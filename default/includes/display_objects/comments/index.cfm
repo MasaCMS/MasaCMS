@@ -238,7 +238,7 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
-		<div id="svComments">
+		<div id="svComments" class="#this.commentsWrapperClass#">
 			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
@@ -258,12 +258,12 @@
 			</cfif>
 
 			<!--- COMMENT FORM --->
-			<div id="postcomment-form" class="well">
+			<div id="postcomment-form" class="#this.commentFormWrapperClass#">
 				
-				<span id="postcomment-comment" style="display: none"><a class="btn btn-default" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
+				<span id="postcomment-comment" style="display: none"><a class="#this.commentNewClass#" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
 
 				<!--- THE FORM --->
-				<form role="form" id="postcomment" class="form-horizontal" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 					<a name="postcomment"></a>
 					<fieldset>
 
@@ -272,41 +272,41 @@
 						<legend id="replytocomment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
 
 						<!--- Name --->
-							<div class="req form-group">
-								<label class="control-label col-lg-3" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-								<div class="col-lg-9">
-									<input id="txtName" name="name" type="text" class="text form-control" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
+							<div class="req #this.commentFieldWrapperClass#">
+								<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
 								</div>
 							</div>
 
 						<!--- Email --->
-							<div class="req form-group">
-								<label class="control-label col-lg-3" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-								<div class="col-lg-9">
-									<input id="txtEmail" name="email" type="text" class="text form-control" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
+							<div class="req #this.commentFieldWrapperClass#">
+								<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
 								</div>
 							</div>
 
 							<!--- URL --->
-							<div class="form-group">
-								<label for="txtUrl" class="control-label col-lg-3">#variables.$.rbKey('comments.url')#</label>
-								<div class="col-lg-9">
-									<input id="txtUrl" name="url" type="text" class="text form-control" maxlength="50" value="#HTMLEditFormat(request.url)#">
+							<div class="#this.commentFieldWrapperClass#">
+								<label for="txtUrl" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.url')#</label>
+								<div class="#this.commentInputWrapperClass#">
+									<input id="txtUrl" name="url" type="text" class="#this.commentInputClass#" maxlength="50" value="#HTMLEditFormat(request.url)#">
 								</div>
 							</div>
 
 							<!--- Comment --->
-							<div class="req form-group">
-								<label for="txtComment" class="control-label col-lg-3">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
-								<div class="col-lg-9">
-									<textarea rows="5" id="txtComment" class="form-control" name="comments" message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+							<div class="req #this.commentFieldWrapperClass#">
+								<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+								<div class="#this.commentInputWrapperClass#">
+									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 								</div>
 							</div>
 
 							<!--- Remember --->
-							<div class="form-group">
-								<div class="col-lg-offset-3 col-lg-9">
-									<div class="checkbox">
+							<div class="#this.commentFieldWrapperClass#">
+								<div class="#this.commentPrefsInputWrapperClass#">
+									<div class="#this.commentCheckboxClass#">
 										<label for="txtRemember">
 											<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif>> #variables.$.rbKey('comments.rememberinfo')#
 										</label>
@@ -315,9 +315,9 @@
 							</div>
 
 							<!--- Subscribe --->
-							<div class="form-group">
-								<div class="col-lg-offset-3 col-lg-9">
-									<div class="checkbox">
+							<div class="#this.commentFieldWrapperClass#">
+								<div class="#this.commentPrefsInputWrapperClass#">
+									<div class="#this.commentCheckboxClass#">
 										<label for="txtSubscribe">
 											<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif>> #variables.$.rbKey('comments.subscribe')#
 										</label>
@@ -332,19 +332,19 @@
 						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 					</div>
 
-					<div class="col-lg-offset-3 col-lg-9">
+					<div class="#this.commentRequiredWrapperClass#">
 						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
 					</div>
 					
 					<!--- SUBMIT BUTTON --->
-					<div class="form-group">
-						<div class="col-lg-offset-3 col-lg-9">
+					<div class="#this.commentFieldWrapperClass#">
+						<div class="#this.commentSubmitButtonWrapperClass#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
 							<input type="hidden" name="commentid" value="#createuuid()#">
 							<input type="hidden" name="parentid" value="">
 							<input type="hidden" name="commenteditmode" value="add">
 							<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#">
-							<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
+							<button type="submit" class="#this.commentSubmitButtonClass#">#htmlEditFormat(variables.$.rbKey('comments.submit'))#</button>
 						</div>
 					</div>
 				</form>

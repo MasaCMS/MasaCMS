@@ -69,30 +69,30 @@
 	</cfquery>
 </cfsilent>
 <cfoutput>
-	<div class="svMailingList well" id="#createCSSID(variables.rslist.name)#">
+	<div class="svMailingList #this.mailingListWrapperClass#" id="#createCSSID(variables.rslist.name)#">
 		
 		<cfif variables.$.event('doaction') eq 'unsubscribe'>
 			<cfif variables.$.event("passedProtect")>
-				<p class="success">#variables.$.rbKey('mailinglist.youhaveunsubscribed')#</p>
+				<p class="#this.mailingListSuccessClass#">#variables.$.rbKey('mailinglist.youhaveunsubscribed')#</p>
 			<cfelse>
-				<p class="error">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.mailingListErrorClass#">#variables.$.rbKey('captcha.spam')#</p>
 			</cfif>
 		<cfelseif variables.$.event('doaction') eq 'subscribe' and variables.rslist.isPurge neq 1>
 			<cfif variables.$.event("passedProtect")>
-				<p class="success">#variables.$.rbKey('mailinglist.youhavesubscribed')#</p>
+				<p class="#this.mailingListSuccessClass#">#variables.$.rbKey('mailinglist.youhavesubscribed')#</p>
 			<cfelse>
-				<p class="error">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.mailingListErrorClass#">#variables.$.rbKey('captcha.spam')#</p>
 			</cfif>
 		<cfelseif variables.$.event('doaction') eq 'subscribe' and variables.rslist.isPurge eq 1>
 			<cfif variables.$.event("passedProtect")>
-				<p class="success">#variables.$.rbKey('mailinglist.emailremoved')#</p>
+				<p class="#this.mailingListSuccessClass#">#variables.$.rbKey('mailinglist.emailremoved')#</p>
 			<cfelse>
-				<p class="error">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.mailingListErrorClass#">#variables.$.rbKey('captcha.spam')#</p>
 			</cfif>	
 		<cfelse>
 
 			<!--- THE FORM --->
-			<form role="form" class="form-horizontal clearfix" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
+			<form role="form" class="#this.mailingListFormClass#" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 				<fieldset>
 					<legend>#HTMLEditFormat(variables.rslist.name)#</legend>
 
@@ -104,46 +104,46 @@
 					<cfif variables.rslist.isPurge neq 1>
 
 						<!--- First Name --->
-						<div class="req form-group">
-							<label for="txtNameFirst" class="col-lg-2 control-label">
+						<div class="req #this.mailingListFormGroupWrapperClass#">
+							<label for="txtNameFirst" class="#this.mailingListFormLabelClass#">
 								#variables.$.rbKey('mailinglist.fname')# 
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
-							<div class="col-lg-10">
-								<input type="text" id="txtNameFirst" class="text form-control" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
+							<div class="#this.mailingListFormFieldWrapperClass#">
+								<input type="text" id="txtNameFirst" class="#this.mailingListFormInputClass#" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
 							</div>
 						</div>
 
 						<!--- Last Name --->
-						<div class="req form-group">
-							<label for="txtNameLast" class="col-lg-2 control-label">
+						<div class="req #this.mailingListFormGroupWrapperClass#">
+							<label for="txtNameLast" class="#this.mailingListFormLabelClass#">
 								#variables.$.rbKey('mailinglist.lname')# 
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
-							<div class="col-lg-10">
-								<input type="text" id="txtNameLast" class="text form-control" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
+							<div class="#this.mailingListFormFieldWrapperClass#">
+								<input type="text" id="txtNameLast" class="#this.mailingListFormInputClass#" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
 							</div>
 						</div>
 
 						<!--- Company --->
-						<div class="form-group">
-							<label for="txtCompany" class="col-lg-2 control-label">
+						<div class="#this.mailingListFormGroupWrapperClass#">
+							<label for="txtCompany" class="#this.mailingListFormLabelClass#">
 								#variables.$.rbKey('mailinglist.company')#
 							</label>
-							<div class="col-lg-10">
-								<input type="text" id="txtCompany" class="text form-control" name="company" maxlength="50" />
+							<div class="#this.mailingListFormFieldWrapperClass#">
+								<input type="text" id="txtCompany" class="#this.mailingListFormInputClass#" name="company" maxlength="50" />
 							</div>
 						</div>
 					</cfif>
 
 					<!--- Email --->
-					<div class="req form-group">
-						<label for="txtEmail" class="col-lg-2 control-label">
+					<div class="req #this.mailingListFormGroupWrapperClass#">
+						<label for="txtEmail" class="#this.mailingListFormLabelClass#">
 							#variables.$.rbKey('mailinglist.email')# 
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 						</label>
-						<div class="col-lg-10">
-							<input type="text" id="txtEmail" class="text form-control" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
+						<div class="#this.mailingListFormFieldWrapperClass#">
+							<input type="text" id="txtEmail" class="#this.mailingListFormInputClass#" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
 						</div>
 					</div>
 				</fieldset>
@@ -157,18 +157,18 @@
 						<input type="hidden" name="doaction" value="subscribe" checked="checked" />
 						<input type="hidden" name="isVerified" value="1" />
 						<!--- Subscribe --->
-						<div class="form-group">
-							<div class="col-lg-offset-2 col-lg-10">
-								<input type="submit" class="submit btn btn-default" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.subscribe'))#" />
+						<div class="#this.mailingListFormGroupWrapperClass#">
+							<div class="#this.mailingListCheckboxWrapperClass#">
+								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.subscribe'))#" />
 							</div>
 						</div>
 					<cfelse>
 						<input type="hidden" name="doaction" value="subscribe"  />
 						<input type="hidden" name="isVerified" value="1"  />
 						<!--- Unsubscribe --->
-						<div class="form-group">
-							<div class="col-lg-offset-2 col-lg-10">
-								<input type="submit" class="submit btn btn-default" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.unsubscribe'))#" />
+						<div class="#this.mailingListFormGroupWrapperClass#">
+							<div class="#this.mailingListCheckboxWrapperClass#">
+								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.unsubscribe'))#" />
 							</div>
 						</div>
 					</cfif>

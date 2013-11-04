@@ -79,11 +79,11 @@
 	</cfquery>
 </cfsilent>
 <cfoutput>
-	<div class="row">
-		<div class="col-lg-12">
-			<div id="svRSSFeeds">
+	<div class="#this.draggableBoxWrapperClass#">
+		<div class="#this.draggableBoxHeaderClass#">
+			<div id="svRSSFeeds" class="#this.draggableBoxRSSWrapperClass#">
 				<cfif not len(getPersonalizationID()) and application.settingsManager.getSite($.event('siteID')).getExtranetPublicReg() eq 1>
-					<p class="rssBlurb"><a class="btn btn-default" href="#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p>
+					<p class="rssBlurb"><a class="#this.draggableBoxHeaderButtonClass#" href="#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p>
 				</cfif>
 			</div>
 		</div>
@@ -95,19 +95,19 @@
 	</#$.getHeaderTag('subHead2')#>
 
 	<!--- Add New Feeds --->
-	<div id="svAddNewFeed" class="well clearfix">
+	<div id="svAddNewFeed" class="#this.draggableBoxAddFeedWrapperClass#">
 		<!--- The Form --->
-		<form role="form" class="form-horizontal" method="post">
+		<form role="form" class="#this.draggableBoxNewFeedFormClass#" method="post">
 			<!--- Select a Feed --->
-			<div class="col-lg-6">
+			<div class="#this.draggableBoxSelectFeedWrapperClass#">
 				<fieldset id="rssInternal">
-					<div class="row">
+					<div class="#this.draggableBoxSelectFeedRowClass#">
 						<legend>#$.rbKey('dragablefeeds.selectafeed')#</legend>
 						<!--- Select a Feed Menu --->
-						<div class="form-group">
-							<div class="col-lg-10">
+						<div class="#this.draggableBoxSelectFeedMenuClass#">
+							<div class="#this.draggableBoxSelectFeedMenuDivClass#">
 								<label class="sr-only" for="rssURL">#HTMLEditFormat($.rbKey('dragablefeeds.selectafeed'))#</label>
-								<select class="form-control" id="rssURL" name="rssURL">
+								<select class="#this.draggableFeedMenuSelectFieldClass#" id="rssURL" name="rssURL">
 									<option value="">#HTMLEditFormat($.rbKey('dragablefeeds.selectafeed'))#</option>
 									<optgroup label="Our Favorites">
 										<cfloop query="remoteFeeds">
@@ -123,9 +123,9 @@
 							</div>
 						</div>
 						<!--- Add Feed Button --->
-						<div class="form-group">
-							<div class="col-lg-2">
-								<button class="btn btn-default" type="button" onclick="createFeed(this.form)" value="Create">
+						<div class="#this.addFeedButtonWrapperDivClass#">
+							<div class="#this.addFeedButtonWrapperDivInnerClass#">
+								<button class="#this.addFeedButtonClass#" type="button" onclick="createFeed(this.form)" value="Create">
 									#HTMLEditFormat($.rbKey('dragablefeeds.addfeed'))#
 								</button>
 							</div>
@@ -135,21 +135,21 @@
 			</div>
 
 			<!--- Add Your Own Feed --->
-			<div class="col-lg-6">
+			<div class="#this.draggableBoxSelectFeedWrapperClass#">
 				<fieldset id="rssExternal">
-					<div class="row">
+					<div class="#this.draggableBoxSelectFeedRowClass#">
 						<legend>#$.rbKey('dragablefeeds.addyourown')#</legend>
 						<!--- URL --->
-						<div class="form-group">
-							<div class="col-lg-10">
+						<div class="#this.draggableBoxSelectFeedMenuClass#">
+							<div class="#this.draggableBoxSelectFeedMenuDivClass#">
 								<label class="sr-only" for="rssURLtext">URL</label>
-								<input class="form-control" type="text" name="rssURLtext" size="30" value="" maxlength="255" placeholder="URL">
+								<input class="#this.draggableFeedMenuSelectFieldClass#" type="text" name="rssURLtext" size="30" value="" maxlength="255" placeholder="URL">
 							</div>
 						</div>
 						<!--- Add Feed Button --->
-						<div class="form-group">
-							<div class="col-lg-2">
-								<button class="btn btn-default" type="button" onclick="createFeed(this.form)" value="Create">
+						<div class="#this.addFeedButtonWrapperDivClass#">
+							<div class="#this.addFeedButtonWrapperDivInnerClass#">
+								<button class="#this.addFeedButtonClass#" type="button" onclick="createFeed(this.form)" value="Create">
 									#HTMLEditFormat($.rbKey('dragablefeeds.addfeed'))#
 								</button>
 							</div>
