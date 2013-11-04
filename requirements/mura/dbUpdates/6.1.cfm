@@ -11,6 +11,7 @@
 	getBean('file').checkSchema();
 	getBean('razunaSettings').checkSchema();
 	getBean('contentFilenameArchive').checkSchema();
+	getBean('commenter').checkSchema();
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
