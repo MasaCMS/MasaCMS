@@ -226,6 +226,7 @@
 			<cfloop query="variables.records">
 				<cfset arrayAppend(array,queryRowToStruct(variables.records,variables.records.currentRow))>
 			</cfloop>
+			<cfreturn array>
 		<cfelse>
 			<cfthrow message="The records have not been set.">
 		</cfif>
