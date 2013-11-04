@@ -129,6 +129,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
  </cffunction>
 
+ <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
+ 	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
+ 	<cfreturn StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+ </cffunction>
+
+ <cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
+ 	<cfreturn StructKeyList(getExtendedAttributes()) />
+ </cffunction>
+
 <cffunction name="setValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
