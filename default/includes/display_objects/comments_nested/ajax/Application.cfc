@@ -1,4 +1,3 @@
-<cfsilent>
 <!---
 	This file is part of Mura CMS.
 
@@ -55,59 +54,15 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<!---
-
-	TODO:	
-			*) maybe display comments grouped by content title and nested by replies
-			*) flag comment as SPAM
-				- allow for blacklisting/blocking IP
-
---->
-</cfsilent>
-<script src="assets/js/comment.js?coreversion=<cfoutput>#application.coreversion#</cfoutput>" type="text/javascript"></script>
-<style>
-#frmSearch div.full>div {
-	width: 940px !important;
-}
-</style>
-<script>
-	$(document).ready(function(){
-		commentManager.loadSearch('');
-	});	
-</script>
-<cfoutput>
-	
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		<div id="nav-module-specific" class="btn-group">
-				<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
-		</div>
-	</cfif>
-
-	
-<div id="commentsManagerWrapper">
-	<h1>#rc.$.rbKey('comments.commentsmanager')#</h1>
-
-	<!--- MESSAGING --->
-	<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
-		<cfset local.class = rc.processed ? 'success' : 'error'>
-		<div id="feedback" class="alert alert-#local.class#">
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-			<cfif rc.processed>
-				#rc.$.rbKey('comments.message.confirmation')#
-			<cfelse>
-				#rc.$.rbKey('comments.message.error')#
-			</cfif>
-		</div>
-	</cfif>
-
-	<form id="frmSearch" action="index.cfm">
-		<div class="tabs-left mura-ui full">
-			<div class="tab-content">
-				<div class="fieldset">
-					<div id="commentSearch"><!--- target for ajax ---></div>
-				</div>
-			</div>
-		</div>
-	</form>
-</div>
-</cfoutput>
+<cfcomponent output="false">
+	<cfset depth=5>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_scriptProtect_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
+</cfcomponent>
