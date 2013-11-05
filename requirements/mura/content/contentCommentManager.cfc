@@ -327,7 +327,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 				}
 				o &= row.name;
 				if (row.hasKids) {
-					o &= dspCategoriesNestSelect(arguments.siteID, row.categoryID, arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName)
+					o &= dspCategoriesNestSelect(arguments.siteID, row.categoryID, arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName);
 				}
 				o &= "</li>";
 			}
