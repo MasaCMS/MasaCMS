@@ -111,7 +111,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable, sourceIterator=variables.instance.sourceIterator)/>
+		<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(
+				baseID=getExtendBaseID()
+				, type=variables.instance.type
+				, subType=variables.instance.subtype
+				, siteID=variables.instance.siteID
+				, dataTable=variables.instance.extendDataTable
+				, sourceIterator=variables.instance.sourceIterator
+			) />
 	</cfif> 
 	<cfreturn variables.instance.extendData />
 </cffunction>
@@ -130,23 +137,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  </cffunction>
 
  <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
- 	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
- 	<cfset var i="">
- 	<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+ 	<cfargument name="name" default="" hint="Extend Set Name" />
 
- 	<cfif not structIsEmpty(extendSetData)>
- 		<cfloop collection="#extendSetData#" item="i">
- 			<cfif valueExists(i)>
- 				<cfset extendSetData[i]=getValue(i)>
- 			</cfif>
- 		</cfloop>
- 	</cfif>
+	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
+	<cfset var i = "" />
+
+	<cfif Len(arguments.name)>
+		<cfscript>
+			extendSetData = {};
+			var structData = getExtendedData().getAllValues();
+			var rsData = StructKeyExists(structData, 'data') ? structData.data : QueryNew('');
+			var rsDefinitions = StructKeyExists(structData, 'definitions') ? structData.definitions : QueryNew('');
+			var rsExtendSet = QueryNew('');
+			var rsAttributes = QueryNew('');
+		</cfscript>
+		<cfif rsDefinitions.recordcount>
+			<cfquery dbtype="query" name="rsExtendSet">
+				SELECT DISTINCT extendsetid
+				FROM rsDefinitions
+				WHERE extendsetname = <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar" />
+			</cfquery>
+		</cfif>
+		<cfif rsExtendSet.recordcount>
+			<cfquery dbtype="query" name="rsAttributes">
+				SELECT name, attributevalue
+				FROM rsData
+				WHERE extendsetid = <cfqueryparam value="#rsExtendSet.extendsetid#" cfsqltype="cf_sql_varchar" />
+			</cfquery>
+			<cfloop query="rsAttributes">
+				<cfset extendSetData['#rsAttributes.name[currentrow]#'] = rsAttributes.attributeValue[currentrow] />
+			</cfloop>
+		</cfif>
+	<cfelse>
+		<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+	</cfif>
+
+	<cfif not structIsEmpty(extendSetData)>
+		<cfloop collection="#extendSetData#" item="i">
+			<cfif valueExists(i)>
+				<cfset extendSetData[i]=getValue(i)>
+			</cfif>
+		</cfloop>
+	</cfif>
 
  	<cfreturn extendSetData>
  </cffunction>
 
  <cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
- 	<cfreturn StructKeyList(getExtendedAttributes()) />
+ 	<cfargument name="name" default="" hint="Extend Set Name" />
+ 	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
  </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
