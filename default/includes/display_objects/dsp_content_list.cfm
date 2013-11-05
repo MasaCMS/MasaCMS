@@ -54,6 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+<div id="" class="">tst</div>
 <cfsilent>
 	<cfif not structKeyExists(arguments,"type")>
 		<cfset arguments.type="Feed">
