@@ -1042,7 +1042,7 @@ Display Objects
 	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
 	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">

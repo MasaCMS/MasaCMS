@@ -55,6 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<p class="alert"><strong>Important:</strong> Leaving large bundle files on server can lead to excessive disk space usage.</p>
 <cfif findNoCase(application.configBean.getWebRoot(),rc.bundleFilePath)>
 	<cfset downloadURL=replace(application.configBean.getContext() & right(rc.bundleFilePath,len(rc.bundleFilePath)-len(application.configBean.getWebRoot())),"\","/","All")>
-	<p><a href="#downloadURL#"class="submit"><span>Download Bundle</span></a></p>
+	<p><a href="#downloadURL#" class="btn btn-primary">Download Bundle</a></p>
 </cfif>
 </cfoutput>
