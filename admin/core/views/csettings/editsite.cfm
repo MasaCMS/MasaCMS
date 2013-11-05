@@ -206,7 +206,7 @@ to your own modified versions of Mura CMS.
           </div>
           </div>
         <div class="control-group">
-            <div class="span2">
+            <div class="span6">
             <label class="control-label">Site Caching</label>
             <div class="controls">
                 <label class="radio inline">
@@ -217,12 +217,13 @@ to your own modified versions of Mura CMS.
                 On</label>
               </div>
           </div>
+            <!---
             <div class="span4">
             <label class="control-label">Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
             <div class="controls">
                 <input name="cacheCapacity" type="text" class="span3" value="#HTMLEditFormat(rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
               </div>
-          </div>
+          </div>--->
             <div class="span6">
             <label class="control-label">Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
             <div class="controls">
