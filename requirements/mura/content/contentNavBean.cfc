@@ -289,4 +289,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
  </cffunction>
 
+ <cffunction name="getExtendedAttributesQuery" returntype="struct" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+	<cfreturn getContentBean().getExtendedAttributesQuery(name=arguments.name) />
+</cffunction>
+
 </cfcomponent>
