@@ -170,13 +170,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
-		<cfif not structIsEmpty(extendSetData)>
-			<cfloop collection="#extendSetData#" item="i">
-				<cfif valueExists(i)>
-					<cfset extendSetData[i]=getValue(i)>
-				</cfif>
-			</cfloop>
-		</cfif>
+	</cfif>
+
+	<cfif not structIsEmpty(extendSetData)>
+		<cfloop collection="#extendSetData#" item="i">
+			<cfif valueExists(i)>
+				<cfset extendSetData[i]=getValue(i)>
+			</cfif>
+		</cfloop>
 	</cfif>
 
  	<cfreturn extendSetData>
