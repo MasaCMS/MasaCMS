@@ -928,7 +928,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset addObjects=newBean.getAddObjects()>
 				<cfset removeObjects=newBean.getRemoveObjects()>
 
-				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="600">
+				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID##newBean.getContentID()#" timeout="600">
 	
 				<cfif isObject(pluginEvent.getValue('approvalRequest'))>
 					<cfset var approvalRequest=pluginEvent.getValue('approvalRequest')>
