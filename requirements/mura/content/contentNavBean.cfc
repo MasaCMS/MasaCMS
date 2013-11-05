@@ -279,4 +279,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif',getValue('fileEXT'))>
 </cffunction>
 
+<cffunction name="getExtendedAttributes" returntype="struct" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+	<cfreturn getContentBean().getExtendedAttributes(name=arguments.name) />
+</cffunction>
+
+ <cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
+ 	<cfargument name="name" default="" hint="Extend Set Name" />
+ 	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
+ </cffunction>
+
+ <cffunction name="getExtendedAttributesQuery" returntype="struct" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+	<cfreturn getContentBean().getExtendedAttributesQuery(name=arguments.name) />
+</cffunction>
+
 </cfcomponent>

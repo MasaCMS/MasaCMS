@@ -269,7 +269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 					<cfset openGrouping=false />
 				<cfelseif len(param.getField())>
-					tusers.userid IN (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#param.getExtendedIDList('tclassextenddatauseractivity',arguments.feedBean.getSiteID(),tableModifier)#">)
+					tusers.userid IN (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#param.getExtendedIDList('tclassextenddatauseractivity',params.getSiteID(),tableModifier)#">)
 					<cfset openGrouping=false />
 				</cfif>
 			</cfif>						
