@@ -97,6 +97,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfsavecontent>
 	
+	<cfset page=replaceNoCase(page,' class=""','','all')>
+	<cfset page=replaceNoCase(page,' div=""','','all')>
 	<cfset page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>")>
 	<cfset page=replaceNoCase(page,"</body>", renderer.renderHTMLQueue("Foot") & "</body>")>
 	<cfset arguments.event.setValue('__MuraResponse__',trim(page))>
