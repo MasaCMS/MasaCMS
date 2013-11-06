@@ -1226,14 +1226,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var crumbs=getCrumbIterator()>
 	<cfset var crumb="">
 	<cfset var chain="">
-
+	<cfset var i="">
+	<cfset var isExempt=false>
 	<cfloop condition="crumbs.hasNext()">
 		<cfset crumb=crumbs.next()>
 		<cfif len(crumb.getChainID())>
 			<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
 			<cfif not chain.getIsNew()>
+				<cfif len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
+					<cfloop list="#crumb.getExemptID()#" index="i">
+						<cfif listFind(session.mura.membershipids,i)>
+							<cfreturn false>
+						</cfif>
+					</cfloop>
+				</cfif>
 				<cfset setValue('chainID',crumb.getChainID())>
-				<cfreturn true>
+				<cfreturn true>		
 			</cfif>
 		</cfif>
 	</cfloop>
