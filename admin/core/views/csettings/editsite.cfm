@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
         <cfif rc.siteBean.getsiteid() eq ''>
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"  /><i class="icon-plus-sign"></i> Add</button>
           <cfelse>
-          <cfif rc.siteBean.getsiteid() neq 'default'>
+          <cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
             <button type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
           </cfif>
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" /><i class="icon-ok-sign"></i> Update</button>
@@ -991,7 +991,9 @@ to your own modified versions of Mura CMS.
     <!--- Site Bundles --->
     <div id="tabBundles" class="tab-pane fade">
     	<div class="fieldset">
-    		
+    		<cfif listFind(session.mura.memberships,'S2')>
+          
+       
         <div class="control-group">
         	<label class="control-label"> Are you restoring a site from a backup bundle? </label>
         	<div class="controls">
@@ -1034,7 +1036,7 @@ to your own modified versions of Mura CMS.
             <p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
           </div>
       </div>
-        
+         </cfif>
         <div class="control-group">
 	        <label class="control-label"> Which rendering files would you like to import? </label>
 	        <div class="controls">
