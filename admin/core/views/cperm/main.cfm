@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfloop query="rc.rslist"> 
 		   <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
             <tr>
-              <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif>></td></cfif> 
+              <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editior' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editior'>disabled</cfif>></td></cfif> 
               <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 	      <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfloop query="rc.rslist"> 
 		   <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
             <tr> 
-             <cfif chains.hasNext()> <td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif>></td></cfif>
+             <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editior' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editior'>disabled</cfif>></td></cfif> 
               <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 	      <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
@@ -173,4 +173,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <input type="hidden" name="topid" value="#rc.topid#"><input type="hidden" name="moduleid" value="#rc.moduleid#"></form></td>
   </tr>
 </table>
+
+<script>
+	$(function(){
+			$("input[type='radio']").click(function(){
+				var e=$(this).closest('tr').find("input[name='exemptID']")
+				
+				if($("input[name='" + $(this).attr('name') + "']:checked").val() != 'editor'){
+					e.attr('checked',false)
+					e.attr('disabled',true)
+				} else {
+					e.attr('disabled',false)
+				}
+			})
+		}
+	)
+</script>
 </cfoutput>
