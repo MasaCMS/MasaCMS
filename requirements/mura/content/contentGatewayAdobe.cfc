@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
-			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID
+			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID,tapprovalassignments.exemptID
 			from tcontent 
 			left join tfiles on(tcontent.fileID=tfiles.fileID)
 			left join tapprovalassignments on (tcontent.contentid=tapprovalassignments.contentid
@@ -181,6 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			<cfset crumb.chainID=rsCrumbData.chainID />
+			<cfset crumb.exemptID=rsCrumbData.exemptID />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
@@ -216,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			length(tcontent.path) depth
 			</cfif> 
-			,tfiles.fileExt
+			,tfiles.fileExt,tapprovalassignments.exemptID
 			
 			from tcontent  
 			left join tfiles on(tcontent.fileID=tfiles.fileID)
@@ -255,6 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			<cfset crumb.chainID=rsCrumbData.chainID />
+			<cfset crumb.exemptID=rsCrumbData.exemptID />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
 			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
