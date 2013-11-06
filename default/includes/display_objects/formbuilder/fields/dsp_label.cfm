@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfif len(arguments.field.rblabel)>
-	<cfoutput><label for="#arguments.field.name#">#$.rbKey(arguments.field.rblabel)#<cfif arguments.field.isrequired> <ins>Required</ins></cfif></cfoutput>
+	<cfoutput><label for="#arguments.field.name#">#$.rbKey(arguments.field.rblabel)#<cfif arguments.field.isrequired> <ins>#$.rbKey('stf.required')#</ins></cfif></cfoutput>
 <cfelse>
 	<cfoutput>
 	<cfif arguments.field.fieldtype.fieldtype eq "radio">
@@ -65,7 +65,7 @@
 	<cfelseif arguments.field.fieldtype.fieldtype eq "hidden">
 	
 	<cfelse>
-		<label for="#arguments.field.name#">#arguments.field.label#<cfif arguments.field.isrequired> <ins>Required</ins></cfif>
+		<label for="#arguments.field.name#">#arguments.field.label#<cfif arguments.field.isrequired> <ins>#$.rbKey('stf.required')#</ins></cfif>
 	</cfif>
 	</cfoutput>
 </cfif>	
