@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
       <!--- Comments --->
-      <cfif application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
+      <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
       <li <cfif rc.originalcircuit eq 'cComments'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cComments.default&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,'layout.comments')#</a></li>
       <!---- /Comments --->
 	   </cfif>
