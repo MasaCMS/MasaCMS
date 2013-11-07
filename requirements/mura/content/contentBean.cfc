@@ -1227,7 +1227,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var crumb="">
 	<cfset var chain="">
 	<cfset var i="">
-	<cfset var isExempt=false>
 	<cfloop condition="crumbs.hasNext()">
 		<cfset crumb=crumbs.next()>
 		<cfif len(crumb.getChainID())>
