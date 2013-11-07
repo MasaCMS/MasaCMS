@@ -109,9 +109,7 @@
 
 			
 			<cfset variables.theContentID=variables.$.content('contentID')>
-			<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.$.event('siteID')).getPrivateUserPoolID()#')
-					and application.permUtility.getnodePerm(request.crumbdata) neq 'none')
-					or listFind(session.mura.memberships,'S2')>
+			<cfset request.isEditor=application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid) or application.permUtility.getnodePerm(request.crumbdata) neq 'none'>
 			<cfparam name="request.commentid" default="">
 			<cfparam name="request.comments" default="">
 			<cfparam name="request.commenteditmode" default="add">
