@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif isStruct(arguments.data)>
 		
 			<cfloop collection="#arguments.data#" item="prop">
-				<cfif structKeyExists(this,"set#prop#")>
+				<cfif isDefined("this.set#prop#")>
 					<cfset tempFunc=this["set#prop#"]>
           			<cfset tempFunc(arguments.data['#prop#'])>
 				</cfif>
