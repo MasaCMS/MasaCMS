@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
-			<cfif structKeyExists(this,"set#prop#")>
+			<cfif isDefined("this.set#prop#")>
 				<cfset tempFunc=this["set#prop#"]>
 				<cfset tempFunc(arguments.config['#prop#'])>
 			<cfelse>
