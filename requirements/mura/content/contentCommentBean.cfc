@@ -648,7 +648,7 @@ To Unsubscribe Click Here:
 	<cfreturn "commentID">
 </cffunction>
 
-<cffunction name="setCommenter" access="private" output="false">
+<cffunction name="setCommenter" output="false">
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	<cfset var commenter=getBean('commenter')>
@@ -662,7 +662,7 @@ To Unsubscribe Click Here:
 	<cfset pluginEvent.getHandler("standardSetCommenter").handle(pluginEvent)>
 </cffunction>
 
-<cffunction name="getCommenter" access="private" output="false">
+<cffunction name="getCommenter" output="false">
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	<cfset var commenter=getBean('commenter')>
