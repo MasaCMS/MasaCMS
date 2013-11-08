@@ -1588,7 +1588,7 @@ Display Objects
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
-	<cfargument name="params" type="string" required="false" default="" />
+	<cfargument name="params" required="false" default="" />
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
