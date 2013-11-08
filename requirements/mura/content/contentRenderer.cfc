@@ -1588,7 +1588,7 @@ Display Objects
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
-	<cfargument name="params" type="string" required="false" default="" />
+	<cfargument name="params" required="false" default="" />
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
@@ -1618,7 +1618,7 @@ Display Objects
 	<cfargument name="hasSummary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
-	<cfargument name="params" type="string" required="true" default="" />
+	<cfargument name="params" required="true" default="" />
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
@@ -1639,6 +1639,8 @@ Display Objects
 	
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
+	<cfelseif isStruct(arguments.params)>
+		<cfset objectParams=arguments.params>
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
@@ -1671,7 +1673,7 @@ Display Objects
 <cfargument name="object" type="string">
 <cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#variables.event.getValue('siteID')#">
-<cfargument name="params" type="string" required="true" default="">
+<cfargument name="params" required="true" default="">
 <cfargument name="assignmentID" type="string" required="true" default="">
 <cfargument name="regionID" required="true" default="0">
 <cfargument name="orderno" required="true" default="0">
