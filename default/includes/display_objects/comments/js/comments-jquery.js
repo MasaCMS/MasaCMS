@@ -55,27 +55,26 @@
 	Mura CMS.
 */
 $(function(){
-	//function initPage() {
-		var $editor = jQuery('#postcomment');
-		var $commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
-		var $newcommentid = jQuery("#postcomment [name=commentid]").val();
-		var $name = jQuery("#postcomment [name=name]").val();
-		var $url = jQuery("#postcomment [name=url]").val();
-		var $email = jQuery("#postcomment [name=email]").val();
-		var $currentedit = "";
-		var $nextN = 3;
-
-		var params = {
+	var $editor = jQuery('#postcomment');
+	var $commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
+	var $newcommentid = jQuery("#postcomment [name=commentid]").val();
+	var $name = jQuery("#postcomment [name=name]").val();
+	var $url = jQuery("#postcomment [name=url]").val();
+	var $email = jQuery("#postcomment [name=email]").val();
+	var $currentedit = "";
+	var $nextN = 3;
+	var params = {
 			// empty
-		};
+	};
 
+	 var initPage=function() {
 		loadPage(params).success(function(data){
 			jQuery('#commentsPage').html(data);	
 			bindEvents();
 			handleHash();
 		})
 			
-	//}
+	}
 
 	var handleHash=function() {
 		var hash = window.location.hash;
@@ -288,5 +287,7 @@ $(function(){
 			$editor.slideDown();
 		});
 	}
+
+	initPage();
 
 });
