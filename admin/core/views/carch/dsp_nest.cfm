@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rsnest.contentid#','#attributes.topid#','#rsnest.parentid#','#attributes.siteid#','#rsnest.type#');"><i class="icon-plus-sign"></i></a>	
 	
-	<cfif isNumeric(rsnest.hasKids) and rsnest.haskids>
+	<cfif isNumeric(hasKids) and haskids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 
