@@ -395,6 +395,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
 			<cfif not archiveBean.getIsNew()>
 				<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+			<cfelse>
+				<cfset archived.delete()>
 			</cfif>
 		</cfif>
 	</cfif>
