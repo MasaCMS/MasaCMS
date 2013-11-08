@@ -295,15 +295,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="isHTTPS" output="false" returnType="boolean">
-	<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
-		<cfreturn true>
-	<cfelseif isBoolean(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
-		<cfreturn true>
-	<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
-		<cfreturn true>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
+	<cfreturn getRequestProtocol() eq 'https'>
+</cffunction>
+
+<cffunction name="getRequestProtocol" output="false">
+	<cftry>
+	<cfreturn listFirst(getPageContext().getRequest().getRequestURL(),":")>
+	<cfcatch>
+		<!--- Legacy --->
+		<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
+			<cfreturn "https">
+		<cfelseif isBoolean(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
+			<cfreturn "https">
+		<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
+			<cfreturn "https">
+		<cfelse>
+			<cfreturn "http">
+		</cfif>
+	</cfcatch>
+	</cftry>
 </cffunction>
 
 <cffunction name="listFix" output="false" returntype="any">

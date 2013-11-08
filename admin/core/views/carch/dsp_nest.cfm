@@ -73,8 +73,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
 
-<cfset hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
-<cfset isMore=hasKids gt attributes.nextN>
+<cfset attributes.hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
+<cfset isMore=attributes.hasKids gt attributes.nextN>
 
 <cfset isOpenSection=listFind(session.openSectionList,rsnest.contentid)>
 
@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rsnest.contentid#','#attributes.topid#','#rsnest.parentid#','#attributes.siteid#','#rsnest.type#');"><i class="icon-plus-sign"></i></a>	
 	
-	<cfif isNumeric(rsnest.hasKids) and rsnest.haskids>
+	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 
@@ -273,8 +273,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 	</dd>
 </dl>
-   <cfif ((hasKids and attributes.nestlevel lt attributes.viewDepth)
-   	 or isOpenSection) and hasKids>
+   <cfif ((attributes.hasKids and attributes.nestlevel lt attributes.viewDepth)
+   	 or isOpenSection) and attributes.hasKids>
    <cf_dsp_nest parentid="#rsnest.contentid#"  
    locking="#attributes.locking#" 
    nestlevel="#evaluate(attributes.nestlevel + 1)#" 

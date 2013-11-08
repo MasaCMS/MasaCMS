@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
 	<cfif len(arguments.property)>
-		<cfif structKeyExists(this,"get#arguments.property#")>
+		<cfif isDefined("this.get#arguments.property#")>
 			<cfset var tempFunc=this["get#arguments.property#"]>
 			<cfreturn tempFunc()>	
 		<cfelseif structKeyExists(variables.instance.struct,"#arguments.property#")>
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
 	<cfargument name="propertyValue">	
-	<cfif structKeyExists(this,"set#arguments.property#")>
+	<cfif isDefined("this.set#arguments.property#")>
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
