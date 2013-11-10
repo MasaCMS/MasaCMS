@@ -262,13 +262,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					</a>
 	 					
 		 				<ul class="dropdown-menu">
-		 					<cfif listFind(session.mura.memberships,'S2')>
+		 					
 		 				 	<li>
 		 						<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&siteid=#session.siteid#">
 		 							<i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
 		 						</a>
 		 					</li>
-		 					</cfif>
+		 					
 		 					<li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
 		 					   	<a href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 		 					   		<i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
@@ -280,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					   	</a>
 		 					</li>
 		 				 
-		 					<cfif listFind(session.mura.memberships,'S2')>
+		 					
 
 		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
@@ -327,13 +327,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 							<i class="icon-trash"></i> Trash Bin
 		 						</a>
 		 					</li>
-		 					
+		 					<cfif listFind(session.mura.memberships,'S2')>
 		 					<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
 		 					<li>
 		 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;">
 		 							<i class="icon-bolt"></i> Update Site
 		 						</a>
 		 					</li>
+		 					</cfif>
 		 					</cfif>
 
 		 					<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
@@ -342,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</li>
 							</cfif>
 										 				
-		 				</cfif>
+		 				
 	 					
 		 				</ul>	
 	 			 									

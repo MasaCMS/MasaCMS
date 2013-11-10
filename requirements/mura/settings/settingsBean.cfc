@@ -570,11 +570,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
-		<cfif not variables.instance.cacheCapacity>
+		<!---<cfif not variables.instance.cacheCapacity>--->
 			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
+		<!---
 		<cfelse>
 			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
 		</cfif>
+		--->
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
 	

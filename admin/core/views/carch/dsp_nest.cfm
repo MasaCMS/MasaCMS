@@ -73,8 +73,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
 
-<cfset hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
-<cfset isMore=hasKids gt attributes.nextN>
+<cfset attributes.hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
+<cfset isMore=attributes.hasKids gt attributes.nextN>
 
 <cfset isOpenSection=listFind(session.openSectionList,rsnest.contentid)>
 
@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rsnest.contentid#','#attributes.topid#','#rsnest.parentid#','#attributes.siteid#','#rsnest.type#');"><i class="icon-plus-sign"></i></a>	
 	
-	<cfif isNumeric(rsnest.hasKids) and rsnest.haskids>
+	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 
@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.locking neq 'all'>
 	<dd class="objects">
-		<cfif verdict eq 'editor'>
+		<cfif verdict eq 'editor' and request.hasLayoutObjectsTab>
 		<a class="mura-quickEditItem" data-attribute="inheritObjects">
 		</cfif>
 			<cfif inheritObjects eq 'cascade'>
@@ -183,11 +183,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<span class="bullet" title="#rsnest.inheritObjects#">&bull;</span>
 			</cfif>
 			 <span>#rsnest.inheritObjects#</span>
-		<cfif verdict eq 'editor'></a></cfif>
+		<cfif verdict eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 	</dd>
 	
 	<dd class="display<cfif rsnest.Display eq 2 and rsnest.approved> scheduled</cfif>">
-		<cfif verdict eq 'editor'>
+		<cfif verdict eq 'editor' and request.hasPublishingTab>
 		<a class="mura-quickEditItem" data-attribute="display">
 		</cfif>
 		
@@ -195,33 +195,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
 		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
-			<cfif verdict neq 'editor'>
+			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
 				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
 			</cfif>
 			<i class="icon-calendar"></i>
-			<cfif verdict neq 'editor'></a></cfif>
+			<cfif not (verdict eq 'editor' and request.hasPublishingTab)></a></cfif>
 		<cfelse>
 		<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 		</cfif>
-		<cfif verdict eq 'editor'></a></cfif>
+		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
 	
 	<dd class="template">
-	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem<cfif len(rsnest.template) or len(rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
+	  	<cfif verdict eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rsnest.template) or len(rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 		<cfif len(rsnest.template) or len(rsnest.template)>
 			 <i class="icon-list-alt" title="#rsnest.template#"></i><span>#rsnest.template#</span>
 		<cfelse>
 			<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
            	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
           </cfif>
-		<cfif verdict eq 'editor'></a></cfif>
+		<cfif verdict eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 	</dd>
 </cfif>
 	<dd class="nav">
-		 <cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
+		 <cfif verdict eq 'editor' and request.hasPublishingTab><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
 			 <cfif isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
 			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#</span>
-		<cfif verdict eq 'editor'></a></cfif>
+		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
     <dd class="updated">#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rsnest.lastupdate,"medium")#</dd>
     <dd class="actions">
@@ -273,8 +273,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 	</dd>
 </dl>
-   <cfif ((hasKids and attributes.nestlevel lt attributes.viewDepth)
-   	 or isOpenSection) and hasKids>
+   <cfif ((attributes.hasKids and attributes.nestlevel lt attributes.viewDepth)
+   	 or isOpenSection) and attributes.hasKids>
    <cf_dsp_nest parentid="#rsnest.contentid#"  
    locking="#attributes.locking#" 
    nestlevel="#evaluate(attributes.nestlevel + 1)#" 

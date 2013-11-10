@@ -364,48 +364,60 @@
 	<cfif not hasPendingApprovals(arguments.changesetID)>
 		<cfset var it=getAssignmentsIterator(argumentCollection=arguments)>
 		<cfset var item="">
-		<cfset var changeset="">
+		<cfset var changeset=read(arguments.changesetID)>
 		<cfset var requestID="">
 		<cfset var contentHistID="">
 		<cfset var approvalRequest="">
 		<cfset var rollback="">
 		<cfset var current="">
 		<cfset var previous="">
+		<cfset var EventArgs=changeset.getAllValues()>
+		<cfset EventArgs.changesetBean=changeset>
+		<cfset EventArgs.changeset=changeset>
 
-		<cfloop condition="it.hasNext()">
-			<cfset item=it.next()>
-			<cfset item.setApproved(1)>
-			<cfset item.setApprovalChainOverride(true)>
-			<cfset item.setLastUpdateBy(item.getLastUpdateBy())>
-			<cfset item.setLastUpdateByID(item.getLastUpdateByID())>
-			
-			<cfset current=getBean('content').loadBy(contentID=item.getContentID(),siteID=item.getSiteID())>
-			<cfset requestID=item.getRequestID()>
-			<cfset contentHistID=item.getContentHistID()>
+		<cfset var pluginEvent=createObject("component","mura.MuraScope").init(EventArgs)>
 
-			<cfset item.save()>
-
-			<cfif len(requestID)>
-				<cfset getBean('approvalRequest').loadBy(requestID=requestID).setContentHistID(item.getContentHistID()).save()>
-				<cfset previous=getBean('content').loadBy(contentHistID=contentHistID,siteID=item.getSiteID())>
-				
-				<cfif not previous.getIsNew()>
-					<cfset previous.deleteVersion()>
-				</cfif>
-			</cfif>
-
-			<cfset rollback=getBean('changesetRollBack').loadBy(
-					changesetHistID=item.getContentHistID(), 
-					changesetID=item.getChangesetID(), 
-					previousHistID=current.getContentHistID(),
-					siteID=item.getSiteID()
-				).save()>
-		</cfloop>
+		<cfset pluginEvent.announceEvent('onBeforeChangeSetPublish')>
 		
-		<cfset changeset=read(arguments.changesetID)>
-		<cfset changeset.setPublished(1)>
-		<cfset changeset.setPublishDate(now())>
-		<cfset changeset.save()>
+		<cfif not changeset.hasErrors()>
+			<cfloop condition="it.hasNext()">
+				<cfset item=it.next()>
+				<cfset item.setApproved(1)>
+				<cfset item.setApprovalChainOverride(true)>
+				<cfset item.setLastUpdateBy(item.getLastUpdateBy())>
+				<cfset item.setLastUpdateByID(item.getLastUpdateByID())>
+				
+				<cfset current=getBean('content').loadBy(contentID=item.getContentID(),siteID=item.getSiteID())>
+				<cfset requestID=item.getRequestID()>
+				<cfset contentHistID=item.getContentHistID()>
+
+				<cfset item.save()>
+
+				<cfif len(requestID)>
+					<cfset getBean('approvalRequest').loadBy(requestID=requestID).setContentHistID(item.getContentHistID()).save()>
+					<cfset previous=getBean('content').loadBy(contentHistID=contentHistID,siteID=item.getSiteID())>
+					
+					<cfif not previous.getIsNew()>
+						<cfset previous.deleteVersion()>
+					</cfif>
+				</cfif>
+
+				<cfset rollback=getBean('changesetRollBack').loadBy(
+						changesetHistID=item.getContentHistID(), 
+						changesetID=item.getChangesetID(), 
+						previousHistID=current.getContentHistID(),
+						siteID=item.getSiteID()
+					).save()>
+			</cfloop>
+			
+			<cfset changeset.setPublished(1)>
+			<cfset changeset.setPublishDate(now())>
+			<cfset changeset.save()>
+
+			<cfset pluginEvent.announceEvent('onAfterChangeSetPublish')>
+		<cfelse>
+			<cfset pluginEvent.announceEvent('onAfterChangeSetPublishFailure')>
+		</cfif>
 	</cfif>
 </cffunction>
 

@@ -63,14 +63,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.type" default="" />
 	<cfparam name="arguments.rc.startrow" default="1" />
 	<cfparam name="arguments.rc.siteid" default="" />
+	<cfparam name="arguments.rc.approvalExempt" default="" />
 	<cfparam name="arguments.rc.chainID" default="" />
+	<cfparam name="arguments.rc.exemptID" default="" />
 	<cfparam name="arguments.rc.topid" default="00000000000000000000000000000000001" />
 </cffunction>
 
 <cffunction name="update" output="false">
 	<cfargument name="rc">
 	<cfset variables.permUtility.update(arguments.rc)  />
-	<cfset getBean('approvalChainAssignment').loadBy(siteID=arguments.rc.siteid, contentID=arguments.rc.contentID).setChainID(arguments.rc.chainID).save()>
+	<cfset getBean('approvalChainAssignment')
+			.loadBy(siteID=arguments.rc.siteid, contentID=arguments.rc.contentID)
+			.setChainID(arguments.rc.chainID)
+			.setExemptID(arguments.rc.exemptID)
+			.save()>
 
 	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,startrow,topid",path="./")>
 </cffunction>

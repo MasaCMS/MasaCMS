@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
-	<cfif structKeyExists(this,"set#arguments.property#")>
+	<cfif isDefined("this.set#arguments.property#")>
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
@@ -259,7 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 	
-	<cfif structKeyExists(this,"get#arguments.property#")>
+	<cfif isDefined("this.get#arguments.property#")>
 		<cfset var tempFunc=this["get#arguments.property#"]>
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
