@@ -41,3 +41,5 @@ Thumbs.db
 *.sublime-workspace
 *_notes/
 *.json
+develop
+bs3
