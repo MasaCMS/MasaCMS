@@ -122,7 +122,7 @@ Display Objects
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
 <cfset this.commentFormWrapperClass="">
-<cfset this.commentFormClass="form-horizontal">
+<cfset this.commentFormClass="well">
 <cfset this.commentNewClass="btn btn-default">
 <cfset this.commentFieldWrapperClass="">
 <cfset this.commentFieldLabelClass="">
@@ -258,8 +258,8 @@ Display Objects
 <cfset this.mailingListSubmitClass="btn btn-default">
 
 <!--- Dsp_nextN.cfm --->
-<cfset this.nextNWrapperClass="container">
-<cfset this.nextNInnerClass="row">
+<cfset this.nextNWrapperClass="">
+<cfset this.nextNInnerClass="pagination">
 
 <!--- Dsp_search_form.cfm --->
 <cfset this.searchFormClass="">
