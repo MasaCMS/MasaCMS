@@ -104,6 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
+<cfset this.bodyMetaImageClass="thumbnail">
 <cfset this.size=50>
 
 <!--- ===================
@@ -121,7 +122,7 @@ Display Objects
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
 <cfset this.commentFormWrapperClass="">
-<cfset this.commentFormClass="form-horizontal">
+<cfset this.commentFormClass="well">
 <cfset this.commentNewClass="btn btn-default">
 <cfset this.commentFieldWrapperClass="">
 <cfset this.commentFieldLabelClass="">
@@ -257,8 +258,8 @@ Display Objects
 <cfset this.mailingListSubmitClass="btn btn-default">
 
 <!--- Dsp_nextN.cfm --->
-<cfset this.nextNWrapperClass="container">
-<cfset this.nextNInnerClass="row">
+<cfset this.nextNWrapperClass="">
+<cfset this.nextNInnerClass="pagination">
 
 <!--- Dsp_search_form.cfm --->
 <cfset this.searchFormClass="">
@@ -1937,6 +1938,7 @@ Display Objects
 	<cfargument name="bodyAttribute">
 	<cfargument name="titleAttribute">
 	<cfargument name="metaImageSizeArgs" default="#this.bodyMetaImageSizeArgs#">
+	<cfargument name="metaImageClass" default="#this.bodymetaImageClass#">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
@@ -2042,7 +2044,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -2071,10 +2073,10 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 									<div id="svAsset">
-									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
+									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
 									</div>
 								</cfif>
 								</cfoutput>	

@@ -96,7 +96,7 @@
 	
 	<div class="#this.nextNWrapperClass#">
 		<div class="#this.nextNInnerClass#">
-			<ul <cfif this.ulPaginationWrapperClass neq "">class="#this.ulPaginationWrapperClass#"</cfif>>
+			<ul <cfif this.ulPaginationClass neq "">class="#this.ulPaginationClass#"</cfif>>
 			<cfif variables.nextN.currentpagenumber gt 1>
 				<cfif request.muraExportHtml>
 					<cfif variables.nextN.currentpagenumber eq 2>
