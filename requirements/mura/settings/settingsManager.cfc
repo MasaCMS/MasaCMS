@@ -408,14 +408,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">
 <cfargument name="siteArray" type="array" required="yes" default="#arrayNew(1)#">
 <cfargument name="isS2" type="boolean" required="yes" default="false">
+<cfargument name="searchString" type="string" required="no" default="">
+<cfargument name="searchMaxRows" type="numeric" required="no" default="-1">
+
 	<cfset var rsSites=""/>
 	<cfset var counter=1/>
 	<cfset var rsAllSites=getList(sortby="site")/>
 	<cfset var s=0/>
+	<cfset var where=false/>
 	
-	<cfquery name="rsSites" dbtype="query">
+	<cfquery name="rsSites" dbtype="query" maxrows="#arguments.searchMaxRows#">
 		select * from rsAllSites
 		<cfif arrayLen(arguments.siteArray) and not arguments.isS2>
+			<cfset where=true/>
 			where siteid in (
 			<cfloop from="1" to="#arrayLen(arguments.siteArray)#" index="s">
 			'#arguments.siteArray['#s#']#'
@@ -423,7 +428,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset counter=counter+1>
 			</cfloop>)
 		<cfelseif not arrayLen(arguments.siteArray) and not arguments.isS2>
+		<cfset where=true/>
 		where 0=1
+		</cfif>
+		<cfif arguments.searchString neq "">
+		<cfif where>
+		and
+		<cfelse>
+		where
+		</cfif>
+		(
+			siteid like <cfqueryparam value="%#arguments.searchString#%">
+		or	Site like <cfqueryparam value="%#arguments.searchString#%">
+		)
 		</cfif>
 		
 	</cfquery>

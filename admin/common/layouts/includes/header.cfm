@@ -184,7 +184,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	
 	 		<div class="container">
 	 		
-	 		
+	 
+	 			<cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />		
 	 
 	 			<ul>
 	 				
@@ -192,19 +193,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					
 		 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">Current Site</a>
 		 				<a class="dropdown-toggle" data-toggle="dropdown" href="##">
-		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+		 				  
 			 				<!--- <i></i> --->
 			 				<div id="site-name">#application.settingsManager.getSite(session.siteid).getSite()#</div>
 			 				<b class="caret"></b>
 		 				</a>
-	 				
-	 				<ul class="dropdown-menu">
-	 				    <cfloop query="theSiteList">
-	 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#" title="#HTMLEditFormat(theSiteList.site)#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
-	 				      </li>
-	 				    </cfloop>
-	 				</ul>
+	 					
+		 				<ul id="select-site-ul" class="dropdown-menu ui-front">
+		 					<cfif theSiteList.recordCount gt 10> <!--- TODO: move '10' to a config? --->
+		 					<div class="ui-widget"><input class="form-control input-sm" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,"dashboard.search")#..."></div>
+		 					<cfelse>
+		 				    <cfloop query="theSiteList">
+		 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+		 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#" title="#HTMLEditFormat(theSiteList.site)#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
+		 				      </li>
+		 				    </cfloop>
+		 				    </cfif>
+		 				</ul>
 	 				
 	 				</li>
 	 				
@@ -335,6 +340,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 						</a>
 		 					</li>
 		 					</cfif>
+
 
 		 					<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 		 						<li>
