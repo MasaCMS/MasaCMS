@@ -1,4 +1,5 @@
 # Folders and Files to ignore
+/demo*/
 /WEB-INF
 /config/settings.ini.cfm
 /config/version.cfm
@@ -41,3 +42,8 @@ Thumbs.db
 *.sublime-workspace
 *_notes/
 *.json
+.gitignore
+
+admin/assets/js/admin.min.js
+
+admin/assets/less/css/admin.css
