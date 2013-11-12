@@ -1437,9 +1437,12 @@ $.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
 	},
 
 	_renderItem: function( ul, item ) {
+		// ?muraAction=cDashboard.main&siteID=demo1
 		return $( "<li>" )
 			.append(
-				$( "<a>" ).append(
+				$( "<a>" ).attr(
+					"href", "?muraAction=cDashboard.main&siteID=" + item.id
+				).append(
 					$( "<i>" ).addClass( "icon-globe" )
 				).append( item.label )
 			).appendTo( ul );
