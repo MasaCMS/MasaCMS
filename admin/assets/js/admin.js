@@ -1437,7 +1437,6 @@ $.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
 	},
 
 	_renderItem: function( ul, item ) {
-		// ?muraAction=cDashboard.main&siteID=demo1
 		return $( "<li>" )
 			.append(
 				$( "<a>" ).attr(
