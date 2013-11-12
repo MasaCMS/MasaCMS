@@ -159,23 +159,26 @@
 					
 				&.file {
 					
-					/* margin-left: -3px; */
 					padding-left: 36px;
 					position: relative;
 					
 					&:before {
 					position: absolute;
-					left: 2px;
+					left: 0;
+					width: auto;
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
 					font-size: 8px;
-					line-height: 1;
+					line-height: 10px;
 					.inline-block;
 					color: @white;
 					background: @iconColor;
-					padding: 3px 4px;
+					//#gradient .vertical (lighten(@grayDark,20%),@grayDark);
+					text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+					padding: 3px 4px 2px;
 					.border-radius(2px);
-					overflow: hidden;					
+					overflow: hidden;
+					top: 7px;				
 					}
 					
 					&.gif,
@@ -187,7 +190,7 @@
 					
 						&:before {
 							position: relative;
-							top: 2px;
+							top: 3px;
 						}
 					}
 				}
@@ -231,7 +234,8 @@
 					.icon-font(FontAwesome);
 					content: "\f03e";
 					font-size: 19px;
-					top: 5px !important;
+					line-height: 18px;
+					top: 6px !important;
 					background: transparent;
 					padding: 0;
 					color: @iconColor;

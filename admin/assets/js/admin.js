@@ -79,10 +79,10 @@ function loadObject(url, target, message) {
 
 //content scheduling
 var dtCh = "/";
-var minYear = 1900;
+var minYear = 1800;
 var maxYear = 2100;
 var dtFormat = [0, 1, 2];
-var dtExample = "12/31/2014";
+var dtExample = "12/31/2016";
 
 function isInteger(s) {
 	var i;
@@ -250,6 +250,12 @@ function isColor(c){
         return M[0]+'('+M.slice(1).join(',')+')';
     }
     return NaN;
+}
+
+function isURL(url){
+	urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/
+
+	return url.match(urlPattern);
 }
 
 function stripe(theclass) {
@@ -471,6 +477,17 @@ function validateForm(theForm) {
 						}
 
 						errors += getValidationMessage(theField, ' is not a valid color.');
+					}
+				} else if(validationType == 'URL' && theField.value != '') {
+					//var re = new RegExp("(^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$)||");
+					if( !isURL(theField.value) ) {
+						if(!started) {
+							started = true;
+							startAt = f;
+							firstErrorNode = "input";
+						}
+
+						errors += getValidationMessage(theField, ' is not a valid URL.');
 					}
 				} else if(validationType == 'REGEX' && theField.value != '' && hasValidationRegex(theField)) {
 					var re = new RegExp(getValidationRegex(theField));
@@ -1373,7 +1390,7 @@ var spinnerArgs2 = {
     position: 'relative'
 }
 
-/*
+
 var spinnerArgs3 = {
 	lines: 17,
 	// The number of lines to draw
@@ -1406,7 +1423,7 @@ var spinnerArgs3 = {
 	left: 'auto', // Left position relative to parent in px
     position: 'relative'
 }
-*/
+
 
 //preloadimages(['./assets/images/ajax-loader.gif']);
 

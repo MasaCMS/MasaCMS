@@ -89,6 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="remoteSource" default=""/>
 		<cfargument name="remoteSourceURL" type="string" required="yes" default=""/>
 	
+		<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 		<cfreturn variables.fileDAO.create(argumentCollection=arguments) />
 	
 </cffunction>
@@ -479,12 +481,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="isPostedFile" output="false">
-<cfargument name="fileField">
-<cfreturn (structKeyExists(form,arguments.fileField) and listFindNoCase("tmp,upload",listLast(form['#arguments.fileField#'],"."))) or listFindNoCase("tmp,upload",listLast(arguments.fileField,"."))>
+	<cfargument name="fileField">
+	<cfreturn (structKeyExists(form,arguments.fileField) and listFindNoCase("tmp,upload",listLast(form['#arguments.fileField#'],"."))) or listFindNoCase("tmp,upload",listLast(arguments.fileField,"."))>
 </cffunction>
 
 <cffunction name="purgeDeleted" output="false">
 	<cfargument name="siteid" default="">
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 	<cfset variables.fileDAO.purgeDeleted(arguments.siteID)>
 </cffunction>
 
@@ -495,6 +498,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="cleanFileCache" output="false">
 <cfargument name="siteID">
+
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 	<cfset var rsDB="">
 	<cfset var rsDIR="">
 	<cfset var rsCheck="">
@@ -546,6 +552,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rebuildImageCache" output="false">
 <cfargument name="siteID">
+
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 	<cfset var rsDB="">
 	<cfset var rsCheck="">
 	<cfset var rsDir="">
@@ -633,6 +642,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="Width" default="AUTO" />
 	<cfargument name="size" default="" />
 	<cfargument name="siteID" default="" />
+
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 	<cfreturn variables.imageProcessor.getCustomImage(argumentCollection=arguments) />
 </cffunction>
 
@@ -661,6 +673,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=session.siteID>
 	</cfif>
+
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 	
 	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
@@ -739,6 +753,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="width">
 	<cfargument name="siteid">
 
+	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>

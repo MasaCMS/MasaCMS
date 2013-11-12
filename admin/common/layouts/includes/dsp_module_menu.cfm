@@ -63,50 +63,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <li <cfif rc.originalfuseaction eq 'draft'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.draft&siteid=#session.siteid#" ><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>--->
     
 	<cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))>
-	  <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
+	  <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
         <li <cfif  rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
         </li>
       </cfif> 
 	</cfif>
 
       <!--- Comments --->
+      <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
       <li <cfif rc.originalcircuit eq 'cComments'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cComments.default&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,'layout.comments')#</a></li>
       <!---- /Comments --->
-	
-	    <cfif application.permUtility.getModulePerm("00000000000000000000000000000000000","#session.siteid#")>
+	   </cfif>
+
+	    <cfif application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
         <li <cfif rc.moduleid eq '00000000000000000000000000000000003'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
         </li>
       </cfif>
 	 
 	 <!--- Categories --->
-      <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010","#session.siteid#")>
+      <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010",session.siteid)>
         <li <cfif  rc.originalcircuit eq 'cCategory' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000010')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.categories")#</a>
         </li>
       </cfif>
-      <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011","#session.siteid#")>
+      <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011",session.siteid)>
         <li <cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cFeed.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#</a>
         </li>
       </cfif>
-      <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
+      <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
         <li <cfif rc.moduleid eq '00000000000000000000000000000000004' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000004')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004&moduleid=00000000000000000000000000000000004"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.forms")#</a>
         </li>
       </cfif>
 	
-	   <!---<cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
+	   <!---<cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008",session.siteid)>
         <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemembers")#</a>
         </li>
       </cfif>--->
 	
-      <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006","#session.siteid#")>
+      <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
         <li <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cAdvertising.listAdvertisers&siteid=#session.siteid#&moduleid=00000000000000000000000000000000006"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.advertising")#</a>
         </li>
       </cfif>
 	   
-      <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005","#session.siteid#")>
+      <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>
         <li <cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000005')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cEmail.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#</a>
         </li>
       </cfif>
-      <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
+      <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009",session.siteid)>
         <li <cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000009')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cMailingList.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#</a>
         </li>
       </cfif>

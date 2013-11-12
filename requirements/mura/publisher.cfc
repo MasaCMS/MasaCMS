@@ -837,7 +837,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.remotePubDate),de('no'),de('yes'))#" value="#rstchangesets.remotePubDate#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstchangesets.remoteSourceURL#">,
 					<cfif structKeyExists(rstchangesets, "closedate")>
-						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.closedate),de('no'),de('yes'))#" value="#rstchangesets.closedate#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.closedate),de('no'),de('yes'))#" value="#rstchangesets.closedate#">
 					<cfelse>
 						null
 					</cfif>
@@ -1189,6 +1189,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var i="">
 		<cfset var rsFileCheck="">
 		<cfset var cfBlobType="cf_sql_BLOB">
+		<cfset var toFilePoolID=getBean('settingsManager').getSite(arguments.toSiteID).getFilePoolID()>
+		
+		<cfif len(arguments.fromSiteID)>
+			<cfset var fromFilePoolID=getBean('settingsManager').getSite(arguments.fromSiteID).getFilePoolID()>
+		</cfif>
 
 		<cfif application.configBean.getDbType() eq "postgresql">
 			<cfset cfBlobType="cf_sql_LONGVARBINARY">
@@ -1198,6 +1203,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#keys.get(i)#'")>
 		</cfloop>
 		--->
+		
+		<cfif not structKeyExists(arguments,"Bundle")
+			and arguments.toSiteID eq arguments.fromSiteID>
+			<cfreturn true>
+		</cfif>
 		
 		<!--- tfiles --->
 			<cfif structKeyExists(arguments,"Bundle")>
@@ -1209,17 +1219,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isDate(arguments.lastDeployment) and rsttrashfiles.recordcount>
 				<cfif rsttrashfiles.recordcount>
 					<cfloop query="rsttrashfiles">
-						<cfdirectory name="rsFileCheck" action="list" directory="#application.confiBean.getFileDir()#/#arguments.toSiteID#/cache/file/" filter="#rsttrashfiles.fileID#*">
+						<cfdirectory name="rsFileCheck" action="list" directory="#application.confiBean.getFileDir()#/#toFilePoolID#/cache/file/" filter="#rsttrashfiles.fileID#*">
 						<cfif rsFileCheck.recordcount>
 							<cfloop query="rsFileCheck">
-								<cffile action="delete" file="#application.confiBean.getFileDir()#/#arguments.toSiteID#/cache/file/#rsFileCheck.name#">
+								<cffile action="delete" file="#application.confiBean.getFileDir()#/#toFilePoolID#/cache/file/#rsFileCheck.name#">
 							</cfloop>
 						</cfif>
 					</cfloop>
 				</cfif>
 				
 				<cfquery datasource="#arguments.toDSN#">
-				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#toFilePoolID#"/>
 				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				<cfif rsttrashfiles.recordcount>
 					and fileID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valuesList(rsttrashfiles.fileID)#">)
@@ -1229,16 +1239,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 			</cfif>
 			
-			<cfif not isDate(arguments.lastDeployment)>
+			<cfif not isDate(arguments.lastDeployment) and not getBean('settingsManager').getSite(arguments.tositeid).getHasSharedFilePool()>
 				<cfquery datasource="#arguments.toDSN#">
-					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#toFilePoolID#"/>
 					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				</cfquery>
 			</cfif>
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstFiles">
-					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#fromFilePoolID#"/>
 					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
 						created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
@@ -1280,7 +1290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="#cfBlobType#" null="#iif(toBase64(rstFiles.imageMedium) eq '',de('yes'),de('no'))#" value="#rstFiles.imageMedium#">,
 					<cfqueryparam cfsqltype="#cfBlobType#" null="#iif(toBase64(rstFiles.imageSmall) eq '',de('yes'),de('no'))#" value="#rstFiles.imageSmall#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstfiles.moduleID neq '',de('no'),de('yes'))#" value="#rstfiles.moduleID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#toFilePoolID#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstFiles.created),de('no'),de('yes'))#" value="#rstFiles.created#">
 					<cfif structKeyExists(rstfiles, "caption")>
 						,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.caption neq '',de('no'),de('yes'))#" value="#rstFiles.caption#">
@@ -2884,6 +2894,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif isDefined("rstclassextend.iconclass")>
 							iconclass=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.iconclass neq '',de('no'),de('yes'))#" value="#rstclassextend.iconclass#">,
+							</cfif>
+							<cfif isDefined("rstclassextend.hasConfigurator")>
+							hasConfigurator=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasConfigurator neq '',de('no'),de('yes'))#" value="#rstclassextend.hasConfigurator#">,
 							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">

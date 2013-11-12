@@ -87,9 +87,9 @@
 		<cfset variables.rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
 	</cfsilent>
 	<cfoutput>
-		<div id="svRatings" class="row clearfix">	
+		<div id="svRatings" class="#this.raterObjectWrapperClass#">	
 			<!--- Rater --->
-			<div id="rateIt" class="col-lg-12">
+			<div id="rateIt" class="#this.raterWrapperClass#">
 				<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.ratethis')#</#variables.$.getHeaderTag('subHead1')#>				
 				<form name="rater1" id="rater1" method="post" action="">
 					<input type="hidden" id="rate" name="rate" value="##">
@@ -109,7 +109,7 @@
 				</form>									
 			</div>
 			<!--- Average Rating --->
-			<div id="avgrating" class="col-lg-12">
+			<div id="avgrating" class="#this.avgRatingWrapperClass#">
 				<cfif variables.rsRating.theCount gt 0>
 					<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#variables.rsRating.theCount# <cfif variables.rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
 					<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(variables.rsRating.theAvg)#<!--- #replace(variables.rsRating.theAvg(),".","")# --->"><cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg#<cfelse>0</cfif></div>

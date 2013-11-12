@@ -235,20 +235,6 @@
 #frontEndTools {
 	background: #333;
 	#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
-    //background-color: mix(@feToolBarBGStart, @feToolBarBGEnd, 60%);
-    /*
-background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
-    background-image: linear-gradient(to bottom, @feToolBarBGStart, @feToolBarBGEnd); // Standard, IE10
-    background-image: -ms-linear-gradient(top, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
-    background-image: linear-gradient(to bottom, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
-    background-repeat: repeat-x;
-*/
-    // Commented out because it blows up dropdowns in IE
-    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
-	
 	height: 32px !important;
 	position: fixed !important;
 	left: 0px !important;
@@ -291,8 +277,8 @@ background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd);
 
 	color: rgba(255,255,255,.85) !important;
 	float: left !important;
-	line-height: 21px !important;
-	height: 31px !important;
+	line-height: 22px !important;
+	height: 32px !important;
 	margin: 0 !important;
 	padding: 4px 0 !important;
 	list-style: none !important;
@@ -300,10 +286,10 @@ background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd);
 	font-weight: normal !important;
 	font-style: normal !important;
 	font-size: 12px !important;
-	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 	background: none !important;
 	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 	overflow: visible !important;
+	box-sizing: border-box !important;
 	
 	&:first-child {
 		border-left: 0 !important;
@@ -565,6 +551,8 @@ background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd);
 			top: 2px !important;
 			font-size: 16px !important;
 			margin-right: 2px !important;
+			display: inline-block !important;
+			text-align: center !important;
 			}
 		
 		li > a:hover i {

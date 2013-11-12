@@ -40,9 +40,11 @@ config.licenseKey = 'VJ42-3FHF-3FVT-9FH2-TU71-G6D1-XDXF';
  *   config.baseUrl = '/userfiles/';
  */
 
+currentSite=application.settingsManager.getSite(session.siteid);
+
 //ATTENTION: The trailing slash is required.
-config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets/';
-config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets/";
+config.baseUrl = application.configBean.getAssetPath() & '/' & currentSite.getFilePoolID() & '/assets/';
+config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##currentSite.getFilePoolID()##application.configBean.getFileDelim()#assets/";
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.

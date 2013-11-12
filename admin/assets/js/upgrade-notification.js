@@ -68,7 +68,7 @@
             warningHtml += '<a style="text-decoration: none; color: black;" href="#close" onclick="this.parentNode.parentNode.style.display=\'none\'; this.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].style.display=\'none\'; return false;">[ close ]</a>';
             warningHtml += '</div>';
             warningHtml += '<div style="text-align:left; margin:auto 10px;">';
-            warningHtml += 'It looks like you are using an out-of-date version of Internet Explorer. In the future, Mura CMS will only support versions of Internet Explorer 8 and above. <a style="'+css_a+'" target="_blank" href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Click here</a> to download the latest version! Or you could try';
+            warningHtml += 'It looks like you are using an out-of-date version of Internet Explorer. In the future, Mura CMS will only support versions of Internet Explorer 9 and above. <a style="'+css_a+'" target="_blank" href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Click here</a> to download the latest version! Or you could try';
             warningHtml += ' <a style="'+css_a+'" target=_blank" href="http://www.google.com/chrome">Chrome</a> or ';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.apple.com/safari/download/">Safari</a>.';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.mozilla.com/firefox/">Firefox</a>, ';

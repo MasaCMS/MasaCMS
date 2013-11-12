@@ -89,6 +89,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 				<div class="controls">
 					#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium')#
+					<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname()) and attributeBean.getValidation() eq "URL">
+						<a href="" onclick="renderRazunaWindow('#JSStringFormat(attributeBean.getName())#');" class="btn-razuna-logo" title="Select a File from Razuna" rel="tooltip">Razuna</a>
+					</cfif>
 				</div>
 					<!---<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
 				
@@ -145,6 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>
 <cfset returnsets.hasAssocFile=subType.getHasAssocFile()>
+<cfset returnsets.hasConfigurator=subType.getHasConfigurator()>
 
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>
 

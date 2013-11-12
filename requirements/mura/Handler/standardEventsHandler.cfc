@@ -92,8 +92,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
 	<cfif arguments.event.getValue('r').restrict>
 		<cfset arguments.event.setValue('nocache',1)>
+	</cfif>	
+</cffunction>
+
+<cffunction name="standardSetCommentPermissionsHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+
+	<cfset arguments.event.setValue('muraAllowComments', 1)>
+</cffunction>
+
+<cffunction name="standardSetCommenterHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var remoteID = "">
+	<cfset var commenter = event.getValue('commenterBean')>
+	<cfset var comment = event.getValue('commentBean')>
+	
+	<cfif not comment.getIsNew()>
+		<!--- update existing commenter --->
+		<cfset commenter.loadBy(commenterID=comment.getUserID())>
+	<cfelse>
+		<!--- set up new commenter --->
+		<cfif getCurrentUser().isLoggedIn()>
+			<cfset remoteID = getCurrentUser().getUserID()>
+		<cfelseif len(comment.getEmail()) gt 0>
+			<cfset remoteID = comment.getEmail()>
+		</cfif>
+		<cfset commenter.loadBy(remoteID=remoteID)>
+		<cfset commenter.setRemoteID(remoteID)>
 	</cfif>
 	
+	<cfset commenter.setName(comment.getName())>
+	<cfset commenter.setEmail(comment.getEmail())>
+	<cfset commenter.save()>
+
+	<cfset comment.setUserID(commenter.getCommenterID())>
+</cffunction>
+
+<cffunction name="standardGetCommenterHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var commenter = event.getValue('commenterBean')>
+	<cfset var comment = event.getValue('commentBean')>
+	
+	<cfset commenter.loadBy(commenterID=comment.getUserID())>
 </cffunction>
 
 <cffunction name="standardSetLocaleHandler" output="false" returnType="any">
@@ -230,11 +270,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 	
 	<cfif fileExists(ExpandPath( "#arguments.event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
-		<cfset renderer.listFormat="ul">
 		<cfset arguments.event.getValue("contentBean").setTemplate("mobile.cfm")>
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
+		<cfset renderer.contentListPropertyTagMap={containerEl="ul",itemEl="li",title="h3",default="p"}>
 	</cfif>
 	
 </cffunction>
@@ -347,6 +387,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
+	</cfif>
+
+	<cfif arguments.event.getValue("contentBean").getIsNew()>
+		<cfset var archived=getBean('contentFilenameArchive').loadBy(filename=event.getValue('currentFilenameAdjusted'),siteid=event.getValue('siteid'))>
+		<cfif not archived.getIsNew()>
+			<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
+			<cfif not archiveBean.getIsNew()>
+				<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+			<cfelse>
+				<cfset archived.delete()>
+			</cfif>
+		</cfif>
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
@@ -530,7 +582,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
-				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either")) 
+				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true)) 
 				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
 			<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
 		</cfif>

@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
 <cfparam name="application.instanceID" default="#createUUID()#" />
+<cfheader name="Generator" value="Mura CMS" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfset setEncoding("url", "utf-8")>
 <cfset setEncoding("form", "utf-8")> 
@@ -123,6 +124,12 @@ If it has not set application.appInitialized=false. --->
 <cfif not StructKeyExists(cookie, 'userid')>
 	  <cfcookie name="userid" expires="never" value="">
 </cfif>
+
+<!---
+<cfif not StructKeyExists(cookie, 'k100608v010505')>
+	  <cfcookie name="k100608v010505" value="true">
+</cfif>
+--->
 	
 <!--- Making sure that session is valid --->
 <cftry>

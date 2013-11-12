@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-	<div id="svCalendar" class="svCalendar">
+	<div id="svCalendar" class="#this.calendarListWrapperClass#">
 		<table>
 			<tr>
 				<th id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth">&laquo;</a></th>

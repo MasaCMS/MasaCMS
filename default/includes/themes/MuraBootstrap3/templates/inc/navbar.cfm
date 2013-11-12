@@ -26,11 +26,11 @@
 								, ulTopClass='nav navbar-nav'
 								, ulNestedClass='dropdown-menu'
 								, liHasKidsClass='dropdown'
-								, liHasKidsCustomString=''
+								, liHasKidsAttributes=''
 								, liHasKidsNestedClass='dropdown-submenu'
 								, liNestedClass=''
 								, aHasKidsClass='dropdown-toggle'
-								, aHasKidsCustomString='role="button" data-toggle="dropdown" data-target="##"'
+								, aHasKidsAttributes='role="button" data-toggle="dropdown" data-target="##"'
 								, liCurrentClass=''
 								, aCurrentClass=''
 								, siteid=$.event('siteid')

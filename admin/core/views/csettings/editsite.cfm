@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
         <cfif rc.siteBean.getsiteid() eq ''>
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"  /><i class="icon-plus-sign"></i> Add</button>
           <cfelse>
-          <cfif rc.siteBean.getsiteid() neq 'default'>
+          <cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
             <button type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
           </cfif>
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" /><i class="icon-ok-sign"></i> Update</button>
@@ -206,7 +206,7 @@ to your own modified versions of Mura CMS.
           </div>
           </div>
         <div class="control-group">
-            <div class="span2">
+            <div class="span6">
             <label class="control-label">Site Caching</label>
             <div class="controls">
                 <label class="radio inline">
@@ -217,12 +217,13 @@ to your own modified versions of Mura CMS.
                 On</label>
               </div>
           </div>
+            <!---
             <div class="span4">
             <label class="control-label">Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
             <div class="controls">
                 <input name="cacheCapacity" type="text" class="span3" value="#HTMLEditFormat(rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
               </div>
-          </div>
+          </div>--->
             <div class="span6">
             <label class="control-label">Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
             <div class="controls">
@@ -406,6 +407,22 @@ to your own modified versions of Mura CMS.
           </div>
           </div>
       </div>
+   
+        <div class="control-group">
+         <div class="span3">
+        <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.filepool')#</label>
+        <div class="controls">
+            <select class="span12"  name="filePoolID">
+            <option value="">This site</option>
+            <cfloop query="rsSites">
+                <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                <option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getFilePoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+              </cfif>
+              </cfloop>
+          </select>
+          </div>
+          </div>
+           </div>
         </div>
     </div>
     
@@ -439,17 +456,28 @@ to your own modified versions of Mura CMS.
 			            <label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> CHECKED</CFIF>>On</label>
 			        </div>
 		        </div>
-	      
-		        <div class="span3">
-			        <label class="control-label">Advertisement Manager</label>
-			        <div class="controls"> 
-			            <!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
-			            <label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
-			            <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
-			          </div>
-			    </div>
 	        
 	        </div>
+
+          <div class="control-group">
+            <div class="span3">
+              <label class="control-label">Advertisement Manager</label>
+              <div class="controls"> 
+                  <!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
+                  <label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
+                  <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
+                </div>
+            </div>
+
+            <div class="span3">
+              <label class="control-label">Comments Manager</label>
+              <div class="controls"> 
+                  <label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> CHECKED</CFIF>>Off</label>
+                  <label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> CHECKED</CFIF>>On</label>
+                </div>
+            </div>
+
+          </div>
       
       
 	        <div class="control-group">
@@ -963,7 +991,9 @@ to your own modified versions of Mura CMS.
     <!--- Site Bundles --->
     <div id="tabBundles" class="tab-pane fade">
     	<div class="fieldset">
-    		
+    		<cfif listFind(session.mura.memberships,'S2')>
+          
+       
         <div class="control-group">
         	<label class="control-label"> Are you restoring a site from a backup bundle? </label>
         	<div class="controls">
@@ -1006,7 +1036,7 @@ to your own modified versions of Mura CMS.
             <p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
           </div>
       </div>
-        
+         </cfif>
         <div class="control-group">
 	        <label class="control-label"> Which rendering files would you like to import? </label>
 	        <div class="controls">
@@ -1101,7 +1131,7 @@ to your own modified versions of Mura CMS.
       <div class="control-group">
         <label class="control-label" for="dampath">DAM Path</label>
         <div class="controls">
-          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="razuna_dampath"> 
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath"> 
           <span class="help-block">Example: /demo/dam</span>
         </div>
       </div>

@@ -538,6 +538,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset publisher.getToWork( argumentCollection=sArgs )>
 		
 		<cfif len(arguments.siteID)>
+			<!-- Legacy data updates --->
+			<cfquery>
+				update tclassextend set type='Folder' where type in ('Portal','LocalRepo')
+			</cfquery>
+			<cfquery>
+				update tcontent set type='Folder' where type in ('Portal','LocalRepo')
+			</cfquery>
+			<cfquery>
+				update tsystemobjects set
+					object='folder_nav',
+					name='Folder Navigation'
+				where object='portal_nav'
+			</cfquery>
+			<!--- --->	
+
 			<cfset getSite(arguments.siteID).getCacheFactory(name="output").purgeAll()>
 			<cfif sArgs.contentMode neq "none">
 				<cfset getSite(arguments.siteID).getCacheFactory(name="data").purgeAll()>
@@ -545,7 +560,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif sArgs.pluginMode neq "none">
 				<cfset getBean("pluginManager").loadPlugins()>
-			</cfif>	
+			</cfif>
 		</cfif>
 		
 		<cfset application.appInitialized=false>

@@ -61,7 +61,7 @@
 	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
 	<textarea rows="5" name="#arguments.field.name#"
 	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#
-	#variables.strField# class="form-control">#arguments.field.value#</textarea>
+	#variables.strField# class="#this.formBuilderFormFieldsClass#">#arguments.field.value#</textarea>
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>

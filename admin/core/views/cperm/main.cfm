@@ -47,6 +47,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.groups=application.permUtility.getGroupList(rc) />
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfset rc.crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
+<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
+<cfset assignment=$.getBean('approvalChainAssignment').loadBy(siteID=rc.siteID, contentID=rc.contentID)>
+<cfset colspan=6>
+<cfif rc.moduleID eq '00000000000000000000000000000000000'>
+	<cfset colspan=colspan+1>
+</cfif>
+<cfif chains.hasNext()>
+	<cfset colspan=colspan+1>
+</cfif>
+<cfif chains.hasNext()>
+	<cfset adminGroup=$.getBean('group').loadBy(groupname='Admin')>
+</cfif>
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
 <div id="nav-module-specific" class="btn-group">
@@ -58,7 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <form novalidate="novalidate" method="post" name="form1" action="./?muraAction=cPerm.update&contentid=#URLEncodedFormat(rc.contentid)#&parentid=#URLEncodedFormat(rc.parentid)#">
            <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 			<table class="mura-table-grid">
-			<tr> 
+			<tr>
+			<cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
@@ -66,20 +79,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
             <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
+          <cfif chains.hasNext()>
+          		 <tr>
+	              <td><input name="exemptID" type="checkbox" class="checkbox" value="#adminGroup.getUserID()#" <cfif len(assignment.getExemptID()) and listFind(assignment.getExemptID(),adminGroup.getUserID())>checked</cfif>></td>
+	              <td><input type="radio" disabled checked></td>
+				   <td><input type="radio" disabled></td>
+				   <td><input type="radio" disabled></td>
+				   <td><input type="radio" disabled></td>
+				   <td><input type="radio" disabled></td>
+					<td nowrap class="var-width">Admin</td>
+	            </tr>
+          </cfif>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
 		   <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
-            <tr> 
+            <tr>
+              <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editior' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editior'>disabled</cfif>></td></cfif> 
               <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 	      <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
+		   
 		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
-              <td class="noResults" <cfif rc.moduleID eq '00000000000000000000000000000000000'>colspan="6"<cfelse>colspan="7"</cfif>>
+              <td class="noResults" colspan="#colspan#">
 			#application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
 			  </td>
             </tr>
@@ -91,6 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
 		<table class="mura-table-grid">
 			<tr> 
+			<cfif chains.hasNext()><th>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchainexempt')#</th></cfif>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
@@ -102,6 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfloop query="rc.rslist"> 
 		   <cfset perm=application.permUtility.getGroupPerm(rc.rslist.userid,rc.contentid,rc.siteid)/>
             <tr> 
+             <cfif chains.hasNext()><td><input name="exemptID" type="checkbox" class="checkbox" value="#rc.rslist.userid#" <cfif perm eq 'editior' and len(assignment.getExemptID()) and listFind(assignment.getExemptID(),rc.rslist.userid)>checked</cfif><cfif perm neq 'editior'>disabled</cfif>></td></cfif> 
               <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="editor" <cfif perm eq 'Editor'>checked</cfif>></td>
 	      <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="author" <cfif perm eq 'Author'>checked</cfif>></td>
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
@@ -111,15 +139,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
-              <td class="noResults" <cfif rc.moduleID eq '00000000000000000000000000000000000'>colspan="6"<cfelse>colspan="7"</cfif>>
+              <td class="noResults" colspan="#colspan#">
 			#application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
 			  </td>
             </tr>
 		</cfif>
 		</table>
 
-	<cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
-	<cfset assignment=$.getBean('approvalChainAssignment').loadBy(siteID=rc.siteID, contentID=rc.contentID)>
+	
 	<cfif chains.hasNext()>
 	<h2>#application.rbFactory.getKeyValue(session.rb,'permissions.approvalchain')#</h2>
 	<div class="control-group">
@@ -146,4 +173,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <input type="hidden" name="topid" value="#rc.topid#"><input type="hidden" name="moduleid" value="#rc.moduleid#"></form></td>
   </tr>
 </table>
+
+<script>
+	$(function(){
+			$("input[type='radio']").click(function(){
+				var e=$(this).closest('tr').find("input[name='exemptID']")
+				
+				if($("input[name='" + $(this).attr('name') + "']:checked").val() != 'editor'){
+					e.attr('checked',false)
+					e.attr('disabled',true)
+				} else {
+					e.attr('disabled',false)
+				}
+			})
+		}
+	)
+</script>
 </cfoutput>

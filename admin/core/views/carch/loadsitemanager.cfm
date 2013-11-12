@@ -65,6 +65,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.copyAll" default="false">
 <cfparam name="session.openSectionList" default="">
 
+<cfset request.tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
+<cfset request.hasPublishingTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Publishing')>
+<cfset request.hasLayoutObjectsTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Layout & Objects')>
 <cfset request.rowNum=0>
 <cfset request.menulist=rc.topid>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
@@ -232,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </cfif>
 		--->
       <dd class="objects">
-        	<cfif perm eq 'editor'>
+          <cfif perm eq 'editor' and request.hasLayoutObjectsTab>
             <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects">
           </cfif>
         	<cfif rc.rstop.inheritObjects eq 'cascade'>
@@ -244,43 +247,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			 <span>#rc.rstop.inheritObjects#</span>
         	
-       		<cfif perm eq 'editor'></a></cfif>
+       		<cfif perm eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
       </dd>
       
 	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
 	    
-			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
+			 <cfif perm eq 'editor' and request.hasPublishingTab>
+          <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 					
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-           	 	<cfif perm neq 'editor'>
+           	 	<cfif not (perm eq 'editor' and request.hasPublishingTab)>
            	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
            	 	 </cfif>
            	 	 <i class="icon-calendar"></i>
-           	 	 <cfif perm neq 'editor'></a></cfif>
+           	 	 <cfif not (perm eq 'editor' and request.hasPublishingTab)></a></cfif>
            	 <cfelse>
            		 <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
            		</cfif>
-			<cfif perm eq 'editor'></a></cfif>
+			<cfif perm eq 'editor'and request.hasPublishingTab></a></cfif>
 			<!--- <i class="icon-calendar"></i> --->
 		</dd>
 		
        <dd class="template">
-	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
+	  		<cfif perm eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
 				  <i class="icon-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
 			<cfelse>
 				<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
            		<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
          	 </cfif>
-			<cfif perm eq 'editor'></a></cfif>
+			<cfif perm eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 		</dd>
      </cfif>
       <dd class="nav">
-	  	<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
+	  	<cfif perm eq 'editor' and request.hasPublishingTab><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
 			<cfif rc.rstop.isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#"></i></cfif>			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#</span>
-	  	<cfif perm eq 'editor'></a></cfif>
+	  	<cfif perm eq 'editor' and request.hasPublishingTab></a></cfif>
 	  </dd>
       <dd class="updated">#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</dd>
       <dd class="actions">

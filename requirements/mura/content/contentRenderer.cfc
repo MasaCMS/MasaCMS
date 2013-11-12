@@ -87,16 +87,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- These settings are for navigational display objects --->
 <cfset this.navWrapperClass="sidebar-nav well">
 <cfset this.liHasKidsClass="">
-<cfset this.liHasKidsCustomString="">
+<cfset this.liHasKidsAttributes="">
 <cfset this.liCurrentClass="current">
-<cfset this.liCurrentCustomString="">
+<cfset this.liCurrentAttributes="">
 <cfset this.liHasKidsNestedClass="">
 <cfset this.aHasKidsClass="">
-<cfset this.aHasKidsCustomString="">
+<cfset this.aHasKidsAttributes="">
 <cfset this.aCurrentClass="current">
-<cfset this.aCurrentCustomString="">
+<cfset this.aCurrentAttributes="">
 <cfset this.ulNestedClass="">
-<cfset this.ulNestedCustomString="">
+<cfset this.ulNestedAttributes="">
 <cfset this.ulTopClass="navSecondary">
 <cfset this.ulPaginationClass="navSequential">
 <cfset this.ulPaginationWrapperClass="pagination">
@@ -104,8 +104,250 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
+<cfset this.bodyMetaImageClass="thumbnail">
 <cfset this.size=50>
 
+<!--- ===================
+Display Objects 
+=================== --->
+
+<!--- calendar/dsp_showMonth.cfm --->
+<cfset this.calendarWrapperClass="svCalendar">
+<cfset this.calendarTableClass="table table-bordered">
+<cfset this.calendarTableHeaderClass="">
+
+<!--- calendar/dspList.cfm --->
+<cfset this.calendarListWrapperClass="svCalendar">
+
+<!--- Comments/index.cfm --->
+<cfset this.commentsWrapperClass="">
+<cfset this.commentFormWrapperClass="">
+<cfset this.commentFormClass="well">
+<cfset this.commentNewClass="btn btn-default">
+<cfset this.commentFieldWrapperClass="">
+<cfset this.commentFieldLabelClass="">
+<cfset this.commentInputWrapperClass="">
+<cfset this.commentInputClass="">
+<cfset this.commentCheckboxClass="checkbox">
+<cfset this.commentPrefsInputWrapperClass="">
+<cfset this.commentSubmitButtonWrapperClass="">
+<cfset this.commentSubmitButtonClass="btn">
+<cfset this.commentRequiredWrapperClass="">
+<cfset this.commentUserEmailClass="">
+<cfset this.commentDeleteButtonClass="">
+
+<!--- Comments/dsp_comment.cfm --->
+<cfset this.emailLinkClass="btn">
+<cfset this.commentsLinkClass="btn">
+<cfset this.approveCommentLinkClass="btn">
+<cfset this.deleteCommentLinkClass="btn">
+
+<!--- Datacollection/dsp_response.cfm --->
+<cfset this.datacollectionErrorPClass="alert alert-error">
+<cfset this.datacollectionErrorDivClass="alert alert-error">
+<cfset this.datacollectionSuccessPClass="success">
+
+<!--- Dataresponses/dsp_detail.cfm --->
+<cfset this.dataResponseListClass="dl-horizontal">
+
+<!--- Dataresponses/dsp_list.cfm --->
+<cfset this.dataResponseTableClass="table table-hover">
+<cfset this.dataResponsePaginationClass="pagination">
+
+<!--- Draggablefeeds/index.cfm --->
+<cfset this.draggableBoxWrapperClass="">
+<cfset this.draggableBoxHeaderClass="">
+<cfset this.draggableBoxRSSWrapperClass="svRSSFeeds">
+<cfset this.draggableBoxHeaderButtonClass="btn btn-default">
+<cfset this.draggableBoxRSSeditFormClass="">
+<cfset this.draggableBoxAddFeedWrapperClass="well clearfix">
+<cfset this.draggableBoxNewFeedFormClass="form-horizontal">
+<cfset this.draggableBoxSelectFeedWrapperClass="">
+<cfset this.draggableBoxSelectFeedRowClass="row">
+<cfset this.draggableBoxSelectFeedMenuClass="">
+<cfset this.draggableBoxSelectFeedMenuDivClass="">
+<cfset this.draggableFeedMenuSelectFieldClass="">
+<cfset this.addFeedButtonWrapperDivClass="">
+<cfset this.addFeedButtonWrapperDivInnerClass="">
+<cfset this.addFeedButtonClass="btn btn-default">
+
+<!--- Dsp_categories_nest.cfm --->
+<cfset this.categoriesNestCheckboxClass="checkbox">
+
+<!--- Dsp_content_list.cfm --->
+<cfset this.contentListImageStyles=true>
+<cfset this.contentListPropertyMap={
+										containerEl={tag="div"},
+										itemEl={tag="dl",class="clearfix"},
+										labelEl={tag="span"},
+										title={tag="dt"},
+										date={tag="dt"},
+										credits={tag="dd",showLabel=true,rbkey="list.by"},
+										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
+										default={tag="dd"}
+									}>
+<cfset this.contentListWrapperDivClass="">
+<cfset this.contentListItemImageLinkClass="thumbnail">
+
+<!--- dsp_folder.cfm --->
+<cfset this.folderWrapperClass="svIndex">
+
+<!--- Dsp_edit_profile.cfm --->
+<cfset this.editProfileWrapperClass="">
+<cfset this.editProfileFormClass="form-horizontal">
+<cfset this.editProfileFormGroupWrapperClass="control-group">
+<cfset this.editProfileFieldLabelClass="control-label">
+<cfset this.editProfileFormFieldsWrapperClass="">
+<cfset this.editProfileFormFieldsClass="">
+<cfset this.editProfileHelpBlockClass="help-block">
+<cfset this.editProfileExtAttributeFileWrapperClass="">
+<cfset this.editProfileExtAttributeFileCheckboxClass="checkbox">
+<cfset this.editProfileExtAttributeDownloadClass="">
+<cfset this.editProfileExtAttributeDownloadButtonClass="btn btn-default">
+<cfset this.editProfileSubmitButtonWrapperClass="">
+<cfset this.editProfileSubmitButtonClass="btn btn-primary">
+<cfset this.editProfileSuccessMessageClass="alert alert-success">
+
+<!--- Dsp_email_dropdown.cfm --->
+<cfset this.emailDropdownSelectClass="dropdown">
+
+<!--- Dsp_event_reminder_form.cfm --->
+<cfset this.eventReminderFormWrapperClass="">
+<cfset this.eventReminderFormClass="well">
+<cfset this.eventReminderFieldWrapperClass="control-group">
+<cfset this.eventReminderFormLabelsClass="control-label">
+<cfset this.eventReminderSubmitClass="btn btn-default">
+
+<!--- Dsp_features.cfm --->
+<cfset this.featuresWrapperClass="svSyndLocal svIndex clearfix">
+
+<!--- Dsp_feed.cfm --->
+<cfset this.localIndexWrapperClass="svSyndLocal svFeed svIndex clearfix">
+<cfset this.remoteFeedWrapperClass="svSyndRemote svIndex svFeed clearfix">
+
+<!--- Dsp_login.cfm --->
+<cfset this.loginWrapperClass="container">
+<cfset this.loginWrapperInnerClass="row">
+<cfset this.loginErrorMessageClass="error">
+<cfset this.loginFormClass="form-horizontal">
+<cfset this.forgotPasswordFormClass="form-horizontal">
+<cfset this.loginFormGroupWrapperClass="">
+<cfset this.loginFormFieldLabelClass="control-label">
+<cfset this.loginFormFieldWrapperClass="">
+<cfset this.loginFormFieldClass="">
+<cfset this.loginFormPrefsClass="">
+<cfset this.loginFormCheckboxClass="checkbox">
+<cfset this.loginFormSubmitWrapperClass="">
+<cfset this.loginFormSubmitClass="btn btn-default">
+<cfset this.loginFormAlertClass="alert alert-success">
+<cfset this.loginFormErrorClass="alert alert-error">
+<cfset this.notRegisteredLinkClass="btn btn-primary">
+
+<!--- Dsp_mailing_list_master.cfm --->
+<cfset this.mailingListWrapperClass="well">
+<cfset this.mailingListSuccessClass="response success">
+<cfset this.mailingListErrorClass="response error">
+<cfset this.mailingListFormClass="form-horizontal">
+<cfset this.mailingListFormGroupWrapperClass="">
+<cfset this.mailingListFormLabelClass="control-label">
+<cfset this.mailingListFormFieldWrapperClass="">
+<cfset this.mailingListFormInputClass="">
+<cfset this.mailingListCheckboxWrapperClass="">
+<cfset this.mailingListCheckboxClass="checkbox">
+<cfset this.mailingListSubmitClass="btn btn-default">
+
+<!--- Dsp_nextN.cfm --->
+<cfset this.nextNWrapperClass="">
+<cfset this.nextNInnerClass="pagination">
+
+<!--- Dsp_search_form.cfm --->
+<cfset this.searchFormClass="">
+<cfset this.searchFormInputWrapperClass="">
+<cfset this.searchFormInputClass="">
+<cfset this.searchFormSubmitWrapperClass="">
+<cfset this.searchFormSubmitClass="btn btn-default">
+
+<!--- Dsp_search_results.cfm --->
+<cfset this.searchResultWrapperClass="container">
+<cfset this.searchResultInnerClass="row">
+<cfset this.searchResultsRowClass="row">
+<cfset this.searchResultsMoreResultsRowClass="row">
+<cfset this.searchReultsListClass="svIndex">
+<cfset this.searchReultsPagerClass="pager">
+<cfset this.searchAgainRowClass="row">
+<cfset this.searchAgainInnerClass="">
+<cfset this.searchAgainFormClass="">
+<cfset this.searchAgainInputWrapperClass="">
+<cfset this.searchAgainFormInputClass="">
+<cfset this.searchAgainButtonWrapperClass="">
+<cfset this.searchAgainSubmitClass="btn btn-default">
+
+<!--- Dsp_user_tools.cfm --->
+<cfset this.userToolsLoginWrapperClass="well clearfix">
+<cfset this.userToolsLoginFormClass="form-horizontal">
+<cfset this.userToolsFormGroupWrapperClass="">
+<cfset this.userToolsLoginFormLabelClass="control-label">
+<cfset this.userToolsLoginFormInputWrapperClass="">
+<cfset this.userToolsLoginFormInputClass="">
+<cfset this.userToolsLoginFormFieldInnerClass="">
+<cfset this.userToolsLoginFormCheckboxClass="checkbox">
+<cfset this.userToolsLoginFormSubmitClass="btn btn-default">
+<cfset this.userToolsNotRegisteredLinkClass="btn btn-primary">
+<cfset this.userToolsWrapperClass="clearfix">
+<cfset this.userToolsEditProfileLinkClass="btn btn-default">
+<cfset this.userToolsLogoutLinkClass="btn btn-default">
+
+<!--- Formbuilder/Dsp_form.cfm --->
+<cfset this.formBuilderFieldWrapperClass="">
+<cfset this.formBuilderButtonWrapperClass="form-actions">
+<cfset this.formBuilderSubmitClass="btn btn-default">
+
+<!---
+ Formbuilder/Fields/Dsp_checkbox.cfm
+ Formbuilder/Fields/Dsp_dropdown.cfm 
+ Formbuilder/Fields/Dsp_file.cfm
+ Formbuilder/Fields/Dsp_radio.cfm
+ Formbuilder/Fields/Dsp_textfield.cfm
+--->
+<cfset this.formBuilderFormFieldsClass="control-group">
+
+<!--- Formbuilder/Fields/field_dropdown.cfm --->
+<cfset this.formBuilderTabHeaderClass="dropdown">
+<cfset this.formBuilderDisabledInputClass="disabled">
+<cfset this.formBuilderCheckboxClass="checkbox">
+
+<!--- Gallery/Index.cfm --->
+<cfset this.galleryWrapperClass="">
+<cfset this.galleryULClass="clearfix">
+<cfset this.galleryThumbnailClass="thumbnail">
+
+<!--- Nav/CalendarNav/index --->
+<cfset this.navCalendarWrapperClass="svCalendar">
+
+<!--- Nav/CalendarNav/NavTools.cfc --->
+<cfset this.navCalendarTableClass="table table-bordered">
+
+<!--- Nav/Dsp_sequential.cfm --->
+<cfset this.navSequentialWrapperClass="container">
+<cfset this.navSequentialInnerClass="row">
+
+<!--- Nav/dsp_tag_cloud.cfm --->
+<cfset this.tagCloudWrapperClass="svTagCloud">
+
+<!--- NavArchive --->
+<cfset this.navArchiveWrapperClass="">
+<cfset this.navArchiveListClass="">
+
+
+<!--- Rater/Index.cfm --->
+<cfset this.raterObjectWrapperClass="row clearfix">
+<cfset this.raterWrapperClass="">
+<cfset this.avgRatingWrapperClass="">
+
+<!--- SendToLink/SendLink.cfm --->
+<cfset this.sendToFriendSuccessClass="success">
+<cfset this.sendToFriendErrorClass="error">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -124,6 +366,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.showMemberToolBar=false>
 	</cfif>
 
+	<!---  Backward support --->
+	<cfif structKeyExists(this,'liHasKidsCustomString') and len(this.liHasKidsCustomString)>
+		<cfset this.liHasKidsAttributes=this.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(this,'liCurrentCustomString') and len(this.liCurrentCustomString)>
+		<cfset this.liCurrentAttributes=this.liCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(this,'aHasKidsCustomString') and len(this.aHasKidsCustomString)>
+		<cfset this.aHasKidsAttributes=this.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(this,'aCurrentCustomString') and len(this.aCurrentCustomString)>
+		<cfset this.aCurrentAttributes=this.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(this,'ulNestedCustomString') and len(this.ulNestedCustomString)>
+		<cfset this.ulNestedAttributes=this.ulNestedCustomString>
+	</cfif>
+	<!--- --->
+	
 	<cfset variables.contentGateway=getBean('contentGateway')>
 
 	<cfif not isDefined('this.enableMuraTag')>
@@ -193,16 +453,84 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getListFormat" returntype="string" output="false">
-	<cfreturn this.listFormat />
+<cffunction name="getContentListProperty" output="false">
+	<cfargument name="property" default="">
+	<cfif structKeyExists(this.contentListPropertyMap,arguments.property)>
+		<cfreturn this.contentListPropertyMap[arguments.property]>
+	<cfelse>
+		<cfreturn this.contentListPropertyMap.default>
+	</cfif>
+
 </cffunction>
 
-<cffunction name="setListFormat" output="false">
-	<cfargument name="listFormat">
-	<cfset this.listFormat=arguments.listFormat>
-	<cfreturn this/>
+<cffunction name="getContentListPropertyValue" output="false">
+	<cfargument name="property" default="">
+	<cfargument name="value" default="">
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfif structKeyExists(propStruct,arguments.value)>
+		<cfreturn propStruct[arguments.value]>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
 </cffunction>
 
+<cffunction name="getContentListLabel" output="false">
+	<cfargument name="property" default="">
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfset var returnString="">
+
+	<cfif structKeyExists(propStruct,"showLabel") and propStruct.showLabel>
+		<cfset var labelEl="labelEl">
+		<cfif structKeyExists(propStruct,"labelEl")>
+			<cfset labelEl=propStruct.labelEl>
+		</cfif>
+		<cfset returnString="<" & getContentListPropertyValue(labelEl,'tag') &  getContentListAttributes(labelEl)& ">">
+		<cfif structKeyExists(propStruct, "rbKey")>
+			<cfset returnString=returnString & htmlEditFormat(variables.$.rbKey(propStruct.rbkey))>
+		<cfelseif structKeyExists(propStruct, "label")>
+			<cfset returnString=returnString & htmlEditFormat(propStruct.label)>
+		<cfelse>
+			<cfset returnString=returnString & arguments.property>
+		</cfif>
+		<cfif structKeyExists(propStruct, "labelDelim")>
+			<cfset returnString=returnString & propStruct.labelDelim>
+		</cfif>
+		<cfset returnString=returnString & "</" & getContentListPropertyValue(labelEl,'tag') & ">">
+	</cfif>
+	
+	<cfreturn returnString>
+</cffunction>
+
+<cffunction name="getContentListAttributes" returntype="string" output="false">
+	<cfargument name="property" default="">
+	<cfargument name="class" default="">
+
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfset var returnstring="">
+	<cfset var propclass=lcase(arguments.property)>
+
+	<cfif structKeyExists(propStruct,"class")>
+		<cfset propclass=propStruct.class>
+	</cfif>
+
+	<cfset arguments.class=trim(propclass & " " & arguments.class)>
+	<cfset returnstring=' class="' & arguments.class & '"'>
+	
+	<cfif structKeyExists(propStruct,"attributes")>
+		<cfset returnstring= trim(returnstring & " " & propStruct.attributes)>
+	</cfif>
+
+	<cfreturn returnstring>
+</cffunction>
+
+<cffunction name="getListFormat" output="false">
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyMap.containerEl.tag)>
+		<cfreturn this.contentListPropertyMap.containerEl.tag>
+	<cfelse>
+		<cfreturn this.contentListPropertyMap.itemEl.tag>
+	</cfif>
+</cffunction>
+--
 <cffunction name="loadJSLib" returntype="void" output="false">
 	<cfif not this.jsLibLoaded>
 	<cfswitch expression="#getJsLib()#">
@@ -218,7 +546,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadShadowboxJS" returntype="void" output="false">
-	<cfif not cookie.mobileFormat>
+	<!---<cfif not cookie.mobileFormat>--->
 		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
 			<cfcase value="prototype">
@@ -229,7 +557,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfdefaultcase>
 		</cfswitch>			
 		<cfset addToHTMLHeadQueue("shadowbox.cfm")>
-	</cfif>
+	<!---</cfif>--->
 </cffunction>
 
 <cffunction name="loadPrettify" returntype="void" output="false">
@@ -531,19 +859,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="rs" required="true" default="">
 		<cfargument name="subNavExpression" required="true" default="">
 		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-		<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+		<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-		<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+		<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 		<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 		<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-		<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+		<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-		<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+		<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+		<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 		<cfargument name="openCurrentOnly" required="true" default="false">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="size" required="true" default="#this.size#">
+
+		<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+			<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+		</cfif>
+		<cfif structKeyExists(arguments,'liCurrentCustomString')>
+			<cfset arguments.liCurrentAttributes=arguments.liCurrentCustomString>
+		</cfif>
+		<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+			<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+		</cfif>
+		<cfif structKeyExists(arguments,'aCurrentCustomString')>
+			<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+		</cfif>
+		<cfif structKeyExists(arguments,'ulNestedCustomString')>
+			<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+		</cfif>
 
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
@@ -619,10 +963,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset linkArgs=structNew()>
 				<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
-				<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
+				<cfset linkArgs.aHasKidsAttributes=arguments.aHasKidsAttributes>
 				<cfset linkArgs.aNotCurrentClass=arguments.aNotCurrentClass>
 				<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
-				<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
+				<cfset linkArgs.aCurrentAttributes=arguments.aCurrentAttributes>
 				<cfset linkArgs.type=rsSection.type>
 				<cfset linkArgs.filename=rsSection.filename>
 				<cfset linkArgs.title=rsSection.menutitle>
@@ -636,9 +980,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<cfif not started>
 				<cfset started=true>
-				<ul<cfif arguments.currDepth eq 1 and len(arguments.class)> class="#arguments.class#"<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
+				<ul<cfif arguments.currDepth eq 1 and len(arguments.class)> class="#arguments.class#"<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
 			</cfif>
-			<li<cfif len(itemClass)> class="#itemClass#"</cfif><cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li><cfelse><cfset adjust=adjust-1></cfif></cfloop>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif><cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>>#link#<cfif subnav>#nest#</cfif></li><cfelse><cfset adjust=adjust-1></cfif></cfloop>
 			<cfif started></ul></cfif></cfoutput>
 			</cfsavecontent>
 		</cfif>
@@ -694,21 +1038,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspFolderNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+	<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspFolderNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 	""
@@ -752,20 +1111,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspStandardNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+	<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspStandardNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -810,18 +1184,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspSubNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 
 	<cfset var thenav="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspSubNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -848,19 +1237,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspPeerNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspPeerNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -1141,9 +1545,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="id" type="string" required="true" default="">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="isParent" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 			
@@ -1151,12 +1555,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var href ="">
 	<cfset var theClass =arguments.class>
 
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<!--- --->
+
 	<cfif arguments.showCurrent>
 		<cfset arguments.showCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#arguments.contentID#")>
 	</cfif>
 	<cfif arguments.showCurrent>					
 		<cfset theClass=listAppend(theClass,arguments.aCurrentClass," ") />
-		<cfelseif len(arguments.aNotCurrentClass)>
+	<cfelseif len(arguments.aNotCurrentClass)>
 		<cfset theClass=listAppend(theClass,arguments.aNotCurrentClass," ") />
 	</cfif>
 	<cfif arguments.isParent>					
@@ -1164,7 +1577,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentCustomString,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #replace(arguments.aHasKidsCustomString,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 	<cfreturn link>
 </cffunction>
 
@@ -1176,7 +1589,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
-	<cfargument name="params" type="string" required="false" default="" />
+	<cfargument name="params" required="false" default="" />
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
@@ -1206,7 +1619,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="hasSummary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
-	<cfargument name="params" type="string" required="true" default="" />
+	<cfargument name="params" required="true" default="" />
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
@@ -1227,6 +1640,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
+	<cfelseif isStruct(arguments.params)>
+		<cfset objectParams=arguments.params>
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
@@ -1259,7 +1674,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="object" type="string">
 <cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#variables.event.getValue('siteID')#">
-<cfargument name="params" type="string" required="true" default="">
+<cfargument name="params" required="true" default="">
 <cfargument name="assignmentID" type="string" required="true" default="">
 <cfargument name="regionID" required="true" default="0">
 <cfargument name="orderno" required="true" default="0">
@@ -1523,6 +1938,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="bodyAttribute">
 	<cfargument name="titleAttribute">
 	<cfargument name="metaImageSizeArgs" default="#this.bodyMetaImageSizeArgs#">
+	<cfargument name="metaImageClass" default="#this.bodymetaImageClass#">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
@@ -1600,9 +2016,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- --->
 				
 				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
-				</cfif>
-				<cfif not len(eventOutput)>
 					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
 				</cfif>
 				<cfif not len(eventOutput)>
@@ -1631,7 +2044,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -1660,10 +2073,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 									<div id="svAsset">
-									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
+									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
 									</div>
 								</cfif>
 								</cfoutput>	
@@ -1868,16 +2281,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="menuClass" type="string" default="">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 		<cfargument name="liHasKidsClass" required="true" default="">
-		<cfargument name="liHasKidsCustomString" required="true" default="">
+		<cfargument name="liHasKidsAttributes" required="true" default="">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-		<cfargument name="liCurrentCustomString" required="true" default="">
+		<cfargument name="liCurrentAttributes" required="true" default="">
 		<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 		<cfargument name="aHasKidsClass" required="true" default="">
-		<cfargument name="aHasKidsCustomString" required="true" default="">
+		<cfargument name="aHasKidsAttributes" required="true" default="">
 		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-		<cfargument name="aCurrentCustomString" required="true" default="">
+		<cfargument name="aCurrentAttributes" required="true" default="">
 		<cfargument name="ulNestedClass" required="true" default="">
-		<cfargument name="ulNestedCustomString" required="true" default="">
+		<cfargument name="ulNestedAttributes" required="true" default="">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
 
@@ -1931,7 +2344,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		</cfif>
-			
+
+
+		<cfif structKeyExists(arguments,'aHasKidsCustomString') and len(arguments.aHasKidsCustomString) and not (arguments.aHasKidsAttributes contains arguments.aHasKidsCustomString)>
+			<cfset arguments.aHasKidsAttributes = arguments.aHasKidsAttributes & ' ' & arguments.aHasKidsCustomString>
+		</cfif>
+
 		<cfif rsSection.recordcount>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
@@ -1946,8 +2364,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfsilent>
 
 				<cfset started=true>
-				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 			
 			<cfloop query="rsSection">
@@ -2022,10 +2440,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset linkArgs=structNew()>
 			<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
-			<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
+			<cfset linkArgs.aHasKidsAttributes=arguments.aHasKidsAttributes>
 			<cfset linkArgs.aNotCurrentClass=arguments.aNotCurrentClass>
 			<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
-			<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
+			<cfset linkArgs.aCurrentAttributes=arguments.aCurrentAttributes>
 			<cfset linkArgs.type=rsSection.type>
 			<cfset linkArgs.filename=rsSection.filename>
 			<cfset linkArgs.title=rsSection.menutitle>
@@ -2042,9 +2460,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not started>
 				<cfset started=true>
 				<cfset itemClass=listAppend(itemClass, "first",' ')>
-				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
+				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
 			</cfif>
-			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
 			<cfelse><cfset adjust=adjust-1></cfif></cfloop>
 			<cfif started></ul></cfif>
 			</cfoutput></cfsavecontent>
@@ -2060,16 +2478,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="openFolders" type="string" default="">
 	<cfargument name="class" type="string" default="">
 	<cfargument name="aHasKidsClass" type="string" default="">
-	<cfargument name="aHasKidsCustomString" type="string" default="">
+	<cfargument name="aHasKidsAttributes" type="string" default="">
 	<cfargument name="siteid" default="#$.event('siteid')#">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 	<cfset var tracePoint=0>
 
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
+
 	<!--- hack or issue with bootstrap that breaks link with kids --->
-	<cfif arguments.aHasKidsClass eq 'dropdown-toggle' and arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
-		<cfset arguments.aHasKidsCustomString=''>
+	<cfif arguments.aHasKidsClass eq 'dropdown-toggle' and arguments.aHasKidsAttributes eq 'role="button" data-toggle="dropdown" data-target="##"'>
+		<cfset arguments.aHasKidsAttributes=''>
 	</cfif>
 
 	<cfif isDefined("arguments.closePortals")>

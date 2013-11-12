@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
-			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID
+			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID,tapprovalassignments.exemptID
 			from tcontent 
 			left join tfiles on(tcontent.fileID=tfiles.fileID)
 			left join tapprovalassignments on (tcontent.contentid=tapprovalassignments.contentid
@@ -181,6 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			<cfset crumb.chainID=rsCrumbData.chainID />
+			<cfset crumb.exemptID=rsCrumbData.exemptID />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
@@ -216,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			length(tcontent.path) depth
 			</cfif> 
-			,tfiles.fileExt
+			,tfiles.fileExt,tapprovalassignments.exemptID
 			
 			from tcontent  
 			left join tfiles on(tcontent.fileID=tfiles.fileID)
@@ -255,6 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			<cfset crumb.chainID=rsCrumbData.chainID />
+			<cfset crumb.exemptID=rsCrumbData.exemptID />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
 			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
@@ -623,13 +625,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="">
 			<cfargument name="today" type="date" required="yes" default="#now()#">
 			<cfargument name="menutype" type="string" required="true" default="">
+
+			<cfreturn getCategorySummary(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getCategorySummary" returntype="query" output="false">
+			<cfargument name="siteid" type="string">
+			<cfargument name="parentid" type="string" default="">
+			<cfargument name="relatedID" type="string" required="yes" default="">
+			<cfargument name="today" type="date" required="yes" default="#now()#">
+			<cfargument name="menutype" type="string" required="true" default="">
 			
-			<cfset var rsKidsCategorySummary= "" />
+			<cfset var rs= "" />
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
 			<cfset var f=""/>
 			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 			
-				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsKidsCategorySummary')#">
+				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 				SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
 				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
 					and tcontent.siteID=tcontentcategoryassign.siteID)
@@ -638,8 +650,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tcontentcategoryassign.siteID=tcontentcategories.siteID
 						)
 				WHERE 
-				      tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-					  AND tcontentcategories.isActive=1  
+				      <cfif len(arguments.parentID)>
+				      	tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+					  	AND </cfif>
+					  tcontentcategories.isActive=1  
 					 #renderActiveClause("tcontent",arguments.siteID)# 
 					  AND tcontent.moduleid = '00000000000000000000000000000000000'
 					  AND tcontent.isNav = 1 
@@ -688,7 +702,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfquery>
 	
-		 <cfreturn rsKidsCategorySummary>
+		 <cfreturn rs>
 </cffunction>
 
 <cffunction name="getCommentCount" returntype="numeric" access="remote" output="false">
@@ -1498,8 +1512,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif kw neq '' or arguments.tag neq ''>
-         			(tcontent.Active = 1 
-			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+         	tcontent.Active = 1 
+			  	<cfif listFindNoCase("image,file",arguments.searchType)>
+					AND tcontent.siteID in (
+							select siteid 
+							from tsettings 
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+							or filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						)
+			  	<cfelse>	
+			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfif>
 					
 					AND
 					
@@ -1524,8 +1547,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or #renderTextParamColumn('tfiles.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 							</cfif>
-							
+	
 							or 
 								(
 									tcontent.type not in ('Link','File')
@@ -1586,9 +1612,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tfiles.fileext in ('png','gif','jpg','jpeg') AND
 		</cfif>
 		
-		(tcontent.Active = 1 
-			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-					
+		tcontent.Active = 1 
+				<cfif listFindNoCase("image,file",arguments.searchType)>
+					AND tcontent.siteID in (
+							select siteid 
+							from tsettings 
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+							or filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						)
+			  	<cfelse>	
+			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfif>
+
 					AND
 					
 					
@@ -1602,7 +1637,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						(#renderTextParamColumn('tcontent.Title')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
 						or #renderTextParamColumn('tcontent.menuTitle')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
 					
-		)				
+						)				
 	GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,

@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MailServerSSL="false" />
 <cfset variables.instance.useDefaultSMTPServer=0/>
 <cfset variables.instance.adminssl=0/>
+<cfset variables.instance.forceAdminSSL=true>
 <cfset variables.instance.logEvents=0/>
 <cfset variables.instance.fileDelim="\" />
 <cfset variables.instance.dbType="mssql"/>
@@ -131,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=true />
-<cfset variables.instance.applyDBUpdates=true />
+<cfset variables.instance.applyDBUpdates=false />
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
@@ -194,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
-			<cfif structKeyExists(this,"set#prop#")>
+			<cfif isDefined("this.set#prop#")>
 				<cfset tempFunc=this["set#prop#"]>
 				<cfset tempFunc(arguments.config['#prop#'])>
 			<cfelse>

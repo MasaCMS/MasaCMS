@@ -54,8 +54,14 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="before" output="false">
 	<cfargument name="rc">
-
-	<cfif not listFind(session.mura.memberships,'S2')>
+	
+	<cfif not (
+				(
+					listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') 
+					and not listFindNoCase('list,editPlugin,deployPlugin,updatePlugin,updatePluginVersion,siteCopy,sitecopyselect,sitecopyresult',listLast(rc.muraAction,"."))
+				)
+				or listFind(session.mura.memberships,'S2')
+				)>
 		<cfset secure(arguments.rc)>
 	</cfif>
 </cffunction>
@@ -155,7 +161,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfif>
 	</cfif>
-	<cfif arguments.rc.action eq 'Add'>
+	<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Add'>
 			<cfset bean=variables.settingsManager.create(arguments.rc)  />
 			<cfset variables.settingsManager.setSites()  />
 			<cfset variables.clusterManager.reload() />
@@ -170,13 +176,20 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfif>
 	</cfif>
-	<cfif arguments.rc.action eq 'Delete'>
+	<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Delete'>
+
 			<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
 			<cfset session.siteid="default" />
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
 			<cfset arguments.rc.siteid="default"/>
 	</cfif>
-	<cfset variables.fw.redirect(action="cSettings.list",path="./")>
+
+	<cfif listFind(session.mura.memberships,'S2')>
+		<cfset variables.fw.redirect(action="cSettings.list",path="./")>
+	<cfelse>
+		<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="./")>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="sitecopyselect" output="false">
@@ -201,6 +214,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="createBundle" output="false">
 	<cfargument name="rc">
 	<cfparam name="arguments.rc.moduleID" default="">
+	<cfparam name="arguments.rc.bundleImportKeyMode" default="copy">
 	<cfparam name="arguments.rc.BundleName" default="">
 	<cfparam name="arguments.rc.includeTrash" default="false">
 	<cfparam name="arguments.rc.includeVersionHistory" default="false">

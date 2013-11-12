@@ -11,6 +11,7 @@
 						, pageTitle=$.content('title')
 						, crumbList=false
 						, showMetaImage=true
+						, metaImageClass='thumbnail'
 					)#
 					#$.dspObjects(2)#
 				</section>

@@ -79,8 +79,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setType" output="false" access="public">
-    <cfargument name="Type" type="string" required="true">
-    <cfset arguments.Type=trim(arguments.Type)>
+		<cfargument name="Type" type="string" required="true">
+		<cfset arguments.Type=trim(arguments.Type)>
 	
 	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
 		<cfset variables.instance.Type = arguments.Type />
@@ -91,19 +91,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setSubType" output="false" access="public">
-    <cfargument name="SubType" type="string" required="true">
+		<cfargument name="SubType" type="string" required="true">
 	<cfset arguments.subType=trim(arguments.subType)>
 	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
-    	<cfset variables.instance.SubType = arguments.SubType />
+			<cfset variables.instance.SubType = arguments.SubType />
 		<cfset purgeExtendedData()>
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setSiteID" output="false" access="public">
-    <cfargument name="SiteID" type="string" required="true">
+		<cfargument name="SiteID" type="string" required="true">
 	<cfif len(arguments.siteID) and trim(arguments.siteID) neq variables.instance.siteID>
-    <cfset variables.instance.SiteID = trim(arguments.SiteID) />
+		<cfset variables.instance.SiteID = trim(arguments.SiteID) />
 	<cfset purgeExtendedData()>
 	</cfif>
 	<cfreturn this>
@@ -111,7 +111,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable, sourceIterator=variables.instance.sourceIterator)/>
+		<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(
+				baseID=getExtendBaseID()
+				, type=variables.instance.type
+				, subType=variables.instance.subtype
+				, siteID=variables.instance.siteID
+				, dataTable=variables.instance.extendDataTable
+				, sourceIterator=variables.instance.sourceIterator
+			) />
 	</cfif> 
 	<cfreturn variables.instance.extendData />
 </cffunction>
@@ -124,10 +131,74 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
  
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
- 	<cfargument name="key" type="string" required="true">
+	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
-  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
- </cffunction>
+		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
+</cffunction>
+
+<cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+
+	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
+	<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+	<cfset var i = "" />
+
+	<cfif Len(arguments.name)>
+		<cfset var rsAttributes = getExtendedAttributesQuery(name=arguments.name) />
+		<cfif rsAttributes.recordcount>
+			<cfset extendSetData = {} />
+			<cfloop query="rsAttributes">
+				<cfset extendSetData['#rsAttributes.name[currentrow]#'] = rsAttributes.attributeValue[currentrow] />
+			</cfloop>
+		</cfif>
+	</cfif>
+
+	<cfif not structIsEmpty(extendSetData)>
+		<cfloop collection="#extendSetData#" item="i">
+			<cfif valueExists(i)>
+				<cfset extendSetData[i]=getValue(i) />
+			</cfif>
+		</cfloop>
+	</cfif>
+
+	<cfreturn extendSetData />
+</cffunction>
+
+<cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+	<cfreturn StructKeyList(getExtendedAttributes(name=arguments.name)) />
+</cffunction>
+
+<cffunction name="getExtendedAttributesQuery" returnType="any" output="false" access="public">
+	<cfargument name="name" default="" hint="Extend Set Name" />
+
+	<cfscript>
+		var structData = getExtendedData().getAllValues();
+		var rsData = StructKeyExists(structData, 'data') ? structData.data : QueryNew('');
+		var rsDefinitions = StructKeyExists(structData, 'definitions') ? structData.definitions : QueryNew('');
+		var rsExtendSet = QueryNew('');
+		var rsAttributes = rsData;
+	</cfscript>
+
+	<cfif Len(arguments.name)>
+		<cfif rsDefinitions.recordcount>
+			<cfquery dbtype="query" name="rsExtendSet">
+				SELECT DISTINCT extendsetid
+				FROM rsDefinitions
+				WHERE extendsetname = <cfqueryparam value="#arguments.name#" cfsqltype="cf_sql_varchar" />
+			</cfquery>
+		</cfif>
+		<cfif rsExtendSet.recordcount>
+			<cfquery dbtype="query" name="rsAttributes">
+				SELECT *
+				FROM rsData
+				WHERE extendsetid = <cfqueryparam value="#rsExtendSet.extendsetid#" cfsqltype="cf_sql_varchar" />
+			</cfquery>
+		</cfif>
+	</cfif>
+
+	<cfreturn rsAttributes />
+</cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">
@@ -140,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
-	<cfif structKeyExists(this,"set#arguments.property#")>
+	<cfif isDefined("this.set#arguments.property#")>
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
@@ -168,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="defaultValue">
 	<cfset var tempValue="">	
 	<cfif len(arguments.property)>
-		<cfif structKeyExists(this,"get#arguments.property#")>
+		<cfif isDefined("this.get#arguments.property#")>
 			<cfset var tempFunc=this["get#arguments.property#"]>
 			<cfreturn tempFunc()>
 		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>

@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 		
 		<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
-		<cfset variables.trashManager.throwIn(feedBean)>
+		<cfset variables.trashManager.throwIn(feedBean,'feed')>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 		<cfset variables.feedDAO.delete(arguments.feedID) />
 		
