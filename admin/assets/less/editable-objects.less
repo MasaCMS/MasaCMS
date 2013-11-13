@@ -197,12 +197,14 @@
 
 // Fix CKEditor QuickEdit toolbar button display issues on Bootstrap 3
 .mura-edit-mode {
-	a {
-		&.cke_button { 
-			height: 26px; 
-		}
-		&.cke_dialog_tab { 
-			height: auto; 
+	div[class*='cke_editor_mura-editable'] {
+		a {
+			&.cke_button { 
+				height: 26px; 
+			}
+			&.cke_dialog_tab { 
+				height: auto; 
+			}
 		}
 	}
 }
