@@ -1432,3 +1432,69 @@ function removePunctuation(item){
 		$(item).val().replace(/[^\w\s-]|/g, "").replace(/\s+/g, "")
 	);
 }
+
+
+// search site drop down menu
+$.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
+	_suggest: function( items ) {
+		// todo: make the ul id an options config (string or object?)
+		var ul = this.element.closest("ul");
+		ul.children("li").remove();
+		
+		this._renderMenu( ul, items );
+		this.isNewMenu = true;
+		this.menu.refresh();
+
+		ul.show();
+		this._resizeMenu();
+
+		if ( this.options.autoFocus ) {
+			this.menu.next();
+		}
+	},
+
+	_renderItem: function( ul, item ) {
+		return $( "<li>" )
+			.append(
+				$( "<a>" ).attr(
+					"href", "?muraAction=cDashboard.main&siteID=" + item.id
+				).append(
+					$( "<i>" ).addClass( "icon-globe" )
+				).append( item.label )
+			).appendTo( ul );
+	},
+
+	options: {
+		create: function( event ) {
+			
+			// we clear the results list if search string get is using backspace for example
+			$( event.target ).keyup(function( event, ui ) {
+				var input = $( this );
+				if ( input.val().length < $( this ).data("customMuraSiteSelector").option("minLength") ) {
+					var ul = input.closest("ul");
+					ul.children("li").remove();
+				}
+			});
+			
+		}
+	}
+});
+
+$(function() {
+	$( "#select-site-ul input" ).muraSiteSelector({
+		source: function( request, response ) {
+			$.ajax({
+				url: "./index.cfm?muraAction=cnav.searchsitedata",
+				dataType: "json",
+				method: "POST",
+				data: {
+					searchString: request.term
+				},
+				success: function( data ) {
+					return response( data );
+				}
+			});
+		},
+		minLength: 3
+	});
+});
