@@ -94,7 +94,15 @@
 			<!--- IMPORTANT: This will only output items that have associated images --->
 			<cfset local.feed = variables.$.getBean('feed').loadBy(name=arguments.feedName)>
 			<cfset local.iterator = local.feed.getIterator()>
-			<cfif local.iterator.hasNext()>
+			<cfif local.feed.getIsNew()>
+				<div class="container">
+					<div class="alert alert-info alert-block">
+						<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+						<h4>Ooops!</h4>
+						The <strong>#HTMLEditFormat(arguments.feedName)#</strong> Content Collection/Local Index does not exist.
+					</div>
+				</div>
+			<cfelseif local.iterator.hasNext()>
 				<div id="#arguments.cssID#" class="carousel slide" data-interval="#arguments.interval#">
 
 					<!--- Indicators --->
