@@ -298,25 +298,28 @@ img {
 	}
 
 // Indexes
-section .mura-Index {
- 	border-top: 0;
- 	padding-top: 0;
-}
-
 .mura-Index {
-
+	padding-top: 0;
+	border-top: 0;
+	margin-top: 0;
+	
 	dl {
 		border-bottom: 1px solid @gray-lighter;
 		padding-bottom: 12px;
-		margin-bottom: 12px;
+		margin: 0 0 12px;
+		//border-bottom: 1px solid #eee;
+		float: left;
+		width: 100%;
 	}
-
-	dd { margin-left: 0; }
 
 	dt.releaseDate {
 		font-size: 12px;
-		line-height: 1;
 		margin-bottom: .25em;
+		line-height: 1;
+	}
+	
+	dd {
+		margin-left: 0;
 	}
 }
 
@@ -368,7 +371,6 @@ section .mura-Index {
 	}
 	
 	.promos > div { text-align: center; }
-	
 }
 
 //
@@ -435,7 +437,7 @@ a.menu:after, .dropdown-toggle:after {
 
 // Sidebar Nav
 // -------------------------
-@offsetValue:					15px;
+@offsetValue: 15px;
 
 .outdent(@multiplier:1) {
 	margin-left: -@offsetValue*@multiplier;
@@ -492,6 +494,11 @@ a.menu:after, .dropdown-toggle:after {
 	.clearfix;
 	border-radius: 6px;
 	//.make-row();
+
+	dt {
+		font-size: 12px;
+		font-weight: normal;	
+	}
 	
 	> p {
 		.pull-left;
@@ -499,7 +506,6 @@ a.menu:after, .dropdown-toggle:after {
 		}
 	
 	> ul {
-		
 		.pull-right;
 		whitespace: nowrap;
 
@@ -508,7 +514,6 @@ a.menu:after, .dropdown-toggle:after {
 		}
 
 		> li {
-		
 			display: inline-block;
 			
 			> a {
@@ -517,9 +522,7 @@ a.menu:after, .dropdown-toggle:after {
 					color: #fff;
 				}
 			}
-			
 		}
-		
 	}
 	
 }
@@ -529,40 +532,12 @@ li.form ol, #svTagCloud ol {
 	margin: 0;
 }
 
-.mura-Index {
-		padding-top: 0;
-		border-top: 0;
-		margin-top: 0;
-	
-	dl {
-		padding-bottom: 12px;
-		margin: 0 0 12px;
-		border-bottom: 1px solid #eee;
-		}
-	
-	dt.releaseDate {
-		font-size: 12px;
-		margin-bottom: .25em;
-		line-height: 1;
-		}
-	
-	dd {
-		margin-left: 0;
-		}
-
-}
-
 .pagination {
 	margin: 24px 0 18px !important;
 
 	 a {
 		padding: 0 14px;
 	}
-}
-
-.moreResults dt {
-	font-size: 12px;
-	font-weight: normal;
 }
 
 .svSlideshow {
@@ -769,19 +744,23 @@ p.required {
 }
 
 // Ratings
-
-section .mura-Index .credits,
-section .mura-Index .comments,
-section .mura-Index .tags,
-section .mura-Index .rating {
-	line-height: 20px; /* acommodate height of stars */
+section {
+	.mura-Index {
+		.credits, .comments, .tags, .rating {
+			line-height: 20px; // acommodate height of stars
+		}
 	}
+}
+
+.rating {
+	background-position: 0 50%;
+}
 
 .stars a {
 	width: 14px;
 	height: 13px;
 	background: transparent url(../../images/rater/stars.png) no-repeat;
-	}
+}
 
 .zero { background-image: url(../../images/rater/star_zero.png); }
 .one { background-image: url(../../images/rater/star_one.png); }
