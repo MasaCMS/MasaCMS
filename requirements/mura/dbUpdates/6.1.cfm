@@ -106,7 +106,13 @@
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)
 	.addColumn(column="isSpam",dataType="int",default=0)
-	.addColumn(column="isDeleted",dataType="int",default=0);
+	.addColumn(column="isDeleted",dataType="int",default=0)
+	.addIndex('entered')
+	.addIndex('userid')
+	.addIndex('siteid')
+	.addIndex('flagCount')
+	.addIndex('isSpam')
+	.addIndex('isDeleted');
 </cfscript>
 
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

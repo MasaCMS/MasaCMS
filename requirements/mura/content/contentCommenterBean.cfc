@@ -50,6 +50,6 @@ component extends="mura.bean.beanORM" table="tcontentcommentcommenters" entityna
 	property name="commenterID" fieldtype="id";
     property name="name" type="string";
     property name="email" type="string";
-    property name="remoteID" type="string";
+    property name="remoteID" fieldtype="index" type="string";
 
 }
