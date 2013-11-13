@@ -390,15 +390,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
-		<cfset var archived=getBean('contentFilenameArchive').loadBy(filename=event.getValue('currentFilenameAdjusted'),siteid=event.getValue('siteid'))>
-		<cfif not archived.getIsNew()>
-			<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
-			<cfif not archiveBean.getIsNew()>
-				<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
-			<cfelse>
-				<cfset archived.delete()>
+		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
+
+		<cfloop condition="listLen(local.filename,'/')">		
+			<cfset var archived=getBean('contentFilenameArchive').loadBy(filename=local.filename,siteid=event.getValue('siteid'))>
+			<cfif not archived.getIsNew()>
+				<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
+				<cfif not archiveBean.getIsNew()>
+					<cfif local.filename eq event.getValue('currentFilenameAdjusted')>
+						<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+					<cfelse>
+						<cfset archiveBean=getBean('content').loadBy(filename=replace(arguments.event.getValue('currentFilenameAdjusted'),local.filename,archiveBean.getFilename()),siteid=event.getValue('siteid'))>
+						<cfif not archiveBean.getIsNew()>
+							<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+						</cfif>
+					</cfif>		
+				<cfelse>
+					<cfset archived.delete()>
+				</cfif>
 			</cfif>
-		</cfif>
+
+			<cfset local.filename=listDeleteAt(local.filename,listLen(local.filename,'/'),'/')>
+		</cfloop>
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
