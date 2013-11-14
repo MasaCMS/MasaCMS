@@ -72,6 +72,16 @@
 		<cfset comment.setCommentID(arguments.commentID).load().flag()>
 	</cffunction>
 
+	<cffunction name="getContentStats" access="remote" output="true">
+		<cfargument name="contentID">
+		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
+		
+		<cfscript>
+			writeOutput(new mura.json().jsonencode(contentStats.getAllValues()));
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="renderCommentsPage" access="remote" output="true">
 		<cfargument name="contentID">
 		<cfargument name="pageNo" required="true" default="1">

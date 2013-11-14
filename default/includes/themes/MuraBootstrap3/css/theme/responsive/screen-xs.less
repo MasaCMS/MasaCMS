@@ -2,9 +2,14 @@
 @media (max-width: 767px) {
 
 	.mura-edit-mode {
-		body {
-			margin-top: 30px;
-		}	
+		.mura {
+			#frontEndTools {
+				> ul {
+					&#tools-changesets, &#tools-status { display: none; }
+					&#tools-version { padding-left: 37px !important; }
+				}
+			}
+		}
 	}
 
 	.navbar-wrapper {
@@ -12,8 +17,6 @@
 
 	  .navbar {
 	  	border-radius: 0;
-	  	margin-left: -15px;
-			margin-right: -15px;
 
 			.navbar-form {
 				margin-bottom: 0;
