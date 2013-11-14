@@ -4,6 +4,8 @@
 <cfset approvalRequest=$.getBean('approvalRequest').loadBy(requestID=rc.requestID)>
 <cfif rc.action eq 'approve'>
 	<cfset approvalRequest.approve(rc.comment)>
+<cfelseif rc.action eq 'cancel'>
+	<cfset approvalRequest.cancel(rc.comment)>
 <cfelse>
 	<cfset approvalRequest.reject(rc.comment)>
 </cfif>

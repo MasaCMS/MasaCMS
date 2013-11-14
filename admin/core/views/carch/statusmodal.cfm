@@ -150,16 +150,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</dl>
 			</cfif>
 		
-			<cfif not content.getApproved() and approvalRequest.getStatus() eq 'Pending' and (listfindNoCase(session.mura.membershipids,approvalRequest.getGroupID()) or $.currentUser().isAdminUser() or $.currentUser().isSuperUser())>
+			<cfset isApprover=(listfindNoCase(session.mura.membershipids,approvalRequest.getGroupID()) or $.currentUser().isAdminUser() or $.currentUser().isSuperUser())>
+			<cfset isRequester=approvalRequest.getUserID() eq session.mura.userid>
+
+			<cfif not content.getApproved() and approvalRequest.getStatus() eq 'Pending' and (isApprover or isRequester)>
 				<dl class="approval-action-form">
 				<dt>#application.rbFactory.getKeyValue(session.rb,"approvalchains.action")#</dt>
 				<dd>
+					<cfif isApprover>
 					<label class="radio inline">
 						<input class="approval-action" id="approval-approve" name="approval-action"type="radio" value="Approve" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approve")# 
 					</label>
 					<label class="radio inline">
 						<input class="approval-action" id="approval-reject" name="approval-action" type="radio" value="Reject" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.reject")#
 					</label>
+					</cfif>
+					<cfif isRequester>
+					<label class="radio inline">
+						<input class="approval-action" id="approval-cancel" name="approval-action"type="radio" value="Cancel" checked/> #application.rbFactory.getKeyValue(session.rb,"approvalchains.cancel")# 
+					</label>
+					</cfif>
 					
 				<p>#application.rbFactory.getKeyValue(session.rb,"approvalchains.comments")#</p>
 				<textarea id="approval-comments" rows="4"></textarea>

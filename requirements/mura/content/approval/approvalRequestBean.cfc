@@ -130,7 +130,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		    	.setChainID(getValue('chainID'))
 		    	.save();
 
-			setValue('status','Cancelled');
+			setValue('status','Canceled');
 	    	save();
 	    	var content=getBean('content').loadBy(contenthistid=getValue('contenthistid'),siteid=getValue('siteid'));
 	    	getBean('contentManager').purgeContentCache(contentBean=content);
