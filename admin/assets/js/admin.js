@@ -1481,7 +1481,7 @@ $.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
 });
 
 $(function() {
-	$( "#select-site-ul input" ).muraSiteSelector({
+	$( 'input[name="site-search"]' ).muraSiteSelector({
 		source: function( request, response ) {
 			$.ajax({
 				url: "./index.cfm?muraAction=cnav.searchsitedata",
@@ -1495,6 +1495,6 @@ $(function() {
 				}
 			});
 		},
-		minLength: 3
+		minLength: 2
 	});
 });
