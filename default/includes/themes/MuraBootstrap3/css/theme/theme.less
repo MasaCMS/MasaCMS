@@ -799,38 +799,55 @@ section {
 }
 
 // FONT AWESOME EXAMPLE PAGE
-.font-awesome-examples {
+.fontawesome-icon-list {
 	[class*="span"] {
 		float:left;
 		min-height:1px;
 		margin-left: 30px;
 	}
 
-	.span3{width:220px;}
+	.text-muted {color:#999;}
 
-	.span3 a {
+	.fa-hover a {
 		display:block;
-		cursor:pointer;
+		color: #222;
 		line-height: 32px;
 		height: 32px;
 		padding-left: 10px;
-		-webkit-border-radius: 6px;
-		-moz-border-radius: 6px;
-		border-radius: 6px;
+		text-decoration: none;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+
+		cursor:auto;
+
+		.fa {
+			width: 32px;
+			font-size: 14px;
+			display: inline-block;
+			text-align: right;
+			margin-right: 10px;
+		}
+
+		&:hover {
+			//line-height: 32px;
+			background-color: #428bca;
+			color: #fff;
+			.text-muted { color: #fff;}
+			i.fa {
+				//font-size: 2em;
+			}
+		}
+
 	}
 
-	.span3 a [class^="icon-"] {
-		width: 32px;
-		font-size:14px;
-		display: inline-block;
-		text-align: right;
-		margin-right:10px;
-	}
 
-	ul, ol {
-		padding:0;
-		margin: 0 0 10px 25px;
-	}
+
+
+	// ul, ol {
+	// 	padding:0;
+	// 	margin: 0 0 10px 25px;
+	// }
 }
 
 // BOOTSTRAP THEME 'EXAMPLE' PAGE
