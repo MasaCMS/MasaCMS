@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					
 		 				<ul id="select-site-ul" class="dropdown-menu ui-front">
 		 					<cfif theSiteList.recordCount gt 10> <!--- TODO: move '10' to a config? --->
-		 					<div class="ui-widget"><input class="form-control input-sm" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,"dashboard.search")#..."></div>
+		 					<div class="ui-widget"><input name="site-search" class="form-control input-sm" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,"dashboard.search")#..."></div>
 		 					<cfelse>
 		 				    <cfloop query="theSiteList">
 		 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>

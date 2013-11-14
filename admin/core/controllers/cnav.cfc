@@ -12,8 +12,8 @@
 		session.siteArray,
 		listFind(session.mura.memberships,'S2'),
 		rc.searchString,
-		-1 // unlimited maxRows because of minLength trigger of autocomplete set to 3
-	) />
+		-1 
+	) /><!--- // unlimited maxRows because of minLength trigger of autocomplete set to 2 --->
 	
 </cffunction>
 
