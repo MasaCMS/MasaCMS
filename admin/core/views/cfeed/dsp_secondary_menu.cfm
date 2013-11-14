@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 	<div id="nav-module-specific" class="btn-group">
@@ -53,7 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="list">
 			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#" href="./?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Local"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a>
 			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#" href="./?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#</a>
+			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 			<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000011&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000011"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'collections.permissions')#</a>
+			</cfif>
 		</cfcase>
 		<cfdefaultcase>
 			<a class="btn" href="./?muraAction=cFeed.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"collections.backtocollections")#</a>
@@ -68,4 +70,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	</div>
 </cfoutput>
-</cfif>
