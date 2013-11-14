@@ -1,8 +1,7 @@
 <cfoutput>
 <header class="navbar-wrapper">
-	<div class="container">
-		<nav class="navbar navbar-inverse navbar-static-top">
-
+	<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#$.createHREF(filename='')#">#HTMLEditFormat($.siteConfig('site'))#</a>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -11,7 +10,6 @@
 					<span class="icon-bar"></span>
 				</button>
 			</div><!--- /.navbar-header --->
-	
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<div class="row">
 					<div class="col-md-7">
@@ -52,7 +50,6 @@
 							})
 						</script>
 					</div>
-
 					<div class="col-md-3 pull-right">
 						<form id="searchForm" class="navbar-form navbar-right" role="search">
 							<div class="input-group">
@@ -67,11 +64,10 @@
 							<input type="hidden" name="newSearch" value="true">
 							<input type="hidden" name="noCache" value="1">
 						</form>
-					</div>
-				</div>
+					</div><!--- /search --->
+				</div><!--- /.row --->
 			</div><!--- /.navbar-collapse --->
-
-		</nav><!--- /.navbar --->
-	</div><!--- /.container --->
+		</div><!--- /.container --->
+	</nav><!--- /nav --->
 </header>
 </cfoutput>
