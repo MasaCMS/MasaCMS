@@ -1454,26 +1454,29 @@ Display Objects
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	<cfset var lookUpBean="">
+	
+	<cfset var loadByArg = Len(arguments.contentID) ? 'contentid' : 'filename' />
+	<cfset var loadByVal = Len(arguments.contentID) ? arguments.contentid : arguments.filename />
+	<cfset var args = { siteid=arguments.siteID, '#loadByArg#'=loadByVal} />
+	<cfset var lookUpBean= application.serviceFactory.getBean('content').loadBy(argumentCollection=args) />
+	<cfset var theFilename = lookupBean.getFilename() />
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
 	</cfif>
-	
+
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,theFilename)##arguments.querystring#") />
 			<cfelseif arguments.type eq "Link">
-				<cfset lookUpBean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 				<cfset href=lookUpBean.getBody()>
 			<cfelse>
-				<cfset lookUpBean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#lookUpBean.getFileID()#/#lookUpBean.getBody()#">
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,theFilename)##arguments.querystring#") />
 		</cfdefaultcase>
 	</cfswitch>
 
