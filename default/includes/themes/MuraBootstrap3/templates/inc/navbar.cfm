@@ -56,7 +56,7 @@
 								<input type="text" name="Keywords" id="txtKeywords" class="form-control" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
 								<span class="input-group-btn">
 									<button type="submit" class="btn btn-default">
-										<i class="icon-search"></i>
+										<i class="fa fa-search"></i>
 									</button>
 								</span>
 							</div>
