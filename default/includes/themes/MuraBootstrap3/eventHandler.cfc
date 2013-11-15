@@ -249,7 +249,7 @@
 			 renderer.remoteFeedWrapperClass="mura-SyndRemote mura-Index mura-Feed clearfix";
 			
 			// dsp_login.cfm
-			 renderer.loginWrapperClass="container";
+			 renderer.loginWrapperClass="mura-LoginForm";
 			 renderer.loginWrapperInnerClass="row";
 			 renderer.loginErrorMessageClass="alert alert-danger";
 			 renderer.loginFormClass="form-horizontal form-signin";
@@ -281,7 +281,7 @@
 			 renderer.mailingListSubmitClass="submit btn btn-default";
 			
 			// dsp_nextN.cfm
-			 renderer.nextNWrapperClass="container";
+			 renderer.nextNWrapperClass="mura-NextN";
 			 renderer.nextNInnerClass="row";
 			
 			// dsp_search_form.cfm
@@ -292,7 +292,7 @@
 			 renderer.searchFormSubmitClass="btn btn-default";
 			
 			// dsp_search_results.cfm
-			 renderer.searchResultWrapperClass="mura-SearchResults container";
+			 renderer.searchResultWrapperClass="mura-SearchResults";
 			 renderer.searchResultInnerClass="row";
 			 renderer.searchResultsRowClass="row";
 			 renderer.searchResultsMoreResultsRowClass="row";
@@ -351,7 +351,7 @@
 			 renderer.navCalendarTableClass="table table-bordered";
 			
 			// nav/dsp_sequential.cfm
-			 renderer.navSequentialWrapperClass="container";
+			 renderer.navSequentialWrapperClass="mura-SequentialNav";
 			 renderer.navSequentialInnerClass="row";
 			
 			// nav/dsp_tag_cloud.cfm

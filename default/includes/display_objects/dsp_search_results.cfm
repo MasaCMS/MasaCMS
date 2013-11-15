@@ -182,7 +182,7 @@
 						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#HTMLEditFormat(request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
 						<span class="#this.searchAgainButtonWrapperClass#">
 							<button type="submit" class="#this.searchAgainSubmitClass#">
-								<i class="icon-search"></i>
+								<i class="fa fa-search"></i> #$.rbKey('search.search')#
 							</button>
 						</span>
 					</div>
