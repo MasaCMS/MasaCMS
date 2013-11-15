@@ -69,7 +69,11 @@ $(function(){
 
 	 var initPage=function() {
 		loadPage(params).success(function(data){
-			jQuery('#commentsPage').html(data);	
+			if (data.count > 0) {
+				jQuery('#commentsPage').html(data.htmloutput);
+			} else {
+				jQuery('#commentsSort').hide();
+			}
 			bindEvents();
 			handleHash();
 		})
@@ -90,7 +94,7 @@ $(function(){
 
 				loadPage(params).success(function(data){
 					jQuery("#moreComments").parent().remove();
-					jQuery(data).appendTo('#commentsPage').hide().fadeIn();
+					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 					bindEvents();
 					if (jQuery(hash).length != 0) {
 						scrollToID(jQuery(hash));
@@ -111,6 +115,7 @@ $(function(){
 		jQuery.extend(params, ext);
 		
 		return jQuery.ajax({
+			dataType: "json",
 			url: $commentsProxyPath,
 			data: params
 		});
@@ -143,7 +148,7 @@ $(function(){
 
 				loadPage(params).success(function(data){
 					jQuery("#moreComments").parent().remove();
-					jQuery(data).appendTo('#commentsPage').hide().fadeIn();
+					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 					bindEvents();
 					if (jQuery('#comment-' + parentid).length != 0) {	
 						scrollToID(jQuery('#comment-' + parentid));
@@ -181,7 +186,7 @@ $(function(){
 			
 			loadPage(params).success(function(data){
 				a.parent().remove();
-				jQuery(data).appendTo('#commentsPage').hide().fadeIn();
+				jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 				bindEvents();
 			})
 			
@@ -193,7 +198,7 @@ $(function(){
 			};
 			
 			loadPage(params).success(function(data){
-				jQuery('#commentsPage').html(data);	
+				jQuery('#commentsPage').html(data.htmloutput);	
 				bindEvents();
 			})
 			

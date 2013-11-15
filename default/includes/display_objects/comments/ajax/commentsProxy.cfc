@@ -62,7 +62,6 @@
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
 		<cfoutput>#createobject("component","mura.json").encode(data)#</cfoutput>
-		<cfabort>
 	</cffunction>
 
 	<cffunction name="flag" access="remote" output="true">
@@ -77,9 +76,7 @@
 		<cfset var $ = getBean("MuraScope").init(session.siteid)>
 		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
 		
-		<cfscript>
-			writeOutput(new mura.json().jsonencode(contentStats.getAllValues()));
-		</cfscript>
+		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(contentStats.getAllValues()));</cfscript>
 	</cffunction>
 
 	<cffunction name="renderCommentsPage" access="remote" output="true">
@@ -111,6 +108,8 @@
 		<cfset var remoteID = "">
 		<cfset var user = "">
 		<cfset var avatar = "">
+		<cfset var returnStruct = structNew()>
+		<cfset returnStruct.count = q.recordcount>
 		
 		<cfscript>
 			// Pagination Setup
@@ -146,72 +145,75 @@
 			}
 		</cfscript>
 
-		<cfoutput>
-			<cfloop from="#local.startPage#" to="#local.endPage#" index="i">
-				<cfset it.setPage(local.pageNo)>	
-				<cfloop condition="#it.hasNext()#">
-					<cfset comment = it.next()>				
-					<cfset commenter = comment.getCommenter()>
-					<!--- set avatar from Mura's user bean --->
-					<cfset avatar = "">
-					<cfif isValid("UUID", commenter.getRemoteID())>
-						<cfset user = $.getBean('user').loadBy(userID=commenter.getRemoteID())>
-						<cfif not user.getIsNew() and len(user.getPhotoFileID())>
-							<cfset avatar = $.createHREFForImage(user.getSiteID(), user.getPhotoFileID(), 'jpg', 'medium')>
+		<cfsavecontent variable="returnStruct.htmloutput">
+			<cfoutput>
+				<cfloop from="#local.startPage#" to="#local.endPage#" index="i">
+					<cfset it.setPage(local.pageNo)>	
+					<cfloop condition="#it.hasNext()#">
+						<cfset comment = it.next()>				
+						<cfset commenter = comment.getCommenter()>
+						<!--- set avatar from Mura's user bean --->
+						<cfset avatar = "">
+						<cfif isValid("UUID", commenter.getRemoteID())>
+							<cfset user = $.getBean('user').loadBy(userID=commenter.getRemoteID())>
+							<cfif not user.getIsNew() and len(user.getPhotoFileID())>
+								<cfset avatar = $.createHREFForImage(user.getSiteID(), user.getPhotoFileID(), 'jpg', 'medium')>
+							</cfif>
 						</cfif>
-					</cfif>
-					<dl id="comment-#comment.getCommentID()#">
-						<dt>
-							<cfif len(commenter.getURL())>
-								<a href="#commenter.getURL()#" target="_blank">#htmleditformat(commenter.getName())#</a>
+						<dl id="comment-#comment.getCommentID()#">
+							<dt>
+								<cfif len(commenter.getURL())>
+									<a href="#commenter.getURL()#" target="_blank">#htmleditformat(commenter.getName())#</a>
+								<cfelse>
+									#htmleditformat(commenter.getName())#
+								</cfif>
+								<cfif isEditor and len(commenter.getEmail())>
+									<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(commenter.getEmail()),'@')#','#listlast(HTMLEditFormat(commenter.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+								</cfif>
+								<cfif isEditor>
+									<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+										 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+									</cfif>
+									<cfif comment.getIsApproved() neq 1>
+										 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+									</cfif>
+									 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+									 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
+								</cfif>
+							</dt>
+							<cfif len(avatar)>
+								<dd class="gravatar"><img src="#avatar#"></dd>
 							<cfelse>
-								#htmleditformat(commenter.getName())#
+								<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(commenter.getEmail())))#" /></dd>
 							</cfif>
-							<cfif isEditor and len(commenter.getEmail())>
-								<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(commenter.getEmail()),'@')#','#listlast(HTMLEditFormat(commenter.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+							<cfif len(comment.getParentID())>
+								<dd class="inReplyTo">
+									<em>In reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a></em>
+								</dd>
 							</cfif>
-							<cfif isEditor>
-								<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-									 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
-								</cfif>
-								<cfif comment.getIsApproved() neq 1>
-									 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
-								</cfif>
-								 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
-								 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
-							</cfif>
-						</dt>
-						<cfif len(avatar)>
-							<dd class="gravatar"><img src="#avatar#"></dd>
-						<cfelse>
-							<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(commenter.getEmail())))#" /></dd>
-						</cfif>
-						<cfif len(comment.getParentID())>
-							<dd class="inReplyTo">
-								<em>In reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a></em>
+							<dd class="comment">
+								#$.setParagraphs(htmleditformat(comment.getComments()))#
 							</dd>
-						</cfif>
-						<dd class="comment">
-							#$.setParagraphs(htmleditformat(comment.getComments()))#
-						</dd>
-						<dd class="dateTime">
-							#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
-						</dd>
-						<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
-						<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
-						<dd id="postcomment-#comment.getCommentID()#"></dd>
-					</dl>
+							<dd class="dateTime">
+								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
+							</dd>
+							<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
+							<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
+							<dd id="postcomment-#comment.getCommentID()#"></dd>
+						</dl>
+					</cfloop>
+					<cfset local.pageNo++>
 				</cfloop>
-				<cfset local.pageNo++>
-			</cfloop>
 
-			<!--- MOAR --->
-			<cfif it.getPageIndex() lt it.pageCount()>
-				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#it.getPageIndex()+1#"><i class="icon-arrow-down"> More Comments</i></a></div>
-			</cfif>
-	
-		</cfoutput>
+				<!--- MOAR --->
+				<cfif it.getPageIndex() lt it.pageCount()>
+					<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#it.getPageIndex()+1#"><i class="icon-arrow-down"> More Comments</i></a></div>
+				</cfif>
+		
+			</cfoutput>
+		</cfsavecontent>
 
+		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(returnStruct));</cfscript>
 	</cffunction>
 
 </cfcomponent>

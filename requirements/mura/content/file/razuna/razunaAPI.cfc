@@ -185,7 +185,13 @@
 		<cfargument name="apiURL" required="true" type="string" >
 		<cfset var res = {}>
 		<cfhttp url="#arguments.apiURL#" method="get" result="res">
+		<cftry>
 		<cfreturn deserializeJSON(res.Filecontent)>
+		<cfcatch>
+			<cfheader statuscode="400" statustext="400 Bad Request
+" />
+			<cfdump var="#res#" abort="true"></cfcatch>
+		</cftry>
 	</cffunction>
 	
 </cfcomponent>

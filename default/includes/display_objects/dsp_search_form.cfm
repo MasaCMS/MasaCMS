@@ -63,7 +63,7 @@
 			<input type="text" name="Keywords" id="txtKeywords" class="#this.searchFormInputClass#" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#variables.$.rbKey('search.search')#">
 			<span class="#this.searchFormSubmitWrapperClass#">
 				<button type="submit" class="#this.searchFormSubmitClass#">
-					<i class="icon-search"></i>
+					<i class="fa fa-search"></i> #$.rbKey('search.search')#
 				</button>
 			</span>
 		</div>
