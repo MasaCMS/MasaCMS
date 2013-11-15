@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 		<div id="draft-prompt">
 		<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
-			
+			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
 			<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
 			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft>		
 				<table class="mura-table-grid">
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tbody>
 				</table>
 			</cfif>
-
+			</cfif>
 			<cfif draftprompdata.yourapprovals.recordcount>
 				<cfset content=$.getBean('content').loadBy(contentid=rc.contentid)>
 				<table class="mura-table-grid">	
