@@ -10,7 +10,7 @@
 				<li><a href="##myModal" data-toggle="modal">Sample Modal Window</a></li>
 			</ul>
 		</div>
-		<cfset backToTop = '<a class="btn" href="##"><i class="icon-circle-arrow-up"></i> Back to top</a>' />
+		<cfset backToTop = '<a class="btn" href="##"><i class="fa fa-arrow-circle-up"></i> Back to top</a>' />
 		<div class="col-lg-2">
 			<p class="hidden-sm hidden-xs pull-right">#backToTop#</p>
 			<p class="visible-sm visible-xs pull-left">#backToTop#</p>
