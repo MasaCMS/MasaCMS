@@ -397,7 +397,7 @@
 			
 				<div class="fa-hover col-md-3 col-sm-4"><a href="http://fontawesome.io/icon/search-minus"><i class="fa fa-search-minus"></i> fa-search-minus</a></div>
 			
-				<div class="fa-hover col-md-3 col-sm-4"><a href="http://fontawesome.io/icon/search-plus">i class="fa fa-search-plus"></i> fa-search-plus</a></div>
+				<div class="fa-hover col-md-3 col-sm-4"><a href="http://fontawesome.io/icon/search-plus"><i class="fa fa-search-plus"></i> fa-search-plus</a></div>
 			
 				<div class="fa-hover col-md-3 col-sm-4"><a href="http://fontawesome.io/icon/share"><i class="fa fa-share"></i> fa-share</a></div>
 			
