@@ -114,8 +114,8 @@
 				<div id="svSessionTools" class="#this.userToolsWrapperClass#">
 					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
 				 	<ul id="navSession">
-						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
-						<li id="navLogout"><a class="#this.userToolsLogoutLinkClass#" href="./?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
+						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="fa fa-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
+						<li id="navLogout"><a class="#this.userToolsLogoutLinkClass#" href="./?doaction=logout"><i class="fa fa-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
 					</ul>
 				</div>
 			</cfif>
