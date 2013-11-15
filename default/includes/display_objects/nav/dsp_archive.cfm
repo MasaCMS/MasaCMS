@@ -59,7 +59,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="#this.ulTopClass# <cfif this.navWrapperClass neq ""> #this.navWrapperClass#</cfif>">
 	<cfloop query="variables.rsvariables.archive">
 		<cfset isCurrentvariables.archive=hasvariables.archiveFilter and variables.$.event("month") eq variables.rsvariables.archive.month and variables.$.event("year") eq variables.rsvariables.archive.year>
-		<li<cfif isCurrentvariables.archive> class="#this.liCurrentClass#"</cfif>><a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsvariables.archive.year#/#variables.rsvariables.archive.month#/')#"<cfif isCurrentvariables.archive> class="current"</cfif>>#monthasstring(variables.rsvariables.archive.month)# #variables.rsvariables.archive.year# (#variables.rsvariables.archive.items#)</a></li>
+		<cfsilent>
+			<cfscript>
+				thisClass = currentRow == 1 ? 'first' : currentRow == variables.rsvariables.archive.recordcount ? 'last' : '';
+				thisClass &= isCurrentvariables.archive ? ' ' & this.liCurrentClass : '';
+			</cfscript>
+		</cfsilent>
+		<li class="#thisClass#">
+			<a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsvariables.archive.year#/#variables.rsvariables.archive.month#/')#" class="#thisClass#">
+				#monthasstring(variables.rsvariables.archive.month)# #variables.rsvariables.archive.year# (#variables.rsvariables.archive.items#)
+			</a>
+		</li>
 	</cfloop>
 </ul>
 </nav>
