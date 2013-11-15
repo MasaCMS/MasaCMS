@@ -87,6 +87,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var filteredSendto=filterEmails(arguments.sendto) />
 	<cfset var mailServerFailto="" />
 
+	<cfif len(arguments.siteid) and not len(arguments.from)>
+		<cfset arguments.from=getFromEmail(arguments.siteid)>
+	</cfif>
+
 	<cfscript>
 		useDefaultSMTPServer = getUseDefaultSMTPServer(arguments.siteid);
 		mailServerUsername = getMailserverUsername(arguments.siteid);
@@ -202,6 +206,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fromEmail="" />
 	<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
+	<cfif len(arguments.siteid) and not len(arguments.from)>
+		<cfset arguments.from=getFromEmail(arguments.siteid)>
+	</cfif>
+
 	<cfif len(filteredSendto)>
 
 		<cfscript>
@@ -276,6 +284,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fromEmail="" />
 	<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
+	<cfif len(arguments.siteid) and not len(arguments.from)>
+		<cfset arguments.from=getFromEmail(arguments.siteid)>
+	</cfif>
+
 	<cfif len(filteredSendto)>
 		<cfscript>
 			useDefaultSMTPServer = getUseDefaultSMTPServer(arguments.siteid);
@@ -348,6 +360,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fromEmail="" />
 	<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
+	<cfif len(arguments.siteid) and not len(arguments.from)>
+		<cfset arguments.from=getFromEmail(arguments.siteid)>
+	</cfif>
+	
 	<cfif len(filteredSendto)>
 		
 		<cfscript>

@@ -50,6 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
 <div id="tabBasic" class="tab-pane fade">
+
+<span id="extendset-container-tabbasictop" class="extendset-container"></span>
+
 <div class="fieldset">
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	<div class="control-group">
@@ -115,5 +118,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </cfif>
 </div>
+
+<span id="extendset-container-basic" class="extendset-container"></span>
+
+<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 </div>
 </cfoutput>
