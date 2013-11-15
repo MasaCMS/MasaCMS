@@ -57,7 +57,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </script>
 	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/">
 		<div class="mura-tb-menu">
-			<ul>
+			<ul class="mura-tb-form-menu">
+			<li><div class="ui-button button-field" id="button-form" data-object="section-form" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.form.tooltip')#"><span class="ui-button-text">#application.rbFactory.getKeyValue(session.rb,'formbuilder.form')#</span></div></li>
+			<li class="spacer"></li>
+			</ul>
+			<ul class="mura-tb-field-menu">
 			<li><div class="ui-button button-field" id="button-section" data-object="section-section" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section.tooltip')#"><span class="ui-button-text ui-icon-formfield-section">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section')#</span></div></li>
 			<li class="spacer"></li>
 			<li><div class="ui-button button-field" id="button-textfield" data-object="field-textfield" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.textfield.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-textfield"></span></div></li>

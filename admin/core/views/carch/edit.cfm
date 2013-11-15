@@ -644,7 +644,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 	
-	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component",rc.contentBean.getType())>
+	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
 		<script type="text/javascript">
 		siteManager.tablist='#JSStringFormat(lcase(tabList))#';
 		siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');

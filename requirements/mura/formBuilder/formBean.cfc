@@ -54,6 +54,7 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="DateCreate" type="date" default="" required="true" />
 	<cfproperty name="DateLastUpdate" type="date" default="" required="true" />
 	<cfproperty name="Fields" type="Struct" default="" required="true" />
+	<cfproperty name="FormAttributes" type="Struct" default="" required="true" />
 	<cfproperty name="FieldOrder" type="Array" default="" required="true" />
 	<cfproperty name="DeletedFields" type="Struct" default="" required="false" />
 	<cfproperty name="Config" type="Any" default="" required="true" />
@@ -76,6 +77,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="DateCreate" type="string" required="false" default="" />
 		<cfargument name="DateLastUpdate" type="string" required="false" default="" />
 		
+		<cfargument name="FormAttributes" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="Fields" type="Struct" required="false" default="#StructNew()#" />
 		<cfargument name="FieldOrder" type="Array" required="false" default="#ArrayNew(1)#" />
 		<cfargument name="DeletedFields" type="Struct" required="false" default="#StructNew()#" />
@@ -96,6 +98,7 @@ to your own modified versions of Mura CMS.
 		<cfset setDateCreate( arguments.DateCreate ) />
 		<cfset setDateLastUpdate( arguments.DateLastUpdate ) />
 
+		<cfset setFormAttributes( arguments.FormAttributes ) />
 		<cfset setFields( arguments.Fields ) />
 		<cfset setFieldOrder( arguments.FieldOrder ) />
 		<cfset setDeletedFields( arguments.DeletedFields ) />
@@ -202,6 +205,19 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance.DateLastUpdate />
 	</cffunction>
 	<!--- Services --->
+	<cffunction name="setFormAttributes" access="public" returntype="void" output="false">
+		<cfargument name="FormAttributes" type="struct" required="true" />
+		<cfset variables.instance['formattributes'] = arguments.FormAttributes />
+	</cffunction>
+	<cffunction name="getFormAttributes" access="public" returntype="struct" output="false">
+		<cfif not variables.FormAttributesChecked and not structCount( variables.instance.FormAttributes )>
+			<cfset setFormAttributes( getFormService().getFormAttributeservice().getFormAttributes( formID = getFormID() ) ) />
+			<cfset variables.FormAttributesChecked = true />
+		</cfif>
+
+		<cfreturn variables.instance.FormAttributes />
+	</cffunction>
+	
 	<cffunction name="setFields" access="public" returntype="void" output="false">
 		<cfargument name="Fields" type="struct" required="true" />
 		<cfset variables.instance['fields'] = arguments.Fields />
@@ -214,6 +230,7 @@ to your own modified versions of Mura CMS.
 
 		<cfreturn variables.instance.Fields />
 	</cffunction>
+	
 	<cffunction name="getField" access="public" returntype="any" output="false">
 		<cfargument name="FieldID" type="struct" required="true" />
 
