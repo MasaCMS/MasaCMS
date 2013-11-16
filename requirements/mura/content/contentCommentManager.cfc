@@ -315,19 +315,19 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 			elemClass = ' class="' & classList & '"';
 			o &= "<ul#elemID##elemClass#>";
 			
-			for (row in rsList) {
+			for (row =1; row lte rsList.recordcount; row=row+1) {
 				o &= "<li>";
-				if (row.isOpen eq 1) {
-					if (listfind(arguments.categoryID, row.categoryID)) {
+				if (rsList.isOpen[row] eq 1) {
+					if (listfind(arguments.categoryID, rslist.categoryID[row])) {
 						elemChecked = " checked";
 					} else {
 						elemChecked = "";
 					}
-					o &= '<input type="checkbox" name="#arguments.elementName#" class="checkbox" value="#rslist.categoryID#"#elemChecked#/> ';
+					o &= '<input type="checkbox" name="#arguments.elementName#" class="checkbox" value="#rsList.categoryID[row]#"#elemChecked#/> ';
 				}
-				o &= row.name;
-				if (row.hasKids) {
-					o &= dspCategoriesNestSelect(arguments.siteID, row.categoryID, arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName);
+				o &= rsList.name[row];
+				if (rsList.hasKids[row]) {
+					o &= dspCategoriesNestSelect(arguments.siteID, rsList.categoryID[row], arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName);
 				}
 				o &= "</li>";
 			}
