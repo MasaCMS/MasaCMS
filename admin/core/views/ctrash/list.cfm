@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <div class="input-append">
-	   <input id="search" name="search" type="text" class="text" value="#HTMLEditFormat(rc.keywords)#">
+	   <input id="search" name="keywords" type="text" class="text" value="#HTMLEditFormat(rc.keywords)#">
 	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
 	</div>
     
