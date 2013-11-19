@@ -2001,7 +2001,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="parentID" type="String" required="true" default="">
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
 	<cfargument name="includeSpam" type="boolean" required="true" default="false">
-	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder,arguments.parentID,arguments.filterByParentID,arguments.includeSpam) />
+	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
+	<cfargument name="includeKids" type="boolean" required="true" default="false">
+	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder,arguments.parentID,arguments.filterByParentID,arguments.includeSpam,arguments.includeDeleted,arguments.includeKids) />
 	
 	</cffunction>
 	

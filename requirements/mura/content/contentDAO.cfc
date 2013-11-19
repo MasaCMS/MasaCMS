@@ -1367,14 +1367,17 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
 	<cfargument name="includeSpam" type="boolean" required="true" default="false">
 	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
+	<cfargument name="includeKids" type="boolean" required="true" default="false">
 	<cfset var rsComments= ''/>
 	
 	<cfquery name="rsComments">
 	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
-	f.fileid, f.fileExt, k.kids
+	f.fileid, f.fileExt, <cfif arguments.includeKids>k.kids, 0 kids</cfif>
 	from tcontentcomments c 
 	left join tusers u on c.userid=u.userid
 	left join tfiles f on u.photofileid=f.fileid
+	
+	<cfif arguments.includeKids>
 	left join (select count(*) kids, parentID from tcontentcomments
 				where parentID in (select commentID from tcontentcomments
 									where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
@@ -1392,6 +1395,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				group by parentID
 				
 				)  k on c.commentID=k.parentID
+	</cfif>
 	where c.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 	and c.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	<cfif arguments.filterByParentID>
