@@ -36,6 +36,10 @@
 </div>
 
 <div class="control-group" id="availableGroups">
+	<div class="alert alert-info">
+		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
+		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
+	</div>
   <label class="control-label">
     <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
   </label>

@@ -121,7 +121,7 @@
 <cfoutput>
 <form id="#variables.frmID#" class="#variables.$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#variables.frmFieldContents#
-	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="Submit"></div>
+	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>

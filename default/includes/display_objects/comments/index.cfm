@@ -231,7 +231,8 @@
 				<cfset application.contentManager.approveComment(request.approvedcommentid,variables.$.getContentRenderer()) />
 			</cfif>
 			<cfset variables.level=0>
-			<cfset rsComments=application.contentManager.readComments(variables.thecontentID,variables.$.event('siteID'),request.isEditor,"asc","",false ) />
+			<!---
+			<cfset rsComments=application.contentManager.readComments(variables.thecontentID,variables.$.event('siteID'),request.isEditor,"asc","",false ) />--->
 			<cfset variables.rsSubComments=StructNew() />
 		</cfsilent>
 
