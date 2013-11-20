@@ -57,7 +57,7 @@
 <!---
 	NOTE: The comment form does not appear on Folders or Galleries
 --->
-<cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
+<cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
 		<cfswitch expression="#variables.$.getJsLib()#">
 			<cfcase value="jquery">
