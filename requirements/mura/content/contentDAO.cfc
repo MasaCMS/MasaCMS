@@ -1372,7 +1372,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	
 	<cfquery name="rsComments">
 	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
-	f.fileid, f.fileExt, <cfif arguments.includeKids>k.kids, 0 kids</cfif>
+	f.fileid, f.fileExt, <cfif arguments.includeKids>k.kids <cfelse> 0 kids</cfif>
 	from tcontentcomments c 
 	left join tusers u on c.userid=u.userid
 	left join tfiles f on u.photofileid=f.fileid
