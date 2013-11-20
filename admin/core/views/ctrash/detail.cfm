@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
+<script src="assets/js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
@@ -78,13 +78,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <cfelse>
 <cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
-<div id="selectNewParent">
-<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#</strong>:
-	<span id="move" class="text"><cfif parentBean.getIsNew()>NA<cfelse>#htmlEditFormat(parentBean.getMenuTitle())#</cfif>
-	&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#rc.trashItem.getSiteID()#','#rc.trashItem.getObjectID()#','#rc.trashItem.getParentID()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#]</a>
-	<input type="hidden" id="parentid" name="parentid" value="#rc.trashItem.getParentID()#">
-	</span>
+
+
+<div class="control-group">
+	<label class="control-group">
+		<div id="selectNewParent">
+			<strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#</strong>:
+				<span id="move" class="text"><cfif parentBean.getIsNew()>NA<cfelse>#htmlEditFormat(parentBean.getMenuTitle())#</cfif>
+				&nbsp;&nbsp;<button class="btn btn-small" onclick="javascript: siteManager.loadSiteParents('#rc.trashItem.getSiteID()#','#rc.trashItem.getObjectID()#','#rc.trashItem.getParentID()#','',1);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#</button>
+				<input type="hidden" id="parentid" name="parentid" value="#rc.trashItem.getParentID()#">
+				</span>
+			</div>
+		</label>
+	</div>
 </div>
+
 <div class="clearfix form-actions">
 <input type="button" class="btn" onclick="restoreItem();" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>
