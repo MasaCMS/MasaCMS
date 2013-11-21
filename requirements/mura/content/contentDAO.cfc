@@ -1405,10 +1405,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and c.isApproved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and c.isSpam=0
+	and  (c.isSpam=0 or c.isSpam is null)
 	</cfif>
 	<cfif not arguments.includeDeleted>
-	and c.isDeleted = 0
+	and (c.isDeleted=0 or c.isDeleted is null)
 	</cfif>
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
