@@ -1440,10 +1440,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and approved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and isSpam=0
+	and (isSpam=0 or isSpam is null)
 	</cfif>
 	<cfif not arguments.includeDeleted>
-	and isDeleted=0
+	and (isDeleted=0 or isDeleted is null)
 	</cfif>
 	order by entered desc
 	<cfif dbType eq "nuodb" and arguments.size>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
@@ -1468,10 +1468,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			and isApproved=1
 		</cfif>
 		<cfif not arguments.includeSpam>
-			and isSpam = 0
+			and (isSpam = 0 or isSpam is null)
 		</cfif>
 		<cfif not arguments.includeDeleted>
-			and isDeleted = 0
+			and (isDeleted = 0 or isDeleted is null)
 		</cfif>
 	</cfquery>
 	
