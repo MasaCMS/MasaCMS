@@ -251,3 +251,11 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	update tsettings set hasComments=1 where hasComments is null
 </cfquery>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tcontentcomments set isDeleted=0 where isDeleted is null
+</cfquery>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tcontentcomments set isSpam=0 where isSpam is null
+</cfquery>

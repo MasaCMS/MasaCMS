@@ -1386,10 +1386,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 									and isApproved=1
 									</cfif>
 									<cfif not arguments.includeSpam>
-									and  (isSpam=0 or isSpam is null)
+									and isSpam=0
 									</cfif>
 									<cfif not arguments.includeDeleted>
-									and (isDeleted=0 or isDeleted is null)
+									and isDeleted=0
 									</cfif>
 								  )
 				group by parentID
@@ -1405,10 +1405,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and c.isApproved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and  (c.isSpam=0 or c.isSpam is null)
+	and  c.isSpam=0
 	</cfif>
 	<cfif not arguments.includeDeleted>
-	and (c.isDeleted=0 or c.isDeleted is null)
+	and c.isDeleted=0
 	</cfif>
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
@@ -1440,10 +1440,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and approved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and (isSpam=0 or isSpam is null)
+	and isSpam=0 
 	</cfif>
 	<cfif not arguments.includeDeleted>
-	and (isDeleted=0 or isDeleted is null)
+	and isDeleted=0
 	</cfif>
 	order by entered desc
 	<cfif dbType eq "nuodb" and arguments.size>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
@@ -1468,10 +1468,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			and isApproved=1
 		</cfif>
 		<cfif not arguments.includeSpam>
-			and (isSpam = 0 or isSpam is null)
+			and isSpam = 0
 		</cfif>
 		<cfif not arguments.includeDeleted>
-			and (isDeleted = 0 or isDeleted is null)
+			and isDeleted = 0
 		</cfif>
 	</cfquery>
 	
