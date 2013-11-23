@@ -382,7 +382,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		where
 
-		<cfif hasColumn('siteid') and len(variables.instance.siteID)>
+		<cfif 
+			(not isDefined('application.objectMappings.#getValue('entityName')#.columns') and len(variables.instance.siteID))
+			or 
+			 (hasColumn('siteid') and len(variables.instance.siteID))>
 			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
 		<cfelse>
 			1=1
