@@ -757,7 +757,7 @@ Display Objects
 				<cfset icon=renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#icon#"</cfif>>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>>
 			<a <cfif arguments.ajax> 
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
@@ -771,7 +771,7 @@ Display Objects
 			<cfset icon=renderIcon(arguments.crumbdata[1])>
 			<cfset isFileIcon= arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
 		</cfsilent>
-		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#icon#"</cfif>><strong>
+		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>><strong>
 		<a <cfif arguments.ajax> 
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
@@ -827,7 +827,7 @@ Display Objects
 				<cfset icon=renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#icon#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -836,7 +836,7 @@ Display Objects
 			<cfset icon=renderIcon(arguments.crumbdata[1])>
 			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
 		</cfsilent>
-		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#icon#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
+		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
 		</ul></cfoutput></cfsavecontent>
 		
 		<cfreturn content />
@@ -1454,29 +1454,38 @@ Display Objects
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	
-	<cfset var loadByArg = Len(arguments.contentID) ? 'contentid' : 'filename' />
-	<cfset var loadByVal = Len(arguments.contentID) ? arguments.contentid : arguments.filename />
-	<cfset var args = { siteid=arguments.siteID, '#loadByArg#'=loadByVal} />
-	<cfset var lookUpBean= application.serviceFactory.getBean('content').loadBy(argumentCollection=args) />
-	<cfset var theFilename = lookupBean.getFilename() />
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
 	</cfif>
 
+	<cfif not isDefined('arguments.bean') 
+		and (
+				(
+					not len(arguments.filename) 
+					and len(arguments.contentID) 
+					and arguments.contentid neq '00000000000000000000000000000000001'
+				)
+			or 
+				request.muraExportHTML and listFindNoCase("Link,File",arguments.type)
+			)
+		>
+		<cfset arguments.bean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
+		<cfset argument.filename=arguments.bean.getFilename()>
+	</cfif>
+	
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,theFilename)##arguments.querystring#") />
+				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 			<cfelseif arguments.type eq "Link">
-				<cfset href=lookUpBean.getBody()>
+				<cfset href=arguments.bean.getBody()>
 			<cfelse>
-				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#lookUpBean.getFileID()#/#lookUpBean.getBody()#">
+				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#arguments.bean.getFileID()#/#arguments.bean.getBody()#">
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,theFilename)##arguments.querystring#") />
+			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 		</cfdefaultcase>
 	</cfswitch>
 

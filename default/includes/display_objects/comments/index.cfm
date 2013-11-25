@@ -57,7 +57,7 @@
 <!---
 	NOTE: The comment form does not appear on Folders or Galleries
 --->
-<cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
+<cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
 		<cfswitch expression="#variables.$.getJsLib()#">
 			<cfcase value="jquery">
@@ -231,7 +231,8 @@
 				<cfset application.contentManager.approveComment(request.approvedcommentid,variables.$.getContentRenderer()) />
 			</cfif>
 			<cfset variables.level=0>
-			<cfset rsComments=application.contentManager.readComments(variables.thecontentID,variables.$.event('siteID'),request.isEditor,"asc","",false ) />
+			<!---
+			<cfset rsComments=application.contentManager.readComments(variables.thecontentID,variables.$.event('siteID'),request.isEditor,"asc","",false ) />--->
 			<cfset variables.rsSubComments=StructNew() />
 		</cfsilent>
 

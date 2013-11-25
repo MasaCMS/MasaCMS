@@ -1367,14 +1367,17 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
 	<cfargument name="includeSpam" type="boolean" required="true" default="false">
 	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
+	<cfargument name="includeKids" type="boolean" required="true" default="false">
 	<cfset var rsComments= ''/>
 	
 	<cfquery name="rsComments">
 	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
-	f.fileid, f.fileExt, k.kids
+	f.fileid, f.fileExt, <cfif arguments.includeKids>k.kids <cfelse> 0 kids</cfif>
 	from tcontentcomments c 
 	left join tusers u on c.userid=u.userid
 	left join tfiles f on u.photofileid=f.fileid
+	
+	<cfif arguments.includeKids>
 	left join (select count(*) kids, parentID from tcontentcomments
 				where parentID in (select commentID from tcontentcomments
 									where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
@@ -1386,12 +1389,13 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 									and isSpam=0
 									</cfif>
 									<cfif not arguments.includeDeleted>
-									and isDeleted = 0
+									and isDeleted=0
 									</cfif>
 								  )
 				group by parentID
 				
 				)  k on c.commentID=k.parentID
+	</cfif>
 	where c.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 	and c.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	<cfif arguments.filterByParentID>
@@ -1401,10 +1405,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and c.isApproved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and c.isSpam=0
+	and  c.isSpam=0
 	</cfif>
 	<cfif not arguments.includeDeleted>
-	and c.isDeleted = 0
+	and c.isDeleted=0
 	</cfif>
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
@@ -1436,7 +1440,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and approved=1
 	</cfif>
 	<cfif not arguments.includeSpam>
-	and isSpam=0
+	and isSpam=0 
 	</cfif>
 	<cfif not arguments.includeDeleted>
 	and isDeleted=0

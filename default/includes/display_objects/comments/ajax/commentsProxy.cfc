@@ -213,7 +213,7 @@
 			</cfoutput>
 		</cfsavecontent>
 
-		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(returnStruct));</cfscript>
+		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(serializeJSON(returnStruct));</cfscript>
 	</cffunction>
 
 </cfcomponent>
