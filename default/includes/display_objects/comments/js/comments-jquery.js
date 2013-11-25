@@ -69,7 +69,7 @@ $(function(){
 
 	 var initPage=function() {
 		loadPage(params).success(function(data){
-			data=keysToLowerCase(data);
+			data=setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#commentsPage').html(data.htmloutput);
 			} else {
@@ -94,7 +94,7 @@ $(function(){
 				};
 
 				loadPage(params).success(function(data){
-					data=keysToLowerCase(data);
+					data=setLowerCaseKeys(data);
 					jQuery("#moreComments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 					bindEvents();
@@ -106,7 +106,7 @@ $(function(){
 		}
 	}
 
-	var keysToLowerCase=function (obj) {
+	var setLowerCaseKeys=function (obj) {
 	  var keys = Object.keys(obj);
 	  var n = keys.length;
 	  while (n--) {
@@ -115,6 +115,9 @@ $(function(){
 	        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
 	        delete obj[key] // delete the old key
 	    }
+	   	if(typeof obj[key.toLowerCase()] == 'object'){
+	   		setLowerCaseKeys(obj[key.toLowerCase()]);
+	   	}
 	  }
 	  return (obj);
 	}
@@ -162,7 +165,7 @@ $(function(){
 				};
 
 				loadPage(params).success(function(data){
-					data=keysToLowerCase(data);
+					data=setLowerCaseKeys(data);
 					jQuery("#moreComments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 					bindEvents();
@@ -201,7 +204,7 @@ $(function(){
 			};
 			
 			loadPage(params).success(function(data){
-				data=keysToLowerCase(data);
+				data=setLowerCaseKeys(data);
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
 				bindEvents();
@@ -215,7 +218,7 @@ $(function(){
 			};
 			
 			loadPage(params).success(function(data){
-				data=keysToLowerCase(data);
+				data=setLowerCaseKeys(data);
 				jQuery('#commentsPage').html(data.htmloutput);	
 				bindEvents();
 			})
