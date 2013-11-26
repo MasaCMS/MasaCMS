@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCrumbData')#">
-			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			select tcontent.contenthistid, tcontent.contentid,tcontent.title, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
 			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID,tapprovalassignments.exemptID
@@ -160,7 +160,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.title=rsCrumbData.title />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfset crumb.urltitle=rsCrumbData.urltitle />
 			<cfset crumb.target=rsCrumbData.target />
 			<cfset crumb.contentid=rsCrumbData.contentid />
 			<cfset crumb.parentid=rsCrumbData.parentid />
@@ -206,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCrumbData')#">
-			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			select tcontent.contenthistid, tcontent.contentid,tcontent.title, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
 			tcontent.sortDirection,tapprovalassignments.chainID,
@@ -235,7 +237,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.title=rsCrumbData.title />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfset crumb.urltitle=rsCrumbData.urltitle />
 			<cfset crumb.target=rsCrumbData.target />
 			<cfset crumb.contentid=rsCrumbData.contentid />
 			<cfset crumb.parentid=rsCrumbData.parentid />
@@ -358,7 +362,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 			<cfset var nowAdjusted="">
 			<cfset var tableModifier="">
+			<cfset var altTable=variables.configBean.getContentGatewayTable()>
 
+			<cfif altTable eq 'tcontent'>
+				<cfset altTable=''>	
+			</cfif>
+			
 			<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
 				<cfset arguments.sortDirection='asc'>
 			</cfif>
@@ -378,11 +387,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.aggregation >
 				<cfset doKids =true />
 			</cfif>
-
-			
-				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsKids')#">
+		
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsKids')#">
 				<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 				SELECT <cfif dbType eq "mssql" and arguments.size>Top #val(arguments.size)#</cfif> 
+				
+				<cfif len(altTable)>
+				tcontent.*
+				<cfelse>
 				title, releasedate, menuTitle, tcontent.lastupdate,summary, tags,tcontent.filename, type,subType, tcontent.siteid,
 				tcontent.contentid, tcontent.contentHistID, target, targetParams, 
 				restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
@@ -392,113 +404,118 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
 				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
-				
-				FROM tcontent 
-				Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
-				left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
-								    and tcontent.siteid=tcontentstats.siteid) 
-				Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid
+				</cfif>
+				FROM <cfif len(altTable)>#alttable#</cfif> tcontent
+
+				<cfif not len(altTable)>
+					Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
+					left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
+									    and tcontent.siteid=tcontentstats.siteid) 
+					Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid
 													and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+				</cfif>
 
-<cfif isExtendedSort>
-	left Join (select 
-			#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
-			 ,tclassextenddata.baseID 
-			from tclassextenddata #tableModifier# inner join tclassextendattributes #tableModifier#
-			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
-			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
-	) qExtendedSort
-	on (tcontent.contenthistid=qExtendedSort.baseID)
-</cfif>
-				
-<!--- begin qKids --->
-			<cfif doKids>
-				Left Join (select 
-						   tcontent.contentID,
-						   Count(TKids.contentID) as kids
-						   from tcontent #tableModifier#
-						   left join tcontent TKids #tableModifier#
-						   on (tcontent.contentID=TKids.parentID
-						   		and tcontent.siteID=TKids.siteID)
-						   	<cfif len(arguments.tag)>
-							Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
-							</cfif>
-						   where tcontent.siteid='#arguments.siteid#'
-						   		 AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-						      	#renderActiveClause("tcontent",arguments.siteID)#
-							    AND tcontent.isNav = 1 
-							    #renderActiveClause("TKids",arguments.siteID)#
-							    AND TKids.isNav = 1 
-							    AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#"/>
-							    
-							   	  <cfif arguments.hasFeatures and not categoryListLen>
-					  and  (tcontent.isFeature=1
-	 						 or
-	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
-							)
-					  </cfif>
-					  <cfif arguments.keywords neq ''>
-					  AND (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
-					  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
-					  </cfif>
- 					
-					   AND (
-					 		#renderMenuTypeClause(arguments.type,nowAdjusted)#
-					 		)
-					
-					<cfif len(arguments.tag)>
-					and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
-					</cfif>
-					
-					<cfif relatedListLen >
-					  and tcontent.contentID in (
-							select relatedID from tcontentrelated #tableModifier#
-							where contentID in 
-							(<cfloop from=1 to="#relatedListLen#" index="f">
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/> 
-							<cfif f lt relatedListLen >,</cfif>
-							</cfloop>)
-							and siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-						)
-					 </cfif>
-
-					  <cfif categoryListLen>
-					  and tcontent.contentHistID in (
-							select tcontentcategoryassign.contentHistID from 
-							tcontentcategoryassign #tableModifier#
-							inner join tcontentcategories #tableModifier#
-							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-							where (<cfloop from="1" to="#categoryListLen#" index="c">
-									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-									<cfif c lt categoryListLen> or </cfif>
-									</cfloop>) 	
-							
-							<cfif arguments.hasFeatures>
-							and  (tcontentcategoryassign.isFeature=1
-		 
-									 or
-		 
-									tcontentcategoryassign.isFeature = 2 
-		
-								and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
-								(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
-								tcontentcategoryassign.FeatureStop is null)
+				<cfif isExtendedSort>
+					left Join (select 
+							#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
+							 ,tclassextenddata.baseID 
+							from tclassextenddata #tableModifier# inner join tclassextendattributes #tableModifier#
+							on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+							where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+							and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
+					) qExtendedSort
+					on (tcontent.contenthistid=qExtendedSort.baseID)
+				</cfif>
+								
+				<!--- begin qKids --->
+				<cfif doKids>
+					Left Join (select 
+							   tcontent.contentID,
+							   Count(TKids.contentID) as kids
+							   from tcontent #tableModifier#
+							   left join tcontent TKids #tableModifier#
+							   on (tcontent.contentID=TKids.parentID
+							   		and tcontent.siteID=TKids.siteID)
+							   	<cfif len(arguments.tag)>
+								Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
+								</cfif>
+							   where tcontent.siteid='#arguments.siteid#'
+							   		 AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+							      	#renderActiveClause("tcontent",arguments.siteID)#
+								    AND tcontent.isNav = 1 
+								    #renderActiveClause("TKids",arguments.siteID)#
+								    AND TKids.isNav = 1 
+								    AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#"/>
+								    
+								   	  <cfif arguments.hasFeatures and not categoryListLen>
+						  and  (tcontent.isFeature=1
+		 						 or
+		 						tcontent.isFeature = 2 
+								and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 								)
-							</cfif>
-					  )
-					  </cfif>	
+						  </cfif>
+						  <cfif arguments.keywords neq ''>
+						  AND (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+						  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
+						  </cfif>
+	 					
+						   AND (
+						 		#renderMenuTypeClause(arguments.type,nowAdjusted)#
+						 		)
+						
+						<cfif len(arguments.tag)>
+						and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
+						</cfif>
+						
+						<cfif relatedListLen >
+						  and tcontent.contentID in (
+								select relatedID from tcontentrelated #tableModifier#
+								where contentID in 
+								(<cfloop from=1 to="#relatedListLen#" index="f">
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/> 
+								<cfif f lt relatedListLen >,</cfif>
+								</cfloop>)
+								and siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+							)
+						 </cfif>
 
-							   
-						   group by tcontent.contentID
-						   ) qKids 
-				on (tcontent.contentID=qKids.contentID)
+						  <cfif categoryListLen>
+						  and tcontent.contentHistID in (
+								select tcontentcategoryassign.contentHistID from 
+								tcontentcategoryassign #tableModifier#
+								inner join tcontentcategories #tableModifier#
+								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+								where (<cfloop from="1" to="#categoryListLen#" index="c">
+										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+										<cfif c lt categoryListLen> or </cfif>
+										</cfloop>) 	
+								
+								<cfif arguments.hasFeatures>
+								and  (tcontentcategoryassign.isFeature=1
+			 
+										 or
+			 
+										tcontentcategoryassign.isFeature = 2 
+			
+									and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
+									(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
+									tcontentcategoryassign.FeatureStop is null)
+									)
+								</cfif>
+						  )
+						  </cfif>	
+
+								   
+							   group by tcontent.contentID
+							   ) qKids 
+					on (tcontent.contentID=qKids.contentID)
 				</cfif>
-<!--- end QKids --->
+				<!--- end QKids --->
+
 				<cfif len(arguments.tag)>
-				Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
+					Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
 				</cfif>
+				
 				WHERE  	
 				    tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
 					  #renderActiveClause("tcontent",arguments.siteID)# 

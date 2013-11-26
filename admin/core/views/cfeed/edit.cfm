@@ -261,6 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="created" <cfif rc.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
 							<option value="orderno" <cfif rc.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
 							<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
+							<option value="" <cfif rc.feedBean.getsortBy() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.donotapplysort')#</option>
 							<cfloop query="rsExtend">
 								<option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
 							</cfloop>

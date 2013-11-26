@@ -127,6 +127,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var isListParam=false>
 	<cfset var tableModifier="">
 	<cfset var alpha="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1,q1,r1,s1,t1,u1,v1,w1,x1,y1,z1">
+	<cfset var altTable=arguments.feedBean.getAltTable()>
+
+	<cfif not len(altTable) and len(variables.configBean.getContentGatewayTable())>
+		<cfset altTable=variables.configBean.getContentGatewayTable()>
+	</cfif>
+
+	<cfif altTable eq 'tcontent'>
+		<cfset altTable=''>	
+	</cfif>
 
 	 <cfif dbtype eq "MSSQL">
 	 	<cfset tableModifier="with (nolock)">
@@ -173,22 +182,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select <cfif not arguments.countOnly and dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif> 
 
 	<cfif not arguments.countOnly>
-		tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
-		tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
-		tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
-		tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
-		tcontent.releaseDate, tcontent.lastupdate,tcontent.summary, 
-		tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
-		tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
-		tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-		tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
-		tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-		tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
+		<cfif len(altTable)>
+			tcontent.*
+		<cfelse>
+			tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
+			tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
+			tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
+			tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+			tcontent.releaseDate, tcontent.lastupdate,tcontent.summary, 
+			tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
+			tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
+			tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
+			tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
+			tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+			tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
+		</cfif>
 	<cfelse>
 		count(*) as count
 	</cfif>
 
-	from tcontent
+	from <cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
 		<cfif listFindNoCase(histtables,jointable)>
@@ -198,15 +211,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	
-	left Join tfiles #tableModifier# on (tcontent.fileid=tfiles.fileid)
-	left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
-					    		and tcontent.siteid=tcontentstats.siteid)
-	Left Join tcontent tparent #tableModifier# on (tcontent.parentid=tparent.contentid
-					    			and tcontent.siteid=tparent.siteid
-					    			and tparent.active=1) 
-	Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid
-									and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
-	
+	<cfif not len(arguments.feedBean.getAltTable())>
+		left Join tfiles #tableModifier# on (tcontent.fileid=tfiles.fileid)
+		left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
+						    		and tcontent.siteid=tcontentstats.siteid)
+		Left Join tcontent tparent #tableModifier# on (tcontent.parentid=tparent.contentid
+						    			and tcontent.siteid=tparent.siteid
+						    			and tparent.active=1) 
+		Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid										and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+	</cfif>
+
 	<cfif not arguments.countOnly and isExtendedSort>
 	left Join (select 
 			
@@ -320,11 +334,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif arguments.feedBean.getUseCategoryIntersect()>
 								AND tcontent.contentHistID in (
 									select a.contentHistID from tcontentcategoryassign a
-									<cfloop from="2" to="#categoryLen#" index="c">
-										<cfset palias = listGetAt(alpha,c-1)>
-										<cfset talias = listGetAt(alpha,c)>
-										inner join tcontentcategoryassign #talias# #tableModifier# on #palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),c)#"/> 
-									</cfloop>
+									<cfif categoryLen eq 1>
+										<cfloop from="2" to="#categoryLen#" index="c">
+											<cfset palias = listGetAt(alpha,c-1)>
+											<cfset talias = listGetAt(alpha,c)>
+											inner join tcontentcategoryassign #talias# #tableModifier# on #palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),c)#"/> 
+										</cfloop>
+									</cfif>
 									where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),1)#"/>
 								)
 							<cfelse>
@@ -524,11 +540,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.feedBean.getUseCategoryIntersect()>
 			AND tcontent.contentHistID in (
 				select a.contentHistID from tcontentcategoryassign a
-				<cfloop from="2" to="#categoryLen#" index="c">
-					<cfset palias = listGetAt(alpha,c-1)>
-					<cfset talias = listGetAt(alpha,c)>
-					inner join tcontentcategoryassign #talias# #tableModifier# on #palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),c)#"/> 
-				</cfloop>
+				<cfif categoryLen gt 1>
+					<cfloop from="2" to="#categoryLen#" index="c">
+						<cfset palias = listGetAt(alpha,c-1)>
+						<cfset talias = listGetAt(alpha,c)>
+						inner join tcontentcategoryassign #talias# #tableModifier# on #palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),c)#"/> 
+					</cfloop>
+				</cfif>
 				where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.feedBean.getCategoryID(),1)#"/>
 			)
 		<cfelse>
@@ -604,7 +622,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
 					AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 				)
-				OR tparent.type='Calendar'
+				OR <cfif len(altTable)>
+						tcontent.parentType='Calendar'
+					<cfelse>
+						tparent.type='Calendar'
+					</cfif>
 			  )			 
 		)		
 	
@@ -622,54 +644,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not arguments.countOnly>	
-		order by
-		
-		<cfif len(arguments.feedBean.getOrderBy())>
-			#arguments.feedBean.getOrderBy()#
-		<cfelse>	
-			<cfswitch expression="#arguments.feedBean.getSortBy()#">
-			<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
-				<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
-					tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
-				<cfelse>
-					lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
-				</cfif>
-			</cfcase>
-			<cfcase value="rating">
-			 tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#
-			</cfcase>
-			<cfcase value="comments">
-			 tcontentstats.comments #arguments.feedBean.getSortDirection()#
-			</cfcase>
-			<cfcase value="random">
-				<cfif dbType eq "mysql">
-			          rand()
-				<cfelseif dbType eq "postgresql">
-			          random()
-			    <cfelseif dbType eq "mssql">
-			          newID()
-			    <cfelseif dbType eq "oracle">
-			          dbms_random.value
-			    </cfif>
-			</cfcase>
-			<cfdefaultcase>
-				<cfif isExtendedSort>
-					qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
-				<cfelse>
-					tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
-				</cfif>
-			</cfdefaultcase>
-			</cfswitch>
+		<cfif arguments.feedBean.getSortBy() neq '' or arguments.feedBean.getOrderBy() neq ''>		
+			order by
+			
+			<cfif len(arguments.feedBean.getOrderBy())>
+				#arguments.feedBean.getOrderBy()#
+			<cfelse>	
+				<cfswitch expression="#arguments.feedBean.getSortBy()#">
+				<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+					<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
+						tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
+					<cfelse>
+						lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
+					</cfif>
+				</cfcase>
+				<cfcase value="rating">
+				 tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#
+				</cfcase>
+				<cfcase value="comments">
+				 tcontentstats.comments #arguments.feedBean.getSortDirection()#
+				</cfcase>
+				<cfcase value="random">
+					<cfif dbType eq "mysql">
+				          rand()
+					<cfelseif dbType eq "postgresql">
+				          random()
+				    <cfelseif dbType eq "mssql">
+				          newID()
+				    <cfelseif dbType eq "oracle">
+				          dbms_random.value
+				    </cfif>
+				</cfcase>
+				<cfdefaultcase>
+					<cfif isExtendedSort>
+						qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+					<cfelse>
+						tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+					</cfif>
+				</cfdefaultcase>
+				</cfswitch>
 
-			<cfif listFindNoCase("oracle,postgresql", dbType)>
-				<cfif arguments.feedBean.getSortDirection() eq "asc">
-					NULLS FIRST
-				<cfelse>
-					NULLS LAST
+				<cfif listFindNoCase("oracle,postgresql", dbType)>
+					<cfif arguments.feedBean.getSortDirection() eq "asc">
+						NULLS FIRST
+					<cfelse>
+						NULLS LAST
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfif>
-	
 		<cfif dbType eq "nuodb" and arguments.feedBean.getMaxItems()>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 		<cfif listFindNoCase("mysql,postgresql", dbType) and arguments.feedBean.getMaxItems()>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 		<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>

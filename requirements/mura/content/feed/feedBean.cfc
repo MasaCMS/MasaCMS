@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="version" type="string" default="RSS 2.0" required="true" />
 <cfproperty name="channelLink" type="string" default=""/>
 <cfproperty name="type" type="string" default="local" required="true" />
-<cfproperty name="sortBy" type="string" default="lastUpdate" required="true" />
+<cfproperty name="sortBy" type="string" default="lastUpdate" required="false" />
 <cfproperty name="sortDirection" type="string" default="desc" required="true" />
 <cfproperty name="parentID" type="string" default=""/>
 <cfproperty name="nextN" type="numeric" default="20" required="true" />
@@ -95,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isLocked" type="numeric" default="0" required="true" />
 <cfproperty name="cssClass" type="string" default="" />
 <cfproperty name="useCategoryIntersect" type="numeric" default="0" />
+<cfproperty name="altTable" type="string" default=""/>
 
 <cfset variables.primaryKey = 'feedid'>
 <cfset variables.entityName = 'feed'>
@@ -155,6 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isLocked=0 />
 	<cfset variables.instance.cssClass="" />
 	<cfset variables.instance.useCategoryIntersect=0 />
+	<cfset variables.instance.altTable="" />
 	
 	<cfreturn this />
 </cffunction>
@@ -477,6 +479,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn this>
   </cffunction>
+
+ <cffunction name="setAltTable" access="public" output="false">
+	<cfargument name="altTable" type="any" />
+	<cfif len(arguments.altTable)>
+	<cfset variables.instance.altTable = arguments.altTable />
+	</cfif>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>

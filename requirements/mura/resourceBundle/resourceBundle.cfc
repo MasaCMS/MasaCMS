@@ -76,10 +76,10 @@
 	var keys=""; // var to hold rb keys
 	var thisKEY="";
 	var thisMSG="";
-	var thisLang=listFirst(variables.Locale,"_");
+	var thisLang=lcase(listFirst(variables.Locale,"_"));
 	var thisDir=GetDirectoryFromPath(variables.rbFile);
 	var thisFile=getFileFromPath(variables.rbFile);
-	var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
+	var thisRBfile=thisDir & lcase(listFirst(thisFile,".") & "_" & variables.Locale & "." & listLast(thisFile,"."));
 	
 	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
 		thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
