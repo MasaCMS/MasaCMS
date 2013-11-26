@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCrumbData')#">
-			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			select tcontent.contenthistid, tcontent.contentid,tcontent.title, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
 			tcontent.sortDirection,tfiles.fileExt,tapprovalassignments.chainID,tapprovalassignments.exemptID
@@ -160,6 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.title=rsCrumbData.title />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
 			<cfset crumb.urltitle=rsCrumbData.urltitle />
 			<cfset crumb.target=rsCrumbData.target />
@@ -207,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCrumbData')#">
-			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			select tcontent.contenthistid, tcontent.contentid,tcontent.title, tcontent.menutitle,tcontent.urltitle, tcontent.filename, tcontent.parentid, tcontent.type, 
 			tcontent.subtype, tcontent.target, tcontent.targetParams, 
 			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
 			tcontent.sortDirection,tapprovalassignments.chainID,
@@ -236,6 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.title=rsCrumbData.title />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
 			<cfset crumb.urltitle=rsCrumbData.urltitle />
 			<cfset crumb.target=rsCrumbData.target />
