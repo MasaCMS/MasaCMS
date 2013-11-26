@@ -639,55 +639,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	)
 	</cfif>
 
-	<cfif not arguments.countOnly and (arguments.feedBean.getSortBy() neq '' or arguments.feedBean.getOrderBy() neq '')>	
-		order by
-		
-		<cfif len(arguments.feedBean.getOrderBy())>
-			#arguments.feedBean.getOrderBy()#
-		<cfelse>	
-			<cfswitch expression="#arguments.feedBean.getSortBy()#">
-			<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
-				<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
-					tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
-				<cfelse>
-					lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
-				</cfif>
-			</cfcase>
-			<cfcase value="rating">
-			 tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#
-			</cfcase>
-			<cfcase value="comments">
-			 tcontentstats.comments #arguments.feedBean.getSortDirection()#
-			</cfcase>
-			<cfcase value="random">
-				<cfif dbType eq "mysql">
-			          rand()
-				<cfelseif dbType eq "postgresql">
-			          random()
-			    <cfelseif dbType eq "mssql">
-			          newID()
-			    <cfelseif dbType eq "oracle">
-			          dbms_random.value
-			    </cfif>
-			</cfcase>
-			<cfdefaultcase>
-				<cfif isExtendedSort>
-					qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
-				<cfelse>
-					tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
-				</cfif>
-			</cfdefaultcase>
-			</cfswitch>
+	<cfif not arguments.countOnly>	
+		<cfif arguments.feedBean.getSortBy() neq '' or arguments.feedBean.getOrderBy() neq ''>		
+			order by
+			
+			<cfif len(arguments.feedBean.getOrderBy())>
+				#arguments.feedBean.getOrderBy()#
+			<cfelse>	
+				<cfswitch expression="#arguments.feedBean.getSortBy()#">
+				<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+					<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
+						tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
+					<cfelse>
+						lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
+					</cfif>
+				</cfcase>
+				<cfcase value="rating">
+				 tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#
+				</cfcase>
+				<cfcase value="comments">
+				 tcontentstats.comments #arguments.feedBean.getSortDirection()#
+				</cfcase>
+				<cfcase value="random">
+					<cfif dbType eq "mysql">
+				          rand()
+					<cfelseif dbType eq "postgresql">
+				          random()
+				    <cfelseif dbType eq "mssql">
+				          newID()
+				    <cfelseif dbType eq "oracle">
+				          dbms_random.value
+				    </cfif>
+				</cfcase>
+				<cfdefaultcase>
+					<cfif isExtendedSort>
+						qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+					<cfelse>
+						tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+					</cfif>
+				</cfdefaultcase>
+				</cfswitch>
 
-			<cfif listFindNoCase("oracle,postgresql", dbType)>
-				<cfif arguments.feedBean.getSortDirection() eq "asc">
-					NULLS FIRST
-				<cfelse>
-					NULLS LAST
+				<cfif listFindNoCase("oracle,postgresql", dbType)>
+					<cfif arguments.feedBean.getSortDirection() eq "asc">
+						NULLS FIRST
+					<cfelse>
+						NULLS LAST
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfif>
-	
 		<cfif dbType eq "nuodb" and arguments.feedBean.getMaxItems()>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 		<cfif listFindNoCase("mysql,postgresql", dbType) and arguments.feedBean.getMaxItems()>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 		<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
