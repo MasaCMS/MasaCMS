@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="version" type="string" default="RSS 2.0" required="true" />
 <cfproperty name="channelLink" type="string" default=""/>
 <cfproperty name="type" type="string" default="local" required="true" />
-<cfproperty name="sortBy" type="string" default="lastUpdate" required="true" />
+<cfproperty name="sortBy" type="string" default="lastUpdate" required="false" />
 <cfproperty name="sortDirection" type="string" default="desc" required="true" />
 <cfproperty name="parentID" type="string" default=""/>
 <cfproperty name="nextN" type="numeric" default="20" required="true" />
