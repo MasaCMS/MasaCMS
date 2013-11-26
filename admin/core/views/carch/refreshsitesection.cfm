@@ -62,7 +62,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.sortdirection=rc.rstop.sortdirection>
 </cfif>
 
-<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>	
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+<cfset request.tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
+<cfset request.hasPublishingTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Publishing')>
+<cfset request.hasLayoutObjectsTab=not len(request.tabAssignments) or listFindNocase(request.tabAssignments,'Layout & Objects')>	
 <cfset request.rowNum=0>
 <cfset request.menulist=rc.contentID>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.contentID,rc.siteid)>
