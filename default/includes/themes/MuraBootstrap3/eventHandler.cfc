@@ -81,7 +81,11 @@
 		<cfargument name="$" hint="mura scope" />
 		<cfset var str = '' />
 		<cfsavecontent variable="str"><cfoutput>
-			// heading vars
+			<!--- 
+			Note: some classes in the theme target these elements. 
+			Make sure to update those if you are going to change them here 
+			--->
+			<!--- heading vars --->
 			config.format_h1 = { element : 'h2' };
 			config.format_h2 = { element : 'h3' };
 			config.format_h3 = { element : 'h4' };

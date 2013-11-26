@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfoutput>
-	<form name="searchForm" class="#this.searchFormClass#" role="search">
+	<form name="searchForm" id="searchForm" class="#this.searchFormClass#" role="search">
 		<#variables.$.getHeaderTag('subHead1')#>
 			<label for="search">#variables.$.rbKey('search.search')#</label>
 		</#variables.$.getHeaderTag('subHead1')#>
@@ -63,7 +63,7 @@
 			<input type="text" name="Keywords" id="txtKeywords" class="#this.searchFormInputClass#" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#variables.$.rbKey('search.search')#">
 			<span class="#this.searchFormSubmitWrapperClass#">
 				<button type="submit" class="#this.searchFormSubmitClass#">
-					<i class="fa fa-search"></i> #$.rbKey('search.search')#
+					#$.rbKey('search.search')#
 				</button>
 			</span>
 		</div>
