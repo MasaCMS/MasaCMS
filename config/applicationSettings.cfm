@@ -58,6 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraAppreloaded" default="false"/>
 	<cfparam name="request.muratransaction" default="false"/>
 	<cfparam name="request.muraDynamicContentError" default="false">
+	<cfparam name="request.muraRegionID" default="0">
 
 	<cffunction name="initTracePoint" output="false">
 		<cfargument name="detail">

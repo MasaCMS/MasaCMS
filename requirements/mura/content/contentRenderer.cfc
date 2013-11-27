@@ -1916,7 +1916,7 @@ Display Objects
 <cfargument name="ContentHistID" required="yes" type="string" default="#variables.event.getValue('contentBean').getcontenthistid()#">
 <cfset var rsObjects="">	
 <cfset var theRegion= ""/>
-
+<cfset request.muraRegionID=arguments.columnID>
 <cfif (variables.event.getValue('isOnDisplay') 
 		and ((not variables.event.getValue('r').restrict) 
 			or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow))) 
@@ -1928,14 +1928,17 @@ Display Objects
 			<cfset rsObjects=variables.contentGateway.getObjectInheritance(arguments.columnID,variables.event.getValue('inheritedObjects'),variables.event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
 				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, variables.event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.event.getValue("inheritedObjectsPerm")) />
+				<cfset request.muraRegionID=arguments.columnID>
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=variables.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,variables.event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
 		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm) />
+		<cfset request.muraRegionID=arguments.columnID>
 	</cfloop>
 </cfif>
+<cfset request.muraRegionID=0>
 
 <cfreturn trim(theRegion) />
 </cffunction>
