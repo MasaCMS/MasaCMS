@@ -77,7 +77,9 @@
 	<cfset variables.strField = variables.strField & ' id="#arguments.field.cssid#"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'cssclass') and len(arguments.field.cssclass)>
-	<cfset variables.strField = variables.strField & ' class="#arguments.field.cssclass#"' />
+	<cfset variables.strField = variables.strField & ' class="#arguments.field.cssclass# #this.formBuilderFormFieldsClass#"' />
+<cfelse>
+	<cfset variables.strField = variables.strField & ' class="#this.formBuilderFormFieldsClass#"' />
 </cfif>
 <cfif len(arguments.field.validatemessage)>
 	<cfset variables.strField = variables.strField & ' data-message="#replace(arguments.field.validatemessage,"""","&quot;","all")#"' />
