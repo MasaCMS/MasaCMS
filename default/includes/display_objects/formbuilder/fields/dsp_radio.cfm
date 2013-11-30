@@ -63,7 +63,9 @@
 	<div>
 	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[dataset.datarecordorder[variables.iiy]] />
-		<label for="#variables.record.datarecordid#"><input name="#arguments.field.name#" id="#record.datarecordid#" type="radio"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#" class="#this.formBuilderFormFieldsClass#">#variables.record.label#</label>
+		<div class="radio">
+		<label for="#variables.record.datarecordid#"><input name="#arguments.field.name#" id="#record.datarecordid#" type="radio"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
+		</div>
 	</cfloop>
 	</div>
 	</cfoutput>
