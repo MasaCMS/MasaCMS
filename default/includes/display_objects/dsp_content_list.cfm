@@ -217,8 +217,8 @@
 					</cfcase>
 					<cfcase value="ReadMore">
 					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,"readMore")#>
-					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-					 		#variables.$.a#variables.$.getContentListTag('itemdetail')#Link(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
+					 		#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
+					 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					</cfcase>
