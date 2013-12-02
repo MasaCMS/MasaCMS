@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraChangesetPreview" default="false"/>
 	<cfparam name="request.muraExportHtml" default="false"/>
 	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraMobileTemplate" default="false"/>
 	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
 	<cfparam name="request.altTHeme" default=""/>
 	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
