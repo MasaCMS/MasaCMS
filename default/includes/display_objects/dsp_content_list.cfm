@@ -7,7 +7,7 @@
 
 	Mura CMS is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See theƒ
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
@@ -68,7 +68,7 @@
 	<cfif arguments.hasImages>
 		<cfset arguments.isCustomImage= false />	
 
-		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileRequest")>
+		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileTemplate")>
 			<cfset arguments.imageSize="small">		
 		<cfelseif not listFindNoCase('small,medium,large,custom',arguments.imagesize)>
 			<cfset arguments.customImageSize=getBean('imageSize').loadBy(name=arguments.imageSize,siteID=variables.$.event('siteID'))>
@@ -175,7 +175,7 @@
 						<cfif arguments.hasImage>
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-							<cfif variables.$.event('muraMobileRequest')>
+							<cfif variables.$.event('muraMobileTemplate')>
 							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
 							<cfelse>
 							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
@@ -217,7 +217,7 @@
 					</cfcase>
 					<cfcase value="ReadMore">
 					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,"readMore")#>
-					 		#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
+					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 					 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
 					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
@@ -233,7 +233,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="Comments">
-						<cfif not variables.$.event('muraMobileRequest') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
+						<cfif not variables.$.event('muraMobileTemplate') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
 						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
 						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 						 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#

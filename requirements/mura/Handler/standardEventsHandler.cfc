@@ -275,6 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
 		<cfset renderer.contentListPropertyTagMap={containerEl="ul",itemEl="li",title="h3",default="p"}>
+		<cfset arguments.event.setValue("muraMobileTemplate",true)>
 	</cfif>
 	
 </cffunction>

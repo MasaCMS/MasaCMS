@@ -204,32 +204,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 	
-	<cfset var extData =structNew() />
-	<cfset var i = "">	
-	
-	<cfif isSimpleValue(arguments.propertyValue)>
-		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
-	</cfif>
-	
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset var tempFunc=this["set#arguments.property#"]>
-		<cfset tempFunc(arguments.propertyValue)>
-	<cfelse>
-		<!---
-		<cfif not structKeyExists(variables.instance,arguments.property)>
-			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-			<cfif not structIsEmpty(extData)>
-				<cfset structAppend(variables.instance,extData.data,false)>	
-				<cfloop list="#extData.extendSetID#" index="i">
-					<cfif not listFind(variables.instance.extendSetID,i)>
-						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-		--->
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	<cfif isValid('variableName',arguments.property)>
+		<cfset var extData =structNew() />
+		<cfset var i = "">	
 		
+		<cfif isSimpleValue(arguments.propertyValue)>
+			<cfset arguments.propertyValue=trim(arguments.propertyValue)>
+		</cfif>
+		
+		<cfif isDefined("this.set#arguments.property#")>
+			<cfset var tempFunc=this["set#arguments.property#"]>
+			<cfset tempFunc(arguments.propertyValue)>
+		<cfelse>
+			<!---
+			<cfif not structKeyExists(variables.instance,arguments.property)>
+				<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+				<cfif not structIsEmpty(extData)>
+					<cfset structAppend(variables.instance,extData.data,false)>	
+					<cfloop list="#extData.extendSetID#" index="i">
+						<cfif not listFind(variables.instance.extendSetID,i)>
+							<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+						</cfif>
+					</cfloop>
+				</cfif>
+			</cfif>
+			--->
+			<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+			
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -238,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property" type="string" required="true">
 	<cfargument name="defaultValue">
 	<cfset var tempValue="">	
-	<cfif len(arguments.property)>
+	<cfif isValid('variableName',arguments.property)>
 		<cfif isDefined("this.get#arguments.property#")>
 			<cfset var tempFunc=this["get#arguments.property#"]>
 			<cfreturn tempFunc()>
