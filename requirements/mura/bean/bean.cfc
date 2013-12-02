@@ -241,16 +241,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
-
-	<cfif isSimpleValue(arguments.propertyValue)>
-		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
-	</cfif>
-	
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset var tempFunc=this["set#arguments.property#"]>
-		<cfset tempFunc(arguments.propertyValue)>
-	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	<cfif isValid('variableName',arguments.property)>
+		<cfif isSimpleValue(arguments.propertyValue)>
+			<cfset arguments.propertyValue=trim(arguments.propertyValue)>
+		</cfif>
+		
+		<cfif isDefined("this.set#arguments.property#")>
+			<cfset var tempFunc=this["set#arguments.property#"]>
+			<cfset tempFunc(arguments.propertyValue)>
+		<cfelse>
+			<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -258,15 +259,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
-	
-	<cfif isDefined("this.get#arguments.property#")>
-		<cfset var tempFunc=this["get#arguments.property#"]>
-		<cfreturn tempFunc()>
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn variables.instance["#arguments.property#"] />
+	<cfif isValid('variableName',arguments.property)>
+		<cfif isDefined("this.get#arguments.property#")>
+			<cfset var tempFunc=this["get#arguments.property#"]>
+			<cfreturn tempFunc()>
+		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelseif structKeyExists(arguments,"defaultValue")>
+			<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
 	<cfelse>
 		<cfreturn "" />
 	</cfif>
