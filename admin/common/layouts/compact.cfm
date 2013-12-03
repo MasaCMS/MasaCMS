@@ -131,6 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
 		var rb='#lcase(session.rb)#';
 		var siteid='#session.siteid#';
+		var activepanel=#JSStringFormat(rc.activepanel)#;
+		var activetab=#JSStringFormat(rc.activetab)#;
+		var webroot='#JSStringFormat($.globalConfig("webroot"))#';
 		</script>
 		
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
@@ -138,15 +141,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript">
 			var frontEndProxy;
 			jQuery(document).ready(function(){
-				setDatePickers(".datepicker",dtLocale);
-				setTabs(".tabs",#rc.activeTab#);
-				setHTMLEditors();
-				setAccordions(".accordion",#rc.activePanel#);
-				setCheckboxTrees();
-				setColorPickers(".colorpicker");
-				setToolTips(".container");
-				setFileSelectors();
-
 				if (top.location != self.location) {
 					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
@@ -161,8 +155,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					});					
 				};
 			});
-
-			preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
 		</script>
 		#rc.ajax#
 		

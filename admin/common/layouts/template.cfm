@@ -173,25 +173,12 @@
 	var rb='#lcase(session.rb)#';
 	var siteid='#session.siteid#';
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
+	var activepanel=#JSStringFormat(rc.activepanel)#;
+	var activetab=#JSStringFormat(rc.activetab)#;
+	var webroot='#JSStringFormat($.globalConfig("webroot"))#';
 	</script>
 	
 	#session.dateKey#
-	
-	<script type="text/javascript">
-		jQuery(document).ready(function(){
-				setDatePickers(".datepicker",dtLocale);
-				setTabs(".tabs",#rc.activeTab#);
-				setHTMLEditors();
-				setAccordions(".accordion",#rc.activePanel#);
-				setCheckboxTrees();
-				setColorPickers(".colorpicker");
-				setToolTips(".container");
-				setFileSelectors();
-			});
-
-		preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
-	</script>
-
 	#rc.ajax#
 
 	<cfif rc.originalcircuit neq "cLogin">

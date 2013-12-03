@@ -1514,3 +1514,50 @@ function setLowerCaseKeys(obj) {
   }
   return (obj);
 }
+
+function setFinders(selector){
+
+	$(selector).unbind('click').on('click',function(){
+		var target=$(this).attr('data-target');
+		var finder = new CKFinder();
+		finder.basePath = context + '/tasks/widgets/ckfinder/';
+		var completepath=$(this).attr('data-completepath');
+
+		if(completepath.toLowerCase() == 'true'){
+			finder.selectActionFunction = function(fileUrl) {
+				jQuery('input[name="' + target + '"]').val(webroot + '/' + fileUrl);		
+			};
+		} else {
+			finder.selectActionFunction = function(fileUrl) {
+				jQuery('input[name="' + target + '"]').val(fileUrl);		
+			};
+		}
+
+		if($(this).attr('data-resourcetype') =='root'){
+			finder.resourceType='Application_Root';
+		} else if($(this).attr('data-resourcetype') == 'site'){
+			finder.resourceType=siteid + '_Site_Files';
+		} else {
+			finder.resourceType=siteid + '_User_Assets';
+		}
+		
+		finder.popup();			
+
+	});
+}
+
+$(function(){
+	
+	setFinders(".mura-ckfinder");
+	setDatePickers(".datepicker",dtLocale);
+	setTabs(".tabs",activetab);
+	setHTMLEditors();
+	setAccordions(".accordion",activepanel);
+	setCheckboxTrees();
+	setColorPickers(".colorpicker");
+	setToolTips(".container");
+	setFileSelectors();
+
+});
+
+preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
