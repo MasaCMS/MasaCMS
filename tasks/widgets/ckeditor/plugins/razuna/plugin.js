@@ -10,7 +10,7 @@ CKEDITOR.plugins.add( 'razuna', {
 
 			      if (!CKEDITOR.currentInstance.razunaimage && ev.data.name == 'image' )
 			      {
-			       
+		
 			         ev.data.definition.getContents( 'info' ).elements[0].children[0].children.push({
 						               id: 'razuna',
 						               type: 'button',
@@ -22,6 +22,35 @@ CKEDITOR.plugins.add( 'razuna', {
 						               onClick: function()
 						                  {	
 						                     renderRazunaWindow(this.getDialog().getContentElement("info", "txtUrl"));
+						                  },
+
+						            });
+
+			       	CKEDITOR.currentInstance.razunaimage=true;
+			   
+					ev.data.definition.dialog.on( 'hide', function( ev )
+					   {
+					   		try{
+						   		$('#razunaModalWindow').dialog("close");
+						   	} catch(err){}
+					 	}
+					 );
+			      }
+
+			      else if (!CKEDITOR.currentInstance.razunaimage && ev.data.name == 'image2' )
+			      {
+			       
+			         ev.data.definition.getContents( 'info' ).elements[0].children[0].children.push({
+						               id: 'razuna',
+						               type: 'button',
+						               label: 'Razuna',
+						               style: 'display:inline-block;margin-top:16px;',
+			                           align: "center",
+						               title: 'Razuna',
+						               disabled: false,
+						               onClick: function()
+						                  {	
+						                     renderRazunaWindow(this.getDialog().getContentElement("info", "src"));
 						                  },
 
 						            });
