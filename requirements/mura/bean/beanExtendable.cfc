@@ -204,35 +204,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 	
-	<cfif isValid('variableName',arguments.property)>
-		<cfset var extData =structNew() />
-		<cfset var i = "">	
-		
-		<cfif isSimpleValue(arguments.propertyValue)>
-			<cfset arguments.propertyValue=trim(arguments.propertyValue)>
-		</cfif>
-		
-		<cfif isDefined("this.set#arguments.property#")>
-			<cfset var tempFunc=this["set#arguments.property#"]>
-			<cfset tempFunc(arguments.propertyValue)>
-		<cfelse>
-			<!---
-			<cfif not structKeyExists(variables.instance,arguments.property)>
-				<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-				<cfif not structIsEmpty(extData)>
-					<cfset structAppend(variables.instance,extData.data,false)>	
-					<cfloop list="#extData.extendSetID#" index="i">
-						<cfif not listFind(variables.instance.extendSetID,i)>
-							<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-						</cfif>
-					</cfloop>
-				</cfif>
-			</cfif>
-			--->
-			<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-			
-		</cfif>
+	<cfset var extData =structNew() />
+	<cfset var i = "">	
+	
+	<cfif isSimpleValue(arguments.propertyValue)>
+		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
+	
+	<cfif isValid('variableName',arguments.property) and isDefined("this.set#arguments.property#")>
+		<cfset var tempFunc=this["set#arguments.property#"]>
+		<cfset tempFunc(arguments.propertyValue)>
+	<cfelse>
+		<!---
+		<cfif not structKeyExists(variables.instance,arguments.property)>
+			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
+		</cfif>
+		--->
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+		
+	</cfif>
+
 	<cfreturn this>
 </cffunction>
 
@@ -240,25 +239,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="property" type="string" required="true">
 	<cfargument name="defaultValue">
 	<cfset var tempValue="">	
-	<cfif isValid('variableName',arguments.property)>
-		<cfif isDefined("this.get#arguments.property#")>
-			<cfset var tempFunc=this["get#arguments.property#"]>
-			<cfreturn tempFunc()>
-		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-			<cfreturn variables.instance["#arguments.property#"] />
-		<cfelseif structKeyExists(arguments,"defaultValue")>
-			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
-			<cfif tempValue neq "useMuraDefault">
-				<cfset variables.instance["#arguments.property#"]=tempValue />
-				<cfreturn tempValue>
-			<cfelse>
-				<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-				<cfreturn arguments.defaultValue />
-			</cfif>
+	
+	<cfif isValid('variableName',arguments.property) and isDefined("this.get#arguments.property#")>
+		<cfset var tempFunc=this["get#arguments.property#"]>
+		<cfreturn tempFunc()>
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelseif structKeyExists(arguments,"defaultValue")>
+		<cfset tempValue=getExtendedAttribute(arguments.property,true) />
+		<cfif tempValue neq "useMuraDefault">
+			<cfset variables.instance["#arguments.property#"]=tempValue />
+			<cfreturn tempValue>
 		<cfelse>
-			<cfreturn getExtendedAttribute(arguments.property) />
+			<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+			<cfreturn arguments.defaultValue />
 		</cfif>
+	<cfelse>
+		<cfreturn getExtendedAttribute(arguments.property) />
 	</cfif>
+
 </cffunction>
 
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
