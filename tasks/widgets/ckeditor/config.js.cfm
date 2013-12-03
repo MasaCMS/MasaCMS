@@ -55,7 +55,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['image2','Image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -70,7 +70,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 	
@@ -83,7 +83,7 @@ CKEDITOR.editorConfig = function( config )
 		['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 		['Link','Unlink','Anchor'],
-		['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
+		['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
 		['Styles','Format','-','Maximize','ShowBlocks','About']
 	] ;
 
@@ -96,7 +96,7 @@ CKEDITOR.editorConfig = function( config )
 		['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 		['Link','Unlink','Anchor'],
-		['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
+		['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
 		['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
 		['Styles','Format','-','Maximize','ShowBlocks','About']
 	];
@@ -106,14 +106,14 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_htmlEditor = [
-		['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
+		['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']
 	];
 
 	config.toolbar_bbcode = [
-		['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
+		['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']
 	];
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
