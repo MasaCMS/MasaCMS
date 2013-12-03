@@ -285,10 +285,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     	<div class="controls">
 	     	 	
 	     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
-	     	 			<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
-						<a href="" onclick="renderRazunaWindow('body');" class="btn-razuna-logo" title="Select a File from Razuna" rel="tooltip">Razuna</a>
+	     	 			<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span8" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+	     	 			<div class="btn-group">
+	     	 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+	     	 				 	<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+	     	 				</a>
+	     	 				<ul class="dropdown-menu">
+	     	 					<li><a href="##" type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+	     	 						<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+	     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('body');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+	     	 				</ul>
+	     	 			</div>
+						
 				<cfelse>
-					<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+					<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+					<div class="btn-group">
+	     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
+	     	 		</div>
 				</cfif>	
 	     	</div>
 	    </div>

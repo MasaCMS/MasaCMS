@@ -901,7 +901,7 @@ buttons: {
 		setHTMLEditors(context, themeAssetPath);
 		setDatePickers(".tab-content .datepicker", dtLocale);
 		setColorPickers(".tab-content .colorpicker");
-		setColorPickers(".tab-content .colorpicker");
+		setFinders(".tab-content .mura-ckfinder");
 		setToolTips(".tab-content");
 		setFileSelectors();
 	},

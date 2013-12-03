@@ -1059,26 +1059,7 @@ to your own modified versions of Mura CMS.
         <div class="controls">
             <p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
             <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
-            <input type="button" value="Browse Server" id="serverBundleBrowser"/>
-            <script>
-		jQuery(document).ready( function() {
-			var finder = new CKFinder();
-				finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
-				finder.selectActionFunction = setServerBundlePath;
-				finder.resourceType='Application_Root';
-			
-				 jQuery("##serverBundleBrowser").bind("click", function(){
-					 finder.popup();
-				 });		
-		});
-		
-		function setServerBundlePath(fileUrl) {
-			var check=fileUrl.split(".");
-			if(check[check.length-1].toLowerCase() == 'zip'){
-			jQuery('##serverBundlePath').val("#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#')#" + fileUrl);
-			}
-		}
-		</script> 
+            <input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
           </div>
       </div>
         <cfif application.configBean.getPostBundles()>
