@@ -44,7 +44,7 @@ CKEDITOR.plugins.add( 'razuna', {
 						               id: 'razuna',
 						               type: 'button',
 						               label: 'Razuna',
-						               style: 'display:inline-block;margin-top:16px;',
+						               style: 'display:inline-block;margin-top:12px;',
 			                           align: "center",
 						               title: 'Razuna',
 						               disabled: false,
