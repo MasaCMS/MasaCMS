@@ -411,7 +411,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,255)#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
 			
 			<cfif len(theValue)>
 				
@@ -638,7 +638,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 			null
 		</cfif>,
 		<cfif len(rs.stringvalue)>
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(rs.stringvalue,250)#">	
 		<cfelse>
 			null
 		</cfif>,
@@ -1004,8 +1004,14 @@ and tclassextendattributes.type='File'
 				<cfif isNumeric(arguments.attribute)>
 				attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				<cfelse>
-				siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-				and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+					and 
+					<cfif variables.configBean.getDbType() eq 'Oracle'>
+						upper(name)
+					<cfelse>
+						name
+					</cfif>
+					=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				</cfif>
 		</cfquery>
 		<cfset arguments.datatype=rs.validation>
