@@ -407,6 +407,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 		}
 		
+		request.muraPreviewDomain=listFirst(cgi.http_host,":");
+	
+		if(!isDefined('request.muraPreviewDomain') || !len(request.muraPreviewDomain)){
+			request.muraPreviewDomain=cgi.server_name;
+		}
+
+		if(application.settingsManager.getSite(session.siteid).isValidDomain(mode='complete')){
+			request.muraPreviewDomain=application.settingsManager.getSite(session.siteid).getDomain();
+		}
+
 		if(application.configBean.getAdminSSL() and application.configBean.getForceAdminSSL() and not application.utility.isHTTPS()){
 			if(cgi.query_string eq ''){
 				page='#cgi.script_name#';

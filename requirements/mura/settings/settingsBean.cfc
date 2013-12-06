@@ -52,7 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="pageLimit" type="string" default="1000" required="true" />
 <cfproperty name="locking" type="string" default="none" required="true" />
 <cfproperty name="domain" type="string" default=""/>
-<cfproperty name="stagingDomain" type="string" default=""/>
 <cfproperty name="domainAlias" type="string" default=""/>
 <cfproperty name="enforcePrimaryDomain" type="int" default="0" required="true" />
 <cfproperty name="contact" type="string" default=""/>
@@ -134,7 +133,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.TagLine=""/>
 	<cfset variables.instance.pageLimit=1000/>
 	<cfset variables.instance.Locking="None"/>
-	<cfset variables.instance.stagingDomain=""/>
 	<cfset variables.instance.Domain=""/>
 	<cfset variables.instance.DomainAlias="">
 	<cfset variables.instance.enforcePrimaryDomain=0>
@@ -301,34 +299,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDomain" returntype="String" access="public" output="false">
-	<cfargument name="mode" type="String" required="true" default="#variables.configBean.getMode()#" />
+	<cfargument name="mode" type="String" required="true" default="" />
 	<cfset var temp="">
 
 	<cfif arguments.mode neq 'production'>
-		<cfif not len(variables.instance.stagingDomain)>
-			
-			<cfif len(variables.instance.Domain)
-				and listFirst(variables.instance.Domain,".") eq "www">
-				<cfset temp=lcase(arguments.mode) & "." & listDeleteAt(variables.instance.Domain,1,".")>
-			<cfelse>
-				<cfset temp=lcase(arguments.mode) & "." & variables.instance.Domain>
-			</cfif>
-
-			<cfif listFindNoCase(variables.instance.domainAlias,temp,chr(13)&chr(10))>
-				<cfset variables.instance.stagingDomain=temp>		
-			<cfelseif arguments.mode eq "Staging">
-				<cfif len(variables.configBean.getAdminDomain())>
-					<cfset variables.instance.stagingDomain=variables.configBean.getAdminDomain() />
-				<cfelse>
-					<cfset variables.instance.stagingDomain=cgi.server_name />
-				</cfif>
-			<cfelse>
-				<cfset variables.instance.stagingDomain=variables.instance.Domain />
-			</cfif>
-
+		<cfif len(request.muraPreviewDomain)>
+			<cfreturn request.muraPreviewDomain />
+		<cfelse>
+			<cfreturn variables.instance.Domain />
 		</cfif>
-
-		<cfreturn variables.instance.stagingDomain />
 	<cfelse>
 		<cfreturn variables.instance.Domain />
 	</cfif>

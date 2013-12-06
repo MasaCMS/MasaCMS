@@ -47,11 +47,12 @@ to your own modified versions of Mura CMS.
   fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
 </cfscript> 
 
+<!---
 <cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
   <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
   <cfabort />
 </cfif>
-
+--->
 <!--- if renderSetup is not found or is false then do not render --->
 <cfif NOT isDefined( "renderSetup" ) OR NOT renderSetup>
   <cfabort />
@@ -694,7 +695,7 @@ to your own modified versions of Mura CMS.
               <option value="">-- Select your Database Type --</option>
               <option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
               <option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
-              <!---<option value="nuodb" <cfif FORM.production_dbtype IS "nuodb">selected</cfif>>NuoDB</option>--->
+              <option value="nuodb" <cfif FORM.production_dbtype IS "nuodb">selected</cfif>>NuoDB</option>
               <option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
 			        <option value="postgresql" <cfif FORM.production_dbtype IS "postgresql">selected</cfif>>PostgreSQL</option>
             </select>
