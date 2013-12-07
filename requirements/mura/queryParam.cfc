@@ -92,6 +92,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.field eq '' or arguments.field eq 'Select Field'>
 		<cfset variables.field=""/>
 		<cfset setIsValid(false) />
+	<cfelse>
+		<cfset variables.field=arguments.field />
 	</cfif>
 </cffunction>
 
@@ -104,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.field />
 </cffunction>
 
-<cffunction name="getFieldStatment">
+<cffunction name="getFieldStatement">
 	<cfif application.configBean.getDbType() eq 'Oracle'>
 		<cfreturn "upper(" & variables.field & ")"/>
 	<cfelse>
@@ -168,6 +170,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse> 
 		<cfreturn variables.condition />
 	</cfif>
+</cffunction>
+
+<cffunction name="getAllValues" output="false">
+	<cfreturn variables>
 </cffunction>
 
 <cffunction name="setCriteria">
