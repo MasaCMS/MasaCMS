@@ -413,7 +413,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			request.muraPreviewDomain=cgi.server_name;
 		}
 
-		if(application.settingsManager.getSite(session.siteid).isValidDomain(mode='complete')){
+		if(application.settingsManager.getSite(session.siteid).isValidDomain(domain=request.muraPreviewDomain,mode='complete')){
 			request.muraPreviewDomain=application.settingsManager.getSite(session.siteid).getDomain();
 		}
 
