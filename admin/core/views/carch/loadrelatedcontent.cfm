@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.setLiveOnly(0);
 		feed.setShowNavOnly(0);
 		feed.setSortBy("lastupdate");
-		feed.setSortBy("desc");
+		feed.setSortDirection("desc");
 		
 		feed.addParam(field="tcontent.approved", criteria=1, condition="eq");
 
