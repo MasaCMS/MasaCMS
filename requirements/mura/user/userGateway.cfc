@@ -150,6 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var join="">
 	<cfset var dbtype=variables.configBean.getDbType()>
 	<cfset var tableModifier="">
+	<cfset var castfield="attributeValue">
 
 	<cfif dbtype eq "MSSQL">
 	 	<cfset tableModifier="with (nolock)">
@@ -217,9 +218,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly and isExtendedSort>
 	left Join (select 
 			#variables.classExtensionManager.getCastString(data.getSortBy(),data.getSiteID())# extendedSort
-			 ,tclassextenddatauseractivity.baseID 
-			from tclassextenddatauseractivity inner join tclassextendattributes
-			on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
+			 ,tclassextenddatauseractivityuseractivity.baseID 
+			from tclassextenddatauseractivityuseractivity inner join tclassextendattributes
+			on (tclassextenddatauseractivityuseractivity.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSortBy()#">
 	) qExtendedSort
@@ -268,8 +269,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif listLen(param.getField(),".") gt 1>					
 					#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>
 					<cfset openGrouping=false />
-				<cfelseif len(param.getField())>
-					tusers.userid IN (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#param.getExtendedIDList('tclassextenddatauseractivity',params.getSiteID(),tableModifier)#">)
+				<cfelseif len(param.getField())>ƒ
+					<cfset castfield="attributeValue">
+					tcontent.contentHistID IN (
+						select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
+						<cfif isNumeric(param.getField())>
+							where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+						<cfelse>
+							inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
+							where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getsiteid()#">
+							and 
+							<cfif variables.configBean.getDbType() eq 'Oracle'>
+								upper(tclassextendattributes.name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(param.getField())#">
+							<cfelse>
+								tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+							</cfif>
+							
+						</cfif>
+						and 
+						<cfif param.getCondition() neq "like">
+							<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),data.getsiteid())>
+						</cfif> 
+						<cfif variables.configBean.getDbType() eq 'Oracle'>
+							upper(#castfield#)
+						<cfelse>
+							#castfield#
+						</cfif>
+						#param.getCondition()# 
+						<cfif isListParam>
+							(
+						</cfif>
+						<cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#">
+						<cfif isListParam>
+							)
+						</cfif>	
+					)
 					<cfset openGrouping=false />
 				</cfif>
 			</cfif>						
