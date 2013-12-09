@@ -186,10 +186,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 
-	<cfif application.configBean.getDbType() eq 'Oracle'>
-		<cfset tmp=ucase(tmp) />
-	</cfif>
-
 	<cfif tmp eq "null">
 		<cfset variables.criteria="null">
 	<cfelse>
@@ -253,7 +249,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getCriteria">
-	<cfreturn variables.criteria />
+	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
+		<cfreturn ucase(variables.criteria) />
+	<cfelse>
+		<cfreturn variables.criteria />
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="setDataType">
@@ -333,19 +334,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				inner join tclassextendattributes on (#arguments.table#.attributeID = tclassextendattributes.attributeID)
 				where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
-				and 
-				<cfif application.configBean.getDbType() eq 'Oracle'>
-					upper(tclassextendattributes.name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(getField())#">
-				<cfelse>
-					tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getField()#">
-				</cfif>
-				
+				and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getField()#">	
 			</cfif>
 			and 
-			<cfif getCondition() neq "like">
+			<cfif variables.condition neq "like">
 				<cfset castfield=application.configBean.getClassExtensionManager().getCastString(getField(),arguments.siteid)>
 			</cfif> 
-			<cfif application.configBean.getDbType() eq 'Oracle'>
+			<cfif variables.condition eq "like" and application.configBean.getDbType() eq 'Oracle'>
 				upper(#castfield#)
 			<cfelse>
 				#castfield#

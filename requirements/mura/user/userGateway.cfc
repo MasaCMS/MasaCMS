@@ -278,19 +278,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
 							where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getsiteid()#">
-							and 
-							<cfif variables.configBean.getDbType() eq 'Oracle'>
-								upper(tclassextendattributes.name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(param.getField())#">
-							<cfelse>
-								tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-							</cfif>
-							
+							and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
 						and 
 						<cfif param.getCondition() neq "like">
 							<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),data.getsiteid())>
 						</cfif> 
-						<cfif variables.configBean.getDbType() eq 'Oracle'>
+						<cfif param.getCondition() eq "like" and variables.configBean.getDbType() eq 'Oracle'>
 							upper(#castfield#)
 						<cfelse>
 							#castfield#
