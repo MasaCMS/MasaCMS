@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getFieldStatement">
-	<cfif application.configBean.getDbType() eq 'Oracle'>
+	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
 		<cfreturn "upper(" & variables.field & ")"/>
 	<cfelse>
 		<cfreturn variables.field />
