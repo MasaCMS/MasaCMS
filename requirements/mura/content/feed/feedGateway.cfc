@@ -326,19 +326,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfelse>
 												inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 												where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#">
-												and 
-												<cfif variables.configBean.getDbType() eq 'Oracle'>
-													upper(tclassextendattributes.name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(param.getField())#">
-												<cfelse>
-													tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-												</cfif>
-												
+												and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">												
 											</cfif>
 											and 
 											<cfif param.getCondition() neq "like">
 												<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid())>
 											</cfif> 
-											<cfif variables.configBean.getDbType() eq 'Oracle'>
+											<cfif param.getCondition() eq "like" and variables.configBean.getDbType() eq 'Oracle'>
 												upper(#castfield#)
 											<cfelse>
 												#castfield#
@@ -563,19 +557,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 							where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#">
-							and 
-							<cfif variables.configBean.getDbType() eq 'Oracle'>
-								upper(tclassextendattributes.name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(param.getField())#">
-							<cfelse>
-								tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-							</cfif>
-							
+							and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">				
 						</cfif>
 						and 
 						<cfif param.getCondition() neq "like">
 							<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid())>
 						</cfif> 
-						<cfif variables.configBean.getDbType() eq 'Oracle'>
+						<cfif param.getCondition() eq 'like' and variables.configBean.getDbType() eq 'Oracle'>
 							upper(#castfield#)
 						<cfelse>
 							#castfield#
