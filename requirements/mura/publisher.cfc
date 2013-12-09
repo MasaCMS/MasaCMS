@@ -292,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
 							<cfelseif rssite.galleryMediumScaleBy eq 'x'>
 								mediumImageHeight='Auto',
-								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
+								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
 							<cfelse>
 								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
 								mediumImageWidth='Auto'
