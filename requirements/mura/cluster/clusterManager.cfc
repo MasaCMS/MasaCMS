@@ -222,4 +222,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsPeers>
 </cffunction>
 
+<cffunction name="clearOldCommands" output="false">
+	<cfquery>
+		delete from tclusterpeers 
+		where instanceid in (select instanceid from 
+							tclustercommands 
+							where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
+							)
+	</cfquery>
+
+	<cfquery>
+		delete from tclustercommands 
+		where created <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
+	</cfquery>
+</cffunction>
+
 </cfcomponent>

@@ -542,4 +542,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset application.sessionTrackingThrottle=false>
+
+	<!-- Clean out old cluster commands --->
+	<cfset application.clusterManager.clearOldCommands()>
 </cfif> 
