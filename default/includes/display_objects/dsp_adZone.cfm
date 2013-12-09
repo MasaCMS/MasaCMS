@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfswitch expression="#$.getJsLib()#">
 <cfcase value="jquery">
 <cfoutput>
-<div id="svAd#r#" class="svAd"></div>
+<div id="svAd#r#" class="mura-ad"></div>
 <script type="text/javascript">
 function renderAdZone#r#(){			
 $.getJSON("#$.globalConfig('context')#/tasks/ads/renderAdZone.cfm", 
@@ -87,7 +87,7 @@ new renderAdZone#r#();
 </cfcase>
 <cfdefaultcase>
 <cfoutput>
-<div id="svAd#r#" class="svAd"></div>
+<div id="svAd#r#" class="mura-ad"></div>
 <script type="text/javascript">
 function renderAdZone#r#(){
 new Ajax.Request( '#$.globalConfig('context')#/tasks/ads/renderAdZone.cfm',

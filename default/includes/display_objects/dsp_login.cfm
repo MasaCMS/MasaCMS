@@ -59,7 +59,7 @@
 	<cfset variables.$.event('isBlocked',false)>
 </cfif>
 <cfoutput>
-	<div id="svLoginContainer" class="#this.loginWrapperClass#">
+	<div id="svLoginContainer" class="mura-loginContainer #this.loginWrapperClass#">
 		<div class="#this.loginWrapperInnerClass#">
 			<#variables.$.getHeaderTag('subhead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subhead1')#>
 

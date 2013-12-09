@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
 	</head>
 
-	<body id="svSendToFriend">
+	<body id="svSendToFriend" class="mura-sendToFriend">
 		<cfif not passedProtect>
 			<h1 class="#this.sendToFriendErrorClass#">#$.rbKey('captcha.spam')#</h1>
 		<cfelse>

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.cacheItem=false>
 <cfset captchaStr=variables.$.getBean('userUtility').getRandomPassword(length=5)>
 <cfoutput>
-<li id="svCaptcha">
+<li id="svCaptcha" class="mura-captcha">
 <cfimage action="captcha" height="75" width="363" text="#captchaStr#" difficulty="medium" fonts="verdana,arial,times new roman,courier" fontsize="28" />
 </li>
 <li>

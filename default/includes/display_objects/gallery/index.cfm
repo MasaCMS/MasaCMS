@@ -137,7 +137,7 @@
 </cfsilent>
 <cfoutput>
 <cfif variables.iterator.getRecordCount()>
-	<div id="svGallery" class="#this.galleryWrapperClass#"> 
+	<div id="svGallery" class="mura-gallery #this.galleryWrapperClass#"> 
 		<ul class="#this.galleryULClass#">
 			<cfloop condition="variables.iterator.hasNext()">
 				<cfsilent>

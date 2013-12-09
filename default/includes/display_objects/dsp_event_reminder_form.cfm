@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbs=variables.$.event('crumbData')>
 <cfif arrayLen(crumbs) gt 1 and crumbs[2].type eq 'Calendar' and variables.$.content('display') eq 2 and variables.$.content('displayStart') gt now()>
 <cfoutput>
-<div id="svEventReminder">
+<div id="svEventReminder" class="mura-eventReminder">
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('event.setreminder')#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif listfind(variables.$.event('doaction'),"setReminder")>
 	<em>#variables.$.rbKey('event.setreminder')#</em><br/><br/>

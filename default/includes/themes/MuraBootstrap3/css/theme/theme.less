@@ -251,7 +251,7 @@ img {
 // Navigation
 // --------------------------------------------------
 #navArchive, #navMultilevel, #navPeer, #navPortal, #navSequential, #navStandard,
-#navSub, #svTagCloud, #svFavoritesList, #svPageTools {
+#navSub, .mura-tagCloud, .mura-favoritesList, .mura-pageTools {
 	margin-bottom: @line-height-base;
 }
 
@@ -296,7 +296,7 @@ img {
 	}
 
 // Indexes
-.mura-Index {
+.mura-index {
 	padding-top: 0;
 	border-top: 0;
 	margin-top: 0;
@@ -394,9 +394,9 @@ aside {
 	}
 }
 
-.svCatSummary {
+.mura-catSummary {
 	padding: 1em 0;
-	&.mura-Index {
+	&.mura-index {
 		padding: 1em 0;
 	}
 }
@@ -420,7 +420,7 @@ a.menu:after, .dropdown-toggle:after {
 	}
 }
 
-.mura-Index, #svTagCloud, #svSessionTools, #svFavoritesList {
+.mura-index, .mura-tagCloud, .mura-sessionTools, .mura-favoritesList {
 	ul, ol {
 		-webkit-padding-start: 0;
 		padding-left: 0;
@@ -525,7 +525,7 @@ a.menu:after, .dropdown-toggle:after {
 	
 }
 
-li.form ol, #svTagCloud ol {
+li.form ol, .mura-tagCloud ol {
 	list-style: none;
 	margin: 0;
 }
@@ -538,7 +538,7 @@ li.form ol, #svTagCloud ol {
 	}
 }
 
-.svSlideshow {
+.mura-slideshow {
 	dt {
 		margin-bottom: 0.25em;
 		&.releaseDate {
@@ -550,7 +550,7 @@ li.form ol, #svTagCloud ol {
 	}
 }
 
-ol.svPager {
+ol.mura-pager {
 	text-align: center;
 
 	li {
@@ -571,7 +571,7 @@ ol.svPager {
 
 /* CALENDAR
 ===================================== */
-.mura-Calendar {
+.mura-calendar {
 	text-align: center;
 
 	table {
@@ -607,7 +607,7 @@ ol.svPager {
 	}
 }
 
-.mura-CalendarNav {
+.mura-calendarNav {
 	th {
 		line-height: 1;
 		padding: 0;
@@ -743,7 +743,7 @@ p.required {
 
 // Ratings
 section {
-	.mura-Index {
+	.mura-index {
 		.credits, .comments, .tags, .rating {
 			line-height: 20px; // acommodate height of stars
 		}
@@ -772,7 +772,7 @@ section {
 .five { background-image: url(../../images/rater/star_five.png); }
 
 // SEARCH
-#svSearchResults {
+.mura-searchResults {
 
 	.well {
 		padding: 0.5em;
@@ -783,11 +783,11 @@ section {
 		}
 	}
 
-	.mura-Index {
+	.mura-index {
 		border:none;
 	}
 
-	#svSearchAgain {
+	.mura-searchAgain {
 		padding: 0;
 		margin: 0 -15px;
 	}

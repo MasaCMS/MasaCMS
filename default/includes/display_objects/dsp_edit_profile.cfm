@@ -67,7 +67,7 @@
 	<#variables.$.getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#variables.$.rbKey('user.createprofile')#<cfelse>#variables.$.rbKey('user.editprofile')#</cfif></#variables.$.getHeaderTag('headline')#>
 
 	<cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
-		<div id="svEditProfile" class="#this.editProfileWrapperClass#">
+		<div id="svEditProfile" class="mura-editProfile #this.editProfileWrapperClass#">
 
 			<cfif not structIsEmpty(request.userBean.getErrors()) >
 				<div id="editProfileMsg" class="required">#variables.$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
