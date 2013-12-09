@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setField">
 	<cfargument name="field">
-	<cfif application.configBean.getDbType() eq 'Oracle'>
+	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
 		<cfset arguments.field=ucase(arguments.field) />
 	</cfif>
 	
