@@ -126,7 +126,7 @@
 	</cfsilent>
 	<cfoutput>
 		#variables.$.getContentListPropertyValue('itemEl','openingOuterMarkUp')#
-		<#variables.$.getContentListPropertyValue('itemEl','tag')# #variables.$.getContentListAttributes('itemEl',arguments.class)#"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getContentListPropertyValue('itemEl','tag')# #variables.$.getContentListAttributes('itemEl',arguments.class)#<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			#variables.$.getContentListPropertyValue('itemEL',"openingInnerMarkUp")#
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
