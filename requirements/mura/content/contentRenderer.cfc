@@ -507,14 +507,19 @@ Display Objects
 
 	<cfset var propStruct=getContentListProperty(arguments.property)>
 	<cfset var returnstring="">
-	<cfset var propclass=lcase(arguments.property)>
+	<cfset var propclass="">
 
 	<cfif structKeyExists(propStruct,"class")>
 		<cfset propclass=propStruct.class>
+	<cfelseif not listFindNoCase('containerel,itemel',arguments.property)>
+		<cfset propclass=lcase(arguments.property)>
 	</cfif>
 
 	<cfset arguments.class=trim(propclass & " " & arguments.class)>
-	<cfset returnstring=' class="' & arguments.class & '"'>
+	
+	<cfif len(arguments.class)>
+		<cfset returnstring=' class="' & arguments.class & '"'>
+	</cfif>
 	
 	<cfif structKeyExists(propStruct,"attributes")>
 		<cfset returnstring= trim(returnstring & " " & propStruct.attributes)>
