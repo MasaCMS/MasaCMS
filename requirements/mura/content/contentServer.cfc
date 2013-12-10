@@ -470,7 +470,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="handleRootRequest">
+<cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
 	<cfif application.configBean.getSiteIDInURLS()>
 		<cfset application.contentServer.redirect()>
@@ -569,7 +569,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
 		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
 	</cfif>
-	<cfreturn response>
+
+	<cfif isdefined('response')>
+		<cfreturn response>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
 </cffunction>
 
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
