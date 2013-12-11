@@ -352,7 +352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		if(session.mura.isLoggedIn and structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)){
 			if(not listFind(session.mura.memberships,'S2IsPrivate')){
-				location(url="#application.configBean.getContext()#/", addtoken="false");
+				location(url="#application.configBean.getContext()#/admin/?muraAction=clogin.main", addtoken="false");
 			} else if(not len(request.context.muraAction)
 					or (
 							len(request.context.muraAction) 
