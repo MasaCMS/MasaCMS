@@ -51,8 +51,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
+
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onGroupEdit",rc.siteID)>
+
+<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onGroupEdit',siteid=rc.siteid))>
+ <cfif arrayLen(pluginEventMappings)>
+    <cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+        <cfset pluginEventMappings[i].eventName='onGroupEdit'>
+    </cfloop>
+ </cfif>
+
 <cfset tabLabelList='#application.rbFactory.getKeyValue(session.rb,'user.basic')#'>
 <cfset tablist="tabBasic">
 <cfif rsSubTypes.recordcount>
@@ -85,9 +93,9 @@ select * from rsSubTypes where subType <> 'Default'
        <p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
       </cfif>
 
-     <form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or rsPluginScripts.recordcount)> class="fieldset-wrap"</cfif> action="./?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+     <form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
       </cfoutput>
-      <cfif rsSubTypes.recordcount or rsPluginScripts.recordcount>
+      <cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
         <div class="tabbable tabs-left mura-ui">
         <ul class="nav nav-tabs tabs initActiveTab">
         <cfoutput>
@@ -98,11 +106,22 @@ select * from rsSubTypes where subType <> 'Default'
           </cfif>
         </cfoutput>
 
+        <!---
         <cfif rsPluginScripts.recordcount>
            <cfoutput query="rsPluginScripts" group="pluginID">
                 <cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
                 <li id="###tabID#LI"><a href="###tabID#" onclick="return false;"><span>#HTMLEditFormat(rsPluginScripts.name)#</span></a></li>
             </cfoutput>
+        </cfif>
+        --->
+
+        <cfif arrayLen(pluginEventMappings)>
+        <cfoutput>
+        <cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+        <cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+        <li id="###tabID#LI"><a href="###tabID#" onclick="return false;"><span>#HTMLEditFormat(pluginEventMappings[i].pluginName)#</span></a></li>
+        </cfloop>
+        </cfoutput>
         </cfif>
 
         </ul>
@@ -154,7 +173,7 @@ select * from rsSubTypes where subType <> 'Default'
           <span id="extendSetsBasic"></span>
 
         </cfoutput>
-        <cfif rsSubTypes.recordcount or rsPluginScripts.recordcount>
+        <cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
         </div>
 
 
@@ -165,6 +184,7 @@ select * from rsSubTypes where subType <> 'Default'
             </cfif>
             
             
+            <!---
             <cfif rsPluginScripts.recordcount>
               <cfoutput query="rsPluginScripts" group="pluginID">
                 <!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
@@ -181,6 +201,21 @@ select * from rsSubTypes where subType <> 'Default'
                   </cfoutput>
                   </div>
               </cfoutput>
+            </cfif>
+            --->
+
+            <cfif arrayLen(pluginEventMappings)>
+            <cfoutput>
+            <cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+            <cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+            <cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+            <cfset tabList=listAppend(tabList,tabID)>
+            <cfset pluginEvent.setValue("tabList",tabLabelList)>
+            <div id="#tabID#" class="tab-pane fade">
+              #$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
+            </div>
+            </cfloop>
+            </cfoutput>
             </cfif>
          
             <cfoutput>
