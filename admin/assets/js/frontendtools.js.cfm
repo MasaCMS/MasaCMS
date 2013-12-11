@@ -77,9 +77,10 @@
 	}
 
 	function openFrontEndToolsModal(a){
-		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
+		var src=a.href;
 		var isModal=jQuery(a).attr("data-configurator");
 		var width=jQuery(a).attr("data-modal-width");
+		var ispreview=jQuery(a).attr("data-modal-preview");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
@@ -88,27 +89,73 @@
 			frontEndModalWidth = width;
 		}
 
-		if(!frontEndModalHeight){
-			if (isModal == undefined) {
-				frontEndModalWidth = frontEndModalWidthStandard;
-			} else if (isModal == "true") {
-				frontEndModalWidth=frontEndModalWidthConfigurator;
-			} else {
-				frontEndModalWidth = frontEndModalWidthStandard;
-			}
-		}
-		
 		closeFrontEndToolsModal();
 		
+		if(ispreview){
+			if(src.indexOf("?") == -1) {
+				src = src + '?muraadminpreview';
+			} else {
+				src = src + '&muraadminpreview';
+			}
+
+			frontEndModalHeight=600;
+			frontEndModalWidth=1075;
+
+			var $tools='<div id="mura-preview-device-selector"><p>Preview Mode</p>';
+				$tools=$tools+'<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
+				$tools=$tools+'<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
+				$tools=$tools+'<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
+				$tools=$tools+'<a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
+				$tools=$tools+'<a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
+				$tools=$tools+'<a href="##" onclick="closeFrontEndToolsModal();"><i class="icon-cancel"></i> Close</a>';
+				$tools=$tools+'</div>';
+
+		} else {
+			if(!frontEndModalHeight){
+				if (isModal == undefined) {
+					frontEndModalWidth = frontEndModalWidthStandard;
+				} else if (isModal == "true") {
+					frontEndModalWidth=frontEndModalWidthConfigurator;
+				} else {
+					frontEndModalWidth = frontEndModalWidthStandard;
+				}
+			}
+
+			src=src + "&frontEndProxyLoc=" + frontEndProxyLoc;
+			var $tools='';
+		}
+
+
 		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
-		'<div id="frontEndToolsModalBody">' +
+		'<div id="frontEndToolsModalBody">' + $tools +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
 		'</div>' +
 		'</div>');
 		
-		frontEndModalHeight=0;
-		jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
-		resizeFrontEndToolsModal(0);
+		if(ispreview){
+			$('##mura-preview-device-selector a').bind('click', function () {
+				var data=$(this).data();
+
+				frontEndModalWidth=data.width;
+			   	frontEndModalHeight=data.height;
+
+			   	$('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
+			    $('##mura-preview-device-selector a').removeClass('active');
+			    $(this).addClass('active');
+
+			    resizeFrontEndToolsModal(data.height);
+			    return false;
+			});
+
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
+			resizeFrontEndToolsModal(frontEndModalHeight);
+		} else{
+			frontEndModalHeight=0;
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
+			resizeFrontEndToolsModal(0);
+			}
+
+		
 		
 	}
 	
