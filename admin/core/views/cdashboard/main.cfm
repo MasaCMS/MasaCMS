@@ -54,19 +54,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span9">
 <h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h1>
 <cfinclude template="dsp_secondary_menu.cfm">
-</cfoutput>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
-<cfoutput query="rsPluginScripts" group="pluginID">
-<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID,rsPluginScripts.moduleID)>
-<div<cfif not started> class="divide"</cfif>>
-	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
-	<cfoutput>
-	#application.pluginManager.renderScripts("onDashboardPrimaryTop",rc.siteid,pluginEvent,rsPluginScript)#
-	</cfoutput>
+
+<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardPrimaryTop',rc.siteid)>
+<cfif arrayLen(eventMappings)>
+<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+<div class="divide">
+	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+	#$.renderEvent(eventName='onDashboardPrimaryTop',index=i)#
 </div>
+</cfloop>
 <cfset started=true>
-</cfoutput>
-<cfoutput>
+</cfif>
+
 <cfif application.configBean.getSessionHistory() >	
 <cfif not application.sessionTrackingThrottle>
 <div id="userActivity"<cfif started> class="divide"</cfif>>
@@ -120,24 +119,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript">dashboardManager.loadEmailActivity('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 </cfif>
-</cfoutput>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryBottom",rc.siteID)>
-<cfoutput query="rsPluginScripts" group="pluginID">
-<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryBottom",rc.siteID,rsPluginScripts.moduleID)>
-<div<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-cog"></i> #HTMLEditformat(rsPluginScripts.name)#</h2>
-	<cfoutput>
-	#application.pluginManager.renderScripts("onDashboardPrimaryBottom",rc.siteid,pluginEvent,rsPluginScript)#
-	</cfoutput>
+
+<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardPrimaryBottom',rc.siteid)>
+<cfif arrayLen(eventMappings)>
+<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+<div class="divide">
+	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+	#$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)#
 </div>
+</cfloop>
 <cfset started=true>
-</cfoutput>
+</cfif>
+
 </div>
 <!---- If there's nothing in the main body of the dashboard just move on the the site manager--->
 <cfif not started>
 <cflocation url="./?muraAction=cArch.list&siteid=#session.siteID#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
 </cfif>
-<cfoutput>
+
 <div id="contentSecondary" class="sidebar span3">
 
 <div>
@@ -156,18 +155,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 </form>
 </div> 
-</cfoutput>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardSidebarTop",rc.siteID)>
-<cfoutput query="rsPluginScripts" group="pluginID">
-<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarTop",rc.siteID,rsPluginScripts.moduleID)>
+
+<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardSideBarTop',rc.siteid)>
+<cfif arrayLen(eventMappings)>
+<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
 <div class="divide">
-	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
-	<cfoutput>
-	#application.pluginManager.renderScripts("onDashboardSidebarTop",rc.siteid,pluginEvent,rsPluginScript)#
-	</cfoutput>
+	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+	#$.renderEvent(eventName='onDashboardSideBarTop',index=i)#
 </div>
-</cfoutput>
-<cfoutput>
+</cfloop>
+<cfset started=true>
+</cfif>
+
 <div id="siteSummary" class="well">
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitesummary")#</h2>
 <dl>
@@ -201,29 +200,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </div>
 
-<!---
-<cfset rsList=application.dashboardManager.getDraftList(rc.siteID,session.mura.userID,5) />
-<div id="drafts" class="well">
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h2>
-<ul><cfif rsList.recordcount>
-	<cfloop query="rslist">
-	<li><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
-	</cfloop>
-	<cfelse>
-	<li>#application.rbFactory.getKeyValue(session.rb,"dashboard.nodrafts")#</li>
-	</cfif>
-</ul>
-</div>
---->
-</cfoutput>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardSidebarBottom",rc.siteID)>
-<cfoutput query="rsPluginScripts" group="pluginID">
-<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarBottom",rc.siteID,rsPluginScripts.moduleID)>
+<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardSideBarBottom',rc.siteid)>
+<cfif arrayLen(eventMappings)>
+<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
 <div class="divide">
-	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
-	<cfoutput>
-	#application.pluginManager.renderScripts("onDashboardSidebarBottom",rc.siteid,pluginEvent,rsPluginScript)#
-	</cfoutput>
+	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+	#$.renderEvent(eventName='onDashboardSideBarBottom',index=i)#
+</div>
+</cfloop>
+<cfset started=true>
+</cfif>
+
 </div>
 </cfoutput>
-</div>

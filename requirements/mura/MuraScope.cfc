@@ -363,12 +363,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="announceEvent" returntype="any" access="public" output="false">
 	<cfargument name="eventName">
-	<cfset getEventManager().announceEvent(arguments.eventName,this)>
+	<cfargument name="index" default="0">
+	<cfset getEventManager().announceEvent(eventToAnnounce=arguments.eventName,currentEventObject=this,index=0)>
 </cffunction>
 
 <cffunction name="renderEvent" returntype="any" access="public" output="false">
 	<cfargument name="eventName">
-	<cfreturn getEventManager().renderEvent(arguments.eventName,this)>
+	<cfargument name="index" default="0">
+	<cfreturn getEventManager().renderEvent(eventToRender=arguments.eventName,currentEventObject=this,index=0)>
 </cffunction>
 
 <cffunction name="createHREF" returntype="string" output="false" access="public">

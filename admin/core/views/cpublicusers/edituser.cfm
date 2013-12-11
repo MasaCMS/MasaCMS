@@ -54,7 +54,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
-<cfset rsPluginScripts=application.pluginManager.getScripts("onUserEdit",rc.siteID)>
+
+<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onUserEdit',siteid=rc.siteid))>
+ <cfif arrayLen(pluginEventMappings)>
+    <cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+        <cfset pluginEventMappings[i].eventName='onUserEdit'>
+    </cfloop>
+ </cfif>
+
 <cfset tabLabelList='#application.rbFactory.getKeyValue(session.rb,'user.basic')#,#application.rbFactory.getKeyValue(session.rb,'user.addressinformation')#,#application.rbFactory.getKeyValue(session.rb,'user.groupmemberships')#,#application.rbFactory.getKeyValue(session.rb,'user.interests')#'>
 <cfset tablist="tabBasic,tabAddressinformation,tabGroupmemberships,tabInterests">
 <cfif rsSubTypes.recordcount>
@@ -411,21 +418,19 @@ select * from rsSubTypes where subType <> 'Default'
 </div>		
 </div>
 	</cfoutput>
-		<cfoutput query="rsPluginScripts" group="pluginID">
-		<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
-		<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
-		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
-		<cfset tabList=listAppend(tabList,tabID)>
-		<cfset pluginEvent.setValue("tabList",tabLabelList)>
-			<div id="#tabID#" class="tab-pane fade">
-			<cfoutput>
-			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",rc.siteID,rsPluginScripts.moduleID)>
-			<cfif rsPluginScript.recordcount>
-			#application.pluginManager.renderScripts("onUserEdit",rc.siteid,pluginEvent,rsPluginScript)#
-			</cfif>
-			</cfoutput>
-			</div>
-		</cfoutput>
+	<cfif arrayLen(pluginEventMappings)>
+	<cfoutput>
+	<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+	<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+	<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+	<cfset tabList=listAppend(tabList,tabID)>
+	<cfset pluginEvent.setValue("tabList",tabLabelList)>
+	<div id="#tabID#" class="tab-pane fade">
+		#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
+	</div>
+	</cfloop>
+	</cfoutput>
+	</cfif>
 </cfsavecontent>	
 <cfoutput>	
 

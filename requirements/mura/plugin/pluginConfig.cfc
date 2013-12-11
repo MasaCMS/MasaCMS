@@ -285,6 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="addEventHandler" output="false" returntype="void">
 	<cfargument name="component" required="true">
+	<cfparam name="arguments.component.pluginName" default="#getName()#">
     <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
     <cfloop query="rsSites">
     <cfset getPluginManager().addEventHandler(arguments.component,rsSites.siteID)>

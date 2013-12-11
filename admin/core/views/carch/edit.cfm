@@ -264,19 +264,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 	
-	<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rc.type)>
-		<cfset rsPluginScripts1=application.pluginManager.getScripts("onContentEdit",rc.siteID)>
-		<cfset rsPluginScripts2=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID)>
-		<cfquery name="rsPluginScripts3" dbtype="query">
-			select * from rsPluginScripts1 
-			union
-			select * from rsPluginScripts2 
-		</cfquery>
-		<cfquery name="rsPluginScripts" dbtype="query">
-			select * from rsPluginScripts3 order by pluginID
-		</cfquery>
+	<cfif ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rc.type)>
+		<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onContentEdit',siteid=rc.siteid))>
+		<cfif arrayLen(pluginEventMappings)>
+			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+				<cfset pluginEventMappings[i].eventName='onContentEdit'>
+			</cfloop>
+		</cfif>
+		<cfset pluginEventMappings2=duplicate($.getBean('pluginManager').getEventMappings(eventName='on#rc.type#Edit',siteid=rc.siteid))>
+		<cfif arrayLen(pluginEventMappings2)>
+			<cfloop from="1" to="#arrayLen(pluginEventMappings2)#" index="i">
+				<cfset pluginEventMappings2[i].eventName='on#rc.type#Edit'>
+				<cfset arrayAppend(pluginEventMappings,pluginEventMappings2[i])>
+			</cfloop>
+		</cfif>
 	<cfelse>
-		<cfset rsPluginScripts=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID)>
+		<cfset pluginEventMappings=$.getBean('pluginManager').getEventMappings(eventName='on#rc.type#Edit',siteid=rc.siteid)>
+		<cfif arrayLen(pluginEventMappings)>
+			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+				<cfset pluginEventMappings[i].eventName='on#rc.type#Edit'>
+			</cfloop>
+		</cfif>
 	</cfif>
 
 	<cfsavecontent variable="actionButtons">
@@ -594,26 +602,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif> 
 	</cfif>
 
-		<cfoutput query="rsPluginScripts" group="pluginID">
-			<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
-			<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
-			<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
-			<cfset tabList=listAppend(tabList,tabID)>
-			<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane fade">
-				<cfoutput>
-				<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",rc.siteID,rsPluginScripts.moduleID)>
-				<cfif rsPluginScript.recordcount>
-				#application.pluginManager.renderScripts("onContentEdit",rc.siteid,pluginEvent,rsPluginScript)#
-				<cfelse>
-				<cfset rsPluginScript=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID,rsPluginScripts.moduleID)>
-				#application.pluginManager.renderScripts("on#rc.type#Edit",rc.siteid,pluginEvent,rsPluginScript)#
-				</cfif>
-				</cfoutput>
-				</div>
-		</cfoutput>
-
-
+	<cfif arrayLen(pluginEventMappings)>
+	<cfoutput>
+	<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+	<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+	<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+	<cfset tabList=listAppend(tabList,tabID)>
+	<cfset pluginEvent.setValue("tabList",tabLabelList)>
+	<div id="#tabID#" class="tab-pane fade">
+		#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
+	</div>
+	</cfloop>
+	</cfoutput>
+	</cfif>
 
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
 		<cfinclude template="form/dsp_tab_publishing.cfm">
