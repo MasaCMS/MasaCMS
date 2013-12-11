@@ -344,7 +344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif session.mura.isLoggedIn and structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)>
-			<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
+			<cfif not listFind(session.mura.memberships,'S2IsPrivate') and not listLast(listFirst(request.context.muraAction,"."),":") eq 'clogin'>
 				<cflocation url="#application.configBean.getContext()#/admin/?muraAction=clogin.main" addtoken="false">
 			<cfelseif not len(request.context.muraAction) 
 					or (
