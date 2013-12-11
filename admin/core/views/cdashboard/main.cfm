@@ -58,12 +58,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardPrimaryTop',rc.siteid)>
 <cfif arrayLen(eventMappings)>
 <cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
-<div class="divide">
+<div<cfif started> class="divide"</cfif>>
 	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
 	#$.renderEvent(eventName='onDashboardPrimaryTop',index=i)#
 </div>
-</cfloop>
 <cfset started=true>
+</cfloop>
 </cfif>
 
 <cfif application.configBean.getSessionHistory() >	
