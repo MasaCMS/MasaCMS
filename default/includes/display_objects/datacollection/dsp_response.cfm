@@ -84,8 +84,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><span class="pollValue">#i#:</span> <span class="pollQty">#variables.lineQty#</span> <span class="pollPercent">(#variables.percent#%)</span><div style="margin: 2px 0 0 0; height: 10px; width: #variables.percent#%; background: ##8C9EB4; font-size: 9px;">&nbsp;</div></li></cfloop></ul></div>
 	</cfif>
 </cfif>
-<cfif not variables.acceptdata>
-	<cfif variables.acceptError eq "Browser">
+<cfif not variables.event.getValue('acceptdata')>
+	<cfset variables.customresponse = application.pluginManager.renderEvent("onFormSubmitErrorRender",variables.event) />
+	<cfif Len(variables.customresponse)>
+		#variables.customresponse#
+	<cfelseif variables.acceptError eq "Browser">
 		<p class="#this.datacollectionErrorPClass#">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
 	<cfelseif variables.acceptError eq "Duplicate">
 		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("poll.onlyonevote")#</p>

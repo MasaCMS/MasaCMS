@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif listFindNoCase('Form,Gallery,Calendar,Component,Page,Folder',rc.type)>    	
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
-		<div id="bodyContainer" class="body-container controls"<cfif rsPluginEditor.recordcount> style="display:none;"</cfif>>
+		<div id="bodyContainer" class="body-container controls" style="display:none;">
 			<div class="control-group">
 			<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#

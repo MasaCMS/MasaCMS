@@ -103,6 +103,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				</cfquery>
 
+				<cfif variables.configBean.getDbType() eq 'Oracle'>	
+					<cfset rsPage=variables.utility.fixOracleClobs(rsPage)>
+				</cfif>
+
 				<cfset arguments.sourceIterator.setPageQuery("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
 
 			</cfif>
@@ -192,6 +196,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
 				</cfquery>
+
+				<cfif variables.configBean.getDbType() eq 'Oracle'>	
+					<cfset rsPage=variables.utility.fixOracleClobs(rsPage)>
+				</cfif>
 
 				<cfset arguments.sourceIterator.setPageQuery("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
 

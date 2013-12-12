@@ -143,8 +143,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cfif>
 
-<cfif variables.acceptdata>
-	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
+<cfset variables.event.setValue('acceptdata',variables.acceptdata)>
+<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
+
+<cfif variables.event.getValue('acceptdata')>
 	<cfset variables.info=application.dataCollectionManager.update(structCopy(request))/>
 	<cfset variables.event.setValue("formResult",variables.info)>
 	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",variables.event)>
@@ -186,6 +188,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				, bcc = ''
 			)>
 		</cfif>
-	</cfif>
-			
+	</cfif>	
 </cfif>
