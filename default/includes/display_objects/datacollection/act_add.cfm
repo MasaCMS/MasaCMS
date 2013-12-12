@@ -188,7 +188,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				, bcc = ''
 			)>
 		</cfif>
-	</cfif>
-<cfelse>
-	<cfoutput>#application.pluginManager.renderEvent("onFormSubmitErrorRender",variables.event)#</cfoutput>		
+	</cfif>	
 </cfif>
