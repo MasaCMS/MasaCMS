@@ -190,5 +190,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 <cfelse>
-	<cfoutput>#application.pluginManager.announceEvent("onFormSubmitErrorRender",variables.event)#</cfoutput>		
+	<cfoutput>#application.pluginManager.renderEvent("onFormSubmitErrorRender",variables.event)#</cfoutput>		
 </cfif>
