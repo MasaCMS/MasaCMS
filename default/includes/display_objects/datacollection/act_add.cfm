@@ -147,7 +147,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
 
 <cfif variables.event.getValue('acceptdata')>
-	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
 	<cfset variables.info=application.dataCollectionManager.update(structCopy(request))/>
 	<cfset variables.event.setValue("formResult",variables.info)>
 	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",variables.event)>
