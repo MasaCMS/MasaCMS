@@ -98,8 +98,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	<cfelseif variables.acceptError eq "Validation">
 		<div class="#this.datacollectionErrorDivClass#">#application.utility.displayErrors(formErrors)#</div>
-	<cfelse>
-			<h3>Huh?</h3>
 	</cfif>
 <cfelse>
 		<div id="frm#replace(variables.rsform.contentID,'-','','ALL')#">
