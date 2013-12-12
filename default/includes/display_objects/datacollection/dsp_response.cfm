@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.customresponse = application.pluginManager.renderEvent("onFormSubmitErrorRender",variables.event) />
 	<cfif Len(variables.customresponse)>
 		#variables.customresponse#
-	<cfif variables.acceptError eq "Browser">
+	<cfelseif variables.acceptError eq "Browser">
 		<p class="#this.datacollectionErrorPClass#">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
 	<cfelseif variables.acceptError eq "Duplicate">
 		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("poll.onlyonevote")#</p>
