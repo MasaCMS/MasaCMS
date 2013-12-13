@@ -955,9 +955,9 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 
 			},
-
 			open: function() {
-
+				$('.ui-widget-overlay').css('z-index',500);
+				$('.ui-dialog').css('z-index',501);
 				$("#newFileMetaContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 				var url = 'index.cfm';
 				var pars = 'muraAction=cArch.loadfilemetadata&fileid=' + fileid + '&property=' + property  + '&contenthistid=' + contenthistid + '&siteid=' + siteid + '&cacheid=' + Math.random();
