@@ -927,6 +927,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
  		$("#newFileMetaContainer").remove();
 		$("body").append('<div id="newFileMetaContainer" title="Loading..." style="display:none"><div id="newFileMeta"><div class="load-inline"></div></div></div>');
 
+		var _focusTabbable=$.ui.dialog.prototype._focusTabbable;
+		$.ui.dialog.prototype._focusTabbable = function(){};
 		$("#newFileMetaContainer").dialog({
 			resizable: false,
 			modal: true,
@@ -1010,6 +1012,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			close: function() {
 				$(this).dialog("destroy");
 				$("#newFileMetaContainer").remove();
+				$.ui.dialog.prototype._focusTabbable=_focusTabbable;
 			}
 		});
 
