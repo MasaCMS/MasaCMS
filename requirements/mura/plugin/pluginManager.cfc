@@ -144,6 +144,8 @@ select * from rsScripts2
 select * from rsScripts order by loadPriority
 </cfquery>
 
+
+<cflock name="loadPluginsBlock#application.instanceID#" type="exclusive" timeout="200">
 <cfif not variables.eventHandlersLoaded>
 	<cfloop query="variables.rsScripts">
 		<cfset arrayAppend(variables.eventHandlers,variables.rsScripts.currentrow)>
@@ -169,6 +171,7 @@ select * from rsScripts order by loadPriority
 	</cfloop>
 	<cfset variables.eventHandlersLoaded=true>
 </cfif>
+</cflock>
 
 
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsDisplayObjects')#">
