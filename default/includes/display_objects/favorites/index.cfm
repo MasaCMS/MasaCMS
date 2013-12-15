@@ -13,7 +13,7 @@
 <cfset variables.currentPageFavoriteID = "">
 </cfsilent>
 <cfoutput>
-<div id="svFavoritesList" class="mura-favoritesList">
+<div id="svFavoritesList" class="mura-favorites-list">
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.favorites')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
 	<!--- list the favorites --->
@@ -76,7 +76,7 @@
 </cfif>
 </div>
 <cfif len(getPersonalizationID())>
-<div id="svPageTools" class="mura-pageTools">
+<div id="svPageTools" class="mura-page-tools">
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.pagetools')#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif variables.favoriteExists>
 		<cfset variables.favoriteExistsStyle = "display:none;">

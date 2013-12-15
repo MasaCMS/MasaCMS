@@ -69,7 +69,7 @@
 	</cfquery>
 </cfsilent>
 <cfoutput>
-	<div class="svMailingList mura-mailingList #this.mailingListWrapperClass#" id="#createCSSID(variables.rslist.name)#">
+	<div class="svMailingList mura-mailing-list #this.mailingListWrapperClass#" id="#createCSSID(variables.rslist.name)#">
 		
 		<cfif variables.$.event('doaction') eq 'unsubscribe'>
 			<cfif variables.$.event("passedProtect")>

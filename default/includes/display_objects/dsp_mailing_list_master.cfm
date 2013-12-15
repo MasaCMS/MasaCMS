@@ -64,7 +64,7 @@
 	</cfquery>
 </cfsilent>
 <cfoutput>
-	<div id="svMasterEmail" class="mura-masterEmail #this.mailingListWrapperClass#">
+	<div id="svMasterEmail" class="mura-master-email #this.mailingListWrapperClass#">
 		<cfif variables.$.event('doaction') eq 'masterSubscribe'>
 			<cfif variables.$.event("passedProtect")>
 				<p class="#this.mailingListSuccessClass#">#variables.$.rbKey('mailinglist.selectionssaved')#</p>

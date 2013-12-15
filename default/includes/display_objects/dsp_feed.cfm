@@ -105,7 +105,7 @@
 	
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
-				<div class="mura-syndLocal mura-feed mura-index #this.localIndexWrapperClass# #variables.feedBean.getCssClass()#" id="#variables.cssID#">
+				<div class="mura-synd-local mura-feed mura-index #this.localIndexWrapperClass# #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<cfif variables.feedBean.getDisplayName()>
 						<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 					</cfif>
@@ -145,7 +145,7 @@
 		</cfsilent>
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
-				<div class="mura-syndRemote mura-index mura-feed #this.remoteFeedWrapperClass# #variables.feedBean.getCssClass()#" id="#variables.cssID#">
+				<div class="mura-synd-remote mura-index mura-feed #this.remoteFeedWrapperClass# #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#variables.$.getHeaderTag('subHead1')#>
 					<!--- UL MARKUP --->
 					<cfif variables.$.getListFormat() eq 'ul'>

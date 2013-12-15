@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif variables.rs.recordcount>
 
 <cfoutput>
-<div class="svCatSummary svIndex mura-catSummary mura-index #this.navWrapperClass#">
+<div class="svCatSummary svIndex mura-cat-summary mura-index #this.navWrapperClass#">
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.categories')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#"><cfloop query="variables.rs">
 	<cfsilent>

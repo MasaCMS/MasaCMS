@@ -84,7 +84,7 @@
 </cfif>
 </cfsilent>
 <cfoutput>
-<nav id="svCalendarNav" class="mura-calendar mura-calendarNav #this.navCalendarWrapperClass# ">
+<nav id="svCalendarNav" class="mura-calendar mura-calendar-nav #this.navCalendarWrapperClass# ">
 <cfset navTools.setParams(navMonth,navDay,navYear,navID,navPath,navType) />
 #navTools.dspMonth()#
 </nav>
