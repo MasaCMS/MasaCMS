@@ -603,17 +603,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arrayLen(pluginEventMappings)>
-	<cfoutput>
-	<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-	<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
-	<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
-	<cfset tabList=listAppend(tabList,tabID)>
-	<cfset pluginEvent.setValue("tabList",tabLabelList)>
-	<div id="#tabID#" class="tab-pane fade">
-		#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
-	</div>
-	</cfloop>
-	</cfoutput>
+		<cfoutput>
+		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
+			<cfif len(trim(renderedEvent))>
+				<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+				<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+				<cfset tabList=listAppend(tabList,tabID)>
+				<cfset pluginEvent.setValue("tabList",tabLabelList)>
+				<div id="#tabID#" class="tab-pane fade">
+					#renderedEvent#
+				</div>
+			</cfif>
+		</cfloop>
+		</cfoutput>
 	</cfif>
 
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
