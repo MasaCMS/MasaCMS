@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rs=application.feedManager.getFeeds($.event('siteID'),'Local',true,true)/>
 <cfset port=application.configBean.getServerPort() />
-<table name="svRssFeedsList" id="svRssFeedsList">
+<table name="svRssFeedsList" id="svRssFeedsList" class="mura-rss-feeds-list">
 	<thead>
 		<tr>
 			<cfoutput><th colspan="5">#$.rbKey('feedtable.rssfeeds')#</th></cfoutput>

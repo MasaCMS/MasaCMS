@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <cfif variables.rsSection.recordcount and variables.rsFeatures.recordcount>
-<div id="#variables.cssID#" class="#this.featuresWrapperClass#">
+<div id="#variables.cssID#" class="mura-synd-local mura-index #this.featuresWrapperClass#">
 <#variables.$.getHeaderTag('subHead1')#>#variables.rsSection.menutitle#</#variables.$.getHeaderTag('subHead1')#>
 <cfloop query="variables.rsFeatures">
 		<cfsilent>

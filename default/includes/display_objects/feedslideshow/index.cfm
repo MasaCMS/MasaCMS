@@ -89,11 +89,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  </cfsilent>
 	  	<cfif variables.iterator.hasNext()>
 	  	<cfoutput>
-	  	<div class="svSlideshow <cfif this.generalWrapperClass neq "">#this.generalWrapperClass#</cfif>" id="#variables.cssID#">
+	  	<div class="svSlideshow mura-slideshow <cfif this.generalWrapperClass neq "">#this.generalWrapperClass#</cfif>" id="#variables.cssID#">
 		 	<cfif variables.feedBean.getDisplayName()>
 		       <#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 			</cfif>
-	  		<div class="svSlides cycle-slideshow" data-cycle-slides="dl" data-cycle-pager=".svPager" data-cycle-pager-template="<li><a href='##'>{{slideNum}}</a></li>" data-cycle-swipe="true" data-cycle-pause-on-hover="true"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageStyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
+	  		<div class="svSlides mura-slides cycle-slideshow" data-cycle-slides="dl" data-cycle-pager=".mura-pager" data-cycle-pager-template="<li><a href='##'>{{slideNum}}</a></li>" data-cycle-swipe="true" data-cycle-pause-on-hover="true"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageStyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
 
 				#variables.$.dspObject_Include(
 					thefile='dsp_content_list.cfm',
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)#
 
 			</div>
-			<ol class="svPager"></ol>
+			<ol class="mura-pager"></ol>
 		</div>
 		</cfoutput>
 		<cfelse>

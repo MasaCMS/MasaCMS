@@ -422,20 +422,23 @@ select * from rsSubTypes where subType <> 'Default'
     </div>
 </div>		
 </div>
-	</cfoutput>
-	<cfif arrayLen(pluginEventMappings)>
+</cfoutput>
+<cfif arrayLen(pluginEventMappings)>
 	<cfoutput>
 	<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-	<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
-	<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
-	<cfset tabList=listAppend(tabList,tabID)>
-	<cfset pluginEvent.setValue("tabList",tabLabelList)>
-	<div id="#tabID#" class="tab-pane fade">
-		#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
-	</div>
+		<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
+		<cfif len(trim(renderedEvent))>
+			<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+			<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+			<cfset tabList=listAppend(tabList,tabID)>
+			<cfset pluginEvent.setValue("tabList",tabLabelList)>
+			<div id="#tabID#" class="tab-pane fade">
+				#renderedEvent#
+			</div>
+		</cfif>
 	</cfloop>
 	</cfoutput>
-	</cfif>
+</cfif>
 </cfsavecontent>	
 <cfoutput>	
 

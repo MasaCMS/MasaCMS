@@ -57,13 +57,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardPrimaryTop',rc.siteid)>
 <cfif arrayLen(eventMappings)>
-<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
-<div<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-	#$.renderEvent(eventName='onDashboardPrimaryTop',index=i)#
-</div>
-<cfset started=true>
-</cfloop>
+	<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+		<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryTop',index=i)>
+		<cfif len(trim(renderedEvent))>
+			<div<cfif started> class="divide"</cfif>>
+				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+				#$.renderEvent(eventName='onDashboardPrimaryTop',index=i)#
+			</div>
+			<cfset started=true>
+		</cfif>
+	</cfloop>
 </cfif>
 
 <cfif application.configBean.getSessionHistory() >	
@@ -120,15 +123,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset started=true>
 </cfif>
 
-<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardPrimaryBottom',rc.siteid)>
 <cfif arrayLen(eventMappings)>
-<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
-<div class="divide">
-	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-	#$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)#
-</div>
-</cfloop>
-<cfset started=true>
+	<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+		<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)>
+		<cfif len(trim(renderedEvent))>
+			<div<cfif started> class="divide"</cfif>>
+				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+				#$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)#
+			</div>
+			<cfset started=true>
+		</cfif>
+	</cfloop>
 </cfif>
 
 </div>
@@ -158,13 +163,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardSideBarTop',rc.siteid)>
 <cfif arrayLen(eventMappings)>
-<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
-<div class="divide">
-	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-	#$.renderEvent(eventName='onDashboardSideBarTop',index=i)#
-</div>
-</cfloop>
-<cfset started=true>
+	<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+		<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarTop',index=i)>
+		<cfif len(trim(renderedEvent))>
+			<div class="divide">
+				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+				#$.renderEvent(eventName='onDashboardSideBarTop',index=i)#
+			</div>
+		</cfif>
+	</cfloop>
 </cfif>
 
 <div id="siteSummary" class="well">
@@ -202,14 +209,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardSideBarBottom',rc.siteid)>
 <cfif arrayLen(eventMappings)>
-<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
-<div class="divide">
-	<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-	#$.renderEvent(eventName='onDashboardSideBarBottom',index=i)#
-</div>
-</cfloop>
-<cfset started=true>
+	<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
+		<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarBottom',index=i)>
+		<cfif len(trim(renderedEvent))>
+			<div class="divide">
+				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
+				#$.renderEvent(eventName='onDashboardSideBarBottom',index=i)#
+			</div>
+		</cfif>
+	</cfloop>
 </cfif>
-
 </div>
 </cfoutput>

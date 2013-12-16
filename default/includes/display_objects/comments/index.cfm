@@ -242,7 +242,7 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
-		<div id="svComments" class="#this.commentsWrapperClass#">
+		<div id="svComments" class="mura-comments #this.commentsWrapperClass#">
 			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>

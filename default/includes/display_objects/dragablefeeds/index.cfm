@@ -81,7 +81,7 @@
 <cfoutput>
 	<div class="#this.draggableBoxWrapperClass#">
 		<div class="#this.draggableBoxHeaderClass#">
-			<div id="svRSSFeeds" class="#this.draggableBoxRSSWrapperClass#">
+			<div id="svRSSFeeds" class="mura-rss-feeds #this.draggableBoxRSSWrapperClass#">
 				<cfif not len(getPersonalizationID()) and application.settingsManager.getSite($.event('siteID')).getExtranetPublicReg() eq 1>
 					<p class="rssBlurb"><a class="#this.draggableBoxHeaderButtonClass#" href="#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p>
 				</cfif>
