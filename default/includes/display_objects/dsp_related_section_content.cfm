@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.iterator.setQuery(rsFeatures)>
 	<cfset variables.cssID=variables.$.createCSSid(variables.rsSection.menuTitle)>
 </cfsilent>
-<div id="#variables.cssID#" class="svRelSecContent svIndex">
+<div id="#variables.cssID#" class="svRelSecContent svIndex mura-rel-sec-content mura-index">
 	<#variables.$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif not structIsEmpty(objectparams)>
 		#variables.$.dspObject_Include(

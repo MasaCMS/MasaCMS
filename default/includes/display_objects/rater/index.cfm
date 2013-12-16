@@ -87,7 +87,7 @@
 		<cfset variables.rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
 	</cfsilent>
 	<cfoutput>
-		<div id="svRatings" class="#this.raterObjectWrapperClass#">	
+		<div id="svRatings" class="mura-ratings #this.raterObjectWrapperClass#">	
 			<!--- Rater --->
 			<div id="rateIt" class="#this.raterWrapperClass#">
 				<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.ratethis')#</#variables.$.getHeaderTag('subHead1')#>				

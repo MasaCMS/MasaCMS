@@ -96,7 +96,7 @@
 
 	<#variables.$.getHeaderTag('headline')#>#variables.$.rbKey('search.searchresults')#</#variables.$.getHeaderTag('headline')#>
 
-	<div id="svSearchResults" class="#this.searchResultWrapperClass#">
+	<div id="svSearchResults" class="mura-search-results #this.searchResultWrapperClass#">
 		<div class="#this.searchResultInnerClass#">
 			<cfset variables.args=arrayNew(1)>
 			<cfset variables.args[1]=session.rsSearch.recordcount>
@@ -142,7 +142,7 @@
 
 			<!--- RESULTS --->
 			<div class="#this.searchResultsRowClass#">
-				<div id="svPortal" class="#this.searchReultsListClass#">
+				<div id="svPortal" class="mura-index #this.searchReultsListClass#">
 					#variables.$.dspObject_Include(
 						thefile='dsp_content_list.cfm'
 						, fields=variables.contentListFields
@@ -176,7 +176,7 @@
 		<!--- SEARCH AGAIN --->
 		<div class="#this.searchAgainRowClass#">
 			<div class="#this.searchAgainInnerClass#">
-				<form id="svSearchAgain" name="searchForm" class="#this.searchAgainFormClass#" role="search">
+				<form id="svSearchAgain" name="searchForm" class="mura-search-again #this.searchAgainFormClass#" role="search">
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
 					<div class="#this.searchAgainInputWrapperClass#">
 						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#HTMLEditFormat(request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">

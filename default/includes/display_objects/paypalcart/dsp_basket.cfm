@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<div id="svPayPalCart">
+<div id="svPayPalCart" class="mura-paypal-cart">
 <cfif getCart.recordcount> 
 <cfoutput>
 <form action="" onSubmit="return validate(this)" method="post">
