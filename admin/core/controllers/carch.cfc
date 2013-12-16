@@ -200,7 +200,7 @@
 	<cfif arguments.rc.moduleID eq '00000000000000000000000000000000000'>
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
-	<cfset arguments.rc.rsRelatedContent=variables.contentManager.getRelatedContent(arguments.rc.siteid, arguments.rc.contenthistID) />
+	
  	
 	<!--- This is here for backward plugin compatibility--->
 	<cfset appendRequestScope(arguments.rc)>
