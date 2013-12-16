@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <link rel="stylesheet" href="#$.globalConfig('assetPath')#/css/style.css" type="text/css" media="all" />
 </head>
 
-<body id="svSendToFriend">
+<body id="svSendToFriend" class="mura-send-to-friend">
 <cfif $.currentUser().isLoggedIn()>
 <cfform name="sendtofriend" method="post" action="sendlink.cfm">
 <fieldset>

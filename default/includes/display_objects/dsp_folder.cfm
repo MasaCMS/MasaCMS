@@ -114,7 +114,7 @@
 
 <cfif variables.iterator.getRecordcount()>
 	<cfoutput>
-	<div id="svFolder" class="#this.folderWrapperClass#">
+	<div id="svFolder" class="mura-index #this.folderWrapperClass#">
 		<cfsilent>
 			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,Credits">

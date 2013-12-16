@@ -64,7 +64,7 @@
 	</cfquery>
 </cfsilent>
 <cfoutput>
-	<div id="svMasterEmail" class="#this.mailingListWrapperClass#">
+	<div id="svMasterEmail" class="mura-master-email #this.mailingListWrapperClass#">
 		<cfif variables.$.event('doaction') eq 'masterSubscribe'>
 			<cfif variables.$.event("passedProtect")>
 				<p class="#this.mailingListSuccessClass#">#variables.$.rbKey('mailinglist.selectionssaved')#</p>
@@ -93,7 +93,7 @@
 					</div>
 
 					<!--- Last Name --->
-					<div class="form-group req">
+					<div class="#this.mailingListFormGroupWrapperClass# req">
 						<label for="txtNameLast" class="#this.mailingListFormLabelClass#">
 							#variables.$.rbKey('mailinglist.lname')# 
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
@@ -104,7 +104,7 @@
 					</div>
 
 					<!--- Company --->
-					<div class="form-group">
+					<div class="#this.mailingListFormGroupWrapperClass#">
 							<label for="txtCompany" class="#this.mailingListFormLabelClass#">#variables.$.rbKey('mailinglist.company')#</label>
 							<div class="#this.mailingListFormFieldWrapperClass#">
 								<input id="txtCompany" class="#this.mailingListFormInputClass#" type="text" maxlength="50" name="company" />
@@ -112,7 +112,7 @@
 					</div>
 
 					<!--- Email --->
-					<div class="form-group req">
+					<div class="#this.mailingListFormGroupWrapperClass# req">
 						<label for="txtEmail" class="#this.mailingListFormLabelClass#">#variables.$.rbKey('mailinglist.email')#<ins> (#variables.$.rbKey('mailinglist.required')#)</ins></label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
 							<input id="txtEmail" class="#this.mailingListFormInputClass#" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#" />

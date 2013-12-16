@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-	<div id="svCalendar" class="#this.calendarListWrapperClass#">
+	<div id="svCalendar" class="mura-calendar #this.calendarListWrapperClass#">
 		<table>
 			<tr>
 				<th id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth">&laquo;</a></th>
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif variables.iterator.getRecordcount()>
 	<cfoutput>
-	<div id="svFolder" class="svIndex">
+	<div id="svFolder" class="mura-index">
 		<cfsilent>
 			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">

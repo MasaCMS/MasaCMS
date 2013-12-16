@@ -98,7 +98,7 @@ form {
 
 	li {
 
-		&#svCaptcha {
+		&.mura-captcha {
 			width: auto;
 			margin-left: 27%;
 			padding-left: 7px;
@@ -108,7 +108,7 @@ form {
 				padding: 0 !important;
 				border: 0 !important;
 			}
-		} // end svCaptcha
+		} // end mura-captcha
 	}
 
 
@@ -152,7 +152,7 @@ form {
 
 // Comments
 // TODO: Add in UL and HTML5 options?
-.mura-Comments {
+.mura-comments {
 	clear: both;
 
 	dl {
@@ -214,12 +214,13 @@ form {
 
 
 // Advertisements
-div.svAd { margin: 0 0 2em; }
+div.mura-ad { margin: 0 0 2em; }
 //end Advertisements
 
 
 // Asset
 // TODO: Convert to Font Awesome
+/*
 a#svAsset {
 	background-position: 0 50%;
 	background-repeat: no-repeat;
@@ -253,10 +254,12 @@ a#svAsset {
 	&.xls { background-image: url(../images/file-icons/xls.gif); }
 	&.zip { background-image: url(../images/file-icons/zip.gif); }
 }
+*/
 //end Asset
 
 
 // Asset Detail
+/*
 #svAssetDetail {
 
 	&.image #svAsset {
@@ -273,6 +276,7 @@ a#svAsset {
 		}
 	}
 }
+*/
 //end Asset Detail
 
 
@@ -289,7 +293,7 @@ a#svAsset {
 
 // Calendar
 // Commented out for Bootstrap ease
-.mura-Calendar {
+.mura-calendar {
 	text-align: center;
 
 	table { width: 100%; }
@@ -359,7 +363,7 @@ a#svAsset {
 
 
 // Calendar Nav
-.mura-CalendarNav {
+.mura-calendar-nav {
 
 	th {
 		font-size: .9em;
@@ -506,16 +510,18 @@ a#svAsset {
 
 
 // FLV Player
+/*
 table.svFlvPlayer td {
 	border: 0;
 	padding: 0;
 }
+*/
 //end FlvPlayer
 
 
 // Gallery
 // TODO: Strip any layout rules, and leave that up to the theme's scaffolding.
-.mura-Gallery {
+.mura-gallery {
 
 	ul {
 		list-style: none;
@@ -584,7 +590,7 @@ table.svFlvPlayer td {
 }
 //end Gallery
 
-.mura-Index  {
+.mura-index  {
 	margin: 2em 0;
 
 	dl {
@@ -645,8 +651,8 @@ table.svFlvPlayer td {
 
 
 // Side Index
-.sidebar .mura-Index,
-aside .mura-Index {
+.sidebar .mura-index,
+aside .mura-index {
 	margin: 0 0 2em 0;
 
 	dl.first,
@@ -673,7 +679,7 @@ aside .mura-Index {
 
 
 // Content Index
-.content .mura-Index, section .mura-Index {
+.content .mura-index, section .mura-index {
 	border-top: 1px solid #ccc;
 	padding-top: 1em;
 }
@@ -697,12 +703,12 @@ aside .hasImage {
 
 
 // Slideshow
-.svSlideshow {
+mura-slideshow {
 	clear: both;
 	position: relative;
 	margin: 0 0 2.2em;
 
-	.svSlides {
+	.mura-slides {
 		overflow: visible;
 		z-index: 1;
 
@@ -730,7 +736,7 @@ aside .hasImage {
 
 
 // Pager
-ol.svPager {
+ol.mura-pager {
 	margin: 0;
 	padding: 0;
 	position: relative;
@@ -814,7 +820,7 @@ a.rss {
 
 
 // RSS Feeds List
-table#svRssFeedsList {
+table.mura-rss-feeds-list {
 	td { vertical-align: middle; }
 
 	img {
@@ -826,7 +832,7 @@ table#svRssFeedsList {
 
 
 // Session Tools
-#svSessionTools {
+.mura-session-tools {
 	margin-bottom: 1em;
 
 	p#welcome {
@@ -838,7 +844,7 @@ table#svRssFeedsList {
 
 
 // Site Map
-ul#svSiteMap {
+ul.mura-site-map {
 	list-style: none;
 	margin: 1em 0;
 
@@ -862,11 +868,11 @@ ul#svSiteMap {
 } //end Site Map
 
 // Tag Cloud (#svTagCloud left in for backward-compatibility)
-#svTagCloud, .mura-TagCloud {
+#svTagCloud, .mura-tag-cloud {
 	padding: 1em 0;
 }
 
-#svTagCloud ol, .mura-TagCloud ol {
+#svTagCloud ol, .mura-tag-cloud ol {
 	margin: 0 0 2em;
 	-webkit-margin-before:0;
 	-webkit-margin-after: 0;
@@ -891,7 +897,7 @@ ul#svSiteMap {
 
 
 // Page Tools
-#svPageTools {
+.mura-page-tools {
 	margin: 0 0 2em;
 	padding: 0;
 
@@ -952,13 +958,14 @@ ul#favoriteList {
 
 
 // Mailing Lists
-.svMailingList {}
-#svMasterEmail {}
+.mura-mailing-list {}
+.mura-master-email {}
 //end Mailing Lists
 
 
 
 // Search
+/*
 #svSearchForm {
 	border-bottom: 1px dotted #ccc;
 	margin: 0 0 1em;
@@ -976,8 +983,9 @@ ul#favoriteList {
 		width: auto;
 	}
 }
+*/
 
-.mura-SearchResults {
+.mura-search-results {
 	.submit {
 		float: none;
 	}
@@ -991,7 +999,7 @@ ul#favoriteList {
 	}
 }
 
-#svSearchAgain {
+.mura-search-again {
 	p {
 		font-weight: bold;
 		margin-bottom: .5em;
@@ -1010,7 +1018,7 @@ span.highlight {
 
 
 // Send to a Friend
-#svSendToFriend {
+mura-send-to-friend {
 	background: #fff;
 	padding: 1em 2em 0;
 
@@ -1136,11 +1144,11 @@ aside .rating {
 	left: -9999px;
 	}
 
-.mura-Index .credits {
+.mura-index .credits {
 	color: #666;
 	}
 
-.mura-Index .comments {
+.mura-index .comments {
 	padding-left: 13px !important;
 	background: url(../images/icon_comments.png) no-repeat 0 50%;
 	}

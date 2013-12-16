@@ -81,11 +81,7 @@
 		<cfargument name="$" hint="mura scope" />
 		<cfset var str = '' />
 		<cfsavecontent variable="str"><cfoutput>
-			<!--- 
-			Note: some classes in the theme target these elements. 
-			Make sure to update those if you are going to change them here 
-			--->
-			<!--- heading vars --->
+			// heading vars
 			config.format_h1 = { element : 'h2' };
 			config.format_h2 = { element : 'h3' };
 			config.format_h3 = { element : 'h4' };
@@ -138,15 +134,15 @@
 			// Use these variables to pass-in specific classes without having to create custom versions
 			
 			// calendar/dsp_showMonth.cfm
-			 renderer.calendarWrapperClass="mura-Calendar";
+			 renderer.calendarWrapperClass="";
 			 renderer.calendarTableClass="table table-bordered";
 			 //renderer.calendarTableHeaderClass="";
 			
 			// calendar/dspList.cfm
-			 renderer.calendarListWrapperClass="mura-Calendar";
+			 renderer.calendarListWrapperClass="";
 			
 			// comments/index.cfm
-			 renderer.commentsWrapperClass="mura-Comments";
+			 renderer.commentsWrapperClass="";
 			 renderer.commentFormWrapperClass="well";
 			 renderer.commentFormClass="form-horizontal";
 			 renderer.commentNewClass="btn btn-default";
@@ -183,7 +179,7 @@
 			// draggablefeeds/index.cfm
 			 renderer.draggableBoxWrapperClass="row";
 			 renderer.draggableBoxHeaderClass="col-lg-12";
-			 renderer.draggableBoxRSSWrapperClass="mura-RSSFeeds";
+			 renderer.draggableBoxRSSWrapperClass="";
 			 renderer.draggableBoxHeaderButtonClass="btn btn-default";
 			 //renderer.draggableBoxRSSeditFormClass="";
 			 renderer.draggableBoxAddFeedWrapperClass="well clearfix";
@@ -217,10 +213,10 @@
 			 renderer.contentListItemImageLinkClass="";
 			
 			// dsp_folder.cfm
-			renderer.folderWrapperClass="mura-Index";
+			renderer.folderWrapperClass="";
 			
 			// dsp_edit_profile.cfm
-			 renderer.editProfileWrapperClass="mura-EditProfile";
+			 renderer.editProfileWrapperClass="";
 			 renderer.editProfileFormClass="form-horizontal";
 			 renderer.editProfileFormGroupWrapperClass="form-group";
 			 renderer.editProfileFieldLabelClass="control-label col-lg-3";
@@ -239,21 +235,21 @@
 			 renderer.emailDropdownSelectClass="dropdown";
 			
 			// dsp_event_reminder_form.cfm
-			 renderer.eventReminderFormWrapperClass="mura-EventReminderForm";
+			 renderer.eventReminderFormWrapperClass="";
 			 renderer.eventReminderFormClass="well";
 			 renderer.eventReminderFieldWrapperClass="";
 			 renderer.eventReminderFormLabelsClass="control-label";
 			 renderer.eventReminderSubmitClass="btn btn-default";
 			
 			// dsp_features.cfm
-			 renderer.featuresWrapperClass="mura-SyndLocal mura-Index clearfix";
+			 renderer.featuresWrapperClass="clearfix";
 			
 			// dsp_feed.cfm
-			 renderer.localIndexWrapperClass="mura-SyndLocal mura-Feed mura-Index clearfix";
-			 renderer.remoteFeedWrapperClass="mura-SyndRemote mura-Index mura-Feed clearfix";
+			 renderer.localIndexWrapperClass="clearfix";
+			 renderer.remoteFeedWrapperClass="clearfix";
 			
 			// dsp_login.cfm
-			 renderer.loginWrapperClass="mura-LoginForm";
+			 renderer.loginWrapperClass="";
 			 renderer.loginWrapperInnerClass="row";
 			 renderer.loginErrorMessageClass="alert alert-danger";
 			 renderer.loginFormClass="form-horizontal form-signin";
@@ -285,7 +281,7 @@
 			 renderer.mailingListSubmitClass="submit btn btn-default";
 			
 			// dsp_nextN.cfm
-			 renderer.nextNWrapperClass="mura-NextN";
+			 renderer.nextNWrapperClass="";
 			 renderer.nextNInnerClass="row";
 			
 			// dsp_search_form.cfm
@@ -293,14 +289,14 @@
 			 renderer.searchFormInputWrapperClass="input-group";
 			 renderer.searchFormInputClass="form-control";
 			 renderer.searchFormSubmitWrapperClass="input-group-btn";
-			 renderer.searchFormSubmitClass="btn btn-default";
+			 renderer.searchFormSubmitClass="btn btn-default fa fa-search";
 			
 			// dsp_search_results.cfm
-			 renderer.searchResultWrapperClass="mura-SearchResults";
+			 renderer.searchResultWrapperClass="";
 			 renderer.searchResultInnerClass="row";
 			 renderer.searchResultsRowClass="row";
 			 renderer.searchResultsMoreResultsRowClass="row";
-			 renderer.searchReultsListClass="mura-Index";
+			 renderer.searchReultsListClass="";
 			 renderer.searchReultsPagerClass="pager";
 			 renderer.searchAgainRowClass="row";
 			 renderer.searchAgainInnerClass="col-md-8";
@@ -308,7 +304,7 @@
 			 renderer.searchAgainInputWrapperClass="input-group";
 			 renderer.searchAgainFormInputClass="form-control";
 			 renderer.searchAgainButtonWrapperClass="input-group-btn";
-			 renderer.searchAgainSubmitClass="btn btn-default";
+			 renderer.searchAgainSubmitClass="btn btn-default fa fa-search";
 			
 			// dsp_user_tools.cfm
 			 renderer.userToolsLoginWrapperClass="well clearfix";
@@ -322,8 +318,8 @@
 			 renderer.userToolsLoginFormSubmitClass="btn btn-default";
 			 renderer.userToolsNotRegisteredLinkClass="btn btn-primary";
 			 renderer.userToolsWrapperClass="clearfix";
-			 renderer.userToolsEditProfileLinkClass="btn btn-default";
-			 renderer.userToolsLogoutLinkClass="btn btn-default";
+			 renderer.userToolsEditProfileLinkClass="btn btn-default fa fa-user";
+			 renderer.userToolsLogoutLinkClass="btn btn-default fa fa-sign-out";
 			
 			// formbuilder/dsp_form.cfm
 			 renderer.formBuilderFieldWrapperClass="form-group";
@@ -344,22 +340,22 @@
 			 renderer.formBuilderCheckboxClass="checkbox";
 			
 			// gallery/index.cfm
-			 renderer.galleryWrapperClass="mura-Gallery";
+			 renderer.galleryWrapperClass="";
 			 renderer.galleryULClass="clearfix";
 			 renderer.galleryThumbnailClass="thumbnail";
 			
 			// nav/calendarNav/index.cfm
-			renderer.navCalendarWrapperClass="mura-Calendar mura-CalendarNav";
+			renderer.navCalendarWrapperClass="";
 			
 			// nav/calendarNav/navTools.cfc
 			 renderer.navCalendarTableClass="table table-bordered";
 			
 			// nav/dsp_sequential.cfm
-			 renderer.navSequentialWrapperClass="mura-SequentialNav";
+			 renderer.navSequentialWrapperClass="";
 			 renderer.navSequentialInnerClass="row";
 			
 			// nav/dsp_tag_cloud.cfm
-			 renderer.tagCloudWrapperClass="mura-TagCloud";
+			 renderer.tagCloudWrapperClass="";
 			
 			// navArchive
 			 //renderer.navArchiveWrapperClass="";
@@ -367,7 +363,7 @@
 			
 			
 			// rater/index.cfm
-			 renderer.raterObjectWrapperClass="row mura-Ratings clearfix";
+			 renderer.raterObjectWrapperClass="row clearfix";
 			 renderer.raterWrapperClass="col-lg-12";
 			 renderer.avgRatingWrapperClass="col-lg-12";
 			
