@@ -1954,7 +1954,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.lastupdatebyid, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL, tcontent.subtype, 
-	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid,
+	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid, tcr.contentid as relatedFromContentID,
 	tcr.relatedContentSetID, tcr.orderNo
 
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
@@ -1966,7 +1966,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			left join tclassextendrcsets tcrs on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
 		</cfif>
 		
-		where tcr.relatedID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.reverseContentID#"/>
+		where tcr.relatedID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.reverseContentID#" list="true"/>)
 		
 		<cfif len(arguments.name)>
 			and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
@@ -1985,7 +1985,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			left join tclassextendrcsets tcrs on (tcr.relatedContentSetID=tcrs.relatedContentSetID)
 		</cfif>
 
-		where tcr.contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#"/>
+		where tcr.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" list="true"/>)
 
 		<cfif len(arguments.name)>
 			and (tcrs.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#"/>
