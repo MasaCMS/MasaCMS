@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfoutput>
-<div id="svCalendar" class="#this.calendarWrapperClass#">
+<div id="svCalendar" class="mura-calendar #this.calendarWrapperClass#">
 <table class="#this.calendarTableClass#">
 <thead>
 <tr>
