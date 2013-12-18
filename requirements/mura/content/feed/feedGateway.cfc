@@ -104,6 +104,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" type="boolean" default="false" />
 	<cfargument name="applyPermFilter" required="true" type="boolean" default="false" />
 	<cfargument name="countOnly" required="true" type="boolean" default="false" />
+	<cfargument name="menuType" default="default"/>
+	<cfargument name="from" required="true" default="#now()#">
+	<cfargument name="to" required="true" default="#now()#">
 	
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
@@ -757,7 +760,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not arguments.countOnly>
-		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsFeed,menuType="default",menuDate=nowAdjusted) />
+		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,from=arguments.from,to=arguments.to) />
 	<cfelse>
 		<cfreturn rsFeed>
 	</cfif>

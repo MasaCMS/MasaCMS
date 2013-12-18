@@ -123,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- Utilities to support iframe communication -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<script type="text/javascript">
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
