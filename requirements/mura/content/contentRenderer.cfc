@@ -1807,8 +1807,8 @@ Display Objects
 			</cfif>
 		</cfif>
 			
-		<cfset variables.$.loadShadowBoxJS()>
-		<!---<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>--->
+		<!---<cfset variables.$.loadShadowBoxJS()>
+		<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>--->
 			
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & variables.$.content("contentID")>
@@ -2870,9 +2870,10 @@ Display Objects
 					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>
+				<!---
 				<cfif getJSLib() eq "prototype">
 					<cfset loadShadowboxJS() />
-				</cfif>
+				</cfif>--->
 				<cfif this.showEditableObjects>
 					<cfsavecontent variable="headerStr">
 					<cfoutput>
