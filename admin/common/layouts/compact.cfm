@@ -59,8 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
 </cfif>
 </cfsilent>
-<cfoutput>
-<!DOCTYPE html>
+<cfoutput><cfcontent reset="true"><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
@@ -179,10 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<body id="#rc.originalcircuit#" class="compact">
 		<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
 		<cfinclude template="includes/dialog.cfm">
-		<div class="main row-fluid">#body#</div>
+		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
 		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 	</body>
-</html>
+</html></cfprocessingdirective>
 </cfoutput>

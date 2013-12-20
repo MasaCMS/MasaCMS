@@ -162,13 +162,28 @@
 						</cfif>
 						<dl id="comment-#comment.getCommentID()#">
 							<dt>
-								<cfif len(commenter.getURL())>
-									<a href="#commenter.getURL()#" target="_blank">#htmleditformat(commenter.getName())#</a>
+								<cfif len(commenter.getName())>
+									<cfset local.commenterName=commenter.getName()>
 								<cfelse>
-									#htmleditformat(commenter.getName())#
+									<cfset local.commenterName=comment.getName()>
 								</cfif>
-								<cfif isEditor and len(commenter.getEmail())>
-									<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(commenter.getEmail()),'@')#','#listlast(HTMLEditFormat(commenter.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+								<cfif len(commenter.getURL())>
+									<cfset local.commenterURL=commenter.getURL()>
+								<cfelse>
+									<cfset local.commenterURL=comment.getURL()>
+								</cfif>
+								<cfif len(commenter.getEmail())>
+									<cfset local.commenterEmail=commenter.getEmail()>
+								<cfelse>
+									<cfset local.commenterEmail=comment.getEmail()>
+								</cfif>
+								<cfif len(local.commenterURL)>
+									<a href="#local.commenterURL#" target="_blank">#htmleditformat(local.commenterName)#</a>
+								<cfelse>
+									#htmleditformat(local.commenterName)#
+								</cfif>
+								<cfif isEditor and len(local.commenterEmail)>
+									<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 								</cfif>
 								<cfif isEditor>
 									<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
@@ -178,13 +193,13 @@
 										 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
 									</cfif>
 									 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
-									 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
+									<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
 								</cfif>
 							</dt>
 							<cfif len(avatar)>
 								<dd class="gravatar"><img src="#avatar#"></dd>
 							<cfelse>
-								<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(commenter.getEmail())))#" /></dd>
+								<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
 							<cfif len(comment.getParentID())>
 								<dd class="inReplyTo">
