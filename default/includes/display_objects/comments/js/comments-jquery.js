@@ -72,6 +72,7 @@ $(function(){
 			data=setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#commentsPage').html(data.htmloutput);
+				jQuery('#commentsSort').show();
 			} else {
 				jQuery('#commentsSort').hide();
 			}
