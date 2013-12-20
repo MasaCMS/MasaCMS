@@ -247,7 +247,7 @@
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
 			
-			<div id="commentsSort">
+			<div id="commentsSort" style="display:none">
 				<select id="sortDirectionSelector" name="sortDirection">
 					<option value="asc"<cfif variables.$.event('sortDirection') eq "asc"> selected</cfif>>Oldest - Newest</option>
 					<option value="desc"<cfif variables.$.event('sortDirection') eq "desc"> selected</cfif>>Newest - Oldest</option>
