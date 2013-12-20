@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset openGrouping=false />
 				<cfelseif len(param.getField())>
 					<cfset castfield="attributeValue">
-					tcontent.contentHistID IN (
+					tusers.userid IN (
 						select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity #tableModifier#
 						<cfif isNumeric(param.getField())>
 							where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
