@@ -75,7 +75,7 @@
 		//this.navDepthLimit=1000;
 		//this.navParentIdx=2;
 		//this.navGrandParentIdx=3;
-		//this.navDepthAjust=0;
+		//this.navDepthAdjust=0;
 		//this.navSelfIdx=1;
 		//this.jslib="jquery";
 		//this.jsLibLoaded=false;
