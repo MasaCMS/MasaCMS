@@ -187,6 +187,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "python", request.userAgent ) OR
 	 FindNoCase( "synapse", request.userAgent ) OR
 	 FindNoCase( "facebookexternalhit", request.userAgent ) OR
+	 FindNoCase( "TencentTraveler", request.userAgent ) OR
+	 FindNoCase( "bluedragon", request.userAgent ) OR
 	 Find( "spider", request.userAgent ))>
 	 
 	<!--- How long do session vars persist? --->
