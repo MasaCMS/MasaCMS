@@ -306,11 +306,7 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 </cfcase>
 </cfswitch>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-update tsettings set 
-cacheFreeMemoryThreshold = 0,
-cacheCapacity=0
-</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set cacheFreeMemoryThreshold = 0,cacheCapacity=0</cfquery>
 </cfif>
 
 <cfswitch expression="#getDbType()#">

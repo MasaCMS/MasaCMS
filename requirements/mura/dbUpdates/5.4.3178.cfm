@@ -384,9 +384,7 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 			,NULL
 			,NULL
 			,NULL
-			,NULL
-			,0
-			,NULL
+			,NULL,0,NULL
 			,NULL
 			,NULL
 			,NULL
@@ -437,9 +435,7 @@ ALTER TABLE tsettings ADD hasChangesets NUMBER(3,0)
 </cfcase>
 </cfswitch>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-update tsettings set hasChangesets=0
-</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set hasChangesets=0</cfquery>
 
 </cfif>
 
@@ -464,7 +460,7 @@ select urltitle from tcontentcategories  where 0=1
 	ALTER TABLE tcontentcategories ADD filename [nvarchar](255) default NULL
 	</cfquery>
 </cfcase>
-<cfcase value="mysql">
+<cfcase value="mysql,nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD urltitle varchar(255) default NULL
 	</cfquery>

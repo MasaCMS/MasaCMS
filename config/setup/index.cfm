@@ -694,7 +694,7 @@ to your own modified versions of Mura CMS.
               <option value="">-- Select your Database Type --</option>
               <option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
               <option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
-              <!---<option value="nuodb" <cfif FORM.production_dbtype IS "nuodb">selected</cfif>>NuoDB</option>--->
+              <option value="nuodb" <cfif FORM.production_dbtype IS "nuodb">selected</cfif>>NuoDB</option>
               <option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
 			        <option value="postgresql" <cfif FORM.production_dbtype IS "postgresql">selected</cfif>>PostgreSQL</option>
             </select>

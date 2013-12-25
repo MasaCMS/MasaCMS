@@ -239,6 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set" output="false" access="public">
 	<cfargument name="data" type="any" required="true">
 	<cfset var prop="">
+
 	<cfif isQuery(arguments.data) and arguments.data.recordcount>
 		<cfloop list="#arguments.data.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.data[prop][1]) />

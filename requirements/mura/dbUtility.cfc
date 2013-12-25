@@ -554,9 +554,13 @@
 					<cfquery>
 						UPDATE #arguments.table# set #tempName#=#arguments.column# 
 					</cfquery>
-					<cfquery>
+					<cftry>
+						<cfquery>
 						ALTER TABLE #arguments.table# DROP COLUMN #arguments.column# 
 					</cfquery>
+					<cfcatch><cfdump var="#cfcatch#" abort></cfcatch>
+					</cftry>
+					
 					<cfquery>
 						ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif> 
 						<cfif not(not arguments.nullable and arguments.default eq 'null')>
@@ -932,6 +936,20 @@
 			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
 
+		<cfif variables.dbtype eq 'nuodb' and len(columnArgs.default) gte 2>
+			<cfif left(columnArgs.default,1) eq "'">
+				<cfset columnArgs.default=right(columnArgs.default,len(columnArgs.default)-1)>
+			</cfif>
+			<cfif right(columnArgs.default,1) eq "'">
+				<cfif len(columnArgs.default) eq 1>
+					<cfset columnArgs.default="">
+				<cfelse>
+					<cfset columnArgs.default=left(columnArgs.default,len(columnArgs.default)-1)>
+				</cfif>
+				<cfset columnArgs.default=mid(columnArgs.default,2,len(columnArgs.default)-1)>
+			</cfif>
+		</cfif>
+		
 		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>
 			<cfif columnArgs.nullable>
 				<cfset columnArgs.default='null'>
@@ -1142,7 +1160,7 @@
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
-		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
+		select * from rsCheck where lower(rsCheck.INDEX_NAME) like '%primary%'
 		or lower(rsCheck.INDEX_NAME) like 'pk_%'
 		or lower(rsCheck.INDEX_NAME) like '%_pkey'
 	</cfquery>
