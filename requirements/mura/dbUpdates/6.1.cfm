@@ -68,8 +68,11 @@
 	.addColumn(column="enableLockdown",datatype="varchar",length=255)
 	.addColumn(column="ExtranetPublicRegNotify",datatype="varchar",length=255)
 	.addColumn(column="customTagGroups",datatype="varchar",length=255)
-	.addColumn(column="siteid",datatype="varchar",length=25,nullable=false,default='')
-	.addPrimaryKey('siteid');
+	.addColumn(column="siteid",datatype="varchar",length=25,nullable=false,default='');
+
+	//writeDump(var=dbUtility.columns(),abort=true);
+
+	dbUtility.setTable("tsettings").addPrimaryKey('siteid');
 
 	dbUtility.setTable("tcontenttags")
 	.addColumn(column="taggroup",datatype="varchar",length=255);

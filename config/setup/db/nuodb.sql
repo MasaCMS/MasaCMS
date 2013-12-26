@@ -645,7 +645,8 @@ CREATE TABLE tsettings (
   mailserverSMTPPort varchar(5) default NULL,
   mailserverPOPPort varchar(5) default NULL,
   mailserverTLS varchar(5) default NULL, 
-  mailserverSSL varchar(5) default NULL
+  mailserverSSL varchar(5) default NULL,
+  PRIMARY KEY  (SiteID)
 ) ;
 
 
