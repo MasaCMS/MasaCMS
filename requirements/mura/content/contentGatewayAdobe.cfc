@@ -1908,7 +1908,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rsPublicSearch" dbtype="query">
 		select *
 		from rsPublicSearch 
-		order by sortpriority, sortdate desc
+		order by sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
 	</cfquery>
 	
 	<cfreturn rsPublicSearch />
