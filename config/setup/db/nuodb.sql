@@ -8,7 +8,7 @@ CREATE TABLE tadcampaigns (
   name varchar(50) default NULL,
   startDate timestamp default NULL,
   endDate timestamp default NULL,
-  isActive int default NULL,
+  isActive integer default NULL,
   notes clob,
   PRIMARY KEY  (campaignID)
 ) ;
@@ -26,9 +26,9 @@ CREATE TABLE tadcreatives (
   redirectURL varchar(200) default NULL,
   altText varchar(200) default NULL,
   notes clob,
-  isActive int default NULL,
-  height int default NULL,
-  width int default NULL,
+  isActive integer default NULL,
+  height integer default NULL,
+  width integer default NULL,
   textBody clob,
   PRIMARY KEY  (creativeID)
 ) ;
@@ -46,7 +46,7 @@ CREATE TABLE tadplacementdetails (
   detailID integer generated always as identity (detailID_seq),
   placementID char(35) NOT NULL default '',
   PlacementType char(35) NOT NULL default '',
-  PlacementValue int NOT NULL default 0,
+  PlacementValue integer NOT NULL default 0,
    PRIMARY KEY  (detailID)
 ) ;
 
@@ -63,10 +63,10 @@ CREATE TABLE tadplacements (
   endDate timestamp default NULL,
   costPerImp decimal(18,5) default NULL,
   costPerClick decimal(18,2) default NULL,
-  isExclusive int default NULL,
+  isExclusive integer default NULL,
   billable decimal(18,2) default NULL,
-  budget int default NULL,
-  isActive int default NULL,
+  budget integer default NULL,
+  isActive integer default NULL,
   notes clob,
   PRIMARY KEY  (placementID)
 ) ;
@@ -75,10 +75,10 @@ CREATE TABLE tadplacements (
 CREATE TABLE tadstats (
   statID integer generated always as identity (statID_seq),
   PlacementID char(35) default NULL,
-  StatHour int default NULL,
+  StatHour integer default NULL,
   StatDate timestamp default NULL,
   Type varchar(50) default NULL,
-  counter int default NULL,
+  counter integer default NULL,
    PRIMARY KEY  (statID)
 ) ;
 
@@ -92,15 +92,15 @@ CREATE TABLE tadzones (
   name varchar(50) default NULL,
   creativeType varchar(50) default NULL,
   notes clob,
-  isActive int default NULL,
-  height int default NULL,
-  width int default NULL,
+  isActive integer default NULL,
+  height integer default NULL,
+  width integer default NULL,
    PRIMARY KEY  (adZoneID)
 ) ;
 
 
 CREATE TABLE tcaptcha (
-  LetterID int NOT NULL default 0,
+  LetterID integer NOT NULL default 0,
   Letter char(1) default NULL,
   ImageFile varchar(50) default NULL
 ) ;
@@ -152,7 +152,7 @@ CREATE TABLE tcontent (
   Type varchar(25) default NULL,
   subType varchar(25) default NULL,
   Active smallint default 0,
-  OrderNo int default NULL,
+  OrderNo integer default NULL,
   Title varchar(255) default NULL,
   MenuTitle varchar(255) default NULL,
   Summary clob,
@@ -183,7 +183,7 @@ CREATE TABLE tcontent (
   isFeature smallint default NULL,
   ReleaseDate timestamp default NULL,
   IsLocked smallint default NULL,
-  nextN int default NULL,
+  nextN integer default NULL,
   sortBy varchar(50) default NULL,
   sortDirection varchar(50) default NULL,
   featureStart timestamp default NULL,
@@ -243,12 +243,12 @@ INSERT INTO tcontent (SiteID,ModuleID,ParentID,ContentID,ContentHistID,RemoteID,
 CREATE TABLE tcontentstats (
   contentID char(35) NOT NULL default '',
   siteID varchar(25) NOT NULL default '',
-  views int NOT NULL default 0,
+  views integer NOT NULL default 0,
   rating float NOT NULL default 0,
-  totalVotes int NOT NULL default 0,
-  upVotes int NOT NULL default 0,
-  downVotes int NOT NULL default 0,
-  comments int NOT NULL default 0,
+  totalVotes integer NOT NULL default 0,
+  upVotes integer NOT NULL default 0,
+  downVotes integer NOT NULL default 0,
+  comments integer NOT NULL default 0,
   PRIMARY KEY  (contentID,siteID)
 ) ;
 
@@ -271,9 +271,9 @@ CREATE TABLE tcontentcategories (
   lastUpdateBy varchar(50) default NULL,
   name varchar(50) default NULL,
   notes clob,
-  isInterestGroup int default NULL,
-  isActive int default NULL,
-  isOpen int default NULL,
+  isInterestGroup integer default NULL,
+  isActive integer default NULL,
+  isOpen integer default NULL,
   sortBy varchar(50) default NULL,
   sortDirection varchar(50) default NULL,
   restrictGroups varchar(255) default NULL,
@@ -287,8 +287,8 @@ CREATE TABLE tcontentcategoryassign (
   contentHistID char(35) NOT NULL default '',
   categoryID char(35) NOT NULL default '',
   contentID char(35) default NULL,
-  isFeature int default NULL,
-  orderno int default NULL,
+  isFeature integer default NULL,
+  orderno integer default NULL,
   siteID varchar(50) default NULL,
   featureStart timestamp default NULL,
   featureStop timestamp default NULL,
@@ -327,10 +327,10 @@ CREATE TABLE tcontenteventreminders (
   siteId varchar(35) NOT NULL default '',
   email varchar(200) NOT NULL default '',
   RemindDate timestamp default NULL,
-  RemindHour int default NULL,
-  RemindMinute int default NULL,
-  RemindInterval int default NULL,
-  isSent int default NULL
+  RemindHour integer default NULL,
+  RemindMinute integer default NULL,
+  RemindInterval integer default NULL,
+  isSent integer default NULL
 ) ;
 
 
@@ -364,7 +364,7 @@ CREATE TABLE tcontentfeeds (
   isDefault smallint default NULL,
   isFeaturesOnly smallint default NULL,
   description clob,
-  maxItems int default NULL,
+  maxItems integer default NULL,
   allowHTML smallint default NULL,
   lang varchar(50) default NULL,
   lastUpdateBy varchar(100) default NULL,
@@ -377,7 +377,7 @@ CREATE TABLE tcontentfeeds (
   Type varchar(50) default NULL,
   sortBy varchar(50) default NULL,
   sortDirection varchar(50) default NULL,
-  nextN int default NULL,
+  nextN integer default NULL,
   displayName smallint default NULL,
   displayRatings smallint default NULL,
   displayComments smallint default NULL,
@@ -392,9 +392,9 @@ CREATE TABLE tcontentobjects (
   Object varchar(50) NOT NULL default '',
   ContentID char(35) default NULL,
   Name varchar(255) default NULL,
-  OrderNo int default NULL,
+  OrderNo integer default NULL,
   SiteID varchar(25) default NULL,
-  ColumnID int default NULL,
+  ColumnID integer default NULL,
   PRIMARY KEY  (ContentHistID,ObjectID,Object,ColumnID )
 ) ;
 
@@ -405,7 +405,7 @@ CREATE TABLE tcontentratings (
   contentID char(35) NOT NULL default '',
   userID char(35) NOT NULL default '',
   siteID varchar(35) NOT NULL default '',
-  rate int default NULL,
+  rate integer default NULL,
   entered timestamp NULL  default ('now'),
   PRIMARY KEY  (contentID,userID,siteID)
 ) ;
@@ -442,7 +442,7 @@ CREATE TABLE temails (
   GroupList clob,
   LastUpdateBy varchar(50) default NULL,
   LastUpdateByID varchar(35) default NULL,
-  NumberSent int NOT NULL default 0,
+  NumberSent integer NOT NULL default 0,
   ReplyTo varchar(50) default NULL,
   format varchar(50) default NULL,
   fromLabel varchar(50) default NULL,
@@ -456,10 +456,10 @@ create index IX_TEmails on temails (siteid);
 CREATE TABLE temailstats (
   EmailID char(35) default NULL,
   Email char(100) default NULL,
-  emailOpen int NOT NULL default 0,
-  returnClick int NOT NULL default 0,
-  bounce int NOT NULL default 0,
-  sent int NOT NULL default 0,
+  emailOpen integer NOT NULL default 0,
+  returnClick integer NOT NULL default 0,
+  bounce integer NOT NULL default 0,
+  sent integer NOT NULL default 0,
   Created timestamp default NULL
 ) ;
 
@@ -473,7 +473,7 @@ CREATE TABLE tfiles (
   image blob,
   imageSmall blob,
   imageMedium blob,
-  fileSize int default NULL,
+  fileSize integer default NULL,
   contentType varchar(100) default NULL,
   contentSubType varchar(200) default NULL,
   fileExt varchar(50) default NULL,
@@ -516,8 +516,8 @@ CREATE TABLE tmailinglist (
   Name varchar(50) default NULL,
   Description clob,
   LastUpdate timestamp default ('now'),
-  isPurge int default NULL,
-  isPublic int default NULL
+  isPurge integer default NULL,
+  isPublic integer default NULL
 ) ;
 
 
@@ -584,8 +584,8 @@ create index IX_TSessionTracking_3 on tsessiontracking (userID);
 CREATE TABLE tsettings (
   SiteID varchar(25) default NOT NULL,
   Site varchar(50) default NULL,
-  MaxNestLevel int default NULL,
-  PageLimit int default NULL,
+  MaxNestLevel integer default NULL,
+  PageLimit integer default NULL,
   Locking varchar(50) default NULL,
   Domain varchar(100) default NULL,
   exportLocation varchar(100) default NULL,
@@ -594,20 +594,20 @@ CREATE TABLE tsettings (
   MailserverIP varchar(50) default NULL,
   MailServerUsername varchar(50) default NULL,
   MailServerPassword varchar(50) default NULL,
-  EmailBroadcaster int default NULL,
-  Extranet int default NULL,
-  ExtranetPublicReg int default NULL,
+  EmailBroadcaster integer default NULL,
+  Extranet integer default NULL,
+  ExtranetPublicReg integer default NULL,
   ExtranetPublicRegNotify varchar(50) default NULL,
-  ExtranetSSL int default NULL,
-  Cache int default NULL,
-  ViewDepth int default NULL,
-  NextN int default NULL,
-  DataCollection int default NULL,
-  columnCount int default NULL,
+  ExtranetSSL integer default NULL,
+  Cache integer default NULL,
+  ViewDepth integer default NULL,
+  NextN integer default NULL,
+  DataCollection integer default NULL,
+  columnCount integer default NULL,
   columnNames varchar(255) default NULL,
-  primaryColumn int default NULL,
-  publicSubmission int default NULL,
-  AdManager int default NULL,
+  primaryColumn integer default NULL,
+  publicSubmission integer default NULL,
+  AdManager integer default NULL,
   archiveDate timestamp default NULL,
   contactName varchar(50) default NULL,
   contactAddress varchar(50) default NULL,
@@ -619,16 +619,16 @@ CREATE TABLE tsettings (
   privateUserPoolID varchar(50) default NULL,
   publicUserPoolID varchar(50) default NULL,
   advertiserUserPoolID varchar(50) default NULL,
-  orderNo int default NULL,
-  emailBroadcasterLimit int NOT NULL default 0,
-  feedManager int default NULL,
+  orderNo integer default NULL,
+  emailBroadcasterLimit integer NOT NULL default 0,
+  feedManager integer default NULL,
   displayPoolID varchar(50) default NULL,
   galleryMainScaleBy varchar(50) default NULL,
-  galleryMainScale int default NULL,
+  galleryMainScale integer default NULL,
   gallerySmallScaleBy varchar(50) default NULL,
-  gallerySmallScale int default NULL,
+  gallerySmallScale integer default NULL,
   galleryMediumScaleBy varchar(50) default NULL,
-  galleryMediumScale int default NULL,
+  galleryMediumScale integer default NULL,
   sendLoginScript clob,
   mailingListConfirmScript clob,
   publicSubmissionApprovalScript clob,
@@ -658,7 +658,7 @@ CREATE TABLE tsystemobjects (
   Object varchar(50) default NULL,
   SiteID varchar(25) default NULL,
   Name varchar(50) default NULL,
-  OrderNo int default NULL
+  OrderNo integer default NULL
 ) ;
 
 
@@ -722,21 +722,21 @@ CREATE TABLE tusers (
   JobTitle varchar(50) default NULL,
   mobilePhone varchar(50) default NULL,
   Website varchar(255) default NULL,
-  Type int default NULL,
+  Type integer default NULL,
   subType varchar(50) default NULL,
-  Ext int default NULL,
+  Ext integer default NULL,
   ContactForm clob,
-  Admin int default NULL,
-  S2 int default NULL,
+  Admin integer default NULL,
+  S2 integer default NULL,
   LastLogin timestamp default ('now'),
   LastUpdate timestamp default ('now'),
   LastUpdateBy varchar(50) default null,
   LastUpdateByID varchar(35) default NULL,
   Perm smallint default NULL,
   InActive smallint default NULL,
-  isPublic int default NULL,
+  isPublic integer default NULL,
   SiteID varchar(50) default NULL,
-  Subscribe int default NULL,
+  Subscribe integer default NULL,
   notes clob,
   description clob,
   interests clob,
@@ -764,9 +764,9 @@ CREATE TABLE tusersfavorites (
   type varchar(30) NOT NULL default '',
   siteID varchar(35) default NULL,
   dateCreated timestamp NOT NULL default ('now'),
-  columnNumber int default NULL,
-  rowNumber int default NULL,
-  maxRSSItems int default NULL,
+  columnNumber integer default NULL,
+  rowNumber integer default NULL,
+  maxRSSItems integer default NULL,
   PRIMARY KEY  (favoriteID)
 ) ;
 
@@ -787,7 +787,7 @@ CREATE TABLE tusersmemb (
 
 CREATE TABLE  tcontentpublicsubmissionapprovals (
   contentID char(35) NOT NULL default '',
-  isApproved int NOT NULL,
+  isApproved integer NOT NULL,
   email varchar(150) NOT NULL,
   siteID varchar(25) NOT NULL,
   PRIMARY KEY (contentID,siteID)
@@ -823,7 +823,7 @@ create index tuserstags_4 on tuserstags (tag);
 CREATE TABLE tclassextenddatauseractivity  (
 	dataID integer generated always as identity (tclassextenddatauseractivity_seq),
 	baseID char (35)  NOT NULL ,
-	attributeID INT NOT NULL ,
+	attributeID integer NOT NULL ,
 	siteID varchar (25)  NULL ,
 	attributeValue clob,
 	PRIMARY KEY (dataID)
@@ -871,7 +871,7 @@ CREATE TABLE tclassextendattributes (
 	label clob  NULL ,
 	hint clob  NULL ,
 	type varchar (100) NULL ,
-	orderno int NULL ,
+	orderno integer NULL ,
 	isActive smallint NULL ,
 	required varchar(50) NULL ,
 	validation varchar (50) NULL ,
@@ -891,7 +891,7 @@ CREATE TABLE tclassextendsets (
 	categoryID clob ,
 	siteID varchar (25) NULL ,
 	name varchar(50)  NULL ,
-	orderno int NULL ,
+	orderno integer NULL ,
 	isActive smallint NULL,
 	PRIMARY KEY (extendSetID)
 ) ;

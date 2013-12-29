@@ -171,7 +171,7 @@ select * from tadplacements  where 0=1
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		ALTER TABLE tadplacements ADD COLUMN hasCategories int default NULL
+		ALTER TABLE tadplacements ADD COLUMN hasCategories integer default NULL
 	</cfquery>
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

@@ -803,7 +803,7 @@
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
 				<cfcase value="int,integer">
-					<cfreturn "int">
+					<cfreturn "integer">
 				</cfcase>
 				<cfcase value="tinyint">
 					<cfreturn "smallint">
@@ -887,7 +887,7 @@
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="int">
+			<cfcase value="int,integer">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
