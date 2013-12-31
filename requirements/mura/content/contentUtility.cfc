@@ -320,11 +320,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filename" type="string" />
 	<cfargument name="oldfilename" type="string" />
 
-	<cfquery>
-	update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#/"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#/"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-	and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#/%"/>
-	and active=1 and type in ('Page','Calendar','Folder','Gallery','Link','File')
+	<cfset var newfilename="">
+
+	<cfquery name="rs">
+		select contentid,contenthistid,siteid,filename from tcontent  
+		where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+		and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#/%"/>
+		and active=1 and type in ('Page','Calendar','Folder','Gallery','Link','File')
 	</cfquery>
+
+	<cfloop query="rs">
+		<cfset newfilename = replaceNoCase(rs.filename,"#arguments.find#/","#arguments.replace#/","ALL")>
+		<cfquery>
+			update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newfilename#"/>
+			where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistid#"/>
+		</cfquery>
+	</cfloop>
 
 	<cfquery>
 	update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
@@ -1003,14 +1014,24 @@ and parentID is null
 	<cfset var rs ="" />
 	<cfset var newSummary ="" />
 	<cfset var newBody ="" />
+	<cfset var newFilename ="" />
 	
 	<cfif arguments.find neq "/">
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentID, contentHistID, siteID, filename from tcontent
+		where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
 		and active=1 and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')
 		</cfquery>
-		
+
+		<cfloop query="rs">
+			<cfset newfilename = replaceNoCase(rs.filename,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newfilename#"/>
+			where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistid#"/>
+			</cfquery>
+		</cfloop>
+
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			and type in ('Page','Calendar','Folder','Gallery','Link','Component','Form')

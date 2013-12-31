@@ -382,14 +382,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcatch></cfcatch>
 	</cftry>
 						
-	<cfif application.configBean.getCreateRequiredDirectories() 
-		and not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
-		<cftry>
-			<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
-			<cfcatch>
-				<cfdirectory action="create" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
-			</cfcatch>
-		</cftry>
+	<cfif application.configBean.getCreateRequiredDirectories()>
+		<cfif not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
+			<cftry>
+				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
+				<cfcatch>
+					<cfdirectory action="create" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
+				</cfcatch>
+			</cftry>
+		</cfif>
 		
 		<cfif not fileExists(variables.basedir & "/robots.txt")>	
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>

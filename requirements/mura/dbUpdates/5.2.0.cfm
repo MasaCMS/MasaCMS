@@ -290,10 +290,10 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold int
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ADD COLUMN cacheCapacity int
+	ALTER TABLE tsettings ADD COLUMN cacheCapacity integer
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ADD COLUMN cacheFreeMemoryThreshold int
+	ALTER TABLE tsettings ADD COLUMN cacheFreeMemoryThreshold integer
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -306,11 +306,7 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 </cfcase>
 </cfswitch>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-update tsettings set 
-cacheFreeMemoryThreshold = 0,
-cacheCapacity=0
-</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set cacheFreeMemoryThreshold = 0,cacheCapacity=0</cfquery>
 </cfif>
 
 <cfswitch expression="#getDbType()#">
@@ -400,7 +396,7 @@ cacheCapacity=0
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE tuserstrikes (
 		  username varchar(100) default NULL,
-		  strikes int default NULL,
+		  strikes integer default NULL,
 		  lastAttempt datetime NOT NULL,
 		  PRIMARY KEY  (username)
 		) 
@@ -470,7 +466,7 @@ ALTER TABLE tplugins ADD loadPriority int
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugins ADD COLUMN loadPriority int
+	ALTER TABLE tplugins ADD COLUMN loadPriority integer
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

@@ -24,7 +24,7 @@
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN majorVersion int NULL
+	ALTER TABLE tcontent ADD COLUMN majorVersion integer NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -65,7 +65,7 @@
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN minorVersion int NULL
+	ALTER TABLE tcontent ADD COLUMN minorVersion integer NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -106,7 +106,7 @@
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentstats ADD COLUMN majorVersion int NULL
+	ALTER TABLE tcontentstats ADD COLUMN majorVersion integer NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -147,7 +147,7 @@
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentstats ADD COLUMN minorVersion int NULL
+	ALTER TABLE tcontentstats ADD COLUMN minorVersion integer NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

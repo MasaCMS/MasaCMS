@@ -901,11 +901,11 @@ if(not isObject(arguments.$)){
 		<cfelse>
 			<cfset var rs="">
 			<cfquery name="rs">
-				select count(*) as count from tsettings
+				select count(*) as counter from tsettings
 				where filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
 				and siteid!=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
 			</cfquery>
-			<cfset variables.instance.hasSharedFilePool=rs.count/>
+			<cfset variables.instance.hasSharedFilePool=rs.counter/>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.hasSharedFilePool>
