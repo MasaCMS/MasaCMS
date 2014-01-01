@@ -284,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset this.javaSettings = {
-		loadPaths=[evalSetting(properties.getProperty('javaSettingsLoadPaths','/requirements/lib'))]
+		loadPaths=[evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib'))]
 		, loadColdFusionClassPath=evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',false))
 		, reloadOnChange=evalSetting(properties.getProperty('javaSettingsReloadOnChange',false))
 		, watchInterval=evalSetting(properties.getProperty('javaSettingsWatchInterval',60))
