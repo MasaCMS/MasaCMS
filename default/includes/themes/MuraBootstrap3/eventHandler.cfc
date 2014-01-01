@@ -304,7 +304,7 @@
 			 renderer.searchAgainInputWrapperClass="input-group";
 			 renderer.searchAgainFormInputClass="form-control";
 			 renderer.searchAgainButtonWrapperClass="input-group-btn";
-			 renderer.searchAgainSubmitClass="btn btn-default fa fa-search";
+			 renderer.searchAgainSubmitClass="btn btn-default";
 			
 			// dsp_user_tools.cfm
 			 renderer.userToolsLoginWrapperClass="well clearfix";

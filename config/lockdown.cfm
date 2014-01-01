@@ -19,7 +19,7 @@ body {
 	background: #FCFCFC;
 	padding: 25px;
 	border: 1px solid #ccc;
-	-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+	-moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
 }
 
 .alert {
@@ -71,12 +71,12 @@ form select {
 }
 
 form input.submit {
-	background: #005AA7;
+	background: #444;
 	color: #fff;
-	text-shadow: 0 -1px 0 #003767;
+	text-shadow: 0 -1px 0 #000;
 	text-transform: uppercase;
-	font-size: 10px;
-	font-weight: bold;
+	font-size: 12px;
+	font-weight: normal;
 	padding: 7px 14px;
 	border: 0;
 	cursor: pointer;
@@ -89,7 +89,7 @@ form input.submit {
 }
 
 form input.submit:hover {
-	background: #006BC7;
+	background: #666;
 }
 
 form p#submitWrap {
@@ -113,10 +113,10 @@ form p#error {
 			<div class="alert"><cfoutput>#application.settingsManager.getSite(request.siteID).getSite()#</cfoutput> is currently undergoing maintenance.</div>
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
 			<form method="post" action="">
-				<label for="locku">Username:</label>
+				<label for="locku">Username</label>
 				<input type="text" name="locku" id="locku" class="text" />
 				
-				<label for="lockp">Password:</label>
+				<label for="lockp">Password</label>
 				<input type="password" name="lockp" id="lockp" class="text" />
 				
 				<label for="expires">Log me in for:</label>

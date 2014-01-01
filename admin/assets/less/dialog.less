@@ -108,6 +108,7 @@
 @import url("dropdowns.less");
 @import url("fonts.less");
 @import url("add-content-ui.less");
+@import url("mobile-preview.less");
 
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */
@@ -329,7 +330,12 @@
 		padding-top: 0 !important;
 		padding-bottom: 0 !important;
 		//line-height: .8 !important;
-		overflow: visible !important;	
+		overflow: visible !important;
+		
+			&.icon-mobile-phone {
+				font-size: 21px !important;
+				top: 0 !important;				
+			}	
 		}
 	
 	}
@@ -573,7 +579,9 @@
 	margin-left: -5px !important;
 	}
 
-#frontEndTools > ul > li#adminSave .dropdown-menu {
+#frontEndTools > ul > li#adminSave .dropdown-menu,
+#frontEndTools > ul > li#adminPreview .dropdown-menu
+ {
 	margin-left: 0 !important;
 }
 

@@ -33,7 +33,7 @@ CKEDITOR.editorConfig = function( config )
 	</cfoutput>
 
 	config.startupFocus = false;
-	config.skin = 'moono'; // 'mura'
+	config.skin = 'mura'; // 'moono'
 	config.allowedContent = true;
 	//config.uiColor = '#ff3405';
 	//config.ignoreEmptyParagraph = false;
