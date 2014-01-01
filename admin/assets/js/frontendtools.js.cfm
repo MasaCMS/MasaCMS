@@ -101,13 +101,13 @@
 			frontEndModalHeight=600;
 			frontEndModalWidth=1075;
 
-			var $tools='<div id="mura-preview-device-selector"><p>Preview Mode</p>';
+			var $tools='<div id="mura-preview-device-selector">';
 				$tools=$tools+'<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
 				$tools=$tools+'<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
 				$tools=$tools+'<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
 				$tools=$tools+'<a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
 				$tools=$tools+'<a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
-				$tools=$tools+'<a href="##" onclick="closeFrontEndToolsModal();"><i class="icon-cancel"></i> Close</a>';
+				$tools=$tools+'<a id="preview-close" href="##" onclick="closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>';
 				$tools=$tools+'</div>';
 
 		} else {

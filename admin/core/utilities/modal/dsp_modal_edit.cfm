@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not request.contentBean.getIsNew()>
 					<cfif ListFindNoCase('editor,author',request.r.perm)>
 						<ul id="tools-version">
-							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')# ---></a>
+							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
 										<a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
@@ -272,9 +272,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</li>
 							
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')# ---></a></li>
-							<!---
-							<li id="adminPreview"><a href="#$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" #variables.targethook#><i class="icon-globe"></i> </a></li>
-							--->
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i><!--- <b class="caret"></b> ---></a>
+								<!---<ul class="dropdown-menu">
+									<li>
+										<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.desktop')#</a>
+									</li>
+									<li>
+										<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.tablet')#</a>
+									</li>
+									<li><a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.tabletlandscape')#</a></li>
+									<li><a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.phone')#</a></li>					
+									<li><a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.phonelandscape')#</a></li>
+								</ul>--->
+								</li>
+								
+								
+
+
 
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')# ---></a></li>

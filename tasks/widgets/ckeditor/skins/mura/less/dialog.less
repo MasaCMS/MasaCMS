@@ -257,11 +257,15 @@ input.cke_dialog_ui_input_text, input.cke_dialog_ui_input_password, textarea.cke
 	padding: 4px 6px;
 	outline: 0;
 	width: 100%;
-*width:95%;
+	*width:95%;
 	.box-sizing(border-box);
 	.border-radius(3px);
 	.box-shadow(0 1px 2px rgba(0,0,0,.15) inset);
+	min-height: 24px !important;
+	line-height: 24px !important;
 }
+
+
 input.cke_dialog_ui_input_text:hover, input.cke_dialog_ui_input_password:hover, textarea.cke_dialog_ui_input_textarea:hover {
 	border: 1px solid #aeb3b9;
 	border-top-color: #a0a6ad
@@ -278,6 +282,7 @@ input.cke_dialog_ui_input_text:focus, input.cke_dialog_ui_input_password:focus, 
 a.cke_dialog_ui_button {
 	#gradient .vertical(#fff,#e4e4e4);
 	.btn-ui;
+	border: 1px solid #ccc;
 	
 		&:hover {
 			border-color: #9e9e9e;

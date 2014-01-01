@@ -109,8 +109,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <tr>
 <td class="var-width">#$.dspZoom(crumbdata)#</td>
-<td><img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
-<td>#rsList.theCount#</td>
+<td><img src="assets/images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
+<td class="count">#rsList.theCount#</td>
 <td class="actions">
 		<ul>
 		<cfswitch expression="#rslist.type#">
