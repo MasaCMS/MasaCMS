@@ -247,14 +247,25 @@
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
 			
-			<div id="commentsSort" style="display:none">
-				<select id="sortDirectionSelector" name="sortDirection">
-					<option value="asc"<cfif variables.$.event('sortDirection') eq "asc"> selected</cfif>>Oldest - Newest</option>
-					<option value="desc"<cfif variables.$.event('sortDirection') eq "desc"> selected</cfif>>Newest - Oldest</option>
-				</select>
+			<div id="commentsSort" class="mura-comment-sort-container #this.commentSortContainerClass#" style="display:none">
+				<div class="mura-comment-sort-wrapper #this.commentSortWrapperClass#">
+					<select id="sortDirectionSelector" class="#this.commentSortSelectClass#" name="sortDirection">
+						<option value="desc"<cfif variables.$.event('sortDirection') eq "desc"> selected</cfif>>#variables.$.rbKey('comments.sortdescending')#</option>
+						<option value="asc"<cfif variables.$.event('sortDirection') eq "asc"> selected</cfif>>#variables.$.rbKey('comments.sortascending')#</option>
+					</select>
+					
+					<!---
+					<ul class="nav nav-pills">
+						<li class="active"><a href="#">Sort Newest to Oldest</a></li>
+						<li><a href="#">Sort Oldest to Newest</a></li>
+					</ul>
+					--->
+				</div>
 			</div>
 
-			<div id="commentsPage" data-contentid="#variables.$.content('contentID')#"></div>
+			<div id="commentsPage" data-contentid="#variables.$.content('contentID')#">
+				
+			</div>
 			
 			<cfif not structIsEmpty(variables.errors) >
 				
