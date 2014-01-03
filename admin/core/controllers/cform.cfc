@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getDialog" access="public" returntype="string" output="false">
 		<cfargument name="rc" type="struct" required="false" default="#StructNew()#">
 		
-		<cfset arguments.rc.return	= variables.formBuilderManager.getDialog( dialog=rarguments.c.dialog ) />
+		<cfset arguments.rc.return	= variables.formBuilderManager.getDialog( dialog=arguments.rc.dialog ) />
 	</cffunction>
 
 	<cffunction name="getForm" access="public" returntype="string" output="false">
