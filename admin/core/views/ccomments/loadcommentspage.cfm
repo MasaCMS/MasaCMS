@@ -3,7 +3,7 @@
 	<div id="commentsPage">
 		<!--- MOAR --->
 		<cfif rc.p.startRow gt 1 and (len(rc.commentID) or len(rc.upperID))>
-			<div id="moreCommentsUpContainer"><a id="moreCommentsUp" class="btn btn-default" href="##" data-upperid="#rc.q.commentID[rc.p.startRow-1]#"><i class="icon-arrow-up"></i> More Comments</a></div>
+			<div id="moreCommentsUpContainer"><a id="moreCommentsUp" class="btn btn-small" href="##" data-upperid="#rc.q.commentID[rc.p.startRow-1]#"><i class="icon-arrow-up"></i> More Comments</a></div>
 		</cfif>
 
 		<cfloop query="rc.q" startrow="#rc.p.startRow#" endrow="#rc.p.endRow#">
@@ -18,23 +18,21 @@
 				</cfif>
 			</cfif>
 			<dl id="detail-#rc.comment.getCommentID()#">
-				<dt>
-					#htmleditformat(rc.comment.getName())#
-				</dt>
 				<cfif len(rc.avatar)>
 					<dd class="gravatar"><img src="#rc.avatar#"></dd>
 				<cfelse>
 					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(rc.comment.getEmail())))#" /></dd>
 				</cfif>
-				<cfif len(rc.comment.getParentID())>
-					<dd class="inReplyTo">
-						<em>In reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#">#rc.comment.getParent().getName()#</a></em>
-					</dd>
-				</cfif>
+				<dt>
+					#htmleditformat(rc.comment.getName())#
+					<cfif len(rc.comment.getParentID())>
+						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#">#rc.comment.getParent().getName()#</a>)</em>
+					</cfif>
+				</dt>
 				<dd class="comment">
 					#rc.$.setParagraphs(htmleditformat(rc.comment.getComments()))#
 				</dd>
-				<dd class="dateTime">
+				<dd class="date-time">
 					#LSDateFormat(rc.comment.getEntered(),"long")#, #LSTimeFormat(rc.comment.getEntered(),"short")#
 				</dd>
 			</dl>
@@ -42,7 +40,7 @@
 
 		<!--- MOAR --->
 		<cfif rc.p.endRow lt rc.q.recordCount and (len(rc.commentID) or len(rc.lowerID))>
-			<div id="moreCommentsDownContainer"><a id="moreCommentsDown" class="btn btn-default" href="##" data-lowerid="#rc.q.commentID[rc.p.endRow+1]#"><i class="icon-arrow-down"></i> More Comments</a></div>
+			<div id="moreCommentsDownContainer"><a id="moreCommentsDown" class="btn btn-small" href="##" data-lowerid="#rc.q.commentID[rc.p.endRow+1]#"><i class="icon-arrow-down"></i> More Comments</a></div>
 		</cfif>
 	</div>
 </cfoutput>

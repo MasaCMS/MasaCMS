@@ -121,9 +121,12 @@ Display Objects
 
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
+<cfset this.commentSortContainerClass="">
+<cfset this.commentSortWrapperClass="">
+<cfset this.commentSortSelectClass="">
 <cfset this.commentFormWrapperClass="">
 <cfset this.commentFormClass="well">
-<cfset this.commentNewClass="btn btn-default">
+<cfset this.commentNewClass="btn">
 <cfset this.commentFieldWrapperClass="">
 <cfset this.commentFieldLabelClass="">
 <cfset this.commentInputWrapperClass="">
@@ -133,8 +136,11 @@ Display Objects
 <cfset this.commentSubmitButtonWrapperClass="">
 <cfset this.commentSubmitButtonClass="btn">
 <cfset this.commentRequiredWrapperClass="">
-<cfset this.commentUserEmailClass="">
-<cfset this.commentDeleteButtonClass="">
+<cfset this.commentAdminButtonWrapperClass="">
+<cfset this.commentUserEmailClass="btn">
+<cfset this.commentDeleteButtonClass="btn">
+<cfset this.commentEditButtonClass="btn">
+<cfset this.commentApproveButtonClass="btn">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
@@ -273,8 +279,8 @@ Display Objects
 <cfset this.searchResultInnerClass="row">
 <cfset this.searchResultsRowClass="row">
 <cfset this.searchResultsMoreResultsRowClass="row">
-<cfset this.searchReultsListClass="svIndex">
-<cfset this.searchReultsPagerClass="pager">
+<cfset this.searchResultsListClass="svIndex">
+<cfset this.searchResultsPagerClass="pager">
 <cfset this.searchAgainRowClass="row">
 <cfset this.searchAgainInnerClass="">
 <cfset this.searchAgainFormClass="">

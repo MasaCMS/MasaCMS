@@ -182,29 +182,31 @@
 								<cfelse>
 									#htmleditformat(local.commenterName)#
 								</cfif>
-								<cfif isEditor and len(local.commenterEmail)>
-									<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+								<cfif len(comment.getParentID())>
+									<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
 								</cfif>
 								<cfif isEditor>
-									<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-										 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+								<div class="<!--- #this.commentAdminButtonWrapperClass# --->">
+									<cfif isEditor and len(local.commenterEmail)>
+										<a class="<!--- #this.commentUserEmailClass# --->" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 									</cfif>
-									<cfif comment.getIsApproved() neq 1>
-										 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+									<cfif isEditor>
+										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+											 <a class="<!--- #this.commentEditButtonClass# --->" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+										</cfif>
+										<cfif comment.getIsApproved() neq 1>
+											 <a class="<!--- #this.commentApproveButtonClass# --->" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+										</cfif>
+										 <a class="<!--- #this.commentDeleteButtonClass# --->" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+										<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
 									</cfif>
-									 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
-									<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
+								</div>
 								</cfif>
 							</dt>
 							<cfif len(avatar)>
 								<dd class="gravatar"><img src="#avatar#"></dd>
 							<cfelse>
 								<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
-							</cfif>
-							<cfif len(comment.getParentID())>
-								<dd class="inReplyTo">
-									<em>In reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a></em>
-								</dd>
 							</cfif>
 							<dd class="comment">
 								#$.setParagraphs(htmleditformat(comment.getComments()))#
