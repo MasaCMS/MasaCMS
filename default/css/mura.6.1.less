@@ -151,7 +151,7 @@ form {
 } // end Form
 
 // Comments
-// TODO: Add in UL and HTML5 options?
+
 .mura-comments {
 	clear: both;
 
@@ -200,8 +200,21 @@ form {
 				float: left;
 				margin-right: 1em;
 			}
-
-			&.reply { font-size: 1em; }
+			
+			&.reply {
+				font-size: 1em;
+				float: left;
+				margin-right: 1em;
+			}
+			
+			&.spam {
+				float: left;
+				clear: right;
+			}
+			
+			&.post-reply {
+				clear: both;
+			}
 		}
 		//end dd
 
@@ -209,6 +222,25 @@ form {
 	}
 	//end dl
 	#moreCommentsContainer { margin-bottom: 20px; }
+	
+	> .mura-comment-sort-container {
+		margin-bottom: 1em;
+		}
+		
+	dl:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+	
+	dt > em {
+		font-weight: normal;
+		font-style: italic;
+	}
+	
+	#postcomment legend {
+		border: 0;
+	}
+
 }
 //end Comments
 

@@ -1,10 +1,12 @@
 <cfset stats=rc.contentBean.getStats()>
 <cfset lockedByYou=stats.getLockID() eq session.mura.userID>
 <cfset lockedBySomeElse=len(stats.getLockID()) and stats.getLockID() neq session.mura.userID>
+<cfset examplefileext="zip">
 <cfoutput>
 <div id="assocFileContainer" class="control-group" style="display:none">
    <label class="control-label">
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
+		<cfset examplefileext="png">
 		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-question-sign"></i></a>
 	<cfelse>
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
@@ -18,7 +20,8 @@
 			</p>
 		</cfif>
 
-		<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" >
+		<cfset imageOnly=rc.ptype eq 'Gallery' or rc.type neq 'File'>
+		<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
 
 		<cfif rc.type eq 'File'>										
 			<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getFileID())#" />

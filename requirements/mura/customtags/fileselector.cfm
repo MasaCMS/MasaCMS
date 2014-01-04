@@ -11,6 +11,7 @@
 <cfparam name="attributes.property" default="#attributes.name#">
 <cfparam name="attributes.size" default="medium">
 <cfparam name="attributes.locked" default="false">
+<cfparam name="attributes.examplefileext" default="zip">
 
 <cfif attributes.bean.getType() neq 'File' and attributes.property eq 'fileid'>
 	<cfset filetype='Image'>
@@ -47,7 +48,7 @@
 				
 			<div class="control-group control-group-nested">
 				<div class="controls">	
-					<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6" type="url" placeholder="http://www.domain.com/yourfile.zip"	value=""
+					<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6" type="url" placeholder="http://www.domain.com/yourfile.#attributes.examplefileext#"	value=""
 					data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
 					<a style="display:none;" class="btn file-meta-open" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
 				</div>
