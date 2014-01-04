@@ -216,7 +216,7 @@
 							</dd>
 							<dd class="reply <!--- #this.commentReplyClass# --->"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
 							<dd class="spam <!--- #this.commentSpamClass# --->"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
-							<dd id="postcomment-#comment.getCommentID()#" class="post-reply"></dd>
+							<dd id="postcomment-#comment.getCommentID()#" class="post-reply well"></dd>
 						</dl>
 					</cfloop>
 					<cfset local.pageNo++>
