@@ -1007,11 +1007,11 @@ and tclassextendattributes.type='File'
 					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 					and 
 					<cfif variables.configBean.getDbType() eq 'Oracle'>
-						upper(name)
+						upper(name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(arguments.attribute)#">
 					<cfelse>
-						name
+						name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 					</cfif>
-					=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+					
 				</cfif>
 		</cfquery>
 		<cfset arguments.datatype=rs.validation>
