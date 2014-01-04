@@ -78,8 +78,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset session.rememberMe=1>
 		<cfreturn true />
 	<cfelse>
-		<cfcookie name="userid" expires="never" value="" />
-		<cfcookie name="userHash" expires="never" value="" />
+		<cfset structDelete(cookie,"userid")>
+		<cfset structDelete(cookie,"userhash")>
 		<cfset session.rememberMe=0>
 		<cfreturn false />
 	</cfif>

@@ -1048,4 +1048,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="readUserPassword" output="false">
+	<cfargument name="userid">
+
+	<cfset var rs="">
+
+	<cfquery name="rs">
+	select password from tusers where userID=<cfqueryparam value="#arguments.userID#">
+	</cfquery>
+
+	<cfreturn rs.password>
+</cffunction>
 </cfcomponent>

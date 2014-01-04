@@ -151,7 +151,7 @@ If it has not set application.appInitialized=false. --->
 <cftry>
 	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
-	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" expires="never" />
+	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" />
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -160,8 +160,8 @@ If it has not set application.appInitialized=false. --->
 </cftry>
 
 <cftry>
-	<cfif cookie.userid neq '' and not session.mura.isLoggedIn>
-	<cfset application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.configBean.getEncryptionKey(),"cfmx_compat",'hex')) />
+	<cfif isDefined('cookie.userid') and cookie.userid neq '' and not session.mura.isLoggedIn>
+	<cfset application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.userManager.readUserPassword(cookie.userid),"cfmx_compat",'hex')) />
 	</cfif>
 <cfcatch></cfcatch>
 </cftry>
