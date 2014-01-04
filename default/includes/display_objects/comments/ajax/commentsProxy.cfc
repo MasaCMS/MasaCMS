@@ -186,37 +186,37 @@
 									<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
 								</cfif>
 								<cfif isEditor>
-								<div class="<!--- #this.commentAdminButtonWrapperClass# --->">
+								<div class="btn-group pull-right">
 									<cfif isEditor and len(local.commenterEmail)>
-										<a class="<!--- #this.commentUserEmailClass# --->" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+										<a class="mura-comment-email btn btn-default btn-sm" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();"><span>#$.rbKey('comments.email')#</span></a>
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-											 <a class="<!--- #this.commentEditButtonClass# --->" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+											 <a class="mura-comment-edit btn btn-default btn-sm" data-id="#comment.getCommentID()#"><span>#$.rbKey('comments.edit')#</span></a>
 										</cfif>
 										<cfif comment.getIsApproved() neq 1>
-											 <a class="<!--- #this.commentApproveButtonClass# --->" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+											 <a class="mura-comment-approve btn btn-default btn-sm" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');"><span>#$.rbKey('comments.approve')#</span></a>
 										</cfif>
-										 <a class="<!--- #this.commentDeleteButtonClass# --->" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
-										<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
+										 <a class="mura-comment-delete btn btn-default btn-sm" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');"><span>#$.rbKey('comments.delete')#</span></a>
+										<!--- <a class="btn btn-default btn-sm" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');"><span>Spam</span></a>	--->	
 									</cfif>
 								</div>
 								</cfif>
 							</dt>
 							<cfif len(avatar)>
-								<dd class="gravatar"><img src="#avatar#"></dd>
+								<dd class="gravatar <!--- #this.commentUserThumbClass# --->"><img src="#avatar#"></dd>
 							<cfelse>
-								<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
+								<dd class="gravatar <!--- #this.commentUserThumbClass# --->"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
-							<dd class="comment">
+							<dd class="comment <!--- #this.commentClass# --->">
 								#$.setParagraphs(htmleditformat(comment.getComments()))#
 							</dd>
-							<dd class="dateTime">
+							<dd class="dateTime <!--- #this.commentDateTimeClass# --->">
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
 							</dd>
-							<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
-							<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
-							<dd id="postcomment-#comment.getCommentID()#"></dd>
+							<dd class="reply <!--- #this.commentReplyClass# --->"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
+							<dd class="spam <!--- #this.commentSpamClass# --->"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
+							<dd id="postcomment-#comment.getCommentID()#" class="post-reply"></dd>
 						</dl>
 					</cfloop>
 					<cfset local.pageNo++>
