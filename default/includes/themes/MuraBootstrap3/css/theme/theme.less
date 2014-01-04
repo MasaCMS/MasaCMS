@@ -805,11 +805,46 @@ section {
 	> .mura-comment-sort-container {
 		margin-bottom: @line-height-computed;
 		}
+		
+	dl:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
 	
 	dt > em {
 		font-weight: normal;
 		font-style: italic;
-	}	
+	}
+	
+	#postcomment legend {
+		border: 0;
+	}
+	
+	dd {
+		
+		&.reply {
+			.fa;
+						
+			&:before {
+			  .icon-before;
+			  content: "\f112";
+			}
+		}
+		
+		&.spam {
+			.fa;
+						
+			&:before {
+			  .icon-before;
+			  content: "\f05e";
+			}
+		}
+		
+		&.post-reply {
+		}
+		
+		
+	}
 }
 
 // FONT AWESOME EXAMPLE PAGE
