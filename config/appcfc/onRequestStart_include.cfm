@@ -120,16 +120,6 @@ If it has not set application.appInitialized=false. --->
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
 </cfif>
-
-<cfif not StructKeyExists(cookie, 'userid')>
-	  <cfcookie name="userid" expires="never" value="">
-</cfif>
-
-<!---
-<cfif not StructKeyExists(cookie, 'k100608v010505')>
-	  <cfcookie name="k100608v010505" value="true">
-</cfif>
---->
 	
 <!--- Making sure that session is valid --->
 <cftry>
@@ -141,22 +131,16 @@ If it has not set application.appInitialized=false. --->
 		
 		<cfset variables.tempcookieuserID=cookie.userID>
 		<cfset application.loginManager.logout()>
-		<cfcookie name="userid" expires="never" value="#variables.tempcookieuserID#">	
 	</cfif>
 </cfif>
 <cfcatch>
 	<cfset application.loginManager.logout()>
-	<cfcookie name="userid" expires="never" value="">
 </cfcatch>
 </cftry>
 
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
 <cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>
 	<cfinclude template="/muraWRM/config/settings.custom.vars.cfm">
-</cfif>
-
-<cfif not StructKeyExists(cookie, 'userHash')>
-   <cfcookie name="userHash" expires="never" value="">
 </cfif>
 	
 <!---<cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
@@ -165,13 +149,13 @@ If it has not set application.appInitialized=false. --->
 </cfif>
 --->
 <cftry>
-	<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
+	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
 	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" expires="never" />
 	</cfif>
 <cfcatch>
-	<cfcookie name="userid" value="" expires="never" />
-	<cfcookie name="userHash" value="" expires="never" />
+	<cfset structDelete(cookie,"userid")>
+	<cfset structDelete(cookie,"userhash")>
 </cfcatch>
 </cftry>
 
@@ -183,13 +167,13 @@ If it has not set application.appInitialized=false. --->
 </cftry>
 
 <cftry>
-	<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
-	<cfcookie name="userid" value="" expires="never" />
-	<cfcookie name="userHash" value="" expires="never" />
+	<cfif isDefined('cookie.userid') and cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
+	<cfset structDelete(cookie,"userid")>
+	<cfset structDelete(cookie,"userhash")>
 	</cfif>
 <cfcatch>
-	<cfcookie name="userid" value="" expires="never" />
-	<cfcookie name="userHash" value="" expires="never" />
+	<cfset structDelete(cookie,"userid")>
+	<cfset structDelete(cookie,"userhash")>
 </cfcatch>
 </cftry>
 

@@ -322,7 +322,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cflogout>
 	<cfset structclear(session) />
-	<cfcookie name="userid" expires="never" value="" />
+	<cfset structDelete(cookie,"userid")>
+	<cfset structDelete(cookie,"userhash")>
 	<cfset variables.userUtility.setUserStruct()/>
 
 	<cfif len(pluginEvent.getValue("siteID"))>
