@@ -1002,16 +1002,10 @@ and tclassextendattributes.type='File'
 				select validation from tclassextendattributes 
 				where 
 				<cfif isNumeric(arguments.attribute)>
-				attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+					attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				<cfelse>
 					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-					and 
-					<cfif variables.configBean.getDbType() eq 'Oracle'>
-						upper(name)=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ucase(arguments.attribute)#">
-					<cfelse>
-						name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
-					</cfif>
-					
+					and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
 				</cfif>
 		</cfquery>
 		<cfset arguments.datatype=rs.validation>
