@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isBoolean(arguments.useMode)>
 	<cfset variables.useMode=arguments.useMode>
 	<cfelse>
-	<cfset variables.useMode=true>
+	<cfset variables.useMode=application.configBean.getValue("useFileMode")>
 	</cfif>
 </cfif>
 

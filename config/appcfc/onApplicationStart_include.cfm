@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				);
 		variables.serviceFactory.addBean("fileWriter",
-			new mura.fileWriter(mode=775,tempDir=application.configBean.getTempDir())
+			new mura.fileWriter()
 		);
 		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
 			
