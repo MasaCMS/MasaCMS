@@ -2552,10 +2552,23 @@ Display Objects
 </cffunction>
 
 <cffunction name="getCurrentURLArray" output="false">
-	<cfset var urlArray=variables.$.getCrumbPropertyArray(property='url',direction="desc")>
-	<cfif arrayLen(urlArray) gt 1>
-		<cfset arrayDeleteAt(urlArray, 1)>
-	</cfif>
+	<cfset var topURL=$.createHREF(filename=this.crumbdata[arrayLen(this.crumbdata)-this.navOffSet].filename)>
+	<cfset var tempUrlArray=variables.$.getCrumbPropertyArray(property='url',direction="desc")>
+	<cfset var i=1>
+	<cfset var urlArray=[]>
+	<cfset var started=false>
+
+	<cfloop from="1" to="#arrayLen(tempUrlArray)#" index="i">
+		<cfif tempUrlArray[i] eq topURL>
+			<cfset started=true>
+			<cfif i eq arrayLen(tempUrlArray)>
+				<cfset arrayAppend(urlArray,tempUrlArray[i])>
+			</cfif>
+		<cfelseif started>
+			<cfset arrayAppend(urlArray,tempUrlArray[i])>
+		</cfif>
+	</cfloop>
+
 	<cfreturn urlArray>
 </cffunction>
 
