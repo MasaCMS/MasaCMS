@@ -177,9 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standardSetContentRendererHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset var $=arguments.event.getValue("muraScope")>
-	<cfset arguments.event.setValue('contentRenderer',arguments.event.getSite().getContentRenderer($))/>
-	<cfset arguments.event.setValue('themeRenderer',arguments.event.getSite().getThemeRenderer($))/>
+	<cfset arguments.event.getValue("muraScope").getThemeRenderer()>
 </cffunction>
 
 <cffunction name="standardSetContentHandler" output="false" returnType="any">

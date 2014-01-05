@@ -63,7 +63,11 @@
 			* Any methods here will be accessible with the following notation:
 				$.yourFunctionName()
 	--->
-
+	<cffunction name="init" output="false">
+		<cfargument name="$">
+		<cfset arguments.$.loadPrettify()>
+	</cffunction>
+	
 	<cffunction name="dspCarouselByFeedName" output="false">
 		<cfargument name="feedName" type="string" default="Slideshow" />
 		<cfargument name="showCaption" type="boolean" default="true" />

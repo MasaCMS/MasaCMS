@@ -131,7 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(request,"contentRenderer")>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
-			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+			<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
+			<cfset getThemeRenderer()>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
@@ -144,10 +146,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false" returntype="any">
+	<cfset getContentRenderer()>
 	<cfif isObject(event("themeRenderer"))>
 		<cfreturn event("themeRenderer")>
 	<cfelseif len(event('siteid')) and fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
-		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer"))>
+		<cfset event("themeRenderer").injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
+		<cfset event("themeRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
 	<cfelse>
 		<cfreturn event("themeRenderer")>
 	</cfif>
