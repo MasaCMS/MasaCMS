@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                  <ul class="dropdown-menu">
 						  <li><a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank"><i class="icon-bookmark"></i> #application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
 	                   <li><a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="icon-bookmark"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
-					   <li><a id="navProg-API" href="http://www.getmura.com/components/" target="_blank"><i class="icon-bookmark"></i> Component API</a></li>
+					   <li><a id="navProg-API" href="http://www.getmura.com/component-api/" target="_blank"><i class="icon-bookmark"></i> Component API</a></li>
 	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/professional-support/" target="_blank"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
 	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank"><i class="icon-bullhorn"></i> #application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
 	                  </ul>
