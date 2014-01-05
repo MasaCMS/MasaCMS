@@ -2551,6 +2551,14 @@ Display Objects
 	<cfreturn thenav />
 </cffunction>
 
+<cffunction name="getCurrentURLArray" output="false">
+	<cfset var urlArray=variables.$.getCrumbPropertyArray(property='url',direction="desc")>
+	<cfif arrayLen(urlArray) gt 1>
+		<cfset arrayDeleteAt(urlArray, 1)>
+	</cfif>
+	<cfreturn urlArray>
+</cffunction>
+
 <cffunction name="setCamelback" access="public" output="false" returntype="string">
 	<cfargument name="theString" type="string">
 
