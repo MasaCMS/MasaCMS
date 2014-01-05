@@ -335,7 +335,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfif param.getCondition() neq "like">
 												<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid())>
 											</cfif> 
-											<cfif param.getCondition() eq "like" and variables.configBean.getDbType() eq 'Oracle'>
+											<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
 												upper(#castfield#)
 											<cfelse>
 												#castfield#
@@ -566,7 +566,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif param.getCondition() neq "like">
 							<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),arguments.feedBean.getsiteid())>
 						</cfif> 
-						<cfif param.getCondition() eq 'like' and variables.configBean.getDbType() eq 'Oracle'>
+						<cfif param.getCondition() eq 'like' and variables.configBean.getDbCaseSensitive()>
 							upper(#castfield#)
 						<cfelse>
 							#castfield#

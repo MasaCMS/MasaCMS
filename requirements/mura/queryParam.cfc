@@ -85,9 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setField">
 	<cfargument name="field">
-	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
-		<cfset arguments.field=ucase(arguments.field) />
-	</cfif>
 	
 	<cfif arguments.field eq '' or arguments.field eq 'Select Field'>
 		<cfset variables.field=""/>
@@ -107,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getFieldStatement">
-	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
+	<cfif variables.condition eq 'like' and application.configBean.getDbCaseSensitive()>
 		<cfreturn "upper(" & variables.field & ")"/>
 	<cfelse>
 		<cfreturn variables.field />
@@ -249,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getCriteria">
-	<cfif variables.condition eq 'like' and application.configBean.getDbType() eq 'Oracle'>
+	<cfif variables.condition eq 'like' and application.configBean.getDbCaseSensitive()>
 		<cfreturn ucase(variables.criteria) />
 	<cfelse>
 		<cfreturn variables.criteria />
@@ -340,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.condition neq "like">
 				<cfset castfield=application.configBean.getClassExtensionManager().getCastString(getField(),arguments.siteid)>
 			</cfif> 
-			<cfif variables.condition eq "like" and application.configBean.getDbType() eq 'Oracle'>
+			<cfif variables.condition eq "like" and application.configBean.getDbCaseSensitive()>
 				upper(#castfield#)
 			<cfelse>
 				#castfield#
