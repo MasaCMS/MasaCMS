@@ -784,54 +784,27 @@ s
 <cfargument name="$" default="">
 <cfif not isObject(arguments.$)>
 	<cfif not isObject(variables.instance.contentRenderer)>
-		<cfset arguments.$=getBean("$")>
-		<cfif fileExists(expandPath("#getIncludePath()#/includes/contentRenderer.cfc"))>
-			<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
-		<cfelse>
-			<cfset variables.instance.contentRenderer=createObject("component","mura.content.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
-		</cfif>
+		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
+		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
 	</cfif>
 	<cfreturn variables.instance.contentRenderer>
 <cfelse>
-	<cfreturn createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
+	<cfreturn arguments.$.getContentRenderer()>
 </cfif>
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false">
 <cfargument name="$" default="">
 <cfscript>
+
 if(not isObject(arguments.$)){
 	if(not isObject(variables.instance.themeRenderer)){
-		arguments.$=getBean("$");
-		if(fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")){
-			variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")
-			.injectMethod("$",arguments.$)
-			.injectMethod("mura",arguments.$)
-			.injectMethod("event",arguments.$.event())
-			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
-		} else {
-			variables.instance.themeRenderer=createObject("component","mura.cfobject")
-			.injectMethod("$",arguments.$)
-			.injectMethod("mura",arguments.$)
-			.injectMethod("event",arguments.$.event())
-			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
-		}
+		arguments.$=getBean("$").init(getValue('siteid'));
+		variables.instance.themeRenderer=argument.$.getThemeRenderer();
 	}
 	return variables.instance.themeRenderer;
 } else {
-	if(fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")){
-		return createObject("component","#getThemeAssetMap()#.contentRenderer")
-			.injectMethod("$",arguments.$)
-			.injectMethod("mura",arguments.$)
-			.injectMethod("event",arguments.$.event())
-			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
-	} else {
-		return createObject("component","mura.cfobject")
-			.injectMethod("$",arguments.$)
-			.injectMethod("mura",arguments.$)
-			.injectMethod("event",arguments.$.event())
-			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
-	}
+	return arguments.$.getThemeRenderer();
 }
 </cfscript>
 </cffunction>

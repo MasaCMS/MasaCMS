@@ -18,7 +18,7 @@
 								viewDepth=1
 								, id='navPrimary'
 								, class='nav navbar-nav'
-								, displayHome='Never'
+								, displayHome='never'
 								, closeFolders=false
 								, showCurrentChildrenOnly=false
 								, ulTopClass='nav navbar-nav'
@@ -42,7 +42,7 @@
 						--->
 						<script>
 							$(function(){
-								$(#serializeJSON($.getCrumbPropertyArray(property='url',direction="desc",displayHome=false))#).each(
+								$(#serializeJSON($.getCurrentURLArray())#).each(
 									function(index, value){
 										$("##navPrimary [href='" + value + "']").closest("li").addClass("active");
 									}

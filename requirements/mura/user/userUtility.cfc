@@ -220,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				
 				<cfset loginByQuery(rsUser)/>
-				
+
 				<cfset pluginEvent.setValue("username",rsUser.username)>
 				<cfset pluginEvent.setValue("password",rsUser.password)>
 				<cfset pluginEvent.setValue("siteid",rsUser.siteid)>
@@ -302,6 +302,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		WHERE tusers.UserID='#rsUser.UserID#'
 		</cfquery>
+
+		<cfif isDefined('cookie.userid') and cookie.userid neq rsuser.userid>
+			<cfset structDelete(cookie,"userid")>
+			<cfset structDelete(cookie,"userhash")>
+		</cfif>
 				
 		<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
 		

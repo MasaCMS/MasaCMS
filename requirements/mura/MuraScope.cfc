@@ -131,7 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(request,"contentRenderer")>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
-			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+			<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
+			<cfset getThemeRenderer()>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
@@ -144,10 +146,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false" returntype="any">
+	<cfset getContentRenderer()>
 	<cfif isObject(event("themeRenderer"))>
 		<cfreturn event("themeRenderer")>
 	<cfelseif len(event('siteid')) and fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
-		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer"))>
+		<cfset event("themeRenderer").injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
+		<cfset event("themeRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
 	<cfelse>
 		<cfreturn event("themeRenderer")>
 	</cfif>
@@ -508,7 +513,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbPropertyArray" output="false">
 	<cfargument name="property">
 	<cfargument name="direction" default="desc">
-	<cfargument name="includeHome" default="true">
+	
 	<cfset var it=content().getCrumbIterator()>
 	<cfset var propertyArray=[]>
 	<cfset var item="">
@@ -517,16 +522,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset it.end()>
 		<cfloop condition="it.hasPrevious()">
 			<cfset item=it.previous()>
-			<cfif arguments.includeHome or item.getValue('contentid') neq '00000000000000000000000000000000001'>
-				<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
-			</cfif>
+			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>	
 		</cfloop>
 	<cfelse>
 		<cfloop condition="it.hasNext()">
 			<cfset item=it.next()>
-			<cfif arguments.includeHome or item.getValue('contentid') neq '00000000000000000000000000000000001'>
-				<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
-			</cfif>
+			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
 		</cfloop>
 	</cfif>
 	<cfreturn propertyArray>
