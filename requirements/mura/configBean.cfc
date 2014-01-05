@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfelseif prefix eq "set" and len(arguments.MissingMethodName)gt 3>
 		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
-		<cfreturn setValue(argumentCollection=arguments.MissingMethodArguments)>
+		<cfreturn setValue(prop,arguments.MissingMethodArguments[1])>
 	<cfelse>
 		<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 	</cfif>
@@ -227,6 +227,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setCompiler("Adobe")/>	
 	</cfdefaultcase>
 	</cfswitch>
+
+	<cfif listfindnocase('oracle,postgresql,nuodb', getDbType()) or getBean('dbUtility').version().database_productname eq 'h2'>
+		<cfset variables.instance.DbCaseSensitive=true>
+	</cfif>
 	
 	<cfif not len(variables.instance.readOnlyDatasource)>
 		<cfset variables.instance.readOnlyDatasource=variables.instance.datasource>
