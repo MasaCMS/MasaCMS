@@ -204,7 +204,7 @@
 								</cfif>
 							</dt>
 							<cfif len(avatar)>
-								<dd class="gravatar <!--- #this.commentUserThumbClass# --->"><img src="#avatar#"></dd>
+								<dd class="gravatar <!--- #$.getContentRenderer.commentUserThumbClass# --->"><img src="#avatar#"></dd>
 							<cfelse>
 								<dd class="gravatar <!--- #this.commentUserThumbClass# --->"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
