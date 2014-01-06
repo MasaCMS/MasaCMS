@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.useMode=true>
 <cffunction name="init" output="false" returntype="any">
-<cfargument name="useMode" required="true" default="true">
+<cfargument name="useMode" required="true" default="">
 <cfargument name="tempDir" required="true" default="#application.configBean.getTempDir()#">
 
 <cfif findNoCase(server.os.name,"Windows")>
