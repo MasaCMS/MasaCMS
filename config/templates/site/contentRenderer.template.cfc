@@ -111,8 +111,8 @@
 		//this.ulNestedClass="";
 		//this.ulNestedAttributes="";
 		//this.ulTopClass="navSecondary";
-		// this.ulPaginationClass="navSequential";
-		// this.ulPaginationWrapperClass="row";
+		//this.ulPaginationClass="navSequential";
+		//this.ulPaginationWrapperClass="row";
 		//this.formWrapperClass="well";
 		//this.generalWrapperClass="well";
 		//this.aNotCurrentClass="";
@@ -285,8 +285,8 @@
 		// this.searchResultInnerClass="";
 		// this.searchResultsRowClass="";
 		// this.searchResultsMoreResultsRowClass="";
-		// this.searchReultsListClass="";
-		// this.searchReultsPagerClass="";
+		// this.searchResultsListClass="";
+		// this.searchResultsPagerClass="";
 		// this.searchAgainRowClass="";
 		// this.searchAgainInnerClass="";
 		// this.searchAgainFormClass="";

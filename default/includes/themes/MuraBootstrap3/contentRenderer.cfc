@@ -269,8 +269,8 @@
 			siteRenderer.searchResultInnerClass="row";
 			siteRenderer.searchResultsRowClass="row";
 			siteRenderer.searchResultsMoreResultsRowClass="row";
-			siteRenderer.searchReultsListClass="";
-			siteRenderer.searchReultsPagerClass="pager";
+			siteRenderer.searchResultsListClass="";
+			siteRenderer.searchResultsPagerClass="pager";
 			siteRenderer.searchAgainRowClass="row";
 			siteRenderer.searchAgainInnerClass="col-md-8";
 			siteRenderer.searchAgainFormClass="navbar-form";

@@ -142,7 +142,7 @@
 
 			<!--- RESULTS --->
 			<div class="#this.searchResultsRowClass#">
-				<div id="svPortal" class="mura-index #this.searchReultsListClass#">
+				<div id="svPortal" class="mura-index #this.searchResultsListClass#">
 					#variables.$.dspObject_Include(
 						thefile='dsp_content_list.cfm'
 						, fields=variables.contentListFields
@@ -157,7 +157,7 @@
 			<div class="#this.searchResultsMoreResultsRowClass#">
 				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
-					<ul class="#this.searchReultsPagerClass#">
+					<ul class="#this.searchResultsPagerClass#">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.prev')#</a>
