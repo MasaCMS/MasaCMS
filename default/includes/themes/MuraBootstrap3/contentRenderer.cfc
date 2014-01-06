@@ -112,22 +112,32 @@
 		this.calendarListWrapperClass="";
 		
 		// comments/index.cfm
-		this.commentsWrapperClass="";
-		this.commentFormWrapperClass="well";
-		this.commentFormClass="form-horizontal";
-		this.commentNewClass="btn btn-default";
-		this.commentFieldWrapperClass="form-group";
-		this.commentFieldLabelClass="control-label col-lg-3";
-		this.commentInputWrapperClass="col-lg-9";
-		this.commentInputClass="form-control";
-		this.commentCheckboxClass="checkbox";
-		this.commentPrefsInputWrapperClass="col-lg-offset-3 col-lg-9";
-		this.commentSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
-		this.commentSubmitButtonClass="btn btn-default";
-		this.commentRequiredWrapperClass="col-lg-offset-3 col-lg-9";
-		//this.commentUserEmailClass="";
-		//this.commentDeleteButtonClass="";
-		
+		 this.commentsWrapperClass="";
+		 this.commentSortContainerClass="row";
+		 this.commentSortWrapperClass="col-xs-5";
+		 this.commentSortSelectClass="form-control";
+		 this.commentFormWrapperClass="";
+		 this.commentFormClass="";
+		 this.commentNewClass="";
+		 this.commentFieldWrapperClass="";
+		 this.commentFieldLabelClass="";
+		 this.commentInputWrapperClass="";
+		 this.commentInputClass="";
+		 this.commentCheckboxClass="";
+		 this.commentPrefsInputWrapperClass="";
+		 this.commentSubmitButtonWrapperClass="";
+		 this.commentSubmitButtonClass="btn btn-default";
+		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up"
+		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down"
+		 this.commentRequiredWrapperClass="";
+		 this.commentUserThumbClass="img img-polaroid";
+		 
+		 this.commentAdminButtonWrapperClass="btn-group pull-right"
+		 this.commentUserEmailClass="btn btn-default btn-sm";
+		 this.commentDeleteButtonClass="btn btn-default btn-sm";
+		 this.commentEditButtonClass="btn btn-default btn-sm";
+		 this.commentApproveButtonClass="btn btn-default btn-sm";	
+		 	
 		// comments/dsp_comment.cfm
 	 	this.emailLinkClass="btn btn-default";
 		this.commentsLinkClass="btn btn-default";
