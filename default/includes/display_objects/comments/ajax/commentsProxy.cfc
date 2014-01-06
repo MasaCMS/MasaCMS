@@ -163,7 +163,7 @@
 								<cfset avatar = $.createHREFForImage(user.getSiteID(), user.getPhotoFileID(), 'jpg', 'medium')>
 							</cfif>
 						</cfif>
-						<dl id="mura-comment-#comment.getCommentID()#">
+						<dl id="mura-comment-#comment.getCommentID()#" <cfif comment.getIsApproved() neq 1>class="#renderer.alertDangerClass#"</cfif>>
 							<dt>
 								<cfset local.commenterName=comment.getName()>
 

@@ -147,7 +147,7 @@
 			    return false;
 			});
 
-			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+70) + "px")
 			resizeFrontEndToolsModal(frontEndModalHeight);
 		} else{
 			frontEndModalHeight=0;
