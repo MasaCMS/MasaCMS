@@ -793,20 +793,9 @@ s
 </cfif>
 </cffunction>
 
-<cffunction name="getThemeRenderer" output="false">
+<cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
 <cfargument name="$" default="">
-<cfscript>
-
-if(not isObject(arguments.$)){
-	if(not isObject(variables.instance.themeRenderer)){
-		arguments.$=getBean("$").init(getValue('siteid'));
-		variables.instance.themeRenderer=argument.$.getThemeRenderer();
-	}
-	return variables.instance.themeRenderer;
-} else {
-	return arguments.$.getThemeRenderer();
-}
-</cfscript>
+	<cfreturn getContentRenderer(arguments.$)>
 </cffunction>
 
 <cffunction name="exportHTML" output="false">
