@@ -94,13 +94,15 @@
 				or listFind(session.mura.memberships,'S2')
 				or application.permUtility.getModulePerm("00000000000000000000000000000000015", $.event('siteID'))>
 		<cfset var sort = listFindNoCase('asc,desc', arguments.sortDirection) ? arguments.sortDirection : 'asc'>
-		<cfset var it = $.getBean('contentCommentManager').getCommentsIterator(
-						contentID=content.getContentID(),
+		<cfset var commentArgs={contentID=content.getContentID(),
 						siteID=$.event('siteID'),
-						isapproved=1,
 						isspam=0,
 						isdeleted=0,
-						sortDirection=sort)>
+						sortDirection=sort}>
+		<cfif not isEditor>
+			<cfset commentArgs.isApproved=1>
+		</cfif>
+		<cfset var it = $.getBean('contentCommentManager').getCommentsIterator(argumentCollection=commentArgs)>
 		<cfset var q = it.getQuery()>
 		<cfset var comment = "">
 		<cfset var local = structNew()>
@@ -163,26 +165,29 @@
 						</cfif>
 						<dl id="mura-comment-#comment.getCommentID()#">
 							<dt>
-								<cfif len(commenter.getName())>
+								<cfset local.commenterName=comment.getName()>
+
+								<cfif not len(local.commenterName) and len(commenter.getName())>
 									<cfset local.commenterName=commenter.getName()>
-								<cfelse>
-									<cfset local.commenterName=comment.getName()>
 								</cfif>
-								<cfif len(commenter.getURL())>
+
+								<cfset local.commenterURL=comment.getURL()>
+
+								<cfif not len(local.commenterURL) and len(commenter.getURL())>
 									<cfset local.commenterURL=commenter.getURL()>
-								<cfelse>
-									<cfset local.commenterURL=comment.getURL()>
 								</cfif>
-								<cfif len(commenter.getEmail())>
+								
+								<cfset local.commenterEmail=comment.getEmail()>
+
+								<cfif  not len(local.commenterEmail) and len(commenter.getEmail())>
 									<cfset local.commenterEmail=commenter.getEmail()>
-								<cfelse>
-									<cfset local.commenterEmail=comment.getEmail()>
 								</cfif>
+
 								<cfif len(local.commenterURL)>
 									<a href="#local.commenterURL#" target="_blank">#htmleditformat(local.commenterName)#</a>
 								<cfelse>
 									#htmleditformat(local.commenterName)#
-								</cfif>
+								</cfif> 
 								<cfif len(comment.getParentID())>
 									<em>(in reply to: <a href="##" class="mura-in-reply-to" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
 								</cfif>
