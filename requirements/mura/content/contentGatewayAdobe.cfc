@@ -2187,15 +2187,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rsContent" type="any" required="true" default="">
 	<cfargument name="moduleID" type="string" required="true" default="00000000000000000000000000000000000">
 	<cfargument name="taggroup" default="">
-	<cfargument name="count" default="true">
 
 	<cfset var rsTagCloud= ''/>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTagCloud')#">
-	select tag
-	<cfif arguments.count>
-		, count(tag) as tagCount	
-	</cfif>
+	select tag, count(tag) as tagCount	
 	from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
 	<cfif arguments.moduleID eq '00000000000000000000000000000000000'>
