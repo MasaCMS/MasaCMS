@@ -100,6 +100,12 @@
 		// form vars
 		this.formWrapperClass = 'well';
 		
+		// alerts
+		this.alertSuccessClass = "alert alert-success";
+		this.alertInfoClass = "alert alert-info";
+		this.alertWarningClass = "alert alert-warning";
+		this.alertDangerClass = "alert alert-danger";
+		
 		// Display Objects
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
@@ -116,13 +122,13 @@
 		 this.commentSortContainerClass="row";
 		 this.commentSortWrapperClass="col-xs-5";
 		 this.commentSortSelectClass="form-control";
-		 this.commentFormWrapperClass="";
+		 this.commentFormWrapperClass="well";
 		 this.commentFormClass="";
 		 this.commentNewClass="";
-		 this.commentFieldWrapperClass="";
-		 this.commentFieldLabelClass="";
+		 this.commentFieldWrapperClass="form-group";
+		 this.commentFieldLabelClass="control-label";
 		 this.commentInputWrapperClass="";
-		 this.commentInputClass="";
+		 this.commentInputClass="form-control";
 		 this.commentCheckboxClass="";
 		 this.commentPrefsInputWrapperClass="";
 		 this.commentSubmitButtonWrapperClass="";
@@ -130,8 +136,16 @@
 		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up"
 		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down"
 		 this.commentRequiredWrapperClass="";
-		 this.commentUserThumbClass="img img-polaroid";
+		 this.commentThumbClass="img-thumbnail";
+		 this.commentSpamClass="";
+		 this.commentSpamLinkClass="";
+		 this.commentClass="";
+		 this.commentDateTimeClass="";
+		 this.commentReplyClass="";
+		 this.commentAwaitingApproval=""; //
+	 
 		 
+		 // !!! These need to have deafult styles in mura.6.1.css since no guarantee of BS3 loaded?
 		 this.commentAdminButtonWrapperClass="btn-group pull-right"
 		 this.commentUserEmailClass="btn btn-default btn-sm";
 		 this.commentDeleteButtonClass="btn btn-default btn-sm";
@@ -254,7 +268,7 @@
 		this.mailingListFormGroupWrapperClass="form-group";
 		this.mailingListFormLabelClass="control-label col-lg-2";
 		this.mailingListFormFieldWrapperClass="col-lg-10";
-		this.mailingListFormInputClass="text form-control";
+		this.mailingListFormInputClass="form-control";
 		this.mailingListCheckboxWrapperClass="col-lg-offset-2 col-lg-10";
 		this.mailingListCheckboxClass="checkbox";
 		this.mailingListSubmitWrapperClass="col-lg-offset-2 col-lg-10";

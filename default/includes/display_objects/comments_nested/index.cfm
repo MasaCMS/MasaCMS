@@ -245,12 +245,12 @@
 				
 					#errorJSTxt#
 					<a name="errors"></a>
-					<div id="editProfileMsg" class="required">
+					<div class="#this.alertDangerClass#">
 						#variables.$.getBean('utility').displayErrors(variables.errors)#
 					</div>
 
 			<cfelseif request.commentid neq '' and application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() neq 1>
-				<div id="editProfileMsg" class="required">
+				<div class="#this.alertDangerClass#">
 					#variables.$.rbKey('comments.postedsoon')#
 				</div>
 			</cfif>

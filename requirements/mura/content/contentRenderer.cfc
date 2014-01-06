@@ -107,6 +107,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.bodyMetaImageClass="thumbnail">
 <cfset this.size=50>
 
+<!--- Alerts --->
+
+<cfset this.alertSuccessClass = "alert alert-success">
+<cfset this.alertInfoClass = "alert alert-info">
+<cfset this.alertWarningClass = "">
+<cfset this.alertDangerClass = "alert alert-error">
+
 <!--- ===================
 Display Objects 
 =================== --->
@@ -141,6 +148,12 @@ Display Objects
 <cfset this.commentDeleteButtonClass="btn">
 <cfset this.commentEditButtonClass="btn">
 <cfset this.commentApproveButtonClass="btn">
+<cfset this.commentThumbClass="img-polaroid">
+<cfset this.commentSpamClass="btn">
+<cfset this.commentSpamLinkClass="btn">
+<cfset this.commentClass="">
+<cfset this.commentDateTimeClass="">
+<cfset this.commentReplyClass="">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">

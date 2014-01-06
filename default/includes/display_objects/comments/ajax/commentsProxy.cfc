@@ -86,6 +86,7 @@
 		<cfargument name="sortDirection" required="true" default="desc">
 		<cfargument name="commentID" required="true" default="">
 		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfset var renderer = $.getContentRenderer()>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
 		<cfset var crumbArray = content.getCrumbArray()>
 		<cfset var isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
@@ -160,7 +161,7 @@
 								<cfset avatar = $.createHREFForImage(user.getSiteID(), user.getPhotoFileID(), 'jpg', 'medium')>
 							</cfif>
 						</cfif>
-						<dl id="comment-#comment.getCommentID()#">
+						<dl id="mura-comment-#comment.getCommentID()#">
 							<dt>
 								<cfif len(commenter.getName())>
 									<cfset local.commenterName=commenter.getName()>
@@ -183,40 +184,40 @@
 									#htmleditformat(local.commenterName)#
 								</cfif>
 								<cfif len(comment.getParentID())>
-									<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
+									<em>(in reply to: <a href="##" class="mura-in-reply-to" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a>)</em>
 								</cfif>
 								<cfif isEditor>
-								<div class="#$.getSiteRenderer().commentAdminButtonWrapperClass()#">
+								<div class="#renderer.commentAdminButtonWrapperClass#">
 									<cfif isEditor and len(local.commenterEmail)>
-										<a class="#$.getContentRenderer.commentUserEmailClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-											 <a class="#$.getContentRenderer.commentEditButtonClass#" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+											 <a class="mura-comment-edit-button #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
 										</cfif>
 										<cfif comment.getIsApproved() neq 1>
-											 <a class="#$.getContentRenderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+											 <a class="mura-comment-approve-button #renderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
 										</cfif>
-										 <a class="#$.getContentRenderer.commentDeleteButtonClass#" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+										 <a class="mura-comment-delete-button #renderer.commentDeleteButtonClass#" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
 										<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
 									</cfif>
 								</div>
 								</cfif>
 							</dt>
 							<cfif len(avatar)>
-								<dd class="userThumb #$.getContentRenderer.commentUserThumbClass#"><img src="#avatar#"></dd>
+								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="#avatar#"></dd>
 							<cfelse>
-								<dd class="userThumb #$.getContentRenderer.commentUserThumbClass#"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
+								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
-							<dd class="comment #$.getContentRenderer.commentClass#">
+							<dd class="mura-comment #renderer.commentClass#">
 								#$.setParagraphs(htmleditformat(comment.getComments()))#
 							</dd>
-							<dd class="dateTime #$.getContentRenderer.commentDateTimeClass#">
+							<dd class="mura-comment-date-time #renderer.commentDateTimeClass#">
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
 							</dd>
-							<dd class="reply #$.getContentRenderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
-							<dd class="spam #$.getContentRenderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
-							<dd id="postcomment-#comment.getCommentID()#"></dd>
+							<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
+							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="mura-comment-spam-link #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
+							<dd id="mura-comment-postcomment-#comment.getCommentID()#"></dd>
 						</dl>
 					</cfloop>
 					<cfset local.pageNo++>
@@ -224,7 +225,7 @@
 
 				<!--- MOAR --->
 				<cfif it.getPageIndex() lt it.pageCount()>
-					<div id="moreCommentsContainer"><a id="moreComments" class="#$.getContentRenderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
+					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
 				</cfif>
 		
 			</cfoutput>
