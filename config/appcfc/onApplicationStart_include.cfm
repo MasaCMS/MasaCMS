@@ -251,6 +251,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
+	<cfif listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) or application.serviceFactory.getBean('dbUtility').version().database_productname eq 'h2'>
+		<cfset application.configBean.setDbCaseSensitive(true)>
+	</cfif>
+
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		
 	<cfobjectcache action="clear" />
