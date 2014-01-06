@@ -127,12 +127,12 @@
 		 this.commentPrefsInputWrapperClass="";
 		 this.commentSubmitButtonWrapperClass="";
 		 this.commentSubmitButtonClass="btn btn-default";
-		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up"
-		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down"
+		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up";
+		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down";
 		 this.commentRequiredWrapperClass="";
 		 this.commentUserThumbClass="img img-polaroid";
 		 
-		 this.commentAdminButtonWrapperClass="btn-group pull-right"
+		 this.commentAdminButtonWrapperClass="btn-group pull-right";
 		 this.commentUserEmailClass="btn btn-default btn-sm";
 		 this.commentDeleteButtonClass="btn btn-default btn-sm";
 		 this.commentEditButtonClass="btn btn-default btn-sm";
@@ -179,16 +179,16 @@
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListPropertyMap={
-										containerEl={tag="div"},
-										itemEl={tag="dl"},
-										labelEl={tag="span"},
-										title={tag="dt"},
-										date={tag="dt"},
-										credits={tag="dd",showLabel=true,rbkey="list.by"},
-										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
-										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-										'default'={tag="dd"}
-									};
+			containerEl={tag="div"},
+			itemEl={tag="dl"},
+			labelEl={tag="span"},
+			title={tag="dt"},
+			date={tag="dt"},
+			credits={tag="dd",showLabel=true,rbkey="list.by"},
+			tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+			rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
+			'default'={tag="dd"}
+		};
 		this.contentListWrapperDivClass="";
 		this.contentListItemImageLinkClass="";
 		
