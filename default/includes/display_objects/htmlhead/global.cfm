@@ -66,4 +66,11 @@ var assetpath="#variables.$.siteConfig('assetPath')#";
 var themepath="#variables.$.siteConfig('themeAssetPath')#";
 var htmlEditorType="#variables.$.globalConfig('htmlEditorType')#";
 var rb="#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#";
+<cfif structKeyExists(url,'muraadminpreview')>
+$(function(){
+   	$("a").attr('href', function(i, h) {
+    return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#" : "?muraadminpreview&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#");
+	});
+});
+</cfif>
 </script></cfoutput>

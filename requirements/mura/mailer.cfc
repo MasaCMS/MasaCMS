@@ -176,9 +176,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfcatch>
 				<cfif len(arguments.siteid)>
-					<cfthrow type="Invalid Mail Settings" message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+					<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 				<cfelse>
-					<cfthrow type="Invalid Mail Settings" message="The current mail server settings in the settings.ini are not valid.">
+					<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
 				</cfif>
 			</cfcatch>
 		</cftry>
@@ -252,11 +252,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cfthrow type="Invalid Mail Settings" 
-		            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 			<cfelse>
-				<cfthrow type="Invalid Mail Settings" 
-		            message="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
 			</cfif>
 		</cfcatch>
 		</cftry>
@@ -329,9 +327,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cfthrow type="Invalid Mail Settings" message="The current mail server settings for the site '#arguments.siteID#' are not valid.">	
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 			<cfelse>
-				<cfthrow type="Invalid Mail Settings" message="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
 			</cfif>
 		</cfcatch>
 		</cftry>
@@ -412,9 +410,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfcatch>
 			<cfif len(arguments.siteid)>
-				<cfthrow type="Invalid Mail Settings" message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 			<cfelse>
-				<cfthrow type="Invalid Mail Settings" message="The current mail server settings in the settings.ini are not valid.">
+				<cflog type="Error" file="exception" text="The current mail server settings in the settings.ini are not valid.">
 			</cfif>
 		</cfcatch>
 		</cftry>
