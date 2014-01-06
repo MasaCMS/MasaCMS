@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#" href="./?muraAction=cchain.edit&siteid=#URLEncodedFormat(rc.siteid)#&chainID=#HTMLEditFormat(chainID)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.vieweditform')#</a>
 			</cfcase>
 			<cfcase value="list">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.addchangeset')#" href="./?muraAction=cchain.edit&chainID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#" href="./?muraAction=cchain.edit&chainID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.addapprovalchain')#</a>
 			</cfcase>
 			<cfcase value="edit">
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#" href="./?muraAction=cchain.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'approvalchains.backtoapprovalchains')#</a>
