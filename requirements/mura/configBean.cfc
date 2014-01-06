@@ -227,10 +227,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setCompiler("Adobe")/>	
 	</cfdefaultcase>
 	</cfswitch>
-
-	<cfif listfindnocase('oracle,postgresql,nuodb', getDbType()) or getBean('dbUtility').version().database_productname eq 'h2'>
-		<cfset variables.instance.DbCaseSensitive=true>
-	</cfif>
 	
 	<cfif not len(variables.instance.readOnlyDatasource)>
 		<cfset variables.instance.readOnlyDatasource=variables.instance.datasource>
