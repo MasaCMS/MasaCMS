@@ -77,19 +77,6 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="onSiteCKEditorConfigRender" access="public" output="false" returntype="any">
-		<cfargument name="$" hint="mura scope" />
-		<cfset var str = '' />
-		<cfsavecontent variable="str"><cfoutput>
-			// heading vars
-			config.format_h1 = { element : 'h2' };
-			config.format_h2 = { element : 'h3' };
-			config.format_h3 = { element : 'h4' };
-			config.format_h4 = { element : 'h5' };
-			config.format_h5 = { element : 'h6' };
-		</cfoutput></cfsavecontent>
-		<cfreturn str />
-	</cffunction>
 
 	<cffunction name="onRenderStart" access="public" output="false" returntype="any">
 		<cfargument name="$" hint="mura scope" />
