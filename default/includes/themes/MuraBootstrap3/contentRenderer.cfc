@@ -135,6 +135,7 @@
 		 this.commentSubmitButtonClass="btn btn-default";
 		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up";
 		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down";
+		 this.commentMoreCommentsContainer="";
 		 this.commentRequiredWrapperClass="";
 		 this.commentThumbClass="img-thumbnail";
 		 this.commentSpamClass="";

@@ -162,6 +162,7 @@
 		// this.commentClass="";
 		// this.commentDateTimeClass="";
 		// this.commentReplyClass="";
+		// this.commentMoreCommentsContainer="";
 		
 		// comments/dsp_comment.cfm
 		// this.emailLinkClass="";

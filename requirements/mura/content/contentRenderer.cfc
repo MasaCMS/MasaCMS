@@ -154,6 +154,7 @@ Display Objects
 <cfset this.commentClass="">
 <cfset this.commentDateTimeClass="">
 <cfset this.commentReplyClass="">
+<cfset this.commentMoreCommentsContainer="">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
