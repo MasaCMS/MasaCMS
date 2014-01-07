@@ -95,7 +95,7 @@
 
 		// pagination vars
 		this.ulPaginationClass = 'pagination';
-		this.ulPaginationWrapperClass = 'pagination';
+		this.ulPaginationWrapperClass = '';
 
 		// form vars
 		this.formWrapperClass = 'well';
