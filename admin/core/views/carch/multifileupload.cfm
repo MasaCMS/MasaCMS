@@ -356,12 +356,14 @@ jQuery(document).ready(function(){
                         <div data-attribute="title">{%=file.title%}</div>
                     </div>
                 </div>
+                 {% if (file.summary) { %}
                 <div class="control-group">
                     <label class="control-label">Summary/Caption</label>
                     <div class="controls">
                         <div data-attribute="summary">{%##file.summary%}</div>
                     </div>
                 </div>
+                {% } %}
                 {% if (file.credits) { %}
                 <div class="control-group">
                     <label class="control-label">Credits</label>

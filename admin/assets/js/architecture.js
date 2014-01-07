@@ -475,6 +475,7 @@ buttons: {
 
 		d.html('<div class="load-inline"></div>');
 		$('#classList .load-inline').spin(spinnerArgs2);
+		return false;
 		$.get(url + "?" + pars, function(data) {
 			$('#classList .load-inline').spin(false);
 			$('#classList').html(data);
