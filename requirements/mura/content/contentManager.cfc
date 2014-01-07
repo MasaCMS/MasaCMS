@@ -2255,7 +2255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset local.returnStr={
 					    filename=JSStringFormat(fileBean.getAssocFilename()),
 					    title=JSStringFormat(fileBean.getTitle()),
-					    summary=JSStringFormat(fileBean.getSummary()),
+					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
 					    altext=JSStringFormat(filemetadata.getAltText()),
 					    credits=JSStringFormat(filemetadata.getCredits()),
 					    size=fileBean.getFileSize(),
@@ -2319,10 +2319,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
 				<cfset filemetadata=fileBean.getFileMetaData()>
+
 				<cfset local.returnStr={
 					    filename=JSStringFormat(fileBean.getAssocFilename()),
 					    title=JSStringFormat(fileBean.getTitle()),
-					    summary=JSStringFormat(fileBean.getSummary()),
+					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
 					    altext=JSStringFormat(filemetadata.getAltText()),
 					    credits=JSStringFormat(filemetadata.getCredits()),
 					    size=fileBean.getFileSize(),
