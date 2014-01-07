@@ -84,6 +84,7 @@ $(function(){
 
 	var handleHash=function() {
 		var hash = window.location.hash;
+
 		if (hash.length > 0) {
 			if (jQuery(hash).length != 0) {
 				scrollToID(hash);
@@ -91,7 +92,7 @@ $(function(){
 				/* load comments, then scroll to */
 				var params = {
 					pageNo: jQuery("#mura-more-comments").attr('data-pageno'),
-					commentID: hash.replace('#comment-', '')
+					commentID: hash.replace('#mura-comment-', '')
 				};
 
 				loadPage(params).success(function(data){
@@ -237,7 +238,7 @@ $(function(){
 			event.preventDefault();
 			$editor.hide();
 			$editor.detach();
-			jQuery("#mura-comment-post-comment" + id).append($editor);
+			jQuery("#mura-comment-post-comment-" + id).append($editor);
 			jQuery("#mura-comment-post-a-comment").hide();
 			jQuery("#mura-comment-edit-comment").hide();
 			jQuery("#mura-comment-reply-to-comment").show();
