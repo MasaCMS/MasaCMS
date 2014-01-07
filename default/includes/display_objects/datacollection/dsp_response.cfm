@@ -89,15 +89,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif Len(variables.customresponse)>
 		#variables.customresponse#
 	<cfelseif variables.acceptError eq "Browser">
-		<p class="#this.datacollectionErrorPClass#">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
+		<p class="#this.alertDangerClass#">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
 	<cfelseif variables.acceptError eq "Duplicate">
-		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("poll.onlyonevote")#</p>
+		<p class="#this.alertDangerClass#">#getSite().getRBFactory().getKey("poll.onlyonevote")#</p>
 	<cfelseif variables.acceptError eq "Captcha">
-		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
+		<p class="#this.alertDangerClass#">#getSite().getRBFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	<cfelseif variables.acceptError eq "Spam">
-		<p class="#this.datacollectionErrorPClass#">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
+		<p class="#this.alertDangerClass#">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	<cfelseif variables.acceptError eq "Validation">
-		<div class="#this.datacollectionErrorDivClass#">#application.utility.displayErrors(formErrors)#</div>
+		<div class="#this.alertDangerClass#">#application.utility.displayErrors(formErrors)#</div>
 	</cfif>
 <cfelse>
 		<div id="frm#replace(variables.rsform.contentID,'-','','ALL')#">
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#variables.customResponse#
 			<cfelse>
 				<cfif isdefined("request.redirect_label")>
-					<p class="#this.datacollectionSuccessPClass#"><a href="#request.redirect_url#">#request.redirect_label#</a></p>
+					<p class="#this.alertSuccessClass#"><a href="#request.redirect_url#">#request.redirect_label#</a></p>
 				<cfelse>
 					<cflocation addtoken="false" url="#request.redirect_url#">
 				</cfif>
