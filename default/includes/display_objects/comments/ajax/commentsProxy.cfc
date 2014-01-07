@@ -201,9 +201,9 @@
 											 <a class="mura-comment-edit-button #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
 										</cfif>
 										<cfif comment.getIsApproved() neq 1>
-											 <a class="mura-comment-approve-button #renderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+											 <a class="mura-comment-approve-button #renderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()###mura-comment-#comment.getCommentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
 										</cfif>
-										 <a class="mura-comment-delete-button #renderer.commentDeleteButtonClass#" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+										 <a class="mura-comment-delete-button #renderer.commentDeleteButtonClass#" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()###mura-comments-page" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
 										<!--- <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>	--->	
 									</cfif>
 								</div>
@@ -221,9 +221,9 @@
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
 							</dd>
 							<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
-							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="mura-comment-spam-link #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
-							<dd id="mura-comment-postcomment-#comment.getCommentID()#"></dd>
+							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="mura-comment-flag-as-spam #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
 						</dl>
+						<div id="mura-comment-post-comment-#comment.getCommentID()#"></div>
 					</cfloop>
 					<cfset local.pageNo++>
 				</cfloop>

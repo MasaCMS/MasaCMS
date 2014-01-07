@@ -143,7 +143,8 @@
 		 this.commentClass="";
 		 this.commentDateTimeClass="";
 		 this.commentReplyClass="";
-		 this.commentAwaitingApproval=""; //
+		 this.commentAwaitingApproval="";
+		 this.COMMENTMORECOMMENTSCONTAINER="";
 	 
 		 
 		 // !!! These need to have deafult styles in mura.6.1.css since no guarantee of BS3 loaded?
