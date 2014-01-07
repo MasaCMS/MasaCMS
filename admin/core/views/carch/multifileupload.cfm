@@ -333,18 +333,18 @@ jQuery(document).ready(function(){
         <td class="file-preview">
             <span class="preview">
                 {% if (file.thumbnail_url) { %}
-                    <a href="{%=file.url%}" title="{%=file.name%}" class="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+                    <a href="{%=file.url%}" title="{%=file.title%}" class="gallery" download="{%=file.filename%}"><img src="{%=file.thumbnail_url%}"></a>
                 {% } else { %}
                     <i class="icon-file-text-alt"></i>
                 {% } %}
-                <span class="badge">{%=$(file.name.split(".")).get(-1).toUpperCase()%}</span>
+                <span class="badge">{%=$(file.filename.split(".")).get(-1).toUpperCase()%}</span>
             </span>
         </td>
         <td class="var-width form-horizontal">
             <div class="control-group">
                 <label class="control-label">File name</label>
                 <div class="controls">
-                    <div class="name">{%=file.name%}</div>
+                    <div class="name">{%=file.filename%}</div>
                 </div>
             </div>
             {% if (file.error) { %}
@@ -353,22 +353,24 @@ jQuery(document).ready(function(){
                 <div class="control-group">
                     <label class="control-label">Title</label>
                     <div class="controls">
-                        <div data-attribute="title">{%=file.name%}</div>
+                        <div data-attribute="title">{%=file.title%}</div>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">Summary/Caption</label>
                     <div class="controls">
-                        <div data-attribute="summary">{%file.summary%}</div>
+                        <div data-attribute="summary">{%##file.summary%}</div>
                     </div>
                 </div>
+                {% if (file.credits) { %}
                 <div class="control-group">
                     <label class="control-label">Credits</label>
                     <div class="controls">
                         <div data-attribute="credits">{%=file.credits%}</div>
                     </div>
                 </div>
-                {% if (file.thumbnail_url) { %}
+                {% } %}
+                {% if (file.thumbnail_url && file.alttext) { %}
                 <div class="control-group">
                     <label class="control-label">Alt Text</label>
                     <div class="controls">
