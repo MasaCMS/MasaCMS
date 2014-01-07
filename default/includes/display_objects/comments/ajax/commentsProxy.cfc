@@ -223,7 +223,7 @@
 							<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
 							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="mura-comment-flag-as-spam #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
 						</dl>
-						<div id="mura-comment-post-comment-#comment.getCommentID()#"></div>
+						<div id="mura-comment-post-comment-#comment.getCommentID()#" class="mura-comment-reply-wrapper #renderer.commentFormWrapperClass#" style="display: none;"></div>
 					</cfloop>
 					<cfset local.pageNo++>
 				</cfloop>

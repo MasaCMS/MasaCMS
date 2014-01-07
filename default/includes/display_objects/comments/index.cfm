@@ -277,7 +277,7 @@
 			<!--- COMMENT FORM --->
 			<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
 				
-				<span id="mura-comment-post-comment-comment" style="display: none"><a class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a></span>
+				<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 				<!--- THE FORM --->
 				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comment-post-comment" onsubmit="return validate(this);" novalidate="novalidate">
