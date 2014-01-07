@@ -169,11 +169,6 @@
 		// this.approveCommentLinkClass="";
 		// this.deleteCommentLinkClass="";
 		
-		// datacollection/dsp_response.cfm
-		// this.datacollectionErrorPClass="";
-		// this.datacollectionErrorDivClass="";
-		// this.datacollectionSuccessPClass="";
-		
 		// dataresponses/dsp_detail.cfm
 		// this.dataResponseListClass="";
 		
@@ -256,7 +251,6 @@
 		// dsp_login.cfm
 		// this.loginWrapperClass="";
 		// this.loginWrapperInnerClass="";
-		// this.loginErrorMessageClass="";
 		// this.loginFormClass="";
 		// this.forgotPasswordFormClass="";
 		// this.loginFormGroupWrapperClass="";
@@ -267,14 +261,10 @@
 		// this.loginFormCheckboxClass="";
 		// this.loginFormSubmitWrapperClass="";
 		// this.loginFormSubmitClass="";
-		// this.loginFormAlertClass="";
-		// this.loginFormErrorClass="";
 		// this.notRegisteredLinkClass="";
 		
 		// dsp_mailing_list_master.cfm
 		// this.mailingListWrapperClass="";
-		// this.mailingListSuccessClass="";
-		// this.mailingListErrorClass="";
 		// this.mailingListFormClass="";
 		// this.mailingListFormGroupWrapperClass="";
 		// this.mailingListFormLabelClass="";
@@ -368,10 +358,6 @@
 		// this.raterObjectWrapperClass="";
 		// this.raterWrapperClass="";
 		// this.avgRatingWrapperClass="";
-		
-		// sendToLink/SendLink.cfm
-		// this.sendToFriendSuccessClass="";
-		// this.sendToFriendErrorClass="";
 		
 		// Generic form vars
 		//	this.formWrapperClass = "";

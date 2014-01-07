@@ -159,11 +159,6 @@
 		this.approveCommentLinkClass="btn btn-default";
 		this.deleteCommentLinkClass="btn btn-default";
 		
-		// datacollection/dsp_response.cfm
-		this.datacollectionErrorPClass="alert alert-danger";
-		this.datacollectionErrorDivClass="alert alert-danger";
-		this.datacollectionSuccessPClass="alert alert-success";
-		
 		// dataresponses/dsp_detail.cfm
 		this.dataResponseListClass="dl-horizontal";
 		
@@ -246,7 +241,6 @@
 		// dsp_login.cfm
 		this.loginWrapperClass="";
 		this.loginWrapperInnerClass="row";
-		this.loginErrorMessageClass="alert alert-danger";
 		this.loginFormClass="form-horizontal form-signin";
 		this.forgotPasswordFormClass="form-horizontal form-sendlogin";
 		this.loginFormGroupWrapperClass="form-group";
@@ -257,14 +251,10 @@
 		this.loginFormCheckboxClass="checkbox";
 		this.loginFormSubmitWrapperClass="col-lg-offset-3 col-lg-10";
 		this.loginFormSubmitClass="btn btn-default";
-		this.loginFormAlertClass="alert alert-success";
-		this.loginFormErrorClass="alert alert-danger";
 		this.notRegisteredLinkClass="btn btn-primary";
 		
 		// dsp_mailing_list_master.cfm
 		this.mailingListWrapperClass="well";
-		this.mailingListSuccessClass="alert alert-success";
-		this.mailingListErrorClass="alert alert-error";
 		this.mailingListFormClass="form-horizontal";
 		this.mailingListFormGroupWrapperClass="form-group";
 		this.mailingListFormLabelClass="control-label col-lg-2";
@@ -361,10 +351,6 @@
 		this.raterObjectWrapperClass="row clearfix";
 		this.raterWrapperClass="col-lg-12";
 		this.avgRatingWrapperClass="col-lg-12";
-		
-		// sendToLink/SendLink.cfm
-		this.sendToFriendSuccessClass="alert alert-success";
-		this.sendToFriendErrorClass="alert alert-danger";
 		
 		// Generic form vars
 		this.formWrapperClass = "";

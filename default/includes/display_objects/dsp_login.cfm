@@ -73,9 +73,9 @@
 			<cfif variables.$.event('status') eq 'failed'>
 				<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 				<cfset variables.$.event('isBlocked',true) />
-				<p id="loginMsg" class="#this.loginErrorMessageClass#">#variables.$.rbKey('user.loginblocked')#</p>
+				<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.loginblocked')#</p>
 				<cfelse>
-				<p id="loginMsg" class="#this.loginErrorMessageClass#">#variables.$.rbKey('user.loginfailed')#</p>
+				<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.loginfailed')#</p>
 				</cfif>
 			</cfif>
 
@@ -139,7 +139,7 @@
 						<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 	
 						<cfif isdefined('msg2')>
-							<cfif FindNoCase('is not a valid',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="#this.loginFormAlertClass#">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+							<cfif FindNoCase('is not a valid',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="#this.alertDangerClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="#this.alertSuccessClass#">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
 						</cfif>
 	
 						<!--- Email --->
