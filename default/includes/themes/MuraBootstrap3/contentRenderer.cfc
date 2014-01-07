@@ -124,7 +124,7 @@
 		 this.commentSortSelectClass="form-control";
 		 this.commentFormWrapperClass="well";
 		 this.commentFormClass="";
-		 this.commentNewClass="";
+		 this.commentNewClass="btn btn-default";
 		 this.commentFieldWrapperClass="form-group";
 		 this.commentFieldLabelClass="control-label";
 		 this.commentInputWrapperClass="";
@@ -144,7 +144,6 @@
 		 this.commentDateTimeClass="";
 		 this.commentReplyClass="";
 		 this.commentAwaitingApproval="";
-		 this.COMMENTMORECOMMENTSCONTAINER="";
 	 
 		 
 		 // !!! These need to have deafult styles in mura.6.1.css since no guarantee of BS3 loaded?

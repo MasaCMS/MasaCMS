@@ -229,7 +229,7 @@ $(function(){
 
 		jQuery(document).on('click', '.mura-comment-reply a', function( event ) {
 			var id = jQuery(this).attr('data-id');
-		
+			jQuery("#mura-comment-reply-wrapper").hide();
 			if($.currentedit != ''){
 				jQuery($currentedit).show();
 				$currentedit='';
@@ -238,7 +238,7 @@ $(function(){
 			event.preventDefault();
 			$editor.hide();
 			$editor.detach();
-			jQuery("#mura-comment-post-comment-" + id).append($editor);
+			jQuery("#mura-comment-post-comment-" + id).append($editor).show();
 			jQuery("#mura-comment-post-a-comment").hide();
 			jQuery("#mura-comment-edit-comment").hide();
 			jQuery("#mura-comment-reply-to-comment").show();
@@ -255,6 +255,7 @@ $(function(){
 		
 		jQuery(document).on('click', '.mura-comment-edit-comment', function( event ) {
 			event.preventDefault();
+			jQuery("#mura-comment-reply-wrapper").hide();
 			var id = jQuery(this).attr('data-id');
 			var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
 			jQuery.get(
@@ -292,7 +293,7 @@ $(function(){
 		
 		jQuery("#mura-comment-post-comment-comment a").on('click', function( event ) {
 			jQuery("#mura-comment-post-comment-comment").hide();
-			
+
 			if($.currentedit != ''){
 				 jQuery($currentedit).show();
 				 $currentedit='';
