@@ -102,6 +102,7 @@
 			frontEndModalWidth=1075;
 
 			var $tools='<div id="mura-preview-device-selector">';
+				$tools=$tools+'<p>Preview Mode</p>';
 				$tools=$tools+'<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
 				$tools=$tools+'<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
 				$tools=$tools+'<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
@@ -147,7 +148,7 @@
 			    return false;
 			});
 
-			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+70) + "px")
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+80) + "px")
 			resizeFrontEndToolsModal(frontEndModalHeight);
 		} else{
 			frontEndModalHeight=0;
