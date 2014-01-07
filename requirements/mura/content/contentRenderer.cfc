@@ -107,6 +107,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.bodyMetaImageClass="thumbnail">
 <cfset this.size=50>
 
+<!--- Alerts --->
+
+<cfset this.alertSuccessClass = "alert alert-success">
+<cfset this.alertInfoClass = "alert alert-info">
+<cfset this.alertWarningClass = "">
+<cfset this.alertDangerClass = "alert alert-error">
+
 <!--- ===================
 Display Objects 
 =================== --->
@@ -141,17 +148,19 @@ Display Objects
 <cfset this.commentDeleteButtonClass="btn">
 <cfset this.commentEditButtonClass="btn">
 <cfset this.commentApproveButtonClass="btn">
+<cfset this.commentThumbClass="img-polaroid">
+<cfset this.commentSpamClass="btn">
+<cfset this.commentSpamLinkClass="btn">
+<cfset this.commentClass="">
+<cfset this.commentDateTimeClass="">
+<cfset this.commentReplyClass="">
+<cfset this.commentMoreCommentsContainer="">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
 <cfset this.commentsLinkClass="btn">
 <cfset this.approveCommentLinkClass="btn">
 <cfset this.deleteCommentLinkClass="btn">
-
-<!--- Datacollection/dsp_response.cfm --->
-<cfset this.datacollectionErrorPClass="alert alert-error">
-<cfset this.datacollectionErrorDivClass="alert alert-error">
-<cfset this.datacollectionSuccessPClass="success">
 
 <!--- Dataresponses/dsp_detail.cfm --->
 <cfset this.dataResponseListClass="dl-horizontal">
@@ -183,16 +192,16 @@ Display Objects
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
 <cfset this.contentListPropertyMap={
-										containerEl={tag="div"},
-										itemEl={tag="dl",class="clearfix"},
-										labelEl={tag="span"},
-										title={tag="dt"},
-										date={tag="dt"},
-										credits={tag="dd",showLabel=true,rbkey="list.by"},
-										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
-										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-										default={tag="dd"}
-									}>
+		containerEl={tag="div"},
+		itemEl={tag="dl",class="clearfix"},
+		labelEl={tag="span"},
+		title={tag="dt"},
+		date={tag="dt"},
+		credits={tag="dd",showLabel=true,rbkey="list.by"},
+		tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
+		default={tag="dd"}
+	}>
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
@@ -235,7 +244,6 @@ Display Objects
 <!--- Dsp_login.cfm --->
 <cfset this.loginWrapperClass="container">
 <cfset this.loginWrapperInnerClass="row">
-<cfset this.loginErrorMessageClass="error">
 <cfset this.loginFormClass="form-horizontal">
 <cfset this.forgotPasswordFormClass="form-horizontal">
 <cfset this.loginFormGroupWrapperClass="">
@@ -246,14 +254,10 @@ Display Objects
 <cfset this.loginFormCheckboxClass="checkbox">
 <cfset this.loginFormSubmitWrapperClass="">
 <cfset this.loginFormSubmitClass="btn btn-default">
-<cfset this.loginFormAlertClass="alert alert-success">
-<cfset this.loginFormErrorClass="alert alert-error">
 <cfset this.notRegisteredLinkClass="btn btn-primary">
 
 <!--- Dsp_mailing_list_master.cfm --->
 <cfset this.mailingListWrapperClass="well">
-<cfset this.mailingListSuccessClass="response success">
-<cfset this.mailingListErrorClass="response error">
 <cfset this.mailingListFormClass="form-horizontal">
 <cfset this.mailingListFormGroupWrapperClass="">
 <cfset this.mailingListFormLabelClass="control-label">
@@ -350,10 +354,6 @@ Display Objects
 <cfset this.raterObjectWrapperClass="row clearfix">
 <cfset this.raterWrapperClass="">
 <cfset this.avgRatingWrapperClass="">
-
-<!--- SendToLink/SendLink.cfm --->
-<cfset this.sendToFriendSuccessClass="success">
-<cfset this.sendToFriendErrorClass="error">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">

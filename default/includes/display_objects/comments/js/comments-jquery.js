@@ -55,12 +55,12 @@
 	Mura CMS.
 */
 $(function(){
-	var $editor = jQuery('#postcomment');
+	var $editor = jQuery('#mura-comment-post-comment');
 	var $commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
-	var $newcommentid = jQuery("#postcomment [name=commentid]").val();
-	var $name = jQuery("#postcomment [name=name]").val();
-	var $url = jQuery("#postcomment [name=url]").val();
-	var $email = jQuery("#postcomment [name=email]").val();
+	var $newcommentid = jQuery("#mura-comment-post-comment [name=commentid]").val();
+	var $name = jQuery("#mura-comment-post-comment [name=name]").val();
+	var $url = jQuery("#mura-comment-post-comment [name=url]").val();
+	var $email = jQuery("#mura-comment-post-comment [name=email]").val();
 	var $currentedit = "";
 	var $nextN = 3;
 	var params = {
@@ -71,10 +71,10 @@ $(function(){
 		loadPage(params).success(function(data){
 			data=setLowerCaseKeys(data);
 			if (data.count > 0) {
-				jQuery('#commentsPage').html(data.htmloutput);
-				jQuery('#commentsSort').show();
+				jQuery('#mura-comments-page').html(data.htmloutput);
+				jQuery('#mura-comments-sort').show();
 			} else {
-				jQuery('#commentsSort').hide();
+				jQuery('#mura-comments-sort').hide();
 			}
 			bindEvents();
 			handleHash();
@@ -84,20 +84,21 @@ $(function(){
 
 	var handleHash=function() {
 		var hash = window.location.hash;
+
 		if (hash.length > 0) {
 			if (jQuery(hash).length != 0) {
 				scrollToID(hash);
 			} else {
 				/* load comments, then scroll to */
 				var params = {
-					pageNo: jQuery("#moreComments").attr('data-pageno'),
-					commentID: hash.replace('#comment-', '')
+					pageNo: jQuery("#mura-more-comments").attr('data-pageno'),
+					commentID: hash.replace('#mura-comment-', '')
 				};
 
 				loadPage(params).success(function(data){
 					data=setLowerCaseKeys(data);
-					jQuery("#moreComments").parent().remove();
-					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
+					jQuery("#mura-more-comments").parent().remove();
+					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
 					if (jQuery(hash).length != 0) {
 						scrollToID(jQuery(hash));
@@ -126,8 +127,8 @@ $(function(){
 	var loadPage=function(ext) {
 		var params = {
 			method: "renderCommentsPage",
-			contentID: jQuery('#commentsPage').attr('data-contentid'),
-			sortDirection: jQuery('#sortDirectionSelector').val(),
+			contentID: jQuery('#mura-comments-page').attr('data-contentid'),
+			sortDirection: jQuery('#mura-sort-direction-selector').val(),
 			nextN: $nextN
 		};
 
@@ -151,33 +152,33 @@ $(function(){
 	}
 
 	var bindEvents=function(){
-		jQuery("a.inReplyTo").on('click', function( event ) {
+		jQuery("a.mura-in-reply-to").on('click', function( event ) {
 			event.preventDefault();
 			var a = jQuery(this);
 			var parentid = a.attr('data-parentid');
 			
-			if (jQuery('#comment-' + parentid).length != 0) {
-				scrollToID(jQuery('#comment-' + parentid));
+			if (jQuery('#mura-comment-' + parentid).length != 0) {
+				scrollToID(jQuery('#mura-comment-' + parentid));
 			} else {
 				/* load comments, then scroll to */
 				var params = {
-					pageNo: jQuery("#moreComments").attr('data-pageno'),
+					pageNo: jQuery("#mura-more-comments").attr('data-pageno'),
 					commentID: parentid
 				};
 
 				loadPage(params).success(function(data){
 					data=setLowerCaseKeys(data);
-					jQuery("#moreComments").parent().remove();
-					jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
+					jQuery("#mura-more-comments").parent().remove();
+					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
-					if (jQuery('#comment-' + parentid).length != 0) {	
-						scrollToID(jQuery('#comment-' + parentid));
+					if (jQuery('#mura-comment-' + parentid).length != 0) {	
+						scrollToID(jQuery('#mura-comment-' + parentid));
 					}
 				})
 			}
 		});
 
-		jQuery("a.flagAsSpam").on('click', function( event ) {
+		jQuery("a.mura-comment-flag-as-spam").on('click', function( event ) {
 			event.preventDefault();
 			var a = jQuery(this);
 			var id = a.attr('data-id');
@@ -195,11 +196,11 @@ $(function(){
 			);
 		});
 
-		jQuery("#moreComments").on('click', function( event ) {
+		jQuery("#mura-more-comments").on('click', function( event ) {
 			event.preventDefault();
 			var a = jQuery(this);
 			var pageNo = a.attr('data-pageno');
-			var contentID = jQuery('#commentsPage').attr('data-contentid');
+			var contentID = jQuery('#mura-comments-page').attr('data-contentid');
 			var params = {
 				pageNo: pageNo
 			};
@@ -207,28 +208,28 @@ $(function(){
 			loadPage(params).success(function(data){
 				data=setLowerCaseKeys(data);
 				a.parent().remove();
-				jQuery(data.htmloutput).appendTo('#commentsPage').hide().fadeIn();
+				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 				bindEvents();
 			})
 			
 		});
 
-		jQuery("#sortDirectionSelector").on('change', function( event ) {
+		jQuery("#mura-sort-direction-selector").on('change', function( event ) {
 			var params = {
 				// empty
 			};
 			
 			loadPage(params).success(function(data){
 				data=setLowerCaseKeys(data);
-				jQuery('#commentsPage').html(data.htmloutput);	
+				jQuery('#mura-comments-page').html(data.htmloutput);	
 				bindEvents();
 			})
 			
 		});
 
-		jQuery(document).on('click', '.reply a', function( event ) {
+		jQuery(document).on('click', '.mura-comment-reply a', function( event ) {
 			var id = jQuery(this).attr('data-id');
-		
+			jQuery(".mura-comment-reply-wrapper").hide();
 			if($.currentedit != ''){
 				jQuery($currentedit).show();
 				$currentedit='';
@@ -237,23 +238,24 @@ $(function(){
 			event.preventDefault();
 			$editor.hide();
 			$editor.detach();
-			jQuery("#postcomment-" + id).append($editor);
-			jQuery("#postacomment").hide();
-			jQuery("#editcomment").hide();
-			jQuery("#replytocomment").show();
-			jQuery("#postcomment-" + id + " [name=name]").val($name);
-			jQuery("#postcomment-" + id + " [name=email]").val($email);
-			jQuery("#postcomment-" + id + " [name=url]").val($url);
-			jQuery("#postcomment-" + id + " [name=comments]").val("");
-			jQuery("#postcomment-" + id + " [name=parentid]").val(id);
-			jQuery("#postcomment-" + id + " [name=commentid]").val($newcommentid);
-			jQuery("#postcomment-" + id + " [name=commenteditmode]").val("add");
-			jQuery("#postcomment-comment").show();
+			jQuery("#mura-comment-post-comment-" + id).append($editor).show();
+			jQuery("#mura-comment-post-a-comment").hide();
+			jQuery("#mura-comment-edit-comment").hide();
+			jQuery("#mura-comment-reply-to-comment").show();
+			jQuery("#mura-comment-post-comment-" + id + " [name=name]").val($name);
+			jQuery("#mura-comment-post-comment-" + id + " [name=email]").val($email);
+			jQuery("#mura-comment-post-comment-" + id + " [name=url]").val($url);
+			jQuery("#mura-comment-post-comment-" + id + " [name=comments]").val("");
+			jQuery("#mura-comment-post-comment-" + id + " [name=parentid]").val(id);
+			jQuery("#mura-comment-post-comment-" + id + " [name=commentid]").val($newcommentid);
+			jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val("add");
+			jQuery("#mura-comment-post-comment-comment").show();
 			$editor.slideDown();
 		});
 		
-		jQuery(document).on('click', '.editcomment', function( event ) {
+		jQuery(document).on('click', '.mura-comment-edit-comment', function( event ) {
 			event.preventDefault();
+			jQuery(".mura-comment-reply-wrapper").hide();
 			var id = jQuery(this).attr('data-id');
 			var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
 			jQuery.get(
@@ -268,30 +270,30 @@ $(function(){
 					
 					$editor.hide();
 					$editor.detach();
-					jQuery("#postcomment-" + id).append($editor);
-					jQuery("#postacomment").hide();
-					jQuery("#editcomment").show();
-					jQuery("#replytocomment").hide();
+					jQuery("#mura-comment-post-comment-" + id).append($editor);
+					jQuery("#mura-comment-post-a-comment").hide();
+					jQuery("#mura-comment-edit-comment").show();
+					jQuery("#mura-comment-reply-to-comment").hide();
 					
 					jQuery("#comment-" + id + " .comment").hide();
 					$currentedit="#comment-" + id + " .comment";
 					
-					jQuery("#postcomment-" + id + " [name=parentid]").val(data.parentid);
-					jQuery("#postcomment-" + id + " [name=name]").val(data.name);
-					jQuery("#postcomment-" + id + " [name=email]").val(data.email);
-					jQuery("#postcomment-" + id + " [name=url]").val(data.url);
-					jQuery("#postcomment-" + id + " [name=comments]").val(data.comments);
-					jQuery("#postcomment-" + id + " [name=commentid]").val(data.commentid);
-					jQuery("#postcomment-" + id + " [name=commenteditmode]").val("edit");
-					jQuery("#postcomment-comment").show();
+					jQuery("#mura-comment-post-comment-" + id + " [name=parentid]").val(data.parentid);
+					jQuery("#mura-comment-post-comment-" + id + " [name=name]").val(data.name);
+					jQuery("#mura-comment-post-comment-" + id + " [name=email]").val(data.email);
+					jQuery("#mura-comment-post-comment-" + id + " [name=url]").val(data.url);
+					jQuery("#mura-comment-post-comment-" + id + " [name=comments]").val(data.comments);
+					jQuery("#mura-comment-post-comment-" + id + " [name=commentid]").val(data.commentid);
+					jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val("edit");
+					jQuery("#mura-comment-post-comment-comment").show();
 					$editor.slideDown();
 				}
 			);
 		});
 		
-		jQuery("#postcomment-comment a").on('click', function( event ) {
-			jQuery("#postcomment-comment").hide();
-			
+		jQuery("#mura-comment-post-comment-comment").on('click', function( event ) {
+			jQuery("#mura-comment-post-comment-comment").hide();
+			jQuery(".mura-comment-reply-wrapper").hide();
 			if($.currentedit != ''){
 				 jQuery($currentedit).show();
 				 $currentedit='';
@@ -300,17 +302,17 @@ $(function(){
 			event.preventDefault();
 			$editor.hide();
 			$editor.detach();
-			jQuery("#postcomment-form").append($editor);
-			jQuery("#postacomment").show();
-			jQuery("#editcomment").hide();
-			jQuery("#replytocomment").hide();
-			jQuery("#postcomment [name=parentid]").val("");
-			jQuery("#postcomment [name=name]").val($name);
-			jQuery("#postcomment [name=email]").val($email);
-			jQuery("#postcomment [name=url]").val($url);
-			jQuery("#postcomment [name=comments]").val("");
-			jQuery("#postcomment [name=commentid]").val($newcommentid);
-			jQuery("#postcomment [name=commenteditmode]").val("add");
+			jQuery("#mura-comment-post-comment-form").append($editor).show();
+			jQuery("#mura-comment-post-a-comment").show();
+			jQuery("#mura-comment-edit-comment").hide();
+			jQuery("#mura-comment-reply-to-comment").hide();
+			jQuery("#mura-comment-post-comment [name=parentid]").val("");
+			jQuery("#mura-comment-post-comment [name=name]").val($name);
+			jQuery("#mura-comment-post-comment [name=email]").val($email);
+			jQuery("#mura-comment-post-comment [name=url]").val($url);
+			jQuery("#mura-comment-post-comment [name=comments]").val("");
+			jQuery("#mura-comment-post-comment [name=commentid]").val($newcommentid);
+			jQuery("#mura-comment-post-comment [name=commenteditmode]").val("add");
 			$editor.slideDown();
 		});
 	}

@@ -243,27 +243,20 @@
 
 		<!--- COMMENTS --->
 		<div id="svComments" class="mura-comments #this.commentsWrapperClass#">
-			<a name="comments"></a>
+			<a name="mura-comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
 			
-			<div id="commentsSort" class="mura-comment-sort-container #this.commentSortContainerClass#" style="display:none">
+			<div id="mura-comments-sort" class="mura-comment-sort-container #this.commentSortContainerClass#" style="display:none">
 				<div class="mura-comment-sort-wrapper #this.commentSortWrapperClass#">
-					<select id="sortDirectionSelector" class="#this.commentSortSelectClass#" name="sortDirection">
+					<select id="mura-sort-direction-selector" class="#this.commentSortSelectClass#" name="sortDirection">
 						<option value="desc"<cfif variables.$.event('sortDirection') eq "desc"> selected</cfif>>#variables.$.rbKey('comments.sortdescending')#</option>
 						<option value="asc"<cfif variables.$.event('sortDirection') eq "asc"> selected</cfif>>#variables.$.rbKey('comments.sortascending')#</option>
 					</select>
-					
-					<!---
-					<ul class="nav nav-pills">
-						<li class="active"><a href="#">Sort Newest to Oldest</a></li>
-						<li><a href="#">Sort Oldest to Newest</a></li>
-					</ul>
-					--->
 				</div>
 			</div>
 
-			<div id="commentsPage" data-contentid="#variables.$.content('contentID')#">
+			<div id="mura-comments-page" data-contentid="#variables.$.content('contentID')#">
 				
 			</div>
 			
@@ -271,29 +264,28 @@
 				
 					#errorJSTxt#
 					<a name="errors"></a>
-					<div id="editProfileMsg" class="required">
+					<div class="#this.alertDangerClass#">
 						#variables.$.getBean('utility').displayErrors(variables.errors)#
 					</div>
 
 			<cfelseif request.commentid neq '' and application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() neq 1>
-				<div id="editProfileMsg" class="required">
+				<div class="#this.alertInfoClass#">
 					#variables.$.rbKey('comments.postedsoon')#
 				</div>
 			</cfif>
 
 			<!--- COMMENT FORM --->
-			<div id="postcomment-form" class="#this.commentFormWrapperClass#">
+			<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
 				
-				<span id="postcomment-comment" style="display: none"><a class="#this.commentNewClass#" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
+				<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 				<!--- THE FORM --->
-				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
-					<a name="postcomment"></a>
+				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comment-post-comment" onsubmit="return validate(this);" novalidate="novalidate">
 					<fieldset>
 
-						<legend id="postacomment">#variables.$.rbKey('comments.postacomment')#</legend>
-						<legend id="editcomment" style="display:none">#variables.$.rbKey('comments.editcomment')#</legend>
-						<legend id="replytocomment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
+						<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
+						<legend id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</legend>
+						<legend id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
 
 						<!--- Name --->
 							<div class="req #this.commentFieldWrapperClass#">

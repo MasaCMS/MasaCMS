@@ -2191,7 +2191,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsTagCloud= ''/>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTagCloud')#">
-	select tag, count(tag) as tagCount from tcontenttags 
+	select tag, count(tag) as tagCount	
+	from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
 	<cfif arguments.moduleID eq '00000000000000000000000000000000000'>
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid

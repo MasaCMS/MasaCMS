@@ -56,300 +56,305 @@
 --->
 <cfcomponent extends="mura.cfobject">
 
+
 	<!---
-			This is the THEME contentsiteRenderer.cfc
+			This is the THEME contentRenderer.cfc
 
 			* Add theme-specific methods here
 			* Any methods here will be accessible with the following notation:
 				$.yourFunctionName()
 	--->
 
-	<cffunction name="init" access="public" output="false" returntype="any">
-		<cfargument name="$" hint="mura scope" />
-		<cfscript>
-			var siteRenderer = arguments.$.getSiteRenderer();
+	<cfscript>
+		// general vars
+		this.jsLib = 'jquery';
+		this.jsLibLoaded = true;
+		this.generalWrapperClass = 'well';
+		
+		// headings
+		this.headline = 'h1';
+		this.subHead1 = 'h2';
+		this.subHead2 = 'h3';
+		this.subHead3 = 'h4';
+		this.subHead4 = 'h5';
 
-			// general vars
-			siteRenderer.jsLib = 'jquery';
-			siteRenderer.jsLibLoaded = true;
-			siteRenderer.generalWrapperClass = 'well';
-			
-			// headings
-			siteRenderer.headline = 'h1';
-			siteRenderer.subHead1 = 'h2';
-			siteRenderer.subHead2 = 'h3';
-			siteRenderer.subHead3 = 'h4';
-			siteRenderer.subHead4 = 'h5';
+		// nav and list item vars
+		this.navWrapperClass = 'well';
+		this.liHasKidsClass = '';
+		this.liHasKidsCustomString = '';
+		this.liCurrentClass = 'active';
+		this.liCurrentCustomString = '';
+		this.aHasKidsClass = '';
+		this.aHasKidsCustomString = '';
+		this.aCurrentClass = 'active';
+		this.aCurrentCustomString = '';
+		this.ulTopClass = 'nav nav-list';
+		this.ulNestedClass = 'nav nav-list';
+		this.ulNestedCustomString = '';
+		this.liNestedClass = '';
 
-			// nav and list item vars
-			siteRenderer.navWrapperClass = 'well';
-			siteRenderer.liHasKidsClass = '';
-			siteRenderer.liHasKidsCustomString = '';
-			siteRenderer.liCurrentClass = 'active';
-			siteRenderer.liCurrentCustomString = '';
-			siteRenderer.aHasKidsClass = '';
-			siteRenderer.aHasKidsCustomString = '';
-			siteRenderer.aCurrentClass = 'active';
-			siteRenderer.aCurrentCustomString = '';
-			siteRenderer.ulTopClass = 'nav nav-list';
-			siteRenderer.ulNestedClass = 'nav nav-list';
-			siteRenderer.ulNestedCustomString = '';
-			siteRenderer.liNestedClass = '';
+		// pagination vars
+		this.ulPaginationClass = 'pagination';
+		this.ulPaginationWrapperClass = 'pagination';
 
-			// pagination vars
-			siteRenderer.ulPaginationClass = 'pagination';
-			siteRenderer.ulPaginationWrapperClass = 'pagination';
-
-			// form vars
-			siteRenderer.formWrapperClass = 'well';
-			
-			// Display Objects
-			// Use these variables to pass-in specific classes without having to create custom versions
-			
-			// calendar/dsp_showMonth.cfm
-			siteRenderer.calendarWrapperClass="";
-			siteRenderer.calendarTableClass="table table-bordered";
-			//siteRenderer.calendarTableHeaderClass="";
-			
-			// calendar/dspList.cfm
-			siteRenderer.calendarListWrapperClass="";
-			
-			// comments/index.cfm
-			siteRenderer.commentsWrapperClass="";
-			siteRenderer.commentFormWrapperClass="well";
-			siteRenderer.commentFormClass="form-horizontal";
-			siteRenderer.commentNewClass="btn btn-default";
-			siteRenderer.commentFieldWrapperClass="form-group";
-			siteRenderer.commentFieldLabelClass="control-label col-lg-3";
-			siteRenderer.commentInputWrapperClass="col-lg-9";
-			siteRenderer.commentInputClass="form-control";
-			siteRenderer.commentCheckboxClass="checkbox";
-			siteRenderer.commentPrefsInputWrapperClass="col-lg-offset-3 col-lg-9";
-			siteRenderer.commentSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
-			siteRenderer.commentSubmitButtonClass="btn btn-default";
-			siteRenderer.commentRequiredWrapperClass="col-lg-offset-3 col-lg-9";
-			//siteRenderer.commentUserEmailClass="";
-			//siteRenderer.commentDeleteButtonClass="";
-			
-			// comments/dsp_comment.cfm
-		 	siteRenderer.emailLinkClass="btn btn-default";
-			siteRenderer.commentsLinkClass="btn btn-default";
-			siteRenderer.approveCommentLinkClass="btn btn-default";
-			siteRenderer.deleteCommentLinkClass="btn btn-default";
-			
-			// datacollection/dsp_response.cfm
-			siteRenderer.datacollectionErrorPClass="alert alert-danger";
-			siteRenderer.datacollectionErrorDivClass="alert alert-danger";
-			siteRenderer.datacollectionSuccessPClass="alert alert-success";
-			
-			// dataresponses/dsp_detail.cfm
-			siteRenderer.dataResponseListClass="dl-horizontal";
-			
-			// dataresponses/dsp_list.cfm
-			siteRenderer.dataResponseTableClass="table table-hover";
-			siteRenderer.dataResponsePaginationClass="pagination";
-			
-			// draggablefeeds/index.cfm
-			siteRenderer.draggableBoxWrapperClass="row";
-			siteRenderer.draggableBoxHeaderClass="col-lg-12";
-			siteRenderer.draggableBoxRSSWrapperClass="";
-			siteRenderer.draggableBoxHeaderButtonClass="btn btn-default";
-			//siteRenderer.draggableBoxRSSeditFormClass="";
-			siteRenderer.draggableBoxAddFeedWrapperClass="well clearfix";
-			siteRenderer.draggableBoxNewFeedFormClass="form-horizontal";
-			siteRenderer.draggableBoxSelectFeedWrapperClass="col-lg-6";
-			siteRenderer.draggableBoxSelectFeedRowClass="row";
-			siteRenderer.draggableBoxSelectFeedMenuClass="form-group";
-			siteRenderer.draggableBoxSelectFeedMenuDivClass="col-lg-10";
-			siteRenderer.draggableFeedMenuSelectFieldClass="form-control";
-			siteRenderer.addFeedButtonWrapperDivClass="form-group";
-			siteRenderer.addFeedButtonWrapperDivInnerClass="col-lg-2";
-			siteRenderer.addFeedButtonClass="btn btn-default";
-			
-			// dsp_categories_nest.cfm
-			siteRenderer.categoriesNestCheckboxClass="checkbox";
-			
-			// dsp_content_list.cfm
-			siteRenderer.contentListImageStyles=true;
-			siteRenderer.contentListPropertyMap={
-											containerEl={tag="div"},
-											itemEl={tag="dl"},
-											labelEl={tag="span"},
-											title={tag="dt"},
-											date={tag="dt"},
-											credits={tag="dd",showLabel=true,rbkey="list.by"},
-											tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
-											rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-											'default'={tag="dd"}
-										};
-			siteRenderer.contentListWrapperDivClass="";
-			siteRenderer.contentListItemImageLinkClass="";
-			
-			// dsp_folder.cfm
-			siteRenderer.folderWrapperClass="";
-			
-			// dsp_edit_profile.cfm
-			siteRenderer.editProfileWrapperClass="";
-			siteRenderer.editProfileFormClass="form-horizontal";
-			siteRenderer.editProfileFormGroupWrapperClass="form-group";
-			siteRenderer.editProfileFieldLabelClass="control-label col-lg-3";
-			siteRenderer.editProfileFormFieldsWrapperClass="col-lg-9";
-			siteRenderer.editProfileFormFieldsClass="form-control";
-			siteRenderer.editProfileExtAttributeDownloadClass="col-lg-3";
-			siteRenderer.editProfileHelpBlockClass="help-block";
-			siteRenderer.editProfileExtAttributeFileWrapperClass="col-lg-offset-3 col-lg-6";
-			siteRenderer.editProfileExtAttributeDownloadClass="col-lg-3";
-			siteRenderer.editProfileExtAttributeDownloadButtonClass="btn btn-default";
-			siteRenderer.editProfileSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
-			siteRenderer.editProfileSubmitButtonClass="btn btn-primary";
-			siteRenderer.editProfileSuccessMessageClass="alert alert-success";
-			
-			// dsp_email_dropdown.cfm
-			siteRenderer.emailDropdownSelectClass="dropdown";
-			
-			// dsp_event_reminder_form.cfm
-			siteRenderer.eventReminderFormWrapperClass="";
-			siteRenderer.eventReminderFormClass="well";
-			siteRenderer.eventReminderFieldWrapperClass="";
-			siteRenderer.eventReminderFormLabelsClass="control-label";
-			siteRenderer.eventReminderSubmitClass="btn btn-default";
-			
-			// dsp_features.cfm
-			siteRenderer.featuresWrapperClass="clearfix";
-			
-			// dsp_feed.cfm
-			siteRenderer.localIndexWrapperClass="clearfix";
-			siteRenderer.remoteFeedWrapperClass="clearfix";
-			
-			// dsp_login.cfm
-			siteRenderer.loginWrapperClass="";
-			siteRenderer.loginWrapperInnerClass="row";
-			siteRenderer.loginErrorMessageClass="alert alert-danger";
-			siteRenderer.loginFormClass="form-horizontal form-signin";
-			siteRenderer.forgotPasswordFormClass="form-horizontal form-sendlogin";
-			siteRenderer.loginFormGroupWrapperClass="form-group";
-			siteRenderer.loginFormFieldLabelClass="control-label col-lg-3";
-			siteRenderer.loginFormFieldWrapperClass="col-lg-9";
-			siteRenderer.loginFormFieldClass="form-control";
-			siteRenderer.loginFormPrefsClass="col-lg-offset-3 col-lg-10";
-			siteRenderer.loginFormCheckboxClass="checkbox";
-			siteRenderer.loginFormSubmitWrapperClass="col-lg-offset-3 col-lg-10";
-			siteRenderer.loginFormSubmitClass="btn btn-default";
-			siteRenderer.loginFormAlertClass="alert alert-success";
-			siteRenderer.loginFormErrorClass="alert alert-danger";
-			siteRenderer.notRegisteredLinkClass="btn btn-primary";
-			
-			// dsp_mailing_list_master.cfm
-			siteRenderer.mailingListWrapperClass="well";
-			siteRenderer.mailingListSuccessClass="alert alert-success";
-			siteRenderer.mailingListErrorClass="alert alert-error";
-			siteRenderer.mailingListFormClass="form-horizontal";
-			siteRenderer.mailingListFormGroupWrapperClass="form-group";
-			siteRenderer.mailingListFormLabelClass="control-label col-lg-2";
-			siteRenderer.mailingListFormFieldWrapperClass="col-lg-10";
-			siteRenderer.mailingListFormInputClass="text form-control";
-			siteRenderer.mailingListCheckboxWrapperClass="col-lg-offset-2 col-lg-10";
-			siteRenderer.mailingListCheckboxClass="checkbox";
-			siteRenderer.mailingListSubmitWrapperClass="col-lg-offset-2 col-lg-10";
-			siteRenderer.mailingListSubmitClass="submit btn btn-default";
-			
-			// dsp_nextN.cfm
-			siteRenderer.nextNWrapperClass="";
-			siteRenderer.nextNInnerClass="row";
-			
-			// dsp_search_form.cfm
-			siteRenderer.searchFormClass="navbar-form";
-			siteRenderer.searchFormInputWrapperClass="input-group";
-			siteRenderer.searchFormInputClass="form-control";
-			siteRenderer.searchFormSubmitWrapperClass="input-group-btn";
-			siteRenderer.searchFormSubmitClass="btn btn-default fa fa-search";
-			
-			// dsp_search_results.cfm
-			siteRenderer.searchResultWrapperClass="";
-			siteRenderer.searchResultInnerClass="row";
-			siteRenderer.searchResultsRowClass="row";
-			siteRenderer.searchResultsMoreResultsRowClass="row";
-			siteRenderer.searchResultsListClass="";
-			siteRenderer.searchResultsPagerClass="pager";
-			siteRenderer.searchAgainRowClass="row";
-			siteRenderer.searchAgainInnerClass="col-md-8";
-			siteRenderer.searchAgainFormClass="navbar-form";
-			siteRenderer.searchAgainInputWrapperClass="input-group";
-			siteRenderer.searchAgainFormInputClass="form-control";
-			siteRenderer.searchAgainButtonWrapperClass="input-group-btn";
-			siteRenderer.searchAgainSubmitClass="btn btn-default";
-			
-			// dsp_user_tools.cfm
-			siteRenderer.userToolsLoginWrapperClass="well clearfix";
-			siteRenderer.userToolsLoginFormClass="form-horizontal";
-			siteRenderer.userToolsFormGroupWrapperClass="form-group";
-			siteRenderer.userToolsLoginFormLabelClass="control-label col-lg-2";
-			siteRenderer.userToolsLoginFormInputWrapperClass="col-lg-10";
-			siteRenderer.userToolsLoginFormInputClass="form-control";
-			siteRenderer.userToolsLoginFormFieldInnerClass="col-lg-offset-2 col-lg-10";
-			siteRenderer.userToolsLoginFormCheckboxClass="checkbox";
-			siteRenderer.userToolsLoginFormSubmitClass="btn btn-default";
-			siteRenderer.userToolsNotRegisteredLinkClass="btn btn-primary";
-			siteRenderer.userToolsWrapperClass="clearfix";
-			siteRenderer.userToolsEditProfileLinkClass="btn btn-default fa fa-user";
-			siteRenderer.userToolsLogoutLinkClass="btn btn-default fa fa-sign-out";
-			
-			// formbuilder/dsp_form.cfm
-			siteRenderer.formBuilderFieldWrapperClass="form-group";
-			siteRenderer.formBuilderButtonWrapperClass="form-actions buttons";
-			siteRenderer.formBuilderSubmitClass="btn btn-default";
-			
-			// formbuilder/fields/dsp_checkbox.cfm
-			// formbuilder/fields/dsp_dropdown.cfm 
-			// formbuilder/fields/dsp_file.cfm
-			// formbuilder/fields/dsp_radio.cfm
-			// formbuilder/fields/dsp_textfield.cfm
-			
-			siteRenderer.formBuilderFormFieldsClass="form-control";
-			
-			// formbuilder/fields/field_dropdown.cfm
-			siteRenderer.formBuilderTabHeaderClass="dropdown";
-			siteRenderer.formBuilderDisabledInputClass="disabled";
-			siteRenderer.formBuilderCheckboxClass="checkbox";
-			
-			// gallery/index.cfm
-			siteRenderer.galleryWrapperClass="";
-			siteRenderer.galleryULClass="clearfix";
-			siteRenderer.galleryThumbnailClass="thumbnail";
-			
-			// nav/calendarNav/index.cfm
-			siteRenderer.navCalendarWrapperClass="";
-			
-			// nav/calendarNav/navTools.cfc
-			siteRenderer.navCalendarTableClass="table table-bordered";
-			
-			// nav/dsp_sequential.cfm
-			siteRenderer.navSequentialWrapperClass="";
-			siteRenderer.navSequentialInnerClass="row";
-			
-			// nav/dsp_tag_cloud.cfm
-			siteRenderer.tagCloudWrapperClass="";
-			
-			// navArchive
-			//siteRenderer.navArchiveWrapperClass="";
-			//siteRenderer.navArchiveListClass="";
-			
-			
-			// rater/index.cfm
-			siteRenderer.raterObjectWrapperClass="row clearfix";
-			siteRenderer.raterWrapperClass="col-lg-12";
-			siteRenderer.avgRatingWrapperClass="col-lg-12";
-			
-			// sendToLink/SendLink.cfm
-			siteRenderer.sendToFriendSuccessClass="alert alert-success";
-			siteRenderer.sendToFriendErrorClass="alert alert-danger";
-			
-			// Generic form vars
-			siteRenderer.formWrapperClass = "";
-
-			return this;
-		</cfscript>
-	</cffunction>
+		// form vars
+		this.formWrapperClass = 'well';
+		
+		// alerts
+		this.alertSuccessClass = "alert alert-success";
+		this.alertInfoClass = "alert alert-info";
+		this.alertWarningClass = "alert alert-warning";
+		this.alertDangerClass = "alert alert-danger";
+		
+		// Display Objects
+		// Use these variables to pass-in specific classes without having to create custom versions
+		
+		// calendar/dsp_showMonth.cfm
+		this.calendarWrapperClass="";
+		this.calendarTableClass="table table-bordered";
+		//this.calendarTableHeaderClass="";
+		
+		// calendar/dspList.cfm
+		this.calendarListWrapperClass="";
+		
+		// comments/index.cfm
+		 this.commentsWrapperClass="";
+		 this.commentSortContainerClass="row";
+		 this.commentSortWrapperClass="col-xs-5";
+		 this.commentSortSelectClass="form-control";
+		 this.commentFormWrapperClass="well";
+		 this.commentFormClass="";
+		 this.commentNewClass="btn btn-default";
+		 this.commentFieldWrapperClass="form-group";
+		 this.commentFieldLabelClass="control-label";
+		 this.commentInputWrapperClass="";
+		 this.commentInputClass="form-control";
+		 this.commentCheckboxClass="";
+		 this.commentPrefsInputWrapperClass="";
+		 this.commentSubmitButtonWrapperClass="";
+		 this.commentSubmitButtonClass="btn btn-default";
+		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up";
+		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down";
+		 this.commentMoreCommentsContainer="";
+		 this.commentRequiredWrapperClass="";
+		 this.commentThumbClass="img-thumbnail";
+		 this.commentSpamClass="";
+		 this.commentSpamLinkClass="";
+		 this.commentClass="";
+		 this.commentDateTimeClass="";
+		 this.commentReplyClass="";
+		 this.commentAwaitingApproval="";
+	 
+		 
+		 // !!! These need to have deafult styles in mura.6.1.css since no guarantee of BS3 loaded?
+		 this.commentAdminButtonWrapperClass="btn-group pull-right";
+		 this.commentUserEmailClass="btn btn-default btn-sm";
+		 this.commentDeleteButtonClass="btn btn-default btn-sm";
+		 this.commentEditButtonClass="btn btn-default btn-sm";
+		 this.commentApproveButtonClass="btn btn-default btn-sm";	
+		 	
+		// comments/dsp_comment.cfm
+	 	this.emailLinkClass="btn btn-default";
+		this.commentsLinkClass="btn btn-default";
+		this.approveCommentLinkClass="btn btn-default";
+		this.deleteCommentLinkClass="btn btn-default";
+		
+		// dataresponses/dsp_detail.cfm
+		this.dataResponseListClass="dl-horizontal";
+		
+		// dataresponses/dsp_list.cfm
+		this.dataResponseTableClass="table table-hover";
+		this.dataResponsePaginationClass="pagination";
+		
+		// draggablefeeds/index.cfm
+		this.draggableBoxWrapperClass="row";
+		this.draggableBoxHeaderClass="col-lg-12";
+		this.draggableBoxRSSWrapperClass="";
+		this.draggableBoxHeaderButtonClass="btn btn-default";
+		//this.draggableBoxRSSeditFormClass="";
+		this.draggableBoxAddFeedWrapperClass="well clearfix";
+		this.draggableBoxNewFeedFormClass="form-horizontal";
+		this.draggableBoxSelectFeedWrapperClass="col-lg-6";
+		this.draggableBoxSelectFeedRowClass="row";
+		this.draggableBoxSelectFeedMenuClass="form-group";
+		this.draggableBoxSelectFeedMenuDivClass="col-lg-10";
+		this.draggableFeedMenuSelectFieldClass="form-control";
+		this.addFeedButtonWrapperDivClass="form-group";
+		this.addFeedButtonWrapperDivInnerClass="col-lg-2";
+		this.addFeedButtonClass="btn btn-default";
+		
+		// dsp_categories_nest.cfm
+		this.categoriesNestCheckboxClass="checkbox";
+		
+		// dsp_content_list.cfm
+		this.contentListImageStyles=true;
+		this.contentListPropertyMap={
+			containerEl={tag="div"},
+			itemEl={tag="dl"},
+			labelEl={tag="span"},
+			title={tag="dt"},
+			date={tag="dt"},
+			credits={tag="dd",showLabel=true,rbkey="list.by"},
+			tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+			rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
+			'default'={tag="dd"}
+		};
+		this.contentListWrapperDivClass="";
+		this.contentListItemImageLinkClass="";
+		
+		// dsp_folder.cfm
+		this.folderWrapperClass="";
+		
+		// dsp_edit_profile.cfm
+		this.editProfileWrapperClass="";
+		this.editProfileFormClass="form-horizontal";
+		this.editProfileFormGroupWrapperClass="form-group";
+		this.editProfileFieldLabelClass="control-label col-lg-3";
+		this.editProfileFormFieldsWrapperClass="col-lg-9";
+		this.editProfileFormFieldsClass="form-control";
+		this.editProfileExtAttributeDownloadClass="col-lg-3";
+		this.editProfileHelpBlockClass="help-block";
+		this.editProfileExtAttributeFileWrapperClass="col-lg-offset-3 col-lg-6";
+		this.editProfileExtAttributeDownloadClass="col-lg-3";
+		this.editProfileExtAttributeDownloadButtonClass="btn btn-default";
+		this.editProfileSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
+		this.editProfileSubmitButtonClass="btn btn-primary";
+		this.editProfileSuccessMessageClass="alert alert-success";
+		
+		// dsp_email_dropdown.cfm
+		this.emailDropdownSelectClass="dropdown";
+		
+		// dsp_event_reminder_form.cfm
+		this.eventReminderFormWrapperClass="";
+		this.eventReminderFormClass="well";
+		this.eventReminderFieldWrapperClass="";
+		this.eventReminderFormLabelsClass="control-label";
+		this.eventReminderSubmitClass="btn btn-default";
+		
+		// dsp_features.cfm
+		this.featuresWrapperClass="clearfix";
+		
+		// dsp_feed.cfm
+		this.localIndexWrapperClass="clearfix";
+		this.remoteFeedWrapperClass="clearfix";
+		
+		// dsp_login.cfm
+		this.loginWrapperClass="";
+		this.loginWrapperInnerClass="row";
+		this.loginFormClass="form-horizontal form-signin";
+		this.forgotPasswordFormClass="form-horizontal form-sendlogin";
+		this.loginFormGroupWrapperClass="form-group";
+		this.loginFormFieldLabelClass="control-label col-lg-3";
+		this.loginFormFieldWrapperClass="col-lg-9";
+		this.loginFormFieldClass="form-control";
+		this.loginFormPrefsClass="col-lg-offset-3 col-lg-10";
+		this.loginFormCheckboxClass="checkbox";
+		this.loginFormSubmitWrapperClass="col-lg-offset-3 col-lg-10";
+		this.loginFormSubmitClass="btn btn-default";
+		this.notRegisteredLinkClass="btn btn-primary";
+		
+		// dsp_mailing_list_master.cfm
+		this.mailingListWrapperClass="well";
+		this.mailingListFormClass="form-horizontal";
+		this.mailingListFormGroupWrapperClass="form-group";
+		this.mailingListFormLabelClass="control-label col-lg-2";
+		this.mailingListFormFieldWrapperClass="col-lg-10";
+		this.mailingListFormInputClass="form-control";
+		this.mailingListCheckboxWrapperClass="col-lg-offset-2 col-lg-10";
+		this.mailingListCheckboxClass="checkbox";
+		this.mailingListSubmitWrapperClass="col-lg-offset-2 col-lg-10";
+		this.mailingListSubmitClass="submit btn btn-default";
+		
+		// dsp_nextN.cfm
+		this.nextNWrapperClass="";
+		this.nextNInnerClass="row";
+		
+		// dsp_search_form.cfm
+		this.searchFormClass="navbar-form";
+		this.searchFormInputWrapperClass="input-group";
+		this.searchFormInputClass="form-control";
+		this.searchFormSubmitWrapperClass="input-group-btn";
+		this.searchFormSubmitClass="btn btn-default fa fa-search";
+		
+		// dsp_search_results.cfm
+		this.searchResultWrapperClass="";
+		this.searchResultInnerClass="row";
+		this.searchResultsRowClass="row";
+		this.searchResultsMoreResultsRowClass="row";
+		this.searchResultsListClass="";
+		this.searchResultsPagerClass="pager";
+		this.searchAgainRowClass="row";
+		this.searchAgainInnerClass="col-md-8";
+		this.searchAgainFormClass="navbar-form";
+		this.searchAgainInputWrapperClass="input-group";
+		this.searchAgainFormInputClass="form-control";
+		this.searchAgainButtonWrapperClass="input-group-btn";
+		this.searchAgainSubmitClass="btn btn-default";
+		
+		// dsp_user_tools.cfm
+		this.userToolsLoginWrapperClass="well clearfix";
+		this.userToolsLoginFormClass="form-horizontal";
+		this.userToolsFormGroupWrapperClass="form-group";
+		this.userToolsLoginFormLabelClass="control-label col-lg-2";
+		this.userToolsLoginFormInputWrapperClass="col-lg-10";
+		this.userToolsLoginFormInputClass="form-control";
+		this.userToolsLoginFormFieldInnerClass="col-lg-offset-2 col-lg-10";
+		this.userToolsLoginFormCheckboxClass="checkbox";
+		this.userToolsLoginFormSubmitClass="btn btn-default";
+		this.userToolsNotRegisteredLinkClass="btn btn-primary";
+		this.userToolsWrapperClass="clearfix";
+		this.userToolsEditProfileLinkClass="btn btn-default fa fa-user";
+		this.userToolsLogoutLinkClass="btn btn-default fa fa-sign-out";
+		
+		// formbuilder/dsp_form.cfm
+		this.formBuilderFieldWrapperClass="form-group";
+		this.formBuilderButtonWrapperClass="form-actions buttons";
+		this.formBuilderSubmitClass="btn btn-default";
+		
+		// formbuilder/fields/dsp_checkbox.cfm
+		// formbuilder/fields/dsp_dropdown.cfm 
+		// formbuilder/fields/dsp_file.cfm
+		// formbuilder/fields/dsp_radio.cfm
+		// formbuilder/fields/dsp_textfield.cfm
+		
+		this.formBuilderFormFieldsClass="form-control";
+		
+		// formbuilder/fields/field_dropdown.cfm
+		this.formBuilderTabHeaderClass="dropdown";
+		this.formBuilderDisabledInputClass="disabled";
+		this.formBuilderCheckboxClass="checkbox";
+		
+		// gallery/index.cfm
+		this.galleryWrapperClass="";
+		this.galleryULClass="clearfix";
+		this.galleryThumbnailClass="thumbnail";
+		
+		// nav/calendarNav/index.cfm
+		this.navCalendarWrapperClass="";
+		
+		// nav/calendarNav/navTools.cfc
+		this.navCalendarTableClass="table table-bordered";
+		
+		// nav/dsp_sequential.cfm
+		this.navSequentialWrapperClass="";
+		this.navSequentialInnerClass="row";
+		
+		// nav/dsp_tag_cloud.cfm
+		this.tagCloudWrapperClass="";
+		
+		// navArchive
+		//this.navArchiveWrapperClass="";
+		//this.navArchiveListClass="";
+		
+		
+		// rater/index.cfm
+		this.raterObjectWrapperClass="row clearfix";
+		this.raterWrapperClass="col-lg-12";
+		this.avgRatingWrapperClass="col-lg-12";
+		
+		// Generic form vars
+		this.formWrapperClass = "";
+	</cfscript>
 
 	<cffunction name="dspCarouselByFeedName" output="false">
 		<cfargument name="feedName" type="string" default="Slideshow" />

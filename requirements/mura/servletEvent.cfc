@@ -186,8 +186,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getValue('contentRenderer') />	
 </cffunction>
 
-<cffunction name="getThemeRenderer" returntype="any" access="public" output="false">
-	<cfreturn getValue('themeRenderer') />	
+<cffunction name="getThemeRenderer" returntype="any" access="public" output="false" hint="deprecated: use getContentRenderer()">
+	<cfreturn getContentRenderer() />	
 </cffunction>
 
 <cffunction name="getContentBean" returntype="any" access="public" output="false">

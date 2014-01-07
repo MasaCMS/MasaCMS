@@ -70,9 +70,9 @@
 		<div id="svEditProfile" class="mura-edit-profile #this.editProfileWrapperClass#">
 
 			<cfif not structIsEmpty(request.userBean.getErrors()) >
-				<div id="editProfileMsg" class="required">#variables.$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
+				<div class="#this.alertDangerClass#">#variables.$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
 			<cfelse>
-				<div id="editProfileMsg" class="required">#msg#</div>
+				<div class="#this.alertDangerClass#">#msg#</div>
 			</cfif>
 
 			<!--- EDIT PROFILE FORM --->
@@ -337,11 +337,11 @@
 		</cfsilent>
 
 		<cfif request.userBean.getInActive()>
-			<div id="editProfileMsg" class="required">
+			<div class="#this.alertDangerClass#">
 				<p class="#this.editProfileSuccessMessageClass#">#variables.$.rbKey('user.thankyouinactive')#</p>
 			</div>
 		<cfelse>
-			<div id="editProfileMsg" class="required"><p class="#this.editProfileSuccessMessageClass#">#variables.$.rbKey('user.thankyouactive')#</p></div>
+			<div class="#this.alertDangerClass#"><p class="#this.editProfileSuccessMessageClass#">#variables.$.rbKey('user.thankyouactive')#</p></div>
 		</cfif>
 	</cfif>
 </cfoutput>

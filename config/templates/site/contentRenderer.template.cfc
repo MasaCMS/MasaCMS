@@ -120,6 +120,12 @@
 		//this.bodyMetaImageSizeArgs={size="medium"};
 		//this.size=50;
 		
+		//this.alertSuccessClass = "alert alert-success";
+		//this.alertInfoClass = "alert alert-info";
+		//this.alertWarningClass = "alert alert-warning";
+		//this.alertDangerClass = "alert alert-danger";
+
+		
 		// Display Objects
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
@@ -133,6 +139,9 @@
 		
 		// comments/index.cfm
 		// this.commentsWrapperClass="";
+		// this.commentSortContainerClass="";
+		// this.commentSortWrapperClass="";
+		// this.commentSortSelectClass="";
 		// this.commentFormWrapperClass="";
 		// this.commentFormClass="";
 		// this.commentNewClass="";
@@ -144,20 +153,22 @@
 		// this.commentPrefsInputWrapperClass="";
 		// this.commentSubmitButtonWrapperClass="";
 		// this.commentSubmitButtonClass="";
+		// this.commentMoreCommentsUpClass=""
+		// this.commentMoreCommentsDownClass=""
 		// this.commentRequiredWrapperClass="";
-		// this.commentUserEmailClass="";
-		// this.commentDeleteButtonClass="";
+		// this.commentThumbClass="";
+		// this.commentSpamClass="";
+		// this.commentSpamLinkClass="";
+		// this.commentClass="";
+		// this.commentDateTimeClass="";
+		// this.commentReplyClass="";
+		// this.commentMoreCommentsContainer="";
 		
 		// comments/dsp_comment.cfm
 		// this.emailLinkClass="";
 		// this.commentsLinkClass="";
 		// this.approveCommentLinkClass="";
 		// this.deleteCommentLinkClass="";
-		
-		// datacollection/dsp_response.cfm
-		// this.datacollectionErrorPClass="";
-		// this.datacollectionErrorDivClass="";
-		// this.datacollectionSuccessPClass="";
 		
 		// dataresponses/dsp_detail.cfm
 		// this.dataResponseListClass="";
@@ -189,16 +200,16 @@
 		// dsp_content_list.cfm
 		//this.contentListImageStyles=true;
 		/* this.contentListPropertyMap={
-										containerEl={tag="div"},
-										itemEl={tag="dl"},
-										labelEl={tag="span"},
-										title={tag="dt"},
-										date={tag="dt"},
-										credits={tag="dd",showLabel=true,rbkey="list.by"},
-										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
-										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-										'default'={tag="dd"}
-									};*/
+				containerEl={tag="div"},
+				itemEl={tag="dl"},
+				labelEl={tag="span"},
+				title={tag="dt"},
+				date={tag="dt"},
+				credits={tag="dd",showLabel=true,rbkey="list.by"},
+				tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+				rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
+				'default'={tag="dd"}
+			};*/
 		// this.contentListWrapperDivClass="";
 		// this.contentListItemImageLinkClass="";
 		 
@@ -241,7 +252,6 @@
 		// dsp_login.cfm
 		// this.loginWrapperClass="";
 		// this.loginWrapperInnerClass="";
-		// this.loginErrorMessageClass="";
 		// this.loginFormClass="";
 		// this.forgotPasswordFormClass="";
 		// this.loginFormGroupWrapperClass="";
@@ -252,14 +262,10 @@
 		// this.loginFormCheckboxClass="";
 		// this.loginFormSubmitWrapperClass="";
 		// this.loginFormSubmitClass="";
-		// this.loginFormAlertClass="";
-		// this.loginFormErrorClass="";
 		// this.notRegisteredLinkClass="";
 		
 		// dsp_mailing_list_master.cfm
 		// this.mailingListWrapperClass="";
-		// this.mailingListSuccessClass="";
-		// this.mailingListErrorClass="";
 		// this.mailingListFormClass="";
 		// this.mailingListFormGroupWrapperClass="";
 		// this.mailingListFormLabelClass="";
@@ -353,10 +359,6 @@
 		// this.raterObjectWrapperClass="";
 		// this.raterWrapperClass="";
 		// this.avgRatingWrapperClass="";
-		
-		// sendToLink/SendLink.cfm
-		// this.sendToFriendSuccessClass="";
-		// this.sendToFriendErrorClass="";
 		
 		// Generic form vars
 		//	this.formWrapperClass = "";

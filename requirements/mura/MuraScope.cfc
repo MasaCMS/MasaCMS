@@ -83,8 +83,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,arguments.MissingMethodName)>
 			<cfset object=variables.instance.event>
-		<cfelseif isObject(getThemeRenderer()) and structKeyExists(getThemeRenderer(),arguments.MissingMethodName)>
-			<cfset object=getThemeRenderer()>
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),arguments.MissingMethodName)>
 			<cfset object=getContentRenderer()>
 		<cfelseif isObject(getContentBean())>
@@ -133,7 +131,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif len(event('siteid'))>
 			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
 			<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
-			<cfset getThemeRenderer()>
+			<cfif fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
+				<cfset var themeRenderer=createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer")>
+				<cfset themeRenderer.injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
+				<cfset themeRenderer.init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
+				<cfset structAppend(event("contentRenderer"), themeRenderer, true)>
+			</cfif>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
@@ -141,21 +144,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn event("contentRenderer")>
 </cffunction>
 
-<cffunction name="getSiteRenderer" output="false" returntype="any">
+<cffunction name="getSiteRenderer" output="false" returntype="any" hint="deprecated: use getContentRenderer()">
 	<cfreturn getContentRenderer()>
 </cffunction>
 
-<cffunction name="getThemeRenderer" output="false" returntype="any">
-	<cfset getContentRenderer()>
-	<cfif isObject(event("themeRenderer"))>
-		<cfreturn event("themeRenderer")>
-	<cfelseif len(event('siteid')) and fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
-		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer"))>
-		<cfset event("themeRenderer").injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
-		<cfset event("themeRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
-	<cfelse>
-		<cfreturn event("themeRenderer")>
-	</cfif>
+<cffunction name="getThemeRenderer" output="false" returntype="any" hint="deprecated: use getContentRenderer()">
+	<cfreturn getContentRenderer()>
 </cffunction>
 
 <cffunction name="getContentBean" output="false" returntype="any">
