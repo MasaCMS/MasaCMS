@@ -366,7 +366,7 @@ jQuery(document).ready(function(){
                 <div class="control-group">
                     <label class="control-label">Credits</label>
                     <div class="controls">
-                        <div data-attribute="credits">{%=file.credits%}</div>
+                        <div data-attribute="credits">{%##file.credits%}</div>
                     </div>
                 </div>
                 {% } %}
