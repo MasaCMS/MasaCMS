@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
 
     <!-- Begin Grid Header -->
-    <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
+    <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> no-manual-sort</cfif>">
     <dl class="mura-grid-hdr">
       <dt>
       		<span class="add"></span>
