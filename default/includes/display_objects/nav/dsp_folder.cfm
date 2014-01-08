@@ -46,4 +46,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <!--- Works just like the standard nav, but omits items in a portal to avoid potentially unmanageably long sub nav for something like a news portal with 100 items --->
-<cfoutput><nav id="navFolder"<cfif this.navWrapperClass neq ""> class="#this.navWrapperClass#"</cfif>>#dspFolderNav()#</nav></cfoutput>
+<cfoutput><nav id="navFolder"<cfif this.navWrapperClass neq ""> class="mura-nav-folder #this.navWrapperClass#"</cfif>>#dspFolderNav()#</nav></cfoutput>

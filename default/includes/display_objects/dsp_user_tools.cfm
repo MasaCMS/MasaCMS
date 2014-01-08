@@ -60,7 +60,7 @@
 <cfoutput>
 	<cfif variables.$.event('display') neq 'login'>
 		<cfif not len(getPersonalizationID())>
-			<div id="login" class="#this.userToolsLoginWrapperClass#">
+			<div id="login" class="mura-user-tools-login #this.userToolsLoginWrapperClass#">
 				<form role="form" class="#this.userToolsLoginFormClass#" action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
 					<legend>#variables.$.rbKey('user.signin')#</legend>
 
@@ -109,7 +109,7 @@
 			</cfif>
 		<cfelse>
 			<cfif session.mura.isLoggedIn>	
-				<div id="svSessionTools" class="mura-user-tools #this.userToolsWrapperClass#">
+				<div id="svSessionTools" class="mura-user-tools-session #this.userToolsWrapperClass#">
 					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
 				 	<ul id="navSession">
 						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
