@@ -66,39 +66,62 @@
 	--->
 
 	<cfscript>
-		// general vars
-		this.jsLib = 'jquery';
+	
+		
+		// GENERAL 
+		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
-		this.generalWrapperClass = 'well';
+		this.generalWrapperClass = "well";
 		
 		// headings
-		this.headline = 'h1';
-		this.subHead1 = 'h2';
-		this.subHead2 = 'h3';
-		this.subHead3 = 'h4';
-		this.subHead4 = 'h5';
+		this.headline = "h1";
+		this.subHead1 = "h2";
+		this.subHead2 = "h3";
+		this.subHead3 = "h4";
+		this.subHead4 = "h5";
 
 		// nav and list item vars
-		this.navWrapperClass = 'well';
-		this.liHasKidsClass = '';
-		this.liHasKidsCustomString = '';
-		this.liCurrentClass = 'active';
-		this.liCurrentCustomString = '';
-		this.aHasKidsClass = '';
-		this.aHasKidsCustomString = '';
-		this.aCurrentClass = 'active';
-		this.aCurrentCustomString = '';
-		this.ulTopClass = 'nav nav-list';
-		this.ulNestedClass = 'nav nav-list';
-		this.ulNestedCustomString = '';
-		this.liNestedClass = '';
+		this.navWrapperClass = this.generalWrapperClass;
+		this.liHasKidsClass = "";
+		this.liHasKidsCustomString = "";
+		this.liCurrentClass = "active";
+		this.liCurrentCustomString = "";
+		this.aHasKidsClass = "";
+		this.aHasKidsCustomString = "";
+		this.aCurrentClass = "active";
+		this.aCurrentCustomString = "";
+		this.ulTopClass = "nav nav-list";
+		this.ulNestedClass = "nav nav-list";
+		this.ulNestedCustomString = "";
+		this.liNestedClass = "";
 
 		// pagination vars
-		this.ulPaginationClass = 'pagination';
-		this.ulPaginationWrapperClass = 'pagination';
+		this.ulPaginationClass = "pagination";
+		this.ulPaginationWrapperClass = "";
 
 		// form vars
-		this.formWrapperClass = 'well';
+		this.formWrapperClass = "well";
+		this.formFieldWrapperClass = "form-group";
+		this.formFieldLabelClass = "control-label";
+		this.formInputWrapperClass = "input-group";
+		this.formInputClass ="form-control";
+		this.formCheckboxClass = "";
+		this.formButtonWrapperClass = "btn-group";
+		this.formButtonInnerClass="input-group-btn";
+		this.formButtonClass = "btn btn-default";
+		this.formRequiredWrapperClass="";
+		
+		// images
+		this.imageClass="img-thumbnail";
+		
+		// tables
+		this.tableClass = "table table-bordered table-striped";
+		this.tableHeadClass = "";
+		this.tableHeaderClass = "";
+		this.tableBodyClass = "";
+		this.tableRowClass = "";
+		this.tableCellClass = "";
+		this.tableFooterClass = "";
 		
 		// alerts
 		this.alertSuccessClass = "alert alert-success";
@@ -106,12 +129,12 @@
 		this.alertWarningClass = "alert alert-warning";
 		this.alertDangerClass = "alert alert-danger";
 		
-		// Display Objects
-		// Use these variables to pass-in specific classes without having to create custom versions
+		// SPECIFIC (Display Objects)
+		// Use these variables to pass-in specific classes without having to create custom versions of the include
 		
 		// calendar/dsp_showMonth.cfm
 		this.calendarWrapperClass="";
-		this.calendarTableClass="table table-bordered";
+		this.calendarTableClass=this.tableClass;
 		//this.calendarTableHeaderClass="";
 		
 		// calendar/dspList.cfm
@@ -121,18 +144,18 @@
 		 this.commentsWrapperClass="";
 		 this.commentSortContainerClass="row";
 		 this.commentSortWrapperClass="col-xs-5";
-		 this.commentSortSelectClass="form-control";
-		 this.commentFormWrapperClass="well";
+		 this.commentSortSelectClass=this.formInputClass;
+		 this.commentFormWrapperClass=this.generalWrapperClass;
 		 this.commentFormClass="";
-		 this.commentNewClass="btn btn-default";
-		 this.commentFieldWrapperClass="form-group";
-		 this.commentFieldLabelClass="control-label";
+		 this.commentNewClass=this.formButtonClass;
+		 this.commentFieldWrapperClass=this.formFieldWrapperClass;
+		 this.commentFieldLabelClass=this.formFieldLabelClass;
 		 this.commentInputWrapperClass="";
-		 this.commentInputClass="form-control";
+		 this.commentInputClass=this.formInputClass;
 		 this.commentCheckboxClass="";
 		 this.commentPrefsInputWrapperClass="";
 		 this.commentSubmitButtonWrapperClass="";
-		 this.commentSubmitButtonClass="btn btn-default";
+		 this.commentSubmitButtonClass=this.formButtonClass;
 		 this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up";
 		 this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down";
 		 this.commentMoreCommentsContainer="";
@@ -144,9 +167,6 @@
 		 this.commentDateTimeClass="";
 		 this.commentReplyClass="";
 		 this.commentAwaitingApproval="";
-	 
-		 
-		 // !!! These need to have deafult styles in mura.6.1.css since no guarantee of BS3 loaded?
 		 this.commentAdminButtonWrapperClass="btn-group pull-right";
 		 this.commentUserEmailClass="btn btn-default btn-sm";
 		 this.commentDeleteButtonClass="btn btn-default btn-sm";
@@ -154,34 +174,34 @@
 		 this.commentApproveButtonClass="btn btn-default btn-sm";	
 		 	
 		// comments/dsp_comment.cfm
-	 	this.emailLinkClass="btn btn-default";
-		this.commentsLinkClass="btn btn-default";
-		this.approveCommentLinkClass="btn btn-default";
-		this.deleteCommentLinkClass="btn btn-default";
+	 	this.emailLinkClass=this.formButtonClass;
+		this.commentsLinkClass=this.formButtonClass;
+		this.approveCommentLinkClass=this.formButtonClass;
+		this.deleteCommentLinkClass=this.formButtonClass;
 		
 		// dataresponses/dsp_detail.cfm
 		this.dataResponseListClass="dl-horizontal";
 		
 		// dataresponses/dsp_list.cfm
 		this.dataResponseTableClass="table table-hover";
-		this.dataResponsePaginationClass="pagination";
+		this.dataResponsePaginationClass=this.ulPaginationClass;
 		
 		// draggablefeeds/index.cfm
 		this.draggableBoxWrapperClass="row";
 		this.draggableBoxHeaderClass="col-lg-12";
 		this.draggableBoxRSSWrapperClass="";
-		this.draggableBoxHeaderButtonClass="btn btn-default";
+		this.draggableBoxHeaderButtonClass=this.formButtonClass;
 		//this.draggableBoxRSSeditFormClass="";
 		this.draggableBoxAddFeedWrapperClass="well clearfix";
 		this.draggableBoxNewFeedFormClass="form-horizontal";
 		this.draggableBoxSelectFeedWrapperClass="col-lg-6";
 		this.draggableBoxSelectFeedRowClass="row";
-		this.draggableBoxSelectFeedMenuClass="form-group";
+		this.draggableBoxSelectFeedMenuClass=this.formFieldWrapperClass;
 		this.draggableBoxSelectFeedMenuDivClass="col-lg-10";
-		this.draggableFeedMenuSelectFieldClass="form-control";
-		this.addFeedButtonWrapperDivClass="form-group";
+		this.draggableFeedMenuSelectFieldClass=this.formInputClass;
+		this.addFeedButtonWrapperDivClass=this.formFieldWrapperClass;
 		this.addFeedButtonWrapperDivInnerClass="col-lg-2";
-		this.addFeedButtonClass="btn btn-default";
+		this.addFeedButtonClass=this.formButtonClass;
 		
 		// dsp_categories_nest.cfm
 		this.categoriesNestCheckboxClass="checkbox";
@@ -197,7 +217,7 @@
 			credits={tag="dd",showLabel=true,rbkey="list.by"},
 			tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
 			rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-			'default'={tag="dd"}
+			"default"={tag="dd"}
 		};
 		this.contentListWrapperDivClass="";
 		this.contentListItemImageLinkClass="";
@@ -208,28 +228,28 @@
 		// dsp_edit_profile.cfm
 		this.editProfileWrapperClass="";
 		this.editProfileFormClass="form-horizontal";
-		this.editProfileFormGroupWrapperClass="form-group";
+		this.editProfileFormGroupWrapperClass=this.formFieldWrapperClass;
 		this.editProfileFieldLabelClass="control-label col-lg-3";
 		this.editProfileFormFieldsWrapperClass="col-lg-9";
-		this.editProfileFormFieldsClass="form-control";
+		this.editProfileFormFieldsClass=this.formInputClass;
 		this.editProfileExtAttributeDownloadClass="col-lg-3";
 		this.editProfileHelpBlockClass="help-block";
 		this.editProfileExtAttributeFileWrapperClass="col-lg-offset-3 col-lg-6";
 		this.editProfileExtAttributeDownloadClass="col-lg-3";
-		this.editProfileExtAttributeDownloadButtonClass="btn btn-default";
+		this.editProfileExtAttributeDownloadButtonClass=this.formButtonClass;
 		this.editProfileSubmitButtonWrapperClass="col-lg-offset-3 col-lg-9";
 		this.editProfileSubmitButtonClass="btn btn-primary";
-		this.editProfileSuccessMessageClass="alert alert-success";
+		this.editProfileSuccessMessageClass=this.alertSuccessClass;
 		
 		// dsp_email_dropdown.cfm
 		this.emailDropdownSelectClass="dropdown";
 		
 		// dsp_event_reminder_form.cfm
 		this.eventReminderFormWrapperClass="";
-		this.eventReminderFormClass="well";
+		this.eventReminderFormClass=this.generalWrapperClass;
 		this.eventReminderFieldWrapperClass="";
-		this.eventReminderFormLabelsClass="control-label";
-		this.eventReminderSubmitClass="btn btn-default";
+		this.eventReminderFormLabelsClass=this.formFieldLabelClass;
+		this.eventReminderSubmitClass=this.formButtonClass;
 		
 		// dsp_features.cfm
 		this.featuresWrapperClass="clearfix";
@@ -243,27 +263,27 @@
 		this.loginWrapperInnerClass="row";
 		this.loginFormClass="form-horizontal form-signin";
 		this.forgotPasswordFormClass="form-horizontal form-sendlogin";
-		this.loginFormGroupWrapperClass="form-group";
+		this.loginFormGroupWrapperClass=this.formFieldWrapperClass;
 		this.loginFormFieldLabelClass="control-label col-lg-3";
 		this.loginFormFieldWrapperClass="col-lg-9";
-		this.loginFormFieldClass="form-control";
+		this.loginFormFieldClass=this.formInputClass;
 		this.loginFormPrefsClass="col-lg-offset-3 col-lg-10";
 		this.loginFormCheckboxClass="checkbox";
 		this.loginFormSubmitWrapperClass="col-lg-offset-3 col-lg-10";
-		this.loginFormSubmitClass="btn btn-default";
+		this.loginFormSubmitClass=this.formButtonClass;
 		this.notRegisteredLinkClass="btn btn-primary";
 		
 		// dsp_mailing_list_master.cfm
-		this.mailingListWrapperClass="well";
+		this.mailingListWrapperClass=this.generalWrapperClass;
 		this.mailingListFormClass="form-horizontal";
-		this.mailingListFormGroupWrapperClass="form-group";
+		this.mailingListFormGroupWrapperClass=this.formFieldWrapperClass;
 		this.mailingListFormLabelClass="control-label col-lg-2";
 		this.mailingListFormFieldWrapperClass="col-lg-10";
-		this.mailingListFormInputClass="form-control";
+		this.mailingListFormInputClass=this.formInputClass;
 		this.mailingListCheckboxWrapperClass="col-lg-offset-2 col-lg-10";
 		this.mailingListCheckboxClass="checkbox";
 		this.mailingListSubmitWrapperClass="col-lg-offset-2 col-lg-10";
-		this.mailingListSubmitClass="submit btn btn-default";
+		this.mailingListSubmitClass=this.formButtonClass;
 		
 		// dsp_nextN.cfm
 		this.nextNWrapperClass="";
@@ -271,9 +291,9 @@
 		
 		// dsp_search_form.cfm
 		this.searchFormClass="navbar-form";
-		this.searchFormInputWrapperClass="input-group";
-		this.searchFormInputClass="form-control";
-		this.searchFormSubmitWrapperClass="input-group-btn";
+		this.searchFormInputWrapperClass=this.formInputWrapperClass;
+		this.searchFormInputClass=this.formInputClass;
+		this.searchFormSubmitWrapperClass=this.formButtonInnerClass;
 		this.searchFormSubmitClass="btn btn-default fa fa-search";
 		
 		// dsp_search_results.cfm
@@ -286,30 +306,30 @@
 		this.searchAgainRowClass="row";
 		this.searchAgainInnerClass="col-md-8";
 		this.searchAgainFormClass="navbar-form";
-		this.searchAgainInputWrapperClass="input-group";
-		this.searchAgainFormInputClass="form-control";
-		this.searchAgainButtonWrapperClass="input-group-btn";
-		this.searchAgainSubmitClass="btn btn-default";
+		this.searchAgainInputWrapperClass=this.formInputWrapperClass;
+		this.searchAgainFormInputClass=this.formInputClass;
+		this.searchAgainButtonWrapperClass=this.formButtonInnerClass;
+		this.searchAgainSubmitClass=this.formButtonClass;
 		
 		// dsp_user_tools.cfm
 		this.userToolsLoginWrapperClass="well clearfix";
 		this.userToolsLoginFormClass="form-horizontal";
-		this.userToolsFormGroupWrapperClass="form-group";
+		this.userToolsFormGroupWrapperClass=this.formFieldWrapperClass;
 		this.userToolsLoginFormLabelClass="control-label col-lg-2";
 		this.userToolsLoginFormInputWrapperClass="col-lg-10";
-		this.userToolsLoginFormInputClass="form-control";
+		this.userToolsLoginFormInputClass=this.formInputClass;
 		this.userToolsLoginFormFieldInnerClass="col-lg-offset-2 col-lg-10";
 		this.userToolsLoginFormCheckboxClass="checkbox";
-		this.userToolsLoginFormSubmitClass="btn btn-default";
+		this.userToolsLoginFormSubmitClass=this.formButtonClass;
 		this.userToolsNotRegisteredLinkClass="btn btn-primary";
 		this.userToolsWrapperClass="clearfix";
 		this.userToolsEditProfileLinkClass="btn btn-default fa fa-user";
 		this.userToolsLogoutLinkClass="btn btn-default fa fa-sign-out";
 		
 		// formbuilder/dsp_form.cfm
-		this.formBuilderFieldWrapperClass="form-group";
-		this.formBuilderButtonWrapperClass="form-actions buttons";
-		this.formBuilderSubmitClass="btn btn-default";
+		this.formBuilderFieldWrapperClass=this.formFieldWrapperClass;
+		this.formBuilderButtonWrapperClass="";
+		this.formBuilderSubmitClass=this.formButtonClass;
 		
 		// formbuilder/fields/dsp_checkbox.cfm
 		// formbuilder/fields/dsp_dropdown.cfm 
@@ -317,7 +337,7 @@
 		// formbuilder/fields/dsp_radio.cfm
 		// formbuilder/fields/dsp_textfield.cfm
 		
-		this.formBuilderFormFieldsClass="form-control";
+		this.formBuilderFormFieldsClass=this.formInputClass;
 		
 		// formbuilder/fields/field_dropdown.cfm
 		this.formBuilderTabHeaderClass="dropdown";
