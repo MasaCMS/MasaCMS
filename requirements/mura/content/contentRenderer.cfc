@@ -107,12 +107,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.bodyMetaImageClass="thumbnail">
 <cfset this.size=50>
 
-<!--- Alerts --->
+<!--- ===================
+General Classes 
+=================== --->
 
+<!--- Forms --->
+<cfset this.formWrapperClass = "well">
+<cfset this.formFieldWrapperClass = "control-group">
+<cfset this.formFieldLabelClass = "control-label">
+<cfset this.formInputWrapperClass = "input-addon">
+<cfset this.formInputClass ="form-control">
+<cfset this.formCheckboxClass = "">
+<cfset this.formButtonWrapperClass = "btn-group">
+<cfset this.formButtonInnerClass="">
+<cfset this.formButtonClass = "btn btn-default">
+<cfset this.formRequiredWrapperClass="">
+		
+<!--- Images --->
+<cfset this.imageClass="img-thumbnail">
+		
+<!--- Tables --->
+<cfset this.tableClass = "table table-bordered table-striped">
+<cfset this.tableHeadClass = "">
+<cfset this.tableHeaderClass = "">
+<cfset this.tableBodyClass = "">
+<cfset this.tableRowClass = "">
+<cfset this.tableCellClass = "">
+<cfset this.tableFooterClass = "">
+		
+<!--- Alerts --->
 <cfset this.alertSuccessClass = "alert alert-success">
 <cfset this.alertInfoClass = "alert alert-info">
-<cfset this.alertWarningClass = "">
+<cfset this.alertWarningClass = "alert">
 <cfset this.alertDangerClass = "alert alert-error">
+
 
 <!--- ===================
 Display Objects 
