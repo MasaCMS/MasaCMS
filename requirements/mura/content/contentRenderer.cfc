@@ -1755,7 +1755,6 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
-			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
@@ -1790,7 +1789,6 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="related_content,related_section_content">
-			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
@@ -2150,13 +2148,11 @@ Display Objects
 					</cfswitch>
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 					<cfcase value="Folder">
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
