@@ -1,7 +1,7 @@
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[ttrash]')
 AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
 CREATE TABLE [dbo].[ttrash] ( 
@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[ttrash] (
 ) on [PRIMARY]
 </cfquery>
 
-<cfquery>	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
 IF NOT EXISTS (SELECT 1
 				FROM sysindexes
 				WHERE id = object_id(N'[dbo].[ttrash]') 
@@ -30,19 +30,19 @@ ALTER TABLE [dbo].[ttrash] WITH NOCHECK ADD
 	)  ON [PRIMARY] 
 </cfquery>
 
-<cfquery>	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_deleteddate')
 CREATE INDEX IX_ttrash_deleteddate ON ttrash (deleteddate)
 </cfquery>
-<cfquery>	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_siteid')
 CREATE INDEX IX_ttrash_siteid ON ttrash (siteid)
 </cfquery>
-<cfquery>	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_objectclass')
 CREATE INDEX IX_ttrash_objectclass ON ttrash (objectclass)
 </cfquery>
-<cfquery>	
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">	
 IF NOT EXISTS (SELECT name FROM sysindexes WHERE name = 'IX_ttrash_parentid')
 CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 </cfquery>
@@ -51,7 +51,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 <cfcase value="mysql">
 	<cftry>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE IF NOT EXISTS  `ttrash` (
 	  objectID char(35) NOT NULL,
 	  parentID char(35) NOT NULL,
@@ -73,7 +73,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	
 	<cfcatch>
 		<cftry>
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE IF NOT EXISTS  `ttrash` (
 		  objectID char(35) NOT NULL,
 		  parentID char(35) NOT NULL,
@@ -95,7 +95,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 </cfcase>
 <cfcase value="postgresql">
 	<cfif not dbUtility.tableExists('ttrash')>
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE ttrash (
 			objectID char(35) NOT NULL,
 			parentID char(35) NOT NULL,
@@ -111,16 +111,16 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 		)
 		</cfquery>
 
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_deleteddate ON ttrash (deleteddate)
 		</cfquery>
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_siteid ON ttrash (siteid)
 		</cfquery>
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_objectclass ON ttrash (objectclass)
 		</cfquery>
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 		</cfquery>
 	</cfif>
@@ -128,7 +128,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 <cfcase value="nuodb">
 
 	<cfif not dbUtility.tableExists('ttrash')>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE ttrash (
 	  objectID char(35) NOT NULL,
 	  parentID char(35) NOT NULL,
@@ -144,16 +144,16 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	) 
 	</cfquery>
 
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_deleteddate on ttrash (deleteddate);
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_siteid on ttrash (siteID);
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_objecttype on ttrash (objectclass);
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE INDEX IX_ttrash_parentid on ttrash (parentID);
 	</cfquery>
 	</cfif>
@@ -162,7 +162,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 <cfcase value="oracle">
 <cfset variables.RUNDBUPDATE=false/>
 <cftry>
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from ttrash where 0=1
 </cfquery>
 <cfcatch>
@@ -172,7 +172,7 @@ select * from ttrash where 0=1
 
 <cfif variables.RUNDBUPDATE>
 	<cftransaction>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE "TTRASH" (
 	"OBJECTID" CHAR(35),
 	"PARENTID" CHAR(35),
@@ -192,19 +192,19 @@ select * from ttrash where 0=1
 	PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
 	</cfquery>
 
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TTRASH" ADD CONSTRAINT "PK_TTRASH" PRIMARY KEY ("OBJECTID") ENABLE
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX "IX_TTRASH_DELETEDDATE" ON "TTRASH" ("DELETEDDATE")
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX "IX_TTRASH_SITEID" ON "TTRASH" ("SITEID")
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX "IX_TTRASH_OBJECTCLASS" ON "TTRASH" ("OBJECTCLASS")
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE INDEX "IX_TTRASH_PARENTID" ON "TTRASH" ("PARENTID")
 	</cfquery>
 	</cftransaction>
@@ -214,48 +214,48 @@ select * from ttrash where 0=1
 
 
 <!--- make sure tcontentcomment.cacheItem exists --->
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from tfiles where 0=1
 </cfquery>
 
 <cfif not listFindNoCase(rsCheck.columnlist,"deleted")>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tfiles ADD deleted tinyint 
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tfiles ADD COLUMN deleted tinyint(3) 
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tfiles ADD deleted tinyint(3)
 			</cfquery>
 		</cfcatch>
 	</cftry>
 </cfcase>
 <cfcase value="postgresql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tfiles ADD deleted smallint
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tfiles ADD COLUMN deleted smallint
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tfiles ADD deleted NUMBER(3,0)
 </cfquery>
 </cfcase>
 </cfswitch>
 
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 update tfiles set deleted=0
 </cfquery>
 </cfif>

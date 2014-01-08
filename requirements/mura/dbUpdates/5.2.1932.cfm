@@ -3,7 +3,7 @@
 <cfset variables.DOUPDATE=false>
 
 <cftry>
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select tablist from tusers  where 0=1
 </cfquery>
 <cfcatch>
@@ -14,27 +14,27 @@ select tablist from tusers  where 0=1
 <cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist [nvarchar](255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="postgresql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TUSERS" ADD "TABLIST" varchar2(255)
 	</cfquery>
 </cfcase>

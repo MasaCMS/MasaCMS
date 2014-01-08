@@ -511,13 +511,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
 	
 	<cfif request.muraChangesetPreview>
-		<cfif isdefined('previewData.showToolbar')>
-			<cfset request.muraChangesetPreviewToolbar=previewData.showToolbar>
-		<cfelse>
-			<cfset request.muraChangesetPreviewToolbar=true>
-		</cfif>
 		<cfif getBean('changeset').loadBy(changesetID=previewData.changesetID,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
-			<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetID,append=false,showToolBar=request.muraChangesetPreviewToolbar)>	
+			<cfset getBean('changesetManager').setSessionPreviewData(previewData.changesetID)>	
 		</cfif>
 			
 		<cfset request.nocache=1>

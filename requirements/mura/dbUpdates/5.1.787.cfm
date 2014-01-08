@@ -3,7 +3,7 @@
 <cfset variables.DOUPDATE=false>
 
 <cftry>
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select domainAlias from tsettings  where 0=1
 </cfquery>
 <cfcatch>
@@ -14,27 +14,27 @@ select domainAlias from tsettings  where 0=1
 <cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD domainAlias #MSSQLlob# NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN domainAlias longtext
 	</cfquery>
 </cfcase>
 <cfcase value="postgresql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN domainAlias text
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN domainAlias clob
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TSETTINGS" ADD ("DOMAINALIAS" clob)
 	</cfquery>
 </cfcase>

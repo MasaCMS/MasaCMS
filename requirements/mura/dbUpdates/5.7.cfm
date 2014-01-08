@@ -34,19 +34,19 @@
 </cfscript>
 
 <cfif not local.hasSmall>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		smallImageWidth=gallerySmallScale,
 		smallImageHeight='AUTO'
 		where gallerySmallScaleBy = 'x'
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		smallImageWidth='AUTO',
 		smallImageHeight=gallerySmallScale
 		where gallerySmallScaleBy = 'y'
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		smallImageWidth=gallerySmallScale,
 		smallImageHeight=gallerySmallScale
@@ -55,19 +55,19 @@
 </cfif>
 
 <cfif not local.hasMedium>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		mediumImageWidth=galleryMediumScale,
 		mediumImageHeight='AUTO'
 		where galleryMediumScaleBy = 'x'
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		mediumImageWidth='AUTO',
 		mediumImageHeight=galleryMediumScale
 		where galleryMediumScaleBy = 'y'
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		mediumImageWidth=galleryMediumScale,
 		mediumImageHeight=galleryMediumScale
@@ -76,13 +76,13 @@
 </cfif>
 
 <cfif not local.hasLarge>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		largeImageWidth=galleryMainScale,
 		largeImageHeight='AUTO'
 		where galleryMainScaleBy = 'x'
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 		update tsettings set 
 		largeImageWidth='AUTO',
 		largeImageHeight=galleryMainScale
@@ -141,13 +141,13 @@
 	}
 </cfscript>
 
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 	update tclassextend set type='Folder' where type in ('Portal','LocalRepo')
 </cfquery>
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 	update tcontent set type='Folder' where type in ('Portal','LocalRepo')
 </cfquery>
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 	update tsystemobjects set
 		object='folder_nav',
 		name='Folder Navigation'

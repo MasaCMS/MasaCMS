@@ -50,6 +50,8 @@ var feedManager = {
 		var d = $('#selectFilter');
 		d.html('<div class="load-inline"></div>');
 		$('#selectFilter .load-inline').spin(spinnerArgs2); 
+
+		return false;
 		$.get(url + "?" + pars, function(data) {
 			$("#selectFilter").html(data);
 		});

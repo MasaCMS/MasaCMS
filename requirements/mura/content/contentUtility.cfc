@@ -326,7 +326,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfloop query="rs">
-		<cfset newfilename = replaceNoCase(rs.filename,"#arguments.oldfilename#/","#arguments.filename#/","ALL")>
+		<cfset newfilename = replaceNoCase(rs.filename,"#arguments.find#/","#arguments.replace#/","ALL")>
 		<cfquery>
 			update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newfilename#"/>
 			where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistid#"/>

@@ -5,7 +5,7 @@
 		<cfset variables.RUNDBUPDATE=false/>
 
 		<cftry>
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				SELECT TOP 1 changesetID AS CheckIfTableExists FROM tchangesets
 			</cfquery>
 			<cfcatch>
@@ -17,7 +17,7 @@
 		
 		<cftransaction>
 
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE TABLE [dbo].[tchangesets] ( 
 				  [changesetID] 	[char](35)		NOT NULL 	DEFAULT (Left(NewID(), 23) + Right(NewID(),12)),
 				  [siteID] 			[nvarchar](25) 	NULL		DEFAULT NULL,
@@ -36,7 +36,7 @@
 			</cfquery>
 			
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				ALTER TABLE [dbo].[tchangesets] 
 				WITH NOCHECK 
 					ADD	CONSTRAINT [PK_tchangesets_changesetID] 
@@ -44,23 +44,23 @@
 					ON [PRIMARY] 
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX [IX_tchangesets_siteid] ON [dbo].[tchangesets]([siteid]) ON [PRIMARY]
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX [IX_tchangesets_publishDate] ON [dbo].[tchangesets]([publishDate]) ON [PRIMARY]
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX [IX_tchangesets_remoteid] ON [dbo].[tchangesets]([remoteid]) ON [PRIMARY]
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				ALTER TABLE tcontent ADD changesetID [char](35) default NULL
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX [IX_tcontent_changesetID] ON [dbo].[tcontent]([changesetID]) ON [PRIMARY]
 			</cfquery>
 		</cftransaction>
@@ -70,7 +70,7 @@
 	<cfcase value="mysql">
 		<cftransaction>
 			<cfif not dbUtility.setTable('tchangesets').tableExists()>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE TABLE `tchangesets` (
 					  `changesetID` char(35),
 					  `siteID` varchar(25),
@@ -97,11 +97,11 @@
 			</cfif>
 
 			<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
 				</cfquery>
 						
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tcontent_changesetID ON tcontent (changesetID)
 				</cfquery>
 			</cfif>
@@ -110,7 +110,7 @@
 	<cfcase value="postgresql">
 		<cfif not dbUtility.setTable('tchangesets').tableExists()>
 			<cftransaction>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE TABLE tchangesets (
 					changesetID char(35),
 					siteID varchar(25),
@@ -129,15 +129,15 @@
 				)
 				</cfquery>
 
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX IX_tchangesets_siteid ON tchangesets(siteid)
 				</cfquery>
 
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX IX_tchangesets_publishDate ON tchangesets(publishDate)
 				</cfquery>
 
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX IX_tchangesets_remoteid ON tchangesets(remoteid)
 				</cfquery>
 			</cftransaction>
@@ -145,11 +145,11 @@
 
 		<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
 			<cftransaction>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				ALTER TABLE tcontent ADD changesetID char(35) default NULL
 				</cfquery>
 
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				CREATE INDEX IX_tcontent_changesetID ON tcontent(changesetID)
 				</cfquery>
 			</cftransaction>
@@ -158,7 +158,7 @@
 	<cfcase value="nuodb">
 		<cftransaction>
 			<cfif not dbUtility.setTable('tchangesets').tableExists()>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE TABLE tchangesets (
 					  changesetID char(35),
 					  siteID varchar(25),
@@ -177,13 +177,13 @@
 					) 
 				</cfquery>
 
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tchangesets_siteID on tchangesets (siteID)
 				</cfquery>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tchangesets_publishDate on tchangesets (publishDate)
 				</cfquery>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tchangesets_remoteID on tchangesets (remoteID)
 				</cfquery>
 				 
@@ -191,11 +191,11 @@
 			</cfif>
 
 			<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
 				</cfquery>
 						
-				<cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tcontent_changesetID ON tcontent (changesetID)
 				</cfquery>
 			</cfif>
@@ -204,7 +204,7 @@
 	<cfcase value="oracle">
 		<cfset variables.RUNDBUPDATE=false/>
 		<cftry>
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				select * from (select changesetID as CheckIfTableExists from tchangesets) where ROWNUM <=1
 			</cfquery>
 			<cfcatch>
@@ -214,7 +214,7 @@
 		
 		<cfif variables.RUNDBUPDATE>
 			<cftransaction>
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE TABLE "TCHANGESETS" (
 			  "CHANGESETID" CHAR(35) ,
 			  "SITEID" varchar2(25) ,
@@ -237,23 +237,23 @@
 				PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE "TCHANGESETS" ADD CONSTRAINT "TCHANGESETS_PRIMARY" PRIMARY KEY ("CHANGESETID") ENABLE
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX "IDX_TCHANGESETS_SITEID" ON "TCHANGESETS" ("SITEID") 
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX "IDX_TCHANGESETS_REMOTEID" ON "TCHANGESETS" ("REMOTEID") 
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tcontent ADD changesetID char(35) default NULL
 			</cfquery>
 			
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX "IDX_TCONTENT_CHANGESETID" ON tcontent (changesetID) 
 			</cfquery>
 			
@@ -262,17 +262,17 @@
 	</cfcase>
 </cfswitch>
 
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select moduleID from tcontent where moduleID='00000000000000000000000000000000014'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
-	<cfquery name="rsCheck">
+	<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	select siteID from tsettings
 	</cfquery>
 	
 	<cfloop query="rsCheck">
-		<cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		INSERT INTO tcontent 
 		(
 			SiteID
@@ -394,55 +394,55 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 </cfif>
 
 
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from tsettings where 0=1
 </cfquery>
 
 <cfif not listFindNoCase(rsCheck.columnlist,"hasChangesets")>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tsettings ADD hasChangesets tinyint 
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cftry>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN hasChangesets tinyint(3) 
 	</cfquery>
 	<cfcatch>
 			<!--- H2 --->
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tsettings ADD hasChangesets tinyint(3)
 			</cfquery>
 		</cfcatch>
 	</cftry>
 </cfcase>
 <cfcase value="postgresql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD hasChangesets smallint
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN hasChangesets smallint 
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-<cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tsettings ADD hasChangesets NUMBER(3,0)
 </cfquery>
 </cfcase>
 </cfswitch>
 
-<cfquery>update tsettings set hasChangesets=1</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set hasChangesets=0</cfquery>
 
 </cfif>
 
 <cfset variables.DOUPDATE=false>
 
 <cftry>
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select urltitle from tcontentcategories  where 0=1
 </cfquery>
 <cfcatch>
@@ -453,34 +453,34 @@ select urltitle from tcontentcategories  where 0=1
 <cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD urltitle [nvarchar](255) default NULL
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD filename [nvarchar](255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql,nuodb">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD urltitle varchar(255) default NULL
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD filename varchar(255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="postgresql">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD urltitle varchar(255) default NULL
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD filename varchar(255) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCATEGORIES" ADD ("URLTITLE" varchar2(255))
 	</cfquery>
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCATEGORIES" ADD ("FILENAME" varchar2(255))
 	</cfquery>
 </cfcase>
@@ -488,7 +488,7 @@ select urltitle from tcontentcategories  where 0=1
 </cfif>
 
 <cfif getDbType() eq "MSSQL">
-	<cfquery name="rscheck">
+	<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		select * from information_schema.columns
 		where table_name = 'tchangesets'
 		and column_name = 'publishDate'
@@ -499,13 +499,13 @@ select urltitle from tcontentcategories  where 0=1
 		<cftry>
 			<cftransaction>
 			<!--- remove not null constrain  --->
-			<cfquery>
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE [dbo].[tchangesets]
 			ALTER COLUMN [publishDate] [datetime] NULL 
 			</cfquery>
 			
 			<!--- Unbind previous default value --->
-			<cfquery name="rscheck">
+			<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			SELECT name 
 			FROM sysobjects so JOIN sysconstraints sc
 			ON so.id = sc.constid 
@@ -518,7 +518,7 @@ select urltitle from tcontentcategories  where 0=1
 			</cfquery>
 			
 			<cfif rscheck.recordcount>
-				<cfquery name="rscheck">
+				<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				ALTER TABLE [dbo].[tchangesets] DROP CONSTRAINT #rscheck.name#
 				</cfquery>
 			</cfif>

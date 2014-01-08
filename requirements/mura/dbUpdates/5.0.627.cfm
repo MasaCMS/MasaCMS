@@ -2,7 +2,7 @@
 <cfset variables.DOUPDATE=false/>
 <cftransaction>
 <cftry>
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	SELECT DATA_TYPE
 			FROM information_schema.COLUMNS
 			WHERE TABLE_SCHEMA = Database() AND TABLE_NAME = 'tsessiontracking'
@@ -15,7 +15,7 @@
 </cfif>
 
 <cfcatch>
-<cfquery name="rsCheck">
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 explain tsessiontracking
 </cfquery>
 <cfquery name="rsCheck" dbType="query">
@@ -31,27 +31,27 @@ select type from rsCheck where Field='referer'
 <cfif variables.DOUPDATE>
 
 
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking ADD COLUMN referer2 varchar(255) character set utf8 default NULL
 	</cfquery>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	UPDATE tsessiontracking SET referer2=left(referer,255)
 	</cfquery>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking DROP Column referer
 	</cfquery>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking ADD COLUMN referer varchar(255) character set utf8 default NULL
 	</cfquery>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	UPDATE tsessiontracking SET referer=referer2
 	</cfquery>
 	
-	<cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsessiontracking DROP Column referer2
 	</cfquery>
 	
