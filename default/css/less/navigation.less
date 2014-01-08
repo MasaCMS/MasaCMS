@@ -1,0 +1,56 @@
+// Nav Session
+#navSession {
+	list-style: none;
+	margin: 0;
+
+	li {
+		display: inline;
+		margin: 0;
+		padding: 0 .25em;
+
+		&#navEditProfile {
+			padding-left: 0;
+		}
+
+		&#navLogout { padding-right: 0; }
+	}
+
+	a { text-decoration: none; }
+
+}
+
+// Category Summary
+
+a.rss {
+	background: url(../images/icon_rss.gif) no-repeat 0 50%;
+	padding: 4px 0 4px 14px;
+}
+
+// Tag Cloud (#svTagCloud left in for backward-compatibility)
+#svTagCloud,
+.mura-tag-cloud {
+	padding: 1em 0;
+}
+
+#svTagCloud ol,
+.mura-tag-cloud ol {
+	margin: 0 0 2em;
+	-webkit-margin-before:0;
+	-webkit-margin-after: 0;
+	-webkit-padding-start:0;
+
+	li { display: inline; }
+
+	span {
+		left: -9999px;
+		position: absolute;
+		width: 990px;
+	}
+
+	.not-popular { font-size: .9em; }
+	.not-very-popular { font-size: 1.2em; }
+	.somewhat-popular { font-size: 1.6em; }
+	.popular { font-size: 1.9em; }
+	.very-popular { font-size: 2.1em; }
+	.ultra-popular { font-size: 2.6em; }
+}

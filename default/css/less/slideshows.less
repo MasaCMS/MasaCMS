@@ -1,0 +1,58 @@
+// Slideshow
+.mura-slideshow {
+	clear: both;
+	position: relative;
+	margin: 0 0 2.2em;
+
+	.mura-slides {
+		overflow: visible;
+		z-index: 1;
+
+		h3 { z-index: 10; }
+
+
+		&>ul {
+				list-style: none;
+				margin: 0 0 2em;
+		}
+
+		dl { border: 0; }
+
+		dl, ul > li {
+			margin: 0;
+			overflow: hidden;
+			position: relative;
+			z-index: 1;
+		}
+
+		ul { overflow: visible;	}
+	}
+}
+//end Slideshow
+
+
+// Slideshow Pager
+ol.mura-pager {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 2;
+
+	li {
+		display: inline;
+		margin: 0 .25em;
+
+		&.activeLI a {}
+
+		a {
+			display: -moz-inline-block;
+			display: inline-block;
+			line-height: 1.2;
+			padding: 2px 5px;
+			text-align: center;
+
+			&:hover	{}
+		}
+	}
+}
+//end Pager

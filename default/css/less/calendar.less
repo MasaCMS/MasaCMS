@@ -1,0 +1,181 @@
+// Calendar
+// Commented out for Bootstrap ease
+.mura-calendar {
+	text-align: center;
+
+	table { width: 100%; }
+
+	th {
+		border: 1px solid;
+		font-size: 1em;
+		font-style: normal;
+		font-weight: bold;
+		line-height: 2.2;
+		padding: 0;
+		text-align: center;
+
+		 a {
+			display: block;
+			padding: .25em;
+			text-align: center;
+			a:hover {}
+		}
+	}
+
+	td {
+		border: 1px solid;
+		font-size: 9px;
+		height: 60px;
+		line-height: 1;
+		padding: .5em;
+		text-align: left;
+		vertical-align: top;
+		width: 14%;
+
+		.date {}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+
+			li a {
+				border: 0;
+				display: block;
+				margin: 2px 0;
+				padding: 0 0 2px;
+				text-align: left;
+				text-decoration: none;
+
+				&:hover,
+				&#today { text-decoration: underline; }
+			}
+		}
+	}
+	//end td
+
+	.dayofweek td {
+		font-style: normal;
+		font-weight: bold;
+		height: auto;
+		line-height: 1.6;
+		padding: .5em;
+		text-align: center;
+
+		a {}
+	}
+
+}
+//end Calendar
+
+
+// Calendar Nav
+.mura-calendar-nav {
+
+	th {
+		font-size: .9em;
+		line-height: 1.2;
+	}
+
+	.dayofweek td { line-height: 1.1; }
+
+	td {
+		height: auto;
+		text-align: center !important;
+	}
+
+}
+//end Calendar Nav
+
+
+// Calendar Date Picker
+#datePickerContainer {
+	margin: 6px auto;
+	padding: 0;
+	text-align: center;
+	width: 178px;
+}
+
+#datePicker {
+	background: #fff;
+	text-align: center;
+	width: 190px;
+
+	form {}
+
+	select.dropdown {
+		font-size: 11px;
+		margin: 0;
+		vertical-align: middle;
+	}
+
+	input.submit { vertical-align: middle; }
+
+	#calendarDates {
+		background: #fff;
+		margin: 6px auto;
+		padding: 0;
+
+		th {
+			background: #333;
+			color: #fff;
+			font-size: 1em;
+			font-style: normal;
+			font-weight: normal;
+			text-align: center;
+
+			a { color: #fff; }
+
+		}
+
+		.dayofweek td {
+			background: #EAE7E7;
+			color: #333;
+			font-size: 1em;
+			font-style: normal;
+			font-weight: bold;
+			padding: .5em;
+			text-align: center;
+		}
+
+		td {
+			background: #f6f6f6;
+			border: 1px solid #EAE7E7;
+			color: #333;
+			font-size: 1em;
+			font-style: normal;
+			font-weight: normal;
+			text-align: center;
+		}
+
+		a {
+			color: #333;
+			display: block;
+			padding: .5em;
+			text-decoration: none;
+
+			&:hover {
+				background: #f6f6f6;
+				color: #fff;
+				display: block;
+				padding: .5em;
+				text-decoration: none;
+			}
+		}
+
+	}
+	//end Calendar Dates
+
+}
+//end DatePicker
+
+
+//Calendar Date Selector
+#calendar a#today {
+	background: #f6f6f6;
+	color: #fff;
+	display: block;
+	padding: .5em;
+	text-decoration: none;
+}
+//end Calendar Date Selector

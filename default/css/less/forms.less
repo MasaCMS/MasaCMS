@@ -1,0 +1,83 @@
+// Form Styles
+form {
+
+	&#login {
+		fieldset { margin-bottom: 0; }
+		h3 {
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+
+	}
+
+	&#sendLogin {
+		margin-bottom: 2em;
+	}
+
+	li {
+
+		&.mura-captcha {
+			width: auto;
+			margin-left: 27%;
+			padding-left: 7px;
+
+			img {
+				width: auto !important;
+				padding: 0 !important;
+				border: 0 !important;
+			}
+		}
+	}
+
+	.mura-form-radio,
+	.mura-form-checkbox {
+		p {
+			float: left;
+			width: 25%;
+			margin-right: 2%;
+			padding-right: 7px;
+			font-weight: bold;
+			line-height: 1.4;
+			text-align: right;
+		}
+
+		label {
+			float: none;
+			display: block;
+			width: 100%;
+			margin: 0 0 .8em;
+			padding: .2em 0 0;
+			font-weight: normal;
+			text-align: left;
+
+			&.checkbox {
+				color: red;
+				text-align: left;
+				width: auto;
+				padding-top: .5em;
+				margin-left: 28%;
+				line-height: 1;
+
+				input.checkbox {
+					float: left;
+				}
+			}
+		}
+	}
+}
+
+// Poll Results
+.pollResults {
+	li {
+		list-style: none;
+		margin: 0 0 2px;
+		padding: 0;
+	}
+}
+.pollPercent {
+	font-style: italic;
+}
+.pollQty {
+	display: none;
+}
+

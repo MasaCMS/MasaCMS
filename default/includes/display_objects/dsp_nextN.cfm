@@ -95,7 +95,6 @@
 <cfoutput>
 	
 	<div class="mura-next-n #this.nextNWrapperClass#">
-		<div class="#this.nextNInnerClass#">
 			<ul <cfif this.ulPaginationClass neq "">class="#this.ulPaginationClass#"</cfif>>
 			<cfif variables.nextN.currentpagenumber gt 1>
 				<cfif request.muraExportHtml>
@@ -137,6 +136,5 @@
 				</cfif>
 			</cfif>
 			</ul>
-		</div>
 	</div>
 </cfoutput>
