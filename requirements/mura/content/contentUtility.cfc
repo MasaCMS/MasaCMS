@@ -591,7 +591,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfif arguments.contentBean.getparentid() neq '00000000000000000000000000000000001'>
 		<cfset parentFilename=left(parentBean.getfilename(),250)>
 		<cfif right(parentFilename,1) eq "/">
-			<cfset parentFilename=left(parentBean.getfilename(),250)>
+			<cfset parentFilename=left(parentBean.getfilename(),249)>
 		</cfif>
 		
 		<cfset arguments.contentBean.setFilename(parentFilename & "/" & arguments.contentBean.getfilename()) />
