@@ -24,7 +24,7 @@
 }
 
 // Favorites List
-ul#favoriteList {
+#favoriteList {
 	margin: 0 0 1em;
 	list-style: none;
 
@@ -46,9 +46,11 @@ ul#favoriteList {
 			margin: 0;
 			padding: 0;
 
-			&.remove { color: #666;	}
+			&.remove:before { 
+				content: " - ";
+				}
 		}
 
-	} //end li
+	}
 
 }
