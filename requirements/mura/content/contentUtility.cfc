@@ -242,61 +242,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsParent = "" />
 
 <cfif arguments.contentBean.gettype() eq 'File'>
-<cftry>
+	<cftry>
 		<cflock name="#arguments.contentBean.getfilename()##application.instanceID#" type="exclusive" timeout="500">
 		<cfset variables.fileManager.deleteAll(arguments.contentBean.getcontentID(),arguments.contentBean.getFileID()) />
 		</cflock>
 	<cfcatch></cfcatch>
 	</cftry>
-<cfelseif arguments.contentBean.gettype() eq 'Page' or arguments.contentBean.gettype() eq 'Calendar' or arguments.contentBean.gettype() eq 'Folder' or arguments.contentBean.gettype() eq 'Gallery'>
+</cfif>
 
-		<cftry>
+<cfif ListFind('Page,Calendar,Folder,Gallery,File,Link',arguments.contentBean.gettype())>
+	<cftry>
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelated')#">
+		select contentid, filename from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"> 
+		and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getfilename()#/%"/>
+		and active=1 and type in ('Page','Calendar','Folder','Gallery','File','Link')
+		</cfquery>
+		
+		
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsParent')#">
+		select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteID()#"/>
+		and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getparentID()#"/>
+		and active=1 and type in ('Page','Calendar','Folder','Gallery','File','Link')
+		</cfquery>
 
-			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsRelated')#">
-			select contentid, filename from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"> 
-			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getfilename()#/%"/>
-			and active=1 and type in ('Page','Calendar','Folder','Gallery')
-			</cfquery>
 			
-			
-			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsParent')#">
-			select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteID()#"/>
-			and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getparentID()#"/>
-			and active=1 and type in ('Page','Calendar','Folder','Gallery')
-			</cfquery>
-
+		<cfloop query="rsRelated">
+			<cfdump var="#rsrelated.filename#" label="rsrelated">
+			 <cfif listlen(rsrelated.filename,"/") eq  (listlen(arguments.contentBean.getfilename(),"/")+1)>
+				<cfset trimLen=len(rsrelated.filename)-len("#arguments.contentBean.getfilename()#/")>
+				<cfif arguments.contentBean.getparentid() eq '00000000000000000000000000000000001'>
+					<cfset newfile='#right(rsrelated.filename,trimLen)#'>
+				<cfelse>
+					<cfset newfile='#rsparent.filename#/#right(rsrelated.filename,trimLen)#'>
+				</cfif>
 				
-				<cfloop query="rsRelated">
-					<cfdump var="#rsrelated.filename#" label="rsrelated">
-					 <cfif listlen(rsrelated.filename,"/") eq  (listlen(arguments.contentBean.getfilename(),"/")+1)>
-						<cfset trimLen=len(rsrelated.filename)-len("#arguments.contentBean.getfilename()#/")>
-						<cfif arguments.contentBean.getparentid() eq '00000000000000000000000000000000001'>
-							<cfset newfile='#right(rsrelated.filename,trimLen)#'>
-						<cfelse>
-							<cfset newfile='#rsparent.filename#/#right(rsrelated.filename,trimLen)#'>
-						</cfif>
-						
-						<cfset tempfile=newfile>
+				<cfset tempfile=newfile>
 
-								<cfset pass=0>
-			       	
-								<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile,arguments.contentBean.getContentID())#">
-									<cfset pass=pass+1>
-									<cfset tempfile="#newfile##pass#">
-								</cfloop>
-								
-								<cfif pass>
-								<cfset newfile=tempfile>
-								</cfif>
-			       
-					
-					
-					<cfset move(arguments.contentBean.getsiteid(),newfile,rsrelated.filename)>
-					
-					</cfif>
+				<cfset pass=0>
+   	
+				<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile,arguments.contentBean.getContentID())#">
+					<cfset pass=pass+1>
+					<cfset tempfile="#newfile##pass#">
 				</cfloop>
-					
-		<cfcatch></cfcatch>
+				
+				<cfif pass>
+				<cfset newfile=tempfile>
+				</cfif>
+	       		
+	       		<cfset move(arguments.contentBean.getsiteid(),newfile,rsrelated.filename)>
+			
+			</cfif>
+		</cfloop>			
+	<cfcatch></cfcatch>
 	</cftry>
 	
 	<cfif listlen(arguments.contentBean.getfilename(),"/") gt 1>
@@ -307,7 +304,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	<cfset newtrunk="">
 	</cfif>
-	
 					
 	<cfset movelink(arguments.contentBean.getsiteid(),newtrunk,arguments.contentBean.getfilename())>
 
