@@ -109,7 +109,7 @@
 			</cfif>
 		<cfelse>
 			<cfif session.mura.isLoggedIn>	
-				<div id="svSessionTools" class="mura-session-tools #this.userToolsWrapperClass#">
+				<div id="svSessionTools" class="mura-user-tools #this.userToolsWrapperClass#">
 					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
 				 	<ul id="navSession">
 						<li id="navEditProfile"><a class="#this.userToolsEditProfileLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
@@ -117,7 +117,7 @@
 					</ul>
 				</div>
 			</cfif>
-			<!--- #dspObject('favorites')# --->
+			#dspObject('favorites')#
 		</cfif>
 	</cfif>
 </cfoutput>

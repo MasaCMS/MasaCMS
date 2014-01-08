@@ -30,7 +30,7 @@
 
 	li {
 		border: none;
-		line-height: 1.1;
+		line-height: 1;
 		margin: 0 0 .65em !important;
 		padding: 0;
 
@@ -45,10 +45,35 @@
 		a {
 			margin: 0;
 			padding: 0;
+			display: inline-block;
+			line-height: 1;
 
 			&.remove:before { 
-				content: " - ";
+				padding: 0 3px;
+				background-color: black;
+				border-radius: 12px;
+				margin-right: 0;
+				display: inline-block;
+				line-height: 10px;
+				height: 12px;
+				color: #fff;
 				}
+			
+			&.remove:before {
+				content: "-";
+			}
+		}
+		
+		&.add-favorite > a:before {
+			content: "+";
+			padding: 0 3px;
+			background-color: black;
+			border-radius: 12px;
+			margin-right: 0;
+			display: inline-block;
+			line-height: 10px;
+			height: 12px;
+			color: #fff;
 		}
 
 	}
