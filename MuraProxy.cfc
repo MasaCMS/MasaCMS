@@ -135,10 +135,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var authToken=hash(createUUID())>
 	<cfset var rsSession="">
 	<cfset var sessionData="">
-	
-	<cfset application.loginManager.remoteLogin(arguments)>
-	
-	<cfif session.mura.isLoggedIn>
+	<cfset var loginSuccess = application.loginManager.remoteLogin(arguments)>
+
+	<cfif loginSuccess>
 		<cfwddx action="cfml2wddx" output="sessionData" input="#session.mura#">
 
 		<cfquery name="rsSession" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
