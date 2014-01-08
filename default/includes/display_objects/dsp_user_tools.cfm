@@ -105,9 +105,7 @@
 			</div>
 			<!--- Not Registered? --->
 			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()>
-				<div class="center">
 					<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a class="#this.userToolsNotRegisteredLinkClass#" href="#variables.$.siteConfig().getEditProfileURL()#&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#>
-				</div>
 			</cfif>
 		<cfelse>
 			<cfif session.mura.isLoggedIn>	
@@ -119,7 +117,7 @@
 					</ul>
 				</div>
 			</cfif>
-			#dspObject('favorites')#
+			<!--- #dspObject('favorites')# --->
 		</cfif>
 	</cfif>
 </cfoutput>
