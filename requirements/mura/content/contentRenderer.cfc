@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.navSelfIdx=1/>
 <cfset this.jslib="jquery"/>
 <cfset this.jsLibLoaded=false/>
+<cfset this.suppressWhitespace=true/>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
 <cfset this.showMetaList="jpg,jpeg,png,gif">
@@ -219,6 +220,7 @@ Display Objects
 
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
+<cfset this.contentListImagePadding=20>
 <cfset this.contentListPropertyMap={
 		containerEl={tag="div"},
 		itemEl={tag="dl",class="clearfix"},
@@ -3207,7 +3209,7 @@ Display Objects
 	<cfargument name="size" default="small">
 	<cfargument name="height" default="auto">
 	<cfargument name="width" default="auto">
-	<cfargument name="padding" default="20">
+	<cfargument name="padding" default="#this.contentListImagePadding#">
 	<cfargument name="setHeight" default="true">
 	<cfargument name="setWidth" default="true">
 	

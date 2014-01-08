@@ -71,6 +71,7 @@
 		// GENERAL 
 		this.jsLib = "jquery";
 		this.jsLibLoaded = true;
+		this.suppressWhitespace = true;
 		this.generalWrapperClass = "well";
 		
 		// headings
@@ -208,6 +209,7 @@
 		
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
+		this.contentListImagePadding=20;  //must be pixels
 		this.contentListPropertyMap={
 			containerEl={tag="div"},
 			itemEl={tag="dl"},
