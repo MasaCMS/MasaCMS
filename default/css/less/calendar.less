@@ -1,9 +1,13 @@
 // Calendar
-// Commented out for Bootstrap ease
 .mura-calendar {
 	text-align: center;
+	margin-bottom: 1em;
 
-	table { width: 100%; }
+	table { 
+		width: 100%;
+		border-spacing: 0;
+		border-collapse: collapse;
+		}
 
 	th {
 		border: 1px solid;
@@ -24,8 +28,8 @@
 
 	td {
 		border: 1px solid;
-		font-size: 9px;
-		height: 60px;
+		font-size: .9em;
+		height: 6em;
 		line-height: 1;
 		padding: .5em;
 		text-align: left;
@@ -73,15 +77,13 @@
 .mura-calendar-nav {
 
 	th {
-		font-size: .9em;
-		line-height: 1.2;
+		font-size: .8em;
 	}
 
-	.dayofweek td { line-height: 1.1; }
-
 	td {
+		font-size: .8em;
 		height: auto;
-		text-align: center !important;
+		text-align: center;
 	}
 
 }

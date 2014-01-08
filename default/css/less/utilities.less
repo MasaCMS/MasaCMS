@@ -8,16 +8,15 @@
 		text-align: center;
 	}
 }
-	// used in User Tools pop-up
-	.sendToFriend {
-		input.text { width: 300px; } // TODO: remove widths
-		textarea {
-			width: 300px;// TODO: remove widths
-			height: 100px;
-		}
+
+// used in User Tools pop-up
+.sendToFriend {
+	input[type=text] { width: 300px; }
+	textarea {
+		width: 300px;
+		height: 100px;
 	}
-	//end User Tools pop-up
-//end Send to a Friend
+}
 
 // Keywords & Highlights
 .keywords,
@@ -29,7 +28,6 @@
 // Help Text
 .help-block,
 .help-inline {
-	color: #ccc;
 }
 
 .help-block {
@@ -45,48 +43,14 @@
 
 // Data Responses
 .responseMessage { color: red; }
-#dsp_list.dataResponses {}
-#dsp_detail.dataResponses {}
 
 // CK Editor Styles
 li .cke_skin_mura {
+	
 	margin-left: 28%;
 
 	table {
 		margin-top: 0;
-	}
-}
-
-// Error, Notice, and Success - Need this?
-.error,
-.notice,
-.success {
-	padding: .8em;
-	margin-bottom: 1em;
-	border: 2px solid #ddd;
-}
-.error {
-	background: #FBE3E4;
-	border-color: #FBC2C4;
-	color: #8a1f11;
-	a {
-		color: #8a1f11;
-	}
-}
-.notice {
-	background: #FFF6BF;
-	border-color: #FFD324;
-	color: #514721;
-	a {
-		color: #514721;
-	}
-}
-.success {
-	background: #E6EFC2;
-	border-color: #C6D880;
-	color: #264409;
-	a {
-		color: #264409;
 	}
 }
 
