@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.navSelfIdx=1/>
 <cfset this.jslib="jquery"/>
 <cfset this.jsLibLoaded=false/>
+<cfset this.suppressWhitespace=true/>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
 <cfset this.showMetaList="jpg,jpeg,png,gif">
@@ -219,6 +220,7 @@ Display Objects
 
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
+<cfset this.contentListImagePadding=20>
 <cfset this.contentListPropertyMap={
 		containerEl={tag="div"},
 		itemEl={tag="dl",class="clearfix"},
@@ -1753,7 +1755,6 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
-			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
@@ -1788,7 +1789,6 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="related_content,related_section_content">
-			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
@@ -2148,13 +2148,11 @@ Display Objects
 					</cfswitch>
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 					<cfcase value="Folder">
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
@@ -3207,7 +3205,7 @@ Display Objects
 	<cfargument name="size" default="small">
 	<cfargument name="height" default="auto">
 	<cfargument name="width" default="auto">
-	<cfargument name="padding" default="20">
+	<cfargument name="padding" default="#this.contentListImagePadding#">
 	<cfargument name="setHeight" default="true">
 	<cfargument name="setWidth" default="true">
 	

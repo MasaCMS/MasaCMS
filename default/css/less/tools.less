@@ -16,23 +16,36 @@
 		li {
 			margin: 0;
 			padding: 0;
+			
+			&.add-favorite > a {
+			padding-left: 20px;
+			background: url("../images/icon_user_tools.png") left -50px no-repeat;
+				}
+			
+			&.print-page > a {			
+			padding-left: 20px;
+			background: url("../images/icon_user_tools.png") left -100px no-repeat;
+				}
 
-			a { line-height: 20px; }
-
+			&.favorite-exists > a {
+				padding-left: 20px;
+				background: url("../images/icon_user_tools.png") left top no-repeat;
+				}
 		}
 	}
 }
 
 // Favorites List
-#favoriteList {
+.mura-favorites-list {
 	margin: 0 0 1em;
-	list-style: none;
+	list-style: none !important;
 
 	li {
 		border: none;
 		line-height: 1;
 		margin: 0 0 .65em !important;
 		padding: 0;
+		list-style: none !important;
 
 		&.defaultMsg {
 			margin: 0;
@@ -42,39 +55,10 @@
 			color: #666;
 		}
 
-		a {
-			margin: 0;
-			padding: 0;
-			display: inline-block;
-			line-height: 1;
-
-			&.remove:before { 
-				padding: 0 3px;
-				background-color: black;
-				border-radius: 12px;
-				margin-right: 0;
-				display: inline-block;
-				line-height: 10px;
-				height: 12px;
-				color: #fff;
-				}
-			
-			&.remove:before {
-				content: "-";
+		> .remove { 				
+			padding-left: 20px;
+			background: url("../images/icon_user_tools.png") left top no-repeat;
 			}
-		}
-		
-		&.add-favorite > a:before {
-			content: "+";
-			padding: 0 3px;
-			background-color: black;
-			border-radius: 12px;
-			margin-right: 0;
-			display: inline-block;
-			line-height: 10px;
-			height: 12px;
-			color: #fff;
-		}
 
 	}
 
