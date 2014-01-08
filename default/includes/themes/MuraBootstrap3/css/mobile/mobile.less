@@ -145,9 +145,14 @@ form {
 }
 
 p.required {
-	padding-left: 7px;
-	background: url(../../../../../images/icon_star.png) no-repeat;
-}
+	display: inline-block;
+	    margin-bottom: 1em;
+	
+		&:before { 
+			content: "* ";
+	    	color: red;
+		}
+	}
 
 p#loginMsg.required {
 	margin-bottom: 2em;
@@ -167,19 +172,18 @@ label.ui-input-text {
 	padding-left: 8px;
 }
 
-.req {
-	label { background: url(../../../../../images/icon_star.png) no-repeat 0 0; }
-	ins {
-		position: absolute;
-		left: -9999px;
-	}
-	input {} /* could do { border: 1px solid darkred; color: darkred; } */
-}
+.req label { 
 
-li .req ins {
-	padding-left: 8px;
-	background: url(../../../../../images/icon_star.png) no-repeat 100% 0;
-}
+		&:after { 
+			content: " *";
+	    	color: red;
+	    }
+	    
+	    > ins {
+			position: absolute;
+			left: -9999px;
+		}
+	}
 
 
 /* @end Globals - Forms - Required Fields
