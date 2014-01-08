@@ -1,5 +1,1 @@
-The files found here are shared by themes and provide necessary styles for Mura default output and objects. Specifically, these are:
-
-- reset.css
-- default.css
-- shadowbox.css
+The files found in this directory are to provide minimal style for Mura CMS display Objects. It is expected that additional style will be applied via a theme.

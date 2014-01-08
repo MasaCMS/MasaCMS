@@ -2251,8 +2251,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
 				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+				<cfset filemetadata=fileBean.getFileMetaData()>
 				<cfset local.returnStr={
-					    name=JSStringFormat(fileBean.getTitle()),
+					    filename=JSStringFormat(fileBean.getAssocFilename()),
+					    title=JSStringFormat(fileBean.getTitle()),
+					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
+					    altext=JSStringFormat(filemetadata.getAltText()),
+					    credits=JSStringFormat(filemetadata.getCredits()),
 					    size=fileBean.getFileSize(),
 					    url=JSStringFormat(fileBean.getImageURL(size='source')),
 					    edit_url=JSStringFormat(fileBean.getEditURL()),
@@ -2313,8 +2318,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
 				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+				<cfset filemetadata=fileBean.getFileMetaData()>
+
 				<cfset local.returnStr={
-					    name=JSStringFormat(fileBean.getTitle()),
+					    filename=JSStringFormat(fileBean.getAssocFilename()),
+					    title=JSStringFormat(fileBean.getTitle()),
+					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
+					    altext=JSStringFormat(filemetadata.getAltText()),
+					    credits=JSStringFormat(filemetadata.getCredits()),
 					    size=fileBean.getFileSize(),
 					    url=JSStringFormat(fileBean.getImageURL(size='source')),
 					    edit_url=JSStringFormat(fileBean.getEditURL()),

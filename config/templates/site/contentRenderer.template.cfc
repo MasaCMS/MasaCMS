@@ -79,6 +79,7 @@
 		//this.navSelfIdx=1;
 		//this.jslib="jquery";
 		//this.jsLibLoaded=false;
+		//this.suppressWhitespace = true;
 		//this.longDateFormat="long";
 		//this.shortDateFormat="short";
 		//this.showMetaList="jpg,jpeg,png,gif";
@@ -199,6 +200,7 @@
 		
 		// dsp_content_list.cfm
 		//this.contentListImageStyles=true;
+		//this.contentListImagePadding=20; //must be pixels
 		/* this.contentListPropertyMap={
 				containerEl={tag="div"},
 				itemEl={tag="dl"},

@@ -1,0 +1,92 @@
+.mura-comments {
+	clear: both;
+	
+	.mura-comment-admin-button-wrapper {
+		float: right;
+	}
+
+	dl {
+		line-height: 1.2;
+		overflow: hidden; /* clear floats */
+		padding-bottom: 1em;
+
+		&.last {
+			border-bottom: 0;
+			margin-bottom: 2em;
+		}
+
+		&.indent-1 { padding-left: 30px; }
+		&.indent-2 { padding-left: 60px; }
+		&.indent-3 { padding-left: 90px; }
+		&.indent-4 { padding-left: 120px; }
+
+		.indent-5,
+		.indent-6,
+		.indent-7,
+		.indent-8,
+		.indent-9 {	border-left: 120px solid #fff; }
+
+		dt { margin-bottom: .5em; }
+
+		dd {
+			margin: 0 1em 0 0;
+
+			&.mura-comment p {
+				margin-top: .5em;
+
+				&:first-child { margin-top: 0; }
+			}
+
+			&.mura-comment-date-time {
+				color: #666;
+				font-size: 1em;
+				margin-bottom: .5em;
+			}
+
+			&.mura-comment-thumb {
+				float: left;
+				margin-right: 1em;
+			}
+			
+			&.mura-comment-reply {
+				font-size: 1em;
+				float: left;
+				margin-right: 1em;
+			}
+			
+			&.mura-comment-spam {
+				float: left;
+				clear: right;
+			}
+			
+			&.mura-comment-post-reply {
+				clear: both;
+			}
+		}
+		//end dd
+
+		a.mura-comment-edit-comment {	cursor: pointer; }
+	}
+	//end dl
+	
+	.mura-comment-more-comments-container { margin-bottom: 20px; }
+	
+	> .mura-comment-sort-container {
+		margin-bottom: 1em;
+		}
+		
+	dl:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+	
+	dt > em {
+		font-weight: normal;
+		font-style: italic;
+	}
+	
+	#mura-comment-post-comment legend {
+		border: 0;
+	}
+
+}

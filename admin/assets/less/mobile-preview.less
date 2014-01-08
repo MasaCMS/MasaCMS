@@ -57,21 +57,26 @@
 	}
 	
 #frontEndToolsModalBody #mura-preview-device-selector {
-	background: @black;
+	background: transparent;
 	display: inline-block;
-	padding: 4px 4px 0;
-	.border-top-radius(6px);
+	padding: 4px 4px;
+	.border-radius(0);
 	position: absolute;
-	top: -14px;
+	top: -40px;
 	left: 50%;
-	width: 150px;
-	margin-left: -75px;
-	.box-shadow(0px 0px 6px rgba(0,0,0,.85));
+	width: 160px;
+	margin-left: -80px;
+	//.box-shadow(0px 0px 6px rgba(0,0,0,.85));
+	
+	a {
+		padding: 0 5px;
+	}
 	
 	#preview-close {
 		margin-left: .35em;
 		padding-left: .35em;
-		border-left: 1px solid lighten(@grayDarker,15%); 
+		border-left: 1px solid lighten(@grayDarker,15%);
+		font-size: 18px;
 		}
 	
 	}

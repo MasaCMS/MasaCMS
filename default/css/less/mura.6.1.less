@@ -1,4 +1,4 @@
-<!---
+/*
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -53,12 +53,24 @@
 	under the GNU General Public License version 2 without this exception.  You 
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
---->
-<!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
-<cfif not listFind("Folder,Gallery",variables.$.content('type'))>
-	<cfoutput>
-			<nav id="navSequential" class="mura-nav-sequential #this.navSequentialWrapperClass#">
-				#variables.$.dspSequentialNav()#
-			</nav>
-	</cfoutput>
-</cfif>
+*/
+
+@import url("forms.less");
+@import url("navigation.less");
+@import url("comments.less");
+@import url("ads.less");
+@import url("navigation.less");
+@import url("assets.less");
+@import url("calendar.less");
+@import url("galleries.less");
+@import url("indexes.less");
+@import url("slideshows.less");
+@import url("features.less");
+@import url("rss-feeds.less");
+@import url("tools.less");
+@import url("stacktrace.less");
+@import url("utilities.less");
+@import url("sitemap.less");
+@import url("search-results.less");
+
+/* NOTE: References to #svXXXXXXX are deprecated in favor of classes; other ID's may be as well depending on DOM scripting methods */

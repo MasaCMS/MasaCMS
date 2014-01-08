@@ -546,7 +546,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfset var total=0>
 	<cfsavecontent variable="trace">
 		<cfoutput>
-			<div id="mura-stacktrace">
+			<div id="mura-stacktrace" class="mura-stacktrace">
 			<h3>Stack Trace</h3>
 			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">

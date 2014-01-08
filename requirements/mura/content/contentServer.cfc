@@ -571,7 +571,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif isdefined('response')>
-		<cfsavecontent variable="response"><cfprocessingdirective suppressWhitespace="true"><cfoutput>#response#</cfoutput></cfprocessingdirective></cfsavecontent>
+		<cfif arguments.event.getContentRenderer().suppressWhitespace>
+			<cfsavecontent variable="response"><cfprocessingdirective suppressWhitespace="true"><cfoutput>#response#</cfoutput></cfprocessingdirective></cfsavecontent>
+		</cfif>
 		<cfreturn response>
 	<cfelse>
 		<cfreturn "">

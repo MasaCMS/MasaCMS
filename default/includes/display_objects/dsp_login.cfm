@@ -80,7 +80,7 @@
 			</cfif>
 
 			<cfif not variables.$.event('isBlocked')>
-				<form role="form" id="login" class="#this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 						<!--- Username --->
@@ -133,7 +133,7 @@
 				</cfif>
 
 				<!--- Forgot Username / Password Form --->
-				<form name="form2" class="#this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
+				<form name="form2" class="mura-send-login #this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
 						<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
@@ -166,7 +166,7 @@
 
 				<!--- Not Registered? --->
 				<cfif variables.$.siteConfig('ExtranetPublicReg')>
-					<div id="notRegistered">
+					<div id="notRegistered" class="mura-not-registered">
 						<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="#this.notRegisteredLinkClass#" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
 					</div>
 				</cfif>

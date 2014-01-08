@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex mura-rel-content mura-index">
 	<#variables.$.getHeaderTag('subHead1')#>
-		<cfif len(objectparams.relatedContentSetName)>
+		<cfif len(objectparams.relatedContentSetName) and objectparams.relatedContentSetName neq "default">
 			#objectparams.relatedContentSetName#
 		<cfelse>
 			#variables.$.rbKey('list.relatedcontent')#

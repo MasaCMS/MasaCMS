@@ -1,0 +1,154 @@
+.mura-index  {
+	margin: 2em 0;
+
+	dl {
+		margin: 1.3em 0 1em;
+		position: relative;
+	}
+
+	dl.last,
+	li.last {
+		border: 0;
+		padding: 0;
+	}
+
+	dt, li h3 {
+		font-size: 1.4em;
+		margin-bottom: 0.25em;
+	}
+	
+	dd {
+		margin-left: 0;
+	}
+
+	> ul {
+		list-style: none;
+		margin: 0 0 2em;
+		position: relative;
+
+		li {
+			margin: 1.3em 0 1em;
+			position: relative;
+		}
+	}
+
+	.comments {
+		background: url(../images/icon_comments.png) no-repeat 0 50%;
+		padding-left: 13px !important;
+	}
+
+	.releaseDate {
+		font-weight: normal;
+		margin-bottom: .5em;
+	}
+
+	.summary .readMore,
+	.readMore {
+		font-size: .9em;
+		}
+
+	.credits,
+	.comments,
+	.tags,
+	.rating {
+		font-size: 1em;
+		float: left;
+		margin-bottom: 0;
+		padding: 0 .75em 0 0;
+	}
+}
+
+// Side Index
+.sidebar .mura-index,
+aside .mura-index {
+	margin: 0 0 2em 0;
+
+	dl.first,
+	li.first {
+		margin-top: 0;
+		padding-top: 0;
+	}
+
+	dt, li h3 {
+		font-size: 16px;
+		margin: 0 0 .25em 0;
+		}
+
+	.credits,
+	.comments,
+	.tags,
+	.rating {
+		float: none;
+		margin-bottom: .35em;
+		padding: 0;
+	}
+}
+//end Side Index
+
+
+// Content Index
+.content .mura-index,
+section .mura-index {
+	border-top: 1px solid #ccc;
+	padding-top: 1em;
+}
+
+
+// Has Image
+.hasImage .image {
+	margin: 0 1em 0 0;
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+
+.sidebar .hasImage,
+aside .hasImage {
+	min-height: 0;
+	padding-left: 0;
+}
+
+.credits,
+.comments,
+.tags,
+.rating {
+	float: left;
+	margin-bottom: 0;
+	padding: 0 .75em 0 0;
+	font-size: 1em;
+	}
+
+.sidebar .credits,
+.sidebar .comments,
+.sidebar .tags,
+.sidebar .rating,
+aside .credits,
+aside .comments,
+aside .tags,
+aside .rating {
+	float: none;
+	margin-bottom: .35em;
+	padding: 0;
+	}
+
+.rating {	
+		position: relative;
+		min-width: 150px;
+		min-height: 20px;
+		background-repeat: no-repeat;
+		background-position: 3.5em 50%;
+		}
+
+.rating span {
+	position: absolute;
+	left: -9999px;
+	}
+
+.mura-index .credits {
+	color: #666;
+	}
+
+.mura-index .comments {
+	padding-left: 13px !important;
+	background: url(../images/icon_comments.png) no-repeat 0 50%;
+	}

@@ -1,7 +1,7 @@
 ﻿CKFinder.addPlugin( 'fileeditor', function( api ) {
 
 	var regexExt = /^(.*)\.([^\.]+)$/,
-		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl|less)$/i,
+		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl|less|properties)$/i,
 		regexCodeMirrorExt = /^(css|html|htm|js|xml|xsl|php|cfm|cfc)$/i,
 		codemirror,
 		file,
@@ -141,7 +141,7 @@
 
 					fileArea.setStyle('height', '100%');
 					fileArea.setHtml( '<textarea id="fileContent" style="height:' + cssHeight + 'px; width:' + cssWidth + 'px"></textarea>' );
-					doc.getById( 'fileContent' ).setText( data );
+					document.getElementById( 'fileContent' ).innerHTML=data;
 
 					codemirror = null;
 					if ( enableCodeMirror && win.$.CodeMirror !== undefined )

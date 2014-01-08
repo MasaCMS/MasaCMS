@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
-<nav id="navArchive" <cfif this.navWrapperClass neq "">class="#this.navWrapperClass#"</cfif>>
+<nav id="navArchive" <cfif this.navWrapperClass neq "">class="mura-nav-archive #this.navWrapperClass#"</cfif>>
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#">
 	<cfloop query="variables.rsArchive">
