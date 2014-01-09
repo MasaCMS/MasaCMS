@@ -136,14 +136,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset themeRenderer.injectMethod('$',event("muraScope")).injectMethod('mura',event("muraScope")).injectMethod('event',event())>
 				<cfset themeRenderer.init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
 				<cfset var siteRenderer=event("contentRenderer")>
-				<cfset var $variables=themeRenderer.getAllValues()>
-				<cfset var key=''>
-				<cfloop collection="#$variables#" item="key">
-					<cfset siteRenderer.injectMethod('#key#',$variables[key],'variables')>
-				</cfloop>
-				<cfloop collection="#themeRenderer#" item="key">
-					<cfset siteRenderer.injectMethod('#key#',themeRenderer[key],'this')>
-				</cfloop>
+         		<cfset var key=''>
+         		<cfloop collection="#themeRenderer#" item="key">
+          			<cfset siteRenderer.injectMethod('#key#',themeRenderer[key])>
+         		</cfloop>
 			</cfif>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
