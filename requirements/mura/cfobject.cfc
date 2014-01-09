@@ -79,6 +79,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn structKeyExists(variables,arguments.property) />
 </cffunction>
 
+<cffunction name="getAllValues" output="false">
+	<cfreturn variables>
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset structAppend(variables,arguments.instance,true)/>
+</cffunction>
+
 <cffunction name="removeValue" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables,arguments.property) />
@@ -138,8 +147,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="injectMethod" access="public" output="false">
 	<cfargument name="toObjectMethod" type="string" required="true" />
 	<cfargument name="fromObjectMethod" type="any" required="true" />
-	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
-	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	<cfargument name="scope" default="">
+	<cfif arguments.scope eq 'this'>
+		<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
+	<cfelseif arguments.scope eq 'variables'>
+		<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	<cfelse>
+		<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
+		<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
