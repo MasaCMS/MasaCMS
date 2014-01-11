@@ -141,7 +141,8 @@
 
 					fileArea.setStyle('height', '100%');
 					fileArea.setHtml( '<textarea id="fileContent" style="height:' + cssHeight + 'px; width:' + cssWidth + 'px"></textarea>' );
-					document.getElementById( 'fileContent' ).innerHTML=data;
+					doc.getById( 'fileContent' ).setText( data );
+					//document.getElementById( 'fileContent' ).innerHTML=data;
 
 					codemirror = null;
 					if ( enableCodeMirror && win.$.CodeMirror !== undefined )
