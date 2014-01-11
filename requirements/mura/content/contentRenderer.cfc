@@ -2884,7 +2884,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-<cfreturn (request.muraChangesetPreview and (this.showMemberToolBar or this.showAdminToolBar) or ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar()) and not request.muraExportHTML />
+<cfreturn (request.muraChangesetPreviewToolbar and (this.showMemberToolBar or this.showAdminToolBar) or ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar()) and not request.muraExportHTML />
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
@@ -2936,7 +2936,7 @@ Display Objects
 				</cfif>
 			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
-				<cfif (getShowModal() or variables.event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
+				<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 					<cfsavecontent variable="headerStr">
 						<cfif getShowModal()>
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm")>
@@ -2944,7 +2944,7 @@ Display Objects
 							<cfset commitTracePoint(tracePoint)>
 						</cfif>	
 						<!---
-						<cfif variables.event.getValue("muraChangesetPreview")>
+						<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm">
 							<cfset commitTracePoint(tracePoint)>
