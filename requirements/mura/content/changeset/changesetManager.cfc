@@ -275,38 +275,55 @@
 
 <cffunction name="setSessionPreviewData" access="public" returntype="any" output="false">
 <cfargument name="changesetID">
-<cfset var local=structNew()>
-
+<cfargument name="append" default="false">
+<cfargument name="showToolbar" default="true">
 <cfset local.changeset=read(arguments.changesetID)>
-<cfset local.changesetPreviewMap=structNew()>
-<cfset local.contentIDList="">
-<cfset local.contentHistIDList="">
 
 <cfif not local.changeset.getIsNew() and not local.changeset.getPublished()>
+
+	<cfset local.currentUser=getCurrentUser()>
+
+	<cfif arguments.append and isStruct(local.currentUser.getValue("ChangesetPreviewData"))>
+		<cfset local.data=local.currentUser.getValue("ChangesetPreviewData")>
+	<cfelse>
+		<cfset local.data=structNew()>
+		<cfset local.data.previewMap=structNew()>
+		<cfset local.data.contentIDList="">
+		<cfset local.data.contentHistIDList="">
+		<cfset local.data.prereqs=queryNew("changesetID,name,publishDate")>
+	</cfif>
+
+	<cfset local.data.showToolbar=arguments.showToolbar>
+
 	<cfif isDate(local.changeset.getPublishDate())>
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='local.prereqs')#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='local.data.prereqs')#">
 		select changesetID,name,publishDate
 		from tchangesets
 		where tchangesets.published=0
 		and tchangesets.publishDate is not null
-		and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">
 		and tchangesets.changesetID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
+		and (tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">	
+			<cfif arguments.append and local.data.prereqs.recordcount>
+			or  tchangesets.changesetID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(local.data.prereqs.changesetid)#">)
+			</cfif>
+			)
 		and tchangesets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getSiteID()#">
+
 		order by tchangesets.publishDate asc
 		</cfquery>
 
-		<cfloop query="local.prereqs">
-			<cfset local.assignments=getAssignmentsQuery(changesetID=local.prereqs.changesetID)>
+		<cfloop query="local.data.prereqs">
+			<cfset local.assignments=getAssignmentsQuery(changesetID=local.data.prereqs.changesetID)>
 			<cfif local.assignments.recordcount>
 				<cfloop query="local.assignments">
-					<cfif not structKeyExists(local.changesetPreviewMap,local.assignments.contentID)>
-						<cfset local.changesetPreviewMap[local.assignments.contentID]=structNew()>
+					<cfif not structKeyExists(local.data.previewMap,local.assignments.contentID)>
+						<cfset local.data.previewMap[local.assignments.contentID]=structNew()>
 					</cfif>
-					<cfset local.changesetPreviewMap[local.assignments.contentID].contentID=local.assignments.contentID>
-					<cfset local.changesetPreviewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
-					<cfset local.changesetPreviewMap[local.assignments.contentID].changesetID=local.prereqs.changesetID>
-					<cfset local.changesetPreviewMap[local.assignments.contentID].changesetName=local.prereqs.name>
-					<cfset local.changesetPreviewMap[local.assignments.contentID].publishDate=local.prereqs.publishDate>			
+					<cfset local.data.previewMap[local.assignments.contentID].contentID=local.assignments.contentID>
+					<cfset local.data.previewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
+					<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.data.prereqs.changesetID>
+					<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.data.prereqs.name>
+					<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.data.prereqs.publishDate>			
 				</cfloop>
 			</cfif>
 		</cfloop>
@@ -316,39 +333,28 @@
 	<cfset local.assignments=getAssignmentsQuery(changesetID=local.changeset.getChangesetID())>
 	<cfif local.assignments.recordcount>
 		<cfloop query="local.assignments">
-			<cfif not structKeyExists(local.changesetPreviewMap,local.assignments.contentID)>
-				<cfset local.changesetPreviewMap[local.assignments.contentID]=structNew()>
+			<cfif not structKeyExists(local.data.previewMap,local.assignments.contentID)>
+				<cfset local.data.previewMap[local.assignments.contentID]=structNew()>
 			</cfif>
-			<cfset local.changesetPreviewMap[local.assignments.contentID].contentID=local.assignments.contentID>
-			<cfset local.changesetPreviewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
-			<cfset local.changesetPreviewMap[local.assignments.contentID].changesetID=local.changeset.getchangesetID()>
-			<cfset local.changesetPreviewMap[local.assignments.contentID].changesetName=local.changeset.getName()>
-			<cfset local.changesetPreviewMap[local.assignments.contentID].publishDate=local.changeset.getPublishDate()>			
+			<cfset local.data.previewMap[local.assignments.contentID].contentID=local.assignments.contentID>
+			<cfset local.data.previewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
+			<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.changeset.getchangesetID()>
+			<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.changeset.getName()>
+			<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.changeset.getPublishDate()>			
 		</cfloop>
 	</cfif>
 	
-	<cfif not structIsEmpty(local.changesetPreviewMap)>
-	<cfloop collection="#local.changesetPreviewMap#" item="local.key">
-		 <cfset local.contentIDList=listAppend(local.contentIDList,"'#local.changesetPreviewMap[local.key].contentID#'")>
-		 <cfset local.contentHistIDList=listAppend(local.contentHistIDList,"'#local.changesetPreviewMap[local.key].contentHistID#'")>
-	</cfloop>
+	<cfif not structIsEmpty(local.data.previewMap)>
+		<cfloop collection="#local.data.previewMap#" item="local.key">
+			 <cfset local.data.contentIDList=listAppend(local.data.contentIDList,"'#local.data.previewMap[local.key].contentID#'")>
+			 <cfset local.data.contentHistIDList=listAppend(local.data.contentHistIDList,"'#local.data.previewMap[local.key].contentHistID#'")>
+		</cfloop>
 	</cfif>
 	
-	<cfset local.data=structNew()>
-	<cfset local.data.contentIDList=local.contentIDList>
-	<cfset local.data.contentHistIDList=local.contentHistIDList>
-	<cfif isDefined("local.prereqs")>
-		<cfset local.data.prereqs=local.prereqs>
-	<cfelse>
-		<cfset local.data.prereqs=queryNew("changesetID,name,publishDate")>
-	</cfif>
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
-	<cfset local.data.previewMap=local.changesetPreviewMap>
-	
-	<cfset local.currentUser=getCurrentUser()>
-	
 	<cfset local.currentUser.setValue("ChangesetPreviewData",local.data)>
-<cfelse>
+	
+<cfelseif not arguments.append>
 	<cfset removeSessionPreviewData()>
 </cfif>
 

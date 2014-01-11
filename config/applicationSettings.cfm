@@ -46,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 	<cfparam name="request.muraFrontEndRequest" default="false"/>
 	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraChangesetPreviewToolbar" default="false"/>
 	<cfparam name="request.muraExportHtml" default="false"/>
 	<cfparam name="request.muraMobileRequest" default="false"/>
 	<cfparam name="request.muraMobileTemplate" default="false"/>
