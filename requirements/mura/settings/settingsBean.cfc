@@ -66,14 +66,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="useDefaultSMTPServer" type="numeric" default="1" required="true" />
 <cfproperty name="EmailBroadcaster" type="numeric" default="0" required="true" />
 <cfproperty name="EmailBroadcasterLimit" type="numeric" default="0" required="true" />
-<cfproperty name="extranet" type="numeric" default="0" required="true" />
+<cfproperty name="extranet" type="numeric" default="1" required="true" />
 <cfproperty name="extranetSSL" type="numeric" default="0" required="true" />
 <cfproperty name="cache" type="numeric" default="0" required="true" />
 <cfproperty name="cacheCapacity" type="numeric" default="0" required="true" />
 <cfproperty name="cacheFreeMemoryThreshold" type="numeric" default="60" required="true" />
 <cfproperty name="viewDepth" type="numeric" default="1" required="true" />
 <cfproperty name="nextN" type="numeric" default="20" required="true" />
-<cfproperty name="dataCollection" type="numeric" default="0" required="true" />
+<cfproperty name="dataCollection" type="numeric" default="1" required="true" />
 <cfproperty name="columnCount" type="numeric" default="3" required="true" />
 <cfproperty name="columnNames" type="string" default="Left Column^Main Content^Right Column" required="true" />
 <cfproperty name="ExtranetPublicReg" type="numeric" default="0" required="true" />
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="privateUserPoolID" type="string" default=""/>
 <cfproperty name="advertiserUserPoolID" type="string" default=""/>
 <cfproperty name="displayPoolID" type="string" default=""/>
-<cfproperty name="feedManager" type="numeric" default="0" required="true" />
+<cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
 <cfproperty name="smallImageHeight" type="string" default="80" required="true" />
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="accountActivationScript" type="string" default=""/>
 <cfproperty name="googleAPIKey" type="string" default=""/>
 <cfproperty name="siteLocale" type="string" default=""/>
-<cfproperty name="hasChangesets" type="numeric" default="0" required="true" />
+<cfproperty name="hasChangesets" type="numeric" default="1" required="true" />
 <cfproperty name="theme" type="string" default=""/>
 <cfproperty name="javaLocale" type="string" default=""/> 
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.useDefaultSMTPServer=1/>
 	<cfset variables.instance.EmailBroadcaster=0/>
 	<cfset variables.instance.EmailBroadcasterLimit=0/>
-	<cfset variables.instance.Extranet=0/>
+	<cfset variables.instance.Extranet=1/>
 	<cfset variables.instance.ExtranetSSL=0/>
 	<cfset variables.instance.cache=0/>
 	<cfset variables.instance.cacheFactories=structNew()/>
@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.cacheFreeMemoryThreshold=60/>
 	<cfset variables.instance.ViewDepth=1/>
 	<cfset variables.instance.nextN=20/>
-	<cfset variables.instance.DataCollection=0/>
+	<cfset variables.instance.DataCollection=1/>
 	<cfset variables.instance.ColumnCount=3/>
 	<cfset variables.instance.ColumnNames="Left Column^Main Content^Right Column"/>
 	<cfset variables.instance.ExtranetPublicReg=0/>
@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.PrivateUserPoolID=""/>
 	<cfset variables.instance.AdvertiserUserPoolID=""/>
 	<cfset variables.instance.DisplayPoolID=""/>
-	<cfset variables.instance.feedManager=0/>
+	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
 	<cfset variables.instance.smallImageHeight='80'/>
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.theme=""/> 
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer=""/>
-	<cfset variables.instance.hasChangesets=0/>
+	<cfset variables.instance.hasChangesets=1/>
 	<cfset variables.instance.type="Site"/>
 	<cfset variables.instance.subtype="Default"/>
 	<cfset variables.instance.baseID=createUUID()/>
@@ -212,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
 	<cfset variables.instance.hasSharedFilePool=""/>
-	<cfset variables.instance.hasComments=0/>
+	<cfset variables.instance.hasComments=1/>
 
 	<cfreturn this />
 </cffunction>

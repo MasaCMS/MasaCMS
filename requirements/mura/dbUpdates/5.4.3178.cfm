@@ -435,7 +435,7 @@ ALTER TABLE tsettings ADD hasChangesets NUMBER(3,0)
 </cfcase>
 </cfswitch>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set hasChangesets=0</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">update tsettings set hasChangesets=1</cfquery>
 
 </cfif>
 
