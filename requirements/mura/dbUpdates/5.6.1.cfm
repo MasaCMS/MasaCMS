@@ -7,38 +7,38 @@
 <cfif not rsCheck.recordcount>
 <cfswitch expression="#getDbType()#">
 	<cfcase value="mssql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		ALTER TABLE tsettings ADD baseID [char](35) default NULL
 		</cfquery>
 	</cfcase>
 	<cfcase value="mysql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL
 		</cfquery>
 	</cfcase>
 	<cfcase value="postgresql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL
 		</cfquery>
 	</cfcase>
 	<cfcase value="nuodb">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL
 		</cfquery>
 	</cfcase>
 	<cfcase value="oracle">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		ALTER TABLE tsettings ADD baseID char(35)
 		</cfquery>
 	</cfcase>
 	</cfswitch>
 
-	<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	<cfquery name="rsCheck">
 		select siteID from tsettings
 	</cfquery>
 
 	<cfloop query="rsCheck">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		update tsettings set 
 			baseID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#createUUID()#">
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsCheck.siteID#">

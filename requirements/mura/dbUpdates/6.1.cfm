@@ -121,17 +121,17 @@
 	.addIndex('isDeleted');
 </cfscript>
 
-<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+<cfquery name="rsCheck">
 select moduleID from tcontent where moduleID='00000000000000000000000000000000015'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
-	<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	<cfquery name="rsCheck">
 	select siteID from tsettings
 	</cfquery>
 	
 	<cfloop query="rsCheck">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cfquery>
 		INSERT INTO tcontent 
 		(
 			SiteID
@@ -254,14 +254,14 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 	</cfloop>
 </cfif>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+<cfquery>
 	update tsettings set hasComments=1 where hasComments is null
 </cfquery>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+<cfquery>
 	update tcontentcomments set isDeleted=0 where isDeleted is null
 </cfquery>
 
-<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+<cfquery>
 	update tcontentcomments set isSpam=0 where isSpam is null
 </cfquery>
