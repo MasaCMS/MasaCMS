@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var data="">
 	<cfset var I=0/>
 	
-	<cffile  action="upload" destination="#variables.configBean.getTempDir()#"  filefield="listfile" nameconflict="makeunique"  accept="text/*">
+	<cffile  action="upload" destination="#variables.configBean.getTempDir()#"  filefield="listfile" nameconflict="makeunique">
 	
 	<cffile 
 	file="#variables.configBean.getTempDir()##cffile.serverfile#"
