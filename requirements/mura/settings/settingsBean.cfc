@@ -302,7 +302,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="mode" type="String" required="true" default="" />
 	<cfset var temp="">
 
-	<cfif arguments.mode neq 'production'>
+	<cfif arguments.mode eq 'preview'>
 		<cfif len(request.muraPreviewDomain)>
 			<cfreturn request.muraPreviewDomain />
 		<cfelse>
