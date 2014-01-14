@@ -46,6 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cffunction name="onApplicationStart" returnType="boolean" output="false">
 	<cfset var local=structNew()>
-	<cfinclude template="/muraWRM/config/appcfc/onApplicationStart_include.cfm">
+	<cfparam name="application.instanceID" default="#createUUID()#" />
+	<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">
+		<cfinclude template="/muraWRM/config/appcfc/onApplicationStart_include.cfm">
+	</cflock>
 	<cfreturn true>
 </cffunction>
