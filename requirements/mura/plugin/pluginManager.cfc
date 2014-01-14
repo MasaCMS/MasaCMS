@@ -86,108 +86,108 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsScripts2="">
 <cfset var siteIDadjusted="">
 <cfset var handlerData="">
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsplugins')#">
-select * from tplugins
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
-</cfquery>
-
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsPluginSiteAsignments')#">
-select moduleID, siteid from tcontent where type='Plugin'
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
-</cfquery>
-
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsSettings')#">
-select * from tpluginsettings
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
-</cfquery>
-
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsScripts1')#">
-select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
-tcontent.siteID, tpluginscripts.docache, tplugins.loadPriority from tpluginscripts
-inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
-inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
-where tpluginscripts.runat not in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
-and tplugins.deployed=1
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
-</cfquery>
-
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsScripts2')#">
-select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
-<cfif variables.configBean.getDbType() eq 'postgresql'>
-	cast('' as varchar(25))
-<cfelse>
-	''
-</cfif> as siteID, tpluginscripts.docache,tplugins.loadPriority from tpluginscripts
-inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
-where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
-and tplugins.deployed=1
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
-</cfquery>
-
-<cfquery name="variables.rsScripts" dbtype="query">
-select * from rsScripts1
-union
-select * from rsScripts2
-</cfquery>
-
-<cfquery name="variables.rsScripts" dbtype="query">
-select * from rsScripts order by loadPriority
-</cfquery>
-
 
 <cflock name="loadPluginsBlock#application.instanceID#" type="exclusive" timeout="200">
-<cfif not variables.eventHandlersLoaded>
-	<cfloop query="variables.rsScripts">
-		<cfset arrayAppend(variables.eventHandlers,variables.rsScripts.currentrow)>
-		<cfset handlerData=structNew()>
-		<cfset handlerData.index=arrayLen(variables.eventHandlers)>
-		<cfset handlerData.pluginName=variables.rsScripts.name>
+	
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsplugins')#">
+	select * from tplugins
+	<cfif arguments.safeMode>
+		where 0=1
+	</cfif>
+	</cfquery>
 
-		<cfif left(variables.rsScripts.runat,8) neq "onGlobal" and variables.rsScripts.runat neq "onApplicationLoad">
-			<cfset siteIDadjusted=adjustSiteID(variables.rsScripts.siteID)>
-			<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
-				<cfset variables.siteListeners[siteIDadjusted]=structNew()>
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsPluginSiteAsignments')#">
+	select moduleID, siteid from tcontent where type='Plugin'
+	<cfif arguments.safeMode>
+		and 0=1
+	</cfif>
+	</cfquery>
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsSettings')#">
+	select * from tpluginsettings
+	<cfif arguments.safeMode>
+		where 0=1
+	</cfif>
+	</cfquery>
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsScripts1')#">
+	select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
+	tcontent.siteID, tpluginscripts.docache, tplugins.loadPriority from tpluginscripts
+	inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
+	inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
+	where tpluginscripts.runat not in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
+	and tplugins.deployed=1
+	<cfif arguments.safeMode>
+		and 0=1
+	</cfif>
+	</cfquery>
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsScripts2')#">
+	select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
+	<cfif variables.configBean.getDbType() eq 'postgresql'>
+		cast('' as varchar(25))
+	<cfelse>
+		''
+	</cfif> as siteID, tpluginscripts.docache,tplugins.loadPriority from tpluginscripts
+	inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
+	where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
+	and tplugins.deployed=1
+	<cfif arguments.safeMode>
+		and 0=1
+	</cfif>
+	</cfquery>
+
+	<cfquery name="variables.rsScripts" dbtype="query">
+	select * from rsScripts1
+	union
+	select * from rsScripts2
+	</cfquery>
+
+	<cfquery name="variables.rsScripts" dbtype="query">
+	select * from rsScripts order by loadPriority
+	</cfquery>
+
+	<cfif not variables.eventHandlersLoaded>
+		<cfloop query="variables.rsScripts">
+			<cfset arrayAppend(variables.eventHandlers,variables.rsScripts.currentrow)>
+			<cfset handlerData=structNew()>
+			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
+			<cfset handlerData.pluginName=variables.rsScripts.name>
+
+			<cfif left(variables.rsScripts.runat,8) neq "onGlobal" and variables.rsScripts.runat neq "onApplicationLoad">
+				<cfset siteIDadjusted=adjustSiteID(variables.rsScripts.siteID)>
+				<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
+					<cfset variables.siteListeners[siteIDadjusted]=structNew()>
+				</cfif>
+				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],variables.rsScripts.runat)>
+					<cfset variables.siteListeners[siteIDadjusted][variables.rsScripts.runat]=arrayNew(1)>
+				</cfif>
+				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][variables.rsScripts.runat] , handlerData)>
+			<cfelse>	
+				<cfif not structKeyExists(variables.globalListeners,variables.rsScripts.runat)>
+					<cfset variables.globalListeners[variables.rsScripts.runat]=arrayNew(1)>
+				</cfif>
+				<cfset arrayAppend( variables.globalListeners[variables.rsScripts.runat], handlerData)>
 			</cfif>
-			<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],variables.rsScripts.runat)>
-				<cfset variables.siteListeners[siteIDadjusted][variables.rsScripts.runat]=arrayNew(1)>
-			</cfif>
-			<cfset arrayAppend( variables.siteListeners[siteIDadjusted][variables.rsScripts.runat] , handlerData)>
-		<cfelse>	
-			<cfif not structKeyExists(variables.globalListeners,variables.rsScripts.runat)>
-				<cfset variables.globalListeners[variables.rsScripts.runat]=arrayNew(1)>
-			</cfif>
-			<cfset arrayAppend( variables.globalListeners[variables.rsScripts.runat], handlerData)>
-		</cfif>
-	</cfloop>
-	<cfset variables.eventHandlersLoaded=true>
-</cfif>
+		</cfloop>
+		<cfset variables.eventHandlersLoaded=true>
+	</cfif>	
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsDisplayObjects')#">
+	select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
+	tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title, tplugins.package, tplugins.directory,
+	tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configuratorInit, tplugindisplayobjects.configuratorJS
+	from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
+	inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
+	<cfif arguments.safeMode>
+		where 0=1
+	</cfif>
+	</cfquery>
+
+	<cfset purgeStandardEventFactories()/>
+	<cfset purgeCacheFactories()/>
+	<cfset purgePluginConfigs()/>
 </cflock>
-
-
-<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='variables.rsDisplayObjects')#">
-select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title, tplugins.package, tplugins.directory,
-tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configuratorInit, tplugindisplayobjects.configuratorJS
-from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
-inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
-</cfquery>
-
-<cfset purgeStandardEventFactories()/>
-<cfset purgeCacheFactories()/>
-<cfset purgePluginConfigs()/>
 </cffunction>
 
 <cffunction name="getLocation" returntype="string" access="public" output="false">
@@ -1241,6 +1241,7 @@ select * from tplugins order by #arguments.orderby#
 	delete from tplugins where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfquery>
 	
+	<cfset application.appInitialized=false>
 	<cfset loadPlugins() />
 	<!---<cfset createLookupTXT()/>--->
 

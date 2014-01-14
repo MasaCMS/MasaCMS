@@ -79,6 +79,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn structKeyExists(variables,arguments.property) />
 </cffunction>
 
+<cffunction name="getAllValues" output="false">
+	<cfreturn variables>
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset structAppend(variables,arguments.instance,true)/>
+</cffunction>
+
 <cffunction name="removeValue" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables,arguments.property) />

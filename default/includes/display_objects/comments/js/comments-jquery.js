@@ -210,6 +210,7 @@ $(function(){
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 				bindEvents();
+				jQuery(".mura-comment-reply-wrapper").hide();
 			})
 			
 		});

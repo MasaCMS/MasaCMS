@@ -132,7 +132,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function setupApplication(){
 
 		if(!request.muraAppreloaded){
-			include "../config/appcfc/onApplicationStart_include.cfm";
+			param name="application.instanceID" default=createUUID();
+			lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
+				include "../config/appcfc/onApplicationStart_include.cfm";
+			}
 		}
 
 		if(not structKeyExists(application,"muraAdmin") or not hasBeanFactory()){
@@ -413,7 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			request.muraPreviewDomain=cgi.server_name;
 		}
 
-		if(application.settingsManager.getSite(session.siteid).isValidDomain(domain=request.muraPreviewDomain,mode='complete')){
+		if(!application.settingsManager.getSite(session.siteid).isValidDomain(domain=request.muraPreviewDomain,mode='complete')){
 			request.muraPreviewDomain=application.settingsManager.getSite(session.siteid).getDomain();
 		}
 

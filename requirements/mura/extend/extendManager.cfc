@@ -1533,6 +1533,7 @@ and tclassextendattributes.type='File'
 	<cfset var extsetorder=0>
 	<cfset var relsetorder=0>
 
+	<cflock name="loadConfigXML#application.instanceID#" type="exclusive" timeout="200">
 	<cfif isDefined("arguments.configXML.plugin")>
 		<cfset baseElement="plugin">
 	<cfelseif isDefined("arguments.configXML.theme")>
@@ -1718,6 +1719,7 @@ and tclassextendattributes.type='File'
 
 
 	</cfif>
+	</cflock>
 </cffunction>
 
 </cfcomponent>

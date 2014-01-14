@@ -1,9 +1,9 @@
-<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+<cfquery name="rscheck">
 select siteID from tsettings where siteID not in (select siteID from tsystemobjects where object='multilevel_nav')
 </cfquery>
 
 <cfloop query="rscheck">
-	<cfquery  datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	<cfquery >
 		INSERT INTO tsystemobjects (Object,SiteID,Name,OrderNo) 
 		VALUES (
 		'multilevel_nav',

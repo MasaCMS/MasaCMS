@@ -158,14 +158,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!---
 						<cfif not rc.contentBean.getIsNew()>
 							<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
-							<a class="btn" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+							<a class="btn" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
 						</cfif>
 						--->
-						<a class="btn" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
+						<a class="btn" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					<cfcase value="File">	
-						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
-						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
+						<!---
+						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+						--->
+						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					</cfswitch>
 				</cfif>
