@@ -2672,6 +2672,7 @@ Display Objects
 <cfargument name="complete" required="true" type="boolean" default="true" />
 <cfargument name="injectVars" required="true" type="string" default="" />
 <cfargument name="filterVars" required="true" type="boolean" default="true" />
+<cfargument name="domain" default="#listFirst(cgi.http_host,":")#">
 	<cfset var qrystr=''>
 	<cfset var host=''>
 	<cfset var item = "" />
@@ -2701,9 +2702,9 @@ Display Objects
 	
 	<cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
-			<cfset host='https://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
+			<cfset host='https://#arguments.domain##application.configBean.getServerPort()#'>
 		<cfelse>
-			<cfset host='http://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
+			<cfset host='http://#arguments.domain##application.configBean.getServerPort()#'>
 		</cfif>
 	</cfif>
 	
