@@ -133,6 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var activepanel=#JSStringFormat(rc.activepanel)#;
 		var activetab=#JSStringFormat(rc.activetab)#;
 		var webroot='#JSStringFormat($.globalConfig("webroot"))#';
+		var fileDelim='#JSStringFormat($.globalConfig("fileDelim"))#';
 		</script>
 		
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
