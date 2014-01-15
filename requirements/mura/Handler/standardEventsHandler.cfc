@@ -56,8 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
-	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(arguments.event.getValue('siteID'),arguments.event.getValue('contentBean').getFilename())#">
+	<cfset var $=arguments.event.getValue('muraScope')>
+	<cflocation addtoken="no" url="#$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))#">
 
 </cffunction>
 

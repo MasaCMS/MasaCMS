@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</button>	
 		</cfif>
 		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
-			<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
+			<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){document.forms['contentForm'].submit();}">
 				<cfif requiresApproval>
 					<i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
 				<cfelse>
