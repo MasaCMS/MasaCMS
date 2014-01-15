@@ -871,8 +871,8 @@ Sincerely,
 	
 	<!--- tcontentrelated --->
 	<cfquery>
-		insert into tcontentrelated (contentHistID,relatedID, contentID, siteID)
-		select '#newContentHistID#',relatedID,'#newContentID#',siteID from tcontentrelated 
+		insert into tcontentrelated (contentHistID,relatedID, contentID, siteID, relatedContentSetID, orderno)
+		select '#newContentHistID#',relatedID,'#newContentID#',siteID,relatedContentSetID,orderno from tcontentrelated 
 		where siteid='#arguments.siteid#' 
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'
