@@ -855,6 +855,8 @@ Sincerely,
 		<cfset contentBean.setPath(listAppend(arguments.path,contentBean.getContentID()))>
 	</cfif>
 	
+	<cfset prevBean=contentBean>
+
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
 	<cfset newContentHistID=contentBean.getContentHistID()>
@@ -902,6 +904,8 @@ Sincerely,
 		where baseid='#contentHistID#' 
 	</cfquery>
 	
+	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[])>
+
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
 	
