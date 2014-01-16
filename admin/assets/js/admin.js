@@ -1528,7 +1528,7 @@ function setFinders(selector){
 
 		if(completepath.toLowerCase() == 'true'){
 			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(webroot + '/' + fileUrl);		
+				jQuery('input[name="' + target + '"]').val(webroot + fileDelim + fileUrl);		
 			};
 		} else {
 			finder.selectActionFunction = function(fileUrl) {

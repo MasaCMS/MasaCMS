@@ -855,6 +855,8 @@ Sincerely,
 		<cfset contentBean.setPath(listAppend(arguments.path,contentBean.getContentID()))>
 	</cfif>
 	
+	<cfset prevBean=contentBean>
+
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>
 	<cfset newContentHistID=contentBean.getContentHistID()>
@@ -871,8 +873,8 @@ Sincerely,
 	
 	<!--- tcontentrelated --->
 	<cfquery>
-		insert into tcontentrelated (contentHistID,relatedID, contentID, siteID)
-		select '#newContentHistID#',relatedID,'#newContentID#',siteID from tcontentrelated 
+		insert into tcontentrelated (contentHistID,relatedID, contentID, siteID, relatedContentSetID, orderno)
+		select '#newContentHistID#',relatedID,'#newContentID#',siteID,relatedContentSetID,orderno from tcontentrelated 
 		where siteid='#arguments.siteid#' 
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'
@@ -897,11 +899,13 @@ Sincerely,
 	
 	<!--- tclassextenddata --->
 	<cfquery>
-		insert into tclassextenddata (baseID,attributeID,siteID,attributeValue)
-		select '#newContentHistID#',attributeID,siteID,attributeValue from tclassextenddata
+		insert into tclassextenddata (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
+		select '#newContentHistID#',attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID from tclassextenddata
 		where baseid='#contentHistID#' 
 	</cfquery>
 	
+	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[])>
+
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
 	

@@ -154,6 +154,7 @@ var commentManager = {
 		$('a.singleEdit').click(function(e) {
 			e.preventDefault();
 			$('.modal').modal('hide');
+		
 			var k = $(this);
 			commentManager.singleEdit(k.attr('data-commentid'), k.attr('data-action'));
 
@@ -166,6 +167,9 @@ var commentManager = {
 				contentID: k.attr('data-contentid'),
 				commentID: k.attr('data-commentid')
 			};
+
+			k.find('div.modal-body').html('<div class="load-inline"></div>');
+			k.find('div.modal-body .load-inline').spin(spinnerArgs2);
 			
 			commentManager.loadPage(params).success(function(data){
 				k.find('div.modal-body').html(data);
@@ -185,6 +189,8 @@ var commentManager = {
 		$('.modal').on('hidden', function(){
 			var k = $(this);
 			k.find('#commentsPage').remove();
+			k.find('div.modal-body').html('<div class="load-inline"></div>');
+			k.find('div.modal-body .load-inline').spin(spinnerArgs2);
 		});
 
 	},

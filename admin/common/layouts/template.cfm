@@ -220,7 +220,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
 	var activepanel=#JSStringFormat(rc.activepanel)#;
 	var activetab=#JSStringFormat(rc.activetab)#;
-	var webroot='#JSStringFormat($.globalConfig("webroot"))#';
+	var webroot='#JSStringFormat(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	var fileDelim='#JSStringFormat($.globalConfig("fileDelim"))#';
 	</script>
 	
 	#session.dateKey#
