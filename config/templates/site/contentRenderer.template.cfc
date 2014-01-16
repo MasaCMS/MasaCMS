@@ -64,10 +64,10 @@
 			* Any methods here will be accessible with the following notation:
 				$.yourFunctionName()
 			* You can also adjust various rendering settings on a per-site basis
-			  by editing any of the 'this.' settings below.
-			  
+			 by editing any of the 'this.' settings below.
+			 
 			* If you wish to customize display object classes at the theme level,
-			  You may do so in the theme's eventHandler.cfc  
+			 You may do so in the theme's eventHandler.cfc  
 	--->
 
 	<cfscript>
@@ -139,31 +139,37 @@
 		// this.calendarListWrapperClass="";
 		
 		// comments/index.cfm
-		// this.commentsWrapperClass="";
-		// this.commentSortContainerClass="";
-		// this.commentSortWrapperClass="";
-		// this.commentSortSelectClass="";
-		// this.commentFormWrapperClass="";
-		// this.commentFormClass="";
-		// this.commentNewClass="";
-		// this.commentFieldWrapperClass="";
-		// this.commentFieldLabelClass="";
-		// this.commentInputWrapperClass="";
-		// this.commentInputClass="";
-		// this.commentCheckboxClass="";
-		// this.commentPrefsInputWrapperClass="";
-		// this.commentSubmitButtonWrapperClass="";
-		// this.commentSubmitButtonClass="";
-		// this.commentMoreCommentsUpClass=""
-		// this.commentMoreCommentsDownClass=""
-		// this.commentRequiredWrapperClass="";
-		// this.commentThumbClass="";
-		// this.commentSpamClass="";
-		// this.commentSpamLinkClass="";
-		// this.commentClass="";
-		// this.commentDateTimeClass="";
-		// this.commentReplyClass="";
-		// this.commentMoreCommentsContainer="";
+		//this.commentsWrapperClass="";
+		//this.commentSortContainerClass="row";
+		//this.commentSortWrapperClass="col-xs-5";
+		//this.commentSortSelectClass=this.formInputClass;
+		//this.commentFormWrapperClass=this.generalWrapperClass;
+		//this.commentFormClass="";
+		//this.commentNewClass=this.formButtonClass;
+		//this.commentFieldWrapperClass=this.formFieldWrapperClass;
+		//this.commentFieldLabelClass=this.formFieldLabelClass;
+		//this.commentInputWrapperClass="";
+		//this.commentInputClass=this.formInputClass;
+		//this.commentCheckboxClass="";
+		//this.commentPrefsInputWrapperClass="";
+		//this.commentSubmitButtonWrapperClass="";
+		//this.commentSubmitButtonClass=this.formButtonClass;
+		//this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up";
+		//this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down";
+		//this.commentMoreCommentsContainer="";
+		//this.commentRequiredWrapperClass="";
+		//this.commentThumbClass="img-thumbnail";
+		//this.commentSpamClass="";
+		//this.commentSpamLinkClass="";
+		//this.commentClass="";
+		//this.commentDateTimeClass="";
+		//this.commentReplyClass="";
+		//this.commentAwaitingApproval="";
+		//this.commentAdminButtonWrapperClass="btn-group pull-right";
+		//this.commentUserEmailClass="btn btn-default btn-sm";
+		//this.commentDeleteButtonClass="btn btn-default btn-sm";
+		//this.commentEditButtonClass="btn btn-default btn-sm";
+		//this.commentApproveButtonClass="btn btn-default btn-sm";	
 		
 		// comments/dsp_comment.cfm
 		// this.emailLinkClass="";
@@ -214,8 +220,8 @@
 			};*/
 		// this.contentListWrapperDivClass="";
 		// this.contentListItemImageLinkClass="";
-		 
-		 // dsp_folder.cfm
+		
+		// dsp_folder.cfm
 		// this.folderWrapperClass="";
 		
 		// dsp_edit_profile.cfm
