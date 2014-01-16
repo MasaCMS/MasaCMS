@@ -171,6 +171,8 @@ Display Objects
 <cfset this.commentPrefsInputWrapperClass="">
 <cfset this.commentSubmitButtonWrapperClass="">
 <cfset this.commentSubmitButtonClass="btn">
+<cfset this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up">
+<cfset this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down">
 <cfset this.commentRequiredWrapperClass="">
 <cfset this.commentAdminButtonWrapperClass="">
 <cfset this.commentUserEmailClass="btn">
@@ -183,7 +185,12 @@ Display Objects
 <cfset this.commentClass="">
 <cfset this.commentDateTimeClass="">
 <cfset this.commentReplyClass="">
-<cfset this.commentMoreCommentsContainer="">
+<cfset this.commentAwaitingApproval="">
+<cfset this.commentAdminButtonWrapperClass="btn-group pull-right">
+<cfset this.commentUserEmailClass="btn btn-default btn-sm">
+<cfset this.commentDeleteButtonClass="btn btn-default btn-sm">
+<cfset this.commentEditButtonClass="btn btn-default btn-sm">
+<cfset this.commentApproveButtonClass="btn btn-default btn-sm">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
