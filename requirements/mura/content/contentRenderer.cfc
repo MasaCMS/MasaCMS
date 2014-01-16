@@ -295,6 +295,7 @@ Display Objects
 <cfset this.mailingListFormInputClass="">
 <cfset this.mailingListCheckboxWrapperClass="">
 <cfset this.mailingListCheckboxClass="checkbox">
+<cfset this.mailingListSubmitWrapperClass="">
 <cfset this.mailingListSubmitClass="btn btn-default">
 
 <!--- Dsp_nextN.cfm --->
