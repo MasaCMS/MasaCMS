@@ -265,7 +265,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 				or application.permUtility.getModulePerm("00000000000000000000000000000000015", rc.$.event('siteID'));
 		rc.sort = listFindNoCase('asc,desc', rc.sortDirection) ? rc.sortDirection : 'asc';
 		rc.q = rc.$.getBean('contentCommentManager').getComments(
-						contentID=rc.content.getContentID(),
+						contentID=rc.contentid,
 						siteID=rc.$.event('siteID'),
 						sortDirection=rc.sort);
 		rc.p = structNew();
