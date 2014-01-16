@@ -196,7 +196,7 @@ var commentManager = {
 	},
 
 	bindAjaxEvents: function(k) {
-		k.find('#moreCommentsUp').on('click', function(e){
+		k.find('#moreCommentsUp').unbind('click').on('click', function(e){
 			e.preventDefault();
 			var params = {
 				contentID: k.attr('data-contentid'),
@@ -211,7 +211,7 @@ var commentManager = {
 			});
 		});
 
-		k.find('#moreCommentsDown').on('click', function(e){
+		k.find('#moreCommentsDown').unbind('click').on('click', function(e){
 			e.preventDefault();
 			var params = {
 				contentID: k.attr('data-contentid'),
