@@ -732,7 +732,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
       Insert into tmailinglist (mlid,name,lastupdate,siteid,ispurge,ispublic)
 	  values(
 	  '#createUUID()#',
-	  <cfqueryparam cfsqltype="cf_sql_varchar" value="Please don't send me email of any kind">,
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="Please Remove Me from All Lists">,
 	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 	  '#arguments.bean.getsiteid()#',
 	  1,
