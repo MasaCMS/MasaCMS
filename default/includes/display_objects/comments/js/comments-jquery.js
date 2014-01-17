@@ -87,7 +87,7 @@ $(function(){
 
 		if (hash.length > 0) {
 			if (jQuery(hash).length != 0) {
-				scrollToID(hash);
+				scrollToID(jQuery(hash));
 			} else {
 				/* load comments, then scroll to */
 				var params = {
