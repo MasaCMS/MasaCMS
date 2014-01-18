@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset args=arrayNew(1)>
 			<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
 			<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
-			<td class="var-width">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
+			<td class="var-width">#left(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args),116)#</td>
 			<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 			<td class="actions">
 			<ul>
