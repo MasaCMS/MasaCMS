@@ -258,7 +258,7 @@ to your own modified versions of Mura CMS.
         <cfif form.production_dbtype eq 'Oracle'>
            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
 
-           <cfquery name="rsTableSpaces" username="#form.production_dbusername#" password="#form.production_dbpassword#">
+           <cfquery name="rsTableSpaces" datasource="#form.production_datasource#" username="#form.production_dbusername#" password="#form.production_dbpassword#">
               select * from user_ts_quotas
               where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
            </cfquery>
@@ -597,16 +597,15 @@ to your own modified versions of Mura CMS.
 <!-- Spinner JS -->
 <script src="#context#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
 
-<!-- Mura Admin JS -->
-<script src="#context#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
-
 <!-- jQuery -->
 <script src="#context#/admin/assets/js/jquery/jquery.js" type="text/javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript" language="Javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js" type="text/javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery-ui.js" type="text/javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery-ui-i18n.min.js" type="text/javascript"></script>
-<link href="#context#/admin/assets/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+
+<!-- Mura Admin JS -->
+<script src="#context#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
 
 <!-- JSON -->
 <script src="#context#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
@@ -689,7 +688,7 @@ to your own modified versions of Mura CMS.
       </cfscript>
       <fieldset class="alert">
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Please select a database from the list of supported databases">Database <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Please select a database from the list of supported databases">Database <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <select class="span2" name="production_dbtype" id="production_dbtype" onChange="javascript:fHandleAutoCreateChange()">
               <option value="">-- Select your Database Type --</option>
@@ -702,7 +701,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="For MySQL, PostgreSQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onClick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="For MySQL, PostgreSQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onClick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="auto_create" value="Yes" id="auto_create_on"  onclick="javascript:fHandleAutoCreateChange()">
@@ -716,7 +715,7 @@ to your own modified versions of Mura CMS.
         <!--- changes below (bsoylu 6/7/2010)  ---> 
         <span id="ac_dsn_span" >
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" data-original-title="The Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Railo administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.">Datasource (DSN) <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="The Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Railo administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.">Datasource (DSN) <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="text" name="production_datasource" value="#FORM.production_datasource#">
             </div>
@@ -724,34 +723,34 @@ to your own modified versions of Mura CMS.
         </span>
         <span id="ac_cfpass_span" style="display:none;">
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" data-original-title="The #theCFServer# password is needed to create a datasource for you. You can create a datasource yourself by selecting No to the Auto Create option.">#theCFServer# password <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="The #theCFServer# password is needed to create a datasource for you. You can create a datasource yourself by selecting No to the Auto Create option.">#theCFServer# password <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="password" name="production_cfpassword" value="">
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" data-original-title="The Server on which to create a datasource for you. If this is located on the same server as #theCFServer# you can use localhost.">Database Server <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="The Server on which to create a datasource for you. If this is located on the same server as #theCFServer# you can use localhost.">Database Server <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="text" name="production_databaseserver" value="#FORM.production_databaseserver#" maxlength="75">
             </div>
           </div>
         </span>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required on shared hosting. This is the same Username supplied to your DSN to allow Mura to connect to your database.">Database Username <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Only required on shared hosting. This is the same Username supplied to your DSN to allow Mura to connect to your database.">Database Username <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_dbusername" value="#FORM.production_dbusername#">
           </div>
         </div>
       
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.">Database Password <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.">Database Password <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#">
             </div>
           </div>
           <span id="oracle-only" style="display:none;">
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required if you are using Oracle.">Oracle TableSpace <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="Only required if you are using Oracle.">Oracle TableSpace <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="text" name="production_dbtablespace" value="#FORM.production_dbtablespace#">
             </div>
@@ -765,21 +764,21 @@ to your own modified versions of Mura CMS.
         <input type="hidden" name="production_port" value="<cfif cgi.server_port IS "" AND FORM.production_port IS "">80<cfelse>#FORM.production_port#</cfif>">
        
          <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="This is the username of the Mura super user account that will be created">Super Admin Username <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="This is the username of the Mura super user account that will be created">Super Admin Username <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="admin_username" value="#FORM.admin_username#">
           </div>
         </div>
       
          <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="This is the password of the Mura super user account that will be created">Super Admin Password <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="This is the password of the Mura super user account that will be created">Super Admin Password <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="admin_password" value="#FORM.admin_password#">
           </div>
         </div>
 
          <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="The email address used by Mura to send global system emails. Example: user@domain.com.">Admin Email Address <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="The email address used by Mura to send global system emails. Example: user@domain.com.">Admin Email Address <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_adminemail" value="#FORM.production_adminemail#">
           </div>
@@ -790,37 +789,37 @@ to your own modified versions of Mura CMS.
       <div class="fieldset">
         <!---
 <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.">Mail Server <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.">Mail Server <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserverip" value="#FORM.production_mailserverip#">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="This is the username used to log into and send emails from the Admin Email account. This may or may not be the same as Admin Email Address.">Mail Server Username <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="This is the username used to log into and send emails from the Admin Email account. This may or may not be the same as Admin Email Address.">Mail Server Username <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserverusername" value="#FORM.production_mailserverusername#">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="The password used to log into the Admin Email account.">Mail Server Password <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="The password used to log into the Admin Email account.">Mail Server Password <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserverpassword" value="#FORM.production_mailserverpassword#">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Edit this value to override the default, port 25.">Mail Server SMTP Port <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Edit this value to override the default, port 25.">Mail Server SMTP Port <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserversmtpport" value="#FORM.production_mailserversmtpport#">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Edit this value to override the default, port 110.">Mail Server POP Port <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Edit this value to override the default, port 110.">Mail Server POP Port <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserverpopport" value="#FORM.production_mailserverpopport#">
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Transport Layer Security: Used by some mail providers (Google, for example) to securely send/receive email.">Use TLS <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Transport Layer Security: Used by some mail providers (Google, for example) to securely send/receive email.">Use TLS <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <select name="production_mailservertls">
               <option value="false" <cfif not form.production_mailservertls>selected</cfif>>No</option>
@@ -829,7 +828,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="Secure Socket Layer: Another method used to securely send/receive email.">Use SSL <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="Secure Socket Layer: Another method used to securely send/receive email.">Use SSL <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <select name="production_mailserverssl">
               <option value="false" <cfif not form.production_mailserverssl>selected</cfif>>No</option>
@@ -841,7 +840,7 @@ to your own modified versions of Mura CMS.
         
         <!--- <cfdump var="#form.production_siteidinurls#"> --->
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="SiteID's are shown as sub-directories for each site in your Mura install. When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.">Use SiteIDs in URLs <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="SiteID's are shown as sub-directories for each site in your Mura install. When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.">Use SiteIDs in URLs <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="production_siteidinurls" value="1" id="siteidinurls_on"<cfif yesNoFormat(form.production_siteidinurls)> checked</cfif>>
@@ -852,7 +851,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="If set to 'No' you must ensure that you have properly configured your webserver's URL rewriting. Toggling this alone will not remove index.cfm from yoru URLs.">Use "index.cfm" in URLS <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" title="If set to 'No' you must ensure that you have properly configured your webserver's URL rewriting. Toggling this alone will not remove index.cfm from yoru URLs.">Use "index.cfm" in URLS <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="production_indexfileinurls" value="1" id="indexfileinurls_on"<cfif yesNoFormat(form.production_indexfileinurls)> checked</cfif>>
@@ -870,12 +869,7 @@ to your own modified versions of Mura CMS.
     </form>
   
 </div>
-<script type="text/javascript" language="javascript">
-jQuery(document).ready(function(){
-  $('form:not(.filter) :input:visible:first').focus();
-  $('[rel=tooltip]').tooltip();
-});
-</script>
+
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 6]>
 <script type="text/javascript" src="#context#/admin/assets/js/ie6notice.js"></script>
@@ -884,18 +878,16 @@ jQuery(document).ready(function(){
 <!-- Le javascript
 ================================================== --> 
 <!-- Placed at the end of the document so the pages load faster --> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-transition.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-alert.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-modal.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-tab.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-popover.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-button.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script> 
-<script src="#context#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+<script src="#context#/admin/assets/bootstrap/js/bootstrap.min.js"></script> 
+<script type="text/javascript" language="javascript">
+dtLocale='';
+activetab=1;
+activepanel=0;
+jQuery(document).ready(function(){
+  $('form:not(.filter) :input:visible:first').focus();
+  setToolTips("##frm");
+});
+</script>
 </body>
 </html>
 </cfoutput>
