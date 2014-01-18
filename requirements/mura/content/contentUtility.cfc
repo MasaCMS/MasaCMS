@@ -897,13 +897,13 @@ Sincerely,
 		and contentID='#arguments.contentID#'
 	</cfquery>
 	
-	<!--- tclassextenddata --->
+	<!--- tclassextenddata 
 	<cfquery>
 		insert into tclassextenddata (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 		select '#newContentHistID#',attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID from tclassextenddata
 		where baseid='#contentHistID#' 
 	</cfquery>
-	
+	--->
 	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[])>
 
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
