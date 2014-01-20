@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					function FCKeditor_OnComplete( editorInstance ) { 	
 						<cfif rc.preview eq 1>
-					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode=preview")##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
+					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode="preview")##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
 						</cfif> 
 						htmlEditorOnComplete(editorInstance); 
 					}
