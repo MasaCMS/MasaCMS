@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					function FCKeditor_OnComplete( editorInstance ) { 	
 						<cfif rc.preview eq 1>
-					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
+					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode=preview")##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
 						</cfif> 
 						htmlEditorOnComplete(editorInstance); 
 					}
@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif listFindNoCase("File",rc.type)>
 							preview('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode="preview")##application.configBean.getServerPort()##application.configBean.getContext()##$.siteConfig().getContentRenderer().getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						<cfelse>
-							openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.siteConfig().getContentRenderer().getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
+							openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode="preview")##application.configBean.getServerPort()##application.configBean.getContext()##$.siteConfig().getContentRenderer().getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						</cfif>
 							previewLaunched=true;
 							}
