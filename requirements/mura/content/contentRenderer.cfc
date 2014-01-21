@@ -370,8 +370,8 @@ Display Objects
 <cfset this.navCalendarTableClass="table table-bordered">
 
 <!--- Nav/Dsp_sequential.cfm --->
-<cfset this.navSequentialWrapperClass="container">
-<cfset this.navSequentialInnerClass="row">
+<cfset this.navSequentialWrapperClass="pagination">
+<cfset this.navSequentialULClass="">
 
 <!--- Nav/dsp_tag_cloud.cfm --->
 <cfset this.tagCloudWrapperClass="svTagCloud">
@@ -1399,7 +1399,7 @@ Display Objects
 			
 			<cfsavecontent variable="theNav">
 			<cfoutput>
-			<ul class="navSequential">
+			<ul class="#this.navSequentialULClass#">
 			<li class="first">
 			 <a href="#application.configBean.getIndexFile()#?startrow=#variables.event.getValue('startRow')#&galleryItemID=#rsSection.contentid[prev]#&categoryID=#variables.event.getValue('categoryID')#&relatedID=#variables.event.getValue('relatedID')#">&laquo; Prev</a>
 			</li>
