@@ -50,19 +50,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset addPrev=minute(application.lastMonitored) neq minute(dateadd("n",-30,theTime))/>
 
 <cfif addPrev>
-<cfset application.contentManager.sendReminders(dateadd("n",-30,theTime)) />
+	<cfset application.contentManager.sendReminders(dateadd("n",-30,theTime)) />
 </cfif>
 <cfset application.contentManager.sendReminders(theTime) />
 
-<!---<cfif hour(theTime) eq 2 and (minute(theTime) eq 0 or (addPrev and minute(application.lastMonitored) eq 0))>
-<cfset application.advertiserManager.compact() />
-</cfif>--->
-
 <cfset application.emailManager.send() />
+
+<cfset application.changesetManager.publishBySchedule()>
 
 <cfset emailList="" />
 
 <cfloop collection="#application.settingsManager.getSites()#" item="site"> 
+	>
 	<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
 	<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
 		<cfif not listFind(emailList,theEmail)>
@@ -75,14 +74,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfloop>
 
-<cfif (minute(theTime) eq 0 and hour(theTime) eq 0) or (addPrev and (minute(application.lastMonitored) eq 0 and hour(application.lastmonitored) eq 0))>
-	<cfset application.settingsManager.purgeAllCache() />
-	<cftry>
-	<cfset application.projectManager.sendReminders() />
-	<cfcatch></cfcatch>
-	</cftry>
-<cfelse>
-	<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+
+<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 	select tcontent.siteid, tcontent.contentid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
 	where tcontent.approved=1 and tcontent.active=1 and tcontent.display=2 and tcontent2.type <> 'Calendar'
 	and ((tcontent.displaystart >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
@@ -91,38 +84,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	(tcontent.displaystop >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
 	and tcontent.displaystop <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">))
 	group by tcontent.siteid, tcontent.contentid
-	</cfquery>
+</cfquery>
 	
-	<cfif rsChanges.recordcount>
-		<cfloop query="rsChanges">
-			<cfset application.serviceFactory
-				.getBean('contentManager')
-					.purgeContentCache(
-						contentBean=application.serviceFactory
-							.getBean('content')
-							.loadBy(
-								contentID=rsChanges.contentid,
-								siteid=rsChanges.siteid
-							)
-					)>
-		</cfloop>
+<cfif rsChanges.recordcount>
+	<cfloop query="rsChanges">
+		<cfset application.serviceFactory
+			.getBean('contentManager')
+				.purgeContentCache(
+					contentBean=application.serviceFactory
+						.getBean('content')
+						.loadBy(
+							contentID=rsChanges.contentid,
+							siteid=rsChanges.siteid
+						)
+				)>
+	</cfloop>
 
-		<cfquery name="rsChanges" dbtype="query">
-			select distinct siteid from rsChanges
-		</cfquery>
-		<cfloop query="rsChanges">
-			<cfset application.settingsManager.getSite(rsChanges.siteid).purgeCache() />
-		</cfloop>
-	</cfif>
+	<cfquery name="rsChanges" dbtype="query">
+		select distinct siteid from rsChanges
+	</cfquery>
+	<cfloop query="rsChanges">
+		<cfset application.settingsManager.getSite(rsChanges.siteid).purgeCache() />
+	</cfloop>
 </cfif>
-<!--- clear out old temp files --->
-<cfdirectory name="tmpFiles" action="list" directory="#application.configBean.getTempDir()#" >
-
- <cfloop query="tmpFiles">
-  <cfif tmpFiles.type eq "File" and DateDiff('n',tmpFiles.datelastmodified,now()) gt 30>
-  <cffile action="delete" file="#application.configBean.getTempDir()##tmpFiles.name#">
-  </cfif>
-</cfloop> 
 
 <cfset pluginEvent = createObject("component","#application.configBean.getMapDir()#.event") />
 <cfset application.pluginManager.executeScripts('onSiteMonitor','',pluginEvent)/>
