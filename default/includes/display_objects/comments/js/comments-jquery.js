@@ -164,7 +164,8 @@ $(function(){
 				/* load comments, then scroll to */
 				var params = {
 					pageNo: jQuery("#mura-more-comments").attr('data-pageno'),
-					commentID: parentid
+					commentID: parentid,
+					siteID: jQuery("#mura-more-comments").attr('data-siteid')
 				};
 
 				loadPage(params).success(function(data){
