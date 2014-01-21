@@ -362,6 +362,8 @@
 		// this.navArchiveWrapperClass="";
 		// this.navArchiveListClass="";
 		
+		// navBreadcrumb
+		// this.navBreadcrumbULClass="";
 		
 		// rater/index.cfm
 		// this.raterObjectWrapperClass="";

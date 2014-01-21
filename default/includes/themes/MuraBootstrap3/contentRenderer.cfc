@@ -368,6 +368,8 @@
 		//this.navArchiveWrapperClass="";
 		//this.navArchiveListClass="";
 		
+		// navBreadcrumb
+		this.navBreadcrumbULClass="breadcrumb";
 		
 		// rater/index.cfm
 		this.raterObjectWrapperClass="row clearfix";
