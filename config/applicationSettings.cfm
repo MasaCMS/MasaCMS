@@ -190,7 +190,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "facebookexternalhit", request.userAgent ) OR
 	 FindNoCase( "TencentTraveler", request.userAgent ) OR
 	 FindNoCase( "bluedragon", request.userAgent ) OR
-	 Find( "spider", request.userAgent ))>
+	 Find( "spider", request.userAgent ) OR
+	 FindNoCase( "80legs", request.userAgent ))>
 	 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>

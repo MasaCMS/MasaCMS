@@ -593,7 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
+	<cfif not len(arguments.event.getValue("previewID")) and (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
 				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true)) 
 				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
 			<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
@@ -644,11 +644,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standardForceSSLValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
-	<cfif arguments.event.getValue("contentBean").getFilename() neq "404" 
+	<cfset var isHTTPS=application.utility.isHTTPS()>
+
+	<cfif not (len(arguments.event.getValue('previewID')) and isHTTPS)
+			and arguments.event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
-				(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
+				(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
 				)
 			or	(
 				not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	

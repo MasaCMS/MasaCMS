@@ -175,12 +175,9 @@ var commentManager = {
 				k.find('div.modal-body').html(data);
 				
 				var elem = $('#detail-' + k.attr('data-commentid'));
-				
-				k.find('div.modal-body').animate({ scrollTop: elem.position().top}, 'slow', function(){
-					elem.fadeTo('fast', 0.5, function() {
-						elem.fadeTo('fast', 1);
-					});
-				});
+					elem.fadeIn();
+
+				k.find('div.modal-body').animate({ scrollTop: elem.position().top}, 'slow');
 
 				commentManager.bindAjaxEvents(k);
 			})
@@ -196,7 +193,7 @@ var commentManager = {
 	},
 
 	bindAjaxEvents: function(k) {
-		k.find('#moreCommentsUp').on('click', function(e){
+		k.find('#moreCommentsUp').unbind('click').on('click', function(e){
 			e.preventDefault();
 			var params = {
 				contentID: k.attr('data-contentid'),
@@ -211,7 +208,7 @@ var commentManager = {
 			});
 		});
 
-		k.find('#moreCommentsDown').on('click', function(e){
+		k.find('#moreCommentsDown').unbind('click').on('click', function(e){
 			e.preventDefault();
 			var params = {
 				contentID: k.attr('data-contentid'),

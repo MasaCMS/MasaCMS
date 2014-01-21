@@ -171,6 +171,8 @@ Display Objects
 <cfset this.commentPrefsInputWrapperClass="">
 <cfset this.commentSubmitButtonWrapperClass="">
 <cfset this.commentSubmitButtonClass="btn">
+<cfset this.commentMoreCommentsUpClass="btn btn-default icon-arrow-up">
+<cfset this.commentMoreCommentsDownClass="btn btn-default icon-arrow-down">
 <cfset this.commentRequiredWrapperClass="">
 <cfset this.commentAdminButtonWrapperClass="">
 <cfset this.commentUserEmailClass="btn">
@@ -183,7 +185,12 @@ Display Objects
 <cfset this.commentClass="">
 <cfset this.commentDateTimeClass="">
 <cfset this.commentReplyClass="">
-<cfset this.commentMoreCommentsContainer="">
+<cfset this.commentAwaitingApproval="">
+<cfset this.commentAdminButtonWrapperClass="btn-group pull-right">
+<cfset this.commentUserEmailClass="btn btn-default btn-sm">
+<cfset this.commentDeleteButtonClass="btn btn-default btn-sm">
+<cfset this.commentEditButtonClass="btn btn-default btn-sm">
+<cfset this.commentApproveButtonClass="btn btn-default btn-sm">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
@@ -380,6 +387,8 @@ Display Objects
 <cfset this.navArchiveWrapperClass="">
 <cfset this.navArchiveListClass="">
 
+<!--- NavBreadcrumb --->
+<cfset this.navBreadcrumbULClass="breadcrumb">
 
 <!--- Rater/Index.cfm --->
 <cfset this.raterObjectWrapperClass="row clearfix">
@@ -1034,13 +1043,13 @@ Display Objects
 <cffunction name="dspCrumblistLinks"  output="false" returntype="string"> 
 <cfargument name="id" type="string" default="crumblist">
 <cfargument name="separator" type="string" default="">
-<cfargument name="class" type="string" default="">
+<cfargument name="class" type="string" default="#this.navBreadcrumbULClass#">
 <cfset var thenav="" />
 <cfset var theOffset=arrayLen(this.crumbdata)- this.navOffSet />
 <cfset var I = 0 />
 <cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
 	<cfsavecontent variable="theNav">
-		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif><cfif len(arguments.class)> class="#arguments.class#"</cfif>>
+		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
 			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li></cfif></cfloop>
 		</ul></cfoutput>
 	</cfsavecontent>

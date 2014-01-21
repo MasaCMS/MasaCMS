@@ -58,7 +58,8 @@
 
 	<cffunction name="get" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfargument name="siteid">
+		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
 		<cfoutput>#createobject("component","mura.json").encode(data)#</cfoutput>
@@ -66,14 +67,16 @@
 
 	<cffunction name="flag" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfargument name="siteid">
+		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset comment.setCommentID(arguments.commentID).load().flag()>
 	</cffunction>
 
 	<cffunction name="getContentStats" access="remote" output="true">
 		<cfargument name="contentID">
-		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfargument name="siteid">
+		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
 		
 		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(contentStats.getAllValues()));</cfscript>
@@ -85,11 +88,12 @@
 		<cfargument name="nextN" required="true" default="3">
 		<cfargument name="sortDirection" required="true" default="desc">
 		<cfargument name="commentID" required="true" default="">
-		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfargument name="siteid">
+		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var renderer = $.getContentRenderer()>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
 		<cfset var crumbArray = content.getCrumbArray()>
-		<cfset var isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
+		<cfset var isEditor=isDefined('session.mura.memberships') and (listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
 				and application.permUtility.getnodePerm(crumbArray) neq 'none')
 				or listFind(session.mura.memberships,'S2')
 				or application.permUtility.getModulePerm("00000000000000000000000000000000015", $.event('siteID'))>
@@ -198,7 +202,7 @@
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-											 <a class="mura-comment-edit-button #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+											 <a class="mura-comment-edit-button #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#">#$.rbKey('comments.edit')#</a>
 										</cfif>
 										<cfif comment.getIsApproved() neq 1>
 											 <a class="mura-comment-approve-button #renderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()###mura-comment-#comment.getCommentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
@@ -220,8 +224,8 @@
 							<dd class="mura-comment-date-time #renderer.commentDateTimeClass#">
 								#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
 							</dd>
-							<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
-							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" class="mura-comment-flag-as-spam #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
+							<dd class="mura-comment-reply #renderer.commentReplyClass#"><a data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#" href="##mura-comment-post-comment">#$.rbKey('comments.reply')#</a></dd>
+							<dd class="mura-comment-spam #renderer.commentSpamClass#"><a data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#" class="mura-comment-flag-as-spam #renderer.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
 						</dl>
 						<div id="mura-comment-post-comment-#comment.getCommentID()#" class="mura-comment-reply-wrapper #renderer.commentFormWrapperClass#" style="display: none;"></div>
 					</cfloop>
@@ -230,7 +234,7 @@
 
 				<!--- MOAR --->
 				<cfif it.getPageIndex() lt it.pageCount()>
-					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
+					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#HTMLEditFormat($.event('siteID'))#">More Comments</a></div>
 				</cfif>
 		
 			</cfoutput>

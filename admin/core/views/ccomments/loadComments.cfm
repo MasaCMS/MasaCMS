@@ -191,7 +191,12 @@
 									
 									<p>
 										<!--- <strong>#HTMLEditFormat(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
-										<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #HTMLEditFormat(local.content.getMenuTitle())#</a></h1>
+										<cfif local.content.getIsNew()>
+											<h1><i class="icon-external-link"></i> Content Missing</h1>
+										<cfelse>
+											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #HTMLEditFormat(local.content.getMenuTitle())#</a></h1>
+										</cfif>
+										
 									<!---
 <br />
 										<i class="icon-calendar"></i>&nbsp;&nbsp;#DateFormat(local.item.getEntered(), 'yyyy.mm.dd')#&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-time"></i> #TimeFormat(local.item.getEntered(), 'hh:mm:ss tt')#
