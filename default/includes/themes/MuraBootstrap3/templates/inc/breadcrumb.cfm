@@ -1,1 +1,1 @@
-<cfoutput><nav>#$.dspCrumbListLinks(id='',class='breadcrumb',separator='')#</nav></cfoutput>
+<cfoutput><nav>#$.dspCrumbListLinks()#</nav></cfoutput>
