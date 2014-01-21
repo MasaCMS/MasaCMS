@@ -241,6 +241,7 @@ If it has not set application.appInitialized=false. --->
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
+<!---
 <cfif isDefined("application.changesetManager") and not 
 	(
 		findNoCase("MuraProxy.cfc",cgi.script_name)
@@ -255,7 +256,7 @@ If it has not set application.appInitialized=false. --->
 	<cfset application.changesetManager.publishBySchedule()>
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
-
+--->
 
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
