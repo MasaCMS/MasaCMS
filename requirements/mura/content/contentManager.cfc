@@ -1343,8 +1343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset request.muratransaction=false>
 				</cftransaction>
-				<cftransaction>
-				<cfset request.muratransaction=true>
+
 				<!--- Related content persistence --->
 				<cfif not isNewBean>
 					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
@@ -1431,9 +1430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif newBean.getApproved() and listFindNoCase("File,Link,Page,Folder,Gallery,Calendar", newBean.getType())>
 					<cfset getBean('contentFilenameArchive').loadBy(filename=newBean.getFilename(),siteid=newBean.getSiteID()).setContentID(newBean.getContentID()).save()>
 				</cfif>
-				<cfset request.muratransaction=false>
-				</cftransaction>	
-				
+
 				<!---
 				<cfif len(newBean.getChangesetID())>
 					variables.changesetManager.setSessionPreviewData(newBean.getChangeSetID())>

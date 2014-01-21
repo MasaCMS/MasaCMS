@@ -107,16 +107,6 @@ If it has not set application.appInitialized=false. --->
 	</cfif>
 </cfif>
 
-
-<cftry>
-	<cfset application.settingsManager.getSite('default')>
-	<cfcatch>
-		<cfset application.broadcastInit=false>
-		<cfset application.appInitialized=false>
-	</cfcatch>
-</cftry>
-
-
 <cfset application.userManager.setUserStructDefaults()>
 
 <cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
