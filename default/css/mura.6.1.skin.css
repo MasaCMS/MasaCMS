@@ -76,3 +76,7 @@
   padding-left: 20px;
   background: url("../images/icon-sprite.png") left top no-repeat;
 }
+.mura-category-summary a.rss {
+  background: url(../images/icon-sprite.png) no-repeat 0 -150px;
+  padding: 4px 0 4px 18px;
+}
