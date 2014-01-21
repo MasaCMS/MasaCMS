@@ -1,85 +1,15 @@
-// User/Session Tools
-.mura-user-tools-session {
-	margin: 0 0 1em;
-	padding: 0;
+.mura-user-tools-session,
+.mura-page-tools,
+.mura-favorites-list {
 
 	ul {
 		list-style: none;
-		margin: 0;
-		padding: 0;
 
 		li {
 			display: inline;
-			margin: 0;
-			padding: 0 .5em 0 0;
 			
 			a { text-decoration: none; }
 			
 			}
 		}
 	}
-	
-// Page Tools
-.mura-page-tools {
-	margin: 0 0 2em;
-	padding: 0;
-
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-
-		li {
-			margin: 0;
-			padding: 0;
-			
-			&.add-favorite > a {
-			padding-left: 20px;
-			background: url("../images/icon-sprite.png") left -50px no-repeat;
-				}
-			
-			&.print-page > a {			
-			padding-left: 20px;
-			background: url("../images/icon-sprite.png") left -100px no-repeat;
-				}
-
-			&.favorite-exists > a {
-				padding-left: 20px;
-				background: url("../images/icon-sprite.png") left top no-repeat;
-				}
-		}
-	}
-}
-
-// Favorites List
-.mura-favorites-list {
-	
-	margin: 0 0 1em;
-	
-	ul {
-		list-style: none !important;
-		margin: 0;
-		padding: 0;
-		
-		li {
-			border: none;
-			line-height: 1;
-			margin: 0 0 .65em !important;
-			padding: 0;
-	
-			&.defaultMsg {
-				margin: 0;
-				list-style: none !important;
-				font-size: 1em;
-				line-height: 1.2;
-				color: #666;
-			}
-	
-			> .remove { 				
-				padding-left: 20px;
-				background: url("../images/icon-sprite.png") left top no-repeat;
-				}
-			}
-		}
-
-}
