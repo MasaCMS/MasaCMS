@@ -353,7 +353,7 @@
 		
 		// nav/dsp_sequential.cfm
 		// this.navSequentialWrapperClass="";
-		// this.navSequentialInnerClass="";
+		// this.navSequentialULClass="";
 		
 		// nav/dsp_tag_cloud.cfm
 		// this.tagCloudWrapperClass="";
