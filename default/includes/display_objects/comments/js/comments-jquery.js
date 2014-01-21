@@ -128,6 +128,7 @@ $(function(){
 		var params = {
 			method: "renderCommentsPage",
 			contentID: jQuery('#mura-comments-page').attr('data-contentid'),
+			siteID: jQuery('#mura-comments-page').attr('data-siteid'),
 			sortDirection: jQuery('#mura-sort-direction-selector').val(),
 			nextN: $nextN
 		};
@@ -182,8 +183,9 @@ $(function(){
 			event.preventDefault();
 			var a = jQuery(this);
 			var id = a.attr('data-id');
+			var siteid = a.attr('data-siteidid')
 			
-			var actionURL = $commentsProxyPath + "?method=flag&commentID=" + id;
+			var actionURL = $commentsProxyPath + "?method=flag&commentID=" + id + "&siteid=" + siteid;
 			jQuery.get(
 				actionURL,
 				function(data){
@@ -258,7 +260,8 @@ $(function(){
 			event.preventDefault();
 			jQuery(".mura-comment-reply-wrapper").hide();
 			var id = jQuery(this).attr('data-id');
-			var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
+			var siteid = jQuery(this).attr('data-siteid');
+			var actionURL=$commentsProxyPath + "?method=get&commentID=" + id + "&siteid=" + siteid;
 			jQuery.get(
 				actionURL,
 				function(data){

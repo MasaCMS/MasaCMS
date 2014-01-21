@@ -256,7 +256,7 @@
 				</div>
 			</div>
 
-			<div id="mura-comments-page" data-contentid="#variables.$.content('contentID')#">
+			<div id="mura-comments-page" data-contentid="#variables.$.content('contentID')#" data-siteid="#variables.$.content('siteid')#">
 				
 			</div>
 			

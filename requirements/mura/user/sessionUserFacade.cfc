@@ -183,4 +183,8 @@
 	<cfset getBean('loginManager').logout()>
 	<cfreturn this>
 </cffunction>
+
+<cffunction name="getAllValues" output="false">
+	<cfreturn getUserBean().getAllValues()>
+</cffunction>
 </cfcomponent>
