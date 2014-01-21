@@ -234,7 +234,7 @@
 
 				<!--- MOAR --->
 				<cfif it.getPageIndex() lt it.pageCount()>
-					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
+					<div class="mura-comment-more-comments-container #renderer.commentMoreCommentsContainer#"><a id="mura-more-comments" class="#renderer.commentMoreCommentsDownClass#" href="##" data-pageno="#it.getPageIndex()+1#" data-siteid="#HTMLEditFormat($.event('siteID'))#">More Comments</a></div>
 				</cfif>
 		
 			</cfoutput>
