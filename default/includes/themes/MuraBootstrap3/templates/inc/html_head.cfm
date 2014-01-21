@@ -14,20 +14,20 @@
 	<!--- Mura CMS --->
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.min.css">
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.skin.css">
+	
 	<!--- Bootstrap core CSS --->
-	<!--- <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css"> --->
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
+	
 	<!--- Font Awesome --->
-	<!--- <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css"> --->
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 	
 
 	<!--- CfStatic THEME CSS --->
-	<!---
-<cf_CacheOMatic key="globalheadercss">
+	<cf_CacheOMatic key="globalheadercss">
 		#$.static()
 			.include('/css/theme/')
 			.renderIncludes('css')#
 	</cf_CacheOMatic>
---->
 	
 	<!--[if IE]>
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/ie/ie.css">
