@@ -61,7 +61,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset emailList="" />
 
 <cfloop collection="#application.settingsManager.getSites()#" item="site"> 
-	>
 	<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
 	<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
 		<cfif not listFind(emailList,theEmail)>
@@ -85,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tcontent.displaystop <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">))
 	group by tcontent.siteid, tcontent.contentid
 </cfquery>
-	
+
 <cfif rsChanges.recordcount>
 	<cfloop query="rsChanges">
 		<cfset application.serviceFactory
