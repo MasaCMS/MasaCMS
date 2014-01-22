@@ -1428,7 +1428,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif newBean.getApproved() and listFindNoCase("File,Link,Page,Folder,Gallery,Calendar", newBean.getType())>
-					<cfset getBean('contentFilenameArchive').loadBy(filename=newBean.getFilename(),siteid=newBean.getSiteID()).setContentID(newBean.getContentID()).save()>
+					<cftry>
+						<cfset getBean('contentFilenameArchive').loadBy(filename=newBean.getFilename(),siteid=newBean.getSiteID()).setContentID(newBean.getContentID()).save()>
+						<cfcatch></cfcatch>
+					</cftry>	
 				</cfif>
 
 				<!---
