@@ -100,6 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            <td> 
             <cfif len(rc.rslist.approvalStatus)>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
+            <cfelseif rc.rslist.approved and rc.rslist.active>
+               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#
+            <cfelseif rc.rslist.approved>
+                 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')#
             <cfelse>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
             </cfif>
@@ -148,6 +152,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <td> 
             <cfif len(rc.rslist.approvalStatus)>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
+            <cfelseif rc.rslist.approved and rc.rslist.active>
+               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#
+            <cfelseif rc.rslist.approved>
+                 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')#
             <cfelse>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
             </cfif>
@@ -194,6 +202,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            <td>
             <cfif len(rc.rslist.approvalStatus)>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
+            <cfelseif rc.rslist.approved and rc.rslist.active>
+               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#
+            <cfelseif rc.rslist.approved>
+                 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')#
             <cfelse>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
             </cfif>
