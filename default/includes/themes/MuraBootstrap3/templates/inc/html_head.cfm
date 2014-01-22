@@ -11,8 +11,9 @@
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#">
 
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
-	<!--- Mura CMS --->
+	<!--- Mura CMS Base Styles--->
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.min.css">
+	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.skin.css">
 	
 	<!--- Bootstrap core CSS --->
