@@ -191,6 +191,7 @@ Display Objects
 <cfset this.commentDeleteButtonClass="btn btn-default btn-sm">
 <cfset this.commentEditButtonClass="btn btn-default btn-sm">
 <cfset this.commentApproveButtonClass="btn btn-default btn-sm">
+<cfset this.commentMoreCommentsContainer="well">
 
 <!--- Comments/dsp_comment.cfm --->
 <cfset this.emailLinkClass="btn">
