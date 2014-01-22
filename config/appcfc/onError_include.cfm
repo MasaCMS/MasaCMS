@@ -44,57 +44,59 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfparam name="local" default="#structNew()#">
-<cfset local.pluginEvent="">
+<cfif not isDefined('request.muraTemplateMissing')>
+	<cfparam name="local" default="#structNew()#">
+	<cfset local.pluginEvent="">
 
-<cflog type="Error" file="exception" text="#exception.stacktrace#">
+	<cflog type="Error" file="exception" text="#exception.stacktrace#">
 
-<cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>
-	<cfif structKeyExists(request,"servletEvent")>
-		<cfset local.pluginEvent=request.servletEvent>
-	<cfelseif structKeyExists(request,"event")>
-		<cfset local.pluginEvent=request.event>
-	<cfelse>
+	<cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>
+		<cfif structKeyExists(request,"servletEvent")>
+			<cfset local.pluginEvent=request.servletEvent>
+		<cfelseif structKeyExists(request,"event")>
+			<cfset local.pluginEvent=request.event>
+		<cfelse>
+			<cftry>
+			<cfset local.pluginEvent=createObject("component","mura.event")>
+			<cfcatch></cfcatch>
+			</cftry>
+		</cfif>
+		
+		<cfif isObject(local.pluginEvent)>
+			<cfset local.pluginEvent.setValue("exception",arguments.exception)>
+			<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
+			<cftry>
+				<cfif len(local.pluginEvent.getValue("siteID"))>
+					<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
+				</cfif>	
+				<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
+				<cfcatch></cfcatch>
+			</cftry>
+			
+		</cfif>
+	</cfif>
+		
+	<cfif structKeyExists(application,"configBean")>
 		<cftry>
-		<cfset local.pluginEvent=createObject("component","mura.event")>
+		<cfif not application.configBean.getDebuggingEnabled()>
+			<cfset mailto=application.configBean.getMailserverusername()>
+			<cfcontent reset="true">
+			<cfheader statuscode="500" statustext="An Error Occurred" />
+			<cfif len(application.configBean.getValue("errorTemplate"))>
+				<cfinclude template="#application.configBean.getValue('errorTemplate')#">
+			<cfelse>
+				<cfinclude template="/muraWRM/config/error.html">
+			</cfif>
+			<cfabort>
+		</cfif>
 		<cfcatch></cfcatch>
 		</cftry>
 	</cfif>
-	
-	<cfif isObject(local.pluginEvent)>
-		<cfset local.pluginEvent.setValue("exception",arguments.exception)>
-		<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
-		<cftry>
-			<cfif len(local.pluginEvent.getValue("siteID"))>
-				<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
-			</cfif>	
-			<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
-			<cfcatch></cfcatch>
-		</cftry>
-		
-	</cfif>
-</cfif>
-	
-<cfif structKeyExists(application,"configBean")>
 	<cftry>
-	<cfif not application.configBean.getDebuggingEnabled()>
-		<cfset mailto=application.configBean.getMailserverusername()>
-		<cfcontent reset="true">
-		<cfheader statuscode="500" statustext="An Error Occurred" />
-		<cfif len(application.configBean.getValue("errorTemplate"))>
-			<cfinclude template="#application.configBean.getValue('errorTemplate')#">
-		<cfelse>
-			<cfinclude template="/muraWRM/config/error.html">
-		</cfif>
-		<cfabort>
-	</cfif>
-	<cfcatch></cfcatch>
+		<cfheader statuscode="500" statustext="An Error Occurred" />	
+		<cfcatch></cfcatch>
 	</cftry>
-</cfif>
-<cftry>
-	<cfheader statuscode="500" statustext="An Error Occurred" />	
-	<cfcatch></cfcatch>
-</cftry>
-	
-<cfdump var="#arguments.exception#" top="100">
-<cfabort>	
+		
+	<cfdump var="#arguments.exception#" top="100">
+	<cfabort>
+</cfif>	
