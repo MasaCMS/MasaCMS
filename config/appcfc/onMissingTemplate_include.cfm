@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.pluginManager.announceEvent("onGlobalMissingTemplate",local.pluginEvent)>	
 </cfif>
 <cfif isDefined("application.contentServer")>
+	<cfset request.muraTemplateMissing=true>
 	<cfset onRequestStart()>
 	<cfset local.fileArray=listToArray(cgi.script_name,"/")>
 	<cfset local.filename="">
