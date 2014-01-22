@@ -1,0 +1,78 @@
+.mura-index .comments a,
+.mura-gallery .comments a {
+  background: url(../images/icon-sprite.png) no-repeat 0 -200px;
+  padding-left: 16px;
+}
+.mura-nav-sequential ul,
+.mura-next-n ul {
+  margin: 0 0 1em;
+  padding: 0;
+}
+.mura-nav-sequential ul li a,
+.mura-next-n ul li a {
+  border: 1px solid #ccc;
+  padding: .25em .5em;
+}
+.mura-user-tools-session {
+  margin: 0 0 1em;
+  padding: 0;
+}
+.mura-user-tools-session ul {
+  margin: 0;
+  padding: 0;
+}
+.mura-user-tools-session ul li {
+  margin: 0;
+  padding: 0 .5em 0 0;
+}
+.mura-user-tools-session ul li a {
+  text-decoration: none;
+}
+.mura-page-tools {
+  margin: 0 0 2em;
+  padding: 0;
+}
+.mura-page-tools ul {
+  margin: 0;
+  padding: 0;
+}
+.mura-page-tools ul li {
+  margin: 0;
+  padding: 0;
+}
+.mura-page-tools ul li.add-favorite > a {
+  padding-left: 20px;
+  background: url("../images/icon-sprite.png") left -50px no-repeat;
+}
+.mura-page-tools ul li.print-page > a {
+  padding-left: 20px;
+  background: url("../images/icon-sprite.png") left -100px no-repeat;
+}
+.mura-page-tools ul li.favorite-exists > a {
+  padding-left: 20px;
+  background: url("../images/icon-sprite.png") left top no-repeat;
+}
+.mura-favorites-list {
+  margin: 0 0 1em;
+}
+.mura-favorites-list ul {
+  margin: 0;
+  padding: 0;
+}
+.mura-favorites-list ul li {
+  border: none;
+  line-height: 1;
+  margin: 0 0 .65em !important;
+  padding: 0;
+}
+.mura-favorites-list ul li.defaultMsg {
+  margin: 0;
+  list-style: none !important;
+  font-size: 1em;
+  line-height: 1.2;
+  color: #666;
+}
+.mura-favorites-list ul li > .remove {
+  padding-left: 20px;
+  background: url("../images/icon-sprite.png") left top no-repeat;
+}

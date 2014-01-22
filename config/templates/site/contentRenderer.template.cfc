@@ -353,7 +353,7 @@
 		
 		// nav/dsp_sequential.cfm
 		// this.navSequentialWrapperClass="";
-		// this.navSequentialInnerClass="";
+		// this.navSequentialULClass="";
 		
 		// nav/dsp_tag_cloud.cfm
 		// this.tagCloudWrapperClass="";
@@ -362,6 +362,8 @@
 		// this.navArchiveWrapperClass="";
 		// this.navArchiveListClass="";
 		
+		// navBreadcrumb
+		// this.navBreadcrumbULClass="";
 		
 		// rater/index.cfm
 		// this.raterObjectWrapperClass="";

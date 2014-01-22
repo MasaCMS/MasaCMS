@@ -11,14 +11,16 @@
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#">
 
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
-
-	<!--- Bootstrap core CSS --->
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
-	<!--- Bootstrap theme compiled below --->
-	<!--- Font Awesome --->
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 	<!--- Mura CMS --->
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.skin.css">
+	
+	<!--- Bootstrap core CSS --->
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
+	
+	<!--- Font Awesome --->
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
+	
 
 	<!--- CfStatic THEME CSS --->
 	<cf_CacheOMatic key="globalheadercss">

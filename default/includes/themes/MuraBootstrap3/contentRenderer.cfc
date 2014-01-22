@@ -359,7 +359,7 @@
 		
 		// nav/dsp_sequential.cfm
 		this.navSequentialWrapperClass="";
-		this.navSequentialInnerClass="row";
+		this.navSequentialULClass="pagination";
 		
 		// nav/dsp_tag_cloud.cfm
 		this.tagCloudWrapperClass="";
@@ -368,6 +368,8 @@
 		//this.navArchiveWrapperClass="";
 		//this.navArchiveListClass="";
 		
+		// navBreadcrumb
+		this.navBreadcrumbULClass="breadcrumb";
 		
 		// rater/index.cfm
 		this.raterObjectWrapperClass="row clearfix";
