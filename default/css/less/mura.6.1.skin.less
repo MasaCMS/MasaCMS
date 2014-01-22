@@ -8,6 +8,17 @@
 	
 }
 
+.mura-breadcrumb {
+	
+	margin-left: 0;
+	padding-left: 0;
+		
+	li {
+		margin-right: .5em;
+	}
+	
+}
+
 // Nav Sequential
 .mura-nav-sequential,
 .mura-next-n {
@@ -102,9 +113,12 @@
 				color: #666;
 			}
 	
-			> .remove { 				
-				padding-left: 20px;
+			> .remove {
 				background: url("../images/icon-sprite.png") left top no-repeat;
+				float: left;
+				display: block;
+				width: 20px;
+				height: 16px;
 				}
 			}
 		}
@@ -116,5 +130,126 @@
 	background: url(../images/icon-sprite.png) no-repeat 0 -150px;
 	padding: 4px 0 4px 18px;
 	}
+
+// Form Styles
+form {
+
+	&.mura-login-form {
+		fieldset { margin-bottom: 0; }
+		h3 {
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+
+	}
+
+	&.mura-send-login {
+		margin-bottom: 2em;
+		}
+
 	
+	.req label { 
+
+		&:after { 
+			content: " *";
+	    	color: red;
+	    }
+	}
+	
+	p.required {
+		display: inline-block;
+	    margin-bottom: 1em;
+	
+		&:before { 
+			content: "* ";
+	    	color: red;
+		}
+	}
+
+	.mura-form-radio,
+	.mura-form-checkbox {
+		p {
+			float: left;
+			width: 25%;
+			margin-right: 2%;
+			padding-right: 7px;
+			font-weight: bold;
+			line-height: 1.4;
+			text-align: right;
+		}
+
+		label {
+			float: none;
+			display: block;
+			width: 100%;
+			margin: 0 0 .8em;
+			padding: .2em 0 0;
+			font-weight: normal;
+			text-align: left;
+
+			&.checkbox {
+				text-align: left;
+				width: auto;
+				padding-top: .5em;
+				margin-left: 28%;
+				line-height: 1;
+
+				input.checkbox {
+					float: left;
+				}
+			}
+		}
+	}
+}
+
+.mura-gallery {
+
+	ul {
+
+		li {
+			/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
+			/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
+			font-size: 1.1em;
+			margin: 0 2% 0 0;
+			padding: 0 0 1.5em;
+			text-align: center;
+
+			a {
+				display: block;
+				margin: 0 auto .75em;
+			}
+
+			img {
+				display: block;
+				margin: 0 auto;
+			}
+
+			p {
+				font-size: .9em;
+				margin: 0;
+				text-align: center;
+			}
+		}
+	}
+
+	// DL layout
+	dl {
+		margin: 0 auto;
+		padding: 0;
+
+		dt {
+			margin: 0 0 .25em;
+			padding: 0;
+		}
+
+		dd {
+			background: transparent;
+			float: none;
+			line-height: 1.25;
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+}	
 	
