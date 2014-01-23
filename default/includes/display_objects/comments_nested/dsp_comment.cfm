@@ -72,7 +72,7 @@
 			</cfif>
 			<cfif request.isEditor>
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-					 <a class="editcomment #this.commentsLinkClass#" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
+					 <a class="mura-comment-edit-comment #this.commentsLinkClass#" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
 				</cfif>
 				<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
 					 <a class="#this.approveCommentLinkClass#" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
