@@ -347,72 +347,78 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function getProperties(){
 		getEntityName();
 
-		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
-			lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
-				if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
-					var md={};
-					var pname='';
-					var i='';
-					var prop={};
-					var md=duplicate(getMetaData(this));
+		if(structIsEmpty(variables.properties)){
+			if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+				lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
+					if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+						var md={};
+						var pname='';
+						var i='';
+						var prop={};
+						var md=duplicate(getMetaData(this));
 
-					param name="application.objectMappings.#variables.entityName#" default={};
-					application.objectMappings[variables.entityName].properties={};
-					
-					//writeDump(var=md,abort=true);
+						param name="application.objectMappings.#variables.entityName#" default={};
+						application.objectMappings[variables.entityName].properties={};
+						
+						//writeDump(var=md,abort=true);
 
-					for (md; 
-					    structKeyExists(md, "extends"); 
-					    md = md.extends) 
-					  { 
+						for (md; 
+						    structKeyExists(md, "extends"); 
+						    md = md.extends) 
+						  { 
 
-					    if (structKeyExists(md, "properties")) 
-					    { 
-					      for (i = 1; 
-					           i <= arrayLen(md.properties); 
-					           i++) 
-					      { 
-					        pName = md.properties[i].name;
+						    if (structKeyExists(md, "properties")) 
+						    { 
+						      for (i = 1; 
+						           i <= arrayLen(md.properties); 
+						           i++) 
+						      { 
+						        pName = md.properties[i].name;
 
-					        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
-					       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
-					       	 	prop=application.objectMappings[variables.entityName].properties[pName];
+						        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
+						       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
+						       	 	prop=application.objectMappings[variables.entityName].properties[pName];
 
-					       	 	if(!structKeyExists(prop,'comparable')){
-						       	 	prop.comparable=true;
-						       	 } 
+						       	 	if(!structKeyExists(prop,'comparable')){
+							       	 	prop.comparable=true;
+							       	 } 
 
-					       	 	if(!structKeyExists(prop,"dataType")){
-					       	 		if(structKeyExists(prop,"ormtype")){
-					       	 			prop.dataType=prop.ormtype;
-					       	 		} else if(structKeyExists(prop,"type")){
-					       	 			prop.dataType=prop.type;
-					       	 		} else {
-					       	 			prop.type="string";
-					       	 			prop.dataType="varchar";
-					       	 		}
-					       	 	}	 	
-					     	 }
-					    	} 
-						} 
+						       	 	if(!structKeyExists(prop,"dataType")){
+						       	 		if(structKeyExists(prop,"ormtype")){
+						       	 			prop.dataType=prop.ormtype;
+						       	 		} else if(structKeyExists(prop,"type")){
+						       	 			prop.dataType=prop.type;
+						       	 		} else {
+						       	 			prop.type="string";
+						       	 			prop.dataType="varchar";
+						       	 		}
+						       	 	}	 	
+						     	 }
+						    	} 
+							} 
+
+						}
+
+						if(hasProperty('contenthistid')){
+							application.objectMappings[variables.entityName].versioned=true;
+						} else {
+							application.objectMappings[variables.entityName].versioned=false;
+						}
+
+
 
 					}
-
-					if(hasProperty('contenthistid')){
-						application.objectMappings[variables.entityName].versioned=true;
-					} else {
-						application.objectMappings[variables.entityName].versioned=false;
-					}
-
 				}
+
+				getValidations();	
 			}
 
-			getValidations();	
+			variables.properties=duplicate(application.objectMappings[variables.entityName]);
 		}
 
 		//writeDump(var=variables.properties,abort=true);
 		
-		return application.objectMappings[variables.entityName].properties;
+		return variables.properties;
 	}
 
 	function getEntityName(){
@@ -551,7 +557,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			}
 
-			return application.objectMappings[variables.entityName].validations;
+			variables.validations=duplicate(application.objectMappings[variables.entityName].validations);
+	
 		}
 
 		return variables.validations;
