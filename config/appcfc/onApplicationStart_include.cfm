@@ -102,9 +102,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.setupComplete>
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
-	<cfset application.objectMappings={}>
-	<cfset application.objectMappings.bundleableBeans="">
-	<cfset application.objectMappings.versionedBeans="">
 		
 	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
 		
@@ -265,6 +262,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfparam name="application.applyDbUpdates" default="#application.configBean.getValue("applyDBUpdates")#">
+
+	<cfset application.objectMappings={}>
+	<cfset application.objectMappings.bundleableBeans="">
+	<cfset application.objectMappings.versionedBeans="">
 
 	<cfif application.applyDbUpdates or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
