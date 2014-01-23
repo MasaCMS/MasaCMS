@@ -275,7 +275,7 @@ $(function(){
 					
 					$editor.hide();
 					$editor.detach();
-					jQuery("#mura-comment-post-comment-" + id).append($editor);
+					jQuery("#mura-comment-post-comment-" + id).append($editor).show();
 					jQuery("#mura-comment-post-a-comment").hide();
 					jQuery("#mura-comment-edit-comment").show();
 					jQuery("#mura-comment-reply-to-comment").hide();

@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.keywords" default="">
 <cfparam name="rc.isNew" default="1">
 <cfset counter=0 />
+<cfset hasParentID=false />
 <cfoutput>
 <div class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h2>
@@ -73,6 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
 			</tr></cfoutput>
+			<cfset hasParentID=true />
 		</cfif>
     	<cfoutput query="rc.rslist" startrow="1" maxrows="100">
 			<cfif rc.rslist.contentid neq rc.parentid>
@@ -80,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>
 			<cfset counter=counter+1/>
+			<cfset hasParentID=false />
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
 	          <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
@@ -94,6 +97,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
   </table>
 </td></tr></table>
+<cfif not hasParentID>
+	<input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" />
+</cfif>
 <cfelse>
 <cfoutput><input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" /></cfoutput>
 </cfif>
