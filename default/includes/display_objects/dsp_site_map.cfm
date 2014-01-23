@@ -44,6 +44,9 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
+<!--- Matt, 2 things need to happen: add "-tree" to the class; set this.ulNestedClass to no value on the dspNestedNav method below. The value is set in the theme contentRenderer for MuraBootstrap3. --->
+
 <cfoutput>
 	<ul id="svSiteMap" class="mura-site-map">
 		<li class="home"><a href="#variables.$.globalConfig('context')##variables.$.getURLStem(variables.$.event('siteID'),'')#">Home</a>#variables.$.dspNestedNav(contentid='00000000000000000000000000000000001',viewdepth=10,class='')#
