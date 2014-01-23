@@ -202,7 +202,7 @@
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-											 <a class="mura-comment-edit-button #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#">#$.rbKey('comments.edit')#</a>
+											 <a class="mura-comment-edit-comment #renderer.commentEditButtonClass#" data-id="#comment.getCommentID()#" data-siteid="#comment.getsiteID()#">#$.rbKey('comments.edit')#</a>
 										</cfif>
 										<cfif comment.getIsApproved() neq 1>
 											 <a class="mura-comment-approve-button #renderer.commentApproveButtonClass#" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()###mura-comment-#comment.getCommentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
