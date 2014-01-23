@@ -348,62 +348,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		getEntityName();
 
 		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
-			var md={};
-			var pname='';
-			var i='';
-			var prop={};
-			var md=duplicate(getMetaData(this));
+			lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
+				if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+					var md={};
+					var pname='';
+					var i='';
+					var prop={};
+					var md=duplicate(getMetaData(this));
 
-			param name="application.objectMappings.#variables.entityName#" default={};
-			application.objectMappings[variables.entityName].properties={};
-			
-			//writeDump(var=md,abort=true);
+					param name="application.objectMappings.#variables.entityName#" default={};
+					application.objectMappings[variables.entityName].properties={};
+					
+					//writeDump(var=md,abort=true);
 
-			for (md; 
-			    structKeyExists(md, "extends"); 
-			    md = md.extends) 
-			  { 
+					for (md; 
+					    structKeyExists(md, "extends"); 
+					    md = md.extends) 
+					  { 
 
-			    if (structKeyExists(md, "properties")) 
-			    { 
-			      for (i = 1; 
-			           i <= arrayLen(md.properties); 
-			           i++) 
-			      { 
-			        pName = md.properties[i].name;
+					    if (structKeyExists(md, "properties")) 
+					    { 
+					      for (i = 1; 
+					           i <= arrayLen(md.properties); 
+					           i++) 
+					      { 
+					        pName = md.properties[i].name;
 
-			        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
-			       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
-			       	 	prop=application.objectMappings[variables.entityName].properties[pName];
+					        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
+					       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
+					       	 	prop=application.objectMappings[variables.entityName].properties[pName];
 
-			       	 	if(!structKeyExists(prop,'comparable')){
-				       	 	prop.comparable=true;
-				       	 } 
+					       	 	if(!structKeyExists(prop,'comparable')){
+						       	 	prop.comparable=true;
+						       	 } 
 
-			       	 	if(!structKeyExists(prop,"dataType")){
-			       	 		if(structKeyExists(prop,"ormtype")){
-			       	 			prop.dataType=prop.ormtype;
-			       	 		} else if(structKeyExists(prop,"type")){
-			       	 			prop.dataType=prop.type;
-			       	 		} else {
-			       	 			prop.type="string";
-			       	 			prop.dataType="varchar";
-			       	 		}
-			       	 	}	 	
-			     	 }
-			    	} 
-				} 
+					       	 	if(!structKeyExists(prop,"dataType")){
+					       	 		if(structKeyExists(prop,"ormtype")){
+					       	 			prop.dataType=prop.ormtype;
+					       	 		} else if(structKeyExists(prop,"type")){
+					       	 			prop.dataType=prop.type;
+					       	 		} else {
+					       	 			prop.type="string";
+					       	 			prop.dataType="varchar";
+					       	 		}
+					       	 	}	 	
+					     	 }
+					    	} 
+						} 
 
+					}
+
+					if(hasProperty('contenthistid')){
+						application.objectMappings[variables.entityName].versioned=true;
+					} else {
+						application.objectMappings[variables.entityName].versioned=false;
+					}
+
+				}
 			}
 
-			if(hasProperty('contenthistid')){
-				application.objectMappings[variables.entityName].versioned=true;
-			} else {
-				application.objectMappings[variables.entityName].versioned=false;
-			}
-			
 			getValidations();	
 		}
+
 		//writeDump(var=variables.properties,abort=true);
 		
 		return application.objectMappings[variables.entityName].properties;
@@ -457,94 +463,97 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(structIsEmpty(variables.validations)){
 			
 			if(!isDefined('application.objectMappings.#variables.entityName#.validations')){
-			
-				param name="application.objectMappings" default={};
-				param name="application.objectMappings.#variables.entityName#" default={};
-				
-				application.objectMappings[variables.entityName].validations={};
-				application.objectMappings[variables.entityName].validations.properties={};
+				lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
+					if(!isDefined('application.objectMappings.#variables.entityName#.validations')){
+						param name="application.objectMappings" default={};
+						param name="application.objectMappings.#variables.entityName#" default={};
+						
+						application.objectMappings[variables.entityName].validations={};
+						application.objectMappings[variables.entityName].validations.properties={};
 
-				var props=getProperties();
-				var rules=[];
-				var rule={};
-				var ruleKey='';
-				var tempRule='';
-				var basicRules = ['minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
+						var props=getProperties();
+						var rules=[];
+						var rule={};
+						var ruleKey='';
+						var tempRule='';
+						var basicRules = ['minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
 
 
-				for(var prop in props){
+						for(var prop in props){
 
-					rules=[];
+							rules=[];
 
-					if(structKeyExists(props[prop], "fkcolumn")){
-						ruleKey=props[prop].fkcolumn;
-					} else {
-						ruleKey=prop;
-					}
-
-					if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
-						if(structKeyExists(props[prop], "message")){
-							rule={message=props[prop].message};
-						} else {
-							rule={};
-						}
-						structAppend(rule,{datatype=props[prop].datatype});
-						arrayAppend(rules, rule);
-					}
-
-					if(structKeyExists(props[prop], "required") && props[prop].required){
-						if(structKeyExists(props[prop], "message")){
-							rule={message=props[prop].message};
-						} else {
-							rule={};
-						}
-						structAppend(rule,{required=props[prop].required});
-						arrayAppend(rules,rule);
-					}
-
-					if(structKeyExists(props[prop], "format")){
-						if(structKeyExists(props[prop], "message")){
-							rule={format=props[prop].message};
-						} else {
-							rule={};
-						}
-						structAppend(rule,{required=props[prop].required});
-						arrayAppend(rules,rule);
-					}
-
-					if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
-						if(structKeyExists(props[prop], "message")){
-							rule={message=props[prop].message};
-						} else {
-							rule={};
-						}
-						structAppend(rule,{maxLength=props[prop].length});
-						arrayAppend(rules,rule);
-					}
-
-					for(var r=1;r <= arrayLen(basicRules);r++){
-						if(structKeyExists(props[prop], basicRules[r])){
-							if(structKeyExists(props[prop], "message")){
-								rule={message=props[prop].message};
+							if(structKeyExists(props[prop], "fkcolumn")){
+								ruleKey=props[prop].fkcolumn;
 							} else {
-								rule={};
+								ruleKey=prop;
 							}
-							tempRule=props[prop];
-							structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
-							arrayAppend(rules, rule);
-						}
 
-					}	
-					
-					if(arrayLen(rules)){
-						application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+							if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
+								if(structKeyExists(props[prop], "message")){
+									rule={message=props[prop].message};
+								} else {
+									rule={};
+								}
+								structAppend(rule,{datatype=props[prop].datatype});
+								arrayAppend(rules, rule);
+							}
+
+							if(structKeyExists(props[prop], "required") && props[prop].required){
+								if(structKeyExists(props[prop], "message")){
+									rule={message=props[prop].message};
+								} else {
+									rule={};
+								}
+								structAppend(rule,{required=props[prop].required});
+								arrayAppend(rules,rule);
+							}
+
+							if(structKeyExists(props[prop], "format")){
+								if(structKeyExists(props[prop], "message")){
+									rule={format=props[prop].message};
+								} else {
+									rule={};
+								}
+								structAppend(rule,{required=props[prop].required});
+								arrayAppend(rules,rule);
+							}
+
+							if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
+								if(structKeyExists(props[prop], "message")){
+									rule={message=props[prop].message};
+								} else {
+									rule={};
+								}
+								structAppend(rule,{maxLength=props[prop].length});
+								arrayAppend(rules,rule);
+							}
+
+							for(var r=1;r <= arrayLen(basicRules);r++){
+								if(structKeyExists(props[prop], basicRules[r])){
+									if(structKeyExists(props[prop], "message")){
+										rule={message=props[prop].message};
+									} else {
+										rule={};
+									}
+									tempRule=props[prop];
+									structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+									arrayAppend(rules, rule);
+								}
+
+							}	
+							
+							if(arrayLen(rules)){
+								application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+							}
+						}
 					}
 				}
-
 			}
 
 			return application.objectMappings[variables.entityName].validations;
 		}
+
 		return variables.validations;
 	}
 
