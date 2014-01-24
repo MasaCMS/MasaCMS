@@ -121,7 +121,7 @@
 		</table>
 		<cfif variables.nextN.numberofpages gt 1>
 			<cfoutput>
-				<div class="#this.dataResponsePaginationClass#">
+				<div class="mura-next-n navSequential #this.dataResponsePaginationClass#">
 					<ul>
 						<cfif variables.nextN.currentpagenumber gt 1>
 							<li>
