@@ -1251,7 +1251,8 @@ function getDialogPosition() {
 		return "center";
 	}
 	*/
-	["top",20]
+	//["top",20]
+	return "center";
 }
 
 function openPreviewDialog(previewURL) {
