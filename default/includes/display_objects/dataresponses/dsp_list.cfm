@@ -121,7 +121,7 @@
 		</table>
 		<cfif variables.nextN.numberofpages gt 1>
 			<cfoutput>
-				<div class="#renderer.dataResponsePaginationClass#">
+				<div class="#this.dataResponsePaginationClass#">
 					<ul>
 						<cfif variables.nextN.currentpagenumber gt 1>
 							<li>
