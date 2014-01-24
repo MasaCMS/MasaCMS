@@ -336,4 +336,33 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		return o;
 	}
 
+	public boolean function purgeDeletedComments(string siteid) {
+		var local = {};
+		var qDeleted = new Query(datasource=getConfigBean().getReadOnlyDatasource());
+		var purged = true;
+
+		local.qryStr = '
+			DELETE
+			FROM tcontentcomments
+			WHERE 0=0
+				AND isdeleted = 1
+		';
+
+		// siteid
+		if ( StructKeyExists(arguments, 'siteid') ) {
+			local.qryStr &= ' AND siteid = ( :siteid ) ';
+			qDeleted.addParam(name='siteid', value=arguments.siteid, cfsqltype='cf_sql_varchar');
+		}
+
+		qDeleted.setSQL(local.qryStr);
+
+		try {
+			qDeleted.execute().getResult();
+		} catch(any e) {
+			purged = false;
+		}
+
+		return purged;
+	}
+
 }

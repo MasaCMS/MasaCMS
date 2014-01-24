@@ -46,6 +46,14 @@
 
 
 var commentManager = {
+
+
+	purgeDeletedComments: function(){
+		var url = './';
+		var pars = 'muraAction=cComments.purgeDeletedComments&siteid=' + siteid + '&cacheid=' + Math.random();
+		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
+	},
+
 	loadSearch: function(values){
 		var url = './';
 		var pars = 'muraAction=cComments.loadcomments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
@@ -149,7 +157,21 @@ var commentManager = {
 					commentManager.bulkEdit();
 				}
 			)
-		});	
+		});
+
+		// PURGE
+		$('a#purge-comments').click(function(e) {
+			e.preventDefault();
+			var k = $(this);
+			console.log('request to purge');
+			confirmDialog(
+				k.attr('data-alertmessage'),
+				function(){
+					console.log('purge approved');
+					commentManager.purgeDeletedComments();
+				}
+			)
+		});
 
 		$('a.singleEdit').click(function(e) {
 			e.preventDefault();

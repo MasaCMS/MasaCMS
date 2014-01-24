@@ -55,16 +55,8 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<!---
-
-	TODO:	
-			*) maybe display comments grouped by content title and nested by replies
-			*) flag comment as SPAM
-				- allow for blacklisting/blocking IP
-
---->
 </cfsilent>
-<script src="assets/js/comment.js?coreversion=<cfoutput>#application.coreversion#</cfoutput>" type="text/javascript"></script>
+<script src="assets/js/comment.js?coreversion=<cfoutput>#application.coreversion#</cfoutput>&amp;dts=<cfoutput>#now()#</cfoutput>" type="text/javascript"></script>
 <style>
 #frmSearch div.full>div {
 	width: 940px !important;
@@ -101,6 +93,14 @@
 	</cfif>
 
 	<form id="frmSearch" action="index.cfm">
+
+		<!--- PURGE DELETED COMMENTS --->
+		<cfif rc.$.currentUser().isSuperUser()>
+			<div>
+				<p><a id="purge-comments" class="btn btn-default" data-alertmessage="#application.rbFactory.getKeyValue(session.rb,'comments.message.confirm.purge')#"><i class="fa fa-trash-o icon-trash"></i> #application.rbFactory.getKeyValue(session.rb,'comments.purgedeletedcomments')#</a>
+			</div>
+		</cfif>
+
 		<div class="tabs-left mura-ui full">
 			<div class="tab-content">
 				<div class="fieldset">
