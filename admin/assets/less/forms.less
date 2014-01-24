@@ -338,8 +338,11 @@ label:last-child {
 #configurator {
 	
 	.fieldset-wrap {
-	.box-shadow(none);
 	margin-bottom: 0;
+	.box-shadow(none);
+	.box-sizing(border-box);
+	background: @grayLight;
+	padding: 15px;
 		}
 	
 	.fieldset {
@@ -348,6 +351,17 @@ label:last-child {
 		}
 }
 
+.ui-dialog-content #configurator {
+	
+	h2 {
+		margin-top: 0;
+	}
+
+	.fieldset-wrap {
+		padding: 0;
+		background-color: transparent;
+	}
+}
 // Various Search Utilities
 .criteria {
 	font-size: 22px;
