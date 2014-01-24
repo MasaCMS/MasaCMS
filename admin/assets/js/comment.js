@@ -44,15 +44,7 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-
 var commentManager = {
-
-
-	purgeDeletedComments: function(){
-		var url = './';
-		var pars = 'muraAction=cComments.purgeDeletedComments&siteid=' + siteid + '&cacheid=' + Math.random();
-		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
-	},
 
 	loadSearch: function(values){
 		var url = './';
@@ -259,5 +251,11 @@ var commentManager = {
 			url: './',
 			data: params
 		});
+	},
+
+	purgeDeletedComments: function(){
+		var url = './';
+		var pars = 'muraAction=cComments.purgeDeletedComments&siteid=' + siteid + '&cacheid=' + Math.random();
+		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
 	}
 }
