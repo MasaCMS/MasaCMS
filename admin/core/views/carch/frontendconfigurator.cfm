@@ -152,6 +152,20 @@ jQuery(document).ready(function(){
 						'parentid':'#JSStringFormat(rc.contentBean.getParentID())#'		
 					});
 		</cfcase>
+		<cfcase value="site_map">	
+			siteManager.initSiteMapConfigurator({
+						'object':'#JSStringFormat(rsDisplayObject.object)#',
+						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
+						'name':'#JSStringFormat(rsDisplayObject.name)#',
+						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
+						'context':'#application.configBean.getContext()#',
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(rc.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(rc.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(rc.contentBean.getParentID())#'		
+					});
+		</cfcase>
 		<cfcase value="related_content,related_section_content">	
 			siteManager.initRelatedContentConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
