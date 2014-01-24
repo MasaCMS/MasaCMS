@@ -320,4 +320,9 @@ component persistent="false" accessors="true" output="false" extends="controller
 			
 	}
 
+	public void function purgeDeletedComments(required struct rc) {
+		rc.processed = getContentCommentManager().purgeDeletedComments(arguments.rc.siteid);
+		getFW().redirect(action='cComments.default', preserve='processed,isapproved,siteid',path="./");
+	}
+
 }
