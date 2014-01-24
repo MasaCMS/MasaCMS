@@ -160,7 +160,7 @@ var commentManager = {
 				k.attr('data-alertmessage'),
 				function(){
 					console.log('purge approved');
-					commentManager.purgeDeletedComments();
+					actionModal(function(){commentManager.purgeDeletedComments();});		
 				}
 			)
 		});
@@ -256,6 +256,9 @@ var commentManager = {
 	purgeDeletedComments: function(){
 		var url = './';
 		var pars = 'muraAction=cComments.purgeDeletedComments&siteid=' + siteid + '&cacheid=' + Math.random();
-		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
+		$.get(url + "?" + pars, function(){
+			$('#action-modal').remove();
+			commentManager.submitSearch();
+		});
 	}
 }
