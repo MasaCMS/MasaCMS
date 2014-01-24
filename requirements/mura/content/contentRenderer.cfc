@@ -1799,6 +1799,20 @@ Display Objects
 				<cfset args=deserializeJSON(arguments.params)>
 			</cfif>
 		</cfcase>
+		<cfcase value="site_map">
+			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
+				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+				<cfif showEditable>
+					<cfset editableControl.class="editableSiteMap">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.isConfigurator=true>
+				</cfif>
+			</cfif>
+
+			<cfif isJSON(arguments.params)>
+				<cfset args=deserializeJSON(arguments.params)>
+			</cfif>
+		</cfcase>
 		<cfcase value="related_content,related_section_content">
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
@@ -1886,7 +1900,7 @@ Display Objects
 		</cfcase>
 		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")></cfcase>
 		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")></cfcase>
-		<cfcase value="site_map"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)></cfcase>							
+		<cfcase value="site_map"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,objects=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable)></cfcase>							
 		<cfcase value="category_summary"><cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & variables.event.getValue('categoryID'),params=arguments.params)></cfcase>
 		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)></cfcase>
 		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)></cfcase>
