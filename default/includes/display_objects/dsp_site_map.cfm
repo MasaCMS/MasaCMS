@@ -46,9 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <!--- Matt, 2 things need to happen: add "-tree" to the class; set this.ulNestedClass to no value on the dspNestedNav method below. The value is set in the theme contentRenderer for MuraBootstrap3. --->
-
+<cfparam name="objectparams.mapclass" default="mura-site-map">
 <cfoutput>
-	<ul id="svSiteMap" class="mura-site-map">
+	<ul id="svSiteMap" class="#objectparams.mapclass#">
 		<li class="home"><a href="#variables.$.globalConfig('context')##variables.$.getURLStem(variables.$.event('siteID'),'')#">Home</a>#variables.$.dspNestedNav(contentid='00000000000000000000000000000000001',viewdepth=10,class='')#
 		</li>
 	</ul>
