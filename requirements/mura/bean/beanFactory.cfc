@@ -70,4 +70,5 @@ component extends="ioc" {
 	  }
 
 	  // At the moment this does nothing else. This method is here for WireBox compatibility for dealing with WireBox's scope storage.
+	}
 }
