@@ -730,6 +730,9 @@
 				<cfcase value="double">
 					<cfreturn "Decimal">
 				</cfcase>
+				<cfcase value="blob">
+					<cfreturn "varbinary">
+				</cfcase>
 			</cfswitch>
 		</cfcase>
 		<cfcase value="mysql">
@@ -760,6 +763,9 @@
 				</cfcase>
 				<cfcase value="double">
 					<cfreturn "double">
+				</cfcase>
+				<cfcase value="blob">
+					<cfreturn "longblob">
 				</cfcase>
 			</cfswitch>
 		</cfcase>
@@ -792,6 +798,9 @@
 				<cfcase value="double">
 					<cfreturn "double precision">
 				</cfcase>
+				<cfcase value="blob">
+					<cfreturn "bytea">
+				</cfcase>
 			</cfswitch>
 		</cfcase>
 		<cfcase value="nuodb">
@@ -823,6 +832,9 @@
 				<cfcase value="double">
 					<cfreturn "double">
 				</cfcase>
+				<cfcase value="blob">
+					<cfreturn "blob">
+				</cfcase>
 			</cfswitch>
 		</cfcase>
 		<cfcase value="oracle">
@@ -850,6 +862,9 @@
 				</cfcase>
 				<cfcase value="double">
 					<cfreturn "binary_double">
+				</cfcase>
+				<cfcase value="blob">
+					<cfreturn "blob">
 				</cfcase>
 			</cfswitch>
 		</cfcase>
@@ -915,9 +930,12 @@
 			<cfcase value="double,decimal,binary_double">
 				<cfset columnArgs.datatype="double">
 			</cfcase>
+			<cfcase value="blob,longblob,bytea,varbinary">
+				<cfset columnArgs.datatype="blob">
+			</cfcase>
 		</cfswitch>
 
-		<cfif arguments.rs.is_nullable eq "y" or (isBoolean(arguments.rs.is_nullable) and arguments.rs.is_nullable)>
+		<cfif columnArgs.datatype eq 'blob' or arguments.rs.is_nullable eq "y" or (isBoolean(arguments.rs.is_nullable) and arguments.rs.is_nullable)>
 			<cfset columnArgs.nullable=true>
 		<cfelse>
 			<cfset columnArgs.nullable=false>
