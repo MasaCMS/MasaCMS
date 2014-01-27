@@ -547,7 +547,6 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfargument name="string">
 	<cfargument name="hash">
 	<cfset var match = "" />
-	<cfset var startTick = getTickCount() />
 	<cftry>
 	<cfset match = variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
 	<cfcatch>
