@@ -140,20 +140,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#", source="#arguments.fileObj#")>
 				
 					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>	
-						<cfif len(arguments.fileObjSource)>
+						<cfif len(arguments.fileObjSource) AND FileExists(arguments.fileObjSource)>
 							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_source.#arguments.fileExt#", source="#arguments.fileObjSource#")>
 						</cfif>
-						<cfif len(arguments.fileObjSmall)>
+						<cfif len(arguments.fileObjSmall) AND FileExists(arguments.fileObjSmall)>
 							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.#arguments.fileExt#", source="#arguments.fileObjSmall#")>
 						</cfif>
-						<cfif len(arguments.fileObjMedium)>
+						<cfif len(arguments.fileObjMedium) AND FileExists(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.#arguments.fileExt#", source="#arguments.fileObjMedium#")/>
 						</cfif>
 					<cfelseif arguments.fileExt eq 'flv'>
-						<cfif len(arguments.fileObjSmall)>
+						<cfif len(arguments.fileObjSmall) AND FileExists(arguments.fileObjSmall)>
 							<cfset variables.fileWriter.moveFile(mode="774", destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.jpg", source="#arguments.fileObjSmall#")>
 						</cfif>
-						<cfif len(arguments.fileObjMedium)>
+						<cfif len(arguments.fileObjMedium) AND FileExists(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.writeFile( mode="774",  destination="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.jpg", source="#arguments.fileObjMedium#")>
 						</cfif>
 					</cfif>			
