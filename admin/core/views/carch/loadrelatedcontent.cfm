@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 		
 		if (len($.event("rcEndDate"))) {
-			feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lte",criteria=$.event("rcEndDate"));	
+			feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
 		}
 
 		feed.addParam(relationship=")");
@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 		
 		if (len($.event("rcEndDate"))) {
-			feed.addParam(field="tcontent.displayStart",datatype="date",condition="lte",criteria=$.event("rcEndDate"));	
+			feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
 		}
 
 		feed.addParam(relationship=")");
