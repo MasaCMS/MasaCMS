@@ -534,7 +534,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		variables.bCrypt.gensalt(JavaCast('int',arguments.logRounds))
 	/>
 	<cfset variables.cryptoSaltSct.dateTimeCreated = now() />
-	</cffunction>
+</cffunction>
 
 <cffunction name="toBCryptHash" output="false">
 	<cfargument name="string">
