@@ -155,6 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.managelinks=true/>
 <cfset variables.instance.hasRazuna=false>
 <cfset variables.instance.purgecomments=true />
+<cfset variables.instance.defaultflatviewrange=0 />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

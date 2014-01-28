@@ -90,16 +90,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
 	
+	paramsStarted=false;
 	tagStarted=false;
 
 	if(len($.event("tags"))){
 		tagStarted=true;
+		paramsStarted=true;
 		feed.addParam(relationship="and (");
 		feed.addParam(field="tcontenttags.tag",criteria=$.event("tags"),condition="in");
 	}
 
 	if(len($.siteConfig('customTagGroups'))){
 		tagGroupArray=listToArray($.siteConfig('customTagGroups'));
+		paramsStarted=true;
  		for(g=1;g <= arrayLen(tagGroupArray); g++ ){
  			if(len($.event("#tagGroupArray[g]#tags"))){
 	 			if(!tagStarted){
@@ -121,14 +124,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	
 	if(len($.event("type"))){
+		paramsStarted=true;
 		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");	
 	}
 	
 	if(len($.event("subtype"))){
+		paramsStarted=true;
 		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));	
 	}
 	
 	if(len($.event("categoryID"))){
+		paramsStarted=true;
 		feed.setCategoryID($.event("categoryID"));	
 	}
 	
@@ -144,32 +150,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	
 	if($.event('report') eq "lockedfiles"){
+		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
 	
 	} else if($.event('report') eq "mylockedfiles"){
+		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
 	
 	} else if($.event('report') eq "expires"){
+		paramsStarted=true;
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
 		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
 	
 	} else if($.event('report') eq "myexpires"){
+		paramsStarted=true;
 		subList=$.getBean("contentManager").getExpiringContent($.event("siteID"),$.currentUser("userID"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	
 	} else if($.event('report') eq "mydrafts"){
+		paramsStarted=true;
 		drafts=$.getBean("contentManager").getDraftList(siteid=$.event("siteID"), startdate=dateAdd('m',-3,now()));
 		//writeDump(var=drafts,abort=true);
 		feed.addParam(field="tcontent.contentid",datatype="varchar",condition="in",criteria=valuelist(drafts.contentid));
 		feed.setLiveOnly(0);
 		//writeDump(var=feed.getQuery(),abort=true);
 	} else if($.event('report') eq "myapprovals"){
+		paramsStarted=true;
 		drafts=$.getBean("contentManager").getApprovalsQuery($.event("siteID"));
 		//writeDump(var=drafts,abort=true);
 		feed.addParam(field="tcontent.contentid",datatype="varchar",condition="in",criteria=valuelist(drafts.contentid));
 		feed.setLiveOnly(0);
 
 	} else if($.event('report') eq "mysubmissions"){
+		paramsStarted=true;
 		drafts=$.getBean("contentManager").getSubmissionsQuery($.event("siteID"));
 		//writeDump(var=subList,abort=true);
 		feed.addParam(field="tcontent.contentid",datatype="varchar",condition="in",criteria=valuelist(drafts.contentid));
@@ -178,8 +191,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	
 	if(len($.event("keywords"))){	
+		paramsStarted=true;
 		subList=$.getBean("contentManager").getPrivateSearch($.event("siteID"),$.event("keywords"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
+	}
+
+	if(!paramsStarted && isNumeric($.globalConfig('defaultflatviewrange')) && $.globalConfig('defaultflatviewrange')){
+		feed.addParam(field="tcontent.lastupdate",criteria=dateAdd('d',-$.globalConfig('defaultflatviewrange'),now()),condition=">=",datatype='datetime');
 	}
 	
 	iterator=feed.getIterator();
