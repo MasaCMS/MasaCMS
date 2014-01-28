@@ -156,6 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.hasRazuna=false>
 <cfset variables.instance.purgecomments=true />
 <cfset variables.instance.defaultflatviewrange=0 />
+<cfset variables.instance.defaultflatviewtable="" />
 <cfset variables.instance.showadminloginhelp=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
