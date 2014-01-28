@@ -196,8 +196,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	}
 
-	if(!paramsStarted && isNumeric($.globalConfig('defaultflatviewrange')) && $.globalConfig('defaultflatviewrange')){
-		feed.addParam(field="tcontent.lastupdate",criteria=dateAdd('d',-$.globalConfig('defaultflatviewrange'),now()),condition=">=",datatype='datetime');
+	if(!paramsStarted ){
+		if( isNumeric($.globalConfig('defaultflatviewrange')) && $.globalConfig('defaultflatviewrange') ){
+			feed.addParam(field="tcontent.lastupdate",criteria=dateAdd('d',-$.globalConfig('defaultflatviewrange'),now()),condition=">=",datatype='datetime');
+		}
+		if( len($.globalConfig('defaultflatviewtable')) ){
+			feed.setTable($.globalConfig('defaultflatviewtable'));
+		}
 	}
 	
 	iterator=feed.getIterator();
