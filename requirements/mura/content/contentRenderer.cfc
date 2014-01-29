@@ -62,6 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
+<cfset this.siteIDInURLS=0>
+<cfset this.indexFileInURLS=1>
+
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
@@ -398,6 +401,9 @@ Display Objects
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
+
+	<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+	<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
 
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
@@ -1485,6 +1491,8 @@ Display Objects
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
+	<cfargument name="siteidinurls" default="#this.siteIDInURLS#">
+	<cfargument name="indexfileinurls" default="#this.indexFileInURLS#">
 	<cfreturn application.contentServer.getURLStem(argumentCollection=arguments)>
 </cffunction>
 
