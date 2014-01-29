@@ -94,7 +94,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 
 		if(dbtype eq "mssql" and arguments.maxItems){
 			local.qryStr='SELECT top ' & arguments.maxItems
-				& ' FROM tcontentcomments
+				& ' * FROM tcontentcomments
 				WHERE 0=0 ';
 		} else if(dbtype eq "oracle" and arguments.maxItems){
 			local.qryStr='select * from (
