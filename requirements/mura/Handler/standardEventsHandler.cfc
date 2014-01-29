@@ -372,12 +372,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfcase value="updateprofile">
 				<cfif session.mura.isLoggedIn>
-					<cfset arguments.event.setValue("userID",session.mura.userID)>
+					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset structDelete(eventStruct,'isPublic')>
+					<cfset structDelete(eventStruct,'s2')>
+					<cfset structDelete(eventStruct,'type')>
+					<cfset eventStruct.userid=session.mura.userID>
+					
 					<cfif isDefined('request.addressAction')>
 						<cfif arguments.event.getValue('addressAction') eq "create">
-							<cfset application.userManager.createAddress(arguments.event.getAllValues())>
+							<cfset application.userManager.createAddress(eventStruct)>
 						<cfelseif arguments.event.getValue('addressAction') eq "update">
-							<cfset application.userManager.updateAddress(arguments.event.getAllValues())>
+							<cfset application.userManager.updateAddress(eventStruct)>
 						<cfelseif arguments.event.getValue('addressAction') eq "delete">
 							<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
 						</cfif>
@@ -385,9 +390,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset arguments.event.setValue('addressID','')>
 						<cfset arguments.event.setValue('addressAction','')>
 					<cfelse>
-						<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(arguments.event.getAllValues()).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
+						<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
 						<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
-							<cfset application.loginManager.loginByUserID(arguments.event.getAllValues())>
+							<cfset application.loginManager.loginByUserID(eventStruct)>
 						</cfif>
 					</cfif>
 				</cfif>
@@ -395,18 +400,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfcase value="createprofile">
 				<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
-					<cfset arguments.event.setValue("userID","")>
+					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset structDelete(eventStruct,'isPublic')>
+					<cfset structDelete(eventStruct,'s2')>
+					<cfset structDelete(eventStruct,'type')>
+					<cfset eventStruct.userid=''>
 					
 					<cfif arguments.event.valueExists("useProtect")>
 						<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 					</cfif>
 					
-					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(arguments.event.getAllValues()).save() ) />		
+					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />		
 					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
 						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
 					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>	
 						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
-						<cfset application.loginManager.loginByUserID(arguments.event.getAllValues())>
+						<cfset application.loginManager.loginByUserID(eventStruct)>
 					</cfif>
 				</cfif>
 			</cfcase>
