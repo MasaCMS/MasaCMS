@@ -1041,6 +1041,11 @@
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
+			<cfcase value="nuodb">
+				<cfquery>
+				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
+				</cfquery>
+			</cfcase>
 			</cfswitch>	
 		<cfcatch></cfcatch>
 		</cftry>
