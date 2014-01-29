@@ -261,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 	</cfif>
 
-	<cfparam name="application.applyDbUpdates" default="#application.configBean.getValue("applyDBUpdates")#">
+	<cfparam name="application.applyDbUpdates" default="false">
 
 	<cfset application.objectMappings={}>
 	<cfset application.objectMappings.bundleableBeans="">
