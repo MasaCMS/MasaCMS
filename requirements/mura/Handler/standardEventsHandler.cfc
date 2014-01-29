@@ -376,6 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset structDelete(eventStruct,'isPublic')>
 					<cfset structDelete(eventStruct,'s2')>
 					<cfset structDelete(eventStruct,'type')>
+					<cfset structDelete(eventStruct,'groupID')>
 					<cfset eventStruct.userid=session.mura.userID>
 					
 					<cfif isDefined('request.addressAction')>
@@ -404,6 +405,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset structDelete(eventStruct,'isPublic')>
 					<cfset structDelete(eventStruct,'s2')>
 					<cfset structDelete(eventStruct,'type')>
+					<cfset structDelete(eventStruct,'groupID')>
 					<cfset eventStruct.userid=''>
 					
 					<cfif arguments.event.valueExists("useProtect")>
