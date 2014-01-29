@@ -485,6 +485,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="createprofile">
 				<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
 					<cfset arguments.event.setValue("userID","")>
+					<cfset arguments.event.setValue("s2",0)>
+					<cfset arguments.event.setValue("isPublic",1)>
 					
 					<cfif arguments.event.valueExists("useProtect")>
 						<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
