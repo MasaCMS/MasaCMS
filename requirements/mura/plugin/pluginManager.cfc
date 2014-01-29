@@ -616,7 +616,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfabort>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="</cfif>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
-	
+
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
 		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
@@ -652,7 +652,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfset currentPath=currentDir & "/" & p>
 							<cfif len(p) and directoryExists(currentPath)>
 								<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-								<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "#rsRequirements.name#/#p#"></cfif>')>
+								<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
 							</cfif>
 						</cfif>
 					</cfloop>
