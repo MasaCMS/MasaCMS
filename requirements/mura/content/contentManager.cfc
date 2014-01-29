@@ -766,6 +766,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doPurgeContentDescendentsCache=false>
 		<cfset var doTrimVersionHistory=false>
 		<cfset var doPreserveVersionedObjects=false>
+		<cfset var doDeleteDraftHistAll=false>
 		<cfset var activeBean="">
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
@@ -1268,7 +1269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset newBean.setActive(1) />
 					<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
 					<cfif variables.configBean.getPurgeDrafts()>
-						<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+						<cfset doDeleteDraftHistAll=true>
 					</cfif>
 					<cfif variables.configBean.getMaxArchivedVersions()>
 						<cfset doTrimVersionHistory=true>
@@ -1407,6 +1408,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif doPurgeContentDescendentsCache>
 					<cfset purgeContentDescendentsCache(contentBean=currentBean)>
+				</cfif>
+				<cfif doDeleteDraftHistAll>
+					<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),newBean.getSiteID())>
 				</cfif>
 				<cfif doTrimVersionHistory>
 					<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
@@ -2235,6 +2239,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset local.fileBean=getBean('file')>
 				<cfset local.fileBean.set(fileItem)>
+				<cfif structKeyExists(fileItem,'summary')>
+					<cfset local.fileBean.setCaption(fileItem.summary)>
+				</cfif>
 				<cfset local.fileBean.setFileField('files')>
 				<cfset local.fileBean.save()>
 			
@@ -2303,6 +2310,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset local.fileBean=getBean('file')>
 				<cfset local.fileBean.set(fileItem)>
+				<cfif structKeyExists(fileItem,'summary')>
+					<cfset local.fileBean.setCaption(fileItem.summary)>
+				</cfif>
 				<cfset local.fileBean.setFileField('files')>
 				<cfset local.fileBean.save()>
 			
