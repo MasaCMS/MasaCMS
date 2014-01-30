@@ -207,7 +207,7 @@
 		
 		//dsp_content_list.cfm
 		this.contentListImageStyles=true;
-		this.contentListImagePadding=20; must be pixels
+		this.contentListImagePadding=20; //must be pixels
 		/* this.contentListPropertyMap={
 				containerEl={tag="div"},
 				itemEl={tag="dl"},
