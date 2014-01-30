@@ -62,6 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
+<cfset this.siteIDInURLS=0>
+<cfset this.indexFileInURLS=1>
+
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
@@ -398,6 +401,9 @@ Display Objects
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
+
+	<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+	<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
 
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
@@ -1485,6 +1491,8 @@ Display Objects
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
+	<cfargument name="siteidinurls" default="#this.siteIDInURLS#">
+	<cfargument name="indexfileinurls" default="#this.indexFileInURLS#">
 	<cfreturn application.contentServer.getURLStem(argumentCollection=arguments)>
 </cffunction>
 
@@ -1744,6 +1752,7 @@ Display Objects
 <cfargument name="orderno" required="true" default="0">
 <cfargument name="hasConfigurator" required="true" default="false">
 <cfargument name="assignmentPerm" required="true" default="none">
+<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & variables.event.getValue('contentBean').getcontentID() />
@@ -1754,77 +1763,67 @@ Display Objects
 	<cfset var tempObject="">
 	<cfset var args={}>
 	
-	<cfswitch expression="#arguments.object#">
-		<cfcase value="plugin">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >
+	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
+		<cfswitch expression="#arguments.object#">
+			<cfcase value="plugin">
 				<cfset showEditable=arguments.hasConfigurator and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editablePlugin">
 					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
-			</cfif>
-		</cfcase>
-		<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >
+			</cfcase>
+			<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableFeed">
 					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
-			</cfif>
-		</cfcase>
-		<cfcase value="category_summary,category_summary_rss">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+			</cfcase>
+			<cfcase value="category_summary,category_summary_rss">
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableCategorySummary">
 					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
-			</cfif>
-		</cfcase>
-		<cfcase value="tag_cloud">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects and len($.siteConfig('customTagGroups'))>	
-				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
-				<cfif showEditable>
-					<cfset editableControl.class="editableTagCloud">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
-					<cfset editableControl.isConfigurator=true>
+			</cfcase>
+			<cfcase value="tag_cloud">
+				<cfif Len($.siteConfig('customTagGroups'))>	
+					<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+					<cfif showEditable>
+						<cfset editableControl.class="editableTagCloud">
+						<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+						<cfset editableControl.isConfigurator=true>
+					</cfif>
 				</cfif>
-			</cfif>
 
-			<cfif isJSON(arguments.params)>
-				<cfset args=deserializeJSON(arguments.params)>
-			</cfif>
-		</cfcase>
-		<cfcase value="site_map">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
+				<cfif isJSON(arguments.params)>
+					<cfset args=deserializeJSON(arguments.params)>
+				</cfif>
+			</cfcase>
+			<cfcase value="site_map">	
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableSiteMap">
 					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
-			</cfif>
 
-			<cfif isJSON(arguments.params)>
-				<cfset args=deserializeJSON(arguments.params)>
-			</cfif>
-		</cfcase>
-		<cfcase value="related_content,related_section_content">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+				<cfif isJSON(arguments.params)>
+					<cfset args=deserializeJSON(arguments.params)>
+				</cfif>
+			</cfcase>
+			<cfcase value="related_content,related_section_content">
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableRelatedContent">
 					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
-			</cfif>
-		</cfcase>
-		<cfcase value="component,form">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
+			</cfcase>
+			<cfcase value="component,form">
 				<cfset showEditable=listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID))>		
 				<cfif showEditable>
 					<cfset historyID = variables.$.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
@@ -1853,9 +1852,9 @@ Display Objects
 					</cfif>		
 					<cfset editableControl.isConfigurator=false>
 				</cfif>
-			</cfif>
-		</cfcase>
-	</cfswitch>	
+			</cfcase>
+		</cfswitch>	
+	</cfif>
 				
 	<cfif showEditable>
 		<cfif len(application.configBean.getAdminDomain())>

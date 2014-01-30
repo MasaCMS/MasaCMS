@@ -212,6 +212,8 @@ component persistent="false" accessors="true" output="false" extends="controller
 			default : break;
 		}
 
+		param name="arguments.rc.maxItems" default='1000';
+
 		rc.itComments = getContentCommentManager().getCommentsIterator(argumentCollection=rc);
 
 		// Pagination Setup

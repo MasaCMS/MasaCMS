@@ -66,7 +66,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <!--- <h2>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h2> --->
 <h2>#HTMLEditFormat(rc.changeset.getName())#</h2>
+
+<cfif not rc.changeset.getPublished()>
 <p><i class="icon-link"></i> <a title="Change Set Name" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
+</cfif>
+
 <form class="form-inline separate" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" placeholder="Keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
 	<input type="button" class="btn" onclick="return submitForm(document.forms.assignmentSearch);" value="#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#" />
@@ -112,11 +116,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif verdict neq 'none'>
       <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets"> <i class="icon-pencil"></i></a></li> 	
-			 <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
+			 <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#JSStringFormat(rc.rslist.contenthistid)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>
     <cfelse>
       <li class="edit disabled"><i class="icon-edit"></i></li>
-      <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
+      <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#JSStringFormat(rc.rslist.contentHistID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		  <li class="version-history disabled"><i class="icon-book"></i></li>
     </cfif>
 		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>

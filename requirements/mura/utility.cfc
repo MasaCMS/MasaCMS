@@ -516,22 +516,60 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfheader name="Set-Cookie" value="#c#" />
 </cffunction>
 
+<cffunction name="getCryptoSalt" returntype="string" output="false">
+    <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
+    <cfargument name="reseedFrequency" default="#variables.configBean.getBCryptReseedFrequency()#" hint="How often to re-seed." >
+    <cfif structKeyExists(variables, "cryptoSaltSct") >
+            
+            <cfset var minutesSinceSaltCreated = 
+                    dateDiff(
+                            "n",
+                            variables.cryptoSaltSct.dateTimeCreated,
+                            now()
+                    )
+            />
+            
+            <cfif minutesSinceSaltCreated GTE reseedFrequency >
+                    <cfset this.setCryptoSalt(arguments.logRounds) />
+            </cfif>
+            
+    <cfelse>
+            
+            <cfset this.setCryptoSalt(arguments.logRounds) />
+            
+    </cfif>
+    
+    <cfreturn variables.cryptoSaltSct.salt />
+        
+</cffunction>
+
+<cffunction name="setCryptoSalt" returntype="void" output="true" >
+        <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
+        <cfset variables.cryptoSaltSct.salt =
+                variables.bCrypt.gensalt(JavaCast('int',arguments.logRounds))
+        />
+        <cfset variables.cryptoSaltSct.dateTimeCreated = now() />
+</cffunction>
+
 <cffunction name="toBCryptHash" output="false">
-	<cfargument name="string">
-	<cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
-	<cfreturn variables.bCrypt.hashpw(JavaCast('string',arguments.string), variables.bCrypt.gensalt(JavaCast('int',arguments.logRounds)))>
+        <cfargument name="string">
+        <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">        
+        <cfset var hash = variables.bCrypt.hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
+        <cfreturn hash >
 </cffunction>
 
 <cffunction name="checkBCryptHash" output="false">
-	<cfargument name="string">
-	<cfargument name="hash">
-	<cftry>
-	<cfreturn variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
-	<cfcatch>
-		<cfreturn false>
-	</cfcatch>
-	</cftry>
-</cffunction>		
+        <cfargument name="string">
+        <cfargument name="hash">
+        <cfset var match = "" />
+        <cftry>
+        <cfset match = variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
+        <cfcatch>
+                <cfset match = false>
+        </cfcatch>
+        </cftry>
+        <cfreturn match />
+</cffunction>            		
 
 <cffunction name="checkForInstanceOf" output="false">
 	<cfargument name="obj">

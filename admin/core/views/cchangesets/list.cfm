@@ -111,7 +111,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 		<ul>
 			<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-pencil"></i></a></li>
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
+			<cfif rc.changeset.getPublished()>
+				<li class="preview disabled"><i class="icon-globe"></i></li>
+			<cfelse>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
+			</cfif>
 			<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-reorder"></i></a></li>
 			<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 		</ul>

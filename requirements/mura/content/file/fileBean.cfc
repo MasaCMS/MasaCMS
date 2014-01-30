@@ -21,10 +21,12 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	property name="remoteSource" type="varchar" length=255;
 	property name="remoteSourceURL" type="varchar" length=255;
 
+	/*
 	function setSummary(summary){
 		setValue('caption',arguments.summary);
 		return this;
 	}
+	*/
 
 	function setFileField(fileField){
 		variables.instance.fileField=arguments.fileField;

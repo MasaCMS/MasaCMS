@@ -145,6 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
 <cfset variables.instance.BCryptLogRounds=10>
+<cfset variables.instance.BCryptReseedFrequency=60>
 <cfset variables.instance.maxSourceImageWidth=3000>
 <cfset variables.dbUtility="">
 <cfset variables.instance.allowAutoUpdates=1>
@@ -154,6 +155,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.managelinks=true/>
 <cfset variables.instance.hasRazuna=false>
 <cfset variables.instance.purgecomments=true />
+<cfset variables.instance.defaultflatviewrange=0 />
+<cfset variables.instance.defaultflatviewtable="" />
+<cfset variables.instance.showadminloginhelp=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1486,6 +1490,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.BCryptLogRounds = arguments.BCryptLogRounds />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getBCryptReseedFrequency" returntype="numeric" access="public" output="false">
+        <cfreturn variables.instance.BCryptReseedFrequency />
+</cffunction>
+
+<cffunction name="setBCryptReseedFrequency" access="public" output="false">
+        <cfargument name="BCryptReseedFrequency" type="String" />
+        <cfif isNumeric(arguments.BCryptReseedFrequency)>
+                <cfset variables.instance.BCryptReseedFrequency = arguments.BCryptReseedFrequency />
+        </cfif>
+        <cfreturn this>
 </cffunction>
 
 <cffunction name="setAllowAutoUpdates" access="public" output="false">

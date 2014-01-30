@@ -90,6 +90,8 @@
 		//this.showMemberToolBar=false;
 		//this.showEditableObjects=false;
 		//this.showInlineEditor=true;
+		//this.siteIDInURLS=0;
+		//this.indexFileInURLS=1;
 		//this.renderHTMLHead=true;
 		//this.renderHTMLQueues=true;
 		//this.listFormat="dl"; //deprecated

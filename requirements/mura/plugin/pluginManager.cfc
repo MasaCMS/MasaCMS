@@ -607,6 +607,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfabort>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="</cfif>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
 	
 	<cffile action="delete" file="#baseDir#/cfapplication.cfm">
 	<cfset variables.fileWriter.writeFile(file="#baseDir#/cfapplication.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
@@ -614,7 +615,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfabort>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="</cfif>", addnewline="true")>
-	
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
+
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
 		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
@@ -626,7 +628,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfif not isDefined("currentConfig.plugin.createmapping.xmlText")
 					or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 					<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = expandPath("/plugins/#rsRequirements.name#")>')>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">')>
 						<cfset done[mHash]=true>
 					</cfif>
 				</cfif>
@@ -650,7 +652,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfset currentPath=currentDir & "/" & p>
 							<cfif len(p) and directoryExists(currentPath)>
 								<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-								<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = expandPath("/plugins/#rsRequirements.name#/#p#")></cfif>')>
+								<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
 							</cfif>
 						</cfif>
 					</cfloop>
@@ -666,7 +668,7 @@ select * from tplugins order by #arguments.orderby#
 						</cfif>
 						<cfset currentPath=currentDir & "/" & p>
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, expandPath("/plugins/#rsRequirements.name#/#p#") )>')>
+							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#" )>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -682,7 +684,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset currentPath=currentDir & "/" & p>
 						<cfdump var="#currentpath#">
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>')>
+							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "/#rsRequirements.name#/#p#")>')>
 						</cfif>
 					</cfloop>
 				</cfif>

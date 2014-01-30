@@ -236,6 +236,41 @@ var commentManager = {
 				commentManager.bindAjaxEvents(k);
 			});
 		});
+
+		k.find('.inReplyTo').on('click',function(e){
+			e.preventDefault();
+			
+			var parentid = $(this).attr('data-parentid');
+
+			if($('#detail-' + parentid).length) {
+				commentManager.scrollToID($('#detail-' + parentid));
+			} else {
+				var params = {
+					contentID: k.attr('data-contentid'),
+					upperID: $(this).attr('data-parentid')
+				};
+
+				commentManager.loadPage(params).success(function(data){
+					k.find('#moreCommentsUpContainer').remove();
+					//k.find('#commentsPage').prepend(data);
+					$(data).prependTo(k.find('#commentsPage')).hide().fadeIn();
+					commentManager.bindAjaxEvents(k);
+					commentManager.scrollToID($('#detail-' + parentid));
+				});
+			}
+			
+		});
+
+	},
+
+	scrollToID: function(elem) {
+		$('html, body').animate({
+			scrollTop: elem.offset().top - 50
+		}, 500, function(){
+			elem.fadeTo('fast', 0.5, function() {
+				elem.fadeTo('fast', 1);
+			});
+		});
 	},
 
 	loadPage: function(ext) {

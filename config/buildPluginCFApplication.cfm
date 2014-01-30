@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
 		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true" mode="775">
 		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
@@ -58,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>">
 				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true">
 				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true">
+				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
@@ -105,9 +107,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,pluginDir & "/#rsRequirements.name#/#p#")>'>		
 				</cfif>
 				<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
@@ -125,11 +127,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>'>		
 				</cfif>
-				<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>
+				<cfset arrayAppend(this.ormsettings.cfclocation,variables.baseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
 			</cfloop>
 		</cfif>

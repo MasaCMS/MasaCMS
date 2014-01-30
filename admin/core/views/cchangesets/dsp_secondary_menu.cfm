@@ -52,8 +52,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="assignments">
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="./?muraAction=cChangesets.edit&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#HTMLEditFormat(rc.changesetID)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a>
-				<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
-				<a class="btn" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+				<cfif not rc.changeset.getPublished()>
+					<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
+					<a class="btn" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+				</cfif>
 			</cfcase>
 			<cfcase value="list">
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="./?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
@@ -65,8 +67,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<cfif not rc.changeset.getIsNew()>
 					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="./?muraAction=cChangesets.assignments&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#"><i class="icon-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a>
-					<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
-					<a class="btn" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+					<cfif not rc.changeset.getPublished()>
+						<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
+						<a class="btn" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+				</cfif>
 				</cfif>
 			</cfcase>
 		</cfswitch>

@@ -83,17 +83,28 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		, string sortby='entered'
 		, string sortdirection='asc'
 		, boolean returnCountOnly=false
+		, numeric maxItems=1000
 	) {
 		var local = {};
 		var qComments = new Query(datasource=getConfigBean().getReadOnlyDatasource());
 		var rsComments = '';
+		var dbtype=getConfigBean().getDbType();
+		
+		local.qryStr='';
 
-		local.qryStr = '
-			SELECT *
-			FROM tcontentcomments
-			WHERE 0=0
-		';
-
+		if(dbtype eq "mssql" and arguments.maxItems){
+			local.qryStr='SELECT top ' & arguments.maxItems
+				& ' * FROM tcontentcomments
+				WHERE 0=0 ';
+		} else if(dbtype eq "oracle" and arguments.maxItems){
+			local.qryStr='select * from (
+				SELECT * FROM tcontentcomments
+				WHERE 0=0 ';
+		} else {
+			local.qryStr='SELECT *
+				FROM tcontentcomments
+				WHERE 0=0 ';
+		}
 		// siteid
 		if ( StructKeyExists(arguments, 'siteid') ) {
 			local.qryStr &= ' AND siteid = ( :siteid ) ';
@@ -187,6 +198,19 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;
+
+		
+		if(dbType eq "nuodb" and arguments.maxItems){
+			local.qryStr=local.qryStr & ' fetch ' & arguments.maxItems;
+		}
+
+		if(listFindNoCase("mysql,postgresql", dbType) and arguments.maxItems){
+			local.qryStr=local.qryStr & ' limit ' & arguments.maxItems;
+		}
+
+		if(dbType eq "oracle" and arguments.maxItems){
+			local.qryStr=local.qryStr & ' ) where ROWNUM <=  ' & arguments.maxItems;
+		}
 
 		//rsComments = qComments.setSQL(local.qryStr).execute().getResult(); // breaks in ACF9: https://github.com/stevewithington/MuraComments/issues/2 .. using workaround instead
 		qComments.setSQL(local.qryStr);
