@@ -78,18 +78,18 @@ cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('
 if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j;}
 throw new SyntaxError('JSON.parse');}};}();}
 
-var dtCh= "/";
-var dtCh= "/";
-var minYear=1900;
-var maxYear=2100;
-var dtFormat =[0,1,2];
-var dtExample ="12/31/2014";
+var mura={dtCh: "/",
+		minYear:1900,
+		maxYear:2100,
+		dtFormat:[0,1,2],
+		dtExample:"12/31/2017"
+	}
 
 
 function noSpam(user,domain) {
 	locationstring = "mailto:" + user + "@" + domain;
 	window.location = locationstring;
-	}
+}
 
 function isInteger(s){
 	var i;
@@ -150,6 +150,7 @@ function daysInFebruary (year){
     // EXCEPT for centurial years which are not also divisible by 400.
     return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
 }
+
 function DaysArray(n) {
 	for (var i = 1; i <= n; i++) {
 		this[i] = 31
@@ -161,15 +162,15 @@ function DaysArray(n) {
 
 function isDate(dtStr,fldName){
 	var daysInMonth = DaysArray(12);
-	var dtArray= dtStr.split(dtCh);
+	var dtArray= dtStr.split(mura.dtCh);
 	
 	if (dtArray.length != 3){
 		//alert("The date format for the "+fldName+" field should be : short")
 		return false
 	}
-	var strMonth=dtArray[dtFormat[0]];
-	var strDay=dtArray[dtFormat[1]];
-	var strYear=dtArray[dtFormat[2]];
+	var strMonth=dtArray[mura.dtFormat[0]];
+	var strDay=dtArray[mura.dtFormat[1]];
+	var strYear=dtArray[mura.dtFormat[2]];
 	
 	/*
 	if(strYear.length == 2){
@@ -196,11 +197,11 @@ function isDate(dtStr,fldName){
 		//alert("Please enter a valid day  in the "+fldName+" field")
 		return false
 	}
-	if (strYear.length != 4 || year==0 || year<minYear || year>maxYear){
-		//alert("Please enter a valid 4 digit year between "+minYear+" and "+maxYear +" in the "+fldName+" field")
+	if (strYear.length != 4 || year==0 || year<mura.minYear || year>mura.maxYear){
+		//alert("Please enter a valid 4 digit year between "+mura.minYear+" and "+mura.maxYear +" in the "+fldName+" field")
 		return false
 	}
-	if (isInteger(stripCharsInBag(dtStr, dtCh))==false){
+	if (isInteger(stripCharsInBag(dtStr, mura.dtCh))==false){
 		//alert("Please enter a valid date in the "+fldName+" field")
 		return false
 	}
@@ -450,7 +451,7 @@ function validateForm(frm) {
 			$.ajax(
 				{
 					type: 'post',
-					url: context + '/tasks/validate/',
+					url: mura.context + '/tasks/validate/',
 					data: {
 							data: JSON.stringify(data),
 							validations: JSON.stringify(validations)
@@ -567,16 +568,16 @@ function muraLoginCheck(e){
 	
 	if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
 		
-		if(typeof(loginURL) == "undefined"){
+		if(typeof(mura.loginURL) == "undefined"){
 			lu="?display=login";
 		} else{
-			lu=loginURL;
+			lu=mura.loginURL;
 		}
 		
-		if(typeof(returnURL) == "undefined"){
+		if(typeof(mura.returnURL) == "undefined"){
 			ru=location.href;
 		} else{
-			ru=returnURL;
+			ru=mura.returnURL;
 		}
 		pressed_keys = "";
 		
@@ -600,11 +601,11 @@ function setHTMLEditors(height,width,config) {
 	var editors = new Array();
 	for (i = 0; i < allPageTags.length; i++) {
 		if (allPageTags[i].className.toLowerCase() == "htmleditor") {
-			if (htmlEditorType=='fckeditor') {
+			if (mura.htmlEditorType=='fckeditor') {
 				var oFCKeditor = new FCKeditor(allPageTags[i].id);
 				oFCKeditor.ToolbarSet			= "htmlEditor";
-				oFCKeditor.Config.EditorAreaCSS	= themepath + '/css/editor.css';
-				oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
+				oFCKeditor.Config.EditorAreaCSS	= mura.themepath + '/css/editor.css';
+				oFCKeditor.Config.StylesXmlPath = mura.themepath + '/css/fckstyles.xml';
 				oFCKeditor.BasePath = context + '/wysiwyg/';
 				oFCKeditor.Height = height;
 				oFCKeditor.Width = width;
@@ -640,7 +641,7 @@ var HTMLEditorLoadCount=0;
 
 function htmlEditorOnComplete( editorInstance ) { 	
 	
-	if( htmlEditorType=='fckeditor'){
+	if( mura.htmlEditorType=='fckeditor'){
 		editorInstance.ResetIsDirty();
 		var totalIntances=FCKeditorAPI.Instances;
 	}else{

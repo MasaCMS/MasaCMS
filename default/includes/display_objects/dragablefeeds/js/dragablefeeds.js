@@ -20,7 +20,7 @@
 	************************************************************************************************************/		
 	
 	/* USER VARIABLES */
-	var imageHome = context + '/' + siteid + '/includes/display_objects/dragablefeeds/images/';
+	var imageHome = mura.context + '/' + mura.siteid + '/includes/display_objects/dragablefeeds/images/';
 	var numberOfColumns = 2;	// Number of columns for dragable boxes
 	var columnParentBoxId = 'svRSSFeeds';	// Id of box that is parent of all your dragable boxes
 	// These may not be used, depending on implementation.
@@ -40,6 +40,8 @@
 	var useCookiesToRememberRSSSources = true;
 	
 	var userID = '';
+	var siteID=mura.siteid;
+	var jslib=mura.jslib;
 	var loginPage = '';
 	var redirecting = false;
 	

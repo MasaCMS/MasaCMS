@@ -197,7 +197,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.siteLocale=""/>
 	<cfset variables.instance.rbFactory=""/>    
 	<cfset variables.instance.javaLocale=""/>
-	<cfset variables.instance.jsDateKey=""/>  
+	<cfset variables.instance.jsDateKey=""/>
+	<cfset variables.instance.jsDateKeyObjInc=""/>   
 	<cfset variables.instance.theme=""/> 
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer=""/>
@@ -608,6 +609,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.jsDateKey=getLocaleUtils().getJSDateKey()>
 	</cfif>
 	<cfreturn variables.instance.jsDateKey />
+</cffunction>
+
+<cffunction name="getJSDateKeyObjInc" returntype="String" access="public" output="false">
+	<cfif not len(variables.instance.jsDateKeyObjInc)>
+		<cfset variables.instance.jsDateKeyObjInc=getLocaleUtils().getJsDateKeyObjInc()>
+	</cfif>
+	<cfreturn variables.instance.jsDateKeyObjInc />
 </cffunction>
 
 <cffunction name="getLocaleUtils" returntype="any" access="public" output="false">
