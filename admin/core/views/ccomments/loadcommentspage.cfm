@@ -26,7 +26,7 @@
 				<dt>
 					#htmleditformat(rc.comment.getName())#
 					<cfif len(rc.comment.getParentID())>
-						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#">#rc.comment.getParent().getName()#</a>)</em>
+						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#rc.comment.getParent().getName()#</a>)</em>
 					</cfif>
 				</dt>
 				<dd class="comment">
