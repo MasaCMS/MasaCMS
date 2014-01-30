@@ -1487,9 +1487,6 @@ Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('rater','default
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('favorites','default','User Favorites',17);
 --|
 
-Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('dragable_feeds','default','Dragable Feeds',18);
---|
-
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('related_content','default','Related Content',19);
 --|
 
