@@ -48,7 +48,7 @@ function reloadRSSData(numericId)
 {
 	$.ajax({
 		  type: "GET",
-		  url: context + '/tasks/feed/readRSS.cfm',
+		  url: mura.context + '/tasks/feed/readRSS.cfm',
 		  data: 'rssURL=' + escape(dragableBoxesArray[numericId]['rssUrl']) + '&maxRssItems=' + dragableBoxesArray[numericId]['maxRssItems'] + '&siteid=' + siteID + '&cacheBuster=' + Math.random(),
 		  success: function(transport){showRSSData(transport,numericId);}
 		});	
@@ -62,7 +62,7 @@ function deleteRssFavorites(userID, siteID)
 		
 	$.ajax({
 		   type: "GET",
-		   url: assetpath + '/includes/display_objects/favorites/ajax/deleteRSSFavorite.cfm',
+		   url: mura.assetpath + '/includes/display_objects/favorites/ajax/deleteRSSFavorite.cfm',
 		   data: 'userID=' + userID + '&siteid=' + siteID + "&cacheBuster=" + Math.random()
 			  });
 			
@@ -79,7 +79,7 @@ function saveRssFavorite(userID, siteID, favoriteName, favoriteLocation, favorit
 
 		$.ajax({
 		  	type: "GET",
-			 url: assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
+			 url: mura.assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
 			 data: 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + escape(favoriteLocation) + '&favoriteType=' + favoriteType + '&columnNumber=' + columnNumber + '&rowNumber=' + rowNumber + '&maxRssItems=' + maxRssItems + "&cacheBuster=" + Math.random()
 			 });
 

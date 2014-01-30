@@ -7,7 +7,7 @@ try
 		var h=0;
 		var temph=0;
 		for(var i=0;i<gArray.length;i++){
-			if(jslib =='jquery'){
+			if(mura.jslib =='jquery'){
 				temph=getHeightJQuery(gArray[i]);
 			} else {
 				temph=getHeightPrototype(gArray[i]);
@@ -17,7 +17,7 @@ try
 		}
 		
 		for(var i=0;i<gArray.length;i++){
-			if(jslib =='jquery'){
+			if(mura.jslib =='jquery'){
 				temph=setHeightJQuery(gArray[i],h);
 			} else {
 				temph=setHeightPrototype(gArray[i],h);
