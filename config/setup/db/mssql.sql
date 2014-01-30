@@ -1141,7 +1141,6 @@ INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES (
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('seq_nav','default','Sequential Nav',8);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('rater','default','Content Rater',16);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('favorites','default','User Favorites',17);
-INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('dragable_feeds','default','Dragable Feeds',18);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('related_content','default','Related Content',19);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('user_tools','default','User Tools',20);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('tag_cloud','default','Tag Cloud',21);

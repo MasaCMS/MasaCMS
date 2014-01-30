@@ -760,7 +760,6 @@ VALUES
   ,('seq_nav','default','Sequential Nav',8)
   ,('rater','default','Content Rater',16)
   ,('favorites','default','User Favorites',17)
-  ,('dragable_feeds','default','Dragable Feeds',18)
   ,('related_content','default','Related Content',19)
   ,('user_tools','default','User Tools',20)
   ,('tag_cloud','default','Tag Cloud',21)
