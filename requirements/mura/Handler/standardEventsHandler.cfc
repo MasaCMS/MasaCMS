@@ -530,6 +530,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardForceSSLValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
+	<cftry>
 	<cfif arguments.event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
@@ -540,6 +541,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)>
 		<cfset arguments.event.getHandler("standardForceSSL").handle(arguments.event)>
 	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
 </cffunction>
 
 <cffunction name="standard404Validator" output="false" returnType="any">
