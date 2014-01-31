@@ -534,7 +534,7 @@
 					$.ajax(
 						{
 							type: 'post',
-							url: context + '/tasks/validate/',
+							url: '#application.configBean.getContext()#/tasks/validate/',
 							data: {
 									data: JSON.stringify($.extend(muraInlineEditor.data,data)),
 									validations: JSON.stringify(validations)

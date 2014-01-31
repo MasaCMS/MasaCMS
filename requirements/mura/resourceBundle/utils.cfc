@@ -379,6 +379,19 @@
 	</script></cfoutput>
 	</cfsavecontent>
 
+	<cfsavecontent variable="variables.jsDateKeyObjInc">
+	<cfoutput>
+	dtExample:"#variables.datekeyExample#",
+	dtCh:"#dtCh#",
+	dtFormat:[#dtFormat#],
+	dtLocale:"#replace(session.locale,'_','-')#"
+	</cfoutput>
+	</cfsavecontent>
+
+	</cffunction>
+
+	<cffunction name="getJsDateKeyObjInc" output="false" returntype="any">
+	<cfreturn variables.jsDateKeyObjInc>
 	</cffunction>
 
 	<cffunction name="getJSDateKey" output="false" returntype="any">
