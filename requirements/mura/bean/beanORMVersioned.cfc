@@ -61,7 +61,7 @@ component extends="mura.bean.beanORM" versioned=true bundleable=true{
 		return this;
 	}
 
-	function persistToVersion(version1,version2){
+	function persistToVersion(previousBean,newBean,$){
 		return true;
 	}
 

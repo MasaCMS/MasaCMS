@@ -1594,6 +1594,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="version2">
 	<cfargument name="removeObjects">
 	<cfargument name="addObjects">
+	<cfargument name="$">
 
 	<cfset var it="">
 	<cfset var i="">
@@ -1629,7 +1630,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				</cfif>
 
 				<cfif not remove and not bean.getIsNew()>
-					<cfif bean.persistToVersion(arguments.version1,arguments.version2)>
+					<cfif bean.persistToVersion(previousBean=arguments.version1,newBean=arguments.version2,version1=arguments.version1,version2=arguments.version2,$=arguments.$)>
 						<cfset bean.setContentHistID(arguments.version2.getContentHistID())>
 						<cfset bean.setValue(bean.getPrimaryKey(),createUUID())>
 						<cfset bean.save()>
