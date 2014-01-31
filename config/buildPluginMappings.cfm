@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true" mode="775">
 		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true" mode="775">
 		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/plugins"] = pluginDir>' mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
@@ -60,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true">
 				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true">
 				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
+				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/plugins"] = pluginDir>'>
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
