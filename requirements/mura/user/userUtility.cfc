@@ -180,6 +180,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfif not strikes.isBlocked()>
 				<cfset strikes.addStrike()>
+				<cfif len(arguments.siteID)>
+					<cfset variables.pluginManager.announceEvent('onSiteLoginFailure',pluginEvent)/>
+				<cfelse>
+					<cfset variables.pluginManager.announceEvent('onGlobalLoginFailure',pluginEvent)/>
+				</cfif>
 			<cfelse>
 			
 				<cfif len(arguments.siteID)>
