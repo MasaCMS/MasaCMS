@@ -157,8 +157,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						subject="#arguments.subject#" 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
-						bcc="#arguments.bcc#">#tmt_mail_head#
-						#trim(tmt_mail_body)#</cfmail>
+						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+				</cfmail>
 			<cfelse>
 				<cfmail to="#filteredSendTo#" 
 						from="#arguments.from# <#fromEmail#>"
@@ -171,8 +171,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						useSSL="#mailserverSSL#"
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
-						bcc="#arguments.bcc#">#tmt_mail_head#
-						#trim(tmt_mail_body)#</cfmail>
+						bcc="#arguments.bcc#">#tmt_mail_head##Chr(13)##Chr(10)##trim(tmt_mail_body)#
+				</cfmail>
+
 			</cfif>
 			<cfcatch>
 				<cfif len(arguments.siteid)>
