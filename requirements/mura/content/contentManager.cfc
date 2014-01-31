@@ -1388,7 +1388,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif doPreserveVersionedObjects>
-					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects,addObjects)>
+					<cfset variables.contentDAO.persistVersionedObjects(version1=currentBean,version2=newBean,removeObjects=removeObjects,addObjects=addObjects,$=pluginEvent.getValue('MuraScope'))>
 				</cfif>
 
 				<cfscript>

@@ -47,8 +47,8 @@ component extends="mura.bean.beanORMVersioned"
 			 ";
 	}
 
-	function persistToVersion(version1,version2){
-		var properties=arguments.version2.getAllValues();
+	function persistToVersion(previousBean,newBean,$){
+		var properties=arguments.newBean.getAllValues();
 
 		param name="request.handledfilemetas" default={};
 
@@ -56,7 +56,7 @@ component extends="mura.bean.beanORMVersioned"
 
 		for(var prop in properties){
 			if(isSimpleValue(properties[prop]) && properties[prop] == getValue('fileid')
-				&& !structKeyExists(request.handledfilemetas,hash(getValue('fileid') & arguments.version2.getContentHistID()))
+				&& !structKeyExists(request.handledfilemetas,hash(getValue('fileid') & arguments.newBean.getContentHistID()))
 			){
 				return true;
 			}
