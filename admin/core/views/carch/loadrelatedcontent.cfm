@@ -192,35 +192,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
 			feed.addParam(relationship="and (");
-		}
+			
 
-		var started=false;
+			var started=false;
 
-		feed.addParam(relationship="(");
+			feed.addParam(relationship="(");
 
-		if (len($.event("rcStartDate"))) {
-			feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
-		}
-		
-		if (len($.event("rcEndDate"))) {
-			feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
-		}
+			if (len($.event("rcStartDate"))) {
+				feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+			}
+			
+			if (len($.event("rcEndDate"))) {
+				feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+			}
 
-		feed.addParam(relationship=")");
+			feed.addParam(relationship=")");
 
-		feed.addParam(relationship="or (");
+			feed.addParam(relationship="or (");
 
-		if (len($.event("rcStartDate"))) {
-			feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
-		}
-		
-		if (len($.event("rcEndDate"))) {
-			feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
-		}
+			if (len($.event("rcStartDate"))) {
+				feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+			}
+			
+			if (len($.event("rcEndDate"))) {
+				feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+			}
 
-		feed.addParam(relationship=")");
+			feed.addParam(relationship=")");
 
-		if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
+	
 			feed.addParam(relationship=")");
 		}
 		
