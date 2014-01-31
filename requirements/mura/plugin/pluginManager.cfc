@@ -608,7 +608,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfabort>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="</cfif>", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
-	
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/plugins"] = pluginDir>')>
+
 	<cffile action="delete" file="#baseDir#/cfapplication.cfm">
 	<cfset variables.fileWriter.writeFile(file="#baseDir#/cfapplication.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
 	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfif not isDefined('this.name')>", addnewline="true")>
