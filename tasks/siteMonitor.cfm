@@ -107,6 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 </cfif>
 
+<cfset application.clusterManager.clearOldCommands()>
+
 <cfset pluginEvent = createObject("component","#application.configBean.getMapDir()#.event") />
 <cfset application.pluginManager.executeScripts('onSiteMonitor','',pluginEvent)/>
 
