@@ -261,16 +261,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 	</cfif>
 
-	<cfparam name="application.applyDbUpdates" default="false">
-
 	<cfset application.objectMappings={}>
 	<cfset application.objectMappings.bundleableBeans="">
 	<cfset application.objectMappings.versionedBeans="">
 
-	<cfif application.applyDbUpdates or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
+	<cfif application.appAutoUpdated or isdefined('url.applyDBUpdates')>
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 		<cfset application.configBean.applyDbUpdates() />
-		<cfset application.applyDbUpdates=false>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	<cfelse>
 		<cfscript>
