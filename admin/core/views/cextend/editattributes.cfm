@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSet=subType.loadSet(rc.extendSetID)/>
 <cfset attributesArray=extendSet.getAttributes() />
 
-<h1>Manage Related Content Set</h1>
+<h1>Manage Extended Attribute Set</h1>
 
 <cfoutput>
 
