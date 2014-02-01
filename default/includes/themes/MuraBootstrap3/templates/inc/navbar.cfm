@@ -14,32 +14,32 @@
 				<div class="row">
 					<div class="col-md-7">
 						<cf_CacheOMatic key="dspPrimaryNav">
+							<!--- 
+								For information on dspPrimaryNav(), visit:
+								http://docs.getmura.com/v6/front-end/template-variables/document-body/
+							--->
 							#$.dspPrimaryNav(
 								viewDepth=1
 								, id='navPrimary'
 								, class='nav navbar-nav'
-								, displayHome='never'
-								, closeFolders=false
+								, displayHome='always'
+								, closeFolders=false 
 								, showCurrentChildrenOnly=false
-								, ulTopClass='nav navbar-nav'
-								, ulNestedClass='dropdown-menu'
 								, liHasKidsClass='dropdown'
 								, liHasKidsAttributes=''
+								, liCurrentClass=''
+								, liCurrentAttributes=''
 								, liHasKidsNestedClass='dropdown-submenu'
-								, liNestedClass=''
 								, aHasKidsClass='dropdown-toggle'
 								, aHasKidsAttributes='role="button" data-toggle="dropdown" data-target="##"'
-								, liCurrentClass=''
 								, aCurrentClass=''
+								, aCurrentAttributes=''
+								, ulNestedClass='dropdown-menu'
+								, ulNestedAttributes=''
+								, aNotCurrentClass=''
 								, siteid=$.event('siteid')
 							)#
 						</cf_CacheOMatic>
-						<!---
-							Optional named arguments for Primary Nav are:
-							displayHome="Always/Never/Conditional"
-							openFolders/closeFolders="contentid,contentid" 
-								(e.g. show specific sub-content in dropdown nav)
-						--->
 						<script>
 							$(function(){
 								$(#serializeJSON($.getCurrentURLArray())#).each(

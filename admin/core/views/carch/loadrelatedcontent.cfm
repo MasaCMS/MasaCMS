@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.addParam(relationship="and (");
 			
 
-			var started=false;
+			started=false;
 
 			feed.addParam(relationship="(");
 
