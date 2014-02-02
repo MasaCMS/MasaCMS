@@ -68,6 +68,7 @@ var mura={
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	#variables.$.siteConfig('JSDateKeyObjInc')#
 }
+$.extend(window,mura);
 <cfif structKeyExists(url,'muraadminpreview')>
 $(function(){
    	$("a").attr('href', function(i, h) {
