@@ -21,11 +21,13 @@
 	.addColumn(column="remoteURL",dataType="varchar",length="255")
 	.addColumn(column="remotePubDate",dataType="datetime")
 	.addColumn(column="remoteSource",dataType="varchar",length="255")
-	.addColumn(column="remoteSourceURL",dataType="varchar",length="255")
+	.addColumn(column="remoteSourceURL",dataType="varchar",length="255");
+	/*
 	.addIndex('siteid')
 	.addIndex('contentid')
 	.addIndex('remoteid')
 	.addIndex('moduleID');
+	*/
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
