@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-<!--
-    NOTES:
-        - This only works for IIS7+
-        - If you wish to allow for missing "index.cfm" from the URL:
-            * make sure you have "IIS URL Rewrite Module 2.0" installed. 
-            * Download available at http://www.iis.net/download/URLRewrite
-            * rename this document to "web.config" without the quotation marks
-            * choose one of the rewrite rules below to enable
--->
+	<!--
+	NOTES:
+		- This only works for IIS7+
+		- If you wish to allow for missing "index.cfm" from the URL:
+			* make sure you have "IIS URL Rewrite Module 2.0" installed. 
+			* Download available at http://www.iis.net/download/URLRewrite
+			* rename this document to "web.config" without the quotation marks
+			* choose one of the rewrite rules below to enable
+	-->
 
-<system.webServer>
-    <rewrite>
-        <rules>
+	<system.webServer>
 
-        <!--
-            Allow for missing SiteID AND index.cfm from URL
-            NOTES:
-                - set enabled="true" to turn on!
-                - make sure "Mura CMS Rewrite Option 2" is enabled="false"
-                - update /config/settings.ini.cfm with the settings below:
-                    siteidinurls=0
-                    indexfileinurls=0
-                - reload Mura CMS
-        -->
-        <rule name="Mura CMS Rewrite Option 1" enabled="true">
-            <match url="^([a-zA-Z0-9/].+)$" ignoreCase="true" />
-            <conditions>
-                <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
-                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
-            </conditions>
-            <action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
-        </rule> 
+		<rewrite>
+			<rules>
 
-        <!--
-            Keep SiteID but allow for missing index.cfm from URL
-                NOTES:
-                    - set enabled="true" to turn on!
-                    - make sure "Mura CMS Rewrite Option 1" is enabled="false"
-                    - update /config/settings.ini.cfm with the settings below:
-                        siteidinurls=1
-                        indexfileinurls=0
-                    - reload Mura CMS
-        -->
-        <rule name="Mura CMS Rewrite Option 2" enabled="false">
-            <match url="^([a-zA-Z0-9]{1,})/([a-zA-Z0-9/].+)$" ignoreCase="true" />
-            <conditions>
-                <add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
-                <add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
-            </conditions>
-            <action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
-        </rule>
-        
-        <!--
-            Rewrite rules to allow each site to have their own respective sitemap.xml and robots.txt for SEO
-                NOTES:
-                    - Works well with Meld Google Sitemaps Plugin
-                    - Must duplicate rules for each site needed
-                    - Replace domain and siteID with respective domain and siteID per instance
-        -->
-        
-        <!--        
-        <rule name="Sitemap" stopProcessing="true">
-            <match url="^sitemap.xml$" />
-            <conditions logicalGrouping="MatchAll">
-                <add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
-            </conditions>
-            <action type="Rewrite" url="/siteID/sitemap.xml" />
-        </rule>
-        
-        <rule name="Robots" stopProcessing="true">
-            <match url="^robots.txt$" />
-            <conditions logicalGrouping="MatchAll">
-                <add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
-            </conditions>
-            <action type="Rewrite" url="/siteID/robots.txt" />
-        </rule>
-        -->
-        
-    </rules>
-</rewrite>
+				<!--
+					Allow for missing SiteID AND index.cfm from URL
+					NOTES:
+						- set enabled="true" to turn on!
+						- make sure "Mura CMS Rewrite Option 2" is enabled="false"
+						- update /config/settings.ini.cfm with the settings below:
+							siteidinurls=0
+							indexfileinurls=0
+						- reload Mura CMS
+				-->
+				<rule name="Mura CMS Rewrite Option 1" enabled="true">
+					<match url="^([a-zA-Z0-9/].+)$" ignoreCase="true" />
+					<conditions>
+						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+					</conditions>
+					<action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
+				</rule> 
 
-<defaultDocument>
-    <files>
-        <remove value="index.cfm" />
-        <add value="index.cfm" />
-    </files>
-</defaultDocument>
+				<!--
+					Keep SiteID but allow for missing index.cfm from URL
+						NOTES:
+							- set enabled="true" to turn on!
+							- make sure "Mura CMS Rewrite Option 1" is enabled="false"
+							- update /config/settings.ini.cfm with the settings below:
+								siteidinurls=1
+								indexfileinurls=0
+							- reload Mura CMS
+				-->
+				<rule name="Mura CMS Rewrite Option 2" enabled="false">
+					<match url="^([a-zA-Z0-9]{1,})/([a-zA-Z0-9/].+)$" ignoreCase="true" />
+					<conditions>
+						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
+						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+					</conditions>
+					<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
+				</rule>
+				
+				<!--
+					Rewrite rules to allow each site to have their own respective sitemap.xml and robots.txt for SEO
+						NOTES:
+							- Works well with Meld Google Sitemaps Plugin
+							- Must duplicate rules for each site needed
+							- Replace domain and siteID with respective domain and siteID per instance
+							- Don't forget to change enabled="true" to turn on the rules!
+				-->
+       
+				<rule name="Sitemap" stopProcessing="true" enabled="false">
+					<match url="^sitemap.xml$" />
+					<conditions logicalGrouping="MatchAll">
+						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
+					</conditions>
+					<action type="Rewrite" url="/siteID/sitemap.xml" />
+				</rule>
+				
+				<rule name="Robots" stopProcessing="true" enabled="false">
+					<match url="^robots.txt$" />
+					<conditions logicalGrouping="MatchAll">
+						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
+					</conditions>
+					<action type="Rewrite" url="/siteID/robots.txt" />
+				</rule>
+				
+			</rules>
+		</rewrite>
 
-<staticContent>
-    <remove fileExtension=".woff" />
-    <mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
-</staticContent>
+		<defaultDocument>
+			<files>
+				<remove value="index.cfm" />
+				<add value="index.cfm" />
+			</files>
+		</defaultDocument>
 
-</system.webServer>
+		<staticContent>
+			<remove fileExtension=".woff" />
+			<mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
+		</staticContent>
+
+	</system.webServer>
 </configuration>
