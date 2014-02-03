@@ -31,7 +31,7 @@
 	</cf_CacheOMatic>
 	
 	<!--[if IE]>
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/ie/ie.css">
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/compiled/ie.min.css">
 	<![endif]-->
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
