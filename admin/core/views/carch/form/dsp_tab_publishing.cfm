@@ -95,7 +95,7 @@
 			<div class="control-group">
 	      		<label class="control-label">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
-	      			<span id="move" class="text"> 
+	      			<span id="mover1" class="text"> 
 	      				<cfif rc.contentBean.getIsNew()>
 	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 	      				</cfif>
@@ -103,26 +103,28 @@
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 						</button>
-						
-						<script>
-							jQuery(document).ready(function(){
-								$('##selectParent').click(function(e){
-									e.preventDefault();
-									siteManager.loadSiteParents(
-										'#JSStringFormat(rc.siteid)#'
-										,'#JSStringFormat(rc.contentid)#'
-										,'#JSStringFormat(rc.parentid)#'
-										,''
-										,1
-									);
-									return false;
-								});
-							});
-						</script>
 					
 						<input type="hidden" name="parentid" value="#HTMLEditFormat(rc.parentid)#">
 					</span>
-				</label>
+	      		</label>
+	      		<div class="controls" id="mover2" style="display:none"></div>
+	      				
+				<script>
+					jQuery(document).ready(function(){
+						$('##selectParent').click(function(e){
+							e.preventDefault();
+							siteManager.loadSiteParents(
+								'#JSStringFormat(rc.siteid)#'
+								,'#JSStringFormat(rc.contentid)#'
+								,'#JSStringFormat(rc.parentid)#'
+								,''
+								,1
+							);
+							return false;
+						});
+					});
+				</script>
+				
 			</div> <!--- /end control-group --->
 		<cfelse>
 		 	<input type="hidden" name="parentid" value="#HTMLEditFormat(rc.parentid)#">

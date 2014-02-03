@@ -447,14 +447,17 @@ buttons: {
 	},
 
 	loadSiteParents: function(siteid, contentid, parentid, keywords, isNew) {
+		$('#mover1').remove();
+
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = $('#move');
+		var d = $('#mover2');
 		d.html('<div class="load-inline"><input type=hidden name=parentid value=' + parentid + ' ></div>');
-		$('#move .load-inline').spin(spinnerArgs2);
+		$('#mover2').show();
+		//$('#mover2 .load-inline').spin(spinnerArgs2);
 		$.get(url + "?" + pars, function(data) {
-			$('#move .load-inline').spin(false);
-			$('#move').html(data);
+			//$('#mover2 .load-inline').spin(false);
+			$('#mover2').html(data);
 		});
 	},
 
