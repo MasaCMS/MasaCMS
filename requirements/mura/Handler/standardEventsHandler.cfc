@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="doAction" output="false">
 <cfargument name="theaction" type="string" default="">
 <cfargument name="event" required="true">
-
+	<cfset var eventStruct="">
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
@@ -371,7 +371,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfcase value="updateprofile">
 				<cfif session.mura.isLoggedIn>
-					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset eventStruct=arguments.event.getAllValues()>
 					<cfset structDelete(eventStruct,'isPublic')>
 					<cfset structDelete(eventStruct,'s2')>
 					<cfset structDelete(eventStruct,'type')>
@@ -400,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfcase value="createprofile">
 				<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
-					<cfset var eventStruct=arguments.event.getAllValues()>
+					<cfset eventStruct=arguments.event.getAllValues()>
 					<cfset structDelete(eventStruct,'isPublic')>
 					<cfset structDelete(eventStruct,'s2')>
 					<cfset structDelete(eventStruct,'type')>
