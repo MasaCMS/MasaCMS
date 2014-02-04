@@ -13,19 +13,38 @@
 	getBean('contentFilenameArchive').checkSchema();
 	getBean('commenter').checkSchema();
 
-	dbUtility.setTable("tfiles")
-	.addColumn(column="caption",dataType="text")
-	.addColumn(column="credits",dataType="varchar",length="255")
-	.addColumn(column="alttext",dataType="varchar",length="255")
-	.addColumn(column="remoteID",dataType="varchar",length="255")
-	.addColumn(column="remoteURL",dataType="varchar",length="255")
-	.addColumn(column="remotePubDate",dataType="datetime")
-	.addColumn(column="remoteSource",dataType="varchar",length="255")
-	.addColumn(column="remoteSourceURL",dataType="varchar",length="255")
-	.addIndex('siteid')
-	.addIndex('contentid')
-	.addIndex('remoteid')
-	.addIndex('moduleID');
+	dbUtility.setTable("tfiles");
+	if(getDbType() == 'MySQL'){
+		if(!dbUtility.columnExists('caption')){
+			new Query().execute(sql="ALTER TABLE tfiles
+				ADD COLUMN caption text DEFAULT null,
+				ADD COLUMN credits varchar(255) DEFAULT null,
+				ADD COLUMN alttext varchar(255) DEFAULT null,
+				ADD COLUMN remoteID varchar(255) DEFAULT null,
+				ADD COLUMN remoteURL varchar(255) DEFAULT null,
+				ADD COLUMN remotePubDate datetime DEFAULT null,
+				ADD COLUMN remoteSource varchar(255) DEFAULT null,
+				ADD COLUMN remoteSourceURL varchar(255) DEFAULT null");
+
+			dbUtility.addIndex('siteid')
+			.addIndex('contentid')
+			.addIndex('remoteid')
+			.addIndex('moduleID');
+		}
+	} else {
+		dbUtility.addColumn(column="caption",dataType="text")
+		.addColumn(column="credits",dataType="varchar",length="255")
+		.addColumn(column="alttext",dataType="varchar",length="255")
+		.addColumn(column="remoteID",dataType="varchar",length="255")
+		.addColumn(column="remoteURL",dataType="varchar",length="255")
+		.addColumn(column="remotePubDate",dataType="datetime")
+		.addColumn(column="remoteSource",dataType="varchar",length="255")
+		.addColumn(column="remoteSourceURL",dataType="varchar",length="255")
+		.addIndex('siteid')
+		.addIndex('contentid')
+		.addIndex('remoteid')
+		.addIndex('moduleID');
+	}
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
