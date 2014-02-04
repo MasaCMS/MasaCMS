@@ -632,13 +632,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul class="nav nav-tabs tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
-			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide" id="#currentTab#LI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide"</cfif>  id="#currentTab#LI"><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 		</ul>
 		<div class="tab-content row-fluid">		
 			#tabContent#
 			<div class="load-inline tab-preloader"></div>
-			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
+			<script>
+				$(function(){
+					$('.tab-preloader').spin(spinnerArgs2);
+					<cfif rc.compactDisplay eq 'true'>
+					//This is a hack to prevent ckeditor bug that sets iframe width to zero when goin to extended attributes and back
+					$('a[href="##tabBasic"]').on('click',function(){
+						$('##tabBasic').find('.cke_wysiwyg_frame').width('100%');
+					});
+					</cfif>
+				});
+			</script>
 			#actionButtons#
 		</div>
 	</div>

@@ -220,6 +220,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			feed.addParam(relationship=")");
 
+			feed.addParam(relationship="or (");
+
+			if (len($.event("rcStartDate"))) {
+				feed.addParam(field="tcontent.featureStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+			}
+			
+			if (len($.event("rcEndDate"))) {
+				feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+			}
+
+			feed.addParam(relationship=")");
+
+
 	
 			feed.addParam(relationship=")");
 		}
