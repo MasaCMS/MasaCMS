@@ -24,12 +24,11 @@
 				ADD COLUMN remoteURL varchar(255) DEFAULT null,
 				ADD COLUMN remotePubDate datetime DEFAULT null,
 				ADD COLUMN remoteSource varchar(255) DEFAULT null,
-				ADD COLUMN remoteSourceURL varchar(255) DEFAULT null");
-
-			dbUtility.addIndex('siteid')
-			.addIndex('contentid')
-			.addIndex('remoteid')
-			.addIndex('moduleID');
+				ADD COLUMN remoteSourceURL varchar(255) DEFAULT null,
+				ADD INDEX #dbUtility.transformIndexName('siteid')# (siteID),
+				ADD INDEX #dbUtility.transformIndexName('contentid')# (contentID),
+				ADD INDEX #dbUtility.transformIndexName('remoteid')# (remoteID),
+				ADD INDEX #dbUtility.transformIndexName('moduleid')# (moduleID)");
 		}
 	} else {
 		dbUtility.addColumn(column="caption",dataType="text")

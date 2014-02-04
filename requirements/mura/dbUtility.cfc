@@ -1083,11 +1083,11 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="transformIndexName" access="private">
+<cffunction name="transformIndexName" access="public">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
 	<cfswitch expression="#variables.dbtype#">
-			<cfcase value="mssql,mysql,postgresql">
+			<cfcase value="mssql,mysql,postgresql,nuodb">
 				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","ALL"),"[[:space:]]","","All")>
 			</cfcase>
 			<cfcase value="oracle">
