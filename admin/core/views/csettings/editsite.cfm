@@ -54,11 +54,10 @@ to your own modified versions of Mura CMS.
     <div id="nav-module-specific" class="btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#"><i class="icon-trash"></i> Trash Bin</a>
       <cfif rc.action eq "updateFiles">
         <a href="./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
-        <cfelseif application.configBean.getAllowAutoUpdates()>
+        <cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
         <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
-
-        <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
       </cfif>
+      <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
       <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
         <a  class="btn" href="##"  onclick="confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="icon-share"></i> Export Static HTML (BETA)</a>
       </cfif>
@@ -1040,13 +1039,17 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
 	        <label class="control-label"> Which rendering files would you like to import? </label>
 	        <div class="controls">
+	            <cfif listFind(session.mura.memberships,'S2')>
+                 <label class="radio inline">
+                  <input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
+              </cfif>
 	            <label class="radio inline">
-	            <input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
-	            <label class="radio inline">
-	            <input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
-	            <label class="radio inline">
-	            <input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
-	            <p class="alert help-block" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+	            <input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}"<cfif not listFind(session.mura.memberships,'S2')> checked="true"</cfif>>Theme Only</label>
+	           <cfif listFind(session.mura.memberships,'S2')>
+                <label class="radio inline">
+	             <input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
+              </cfif>
+	            <p class="alert help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 	        </div>
         </div>
         
