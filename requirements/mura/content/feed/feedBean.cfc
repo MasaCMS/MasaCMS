@@ -556,6 +556,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn "feedID">
 </cffunction>
 
+<cffunction name="getEntityName" output="false">
+	<cfargument name="userProxyName" default="true">
+	<cfif arguments.userProxyName>
+		<cfreturn "content">
+	<cfelse>
+		<cfreturn "feed">
+	</cfif>
+</cffunction>
+
 <cffunction name="getAvailableCount" output="false">
 	<cfreturn getQuery(countOnly=true).count>
 </cffunction>

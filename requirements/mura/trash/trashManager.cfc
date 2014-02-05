@@ -241,7 +241,6 @@
 	
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
 
-
 	
 	<cfset idString=getIdString(arguments.deleted)>
 	
@@ -454,7 +453,7 @@
 <cffunction name="getIDString" output="false">
 <cfargument name="object">
 
-	<cfif arguments.object.getEntityName() eq 'content'>
+	<cfif arguments.object.getEntityName(userProxyName=false) eq 'content'>
 		<cfreturn "contentID">
 	<cfelse>
 		<cfreturn arguments.object.getPrimaryKey()>
