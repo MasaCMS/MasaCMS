@@ -412,9 +412,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="minifyMode" default="package">
 	<cfargument name="checkForUpdates" default="true">
 	<cfargument name="addCacheBusters" default="false">
+	<cfargument name="forceCompilation" default="false">
 	<cfargument name="javaLoaderScope" default="#application.configBean.getValue('cfStaticJavaLoaderScope')#">
 	<cfset var hashKey="">
-	
+
 	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
 		<cfset arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"))>	
 	</cfif>
