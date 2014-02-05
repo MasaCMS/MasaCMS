@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.extensionManager=""/>
 <cfset variables.instance.locale="Server" />
 <cfset variables.instance.imageInterpolation="highestQuality" />
+<cfset variables.instance.imageQuality=1 />
 <cfset variables.instance.clusterIPList="" />
 <cfset variables.instance.enableMuraTag=true />
 <cfset variables.instance.dashboard=true />
@@ -1100,6 +1101,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getImageInterpolation" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.imageInterpolation />
+</cffunction>
+
+<cffunction name="setImageQuality" access="public" output="false">
+	<cfargument name="imageQuality" type="numeric" />
+	
+	<cfif val(arguments.imageQuality)>
+		<cfset variables.instance.imageQuality = arguments.imageQuality />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getImageQuality" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.imageQuality />
 </cffunction>
 
 <cffunction name="getMailServerSMTPPort" returntype="any" access="public" output="false">
