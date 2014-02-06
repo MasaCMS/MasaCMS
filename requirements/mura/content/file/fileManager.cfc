@@ -784,7 +784,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isDefined('arguments.x')>	
 			<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.height)>
-			<cfset ImageWrite(cropper,file,1)>
+			<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
 			
 			<cfif listFindNoCase('small,medium,large',arguments.size)>
 				<cfset variables.imageProcessor.resizeImage(
@@ -801,7 +801,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 			</cfif>
 		<cfelse>
-			<cfset ImageWrite(cropper,file,1)>
+			<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
 			<cfif listFindNoCase('small,medium,large',arguments.size)>
 				<cfset variables.imageProcessor.resizeImage(
 					image=file,
@@ -835,7 +835,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfscript>
 			myImage=imageRead(source);
 			ImageRotate(myImage,arguments.degrees);
-			imageWrite(myImage,source,1);
+			imageWrite(myImage,source,variables.configBean.getImageQuality());
 		</cfscript>
 	</cfif>
 </cffunction>
@@ -852,7 +852,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfscript>
 			myImage=imageRead(source);
 			ImageFlip(myImage,arguments.transpose);
-			imageWrite(myImage,source,1);
+			imageWrite(myImage,source,variables.configBean.getImageQuality());
 		</cfscript>
 	</cfif>
 </cffunction>

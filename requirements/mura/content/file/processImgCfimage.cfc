@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager/>
 		<cfset variables.instance.imageInterpolation=arguments.configBean.getImageInterpolation()> 
 		<cfset variables.fileWriter=getBean("fileWriter")>
+		<cfset variables.instance.imageQuality=arguments.configBean.getImageQuality()> 
 
 		<cfif StructKeyExists(SERVER,"bluedragon") and not listFindNoCase("bicubic,bilinear,nearest",variables.instance.imageInterpolation)>
 			<cfset variables.instance.imageInterpolation="bicubic">
@@ -166,12 +167,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.Width eq "AUTO">
 			<cfif ThisImage.height gt arguments.height>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
-				<cfset ImageWrite(ThisImage,arguments.image,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			</cfif>
 		<cfelseif arguments.Height eq "AUTO">
 			<cfif ThisImage.width gt arguments.width>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-				<cfset ImageWrite(ThisImage,arguments.image,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			</cfif>
 		<cfelse>
 			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
@@ -180,18 +181,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif ImageAspectRatio eq NewAspectRatio>
 				<cfif ThisImage.width gt arguments.width>
 					<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-					<cfset ImageWrite(ThisImage,arguments.image,1)>
+					<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 				</cfif>
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
 				<cfset ImageCrop(ThisImage, 0, CropY, arguments.Width, arguments.height) />
-				<cfset ImageWrite(ThisImage,arguments.image,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			<cfelseif ImageAspectRatio gt NewAspectRatio>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
 				<cfset CropX = (ThisImage.width - arguments.width)/2 />
 				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
-				<cfset ImageWrite(ThisImage,arguments.image,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,variables.instance.imageQuality)>
 			</cfif>
 		</cfif>
 
