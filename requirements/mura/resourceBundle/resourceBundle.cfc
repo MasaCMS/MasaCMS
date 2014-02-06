@@ -226,7 +226,7 @@
 	
 	<cfif structKeyExists(variables.resourceBundle,arguments.key)>
 
-		<cfreturn variables.resourceBundle[arguments.key] />
+		<cfreturn replace(variables.resourceBundle[arguments.key],"''","'","ALL") />
 
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "muraKeyEmpty">
