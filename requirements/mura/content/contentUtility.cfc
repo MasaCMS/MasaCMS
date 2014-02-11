@@ -547,9 +547,8 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<!--- Remove HTML --->
 	<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
 	
-	<!--- replace some latin based unicode chars with allowable chars 
+	<!--- replace some latin based unicode chars with allowable chars --->
 	<cfset arguments.filename=removeUnicode(arguments.filename) />
-	--->
 	
 	<!--- temporarily escape " " used for word separation --->
 	<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
@@ -560,16 +559,15 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<!--- remove all punctuation --->
 	<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
 	
-	<!--- escape any remaining unicode chars
+	<!--- escape any remaining unicode chars  --->
 	<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
-	 --->
 	
 	<!---  put word separators " "  and "-" back in --->
 	<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
 	
-	<!--- remove an non alphanumeric chars (most likely %) 
+	<!--- remove an non alphanumeric chars (most likely %) --->
 	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\#wordDelim#]","","ALL")) />
-	--->
+	
 	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
 
 	<cfreturn arguments.filename>
