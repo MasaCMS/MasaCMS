@@ -65,10 +65,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="touchDir" returntype="void" output="false">
 		<cfargument name="dir" required="Yes" type="string">
-		<cfargument name="mode" required="no" type="string" default="777">
+		<cfargument name="mode" required="no" type="string" default="#variables.configBean.getDefaultfilemode()#">
 		
 		<cfif not directoryExists(dir)>
-			<cfdirectory directory="#dir#" action="create" mode="#arguments.mode#">
+			<cfif variables.configBean.getUseFileMode()>
+				<cfdirectory directory="#dir#" action="create" mode="#arguments.mode#">
+			<cfelse>
+				<cfdirectory directory="#dir#" action="create">
+			</cfif>
 		</cfif>
 	</cffunction>
 
