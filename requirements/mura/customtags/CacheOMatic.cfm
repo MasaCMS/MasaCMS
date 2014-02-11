@@ -45,11 +45,12 @@
 <!--- Either the user provides a name or the tag
 uses the query string as the key --->
 <cfparam name="request.siteID" default="default">
+<cfparam name="request.purgeCache" default="false">
 <cfparam name="attributes.key" default="#CGI.script_name##CGI.query_string#">
 <cfparam name="attributes.timespan" default="#createTimeSpan(0,0,30,0)#">
 <cfparam name="attributes.scope" default="application">
 <cfparam name="attributes.nocache" default="0">
-<cfparam name="attributes.purge" default="0">
+<cfparam name="attributes.purgeCache" default="#request.purgeCache#">
 <cfparam name="attributes.siteid" default="#request.siteid#">
 <cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory(name='output')#">
 <cfparam name="request.forceCache" default="false">
@@ -68,11 +69,11 @@ uses the query string as the key --->
   <cfset request.forceCache=false/>
 </cfif>
 
-<cfif not isBoolean(attributes.purge)>
-  <cfset attributes.purge = false />
+<cfif not isBoolean(attributes.purgeCache)>
+  <cfset attributes.purgeCache = false />
 </cfif> 
 
-<cfif attributes.purge and attributes.cacheFactory.has(attributes.key)>
+<cfif attributes.purgeCache and attributes.cacheFactory.has(attributes.key)>
   <cfset attributes.cacheFactory.purge(attributes.key) />
 </cfif>
 
