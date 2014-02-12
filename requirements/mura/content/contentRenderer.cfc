@@ -1534,7 +1534,7 @@ Display Objects
 		<cfset argument.filename=arguments.bean.getFilename()>
 	</cfif>
 	
-	<cfif application.configBean.getAllowUnicodeInFilenames()>
+	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
 		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
 	</cfif>
@@ -1574,7 +1574,7 @@ Display Objects
 	<cfset var tp=""/>
 	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
-	<cfif application.configBean.getAllowUnicodeInFilenames()>
+	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
 		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
 	</cfif>
