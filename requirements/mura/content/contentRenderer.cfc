@@ -1534,9 +1534,11 @@ Display Objects
 		<cfset argument.filename=arguments.bean.getFilename()>
 	</cfif>
 	
-	<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-	<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
-
+	<cfif application.configBean.getAllowUnicodeInFilenames()>
+		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
+		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+	</cfif>
+	
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
@@ -1572,8 +1574,10 @@ Display Objects
 	<cfset var tp=""/>
 	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
-	<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-	<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+	<cfif application.configBean.getAllowUnicodeInFilenames()>
+		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
+		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+	</cfif>
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
