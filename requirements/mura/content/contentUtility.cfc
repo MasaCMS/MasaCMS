@@ -1334,7 +1334,7 @@ and parentID is null
 	<cfelse>
 
 		<cfif not stats.getMajorVersion()>		
-			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">	
 				select contentID, siteID, max(majorVersion) majorVersion, max(minorVersion) minorVersion
 				from tcontent
 				where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">
