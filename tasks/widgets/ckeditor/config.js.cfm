@@ -110,7 +110,7 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_bbcode = [
-		{name: 'group1', items: ['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
+		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
 	];
 
 	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils';
@@ -127,8 +127,7 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',muratag';
 	</cfif>
 	
-	config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
-	config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
+	config.ProtectedTags = 'i' ;
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
