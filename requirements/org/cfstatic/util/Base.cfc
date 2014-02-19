@@ -328,9 +328,12 @@
 		<cfargument name="file" type="string" required="true" />
 
 		<cfscript>
-			if ( fileExists( ExpandPath( file ) ) ) {
-				return ExpandPath( file );
-			}
+			try{
+				if ( fileExists( ExpandPath( file ) ) ) {
+					return ExpandPath( file );
+				}
+			} catch (any e){}
+			
 			return file;
 		</cfscript>
 	</cffunction>
