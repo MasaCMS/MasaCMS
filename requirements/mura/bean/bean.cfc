@@ -563,12 +563,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function getSynthedFunctions(){
-		bc=getEntityName();
+		getEntityName();
 
-		param name="application.objectMappings.#variables.entityName#" default={};
-		param name="application.objectMappings.#variables.entityName#.synthedFunctions" default={};
+		if(len(variables.entityName)){
+			param name="application.objectMappings.#variables.entityName#" default={};
+			param name="application.objectMappings.#variables.entityName#.synthedFunctions" default={};
 
-		return application.objectMappings[variables.entityName].synthedFunctions;
+			return application.objectMappings[variables.entityName].synthedFunctions;
+		} else {
+			return {};
+		}
 	}
 
 
