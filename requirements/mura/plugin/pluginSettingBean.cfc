@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(arguments.theXML,i)>
 			<cfset evaluate("set#i#(arguments.theXML[i].xmlText)")/>
 		<cfelseif structKeyExists(arguments.theXML.xmlAttributes,i)>
-			<cfset evaluate("set#i#(arguments.theXML[i].xmlText)")/>
+			<cfset evaluate("set#i#(arguments.theXML.xmlAttributes[i].xmlText)")/>
 		</cfif>
 	</cfloop>
 	
