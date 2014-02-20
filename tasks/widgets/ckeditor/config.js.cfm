@@ -55,7 +55,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['image2','Image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -73,44 +73,44 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group9', items:['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
-	
+
 	config.toolbar_Summary = [
-		['Source'],
-		['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-		['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
-		['BidiLtr','BidiRtl'],
-		['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-		['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-		['Link','Unlink','Anchor'],
-		['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
-		['Styles','Format','-','Maximize','ShowBlocks','About']
-	] ;
+		{name: 'group1', items: ['Source']},
+		{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+		{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+		{name: 'group4', items: ['BidiLtr','BidiRtl']},
+		{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
+		{name: 'group9', items: ['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
+	];
 
 	config.toolbar_Form = [
-		['Source'],
-		['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-		['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
-		['BidiLtr','BidiRtl'],
-		['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-		['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-		['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-		['Link','Unlink','Anchor'],
-		['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
-		['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
-		['Styles','Format','-','Maximize','ShowBlocks','About']
+		{name: 'group1', items: ['Source']},
+		{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+		{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+		{name: 'group4', items: ['BidiLtr','BidiRtl']},
+		{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group8', items: ['Link','Unlink','Anchor']},
+		{name: 'group9', items: ['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+		{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
 	config.toolbar_Basic = [
-		['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']
+		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
 	];
 
 	config.toolbar_htmlEditor = [
-		['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']
+		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
 	];
 
 	config.toolbar_bbcode = [
-		['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']
+		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
 	];
 
 	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils';
@@ -127,8 +127,7 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',muratag';
 	</cfif>
 	
-	config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
-	config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
+	config.ProtectedTags = 'i' ;
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';

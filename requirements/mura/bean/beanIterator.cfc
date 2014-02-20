@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cfset variables.entityName="">
+<cfset variables.entityName="bean">
 
 <cffunction name="init" output="false">
 	<cfset super.init()>

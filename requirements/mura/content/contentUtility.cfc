@@ -544,30 +544,50 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfargument name="filename" type="any" />
 	<cfset var wordDelim=variables.configBean.getURLTitleDelim()>
 
-	<!--- Remove HTML --->
-	<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
-	
-	<!--- replace some latin based unicode chars with allowable chars --->
-	<cfset arguments.filename=removeUnicode(arguments.filename) />
-	
-	<!--- temporarily escape " " used for word separation --->
-	<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
-	
-	<!--- temporarily escape "-" used for word separation --->
-	<cfset arguments.filename=rereplace(arguments.filename,"\#wordDelim#","svphsv","ALL") />
-	
-	<!--- remove all punctuation --->
-	<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
-	
-	<!--- escape any remaining unicode chars --->
-	<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
-	
-	<!---  put word separators " "  and "-" back in --->
-	<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
-	
-	<!--- remove an non alphanumeric chars (most likely %) --->
-	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\#wordDelim#]","","ALL")) />
-	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
+	<cfif not variables.configBean.getAllowUnicodeInFilenames()>
+		<!--- Remove HTML --->
+		<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
+		
+		<!--- replace some latin based unicode chars with allowable chars --->
+		<cfset arguments.filename=removeUnicode(arguments.filename) />
+		
+		<!--- temporarily escape " " used for word separation --->
+		<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
+		
+		<!--- temporarily escape "-" used for word separation --->
+		<cfset arguments.filename=rereplace(arguments.filename,"\#wordDelim#","svphsv","ALL") />
+		
+		<!--- remove all punctuation --->
+		<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
+		
+		<!--- escape any remaining unicode chars  --->
+		<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
+		
+		<!---  put word separators " "  and "-" back in --->
+		<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
+		
+		<!--- remove an non alphanumeric chars (most likely %) --->
+		<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\#wordDelim#]","","ALL")) />
+		
+		<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
+	<cfelse>
+		<!--- Remove HTML --->
+		<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
+		
+		<!--- temporarily escape " " used for word separation --->
+		<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
+		
+		<!--- temporarily escape "-" used for word separation --->
+		<cfset arguments.filename=rereplace(arguments.filename,"\#wordDelim#","svphsv","ALL") />
+		
+		<!--- remove all punctuation --->
+		<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
+			
+		<!---  put word separators " "  and "-" back in --->
+		<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
+			
+		<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
+	</cfif>
 
 	<cfreturn arguments.filename>
 
@@ -1080,7 +1100,6 @@ and parentID is null
 			'#252':'ü','#255':'ÿ','#34':'','#38':'&','#60':'<','#62':'>',
 			'#8211':'–','#8212':'—','#8364':'€','#96':'`'	
 		--->	
-
 	
 		<cfset unicodeArray[1][1]=192 />
 		<cfset unicodeArray[1][2]="À" />
@@ -1315,7 +1334,7 @@ and parentID is null
 	<cfelse>
 
 		<cfif not stats.getMajorVersion()>		
-			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">	
 				select contentID, siteID, max(majorVersion) majorVersion, max(minorVersion) minorVersion
 				from tcontent
 				where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">

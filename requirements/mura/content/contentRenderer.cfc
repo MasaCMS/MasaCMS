@@ -1534,6 +1534,11 @@ Display Objects
 		<cfset argument.filename=arguments.bean.getFilename()>
 	</cfif>
 	
+	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
+		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
+		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+	</cfif>
+	
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
@@ -1569,20 +1574,24 @@ Display Objects
 	<cfset var tp=""/>
 	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
-		<cfswitch expression="#arguments.type#">
-				<cfcase value="Link">
-					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
-				</cfcase>
-				<cfcase value="File">
-					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
-				</cfcase>
-				<cfdefaultcase>
-					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
-				</cfdefaultcase>
-		</cfswitch>
-		
+	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
+		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
+		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+	</cfif>
 
-<cfreturn href />
+	<cfswitch expression="#arguments.type#">
+			<cfcase value="Link">
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+			</cfcase>
+			<cfcase value="File">
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+			</cfcase>
+			<cfdefaultcase>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
+			</cfdefaultcase>
+	</cfswitch>
+		
+	<cfreturn href />
 </cffunction>
 
 <cffunction name="createHREFForImage" output="false" returntype="any">

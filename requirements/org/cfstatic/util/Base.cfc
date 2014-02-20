@@ -171,17 +171,15 @@
 		<cfargument name="src"           type="string" required="true"                  />
 		<cfargument name="media"         type="string" required="true"                  />
 		<cfargument name="ieConditional" type="string" required="false" default=""      />
-		<cfargument name="charset"       type="string" required="false" default="utf-8" />
 
-		<cfreturn $renderIeConditional( '<link rel="stylesheet" href="#src#" media="#media#" charset="#charset#" />', ieConditional ) & $newline() />
+		<cfreturn $renderIeConditional( '<link rel="stylesheet" href="#src#" media="#media#" />', ieConditional ) & $newline() />
 	</cffunction>
 
 	<cffunction name="$renderJsInclude" access="private" returntype="string" output="false" hint="I return the html nevessary to include the given javascript file">
 		<cfargument name="src"           type="string" required="true"                  />
 		<cfargument name="ieConditional" type="string" required="false" default=""      />
-		<cfargument name="charset"       type="string" required="false" default="utf-8" />
 
-		<cfreturn $renderIeConditional( '<script type="text/javascript" src="#src#" charset="#charset#"></script>', ieConditional ) & $newline() />
+		<cfreturn $renderIeConditional( '<script type="text/javascript" src="#src#"></script>', ieConditional ) & $newline() />
 	</cffunction>
 
 	<cffunction name="$generateCacheBuster" access="private" returntype="string" output="false" hint="I return a cachebuster string for a given date">
@@ -194,7 +192,11 @@
 		<cfargument name="include"       type="string" required="true" />
 		<cfargument name="ieConditional" type="string" required="true" />
 
-		<cfif Len( Trim( ieConditional ) )>
+		<cfif Trim( ieConditional ) eq "!IE">
+			<cfreturn '<!--[if #ieConditional#]>-->
+#include#
+<!-- <![endif]-->' />
+		<cfelseif Len( Trim( ieConditional ) )>
 			<cfreturn '<!--[if #ieConditional#]>#include#<![endif]-->' />
 		</cfif>
 
@@ -235,6 +237,11 @@
 
 		<cfscript>
 			filepath = $normalizeUnixAndWindowsPaths(filepath);
+
+			if ( $isTemporaryFileName( filePath ) ) {
+				return false;
+			}
+
 			if ( Len( Trim( includePattern ) ) AND NOT ReFindNoCase( includePattern, filePath ) ) {
 				return false;
 			}
@@ -277,6 +284,9 @@
 
 			/* Build the prefix for the relative path (../../etc.) */
 			for ( i=ArrayLen( basePathArray ) - pathStart; i GTE 0; i=i-1 ) {
+				if ( ArrayLen( finalPath ) and finalPath[1] eq "." ) {
+					ArrayDeleteAt( finalPath, 1 );
+				}
 				ArrayAppend( finalPath, ".." );
 			}
 
@@ -307,7 +317,7 @@
 	<cffunction name="$ensureFullDirectoryPath" access="private" returntype="string" output="false">
 		<cfargument name="dir" type="string" required="true" />
 		<cfscript>
-			if ( len(dir) && directoryExists( ExpandPath( dir ) ) ) {
+			if ( directoryExists( ExpandPath( dir ) ) ) {
 				return ExpandPath( dir );
 			}
 			return dir;
@@ -318,9 +328,12 @@
 		<cfargument name="file" type="string" required="true" />
 
 		<cfscript>
-			if ( len(file) && fileExists( ExpandPath( file ) ) ) {
-				return ExpandPath( file );
-			}
+			try{
+				if ( fileExists( ExpandPath( file ) ) ) {
+					return ExpandPath( file );
+				}
+			} catch (any e){}
+			
 			return file;
 		</cfscript>
 	</cffunction>
@@ -339,6 +352,18 @@
 				default       : return filePath;
 			}
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="$createTemporaryFilename" access="private" returntype="string" output="false">
+		<cfargument name="extension" type="string" required="true" />
+
+		<cfreturn ".tmp." & Hash( CreateUUId() ) & "." & LCase( extension ) />
+	</cffunction>
+
+	<cffunction name="$isTemporaryFileName" access="private" returntype="boolean" output="false">
+		<cfargument name="filePath"  type="string" required="true" />
+
+		<cfreturn ReFind( "/\.tmp\.[0-9A-F]{32}\.[a-z0-9]+$", filePath ) />
 	</cffunction>
 
 <!--- accessors --->
