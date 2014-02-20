@@ -1267,7 +1267,7 @@ function openPreviewDialog(previewURL) {
 
 	var position=["top",20];
 
-	var $dialog = $('<div id="mura-preview-container"></div>').html('<iframe id="preview-dialog" style="border: 0; " src="' + $previewURL + '&mobileFormat=false" width="1075" height="600" allowfullscreen></iframe>').dialog({
+	var $dialog = $('<div id="mura-preview-container"></div>').html('<iframe id="preview-dialog" style="border: 0; background:#fff;" src="' + $previewURL + '&mobileFormat=false" width="1075" height="600" allowfullscreen></iframe>').dialog({
 		width: 1105,
 		height: 600,
 		modal: true,
