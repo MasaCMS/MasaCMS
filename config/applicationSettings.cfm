@@ -217,6 +217,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ormSettings={}>
 	<cfset this.ormSettings.cfclocation=[]>
 
+	<cftry>
+		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
+		<cfset request.hasCFApplicationCFM=true>
+		<cfcatch>
+			<cfset request.hasCFApplicationCFM=false>
+		</cfcatch>
+	</cftry>
+	
 	<cfif len(properties.getProperty("datasource",""))>
 
 		<!--- You can't depend on 9 supporting datasource as struct --->
@@ -270,13 +278,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset hasPluginCFApplication=true>
 		<cfcatch>
 			<cfset hasPluginCFApplication=false>
-		</cfcatch>
-	</cftry>
-	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
-		<cfset request.hasCFApplicationCFM=true>
-		<cfcatch>
-			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
 	

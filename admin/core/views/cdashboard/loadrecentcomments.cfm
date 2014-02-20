@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr>
 	</thead>
 	<tbody>
+	<cfif comments.hasNext()>
 	<cfloop condition="comments.hasNext()">
 		<cfset comment=comments.next()>
 		<!---
@@ -77,6 +78,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</td>
 		</tr>
 		</cfloop>
+		<cfelse>
+		<tr>
+		<td class="noResults" colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.nocomments")#</td>
+		</tr>
+		</cfif>
 	</tbody>
 	</table>
 </cfoutput>

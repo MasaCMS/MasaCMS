@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfif>
 
-<cfif application.settingsManager.getSite(session.siteid).getHasComments() 
+<cfif yesNoFormat(application.configBean.getDashboardComments()) and application.settingsManager.getSite(session.siteid).getHasComments() 
 	and application.permUtility.getModulePerm('00000000000000000000000000000000015',rc.siteid)
 	and application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
 <div id="recentComments"<cfif started> class="divide"</cfif>>

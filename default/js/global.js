@@ -305,7 +305,7 @@ function getValidationRegex(theField){
 	}
 }
 
-function validateForm(frm) {
+function validateForm(frm,customaction) {
 		var theForm=frm;
 		var errors="";
 		var setFocus=0;
@@ -317,7 +317,8 @@ function validateForm(frm) {
 		var frmInputs = theForm.getElementsByTagName("input");	
 		var rules=new Array();
 		var data={};
-
+		var $customaction=customaction;
+		
 		for (var f=0; f < frmInputs.length; f++) {
 		 var theField=frmInputs[f];
 		 validationType=getValidationType(theField).toUpperCase();
@@ -461,7 +462,11 @@ function validateForm(frm) {
  				 		data=eval('(' + resp + ')');
 
  				 		if($.isEmptyObject(data)){
- 				 			theForm.submit();
+ 				 			if(typeof $customaction == 'function'){
+ 				 				$customaction(theForm);
+ 				 			} else {
+ 				 				theForm.submit();
+ 				 			}
  				 		} else {
 	 				 		var msg='';
 	 				 		for(var e in data){
@@ -690,5 +695,3 @@ function setLowerCaseKeys(obj) {
 }
 
 $(document).ready(setMuraLoginCheck);
-
-
