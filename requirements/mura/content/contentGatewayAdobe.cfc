@@ -1975,7 +1975,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				)
 		<cfelseif len(arguments.relatedContentSetID)>
-			and tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+			and (
+				tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+				<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
+					or tcr.relatedContentSetID is null
+				</cfif>
+				)
 		</cfif>
 
 	<cfelse>
@@ -1994,7 +1999,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				)
 		<cfelseif len(arguments.relatedContentSetID)>
-			and tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+			and (
+				tcr.relatedContentSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedContentSetID#"/>
+				<cfif arguments.relatedContentSetID eq "00000000000000000000000000000000000">
+					or tcr.relatedContentSetID is null
+				</cfif>
+				)
 		</cfif>
 	</cfif>
 	
