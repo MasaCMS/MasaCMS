@@ -240,7 +240,7 @@
 			</cfoutput>
 		</cfsavecontent>
 
-		<cfcontent type="application/json" reset="true"><cfscript>writeOutput(serializeJSON(returnStruct));</cfscript>
+		<cfcontent type="application/json; charset=utf-8" reset="true"><cfscript>writeOutput(serializeJSON(returnStruct));</cfscript>
 	</cffunction>
 
 </cfcomponent>
