@@ -7,14 +7,22 @@ component extends="mura.bean.beanORM" table="tchangesetrollback" entityname="cha
 
     function rollback(){
         var previousContent=getBean('content').loadBy(contenthistID=getValue('previousHistID'));
-        //writeDump(var=previousContent.getIsNew(),abort=true);
 
-         if(not previousContent.getIsNew()){
-            //writeDump(var=previousContent.getIsNew(),abort=true);
+        if(not previousContent.getIsNew()){
              previousContent
                 .setApprovalChainOverride(true)
                 .setApproved(1)
                 .save();
+        } else {
+            previousContent=getBean('content').loadBy(contenthistID=getValue('changesetHistID'));
+
+            if(not previousContent.getIsNew()){
+                previousContent
+                    .setApprovalChainOverride(true)
+                    .setApproved(1)
+                    .setDisplay(0)
+                    .save();
+            }
         }
 
         return this;
