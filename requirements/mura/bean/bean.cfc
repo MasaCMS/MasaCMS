@@ -421,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var md=getMetaData(this);
 
 			if(structKeyExists(md,'entityName')){
-				variables.entityName=md.entityName;
+				variables.entityName=listLast(md.entityName,".");
 			} else {
 				variables.entityName=listLast(md.name,".");
 
