@@ -62,11 +62,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </script>
 </cfif>
 <div class="mura">
-	
+	<!---
 	<p class="alert">
 		#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.newcontentlocation"),'<strong>"' & parentBean.getMenuTitle() & '"</strong>')#
 	</p>
-	<!---
+	
 	#$.dspZoomNoLinks(parentBean.getCrumbArray())#
 	--->
 	<div class="add-content-ui">

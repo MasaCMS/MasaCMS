@@ -662,10 +662,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and arguments.event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
-				(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
+				(
+					(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
 				)
-			or	(
-				not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	
+				or	(
+					not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	
+				)
 			)>
 		<cfset arguments.event.getHandler("standardForceSSL").handle(arguments.event)>
 	</cfif>
