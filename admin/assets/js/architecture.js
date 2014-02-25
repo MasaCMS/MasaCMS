@@ -627,6 +627,7 @@ buttons: {
 			}
 			$('#selectRelatedContent .load-inline').spin(false);
 			$('#selectRelatedContent').html(data);
+
 			$(".rcDraggable li.item").draggable({
 				connectToSortable: '.rcSortable',
 				helper: 'clone',
@@ -654,6 +655,7 @@ buttons: {
 			
 			siteManager.bindMouse();
 			setCheckboxTrees();
+			siteManager.setupRCQuikEdit();
 			
 			$('#rcAdvancedSearch').find('ul.categories:not(.checkboxTrees)').css("margin-left", "10px");
 			
@@ -687,6 +689,19 @@ buttons: {
 		});
 
 	},
+
+	setupRCQuikEdit: function(){	
+		$('.mura-rc-quickoption').each(function(){
+			$(this).unbind('on').on('click',function(){
+				rccurrentitem=$(this).val();
+				$('.mura-rc-quickassign').each(function(){
+					$(this).prop('checked',$('#rcSortable-' + $(this).val()).find('li[data-contentid="' + rccurrentitem + '"]').length);		
+				});
+			});
+
+		});
+	},
+
 	setupRCSortable: function() {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
@@ -708,13 +723,18 @@ buttons: {
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();
+		siteManager.setupRCQuikEdit();
 	},
 	
 	updateRCForm: function() {
 		var aBuckets = new Array();
+		
+
 		$(".rcSortable").each(function(){
 			var aItems = new Array();
 			var bucket = new Object;
+			$(this).find('.mura-rc-quickoption').remove();
+			
 			$(this).find('li.item:not(.empty)').each(function(){
 				if(typeof($(this).attr('data-url')) == 'undefined' ){
 					aItems.push($(this).attr('data-contentid'));
