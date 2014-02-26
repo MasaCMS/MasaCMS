@@ -4,12 +4,12 @@
 <cfset request.layout=false>
 <cfoutput>
 
-	<div id="mura-rc-quickedit" <!---style="display:none;"--->>
+	<div id="mura-rc-quickedit" style="display:none;">
 		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>
 		<ul>
 		<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 			<cfset rcsBean = relatedContentSets[s]/>
-			<li><input type="checkbox" class="mura-rc-quickassign" value="#rcsBean.getRelatedContentSetID()#"/> #htmlEditFormat(rcsBean.getName())# </li>
+			<li><input id="mura-rc-option-label#s#" type="checkbox" class="mura-rc-quickassign" value="#rcsBean.getRelatedContentSetID()#"/> <label for="mura-rc-option-label#s#">#htmlEditFormat(rcsBean.getName())#</label></li>
 		</cfloop>
 		</ul>
 	</div>

@@ -691,11 +691,42 @@ buttons: {
 	},
 
 	setupRCQuikEdit: function(){	
+
 		$('.mura-rc-quickoption').each(function(){
+
 			$(this).unbind('on').on('click',function(){
-				rccurrentitem=$(this).val();
+				var $contentid=$(this).val();
+				var $currentItem=$('#selectRelatedContent').find('li[data-contentid="' + $contentid + '"]');
+				
 				$('.mura-rc-quickassign').each(function(){
-					$(this).prop('checked',$('#rcSortable-' + $(this).val()).find('li[data-contentid="' + rccurrentitem + '"]').length);		
+					var $this=this;
+					var $sortable= $('#rcSortable-' + $($this).val());
+					var isInSet=function(){return $sortable.find('li[data-contentid="' + $contentid + '"]').length;}
+
+					$('#mura-rc-quickedit').show();
+
+					$($this).attr('disabled',false);
+
+					// ignore parent container
+					if (!($sortable.attr('id') == $currentItem.parent().attr('id'))) {
+					
+						if ($sortable.attr('data-accept').length > 0 && $sortable.attr('data-accept').indexOf($currentItem.attr('data-content-type')) == -1) {
+							$($this).attr('disabled',true);
+						}
+					}
+					
+					$(this).unbind('change');
+					$(this).prop('checked',isInSet());
+					$(this).on("change",function(){
+						if($(this).prop('checked')){
+							$currentItem.clone().appendTo($('#rcSortable-' + $($this).val()));
+						} else {
+							$('#rcSortable-' + $($this).val()).find('li[data-contentid="' + $contentid + '"]').remove();
+						}
+
+						siteManager.updateBuckets();
+						siteManager.updateRCForm();
+					});		
 				});
 			});
 
