@@ -726,6 +726,8 @@ buttons: {
 						}
 
 						siteManager.updateBuckets();
+						siteManager.bindDelete();
+						siteManager.bindMouse();
 						siteManager.updateRCForm();
 					});		
 				});
