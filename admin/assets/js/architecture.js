@@ -544,9 +544,12 @@ buttons: {
 	
 	bindDelete: function () {
 		$('a.delete').click(function(){
+			var contentid=$(this).parent().attr('data-contentid');
 			$(this).parent().remove();
+			siteManager.setupRCResultIcon($('#selectRelatedContent button[value="'+ contentid + '"]'));
 			siteManager.updateBuckets();
 			siteManager.updateRCForm();
+			$('#mura-rc-quickedit').hide();
 		});
 	},
 		
@@ -659,6 +662,10 @@ buttons: {
 			
 			$('#rcAdvancedSearch').find('ul.categories:not(.checkboxTrees)').css("margin-left", "10px");
 			
+			$('.mura-rc-quickoption').each(function(){
+				siteManager.setupRCResultIcon($(this));
+			});
+
 			$('#rcBtnSearch').click(function(e){
 				e.preventDefault();
 				var advSearching = $('#rcAdvancedSearch').is(':visible');
@@ -672,6 +679,7 @@ buttons: {
 			});
 		});
 	},
+
 	loadRelatedContentSets:function(contenthistid,type,subtype,siteid){
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
@@ -688,6 +696,14 @@ buttons: {
 			siteManager.setupRCSortable();
 		});
 
+	},
+
+	setupRCResultIcon: function(el){
+		if($('#selectedRelatedContent').find('li[data-contentid="'+ el.val() + '"]').length){
+			el.find('i').attr('class','icon-ok');
+		} else {
+			el.find('i').attr('class','icon-plus');	
+		}
 	},
 
 	setupRCQuikEdit: function(){	
@@ -721,10 +737,14 @@ buttons: {
 						if($(this).prop('checked')){
 							$currentItem.clone().appendTo($('#rcSortable-' + $($this).val()));
 							$('#rcSortable-' + $($this).val()).find('.mura-rc-quickoption').remove();
+							$('#rcSortable-' + $($this).val()).find('li[data-contentid="' + $contentid + '"]').append('<a class="delete"></a>');
 						} else {
 							$('#rcSortable-' + $($this).val()).find('li[data-contentid="' + $contentid + '"]').remove();
 						}
 
+						//alert($('#selectRelatedContent button[value="'+ $contentid + '"]').length)
+						//alert($('#selectedRelatedContent').find('li[data-contentid="'+ $contentid  + '"]').length)
+						siteManager.setupRCResultIcon($('#selectRelatedContent button[value="'+ $contentid + '"]'));
 						siteManager.updateBuckets();
 						siteManager.bindDelete();
 						siteManager.bindMouse();
@@ -749,6 +769,8 @@ buttons: {
 				siteManager.bindMouse();
 				siteManager.setDirtyRelatedContent();
 				siteManager.updateRCForm();
+
+				siteManager.setupRCResultIcon($('#selectRelatedContent button[value="'+ ui.item.attr('data-contentid') + '"]'));
 			},
 			cancel: "li.empty"
 		}).disableSelection();
