@@ -808,7 +808,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfset isFeature=arguments.data['categoryAssign#catTrim#'] />
 			
-			
+			<!---
 			<cfif isFeature>
 			
 				<cfset orderno = variables.DAO.getCurrentOrderNO(rsCategories.categoryID,arguments.contentid,arguments.siteid) />
@@ -818,7 +818,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 			</cfif>
-			
+			--->
 			<cfif isFeature eq 2>
 				<cfset schedule.featureStart=arguments.data['featureStart#catTrim#'] />
 				<cfset schedule.starthour=arguments.data['starthour#catTrim#'] />
