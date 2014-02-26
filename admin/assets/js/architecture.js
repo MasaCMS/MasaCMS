@@ -720,6 +720,7 @@ buttons: {
 					$(this).on("change",function(){
 						if($(this).prop('checked')){
 							$currentItem.clone().appendTo($('#rcSortable-' + $($this).val()));
+							$('#rcSortable-' + $($this).val()).find('.mura-rc-quickoption').remove();
 						} else {
 							$('#rcSortable-' + $($this).val()).find('li[data-contentid="' + $contentid + '"]').remove();
 						}

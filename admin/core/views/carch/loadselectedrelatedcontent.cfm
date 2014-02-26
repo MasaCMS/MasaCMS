@@ -6,6 +6,7 @@
 
 	<div id="mura-rc-quickedit" style="display:none;">
 		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>
+		<button class="btn" type="button" onclick="$('##mura-rc-quickedit').hide()">Close</button>
 		<ul>
 		<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 			<cfset rcsBean = relatedContentSets[s]/>
