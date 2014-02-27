@@ -57,7 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<script>
 		function toggleRelatedType(clicked){
-		
+			$('##mura-rc-quickedit').hide();
+
 			if($(clicked).val()=='internal'){
 				$(".mura-related-internal").show();
 				$(".mura-related-external").hide();
