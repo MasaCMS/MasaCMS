@@ -76,18 +76,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				return false;
 			}
 
+			var newcontentid=Math.random();
+
 			$("##draggableContainmentExternal .list-table-items").append(
-			 	$('<li/>').attr('data-contentid',Math.random())
+			 	$('<li/>').attr('data-contentid',newcontentid)
 			 	.attr('data-url',$('##mura-related-url').val())
 			 	.attr('data-title',$('##mura-related-title').val())
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<ul class="navZoom"/>')
-			 		.append(
-			 			$('<li class="link"/>'))
-			 			.append('<strong></strong>')
-			 				.append(' ' + $('##mura-related-title').val())
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus"></i></button><ul class="navZoom"/><li class="link"><strong>' + $('##mura-related-title').val() + '</strong></li>')
 			 	)
 			 ); 
 
@@ -105,6 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				},
 				zIndex: 100
 			}).disableSelection();
+
+			siteManager.setupRCQuikEdit();
 
 			siteManager.bindMouse();
 
