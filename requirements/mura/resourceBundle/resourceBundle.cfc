@@ -188,7 +188,7 @@
 			<cfif NOT isArray(inputArgs)>
 				<cfset inputArgs=listToArray(inputArgs)>
 			</cfif>	
-			<cfset thisFormat=variables.msgFormat.init(arguments.thisPattern,variables.javaLocale)>
+			<cfset thisFormat=variables.msgFormat.init(replace(arguments.thisPattern,"'","''","all"),variables.javaLocale)>
 			<!--- let's make sure any cf numerics are cast to java datatypes --->
 			<cfset p=pattern.compile(regexStr,pattern.CASE_INSENSITIVE)>
 			<cfset m=p.matcher(arguments.thisPattern)>
@@ -226,7 +226,7 @@
 	
 	<cfif structKeyExists(variables.resourceBundle,arguments.key)>
 
-		<cfreturn variables.resourceBundle[arguments.key] />
+		<cfreturn replace(variables.resourceBundle[arguments.key],"''","'","ALL") />
 
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "muraKeyEmpty">
