@@ -72,9 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset isloggedin=variables.userUtility.loginByUserID(rsUser.userID,rsUser.siteID)>
 	</cfif>
 	
-	<cfif isloggedin>
-		<cfcookie name="userid" expires="never" value="#session.mura.userID#" />
-		<cfcookie name="userHash" expires="never" value="#encrypt(arguments.userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" />
+	<cfif not isloggedin>
 		<cfset session.rememberMe=1>
 		<cfreturn true />
 	<cfelse>
