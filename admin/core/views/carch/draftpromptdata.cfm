@@ -55,9 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif application.configBean.getLockableNodes() and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
-			<p class="alert">
-				This node is currently locked for editing by #HTMLEditFormat(lockedBy.getFullname())#
-				<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i>
+			<p class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
+				<a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> 
 			</p>
 		</cfif>
 
@@ -68,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
 
-			<cfif application.configBean.getLockableNodes() and (poweruser or draftprompdata.lockavailable)>
+			<cfif application.configBean.getLockableNodes() and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
 				<p class="alert">
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#:
 					<input id="locknodetoggle" type="checkbox"/>
@@ -186,6 +185,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset structDelete(draftprompdata,'yourapprovals')>
 <cfset structDelete(draftprompdata,'pendingchangesets')>
-<cfcontent type="application/json">
+<cfcontent type="application/json; charset=utf-8" reset="true">
 <cfoutput>#createObject("component","mura.json").encode(draftprompdata)#</cfoutput>
 <cfabort>

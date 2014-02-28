@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts() and not requiresApproval><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 		siteManager.hasNodeLock=<cfif stats.getLockType() eq 'node'>true<cfelse>false</cfif>;
-		siteManager.unlocknodeconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";
+		<cfoutput>siteManager.unlocknodeconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";</cfoutput>
 </script>
 
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()>
@@ -99,7 +99,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			try{
 				if (typeof(anchors[i].onclick) != 'function' 
 					&& typeof(anchors[i].getAttribute('href')) == 'string' 
-					&& anchors[i].getAttribute('href').indexOf('#') == -1) {
+					&& anchors[i].getAttribute('href').indexOf('#') == -1
+					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
 		   			anchors[i].onclick = setRequestedURL;
 				}
 			} catch(err){}

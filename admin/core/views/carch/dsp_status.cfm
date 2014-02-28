@@ -4,36 +4,38 @@
 <cfif nodeLockedByYou or nodeLockedBySomeElse>
 
 	<cfif not nodeLockedBySomeElse>
-		<p id="msg-node-locked" class="alert"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+		<p id="msg-node-locked" class="alert"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
 		</p>
 	<cfelse>
 		<!--- Locked by someone else --->	
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<p id="msg-node-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
-		</p>
-		
 		<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
-			<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> &nbsp; &nbsp;<a class="mura-file-unlock" href=""><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
 			</p>
+		<cfelse>
+			<p id="msg-node-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')#
+		</p>
 		</cfif>
 	</cfif>
 	<script>
-		jQuery(".mura-node-unlock").click(
-			function(event){
-				event.preventDefault();
-				confirmDialog(
-					"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#",
-					function(){
-						jQuery("##msg-node-locked").fadeOut();
-						jQuery(".mura-node-unlock").hide();
-						jQuery("##msg-node-locked-else").fadeOut();
-						siteManager.hasNodeLock=false;
-						jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
-					}
-				);							
-			}
-		);
+		$(function(){
+			jQuery(".mura-node-unlock").click(
+				function(event){
+					event.preventDefault();
+					confirmDialog(
+						"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#",
+						function(){
+							jQuery("##msg-node-locked").fadeOut();
+							jQuery(".mura-node-unlock").hide();
+							jQuery("##msg-node-locked-else").fadeOut();
+							siteManager.hasNodeLock=false;
+							jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
+						}
+					);							
+				}
+			);
+		});
 		</script>
 </cfif>
 

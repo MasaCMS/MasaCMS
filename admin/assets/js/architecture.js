@@ -117,15 +117,15 @@ var siteManager = {
 			confirmDialog(this.unlockfileconfirm, function() {
 				//alert('true')
 				$("#unlockfilewithnew").val("true");
-				if(this.ckContent(false)) {
-					formSubmitted = true;
+				if(siteManager.ckContent(false)) {
+					siteManager.formSubmitted = true;
 					document.contentForm.submit();
 				}
 			}, function() {
 				//alert('false')
 				$("#unlockfilewithnew").val("false");
-				if(this.ckContent(false)) {
-					this.formSubmitted = true;
+				if(siteManager.ckContent(false)) {
+					siteManager.formSubmitted = true;
 					document.contentForm.submit();
 				}
 			});
@@ -138,15 +138,15 @@ var siteManager = {
 			confirmDialog(this.unlocknodeconfirm, function() {
 				//alert('true')
 				$("#unlocknodewithpublish").val("true");
-				if(this.ckContent(false)) {
-					formSubmitted = true;
+				if(siteManager.ckContent(false)) {
+					siteManager.formSubmitted = true;
 					document.contentForm.submit();
 				}
 			}, function() {
 				//alert('false')
 				$("#unlocknodewithpublish").val("false");
-				if(this.ckContent(false)) {
-					this.formSubmitted = true;
+				if(siteManager.ckContent(false)) {
+					siteManager.formSubmitted = true;
 					document.contentForm.submit();
 				}
 			});
@@ -154,7 +154,7 @@ var siteManager = {
 			this.nodeLockConfirmed = true;
 			return false;
 		}
-		
+
 		//alert(document.contentForm.muraPreviouslyApproved)
 		//alert(document.contentForm.approved.value)
 		//alert(cancelPendingApproval)
