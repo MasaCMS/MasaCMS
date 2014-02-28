@@ -9,7 +9,8 @@ function initDraftPrompt(){
 		e.preventDefault(); // stop the link's normal clicking behavior
 		var node = jQuery(this).parents(".mura-node-data:first");		
 		var a = jQuery(this);
-		
+		var locknode=false;
+
 		$.ajax({
 			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid'),
 			  context: this,
@@ -24,7 +25,7 @@ function initDraftPrompt(){
 					
 					$(".draft-prompt-option").click(function(e){
 						e.preventDefault();
-						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid'));
+						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid') + "&locknode=" + locknode);
 						actionModal(href);
 					});
 
@@ -34,6 +35,11 @@ function initDraftPrompt(){
 						jQuery(dialog).dialog('close');
 						return false;
 					});
+
+					$("##locknodetoggle").on("change",function(){
+						locknode=$(this).is(":checked");
+					});
+
 				} else {
 					actionModal(a.attr('href'));
 				}

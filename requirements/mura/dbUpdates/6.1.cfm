@@ -141,6 +141,9 @@
 	dbUtility.setTable('tsettings')
 	.addColumn(column="filePoolID",datatype="varchar",length=25);
 
+	dbUtility.setTable('tcontentstats')
+	.addColumn(column="lockType",datatype="varchar",length=50);
+
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)
 	.addColumn(column="isSpam",dataType="int",default=0)

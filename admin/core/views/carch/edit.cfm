@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset isExtended=false>
 <cfset nodeLevelList="Page,Folder,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
+<cfset stats=rc.contentBean.getStats()>
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
@@ -77,6 +78,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <script>
 	var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts() and not requiresApproval><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
+		siteManager.hasNodeLock=<cfif stats.getLockType() eq 'node'>true<cfelse>false</cfif>;
+		siteManager.unlocknodeconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";
 </script>
 
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()>
@@ -700,6 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="cancelpendingapproval" value="false">
 	<input type="hidden" name="murakeepediting" value="false">
 	<input type="hidden" name="filemetadataassign" id="filemetadataassign" value=""/>
+	<input type="hidden" id="unlocknodewithpublish" name="unlocknodewithpublish" value="false" />
 	<cfif not  listFind(session.mura.memberships,'S2')>
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>

@@ -161,6 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.showadminloginhelp=true/>
 <cfset variables.instance.allowUnicodeInFilenames=false/>
 <cfset variables.instance.dashboardcomments=true/>
+<cfset variables.instance.lockableNodes=false/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

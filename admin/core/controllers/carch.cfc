@@ -58,6 +58,7 @@
 		<cfparam name="arguments.rc.ommitRelatedContentTab" default="false"/>
 		<cfparam name="arguments.rc.ommitAdvancedTab" default="false"/>
 		<cfparam name="arguments.rc.murakeepediting" default="false"/>
+		<cfparam name="arguments.rc.locknode" default="false"/>
 
 		<cfif not arguments.rc.ommitPublishingTab>
 			<cfparam name="arguments.rc.isNav" default="0"/>
@@ -201,6 +202,12 @@
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
 	
+	<cfif arguments.rc.locknode>
+		<cfset var stats=arguments.rc.contentBean.getStats()>
+		<cfif not len(stats.getLockID()) or stats.getLockID() eq session.mura.userid>
+			<cfset stats.setLockID(session.mura.userID).setLockType('node').save()>
+		</cfif>
+	</cfif>
  	
 	<!--- This is here for backward plugin compatibility--->
 	<cfset appendRequestScope(arguments.rc)>
@@ -427,7 +434,7 @@
 	
 	<cfif listFindNoCase("author,editor",local.perm)
 		or listFindNoCase(session.mura.memberships,"s2")>
-			<cfset local.contentBean.getStats().setLockID(session.mura.userID).save()>
+			<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
 			<cflocation url="#variables.configBean.getContext()#/tasks/render/file/?fileid=#local.contentBean.getFileID()#&method=attachment">
 	</cfif>
 	<cfabort>
@@ -445,7 +452,25 @@
 			or
 			listFindNoCase(session.mura.memberships,"s2")
 			)>
-		<cfset local.stats.setLockID("").save()>
+		<cfset local.stats.setLockID("").setLockType("").save()>
+	
+	</cfif>
+	<cfabort>
+</cffunction>
+
+<cffunction name="unlockNode" ouput="false">
+	<cfargument name="rc">
+	
+	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+	<cfset local.stats=local.contentBean.getStats()> 
+
+	<cfif len(local.stats.getLockID())
+		and (
+			local.stats.getLockID() eq session.mura.userID
+			or
+			listFindNoCase(session.mura.memberships,"s2")
+			)>
+		<cfset local.stats.setLockID("").setLockType("").save()>
 	
 	</cfif>
 	<cfabort>

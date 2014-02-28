@@ -402,7 +402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				tfiles.fileSize,tfiles.fileExt, audience, keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
-				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
 				</cfif>
 				FROM <cfif len(altTable)>#alttable#</cfif> tcontent
@@ -868,7 +868,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
@@ -891,7 +891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contenthistid, tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status
 	HAVING --->
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -900,7 +900,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	SELECT DISTINCT draft.contenthistid,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus
 	FROM  tcontent draft INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 		   INNER JOIN tcontentassignments ON (draft.contentID=tcontentassignments.contentID and tcontentassignments.type='draft')
@@ -923,7 +923,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contenthistid, tmodule.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status
 	HAVING --->
 	and module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -933,7 +933,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 module.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
@@ -955,7 +955,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contenthistid, tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status
 	HAVING--->
 	and  module.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -964,7 +964,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus
 	FROM  tcontent draft INNER JOIN tcontent module ON (draft.ModuleID = module.ContentID and draft.siteid = module.siteid)
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
@@ -986,7 +986,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contenthistid, module.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type,draft.subType, 
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status
 	HAVING 
 	--->
@@ -997,7 +997,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	SELECT DISTINCT draft.contenthistid, module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus
 	FROM  tcontent draft INNER JOIN tcontent module ON (
 														draft.ModuleID = module.ContentID
@@ -1025,7 +1025,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contenthistid, module.Title, active.ModuleID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status--->
 	</cfquery>
 	
@@ -1049,7 +1049,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	SELECT DISTINCT draft.contentHistID,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus, draft.displayStart, tchangesets.publishDate
 	FROM  tcontent draft INNER JOIN tcontent module ON (
 														draft.ModuleID = module.ContentID
@@ -1078,7 +1078,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contentHistID, module.Title, draft.ModuleID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status, draft.displayStart, tchangesets.publishDate
 	</cfquery>
 
@@ -1104,7 +1104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	SELECT DISTINCT draft.contentHistID,module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	 tapprovalrequests.status AS approvalStatus, draft.displayStart, tchangesets.publishDate
 	FROM  tcontent draft INNER JOIN tcontent module ON (
 														draft.ModuleID = module.ContentID
@@ -1132,7 +1132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY draft.contentHistID,module.Title, draft.ModuleID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires,
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, tcontentstats.lockType, draft.expires,
 	tapprovalrequests.status, draft.displayStart, tchangesets.publishDate
 	</cfquery>
 
@@ -1175,7 +1175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>tcontent.isfeature,tcontent.inheritObjects,tcontent.target,
 		tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
 		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.fileid, tcontentfilemetadata.altText as fileAltText
 	
@@ -1227,7 +1227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 			tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 			tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-			tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+			tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 			tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,tfiles.filename,tcontent.displayInterval
 			<cfif isExtendedSort>
 				,qExtendedSort.extendedSort	
@@ -1503,7 +1503,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1598,7 +1598,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText
 		
 		
 		<cfif kw neq ''>	
@@ -1608,7 +1608,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
 		FROM tcontent 
 		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1659,7 +1659,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText
 	</cfif>
 	</cfquery> 
 	
@@ -1693,7 +1693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
 	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
@@ -1806,7 +1806,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
 	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid

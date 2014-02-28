@@ -1157,6 +1157,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
 						<cfset doPurgeContentDescendentsCache=true>
 					</cfif>
+
+					<cfif isdefined("arguments.data.unlocknodewithpublish") 
+						and arguments.data.unlocknodewithpublish>
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>	
+					</cfif>
 								
 				</cfif>		
 						
@@ -1202,9 +1207,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset newBean.setfileID(local.fileBean.getFileID()) />
 						
 					<cfif not newBean.getIsNew()
-							and isdefined("arguments.data.unlockwithnew") 
-							and arguments.data.unlockwithnew>
-						<cfset newBean.getStats().setLockID("").save()>	
+							and isdefined("arguments.data.unlockfilewithnew") 
+							and arguments.data.unlockfilewithnew>
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>	
 					</cfif>
 						
 					<cfif newBean.getType() eq "File">
@@ -2445,6 +2450,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset data.historyID=''>
 		<cfset data.publishedHistoryID= cb.getContentHistID() />
 		<cfset data.yourapprovals=queryNew('empty')>
+		<cfset data.lockid=''>
+		<cfset data.locktype=''>
+		<cfset data.isLocked=false>
+		<cfset data.lockedbyyou=false>
+		<cfset data.lockavailable=false>
 
 		<cfif cb.getActive()>
 			<cfif history.recordcount or data.pendingchangesets.recordcount>
@@ -2500,8 +2510,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		</cfif>
+
+		<cfif variables.configBean.getLockableNodes()>
+			<cfset var stats=cb.getStats()>
+			
+			<cfset data.lockid=stats.getLockID()>
+			<cfset data.locktype=stats.getLockType()>
+			<cfset data.lockedbyyou=stats.getLockID() eq session.mura.userid>
+
+			<cfif data.locktype eq 'node' and len(data.lockid)>
+				<cfset data.isLocked=true>
+			</cfif>
+
+			<cfif len(data.lockid) and not data.lockedbyyou>
+				<cfset data.lockavailable=false>
+			</cfif>
+
+		</cfif>
 		
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
+		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
+
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (variables.configBean.getLockableNodes() and not (data.isLocked and data.lockID eq session.mura.userID) )/>
 			
 		<cfreturn data />
 	</cffunction>

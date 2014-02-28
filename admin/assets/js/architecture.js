@@ -49,6 +49,8 @@ var siteManager = {
 	formSubmitted: false,
 	fileLockConfirmed: false,
 	hasFileLock: false,
+	nodeLockConfirmed: false,
+	hasNodeLock: false,
 	dirtyRelatedContent: false,
 	copyContentID: "",
 	copySiteID: "",
@@ -110,17 +112,18 @@ var siteManager = {
 			return false;
 		}
 
-		if(typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("#file").val() != '') {
+
+		if(typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
 			confirmDialog(this.unlockfileconfirm, function() {
 				//alert('true')
-				$("#unlockwithnew").val("true");
+				$("#unlockfilewithnew").val("true");
 				if(this.ckContent(false)) {
 					formSubmitted = true;
 					document.contentForm.submit();
 				}
 			}, function() {
 				//alert('false')
-				$("#unlockwithnew").val("false");
+				$("#unlockfilewithnew").val("false");
 				if(this.ckContent(false)) {
 					this.formSubmitted = true;
 					document.contentForm.submit();
@@ -130,6 +133,28 @@ var siteManager = {
 			this.fileLockConfirmed = true;
 			return false;
 		}
+
+		if(typeof(this.hasNodeLock) != 'undefined' && !this.nodeLockConfirmed) {
+			confirmDialog(this.unlocknodeconfirm, function() {
+				//alert('true')
+				$("#unlocknodewithpublish").val("true");
+				if(this.ckContent(false)) {
+					formSubmitted = true;
+					document.contentForm.submit();
+				}
+			}, function() {
+				//alert('false')
+				$("#unlocknodewithpublish").val("false");
+				if(this.ckContent(false)) {
+					this.formSubmitted = true;
+					document.contentForm.submit();
+				}
+			});
+
+			this.nodeLockConfirmed = true;
+			return false;
+		}
+		
 		//alert(document.contentForm.muraPreviouslyApproved)
 		//alert(document.contentForm.approved.value)
 		//alert(cancelPendingApproval)

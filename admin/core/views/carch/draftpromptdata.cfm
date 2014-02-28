@@ -46,13 +46,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
-<cfif draftprompdata.showdialog>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
+<cfif draftprompdata.showdialog >
 	<cfset draftprompdata.showdialog='true'>
 	<cfsavecontent variable="draftprompdata.message">
 	<cfoutput>
-		<div id="draft-prompt">
-		<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+	<div id="draft-prompt">	
+
+		<cfif application.configBean.getLockableNodes() and draftprompdata.islocked>
+			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
+			<p class="alert">
+				This node is currently locked for editing by #HTMLEditFormat(lockedBy.getFullname())#
+				<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i>
+			</p>
+		</cfif>
+
+		<cfif not application.configBean.getLockableNodes() or not draftprompdata.islocked or poweruser or $.currentUser().getUser() eq  draftprompdata.lockid>
+			<cfif draftprompdata.hasmultiple>
+				<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+			</cfif>
+			
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
+
+			<cfif application.configBean.getLockableNodes() and (poweruser or draftprompdata.lockavailable)>
+				<p class="alert">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#:
+					<input id="locknodetoggle" type="checkbox"/>
+				</p>
+			</cfif>
+
 			<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
 			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft>		
 				<table class="mura-table-grid">
@@ -144,6 +166,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tbody>
 				</table>
 			</cfif>
+
+		</cfif>
 					
 		<!---			
 		<cfif listFindNoCase('Pending,Rejected',draftprompdata.pendingchangesets.approvalStatus)>
