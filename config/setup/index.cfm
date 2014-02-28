@@ -66,7 +66,6 @@ to your own modified versions of Mura CMS.
 <cfset webRoot = mid( webRoot, 1, len( webRoot )-1 ) />
 <cfparam name="FORM.fieldnames" default="" />
 <cfparam name="FORM.production_dbtype" default="#settingsIni.get( "production", "dbtype" )#" />
-<cfparam name="FORM.production_port" default="#cgi.server_port#" />
 <cfparam name="FORM.production_datasource" default="#settingsIni.get( "production", "datasource" )#" />
 <cfparam name="FORM.production_dbusername" default="#settingsIni.get( "production", "dbusername" )#" />
 <cfparam name="FORM.production_dbpassword" default="#settingsIni.get( "production", "dbpassword" )#" />
@@ -758,11 +757,7 @@ to your own modified versions of Mura CMS.
         </span>
         <input type="hidden" name="production_assetpath" value="#FORM.production_assetpath#">
         <input type="hidden" name="production_context" value="#FORM.production_context#">
-        
-        <!--- port --->
-        
-        <input type="hidden" name="production_port" value="<cfif cgi.server_port IS "" AND FORM.production_port IS "">80<cfelse>#FORM.production_port#</cfif>">
-       
+    
          <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" title="This is the username of the Mura super user account that will be created">Super Admin Username <i class="icon-question-sign"></i></a></label>
           <div class="controls">
