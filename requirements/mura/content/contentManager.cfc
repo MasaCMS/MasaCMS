@@ -2726,9 +2726,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsDrafts.recordcount>
 	</cffunction>
 
-	<cffunction name="getMyLockedFilesCount" output="false">
+	<cffunction name="getMyLockedContentCount" output="false">
 		<cfargument name="siteid" type="string" required="true">
-		<cfreturn variables.contentGateway.getLockedFilesCount(arguments.siteid,session.mura.userid)>
+		<cfreturn variables.contentGateway.getLockedContentCount(arguments.siteid,session.mura.userid)>
 	</cffunction>
 
 	<cffunction name="getKidsCount" output="false">

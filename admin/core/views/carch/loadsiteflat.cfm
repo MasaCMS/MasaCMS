@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
 	
-	} else if($.event('report') eq "mylockedfiles"){
+	} else if($.event('report') eq "mylockedcontent"){
 		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
 	
@@ -340,6 +340,12 @@ if(len($.siteConfig('customTagGroups'))){
 <div id="main" class="span9">
 <cfif not len($.event("report"))>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>	
+<cfelseif $.event('report') eq 'mylockedcontent'>
+	<cfif application.configBean.getLockableNodes()>
+		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#</h2>
+	<cfelse>
+		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</h2>
+	</cfif>
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>	
 </cfif>
@@ -521,7 +527,12 @@ if(len($.siteConfig('customTagGroups'))){
 			</cfif>
 				<cfif len(item.getLockID())>
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
-					<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					<cfif item.getLockType() neq 'node'>
+						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					<cfelse>
+						<p class="locked-node"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					</cfif>
+					
 				</cfif>
 				
 				#$.dspZoom(crumbData=crumbdata,ajax=true)#
@@ -579,8 +590,14 @@ if(len($.siteConfig('customTagGroups'))){
 			<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
 			<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMyLockedFilesCount(session.siteid)>
-			<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
+			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
+				<cfif application.configBean.getLockableNodes()>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
+				<cfelse>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
+				</cfif>
+				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
 	</div>
 	
