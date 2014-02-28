@@ -2524,6 +2524,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif len(data.lockid) and not data.lockedbyyou>
 				<cfset data.lockavailable=false>
+			<cfelse>
+				<cfset data.lockavailable=true>
 			</cfif>
 
 		</cfif>

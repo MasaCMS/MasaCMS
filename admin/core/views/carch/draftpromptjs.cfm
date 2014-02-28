@@ -7,7 +7,13 @@ $(function(){
 function initDraftPrompt(){
 	$('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
-		var node = jQuery(this).parents(".mura-node-data:first");		
+
+		if(typeof $(this).attr('data-contenthistid') != 'undefined'){
+			var node =$(this);	
+		} else {
+			var node = jQuery(this).parents(".mura-node-data:first");	
+		}
+			
 		var a = jQuery(this);
 		var locknode=false;
 
