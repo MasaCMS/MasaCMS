@@ -1,7 +1,7 @@
 <cfset nodeLockedByYou= stats.getLockType() eq 'node' and stats.getLockID() eq session.mura.userID>
 <cfset nodeLockedBySomeElse=len(stats.getLockID()) and stats.getLockType() eq 'node' and  stats.getLockID() neq session.mura.userID>
 <cfoutput>
-<cfif nodeLockedByYou or fileLockedBySomeElse>
+<cfif nodeLockedByYou or nodeLockedBySomeElse>
 
 	<cfif not nodeLockedBySomeElse>
 		<p id="msg-node-locked" class="alert"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
