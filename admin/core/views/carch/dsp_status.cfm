@@ -8,15 +8,13 @@
 		</p>
 	<cfelse>
 		<!--- Locked by someone else --->	
-		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
-			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
-			<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
-			</p>
-		<cfelse>
-			<p id="msg-node-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')#
+		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>	
+		<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
+		<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
+			<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			</cfif>
 		</p>
-		</cfif>
+	
 	</cfif>
 	<script>
 		$(function(){
@@ -28,13 +26,21 @@
 						function(){
 							jQuery("##msg-node-locked").fadeOut();
 							jQuery(".mura-node-unlock").hide();
+							<cfif nodeLockedBySomeElse>
 							jQuery("##msg-node-locked-else").fadeOut();
+							</cfif>
 							siteManager.hasNodeLock=false;
+							$('.form-actions').fadeIn();
 							jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
 						}
 					);							
 				}
 			);
+
+
+			<cfif nodeLockedBySomeElse>
+			$('.form-actions').hide();
+			</cfif>
 		});
 		</script>
 </cfif>
