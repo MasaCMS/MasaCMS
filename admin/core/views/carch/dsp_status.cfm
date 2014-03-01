@@ -28,9 +28,10 @@
 							function(){
 								jQuery("##msg-node-locked").fadeOut();
 								jQuery(".mura-node-unlock").hide();
-								<cfif nodeLockedBySomeElse>
-								jQuery("##msg-node-locked-else").fadeOut();
-								</cfif>
+								if(lockedbysomeonelse){
+									jQuery("##msg-node-locked-else").fadeOut();
+									lockedbysomeonelse=false;
+								}
 								siteManager.hasNodeLock=false;
 								$('.form-actions').fadeIn();
 								jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
@@ -42,6 +43,7 @@
 
 				<cfif nodeLockedBySomeElse>
 				$('.form-actions').hide();
+				lockedbysomeonelse=true;
 				</cfif>
 			});
 			</script>
