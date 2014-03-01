@@ -450,7 +450,7 @@ function validateForm(frm,customaction) {
 		try{
 			//alert(JSON.stringify(validations));
 
-			$.ajax(
+			jQuery.ajax(
 				{
 					type: 'post',
 					url: mura.context + '/tasks/validate/',
@@ -461,7 +461,7 @@ function validateForm(frm,customaction) {
 					success: function(resp) {
  				 		data=eval('(' + resp + ')');
 
- 				 		if($.isEmptyObject(data)){
+ 				 		if(jQuery.isEmptyObject(data)){
  				 			if(typeof $customaction == 'function'){
  				 				$customaction(theForm);
  				 			} else {
