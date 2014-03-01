@@ -529,7 +529,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 					<cfif item.getLockType() neq 'node'>
 						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
-					<cfelse>
+					<cfelseif application.configBean.getLockableNodes()>
 						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
 					</cfif>
 					
