@@ -191,6 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "TencentTraveler", request.userAgent ) OR
 	 FindNoCase( "bluedragon", request.userAgent ) OR
 	 FindNoCase( "binarycanary", request.userAgent ) OR
+	 FindNoCase( "siteexplorer", request.userAgent ) OR
 	 Find( "spider", request.userAgent ) OR
 	 FindNoCase( "80legs", request.userAgent ))>
 	 
