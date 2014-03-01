@@ -108,11 +108,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getQuery"  access="public" output="false" returntype="query">
-
+<cffunction name="getQuery" access="public" output="false" returntype="query">
 
 	<cfset var rs=""/>
-	<cfquery name="rs" cachedwithin="#createTimeSpan(0, 0, 0, 1)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs',cachedwithin=createTimeSpan(0, 0, 0, 1))#">
 	select * from timagesizes 
 	where
 	<cfif structKeyExists(arguments,'sizeid')>
@@ -135,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update timagesizes set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('contentUtility').formatFilename(variables.instance.name)#">,
@@ -146,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		insert into timagesizes (sizeid,siteid,name,height,width) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
@@ -165,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="delete"  access="public" output="false">
 
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		delete from timagesizes 
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 	</cfquery>
