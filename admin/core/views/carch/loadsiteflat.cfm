@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.layout=false>
 <cfset event=request.event>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cftry>
 <cfscript>
 	//data=structNew();
@@ -382,6 +383,8 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset item=iterator.next()>
 		<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		<cfset isLocked=len(item.getLockID()) and item.getLockType() eq 'node'>
+		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
 		
 		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
 			<cfset newcontent=verdict>
@@ -449,7 +452,7 @@ if(len($.siteConfig('customTagGroups'))){
 							<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						</cfif>
 					    
-					    <cfif deletable>
+					    <cfif deletable and not isLockedBySomeoneElse>
 					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#topID#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
 							<i class="icon-remove-sign"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>

@@ -31,6 +31,7 @@
 								if(lockedbysomeonelse){
 									jQuery("##msg-node-locked-else").fadeOut();
 									lockedbysomeonelse=false;
+									siteManager.doConditionalExit=true;
 								}
 								siteManager.hasNodeLock=false;
 								$('.form-actions').fadeIn();
@@ -40,15 +41,16 @@
 					}
 				);
 
-
 				<cfif nodeLockedBySomeElse>
 				$('.form-actions').hide();
 				lockedbysomeonelse=true;
+				siteManager.doConditionalExit=false;
 				</cfif>
 			});
 			</script>
 	</cfif>
 </cfif>
+<cfif isdefined('requiresApproval')>
 <cfif requiresApproval and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
 	<p class="alert alert-error">
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
@@ -129,4 +131,5 @@ function applyApprovalAction(requestid,action,comment,siteid){
 <div style="display:none;" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
 
 </div>
+</cfif>
 </cfoutput>

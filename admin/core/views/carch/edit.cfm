@@ -86,6 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 	siteManager.requestedURL="";
 	siteManager.formSubmitted=false;
+	siteManager.doConditionalExit=true;
 	<cfoutput>
 	function setRequestedURL(){
 		siteManager.requestedURL=this.href
@@ -116,6 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 
 	function conditionalExit(msg){
+
+		if(!siteManager.doConditionalExit){
+			return true;
+		}
+		
 		if(siteManager.form_is_modified(document.contentForm)){
 		if(msg==null){
 			<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>

@@ -46,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfset $=request.event.getValue('MuraScope')>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cfinclude template="js.cfm">
 <cfswitch expression="#rc.moduleID#">
 
@@ -88,6 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 </cfoutput>
+
 <div class="row-fluid">
 	  <div id="main" class="span9">
 	  <table class="mura-table-grid">
@@ -106,8 +108,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tbody>
 	<cfif rc.rstop.recordcount>
 	<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
-		<cfsilent><cfif rc.perm neq 'editor'>
-			<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
+		<cfsilent>
+			<cfset isLockedBySomeoneElse=len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>	
+			
+			<cfif rc.perm neq 'editor'>
+				<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
 			
 			<cfif verdict neq 'deny'>
 				<cfif verdict eq 'none'>
@@ -118,8 +123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfelse>
-		<cfset verdict='editor'>
-		</cfif>
+				<cfset verdict='editor'>
+			</cfif>
 		</cfsilent>
         <tr>  
           <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
@@ -153,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>
-				<cfif ((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1>
+				<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
 					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
 					<li class="delete disabled"><i class="icon-remove-sign"></i></li>

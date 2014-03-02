@@ -53,6 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset hasChangesetAccess=application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
 <cfset stats=rc.contentBean.getStats()>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
+<cfset isLocked=len(stats.getLockID()) and stats.getLockType() eq 'node'>
+<cfset isLockedBySomeoneElse=isLocked and stats.getLockID() neq session.mura.userid>
 <cfif rc.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(rc.contentBean.getFileID())>
 <cfset fileExt=rsFile.fileExt>
@@ -72,6 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#$.dspZoom(crumbdata=crumbdata,class="navZoom alt")#
 	</cfif>
 </cfif>
+
+<cfinclude template="dsp_status.cfm">
 
 <table class="mura-table-grid">
 <thead>
@@ -126,7 +131,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="radio" name="compare2" value="#rc.item.getContentHistID()#"<cfif rc.items.currentIndex() eq 1> checked</cfif>/>
 </td>
 <td class="title var-width">
-	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#">#HTMLEditFormat(left(rc.item.getmenutitle(),90))#</a>
+	<cfif not isLockedBySomeoneElse or poweruser>
+	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#">
+	</cfif>
+	#HTMLEditFormat(left(rc.item.getmenutitle(),90))#
+	<cfif not isLockedBySomeoneElse or poweruser>
+	</a>
+	</cfif>
 </td>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()>
 	<td>
@@ -195,7 +206,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="user">#HTMLEditFormat(rc.item.getlastUpdateBy())#</td> 
 <td class="actions">
 
-	<ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><i class="icon-pencil"></i></a></li>
+	<ul><li class="edit">
+	<cfif not isLockedBySomeoneElse or poweruser>
+		<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><i class="icon-pencil"></i></a>
+	<cfelse>
+		<i class="icon-pencil disabled"></i>
+	</cfif>
+	</li>
 <cfswitch expression="#rc.item.gettype()#">
 <cfcase value="Page,Folder,Calendar,Gallery,Link,File">
 	<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.contentBean.getFilename())#?previewid=#rc.item.getcontenthistid()#'>
@@ -209,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
  <li class="audit-trail"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.audittrail")#" href="./?muraAction=cArch.audit&contentid=#rc.item.getContentID()#&contenthistid=#rc.item.getContentHistID()#&type=#rc.item.gettype()#&parentid=#rc.item.getparentID()#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.item.getsiteid())#&moduleid=#rc.item.getmoduleid()#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><i class="icon-sitemap"></i></a></li>
 
-<cfif not rc.item.getactive() and (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')))><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contenthistid=#rc.item.getContentHistID()#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput>
+<cfif (not rc.item.getactive() and (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')))) and not isLockedBySomeoneElse><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contenthistid=#rc.item.getContentHistID()#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput>
 </cfloop> 
 </tbody></table>
 <script type="text/javascript">
