@@ -1341,8 +1341,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate,
-		tfiles.filename AS assocFilename,tfiles.fileid, tcontent.siteid
+		tfiles.filename AS assocFilename,tfiles.fileid, tcontent.siteid,tcontentstats.lockid,tcontentstats.locktype
 		FROM tcontent
+		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
+								and tcontent.siteID=tcontentstats.siteID
+								)
 		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID
 		WHERE tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and tcontent.Active=1 and tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.topID#"/>
 		</cfquery>
