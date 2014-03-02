@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rstop.recordcount>
 	<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
 		<cfsilent>
-			<cfset isLockedBySomeoneElse=len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>	
+			<cfset isLockedBySomeoneElse=application.configBean.getLockableNodes() and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>	
 			
 			<cfif rc.perm neq 'editor'>
 				<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>

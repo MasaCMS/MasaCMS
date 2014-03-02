@@ -383,7 +383,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset item=iterator.next()>
 		<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-		<cfset isLocked=len(item.getLockID()) and item.getLockType() eq 'node'>
+		<cfset isLocked=application.configBean.getLockableNodes() and len(item.getLockID()) and item.getLockType() eq 'node'>
 		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
 		
 		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
