@@ -59,8 +59,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> 
 			</p>
 		</cfif>
-		
-		<cfif not application.configBean.getLockableNodes() or not draftprompdata.islocked or poweruser or $.currentUser().getUser() eq  draftprompdata.lockid>
+
+		<cfif not application.configBean.getLockableNodes() or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
+			
 			<cfif draftprompdata.hasmultiple>
 				<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
 			</cfif>
@@ -75,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
+			
 			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft>	
 				<table class="mura-table-grid">
 					<thead>
