@@ -981,7 +981,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>	
 				
 				<cftransaction>
-				<cfset request.muratransaction=true>
+				<cfset request.muratransaction=request.muratransaction+1>
 				<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
 					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
@@ -1347,9 +1347,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset variables.contentDAO.create(newBean) />
 
-				<cfset request.muratransaction=false>
 				</cftransaction>
 
+				<cfset request.muratransaction=request.muratransaction-1>
+				
 				<!--- Related content persistence --->
 				<cfif not isNewBean>
 					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),

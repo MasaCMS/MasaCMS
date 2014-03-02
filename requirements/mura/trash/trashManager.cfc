@@ -21,7 +21,7 @@
 	</cfif>
 	
 	<cftransaction>
-	<cfset request.muratransaction=true>
+	<cfset request.muratransaction=request.muratransaction+1>
 
 	<cfloop query="rs">
 		<!--- CONTENT --->
@@ -145,9 +145,9 @@
 		delete from tadstats
 		where placementID not in (select placementID from tadplacements)
 	</cfquery>
-
-	<cfset request.muratransaction=false>
 	</cftransaction>
+	
+	<cfset request.muratransaction=request.muratransaction-1>
 	
 	<!--- FILES --->
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>

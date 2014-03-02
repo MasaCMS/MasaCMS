@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraShowTrace" default="true"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
 	<cfparam name="request.muraAppreloaded" default="false"/>
-	<cfparam name="request.muratransaction" default="false"/>
+	<cfparam name="request.muratransaction" default="0"/>
 	<cfparam name="request.muraDynamicContentError" default="false">
 	<cfparam name="request.muraPreviewDomain" default="">
 
@@ -190,6 +190,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "facebookexternalhit", request.userAgent ) OR
 	 FindNoCase( "TencentTraveler", request.userAgent ) OR
 	 FindNoCase( "bluedragon", request.userAgent ) OR
+	 FindNoCase( "binarycanary", request.userAgent ) OR
+	 FindNoCase( "siteexplorer", request.userAgent ) OR
 	 Find( "spider", request.userAgent ) OR
 	 FindNoCase( "80legs", request.userAgent ))>
 	 

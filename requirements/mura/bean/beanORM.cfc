@@ -741,8 +741,10 @@ component extends="mura.bean.bean" versioned=false {
 			pluginManager.announceEvent('onAfter#variables.entityName#Save',event);
 			pluginManager.announceEvent('on#variables.entityName#Save',event);
 		
+		/*
 		} else {
-			request.muratransaction=false;
+			request.muratransaction=request.muratransaction-1;
+		*/
 		}
 
 		if(getUseTrash()){
