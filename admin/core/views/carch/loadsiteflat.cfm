@@ -430,7 +430,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
 					 
-					    <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
+					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
