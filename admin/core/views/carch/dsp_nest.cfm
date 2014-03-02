@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsnest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
-
+<cfset isLockedBySomeoneElse=len(rsnest.lockid) and rsnest.lockid neq session.mura.userid>
 <cfset attributes.hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
 <cfset isMore=attributes.hasKids gt attributes.nextN>
 
@@ -242,7 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfelse>
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		</cfif>
-        <cfif deletable>
+        <cfif deletable and not isLockedBySomeoneElse>
           <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
