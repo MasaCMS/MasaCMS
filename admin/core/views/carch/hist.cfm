@@ -206,11 +206,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="user">#HTMLEditFormat(rc.item.getlastUpdateBy())#</td> 
 <td class="actions">
 
-	<ul><li class="edit">
+	<ul>
 	<cfif not isLockedBySomeoneElse or poweruser>
+		<li class="edit">
 		<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><i class="icon-pencil"></i></a>
 	<cfelse>
-		<i class="icon-pencil disabled"></i>
+		<li class="edit disabled">
+		<i class="icon-pencil"></i>
 	</cfif>
 	</li>
 <cfswitch expression="#rc.item.gettype()#">
