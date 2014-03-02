@@ -2533,7 +2533,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
 
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (variables.configBean.getLockableNodes() and  data.lockID neq session.mura.userID)/>
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (variables.configBean.getLockableNodes() and  data.isLocked and data.lockID neq session.mura.userID)/>
 			
 		<cfreturn data />
 	</cffunction>
