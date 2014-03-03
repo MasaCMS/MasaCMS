@@ -26,6 +26,8 @@
 compiled/
 *.less.css
 /temp
+/mxunit
+/tests
 
 # OS or Editor folders
 *~
