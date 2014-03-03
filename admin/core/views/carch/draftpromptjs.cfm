@@ -18,7 +18,7 @@ function initDraftPrompt(){
 		var locknode=false;
 
 		$.ajax({
-			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid'),
+			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid') + "&targetversion=" + node.attr('data-targetversion') + "&contenthistid=" + node.attr('data-contenthistid'),
 			  context: this,
 			  success: function(resp){
 				  
@@ -31,7 +31,7 @@ function initDraftPrompt(){
 					
 					$(".draft-prompt-option").click(function(e){
 						e.preventDefault();
-						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid') + "&locknode=" + locknode);
+						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid') + "&locknode=" + locknode );
 						actionModal(href);
 					});
 

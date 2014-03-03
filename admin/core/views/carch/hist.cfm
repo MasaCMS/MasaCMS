@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </td>
 <td class="title var-width">
 	<cfif not isLockedBySomeoneElse or poweruser>
-	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#">
+	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#">
 	</cfif>
 	#HTMLEditFormat(left(rc.item.getmenutitle(),90))#
 	<cfif not isLockedBySomeoneElse or poweruser>
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<ul>
 	<cfif not isLockedBySomeoneElse or poweruser>
 		<li class="edit">
-		<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><i class="icon-pencil"></i></a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#"><i class="icon-pencil"></i></a>
 	<cfelse>
 		<li class="edit disabled">
 		<i class="icon-pencil"></i>
@@ -295,7 +295,6 @@ jQuery(document).ready(function(){
 
 
 });
-
-
-
 </script>
+
+<cfinclude template="draftpromptjs.cfm">
