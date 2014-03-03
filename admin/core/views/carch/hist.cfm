@@ -296,5 +296,7 @@ jQuery(document).ready(function(){
 
 });
 </script>
+<cfif application.configBean.getLockableNodes()>
+<cfinclude template="draftpromptjs.cfm">	
+</cfif>
 
-<cfinclude template="draftpromptjs.cfm">
