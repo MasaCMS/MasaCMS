@@ -26,7 +26,7 @@
 <cffunction name="version" output="false">
 	<cfset var rscheck="">
 
-	<cfdbinfo 
+	<cfdbinfo
 		name="rsCheck"
 		type="version">
 
@@ -42,7 +42,7 @@
 
 <cffunction name="dropTable" output="false">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfif tableExists(arguments.table)>
 		<cfquery>
 			DROP TABLE #arguments.table#
@@ -73,7 +73,7 @@
 			select table_name from information_schema.tables where table_schema = current_schema()
 		</cfquery>
 	<cfelseif variables.dbtype neq 'oracle'>
-		<cfdbinfo 
+		<cfdbinfo
 			name="rsCheck"
 			type="tables">
 
@@ -90,7 +90,7 @@
 			select TABLE_NAME from user_tables
 		</cfquery>
 	</cfif>
-	
+
 	<cfloop query="rscheck">
 		<cfset tableStruct[rsCheck.table_name]=variables.utility.queryRowToStruct(rsCheck,rsCheck.currentRow)>
 	</cfloop>
@@ -104,18 +104,18 @@
 <cffunction name="columns" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rs ="">
-	
+
 	<cfif not structKeyExists(variables.tableMetaDataLookUp,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="oracle">
 				<cfquery
 				name="rs">
-					SELECT column_name, 
-					data_length column_size, 
-					data_type type_name, 
+					SELECT column_name,
+					data_length column_size,
+					data_type type_name,
 					data_default column_default_value,
 					nullable is_nullable,
-					 data_precision 
+					 data_precision
 					FROM user_tab_cols
 					WHERE table_name=UPPER('#arguments.table#')
 			</cfquery>
@@ -123,27 +123,27 @@
 			<!---
 			<cfcase value="nuodb">
 				<cfquery
-				name="rs" 
+				name="rs"
 				datasource="#variables.datasource#"
 				username="#variables.dbusername#"
 				password="#variables.dbpassword#">
-					SELECT field , 
-					length, 
-					datatype , 
-					defaultvalue, 
-					1  is_nullable, 
+					SELECT field ,
+					length,
+					datatype ,
+					defaultvalue,
+					1  is_nullable,
 					precision
 					FROM system.fields
 					WHERE tablename='#ucase(arguments.table)#'
 			</cfquery>
 			<cfquery
-				name="rs" 
+				name="rs"
 				dbtype="query">
-					SELECT field column_name, 
-					length column_size, 
-					datatype type_name, 
-					defaultvalue column_default_value, 
-					is_nullable, 
+					SELECT field column_name,
+					length column_size,
+					datatype type_name,
+					defaultvalue column_default_value,
+					is_nullable,
 					precision data_precision
 					FROM rs
 			</cfquery>
@@ -163,13 +163,13 @@
 			</cfquery>
 			</cfcase>
 			<cfdefaultcase>
-				<cfdbinfo 
+				<cfdbinfo
 				name="rs"
 				table="#qualifySchema(arguments.table)#"
-				type="columns">	
+				type="columns">
 			</cfdefaultcase>
 		</cfswitch>
-		
+
 		<cfset variables.tableMetaDataLookUp[arguments.table]=transformColumnMetaData(rs,arguments.table)>
 	</cfif>
 
@@ -179,7 +179,7 @@
 <cffunction name="dropColumn" output="false">
 	<cfargument name="column" default="">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfif columnExists(arguments.column,arguments.table)>
 	<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
@@ -202,7 +202,7 @@
 			ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 			</cfquery>
 		</cfcase>
-	</cfswitch>	
+	</cfswitch>
 
 	<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>
 	</cfif>
@@ -238,7 +238,7 @@
 			and (existing.dataType neq arguments.datatype
 			and not arguments.autoincrement
 			or (
-				listFindNoCase("char,varchar",arguments.datatype) 
+				listFindNoCase("char,varchar",arguments.datatype)
 				and arguments.length neq existing.length
 				)
 			or existing.nullable neq arguments.nullable
@@ -258,7 +258,7 @@
 			</cftry>
 
 	<cfelseif not hasTable or not len(existing.column)>
-		
+
 		<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
 			<cfquery>
@@ -267,15 +267,15 @@
 				<cfelse>
 					ALTER TABLE #arguments.table# ADD
 				</cfif>
-				
-				#arguments.column#  
+
+				#arguments.column#
 				<cfif arguments.autoincrement>
 					INT PRIMARY KEY IDENTITY
 				<cfelse>
-					#transformDataType(arguments.datatype,arguments.length)# 
+					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
 					<cfif not(not arguments.nullable and arguments.default eq 'null')>
-						default 
+						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
@@ -283,7 +283,7 @@
 						</cfif>
 					</cfif>
 				</cfif>
-				
+
 				<cfif not hasTable>) ON [PRIMARY]</cfif>
 			</cfquery>
 		</cfcase>
@@ -294,16 +294,16 @@
 				<cfelse>
 					ALTER TABLE #arguments.table# ADD COLUMN
 				</cfif>
-				
-				#arguments.column#  
+
+				#arguments.column#
 
 				<cfif arguments.autoincrement>
 					INT(10) NOT NULL AUTO_INCREMENT
 				<cfelse>
-					#transformDataType(arguments.datatype,arguments.length)# 
-					<cfif not arguments.nullable> not null </cfif> 
+					#transformDataType(arguments.datatype,arguments.length)#
+					<cfif not arguments.nullable> not null </cfif>
 					<cfif not(not arguments.nullable and arguments.default eq 'null')>
-						default 
+						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
@@ -311,14 +311,14 @@
 						</cfif>
 					</cfif>
 				</cfif>
-				
+
 				<cfif not hasTable>
 					<cfif version().database_productname neq 'h2'>
 						<cfif arguments.autoincrement>
 							,PRIMARY KEY(#arguments.column#)
 						</cfif>
-						) 
-						
+						)
+
 						ENGINE=#variables.configBean.getMySQLEngine()# DEFAULT CHARSET=utf8
 					<cfelse>
 						)
@@ -334,11 +334,11 @@
 			<cfquery>
 				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
-						#arguments.column# 
-						<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif> <cfif not arguments.nullable>NOT NULL</cfif> 
-						<cfif not arguments.autoincrement> 
+						#arguments.column#
+						<cfif arguments.autoincrement>SERIAL<cfelse>#transformDataType(arguments.datatype,arguments.length)#</cfif> <cfif not arguments.nullable>NOT NULL</cfif>
+						<cfif not arguments.autoincrement>
 							<cfif not(not arguments.nullable and arguments.default eq 'null')>
-								DEFAULT 
+								DEFAULT
 								<cfif arguments.default eq 'null' or listFindNoCase('int,smallint',arguments.datatype)>
 									#arguments.default#
 								<cfelse>
@@ -365,15 +365,15 @@
 				<cfelse>
 					ALTER TABLE #arguments.table# ADD COLUMN
 				</cfif>
-				
-				#arguments.column#  
+
+				#arguments.column#
 				<cfif arguments.autoincrement>
 					integer generated always as identity (seq_#arguments.table#)
 				<cfelse>
-					#transformDataType(arguments.datatype,arguments.length)# 
-					<cfif not arguments.nullable> not null </cfif> 
+					#transformDataType(arguments.datatype,arguments.length)#
+					<cfif not arguments.nullable> not null </cfif>
 					<cfif not(not arguments.nullable and arguments.default eq 'null')>
-						default 
+						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
 						<cfelse>
@@ -396,19 +396,19 @@
 				<cfelse>
 					ALTER TABLE #arguments.table# ADD <cfif variables.dbtype eq "ORACLE">(</cfif>
 				</cfif>
-				
-				#arguments.column# #transformDataType(arguments.datatype,arguments.length)#  
+
+				#arguments.column# #transformDataType(arguments.datatype,arguments.length)#
 				<cfif not(not arguments.nullable and arguments.default eq 'null')>
-					default 
+					default
 					<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 						#arguments.default#
 					<cfelse>
 						'#arguments.default#'
 					</cfif>
 				</cfif>
-				
+
 				<cfif not hasTable or variables.dbtype eq "ORACLE">)</cfif>
-				
+
 				<cfif arguments.datatype eq "longtext">
 					lob (#arguments.column#) STORE AS (
 					TABLESPACE #variables.configBean.getDbTablespace()# ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
@@ -420,7 +420,7 @@
 			</cfquery>
 
 			<cftry>
-				<cfif not arguments.nullable> 
+				<cfif not arguments.nullable>
 					<cfquery>
 						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 					</cfquery>
@@ -432,17 +432,17 @@
 				<cfcatch></cfcatch>
 			</cftry>
 
-			<cfif arguments.autoincrement>				
+			<cfif arguments.autoincrement>
 				<cfset var seq_name=left('seq_#arguments.table#_#arguments.column#',30)>
 				<cfset var trg_name=left('trg_#arguments.table#_#arguments.column#',30)>
-				
+
 				<cftry>
 				 <cfquery>
 					DROP SEQUENCE #seq_name#
 				</cfquery>
 				<cfcatch></cfcatch>
 				</cftry>
-				
+
 				<cfquery>
 					CREATE SEQUENCE #seq_name#
 					MINVALUE 1
@@ -465,13 +465,13 @@
 		</cfcase>
 		</cfswitch>
 
-		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>	
-		
+		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>
+
 		<!--- if we just added the table, update the tableLookUp--->
 		<cfif not hasTable>
 			<cfset variables.tableLookUp[arguments.table] = true>
 		</cfif>
-	</cfif> 
+	</cfif>
 
 	<cfreturn this>
 </cffunction>
@@ -494,7 +494,7 @@
 	<cfif arguments.datatype eq "any">
 		<cfset arguments.datatype="varchar">
 	</cfif>
-	
+
 	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
@@ -504,21 +504,21 @@
 			</cfcase>
 			<cfcase value="mysql">
 				<cfquery>
-					ALTER TABLE #arguments.table# 
+					ALTER TABLE #arguments.table#
 					<cfif version().database_productname eq 'H2'>
 						ALTER
 					<cfelse>
 						MODIFY
 					</cfif>
-					 
-					COLUMN #arguments.column# 
+
+					COLUMN #arguments.column#
 					<cfif arguments.autoincrement>
 						INT(10) NOT NULL AUTO_INCREMENT
 					<cfelse>
-						#transformDataType(arguments.datatype,arguments.length)# 
-						<cfif not arguments.nullable> not null </cfif> 
+						#transformDataType(arguments.datatype,arguments.length)#
+						<cfif not arguments.nullable> not null </cfif>
 						<cfif not(not arguments.nullable and arguments.default eq 'null')>
-							default 
+							default
 							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 								#arguments.default#
 							<cfelse>
@@ -546,23 +546,23 @@
 						<cfset dropColumn(table=arguments.table,column=tempName)>
 					</cfif>
 					<cfquery>
-						ALTER TABLE #arguments.table# ADD COLUMN #tempName# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif> 
+						ALTER TABLE #arguments.table# ADD COLUMN #tempName# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
 						<cfif not(not arguments.nullable and arguments.default eq 'null')>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
 					</cfquery>
 					<cfquery>
-						UPDATE #arguments.table# set #tempName#=#arguments.column# 
+						UPDATE #arguments.table# set #tempName#=#arguments.column#
 					</cfquery>
 					<cftry>
 						<cfquery>
-						ALTER TABLE #arguments.table# DROP COLUMN #arguments.column# 
+						ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 					</cfquery>
 					<cfcatch><cfdump var="#cfcatch#" abort></cfcatch>
 					</cftry>
-					
+
 					<cfquery>
-						ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif> 
+						ALTER TABLE #arguments.table# ADD COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>integer generated always as identity (seq_#arguments.table#)<cfelse><cfif not arguments.nullable> not null </cfif>
 						<cfif not(not arguments.nullable and arguments.default eq 'null')>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 						</cfif>
@@ -585,14 +585,14 @@
 						ALTER TABLE #arguments.table# RENAME COLUMN #arguments.column# to #tempName#
 					</cfquery>
 					<cfquery>
-						ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)# 
+						ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)#
 						<cfif not(not arguments.nullable and arguments.default eq 'null')>
 							default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
 						</cfif>
 					</cfquery>
 
 					<cftry>
-						<cfif not arguments.nullable> 
+						<cfif not arguments.nullable>
 							<cfquery>
 								ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 							</cfquery>
@@ -677,7 +677,7 @@
 	<cfargument name="datatype" default="varchar">
 	<cfargument name="length" default="50">
 	<cfset var MSSQLversion=0>
-	
+
 	<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
 			<cfswitch expression="#arguments.datatype#">
@@ -687,7 +687,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,numeric">
 					<cfreturn "int">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -709,7 +709,7 @@
 						<cfquery name="MSSQLversion">
 							EXEC sp_MSgetversion
 						</cfquery>
-					
+
 						<cftry>
 							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 							<cfcatch>
@@ -722,7 +722,7 @@
 						<cfreturn "[nvarchar](max)">
 					<cfelse>
 						<cfreturn "[ntext]">
-					</cfif>		
+					</cfif>
 				</cfcase>
 				<cfcase value="float">
 					<cfreturn "float">
@@ -743,7 +743,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,numeric">
 					<cfreturn "int(10)">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -777,7 +777,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,numeric">
 					<cfreturn "integer">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -811,7 +811,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,numeric">
 					<cfreturn "integer">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -845,7 +845,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,numeric">
 					<cfreturn "number(10,0)">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -874,9 +874,9 @@
 <cffunction name="columnExists" output="false">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfreturn structKeyExists(columns(arguments.table),arguments.column)>
-	
+
 </cffunction>
 
 <cffunction name="transformColumnMetaData" access="private" output="false">
@@ -891,7 +891,7 @@
 		<cfset columnArgs=structCopy(defaultArgs)>
 		<cfset columnArgs.column=arguments.rs.column_name>
 		<cfset columnArgs.table=arguments.table>
-		
+
 		<cfswitch expression="#arguments.rs.type_name#">
 			<cfcase value="varchar,nvarchar,varchar2">
 				<!--- Add MSSQL nvarchar(max)--->
@@ -902,14 +902,14 @@
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="int,integer">
+			<cfcase value="int,integer,numeric">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
 				<cfif arguments.rs.data_precision eq 3>
 					<cfset columnArgs.datatype="tinyint">
 				<cfelse>
-					<cfset columnArgs.datatype="int">	
+					<cfset columnArgs.datatype="int">
 				</cfif>
 			</cfcase>
 			<cfcase value="tinyint,smallint">
@@ -945,8 +945,8 @@
 			<cfset columnArgs.default=arguments.rs.column_default_value>
 		</cfif>
 
-		<cfif len(columnArgs.default) 
-			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype) 
+		<cfif len(columnArgs.default)
+			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype)
 			and not (
 						isNumeric(columnArgs.default)
 						and columnArgs.default neq "null")
@@ -967,7 +967,7 @@
 				<cfset columnArgs.default=mid(columnArgs.default,2,len(columnArgs.default)-1)>
 			</cfif>
 		</cfif>
-		
+
 		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>
 			<cfif columnArgs.nullable>
 				<cfset columnArgs.default='null'>
@@ -975,7 +975,7 @@
 				<cfset columnArgs.default=0>
 			</cfif>
 		</cfif>
-		
+
 		<cfif not columnArgs.nullable and columnArgs.datatype eq "int" and isDefined('rs.is_primarykey') and arguments.rs.is_primarykey>
 			<cfset columnArgs.autoincrement=true>
 		</cfif>
@@ -991,7 +991,7 @@
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var columnsStruct=columns(arguments.table)>
-	
+
 	<cfif structKeyExists(columnsStruct,arguments.column)>
 		<cfreturn columnsStruct[arguments.column]>
 	</cfif>
@@ -1015,9 +1015,9 @@
 <cffunction name="addIndex" output="false">
 	<cfargument name="column" default="">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfset var rsCheck="">
-	
+
 	<cfif not indexExists(arguments.column,arguments.table)>
 		<cftry>
 			<cfswitch expression="#variables.dbtype#">
@@ -1041,7 +1041,7 @@
 				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
 				</cfquery>
 			</cfcase>
-			</cfswitch>	
+			</cfswitch>
 		<cfcatch></cfcatch>
 		</cftry>
 		<cfset structDelete(variables.tableIndexLookUp,arguments.table)>
@@ -1076,7 +1076,7 @@
 				DROP INDEX #transformIndexName(argumentCollection=arguments)#
 				</cfquery>
 			</cfcase>
-		</cfswitch>	
+		</cfswitch>
 
 		<cfset structDelete(variables.tableIndexLookUp,arguments.table)>
 	</cfif>
@@ -1093,7 +1093,7 @@
 			<cfcase value="oracle">
 				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","ALL"),"[[:space:]]","","All")>
 			</cfcase>
-		</cfswitch>	
+		</cfswitch>
 </cffunction>
 
 <cffunction name="indexes" output="false">
@@ -1101,7 +1101,7 @@
 	<cfset var rs="">
 
 	<cfif not structKeyExists(variables.tableIndexLookUp,arguments.table)>
-	<cfdbinfo 
+	<cfdbinfo
 		name="rs"
 		table="#qualifySchema(arguments.table)#"
 		type="index">
@@ -1116,7 +1116,7 @@
 	<cfargument name="table">
 	<cfset var index={}>
 	<cfset var indexArray=[]>
-	
+
  	<cfif rs.recordcount>
 		<cfloop query="rs">
 			<cfset index={table=arguments.table,
@@ -1172,11 +1172,11 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo 
+	<cfdbinfo
 		name="rsCheck"
 		table="#qualifySchema(arguments.table)#"
 		type="index">
-	
+
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like '%primary%'
 		or lower(rsCheck.INDEX_NAME) like 'pk_%'
@@ -1190,11 +1190,11 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo 
+	<cfdbinfo
 		name="rsCheck"
 		table="#qualifySchema(arguments.table)#"
 		type="index">
-	
+
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
 		or lower(rsCheck.INDEX_NAME) like 'pk_%'
@@ -1208,11 +1208,11 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo 
+	<cfdbinfo
 		name="rsCheck"
 		table="#qualifySchema(arguments.table)#"
 		type="index">
-	
+
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
 		or lower(rsCheck.INDEX_NAME) like 'pk_%'
@@ -1225,7 +1225,7 @@
 <cffunction name="addPrimaryKey" output="false">
 	<cfargument name="column" default="">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfif not primaryKeyExists(arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
@@ -1260,7 +1260,7 @@
 
 <cffunction name="dropPrimaryKey" output="false">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfif primaryKeyExists(arguments.table)>
 		<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql">
@@ -1304,7 +1304,7 @@
 
 	<cfset var fkArray=foreignKeys(argumentCollection=arguments)>
 	<cfset var i="">
-	
+
 	<cfif arrayLen(fkArray)>
 		<cfloop from="1" to="#arrayLen(fkArray)#" index="i">
 			<cfif fkArray[i].fkColumn eq arguments.fkColumn
@@ -1324,7 +1324,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var fkArray=foreignKeys(argumentCollection=arguments)>
 	<cfset var i="">
-	
+
 	<cfif arrayLen(fkArray)>
 		<cfloop from="1" to="#arrayLen(fkArray)#" index="i">
 			<cfif fkArray[i].fkColumn eq arguments.fkColumn
@@ -1349,7 +1349,7 @@
 							column=arguments.fkColumn,
 							fkTable=arguments.table,
 							fkColumn=arguments.column
-						)>	
+						)>
 		<cfset addIndex(arguments.column,arguments.table)>
 		<cfquery>
 			ALTER TABLE #arguments.table#
@@ -1414,7 +1414,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfdbinfo 
+	<cfdbinfo
 		name="rsCheck"
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
@@ -1424,11 +1424,11 @@
 <cfscript>
 /**
  * Parse out the first set of numbers in a string.
- * 
+ *
  * @param string      String to parse. (Required)
- * @return Returns a string. 
- * @author Marco G. Williams (email@marcogwilliams.com) 
- * @version 1, May 22, 2003 
+ * @return Returns a string.
+ * @author Marco G. Williams (email@marcogwilliams.com)
+ * @version 1, May 22, 2003
  */
 function _parseInt(String){
     var NewString = "";
@@ -1444,7 +1444,7 @@ function _parseInt(String){
 <cffunction name="columnParamType" output="false">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	
+
 	<cfset var datatype=columnMetaData(argumentCollection=arguments).datatype>
 
 	<cfswitch expression="#datatype#">
