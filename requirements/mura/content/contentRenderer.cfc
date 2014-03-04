@@ -1771,14 +1771,22 @@ Display Objects
 	<cfset var historyID="">
 	<cfset var tempObject="">
 	<cfset var args={}>
-	
+
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
+
+
+		<cfif application.configBean.getLockableNodes()>
+			<cfset var configuratorAction="cArch.lockcheck&destAction=">
+		<cfelse>
+			<cfset var configuratorAction="">
+		</cfif>
+
 		<cfswitch expression="#arguments.object#">
 			<cfcase value="plugin">
 				<cfset showEditable=arguments.hasConfigurator and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editablePlugin">
-					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1786,7 +1794,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableFeed">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1794,7 +1802,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableCategorySummary">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1803,7 +1811,7 @@ Display Objects
 					<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 					<cfif showEditable>
 						<cfset editableControl.class="editableTagCloud">
-						<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+						<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfif>
 				</cfif>
@@ -1816,7 +1824,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableSiteMap">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 
@@ -1828,7 +1836,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableRelatedContent">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1841,7 +1849,9 @@ Display Objects
 					<cfelse>
 						<cfset editableControl.class="editableForm">
 					</cfif>
-					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.edit">
+
+					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.edit">
+					
 					<cfif len(variables.$.event('previewID'))>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & variables.$.event('previewID')>
 					<cfelse>

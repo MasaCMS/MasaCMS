@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
 			</cfif>
-			
+		
 			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft or rc.targetversion>	
 				<table class="mura-table-grid">
 					<thead>

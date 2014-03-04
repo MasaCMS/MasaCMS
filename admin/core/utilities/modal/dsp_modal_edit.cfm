@@ -85,8 +85,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfset variables.targetHook=generateEditableHook()>
+				
+			<cfif application.configBean.getLockableNodes()>
+				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.lockcheck&destAction=carch.edit">
+			<cfelse>
+				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
+			</cfif>
 			
-			<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
 			<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 				<cfset variables.editLink = variables.editLink & "&amp;contenthistid=" & request.previewID>
 			<cfelse>
