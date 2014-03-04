@@ -67,14 +67,14 @@ component extends="mura.bean.bean" versioned=false {
 				} else if(prop.persistent){
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
-						variables.instance[prop.column]=createUUID();
+						variables.instance[prop.name]=createUUID();
 					}else if (listFindNoCase("date,datetime,timestamp",prop.datatype)){
-						variables.instance[prop.column]=now();
+						variables.instance[prop.name]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
-							variables.instance[prop.column]=prop.default;
+							variables.instance[prop.name]=prop.default;
 						} else {
-							variables.instance[prop.column]='';
+							variables.instance[prop.name]='';
 						}
 					}
 
@@ -95,12 +95,12 @@ component extends="mura.bean.bean" versioned=false {
 				}
 				else {
 					if(listFindNoCase("date,datetime,timestamp",prop.datatype)){
-						variables.instance[prop.column]=now();
+						variables.instance[prop.name]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
-							variables.instance[prop.column]=prop.default;
+							variables.instance[prop.name]=prop.default;
 						} else {
-							variables.instance[prop.column]='';
+							variables.instance[prop.name]='';
 						}
 					}
 				}
@@ -567,7 +567,7 @@ component extends="mura.bean.bean" versioned=false {
 				paramArgs.null=arguments.prop.nullable and (not len(arguments.value) or arguments.value eq "null");
 			}	else {
 				arguments.value='null';
-				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");
+				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.name]) or variables.instance[arguments.prop.name] eq "null");
 			}
 
 			if(arguments.prop.column == getDiscriminatorColumn()){
@@ -626,7 +626,7 @@ component extends="mura.bean.bean" versioned=false {
 
 			for (prop in props){
 				if(props[prop].persistent){
-					addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					addQueryParam(qs,props[prop],variables.instance[prop]);
 				}
 			}
 
@@ -977,7 +977,7 @@ component extends="mura.bean.bean" versioned=false {
 						writeOutput("and ");
 					}
 
-					writeOutput(" #getTable()#.#arg#= :#arg# ");
+					writeOutput(" #getTable()#.#props[prop].column#= :#props[prop].column# ");
 				}
 
 				if(hasDiscriminator && !foundDiscriminator){
@@ -1040,7 +1040,27 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	private function getLoadSQL(){
-		return "select * from #getTable()# ";
+		var sql			= ''
+		var props		= getProperties();
+		var columns		= getColumns();
+		var started		= false;
+
+		savecontent variable="sql"{
+			writeOutput('select ');
+
+			for(prop in props){
+				if (structKeyExists(columns, props[prop].column)) {
+					if (started) {
+						writeOutput(',');
+					}
+					writeOutput('#getTable()#.#props[prop].column# as #props[prop].name# ');
+					started = true;
+				}
+			}
+
+			writeOutput('from #getTable()# ');
+		}
+		return sql;
 	}
 
 	function clone(){
