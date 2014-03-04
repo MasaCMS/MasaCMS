@@ -1208,21 +1208,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				</cfif>
 
-				<!--- Preserve Extended data --->
-				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
-					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>
-						<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
-					</cfif>
-
-					<cfif not newBean.getIsNew()>
-						<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
-					</cfif>
-				</cfif>
-
-				<cfif not newBean.getIsNew()>
-					<cfset doPreserveVersionedObjects=true>
-				</cfif>
-
 				<!--- Delete Files that are not attached to any version in versin history--->
 				<cfif variables.configBean.getPurgeDrafts() and newBean.getApproved() and not newBean.getIsNew()>
 					<cfset rsArchive=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
@@ -1265,6 +1250,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 				<!---If approved, delete all drafts and set the last active to inactive--->
+
+				<!--- Preserve Extended data --->
+				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
+					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>
+						<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
+					</cfif>
+
+					<cfif not newBean.getIsNew()>
+						<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
+					</cfif>
+				</cfif>
+
+				<cfif not newBean.getIsNew()>
+					<cfset doPreserveVersionedObjects=true>
+				</cfif>
 
 				<cfif newBean.getapproved() and not newBean.getIsNew()>
 
