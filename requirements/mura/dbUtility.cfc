@@ -687,7 +687,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer,numeric">
+				<cfcase value="int,integer">
 					<cfreturn "int">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -724,7 +724,7 @@
 						<cfreturn "[ntext]">
 					</cfif>
 				</cfcase>
-				<cfcase value="float">
+				<cfcase value="float,numeric">
 					<cfreturn "float">
 				</cfcase>
 				<cfcase value="double">
@@ -743,11 +743,14 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer,numeric">
+				<cfcase value="int,integer">
 					<cfreturn "int(10)">
 				</cfcase>
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
+				</cfcase>
+				<cfcase value="boolean">
+					<cfreturn "tinyint(1)">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
 					<cfreturn "datetime">
@@ -758,7 +761,7 @@
 				<cfcase value="longtext">
 					<cfreturn "longtext">
 				</cfcase>
-				<cfcase value="float">
+				<cfcase value="float,numeric">
 					<cfreturn "float">
 				</cfcase>
 				<cfcase value="double">
@@ -777,7 +780,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer,numeric">
+				<cfcase value="int,integer">
 					<cfreturn "integer">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -792,7 +795,7 @@
 				<cfcase value="longtext">
 					<cfreturn "text">
 				</cfcase>
-				<cfcase value="float">
+				<cfcase value="float,numeric">
 					<cfreturn "real">
 				</cfcase>
 				<cfcase value="double">
@@ -811,7 +814,7 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer,numeric">
+				<cfcase value="int,integer">
 					<cfreturn "integer">
 				</cfcase>
 				<cfcase value="tinyint">
@@ -826,7 +829,7 @@
 				<cfcase value="longtext">
 					<cfreturn "clob">
 				</cfcase>
-				<cfcase value="float">
+				<cfcase value="float,numeric">
 					<cfreturn "float">
 				</cfcase>
 				<cfcase value="double">
@@ -845,11 +848,14 @@
 				<cfcase value="char">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer,numeric">
+				<cfcase value="int,integer">
 					<cfreturn "number(10,0)">
 				</cfcase>
 				<cfcase value="tinyint">
 					<cfreturn "number(3,0)">
+				</cfcase>
+				<cfcase value="boolean">
+					<cfreturn "number(1,0)">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
 					<cfreturn "date">
@@ -857,7 +863,7 @@
 				<cfcase value="text,longtext">
 					<cfreturn "clob">
 				</cfcase>
-				<cfcase value="float">
+				<cfcase value="float,numeric">
 					<cfreturn "binary_float">
 				</cfcase>
 				<cfcase value="double">
@@ -868,7 +874,11 @@
 				</cfcase>
 			</cfswitch>
 		</cfcase>
+		<cfdefaultcase>
+			<cfthrow type="muraorm" message="Unrecognized ORM dbtype #arguments.datatype#. Valid dbtypes are mssqlm mysql, postgresql, nuodb, oracle." />
+		</cfdefaultcase>
 	</cfswitch>
+	<cfthrow type="muraorm" message="Unrecognized ORM datatype #arguments.datatype#. Valid datatypes are varchar, string, char,int, integer, tinyint, boolean, date, datetime, timestamp, text, longtext, float, numeric, double, blob." />
 </cffunction>
 
 <cffunction name="columnExists" output="false">
@@ -902,7 +912,7 @@
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="int,integer,numeric">
+			<cfcase value="int,integer">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
