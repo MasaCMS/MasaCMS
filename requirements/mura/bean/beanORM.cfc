@@ -185,6 +185,10 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].primaryKey;
 	}
 
+	function getPrimaryKeyColumn(){
+		return application.objectMappings[variables.entityName].properties[getPrimaryKey()].column;
+	}
+
 	function getUseTrash(){
 		return application.objectMappings[variables.entityName].usetrash;
 	}
@@ -628,7 +632,7 @@ component extends="mura.bean.bean" versioned=false {
 
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
-			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
+			if(qs.execute(sql='select #getPrimaryKeyColumn()# from #getTable()# where #getPrimaryKeyColumn()# = :primarykey').getResult().recordcount){
 
 				preUpdate();
 
@@ -639,7 +643,7 @@ component extends="mura.bean.bean" versioned=false {
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
 						for(prop in props){
-							if(props[prop].column neq getPrimaryKey() and structKeyExists(columns, props[prop].column)){
+							if(props[prop].column neq getPrimaryKeyColumn() and structKeyExists(columns, props[prop].column)){
 								if(started){
 									writeOutput(",");
 								}
@@ -648,7 +652,7 @@ component extends="mura.bean.bean" versioned=false {
 							}
 						}
 
-						writeOutput(" where #getPrimaryKey()# = :primarykey");
+						writeOutput(" where #getPrimaryKeyColumn()# = :primarykey");
 
 					}
 
@@ -774,7 +778,7 @@ component extends="mura.bean.bean" versioned=false {
 
 				if( valueExist(props[prop].keycolumn) ){
 					if(props[prop].fkcolumn eq 'primaryKey'){
-						primaryLoadArgs={'#getPrimaryKey()#'=getValue(translatePropKey(props[prop].fkcolumn))};
+						primaryLoadArgs={'#getPrimaryKeyColumn()#'=getValue(translatePropKey(props[prop].fkcolumn))};
 					} else {
 						primaryLoadArgs={'#props[prop].fkcolumn#'=getValue(translatePropKey(props[prop].fkcolumn))};
 					}
@@ -896,7 +900,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		var qs=getQueryService();
 		qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
-		qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		qs.execute(sql='delete from #getTable()# where #getPrimaryKeyColumn()# = :primarykey');
 		purgeCache();
 
 		postDelete();
