@@ -1280,7 +1280,7 @@ buttons: {
 			stripe('stripe');
 			setCheckboxTrees();
 			setToolTips(".mura-table-grid");
-		
+
 			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(function(data){
 				var tagArray=eval('(' + data + ')'); 
 				$('#tags').tagSelector(tagArray, 'tags');
@@ -1381,7 +1381,7 @@ buttons: {
 
 			});
 			initDraftPrompt();
-
+		
 			d.hide().animate({
 				'opacity': 'show'
 			}, 1000);
