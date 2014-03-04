@@ -87,9 +87,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.targetHook=generateEditableHook()>
 				
 			<cfif application.configBean.getLockableNodes()>
-				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.lockcheck&destAction=carch.edit">
+				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=carch.lockcheck&destAction=carch.edit">
+				<cfset dolockcheck=not($.content().getStats().getLockID() eq $.currentUser().getUserID())>
 			<cfelse>
 				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
+				<cfset dolockcheck=false>
 			</cfif>
 			
 			<cfif structKeyExists(request,"previewID") and len(request.previewID)>
@@ -263,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
+										<a href="#variables.editLink#"<cfif dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
 									</li>
 									<cfif this.showInlineEditor>	
 									<li id="adminQuickEdit">

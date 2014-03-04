@@ -1776,7 +1776,7 @@ Display Objects
 
 
 		<cfif application.configBean.getLockableNodes()>
-			<cfset var configuratorAction="cArch.lockcheck&destAction=">
+			<cfset var configuratorAction="carch.lockcheck&destAction=">
 		<cfelse>
 			<cfset var configuratorAction="">
 		</cfif>
