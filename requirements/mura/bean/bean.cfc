@@ -344,10 +344,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return variables.primarykey;
 	}
 
-	function getPrimaryKeyColumn(){
-		return getPrimaryKey();
-	}
-
 	function getProperties(){
 		getEntityName();
 
