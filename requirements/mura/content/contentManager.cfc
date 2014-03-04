@@ -1145,18 +1145,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset doPurgeContentDescendentsCache=true>
 					</cfif>
 
-<<<<<<< HEAD
-					<cfif isdefined("arguments.data.unlocknodewithpublish") 
+					<cfif isdefined("arguments.data.unlocknodewithpublish")
 						and arguments.data.unlocknodewithpublish>
-						<cfset newBean.getStats().setLockID("").setLockType("").save()>	
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>
 					</cfif>
-								
-				</cfif>		
-						
-=======
+
 				</cfif>
 
->>>>>>> develop
 				<cfif newBean.getIsNew()>
 					<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
 				<cfelse>
@@ -1199,15 +1194,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset newBean.setfileID(local.fileBean.getFileID()) />
 
 					<cfif not newBean.getIsNew()
-<<<<<<< HEAD
-							and isdefined("arguments.data.unlockfilewithnew") 
+							and isdefined("arguments.data.unlockfilewithnew")
 							and arguments.data.unlockfilewithnew>
-						<cfset newBean.getStats().setLockID("").setLockType("").save()>	
-=======
-							and isdefined("arguments.data.unlockwithnew")
-							and arguments.data.unlockwithnew>
-						<cfset newBean.getStats().setLockID("").save()>
->>>>>>> develop
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>
 					</cfif>
 
 					<cfif newBean.getType() eq "File">
@@ -1222,21 +1211,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<!--- Delete Files in temp directory --->
 
-				</cfif>
-
-				<!--- Preserve Extended data --->
-				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
-					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>
-						<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
-					</cfif>
-
-					<cfif not newBean.getIsNew()>
-						<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
-					</cfif>
-				</cfif>
-
-				<cfif not newBean.getIsNew()>
-					<cfset doPreserveVersionedObjects=true>
 				</cfif>
 
 				<!--- Delete Files that are not attached to any version in versin history--->
@@ -1281,6 +1255,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 				<!---If approved, delete all drafts and set the last active to inactive--->
+
+				<!--- Preserve Extended data --->
+				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
+					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>
+						<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
+					</cfif>
+
+					<cfif not newBean.getIsNew()>
+						<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
+					</cfif>
+				</cfif>
+
+				<cfif not newBean.getIsNew()>
+					<cfset doPreserveVersionedObjects=true>
+				</cfif>
 
 				<cfif newBean.getapproved() and not newBean.getIsNew()>
 
@@ -2525,10 +2514,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-<<<<<<< HEAD
 		<cfif variables.configBean.getLockableNodes()>
 			<cfset var stats=cb.getStats()>
-			
+
 			<cfset data.lockid=stats.getLockID()>
 			<cfset data.locktype=stats.getLockType()>
 			<cfset data.lockedbyyou=stats.getLockID() eq session.mura.userid>
@@ -2544,15 +2532,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 		</cfif>
-		
+
 		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
 
 		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (variables.configBean.getLockableNodes() and  data.lockID neq session.mura.userID)/>
-			
-=======
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
 
->>>>>>> develop
 		<cfreturn data />
 	</cffunction>
 
