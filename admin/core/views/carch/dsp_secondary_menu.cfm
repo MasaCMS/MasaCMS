@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif isdefined('rc.contentBean')>
 	<cfparam name="stats" default="#rc.contentBean.getStats()#">
-	<cfset isLocked=application.configBean.getLockableNodes() and len(stats.getLockID()) and stats.getLockType() eq 'node'>
+	<cfset isLocked=$.siteConfig('hasLockableNodes') and len(stats.getLockID()) and stats.getLockType() eq 'node'>
 	<cfset isLockedBySomeoneElse=isLocked and stats.getLockID() neq session.mura.userid>
 </cfif>
 

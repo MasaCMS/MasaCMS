@@ -285,7 +285,7 @@
 		inited: false,
 		init: function(){
 
-			<cfif application.configBean.getLockableNodes()>
+			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset stats=node.getStats()>
 				<cfif stats.getLockType() eq 'node' and stats.getLockID() neq session.mura.userid>
 					alert('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.draftprompt.contentislockedbyanotheruser"))#');

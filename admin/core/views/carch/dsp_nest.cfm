@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsnest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
-<cfset isLockedBySomeoneElse=application.configBean.getLockableNodes() and len(rsnest.lockid) and rsnest.lockid neq session.mura.userid>
+<cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rsnest.lockid) and rsnest.lockid neq session.mura.userid>
 <cfset attributes.hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
 <cfset isMore=attributes.hasKids gt attributes.nextN>
 

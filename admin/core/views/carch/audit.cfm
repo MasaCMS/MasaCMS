@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset hasChangesetAccess=application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
 <cfset stats=rc.contentBean.getStats()>
 <cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
-<cfset isLocked=application.configBean.getLockableNodes() and len(stats.getLockID()) and stats.getLockType() eq 'node'>
+<cfset isLocked=$.siteConfig('hasLockableNodes') and len(stats.getLockID()) and stats.getLockType() eq 'node'>
 <cfset isLockedBySomeoneElse=isLocked and stats.getLockID() neq session.mura.userid>
 <cfif rc.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(rc.contentBean.getFileID())>
@@ -254,7 +254,7 @@ jQuery(document).ready(function(){
 	}); 
 });
 </script>
-<cfif application.configBean.getLockableNodes()>
+<cfif $.siteConfig('hasLockableNodes')>
 <cfinclude template="draftpromptjs.cfm">	
 </cfif>
 

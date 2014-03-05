@@ -2445,6 +2445,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var newDraft = "" />
 		<cfset var history = getDraftHist(arguments.contentid,arguments.siteid) />
 		<cfset var pending = "">
+		<cfset var lockableNodes=variables.settingsManager.getSite(arguments.siteid).getHasLockableNodes()>
 
 		<cfset data.verdict=getBean("permUtility").getNodePerm(cb.getCrumbArray())>
 		<cfset data.pendingchangesets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
@@ -2514,7 +2515,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfif variables.configBean.getLockableNodes()>
+		<cfif lockableNodes>
 			<cfset var stats=cb.getStats()>
 
 			<cfset data.lockid=stats.getLockID()>
@@ -2535,7 +2536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
 
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (variables.configBean.getLockableNodes() and  data.lockID neq session.mura.userID)/>
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (lockableNodes and  data.lockID neq session.mura.userID)/>
 
 		<cfreturn data />
 	</cffunction>

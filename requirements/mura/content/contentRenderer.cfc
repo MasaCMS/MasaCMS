@@ -1775,7 +1775,7 @@ Display Objects
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
 
-		<cfif application.configBean.getLockableNodes()>
+		<cfif variables.$.siteConfig('hasLockableNodes')>
 			<cfset var configuratorAction="carch.lockcheck&destAction=">
 		<cfelse>
 			<cfset var configuratorAction="">
