@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isBoolean(rc.targetversion)>
 	<cfset rc.targetversion=false>
 </cfif>
-<cfif isdefined('rc.homeid') and len(rc.homeid)>
+<cfif not len(rc.contentid) and isdefined('rc.homeid') and len(rc.homeid)>
 	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.homeid,rc.siteid)>
 <cfelse>
 	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
