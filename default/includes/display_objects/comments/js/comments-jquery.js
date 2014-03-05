@@ -194,6 +194,11 @@ $(function(){
 	}
 
 	var bindEvents=function(){
+
+		if(typeof customCommentsPageInit == 'function'){
+			customCommentsPageInit();
+		}
+
 		jQuery("a.mura-in-reply-to").on('click', function( event ) {
 			event.preventDefault();
 			var a = jQuery(this);

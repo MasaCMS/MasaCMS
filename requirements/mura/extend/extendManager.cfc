@@ -1553,7 +1553,13 @@ and tclassextendattributes.type='File'
 			subType = application.classExtensionManager.getSubTypeBean();
 						
 			if(isDefined("extXML.xmlAttributes.type")){
-				subType.setType( extXML.xmlAttributes.type );
+				if(extXML.xmlAttributes.type eq 'User'){
+					subType.setType( 2 );
+				} else if(extXML.xmlAttributes.type eq 'Group'){
+					subType.setType( 1);
+				} else {
+					subType.setType( extXML.xmlAttributes.type );
+				}
 			}
 						
 			if(isDefined("extXML.xmlAttributes.subtype")){
