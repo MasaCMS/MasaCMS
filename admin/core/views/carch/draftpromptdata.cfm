@@ -48,14 +48,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isBoolean(rc.targetversion)>
 	<cfset rc.targetversion=false>
 </cfif>
-<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
+<cfif isdefined('rc.homeid') and len(rc.homeid)>
+	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.homeid,rc.siteid)>
+<cfelse>
+	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
+</cfif>
+
 <cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cfif draftprompdata.showdialog >
 	<cfset draftprompdata.showdialog='true'>
 	<cfsavecontent variable="draftprompdata.message">
 	<cfoutput>
 	<div id="draft-prompt">	
-
 		<cfif application.configBean.getLockableNodes() and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
 			<p class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
