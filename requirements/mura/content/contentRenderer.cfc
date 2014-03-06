@@ -985,9 +985,7 @@ Display Objects
 							ListFind("Page,Folder,Calendar",rsSection.type)
 							and arguments.openCurrentOnly 
 							and ListFindNoCase(ArrayToList(this.crumbData[this.navSelfIdx].parentArray), rsSection.contentid)
-						) 
-						or 
-						(
+						) or (
 							ListFindNoCase("Page,Calendar",rsSection.type)
 							and not arguments.openCurrentOnly
 						)
