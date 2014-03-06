@@ -179,7 +179,8 @@ $(function(){
 		return jQuery.ajax({
 			dataType: "json",
 			url: $commentsProxyPath,
-			data: params
+			data: params,
+			cache: false
 		});
 	}
 
