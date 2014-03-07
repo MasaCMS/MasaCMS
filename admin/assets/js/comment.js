@@ -284,7 +284,8 @@ var commentManager = {
 		
 		return $.ajax({
 			url: './',
-			data: params
+			data: params,
+			cache: false
 		});
 	},
 

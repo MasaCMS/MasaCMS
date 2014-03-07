@@ -342,7 +342,7 @@ if(len($.siteConfig('customTagGroups'))){
 <cfif not len($.event("report"))>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>	
 <cfelseif $.event('report') eq 'mylockedcontent'>
-	<cfif application.configBean.getLockableNodes()>
+	<cfif $.siteConfig('hasLockableNodes')>
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#</h2>
 	<cfelse>
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</h2>
@@ -383,7 +383,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset item=iterator.next()>
 		<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-		<cfset isLocked=application.configBean.getLockableNodes() and len(item.getLockID()) and item.getLockType() eq 'node'>
+		<cfset isLocked=$.siteConfig('hasLockableNodes') and len(item.getLockID()) and item.getLockType() eq 'node'>
 		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
 		
 		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
@@ -532,7 +532,7 @@ if(len($.siteConfig('customTagGroups'))){
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 					<cfif item.getLockType() neq 'node'>
 						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
-					<cfelseif application.configBean.getLockableNodes()>
+					<cfelseif $.siteConfig('hasLockableNodes')>
 						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
 					</cfif>
 					
@@ -595,7 +595,7 @@ if(len($.siteConfig('customTagGroups'))){
 			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
 			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
 			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
-				<cfif application.configBean.getLockableNodes()>
+				<cfif $.siteConfig('hasLockableNodes')>
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
 				<cfelse>
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#

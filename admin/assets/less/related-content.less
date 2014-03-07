@@ -1,3 +1,66 @@
+.mura-rc-quickoption{
+	border: none;
+	background: none;
+	.border-radius(0);
+	.box-shadow(none);
+	padding: 5px 0;
+	float: left;
+	width: 1em;
+	margin-right: 5px;
+	i{
+		color: @iconColor;
+		font-size: 1em;
+	}
+}
+#mura-rc-quickedit{
+width: 190px;
+color: @gray;
+position: absolute;
+left: -190px;
+z-index: 20;
+padding: 10px;
+background: rgba(0,0,0,.9);
+.border-radius(5px);
+.box-shadow(1px 1px 4px rgba(0,0,0,.65));
+
+	button{
+		border: none;
+		background: none;
+		.border-radius(0);
+		.box-shadow(none);
+		position: absolute;
+		right: 0;
+		top:5px;
+		i{
+			color: @gray;
+			font-size: 1.4em;
+		}
+	}
+	ul {
+		margin: 0;
+		overflow: hidden;
+	}
+
+	li {
+		list-style: none;
+		margin: 0;
+		padding: .12em;
+		position: relative;
+		border-top: 1px dotted rgba(255,255,255,.2);
+		input{
+			float: left;
+			margin-right: 5px;
+		}
+
+			&:first-child { border-top: 0; }
+		}
+
+}
+#draggableContainmentInternal{
+	max-height: 300px;
+	overflow: scroll;
+	position: relative;
+}
 .rcSortable {
 	min-height: 27px;
 }

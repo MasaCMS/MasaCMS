@@ -258,6 +258,7 @@ to your own modified versions of Mura CMS.
             </div>
           </div>
         </div>
+       
         <div class="control-group">
             <label class="control-label">Static HTML Export Location (BETA)</label>
             <div class="controls">
@@ -273,7 +274,7 @@ to your own modified versions of Mura CMS.
               <input name="customTagGroups" type="text" class="span12"  value="#rc.siteBean.getCustomTagGroups()#" maxlength="255"/>
             </div>
         </div>
-		<div class="control-group">
+		    <div class="control-group">
             <label class="control-label">Site Mode</label>
             <div class="controls">
             	<select name="enableLockdown">
@@ -282,7 +283,22 @@ to your own modified versions of Mura CMS.
                 	<option value="maintenance"<cfif rc.siteBean.getEnableLockdown() eq "maintenance"> selected</cfif>>Maintenance</option>
                 </select>
             </div>
-        </div>  
+        </div> 
+        <cfif application.configBean.getLockableNodes()>
+        <div class="control-group">      
+            <label class="control-label">Allow Content Locking</label>
+            <div class="controls">
+                <p class="help-block">Grants content editors the right to exlusively lock a content node and all of it's versions when editing.</p>
+                <label class="radio inline">
+                <input type="radio" name="hasLockableNodes" value="1" <cfif rc.siteBean.gethasLockableNodes()  eq 1> CHECKED</CFIF>>
+                Yes</label>
+                <label class="radio inline">
+                <input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> CHECKED</CFIF>>
+                No</label>
+              
+              </div>      
+        </div>
+        </cfif> 
       </div>
     </div>
         

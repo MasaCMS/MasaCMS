@@ -1,5 +1,5 @@
 <cfoutput>
-<cfif application.configBean.getLockableNodes()>
+<cfif $.siteConfig('hasLockableNodes')>
 	<cfset nodeLockedByYou= stats.getLockType() eq 'node' and stats.getLockID() eq session.mura.userID>
 	<cfset nodeLockedBySomeElse=len(stats.getLockID()) and stats.getLockType() eq 'node' and  stats.getLockID() neq session.mura.userID>
 	

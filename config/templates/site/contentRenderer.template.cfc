@@ -121,7 +121,7 @@
 		//this.aNotCurrentClass="";
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};
-		//this.size=50;
+		//this.defaultnavsize=50;
 		
 		this.alertSuccessClass = "";
 		this.alertInfoClass = "";

@@ -119,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="enableLockdown" type="string" default="" />
 <cfproperty name="customTagGroups" type="string" default="" />
 <cfproperty name="hasComments" type="numeric" default="1" required="true" />
+<cfproperty name="hasLockableNodes" type="numeric" default="0" required="true" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -214,6 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.customTagGroups=""/>
 	<cfset variables.instance.hasSharedFilePool=""/>
 	<cfset variables.instance.hasComments=1/>
+	<cfset variables.instance.hasLockableNodes=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -879,6 +881,14 @@ s
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.hasSharedFilePool>
+</cffunction>
+
+<cffunction name="setHasLockableNodes" access="public" output="false">
+	<cfargument name="hasLockableNodes" type="String" />
+	<cfif isNumeric(arguments.hasLockableNodes)>
+	<cfset variables.instance.hasLockableNodes = arguments.hasLockableNodes />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

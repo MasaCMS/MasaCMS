@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset variables.targetHook=generateEditableHook()>
 				
-			<cfif application.configBean.getLockableNodes()>
+			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=carch.lockcheck&destAction=carch.edit">
 				<cfset dolockcheck=not($.content().getStats().getLockID() eq $.currentUser().getUserID())>
 			<cfelse>

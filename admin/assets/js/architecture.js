@@ -655,20 +655,21 @@ buttons: {
 			}
 			$('#selectRelatedContent .load-inline').spin(false);
 			$('#selectRelatedContent').html(data);
+			$('#draggableContainmentInternal').on('scroll',function(){$('#mura-rc-quickedit').hide()});
 
 			$(".rcDraggable li.item").draggable({
 				connectToSortable: '.rcSortable',
 				helper: 'clone',
 				revert: 'invalid',
+				appendTo: 'body',
 				start: function(event, ui) {
 					// bind mouse events to clone
+					$('#mura-rc-quickedit').hide();
 					siteManager.bindMouse();
 				},
 				zIndex: 100
 			}).disableSelection();
 
-
-			
 			setDatePickers(".mura-relatedContent-datepicker", dtLocale, dtCh);
 			
 			$('#aAdvancedSearch').click(function(e){
@@ -699,7 +700,7 @@ buttons: {
 				if (advSearching) {
 					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
 				}
-								
+				$('#mura-rc-quickedit').hide();				
 				siteManager.loadRelatedContent(siteid, 0, $(valueSelector).serialize(), advSearching);
 			});
 		});
@@ -739,6 +740,9 @@ buttons: {
 				var $contentid=$(this).val();
 				var $currentItem=$('#selectRelatedContent').find('li[data-contentid="' + $contentid + '"]');
 				
+				$('#mura-rc-quickedit').show();
+				$('#mura-rc-quickedit').offset({top:$(this).offset().top});
+
 				$('.mura-rc-quickassign').each(function(){
 					var $this=this;
 					var $sortable= $('#rcSortable-' + $($this).val());

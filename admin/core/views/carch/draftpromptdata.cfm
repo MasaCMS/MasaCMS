@@ -60,14 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsavecontent variable="draftprompdata.message">
 	<cfoutput>
 	<div id="draft-prompt">	
-		<cfif application.configBean.getLockableNodes() and draftprompdata.islocked>
+		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
 			<p class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
 				<a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> 
 			</p>
 		</cfif>
 
-		<cfif not application.configBean.getLockableNodes() or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
+		<cfif not $.siteConfig('hasLockableNodes') or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
 			
 			<cfif draftprompdata.hasmultiple and not rc.targetversion>
 				<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
 
-			<cfif application.configBean.getLockableNodes() and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
+			<cfif $.siteConfig('hasLockableNodes') and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
 				<p class="alert">
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#:
 					<input id="locknodetoggle" type="checkbox"/>

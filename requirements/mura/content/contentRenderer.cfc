@@ -109,7 +109,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
+<!-- this is legacy--->
 <cfset this.size=50>
+<!-- use this--->
+<cfset this.navsize=this.size>
 
 <!--- ===================
 General Classes 
@@ -929,7 +932,7 @@ Display Objects
 		<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 		<cfargument name="openCurrentOnly" required="true" default="false">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
-		<cfargument name="size" required="true" default="#this.size#">
+		<cfargument name="size" required="true" default="#this.navsize#">
 
 		<cfif structKeyExists(arguments,'liHasKidsCustomString')>
 			<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
@@ -1775,7 +1778,7 @@ Display Objects
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
 
-		<cfif application.configBean.getLockableNodes()>
+		<cfif variables.$.siteConfig('hasLockableNodes')>
 			<cfset var configuratorAction="carch.lockcheck&destAction=">
 		<cfelse>
 			<cfset var configuratorAction="">
