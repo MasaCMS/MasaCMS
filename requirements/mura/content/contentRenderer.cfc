@@ -979,7 +979,20 @@ Display Objects
 				<cfif len(arguments.subNavExpression)>
 					<cfset subnav=evaluate(arguments.subNavExpression)>
 				<cfelse>
-					<cfset subnav=(((ListFind("Page,Folder,Calendar",rsSection.type)) and arguments.openCurrentOnly and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and not arguments.openCurrentOnly)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+					<cfset subnav=
+					(
+						(
+							ListFind("Page,Folder,Calendar",rsSection.type)
+							and arguments.openCurrentOnly 
+							and ListFindNoCase(ArrayToList(this.crumbData[this.navSelfIdx].parentArray), rsSection.contentid)
+						) or (
+							ListFindNoCase("Page,Calendar",rsSection.type)
+							and not arguments.openCurrentOnly
+						)
+					) 
+					and arguments.currDepth lt arguments.viewDepth 
+					and rsSection.type neq 'Gallery' 
+					and not (rsSection.restricted and not session.mura.isLoggedIn) />
 				</cfif>
 			
 				<cfset current=current+1>
