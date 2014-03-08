@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">URL</label>
 		<div class="controls input-append">
 			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus"></i></button>		
+			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus-sign"></i></button>		
 		</div>
 	</div>
 </div>	
