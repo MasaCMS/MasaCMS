@@ -2428,7 +2428,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="complete" default="false"/>
 		<cfargument name="height" default=""/>
 		<cfargument name="width" default=""/>
+		<cfargument name="default" default=""/>
+		<cfif ListFindNoCase ('jpeg,jpg,png,gif', arguments.bean.getFileExt())>
 		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
+		<cfelseif len(arguments.default)>
+			<cfreturn arguments.default>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="getDraftPromptData" access="public" returntype="struct" output="false">

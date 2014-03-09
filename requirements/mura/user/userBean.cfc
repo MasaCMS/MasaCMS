@@ -670,12 +670,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getImageURL" output="false">
-	<cfargument name="size" required="true" default="Large">
+	<cfargument name="bean" required="true">
+	<cfargument name="size" required="true" default="undefined">
 	<cfargument name="direct" default="true"/>
 	<cfargument name="complete" default="false"/>
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
-	<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
+	<cfargument name="default" default=""/>
+	<cfif ListFindNoCase ('jpeg,jpg,png,gif', arguments.bean.getFileExt())>
+		<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
+	<cfelseif len(arguments.default)>
+		<cfreturn arguments.default>
+	</cfif>
 </cffunction>
 
 <cffunction name="getPrimaryKey" output="false">
