@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="attributes.siteID" default="" />
 	<cfparam name="attributes.parentID" default="" />
 	<cfparam name="attributes.nestLevel" default="1" />
+	<cfparam name="attributes.disabled" default="false" />
 	<cfparam name="request.catNo" default="0" />
 	<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
 </cfsilent>
@@ -63,22 +64,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND ContentHistID='#attributes.contentBean.getcontentHistID()#'
 				</cfquery>
 				<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
-				<cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
-					<cfset disabled=true />
-				<cfelse>
-					<cfset disabled=false />
+				<cfif not attributes.disabled and not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
+					<cfset attributes.disabled=true />
 				</cfif>
 			</cfsilent>
-			<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#" data-disabled="#disabled#">
+			<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#" data-disabled="#attributes.disabled#">
 				<dl class="categoryitem">
 					<!--- title --->
 					<dt class="categorytitle">
 						<span class="<cfif rslist.hasKids> hasChildren closed</cfif>"></span>
 						<label>
-							<cfif rslist.isOpen eq 1><input name="categoryid"<cfif disabled>
+							<cfif rslist.isOpen eq 1><input name="categoryid"<cfif attributes.disabled>
 								disabled="true"
 							</cfif> value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> </cfif>#HTMLEditFormat(rslist.name)#</label>
-							<cfif disabled>
+							<cfif attributes.disabled>
 								<input name="categoryid" value="#rslist.categoryid#" type="hidden" /> 
 							</cfif>
 					</dt>
@@ -88,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<div id="categoryLabelContainer#cattrim#" class="categoryLabelContainer">
 								<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 									<!--- Quick Edit --->
-									<a class="dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
+									<a class="dropdown-toggle<cfif not attributes.disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
 											<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
@@ -168,7 +167,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						parentID="#rslist.categoryID#" 
 						nestLevel="#evaluate(attributes.nestLevel +1)#" 
 						contentBean="#attributes.contentBean#"
-						rsCategoryAssign="#attributes.rsCategoryAssign#">
+						rsCategoryAssign="#attributes.rsCategoryAssign#"
+						disabled="#attributes.disabled#">
 				</cfif>
 			</li><!--- /.categoryitem --->
 		</cfoutput>
