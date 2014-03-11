@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.mode eq 'frontend'>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'layout.status')#</h1>
+	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.locked")# {NAME})</span></p>
 <div class="well">
 </cfif>
 <div id="status-modal" class="mura-list-grid">
@@ -85,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<dl>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</dt>
-		<dd>
+		<dd class="status-locked">
 			
 			<cfif content.getactive() gt 0 and content.getapproved() gt 0>
 				<i class="icon-ok-sign"></i>
