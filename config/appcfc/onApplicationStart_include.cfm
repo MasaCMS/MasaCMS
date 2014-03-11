@@ -453,7 +453,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
-				<cfset variables.localhandler._objectName="#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler">
+				<cfset variables.localhandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler._objectName#.onApplicationLoad")>
 				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
@@ -466,8 +466,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>		
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
-				<cfset variables.themeHandler._objectName="#variables.siteBean.getThemeAssetMap()#.eventHandler">
-				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler._objectName#.onApplicationLoad")>
+				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
+				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
 				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>

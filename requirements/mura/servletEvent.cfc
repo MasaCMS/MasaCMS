@@ -164,7 +164,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="scope" default="request" required="true">
 		<cfset var theScope=getScope(arguments.scope) />
 		<cfset structDelete(theScope,arguments.property) />
-	 returntype="void"
 </cffunction>
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">

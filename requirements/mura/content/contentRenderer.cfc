@@ -455,6 +455,18 @@ Display Objects
 	</cfif>
 </cffunction>
 
+<cffunction name="getShowEditableObjects" output="false">
+	<cfreturn this.showEditableObjects>
+</cffunction>
+
+<cffunction name="getSuppressWhitespace" output="false">
+	<cfreturn this.suppressWhitespace>
+</cffunction>
+
+<cffunction name="getDirectImages" output="false">
+	<cfreturn this.directImages>
+</cffunction>
+
 <cffunction name="setJsLib" returntype="void" output="false">
 <cfargument name="jsLib">
 	<cfset this.jsLib=arguments.jsLib />

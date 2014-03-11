@@ -221,10 +221,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.setValue('crumbdata',application.contentGateway.getCrumbList(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getContentBean().getSiteID(),true,arguments.event.getValue('contentBean').getPath())) />
 	</cfif>
 	
-	<cfset renderer.crumbdata=arguments.event.getValue("crumbdata")>
+	<cfset renderer.injectMethod('crumbdata',arguments.event.getValue("crumbdata"))>
 	
 	<cfif isObject(themeRenderer)>
-		<cfset themeRenderer.crumbdata=arguments.event.getValue("crumbdata")>
+		<cfset themeRenderer.injectMethod('crumbdata',arguments.event.getValue("crumbdata"))>
 	</cfif>
 </cffunction>
 

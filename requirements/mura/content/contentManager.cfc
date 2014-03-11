@@ -82,6 +82,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this />
 	</cffunction>
 
+	<cffunction name="getTreeLevelList" output="false">
+		<cfreturn this.treeLevelList>
+	</cffunction>
+
+	<cffunction name="getExtendableList" output="false">
+		<cfreturn this.extendableList>
+	</cffunction>
+
 	<cffunction name="getBean" output="false">
 		<cfargument name="beanName" default="content">
 		<cfreturn super.getBean(arguments.beanName)>

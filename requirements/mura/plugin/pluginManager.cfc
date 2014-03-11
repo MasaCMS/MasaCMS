@@ -1406,7 +1406,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
@@ -1445,7 +1445,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
@@ -1526,7 +1526,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(arguments.event.getValue("localHandler"))>
 				<cfset localHandler=arguments.event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,arguments.runat)>
-					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
+					<cfset tracePoint=initTracePoint("#localHandler.getValue('_objectName')#.#arguments.runat#")>
 					<cfinvoke component="#localHandler#" method="#arguments.runat#">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
@@ -1567,7 +1567,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfif not isObject(eventHandler)>
 									<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 								</cfif>
-								<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+								<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 								<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 									<cfinvokeargument name="event" value="#arguments.event#">
 									<cfinvokeargument name="$" value="#muraScope#">
@@ -1608,7 +1608,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfif not isObject(eventHandler)>
 									<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 								</cfif>
-								<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+								<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 								<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 									<cfinvokeargument name="event" value="#arguments.event#">
 									<cfinvokeargument name="$" value="#muraScope#">
@@ -1768,7 +1768,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1826,7 +1826,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfif not isObject(eventHandler)>
 							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 						</cfif>
-						<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+						<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 						<cfsavecontent variable="local.theDisplay1">
 						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 							<cfinvokeargument name="event" value="#arguments.event#">
@@ -1925,7 +1925,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(arguments.event.getValue("localHandler"))>
 				<cfset localHandler=arguments.event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,arguments.runat)>
-					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
+					<cfset tracePoint=initTracePoint("#localHandler.getValue('_objectName')#.#arguments.runat#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
@@ -1985,7 +1985,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfif not isObject(eventHandler)>
 									<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 								</cfif>
-								<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+								<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
 								<cfsavecontent variable="local.theDisplay1">
 								<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 									<cfinvokeargument name="event" value="#arguments.event#">
@@ -2044,7 +2044,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfif not isObject(eventHandler)>
 									<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 								</cfif>
-								<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+								<cfset tracePoint=initTracePoint("#eventHandlere.getValue('_objectName')#.#arguments.runat#")>
 								<cfsavecontent variable="local.theDisplay1">
 								<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 									<cfinvokeargument name="event" value="#arguments.event#">
@@ -2470,8 +2470,6 @@ select * from rs order by name
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var _persist=false>
 
-	<cfparam name="eventHandler.pluginName" default="Undefined">
-
 	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 		<cfset variables.siteListeners[siteIDadjusted]=structNew()>
 	</cfif>
@@ -2487,8 +2485,16 @@ select * from rs order by name
 			<cfset arrayAppend(variables.eventHandlers,arguments.component)>
 		</cfif>
 	</cfif>
+
+	<cfif not isDefined('eventhandler.getValue')>
+		<cfset eventHandler.injectMethod('getValue',getValue)>
+	</cfif>
+
+	<cfif not isDefined('eventhandler.setValue')>
+		<cfset eventHandler.injectMethod('setValue',setValue)>
+	</cfif>
 	
-	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
+	<cfset eventhandler.setValue('_objectName',getMetaData(eventhandler).name)>
 	
 	<!---
 	<cfset var appcfcLookup={
@@ -2511,7 +2517,13 @@ select * from rs order by name
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
 			<cfset handlerData=structNew()>
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
-			<cfset handlerData.pluginName=eventHandler.pluginName>
+			<cfif isDefined("eventHandler.pluginName")>
+				<cfset handlerData.pluginName=eventHandler.pluginName>
+			<cfelseif isDefined("eventHandler.getValue") and len(eventHandler.getValue('pluginName'))>
+				<cfset handlerData.pluginName=eventHandler.getValue('pluginName')>
+			<cfelse>
+				<cfset handlerData.pluginName='undefined'>
+			</cfif>
 			<cfif not findNoCase('global',i)>
 				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],i)>
 					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
