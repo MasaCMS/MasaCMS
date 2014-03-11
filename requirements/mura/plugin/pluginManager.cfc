@@ -2519,7 +2519,7 @@ select * from rs order by name
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
 			<cfif isDefined("eventHandler.pluginName")>
 				<cfset handlerData.pluginName=eventHandler.pluginName>
-			<cfelseif isDefined("eventHandler.getValue") and len(eventHandler.getValue('pluginName'))>
+			<cfelseif len(eventHandler.getValue('pluginName'))>
 				<cfset handlerData.pluginName=eventHandler.getValue('pluginName')>
 			<cfelse>
 				<cfset handlerData.pluginName='undefined'>
