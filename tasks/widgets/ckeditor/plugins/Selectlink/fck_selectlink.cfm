@@ -47,7 +47,7 @@ StructAppend(attributes, form, "no");
  <table class="table table-condensed table-bordered table-striped mura-table-grid">
  <thead>
     <tr>
-	  <!--- <th class="actions">&nbsp;</th>  --->
+	  <th class="actions"></th> 
       <th class="varWidth">Title</th>
     </tr>
  </thead>
@@ -55,8 +55,10 @@ StructAppend(attributes, form, "no");
     <cfif request.rslist.recordcount>
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
-        <tr><td class="varWidth">
-          	<input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>> #application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#
+        <tr>
+        <td class="actions"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
+        <td class="varWidth">
+          	 #application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#
           </td>
 		  
 		</tr>

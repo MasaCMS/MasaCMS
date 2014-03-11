@@ -32,7 +32,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 									 type : 'iframe',
 									 src : me.path + 'fck_selectlink.cfm',
 									 width : '100%',
-									 height : '380px',
+									 height : '460px',
 									 onContentLoad : function() {
 										var iframe = document.getElementById(this._.frameId);
 										iframeWindow = iframe.contentWindow;
