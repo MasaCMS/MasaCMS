@@ -449,6 +449,34 @@ Display Objects
 <cfreturn this />
 </cffunction>
 
+<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
+<cfargument name="MissingMethodArguments" type="struct" required="true" />
+	<cfscript>
+		var prefix=left(arguments.MissingMethodName,3);
+	
+		if(listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3){
+			var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);	
+			
+			if(prefix eq "get"){
+				param name='this.#prop#' default='';
+				return this['#prop#'];
+			} 
+
+			if(not structIsEmpty(arguments.MissingMethodArguments)){
+				this['#prop#']=arguments.MissingMethodArguments[1];
+				return this;;
+			} else {
+				throw(message="The method '#arguments.MissingMethodName#' requires a propery value");
+			}
+				
+		} else {
+			throw(message="The method '#arguments.MissingMethodName#' is not defined");
+		}
+	</cfscript>
+
+</cffunction>
+
 <cffunction name="getHeaderTag" returntype="string" output="false">
 <cfargument name="header">
 	<cfif listFindNoCase("headline,subHead1,subHead2,subHead3,subHead4,subHead5",arguments.header)>
@@ -456,18 +484,6 @@ Display Objects
 	<cfelse>
 	<cfreturn "Invalid Argument. Must be one of 'headline, subHead1, subHead2, subHead3, subHead4, subHead5'">
 	</cfif>
-</cffunction>
-
-<cffunction name="getShowEditableObjects" output="false">
-	<cfreturn this.showEditableObjects>
-</cffunction>
-
-<cffunction name="getSuppressWhitespace" output="false">
-	<cfreturn this.suppressWhitespace>
-</cffunction>
-
-<cffunction name="getDirectImages" output="false">
-	<cfreturn this.directImages>
 </cffunction>
 
 <cffunction name="setJsLib" returntype="void" output="false">
