@@ -77,10 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
 
 			<cfif $.siteConfig('hasLockableNodes') and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
-				<p class="alert">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#:
-					<input id="locknodetoggle" type="checkbox"/>
-				</p>
+				<p class="alert"><input id="locknodetoggle" type="checkbox"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#</p>
 			</cfif>
 
 			<cfif rc.targetversion>
