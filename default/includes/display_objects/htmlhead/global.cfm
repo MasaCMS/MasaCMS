@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>--->
 </cfsilent>
 <cfoutput>
-<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.js"></script>
+<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.min.js"></script>
 <script type="text/javascript">
 var mura={
 	loginURL:"#variables.loginURL#",

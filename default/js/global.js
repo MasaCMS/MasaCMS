@@ -359,7 +359,7 @@ function validateForm(frm,customaction) {
 					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
 						rules.push({
-							regex: hasValidationRegex(theField),
+							regex: getValidationRegex(theField),
 							message: getValidationMessage(theField,' is not valid.')
 						});
 										

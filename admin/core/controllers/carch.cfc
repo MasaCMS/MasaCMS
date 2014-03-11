@@ -365,8 +365,10 @@
 <cffunction name="siteManagerTab" ouput="false">
 	<cfargument name="rc">
 	<cfparam name="session.flatViewArgs" default="#structNew()#">
-	<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
-	<cfset session.flatViewArgs[session.siteID].tab=arguments.rc.tab  />
+	<cfif not structKeyExists(session.flatViewArgs,'#session.siteID#')>
+	 	<cfset session.flatViewArgs['#session.siteID#']=structNew()>
+	</cfif>
+	<cfset session.flatViewArgs['#session.siteID#'].tab=arguments.rc.tab  />
 	<cfabort>
 </cffunction>
 

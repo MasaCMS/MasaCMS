@@ -726,9 +726,9 @@ buttons: {
 
 	setupRCResultIcon: function(el){
 		if($('#selectedRelatedContent').find('li[data-contentid="'+ el.val() + '"]').length){
-			el.find('i').attr('class','icon-ok');
+			el.find('i').attr('class','icon-ok-sign');
 		} else {
-			el.find('i').attr('class','icon-plus');	
+			el.find('i').attr('class','icon-plus-sign');	
 		}
 	},
 

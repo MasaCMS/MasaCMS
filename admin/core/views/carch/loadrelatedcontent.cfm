@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus"></i></button><ul class="navZoom"/><li class="link"><strong>' + $('##mura-related-title').val() + '</strong></li>')
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus-sign"></i></button><ul class="navZoom"/><li class="link"><strong>' + $('##mura-related-title').val() + '</strong></li>')
 			 	)
 			 ); 
 
@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">URL</label>
 		<div class="controls input-append">
 			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus"></i></button>		
+			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus-sign"></i></button>		
 		</div>
 	</div>
 </div>	
