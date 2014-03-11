@@ -1,9 +1,9 @@
-<cfif not len(chainID)>
-  <cfset chainID=createUUID()>
+<cfif not len(rc.chainID)>
+  <cfset rc.chainID=createUUID()>
 </cfif>  
-<cfset chain=$.getBean('approvalChain').loadBy(chainid=chainID)/>
+<cfset chain=$.getBean('approvalChain').loadBy(chainid=rc.chainID)/>
 <cfoutput>
-<cfif not len(chainid)>
+<cfif not len(rc.chainid)>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.addapprovalchain")#</h1>
 <cfelse>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.editapprovalchain")#</h1>
