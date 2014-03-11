@@ -68,7 +68,7 @@ component extends="mura.bean.beanORMVersioned"
 	function setSiteID(siteid){
 		if(len(arguments.siteid)){
 			variables.instance.siteid=arguments.siteid;
-			variables.instance.directImages=getBean('settingsManager').getSite(variables.instance.siteid).getContentRenderer().directImages;
+			variables.instance.directImages=getBean('settingsManager').getSite(variables.instance.siteid).getContentRenderer().getDirectImages();
 		}
 	}
 

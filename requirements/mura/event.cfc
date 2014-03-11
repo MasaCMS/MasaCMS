@@ -202,7 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
-		<cfset localHandler._objectName="#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler">
+		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
 		<cfset setValue("localHandler",localHandler)>
 	</cfif>
 	

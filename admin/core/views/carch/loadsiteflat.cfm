@@ -617,7 +617,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset rsTypes=application.configBean.getClassExtensionManager().getSubTypes(session.siteid)>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
-			<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
+			<cfloop list="#$.getBean('contentManager').getTreeLevelList()#" index="i">
 				<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
 				<cfquery name="rsSubTypes" dbtype="query">
 					select * from rsTypes where type='#i#' and subtype!='Default'
