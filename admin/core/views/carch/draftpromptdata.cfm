@@ -62,9 +62,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="draft-prompt">	
 		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
-			<p class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
-				<a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a> 
-			</p>
+			<div class="alert alert-error alert-locked">
+				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.</p>
+				<p><a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
+			</div>
 		</cfif>
 
 		<cfif not $.siteConfig('hasLockableNodes') or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
