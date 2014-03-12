@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
-				<div class="list-table-content-set"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')#</cfoutput></label></div>
+				<div class="list-table-content-set"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput></label></div>
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
