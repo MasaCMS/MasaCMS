@@ -1938,6 +1938,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="name" type="string" default="">
 		<cfargument name="reverse" type="boolean" default="false">
 		<cfargument name="reverseContentID"  type="string" />
+		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 
 		<cfreturn variables.contentGateway.getRelatedContent(argumentCollection=arguments) />
 	</cffunction>
@@ -1953,7 +1954,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="name" type="string" default="">
 		<cfargument name="reverse" type="boolean" default="false">
 		<cfargument name="reverseContentID"  type="string" />
-
+		<cfargument name="navOnly" type="boolean" required="yes" default="false" />
+		
 		<cfset var rs=getRelatedContent(argumentCollection=arguments) />
 		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>

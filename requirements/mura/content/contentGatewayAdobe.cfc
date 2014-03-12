@@ -1943,6 +1943,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="name" type="string" default="">
 	<cfargument name="reverse" type="boolean" default="false">
 	<cfargument name="reverseContentID"  type="string" />
+	<cfargument name="navOnly" type="boolean" required="yes" default="false" />
 	<cfset var rsRelatedContent ="" />
 	
 	<cfif not listFindNoCase('menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype,comments,rating,orderno',arguments.sortby)>
@@ -2014,6 +2015,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and tcontent.active=1 
 
+
+	<cfif arguments.navOnly>
+		and tcontent.isnav=1
+	</cfif>
+	
 	<cfif arguments.liveOnly>
 	  AND (
 			  (
