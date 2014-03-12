@@ -3,13 +3,25 @@
 <cfset relatedContentSets = subtype.getRelatedContentSets()>
 <cfset request.layout=false>
 <cfoutput>
+
+	<div id="mura-rc-quickedit" style="display:none;">
+		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>
+		<button class="btn" type="button" onclick="$('##mura-rc-quickedit').hide()"><i class="icon-remove-sign"></i></button>
+		<ul>
+		<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
+			<cfset rcsBean = relatedContentSets[s]/>
+			<li><input id="mura-rc-option-label#s#" type="checkbox" class="mura-rc-quickassign" value="#rcsBean.getRelatedContentSetID()#"/> <label for="mura-rc-option-label#s#">#htmlEditFormat(rcsBean.getName())#</label></li>
+		</cfloop>
+		</ul>
+	</div>
+
 	<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 		<cfset rcsBean = relatedContentSets[s]/>
 		<cfset rcsRs = rcsBean.getRelatedContentQuery(rc.contentBean.getContentHistID())>
 		<cfset emptyClass = "item empty">
 		<cfoutput>
 			<div id="rcGroup-#rcsBean.getRelatedContentSetID()#" class="list-table">
-				<div class="list-table-content-set">#rcsBean.getName()# 
+				<div class="list-table-content-set">#htmlEditFormat(rcsBean.getName())# 
 					<cfif len(rcsBean.getAvailableSubTypes()) gt 0>
 						<span class="content-type">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.restrictedmessage')#: 
 							<cfloop list="#rcsBean.getAvailableSubTypes()#" index="i">
@@ -37,4 +49,5 @@
 			</div>
 		</cfoutput>
 	</cfloop>
+	
 </cfoutput>

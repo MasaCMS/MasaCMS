@@ -18,6 +18,13 @@
 	</cfif>
 	<cfset assignChangesets=rc.perm eq 'editor' and hasChangesets>
 	<cfset $=event.getValue("MuraScope")>
+	
+	<cfif isDefined('arguments.rc.locknode') and arguments.rc.locknode>
+		<cfset stats=arguments.rc.contentBean.getStats()>
+		<cfif not len(stats.getLockID()) or stats.getLockID() eq session.mura.userid>
+			<cfset stats.setLockID(session.mura.userID).setLockType('node').save()>
+		</cfif>
+	</cfif>
 </cfsilent>
 <cfoutput>
 <cfif rc.compactDisplay eq "true">

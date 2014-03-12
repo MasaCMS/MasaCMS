@@ -249,8 +249,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 				<cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
 					 					 <li <cfif request.action eq 'core:cpublicusers.list' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cpublicusers' and len(rc.userid))>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#</a>
 					 					</li>
-						 				 <li<cfif request.action eq "core:cpublicusers.edituser" and not len(rc.userID)> class="active"</cfif>><a href="./?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
-						 				<li<cfif request.action eq "core:cpublicusers.editgroup" and not len(rc.userID)> class="active"</cfif>><a href="./?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#</a></li>
+						 				 <li<cfif request.action eq "core:cpublicusers.edituser" and not len(rc.userID)> class="active"</cfif>><a href="./?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(session.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
+						 				<li<cfif request.action eq "core:cpublicusers.editgroup" and not len(rc.userID)> class="active"</cfif>><a href="./?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(session.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#</a></li>
 			 					   	</cfif>
 		 					  </ul>			
 	 					</li>
@@ -283,13 +283,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					   		<i class="icon-ok"></i> #application.rbFactory.getKeyValue(session.rb,"layout.approvalchains")#
 		 					   	</a>
 		 					</li>
-		 				 
 		 					
-
-		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
+		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
 
 		 					<li class="dropdown-submenu">
-		 					<a href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-wrench"></i> Class Extension Manager</a>
+		 					<a href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(session.siteid)#"><i class="icon-wrench"></i> Class Extension Manager</a>
 			 					<ul class="dropdown-menu">
 			 						<!--- This is here solely for autoupdates--->
 			 						<cfif structKeyExists(application.classExtensionManager,'getIconClass')>
@@ -300,12 +298,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 							<cfset exp="">
 			 						</cfif>
 			 						<!--- --->
-				 					 <li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a></li>
+				 					 <li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(session.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a></li>
 				 					<cfif rsExts.recordcount>
 				 						<li class="divider"></li>
 				 					</cfif>
 				 					<cfloop query="rsExts">
-				 						<li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
+				 						<li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(session.siteid)#">
 				 							<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i>				 								
 				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
 				 						</a></li>
@@ -327,14 +325,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 									 					
 		 					<li>
-		 						<a href="./?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#">
+		 						<a href="./?muraAction=cTrash.list&siteID=#URLEncodedFormat(session.siteid)#">
 		 							<i class="icon-trash"></i> Trash Bin
 		 						</a>
 		 					</li>
 		 					<cfif listFind(session.mura.memberships,'S2')>
 		 					<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
 		 					<li>
-		 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;">
+		 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(session.siteid)#&action=updateFiles')});return false;">
 		 							<i class="icon-bolt"></i> Update Site
 		 						</a>
 		 					</li>

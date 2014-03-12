@@ -405,8 +405,9 @@ jQuery(document).ready(function(){
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
 
-<!-- blueimp Gallery script -->
+<!-- blueimp Gallery script 
 <script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
+-->
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>
 <!-- The basic File Upload plugin -->

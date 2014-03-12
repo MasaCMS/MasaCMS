@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset $.event('contentBean',content)>
 	<cfset requiresApproval=content.requiresApproval()>
 	<cfset user=content.getUser()>
-
+	<cfset islocked=false>
 	<cfif requiresApproval>
 		<cfset approvalRequest=content.getApprovalRequest()>
 		<cfset group=approvalRequest.getGroup()>
@@ -63,6 +63,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.mode eq 'frontend'>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'layout.status')#</h1>
+	<cfif $.siteConfig('hasLockableNodes')>
+		<cfset stats=content.getStats()>
+		<cfif stats.getLockType() eq 'node'>
+		<cfset islocked=true>
+		<cfset lockedBy=$.getBean('user').loadBy(userid=stats.getLockID())>
+		<div class="alert alert-error alert-locked">
+			<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.</p>
+			<p><a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
+		</div>
+		</cfif>
+	</cfif>
 <div class="well">
 </cfif>
 <div id="status-modal" class="mura-list-grid">
@@ -85,8 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<dl>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</dt>
-		<dd>
-			
+		<dd<cfif islocked> class="status-locked"</cfif>>	
 			<cfif content.getactive() gt 0 and content.getapproved() gt 0>
 				<i class="icon-ok-sign"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</p>

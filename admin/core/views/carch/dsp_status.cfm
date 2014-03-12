@@ -1,5 +1,56 @@
-
 <cfoutput>
+<cfif $.siteConfig('hasLockableNodes')>
+	<cfset nodeLockedByYou= stats.getLockType() eq 'node' and stats.getLockID() eq session.mura.userID>
+	<cfset nodeLockedBySomeElse=len(stats.getLockID()) and stats.getLockType() eq 'node' and  stats.getLockID() neq session.mura.userID>
+	
+	<cfif nodeLockedByYou or nodeLockedBySomeElse>
+
+		<cfif not nodeLockedBySomeElse>
+			<p id="msg-node-locked" class="alert alert-error"<cfif not nodeLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockednode')# <a class="mura-node-unlock" href="##"<cfif not nodeLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+			</p>
+		<cfelse>
+			<!--- Locked by someone else --->	
+			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>	
+			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
+			<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
+				<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
+				</cfif>
+			</p>
+		
+		</cfif>
+		<script>
+			$(function(){
+				jQuery(".mura-node-unlock").click(
+					function(event){
+						event.preventDefault();
+						confirmDialog(
+							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#",
+							function(){
+								jQuery("##msg-node-locked").fadeOut();
+								jQuery(".mura-node-unlock").hide();
+								if(lockedbysomeonelse){
+									jQuery("##msg-node-locked-else").fadeOut();
+									lockedbysomeonelse=false;
+									siteManager.doConditionalExit=true;
+								}
+								siteManager.hasNodeLock=false;
+								$('.form-actions').fadeIn();
+								jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
+							}
+						);							
+					}
+				);
+
+				<cfif nodeLockedBySomeElse>
+				$('.form-actions').hide();
+				lockedbysomeonelse=true;
+				siteManager.doConditionalExit=false;
+				</cfif>
+			});
+			</script>
+	</cfif>
+</cfif>
+<cfif isdefined('requiresApproval')>
 <cfif requiresApproval and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
 	<p class="alert alert-error">
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
@@ -80,4 +131,5 @@ function applyApprovalAction(requestid,action,comment,siteid){
 <div style="display:none;" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
 
 </div>
+</cfif>
 </cfoutput>

@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset isExtended=false>
 <cfset nodeLevelList="Page,Folder,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
+<cfset stats=rc.contentBean.getStats()>
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
@@ -77,12 +78,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <script>
 	var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts() and not requiresApproval><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
+		siteManager.hasNodeLock=<cfif stats.getLockType() eq 'node'>true<cfelse>false</cfif>;
+		<cfoutput>siteManager.unlocknodeconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";</cfoutput>
 </script>
 
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()>
 	<script>
 	siteManager.requestedURL="";
 	siteManager.formSubmitted=false;
+	siteManager.doConditionalExit=true;
 	<cfoutput>
 	function setRequestedURL(){
 		siteManager.requestedURL=this.href
@@ -96,7 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			try{
 				if (typeof(anchors[i].onclick) != 'function' 
 					&& typeof(anchors[i].getAttribute('href')) == 'string' 
-					&& anchors[i].getAttribute('href').indexOf('#') == -1) {
+					&& anchors[i].getAttribute('href').indexOf('#') == -1
+					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
 		   			anchors[i].onclick = setRequestedURL;
 				}
 			} catch(err){}
@@ -112,6 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 
 	function conditionalExit(msg){
+
+		if(!siteManager.doConditionalExit){
+			return true;
+		}
+		
 		if(siteManager.form_is_modified(document.contentForm)){
 		if(msg==null){
 			<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
@@ -318,37 +328,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
  	
  				var shifted=false;
+ 				var lockedbysomeonelse=false;
 
- 				chechForSave=function(e) {
+ 				chechForSave=function(e) {	  
 				  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
 				    	e.preventDefault();
-				   
-				   		if(e.altKey){
-							document.contentForm.approved.value=1;
-						} else {
-							document.contentForm.approved.value=0;
-						}
+					   	if(!lockedbysomeonelse){
+					   		if(e.altKey){
+								document.contentForm.approved.value=1;
+							} else {
+								document.contentForm.approved.value=0;
+							}
 
-						if(e.shiftKey){
-							document.contentForm.preview.value=1;
-						} else {
-							document.contentForm.preview.value=0;
-						}
+							if(e.shiftKey){
+								document.contentForm.preview.value=1;
+							} else {
+								document.contentForm.preview.value=0;
+							}
 
-						<cfif rc.compactDisplay neq 'true'>
-						document.contentForm.murakeepediting.value=true;
-						</cfif>
+							<cfif rc.compactDisplay neq 'true'>
+							document.contentForm.murakeepediting.value=true;
+							</cfif>
 
-					    if(siteManager.ckContent(draftremovalnotice)){
-							submitForm(document.contentForm,'add');
-						} else {
-							document.contentForm.approved.value=0;
-							document.contentForm.murakeepediting.value=false;
-							document.contentForm.preview.value=0;
-							document.contentForm.approved.value=0;
+						    if(siteManager.ckContent(draftremovalnotice)){
+								submitForm(document.contentForm,'add');
+							} else {
+								document.contentForm.approved.value=0;
+								document.contentForm.murakeepediting.value=false;
+								document.contentForm.preview.value=0;
+								document.contentForm.approved.value=0;
+							}
+							
 						}
-						
-					}
+					}	
 				}
 
 				window.top.document.addEventListener("keydown", chechForSave , false);
@@ -649,7 +661,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				});
 			</script>
-			#actionButtons#
+			#actionButtons#	
 		</div>
 	</div>
 
@@ -700,6 +712,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="cancelpendingapproval" value="false">
 	<input type="hidden" name="murakeepediting" value="false">
 	<input type="hidden" name="filemetadataassign" id="filemetadataassign" value=""/>
+	<input type="hidden" id="unlocknodewithpublish" name="unlocknodewithpublish" value="false" />
 	<cfif not  listFind(session.mura.memberships,'S2')>
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>

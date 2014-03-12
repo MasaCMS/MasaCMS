@@ -53,7 +53,8 @@
 	dbUtility.setTable("tsettings")
 	.addColumn(column="contentApprovalScript",dataType="longtext")
 	.addColumn(column="contentRejectionScript",dataType="longtext")
-	.addColumn(column="hasComments",dataType="int",default=0);
+	.addColumn(column="hasComments",dataType="int",default=0)
+	.addColumn(column="hasLockableNodes",dataType="int",default=0);
 
 	dbUtility.setTable('temails')
 	.addColumn(column='template',dataType='varchar');
@@ -140,6 +141,9 @@
 
 	dbUtility.setTable('tsettings')
 	.addColumn(column="filePoolID",datatype="varchar",length=25);
+
+	dbUtility.setTable('tcontentstats')
+	.addColumn(column="lockType",datatype="varchar",length=50);
 
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)

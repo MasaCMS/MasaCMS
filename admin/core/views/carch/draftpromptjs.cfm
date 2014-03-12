@@ -7,11 +7,18 @@ $(function(){
 function initDraftPrompt(){
 	$('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
-		var node = jQuery(this).parents(".mura-node-data:first");		
+
+		if(typeof $(this).attr('data-contenthistid') != 'undefined'){
+			var node =$(this);	
+		} else {
+			var node = jQuery(this).parents(".mura-node-data:first");	
+		}
+			
 		var a = jQuery(this);
-		
+		var locknode=false;
+
 		$.ajax({
-			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid'),
+			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid') + "&targetversion=" + node.attr('data-targetversion') + "&contenthistid=" + node.attr('data-contenthistid'),
 			  context: this,
 			  success: function(resp){
 				  
@@ -24,7 +31,7 @@ function initDraftPrompt(){
 					
 					$(".draft-prompt-option").click(function(e){
 						e.preventDefault();
-						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid'));
+						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid') + "&locknode=" + locknode );
 						actionModal(href);
 					});
 
@@ -34,6 +41,11 @@ function initDraftPrompt(){
 						jQuery(dialog).dialog('close');
 						return false;
 					});
+
+					$("##locknodetoggle").on("change",function(){
+						locknode=$(this).is(":checked");
+					});
+
 				} else {
 					actionModal(a.attr('href'));
 				}

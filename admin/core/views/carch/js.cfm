@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
+<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 </cfoutput>
 <cfif listLast(rc.muraAction,".") eq 'edit'>
 <script type="text/javascript">

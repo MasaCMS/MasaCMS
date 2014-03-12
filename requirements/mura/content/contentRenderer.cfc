@@ -109,7 +109,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
+<!-- this is legacy--->
 <cfset this.size=50>
+<!-- use this--->
+<cfset this.navsize=this.size>
 
 <!--- ===================
 General Classes 
@@ -446,6 +449,34 @@ Display Objects
 <cfreturn this />
 </cffunction>
 
+<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
+<cfargument name="MissingMethodArguments" type="struct" required="true" />
+	<cfscript>
+		var prefix=left(arguments.MissingMethodName,3);
+	
+		if(listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3){
+			var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);	
+			
+			if(prefix eq "get"){
+				param name='this.#prop#' default='';
+				return this['#prop#'];
+			} 
+
+			if(not structIsEmpty(arguments.MissingMethodArguments)){
+				this['#prop#']=arguments.MissingMethodArguments[1];
+				return this;;
+			} else {
+				throw(message="The method '#arguments.MissingMethodName#' requires a propery value");
+			}
+				
+		} else {
+			throw(message="The method '#arguments.MissingMethodName#' is not defined");
+		}
+	</cfscript>
+
+</cffunction>
+
 <cffunction name="getHeaderTag" returntype="string" output="false">
 <cfargument name="header">
 	<cfif listFindNoCase("headline,subHead1,subHead2,subHead3,subHead4,subHead5",arguments.header)>
@@ -453,18 +484,6 @@ Display Objects
 	<cfelse>
 	<cfreturn "Invalid Argument. Must be one of 'headline, subHead1, subHead2, subHead3, subHead4, subHead5'">
 	</cfif>
-</cffunction>
-
-<cffunction name="getShowEditableObjects" output="false">
-	<cfreturn this.showEditableObjects>
-</cffunction>
-
-<cffunction name="getSuppressWhitespace" output="false">
-	<cfreturn this.suppressWhitespace>
-</cffunction>
-
-<cffunction name="getDirectImages" output="false">
-	<cfreturn this.directImages>
 </cffunction>
 
 <cffunction name="setJsLib" returntype="void" output="false">
@@ -941,7 +960,7 @@ Display Objects
 		<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 		<cfargument name="openCurrentOnly" required="true" default="false">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
-		<cfargument name="size" required="true" default="#this.size#">
+		<cfargument name="size" required="true" default="#this.navsize#">
 
 		<cfif structKeyExists(arguments,'liHasKidsCustomString')>
 			<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
@@ -1796,14 +1815,22 @@ Display Objects
 	<cfset var historyID="">
 	<cfset var tempObject="">
 	<cfset var args={}>
-	
+
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
+
+
+		<cfif variables.$.siteConfig('hasLockableNodes')>
+			<cfset var configuratorAction="carch.lockcheck&destAction=">
+		<cfelse>
+			<cfset var configuratorAction="">
+		</cfif>
+
 		<cfswitch expression="#arguments.object#">
 			<cfcase value="plugin">
 				<cfset showEditable=arguments.hasConfigurator and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editablePlugin">
-					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1811,7 +1838,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableFeed">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1819,7 +1846,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableCategorySummary">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1828,7 +1855,7 @@ Display Objects
 					<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 					<cfif showEditable>
 						<cfset editableControl.class="editableTagCloud">
-						<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+						<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfif>
 				</cfif>
@@ -1841,7 +1868,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableSiteMap">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 
@@ -1853,7 +1880,7 @@ Display Objects
 				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editableRelatedContent">
-					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.frontEndConfigurator">
+					<cfset editableControl.editLink =  "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			</cfcase>
@@ -1866,7 +1893,9 @@ Display Objects
 					<cfelse>
 						<cfset editableControl.class="editableForm">
 					</cfif>
-					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=cArch.edit">
+
+					<cfset editableControl.editLink = "#variables.$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.edit">
+					
 					<cfif len(variables.$.event('previewID'))>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & variables.$.event('previewID')>
 					<cfelse>

@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.layout=false>
 <cfset event=request.event>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cftry>
 <cfscript>
 	//data=structNew();
@@ -153,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
 	
-	} else if($.event('report') eq "mylockedfiles"){
+	} else if($.event('report') eq "mylockedcontent"){
 		paramsStarted=true;
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
 	
@@ -340,6 +341,12 @@ if(len($.siteConfig('customTagGroups'))){
 <div id="main" class="span9">
 <cfif not len($.event("report"))>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>	
+<cfelseif $.event('report') eq 'mylockedcontent'>
+	<cfif $.siteConfig('hasLockableNodes')>
+		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#</h2>
+	<cfelse>
+		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</h2>
+	</cfif>
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.#$.event('report')#")#</h2>	
 </cfif>
@@ -376,6 +383,8 @@ if(len($.siteConfig('customTagGroups'))){
 		<cfset item=iterator.next()>
 		<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		<cfset isLocked=$.siteConfig('hasLockableNodes') and len(item.getLockID()) and item.getLockType() eq 'node'>
+		<cfset isLockedBySomeoneElse=isLocked and item.getLockID() neq session.mura.userid>
 		
 		<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
 			<cfset newcontent=verdict>
@@ -421,7 +430,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
 					 
-					    <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
+					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
@@ -443,7 +452,7 @@ if(len($.siteConfig('customTagGroups'))){
 							<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						</cfif>
 					    
-					    <cfif deletable>
+					    <cfif deletable and not isLockedBySomeoneElse>
 					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#topID#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
 							<i class="icon-remove-sign"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>
@@ -480,7 +489,7 @@ if(len($.siteConfig('customTagGroups'))){
 			
 			<h2>
 				<cfif not listFindNoCase('none,read',verdict) or listFindNoCase('myapprovals,mysubmissions',$.event('report'))>
-					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt"  href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(topID)#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#
+					<a class="draftprompt" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt"  href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(topID)#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#
 						<!---
 						<cfif $.event('report') eq 'mydrafts'>
 							(
@@ -521,7 +530,12 @@ if(len($.siteConfig('customTagGroups'))){
 			</cfif>
 				<cfif len(item.getLockID())>
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
-					<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					<cfif item.getLockType() neq 'node'>
+						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					<cfelseif $.siteConfig('hasLockableNodes')>
+						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
+					</cfif>
+					
 				</cfif>
 				
 				#$.dspZoom(crumbData=crumbdata,ajax=true)#
@@ -579,8 +593,14 @@ if(len($.siteConfig('customTagGroups'))){
 			<cfset draftCount=$.getBean('contentManager').getMyExpiresCount(session.siteid)>
 			<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 			<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#<!---<span class="badge badge-success">13</span>---></a></li>
-			<cfset draftCount=$.getBean('contentManager').getMyLockedFilesCount(session.siteid)>
-			<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
+			<cfset draftCount=$.getBean('contentManager').getmylockedcontentCount(session.siteid)>
+			<li><a href="" data-report="mylockedcontent"<cfif $.event("report") eq "mylockedcontent"> class="active"</cfif>>
+				<cfif $.siteConfig('hasLockableNodes')>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedcontent")#
+				<cfelse>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#
+				</cfif>
+				<cfif draftCount><span class="badge badge-important">#draftCount#</span></cfif></a></li>
 		</ul>
 	</div>
 	

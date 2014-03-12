@@ -57,7 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<script>
 		function toggleRelatedType(clicked){
-		
+			$('##mura-rc-quickedit').hide();
+
 			if($(clicked).val()=='internal'){
 				$(".mura-related-internal").show();
 				$(".mura-related-external").hide();
@@ -71,23 +72,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			if($('##mura-related-title').val()=='' || $('##mura-related-url').val()==''){
 
-				alertDialog("The 'Title' and 'URL' fields are both required.");
+				alertDialog("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.newcontentvalidation'))#");
 
 				return false;
 			}
 
+			var newcontentid=Math.random();
+
 			$("##draggableContainmentExternal .list-table-items").append(
-			 	$('<li/>').attr('data-contentid',Math.random())
+			 	$('<li/>').attr('data-contentid',newcontentid)
 			 	.attr('data-url',$('##mura-related-url').val())
 			 	.attr('data-title',$('##mura-related-title').val())
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<ul class="navZoom"/>')
-			 		.append(
-			 			$('<li class="link"/>'))
-			 			.append('<strong></strong>')
-			 				.append(' ' + $('##mura-related-title').val())
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus-sign"></i></button><ul class="navZoom"/><li class="link"><strong>' + $('##mura-related-title').val() + '</strong></li>')
 			 	)
 			 ); 
 
@@ -106,25 +105,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				zIndex: 100
 			}).disableSelection();
 
+			siteManager.setupRCQuikEdit();
+
 			siteManager.bindMouse();
 
 		}		
 	</script>
 	<div class="control-group">
-		<label class="control-label"><a href="##" rel="tooltip" title="You can add related content from either this site or another site entirely. Use the controls below to specify where the related content you'd like to add lives.">Where is the Related Content? <i class="icon-question-sign"></i></a></label>
+		<label class="control-label"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
 		<div class="controls">
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>In this site</label>
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>On another site</label>
+			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
+			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
 		</div>
 	</div>
 	<div class="control-group mura-related-internal">
-		<label class="control-label">Add Related Content</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
 		<div id="internalContent" class="form-inline">
 			<div class="input-append">
 				<input type="text" name="keywords" value="#rc.keywords#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="button" name="btnSearch" id="rcBtnSearch" class="btn"><i class="icon-search"></i></button>
 			</div>
-			<a href="##" class="btn" id="aAdvancedSearch" data-toggle="button">Advanced Search</a>
+			<a href="##" class="btn" id="aAdvancedSearch" data-toggle="button">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.advancedsearch')#</a>
 		</div>	
 	</div>
 	
@@ -132,10 +133,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="control-group">
 				<div class="span4">
-					<label class="control-label">Content Type</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
 					<div class="controls">
 						<select name="searchTypeSelector" id="searchTypeSelector">
-							<option value="">All</option>
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
 							<cfloop list="#baseTypeList#" index="t">
 								<cfsilent>
 									<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery>
@@ -151,15 +152,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>	
 				<div class="span8">
-					<label class="control-label">Release Date Range</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 					<div class="controls">
-						<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="Start Date" value="#rc.rcStartDate#" /> &ndash; <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="End Date" value="#rc.rcEndDate#" />
+						<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> &ndash; <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
 					</div>
 				</div>			
 			</div>
 			<div class="control-group">
 				<div class="controls">
-					<label class="control-label">Available Categories</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>
 			
 					<div id="mura-list-tree" class="controls">
 						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
@@ -251,13 +252,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
-				<div class="list-table-content-set">Search Results</label></div>
+				<div class="list-table-content-set"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput></label></div>
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 						<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
 							<li class="item" data-content-type="#rc.rslist.type#/#rc.rslist.subtype#" data-contentid="#rc.rslist.contentID#">
-								#$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
+								<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="icon-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 							</li>
 						</cfif>
 					</cfoutput>
@@ -273,16 +274,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group mura-related-external" style="display:none;">
 	<div class="span6">
-		<label class="control-label">Title</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</label>
 		<div class="controls">
 			<input type="text" id="mura-related-title" value="" class="span12">	
 		</div>
 	</div>
 	<div class="span6">
-		<label class="control-label">URL</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.url')#</label>
 		<div class="controls input-append">
 			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus"></i></button>		
+			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus-sign"></i></button>		
 		</div>
 	</div>
 </div>	
@@ -290,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-related-external" style="display:none;">
 	<div id="draggableContainmentExternal" class="control-group" style="display:none;">
 		<div class="list-table search-results">
-			<div class="list-table-content-set">Available URLs</label></div>
+			<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.availableurls')#</label></div>
 			<ul class="rcDraggable list-table-items"></ul>
 		</div>	
 	</div>

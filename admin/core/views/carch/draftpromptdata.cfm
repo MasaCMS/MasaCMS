@@ -44,25 +44,61 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfparam name="rc.targetversion" default="false">
+<cfif not isBoolean(rc.targetversion)>
+	<cfset rc.targetversion=false>
+</cfif>
+<cfif not len(rc.contentid) and isdefined('rc.homeid') and len(rc.homeid)>
+	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.homeid,rc.siteid)>
+<cfelse>
+	<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
+</cfif>
 
-<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
-<cfif draftprompdata.showdialog>
+<cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
+<cfif draftprompdata.showdialog >
 	<cfset draftprompdata.showdialog='true'>
 	<cfsavecontent variable="draftprompdata.message">
 	<cfoutput>
-		<div id="draft-prompt">
-		<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+	<div id="draft-prompt">	
+		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
+			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
+			<div class="alert alert-error alert-locked">
+				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.</p>
+				<p><a tabindex="-1" href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
+			</div>
+		</cfif>
+
+		<cfif not $.siteConfig('hasLockableNodes') or draftprompdata.lockavailable or poweruser or $.currentUser().getUserID() eq  draftprompdata.lockid>
+			
+			<cfif draftprompdata.hasmultiple and not rc.targetversion>
+				<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+			</cfif>
+			
 			<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
-			<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
-			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft>		
+
+			<cfif $.siteConfig('hasLockableNodes') and (draftprompdata.lockavailable) and  draftprompdata.lockid neq session.mura.userid>
+				<p class="alert"><input id="locknodetoggle" type="checkbox"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.locknode')#</p>
+			</cfif>
+
+			<cfif rc.targetversion>
+				<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+			<cfelse>
+				<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
+			</cfif>
+		
+			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft or rc.targetversion>	
 				<table class="mura-table-grid">
 					<thead>
 						<tr>
 							<th colspan="4">
-								<cfif publishedVersion.getApproved()>
-									<i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#
+								<cfif not rc.targetversion>
+									<cfif publishedVersion.getApproved()>
+										<i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#
+									<cfelse>
+										<i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#
+									</cfif>
 								<cfelse>
-									<i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#
+									<i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.editversion'))#
 								</cfif>
 							</th>
 						</tr>
@@ -76,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</table>
 			</cfif>
 
-			<cfif draftprompdata.hasdraft>
+			<cfif draftprompdata.hasdraft and not rc.targetversion>
 
 				<cfset draftVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.historyid)>
 				<table class="mura-table-grid">
@@ -96,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</table>
 			</cfif>
 
-			<cfif draftprompdata.pendingchangesets.recordcount>
+			<cfif draftprompdata.pendingchangesets.recordcount and not rc.targetversion>
 				<table class="mura-table-grid">	
 					<thead>
 						<tr>
@@ -116,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</table>
 			</cfif>
 			</cfif>
-			<cfif draftprompdata.yourapprovals.recordcount>
+			<cfif draftprompdata.yourapprovals.recordcount and not rc.targetversion>
 				<cfset content=$.getBean('content').loadBy(contentid=rc.contentid)>
 				<table class="mura-table-grid">	
 					<thead>
@@ -144,6 +180,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tbody>
 				</table>
 			</cfif>
+
+		</cfif>
 					
 		<!---			
 		<cfif listFindNoCase('Pending,Rejected',draftprompdata.pendingchangesets.approvalStatus)>
@@ -162,6 +200,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset structDelete(draftprompdata,'yourapprovals')>
 <cfset structDelete(draftprompdata,'pendingchangesets')>
-<cfcontent type="application/json">
+<cfcontent type="application/json; charset=utf-8" reset="true">
 <cfoutput>#createObject("component","mura.json").encode(draftprompdata)#</cfoutput>
 <cfabort>

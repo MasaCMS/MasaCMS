@@ -1153,6 +1153,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset doPurgeContentDescendentsCache=true>
 					</cfif>
 
+					<cfif isdefined("arguments.data.unlocknodewithpublish")
+						and arguments.data.unlocknodewithpublish>
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>
+					</cfif>
+
 				</cfif>
 
 				<cfif newBean.getIsNew()>
@@ -1197,9 +1202,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset newBean.setfileID(local.fileBean.getFileID()) />
 
 					<cfif not newBean.getIsNew()
-							and isdefined("arguments.data.unlockwithnew")
-							and arguments.data.unlockwithnew>
-						<cfset newBean.getStats().setLockID("").save()>
+							and isdefined("arguments.data.unlockfilewithnew")
+							and arguments.data.unlockfilewithnew>
+						<cfset newBean.getStats().setLockID("").setLockType("").save()>
 					</cfif>
 
 					<cfif newBean.getType() eq "File">
@@ -2448,14 +2453,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var newDraft = "" />
 		<cfset var history = getDraftHist(arguments.contentid,arguments.siteid) />
 		<cfset var pending = "">
+		<cfset var lockableNodes=variables.settingsManager.getSite(arguments.siteid).getHasLockableNodes()>
 
-		<cfset data.verdict=getBean("permUtility").getPerm(contentid=arguments.contentid,siteid=arguments.siteid)>
+		<cfset data.verdict=getBean("permUtility").getNodePerm(cb.getCrumbArray())>
 		<cfset data.pendingchangesets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
 		<cfset data.hasdraft=false>
 		<cfset data.hasdraftpending=false>
 		<cfset data.historyID=''>
 		<cfset data.publishedHistoryID= cb.getContentHistID() />
 		<cfset data.yourapprovals=queryNew('empty')>
+		<cfset data.lockid=''>
+		<cfset data.locktype=''>
+		<cfset data.isLocked=false>
+		<cfset data.lockedbyyou=false>
+		<cfset data.lockavailable=false>
 
 		<cfif cb.getActive()>
 			<cfif history.recordcount or data.pendingchangesets.recordcount>
@@ -2512,7 +2523,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
-		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
+		<cfif lockableNodes>
+			<cfset var stats=cb.getStats()>
+
+			<cfset data.lockid=stats.getLockID()>
+			<cfset data.locktype=stats.getLockType()>
+			<cfset data.lockedbyyou=stats.getLockID() eq session.mura.userid>
+
+			<cfif data.locktype eq 'node' and len(data.lockid)>
+				<cfset data.isLocked=true>
+			</cfif>
+
+			<cfif len(data.lockid) and not data.lockedbyyou>
+				<cfset data.lockavailable=false>
+			<cfelse>
+				<cfset data.lockavailable=true>
+			</cfif>
+
+		</cfif>
+
+		<cfset data.hasmultiple = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
+
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount or (lockableNodes and  data.lockID neq session.mura.userID)/>
 
 		<cfreturn data />
 	</cffunction>
@@ -2708,9 +2740,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsDrafts.recordcount>
 	</cffunction>
 
-	<cffunction name="getMyLockedFilesCount" output="false">
+	<cffunction name="getMyLockedContentCount" output="false">
 		<cfargument name="siteid" type="string" required="true">
-		<cfreturn variables.contentGateway.getLockedFilesCount(arguments.siteid,session.mura.userid)>
+		<cfreturn variables.contentGateway.getLockedContentCount(arguments.siteid,session.mura.userid)>
 	</cffunction>
 
 	<cffunction name="getKidsCount" output="false">

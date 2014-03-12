@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <!---- /Comments --->
 	   </cfif>
 
-	    <cfif application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)>
+	    <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
         <li <cfif rc.moduleid eq '00000000000000000000000000000000003'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
         </li>
       </cfif>

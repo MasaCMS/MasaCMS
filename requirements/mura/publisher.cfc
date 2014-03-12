@@ -1491,6 +1491,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentstats.majorVersion")>
 					,majorVersion,minorVersion, lockID
 					</cfif>
+					<cfif isdefined("rstcontentstats.lockType")>
+					,lockType
+					</cfif>
 					)
 					values
 					(
@@ -1508,6 +1511,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.majorVersion),de(rstcontentstats.majorVersion),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.minorVersion),de(rstcontentstats.minorVersion),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockID neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockID#">
+					</cfif>
+					<cfif isdefined("rstcontentstats.lockType")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockType neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockType#">
 					</cfif>
 					)
 				</cfquery>
@@ -2823,7 +2830,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset local.it=getBean('relatedContentSet').getIterator()>
 				<cfset local.it.setQuery(tclassextendrcsets)>
 				<cfloop condition="local.it.hasNext()">
-					<cfset local.item=local.next()>
+					<cfset local.item=local.it.next()>
 					<cfset local.item.setSiteID(arguments.toSiteID)>
 					<cfset local.item.setRelatedContentID(keys.get(local.item.getRelatedContentID()))>
 					<cfset local.item.setRelatedContentID(keys.get(local.item.getSubTypeID()))>

@@ -86,7 +86,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset variables.targetHook=generateEditableHook()>
 			
-			<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
+			<cfif $.siteConfig('hasLockableNodes')>
+				<cfset variables.stats=$.content().getStats()>
+				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=carch.lockcheck&destAction=carch.edit">
+				<cfset variables.dolockcheck=not(stats.getLockID() eq $.currentUser().getUserID())>
+				<cfset variables.isLocked=variables.stats.getLockType() eq 'node'>
+			<cfelse>
+				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
+				<cfset variables.dolockcheck=false>
+				<cfset variables.isLocked=false>
+			</cfif>
+			
 			<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 				<cfset variables.editLink = variables.editLink & "&amp;contenthistid=" & request.previewID>
 			<cfelse>
@@ -159,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">	
 				<cfif $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
-					<ul id="tools-status">
+					<ul id="tools-status"<cfif variables.isLocked> class="status-locked"</cfif>>
 						<li id="adminStatus">
 							<cfif $.content('active') gt 0 and  $.content('approved')  gt 0>
 								<cfif len($.content('approvalStatus'))>
@@ -258,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
 									</li>
 									<cfif this.showInlineEditor>	
 									<li id="adminQuickEdit">
