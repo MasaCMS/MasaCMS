@@ -44,7 +44,11 @@
 <cfoutput>
 <h1>Image Details</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<cfsavecontent variable="secondarynav">
+	<cfinclude template="dsp_secondary_menu.cfm">
+</cfsavecontent>
+
+#secondarynav#
 
 <cfif rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
 	#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="navZoom alt")#
@@ -121,8 +125,8 @@
 			   	<img id="jc-source-image"/>
 			</div>
 	    </div>
-	    -->
-	  
+	    --->
+
 	    <script>
 	    var currentFileID='';
 	    var currentCoords='';
@@ -313,4 +317,6 @@
 <cfelse>
 	<p class="alert">This content does not have any image attached to it.</p>
 </cfif>
+
+#secondarynav#
 </cfoutput>
