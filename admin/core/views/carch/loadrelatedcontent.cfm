@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 	<div class="control-group mura-related-internal">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 		<div id="internalContent" class="form-inline">
 			<div class="input-append">
 				<input type="text" name="keywords" value="#rc.keywords#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
@@ -271,16 +271,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</div>
 </cfif>
-
+<cfoutput>
 <div class="control-group mura-related-external" style="display:none;">
 	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
 		<div class="controls">
 			<input type="text" id="mura-related-title" value="" class="span12">	
 		</div>
 	</div>
 	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.url')#</label>
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
 		<div class="controls input-append">
 			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
 			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus-sign"></i></button>		
@@ -291,11 +291,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="mura-related-external" style="display:none;">
 	<div id="draggableContainmentExternal" class="control-group" style="display:none;">
 		<div class="list-table search-results">
-			<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.availableurls')#</label></div>
+			<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availableurls')#</label></div>
 			<ul class="rcDraggable list-table-items"></ul>
 		</div>	
 	</div>
 </div>
+</cfoutput>
 
 
 
