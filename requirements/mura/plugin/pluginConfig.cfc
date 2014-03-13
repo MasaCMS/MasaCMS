@@ -285,6 +285,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="addEventHandler" output="false" returntype="void">
 	<cfargument name="component" required="true">
+
+	<cfif not isDefined('arguments.component.injectMethod')>
+		<cfset arguments.component.injectMethod=injectMethod>
+	</cfif>
+
+	<cfif not isDefined('arguments.component.getValue')>
+		<cfset arguments.component.injectMethod('getValue',getValue)>
+	</cfif>
+
+	<cfif not isDefined('arguments.component.setValue')>
+		<cfset arguments.component.injectMethod('setValue',setValue)>
+	</cfif>
+
 	<cfset arguments.component.setValue('pluginName',getName())>
     <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
     <cfloop query="rsSites">

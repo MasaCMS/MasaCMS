@@ -64,7 +64,7 @@
 		<div id="tabFileMetaExifData" class="tab-pane">
 			<cfset gpsList="GPS Altitude,GPS Altitude Ref,GPS Latitude,GPS Latitude Ref,GPS Longitude,GPS Longitude Ref,GPS Img Direction,GPS Time-Stamp">
 			<div class="fieldset">
-				<cfloop list="#gpsList#" item="k">
+				<cfloop list="#gpsList#" index="k">
 					<div class="control-group">
 						<label class="control-label">
 							#k#

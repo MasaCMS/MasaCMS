@@ -2486,6 +2486,10 @@ select * from rs order by name
 		</cfif>
 	</cfif>
 
+	<cfif not isDefined('arguments.component.injectMethod')>
+		<cfset arguments.component.injectMethod=injectMethod>
+	</cfif>
+
 	<cfif not isDefined('eventhandler.getValue')>
 		<cfset eventHandler.injectMethod('getValue',getValue)>
 	</cfif>
