@@ -21,6 +21,17 @@ component extends="mura.bean.beanORMVersioned"
 	property name="remotePubDate" type="datetime" ;
 	property name="remoteSource" type="varchar" length=255;
 	property name="remoteSourceURL" type="varchar" length=255;
+	/*
+	property name="gpsaltitude" type="varchar" length=50;
+	property name="gpsaltituderef" type="varchar" length=50;
+	property name="gpslatitude" type="varchar" length=50;
+	property name="gpslatituderef" type="varchar" length=50;
+	property name="gpslongitude" type="varchar" length=50;
+	property name="gpslongituderef" type="varchar" length=50;
+	property name="gpsimgdirection" type="varchar" length=50;
+	property name="gpstimestamp" type="varchar" length=50;
+	*/
+	property name="exif" datatype="text";
 	
 	function loadBy(returnFormat="self"){
 		var result=super.loadBy(argumentCollection=arguments);
@@ -110,11 +121,12 @@ component extends="mura.bean.beanORMVersioned"
 	}
 
 	function save(setAsDefault=false){
+		serializeExif();
 		super.save();
 
 		if(arguments.setAsDefault){
 			getBean('file').loadBy(fileid=getValue('fileid'))
-			.setCaption(getValue('caption'))
+			/*.setCaption(getValue('caption'))
 			.setAltText(getValue('alttext'))
 			.setCredits(getValue('credits'))
 			.setRemoteID(getValue('remoteID'))
@@ -122,9 +134,69 @@ component extends="mura.bean.beanORMVersioned"
 			.setRemotePubDate(getValue('remotePubDate'))
 			.setRemoteSource(getValue('remoteSource'))
 			.setRemoteSourceURL(getValue('remoteSourceURL'))
+			.setgpsLatitude(getValue('gpslatitude'))
+			.setgpsLongitude(getValue('gpslongitude'))*/
+			.getExif(getValue('exif'))
 			.save(processFile=false);
 		}
 
+		return this;
+	}
+
+	function setExifPartial(exif){
+		deserializeExif();
+
+		if(isJSON(arguments.exif)){
+			arguments.exif=deserializeJSON(arguments.exif);
+		}
+
+		structAppend(variables.instance.exif,arguments.exif);
+
+		return this;
+	}
+
+	function serializeExif(){
+		if(!isJSON(getValue('exif'))){
+			if(isStruct(getValue('exif'))){
+				setValue('exif',serializeJSON(getValue('exif')));
+			} else {
+				setValue('exif','{}');
+			}
+		}
+		return getValue('exif');
+	}
+
+	function deserializeExif(){
+		if(!isStruct(getValue('exif'))){
+			if(len(getValue('exif'))){
+				setValue('exif',deserializeJSON(getValue('exif')));
+			} else {
+				setValue('exif',{});
+			}
+		}
+		return getValue('exif');
+	}
+
+	function getExifTag(tag){
+		deserializeExif();
+		if(structKeyExists(variables.instance.exif,arguments.tag)){
+			return variables.instance.exif['#arguments.tag#'];
+		} else {
+			return '';
+		}
+	}
+
+	function getExifAsJSON(){
+		return serializeExif();
+	}
+
+	function getExifAsStruct(){
+		return deserializeExif();
+	}
+
+	function setExifTag(tag,value){
+		deserializeExif();
+		variables.instance.exif['#arguments.tag#']=arguments.value;
 		return this;
 	}
 

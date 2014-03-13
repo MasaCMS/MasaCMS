@@ -134,7 +134,8 @@ var siteManager = {
 			return false;
 		}
 
-		if(typeof(this.hasNodeLock) != 'undefined' && !this.nodeLockConfirmed) {
+		if(typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
+			alert('b')
 			confirmDialog(this.unlocknodeconfirm, function() {
 				//alert('true')
 				$("#unlocknodewithpublish").val("true");

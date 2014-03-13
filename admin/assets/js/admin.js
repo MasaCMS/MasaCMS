@@ -937,10 +937,14 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			position: getDialogPosition(),
 			buttons: {
 				Save:function(){
-					var fileData={};
+					var fileData={exifpartial:{}};
 
 					$('.filemeta').each(function(){
 						fileData[$(this).attr('data-property')]=$(this).val();
+					});
+
+					$('.exif').each(function(){
+						fileData.exifpartial[$(this).attr('data-property')]=$(this).val();
 					});
 
 					fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');

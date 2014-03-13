@@ -1270,6 +1270,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						,RemoteSource
 						,remoteSourceURL
 					</cfif>
+					<cfif structKeyExists(rstfiles, "exif")>
+						,exif
+					</cfif>
 					)
 					values
 					(
@@ -1299,6 +1302,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						,<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstFiles.remotePubDate),de('no'),de('yes'))#" value="#rstFiles.remotePubDate#">
 						,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.remotesource neq '',de('no'),de('yes'))#" value="#rstFiles.remotesource#">
 						,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.remotesourceurl neq '',de('no'),de('yes'))#" value="#rstFiles.remotesourceurl#">
+					</cfif>
+					<cfif structKeyExists(rstfiles, "exif")>			
+						,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.exif neq '',de('no'),de('yes'))#" value="#rstFiles.exif#">
 					</cfif>
 					)
 				</cfquery>

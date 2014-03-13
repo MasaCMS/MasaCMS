@@ -101,6 +101,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="remotePubDate" type="string" required="yes" default=""/>
 		<cfargument name="remoteSource" default=""/>
 		<cfargument name="remoteSourceURL" type="string" required="yes" default=""/>
+		<!---<cfargument name="gpsaltitude" type="string" required="yes" default=""/>
+		<cfargument name="gpsaltiuderef" type="string" required="yes" default=""/>
+		<cfargument name="gpslatitude" type="string" required="yes" default=""/>
+		<cfargument name="gpslatituderef" type="string" required="yes" default=""/>
+		<cfargument name="gpslongitude" type="string" required="yes" default=""/>
+		<cfargument name="gpslongituderef" type="string" required="yes" default=""/>
+		<cfargument name="gpsimgdirection" type="string" required="yes" default=""/>
+		<cfargument name="gpstimestamp" type="string" required="yes" default=""/>--->
+		<cfargument name="exif" type="string" required="yes" default=""/>
 		
 		<cfset var ct=arguments.contentType & "/" & arguments.contentSubType />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />

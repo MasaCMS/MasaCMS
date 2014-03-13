@@ -88,6 +88,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="remotePubDate" type="string" required="yes" default=""/>
 		<cfargument name="remoteSource" default=""/>
 		<cfargument name="remoteSourceURL" type="string" required="yes" default=""/>
+		<!---<cfargument name="gpsaltitude" type="string" required="yes" default=""/>
+		<cfargument name="gpsaltiuderef" type="string" required="yes" default=""/>
+		<cfargument name="gpslatitude" type="string" required="yes" default=""/>
+		<cfargument name="gpslatituderef" type="string" required="yes" default=""/>
+		<cfargument name="gpslongitude" type="string" required="yes" default=""/>
+		<cfargument name="gpslongituderef" type="string" required="yes" default=""/>
+		<cfargument name="gpsimgdirection" type="string" required="yes" default=""/>
+		<cfargument name="gpstimestamp" type="string" required="yes" default=""/>--->
+		<cfargument name="exif" type="string" required="yes" default=""/>
 	
 		<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 
@@ -465,9 +474,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop condition="not local.fileuploaded">
 		<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
 			<cfif local.isLocalFile>
+				<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+					<cftry>
+						<cfimage source="#local.filePath#" name="local.imageObj"> 
+						<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+						<cfcatch>
+							<cfset local.results.exif={}>
+						</cfcatch>
+					</cftry>
+				<cfelse>
+					<cfset local.results.exif={}>
+				</cfif>
 				<cffile action="copy" destination="#local.results.serverDirectory#/#local.results.serverFile#" source="#local.filePath#" >
 			<cfelse>
 				<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.remoteGet.fileContent#" >
+				<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+				<cftry>
+					<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
+					<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+					<cfcatch>
+						<cfset local.results.exif={}>
+					</cfcatch>
+				</cftry>
+				<cfelse>
+					<cfset local.results.exif={}>
+				</cfif>
 			</cfif>
 			<cfset local.fileuploaded=true>
 		<cfelse>
@@ -546,8 +577,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="upload" output="false">
 	<cfargument name="fileField">
-	<cffile action="upload" result="local.tempFile" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-	<cfreturn local.tempFile>
+	<cffile action="upload" result="local.results" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+	
+	<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+		<cftry>
+			<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
+			<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+			<cfcatch>
+				<cfset local.results.exif={}>
+			</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfset local.results.exif={}>
+	</cfif>
+	<cfreturn local.results>
 </cffunction>
 
 <cffunction name="rebuildImageCache" output="false">

@@ -7,6 +7,9 @@
 			<a href="##tabFileMetaBasic" data-toggle="tab"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</span></a>
 		</li>
 		<li>
+			<a href="##tabFileMetaExifData" data-toggle="tab"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.exifdata')#</span></a>
+		</li>
+		<li>
 			<a href="##tabFileMetaAdvanced" data-toggle="tab"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</span></a>
 		</li>
 	</ul>
@@ -58,9 +61,24 @@
 				<!---<input type="hidden" data-property="property" value="#HTMLEditFormat(rc.property)#" class="filemeta">--->
 			</div>
 		</div>
+		<div id="tabFileMetaExifData" class="tab-pane">
+			<cfset gpsList="GPS Altitude,GPS Altitude Ref,GPS Latitude,GPS Latitude Ref,GPS Longitude,GPS Longitude Ref,GPS Img Direction,GPS Time-Stamp">
+			<div class="fieldset">
+				<cfloop list="#gpsList#" item="k">
+					<div class="control-group">
+						<label class="control-label">
+							#k#
+						</label>
+						<div class="controls">
+							<input type="text" data-property="#k#" value="#HTMLEditFormat(fileMetaData.getExifTag(k))#" class="exif span12">
+						</div>
+					</div>
+				</cfloop>
+			</div>
+			
+		</div>
 		<div id="tabFileMetaAdvanced" class="tab-pane">
 			<div class="fieldset">
-			 	
 				<div class="control-group">
 					<label class="control-label">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#
