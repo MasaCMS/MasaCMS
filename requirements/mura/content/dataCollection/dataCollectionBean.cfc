@@ -51,6 +51,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	property name='siteID' required=true dataType='string';
 
 	function set(data){
+
 		if(isQuery(arguments.data)){
 			arguments.data=getBean('utility').queryRowToStruct(arguments.data);
 		}
@@ -59,6 +60,33 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			var formdata=variables.dataCollectionManager._deserializeWDDX(arguments.data.data);
 			structDelete(arguments.data, data);
 			structAppend(arguments.data,formdata,true);
+		}
+
+		if(structKeyExists(arguments.data,"fieldnameOrder")){
+			arguments.data.fieldnames='';
+		
+			for(local.i in listToArray(arguments.data.fieldnameOrder)){
+				if(structKeyExists(form, local.i)){
+					arguments.data.fieldnames = listAppend(arguments.data.fieldnames, local.i);
+				}
+			}
+
+			structDelete(form, "fieldnameOrder");
+			structDelete(aguments.data, "fieldnameOrder");
+
+		} else if (application.configBean.getCompiler() eq "Railo"){
+			arguments.data.fieldnames='';
+			local.aRawForm = form.getRaw();
+    
+    		for(local.i in local.aRawForm){
+    			arguments.data.fieldnames=listAppend(arguments.data.fieldnames, local.i.getName())
+    		}
+
+		} else if(!structKeyExists(arguments.data,'fieldnames')) {
+			argument.data.fieldnames='';
+			for(local.i in arguments.data){
+				arguments.data.fieldnames=listAppend(arguments.data.fieldnames,local.i);
+			}
 		}
 
 		return super.set(arguments.data);
@@ -112,7 +140,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	}
 
 	function getFormBean(){
-		return getBean('content').loadBy(contentID=getValue('formID'),siteID=getValue('siteID'));
+		param name="variables.instance.formBean" default=getBean('content').loadBy(contentID=getValue('formID'),siteID=getValue('siteID'));
+		return variables.instance.formBean;
 	}
 
 	function setContentID(contentID){
@@ -139,8 +168,206 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 	function save(){
 		//need to make sure responseID,siteid and formID are in data
-		variables.dataCollectionManager.update(getAllValues());
+		super.validate();
+
+		if(structIsEmpty(getErrors())){
+			variables.dataCollectionManager.update(getAllValues());
+		}
+		
 		return this;
+	}
+
+	function validate($){
+
+		if(!isDefined('arguments.$')){
+			arguments.$=getValue('MuraScope');
+			if(!isObject(arguments.$)){
+				arguments.$=getBean('$').init(getValue('siteid'));
+			}
+		}
+
+		super.validate();
+
+		setValue('acceptData',structIsEmpty(getErrors()));
+		
+		if(!session.mura.requestcount > 1){
+			setValue('acceptError','Spam');
+			setValue('acceptData','0');
+			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+		}
+
+		if(getFormBean().getResponseChart()){
+
+			 if(not isdefined('cookie.poll')){
+				cookie.poll=getValue('formID');
+			} else if( isdefined('cookie.poll') and listfind(cookie.poll,getValue('formID')) ){
+				setValue('acceptError','Duplicate');
+				variables.instance.errors.duplicate=variables.settingsManager.getSite(getValue('siteid')).getRBFactory().getKey("poll.onlyonevote");
+				setValue('acceptData','0');
+			} else if( isdefined('cookie.poll') and not listfind(cookie.poll,getValue('formID')) ){
+				var templist=cookie.poll;
+				if( listlen(templist) eq 6){
+					templist=listdeleteat(templist,1);
+				}
+				templist=listappend(templist,getValue('formID'));
+				cookie.poll="#templist#";
+			}
+		}
+
+		if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'))) ){
+			setValue('acceptError','Captcha');
+			setValue('acceptData','0');
+			variables.instance.errors.SecurityCode=variables.settingsManager.getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
+		}
+
+		if(!getBean('utility').cfformprotect(arguments.$.event())){
+			setValue('acceptError','Spam');
+			setValue('acceptData','0');
+			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+		}
+
+	}
+	function submit($){
+
+		if(!isDefined('arguments.$')){
+			arguments.$=getValue('MuraScope');
+			if(!isObject(arguments.$)){
+				arguments.$=getBean('$').init(getValue('siteid'));
+			}
+		}
+
+		validate(arguments.$);
+		arguments.$.event('formDataBean',this);
+		arguments.$.event('acceptData',getValue('acceptData'));
+		arguments.$.event('sendto','');
+		arguments.$.announceEvent('onBeforeFormSubmitSave');
+
+		if(structIsEmpty(getErrors())){
+			variables.dataCollectionManager.update(getAllValues());
+			arguments.$.event('sendto','')
+			arguments.$.announceEvent('onAfterFormSubmitSave');
+
+			var subject=arguments.$.event('subject');
+
+			if(!len(subject)){
+				subject=getFormBean().getTitle();
+			}
+
+			var sendto=arguments.$.event('sendto');
+
+			if(len(getFormBean().getSendTo())){
+				sendto=listAppend(sendto,getFormBean().getSendTo());
+			}
+
+			var mailer=getBean('mailer');
+			
+			if(mailer.isValidEmailFormat(getValue('email'))){
+				mailer.send(
+					args = getAllValues()
+					, sendto = sendto
+					, from = getValue('email')
+					, subject = subject
+					, siteid = getValue('siteid')
+					, replyto = getValue('email')
+					, bcc = ''
+				);
+
+			} else {
+				mailer.send(
+					args = getAllValues()
+					, sendto = sendto
+					, from = mailer.getFromEmail(getValue('siteid'))
+					, subject = subject
+					, siteid = getValue('siteid')
+					, replyto = ''
+					, bcc = ''
+				);
+			}
+			
+		}
+		
+		return this;
+
+	}
+
+	function dspResponse($){
+		return '';
+	}
+
+	function render($){
+		var bean=getFormBean();
+		var returnStr='';
+
+		if(!isDefined('arguments.$')){
+			arguments.$=getValue('MuraScope');
+			if(!isObject(arguments.$)){
+				arguments.$=getBean('$').init(getValue('siteid'));
+			}
+		}
+
+		if(bean.getDisplayTitle() > 0){
+			returnStr='<#arguments.$.getHeaderTag('subHead1')#>#HTMLEditFormat(bean.getTitle())#</#arguments.$.getHeaderTag('subHead1')#>';
+		}
+		
+		param name="form.formid" default="";
+
+		if(len(getValue('formid')) && getValue('formid') == bean.getContentID()){
+			
+			submit(arguments.$);
+				
+			var response=dspResponse();
+
+			if(!len(response)){
+				response=arguments.$.dspObject_Include(
+							thefile='dataCollection/dsp_response.cfm'		
+						);
+			}
+
+			returnStr=returnStr & response;
+		} else {
+			var renderedForm=arguments.$.renderEvent('onForm#bean.getSubType()#BodyRender');
+
+			if(len(renderedForm)){
+				return renderedForm;
+			}
+
+			if(isJSON(bean.getBody())) {
+				renderedForm=arguments.$.setDynamicContent(
+					arguments.$.dspObject_Include(
+						thefile='formbuilder/dsp_form.cfm',
+						formid=bean.getContentID(),
+						siteid=bean.getSiteID(),
+						formJSON=bean.getBody()
+					)
+				);
+		
+			} else {
+				renderedForm=arguments.$.setDynamicContent(bean.getBody());
+			}
+
+			renderedForm=variables.dataCollectionManager.renderForm(
+				bean.getContentID(),
+				bean.getSiteID(),
+				renderedForm,
+				bean.getResponseChart(), 
+				arguments.$.content('contentID')
+			);
+			
+			returnStr=returnStr & renderedForm;
+
+			if(find("htmlEditor",renderedForm)){
+				arguments.$.addToHTMLHeadQueue("htmlEditor.cfm");	
+				returnStr=returnStr & '<script type="text/javascript">setHTMLEditors(200,500);</script>';
+			}
+		}
+
+		if(bean.getIsOnDisplay() && bean.getForceSSL()){
+			request.forceSSL = 1;
+			request.cacheItem=false;
+		} else {
+			request.cacheItem=bean.getDoCache();
+		}
+		return returnStr;
 	}
 
 }

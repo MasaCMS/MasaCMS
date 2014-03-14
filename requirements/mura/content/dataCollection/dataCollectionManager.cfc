@@ -303,25 +303,23 @@ order by tformresponsepackets.entered asc
 <cfsavecontent variable="frm"><cfoutput>
 #body#
 <script type="text/javascript">
-		var frm=document.getElementById('#frmID#');
-			frm.setAttribute('action','?nocache=1');
-			frm.setAttribute('method','post');
-			if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
-				frm.onsubmit=function(){return validateForm(this);}
-			}
-		<cfif not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>	
-			<cfif arguments.responseChart>
-				polllist=new Array();
-				poll=frm.elements;
-					for (p=0; p < poll.length; p++) {
-							if(poll[p].type =='radio'){polllist.push(escape(poll[p].value));}
-						}
-				if(polllist.length > 0) {frm.setAttribute('action','?nocache=1&polllist='+ polllist.toString());}		
-			</cfif>
-		</cfif>
-		if( !(typeof(window.jQuery) != 'undefined' && typeof(window.jQuery.mobile) != 'undefined') ){
-			frm.setAttribute('action',frm.getAttribute('action') + '###frmID#');
+	$(function(){
+		frm=$('###frmID#');
+		frm.attr('action','?nocache=1');
+		frm.attr('method','post');
+
+		if(frm.attr('onsubmit') == undefined){
+			frm.on('submit',function(){return validateForm(this);})
 		}
+		<cfif arguments.responseChart>
+			var polllist=new Array();
+			frm.find("input[type='radio]").each(function(){
+				polllist.push($(this).val());
+			});
+			if(polllist.length > 0) {frm.attr('action','?nocache=1&polllist='+ polllist.toString());}		
+		</cfif>
+		frm.attr('action',frm.attr('action') + '###frmID#');
+	});
 </script></cfoutput>
 </cfsavecontent>
 

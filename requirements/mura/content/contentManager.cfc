@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset this.TreeLevelList="Page,Folder,Calendar,Link,File,Gallery">
-	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component">
+	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component,Form">
 	<cfset this.versionObjects="">
 
 	<cffunction name="init" access="public" returntype="any" output="false">

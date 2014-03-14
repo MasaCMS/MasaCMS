@@ -74,8 +74,8 @@
 				</div>
 			</div>
 		</cfif>
-	<cfelseif rc.type eq 'Component'>	
-		<cfset t="Component"/>
+	<cfelseif listFindNoCase('Component,Form',rc.type)>	
+		<cfset t=rc.type/>
 			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery>
 		</cfsilent>
 		<cfif rsst.recordcount>

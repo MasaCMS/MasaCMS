@@ -53,55 +53,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset variables.rsForm=bean.getAllValues()>
 	<cfset variables.event.setValue("formBean",bean)>
-	
-	<cfset variables.rsForm.isOnDisplay=variables.rsForm.display eq 1 or 
-			(
-				variables.rsForm.display eq 2 and variables.rsForm.DisplayStart lte now()
-				AND (variables.rsForm.DisplayStop gte now() or variables.rsForm.DisplayStop eq "")
-			)>
 </cfsilent>
-<cfoutput>
-<cfif variables.rsForm.isOnDisplay>
-	<cfif variables.rsForm.displayTitle neq 0><#variables.$.getHeaderTag('subHead1')#>#variables.rsForm.title#</#variables.$.getHeaderTag('subHead1')#></cfif>
-	<cfif isdefined('request.formid') and request.formid eq variables.rsform.contentid>
-	<cfset acceptdata=1> 
-	<cfinclude template="act_add.cfm">
-	<cfinclude template="dsp_response.cfm">
-	<cfelse>
-	<cfsilent>
-		<cfif isJSON(variables.rsForm.body)>
-			<cfset variables.renderedForm=variables.$.setDynamicContent(
-					dspObject_Include(
-						thefile='formbuilder/dsp_form.cfm',
-						formid=variables.rsForm.contentid,
-						siteid=variables.rsForm.siteid,
-						formJSON=variables.rsForm.body
-					)
-				)>
-		<cfelse>
-			<cfset variables.renderedForm=variables.$.setDynamicContent(variables.rsForm.body)>
-		</cfif>
-		</cfsilent>
-		<cfset variables.renderedForm=application.dataCollectionManager.renderForm(
-			variables.rsForm.contentid,
-			variables.$.event('siteID'),
-			variables.renderedForm,
-			variables.rsForm.responseChart, 
-			variables.$.content('contentID')
-		)>
-		#variables.renderedForm#
-		<cfif find("htmlEditor",variables.renderedForm)>
-			<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>	
-			<script type="text/javascript">
-			setHTMLEditors(200,500);
-			</script>
-		</cfif>
-	</cfif>
-</cfif>
-</cfoutput>
-<cfif variables.rsForm.isOnDisplay and variables.rsForm.forceSSL eq 1>
-<cfset request.forceSSL = 1>
-<cfset request.cacheItem=false>
-<cfelse>
-<cfset request.cacheItem=variables.rsForm.doCache>
+
+<cfif bean.getIsOnDisplay()>
+	<cfoutput>
+		#$.getBean('dataCollectionBean')
+		.set($.event().getAllValues())
+		.render($)#
+	</cfoutput>
 </cfif>

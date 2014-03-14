@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
-<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
+<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Folder^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Form^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
 <h1><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h1>
 
@@ -129,14 +129,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#HTMLEditFormat(subtype.getDescription())#</textarea></div>
 		</div>
 			
-			<div class="control-group hasSummaryContainer">
-			<div class="span4">
-				<label class="control-label">Show "Summary" field when editing?</label>
-				<div class="controls">
-				<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
-				<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
-				</div>
+	<div class="control-group hasRow1Container" >
+		<div class="span4 hasSummaryContainer">
+			<label class="control-label">Show "Summary" field when editing?</label>
+			<div class="controls">
+			<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
+			<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
 			</div>
+		</div>
 		
 		<div class="span4 hasBodyContainer">
 			<label class="control-label">Show "Body" field when editing?</label>

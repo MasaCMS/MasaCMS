@@ -171,61 +171,75 @@ var extendManager = {
 			document.subTypeFrm.dataTable.value = dataArray[3];
 		}
 		if(dataArray[0] == "") {
+			$(".hasRow1Container").hide();
 			$(".subTypeContainer").hide();
 			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
+			$(".hasAssocFileContainer").hide();
 		} else if(dataArray[0] == "Site") {
+			$(".hasRow1Container").hide();
 			$(".subTypeContainer").hide();
 			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".hasConfiguratorContainer").hide();
+			$(".hasAssocFileContainer").hide();
 			$("#subType").val("Default");
 		} else if(dataArray[0] == "1" || dataArray[0] == "2" || dataArray[0] == "Address" || dataArray[0] == "Custom" || dataArray[0] == "Base") {
+			$(".hasRow1Container").hide();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
+			$(".hasAssocFileContainer").hide();
 		} else if(dataArray[0] == "File" || dataArray[0] == "Link") {
+			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").hide();
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").show();
+			if(dataArray[0] == "File"){
+				$(".hasAssocFileContainer").hide();
+			} else {
+				$(".hasAssocFileContainer").show();
+			}
 		} else if(dataArray[0] == "Component" || dataArray[0] == "Form") {
+			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").show();
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
+			$(".hasAssocFileContainer").hide();
 		} else if(dataArray[0] == "Folder" || dataArray[0] == "Gallery" || dataArray[0] == "Calendar") {
+			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
 			$(".hasConfiguratorContainer").show();
 			$(".availableSubTypesContainer").show();
+			$(".hasAssocFileContainer").show();
 		} else {
+			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").show();
-		}
-
-		if(dataArray[0] == "File"){
-			$(".hasAssocFileContainer").hide();
-		} else {
 			$(".hasAssocFileContainer").show();
 		}
+
+		
 
 	}
 }

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset pageLevelList="Page,Folder,Calendar,Gallery"/>
-<cfset extendedList="Page,Folder,Calendar,Gallery,Link,File,Component"/>
+<cfset extendedList="Page,Folder,Calendar,Gallery,Link,File,Component,Form"/>
 <cfset isExtended=false>
 <cfset nodeLevelList="Page,Folder,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 		</cfif>
 		--->
-		<cfif listFindNoCase("Component,File,Link",rc.type)>
+		<cfif listFindNoCase("Component,File,Link,Form",rc.type)>
 			<cfset baseTypeList=rc.type>
 		<cfelse>
 			<cfset baseTypeList=pageLevelList>
@@ -598,7 +598,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	
 	<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery,Link,File,Component">
+		<cfcase value="Page,Folder,Calendar,Gallery,Link,File,Component,Form">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
