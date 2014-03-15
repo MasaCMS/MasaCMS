@@ -101,7 +101,7 @@
 		padding: 0;
 		margin: 0;
 		max-height: 300px;
-		overflow: scroll;
+		overflow: auto;
 
 		.navZoom {
 			width: 95% !important;			
@@ -116,8 +116,9 @@
 			padding: 4px 5px;
 			border-collapse: collapse;
 			overflow: hidden;
-			width: 686px;
+			max-width: 100%;
 			cursor: move;
+			box-sizing: border-box;
 			}
 		
 		/* zero out bottom margin on empty list item */
