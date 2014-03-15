@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset isloggedin=variables.userUtility.loginByUserID(rsUser.userID,rsUser.siteID)>
 	</cfif>
 	
-	<cfif not isloggedin>
+	<cfif isloggedin>
 		<cfset session.rememberMe=1>
 		<cfreturn true />
 	<cfelse>
