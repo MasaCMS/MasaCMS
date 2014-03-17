@@ -79,7 +79,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			local.aRawForm = form.getRaw();
     
     		for(local.i in local.aRawForm){
-    			arguments.data.fieldnames=listAppend(arguments.data.fieldnames, local.i.getName())
+    			arguments.data.fieldnames=listAppend(arguments.data.fieldnames, local.i.getName());
     		}
 
 		} else if(!structKeyExists(arguments.data,'fieldnames')) {
@@ -244,7 +244,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		if(structIsEmpty(getErrors())){
 			variables.dataCollectionManager.update(getAllValues());
-			arguments.$.event('sendto','')
+			arguments.$.event('sendto','');
 			arguments.$.announceEvent('onAfterFormSubmitSave');
 
 			var subject=arguments.$.event('subject');

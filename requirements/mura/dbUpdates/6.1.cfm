@@ -34,8 +34,7 @@
 
 		if(!dbUtility.columnExists('exif')){
 			new Query().execute(sql="ALTER TABLE tfiles
-				ADD COLUMN exif text DEFAULT null
-			");
+				ADD COLUMN exif text DEFAULT null");
 		}
 	} else {
 		dbUtility.addColumn(column="caption",dataType="text")
