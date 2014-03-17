@@ -226,6 +226,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
 		}
 
+		return this;
+
 	}
 	function submit($){
 
