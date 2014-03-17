@@ -1551,7 +1551,8 @@ and tclassextendattributes.type='File'
 			extXML=arguments.configXML[baseElement].extensions.extension[ext];
 
 			subType = application.classExtensionManager.getSubTypeBean();
-						
+			
+
 			if(isDefined("extXML.xmlAttributes.type")){
 				if(extXML.xmlAttributes.type eq 'User'){
 					subType.setType( 2 );
@@ -1663,10 +1664,11 @@ and tclassextendattributes.type='File'
 					}
 				} else if(extendSetXML.xmlName == 'relatedcontentset' && isDefined("extendSetXML.xmlAttributes.name")){
 					relsetorder=relsetorder+1;
-					relset=getBean('extendRelatedContentSetBean').loadBy(subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
+					relset=getBean('extendRelatedContentSetBean').loadBy(siteID=subtype.getSiteID(),subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
 					if(isDefined("extendSetXML.xmlAttributes.AvailableSubTypes")){
 						relset.setAvailableSubTypes(extendSetXML.xmlAttributes.AvailableSubTypes);
 					}
+
 					relset.setOrderNo(relsetorder);
 					relset.save();
 				}
