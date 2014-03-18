@@ -83,7 +83,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
     		}
 
 		} else if(!structKeyExists(arguments.data,'fieldnames')) {
-			argument.data.fieldnames='';
+			arguments.data.fieldnames='';
 			for(local.i in arguments.data){
 				arguments.data.fieldnames=listAppend(arguments.data.fieldnames,local.i);
 			}
