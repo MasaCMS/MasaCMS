@@ -220,7 +220,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			variables.instance.errors.SecurityCode=variables.settingsManager.getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
 		}
 
-		if(!getBean('utility').cfformprotect(arguments.$.event())){
+		if(yesNoFormat(getValue('useProtect')) && !getBean('utility').cfformprotect(arguments.$.event())){
 			setValue('acceptError','Spam');
 			setValue('acceptData','0');
 			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
