@@ -66,10 +66,6 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			}
 
 			if(isStruct(local.tempfile.exif)){
-				for(local.key in local.tempfile.exif){
-					variables.instance["#replace(local.tempfile.exif,' ','','all')#"]=local.tempfile.exif[local.key];
-				}
-
 				local.tempFile.exif=serializeJSON(local.tempFile.exif);
 			}
 
