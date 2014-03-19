@@ -5,7 +5,7 @@
 
 		<cfscript>
 			if ( StructKeyExists( arguments, 'javaloader' ) ) {
-				super._setJavaLoader( javaloader );
+				_setJavaLoader( javaloader );
 			}
 
 			_setLessEngine( $loadJavaClass( 'com.asual.lesscss.LessEngine' ) );

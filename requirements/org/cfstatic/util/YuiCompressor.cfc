@@ -5,7 +5,7 @@
 
 		<cfscript>
 			if ( StructKeyExists( arguments, 'javaloader' ) ) {
-				super._setJavaLoader( javaloader );
+				_setJavaLoader( javaloader );
 			}
 			return this;
 		</cfscript>

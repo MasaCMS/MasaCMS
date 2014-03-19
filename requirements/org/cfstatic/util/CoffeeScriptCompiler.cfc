@@ -4,7 +4,7 @@
 		<cfargument name="javaloader" type="any" required="true" hint="An instance of the javaloader with class path of Less Compiler jar preloaded." />
 		<cfscript>
 			if ( StructKeyExists( arguments, 'javaloader' ) ) {
-				super._setJavaLoader( javaloader );
+				_setJavaLoader( javaloader );
 			}
 
 			_setCoffeeScriptEngine( $loadJavaClass( 'org.jcoffeescript.JCoffeeScriptCompiler' ) );
