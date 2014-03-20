@@ -316,6 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var serverFilename=arguments.file.serverfilename />
 		<cfset var serverDirectory=arguments.file.serverDirectory & variables.configBean.getFileDelim() />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
+		<cfset var pid=createUUID()>
 
 		<cfset fileStruct.fileObj = '' />
 		<cfset fileStruct.fileObjSmall = '' />
@@ -333,15 +334,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cffile action="rename" source="#serverDirectory##arguments.file.serverfile#" destination="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" attributes="normal">
 		</cfif>
 
-		<cfset fileStruct.fileObj = "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" />
+		<cffile action="rename" source="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" destination="#serverDirectory##pid#-#serverFilename#.#arguments.file.serverFileExt#" attributes="normal">
+		<cfset fileStruct.fileObj = "#serverDirectory##pid#-#serverFilename#.#arguments.file.serverFileExt#" />
 			
 		<!--- BEGIN IMAGE MANIPULATION --->
 		<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 			
 			<cfif variables.configBean.getFileStore() eq "fileDir">		
-				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=variables.configBean.getMaxSourceImageWidth())#'/>						
+				<cfset fileStruct.fileObjSource = '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=variables.configBean.getMaxSourceImageWidth())#'/>						
 			<cfelse>
-				<cfset fileStruct.fileObjSource =fileStruct.fileObj>
+				<cfset fileStruct.fileObjSource = fileStruct.fileObj>
 			</cfif>
 		
 			<cfset fileStruct.fileObjSmall = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getSmallImageHeight(),width=site.getSmallImageWidth())#" />
@@ -362,6 +364,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cffile action="delete" file="#fileStruct.fileObj#">
 			<cffile action="rename" destination="#fileStruct.fileObj#" source="#fileStruct.fileObjLarge#">
 			<cfset structDelete(fileStruct,"fileObjLarge")>
+
+			<cfif variables.configBean.getFileStore() eq "fileDir">		
+				<!--- clean up source--->
+				<cffile action="delete" file="#fileStruct.fileObjSource#">
+			</cfif>
 		</cfif>
 		
 		<cfset fileStruct.theFile=fileStruct.fileObj/>
