@@ -453,8 +453,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
+
+				<cfif not isDefined('variables.localhandler.injectMethod')>
+					<cfset variables.localhandler.injectMethod=variables.pluginEvent.injectMethod>
+				</cfif>
+
+				<cfif not isDefined('variables.localhandler.getValue')>
+					<cfset variables.localhandler.injectMethod('getValue',variables.pluginEvent.getValue)>
+				</cfif>
+
+				<cfif not isDefined('variables.localhandler.setValue')>
+					<cfset variables.localhandler.injectMethod('setValue',variables.pluginEvent.setValue)>
+				</cfif>
+
 				<cfset variables.localhandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler")>
-				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler._objectName#.onApplicationLoad")>
+				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad")>
 				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
@@ -466,6 +479,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>		
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
+
+				<cfif not isDefined('variables.themeHandler.injectMethod')>
+					<cfset variables.themeHandler.injectMethod=variables.pluginEvent.injectMethod>
+				</cfif>
+
+				<cfif not isDefined('variables.themeHandler.getValue')>
+					<cfset variables.themeHandler.injectMethod('getValue',variables.pluginEvent.getValue)>
+				</cfif>
+
+				<cfif not isDefined('variables.themeHandler.setValue')>
+					<cfset variables.themeHandler.injectMethod('setValue',variables.pluginEvent.setValue)>
+				</cfif>
+				
 				<cfset variables.themeHandler.setValue("_objectName","#variables.siteBean.getThemeAssetMap()#.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler.getValue('_objectName')#.onApplicationLoad")>
 				<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
