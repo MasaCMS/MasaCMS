@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	
 	<!--- Should we even use sessions? --->
-	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
+	<cfset request.trackSession = not (
 	 REFind( "bot\b", request.userAgent ) OR
 	 Find( "_bot_", request.userAgent ) OR
 	 Find( "crawl", request.userAgent ) OR
