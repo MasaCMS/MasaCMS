@@ -131,6 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	function setupApplication(){
 
+		param name="application.appInitialized" default=false;
+		
 		if(!application.appInitialized){
 			param name="application.instanceID" default=createUUID();
 			lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
