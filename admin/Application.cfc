@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	function setupApplication(){
 
-		if(!request.muraAppreloaded){
+		if(!application.appInitialized){
 			param name="application.instanceID" default=createUUID();
 			lock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200" {
 				include "../config/appcfc/onApplicationStart_include.cfm";
