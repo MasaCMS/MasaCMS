@@ -228,6 +228,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		throw("You have attempted to call the method #arguments.methodName# which does not exist in #getClassFullName()#");
 	}
 
+	function getQueryService(){
+		return new Query(argumentCollection=getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments));
+	}
+
 </cfscript>
 
 </cfcomponent>

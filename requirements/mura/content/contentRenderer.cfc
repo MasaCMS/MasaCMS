@@ -1749,6 +1749,7 @@ Display Objects
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="contentHistID" required="true" default="0">
+	<cfargument name="throwError" default="true">
 	
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1785,13 +1786,13 @@ Display Objects
 		<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
 		<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
 		<cfset commitTracePoint(tracePoint)>
-	<cfelse>
+	<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
 		<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
 		<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
 		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	</cfsavecontent>
-	<cfreturn theContent />
+	<cfreturn trim(theContent) />
 
 </cffunction>
 

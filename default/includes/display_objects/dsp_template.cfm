@@ -125,9 +125,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfif variables.rsTemplate.isOnDisplay>
 	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
+	<cfif not len(variables.componentOutput)>
+		<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
+	</cfif>
 	<cfif len(variables.componentOutput)>
 		<cfoutput>#variables.componentOutput#</cfoutput>
-		<cfelse>
+	<cfelse>
 		<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
 			<cfset variables.componentBody=variables.rsTemplate.body>
 			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">

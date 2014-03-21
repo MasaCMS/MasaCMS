@@ -243,12 +243,14 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		arguments.$.event('acceptData',getValue('acceptData'));
 		arguments.$.event('sendto','');
 		arguments.$.announceEvent('onBeforeFormSubmitSave');
+		arguments.$.announceEvent('onBeforeForm#getFormBean().getSubType()#SubmitSave');
 
 		if(structIsEmpty(getErrors())){
 			variables.dataCollectionManager.update(getAllValues());
 			arguments.$.event('sendto','');
 			arguments.$.announceEvent('onAfterFormSubmitSave');
-
+			arguments.$.announceEvent('onAfterForm#getFormBean().getSubType()#SubmitSave');
+			
 			var subject=arguments.$.event('subject');
 
 			if(!len(subject)){
@@ -329,6 +331,11 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		} else {
 			var renderedForm=arguments.$.renderEvent('onForm#bean.getSubType()#BodyRender');
 
+			/*
+			if(!len(renderedForm)){
+				renderedForm=arguments.$.dspObject_include(theFile='extensions/dsp_Form_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false);
+			}
+			*/
 			if(len(renderedForm)){
 				return renderedForm;
 			}
