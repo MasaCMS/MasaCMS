@@ -323,7 +323,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 			if(!len(response)){
 				response=arguments.$.dspObject_Include(
-							thefile='dataCollection/dsp_response.cfm'		
+							thefile='datacollection/dsp_response.cfm'		
 						);
 			}
 
