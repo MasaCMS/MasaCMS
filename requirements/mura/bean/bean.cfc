@@ -250,7 +250,7 @@ component extends="mura.cfobject" output="false" {
 			return tempFunc();
 		} else if(structKeyExists(variables.instance,"#arguments.property#")){
 			return variables.instance["#arguments.property#"];
-		} elseif(structKeyExists(arguments,"defaultValue")){
+		} else if(structKeyExists(arguments,"defaultValue")){
 			variables.instance["#arguments.property#"]=arguments.defaultValue;
 			return variables.instance["#arguments.property#"];
 		} else{
