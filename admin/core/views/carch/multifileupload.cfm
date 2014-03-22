@@ -507,6 +507,10 @@ $(function () {
 
         var id="summaryid" + fileIndex;
 
+        if(CKEDITOR.instances[id]){
+            CKEDITOR.instances[id].destroy();
+        }
+
         CKEDITOR.inline( 
                 document.getElementById(id),
                 {
@@ -517,6 +521,10 @@ $(function () {
             );
 
         id="creditsid" + fileIndex;
+
+        if(CKEDITOR.instances[id]){
+            CKEDITOR.instances[id].destroy();
+        }
 
         if($("##" + id).hasClass('htmlEditor')){
             CKEDITOR.inline( 
