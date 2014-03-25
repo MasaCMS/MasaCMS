@@ -1568,4 +1568,4 @@ $(function(){
 
 });
 
-preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
+preloadimages(['assets/images/ajax-loader.gif']);
