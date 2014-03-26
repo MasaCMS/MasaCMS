@@ -259,7 +259,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 			var sendto=arguments.$.event('sendto');
 
-			if(len(getFormBean().getSendTo())){
+			if(len(getFormBean().getResponseSendTo())){
 				sendto=listAppend(sendto,getFormBean().getResponseSendTo());
 			}
 
