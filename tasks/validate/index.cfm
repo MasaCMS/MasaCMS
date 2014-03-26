@@ -21,5 +21,6 @@
 			.getErrors()
 		);
 	}
+
+	writeOutput(serializeJSON(errors));	
 </cfscript>
-<cfcontent type="charset=utf-8" reset="true"><cfscript>writeOutput(new mura.json().jsonencode(errors));</cfscript>
