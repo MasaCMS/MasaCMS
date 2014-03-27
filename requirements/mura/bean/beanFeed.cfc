@@ -110,25 +110,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var temp="">
 	<cfset var i="">
 
-	<cfif not len(variables.instance.tableFieldList)>
-		<cfset variables.instance.tableFieldLookUp=variables.configBean.getValue("#variables.instance.entityName#FieldLookUp")>
-		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.entityName#FieldList")>
-		<cfif not len(variables.instance.tableFieldList)>
-			<cfset variables.instance.tableFieldLookUp=structNew()>
-			<cfset rs=variables.configBean.dbTableColumns(variables.instance.table)>
-			<cfset variables.instance.tableFieldlist=valueList(rs.column_name)>
-			<cfloop list="#variables.instance.tableFieldlist#" index="i">
-				<cfset variables.instance.tableFieldLookUp["#i#"]=true>
-			</cfloop>
-			<cfset variables.configBean.setValue("#variables.instance.entityName#FieldLookUp",variables.instance.tableFieldLookUp)>
-			<cfset variables.configBean.setValue("#variables.instance.entityName#FieldList",variables.instance.tableFieldlist)>
-		</cfif>
-	</cfif>
+	<cfparam name="application.objectMappings.#variables.instance.entityName#" default="#structNew()#">
+	<cfparam name="application.objectMappings.#variables.instance.entityName#.columns" default="#getBean('dbUtility').columns(table=variables.instance.table)#">
+	<cfparam name="application.objectMappings.#variables.instance.entityName#.columnlist" default="#structKeyList(application.objectMappings[variables.instance.entityName].columns)#">
 </cffunction>
 
 <cffunction name="getTableFieldList" output="false">
 	<cfset loadTableMetaData()>
-	<cfreturn variables.instance.tableFieldList>
+	<cfreturn application.objectMappings[variables.instance.entityName].columnlist>
 </cffunction>
 
 <cffunction name="formatField" output="false">
@@ -136,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset loadTableMetaData()>
 
-	<cfif structKeyExists(variables.instance.tableFieldLookUp,arguments.field)>
+	<cfif structKeyExists(application.objectMappings[variables.instance.entityName].columns,arguments.field)>
 		<cfset arguments.field="#variables.instance.table#.#arguments.field#">
 	</cfif>
 
@@ -211,13 +200,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
+	<cfargument name="datatype" type="string"  default="" required="true">
 		<cfset var rows=1/>
 
 		<cfif structKeyExists(arguments,'column')>
 			<cfset arguments.field=arguments.column>
 		</cfif>
 		
+		<cfif not len(arguments.dataType)>
+			<cfset loadTableMetaData()>
+			<cfparam name="variables.dbUtility" default="#getBean('dbUtility')#">
+			<cfset var tempField=listLast(arguments.field,'.')>
+			<cfif structKeyExists(application.objectMappings[variables.instance.entityName].columns,tempField)>
+				<cfset arguments.dataType=variables.dbUtility.transformParamType(application.objectMappings[variables.instance.entityName].columns[tempField].dataType)>
+			</cfif>
+		</cfif>
+
 		<cfset queryAddRow(variables.instance.params,1)/>
 		<cfset rows = variables.instance.params.recordcount />
 		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
@@ -234,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
+	<cfargument name="datatype" type="string"  default="" required="true">
 		
 	<cfreturn addParam(argumentCollection=arguments)>
 </cffunction>

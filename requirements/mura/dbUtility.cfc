@@ -777,13 +777,13 @@
 				<cfcase value="varchar,string">
 					<cfreturn "varchar(#arguments.length#)">
 				</cfcase>
-				<cfcase value="char">
+				<cfcase value="char,bpchar">
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
-				<cfcase value="int,integer">
+				<cfcase value="int,integer,int4">
 					<cfreturn "integer">
 				</cfcase>
-				<cfcase value="tinyint">
+				<cfcase value="tinyint,int2">
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime,timestamp">
@@ -908,11 +908,11 @@
 				<cfset columnArgs.datatype="varchar">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="char">
+			<cfcase value="char,bpchar">
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="int,integer">
+			<cfcase value="int,integer,int4">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
@@ -922,7 +922,7 @@
 					<cfset columnArgs.datatype="int">
 				</cfif>
 			</cfcase>
-			<cfcase value="tinyint,smallint">
+			<cfcase value="tinyint,smallint,int2">
 				<cfset columnArgs.datatype="tinyint">
 			</cfcase>
 			<cfcase value="date,datetime,timestamp">
@@ -1455,36 +1455,43 @@ function _parseInt(String){
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
 
-	<cfset var datatype=columnMetaData(argumentCollection=arguments).datatype>
+	<cfreturn transformParamType(columnMetaData(argumentCollection=arguments).datatype)>
 
-	<cfswitch expression="#datatype#">
-			<cfcase value="varchar,nvarchar,varchar2">
-				<!--- Add MSSQL nvarchar(max)--->
-				<cfreturn "varchar">
-			</cfcase>
-			<cfcase value="char">
-				<cfreturn "char">
-			</cfcase>
-			<cfcase value="int,number,tinyint">
-				<cfreturn "numeric">
-			</cfcase>
-			<cfcase value="datetime">
-				<cfreturn "datetime">
-			</cfcase>
-			<cfcase value="date">
-				<cfreturn "date">
-			</cfcase>
-			<cfcase value="ntext,longtext,clob,text">
-				<cfreturn "longvarchar">
-			</cfcase>
-			<cfcase value="float,binary_float">
-				<cfreturn "float">
-			</cfcase>
-			<cfcase value="double,decimal,binary_double">
-				<cfreturn "double">
-			</cfcase>
-		</cfswitch>
+</cffunction>
 
+<cffunction name="transformParamType" output="false">
+	<cfargument name="paramType">
+
+	<cfswitch expression="#arguments.paramType#">
+		<cfcase value="varchar,nvarchar,varchar2">
+			<!--- Add MSSQL nvarchar(max)--->
+			<cfreturn "varchar">
+		</cfcase>
+		<cfcase value="char">
+			<cfreturn "char">
+		</cfcase>
+		<cfcase value="int,number,tinyint">
+			<cfreturn "numeric">
+		</cfcase>
+		<cfcase value="datetime">
+			<cfreturn "datetime">
+		</cfcase>
+		<cfcase value="date">
+			<cfreturn "date">
+		</cfcase>
+		<cfcase value="ntext,longtext,clob,text">
+			<cfreturn "longvarchar">
+		</cfcase>
+		<cfcase value="float,binary_float">
+			<cfreturn "float">
+		</cfcase>
+		<cfcase value="double,decimal,binary_double">
+			<cfreturn "double">
+		</cfcase>
+		<cfdefaultcase>
+			<cfreturn arguments.paramType>
+		</cfdefaultcase>
+	</cfswitch>
 </cffunction>
 
 <cffunction name="buildSchemaFromProperties" output="false">

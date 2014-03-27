@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.setSortBy("lastupdate");
 		feed.setSortDirection("desc");
 		
-		feed.addParam(field="tcontent.approved", criteria=1, condition="eq");
+		feed.addParam(field="approved", criteria=1, condition="eq");
 
 		if (len($.event("searchTypeSelector"))) {
 			feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
@@ -249,6 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		rc.rslist=feed.getQuery();
 	</cfscript>
+
 	<div class="control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
