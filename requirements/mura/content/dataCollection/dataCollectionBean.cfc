@@ -246,7 +246,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		arguments.$.announceEvent('onBeforeForm#getFormBean().getSubType()#SubmitSave');
 
 		if(structIsEmpty(getErrors())){
-			variables.dataCollectionManager.update(getAllValues());
+			setValue('formResult',variables.dataCollectionManager.update(structCopy(getAllValues())));
+			//structAppend(variables.instance,getValue('formResult'));
 			arguments.$.event('sendto','');
 			arguments.$.announceEvent('onAfterFormSubmitSave');
 			arguments.$.announceEvent('onAfterForm#getFormBean().getSubType()#SubmitSave');
@@ -267,7 +268,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			
 			if(mailer.isValidEmailFormat(getValue('email'))){
 				mailer.send(
-					args = getAllValues()
+					args = getValue('formResult')
 					, sendto = sendto
 					, from = getValue('email')
 					, subject = subject
@@ -278,7 +279,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 			} else {
 				mailer.send(
-					args = getAllValues()
+					args = getValue('formResult')
 					, sendto = sendto
 					, from = mailer.getFromEmail(getValue('siteid'))
 					, subject = subject
