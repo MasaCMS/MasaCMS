@@ -47,6 +47,11 @@ to your own modified versions of Mura CMS.
   fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
 </cfscript> 
 
+<cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
+    <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
+    <cfabort />
+</cfif>
+
 <!--- if renderSetup is not found or is false then do not render --->
 <cfif NOT isDefined( "renderSetup" ) OR NOT renderSetup>
   <cfabort />
