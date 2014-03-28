@@ -32,10 +32,13 @@
 				ADD INDEX #dbUtility.transformIndexName('moduleid')# (moduleID)");
 		}
 
-		if(!dbUtility.columnExists('exif')){
-			new Query().execute(sql="ALTER TABLE tfiles
-				ADD COLUMN exif text DEFAULT null");
-		}
+		try{
+			if(!dbUtility.columnExists('exif')){
+				new Query().execute(sql="ALTER TABLE tfiles
+					ADD COLUMN exif text DEFAULT null");
+			}
+		} catch(Any e){}
+		
 	} else {
 		dbUtility.addColumn(column="caption",dataType="text")
 		.addColumn(column="credits",dataType="varchar",length="255")
