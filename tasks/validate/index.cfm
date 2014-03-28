@@ -1,11 +1,23 @@
 <cfscript>
-	data=deserializeJSON(form.data);
+	param name="form.version" default=1;
+	param name="form.validations" default="{}";
+	param name="form.data" default="{}";
+
+	if(form.version == 1){
+		data=deserializeJSON(form.data);
+		validations=deserializeJSON(form.validations);
+	} else {
+		data=deserializeJSON(urlDecode(form.data));
+		validations=deserializeJSON(urlDecode(form.validations));
+	}
+	
 	errors={};
 
-	if(isDefined('form.validations')){
+	if(!structIsEmpty(validations)){
+
 		structAppend(errors,new mura.bean.bean()
 			.set(data)
-			.setValidations(deserializeJSON(form.validations))
+			.setValidations(validations)
 			.validate()
 			.getErrors()
 		);

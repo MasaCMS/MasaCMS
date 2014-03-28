@@ -455,8 +455,9 @@ function validateForm(frm,customaction) {
 					type: 'post',
 					url: mura.context + '/tasks/validate/',
 					data: {
-							data: JSON.stringify(data),
-							validations: JSON.stringify(validations)
+							data: escape(JSON.stringify(data)),
+							validations: escape(JSON.stringify(validations)),
+							version: 2
 						},
 					success: function(resp) {
  				 		data=eval('(' + resp + ')');
