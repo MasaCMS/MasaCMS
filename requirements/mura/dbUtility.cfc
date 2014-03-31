@@ -1470,8 +1470,8 @@ function _parseInt(String){
 		<cfcase value="int,number,tinyint">
 			<cfreturn "numeric">
 		</cfcase>
-		<cfcase value="datetime">
-			<cfreturn "datetime">
+		<cfcase value="datetime,timestamp">
+			<cfreturn "timestamp">
 		</cfcase>
 		<cfcase value="date">
 			<cfreturn "date">
