@@ -1486,7 +1486,7 @@ function _parseInt(String){
 			<cfreturn "double">
 		</cfcase>
 		<cfdefaultcase>
-			<cfreturn arguments.paramType>
+			<cfreturn "varchar">
 		</cfdefaultcase>
 	</cfswitch>
 </cffunction>

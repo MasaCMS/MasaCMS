@@ -213,6 +213,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var tempField=listLast(arguments.field,'.')>
 			<cfif structKeyExists(application.objectMappings[variables.instance.entityName].columns,tempField)>
 				<cfset arguments.dataType=variables.dbUtility.transformParamType(application.objectMappings[variables.instance.entityName].columns[tempField].dataType)>
+			<cfelse>
+				<cfset arguments.dataType="varchar">
 			</cfif>
 		</cfif>
 
