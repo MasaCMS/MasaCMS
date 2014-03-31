@@ -1463,12 +1463,9 @@ function _parseInt(String){
 	<cfargument name="paramType">
 
 	<cfswitch expression="#arguments.paramType#">
-		<cfcase value="varchar,nvarchar,varchar2">
+		<cfcase value="varchar,nvarchar,varchar2,char">
 			<!--- Add MSSQL nvarchar(max)--->
 			<cfreturn "varchar">
-		</cfcase>
-		<cfcase value="char">
-			<cfreturn "char">
 		</cfcase>
 		<cfcase value="int,number,tinyint">
 			<cfreturn "numeric">

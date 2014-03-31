@@ -293,7 +293,11 @@
 		<cfset local.data.prereqs=queryNew("changesetID,name,publishDate")>
 	</cfif>
 
-	<cfset local.data.showToolbar=arguments.showToolbar>
+	<cfparam name="local.data.showToolbar" default="false">
+
+	<cfif arguments.showToolbar>
+		<cfset local.data.showToolbar=arguments.showToolbar>
+	</cfif>
 
 	<cfif isDate(local.changeset.getPublishDate())>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='local.data.prereqs')#">
