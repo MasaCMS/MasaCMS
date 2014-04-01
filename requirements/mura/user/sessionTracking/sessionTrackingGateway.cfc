@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
 	<cfargument name="excludeHome" type="boolean" required="true" default="false">
+	<cfargument name="sectionid" type="string" required="true" default="">
 	
 	<cfset var rs = ""/>
 	<cfset var start ="">
@@ -144,6 +145,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.excludeHome>
 	and tcontent.ContentID <>'00000000000000000000000000000000001'
+	</cfif>
+
+	<cfif len(arguments.sectionid)>
+	and tcontent.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionid#%">
 	</cfif>
 	
 	Group By tsessiontracking.contentID,
