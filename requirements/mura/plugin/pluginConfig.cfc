@@ -300,8 +300,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.component.setValue('pluginName',getName())>
     <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+    <cfset var applyglobal=true>
     <cfloop query="rsSites">
-    <cfset getPluginManager().addEventHandler(arguments.component,rsSites.siteID)>
+    <cfset getPluginManager().addEventHandler(component=arguments.component,siteid=rsSites.siteID,applyglobal=applyglobal)>
+     <cfset var applyglobal=false>
     </cfloop>
 </cffunction>
 

@@ -2464,6 +2464,7 @@ select * from rs order by name
 <cfargument name="component">
 <cfargument name="siteID" required="true">
 <cfargument name="persist" required="true" default="true">
+<cfargument name="applyglobal" required="true" default="true">
 	<cfset var i = "">
 	<cfset var handlerData=structNew()>
 	<cfset var eventhandler=arguments.component>
@@ -2535,7 +2536,7 @@ select * from rs order by name
 					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
 				</cfif>
 				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][i] , handlerData)>
-			<cfelse>
+			<cfelseif arguments.applyglobal>
 				<cfif not structKeyExists(variables.globalListeners,i)>
 					<cfset variables.globalListeners[i]=arrayNew(1)>
 				</cfif>
