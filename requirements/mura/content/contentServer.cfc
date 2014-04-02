@@ -494,6 +494,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var previewData=""/>
 	<cfset var changeset=""/>
 
+	<cfset request.muraFrontEndRequest=true>
+
 	<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
 
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
@@ -502,7 +504,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
 	</cfif>
 	
-	<cfset request.muraFrontEndRequest=true>
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#arguments.event.getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler.setValue("_objectName",getMetaData(localHandler).name)>
+	</cfif>
+
+	<cfset arguments.event.setValue("localHandler",localHandler)/>
+	
+	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfif structKeyExists(url,"changesetID")>
 		<cfset getBean('changesetManager').setSessionPreviewData(url.changesetID)>
@@ -523,15 +532,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 		<cfset request.nocache=1>
 	</cfif>
-	
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#arguments.event.getValue('siteid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.eventHandler").init()>
-		<cfset localHandler.setValue("_objectName",getMetaData(localHandler).name)>
-	</cfif>
-
-	<cfset arguments.event.setValue("localHandler",localHandler)/>
-	
-	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfif isdefined("servlet.onRequestStart")>
 		<cfset servlet.onRequestStart()>
