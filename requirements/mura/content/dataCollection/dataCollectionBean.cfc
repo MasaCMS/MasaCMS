@@ -252,7 +252,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			arguments.$.announceEvent('onAfterFormSubmitSave');
 			arguments.$.announceEvent('onAfterForm#getFormBean().getSubType()#SubmitSave');
 			
-			sendNotication(arguments.$);
+			sendNotification(arguments.$);
 			
 		}
 		
@@ -260,7 +260,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 	}
 
-	function sendNotication($){
+	function sendNotification($){
 
 		if(!isDefined('arguments.$')){
 			arguments.$=getValue('MuraScope');
