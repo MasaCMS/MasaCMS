@@ -252,47 +252,61 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			arguments.$.announceEvent('onAfterFormSubmitSave');
 			arguments.$.announceEvent('onAfterForm#getFormBean().getSubType()#SubmitSave');
 			
-			var subject=arguments.$.event('subject');
-
-			if(!len(subject)){
-				subject=getFormBean().getTitle();
-			}
-
-			var sendto=arguments.$.event('sendto');
-
-			if(len(getFormBean().getResponseSendTo())){
-				sendto=listAppend(sendto,getFormBean().getResponseSendTo());
-			}
-
-			var mailer=getBean('mailer');
-			
-			if(mailer.isValidEmailFormat(getValue('email'))){
-				mailer.send(
-					args = getValue('formResult')
-					, sendto = sendto
-					, from = getValue('email')
-					, subject = subject
-					, siteid = getValue('siteid')
-					, replyto = getValue('email')
-					, bcc = ''
-				);
-
-			} else {
-				mailer.send(
-					args = getValue('formResult')
-					, sendto = sendto
-					, from = mailer.getFromEmail(getValue('siteid'))
-					, subject = subject
-					, siteid = getValue('siteid')
-					, replyto = ''
-					, bcc = ''
-				);
-			}
+			sendNotication(arguments.$);
 			
 		}
 		
 		return this;
 
+	}
+
+	function sendNotication($){
+
+		if(!isDefined('arguments.$')){
+			arguments.$=getValue('MuraScope');
+			if(!isObject(arguments.$)){
+				arguments.$=getBean('$').init(getValue('siteid'));
+			}
+		}
+
+		var subject=arguments.$.event('subject');
+
+		if(!len(subject)){
+			subject=getFormBean().getTitle();
+		}
+
+		var sendto=arguments.$.event('sendto');
+
+		if(len(getFormBean().getResponseSendTo())){
+			sendto=listAppend(sendto,getFormBean().getResponseSendTo());
+		}
+
+		var mailer=getBean('mailer');
+		
+		if(mailer.isValidEmailFormat(getValue('email'))){
+			mailer.send(
+				args = getValue('formResult')
+				, sendto = sendto
+				, from = getValue('email')
+				, subject = subject
+				, siteid = getValue('siteid')
+				, replyto = getValue('email')
+				, bcc = ''
+			);
+
+		} else {
+			mailer.send(
+				args = getValue('formResult')
+				, sendto = sendto
+				, from = mailer.getFromEmail(getValue('siteid'))
+				, subject = subject
+				, siteid = getValue('siteid')
+				, replyto = ''
+				, bcc = ''
+			);
+		}
+
+		return this;
 	}
 
 	function dspResponse($){
