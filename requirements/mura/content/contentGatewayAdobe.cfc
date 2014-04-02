@@ -1667,7 +1667,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery> 
 	
 	<cfquery name="rsPrivateSearch" dbtype="query">
-	select * from rsPrivateSearch order by priority, title
+	select *,0 as supersort from rsPrivateSearch 
+	where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			)
+	
+
+	UNION
+
+	select *,1 as supersort from rsPrivateSearch 
+	where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			)
+	
+	</cfquery>
+
+	<cfquery name="rsPrivateSearch" dbtype="query">
+	select * from rsPrivateSearch 
+	order by supersort, priority, title
 	</cfquery>
 
 	<cfreturn rsPrivateSearch />
@@ -1909,9 +1926,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfquery name="rsPublicSearch" dbtype="query">
-		select *
+		select *, 0 as supersort
 		from rsPublicSearch 
-		order by sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			)
+
+		UNION 
+
+		select *, 1 as supersort
+		from rsPublicSearch 
+		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			)
+		
+	</cfquery>
+
+	<cfquery name="rsPublicSearch" dbtype="query">
+	select * from rsPublicSearch 
+	order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
 	</cfquery>
 	
 	<cfreturn rsPublicSearch />

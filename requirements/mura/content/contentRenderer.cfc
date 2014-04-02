@@ -2853,7 +2853,7 @@ Display Objects
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
+	<cfset var regex1="(\[sava\]|\[mura\]|\[m\]).+?(\[/sava\]|\[/mura\]|\[/m\])">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
@@ -2870,8 +2870,8 @@ Display Objects
 		<cftry>
 			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
 			
-			<cfif left(tempValue,2) eq "{{">
-				<cfset tempValue=evaluate("##" & mid(tempValue, 3, len(tempValue)-4) & "##")>
+			<cfif left(tempValue,3) eq "[m]">
+				<cfset tempValue=evaluate("##" & mid(tempValue, 4, len(tempValue)-7) & "##")>
 			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
 			</cfif>
