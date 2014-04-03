@@ -202,7 +202,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 				cookie.poll=getValue('formID');
 			} else if( isdefined('cookie.poll') and listfind(cookie.poll,getValue('formID')) ){
 				setValue('acceptError','Duplicate');
-				variables.instance.errors.duplicate=variables.settingsManager.getSite(getValue('siteid')).getRBFactory().getKey("poll.onlyonevote");
+				variables.instance.errors.duplicate=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("poll.onlyonevote");
 				setValue('acceptData','0');
 			} else if( isdefined('cookie.poll') and not listfind(cookie.poll,getValue('formID')) ){
 				var templist=cookie.poll;
@@ -217,7 +217,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		if(!(!len(getValue('hKey')) or getValue('hKey') eq hash(getValue('uKey'))) ){
 			setValue('acceptError','Captcha');
 			setValue('acceptData','0');
-			variables.instance.errors.SecurityCode=variables.settingsManager.getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
+			variables.instance.errors.SecurityCode=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
 		}
 
 		if(yesNoFormat(getValue('useProtect')) && !getBean('utility').cfformprotect(arguments.$.event())){
