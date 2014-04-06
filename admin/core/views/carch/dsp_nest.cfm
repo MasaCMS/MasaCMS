@@ -175,9 +175,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict eq 'editor' and request.hasLayoutObjectsTab>
 		<a class="mura-quickEditItem" data-attribute="inheritObjects">
 		</cfif>
-			<cfif inheritObjects eq 'cascade'>
+			<cfif rsnest.inheritObjects eq 'cascade'>
 				<i class="icon-arrow-down" title="#rsnest.inheritObjects#"></i>
-				<cfelseif inheritObjects eq 'reject'>
+				<cfelseif rsnest.inheritObjects eq 'reject'>
 					<i class="icon-ban-circle" title="#rsnest.inheritObjects#"></i>
 				<cfelse>
 					<span class="bullet" title="#rsnest.inheritObjects#">&bull;</span>
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 	<dd class="nav">
 		 <cfif verdict eq 'editor' and request.hasPublishingTab><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-			 <cfif isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
+			 <cfif rsnest.isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
 			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#</span>
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
