@@ -285,12 +285,17 @@
 
 	<cfif arguments.append and isStruct(local.currentUser.getValue("ChangesetPreviewData"))>
 		<cfset local.data=local.currentUser.getValue("ChangesetPreviewData")>
+
+		<cfparam name="local.data.changesetIDList" default="">
+
+		<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.changeset.getChangesetID())>
 	<cfelse>
 		<cfset local.data=structNew()>
 		<cfset local.data.previewMap=structNew()>
 		<cfset local.data.contentIDList="">
 		<cfset local.data.contentHistIDList="">
 		<cfset local.data.prereqs=queryNew("changesetID,name,publishDate")>
+		<cfset local.data.changesetIDList=local.changeset.getChangesetID()>
 	</cfif>
 
 	<cfparam name="local.data.showToolbar" default="false">
@@ -317,6 +322,11 @@
 		</cfquery>
 
 		<cfloop query="local.data.prereqs">
+			
+			<cfif not listFind(local.data.changesetIDList,local.data.prereqs.changesetid)>
+				<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.data.prereqs.changesetid)>
+			</cfif>
+
 			<cfset local.assignments=getAssignmentsQuery(changesetID=local.data.prereqs.changesetID)>
 			<cfif local.assignments.recordcount>
 				<cfloop query="local.assignments">
@@ -331,6 +341,8 @@
 				</cfloop>
 			</cfif>
 		</cfloop>
+
+		<cfset local.data.changesetIDList=listSort(local.data.changesetIDList,'text','asc')>
 
 	</cfif>
 	

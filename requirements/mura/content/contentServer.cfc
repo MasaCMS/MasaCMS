@@ -526,11 +526,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset request.muraChangesetPreviewToolbar=true>
 		</cfif>
+
 		<cfif getBean('changeset').loadBy(changesetID=previewData.changesetID,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
 			<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetID,append=false,showToolBar=request.muraChangesetPreviewToolbar)>	
 		</cfif>
-			
-		<cfset request.nocache=1>
+		
+		<cfif isdefined('previewData.changesetIDList')>
+			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList)>
+		<cfelse>
+			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
+		</cfif>
 	</cfif>
 
 	<cfif isdefined("servlet.onRequestStart")>

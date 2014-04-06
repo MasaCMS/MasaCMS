@@ -57,6 +57,8 @@ uses the query string as the key --->
 <cfparam name="request.cacheItem" default="true">
 <cfparam name="request.cacheItemTimeSpan" default="">
 
+<cfset attributes.key=attributes.key & request.muraOutputCacheOffset>
+
 <cfif not isBoolean(request.cacheItem)>
   <cfset request.cacheItem=true/>
 </cfif>

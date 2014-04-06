@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muratransaction" default="0"/>
 	<cfparam name="request.muraDynamicContentError" default="false">
 	<cfparam name="request.muraPreviewDomain" default="">
+	<cfparam name="request.muraOutputCacheOffset" default="">
 
 	<cffunction name="initTracePoint" output="false">
 		<cfargument name="detail">
