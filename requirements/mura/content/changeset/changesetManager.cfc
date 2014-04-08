@@ -177,7 +177,7 @@
 	</cfif>
 
 	<cfif len(arguments.bean.getCategoryID())>
-		<cfloop list="#arguments.bean.getCategoryID()#" item="local.i">
+		<cfloop list="#arguments.bean.getCategoryID()#" index="local.i">
 			<cfset getBean('changesetCategoryAssignment').loadBy(
 				changesetid=arguments.bean.getChangesetID(),
 				siteid=arguments.bean.getSiteid(),
