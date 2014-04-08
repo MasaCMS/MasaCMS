@@ -226,17 +226,15 @@
 	where changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 	</cfquery>
 	
-	<cfset local.assignments=arguments.bean.getChangesetCategoryAssignmentIterator()>
+	<cfquery>
+		delete from tchangesetcategoryassignments
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+	</cfquery>
 
-	<cfloop condition="local.assignments.hasNext()">
-		<cfset local.assignments.next().delete()>
-	</cfloop>
-
-	<cfset local.assignments=arguments.bean.getChangesetTagAssignmentIterator()>
-
-	<cfloop condition="local.assignments.hasNext()">
-		<cfset local.assignments.next().delete()>
-	</cfloop>
+	<cfquery>
+		delete from tchangesettagassignments
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+	</cfquery>
 
 </cffunction>
 
