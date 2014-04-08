@@ -88,8 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="control-group">
 	    <!--- Category Filters --->
 	    <label class="control-label">
-	    	<!---#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#--->
-	    	Available Categories
+	    	#application.rbFactory.getKeyValue(session.rb,'changesets.categoryfilters')#
 	   	</label>
 	    <div id="mura-list-tree" class="controls">
 	      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.categoryid#">
