@@ -926,8 +926,10 @@ jQuery(document).ready(function(){
 	<div class="fieldset">
 		<div  class="control-group">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
-		    <div class="controls">
+		  
+		    <div id="mura-list-tree" class="controls">
 				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+			
 			</div>
 		</div>
 	</div>
