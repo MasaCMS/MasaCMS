@@ -134,7 +134,7 @@ component extends="mura.bean.beanORMVersioned"
 			.setRemotePubDate(getValue('remotePubDate'))
 			.setRemoteSource(getValue('remoteSource'))
 			.setRemoteSourceURL(getValue('remoteSourceURL'))
-			.getExif(getValue('exif'))
+			.setExif(getValue('exif'))
 			.save(processFile=false);
 		}
 
