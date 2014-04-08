@@ -12,6 +12,7 @@
 	getBean('razunaSettings').checkSchema();
 	getBean('contentFilenameArchive').checkSchema();
 	getBean('commenter').checkSchema();
+	getBean('changesetCategoryAssignment').checkSchema();
 
 	dbUtility.setTable("tfiles");
 	if(getDbType() == 'MySQL'){

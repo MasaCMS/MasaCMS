@@ -70,94 +70,96 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)#
 </span>
 
-<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-<div class="fieldset">
-<div class="control-group">
-  <label class="control-label">
-    #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
-  </label>
-  <div class="controls">
-  <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50">
-   </div>
-</div>
+<form novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 
-<div class="control-group">
-  <label class="control-label">
-    #application.rbFactory.getKeyValue(session.rb,'changesets.description')#
-  </label>
-  <div class="controls">
-  <textarea name="description" class="span12" rows="6">#HTMLEditFormat(rc.changeset.getDescription())#</textarea>
-  </div>
-</div>
+<cfset tablist="tabBasic">
+<cfset tablabellist="Basic">
+<cfset hasCategories=application.categoryManager.getCategoryCount(rc.siteid)>
+<cfif hasCategories>
+    <cfset tablist=listAppend(tablist,'tabCategorization')>
+    <cfset tablabellist=listAppend(tablabellist,'Categorization')>
+</cfif>
 
-<div class="control-group">
-  <label class="control-label">
-    <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
-    </label>
-  <div class="controls">
-     <cfif rc.changeset.getPublished()>
-        <cfif lsIsDate(rc.changeset.getCloseDate())>
-          #LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getCloseDate(),"medium")#
-        <cfelse>
-           #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
+<div class="tabbable tabs-left mura-ui">
+    <ul class="nav nav-tabs tabs initActiveTab">
+    <cfloop from="1" to="#listlen(tabList)#" index="t">
+    <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+    </cfloop>
+    </ul>
+    <div class="tab-content">
+    <div id="tabBasic" class="tab-pane fade">
+      <div class="fieldset">
+      <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
+        </label>
+        <div class="controls">
+        <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50">
+         </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'changesets.description')#
+        </label>
+        <div class="controls">
+        <textarea name="description" class="span12" rows="6">#HTMLEditFormat(rc.changeset.getDescription())#</textarea>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label">
+          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
+          </label>
+        <div class="controls">
+           <cfif rc.changeset.getPublished()>
+              <cfif lsIsDate(rc.changeset.getCloseDate())>
+                #LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getCloseDate(),"medium")#
+              <cfelse>
+                 #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
+              </cfif>
+          <cfelse>
+             <cf_datetimeselector name="closeDate" datetime="#rc.changeset.getCloseDate()#" defaulthour="23" defaultminute="59">
+          
         </cfif>
-    <cfelse>
-       <cf_datetimeselector name="closeDate" datetime="#rc.changeset.getCloseDate()#" defaulthour="23" defaultminute="59">
-       <!---
-      <input type="text" name="closeDate" value="#LSDateFormat(rc.changeset.getCloseDate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt datepicker" />
+        </div>
+      </div>
 
-       <cf_timeselector name="close" time="#rc.changeset.getCloseDate()#" defaulthour="23" defaultminute="59">
+      <div class="control-group">
+        <label class="control-label">
+          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
+          </label>
+        <div class="controls">
+          <cfif rc.changeset.getPublished()>
+          #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
+        <cfelse>
+         
+          <cf_datetimeselector name="publishDate" datetime="#rc.changeset.getpublishdate()#">
+         
+        </cfif>
 
-     
-      <cfif session.localeHasDayParts>
-        <select name="closehour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getCloseDate())  and h eq 12 or (LSisDate(rc.changeset.getCloseDate()) and (hour(rc.changeset.getCloseDate()) eq h or (hour(rc.changeset.getCloseDate()) - 12) eq h or hour(rc.changeset.getCloseDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-      <cfelse>
-        <select name="closeHour" class="time"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif LSisDate(rc.changeset.getCloseDate())  and hour(rc.changeset.getCloseDate()) eq h >selected</cfif>>#h#</option></cfloop></select>
-      </cfif>
+        </div>
+      </div>
 
-      <select name="closeMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getCloseDate()) and minute(rc.changeset.getCloseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+      </div>
 
-      <cfif session.localeHasDayParts>
-        <select name="closeDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getCloseDate()) and hour(rc.changeset.getCloseDate()) gte 12>selected</cfif>>PM</option></select>
-      </cfif>
-      --->
-  </cfif>
-  </div>
-</div>
+    </div>
 
-<div class="control-group">
-  <label class="control-label">
-    <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
-    </label>
-  <div class="controls">
-    <cfif rc.changeset.getPublished()>
-    #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
-  <cfelse>
-   
-    <cf_datetimeselector name="publishDate" datetime="#rc.changeset.getpublishdate()#">
-    <!---
-    <input type="text" name="publishDate" value="#LSDateFormat(rc.changeset.getpublishdate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt datepicker" />
-
-    <cf_timeselector name="publish" time="#rc.changeset.getpublishdate()#">
-  
-    <cfif session.localeHasDayParts>
-      <select name="publishhour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getpublishDate())  and h eq 12 or (LSisDate(rc.changeset.getpublishDate()) and (hour(rc.changeset.getpublishDate()) eq h or (hour(rc.changeset.getpublishDate()) - 12) eq h or hour(rc.changeset.getpublishDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-    <cfelse>
-       <select name="publishhour" class="time"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif LSisDate(rc.changeset.getpublishDate())  and hour(rc.changeset.getpublishDate()) eq h >selected</cfif>>#h#</option></cfloop></select>
+    <cfif hasCategories> 
+      <div id="tabCategorization" class="tab-pane fade">
+        <div class="fieldset">
+          <div class="control-group">
+            <!--- Category Filters --->
+            <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
+            <div id="mura-list-tree" class="controls">
+              <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.changeset.getCategoryID()#">
+            </div>
+          </div>
+        </div>
+      </div>
     </cfif>
 
-   <select name="publishMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getpublishDate()) and minute(rc.changeset.getpublishDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 
-   <cfif session.localeHasDayParts>
-     <select name="publishDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getpublishDate()) and hour(rc.changeset.getpublishDate()) gte 12>selected</cfif>>PM</option></select>
-    </cfif>  
-  --->
-  </cfif>
-
-  </div>
-</div>
-
-</div>
 <div class="form-actions">
   <cfif rc.changesetID eq ''>
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">

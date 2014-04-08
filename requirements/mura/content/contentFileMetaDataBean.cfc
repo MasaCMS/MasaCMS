@@ -126,7 +126,7 @@ component extends="mura.bean.beanORMVersioned"
 
 		if(arguments.setAsDefault){
 			getBean('file').loadBy(fileid=getValue('fileid'))
-			/*.setCaption(getValue('caption'))
+			.setCaption(getValue('caption'))
 			.setAltText(getValue('alttext'))
 			.setCredits(getValue('credits'))
 			.setRemoteID(getValue('remoteID'))
@@ -134,8 +134,6 @@ component extends="mura.bean.beanORMVersioned"
 			.setRemotePubDate(getValue('remotePubDate'))
 			.setRemoteSource(getValue('remoteSource'))
 			.setRemoteSourceURL(getValue('remoteSourceURL'))
-			.setgpsLatitude(getValue('gpslatitude'))
-			.setgpsLongitude(getValue('gpslongitude'))*/
 			.getExif(getValue('exif'))
 			.save(processFile=false);
 		}

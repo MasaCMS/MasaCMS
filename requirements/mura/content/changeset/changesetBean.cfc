@@ -13,6 +13,7 @@
 <cfproperty name="lastUpdate" type="date" default="" />
 <cfproperty name="lastUpdateBy" type="string" default="" />
 <cfproperty name="closeDate" type="date" default="" />
+<cfproperty name="categoryID" type="string" default="" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cfset variables.primaryKey = 'changesetID'>
@@ -36,6 +37,7 @@
 	<cfset variables.instance.lastUpdateBy=""/>
 	<cfset variables.instance.closeDate=""/>
 	<cfset variables.instance.isNew=1 />
+	<cfset variables.instance.categoryID=""/>
 	<cfset variables.instance.errors=structNew()>
 	
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
@@ -159,6 +161,23 @@
 
 <cffunction name="getPrimaryKey" output="false">
 	<cfreturn "changesetID">
+</cffunction>
+
+<cffunction name="setCategoryID" access="public" output="false">
+	<cfargument name="categoryID" type="String" />
+	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfset var i="">
+	
+    <cfif not arguments.append>
+		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
+	<cfelse>
+		<cfloop list="#arguments.categoryID#" index="i">
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
+	    </cfif>
+	    </cfloop> 
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="hasPendingApprovals" output="false">

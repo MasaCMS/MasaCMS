@@ -435,7 +435,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.event.setValue("showmeta",currentItem)>
 			<cfset currentArrayName="">
 		<cfelseif len(currentArrayName)>
-			<cfset evaluate("arrayAppend(#currentArrayName#,'#currentItem#')")>	
+			<cftry>
+				<cfset evaluate("arrayAppend(#currentArrayName#,'#currentItem#')")>	
+				<cfcatch></cfcatch>
+			</cftry>
 		</cfif>
 
 	</cfloop>

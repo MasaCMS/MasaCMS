@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.stopdate" default=""/>
 	<cfparam name="arguments.rc.page" default="1"/>
 	<cfparam name="arguments.rc.keywords" default=""/>
+	<cfparam name="arguments.rc.categoryid" default=""/>
 </cffunction>
 
 <cffunction name="list" output="false">
@@ -74,7 +75,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.startdate,condition=">=")>	
 </cfif>
 
-
 <cfif isDate(rc.stopdate)>
 	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.stopdate,condition="<=")>
 	<cfif not isDate(rc.startdate)>
@@ -85,6 +85,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(rc.keywords)>
 	<cfset feed.addParam(column='name',criteria=arguments.rc.keywords,condition="contains")>	
 </cfif>
+
+<cfif len(rc.categoryid)>
+	<cfquery name="local.rscats">
+		select changesetid from tchangesetcategoryassignments where categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.categoryid#">)
+	</cfquery>
+
+	<cfif local.rscats.recordcount>
+		<cfset feed.addParam(column='changesetid',criteria=valuelist(local.rscats.changesetid),condition="in")>	
+	<cfelse>
+		<cfset feed.addParam(column='changesetid',criteria='none')>	
+	</cfif>
+</cfif>
+
+
 
 <cfset arguments.rc.changesets=feed.getIterator()>
 

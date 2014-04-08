@@ -31,6 +31,7 @@
 	<cfargument name="remoteID" type="string" default=""/>
 	<cfargument name="changesetBean"  default=""/>
 	<cfset var rs="">
+	<cfset var rscategories="">
 	<cfset var bean=arguments.changesetBean>
 	
 	<cfif not isObject(bean)>
@@ -60,7 +61,14 @@
 	<cfelseif len(arguments.siteID)>
 		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
-	
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rscategories')#">
+		select categoryid from tchangesetcategoryassignments 
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#bean.getChangesetID()#">
+	</cfquery>
+
+	<cfset bean.setCategoryID(valueLIst(rscategories.categoryid))>
+
 	<cfreturn bean>
 
 </cffunction>
@@ -167,6 +175,15 @@
 	<cfset variables.trashManager.takeOut(bean)>
 	
 	</cfif>
+
+	<cfif len(arguments.bean.getCategoryID())>
+		<cfloop list="#arguments.bean.getCategoryID()#" item="local.i">
+			<cfset getBean('changesetCategoryAssignment').loadBy(
+				changesetid=arguments.bean.getChangesetID(),
+				siteid=arguments.bean.getSiteid(),
+				categoryid=local.i).save()>
+		</cfloop>
+	</cfif>
 	<cfreturn bean>
 
 </cffunction>
@@ -181,6 +198,12 @@
 	delete from tchangesets 
 	where changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 	</cfquery>
+	
+	<cfset local.assignments=arguments.bean.getChangesetCategoryAssignmentIterator()>
+
+	<cfloop condition="local.assignments.hasNext()">
+		<cfset local.assignments.next().delete()>
+	</cfloop>
 
 </cffunction>
 
