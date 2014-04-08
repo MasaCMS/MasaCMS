@@ -246,6 +246,7 @@
 <cfargument name="keywords">
 <cfargument name="sortBy">
 <cfargument name="openOnly">
+<cfargument name="tag">
 
 	<cfset var rsChangeSets="">
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsChangeSets')#">
@@ -280,6 +281,13 @@
 		description like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 		
 		)
+	</cfif>
+
+	<cfif isdefined('arguments.tag') and len(arguments.tag)>
+		and changesetid in (select changesetid fromt tchangesettagassignments 
+							where tag=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#">
+							and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
+
 	</cfif>
 	order by 
 	<cfif structKeyExists(arguments,"sortBy") and arguments.sortBy eq "PublishDate">
