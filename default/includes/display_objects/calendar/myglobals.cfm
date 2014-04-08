@@ -45,24 +45,25 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfparam name="request.month" default="#month(now())#">
-<cfparam name="request.year" default="#year(now())#">
-<cfparam name="request.day" default="#day(now())#">
+<cfset variables.currentDate=now()>
+<cfparam name="request.month" default="#month(variables.currentDate)#">
+<cfparam name="request.year" default="#year(variables.currentDate)#">
+<cfparam name="request.day" default="#day(variables.currentDate)#">
 <cfscript>
-variables.currentDate=now();
-variables.selectedMonth = createDate(request.year,request.month,1);
+variables.selectedMonth=createDate(request.year,request.month,1);
 variables.daysInMonth=daysInMonth(variables.selectedMonth);
-variables.firstDayOfWeek=dayOfWeek(variables.selectedMonth)-1;
+variables.firstDayOfWeek=dayOfWeek(variables.selectedMonth)-application.rbFactory.getResourceBundle(session.rb).getUtils().weekStarts();
+if (variables.firstDayOfWeek<0) {variables.firstDayOfWeek+=7;}
 variables.weekdayShort=variables.$.rbKey('calendar.weekdayshort');
 variables.weekdayLong=variables.$.rbKey('calendar.weekdaylong');
 variables.monthShort=variables.$.rbKey('calendar.monthshort');
 variables.monthLong=variables.$.rbKey('calendar.monthlong');
-variables.dateLong = "#listGetAt(variables.monthLong,request.month,",")# #request.year#";
-variables.dateShort = "#listGetAt(variables.monthShort,request.month,",")# #request.year#";
-variables.previousMonth = request.month-1;
-variables.nextMonth = request.month+1;
-variables.nextYear = request.year;
+variables.dateLong="#listGetAt(variables.monthLong,request.month,",")# #request.year#";
+variables.dateShort="#listGetAt(variables.monthShort,request.month,",")# #request.year#";
+variables.previousMonth=request.month-1;
+variables.nextMonth=request.month+1;
+variables.nextYear=request.year;
 variables.previousYear=request.year;
-if (variables.previousMonth lte 0) {variables.previousMonth=12;variables.previousYear=variables.previousYear-1;}
-if (variables.nextMonth gt 12) {variables.nextMonth=1;variables.nextYear=variables.nextYear+1;}
+if (variables.previousMonth lte 0) {variables.previousMonth=12;variables.previousYear--;}
+if (variables.nextMonth gt 12) {variables.nextMonth=1;variables.nextYear++;}
 </cfscript>
