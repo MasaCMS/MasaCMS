@@ -13,6 +13,7 @@
 	getBean('contentFilenameArchive').checkSchema();
 	getBean('commenter').checkSchema();
 	getBean('changesetCategoryAssignment').checkSchema();
+	getBean('changesetTagAssignment').checkSchema();
 
 	dbUtility.setTable("tfiles");
 	if(getDbType() == 'MySQL'){

@@ -79,6 +79,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfset tablist=listAppend(tablist,'tabCategorization')>
     <cfset tablabellist=listAppend(tablabellist,'Categorization')>
 </cfif>
+ <cfset tablist=listAppend(tablist,'tabTags')>
+<cfset tablabellist=listAppend(tablabellist,'Tags')>
 
 <div class="tabbable tabs-left mura-ui">
     <ul class="nav nav-tabs tabs initActiveTab">
@@ -159,6 +161,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
     </cfif>
 
+   
+    <div id="tabTags" class="tab-pane fade">
+      <div class="fieldset">
+        <div class="control-group"> 
+          <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#
+          </label>      
+          <div class="controls">
+              <div id="tags" class="tagSelector">
+              <cfif len(rc.changeset.getTags())>
+                <cfloop list="#rc.changeset.getTags()#" index="i">
+                  <span class="tag">
+                  #HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
+                  <input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
+                  </span>
+                </cfloop>
+              </cfif>
+              <input type="text" name="tags">
+            </div>
+          </div>
+
+          <script>
+          $(document).ready(function(){
+            $.get('?muraAction=cChangesets.loadtagarray&siteid=' + siteid).done(function(data){
+            var tagArray=eval('(' + data + ')'); 
+            $('##tags').tagSelector(tagArray, 'tags');
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
 
 <div class="form-actions">
   <cfif rc.changesetID eq ''>

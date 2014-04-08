@@ -32,6 +32,7 @@
 	<cfargument name="changesetBean"  default=""/>
 	<cfset var rs="">
 	<cfset var rscategories="">
+	<cfset var rstags="">
 	<cfset var bean=arguments.changesetBean>
 	
 	<cfif not isObject(bean)>
@@ -67,7 +68,14 @@
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#bean.getChangesetID()#">
 	</cfquery>
 
-	<cfset bean.setCategoryID(valueLIst(rscategories.categoryid))>
+	<cfset bean.setCategoryID(valueList(rscategories.categoryid))>
+
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rstags')#">
+		select tag from tchangesettagassignments 
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#bean.getChangesetID()#">
+	</cfquery>
+
+	<cfset bean.setTags(valueList(rstags.tag))>
 
 	<cfreturn bean>
 
@@ -125,6 +133,16 @@
 		where changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#">
 	</cfquery>
 
+	<cfquery>
+		delete from tchangesetcategoryassignments
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#">
+	</cfquery>
+
+	<cfquery>
+		delete from tchangesettagassignments
+		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#">
+	</cfquery>
+
 	<cfelse>
 		<cfquery>
 		insert into tchangesets (changesetID, siteID, name, description, created, publishDate, 
@@ -177,11 +195,20 @@
 	</cfif>
 
 	<cfif len(arguments.bean.getCategoryID())>
-		<cfloop list="#arguments.bean.getCategoryID()#" item="local.i">
+		<cfloop list="#arguments.bean.getCategoryID()#" index="local.i">
 			<cfset getBean('changesetCategoryAssignment').loadBy(
 				changesetid=arguments.bean.getChangesetID(),
 				siteid=arguments.bean.getSiteid(),
 				categoryid=local.i).save()>
+		</cfloop>
+	</cfif>
+
+	<cfif len(arguments.bean.getTags())>
+		<cfloop list="#arguments.bean.getTags()#" index="local.i">
+			<cfset getBean('changesetTagAssignment').loadBy(
+				changesetid=arguments.bean.getChangesetID(),
+				siteid=arguments.bean.getSiteid(),
+				tag=local.i).save()>
 		</cfloop>
 	</cfif>
 	<cfreturn bean>
@@ -200,6 +227,12 @@
 	</cfquery>
 	
 	<cfset local.assignments=arguments.bean.getChangesetCategoryAssignmentIterator()>
+
+	<cfloop condition="local.assignments.hasNext()">
+		<cfset local.assignments.next().delete()>
+	</cfloop>
+
+	<cfset local.assignments=arguments.bean.getChangesetTagAssignmentIterator()>
 
 	<cfloop condition="local.assignments.hasNext()">
 		<cfset local.assignments.next().delete()>
@@ -549,6 +582,21 @@
 	<cfargument name="changesetID">
 	<cfset read(changesetID=arguments.changesetID).rollback()>	
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getTagCloud" access="public" output="false" returntype="query">
+	<cfargument name="siteID" type="String" required="true" default="">
+	
+	<cfset var rsTagCloud= ''/>
+	
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTagCloud')#">
+	select tag, count(tag) as tagCount	
+	from tchangesettagassignments 
+	group by tag
+	order by tag
+	</cfquery>
+	
+	<cfreturn rsTagCloud />
 </cffunction>
 
 </cfcomponent>
