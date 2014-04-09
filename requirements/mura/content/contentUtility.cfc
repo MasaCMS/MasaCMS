@@ -1832,21 +1832,21 @@ and parentID is null
 
 	public string function approximate(str) {
 		for (var approx in variables.approximations) {
-	    	arguments.str = replaceNoCase(arguments.str, chr(approx), variables.approximations[approx], 'all');
-	    }
+			arguments.str = replaceNoCase(arguments.str, chr(approx), variables.approximations[approx], 'all');
+		}
 
-	    return arguments.str;
+		return arguments.str;
 	}
 
 	public string function deaccent(str) {
-	    // based on the approach found here: http://stackoverflow.com/a/1215117/894061
-	    var normalizer = createObject("java","java.text.Normalizer");
-	    var normalizerForm = createObject("java","java.text.Normalizer$Form");
-	    var pattern = createObject("java","java.util.regex.Pattern").compile("\p{InCombiningDiacriticalMarks}+");
+		// based on the approach found here: http://stackoverflow.com/a/1215117/894061
+		var normalizer = createObject("java","java.text.Normalizer");
+		var normalizerForm = createObject("java","java.text.Normalizer$Form");
+		var pattern = createObject("java","java.util.regex.Pattern").compile("\p{InCombiningDiacriticalMarks}+");
 
-	    var normalizedString = normalizer.normalize(str, normalizerForm.NFD);
-	    
-	    return pattern.matcher(normalizedString).replaceAll("");
+		var normalizedString = normalizer.normalize(str, normalizerForm.NFD);
+
+		return pattern.matcher(normalizedString).replaceAll("");
 	}
 	</cfscript>
 
