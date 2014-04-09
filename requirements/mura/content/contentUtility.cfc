@@ -61,6 +61,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
 		<cfset variables.filedelim=variables.configBean.getFileDelim() />
+		<cfset variables.approximations = {
+			'230'='ae','198'='AE','228'='ae','196'='Ae',
+			'246'='oe','214'='Oe','252'='ue','220'='Ue',
+			'223'='ss','248'='o','216'='O',
+			'8217'="'",'8220'='"','8221'='"','171'='"','187'='"'
+		} />
 		
 <cfreturn this />
 </cffunction>
@@ -545,31 +551,8 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset var wordDelim=variables.configBean.getURLTitleDelim()>
 
 	<cfif not variables.configBean.getAllowUnicodeInFilenames()>
-		<!--- Remove HTML --->
-		<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
-		
-		<!--- replace some latin based unicode chars with allowable chars --->
-		<cfset arguments.filename=removeUnicode(arguments.filename) />
-		
-		<!--- temporarily escape " " used for word separation --->
-		<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
-		
-		<!--- temporarily escape "-" used for word separation --->
-		<cfset arguments.filename=rereplace(arguments.filename,"\#wordDelim#","svphsv","ALL") />
-		
-		<!--- remove all punctuation --->
-		<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
-		
-		<!--- escape any remaining unicode chars  --->
-		<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
-		
-		<!---  put word separators " "  and "-" back in --->
-		<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
-		
-		<!--- remove an non alphanumeric chars (most likely %) --->
-		<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\#wordDelim#]","","ALL")) />
-		
-		<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
+		<cfset arguments.filename = urlSafeFormat(arguments.filename,wordDelim) />
+
 	<cfelse>
 		<!--- Remove HTML --->
 		<cfset arguments.filename=ReReplace(arguments.filename, "<[^>]*>","","all") />
@@ -1832,5 +1815,35 @@ and parentID is null
 		</cfloop>
 		
 	</cffunction>
+
+	<cfscript>
+	public string function urlSafeFormat(str, delim='-') {
+		arguments.str=approximate(arguments.str);
+		arguments.str=deaccent(arguments.str);
+		arguments.str=reReplace(arguments.str,'<[^>]*>','','all');
+		arguments.str=rereplace(arguments.str,'[^a-zA-Z0-9\#arguments.delim#]',arguments.delim,'all');
+		arguments.str=rereplace(arguments.str,'\#arguments.delim#+',arguments.delim,'all');
+		arguments.str=rereplace(arguments.str,'^#arguments.delim#','','all');
+		arguments.str=rereplace(arguments.str,'#arguments.delim#$','','all');
+		return (arguments.str=='')?createUUID():lcase(arguments.str);
+	}
+
+	public string function approximate(str) {
+		for (var approx in variables.approximations) {
+			arguments.str = replaceNoCase(arguments.str, chr(approx), variables.approximations[approx], 'all');
+		}
+
+		return arguments.str;
+	}
+
+	public string function deaccent(str) {
+		// based on the approach found here: http://stackoverflow.com/a/1215117/894061
+		var normalizer = createObject("java","java.text.Normalizer");
+		var normalizerForm = createObject("java","java.text.Normalizer$Form");
+		var pattern = createObject("java","java.util.regex.Pattern").compile("\p{InCombiningDiacriticalMarks}+");
+
+		return pattern.matcher(normalizer.normalize(arguments.str, normalizerForm.NFD)).replaceAll("");
+	}
+	</cfscript>
 
 </cfcomponent>
