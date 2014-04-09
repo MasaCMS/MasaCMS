@@ -1821,8 +1821,6 @@ and parentID is null
 		arguments.str=approximate(arguments.str);
 		arguments.str=deaccent(arguments.str);
 		arguments.str=reReplace(arguments.str,'<[^>]*>','','all');
-		arguments.str=rereplace(arguments.str,'\s',arguments.delim,'all');
-		arguments.str=rereplace(arguments.str,'[[:punct:]]',arguments.delim,'all');
 		arguments.str=rereplace(arguments.str,'[^a-zA-Z0-9\#arguments.delim#]',arguments.delim,'all');
 		arguments.str=rereplace(arguments.str,'\#arguments.delim#+',arguments.delim,'all');
 		arguments.str=rereplace(arguments.str,'^#arguments.delim#','','all');
