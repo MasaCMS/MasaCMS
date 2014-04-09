@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			     		</label>
 			    	</div>
 			    </div>
-			    <div class="control-group body-container" style="display:none">
+			    <div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 				 	<div class="controls">
 			      		<label for="displayTitle" class="checkbox">
