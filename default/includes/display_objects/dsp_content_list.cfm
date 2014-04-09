@@ -262,7 +262,7 @@
 						 		#variables.$.getContentListLabel(arguments.field)# 
 						 		<span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span>
 						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue('itemEl','tag')#>	 	
+						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>	 	
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
