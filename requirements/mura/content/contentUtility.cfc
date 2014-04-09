@@ -1820,7 +1820,7 @@ and parentID is null
 	public string function urlSafeFormat(str, delim='-') {
 		arguments.str=approximate(arguments.str);
 		arguments.str=deaccent(arguments.str);
-		arguments.str=reReplace(arguments.str, '<[^>]*>','','all');
+		arguments.str=reReplace(arguments.str,'<[^>]*>','','all');
 		arguments.str=rereplace(arguments.str,'\s',arguments.delim,'all');
 		arguments.str=rereplace(arguments.str,'[[:punct:]]',arguments.delim,'all');
 		arguments.str=rereplace(arguments.str,'[^a-zA-Z0-9\#arguments.delim#]',arguments.delim,'all');
@@ -1844,9 +1844,7 @@ and parentID is null
 		var normalizerForm = createObject("java","java.text.Normalizer$Form");
 		var pattern = createObject("java","java.util.regex.Pattern").compile("\p{InCombiningDiacriticalMarks}+");
 
-		var normalizedString = normalizer.normalize(str, normalizerForm.NFD);
-
-		return pattern.matcher(normalizedString).replaceAll("");
+		return pattern.matcher(normalizer.normalize(arguments.str, normalizerForm.NFD)).replaceAll("");
 	}
 	</cfscript>
 
