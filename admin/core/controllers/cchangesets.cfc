@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.page" default="1"/>
 	<cfparam name="arguments.rc.keywords" default=""/>
 	<cfparam name="arguments.rc.categoryid" default=""/>
+	<cfparam name="arguments.rc.tags" default=""/>
 </cffunction>
 
 <cffunction name="list" output="false">
@@ -84,6 +85,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(rc.keywords)>
 	<cfset feed.addParam(column='name',criteria=arguments.rc.keywords,condition="contains")>	
+</cfif>
+
+<cfif len(rc.tags)>
+	<cfquery name="local.rstags">
+		select changesetid from tchangesettagassignments where tag in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.tags#">)
+	</cfquery>
+
+	<cfif local.rstags.recordcount>
+		<cfset feed.addParam(column='changesetid',criteria=valuelist(local.rstags.changesetid),condition="in")>	
+	<cfelse>
+		<cfset feed.addParam(column='changesetid',criteria='none')>	
+	</cfif>	
 </cfif>
 
 <cfif len(rc.categoryid)>
