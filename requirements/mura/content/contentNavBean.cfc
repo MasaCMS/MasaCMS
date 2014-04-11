@@ -239,6 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" default="false"/>
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
+	<cfargument name="default" default=""/>
 	<cfset arguments.bean=this>
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
