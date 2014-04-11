@@ -2396,6 +2396,10 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
 
+<cfif not isDefined('session.siteid')>
+	<cflocation url="#variables.configBean.getContext()#/admin/" addtoken="false">
+</cfif>
+
 <cfset var rc=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
