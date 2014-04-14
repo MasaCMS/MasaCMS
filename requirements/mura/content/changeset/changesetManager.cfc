@@ -64,14 +64,14 @@
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rscategories')#">
-		select categoryid from tchangesetcategoryassignments 
+		select categoryid from tchangesetcategoryassign 
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#bean.getChangesetID()#">
 	</cfquery>
 
 	<cfset bean.setCategoryID(valueList(rscategories.categoryid))>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rstags')#">
-		select tag from tchangesettagassignments 
+		select tag from tchangesettagassign 
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#bean.getChangesetID()#">
 	</cfquery>
 
@@ -134,12 +134,12 @@
 	</cfquery>
 
 	<cfquery>
-		delete from tchangesetcategoryassignments
+		delete from tchangesetcategoryassign
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#">
 	</cfquery>
 
 	<cfquery>
-		delete from tchangesettagassignments
+		delete from tchangesettagassign
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#">
 	</cfquery>
 
@@ -227,12 +227,12 @@
 	</cfquery>
 	
 	<cfquery>
-		delete from tchangesetcategoryassignments
+		delete from tchangesetcategoryassign
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 	</cfquery>
 
 	<cfquery>
-		delete from tchangesettagassignments
+		delete from tchangesettagassign
 		where changesetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 	</cfquery>
 
@@ -284,7 +284,7 @@
 	</cfif>
 
 	<cfif isdefined('arguments.tag') and len(arguments.tag)>
-		and changesetid in (select changesetid fromt tchangesettagassignments 
+		and changesetid in (select changesetid fromt tchangesettagassign 
 							where tag=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#">
 							and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 
@@ -597,7 +597,7 @@
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTagCloud')#">
 	select tag, count(tag) as tagCount	
-	from tchangesettagassignments 
+	from tchangesettagassign 
 	group by tag
 	order by tag
 	</cfquery>

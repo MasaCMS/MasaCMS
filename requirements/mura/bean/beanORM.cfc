@@ -246,6 +246,14 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].datasource;
 	}
 
+	function getHasManyPropArray(){
+		return application.objectMappings[variables.entityName].hasMany;
+	}
+
+	function getHasOnePropArray(){
+		return application.objectMappings[variables.entityName].hasOne;
+	}
+
 	function getQueryAttrs(){
 		if( hasCustomDatasource() ){
 			structAppend(arguments,
@@ -283,6 +291,8 @@ component extends="mura.bean.bean" versioned=false {
 					application.objectMappings[variables.entityName].properties={};
 					application.objectMappings[variables.entityName].synthedFunctions={};
 					application.objectMappings[variables.entityName].primarykey="";
+					application.objectMappings[variables.entityName].hasMany=[];
+					application.objectMappings[variables.entityName].hasOne=[];
 					
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
@@ -448,17 +458,21 @@ component extends="mura.bean.bean" versioned=false {
 
 						       	 		}		
 
+						       	 		arrayAppend(application.objectMappings[variables.entityName].hasMany, prop.name);
+
 							       	 	if(structKeyExists(prop,"singularname")){
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#'];
+							       	 	
 							       	 	}
 
 					       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
 					 
-		   	 							
+		   	 							arrayAppend(application.objectMappings[variables.entityName].hasOne, {name=prop.name,column=prop.fkcolumn});
+
 					       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 					       	 				
 					       	 				if(prop.fkcolumn eq 'siteid'){
