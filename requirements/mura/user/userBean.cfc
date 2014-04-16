@@ -676,11 +676,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfargument name="default" default=""/>
-	<cfif ListFindNoCase ('jpeg,jpg,png,gif', variables.instance.photofileEXT)>
-		<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
-	<cfelseif len(arguments.default)>
-		<cfreturn arguments.default>
-	</cfif>
+	<cfscript>
+		var image = variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width);
+		return Len(image) ? image : arguments.default;
+	</cfscript>
 </cffunction>
 
 <cffunction name="getPrimaryKey" output="false">
