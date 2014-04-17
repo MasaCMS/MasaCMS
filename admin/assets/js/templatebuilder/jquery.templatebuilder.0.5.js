@@ -187,7 +187,7 @@
 					goLoadField( jQuery(this).attr('data-object'),_formData.formid );
 				});
 			});
-			jQuery("#mura-tb-fields li div").live( 'click', function() {
+			jQuery(document).on( 'click',"#mura-tb-fields li div", function() {
 				doField( this );
 			});			
 		}
@@ -467,7 +467,12 @@
 				}
 			});
 			
-			jQuery(".mura-tb-grid-radio",$_grid).live('click',function() {
+			jQuery(document).on('click',".mura-tb-grid-radio",function() {
+				id = jQuery(this).attr('data-id');
+				_currentDataset.defaultid = id;
+			});
+
+			jQuery(document).on('click',$_grid,function() {
 				id = jQuery(this).attr('data-id');
 				_currentDataset.defaultid = id;
 			});
