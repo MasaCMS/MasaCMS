@@ -144,7 +144,7 @@
 					<input type="hidden" name="siteid" value="#variables.$.event('siteID')#" />
 					<input type="hidden" name="doaction" value="masterSubscribe" />
 					<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#" />
-					<div class="form-group">
+					<div class="#this.mailingListFormGroupWrapperClass#">
 						<div class="#this.mailingListSubmitWrapperClass#">
 							<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.submit'))#" />
 						</div>
