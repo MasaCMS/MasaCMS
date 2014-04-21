@@ -6,4 +6,7 @@ jQuery(document).ready(function($) {
 	});
 	$('#myTooltip').tooltip();
 
+	// Example of how to append a lock icon to a restricted primary nav item
+	//$('#navProtectedArea a').append('&nbsp;<i class="fa fa-lock"></i>');
+
 });
