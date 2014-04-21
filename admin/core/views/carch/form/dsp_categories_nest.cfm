@@ -56,14 +56,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<ul class="categorylist"<cfif len(attributes.parentid)> style="display:none"<cfelse> id="mura-nodes"</cfif>>
 		<cfoutput query="rslist">
 			<cfsilent>
+				<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
 				<cfset request.catNo=request.catNo+1 />	
-				<cfquery name="rsIsMember" dbtype="query">
+				<cfif not len(attributes.contentBean.getValue('categoryAssign#catTrim#'))>
+					<cfquery name="rsIsMember" dbtype="query">
 					SELECT * 
 					FROM attributes.rsCategoryAssign
 					WHERE categoryID='#rslist.categoryID#'
 						AND ContentHistID='#attributes.contentBean.getcontentHistID()#'
-				</cfquery>
-				<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
+					</cfquery>
+				<cfelse>
+					<cfset rsIsMember={
+						recordcount=listFind(attributes.contentBean.getCategoryID(),rslist.categoryid),
+						isFeature=attributes.contentBean.getValue('categoryAssign#catTrim#'),
+						featureStart=attributes.contentBean.getValue('featureStart#catTrim#'),
+						startHour=attributes.contentBean.getValue('startHour#catTrim#'),
+						startMinute=attributes.contentBean.getValue('startMinute#catTrim#'),
+						startDayPart=attributes.contentBean.getValue('startDayPart#catTrim#'),
+						stopHour=attributes.contentBean.getValue('stopHour#catTrim#'),
+						stopMinute=attributes.contentBean.getValue('stopMinute#catTrim#'),
+						stopDayPart=attributes.contentBean.getValue('stopDayPart#catTrim#')
+					}>
+				</cfif>
+				<cfparam name="request.opencategorylist" default="">
+
+				<cfif rsIsMember.recordcount>
+					<cfset request.opencategorylist=listAppend(request.opencategorylist,rslist.categoryid)>
+				</cfif>
+
 				<cfif not attributes.disabled and not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
 					<cfset attributes.disabled=true />
 				</cfif>
