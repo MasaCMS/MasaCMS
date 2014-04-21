@@ -178,15 +178,9 @@ If it has not set application.appInitialized=false. --->
 </cftry>
 
 <cftry>
-	<cfif not structKeyExists(cookie,"_mura_trk")>
-		<cfif structKeyExists(cookie,'originalurltoken')>
-			<cfcookie name="_mura_trk" value="#cookie.originalurltoken#" expires="never" />
-			<cfparam name="session.trackingID" default="#cookie._mura_trk#">
-			<cfset structDelete(cookie,'originalurltoken')>
-		<cfelse>
-			<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
-			<cfcookie name="_mura_trk" value="#session.trackingID#" expires="never" />
-		</cfif>	
+	<cfif not structKeyExists(cookie,"originalURLToken")>
+	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
+	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" />
 	</cfif>
 <cfcatch></cfcatch>
 </cftry>

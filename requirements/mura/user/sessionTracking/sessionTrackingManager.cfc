@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																		arguments.siteid,
 																		arguments.contentid,
 																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
-																		cookie._mura_trk
+																		cookie.originalurltoken
 																		)/>
 				<!---<cfcatch><cfreturn ""/></cfcatch></cftry>--->
 			</cfif>
