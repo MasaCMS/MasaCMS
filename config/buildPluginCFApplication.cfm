@@ -44,22 +44,29 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<!---
+Build a temporary file, and swap it out at the end, to reduce the potential for
+the rest of the app to read a half-written file.
+--->
+<cflock name="buildPluginCFApplication" type="exclusive" throwontimeout="true" timeout="5" >
+<cfset pluginCfapplicationFilePathName = "#variables.baseDir#/plugins/cfapplication.cfm" /> 
+<cfset pluginCfapplicationTempFilePathName = "#variables.baseDir#/plugins/cfapplication.tmp.cfm" /> 
 <cftry>
-		<cffile action="write" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
+		<cffile action="write" file="#pluginCfapplicationTempFilePathName#" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfabort>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="</cfif>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
-				<cffile action="write" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>">
-				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
+				<cffile action="write" file="#pluginCfapplicationTempFilePathName#" output="<!--- Do Not Edit --->" addnewline="true">
+				<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfif not isDefined('this.name')>" addnewline="true">
+				<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfoutput>Access Restricted.</cfoutput>">
+				<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfabort>" addnewline="true">
+				<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="</cfif>" addnewline="true">
+				<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
@@ -107,9 +114,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,pluginDir & "/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,pluginDir & "/#rsRequirements.name#/#p#")>'>		
 				</cfif>
 				<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
@@ -127,9 +134,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#pluginCfapplicationTempFilePathName#" output='<cfset arrayAppend(this.ormsettings.cfclocation,pluginDir & "/#rsRequirements.name#/#p#")>'>		
 				</cfif>
 				<cfset arrayAppend(this.ormsettings.cfclocation,variables.baseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
@@ -138,3 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfloop>
 
+<!--- Swap out the real file with the temporary file. --->
+<cffile action="rename" source="#pluginCfapplicationTempFilePathName#" destination="#pluginCfapplicationFilePathName#" />
+
+</cflock>
