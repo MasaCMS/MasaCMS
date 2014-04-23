@@ -598,25 +598,36 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var p="">
 	<cfset var currentPath="">
 	<cfset var pluginmapping="">
+	<cfset var pluginCfapplicationFilePathName = "#baseDir#/cfapplication.cfm" /> 
+	<cfset var pluginCfapplicationTempFilePathName = "#baseDir#/cfapplication.tmp.cfm" /> 
+	<cfset var pluginMappingsFilePathName = "#baseDir#/mappings.cfm" /> 
+	<cfset var pluginMappingsTempFilePathName = "#baseDir#/mappings.tmp.cfm" /> 
 	
 	<cflock name="createAppCFCIncludes#application.instanceID#" type="exclusive" timeout="200">
+	<!--- Similar functionality is found elsewhere; be sure to use those named locks, too --->
+	<cflock name="buildPluginCFApplication" type="exclusive" throwontimeout="true" timeout="5" >
+	<cflock name="buildPluginMappings" type="exclusive" throwontimeout="true" timeout="5" >
 	
-	<cffile action="delete" file="#baseDir#/mappings.cfm">
-	<cfset variables.fileWriter.writeFile(file="#baseDir#/mappings.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfif not isDefined('this.name')>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfabort>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="</cfif>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/plugins"] = pluginDir>')>
+	<cfif fileExists(pluginMappingsTempFilePathName) >
+		<cffile action="delete" file="#pluginMappingsTempFilePathName#">
+	</cfif>
+	<cfset variables.fileWriter.writeFile(file="#pluginMappingsTempFilePathName#", output="<!--- Do Not Edit --->", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output="<cfif not isDefined('this.name')>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output="<cfabort>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output="</cfif>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/plugins"] = pluginDir>')>
 
-	<cffile action="delete" file="#baseDir#/cfapplication.cfm">
-	<cfset variables.fileWriter.writeFile(file="#baseDir#/cfapplication.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfif not isDefined('this.name')>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfabort>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="</cfif>", addnewline="true")>
-	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
+	<cfif fileExists(pluginCfapplicationTempFilePathName) >
+		<cffile action="delete" file="#pluginCfapplicationTempFilePathName#">
+	</cfif>
+	<cfset variables.fileWriter.writeFile(file="#pluginCfapplicationTempFilePathName#", output="<!--- Do Not Edit --->", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output="<cfif not isDefined('this.name')>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output="<cfabort>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output="</cfif>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>", addnewline="true")>
 
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
@@ -629,7 +640,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfif not isDefined("currentConfig.plugin.createmapping.xmlText")
 					or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 					<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">')>
+						<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">')>
 						<cfset done[mHash]=true>
 					</cfif>
 				</cfif>
@@ -653,7 +664,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfset currentPath=currentDir & "/" & p>
 							<cfif len(p) and directoryExists(currentPath)>
 								<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-								<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
+								<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
 							</cfif>
 						</cfif>
 					</cfloop>
@@ -669,7 +680,7 @@ select * from tplugins order by #arguments.orderby#
 						</cfif>
 						<cfset currentPath=currentDir & "/" & p>
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#" )>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#" )>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -685,7 +696,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset currentPath=currentDir & "/" & p>
 						<cfdump var="#currentpath#">
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "/#rsRequirements.name#/#p#")>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "/#rsRequirements.name#/#p#")>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -693,6 +704,13 @@ select * from tplugins order by #arguments.orderby#
 			</cftry>
 		</cfif>
 	</cfloop>
+		
+	<!--- Swap out the real file with the temporary file. --->
+	<cffile action="rename" source="#pluginMappingsTempFilePathName#" destination="#pluginMappingsFilePathName#" />
+	<cffile action="rename" source="#pluginCfapplicationTempFilePathName#" destination="#pluginCfapplicationFilePathName#" />
+	
+	</cflock>
+	</cflock>
 	</cflock>
 </cffunction>
 
