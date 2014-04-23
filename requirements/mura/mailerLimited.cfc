@@ -376,8 +376,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">
-					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
-					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
+					<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
+					<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
 				</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
@@ -392,8 +392,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">
-					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
-					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
+					<cfmailpart type="text/plain">#trim(arguments.text)#</cfmailpart>
+					<cfmailpart type="text/html">#trim(arguments.html)#</cfmailpart>
 				</cfmail>
 	</cfif>
 	<cfcatch>
