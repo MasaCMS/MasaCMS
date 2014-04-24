@@ -82,6 +82,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn this />
 	</cffunction>
 
+	<cffunction name="validate" output="false">
+		<cfreturn isObject(variables.contentGateway)
+		and isObject(variables.contentDAO)
+		and isObject(variables.contentUtility)
+		and isObject(variables.reminderManager)
+		and isObject(variables.settingsManager)
+		and isObject(variables.categoryManager)
+		and isObject(variables.configBean)
+		and isObject(variables.fileManager)
+		and isObject(variables.pluginManager)
+		and isObject(variables.trashManager)
+		and isObject(variables.ClassExtensionManager)
+		and isObject(variables.clusterManager)>
+	</cffunction>
+
 	<cffunction name="getTreeLevelList" output="false">
 		<cfreturn this.treeLevelList>
 	</cffunction>
