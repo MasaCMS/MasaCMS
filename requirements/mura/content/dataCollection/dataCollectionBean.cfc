@@ -171,7 +171,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		super.validate();
 
 		if(structIsEmpty(getErrors())){
-			variables.dataCollectionManager.update(getAllValues());
+			setValue('formResult',variables.dataCollectionManager.update(structCopy(getAllValues())));
 		}
 		
 		return this;
