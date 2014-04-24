@@ -70,6 +70,7 @@ If it has not set application.appInitialized=false. --->
 			and isStruct(application.configBean.getAllValues())
 		)>
 		<cfset application.appInitialized=false>
+		<cfset application.broadcastInit=false/>
 	</cfif>
 	<cfset application.clusterManager.runCommands()>
 	<cfif not application.appInitialized>
@@ -78,6 +79,7 @@ If it has not set application.appInitialized=false. --->
 	<cfcatch>
 		<cfset application.appInitialized=false>
 		<cfset request.muraAppreloaded=false>
+		<cfset application.broadcastInit=false/>
 	</cfcatch>
 </cftry>
 
