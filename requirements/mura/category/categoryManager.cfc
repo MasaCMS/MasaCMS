@@ -333,7 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cacheFactory="">
 	<cfset var bean=arguments.categoryBean>	
 	
-	<cfif not len(arguments.siteID) and isdefined("session.siteID")>
+	<cfif isdefined("session.siteID") and not len(arguments.siteID)>
 		<cfset arguments.siteID=session.siteID>
 	</cfif>
 	
