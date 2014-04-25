@@ -347,7 +347,7 @@
 		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 		</cfif>	
 		<cfif structKeyExists(arguments,"beforeDate")>
-		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+		and deletedDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.beforeDate#">
 		</cfif>
 		<cfif structKeyExists(arguments,"objectID")>
 		and objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
