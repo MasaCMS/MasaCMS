@@ -52,6 +52,11 @@ the rest of the app to read a half-written file.
 <cfset pluginMappingsFilePathName = "#variables.baseDir#/plugins/mappings.cfm" /> 
 <cfset pluginMappingsTempFilePathName = "#variables.baseDir#/plugins/mappings.tmp.cfm" /> 
 <cftry>		
+
+		<cfif not directoryExists("#variables.baseDir#/plugins")>
+    		<cfdirectory action="create" directory="#variables.baseDir#/plugins">
+		</cfif>
+
 		<cffile action="write" file="#pluginMappingsTempFilePathName#" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
 		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
 		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
