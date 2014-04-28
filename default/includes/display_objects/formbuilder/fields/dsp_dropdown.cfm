@@ -67,10 +67,12 @@
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
 	#variables.strField# >
-	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="variables.iiy">
+	<cfif StructKeyExists(arguments.dataset,"datarecordorder") and isArray( arguments.dataset.datarecordorder) and ArrayLen( arguments.dataset.datarecordorder ) gt 0>
+	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
 		<option<cfif len(variables.record.value)> value="#variables.record.value#"</cfif><cfif variables.record.datarecordid eq arguments.dataset.defaultid> SELECTED</cfif>>#variables.record.label#</option>
 	</cfloop>
+	</cfif>
 	</select>
 	</cfoutput>
 </cfsavecontent>
