@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 			</button>
 		
-			<input type="hidden" name="parentid" value="#HTMLEditFormat(rc.trashItem.getParentID())#">
+			<input type="hidden" id="parentid" name="parentid" value="#HTMLEditFormat(rc.trashItem.getParentID())#">
 		</span>
 		</label>
 		<div class="controls" id="mover2" style="display:none"></div>
@@ -111,8 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(typeof(jQuery('##parentid').val()) != 'undefined' ){
 			parentid=jQuery('##parentid').val();
 		}else{
-			parentid=jQuery('input:radio[name=parentid]:checked').val();
-			
+			parentid=jQuery('input:radio[name=parentid]:checked').val();		
 		}
 		
 		if(parentid.length==35){
@@ -129,7 +128,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			parentid=jQuery('##parentid').val();
 		}else{
 			parentid=jQuery('input:radio[name=parentid]:checked').val();
-			
 		}
 		
 		if(parentid.length==35){
@@ -138,7 +136,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			alertDialog('Please select a valid content parent.');
 		}
 	}
-
 
 	jQuery(document).ready(function(){
 		$('##selectParent').click(function(e){
