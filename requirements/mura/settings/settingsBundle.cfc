@@ -110,6 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
 			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">
 			<cftry>
+				<cfset importWDDX =REReplace(importWDDX,'[\x0]','','ALL')>
 				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
 			<cfcatch>
 				<cfdump var="An error happened while trying to deserialize #rsImportFiles.name#.">
