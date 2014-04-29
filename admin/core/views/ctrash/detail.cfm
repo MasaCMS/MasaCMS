@@ -83,16 +83,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 			<span id="mover1" class="text"> 
-				<cfif parentBean.getIsNew()>NA<cfelse>#htmlEditFormat(parentBean.getMenuTitle())#</cfif>
+			<cfif parentBean.getIsNew()>NA<cfelse>#htmlEditFormat(parentBean.getMenuTitle())#</cfif>
 
 			<button id="selectParent" name="selectParent" class="btn">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
-			</button>
-		
-			<input type="hidden" id="parentid" name="parentid" value="#HTMLEditFormat(rc.trashItem.getParentID())#">
+			</button>		
 		</span>
 		</label>
-		<div class="controls" id="mover2" style="display:none"></div>
+		<div class="controls" id="mover2" style="display:none"><input type="hidden" id="parentid" name="parentid" value="#HTMLEditFormat(rc.trashItem.getParentID())#"></div>
 	</div>
 
 	</div>
