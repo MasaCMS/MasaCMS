@@ -113,12 +113,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&startdate=#URLEncodedFormat(rc.startdate)#&stopdate=#URLEncodedFormat(rc.stopdate)#&categoryid=#URLEncodedFormat(rc.categoryid)#&tags=#URLEncodedFormat(rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
 			</li>
 			</cfif>
-			<cfloop from="1"  to="#rc.changesets.pageCount()#" index="i">
+			<cfloop from="1" to="#rc.changesets.pageCount()#" index="i">
 				<cfif rc.changesets.getPageIndex() eq i> 
 					<li class="active"><a href="##">#i#</a></li>
 				<cfelse> 
 					<li>
-						<a href="./?muraAction=cChangesets.list&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#keywords=#URLEncodedFormat(rc.keywords)#&startdate=#URLEncodedFormat(rc.startdate)#&stopdate=#URLEncodedFormat(rc.stopdate)#&categoryid=#URLEncodedFormat(rc.categoryid)#"&tags=#URLEncodedFormat(rc.tags)#>#i#</a>
+						<a href="./?muraAction=cChangesets.list&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&startdate=#URLEncodedFormat(rc.startdate)#&stopdate=#URLEncodedFormat(rc.stopdate)#&categoryid=#URLEncodedFormat(rc.categoryid)#"&tags=#URLEncodedFormat(rc.tags)#>#i#</a>
 					</li>
 				</cfif>
 			</cfloop>
