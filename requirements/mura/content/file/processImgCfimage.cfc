@@ -365,12 +365,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cffile action="rename" destination="#fileStruct.fileObj#" source="#fileStruct.fileObjLarge#">
 			<cfset structDelete(fileStruct,"fileObjLarge")>
 
-			<!---
-			<cfif variables.configBean.getFileStore() eq "fileDir">		
+			
+			<cfif variables.configBean.getFileStore() neq "fileDir">		
 				<!--- clean up source--->
 				<cffile action="delete" file="#fileStruct.fileObjSource#">
 			</cfif>
-			--->
+			
 		</cfif>
 		
 		<cfset fileStruct.theFile=fileStruct.fileObj/>
