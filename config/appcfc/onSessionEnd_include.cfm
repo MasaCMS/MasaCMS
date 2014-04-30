@@ -45,17 +45,38 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
-<cftry>
 <cfif isDefined("arguments.ApplicationScope")>
+	<cfparam name="request.muraFrontEndRequest" default="false"/>
+	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraChangesetPreviewToolbar" default="false"/>
+	<cfparam name="request.muraExportHtml" default="false"/>
+	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraMobileTemplate" default="false"/>
+	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
+	<cfparam name="request.altTHeme" default=""/>
+	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
+	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
+	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
+	<cfparam name="request.muraShowTrace" default="true"/>
+	<cfparam name="request.muraValidateDomain" default="true"/>
+	<cfparam name="request.muraAppreloaded" default="false"/>
+	<cfparam name="request.muratransaction" default="0"/>
+	<cfparam name="request.muraDynamicContentError" default="false">
+	<cfparam name="request.muraPreviewDomain" default="">
+	<cfparam name="request.muraOutputCacheOffset" default="">
+
 	<cfset session=arguments.SessionScope>
 	<cfset application=arguments.ApplicationScope>
-	<cfset local.pluginEvent=createObject("component","mura.event")>
+	
+	<cfset local.pluginEvent=createObject("component","mura.event").init()>
 	<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
 	<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
+
 	<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
 		<cfset local.pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
 		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",local.pluginEvent)>
+	<cfelse>
+		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onGlobalSessionEnd",local.pluginEvent)>
 	</cfif>	
 </cfif>
-<cfcatch></cfcatch>
-</cftry>
+

@@ -44,24 +44,36 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<!---
+Build a temporary file, and swap it out at the end, to reduce the potential for
+the rest of the app to read a half-written file.
+--->
+<cflock name="buildPluginMappings" type="exclusive" throwontimeout="true" timeout="5" >
+<cfset pluginMappingsFilePathName = "#variables.baseDir#/plugins/mappings.cfm" /> 
+<cfset pluginMappingsTempFilePathName = "#variables.baseDir#/plugins/mappings.tmp.cfm" /> 
 <cftry>		
-		<cffile action="write" file="#variables.baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
-		<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/plugins"] = pluginDir>' mode="775">
+
+		<cfif not directoryExists("#variables.baseDir#/plugins")>
+    		<cfdirectory action="create" directory="#variables.baseDir#/plugins">
+		</cfif>
+
+		<cffile action="write" file="#pluginMappingsTempFilePathName#" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfabort>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="</cfif>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true" mode="775">
+		<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/plugins"] = pluginDir>' mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
-				<cffile action="write" file="#variables.baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/plugins"] = pluginDir>'>
+				<cffile action="write" file="#pluginMappingsTempFilePathName#" output="<!--- Do Not Edit --->" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfif not isDefined('this.name')>" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfabort>" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output="</cfif>" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output="<cfset pluginDir=getDirectoryFromPath(getCurrentTemplatePath())/>" addnewline="true">
+				<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/plugins"] = pluginDir>'>
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
@@ -104,9 +116,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 			<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">' mode="775">
+					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] =pluginDir & "/#rsRequirements.name#">'>		
+					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] =pluginDir & "/#rsRequirements.name#">'>		
 				</cfif>
 				<cfset this.mappings["/#m#"] = rsRequirements.directory & "/" & rsRequirements.name>
 			</cfif>
@@ -130,9 +142,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(p) and directoryExists(currentPath)>
 					<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
 					<cfif canWriteMode>
-						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>' mode="775">
+						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>' mode="775">
 					<cfelseif canWriteMappings>
-						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>'>		
+						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>'>		
 					</cfif>
 				</cfif>
 			</cfif>
@@ -140,3 +152,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 </cfloop>
+
+<!--- Swap out the real file with the temporary file. --->
+<cffile action="rename" source="#pluginMappingsTempFilePathName#" destination="#pluginMappingsFilePathName#" />
+
+</cflock>

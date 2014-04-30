@@ -103,12 +103,9 @@
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 						</button>
-					
-						<input type="hidden" name="parentid" value="#HTMLEditFormat(rc.parentid)#">
 					</span>
 	      		</label>
-	      		<div class="controls" id="mover2" style="display:none"></div>
-	      				
+	      		<div class="controls" id="mover2" style="display:none"><input type="hidden" name="parentid" value="#HTMLEditFormat(rc.parentid)#"></div>	
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){

@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</a>
 				</dd>
 			</dl><!--- /.mura-grid-hdr --->
+				<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
 				<cf_dsp_categories_nest 
 					siteID="#rc.siteID#" 
 					parentID="" 
@@ -121,7 +122,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			}	
 		});
-		<cfset cats=rc.contentBean.getCategoriesIterator()>
+		
+		<cfset cats=$.getBean('categoryFeed')
+			.addParam(
+				column="categoryid",
+				list=true,
+				condition="in",
+				criteria=request.opencategorylist)
+			.getIterator()>
+
 		<cfset itemList="">
 		<cfloop condition="cats.hasNext()">
 			<cfset cat=cats.next()>

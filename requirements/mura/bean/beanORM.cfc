@@ -458,7 +458,7 @@ component extends="mura.bean.bean" versioned=false {
 
 						       	 		}		
 
-						       	 		arrayAppend(application.objectMappings[variables.entityName].hasMany, prop.name);
+						       	 		arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
 
 							       	 	if(structKeyExists(prop,"singularname")){
 							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
@@ -471,7 +471,7 @@ component extends="mura.bean.bean" versioned=false {
 
 					       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
 					 
-		   	 							arrayAppend(application.objectMappings[variables.entityName].hasOne, {name=prop.name,column=prop.fkcolumn});
+		   	 							arrayAppend(application.objectMappings[variables.entityName].hasOne, prop);
 
 					       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 					       	 				

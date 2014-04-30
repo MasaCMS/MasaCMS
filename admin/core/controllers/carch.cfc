@@ -197,7 +197,6 @@
   	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid) />
   	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
   	<cfset arguments.rc.rsTemplates=variables.contentUtility.getTemplates(arguments.rc.siteid,arguments.rc.type) />
-  	<cfset arguments.rc.rsCategoryAssign=variables.contentManager.getCategoriesByHistID(arguments.rc.contenthistID) />
 	<cfif arguments.rc.moduleID eq '00000000000000000000000000000000000'>
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>

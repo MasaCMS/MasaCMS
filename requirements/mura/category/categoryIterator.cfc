@@ -44,20 +44,11 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.iterator.queryIterator" output="false">
+<cfcomponent extends="mura.bean.beanIterator" output="false">
 
-<cfset variables.categoryBean="">
-
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfif NOT isObject(variables.categoryBean)>
-		<cfset variables.categoryBean=getBean("category") />
-		<cfset variables.categoryStructTemplate=structCopy(variables.categoryBean.getAllValues())>
-	<cfelse>
-		<cfset variables.categoryBean.setAllValues( structCopy(variables.categoryStructTemplate) )>
-	</cfif>
-
-	<cfset variables.categoryBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn variables.categoryBean>
-</cffunction>
-
+	<cffunction name="init" output="false">
+		<cfset super.init(argumentCollection=arguments)>
+		<cfset variables.entityname="categoryBean">
+		<cfreturn this>
+	</cffunction>
 </cfcomponent>

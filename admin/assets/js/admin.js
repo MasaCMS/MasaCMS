@@ -1568,4 +1568,3 @@ $(function(){
 
 });
 
-preloadimages(['assets/images/ajax-loader.gif']);

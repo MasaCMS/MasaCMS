@@ -473,17 +473,16 @@ buttons: {
 	},
 
 	loadSiteParents: function(siteid, contentid, parentid, keywords, isNew) {
-		$('#mover1').remove();
+		$('#mover1').hide();
 
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#mover2');
-		d.html('<div class="load-inline"><input type=hidden name=parentid value=' + parentid + ' ></div>');
-		$('#mover2').show();
-		//$('#mover2 .load-inline').spin(spinnerArgs2);
+		
 		$.get(url + "?" + pars, function(data) {
 			//$('#mover2 .load-inline').spin(false);
 			$('#mover2').html(data);
+			$('#mover2').show();
 		});
 	},
 

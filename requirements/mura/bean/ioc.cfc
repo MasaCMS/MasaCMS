@@ -17,13 +17,14 @@ component {
 
 	// CONSTRUCTOR
 	
-	public any function init( string folders, struct config = {} ) {
+	public any function init( string folders, struct config = { } ) {
 		variables.folders = folders;
 		variables.config = config;
 		variables.beanInfo = { };
 		variables.beanCache = { };
         variables.settersInfo = { };
-		variables.autoExclude = [ '/WEB-INF', '/Application.cfc' ];
+		variables.autoExclude = [ '/WEB-INF', '/Application.cfc',
+                                  'framework.cfc', 'ioc.cfc' ];
         variables.listeners = 0;
 		setupFrameworkDefaults();
 		return this;
@@ -56,7 +57,7 @@ component {
 	
 	
 	// programmatically register new beans with the factory (add an actual CFC)
-	public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true ) {
+	public any function declareBean( string beanName, string dottedPath, boolean isSingleton = true, struct overrides = { } ) {
 		discoverBeans( variables.folders );
 		var singleDir = '';
 		if ( listLen( dottedPath, '.' ) > 1 ) {
@@ -67,7 +68,8 @@ component {
 		var cfcPath = replace( expandPath( '/' & replace( dottedPath, '.', '/', 'all' ) & '.cfc' ), chr(92), '/', 'all' );
 		var metadata = { 
 			name = beanName, qualifier = singleDir, isSingleton = isSingleton, 
-			path = cfcPath, cfc = dottedPath, metadata = cleanMetadata( dottedPath )
+			path = cfcPath, cfc = dottedPath, metadata = cleanMetadata( dottedPath ),
+            overrides = overrides
 		};
 		variables.beanInfo[ beanName ] = metadata;
         return this;
@@ -140,9 +142,11 @@ component {
             else bean = createObject( 'component', bean );
         }
 		for ( var property in properties ) {
-			var args = { };
-			args[ property ] = properties[ property ];
-			evaluate( 'bean.set#property#( argumentCollection = args )' );
+			if ( !isNull( properties[ property ] ) ) {
+				var args = { };
+				args[ property ] = properties[ property ];
+				evaluate( 'bean.set#property#( argumentCollection = args )' );
+			}
 		}
 		return bean;
 	}
@@ -482,7 +486,9 @@ component {
 			var injection = partialBean.injection[ name ];
 			for ( var property in injection.setters ) {
 				var args = { };
-				if ( structKeyExists( partialBean.injection, property ) ) {
+                if ( structKeyExists( injection.overrides, property ) ) {
+                    args[ property ] = injection.overrides[ property ];
+				} else if ( structKeyExists( partialBean.injection, property ) ) {
 					args[ property ] = partialBean.injection[ property ].bean;
 				} else if ( structKeyExists( variables, 'parent' ) && variables.parent.containsBean( property ) ) {
 					args[ property ] = variables.parent.getBean( property );
@@ -503,6 +509,7 @@ component {
 			var info = variables.beanInfo[ beanName ];
 			if ( structKeyExists( info, 'cfc' ) ) {
 				var metaBean = cachable( beanName );
+                var overrides = structKeyExists( info, 'overrides' ) ? info.overrides : { };
 				bean = metaBean.bean;
 				if ( metaBean.newObject ) {
 				    if ( structKeyExists( info.metadata, 'constructor' ) ) {
@@ -512,7 +519,10 @@ component {
                             // handle known required arguments
                             if ( info.metadata.constructor[ arg ] ) {
                                 var beanMissing = true;
-                                if ( containsBean( arg ) ) {
+                                if ( structKeyExists( overrides, arg ) ) {
+                                    args[ arg ] = overrides[ arg ];
+                                    beanMissing = false;
+                                } else if ( containsBean( arg ) ) {
                                     argBean = resolveBeanCreate( arg, accumulator );
                                     if ( structKeyExists( argBean, 'bean' ) ) {
                                         args[ arg ] = argBean.bean;
@@ -522,14 +532,18 @@ component {
                                 if ( beanMissing ) {
 								    throw 'bean not found: #arg#; while resolving constructor arguments for #beanName#';
                                 }
-                            } else if ( containsBean( arg ) ) {
-                                // optional but present
-							    argBean = resolveBeanCreate( arg, accumulator );
-							    if ( structKeyExists( argBean, 'bean' ) ) {
-							        args[ arg ] = argBean.bean;
-							    }
                             } else {
-                                // optional but not present
+                                if ( structKeyExists( overrides, arg ) ) {
+                                    args[ arg ] = overrides[ arg ];
+                                } else if ( containsBean( arg ) ) {
+                                    // optional but present
+							        argBean = resolveBeanCreate( arg, accumulator );
+							        if ( structKeyExists( argBean, 'bean' ) ) {
+							            args[ arg ] = argBean.bean;
+							        }
+                                } else {
+                                    // optional but not present
+                                }
                             }
 						}
 						var __ioc_newBean = evaluate( 'bean.init( argumentCollection = args )' );
@@ -544,13 +558,21 @@ component {
 					}
 				}
                 if ( !structKeyExists( accumulator.injection, beanName ) ) {
-                    if ( !structKeyExists( variables.settersInfo, beanName ) ) {   
+                    if ( !structKeyExists( variables.settersInfo, beanName ) ) {
                         variables.settersInfo[ beanName ] = findSetters( bean, info.metadata );
                     }
-				    var setterMeta = {setters=variables.settersInfo[ beanName ].setters, bean=bean};
+				    var setterMeta = {
+                        setters = variables.settersInfo[ beanName ].setters,
+                        bean = bean,
+                        overrides = overrides
+                    };
 				    accumulator.injection[ beanName ] = setterMeta; 
 				    for ( var property in setterMeta.setters ) {
-					    resolveBeanCreate( property, accumulator );
+                        if ( structKeyExists( overrides, property ) ) {
+                            // skip resolution because we'll inject override
+                        } else {
+					        resolveBeanCreate( property, accumulator );
+                        }
 				    }
                 }
 				accumulator.bean = bean;
@@ -602,7 +624,7 @@ component {
             throw 'singletonPattern and transientPattern are mutually exclusive';
         }
 				
-		variables.config.version = '0.4.7';
+		variables.config.version = '0.5.0';
 	}
 	
 	
