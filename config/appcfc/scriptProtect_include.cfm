@@ -38,6 +38,6 @@
 		<cfcatch></cfcatch>
 	</cftry>
 	<cfif application.scriptProtectionFilter.isBlocked(request.remoteAddr) eq true>
-		<cfset application.eventManager.announceEvent("onGlobalThreatDetect",createObject("component","mura.event"))>
+		<cfset application.eventManager.announceEvent("onGlobalThreatDetect",createObject("component","mura.event").init())>
 	</cfif> 
 </cfif>

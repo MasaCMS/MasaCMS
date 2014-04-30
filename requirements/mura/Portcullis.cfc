@@ -121,10 +121,29 @@
 		<cfif structkeyexists(arguments,"exceptionFields") and len(arguments.exceptionFields)>
 			<cfset exFF = exFF & "," & arguments.exceptionFields/>
 		</cfif>
+
+		<!---Filter CRLF--->
+		<cfif variables.instance.blockCRLF eq true>
+		<cfloop collection="#object#" item="item">
+			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
+				<cfset temp = filterCRLF(object[item])/>
+				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+				<!---<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>  // We're not going to take note of CRLFs since it's very likely benign--->
+				<cfif arguments.fixValues>
+					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
+						<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly;path=/">
+					<cfelse>
+						<cfset "#objectname#.#itemname#" = temp.cleanText/>
+					</cfif>
+				</cfif>	
+			</cfif>
+		</cfloop>
+		</cfif>
 		
 		<!---Filter Tags--->
 		<cfif arguments.useTagFilter>
 			<cfloop collection="#object#" item="item">
+				
 				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 					<cfset temp = filterTags(object[item])/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
@@ -163,24 +182,6 @@
 				</cfif>
 			</cfif>
 		</cfloop>
-
-		<!---Filter CRLF--->
-		<cfif variables.instance.blockCRLF eq true>
-		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
-				<cfset temp = filterCRLF(object[item])/>
-				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
-				<!---<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>  // We're not going to take note of CRLFs since it's very likely benign--->
-				<cfif arguments.fixValues>
-					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
-						<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly;path=/">
-					<cfelse>
-						<cfset "#objectname#.#itemname#" = temp.cleanText/>
-					</cfif>
-				</cfif>	
-			</cfif>
-		</cfloop>
-		</cfif>
 
 		<!---Filter SQL--->
 		<cfif arguments.useSQLFilter>
@@ -355,7 +356,8 @@
 					<cfset result.cleanText = ReReplaceNoCase(result.cleanText, "<#tag#.*?>|<#tag#.*?/>|</#tag#.*?>", variables.instance.invalidMarker, "All")>
 				<cfelse>
 					<cfset result.cleanText = ReReplaceNoCase(result.cleanText, "<#tag#.*?>.*?</#tag#.*?>|<#tag#.*?/>|</#tag#.*?>", variables.instance.invalidMarker, "All")>
-				</cfif>
+					<cfset result.cleanText = ReReplaceNoCase(result.cleanText, "<#tag#.*?>|<#tag#.*?/>|</#tag#.*?>", variables.instance.invalidMarker, "All")>
+				</cfif>	
 			</cfif>
 			<cfset lcount = lcount + 1/>
 		</cfloop>
@@ -363,7 +365,7 @@
 		<cfif tcount eq lcount>
 			<cfset result.detected = false/>
 		</cfif>
-			
+		
 		<cfreturn result/>
 	</cffunction>
 
