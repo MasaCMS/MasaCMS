@@ -104,6 +104,11 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbar_Basic = [
 		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
 	];
+	
+	config.toolbar_FormBuilder = [
+		{name: 'group1', items: ['Source']},
+		{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+	];
 
 	config.toolbar_htmlEditor = [
 		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
