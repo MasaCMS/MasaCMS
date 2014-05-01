@@ -347,7 +347,7 @@
 //			jQuery("#ui-tabs").tabs('select',0);
 
 			if(fieldData.fieldtype.fieldtype == "textblock") {
-				jQuery('#field_textblock').ckeditor( {toolbar: 'Basic', customConfig: 'config.js.cfm'},onCKEditorChange );
+				jQuery('#field_textblock').ckeditor( {toolbar: 'FormBuilder', customConfig: 'config.js.cfm'},onCKEditorChange );
 				_ckeditor = true;
 			}
 		}
