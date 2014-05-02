@@ -2073,9 +2073,9 @@ Display Objects
 <cffunction name="dspBody"  output="false" returntype="string">
 	<cfargument name="body" type="string" default="">
 	<cfargument name="pagetitle" type="string" default="">
-	<cfargument name="crumblist" type="numeric" default="1">
+	<cfargument name="crumblist" type="boolean" default="1">
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
-	<cfargument name="showMetaImage" type="numeric" default="1">
+	<cfargument name="showMetaImage" type="boolean" default="1">
 	<cfargument name="includeMetaHREF" type="boolean" default="true" />
 	<cfargument name="bodyAttribute">
 	<cfargument name="titleAttribute">
