@@ -173,6 +173,10 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].discriminatorValue;
 	}
 
+	function getOrderBy(){
+		return application.objectMappings[variables.entityName].orderby;
+	}
+
 	function getReadOnly(){
 		return application.objectMappings[variables.entityName].readonly;
 	}
@@ -316,6 +320,8 @@ component extends="mura.bean.bean" versioned=false {
 
 					if(structKeyExists(md,'orderby')){
 						application.objectMappings[variables.entityName].orderby=md.orderby;
+					} else{
+						application.objectMappings[variables.entityName].orderby='';
 					}
 
 					if(structKeyExists(md,'datasource') && md.datasource != application.configBean.getDatasource()){
@@ -924,7 +930,7 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
-	function loadBy(returnFormat="self"){
+	function loadBy(returnFormat="self",orderby=getOrderby()){
 		var qs=getQueryService();
 		var sql="";
 		var props=getProperties();
@@ -1002,7 +1008,7 @@ component extends="mura.bean.bean" versioned=false {
 				}	
 			}
 
-			if(structKeyExists(arguments,'orderby')){
+			if(len(arguments.orderby)){
 				writeOutput("order by #arguments.orderby# ");	
 			}
 		}
@@ -1063,6 +1069,8 @@ component extends="mura.bean.bean" versioned=false {
 		if(hasProperty('siteid')){
 			feed.setSiteID(getValue('siteID'));
 		}
+
+		feed.setOrderBy(getOrderBy());
 
 		return feed;	
 	}
