@@ -112,7 +112,7 @@ form p#error {
 		<cfif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "maintenance">
 			<div class="alert"><cfoutput>#application.settingsManager.getSite(request.siteID).getSite()#</cfoutput> is currently undergoing maintenance.</div>
 		<cfelseif application.settingsManager.getSite(request.siteID).getEnableLockdown() eq "development">
-			<form method="post" action="">
+			<form method="post" action="<cfif application.configBean.getLockdownHTTPS() eq true><cfoutput>#replacenocase(arguments.$.getContentRenderer().createHREF(siteid = request.siteid, filename = arguments.event.getScope().currentfilename, complete = true), "http:", "https:")#</cfoutput></cfif>">
 				<label for="locku">Username</label>
 				<input type="text" name="locku" id="locku" class="text" />
 				
