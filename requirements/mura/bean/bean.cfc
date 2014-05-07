@@ -266,6 +266,9 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function getAllValues(){
+		for(var prop in variables.instance){
+			variables.instance['#lcase(prop)#']=variables.instance['#prop#'];
+		}
 		return variables.instance;
 	}
 
@@ -316,6 +319,14 @@ component extends="mura.cfobject" output="false" {
 	function setlastUpdateBy(lastUpdateBy){
 		variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) ;
 		return this;
+	}
+
+	function getHasManyPropArray(){
+		return [];
+	}
+
+	function getHasOnePropArray(){
+		return [];
 	}
 
 	function getPrimaryKey(){
@@ -584,6 +595,14 @@ component extends="mura.cfobject" output="false" {
 		}
 
 		return returnStruct;
+	}
+
+	function getIterator(){
+		if(getServiceFactory().containsBean(getEntityName() & 'Iterator')){
+			return getBean(getEntityName() & 'Iterator');
+		} else {
+			return getBean('beanIterator').setEntityName(getEntityName());
+		}
 	}
 
 }
