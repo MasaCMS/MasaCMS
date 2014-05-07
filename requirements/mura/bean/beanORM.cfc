@@ -930,7 +930,7 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
-	function loadBy(returnFormat="self",orderby=getOrderby()){
+	function loadBy(returnFormat="self"){
 		var qs=getQueryService();
 		var sql="";
 		var props=getProperties();
@@ -1008,8 +1008,10 @@ component extends="mura.bean.bean" versioned=false {
 				}	
 			}
 
-			if(len(arguments.orderby)){
+			if(structKeyExists(arguments,'orderby')){
 				writeOutput("order by #arguments.orderby# ");	
+			} else if(len(getOrderBy())){
+				writeOutput("order by #getOrderBy()# ");
 			}
 		}
 		
@@ -1070,7 +1072,9 @@ component extends="mura.bean.bean" versioned=false {
 			feed.setSiteID(getValue('siteID'));
 		}
 
-		feed.setOrderBy(getOrderBy());
+		if(len(getOrderBy())){
+			feed.setOrderBy(getOrderBy());
+		}
 
 		return feed;	
 	}
