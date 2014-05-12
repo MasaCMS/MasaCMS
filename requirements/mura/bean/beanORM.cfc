@@ -250,14 +250,6 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].datasource;
 	}
 
-	function getHasManyPropArray(){
-		return application.objectMappings[variables.entityName].hasMany;
-	}
-
-	function getHasOnePropArray(){
-		return application.objectMappings[variables.entityName].hasOne;
-	}
-
 	function getQueryAttrs(){
 		if( hasCustomDatasource() ){
 			structAppend(arguments,

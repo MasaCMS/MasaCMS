@@ -322,6 +322,16 @@ component extends="mura.cfobject" output="false" {
 		return variables.primarykey;
 	}
 
+	function getHasManyPropArray(){
+		param name='application.objectMappings.#variables.entityName#.hasMany' default=[];
+		return application.objectMappings[variables.entityName].hasMany;
+	}
+
+	function getHasOnePropArray(){
+		param name='application.objectMappings.#variables.entityName#.hasOne' default=[];
+		return application.objectMappings[variables.entityName].hasOne;
+	}
+
 	function getProperties(){
 		getEntityName();
 
