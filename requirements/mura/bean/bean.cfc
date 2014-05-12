@@ -596,4 +596,22 @@ component extends="mura.cfobject" output="false" {
 		return returnStruct;
 	}
 
+	function getFeed(){
+		if(getServiceFactory().containsBean(variables.entityName & 'Feed')){
+			var feed=getBean(variables.entityName & 'Feed');
+		} else {
+			var feed=getBean('beanFeed');
+		}
+
+		feed.setEntityName(variables.entityName).setTable(getTable());
+	
+		if(hasProperty('siteid')){
+			feed.setSiteID(getValue('siteID'));
+		}
+
+		if(len(getOrderBy())){
+			feed.setOrderBy(getOrderBy());
+		}
+	}
+
 }
