@@ -159,8 +159,8 @@ If it has not set application.appInitialized=false. --->
 --->
 <cftry>
 	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
-	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
-	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" />
+	<cfcookie name="userid" value="#session.mura.userID#" expires="never" httponly="true"/>
+	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true"/>
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -249,23 +249,6 @@ If it has not set application.appInitialized=false. --->
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
-
-<!---
-<cfif isDefined("application.changesetManager") and not 
-	(
-		findNoCase("MuraProxy.cfc",cgi.script_name)
-		and isDefined("url.method")
-		and (
-				findNoCase("purge",url.method)
-				or 
-				url.method eq "reload"
-			)
-	)>
-	<cfset variables.tracePoint=initTracePoint("mura.content.changesets.changesetManager.publishBySchedule()")>
-	<cfset application.changesetManager.publishBySchedule()>
-	<cfset commitTracePoint(variables.tracePoint)>
-</cfif>
---->
 
 <cfparam name="session.mura.requestcount" default="0">
 <cfset session.mura.requestcount=session.mura.requestcount+1>
