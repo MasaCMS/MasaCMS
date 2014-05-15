@@ -178,7 +178,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 <thead>
 <tr>
 <th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#" rel="nofollow">&laquo;</a></th>
-<th colspan="5"><a href="#navPath#date/#navYear#/#navmonth#/#qrystr#">#dateLong#</a></th>
+<th colspan="5" id="calendarnav_month_and_year"><a href="#navPath#date/#navYear#/#navmonth#/#qrystr#">#dateLong#</a></th>
 <th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#" rel="nofollow">&raquo;</a></th>
 </tr>
 </tr>
@@ -186,7 +186,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
 	<cfset dayValue = listGetAt(weekdayShort,id,",")>
 	<cfset dayValueLong = listGetAt(weekdayLong,id,",")>
-	<td title="#dayValueLong#">#dayValue#</td>
+	<th title="#dayValueLong#" id="calendarnav_#dayValueLong#">#dayValue#</th>
 
 	</cfloop>
 	</tr>
@@ -201,7 +201,8 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 	<cfloop index="id" from="1" to="#daysInMonth#">
 	<cfif posn eq 8></tr><cfif id lte daysInMonth><tr></cfif>
 	<cfset posn=1></cfif>
-	<td<cfif day(now()) eq id and navMonth eq month(now())> class="current"</cfif>>#dspDay(navID,createdate('#navYear#','#navMonth#','#id#'),navPath)#</td>
+	<td headers="calendarnav_month_and_year calendarnav_#DateFormat("#navmonth#/#id#/#navYear#","dddd")#"<cfif day(now()) eq id and navMonth eq month(now())>
+class="current"</cfif>>#dspDay(navID,createdate('#navYear#','#navMonth#','#id#'),navPath)#</td>
 	<cfset posn=posn+1>
 	</cfloop>
 	<cfif posn lt 8>
