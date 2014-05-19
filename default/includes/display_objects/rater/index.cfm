@@ -56,7 +56,6 @@
 --->
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfsilent>
-		<cfset variables.$.loadJSLib() />
 		<cfswitch expression="#variables.$.getJsLib()#">
 			<cfcase value="jquery">
 			 	<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>

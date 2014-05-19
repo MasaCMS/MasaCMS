@@ -621,22 +621,11 @@ Display Objects
 </cffunction>
 
 <cffunction name="loadJSLib" returntype="void" output="false">
-	<cfif not this.jsLibLoaded>
-	<cfswitch expression="#getJsLib()#">
-		<cfcase value="prototype">
-			<cfset addToHTMLHeadQueue("prototype.cfm","prepend")>
-			<cfset addToHTMLHeadQueue("scriptaculous.cfm","prepend")>
-		</cfcase>
-		<cfdefaultcase>
-			<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
-		</cfdefaultcase>
-		</cfswitch>
-	</cfif>
+	<!--- deprecated --->
 </cffunction>
 
 <cffunction name="loadShadowboxJS" returntype="void" output="false">
 	<!---<cfif not cookie.mobileFormat>--->
-		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
 			<cfcase value="prototype">
 				<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
@@ -650,7 +639,6 @@ Display Objects
 </cffunction>
 
 <cffunction name="loadPrettify" returntype="void" output="false">
-	<cfset loadJSLib() />	
 	<cfset addToHTMLHeadQueue("prettify.cfm")>
 </cffunction>
 
@@ -3008,7 +2996,17 @@ Display Objects
 			<cfset addToHTMLHEADQueue('global.cfm',"prepend")>
 
 			<!--- ensure that the js lb is always there --->
-			<cfset loadJSLib() />
+			<cfif not this.jsLibLoaded>
+				<cfswitch expression="#getJsLib()#">
+					<cfcase value="prototype">
+						<cfset addToHTMLHeadQueue("prototype.cfm","prepend")>
+						<cfset addToHTMLHeadQueue("scriptaculous.cfm","prepend")>
+					</cfcase>
+					<cfdefaultcase>
+						<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
+					</cfdefaultcase>
+				</cfswitch>
+			</cfif>
 					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>

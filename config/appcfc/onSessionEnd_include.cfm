@@ -67,16 +67,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset session=arguments.SessionScope>
 	<cfset application=arguments.ApplicationScope>
-	
-	<cfset local.pluginEvent=createObject("component","mura.event").init()>
-	<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
-	<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
+	<cftry>
+		<cfset local.pluginEvent=createObject("component","mura.event").init()>
+		<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
+		<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
 
-	<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
-		<cfset local.pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
-		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",local.pluginEvent)>
-	<cfelse>
-		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onGlobalSessionEnd",local.pluginEvent)>
-	</cfif>	
+		<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
+			<cfset local.pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
+			<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",local.pluginEvent)>
+		<cfelse>
+			<cfset arguments.ApplicationScope.pluginManager.announceEvent("onGlobalSessionEnd",local.pluginEvent)>
+		</cfif>
+	<cfcatch></cfcatch>
+	</cftry>	
 </cfif>
 

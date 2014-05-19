@@ -67,14 +67,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 </cfsilent>
-
 <cfoutput>
 	<div id="svCalendar" class="mura-calendar #this.calendarListWrapperClass#">
 		<table>
 			<tr>
-				<th id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth">&laquo;</a></th>
+				<th id="previousMonth"><a href="#variables.$.createHref(
+				filename='/#variables.$.content('filename')#/date/#variables.previousYear#/#variables.previousMonth#/',
+					queryString='categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth')#">&laquo;</a></th>
 				<th>#dateLong#</th>
-				<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth">&raquo;</a></th>
+				<th id="nextMonth"><a href="#variables.$.createHref(
+					filename='/#variables.$.content('filename')#/date/#variables.nextYear#/#variables.nextMonth#/',
+					queryString='categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#&keywords=#URLEncodedFormat($.event('keywords'))#&filterBy=releaseMonth')#">&raquo;</a></th>
 			</tr>
 		</table>
 	</div>

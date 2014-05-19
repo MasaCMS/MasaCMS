@@ -60,7 +60,6 @@
 	</cfif>
 
 	<cfparam name="msg" default="#variables.$.rbKey('user.message')#">
-	<cfset variables.$.loadJSLib()>
 	<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
 <cfoutput>

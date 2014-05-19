@@ -70,7 +70,7 @@
 		
 		// GENERAL 
 		this.jsLib = "jquery";
-		this.jsLibLoaded = true;
+		this.jsLibLoaded = false;
 		this.suppressWhitespace = true;
 		this.generalWrapperClass = "well";
 		

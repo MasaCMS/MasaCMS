@@ -59,16 +59,8 @@
 --->
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
-		<cfswitch expression="#variables.$.getJsLib()#">
-			<cfcase value="jquery">
-				<cfset variables.$.getContentRenderer().loadJSLib() />
-			 	<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
-			</cfcase>
-			<cfdefaultcase>
-				<!--- no such luck, signed Grant --->
-			</cfdefaultcase>
-		</cfswitch>
 		<cfsilent>
+			<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
 			<cfparam name="cookie.name" default="">
