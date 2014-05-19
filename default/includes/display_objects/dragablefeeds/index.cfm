@@ -56,7 +56,6 @@
 --->
 <cfsilent>
 	<cfset rbFactory=$.siteConfig("rbFactory")>
-	<cfset loadJSLib() />
 	<cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds.cfm") />
 	<cfswitch expression="#$.getJsLib()#">
 		<cfcase value="jquery">

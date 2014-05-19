@@ -47,7 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfswitch expression="#variables.$.getJsLib()#">
 <cfcase value="jquery">
-	<cfset loadJSLib() />
 	<cfset variables.$.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
 	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#variables.$.event('nocache')#">
 	<cfsilent>
