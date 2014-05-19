@@ -266,9 +266,6 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function getAllValues(){
-		for(var prop in variables.instance){
-			variables.instance['#lcase(prop)#']=variables.instance['#prop#'];
-		}
 		return variables.instance;
 	}
 
@@ -321,16 +318,18 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
+	function getPrimaryKey(){
+		return variables.primarykey;
+	}
+
 	function getHasManyPropArray(){
-		return [];
+		param name='application.objectMappings.#variables.entityName#.hasMany' default=[];
+		return application.objectMappings[variables.entityName].hasMany;
 	}
 
 	function getHasOnePropArray(){
-		return [];
-	}
-
-	function getPrimaryKey(){
-		return variables.primarykey;
+		param name='application.objectMappings.#variables.entityName#.hasOne' default=[];
+		return application.objectMappings[variables.entityName].hasOne;
 	}
 
 	function getProperties(){
@@ -597,11 +596,21 @@ component extends="mura.cfobject" output="false" {
 		return returnStruct;
 	}
 
-	function getIterator(){
-		if(getServiceFactory().containsBean(getEntityName() & 'Iterator')){
-			return getBean(getEntityName() & 'Iterator');
+	function getFeed(){
+		if(getServiceFactory().containsBean(variables.entityName & 'Feed')){
+			var feed=getBean(variables.entityName & 'Feed');
 		} else {
-			return getBean('beanIterator').setEntityName(getEntityName());
+			var feed=getBean('beanFeed');
+		}
+
+		feed.setEntityName(variables.entityName).setTable(getTable());
+	
+		if(hasProperty('siteid')){
+			feed.setSiteID(getValue('siteID'));
+		}
+
+		if(len(getOrderBy())){
+			feed.setOrderBy(getOrderBy());
 		}
 	}
 
