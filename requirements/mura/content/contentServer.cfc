@@ -117,6 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset cgi_path=parsed_path_info />
 	</cfif>
+	
+	<cfif left(cgi_path,1) neq "/">
+		<cfset cgi_path = "/" & cgi_path />
+	</cfif>
+	
 	<cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
@@ -264,7 +269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 	
-	<cfif not len(cgi.PATH_INFO)>
+	<cfif not len(cgi_path)>
 		<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
 	<cfelse>
 		<cfif not listFirst(url.path,"/") eq siteid>
