@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfquery>
 		<cfloop query="rc.rsObjects">
-			<option value='{"object":"#JSStringFormat(rc.rsobjects.object)#","name":"#JSStringFormat(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
-				#rc.rsObjects.name#
+			<option title="#HTMLEditFormat(rc.rsObjects.name)#" value='{"object":"#JSStringFormat(rc.rsobjects.object)#","name":"#JSStringFormat(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
+				#HTMLEditFormat(rc.rsObjects.name)#
 			</option>
 		</cfloop>
 	</select>

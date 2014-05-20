@@ -80,26 +80,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        >
 			<cfloop query="rc.rsSections">
 				<cfif rc.rsSections.contentID eq rc.subclassid>
-					<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.pathString)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
+					<cfset title=rc.rsSections.pathString
+						& ' - '  
+						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
+
+					<option title="#HTMLEditFormat(title)#" value="{'object':'category_summary','name':'#JSStringFormat(title)#','objectid':'#rc.rsSections.contentid#'}">
+						#HTMLEditFormat(title)#
 					</option>
-					<option value="{'object':'related_section_content','name':'#JSStringFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.pathString)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.relatedcontent')#
+
+					<cfset title=rc.rsSections.pathString 
+						& ' - ' 
+						& application.rbFactory.getKeyValue(session.rb, 
+					                                    'sitemanager.content.fields.relatedcontent')>
+
+					<option title="#HTMLEditFormat(title)#" value="{'object':'related_section_content','name':'#JSStringFormat(title)#','objectid':'#rc.rsSections.contentid#'}">
+						#HTMLEditFormat(title)#
 					</option>
-					<option value="calendar_nav~#HTMLEditFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
-						#HTMLEditFormat(rc.rsSections.pathString)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')#
+
+					<cfset title=rc.rsSections.pathString
+						& ' - ' 
+						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
+
+					<option titlie="#HTMLEditFormat(title)#" value="calendar_nav~#HTMLEditFormat(title)#~#rc.rsSections.contentid#">
+						#HTMLEditFormat(title)#
 					</option>
-					<option value="archive_nav~#HTMLEditFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.archivenavigation')#~#rc.rsSections.contentid#">
-						#HTMLEditFormat(rc.rsSections.pathString)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')#
+
+					<cfset title=rc.rsSections.pathString
+						& ' - '  
+						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')>
+
+					<option title="#HTMLEditFormat(title)#" value="archive_nav~#HTMLEditFormat(title)#~#rc.rsSections.contentid#">
+						#HTMLEditFormat(title)#
 					</option>
 				</cfif>
 			</cfloop>

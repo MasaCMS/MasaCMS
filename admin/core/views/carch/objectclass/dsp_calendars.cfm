@@ -86,21 +86,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfsilent>
 						<cfset pathString=$.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
 						</cfsilent>
-						<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
-							#HTMLEditFormat(rc.rsSections.pathString)# 
-							- 
-							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
+
+						<cfset title=rc.rsSections.pathString
+							& ' - ' 
+							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
+
+						<option title="#HTMLEditFormat(title)#" value="{'object':'category_summary','name':'#JSStringFormat(title)#','objectid':'#rc.rsSections.contentid#'}">
+							#HTMLEditFormat(title)# 
 						</option>
-						<option value="{'object':'related_section_content','name':'#JSStringFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
-							#HTMLEditFormat(rc.rsSections.pathString)# 
-							- 
-							#application.rbFactory.getKeyValue(session.rb, 
-						                                    'sitemanager.content.fields.relatedcontent')#
+
+						<cfset title=rc.rsSections.pathString 
+							& ' - '  
+							& application.rbFactory.getKeyValue(session.rb, 
+						                                    'sitemanager.content.fields.relatedcontent')>
+
+						<option title="#HTMLEditFormat(title)#" value="{'object':'related_section_content','name':'#JSStringFormat(title)#','objectid':'#rc.rsSections.contentid#'}">
+							#HTMLEditFormat(title)#
 						</option>
-						<option value="calendar_nav~#HTMLEditFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
-							#HTMLEditFormat(rc.rsSections.pathString)# 
-							- 
-							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')#
+
+						<cfset title=rc.rsSections.pathString
+							& ' - ' 
+							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
+
+						<option title="#HTMLEditFormat(title)#" value="calendar_nav~#HTMLEditFormat(title)#~#rc.rsSections.contentid#">
+							#HTMLEditFormat(title)# 
 						</option>
 					</cfif>
 				</cfloop>

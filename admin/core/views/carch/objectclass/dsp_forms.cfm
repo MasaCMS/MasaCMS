@@ -52,18 +52,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			        style="width:310px;">
 				<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
 				<cfloop query="rc.rsForms">
-					<option value="form~#iif(rc.rsForms.responseChart eq 1,de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.poll')#'),de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datacollector')#'))# - #rc.rsForms.menutitle#~#rc.rsForms.contentid#">
-						#iif(rc.rsForms.responseChart eq 1, 
+
+					<cfset title=iif(rc.rsForms.responseChart eq 1, 
 					      de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.poll')#'),
-					      de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datacollector')#'))# 
-						- 
-						#rc.rsForms.menutitle#
+					      de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datacollector')#')) 
+						& ' - ' 
+						& rc.rsForms.menutitle>
+
+					<option title="#HTMLEditFormat(title)#" value="form~#HTMLEditFormat(title)#~#rc.rsForms.contentid#">
+						#HTMLEditFormat(title)#
 					</option>
+
 					<cfif rc.rsForms.responseChart neq 1>
-						<option value="form_responses~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.dataresponses')# - #rc.rsForms.menutitle#~#rc.rsForms.contentid#">
-							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.dataresponses')# 
-							- 
-							#rc.rsForms.menutitle#
+
+						<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.dataresponses')
+							& ' - ' 
+							& rc.rsForms.menutitle>
+							
+						<option title="#HTMLEditFormat(title)#" value="form_responses~#HTMLEditFormat(title)#~#rc.rsForms.contentid#">
+							#HTMLEditFormat(title)#
 						</option>
 					</cfif>
 				</cfloop>
