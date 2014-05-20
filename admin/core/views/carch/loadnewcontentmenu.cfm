@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif len(rsItemTypes.description)>
 								<a href="##" rel="tooltip" data-original-title="#HTMLEditFormat(rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
 							</cfif>
-							<a href="./?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="i#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/ --->#rsItemTypes.subType#</span></a>
+							<a href="./?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/ --->#rsItemTypes.subType#</span></a>
 						</li>
 					</cfif>
 				</cfif>
