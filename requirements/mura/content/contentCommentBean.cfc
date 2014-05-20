@@ -81,6 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.entered=now()/>
 	<cfset variables.instance.subscribe=0/>
 	<cfset variables.instance.isApproved=0/>
+	<cfset variables.instance.isSpam=0/>
+	<cfset variables.instance.isDeleted=0/>
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.path=""/>
 	<cfset variables.instance.kids=0/>

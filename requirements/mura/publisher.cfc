@@ -1500,6 +1500,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentstats.lockType")>
 					,lockType
 					</cfif>
+					<cfif isdefined("rstcontentstats.disableComments")>
+					,disableComments
+					</cfif>
 					)
 					values
 					(
@@ -1521,6 +1524,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentstats.lockType")>
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockType neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockType#">
+					</cfif>
+					<cfif isdefined("rstcontentstats.disableComments")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.disableComments),de(rstcontentstats.disableComments),de(0))#">
 					</cfif>
 					)
 				</cfquery>
