@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, c.remoteID, k.kids, f.fileid, f.fileExt 
+	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.isDeleted,c.isSpam,c.subscribe, c.userID, c.path, c.remoteID, k.kids, f.fileid, f.fileExt 
 	from tcontentcomments c left join (select count(*) kids, parentID 
 										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
 										group by parentID
