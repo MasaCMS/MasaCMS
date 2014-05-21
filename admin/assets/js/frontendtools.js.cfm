@@ -426,7 +426,7 @@
 
 							$.ajax({ 
 					        type: "POST",
-					        <cfif $.globalConfig('accesscontrolheaders') and len($.globalConfig('admindomain'))>
+					        <cfif $.globalConfig('accesscontrolheaders')>
 					        xhrFields: { withCredentials: true },
 					        crossDomain:true,
 					     	</cfif>
