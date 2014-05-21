@@ -58,6 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.context=""/>
 <cfset variables.instance.admindomain=""/>
 <cfset variables.instance.accesscontrolheaders=false/>
+<cfset variables.instance.accesscontrolcredentials=false/>
 <cfset variables.instance.indexfile=""/>
 <cfset variables.instance.contact=""/>
 <cfset variables.instance.sendfrommailserverusername=true/>
