@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <div class="control-group">
         <label class="control-label">
-          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
+          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
           </label>
         <div class="controls">
            <cfif rc.changeset.getPublished()>
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <div class="control-group">
         <label class="control-label">
-          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
+          <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
           </label>
         <div class="controls">
           <cfif rc.changeset.getPublished()>
