@@ -433,8 +433,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		if(yesNoFormat(application.configBean.getAccessControlHeaders()) 
-			&& len(application.configBean.getAdminDomain())
-			&& len(session.siteid)
 		){
 			var headers = getHttpRequestData().headers;
 		  	var origin = '';
