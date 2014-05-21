@@ -424,13 +424,19 @@
 
 							}
 
-							$.post(adminLoc,
-								muraInlineEditor.data,
-								function(data){
-									var resp = eval('(' + data + ')');
-									location.href=resp.location;
-								}
-							);
+							$.ajax({ 
+					        type: "POST",
+					        <cfif $.globalConfig('accesscontrolheaders') and len($.globalConfig('admindomain'))>
+					        xhrFields: { withCredentials: true },
+					        crossDomain:true,
+					     	</cfif>
+					        url: adminLoc,
+					        data: muraInlineEditor.data,
+					        success: function(data){
+						        var resp = eval('(' + data + ')');
+						        location.href=resp.location;
+					        }
+					       });
 						} else {
 							location.reload();
 						}
