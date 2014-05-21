@@ -777,16 +777,15 @@ Display Objects
 		<cfset var crumbLen=arrayLen(arguments.crumbdata)>
 		<cfset var I = 0 />
 		<cfset var content="">
-		<cfsavecontent variable="content">
+		
 		<cfoutput>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
-		#arguments.crumbdata[I].menutitle#  #arguments.separator#
+		<cfset content=content & " #arguments.crumbdata[I].menutitle#  #arguments.separator#">
 		</cfloop>
-		#arguments.crumbdata[1].menutitle#
+		<cfset content=content & " #arguments.crumbdata[1].menutitle#">
 		</cfoutput>
-		</cfsavecontent>
 		
-		<cfreturn content />
+		<cfreturn trim(content) />
 </cffunction>
 
 <cffunction name="dspZoom" returntype="string" output="false">
