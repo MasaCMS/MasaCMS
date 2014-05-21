@@ -891,4 +891,35 @@ s
 	<cfreturn this>
 </cffunction>
 
+
+<cffunction name="getAccessControlOriginList" output="false">
+	<cfset var thelist="http://#getValue('domain')#">
+	<cfset var adminSSL=application.configBean.getAdminSSL()>
+	<cfset var i="">
+	<cfset var lineBreak=chr(13)&chr(10)>
+
+	<cfif adminSSL>
+		<cfset listAppend(thelist,"https://#getValue('domain')#")>
+	</cfif>
+
+	<cfif len(application.configBean.getAdminDomain())>
+		<cfset listAppend(thelist,"http://#application.configBean.getAdminDomain()#")>
+		<cfif adminSSL>
+			<cfset listAppend(thelist,"https://#application.configBean.getAdminDomain()#")>
+		</cfif>
+	</cfif>
+	
+	<cfif len(getValue('domainAlias'))>
+		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
+			<cfset listAppend(thelist,"http://#i#")>
+			<cfif adminSSL>
+				<cfset listAppend(thelist,"https://#i#")>
+			</cfif>	
+		</cfloop>
+	</cfif>
+
+	<cfreturn thelist>
+
+</cffunction>
+
 </cfcomponent>

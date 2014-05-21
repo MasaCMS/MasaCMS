@@ -431,7 +431,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			location(addtoken="false", url="https://#listFirst(cgi.http_host,":")##page#");
 		}
-		
+
+		if(yesNoFormat(application.configBean.getAccessControlHeaders()) 
+			&& len(application.configBean.getAdminDomain())
+			&& len(session.siteid)
+		){
+			var headers = getHttpRequestData().headers;
+		  	var origin = '';
+		  	var PC = getpagecontext().getresponse();
+		 
+		  	// Find the Origin of the request
+		  	if( structKeyExists( headers, 'Origin' ) ) {
+		   		origin = headers['Origin'];
+		  	}
+		 
+		  	// If the Origin is okay, then echo it back, otherwise leave out the header key
+		  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginList(), origin )) {
+		   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
+		   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+		  	}
+	  	}
+
 		application.rbFactory.setAdminLocale();
 		application.pluginManager.announceEvent("onAdminRequestStart",request.event);
 		
