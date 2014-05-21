@@ -446,7 +446,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  	// If the Origin is okay, then echo it back, otherwise leave out the header key
 		  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginList(), origin )) {
 		   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-		   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+		   		
+		   		if(yesNoFormat(application.configBean.getAccessControlCredentials())){
+		   			PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+		   		}
 		  	}
 	  	}
 
