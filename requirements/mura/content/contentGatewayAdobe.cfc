@@ -458,13 +458,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												)
 
 
-											  <cfif categoryLen> OR tcontent.contenthistID in (
+											  <cfif categoryListLen> OR tcontent.contenthistID in (
 												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 												inner join tcontentcategories #tableModifier#
 												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-												where (<cfloop from="1" to="#categoryLen#" index="c">
+												where (<cfloop from="1" to="#categoryListLen#" index="c">
 														tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-														<cfif c lt categoryLen> or </cfif>
+														<cfif c lt categoryListLen> or </cfif>
 														</cfloop>) 
 											
 													AND 
@@ -551,13 +551,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								)
 
 
-							  <cfif categoryLen> OR tcontent.contenthistID in (
+							  <cfif categoryListLen> OR tcontent.contenthistID in (
 								select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 								inner join tcontentcategories #tableModifier#
 								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-								where (<cfloop from="1" to="#categoryLen#" index="c">
+								where (<cfloop from="1" to="#categoryListLen#" index="c">
 										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-										<cfif c lt categoryLen> or </cfif>
+										<cfif c lt categoryListLen> or </cfif>
 										</cfloop>) 
 							
 									AND 
