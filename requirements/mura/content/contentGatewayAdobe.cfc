@@ -350,6 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			<cfargument name="tagGroup" type="string" required="yes" default="" >
+			<cfargument name="useCategoryIntersect" default="false">
 			
 			<cfset var rsKids = ""/>
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
@@ -363,6 +364,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var nowAdjusted="">
 			<cfset var tableModifier="">
 			<cfset var altTable=variables.configBean.getContentGatewayTable()>
+			<cfset var castfield="attributeValue">
+			<cfset var palias="">
+			<cfset var talias="">
 
 			<cfif altTable eq 'tcontent'>
 				<cfset altTable=''>	
@@ -442,60 +446,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif>
 
 							   where tcontent.siteid='#arguments.siteid#'
-							   		 AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+							   		AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
 							      	#renderActiveClause("tcontent",arguments.siteID)#
 								    AND tcontent.isNav = 1 
 								    #renderActiveClause("TKids",arguments.siteID)#
 								    AND TKids.isNav = 1 
 								    AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#"/>
-								    
-								    <cfif arguments.hasFeatures>
-									  and  (
-										  		(tcontent.isFeature=1
-						 						 or
-						 						tcontent.isFeature = 2 
-												and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
-												)
 
-
-											  <cfif categoryListLen> OR tcontent.contenthistID in (
-												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
-												inner join tcontentcategories #tableModifier#
-												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-												where (<cfloop from="1" to="#categoryListLen#" index="c">
-														tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-														<cfif c lt categoryListLen> or </cfif>
-														</cfloop>) 
-											
-													AND 
-													(
-														tcontentcategoryassign.isFeature = 1
-													OR
-														
-														(	tcontentcategoryassign.isFeature = 2 
-															AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-															AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
-														)
-																		
-													) 
-													and tcontentcategoryassign.siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
-												)
-												
-												</cfif>
-											)
-									  </cfif>
-
-									  <cfif arguments.keywords neq ''>
-									  AND (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+									<cfif arguments.keywords neq ''>
+									  	AND (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
 									  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
-									  </cfif>
+									</cfif>
 				 					
-									   AND (
-									 		#renderMenuTypeClause(arguments.type,nowAdjusted)#
-									 		)
+									AND (
+									 	#renderMenuTypeClause(arguments.type,nowAdjusted)#
+									 	)
 									
 									<cfif len(arguments.tag)>
-									and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
+										and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 									</cfif>
 									
 									<cfif relatedListLen >
@@ -510,20 +478,115 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										)
 									 </cfif>
 
-									  <cfif categoryListLen>
-									  and tcontent.contentHistID in (
-											select tcontentcategoryassign.contentHistID from 
-											tcontentcategoryassign #tableModifier#
-											inner join tcontentcategories #tableModifier#
-											ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-											where (<cfloop from="1" to="#categoryListLen#" index="c">
-													tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-													<cfif c lt categoryListLen> or </cfif>
-													</cfloop>) 	
-									  	)
-									  </cfif>	
+									<cfif categoryListLen>
+										<cfif arguments.useCategoryIntersect>
+											AND tcontent.contentHistID in (
+												select a.contentHistID from tcontentcategoryassign a
+												<cfif categoryListLen gt 1>
+													<cfloop from="2" to="#categoryListLen#" index="c">
+														<cfset palias = listGetAt(alpha,c-1)>
+														<cfset talias = listGetAt(alpha,c)>
+														inner join tcontentcategoryassign #talias# #tableModifier# on 	#palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,c)#">	
+													</cfloop>
+												</cfif>
+												where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,1)#"/>
+											)
+										<cfelse>
+											AND tcontent.contenthistID in (
+												select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+												inner join tcontentcategories #tableModifier#
+												ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+												where (<cfloop from="1" to="#categoryListLen#" index="c">
+														tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+														<cfif c lt categoryListLen> or </cfif>
+														</cfloop>)
+											)
+										</cfif>
+									</cfif>
 
-											   
+									<cfif arguments.hasFeatures>
+										AND 
+										(
+											(
+												tcontent.isFeature = 1
+											
+												OR
+												
+												(	tcontent.isFeature = 2 
+													AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+													AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
+												)				
+											) 
+
+											<cfif categoryListLen>
+												<cfif arguments.useCategoryIntersect>
+												OR tcontent.contentHistID in (
+													select a.contentHistID from tcontentcategoryassign a
+													<cfif categoryListLen gt 1>
+														<cfloop from="2" to="#categoryListLen#" index="c">
+															<cfset palias = listGetAt(alpha,c-1)>
+															<cfset talias = listGetAt(alpha,c)>
+															inner join tcontentcategoryassign #talias# #tableModifier# on 
+																(
+																	#palias#.contentHistID = #talias#.contentHistID 
+																	and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,c)#"/>
+																	<cfif arguments.hasFeatures>
+																	AND 
+																		(
+																			#talias#.isFeature = 1
+																		OR
+																			
+																			(	#talias#.isFeature = 2 
+																				AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+																				AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)			 
+																			)
+																							
+																		)
+																	</cfif> 
+																)
+														</cfloop>
+													</cfif>
+													where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,1)#"/>
+													
+													
+													AND 
+														(
+															a.isFeature = 1
+														OR
+															
+															(	a.isFeature = 2 
+																AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+																AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)			 
+															)
+																			
+														)
+												)
+											<cfelse>
+												OR tcontent.contenthistID in (
+													select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+													inner join tcontentcategories #tableModifier#
+													ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+													where (<cfloop from="1" to="#categoryListLen#" index="c">
+															tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+															<cfif c lt categoryListLen> or </cfif>
+															</cfloop>)
+													AND 
+														(
+															tcontentcategoryassign.isFeature = 1
+														OR
+															
+															(	tcontentcategoryassign.isFeature = 2 
+																AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+																AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
+															)
+																			
+														)
+												)
+											</cfif> 
+										</cfif>
+										)
+									</cfif>
+   
 									group by tcontent.contentID
 							   ) qKids 
 
@@ -537,58 +600,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				WHERE  	
 				    tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-					  #renderActiveClause("tcontent",arguments.siteID)# 
-					  AND tcontent.isNav = 1 
-					  AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
-					  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					
-					 <cfif arguments.hasFeatures >
-					  and  (
-						  		(tcontent.isFeature=1
-		 						 or
-		 						tcontent.isFeature = 2 
-								and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
-								)
-
-
-							  <cfif categoryListLen> OR tcontent.contenthistID in (
-								select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
-								inner join tcontentcategories #tableModifier#
-								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-								where (<cfloop from="1" to="#categoryListLen#" index="c">
-										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-										<cfif c lt categoryListLen> or </cfif>
-										</cfloop>) 
-							
-									AND 
-									(
-										tcontentcategoryassign.isFeature = 1
-									OR
-										
-										(	tcontentcategoryassign.isFeature = 2 
-											AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-											AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
-										)
-														
-									) 
-									and tcontentcategoryassign.siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
-								)
-								
-								</cfif>
-							)
-
-
-					  </cfif>
+					#renderActiveClause("tcontent",arguments.siteID)# 
+					AND tcontent.isNav = 1 
+					AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
+					AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 					  
-					  <cfif arguments.keywords neq ''>
-					  AND 
-					  (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					<cfif arguments.keywords neq ''>
+					  	AND 
+					  	(UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
 					  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
-					  </cfif>
- 					
-					   AND (
-					   		#renderMenuTypeClause(arguments.type,nowAdjusted)#
-		  					)
+					</cfif>
+						
+					AND (
+					   	#renderMenuTypeClause(arguments.type,nowAdjusted)#
+		  				)
 					
 					<cfif len(arguments.tag)>
 						and (
@@ -600,7 +625,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					
 					<cfif relatedListLen >
-					  and tcontent.contentID in (
+					  	and tcontent.contentID in (
 							select relatedID from tcontentrelated 
 							where contentID in 
 							(<cfloop from=1 to="#relatedListLen#" index="f">
@@ -611,18 +636,114 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)
 					 </cfif>
 
-					  <cfif categoryListLen>
-					  	and tcontent.contentHistID in (
-							select tcontentcategoryassign.contentHistID from 
-							tcontentcategoryassign #tableModifier#
-							inner join tcontentcategories #tableModifier#
-							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
-								and (<cfloop from="1" to="#categoryListLen#" index="c">
-									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
-									<cfif c lt categoryListLen> or </cfif>
-									</cfloop>) 		
-					  	)
-					  </cfif>	
+					<cfif categoryListLen>
+						<cfif arguments.useCategoryIntersect>
+							AND tcontent.contentHistID in (
+								select a.contentHistID from tcontentcategoryassign a
+								<cfif categoryListLen gt 1>
+									<cfloop from="2" to="#categoryListLen#" index="c">
+										<cfset palias = listGetAt(alpha,c-1)>
+										<cfset talias = listGetAt(alpha,c)>
+										inner join tcontentcategoryassign #talias# #tableModifier# on 	#palias#.contentHistID = #talias#.contentHistID and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,c)#">	
+									</cfloop>
+								</cfif>
+								where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,1)#"/>
+							)
+						<cfelse>
+							AND tcontent.contenthistID in (
+								select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+								inner join tcontentcategories #tableModifier#
+								ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+								where (<cfloop from="1" to="#categoryListLen#" index="c">
+										tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+										<cfif c lt categoryListLen> or </cfif>
+										</cfloop>)
+							)
+						</cfif>
+					</cfif>
+
+					<cfif arguments.hasFeatures>
+						AND 
+						(
+							(
+								tcontent.isFeature = 1
+							
+								OR
+								
+								(	tcontent.isFeature = 2 
+									AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+									AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
+								)				
+							) 
+
+							<cfif categoryListLen>
+								<cfif arguments.useCategoryIntersect>
+								OR tcontent.contentHistID in (
+									select a.contentHistID from tcontentcategoryassign a
+									<cfif categoryListLen gt 1>
+										<cfloop from="2" to="#categoryListLen#" index="c">
+											<cfset palias = listGetAt(alpha,c-1)>
+											<cfset talias = listGetAt(alpha,c)>
+											inner join tcontentcategoryassign #talias# #tableModifier# on 
+												(
+													#palias#.contentHistID = #talias#.contentHistID 
+													and #talias#.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,c)#"/>
+													<cfif arguments.hasFeatures>
+													AND 
+														(
+															#talias#.isFeature = 1
+														OR
+															
+															(	#talias#.isFeature = 2 
+																AND #talias#.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+																AND (#talias#.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or #talias#.FeatureStop is null)			 
+															)
+																			
+														)
+													</cfif> 
+												)
+										</cfloop>
+									</cfif>
+									where a.categoryID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.categoryID,1)#"/>
+									
+									
+									AND 
+										(
+											a.isFeature = 1
+										OR
+											
+											(	a.isFeature = 2 
+												AND a.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+												AND (a.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or a.FeatureStop is null)			 
+											)
+															
+										)
+								)
+							<cfelse>
+								OR tcontent.contenthistID in (
+									select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+									inner join tcontentcategories #tableModifier#
+									ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+									where (<cfloop from="1" to="#categoryListLen#" index="c">
+											tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+											<cfif c lt categoryListLen> or </cfif>
+											</cfloop>)
+									AND 
+										(
+											tcontentcategoryassign.isFeature = 1
+										OR
+											
+											(	tcontentcategoryassign.isFeature = 2 
+												AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+												AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
+											)
+															
+										)
+								)
+							</cfif> 
+						</cfif>
+						)
+					</cfif>
 				
 				#renderMobileClause()#
 						
