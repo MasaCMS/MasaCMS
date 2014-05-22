@@ -79,13 +79,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</label>
-	<div class="controls"><input name="startDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#iif(rc.placementBean.getStartDate() eq '',de(LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getStartDate(),session.dateKeyFormat)))#">
+	<div class="controls"><input name="startDate" type="text" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#iif(rc.placementBean.getStartDate() eq '',de(LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getStartDate(),session.dateKeyFormat)))#">
 	</div>
 </div>
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</label>
-	<div class="controls"><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#iif(rc.placementBean.getEndDate() eq '',de(LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getEndDate(),session.dateKeyFormat)))#">
+	<div class="controls"><input name="endDate" type="text" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#iif(rc.placementBean.getEndDate() eq '',de(LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getEndDate(),session.dateKeyFormat)))#">
 	</div>
 </div>
 
@@ -98,7 +98,7 @@ function uncheckAllHours() {
 		 for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=false;}
 		}
 </script>
-<table border="0" cellspacing="10" cellpadding="0">
+<table class="table table-bordered" border="0" cellspacing="10" cellpadding="0">
 <tr>
   <td><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.daysofweek')# </strong></td>
     <td colspan="4"><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.hoursinday')#</strong> (<a href="javascript:void();" onclick="javascript:checkAllHours();return false;"> #application.rbFactory.getKeyValue(session.rb,'advertising.selectall')#</a> | <a href="javascript:void();" onclick="javascript:uncheckAllHours();return false;">#application.rbFactory.getKeyValue(session.rb,'advertising.removeall')#</a> )</td>
@@ -106,27 +106,37 @@ function uncheckAllHours() {
 <tr>
 <td valign="top" nowrap>
 <cfloop from="1" to="7" index="wd">
-<input name="weekday" id="day#wd#"type="checkbox" value="#wd#" <cfif listfind(rc.placementBean.getweekday(),wd)>checked</cfif>> <label for="day#wd#">#dayOfWeekAsString(wd)#</label> <br/>
+<div class="controls">
+<label for="day#wd#" class="checkbox"><input name="weekday" id="day#wd#"type="checkbox" value="#wd#" <cfif listfind(rc.placementBean.getweekday(),wd)>checked</cfif>> #dayOfWeekAsString(wd)#</label> <br/>
+</div>
 </cfloop>
 </td>
 <td valign="top" nowrap>
 <cfloop from="0" to="6" index="h">
-<input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> <label for="hour#h#">#LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+<div class="controls">
+<label for="hour#h#" class="checkbox"><input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> #LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+</div>
 </cfloop>
 
 <td valign="top" nowrap>
 <cfloop from="7" to="13" index="h">
-<input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> <label for="hour#h#">#LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+<div class="controls">
+<label for="hour#h#" class="checkbox"><input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> #LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+</div>
 </cfloop>
 </td>
 <td valign="top" nowrap>
 <cfloop from="14" to="20" index="h">
-<input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> <label for="hour#h#">#LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+<div class="controls">
+<label for="hour#h#" class="checkbox"><input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> #LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+</div>
 </cfloop>
 </td>
 <td valign="top" nowrap>
 <cfloop from="21" to="23" index="h">
-<input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> <label for="hour#h#">#LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+<div class="controls">
+<label for="hour#h#" class="checkbox"><input name="hour" id="hour#h#" type="checkbox" value="#h#" <cfif listfind(rc.placementBean.gethour(),h)>checked</cfif>> #LSTimeFormat(createTime(h,0,0),"short")#</label><br/>
+</div>
 </cfloop>
 </td>
 </tr>
@@ -136,7 +146,7 @@ function uncheckAllHours() {
 <cfif application.categoryManager.getCategoryCount(rc.siteid)>
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.categoryfilters')#</label>
-	<div class="controls categories">
+	<div id="mura-list-tree" class="controls categories">
 <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" placementID="#rc.placementID#" placementBean="#rc.placementBean#">
 	</div>
 </div>
@@ -145,28 +155,28 @@ function uncheckAllHours() {
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.costper1000impressions')#</label>
-	<div class="controls"><input name="costPerM" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#rc.placementBean.getCostPerM()#">
+	<div class="controls"><input name="costPerM" type="text" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#rc.placementBean.getCostPerM()#">
 		</div>
 </div>
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#</label>
-	<div class="controls"><input name="costPerClick" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#rc.placementBean.getCostPerClick()#">
+	<div class="controls"><input name="costPerClick" type="text" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#rc.placementBean.getCostPerClick()#">
 	</div>
 </div>
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.budget')#</label>
-	<div class="controls"><input name="budget" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#rc.placementBean.getBudget()#">
+	<div class="controls"><input name="budget" type="text" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#rc.placementBean.getBudget()#">
 	</div>
 </div>
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.exclusive')#</label>
 	<div class="controls">
-	<label  clas="radio" for="isExclusiveYes">
+	<label  class="radio inline" for="isExclusiveYes">
 <input name="isExclusive" id="isExclusiveYes" type="radio" value="1" <cfif rc.placementBean.getisExclusive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 
-<label clas="radio" for="isExclusiveNo">
+<label class="radio inline" for="isExclusiveNo">
 <input name="isExclusive" id="isExclusiveNo" type="radio" value="0" <cfif not rc.placementBean.getisExclusive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label> 
 	</div>
 </div>
@@ -174,9 +184,9 @@ function uncheckAllHours() {
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
 	<div class="controls">
-	<label class="radio" for="isActiveYes">
+	<label class="radio inline" for="isActiveYes">
 <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.placementBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label>
-<label class="radio" for="isActiveNo">
+<label class="radio inline" for="isActiveNo">
 <input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.placementBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label>
 	</div>
 </div>

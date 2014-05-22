@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
 	</label>
 	<div class="controls">
-		<input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.creativeBean.getName())#" maxlength="50">
+		<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.creativeBean.getName())#" maxlength="50">
 	</div>
 </div>
 
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.title')#
 	</label>
-	<div class="controls"><input name="title" class="text"  value="#HTMLEditFormat(rc.creativeBean.getTitle())#" maxlength="200">
+	<div class="controls"><input name="title" type="text" class="text"  value="#HTMLEditFormat(rc.creativeBean.getTitle())#" maxlength="200">
 	</div>
 </div>
 
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.linktitle')#
 	</label>
-	<div class="controls"><input name="linkTitle" class="text"  value="#HTMLEditFormat(rc.creativeBean.getLinkTitle())#" maxlength="100">
+	<div class="controls"><input name="linkTitle" type="text" class="text"  value="#HTMLEditFormat(rc.creativeBean.getLinkTitle())#" maxlength="100">
 	</div>
 </div>
 </span>
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'advertising.height')#
 	</label>
 	<div class="controls">
-		<input name="height" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.creativeBean.getHeight()#">
+		<input name="height" type="text" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.creativeBean.getHeight()#">
 	</div>
 </div>
 
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'advertising.width')#
 	</label>
 	<div class="controls">
-	<input name="width" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.creativeBean.getWidth()#">
+	<input name="width" type="text" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.creativeBean.getWidth()#">
 	</div>
 </div>
 
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'advertising.advertisementurl')#
 	</label>
 	<div class="controls">
-		<input name="redirectURL" class="text" value="#HTMLEditFormat(rc.creativeBean.getRedirectURL())#" maxlength="200">
+		<input name="redirectURL" type="text" class="text" value="#HTMLEditFormat(rc.creativeBean.getRedirectURL())#" maxlength="200">
 	</div>
 </div>
 
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.alttext')#
 	</label>
-	<div class="controls"><input name="altText" class="text"  value="#HTMLEditFormat(rc.creativeBean.getAltText())#" maxlength="200">
+	<div class="controls"><input name="altText" type="text" class="text"  value="#HTMLEditFormat(rc.creativeBean.getAltText())#" maxlength="200">
 	</div>
 </div>
 
@@ -175,8 +175,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
 	<div class="controls">
-		<input name="isActive" type="radio" value="1" <cfif rc.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.yes')# 
-		<input name="isActive" type="radio" value="0" <cfif not rc.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.no')# 
+		<input name="isActive" class="radio inline" type="radio" value="1" <cfif rc.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.yes')# 
+		<input name="isActive" class="radio inline" type="radio" value="0" <cfif not rc.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.no')# 
 	</div>
 </div>
 
