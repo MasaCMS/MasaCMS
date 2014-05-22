@@ -44,21 +44,21 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="stats" table="tcontentstats" output="false">
 
-<cfproperty name="contenID" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="contenid" type="string" default="" required="true" />
+<cfproperty name="siteid" type="string" default="" required="true" />
 <cfproperty name="views" type="numeric" default="0" required="true" />
 <cfproperty name="rating" type="numeric" default="0" required="true" />
-<cfproperty name="totalVotes" type="numeric" default="0" required="true" />
-<cfproperty name="upVotes" type="numeric" default="0" required="true" />
-<cfproperty name="downVotes" type="numeric" default="0" required="true" />
+<cfproperty name="totalvotes" type="numeric" default="0" required="true" />
+<cfproperty name="upvotes" type="numeric" default="0" required="true" />
+<cfproperty name="downvotes" type="numeric" default="0" required="true" />
 <cfproperty name="comments" type="numeric" default="0" required="true" />
-<cfproperty name="disableComments" type="numeric" default="0" required="true" />
-<cfproperty name="majorVersion" type="numeric" default="0" required="true" />
-<cfproperty name="minorVersion" type="numeric" default="0" required="true" />
-<cfproperty name="lockID" type="string" default="" required="true" />
-<cfproperty name="lockType" type="string" default="" required="true" />
+<cfproperty name="disablecomments" type="numeric" default="0" required="true" />
+<cfproperty name="majorversion" type="numeric" default="0" required="true" />
+<cfproperty name="minorversion" type="numeric" default="0" required="true" />
+<cfproperty name="lockid" type="string" default="" required="true" />
+<cfproperty name="locktype" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	

@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.dataType="" />
 <cfset variables.condition="" />
 <cfset variables.criteria="" />
+<cfset variables.orderBy="" />
 <cfset variables.isValid=true />
 
 <cffunction name="init" returntype="any" access="public">
@@ -355,5 +356,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn valuelist(rs.baseid)>
 </cffunction>
 
+<cffunction name="setOrderBy">
+	<cfargument name="orderby">
+	<cfset variables.orderby=arguments.orderby />
+</cffunction>
+
+<cffunction name="getOrderBy" output="false">
+	<cfreturn variables.orderby />	
+</cffunction>
 
 </cfcomponent>

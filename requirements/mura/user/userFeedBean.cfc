@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanFeed" output="false">
+<cfcomponent extends="mura.bean.beanFeed" entityName="user" output="false">
 
 	<cfproperty name="inActive" type="numeric" default="0" required="true" />
 	<cfproperty name="isPublic" type="numeric" default="1" required="true" />
@@ -56,6 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
 	<cfproperty name="bean" type="string" default="user" required="true" />
 	
+	<cfset variables.entityName="user">
+
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
@@ -65,7 +67,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.type=2>
 	<cfset variables.instance.categoryID="">
 	<cfset variables.instance.siteID="">
-	<cfset variables.instance.entityName="user">
 	<cfset variables.instance.sortBy="lname" />
 	<cfset variables.instance.sortDirection="asc" />
 	<cfset variables.instance.table="tusers">
