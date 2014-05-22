@@ -95,6 +95,8 @@ component extends="mura.cfobject" output="false" {
 							//writeDump(var=bean.getProperties());
 							if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
 								synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
+							} else if (!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
+								synthedFunctions[arguments.MissingMethodName].args.loadkey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
 							}
 
 							structAppend(arguments.MissingMethodArguments,synthArgs(synthedFunctions[arguments.MissingMethodName].args),true);
