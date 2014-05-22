@@ -157,6 +157,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
+	<cfif not directoryExists("#webroot#/#arguments.siteid#/includes")> 
+		<cfset variables.fileWriter.createDir(directory="#webroot#/#arguments.siteid#/includes")>
+	</cfif>
+
 	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")> 
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")>
 	</cfif>
