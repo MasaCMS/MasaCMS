@@ -1,6 +1,6 @@
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="changeset" table="tchangesets" output="false">
 
-<cfproperty name="changesetID" type="string" default="" required="true" />
+<cfproperty name="changesetID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="name" type="string" default="" required="true" />
 <cfproperty name="created" type="date" default="" />

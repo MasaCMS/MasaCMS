@@ -58,7 +58,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="sortTable" type="string" default="" />
 	
 <cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.siteID="">
 	<cfset variables.instance.entityName=""/>
