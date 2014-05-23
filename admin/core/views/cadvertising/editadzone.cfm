@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
-<form <cfif rc.adZoneID neq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="./?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
+<form <cfif rc.adZoneID eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="./?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
 
 
 <cfif rc.adZoneID neq ''>
@@ -60,19 +60,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><a href="##tabBasic" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.basic')#</span></a></li>
 		<li><a href="##tabUsagereport" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.usagereport')#</span></a></li>
 	</ul>
+	
 	<div class="tab-content">
 		<div id="tabBasic" class="tab-pane fade">
-<cfelse>
-	<div class="fieldset">
 </cfif>
+		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
 				</label>
 				<div class="controls">
-					<input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.adZoneBean.getName())#" maxlength="50">
+					<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.adZoneBean.getName())#" maxlength="50">
 				</div>
-			</div>
+			</div><!--- // Name --->
 
 			<div class="control-group">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</label>
@@ -83,21 +83,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfloop>
 					</select>
 				</div>
-			</div>
+			</div><!--- // Type --->
 
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</label>
 				<div class="controls">
-					<input name="height" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.adZoneBean.getHeight()#">
+					<input name="height" type="text" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.adZoneBean.getHeight()#">
 				</div>
-			</div>
+			</div><!--- // Height --->
 
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</label>
 				<div class="controls">
-				<input name="width" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.adZoneBean.getWidth()#">
+				<input name="width" type="text" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.adZoneBean.getWidth()#">
 				</div>
-			</div>
+			</div><!--- // Width --->
 
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
@@ -111,17 +111,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#application.rbFactory.getKeyValue(session.rb,'advertising.no')#
 					</label>
 				</div>
-			</div>
+			</div><!--- // isActive --->
 
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</label>
 				<div class="controls">
 				<textarea name="notes" class="textArea">#HTMLEditFormat(rc.adZoneBean.getNotes())#</textarea>
 				</div>
-			</div>
+			</div><!--- // Notes --->
 		
 
-		</div>
+		</div><!--- // Fieldset --->
+	</div><!--- // Basic Tab --->
 		
 		<cfif rc.adZoneID neq ''>
 		<cfinclude template="dsp_tab_usage.cfm">
