@@ -60,7 +60,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isApproved" type="numeric" default="0" />
 <cfproperty name="userID" type="string" default="" />
 <cfproperty name="path" type="string" default="" />
-<cfproperty name="kids" type="string" default="" />
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="isNew" type="numeric" default="1" />
 
