@@ -622,9 +622,9 @@ component extends="mura.cfobject" output="false" {
 				}
 			} 
 
-			try{
-				getValidations();
-			} catch(Any e){}
+			
+			getValidations();
+			
 			//getServiceFactory().declareBean(beanName=variables.entityName,dottedPath=dottedPath,isSingleton=false);
 		}
 
