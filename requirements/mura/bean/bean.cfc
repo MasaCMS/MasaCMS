@@ -637,14 +637,15 @@ component extends="mura.cfobject" output="false" {
 
 	private function setPropAsIDColumn(prop,isPrimaryKey=true){
 		arguments.prop.type="string";
-	
+		arguments.prop.default="";
+
+		/*
 		if(arguments.isPrimaryKey){
 			arguments.prop.required=true;
 			arguments.prop.nullable=false;
 		}
-
-		arguments.prop.default="";
-
+		*/
+		
 		if(arguments.prop.name eq 'site'){
 			arguments.prop.ormtype="varchar";
 			arguments.prop.datatype="varchar";
