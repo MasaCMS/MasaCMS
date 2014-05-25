@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif isDefined('arguments.exception.rootCause') and arguments.exception.rootCause eq "coldfusion.runtime.AbortException">
-	<cfreturn/>
+	<cfreturn>
 </cfif>
 
 <cfif not isDefined('request.muraTemplateMissing')>
