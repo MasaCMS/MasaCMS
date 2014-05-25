@@ -112,6 +112,15 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
+	private function setPropAsIDColumn(prop,isPrimaryKey=true){
+		super.setPropAsIDColumn(argumentCollection=arguments);
+	
+		if(arguments.isPrimaryKey){
+			arguments.prop.required=true;
+			arguments.prop.nullable=false;
+		}
+	}
+	
 	function set(data){
 	
 		preLoad();
