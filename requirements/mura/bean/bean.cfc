@@ -236,7 +236,7 @@ component extends="mura.cfobject" output="false" {
 			arguments.propertyValue=trim(arguments.propertyValue);
 		}
 	
-		if(isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
+		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
 		} else {
