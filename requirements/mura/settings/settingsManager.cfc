@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />	
 		</cfif>
 		<cfif variables.configBean.getCreateRequiredDirectories()>
-			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid) />
+			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
 		</cfif>
  	</cfloop>
 

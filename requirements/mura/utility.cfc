@@ -136,6 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
+<cfargument name="displaypoolid" type="string" default="" required="yes"/>
 	<cfset var webroot=expandPath('/muraWRM')>
 
 	<!--- make sure that the file cache directory exists, for node level files --->
@@ -157,28 +158,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
-	<cfif not directoryExists("#webroot#/#arguments.siteid#/includes")> 
-		<cfset variables.fileWriter.createDir(directory="#webroot#/#arguments.siteid#/includes")>
+	<cfset basedir="#webroot#/#arguments.siteid#/includes">
+
+	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
+		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
 	</cfif>
 
-	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")> 
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")>
+	<cfif not directoryExists(basedir)> 
+		<cfset variables.fileWriter.createDir(directory=basedir)>
 	</cfif>
 
-	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/Application.cfc")> 
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#webroot#/#arguments.siteid#/includes/Application.cfc")>
+	<cfif not fileExists("#basedir#/contentRenderer.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#basedir#/contentRenderer.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/eventHandler.cfc")> 
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#webroot#/#arguments.siteid#/includes/eventHandler.cfc")>
+	<cfif not fileExists("#basedir#/Application.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#basedir#/Application.cfc")>
 	</cfif>
 
-	<cfif not directoryExists("#webroot#/#arguments.siteid#/includes/email")> 
-		<cfset variables.fileWriter.createDir(directory="#webroot#/#arguments.siteid#/includes/email")>
+	<cfif not fileExists("#basedir#/eventHandler.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#basedir#/eventHandler.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/email/inc_email.cfm")> 
-		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#webroot#/#arguments.siteid#/includes/email/inc_email.cfm")>
+	<cfif not directoryExists("#basedir#/email")> 
+		<cfset variables.fileWriter.createDir(directory="#basedir#/email")>
+	</cfif>
+
+	<cfif not fileExists("#basedir#/email/inc_email.cfm")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#basedir#/email/inc_email.cfm")>
 	</cfif>
 	
 </cffunction>
