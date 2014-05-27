@@ -79,14 +79,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
 </cfoutput>
 
-<h3>Extended Attribute Sets <cfif arrayLen(extendSets)>(<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;"><i class="icon-check"></i>Save Order</a><a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;"><i class="icon-move"></i>Reorder</a>)</cfif></h3>
+<h3>Extended Attribute Sets <cfif arrayLen(extendSets) gt 1>(<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;"><i class="icon-check"></i>Save Order</a><a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;"><i class="icon-move"></i>Reorder</a>)</cfif></h3>
 <cfif arrayLen(extendSets)>
-	<!---
-<ul class="nav nav-pills">
-		<li><a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;"><i class="icon-check"></i> Save Order</a></li>
-		<li><a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;"><i class="icon-move"></i> Reorder</a></li>
-	</ul>
---->
 
 	<ul id="attr-set" class="attr-list">
 		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
@@ -110,11 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif showRelatedContentSets>
 	<cfif arrayLen(relatedContentsets)>
 		<hr />
-		<h3>Related Content Sets</h3>
-		<ul class="nav nav-pills">
-			<li><a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;"><i class="icon-check"></i> Save Order</a></li>
-			<li><a href="javascript:;"  id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;"><i class="icon-move"></i> Reorder</a></li>
-		</ul>
+		<h3>Related Content Sets <cfif arrayLen(relatedContentsets) gt 1>(<a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;"><i class="icon-check"></i> Save Order</a><a href="javascript:;"  id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;"><i class="icon-move"></i> Reorder</a>)</cfif></h3>
 		
 		<ul id="related-set" class="attr-list">
 			<cfloop from="1" to="#arrayLen(relatedContentsets)#" index="s">	
