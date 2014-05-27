@@ -53,7 +53,7 @@
 					<div class="col-md-3 pull-right">
 						<form id="searchForm" class="navbar-form navbar-right" role="search">
 							<div class="input-group">
-								<input type="text" name="Keywords" id="txtKeywords" class="form-control" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
+								<input type="text" name="Keywords" id="navKeywords" class="form-control" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#$.rbKey('search.search')#">
 								<span class="input-group-btn">
 									<button type="submit" class="btn btn-default">
 										<i class="fa fa-search"></i>
