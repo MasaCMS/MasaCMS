@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
-	<cfset var themeRenderer=arguments.event.getValue("themeRenderer")>
+	<cfset var themeRenderer=renderer>
 	<cfset var contentArray="">
 	
 	<cfif arguments.event.valueExists('previewID')>
@@ -199,16 +199,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelseif len(arguments.event.getValue('currentFilenameAdjusted')) and  application.configBean.getLoadContentBy() eq 'urltitle'>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveByURLTitle(listLast(arguments.event.getValue('currentFilenameAdjusted'),'/'),arguments.event.getValue('siteid'),true)) />
 			<cfelse>
+
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename(arguments.event.getValue('currentFilenameAdjusted'),arguments.event.getValue('siteid'),true)) />
 			</cfif>
 		</cfif>
 	</cfif>
-
+	
 	<cfif isArray(arguments.event.getValue('contentBean'))>
 		<cfset contentArray=arguments.event.getValue('contentBean')>
 		<cfset arguments.event.setValue('contentBean',contentArray[1])>
 	</cfif>
-
+	
 	<cfset arguments.event.getValidator("standardWrongFilename").validate(arguments.event)>
 
 	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
@@ -220,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.event.valueExists('crumbdata')>
 		<cfset arguments.event.setValue('crumbdata',application.contentGateway.getCrumbList(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getContentBean().getSiteID(),true,arguments.event.getValue('contentBean').getPath())) />
 	</cfif>
-	
+
 	<cfset renderer.injectMethod('crumbdata',arguments.event.getValue("crumbdata"))>
 	
 	<cfif isObject(themeRenderer)>
@@ -323,13 +324,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var showMeta=0>
 	<cfset var renderer="">
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
-	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
+	<cfset var themeRenderer=renderer>
 	<cfset var translator="">
-	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"showItemMeta")>
-		<cfset renderer=themeRenderer>
-	<cfelse>
-		<cfset renderer=siteRenderer>
-	</cfif>
 	
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 	

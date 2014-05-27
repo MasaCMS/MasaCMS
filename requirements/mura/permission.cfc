@@ -347,14 +347,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfreturn r>
 				</cfif>
 				<cfset r.loggedIn=0>
-			</cfif>
-			
+				</cfif>
+						
 			<cfif not isBoolean(arguments.hasModuleAccess)>
 				<cfset r.hasModuleAccess=getModulePerm('00000000000000000000000000000000000','#arguments.crumbdata[1].siteid#')>
 			<cfelse>
 				<cfset r.hasModuleAccess=arguments.hasModuleAccess>
 			</cfif>
-			
+				
 			<!--- Check to see if this node is restricted--->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I" step="1">
 				<cfif arguments.crumbdata[I].restricted eq 1>

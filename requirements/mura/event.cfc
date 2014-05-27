@@ -197,13 +197,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not valueExists("contentRenderer")>
 		<cfset getBean('settingsManager').getSite(getValue('siteID')).getContentRenderer(getValue('MuraScope'))>
 	</cfif>
-	<cfif not valueExists("themeRenderer") and fileExists(expandPath(getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
-		<cfset getBean('settingsManager').getSite(getValue('siteID')).getThemeRenderer(getValue('MuraScope'))>
-	</cfif>	
-	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
-		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
-		<cfset setValue("localHandler",localHandler)>
+	<cfif not valueExists("localHandler") >	
+		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
+			<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
+			<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
+			<cfset setValue("localHandler",localHandler)>
+		<cfelseif getValue('displaypoolid') neq getValue('siteid') and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc")>
+			<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler").init()>
+			<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler")>
+			<cfset setValue("localHandler",localHandler)>
+		</cfif>
 	</cfif>
 	
 	<cfreturn this>
