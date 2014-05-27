@@ -44,9 +44,9 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="site" table="tsettings" output="false">
  
-<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="siteID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="site" type="string" default=""/>
 <cfproperty name="tagLine" type="string" default=""/>
 <cfproperty name="pageLimit" type="string" default="1000" required="true" />
@@ -788,6 +788,18 @@ s
 	</cfif>
 
 	<cfreturn false>
+</cffunction>
+
+<cffunction name="getLocalHandler" output="false">
+	<cfset var localHandler="">
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler")>
+	<cfelseif getValue('displaypoolid') neq getValue('siteid') and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('displaypoolid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler").init()>
+		<cfset localHandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#getValue('displaypoolid')#.includes.eventHandler")>
+	</cfif>
+	<cfreturn localHandler>
 </cffunction>
 
 <cffunction name="getContentRenderer" output="false">

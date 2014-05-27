@@ -44,12 +44,13 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="comment" table="tcontentcomments" output="false">
 
-<cfproperty name="commentID" type="string" default="" />
-<cfproperty name="contentID" type="string" default="" />
-<cfproperty name="parentID" type="string" default="" />
-<cfproperty name="siteID" type="string" default="" />
+<cfproperty name="commentID" fieldType="id" type="string" default="" />
+<cfproperty name="content" fieldtype="many-to-one" fkcolumn="contentid" cfc="content"/>
+<cfproperty name="kids" fieldtype="one-to-many" cfc="comment" nested=true orderby="created asc" cascade="delete"/>
+<cfproperty name="parent" fieldtype="many-to-one" cfc="comment" fkcolumn="parentid"/>
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
 <cfproperty name="comments" type="string" default="" />
 <cfproperty name="url" type="string" default=""  />
 <cfproperty name="name" type="string" default=""  />
@@ -59,7 +60,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isApproved" type="numeric" default="0" />
 <cfproperty name="userID" type="string" default="" />
 <cfproperty name="path" type="string" default="" />
-<cfproperty name="kids" type="string" default="" />
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="isNew" type="numeric" default="1" />
 

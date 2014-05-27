@@ -58,8 +58,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="sortTable" type="string" default="" />
 	
 <cffunction name="init" output="false">
-	<cfset super.init(argumentCollection=arguments)>
 	
+	<cfset variables.instance={}>
+	<cfset variables.instance.isNew=1>
+	<cfset variables.instance.errors={}>
+	<cfset variables.instance.fromMuraCache = false>
+	<cfif not structKeyExists(variables.instance,"instanceID")>
+		<cfset variables.instance.instanceID=createUUID()>
+	</cfif>
+	<cfset variables.instance.addObjects=[]>
+	<cfset variables.instance.removeObjects=[]>
 	<cfset variables.instance.siteID="">
 	<cfset variables.instance.entityName=""/>
 	<cfset variables.instance.table="">

@@ -205,8 +205,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");
 		variables.serviceFactory.addAlias("content","contentBean");
+		variables.serviceFactory.addAlias("contentCategoryAssign","contentCategoryAssignBean");
 		variables.serviceFactory.addAlias("HTMLExporter","contentHTMLExporter");
 		variables.serviceFactory.addAlias("feed","feedBean");
+		variables.serviceFactory.addAlias("contentFeed","feedBean");
 		variables.serviceFactory.addAlias("site","settingsBean");
 		variables.serviceFactory.addAlias("user","userBean");
 		variables.serviceFactory.addAlias("group","userBean");
@@ -450,8 +452,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfif>
 
-		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#variables.rsSites.siteID#/includes/eventHandler.cfc")>
-			<cfset variables.localhandler=createObject("component","#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler").init()>
+		<cfset variables.localHandler=variables.siteBean.getLocalHandler()>
+
+		<cfif isObject(variables.localHandler)>
 			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		
 				<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
 				<cfset variables.pluginEvent.loadSiteRelatedObjects()>
@@ -468,13 +471,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.localhandler.injectMethod('setValue',variables.pluginEvent.setValue)>
 				</cfif>
 
-				<cfset variables.localhandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler")>
 				<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler.getValue('_objectName')#.onApplicationLoad")>
 				<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
 				<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 			</cfif>
 		</cfif>
-		<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteid)>
+
 		<cfset variables.expandedPath=expandPath(variables.siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
 		<cfif fileExists(variables.expandedPath)>
 			<cfset variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init()>

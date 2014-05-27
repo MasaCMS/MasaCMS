@@ -44,10 +44,16 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="content" table="tcontent" output="false">
 	
-<cfproperty name="contentHistID" type="string" default="" required="true" comparable="false"/>
+<cfproperty name="contentHistID" fieldtype="id" type="string" default="" required="true" comparable="false"/>
 <cfproperty name="contentID" type="string" default="" required="true" comparable="false"/>
+<cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true fkcolumn="contentid" orderby="created asc" cascade="delete"/>
+<cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
+<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign"/>
+<cfproperty name="comments" fieldtype="one-to-many" cfc="comment" fkcolumn="contentid"/>
+<cfproperty name="stats" fieldtype="one-to-one" cfc="stats" fkcolumn="contentid" />
 <cfproperty name="preserveID" type="string" default="" comparable="false"/>
 <cfproperty name="active" type="numeric" default="0" required="true" comparable="false"/>
 <cfproperty name="approved" type="numeric" default="0" required="true" comparable="false"/>
@@ -65,7 +71,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="oldfilename" type="string" default=""/>
 <cfproperty name="lastUpdate" type="date" default="" comparable="false"/>
 <cfproperty name="display" type="numeric" default=""/>
-<cfproperty name="parentID" type="string" default=""/>
 <cfproperty name="type" type="string" default="Page" required="true" />
 <cfproperty name="newfile" type="string" default=""/>
 <cfproperty name="lastUpdateBy" type="string" default=""/>

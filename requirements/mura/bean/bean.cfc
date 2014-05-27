@@ -59,6 +59,7 @@ component extends="mura.cfobject" output="false" {
 
 	function init(){
 		super.init(argumentCollection=arguments);
+
 		variables.instance=structNew();
 		variables.instance.isNew=1;
 		variables.instance.errors=structNew();
@@ -68,6 +69,8 @@ component extends="mura.cfobject" output="false" {
 		}
 		variables.instance.addObjects=[];
 		variables.instance.removeObjects=[];
+		
+		getProperties();
 
 		return this;
 	}
@@ -92,8 +95,8 @@ component extends="mura.cfobject" output="false" {
 							//writeDump(var=bean.getProperties());
 							if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
 								synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
-							} else {
-								synthedFunctions[arguments.MissingMethodName].args.loadKey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
+							} else if (!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
+								synthedFunctions[arguments.MissingMethodName].args.loadkey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
 							}
 
 							structAppend(arguments.MissingMethodArguments,synthArgs(synthedFunctions[arguments.MissingMethodName].args),true);
@@ -184,7 +187,7 @@ component extends="mura.cfobject" output="false" {
 		return returnArgs;
 	}
 
-	private function translatePropKey(property){
+	function translatePropKey(property){
 		if(arguments.property eq 'primaryKey'){
 			return getPrimaryKey();
 		}
@@ -322,6 +325,21 @@ component extends="mura.cfobject" output="false" {
 		return variables.primarykey;
 	}
 
+	function getTable(){
+		param name="application.objectMappings.#variables.entityName#.table" default="";
+		return application.objectMappings[variables.entityName].table;
+	}
+
+	function getOrderBy(){
+		param name="application.objectMappings.#variables.entityName#.orderby" default="";
+		return application.objectMappings[variables.entityName].orderby;
+	}
+
+
+	function hasTable(){
+		return structKeyExists(application.objectMappings[variables.entityName],'table') && len(application.objectMappings[variables.entityName].table);
+	}
+
 	function getHasManyPropArray(){
 		param name='application.objectMappings.#variables.entityName#.hasMany' default=[];
 		return application.objectMappings[variables.entityName].hasMany;
@@ -333,21 +351,103 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function getProperties(){
+		
 		getEntityName();
 
 		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
 			lock type="exclusive" name="muraORM#variables.entityName##application.instanceID#" timeout="5" {
 				if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
-					var md={};
 					var pname='';
 					var i='';
 					var prop={};
 					var md=duplicate(getMetaData(this));
+					var loadKey="";
+					var dottedPath=md.fullname;
+					var synthArgs={};
+					var defaultMetaData={column="",table="",datatype="varchar","default"="null",nullable=true};
 
 					param name="application.objectMappings.#variables.entityName#" default={};
 					application.objectMappings[variables.entityName].properties={};
+					application.objectMappings[variables.entityName].synthedFunctions={};
+					application.objectMappings[variables.entityName].primarykey="";
+					application.objectMappings[variables.entityName].hasMany=[];
+					application.objectMappings[variables.entityName].hasOne=[];
 					
-					//writeDump(var=md,abort=true);
+					if(structKeyExists(md,'versioned') && md.versioned){
+						application.objectMappings[variables.entityName].versioned=true;
+
+						if(not listFindNoCase(application.objectMappings.versionedBeans, variables.entityName)){
+							application.objectMappings.versionedBeans=listAppend(application.objectMappings.versionedBeans, variables.entityName);
+						}
+					} else {
+						application.objectMappings[variables.entityName].versioned=false;
+					}
+
+					if(structKeyExists(md,'bundleable') && md.bundleable){
+						application.objectMappings[variables.entityName].bundleable=md.bundleable;
+
+						if(not listFindNoCase(application.objectMappings.bundleableBeans, variables.entityName)){
+							application.objectMappings.bundleableBeans=listAppend(application.objectMappings.bundleableBeans, variables.entityName);
+						}
+					} else {
+						application.objectMappings[variables.entityName].bundleable=false;
+					}
+
+					if(structKeyExists(md,'orderby')){
+						application.objectMappings[variables.entityName].orderby=md.orderby;
+					} else{
+						application.objectMappings[variables.entityName].orderby='';
+					}
+
+					if(structKeyExists(md,'datasource') && md.datasource != application.configBean.getDatasource()){
+						application.objectMappings[variables.entityName].datasource=md.datasource;
+
+						if(structKeyExists(md,'dbtype')){
+							application.objectMappings[variables.entityName].dbtype=md.dbtype;
+						}
+					}
+
+					if(structKeyExists(md,'table')){
+						application.objectMappings[variables.entityName].table=md.table;
+					} else {
+						application.objectMappings[variables.entityName].table='';
+					}
+
+					if(structKeyExists(md,'discriminatorColumn')){
+						application.objectMappings[variables.entityName].discriminatorColumn=md.discriminatorColumn;
+					} else {
+						application.objectMappings[variables.entityName].discriminatorColumn='';
+					}
+
+					if(structKeyExists(md,'discriminatorValue')){
+						application.objectMappings[variables.entityName].discriminatorValue=md.discriminatorValue;
+					} else {
+						application.objectMappings[variables.entityName].discriminatorValue='';
+					}
+
+					if(structKeyExists(md,'cachename')){
+						application.objectMappings[variables.entityName].cachename=md.cachename;
+					} else {
+						application.objectMappings[variables.entityName].cachename='data';
+					}
+
+					if(structKeyExists(md,'readonly')){
+						application.objectMappings[variables.entityName].readonly=md.readonly;
+					} else {
+						application.objectMappings[variables.entityName].readonly=false;
+					}
+
+					if(structKeyExists(md,'manageschema')){
+						application.objectMappings[variables.entityName].manageschema=md.manageschema;
+					} else {
+						application.objectMappings[variables.entityName].manageschema=true;
+					}
+
+					if(structKeyExists(md,'usetrash')){
+						application.objectMappings[variables.entityName].usetrash=md.usetrash;
+					} else {
+						application.objectMappings[variables.entityName].usetrash=false;
+					}
 
 					for (md; 
 					    structKeyExists(md, "extends"); 
@@ -360,15 +460,34 @@ component extends="mura.cfobject" output="false" {
 					           i <= arrayLen(md.properties); 
 					           i++) 
 					      { 
-					        pName = md.properties[i].name;
+					        pName = md.properties[i].name; 
+
+					        //writeDump(var=pname,abort=true);
 
 					        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
 					       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
 					       	 	prop=application.objectMappings[variables.entityName].properties[pName];
+					       	 	prop.table=application.objectMappings[variables.entityName].table;
 
-					       	 	if(!structKeyExists(prop,'comparable')){
-						       	 	prop.comparable=true;
-						       	 } 
+					       	 	param name="prop.comparable" default=true;
+					       	 	param name="prop.required" default=false;
+					       	 	param name="prop.nullable" default=true;
+					       	 	param name="prop.fieldtype" default="";
+					       	 	param name="prop.nested" default="false";
+
+					       	 	if(prop.required){
+					       	 		prop.nullable=false;
+					       	 	}
+
+					       	 	if(prop.nullable){
+					       	 		prop.required=false;
+					       	 	}
+
+					       	 	if(prop.fieldtype eq 'id'){
+					       	 		application.objectMappings[variables.entityName].primaryKey=prop.name;
+					       	 		setPropAsIDColumn(prop);
+					       	 		//writeDump(var=prop,abort=true);
+					       	 	}
 
 					       	 	if(!structKeyExists(prop,"dataType")){
 					       	 		if(structKeyExists(prop,"ormtype")){
@@ -379,28 +498,163 @@ component extends="mura.cfobject" output="false" {
 					       	 			prop.type="string";
 					       	 			prop.dataType="varchar";
 					       	 		}
-					       	 	}	 	
-					     	 }
-					    	} 
-						} 
+					       	 	}
 
-					}
+					       	 	if(structKeyExists(prop,'cfc')){
+					       	 		prop.persistent=true;
 
-					if(hasProperty('contenthistid')){
-						application.objectMappings[variables.entityName].versioned=true;
-					} else {
-						application.objectMappings[variables.entityName].versioned=false;
-					}
+					       	 		if(prop.fieldtype eq 'one-to-many'){
+					       	 			prop.persistent=false;
+					       	 		} else {
+					       	 			prop.persistent=true;
+					       	 			setPropAsIDColumn(prop,false);
+					       	 			//writeDump(var=prop,abort=true);
+					       	 		}
 
+					       	 		param name="prop.fkcolumn" default="primaryKey";
+
+					       	 		prop.column=prop.fkcolumn;
+					       	 		prop.loadkey=prop.fkcolumn;
+
+					       	 		if(prop.nested){
+					       	 			prop.loadkey='parentid';
+					       	 		}
+
+					       	 		if(prop.fieldtype eq 'one-to-many' or prop.fieldtype eq 'many-to-many'){
+
+					       	 			//getBean("#prop.cfc#").loadBy(argumentCollection=structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions["has#prop.name#"].args),false)).recordcount
+						       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="iterator",functionType='getEntityIterator'}};
+						       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='getEntityQuery'}};
+						       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=prop.name,fkcolumn="primaryKey",loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="query",functionType='hasEntity'}};
+						       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='addEntity'}};
+						       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=prop.name,functionType='removeEntity'}};
+
+						       	 		if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
+						       	 			param name="application.objectMappings.#prop.cfc#" default={};
+						       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
+
+						       	 			if(prop.fieldtype eq 'many-to-many'){
+
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
+							       	 			//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+							       	 			application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+							       	 			application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
+
+						       	 			} else {
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn="#prop.fkcolumn#",loadkey=prop.loadkey,siteid=true,cfc="#variables.entityName#",returnFormat="this",functionType='getEntity'}};
+						       	 				//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+						       	 			}
+
+						       	 		}		
+
+						       	 		arrayAppend(application.objectMappings[variables.entityName].hasMany, prop);
+
+							       	 	if(structKeyExists(prop,"singularname")){
+							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Iterator']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Iterator'];
+							       	 		application.objectMappings[variables.entityName].synthedFunctions['get#prop.singularname#Query']=application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#Query'];
+							       	 		application.objectMappings[variables.entityName].synthedFunctions['add#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['add#prop.name#'];
+							       	 		application.objectMappings[variables.entityName].synthedFunctions['has#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['has#prop.name#'];
+							       	 		application.objectMappings[variables.entityName].synthedFunctions['remove#prop.singularname#']=application.objectMappings[variables.entityName].synthedFunctions['remove#prop.name#'];
+							       	 	
+							       	 	}
+
+					       	 		} else if (prop.fieldtype eq 'many-to-one' or prop.fieldtype eq 'one-to-one'){
+					 
+		   	 							arrayAppend(application.objectMappings[variables.entityName].hasOne, prop);
+
+					       	 			if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
+					       	 				
+					       	 				if(prop.fkcolumn eq 'siteid'){
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='getBean("settingsManager").getSite(getValue("siteID"))',args={prop=prop.name,functionType='getEntity'}};
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("siteID",arguments.MissingMethodArguments[1].getSiteID()))',args={prop=prop.name,functionType='setEntity'}};
+						       	 			} else {
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc=prop.cfc,returnFormat="this",functionType='getEntity'}};
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getPrimaryKey())',args={prop=prop.name,functionType='setEntity'}};
+						       	 			}
+
+					       	 				param name="application.objectMappings.#prop.cfc#" default={};
+							       	 		param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
+
+					       	 				if(prop.fieldtype eq 'many-to-one'){
+
+					       	 					application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc=variables.entityName,returnFormat="iterator",functionType='getEntityIterator'}};
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc=variables.entityName,returnFormat="query",functionType='getEntityQuery'}};
+						       	 				//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+						       	 				application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
+
+					       	 				} else {
+							       	 			
+							       	 			application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc=variables.entityName,returnFormat="this",functionType='getEntity'}};
+							       	 			//application.objectMappings[prop.cfc].synthedFunctions['set#variables.entityName#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getValue("#prop.fkcolumn#"))',args={prop=variables.entityName,functionType='setEntity'}};
+						       	 			}
+					       	 			} else {
+					       	 				if(prop.fkcolumn eq 'siteid'){
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='getBean("settingsManager").getSite(getValue("siteID"))',args={prop=prop.name,functionType='getEntity'}};
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("siteID",arguments.MissingMethodArguments[1].getSiteID()))',args={prop=prop.name,functionType='setEntity'}};
+						       	 			} else {
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['get#prop.name#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=prop.name,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,cfc=prop.cfc,returnFormat="this",functionType='getEntity'}};
+						       	 				application.objectMappings[variables.entityName].synthedFunctions['set#prop.name#']={exp='setValue("#prop.fkcolumn#",arguments.MissingMethodArguments[1].getValue(arguments.MissingMethodArguments[1].getPrimaryKey())',args={prop=prop.name,functionType='setEntity'}};
+						       	 			}
+					       	 			}
+					       	 			
+					       	 		}
+
+					       	 		param name="prop.cascade" default="none";
+
+					       	 	} else if(!structKeyExists(prop,"persistent") ){
+					       	 		prop.persistent=true;
+					       	 	} 
+
+					       	 	param name="prop.column" default=prop.name;
+
+					       	 	
+					       	 	structAppend(prop,
+					       	 		defaultMetaData,
+									false
+								);
+
+					      	} 
+					      }
+					    }
+				    } 
 				}
-			}
+			} 
 
-			getValidations();	
+			
+			getValidations();
+			
+			//getServiceFactory().declareBean(beanName=variables.entityName,dottedPath=dottedPath,isSingleton=false);
 		}
 
-		//writeDump(var=variables.properties,abort=true);
+		//abort;
+		
+		//writeDump(var=application.objectMappings[variables.entityName].properties,abort=true);
 		
 		return application.objectMappings[variables.entityName].properties;
+	}
+
+	private function setPropAsIDColumn(prop,isPrimaryKey=true){
+		arguments.prop.type="string";
+		arguments.prop.default="";
+
+		/*
+		if(arguments.isPrimaryKey){
+			arguments.prop.required=true;
+			arguments.prop.nullable=false;
+		}
+		*/
+		
+		if(arguments.prop.name eq 'site'){
+			arguments.prop.ormtype="varchar";
+			arguments.prop.datatype="varchar";
+			arguments.prop.length=25;
+		} else {
+			arguments.prop.ormtype="char";
+			arguments.prop.datatype="char";
+			arguments.prop.length=35;
+		}
 	}
 
 	function getEntityName(){
@@ -612,6 +866,8 @@ component extends="mura.cfobject" output="false" {
 		if(len(getOrderBy())){
 			feed.setOrderBy(getOrderBy());
 		}
+
+		return feed;
 	}
 
 }

@@ -44,9 +44,9 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" entityName="address" table="tuseraddresses" output="false">
 
-<cfproperty name="addressID" type="string" default="" required="true" />
+<cfproperty name="addressID" fieldtype="id" type="string" default="" required="true" />
 <cfproperty name="userID" type="string" default="" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="isPrimary" type="numeric" default="0" required="true" />

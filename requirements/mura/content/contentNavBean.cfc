@@ -165,6 +165,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getAllValues" output="false">
+	<cfargument name="expand" default="true">
+	<cfif arguments.expand>
+		<cfreturn getContentBean().getAllValues(argumentCollection=arguments)>
+	<cfelse>
+		<cfreturn variables.instance.struct>
+	</cfif>
+</cffunction>
+
 <cffunction name="getParent" output="false" returntype="any">
 	<cfset var i="">
 	<cfset var cl=0>

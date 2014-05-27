@@ -194,7 +194,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "binarycanary", request.userAgent ) OR
 	 FindNoCase( "siteexplorer", request.userAgent ) OR
 	 Find( "spider", request.userAgent ) OR
-	 FindNoCase( "80legs", request.userAgent ))>
+	 FindNoCase( "80legs", request.userAgent ) OR
+	 FindNoCase( "googlebot", request.userAgent ) OR
+	 FindNoCase( "Microsoft Office Protocol", request.userAgent )
+	 )>
 	 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>

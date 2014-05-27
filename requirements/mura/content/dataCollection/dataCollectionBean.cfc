@@ -94,7 +94,12 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	}
 
 	function getValidations(){
-		var content=getFormBean();
+		try{
+			var content=getFormBean();
+		} catch(Any e){ 
+			return false;
+		}
+		
 		var validations={properties={}};
 		var i=1;
 		var prop={};

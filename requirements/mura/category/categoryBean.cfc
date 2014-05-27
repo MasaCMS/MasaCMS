@@ -45,16 +45,17 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" entityName="category" table="tcontentcategories" output="false">
 
-<cfproperty name="categoryID" type="string" default="" />
-<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="categoryID" fieldtype="id" type="string" default="" />
+<cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true orderby="name asc" cascade="delete"/>
+<cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
+<cfproperty name="site" fieldtype="one-to-many" cfc="site" fkcolumn="siteid" />
 <cfproperty name="dateCreated" type="date" default="" />
 <cfproperty name="lastUpdate" type="date" default="" />
 <cfproperty name="lastUpdateBy" type="string" default="" />
 <cfproperty name="name" type="string" default="" required="true"/>
 <cfproperty name="isInterestGroup" type="numeric" default="1" required="true"/>
-<cfproperty name="parentID" type="string" default=""  />
 <cfproperty name="isActive" type="numeric" default="1" required="true"/>
 <cfproperty name="isOpen" type="numeric" default="1" />
 <cfproperty name="note" type="string" default="" />
