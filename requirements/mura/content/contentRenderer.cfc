@@ -3496,8 +3496,8 @@ Display Objects
 	<cfscript>
 		public any function getSectionTitle() {
 			var crumbdata = variables.$.event('crumbdata');
-			return ArrayLen(crumbdata) > 1
-				?	crumbdata[ArrayLen(crumbdata)-1].title
+			return IsArray(crumbdata) && ArrayLen(crumbdata) > 1
+				? crumbdata[ArrayLen(crumbdata)-1].title
 				: '';
 		}
 	</cfscript>
