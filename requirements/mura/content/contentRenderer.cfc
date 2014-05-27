@@ -3495,10 +3495,9 @@ Display Objects
 
 	<cfscript>
 		public any function getSectionTitle() {
-			var path = variables.$.content('path');
-			var topSectionID = ListLen(path) > 1 ? ListGetAt(path, 2) : '';
-			return Len(topSectionID)
-				? variables.$.getBean('content').loadBy(contentid=topSectionID).getTitle()
+			var crumbdata = variables.$.event('crumbdata');
+			return ArrayLen(crumbdata) > 1
+				?	crumbdata[ArrayLen(crumbdata)-1].title
 				: '';
 		}
 	</cfscript>
