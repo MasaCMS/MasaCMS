@@ -3495,10 +3495,7 @@ Display Objects
 
 	<cfscript>
 		public any function getSectionTitle() {
-			var crumbdata = variables.$.event('crumbdata');
-			return IsArray(crumbdata) && ArrayLen(crumbdata) > 1
-				? crumbdata[ArrayLen(crumbdata)-1].title
-				: '';
+			return variables.$.getCrumbVarByLevel('title', 1);
 		}
 
 		public any function dspComponent(string componentid) {
