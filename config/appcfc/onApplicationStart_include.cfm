@@ -452,16 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfif>
 
-		<cfset variables.localHandler="">
-
-		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#variables.siteBean.getSitelID()#/includes/eventHandler.cfc")>
-			<cfset variables.localhandler=createObject("component","#application.configBean.getWebRootMap()#.#variables.siteBean.getSiteID()#.includes.eventHandler").init()>
-			<cfset variables.localhandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#variables.siteBean.getSiteID()#.includes.eventHandler")>
-			
-		<cfelseif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#variables.siteBean.getDisplayPoolID()#/includes/eventHandler.cfc")>
-			<cfset variables.localhandler=createObject("component","#application.configBean.getWebRootMap()#.#variables.siteBean.getDisplayPoolID()#.includes.eventHandler").init()>
-			<cfset variables.localhandler.setValue("_objectName","#application.configBean.getWebRootMap()#.#variables.siteBean.getDisplayPoolID()#.includes.eventHandler")>
-		</cfif>
+		<cfset variables.localHandler=variables.siteBean.getLocalHandler()>
 
 		<cfif isObject(variables.localHandler)>
 			<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		

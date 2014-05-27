@@ -495,7 +495,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="event">
 	<cfset var response=""/>
 	<cfset var servlet = "" />
-	<cfset var localHandler=""/>
 	<cfset var previewData=""/>
 	<cfset var changeset=""/>
 
@@ -508,18 +507,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
 	</cfif>
+
+	<cfset arguments.event.setValue("localHandler",application.settingsManager.getSite(arguments.event.getValue('siteID')).getLocalHandler())>
 	
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#arguments.event.getValue('siteid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.eventHandler").init()>
-	<cfelseif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#arguments.event.getValue('displaypoolid')#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('displaypoolid')#.includes.eventHandler").init()>
-	</cfif>
-
-	<cfif isObject(localHandler)>
-		<cfset localHandler.setValue("_objectName",getMetaData(localHandler).name)>
-		<cfset arguments.event.setValue("localHandler",localHandler)/>
-	</cfif>
-
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfif structKeyExists(url,"changesetID")>

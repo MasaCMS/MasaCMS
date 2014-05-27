@@ -300,12 +300,12 @@
 		
 		// dsp_search_results.cfm
 		this.searchResultWrapperClass="";
-		this.searchResultInnerClass="row";
-		this.searchResultsRowClass="row";
-		this.searchResultsMoreResultsRowClass="row";
+		this.searchResultInnerClass="";
+		this.searchResultsRowClass="";
+		this.searchResultsMoreResultsRowClass="";
 		this.searchResultsListClass="";
 		this.searchResultsPagerClass="pager";
-		this.searchAgainRowClass="row";
+		this.searchAgainRowClass="";
 		this.searchAgainInnerClass="col-md-8";
 		this.searchAgainFormClass="navbar-form";
 		this.searchAgainInputWrapperClass=this.formInputWrapperClass;

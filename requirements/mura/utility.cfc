@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 
-	<cfset basedir="#webroot#/#arguments.siteid#/includes">
+	<cfset var basedir="#webroot#/#arguments.siteid#/includes">
 
 	<cfif not directoryExists(basedir) and arguments.displaypoolid neq arguments.siteid>
 		<cfset basedir="#webroot#/#arguments.displaypoolid#/includes">
