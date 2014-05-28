@@ -3493,4 +3493,26 @@ Display Objects
 	</cfscript>
 </cffunction>
 
+	<cfscript>
+		public any function dspComponent(string componentid) {
+			var bean = IsValid('uuid', arguments.componentid)
+				? variables.$.getBean('content').loadBy(contentid=arguments.componentid)
+				: variables.$.getBean('content').loadBy(title=arguments.componentid, type='Component');
+
+			return !bean.getIsNew() 
+				? variables.$.dspObject('component', bean.getContentID())
+				: '';
+		}
+
+		public any function dspForm(string formid) {
+			var bean = IsValid('uuid', arguments.formid)
+				? variables.$.getBean('content').loadBy(contentid=arguments.formid)
+				: variables.$.getBean('content').loadBy(title=arguments.formid, type='Form');
+
+			return !bean.getIsNew() 
+				? variables.$.dspObject('form', bean.getContentID())
+				: '';
+		}
+	</cfscript>
+
 </cfcomponent>
