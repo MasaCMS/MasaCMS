@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="categoryID" type="string" default=""/>
 <cfproperty name="maxItems" type="numeric" default="20" required="true" />
 <cfproperty name="allowHTML" type="numeric" default="1" required="true" />
-<cfproperty name="isFeaturesOnly" type="numeric" default="0" required="true" hint="either,architecture,category/>
+<cfproperty name="isFeaturesOnly" type="numeric" default="0" required="true" hint="either,architecture,category"/>
 <cfproperty name="featureType" type="string" default="either"/>
 <cfproperty name="restricted" type="numeric" default="0" required="true" />
 <cfproperty name="restrictGroups" type="string" default=""/>
