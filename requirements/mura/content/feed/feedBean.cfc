@@ -123,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.MaxItems=20 />
 	<cfset variables.instance.allowHTML=1 />
 	<cfset variables.instance.isFeaturesOnly=0 />
+	<cfset variables.instance.featureType='either' />
 	<cfset variables.instance.restricted=0 />
 	<cfset variables.instance.restrictGroups="" />
 	<cfset variables.instance.Version="RSS 2.0" />
