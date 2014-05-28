@@ -119,29 +119,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfsilent>
 
-
-<cfif editableControl.innerHTML neq "">
-	<cfoutput>#variables.$.renderEditableObjectHeader("editableComponent")#</cfoutput>
-</cfif>
-<cfif variables.rsTemplate.isOnDisplay>
-	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
-	<cfif not len(variables.componentOutput)>
-		<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
+<cfif not bean.getIsNew()>
+	<cfif editableControl.innerHTML neq "">
+		<cfoutput>#variables.$.renderEditableObjectHeader("editableComponent")#</cfoutput>
 	</cfif>
-	<cfif len(variables.componentOutput)>
-		<cfoutput>#variables.componentOutput#</cfoutput>
-	<cfelse>
-		<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
-			<cfset variables.componentBody=variables.rsTemplate.body>
-			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
+	<cfif variables.rsTemplate.isOnDisplay>
+		<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
+		<cfif not len(variables.componentOutput)>
+			<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
+		</cfif>
+		<cfif len(variables.componentOutput)>
+			<cfoutput>#variables.componentOutput#</cfoutput>
 		<cfelse>
-			<cfoutput>#variables.$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
+			<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
+				<cfset variables.componentBody=variables.rsTemplate.body>
+				<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
+			<cfelse>
+				<cfoutput>#variables.$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
+			</cfif>
 		</cfif>
 	</cfif>
-</cfif>
-<cfif editableControl.innerHTML neq "">
-	<cfoutput>#variables.$.renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
-</cfif>
-<cfif not variables.rsTemplate.doCache>
-	<cfset request.cacheItem=variables.rsTemplate.doCache/>
+	<cfif editableControl.innerHTML neq "">
+		<cfoutput>#variables.$.renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
+	</cfif>
+	<cfif not variables.rsTemplate.doCache>
+		<cfset request.cacheItem=variables.rsTemplate.doCache/>
+	</cfif>
+<cfelse>
+	<cfset request.muraValidObject=false>
 </cfif>

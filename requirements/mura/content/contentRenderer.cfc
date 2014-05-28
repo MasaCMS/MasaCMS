@@ -1803,6 +1803,7 @@ Display Objects
 	<cfset var historyID="">
 	<cfset var tempObject="">
 	<cfset var args={}>
+	<cfset request.muraValidObject=true>
 
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
@@ -2018,9 +2019,14 @@ Display Objects
 		<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_Folder_features.cfm",cacheKeyObjectId,false)></cfcase>
 		<!--- END DEPRICATED --->
 	</cfswitch>
-	<cfif showEditable>
+
+	<cfif request.muraValidObject and showEditable>
 		<cfset theObject=theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+	<cfelseif not request.muraValidObject>
+		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
+		<cfset request.muraValidObject=true>
 	</cfif>
+
 
 	<cfreturn trim(theObject) />
 </cffunction>
@@ -3493,26 +3499,18 @@ Display Objects
 	</cfscript>
 </cffunction>
 
-	<cfscript>
-		public any function dspComponent(string componentid) {
-			var bean = IsValid('uuid', arguments.componentid)
-				? variables.$.getBean('content').loadBy(contentid=arguments.componentid)
-				: variables.$.getBean('content').loadBy(title=arguments.componentid, type='Component');
+<cfscript>
+	public any function dspComponent(string componentid) {
+		return variables.$.dspObject(object='component',objectid=arguments.componentid);
+	}
 
-			return !bean.getIsNew() 
-				? variables.$.dspObject('component', bean.getContentID())
-				: '';
-		}
+	public any function dspForm(string formid) {
+		return variables.$.dspObject(object='form',objectid=arguments.formid);
+	}
 
-		public any function dspForm(string formid) {
-			var bean = IsValid('uuid', arguments.formid)
-				? variables.$.getBean('content').loadBy(contentid=arguments.formid)
-				: variables.$.getBean('content').loadBy(title=arguments.formid, type='Form');
-
-			return !bean.getIsNew() 
-				? variables.$.dspObject('form', bean.getContentID())
-				: '';
-		}
-	</cfscript>
+	public any function dspFeed(string feedid,params={}) {
+		return variables.$.dspObject(object='feed',objectid=arguments.feedid,params=arguments.params);
+	}
+</cfscript>
 
 </cfcomponent>

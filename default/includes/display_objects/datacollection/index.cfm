@@ -55,10 +55,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.event.setValue("formBean",bean)>
 </cfsilent>
 
-<cfif bean.getIsOnDisplay()>
+<cfif not bean.getIsNew() and bean.getIsOnDisplay()>
 	<cfoutput>
 		#$.getBean('dataCollectionBean')
 		.set($.event().getAllValues())
 		.render($)#
 	</cfoutput>
+<cfelse>
+	<cfset request.muraValidObject=false>
 </cfif>

@@ -72,7 +72,7 @@
 	<cfparam name="objectparams.viewalllabel" default="#$.rbKey('list.viewall')#">
 </cfsilent>
 
-<cfif variables.feedBean.getIsActive()>
+<cfif not variables.feedBean.getIsNew() and variables.feedBean.getIsActive()>
 
 	<cfset variables.cssID = variables.$.createCSSid(variables.feedBean.renderName())>
 
@@ -243,6 +243,8 @@
 		<cfcatch><!-- Error getting Feed <cfoutput>'#feedBean.getName()#'</cfoutput> --></cfcatch>
 		</cftry>---->
 	</cfif>
+<cfelseif variables.feedBean.getIsNew()>
+	<cfset request.muraValidObject=false>
 <cfelse>
 	<!-- Inactive Feed '
 	<cfoutput>#feedBean.getName()#</cfoutput>
