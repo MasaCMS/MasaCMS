@@ -322,15 +322,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfset var showMeta=0>
-	<cfset var renderer="">
-	<cfset var siteRenderer=arguments.event.getContentRenderer()>
-	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
+	<cfset var renderer=arguments.event.getContentRenderer()>
 	<cfset var translator="">
-	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"showItemMeta")>
-		<cfset renderer=themeRenderer>
-	<cfelse>
-		<cfset renderer=siteRenderer>
-	</cfif>
 	
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 	
