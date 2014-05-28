@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	if(len($.siteConfig('customTagGroups'))){
-		tagGroupArray=listToArray($.siteConfig('customTagGroups'));
+		tagGroupArray=listToArray($.siteConfig('customTagGroups'),'^,');
 		paramsStarted=true;
  		for(g=1;g <= arrayLen(tagGroupArray); g++ ){
  			if(len($.event("#tagGroupArray[g]#tags"))){
@@ -240,7 +240,6 @@ if(len($.siteConfig('customTagGroups'))){
 }
 
 </cfscript>
-
 
 <cfif iterator.getRecordcount()>
 
@@ -709,7 +708,7 @@ if(len($.siteConfig('customTagGroups'))){
 		siteManager.loadSiteFlat(flatViewArgs);
 	}
 </script>
-
+<cfdump var="#iterator.getQuery()#">
 <!---<cfdump var="#rc.test#">--->
 </cfoutput>
 <!---</cfsavecontent>

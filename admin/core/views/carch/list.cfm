@@ -242,6 +242,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 
+		<cfif len($.siteConfig('customTagGroups'))>
+			<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
+				<div class="module well" id="mura-filter-tags">
+					<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+					<div id="#g#tags" class="tagSelector">
+						<cfloop list="#$.event('#g#tags')#" index="i">
+							<span class="tag">
+							#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
+							<input name="#g#tags" type="hidden" value="#HTMLEditFormat(i)#">
+							</span>
+						</cfloop>
+						<input type="text" name="#g#tags">
+					</div>
+				</div>
+			</cfloop>
+		</cfif>
+
 	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 			<div class="module well" id="mura-list-tree">
 				<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
@@ -256,6 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	 </form>
 
   	 <script>
+  	 	var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups'),"^,"))#;
 
   	 	$(function(){
 			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(
@@ -264,6 +282,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##tags').tagSelector(tagArray, 'tags');
 				}
 			);
+
+			if(customtaggroups.length){
+				for(var g=0;g < customtaggroups.length; g++){
+					
+					if(window[customtaggroups[g]]){
+						$('##' + customtaggroups[g] + 'tags').tagSelector(window[customtaggroups[g]], customtaggroups[g] + 'tags');
+					}else{
+						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
+								context:{taggroup:customtaggroups[g]},
+								success:function(data){
+									window[this.taggroup]=eval('(' + data + ')'); 
+									$('##' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');
+								}
+							});
+					}
+					
+				}
+			}
 		}); 	
 
 	  	$('##removeFilter').click(
@@ -272,6 +308,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  	 	$("input[name='tags']").val('');
 				$('##searchString').val('');
 				$('input[name=categoryID]').attr('checked', false);
+				<cfif len($.siteConfig('customTagGroups'))>
+				<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
+				$("input[name='#g#tags']").val('');
+				</cfloop>
+				</cfif>
 				document.getElementById('filterByTitle').submit();
 
 	  	 	}

@@ -155,12 +155,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset feed.addParam(relationship="or",column="tcontent.body",criteria=data.searchString,condition="contains")>
 					<cfset feed.addParam(relationship=")")>
 				</cfif>
+
+				<cfset var tagstarted=false>
 				<cfif len(data.tag)>
+					<cfset tagstarted=true>
+					<cfset feed.addParam(relationship="and (")>
 					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tag,condition="in")>
 				</cfif>
 				<cfif len(data.tags)>
+					<cfset tagstarted=true>
+					<cfset feed.addParam(relationship="and (")>
 					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tags,condition="in")>
 				</cfif>
+
+				<cfscript>
+					var customtagsgroups=variables.settingsManager.getSite(data.siteid).getValue('customTagGroups');
+					var g='';
+					var t='';
+
+					if(len(customtagsgroups)){
+						var tagGroupArray=listToArray(customtagsgroups,'^,');
+						var paramsStarted=true;
+				 		for(g=1;g <= arrayLen(tagGroupArray); g++ ){
+				 			t="#tagGroupArray[g]#tags";
+
+				 			if(isDefined('data.#t#') && len(data["#tagGroupArray[g]#tags"])){
+					 			if(!tagStarted){
+					 				tagStarted=true;
+					 				feed.addParam(relationship="and (");
+					 				feed.addParam(relationship="(",field="tcontenttags.tag",criteria=data["#tagGroupArray[g]#tags"],condition="in");
+					 			} else {
+					 				feed.addParam(relationship="or (",field="tcontenttags.tag",criteria=data["#tagGroupArray[g]#tags"],condition="in");
+					 			}
+
+					 			feed.addParam(relationship="and",field="tcontenttags.taggroup",criteria=tagGroupArray[g]);
+					 			feed.addParam(relationship=")");
+				 			}
+				 		}
+					}
+
+					if(tagStarted){
+						feed.addParam(relationship=")");
+					}
+				</cfscript>
 
 				<cfset rs=feed.getQuery()>
 

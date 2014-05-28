@@ -1234,12 +1234,13 @@ buttons: {
 
 				$("input[name='" + customtaggroups[g] + "tags']").each(
 					function() {
-						tags.push($(this).val());
+						if($(this).val().length){
+							tags.push($(this).val());
+						}	
 					}
 				);
 
 				flatViewArgs[customtaggroups[g] + "tags"]=tags.toString();
-
 			}
 		}
 
