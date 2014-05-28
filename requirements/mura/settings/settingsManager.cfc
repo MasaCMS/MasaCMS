@@ -319,10 +319,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.create(bean) />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#", "#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#") />
+		
+		<cfset var fileDelim=variables.configBean.getFileDelim()>
+
+		<cfset variables.utility.copyDir(
+			baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
+			destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
+			excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
+		)>
+	
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID()) />
 		</cfif>
+
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>

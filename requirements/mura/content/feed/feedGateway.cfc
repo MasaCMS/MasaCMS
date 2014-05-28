@@ -396,6 +396,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif arguments.feedBean.getIsFeaturesOnly()>
 							AND 
 							(
+								<cfif listFindNoCase('either,architecture',arguments.feedBean.getFeatureType())>			
 								(
 									tcontent.isFeature = 1
 								
@@ -406,10 +407,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
 									)				
 								) 
-
-								<cfif categoryLen>
+								</cfif>
+								<cfif listFindNoCase('either,category',arguments.feedBean.getFeatureType()) and categoryLen>
+									<cfif arguments.feedBean.getFeatureType() eq 'either'>
+										OR
+									</cfif>
 									<cfif arguments.feedBean.getUseCategoryIntersect()>
-									OR tcontent.contentHistID in (
+									tcontent.contentHistID in (
 										select a.contentHistID from tcontentcategoryassign a
 										<cfif categoryLen gt 1>
 											<cfloop from="2" to="#categoryLen#" index="c">
@@ -451,7 +455,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											)
 									)
 								<cfelse>
-									OR tcontent.contenthistID in (
+									tcontent.contenthistID in (
 										select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 										inner join tcontentcategories #tableModifier#
 										ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
@@ -675,6 +679,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.feedBean.getIsFeaturesOnly()>
 		AND 
 		(
+			<cfif listFindNoCase('either,architecture',arguments.feedBean.getFeatureType())>
 			(
 				tcontent.isFeature = 1
 			
@@ -685,10 +690,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
 				)				
 			) 
-
-			<cfif categoryLen>
+			</cfif>
+			<cfif listFindNoCase('either,category',arguments.feedBean.getFeatureType()) and categoryLen>
+				<cfif arguments.feedBean.getFeatureType() eq 'either'>
+					OR
+				</cfif>
 				<cfif arguments.feedBean.getUseCategoryIntersect()>
-				OR tcontent.contentHistID in (
+				tcontent.contentHistID in (
 					select a.contentHistID from tcontentcategoryassign a
 					<cfif categoryLen gt 1>
 						<cfloop from="2" to="#categoryLen#" index="c">
@@ -730,7 +738,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)
 				)
 			<cfelse>
-				OR tcontent.contenthistID in (
+				tcontent.contenthistID in (
 					select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
 					inner join tcontentcategories #tableModifier#
 					ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 

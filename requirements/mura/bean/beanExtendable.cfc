@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
-	<cfif isValid('variableName',arguments.property) and isDefined("this.set#arguments.property#")>
+	<cfif arguments.property neq 'value' and isValid('variableName',arguments.property) and isDefined("this.set#arguments.property#")>
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>

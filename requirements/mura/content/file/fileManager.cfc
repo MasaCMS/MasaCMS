@@ -602,6 +602,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
+	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 	<cfset var check="">
 	<cfset var currentSource="">
 	<cfset var i="">

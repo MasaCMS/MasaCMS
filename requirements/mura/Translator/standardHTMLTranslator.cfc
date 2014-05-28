@@ -98,8 +98,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsavecontent>
 	
 	<cfset page=rereplace(page,'(class|id)="\s*"','','all')>
+
 	<cfset page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>")>
-	<cfset page=replaceNoCase(page,"</body>", renderer.renderHTMLQueue("Foot") & "</body>")>
+	
+	<!--- This is to prevent a lower level CF replaceNoCase issue from throwing an error with some utf chars--->
+	<cfset var renderedFootQueue=renderer.renderHTMLQueue("Foot")>
+	<cftry>
+		<cfset page=replaceNoCase(page,"</body>", renderedFootQueue & "</body>")>
+		<cfcatch>
+			<cfset page=replace(page,"</body>", renderedFootQueue & "</body>")>
+		</cfcatch>
+	</cftry>
+	
 	<cfset arguments.event.setValue('__MuraResponse__',trim(page))>
 </cffunction>
 
