@@ -3494,10 +3494,6 @@ Display Objects
 </cffunction>
 
 	<cfscript>
-		public any function getSectionTitle() {
-			return variables.$.getCrumbVarByLevel('title', 1);
-		}
-
 		public any function dspComponent(string componentid) {
 			var bean = IsValid('uuid', arguments.componentid)
 				? variables.$.getBean('content').loadBy(contentid=arguments.componentid)
