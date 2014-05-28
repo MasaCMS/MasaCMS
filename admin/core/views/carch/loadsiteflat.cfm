@@ -708,7 +708,6 @@ if(len($.siteConfig('customTagGroups'))){
 		siteManager.loadSiteFlat(flatViewArgs);
 	}
 </script>
-<cfdump var="#iterator.getQuery()#">
 <!---<cfdump var="#rc.test#">--->
 </cfoutput>
 <!---</cfsavecontent>
