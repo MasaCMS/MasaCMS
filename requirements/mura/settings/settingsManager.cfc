@@ -322,19 +322,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var fileDelim=variables.configBean.getFileDelim()>
 
-		<!---
 		<cfset variables.utility.copyDir(
-				baseDir="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#",
-				destDir="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#",
-				excludeList="default#fileDelim#cache,default#fileDelim#assets"
-		) />
-		--->
-
-		<cfset variables.utility.copyDir(
-				baseDir="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#",
-				destDir="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#"
-		) />
-		
+			baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
+			destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
+			excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
+		)>
+	
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID()) />
 		</cfif>
