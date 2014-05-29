@@ -14,7 +14,8 @@
 									object=form,
 									objectname="form",
 									ipAddress=request.remoteAddr,
-									useTagFilter=true)>
+									useTagFilter=true,
+									useWordFilter=true)>
 	</cfif>
 	<cftry>
 		<cfif isDefined("cgi")>
