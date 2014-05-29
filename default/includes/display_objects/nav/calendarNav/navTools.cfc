@@ -174,7 +174,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 
 <cffunction name="dspMonth" output="true">
 <cfoutput>
-<table class="#$.getSiteRenderer().getNavCalendarTableClass()#">
+<table class="#$.getSiteRenderer().getNavCalendarTableClass()#" summary="Calendar Navigation">
 <thead>
 <tr>
 <th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#" rel="nofollow">&laquo;</a></th>
