@@ -455,17 +455,19 @@ to your own modified versions of Mura CMS.
   <!--- ************************ --->
   
   <!--- save settings --->
-  <cfloop list="#FORM.fieldnames#" index="ele">
-    <!--- check to see if we are in one of the proper profiles --->
-    <cfif listFindNoCase( validSections, listGetAt( ele, 1, "_" ) )>
-      <cfset section = listGetAt( ele, 1, "_" ) />
-      <cfset entry = mid( ele, len( section )+2 , len( ele )-len( section ) ) />
-      <cfif not listFindNoCase("cfpassword,databaseserver",entry)>
-        <!--- set the profile string --->
-        <cfset settingsIni.set( section, entry, FORM[ele] ) />
+  <cfif NOT len( errorType )>
+    <cfloop list="#FORM.fieldnames#" index="ele">
+      <!--- check to see if we are in one of the proper profiles --->
+      <cfif listFindNoCase( validSections, listGetAt( ele, 1, "_" ) )>
+        <cfset section = listGetAt( ele, 1, "_" ) />
+        <cfset entry = mid( ele, len( section )+2 , len( ele )-len( section ) ) />
+        <cfif not listFindNoCase("cfpassword,databaseserver",entry)>
+          <!--- set the profile string --->
+          <cfset settingsIni.set( section, entry, FORM[ele] ) />
+        </cfif>
       </cfif>
-    </cfif>
-  </cfloop>
+    </cfloop>
+  </cfif>
   
   <!--- ************************ --->
   <!--- STEP 6 --->
