@@ -764,12 +764,13 @@ to your own modified versions of Mura CMS.
             position: getDialogPosition(),
             buttons: dialogoptions,
             open: function(){
-              jQuery("##ui-dialog-title-custom-image-dialog").html('Edit Custom Image Size');
+             
               jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
               var url = 'index.cfm';
               var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
               jQuery.get(url + "?" + pars, 
                   function(data) {
+                  jQuery("##custom-image-dialog").closest(".ui-dialog").find(".ui-dialog-title").html('Edit Custom Image Size');
                   jQuery('##custom-image-dialog').html(data);
                   $("##custom-image-dialog").dialog("option", "position", "center");
                   }
@@ -841,7 +842,7 @@ to your own modified versions of Mura CMS.
       </script>
       <div class="control-group">
         <label class="control-label">Custom Images</label>
-        <ul class="nav nav-pills"><li><a href="##" onclick="return openCustomImageSize('','#JSStringFormat(rc.siteBean.getSiteID())#')"><i class="icon-plus-sign"></i>Add Custom Image Size</a></li></ul>
+        <ul class="nav nav-pills"><li><a href="##" onclick="return openCustomImageSize('','#JSStringFormat(rc.siteBean.getSiteID())#')"><i class="icon-plus-sign"></i> Add Custom Image Size</a></li></ul>
         <div id="custom-images-container"></div>
       </div>
       </cfif>
