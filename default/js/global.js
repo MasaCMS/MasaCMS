@@ -347,7 +347,7 @@ function validateForm(frm,customaction) {
 								
 					}
 	
-					else if(validationType=='NUMERIC')
+					else if(validationType=='NUMERIC' && theField.value != '')
 					{	
 						rules.push({
 							dataType: 'NUMERIC',
