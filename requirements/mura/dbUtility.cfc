@@ -1429,6 +1429,10 @@
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
+	<cfreturn buildForeignKeyMetaData(	
+		rs = rsCheck,
+		table = arguments.table
+	)>
 </cffunction>
 
 <cfscript>
