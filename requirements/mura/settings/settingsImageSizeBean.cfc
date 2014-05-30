@@ -76,6 +76,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setName" output="false">
+	<cfargument name="name">
+	<cfset variables.instance.name=getBean('contentUtility').formatFilename(arguments.name)>
+</cffunction>
+
 <cffunction name="setHeight" output="false">
 <cfargument name="height">
 	<cfif isNumeric(arguments.height) or arguments.height eq "AUTO">
@@ -96,6 +101,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sizeID">
 	<cfargument name="name">
 	<cfargument name="siteID" default="#variables.instance.siteID#">
+	
+	<cfif isDefined('arguments.name')>
+		<cfset arguments.name=getBean('contentUtility').formatFilename(arguments.name)>
+	</cfif>
 	
 	<cfset variables.instance.isNew=1/>
 	<cfset var rs=getQuery(argumentCollection=arguments)>
@@ -137,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery>
 		update timagesizes set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
-		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('contentUtility').formatFilename(variables.instance.name)#">,
+		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
 		height=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
 		width=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
@@ -149,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		insert into timagesizes (sizeid,siteid,name,height,width) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('contentUtility').formatFilename(variables.instance.name)#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		)
