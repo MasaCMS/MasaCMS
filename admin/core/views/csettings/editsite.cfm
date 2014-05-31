@@ -1084,7 +1084,7 @@ to your own modified versions of Mura CMS.
       </div>
         <cfif application.configBean.getPostBundles()>
         <div class="control-group">
-            <label class="control-label"><a rel="tooltip" title="Uploading large files via a web browser can produce inconsistent results.">Upload Bundle File</a></label>
+            <label class="control-label"><a rel="tooltip" data-container="body" title="Uploading large files via a web browser can produce inconsistent results.">Upload Bundle File</a></label>
             <div class="controls">
             <input type="file" name="bundleFile" accept=".zip"/>
           </div>
