@@ -1976,9 +1976,15 @@ Display Objects
 		<cfcase value="payPalCart"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")></cfcase>
 		<cfcase value="rater"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")></cfcase>
 		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
-			<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
+		<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
+			<cfif isJSON(arguments.params)>
+				<cfset arguments.params=deserializeJSON(arguments.params)>
+			<cfelseif not isStruct(arguments.params)>
+				<cfset arguments.params={}>
+			</cfif>
+			<cfparam name="arguments.params.relatedContentSetName" default="default">
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & getListFormat() & arguments.params.relatedContentSetName,params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="related_section_content">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
@@ -2074,6 +2080,7 @@ Display Objects
 	<cfargument name="titleAttribute">
 	<cfargument name="metaImageSizeArgs" default="#this.bodyMetaImageSizeArgs#">
 	<cfargument name="metaImageClass" default="#this.bodymetaImageClass#">
+	<cfargument name="renderKids" default="true">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
@@ -2227,26 +2234,28 @@ Display Objects
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
-					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
-					<cfcase value="Folder">
-						<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
-						</cf_CacheOMatic>
-					</cfcase> 
-					<cfcase value="Calendar">
-						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
-						 </cf_CacheOMatic>
-					</cfcase> 
-					<cfcase value="Gallery">
-						<cfset loadShadowBoxJS() />
-						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
-						<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
-						<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
-						</cf_CacheOMatic>
-					</cfcase> 
-				</cfswitch>
+					<cfif arguments.renderKids>
+						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
+						<cfcase value="Folder">
+							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+							 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+							</cf_CacheOMatic>
+						</cfcase> 
+						<cfcase value="Calendar">
+							 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+							 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
+							 </cf_CacheOMatic>
+						</cfcase> 
+						<cfcase value="Gallery">
+							<cfset loadShadowBoxJS() />
+							<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
+							<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
+							<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+							<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
+							</cf_CacheOMatic>
+						</cfcase> 
+						</cfswitch>
+					</cfif>
 				</cfif>		
 			</cfif> 
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
