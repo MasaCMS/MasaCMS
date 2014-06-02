@@ -41,6 +41,9 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 
+<!--- Give Mura 5 minutes for setup script to run to prevent it timing out when server configuration request timeout is too small --->
+<cfsetting requesttimeout="300">
+
 <!--- Prevent installation if under a directory called 'mura' --->
 <cfscript>
   muraInstallPath = GetDirectoryFromPath(GetCurrentTemplatePath());
