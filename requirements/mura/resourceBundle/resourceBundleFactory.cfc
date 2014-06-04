@@ -647,7 +647,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 
 			<cfcase value="dutch">
-				<cfreturn "nl_BE">
+				<cfreturn "nl_NL">
 			</cfcase>
 
 			<cfcase value="dutch (belgium)">
@@ -655,15 +655,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 
 			<cfcase value="dutch (netherlands)">
-				<cfreturn "nl_BE">
+				<cfreturn "nl_NL">
 			</cfcase>
 
 			<cfcase value="norwegian">
-				<cfreturn "no_NO_NY">
+				<cfreturn "no_NO">
 			</cfcase>
 
 			<cfcase value="norwegian (norway)">
-				<cfreturn "no_NO_NY">
+				<cfreturn "no_NO">
 			</cfcase>
 
 			<cfcase value="polish">
