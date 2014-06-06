@@ -83,64 +83,65 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <cfelse>
                    <cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
                </cfif> 
-	         
+	          
+	          <cfif session.mura.isLoggedIn>
 	          <div class="nav-collapse">
 	            <ul class="nav pull-right">
-	              <cfif session.mura.isLoggedIn>
+	             
 	              <li id="navVersion" class="dropdown">
 	               <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.version")#
 	                      <b class="caret"></b>
 	                    </a>
 	                <ul class="dropdown-menu">
 						<li><a href="##"><strong>Core Version</strong> #application.autoUpdater.getCurrentCompleteVersion()#</a></li>
-						<li><a href="##"><strong>Site Version</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</a></span>
+						<li><a href="##"><strong>Site Version</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</a></li>
 							<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and session.mura.isLoggedIn>
-							<li><a href="##"><strong>Last Deployment</strong>
+							<li>
+								<a href="##"><strong>Last Deployment</strong>
 								<cftry>
 								#LSDateFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),session.dateKeyFormat)# #LSTimeFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),"short")#
 									<cfcatch>
 									Never
 									</cfcatch>
 								</cftry>
+								</a>
 							</li>
 							</cfif>
 						</cfif> 
 	                </ul>
-	                </cfif>
+	                </li>
 	              <!--- Global Settings --->
 	               <cfif session.siteid neq '' and session.mura.isLoggedIn>
-	               		<cfif listFind(session.mura.memberships,'S2')>
-	              	               
-	                  	<li id="navGlobalSettings" class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
-	                      <b class="caret"></b>
-	                    </a>
-		                    <ul class="dropdown-menu">
-		                    <li>
-		                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
-		                    </li>
-		                    <li>
-		                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#</a>
-		                    </li>
-		                    <li>
-		                      <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&siteid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
-		                    </li>
-		                    <li><a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.sitecopyselect"><i class="icon-copy"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
-		                    </li>
-		                   
+	               		<cfif listFind(session.mura.memberships,'S2')>               
+	                  		<li id="navGlobalSettings" class="dropdown">
+			                    <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
+			                      <b class="caret"></b>
+			                    </a>
+			                    <ul class="dropdown-menu">
+			                    <li>
+			                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
+			                    </li>
+			                    <li>
+			                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#</a>
+			                    </li>
+			                    <li>
+			                      <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&siteid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
+			                    </li>
+			                    <li>
+			                    	<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.sitecopyselect"><i class="icon-copy"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
+			                    </li>
 		                     	<li><a href="#application.configBean.getContext()#/admin/?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#" onclick="return actionModal(this.href);"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
-		                     	
-		                     	<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
+			                     	
+			                     	<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
 		                     	<li>
 		                     		<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore')});return false;">
 		                     			<i class="icon-bolt"></i> Update Mura Core
 		                     		</a>
 		                     	</li>
 		                     	</cfif>
-		                   
-		                    </ul>
-	                 </cfif>
-
+			                    </ul>
+	                  	</li>
+					  	</cfif>
 	                <li id="navHelp" class="dropdown">
 	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
@@ -153,9 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank"><i class="icon-bullhorn"></i> #application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
 	                  </ul>
 	                </li> 
-	             
-	               
-	                 <li id="navEditProfile" class="dropdown">
+					<li id="navEditProfile" class="dropdown">
 	                 	<a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
 	                 		<b class="caret"></b></a>
 		                 <ul class="dropdown-menu">
@@ -164,8 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                 <li id="navLogout"><a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 		                 </ul>
 	                 </li>
-	               
-	                
+	               </cfif>
 	              </ul>
 	          </div><!--/.nav-collapse -->
 	          </div><!--/.container -->

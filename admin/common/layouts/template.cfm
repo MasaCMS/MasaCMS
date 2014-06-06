@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          	<div class="row-fluid">
          		<cfif request.action neq "core:cDashboard.main" 
          			and request.action neq "core:cLogin.main">
-         			<div class="span12">
+         			<div id="mura-content" class="span12">
          		</cfif>
          		</cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true">
          		<cfif request.action neq "core:cDashboard.main"
