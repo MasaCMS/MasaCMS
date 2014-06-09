@@ -2648,6 +2648,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif NOT arguments.contentBean.getIsNew()>
 		<cfset purgeContentCacheKey(cache, "contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
+		<cfset purgeContentCacheKey(cache, "crumb"  & arguments.siteid & arguments.contentID,false)>
 
 		<cfif len(arguments.contentBean.getRemoteID())>
 			<cfset purgeContentCacheKey(cache,"remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
