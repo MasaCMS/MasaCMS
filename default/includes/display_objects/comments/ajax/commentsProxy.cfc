@@ -58,7 +58,7 @@
 
 	<cffunction name="get" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfargument name="siteid">
+		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
@@ -67,7 +67,7 @@
 
 	<cffunction name="flag" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfargument name="siteid">
+		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset comment.setCommentID(arguments.commentID).load().flag()>
@@ -75,7 +75,7 @@
 
 	<cffunction name="getContentStats" access="remote" output="true">
 		<cfargument name="contentID">
-		<cfargument name="siteid">
+		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var contentStats = $.getBean('content').loadBy(contentID=arguments.contentID).getStats()>
 		
@@ -88,7 +88,7 @@
 		<cfargument name="nextN" required="true" default="3">
 		<cfargument name="sortDirection" required="true" default="desc">
 		<cfargument name="commentID" required="true" default="">
-		<cfargument name="siteid">
+		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var renderer = $.getContentRenderer()>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
