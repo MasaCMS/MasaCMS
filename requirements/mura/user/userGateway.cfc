@@ -49,12 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
 <cffunction name="init" returntype="any" access="public" output="false">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="settingsManager" type="any" required="yes"/>
-		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
-		<cfset variables.settingsManager=arguments.settingsManager />
-<cfreturn this />
+	<cfargument name="configBean" type="any" required="yes"/>
+	<cfargument name="settingsManager" type="any" required="yes"/>
+	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
+	<cfset variables.settingsManager=arguments.settingsManager />
+	<cfreturn this />
 </cffunction> 
 
 <cffunction name="getUserGroups" returntype="query" access="public" output="false">
@@ -461,5 +461,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	<cfreturn rsTotalAdministrators.theCount />
 </cffunction>
+
+
+
+	<cffunction name="getUsers" returntype="query" access="public" output="false">
+		<cfargument name="siteid" default="" />
+		<cfargument name="isPublic" default="" />
+		<cfset var rsUsers = '' />
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsers')#">
+			SELECT *
+			FROM tusers
+			WHERE 0=0
+				AND tusers.type = 2
+				<cfif Len(arguments.siteid)>
+					AND tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				</cfif>
+				<cfif Len(arguments.isPublic)>
+					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.ispublic#" />
+				</cfif>
+			ORDER BY
+				tusers.lname asc, tusers.fname asc
+		</cfquery>
+		<cfreturn rsUsers />
+	</cffunction>
+
+	<cffunction name="getUsersMemb" returntype="query" access="public" output="false">
+		<cfset var rsUsersMemb = '' />
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsersMemb')#">
+			SELECT *
+			FROM tusersmemb
+		</cfquery>
+		<cfreturn rsUsersMemb />
+	</cffunction>
+
+	<cffunction name="getUnassignedUsers" returntype="query" access="public" output="false">
+		<cfargument name="siteid" default="" />
+		<cfargument name="isPublic" default="" />
+		<cfargument name="showSuperUsers" default="0" />
+
+		<cfset var rsUsers = getUsers(argumentCollection=arguments) />
+		<cfset var rsUnassignedUsers = '' />
+		<cfset var rsUsersMemb = getUsersMemb() />
+
+		<cfquery name="rsUnassignedUsers" dbtype="query">
+			SELECT *
+			FROM rsUsers
+			WHERE userid NOT IN (<cfqueryparam list="true" value="#ValueList(rsUsersMemb.UserID)#" />)
+				<cfif arguments.showSuperUsers NEQ 1>
+					AND s2 <> 1
+				</cfif>
+		</cfquery>
+
+		<cfreturn rsUnassignedUsers />
+	</cffunction>
 
 </cfcomponent>
