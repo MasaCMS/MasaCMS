@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 		<cfset var I=0>
 		<cfset var crumbdata="">
-		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
+		<cfset var key="crumb" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>
 		
@@ -80,54 +80,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- otherwise grab it from the cache --->
 			
 			<cfif NOT cacheFactory.has( key )>			
-				<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />	
+				<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />	
 				<cfif arrayLen(crumbdata) lt 50>
-					<cfreturn cacheFactory.get( key, crumbdata ) />
-				<cfelse>
-					<cfreturn crumbdata>
+					<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 				</cfif>
 			<cfelse>
 				<cftry>
 					<cfset crumbdata=cacheFactory.get( key ) />
 					
 					<cfif not isArray(crumbdata)>
-						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
+						<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
 						<cfif arrayLen(crumbdata) lt 50>
-							<cfreturn cacheFactory.get( key, crumbdata ) />
-						<cfelse>
-							<cfreturn crumbdata>
+							<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 						</cfif>
 					</cfif>
 
-					<cfif arguments.setInheritance>
-						<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
-							<cfif crumbdata[I].inheritObjects eq 'cascade'>
-								<cfset request.inheritedObjects=crumbdata[I].contenthistid>
-								<cfbreak>
-							</cfif>
-						</cfloop>
-					</cfif>	
-					<cfreturn crumbdata />
 					<cfcatch>
-						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
+						<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
 						<cfif arrayLen(crumbdata) lt 50>
-							<cfreturn cacheFactory.get( key, crumbdata ) />
-						<cfelse>
-							<cfreturn crumbdata>
+							<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 						</cfif>
 					</cfcatch>
 				</cftry>
 			</cfif>
 		<cfelse>
-			<cfreturn buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path)/>
+			<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path)/>
 		</cfif>
 
+		<cfif arguments.setInheritance>
+			<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+				<cfif crumbdata[I].inheritObjects eq 'cascade'>
+					<cfset request.inheritedObjects=crumbdata[I].contenthistid>
+					<cfbreak>
+				</cfif>
+			</cfloop>
+		</cfif>	
+
+		<cfreturn crumbdata>
 </cffunction>
 
 <cffunction name="buildCrumblist" returntype="array" access="public" output="false">
 		<cfargument name="contentid" required="true" default="">
 		<cfargument name="siteid" required="true" default="">
-		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
 			
 		<cfset var ID=arguments.contentid>
@@ -187,10 +181,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
-			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
-			<cfset request.inheritedObjects=rsCrumbData.contenthistid>
-			</cfif>
-			
 			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
 			<cfset ID=rsCrumbData.parentid>
@@ -263,10 +253,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.exemptID=rsCrumbData.exemptID />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
-			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
-				<cfset request.inheritedObjects=rsCrumbData.contenthistid>
-			</cfif>
-			
 			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
 			</cfloop>

@@ -80,7 +80,7 @@
 			</cfif>
 
 			<cfif not variables.$.event('isBlocked')>
-				<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validateForm(this);" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 						<!--- Username --->
@@ -133,7 +133,7 @@
 				</cfif>
 
 				<!--- Forgot Username / Password Form --->
-				<form name="form2" class="mura-send-login #this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
+				<form name="form2" class="mura-send-login #this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validateForm(this);" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
 						<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
