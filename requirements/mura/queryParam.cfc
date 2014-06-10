@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setRelationship">
 	<cfargument name="relationship">
-	<cfif listFindNoCase("or,and" & variables.grouprelationships,arguments.relationship)>
+	<cfif listFindNoCase("or,and," & variables.grouprelationships,arguments.relationship)>
 		<cfset variables.relationship=arguments.relationship />
 	</cfif>
 </cffunction>
