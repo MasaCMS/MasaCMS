@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	insert into tcontentcategories (categoryID,siteid,parentID,dateCreated,lastupdate,lastupdateBy,
 	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path,remoteID,remoteSourceURL,remotePubDate,urltitle,filename,isFeatureable)
 	values (
-	'#arguments.categoryBean.getCategoryID()#',
+	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getsiteID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getParentID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getParentID()#">,
 	<cfif isDate(arguments.categoryBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getDateCreated()#"><cfelse>null</cfif>,
