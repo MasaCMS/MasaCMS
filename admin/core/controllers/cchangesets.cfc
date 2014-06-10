@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(rc.tags)>
 	<cfquery name="local.rstags">
-		select changesetid from tchangesettagassignments where tag in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.tags#">)
+		select changesetid from tchangesettagassign where tag in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.tags#">)
 	</cfquery>
 
 	<cfif local.rstags.recordcount>
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(rc.categoryid)>
 	<cfquery name="local.rscats">
-		select changesetid from tchangesetcategoryassignments where categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.categoryid#">)
+		select changesetid from tchangesetcategoryassign where categoryid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.rc.categoryid#">)
 	</cfquery>
 
 	<cfif local.rscats.recordcount>
