@@ -103,8 +103,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcatch>
 				</cftry>
 			</cfif>
-		<cfelse>
+		</cfif>
+
+		<cfif not isDefined('crumbdata') or isSimpleValue(crumbdata) >
 			<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path)/>
+			<cfif site.getCache() and arrayLen(crumbdata) lt 50>
+				<cfset cacheFactory.get( key, crumbdata ) />
+			</cfif>
 		</cfif>
 
 		<cfif arguments.setInheritance>
