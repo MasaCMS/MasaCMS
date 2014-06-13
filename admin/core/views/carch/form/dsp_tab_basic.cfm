@@ -246,12 +246,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							);
 						}
 					}
-
-					<cfif not isExtended>
-						showBodyEditor();	
-					</cfif>
 					
 					jQuery(document).ready(function(){
+						<cfif not isExtended>
+						showBodyEditor();	
+						</cfif>
 						if (!hasSummary && !hasBody){
 							setTimeout(function(){
 								showPreview();
