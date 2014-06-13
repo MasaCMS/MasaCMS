@@ -92,7 +92,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset commitTracePoint(tracePoint)>
 		<cfelse>
 		<cfset tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/default.cfm")>
-		<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/default.cfm">
+		<cftry>
+			<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/default.cfm">
+		<cfcatch type="any">
+			<cfoutput>
+				#$.rbKey('templates.missingDefault')#
+			</cfoutput>
+		</cfcatch>
+		</cftry>
 		<cfset commitTracePoint(tracePoint)>
 		</cfif>
 	</cfsavecontent>
