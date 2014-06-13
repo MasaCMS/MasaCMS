@@ -2239,56 +2239,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
 
-	<!--- BEGIN LEGACY --->
-	<cfif structKeyExists(arguments.data,'qqfile')>
-		<cftry>
-
-		<cfif len(requestData.content) GT 0>
-
-			<cffile action="write" file="#variables.configBean.getTempDir()##arguments.data.qqfile#" output="#requestData.content#">
-			<cfset tempFile=variables.fileManager.emulateUpload("#variables.configBean.getTempDir()##arguments.data.qqfile#")>
-
-		<cfelse>
-
-			<cffile action="upload" result="tempFile" filefield="qqfile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		</cfif>
-
-		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />
-		<cfset fileItem.title=tempFile.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
-		<cfset fileItem.filename=tempFile.serverfile/>
-		<cfset fileBean=add(structCopy(fileItem)) />
-		<cfquery>
-			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
-			 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
-		</cfquery>
-
-		<cfif len(requestData.content) GT 0>
-		<cffile action="delete" file="#variables.configBean.getTempDir()##arguments.data.qqfile#">
-		</cfif>
-		<cfcatch>
-		<cflog log="application" text="#cfcatch.message#">
-		</cfcatch>
-		</cftry>
-	</cfif>
-
-	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
-		<cfif len(form["NewFile#f#"])>
-		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />
-		<cfset fileItem.title=tempFile.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
-		<cfset fileItem.filename=tempFile.serverfile/>
-		<cfset fileBean=add(structCopy(fileItem)) />
-		<cfquery>
-			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
-			 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
-		</cfquery>
-		</cfif>
-		<cfset f=f+1 />
-	</cfloop>
-	<!--- END LEGACY --->
-
 	<!--- RAILO --->
 	<cfif isDefined('form.files') and isArray(form.files)>
 		<cftry>

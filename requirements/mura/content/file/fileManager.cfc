@@ -410,6 +410,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 </cffunction>
 
+<cffunction name="upload" output="false">
+	<cfargument name="fileField">
+	<cffile action="upload" result="local.results" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+	
+	<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+		<cftry>
+			<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
+			<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+			<cfcatch>
+				<cfset local.results.exif={}>
+			</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfset local.results.exif={}>
+	</cfif>
+	<cfreturn local.results>
+</cffunction>
+
 <cffunction name="emulateUpload" returntype="any" output="false">
 	<cfargument name="filePath" type="string" required="true" />
 	<cfargument name="destinationDir" type="string" required="true" default="#variables.configBean.getTempDir()#"/>
@@ -573,24 +591,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</cfif>
-</cffunction>
-
-<cffunction name="upload" output="false">
-	<cfargument name="fileField">
-	<cffile action="upload" result="local.results" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-	
-	<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
-		<cftry>
-			<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
-			<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
-			<cfcatch>
-				<cfset local.results.exif={}>
-			</cfcatch>
-		</cftry>
-	<cfelse>
-		<cfset local.results.exif={}>
-	</cfif>
-	<cfreturn local.results>
 </cffunction>
 
 <cffunction name="rebuildImageCache" output="false">

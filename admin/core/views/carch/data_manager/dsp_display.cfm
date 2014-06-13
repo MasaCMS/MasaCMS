@@ -66,7 +66,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
       <td valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablefields')#<br/>
         <select name="availableFields" size="10" id="availableFields" class="multiSelect">
           <cfloop list="#rc.fieldnames#" index="f">
-            <option value="#f#">#f#</option>
+            <option value="#HTMLEditFormat(f)#">#HTMLEditFormat(f)#</option>
           </cfloop>
         </select></td>
       <td><table>
@@ -78,7 +78,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
               <select name="summaryList" id="summaryList" size="4" class="multiSelect">
                 <cfif summaryList neq "">
                   <cfloop list="#summaryList#" delimiters="^" index="f">
-                    <option value="#f#">#f#</option>
+                    <option value="#HTMLEditFormat(f)#">#HTMLEditFormat(f)#</option>
                   </cfloop>
                 </cfif>
               </select>
@@ -95,7 +95,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
               <select name="detailList"  id="detailList" size="4" style="width:310px;">
                 <cfif detailList neq "">
                   <cfloop list="#detailList#" delimiters="^" index="f">
-                    <option value="#f#">#f#</option>
+                    <option value="#HTMLEditFormat(f)#">#HTMLEditFormat(f)#</option>
                   </cfloop>
                 </cfif>
               </select>
@@ -126,7 +126,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
   <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#:</label>
   <div class="controls"><select name="sortBy" class="dropdown">
           <cfloop list="#rc.fieldnames#" index="f">
-            <option value="#f#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#f#</option>
+            <option value="#HTMLEditFormat(f)#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#HTMLEditFormat(f)#</option>
           </cfloop>
         </select>
         <select name="sortDirection" class="dropdown">
@@ -144,6 +144,6 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
-<input type="hidden" name="moduleid" value="#rc.moduleid#" />
+<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#" />
 </cfoutput>
 </form>
