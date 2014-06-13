@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif rc.type eq 'Form'>
-		<div class="control-group body-container" style="display:none">
+		<div class="control-group body-container">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 			<div class="controls">
 				<label for="rc" class="checkbox">
@@ -347,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		</label>
 			</div>
 		</div>
-		<div class="control-group body-container" style="display:none">
+		<div class="control-group body-container">
 			<label class="control-label">
 				 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
