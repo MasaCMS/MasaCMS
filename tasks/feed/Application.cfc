@@ -62,10 +62,6 @@
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
 	<cffunction name="onRequestStart">
 		<cfset var local=structNew()>
-		<!---
-				NOTE: If you need to allow direct access to a file located under your site/theme (e.g., a remote web service, etc.),
-				just add the file name to the list of files below.
-		--->
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm">
 		<cfoutput>Access Restricted.</cfoutput>
 		<cfabort>
