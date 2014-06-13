@@ -1360,8 +1360,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfif not isdefined('arguments.data.topOrBottom') or isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'Top' >
 						<cfquery>
-						 update tcontent set orderno=OrderNo+1 where parentid='#newBean.getparentid()#'
-						 and siteid='#newBean.getsiteid()#'
+						 update tcontent set orderno=OrderNo+1 where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getparentid()#">
+						 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getsiteid()#">
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 						 </cfquery>
 
@@ -1371,16 +1371,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<cfif not newBean.getIsNew() and newBean.getParentID() eq currentBean.getParentID()>
 							<cfquery>
-							 update tcontent set orderno=OrderNo-1 where parentid='#newBean.getparentid()#'
-							 and siteid='#newBean.getsiteid()#'
+							 update tcontent set orderno=OrderNo-1 where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getparentid()#">
+							 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getsiteid()#">
 							 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
-							 and orderno > #currentBean.getOrderNo()#
+							 and orderno > <cfqueryparam cfsqltype="cf_sql_integer" value="#currentBean.getOrderNo()#">
 								</cfquery>
 						</cfif>
 
 						<cfquery name="rsOrder">
-						 select max(orderno) as theBottom from tcontent where parentid='#newBean.getparentid()#'
-						 and siteid='#newBean.getsiteid()#'
+						 select max(orderno) as theBottom from tcontent where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getparentid()#">
+						 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getsiteid()#">
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 						 </cfquery>
 
@@ -1393,8 +1393,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() >
 						<cfquery>
-						update tcontent set parentid='#newBean.getparentid()#' where contentid='#newBean.getcontentid()#'
-						and active=0 and siteid='#newBean.getsiteid()#'
+						update tcontent set parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getparentid()#"> where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getcontentid()#">
+						and active=0 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getsiteid()#">
 						</cfquery>
 					</cfif>
 				</cfif>
@@ -2648,7 +2648,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif NOT arguments.contentBean.getIsNew()>
 		<cfset purgeContentCacheKey(cache, "contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
-		<cfset purgeContentCacheKey(cache, "crumb"  & arguments.siteid & arguments.contentID,false)>
+		<cfset purgeContentCacheKey(cache, "crumb"  & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
 
 		<cfif len(arguments.contentBean.getRemoteID())>
 			<cfset purgeContentCacheKey(cache,"remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
