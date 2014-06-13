@@ -3,20 +3,20 @@
 	<!--- Header --->
 	<cfinclude template="dsp_users_header.cfm" />
 
-	<h2>#application.rbFactory.getKeyValue(session.rb,'user.groups')#</h2>
+	<h2>#rc.$.rbKey('user.groups')#</h2>
 
 	<!--- TAB NAV --->
 		<ul class="nav nav-tabs">
 			<!--- Public Groups --->
 			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#">
-					#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#
+					#rc.$.rbKey('user.membergroups')#
 				</a>
 			</li>
 			<!--- Private Groups --->
 			<li<cfif rc.ispublic eq 0> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#">
-					#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#
+					#rc.$.rbKey('user.adminusergroups')#
 				</a>
 			</li>
 		</ul>

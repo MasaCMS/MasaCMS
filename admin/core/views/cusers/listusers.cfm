@@ -3,7 +3,7 @@
 	<!--- Header --->
 	<cfinclude template="dsp_users_header.cfm" />
 
-	<h2>#application.rbFactory.getKeyValue(session.rb,'user.users')#</h2>
+	<h2>#rc.$.rbKey('user.users')#</h2>
 
 	<!--- TAB NAV --->
 		<ul class="nav nav-tabs">
@@ -45,29 +45,19 @@
 							&nbsp;
 						</th>
 						<th class="var-width">
-							<!--- <a rel="tooltip" title="Last Name, First Name"> --->
-								<i class="icon-user"></i>
-							<!--- </a> --->
+							<i class="icon-user"></i>
 						</th>
 						<th>
-							<!--- <a rel="tooltip" title="Email Address"> --->
-								<i class="icon-envelope"></i>
-							<!--- </a> --->
+							<i class="icon-envelope"></i>
 						</th>
 						<th>
-							<!--- <a rel="tooltip" title="Date Last Updated"> --->
-								<i class="icon-calendar"></i>
-							<!--- </a> --->
+							<i class="icon-calendar"></i>
 						</th>
 						<th>
-							<!--- <a rel="tooltip" title="Time Last Updated"> --->
-								<i class="icon-time"></i>
-							<!--- </a> --->
+							<i class="icon-time"></i>
 						</th>
 						<th>
-							<!--- <a rel="tooltip" title="Last Updated By"> --->
-								<i class="icon-wrench"></i>
-							<!--- </a> --->
+							<i class="icon-wrench"></i>
 						</th>
 						<th>&nbsp;</th>
 					</tr>

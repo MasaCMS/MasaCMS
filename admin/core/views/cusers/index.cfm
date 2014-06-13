@@ -53,7 +53,7 @@
 <html>
 
 <head><cfoutput>
-<title>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</title>
+<title>#rc.$.rbKey('user.selectuser')#</title>
 <link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -95,7 +95,7 @@ if (window.opener)	{
 
 function goAndClose(userid)	{
 	<cfoutput>
-	mainwin.location.href='../../index.cfm?muraAction=cUsers.addtogroup&groupid=#URLEncodedFormat(url.groupid)#&routeid=#URLEncodedFormat(url.groupid)#&siteid=#URLEncodedFormat(url.siteid)#&userid='+userid;
+	mainwin.location.href='../../index.cfm?muraAction=cUsers.addtogroup&amp;groupid=#URLEncodedFormat(url.groupid)#&amp;routeid=#URLEncodedFormat(url.groupid)#&amp;siteid=#URLEncodedFormat(url.siteid)#&amp;userid='+userid;
 	</cfoutput>
 	window.close();
 }
@@ -110,23 +110,23 @@ function goAndClose(userid)	{
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body id="popUp"><cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</h1>
+<h1>#rc.$.rbKey('user.selectuser')#</h1>
 <form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);">
 
 	<div class="input-append">
-	    <input name="search" style="width: 208px;" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#" type="text" />
-	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	    <input name="search" style="width: 208px;" class="text" required="true" message="#rc.$.rbKey('user.lastnameorcompanyrequired')#" type="text" />
+	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#rc.$.rbKey('user.search')#" /><i class="icon-search"></i></button>
 	</div>
 
 <!---
-<input name="search" style="width: 208px;" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#">
-<input type="button" class="submit" onClick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+<input name="search" style="width: 208px;" class="text" required="true" message="#rc.$.rbKey('user.lastnameorcompanyrequired')#">
+<input type="button" class="submit" onClick="submitForm(document.forms.form1);" value="#rc.$.rbKey('user.search')#" />
 --->
 
 </form></cfoutput>
 <cfif rslist.recordcount>
 <table class="mura-table-grid"><cfoutput>
-<tr><th>#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
+<tr><th>#rc.$.rbKey('user.name')#</th>
 </tr></cfoutput>
   <cfoutput query="rslist"> 
     <tr <cfif not rslist.currentrow mod 2>class="alt"</cfif>>
@@ -137,7 +137,7 @@ function goAndClose(userid)	{
 <cfelseif form.search neq ''>
 <div class="separate"></div>
 <cfoutput>
-<div class="alert">#application.rbFactory.getKeyValue(session.rb,'user.nosearchresults')#.</div></cfoutput>
+<div class="alert">#rc.$.rbKey('user.nosearchresults')#.</div></cfoutput>
 </cfif>
 </body>
 </html>
