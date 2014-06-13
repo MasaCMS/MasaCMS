@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/default.cfm">
 		<cfcatch type="any">
 			<cfoutput>
-				#$.rbKey('templates.missingDefault')#
+				#$.rbKey('sitemanager.missingDefaultTemplate')#
 			</cfoutput>
 		</cfcatch>
 		</cftry>
