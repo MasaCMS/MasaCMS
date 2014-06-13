@@ -323,7 +323,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(rc,'$')>
 		#rc.$.renderEvent('onAdminHTMLFootRender')#
 	</cfif>
-	<cfdump var="#session.mura#" />
   </body>
 </html></cfprocessingdirective>
 </cfoutput>

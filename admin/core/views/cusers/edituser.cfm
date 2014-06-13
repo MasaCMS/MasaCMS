@@ -24,8 +24,8 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 <cfset tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")></cfsilent>
-<cfoutput><form novalidate="novalidate" action="./?muraAction=cUsers.update&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
-	<h1>#rc.$.rbKey('user.adminuserform')#</h1>
+<cfoutput><form novalidate="novalidate" action="./?muraAction=cUsers.update&amp;userid=#URLEncodedFormat(rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+	<h1>#rc.$.rbKey('user.edituserform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#</a>
@@ -390,7 +390,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 						<label class="radio inline">
 							<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.userBean.getIsPublic()> Checked</cfif>> 
-							#rc.$.rbKey('user.administrative')#
+							#rc.$.rbKey('user.adminuser')#
 						</label>
 					</div>
 				</div>
