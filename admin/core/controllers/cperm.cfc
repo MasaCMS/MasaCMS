@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="updategroup" output="false">
 	<cfargument name="rc">
 	<cfset variables.permUtility.updateGroup(arguments.rc)  />
-	<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid",path="./")>
+	<cfset variables.fw.redirect(action="cUsers.list",append="siteid",path="./")>
 </cffunction>
 
 <cffunction name="main" output="false">
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	<cfset variables.permUtility.updateModule(arguments.rc) />
 	<cfif arguments.rc.moduleid eq '00000000000000000000000000000000004'>
-		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cUsers.list",append="siteid",path="./")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000005'>
 		 <cfset variables.fw.redirect(action="cEmail.list",append="siteid",path="./")>
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfset variables.fw.redirect(action="cForm.list",append="siteid",path="./")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000008'>
-		 <cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cUsers.list",append="siteid",path="./")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000009'>
 		 <cfset variables.fw.redirect(action="cMailingList.list",append="siteid",path="./")>
