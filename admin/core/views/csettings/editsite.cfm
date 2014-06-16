@@ -462,7 +462,7 @@ to your own modified versions of Mura CMS.
 			            <label class="radio inline"><input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> CHECKED</CFIF>>On</label>
 			        </div>
 		        </div>
-		        
+		        <cfif application.configBean.getDataCollection()>
 		        <div class="span3">
 			        <label class="control-label">Forms Manager</label>
 			        <div class="controls">
@@ -471,7 +471,7 @@ to your own modified versions of Mura CMS.
 			            <label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> CHECKED</CFIF>>On</label>
 			        </div>
 		        </div>
-	        
+	           </cfif>
 	        </div>
 
           <div class="control-group">
