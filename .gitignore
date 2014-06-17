@@ -1,5 +1,6 @@
 # Folders and Files to ignore
 /demo*/
+/META-INF
 /WEB-INF
 /config/settings.ini.cfm
 /config/version.cfm
