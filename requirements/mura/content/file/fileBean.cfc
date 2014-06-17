@@ -62,7 +62,12 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			if(fileManager.isPostedFile(getValue('fileField'))){
 				local.tempFile=fileManager.upload(getValue('fileField'));
 			} else {
-				local.tempFile=fileManager.emulateUpload(getValue(getValue('fileField')));
+
+				if(!getBean('configBean').getAllowLocalNewFiles() && (not find("://",local.filePath) || find("file://",local.filePath))){
+					setValue('filename','Local files are not allowed');
+				}
+
+				local.tempFile=fileManager.emulateUpload(filePath=getValue(getValue('fileField')));
 			}
 
 			if(isStruct(local.tempfile.exif)){
@@ -70,7 +75,6 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			}
 
 			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
-
 
 			if(!len(allowableExtensions) || listFindNoCase(allowableExtensions,local.tempFile.serverFileExt)){
 				structAppend(variables.instance, local.tempFile);

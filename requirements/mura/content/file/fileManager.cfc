@@ -438,7 +438,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.filePath=replace(arguments.filePath,"\","/","all")>
 	<cfset local.results=structNew()>
 
-	<cfif variables.configBean.getAllowLocalNewFiles() and (not find("://",local.filePath) or  find("file://",local.filePath))>
+	<cfif not find("://",local.filePath) or find("file://",local.filePath)>
+
 		<cfset local.isLocalFile=true>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file:///","")>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
