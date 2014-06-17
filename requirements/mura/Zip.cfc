@@ -515,8 +515,11 @@
 			cols = ListToArray(cols);
 
 			/* Open Zip file */
-			zipFile.init(arguments.zipFilePath);
-
+			try{
+				zipFile.init(arguments.zipFilePath);
+			} catch (Any e){
+				throw("java.util.zip.ZipException","error in opening zip file " & arguments.zipFilePath);
+			}
 			/* Zip file entries */
 			entries = zipFile.entries();
 
