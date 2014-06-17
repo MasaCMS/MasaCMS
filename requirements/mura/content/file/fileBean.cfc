@@ -63,7 +63,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 				local.tempFile=fileManager.upload(getValue('fileField'));
 			} else {
 
-				if(!getBean('configBean').getAllowLocalNewFiles() && (not find("://",getValue('filename')) || find("file://",getValue('filename')))){
+				if(!getBean('configBean').getAllowLocalFiles() && (not find("://",getValue('filename')) || find("file://",getValue('filename')))){
 					setValue('filename','Local files are not allowed');
 					return this;
 				}
