@@ -69,19 +69,33 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 				local.tempFile.exif=serializeJSON(local.tempFile.exif);
 			}
 
-			structAppend(variables.instance, local.tempFile);
-			structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
-			variables.instance.fileExt=local.tempFile.serverFileExt;
-			variables.instance.filename=local.tempFile.ClientFile;
+			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
 
-			//writeDump(var=variables.instance,abort=true);
 
-			param name='variables.instance.content' default='';
-			param name='variables.instance.exif' default={};
+			if(!len(allowableExtensions) || listFindNoCase(allowableExtensions,local.tempFile.serverFileExt)){
+				structAppend(variables.instance, local.tempFile);
+				structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
+				variables.instance.fileExt=local.tempFile.serverFileExt;
+				variables.instance.filename=local.tempFile.ClientFile;
+
+				//writeDump(var=variables.instance,abort=true);
+
+				param name='variables.instance.content' default='';
+				param name='variables.instance.exif' default={};
+				
+				fileManager.create(argumentCollection=variables.instance);
 			
-			fileManager.create(argumentCollection=variables.instance);
-		
-			setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
+				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
+			}	else {
+				
+				var fileDelim=getBean('configBean').getFileDelim();
+
+				try{
+					fileDelete(local.tempfile.serverDirectory & fileDelim & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);
+				} catch (Any e){}
+
+				setValue('filename','Invalid file type .' & ucase(local.tempfile.serverFileExt));
+			}
 		} else {
 
 			serializeExif();

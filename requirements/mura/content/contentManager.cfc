@@ -2276,16 +2276,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset fileItem.credits=variables.utility.textPreview(local.fileBean.getCredits(),255)>
+				
+				<cfif not fileBean.getIsNew()>
+					<cfset fileBean=add(structCopy(fileItem)) />
 
-				<cfset fileBean=add(structCopy(fileItem)) />
-
-				<cfquery>
-					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
-					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
-				</cfquery>
-				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
-				<cfset filemetadata=fileBean.getFileMetaData()>
-				<cfset local.returnStr={
+					<cfquery>
+						 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
+						 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
+					</cfquery>
+					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+					<cfset filemetadata=fileBean.getFileMetaData()>
+					<cfset local.returnStr={
 					    filename=JSStringFormat(fileBean.getAssocFilename()),
 					    title=JSStringFormat(fileBean.getTitle()),
 					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
@@ -2298,6 +2299,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    delete_url="",
 					    delete_type="DELETE"
 					  }>
+				<cfelse>
+					<cfset local.returnStr={
+					    filename=JSStringFormat(fileBean.getFilename()),
+					    title=JSStringFormat(fileBean.getFilename()),
+					    summary='',
+					    altext='',
+					    credits='',
+					    size='',
+					    url='',
+					    edit_url='',
+					    thumbnail_url='',
+					    delete_url="",
+					    delete_type="DELETE"
+					  }>
+				</cfif>
+				
 				<cfset structAppend(local.returnStr,local.extraParams)>
 				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
 				<cfif f lt arrayLen(form.files)><cfoutput>,</cfoutput></cfif>
@@ -2347,28 +2364,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset fileItem.credits=variables.utility.textPreview(local.fileBean.getCredits(),255)>
+				
+				<cfif not fileBean.getIsNew()>
+					<cfset fileBean=add(structCopy(fileItem)) />
+					<cfquery>
+						 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
+						 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
+					</cfquery>
+					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+					<cfset filemetadata=fileBean.getFileMetaData()>
 
-				<cfset fileBean=add(structCopy(fileItem)) />
-				<cfquery>
-					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
-					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
-				</cfquery>
-				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
-				<cfset filemetadata=fileBean.getFileMetaData()>
-
-				<cfset local.returnStr={
-					    filename=JSStringFormat(fileBean.getAssocFilename()),
-					    title=JSStringFormat(fileBean.getTitle()),
-					    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
-					    altext=JSStringFormat(filemetadata.getAltText()),
-					    credits=JSStringFormat(filemetadata.getCredits()),
-					    size=fileBean.getFileSize(),
-					    url=JSStringFormat(fileBean.getImageURL(size='source')),
-					    edit_url=JSStringFormat(fileBean.getEditURL()),
-					    thumbnail_url=JSStringFormat(fileBean.getImageURL(size='small')),
+					<cfset local.returnStr={
+						    filename=JSStringFormat(fileBean.getAssocFilename()),
+						    title=JSStringFormat(fileBean.getTitle()),
+						    summary=iif(fileBean.getSummary() eq '<p></p>',de(''),de('JSStringFormat(fileBean.getSummary())')),
+						    altext=JSStringFormat(filemetadata.getAltText()),
+						    credits=JSStringFormat(filemetadata.getCredits()),
+						    size=fileBean.getFileSize(),
+						    url=JSStringFormat(fileBean.getImageURL(size='source')),
+						    edit_url=JSStringFormat(fileBean.getEditURL()),
+						    thumbnail_url=JSStringFormat(fileBean.getImageURL(size='small')),
+						    delete_url="",
+						    delete_type="DELETE"
+						  }>
+				<cfelse>
+					<cfset local.returnStr={
+					    filename=JSStringFormat(fileBean.getFilename()),
+					    title=JSStringFormat(fileBean.getFilename()),
+					    summary='',
+					    altext='',
+					    credits='',
+					    size='',
+					    url='',
+					    edit_url='',
+					    thumbnail_url='',
 					    delete_url="",
 					    delete_type="DELETE"
 					  }>
+				</cfif>
 				<cfset structAppend(local.returnStr,local.extraParams)>
 				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
 			<!---</cfloop>--->
