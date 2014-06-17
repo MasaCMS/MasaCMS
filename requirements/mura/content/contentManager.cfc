@@ -833,6 +833,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var activeBean="">
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
+		<cfset var errors={}>
 
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -972,6 +973,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset newBean.validate()>
 
 			<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+
+			<cfif variables.fileManager.requestHasRestrictedFiles()>
+				<cfset errors=newBean.getErrors()>
+				<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(newBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
+			</cfif>
 
 			<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
 				<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>
