@@ -184,7 +184,7 @@ application.serviceFactory.getBean("fileWriter").touchDir(config.resourceType[3]
 
 
 if (isdefined("url.type")){
-	if(currentUser.getS2() and application.configBean.getValue('fmShowApplicationRoot') neq 0){
+	if(currentUser.getS2() && (!isBoolean(application.configBean.getValue('fmShowApplicationRoot')) || application.configBean.getValue('fmShowApplicationRoot'))){
 	  config.resourceType[4] = structNew();
 	  config.resourceType[4].name = 'Application_Root';
 	  config.resourceType[4].url =  application.configBean.getContext();
@@ -213,7 +213,7 @@ if (isdefined("url.type")){
 	    
 	    arrayAppend(application.CKFinderResources,temp);
 	    
-	    if(application.configBean.getValue('fmShowSiteFiles') neq 0){
+	    if(!isBoolean(application.configBean.getValue('fmShowSiteFiles')) || application.configBean.getValue('fmShowSiteFiles')){
 	      temp = structNew();
 	      temp.name = '#rsSites.siteID[i]#_Site_Files';
 	      temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i] & '/' ;
