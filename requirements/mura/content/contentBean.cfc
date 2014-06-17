@@ -882,7 +882,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="size" required="true" default="0">
 	
 	<cfset arguments.parentid=getContentID()>
-	<cfset arguments.siteid=getSiteID()>
+	<cfset arguments.siteid=getValue('siteid')>
 	<cfreturn variables.contentManager.getKidsQuery(argumentCollection=arguments) />
 </cffunction>
 
@@ -899,7 +899,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset q=getKidsQuery(argumentCollection=arguments) />
 	<cfelse>
 		<cfset arguments.parentid=getContentID()>
-		<cfset arguments.siteid=getSiteID()>
+		<cfset arguments.siteid=getValue('siteid')>
 		<cfset q=variables.contentManager.getNest(argumentCollection=arguments) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
