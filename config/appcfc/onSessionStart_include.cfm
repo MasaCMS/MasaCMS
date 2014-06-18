@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.mura.memberships" default="" />
 <cfparam name="session.mura.membershipids" default="" />
 <cfparam name="session.mura.showTrace" default="false" />
+<cfparam name="session.mura.csrfkey" default="#createUUID()#">
 <cfparam name="session.rememberMe" type="numeric" default="0" />
 <cfparam name="session.loginAttempts" type="numeric" default="0" />
 <cfparam name="session.blockLoginUntil" type="string" default="" />

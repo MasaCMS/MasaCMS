@@ -696,6 +696,7 @@ Thanks for using #contactName#</cfoutput>
 
 <!--- clear out all existing values --->
 <cfset session.mura=structNew()>
+<cfparam name="session.mura.csrfkey" default="#createUUID()#">
 
 <cfif structKeyExists(arguments,"user")>
 	<cfset session.mura.isLoggedIn=true>			
@@ -735,6 +736,7 @@ Thanks for using #contactName#</cfoutput>
 	<cfset session.mura.membershipids="">
 	<cfset session.mura.showTrace=false>
 </cfif>
+
 </cffunction>
 
 <cffunction name="returnLoginCheck" output="false">

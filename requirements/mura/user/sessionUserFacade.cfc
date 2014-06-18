@@ -187,4 +187,20 @@
 <cffunction name="getAllValues" output="false">
 	<cfreturn getUserBean().getAllValues()>
 </cffunction>
+
+<cffunction name="validateCSRFTokens" output="false">
+	
+
+</cffunction>
+
+<cffunction name="generateCSRFTokens" output="false">
+	<cfset var timestamp=now()>
+
+	<cfreturn {
+		created=timestamp,
+		token=CSRFGenerateToken(key=session.mura.csrfkey & timestamp, forceNew=true)
+	}>
+
+</cffunction>
+
 </cfcomponent>
