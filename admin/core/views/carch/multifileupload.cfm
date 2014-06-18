@@ -137,7 +137,7 @@ jQuery(document).ready(function(){
         <table role="presentation" class="mura-table-grid">
         <tbody class="files" data-toggle="modal-gallery" data-target="##modal-gallery"></tbody></table>
       <input type="hidden" name="muraAction" value="cArch.update"/>
-      <input type="hidden" name="action" value="multiFileUpload"/>
+      <input type="hidden" name="action" value="multifileupload"/>
       <input type="hidden" name="siteid" value="#htmlEditFormat(rc.siteid)#"/>
       <input type="hidden" name="moduleid" value="#htmlEditFormat(rc.moduleid)#"/>
       <input type="hidden" name="topid" value="#htmlEditFormat(rc.topid)#"/>
@@ -149,6 +149,7 @@ jQuery(document).ready(function(){
       <input type="hidden" name="startrow" value="#rc.startrow#"/>
       <input type="hidden" name="orderno" value="0"/>
       <input type="hidden" name="approved" value="<cfif rc.perm eq 'editor'>1<cfelse>0</cfif>" />
+      #rc.$.renderCSRFTokens(context=rc.parentid & 'multifileupload',format='form')#
     </form>
 </div>
 </div>

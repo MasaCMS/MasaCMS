@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						recordcount=listFind(attributes.contentBean.getCategoryID(),rslist.categoryid),
 						isFeature=attributes.contentBean.getValue('categoryAssign#catTrim#'),
 						featureStart=attributes.contentBean.getValue('featureStart#catTrim#'),
+						featureStop=attributes.contentBean.getValue('featureStop#catTrim#'),
 						startHour=attributes.contentBean.getValue('startHour#catTrim#'),
 						startMinute=attributes.contentBean.getValue('startMinute#catTrim#'),
 						startDayPart=attributes.contentBean.getValue('startDayPart#catTrim#'),

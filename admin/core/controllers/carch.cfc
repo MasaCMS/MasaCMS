@@ -240,36 +240,58 @@
 	<cfset  arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
 	 
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deleteall'>
-		<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />  
+	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deleteall")>
+			<cfset arguments.rc.topid=variables.contentManager.deleteAll(arguments.rc) />
+		<cfelse>
+
+		</cfif>
 	 </cfif>
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'deletehistall'>
-	 	<cfset variables.contentManager.deletehistAll(arguments.rc) />
+	 	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "deletehistall")>
+	 		<cfset variables.contentManager.deletehistAll(arguments.rc) />
+	 	<cfelse>
+
+	 	</cfif>
 	 </cfif>
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'delete'>
-		<cfset variables.contentManager.delete(arguments.rc) />
+	 	<cfif rc.$.validateCSRFTokens(context=rc.contenthistid & "delete")>
+			<cfset variables.contentManager.delete(arguments.rc) />
+		<cfelse>
+
+		</cfif>
 	 </cfif>
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
 		<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc) />
 		<cfelseif structKeyExists(arguments.rc,"contenthistid") and isValid('UUID',arguments.rc.contenthistid)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc) />
 		<cfelse>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc) />
 		</cfif>
-		<cfif not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
-			<cfset arguments.rc.fileid=request.newImageIDList>
-			<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-			<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay",path="./")>
+
+		<cfif rc.$.validateCSRFTokens(context=arguments.rc.contentBean.getContentHistID() & "add")>
+			<cfset arguments.rc.contentBean=arguments.rc.contentBean.save()>
+			<cfif not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
+				<cfset arguments.rc.fileid=request.newImageIDList>
+				<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+				<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay",path="./")>
+			</cfif>
+		<cfelse>
+			<cfset arguments.rc.contentBean.validate().getErrors().csrf='Your request contained invalid tokens'>
 		</cfif>
 	 </cfif>
 	 
 	 <cfif not arguments.rc.ajaxrequest>
 		 		
-		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multiFileUpload'>
-			  <cfset variables.contentManager.multiFileUpload(arguments.rc) />
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
+		 		<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload")>
+			  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
+			  	<cfelse>
+
+			  	</cfif>
 		 </cfif>
 		 
 		  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>

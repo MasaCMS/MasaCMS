@@ -243,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		</cfif>
         <cfif deletable and not isLockedBySomeoneElse>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
         </cfif>
@@ -288,7 +288,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    startrow="#attributes.startrow#"
    sortBy="#attributes.sortBy#"
    sortDirection="#attributes.sortDirection#"
-   pluginEvent="#attributes.pluginEvent#">
+   pluginEvent="#attributes.pluginEvent#"
+   muraScope="#attributes.muraScope#">
    </cfif>
    <cfset currentPos=currentPos+1>
    <cfif sortable>

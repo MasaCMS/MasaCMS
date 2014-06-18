@@ -338,7 +338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </dl>
       
       <cfif hasKids>
-        <cf_dsp_nest topid="#rc.topid#" parentid="#rc.topid#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#">
+        <cf_dsp_nest topid="#rc.topid#" parentid="#rc.topid#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#" muraScope="#rc.$#">
       </cfif>
       </li>
       </ul>
