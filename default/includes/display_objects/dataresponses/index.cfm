@@ -54,6 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+<cfif variables.$.siteConfig('dataCollection')>
 <cfsilent>
 	<cfparam name="request.dataResponseView" default="list">
 	<cfquery datasource="#application.configBean.getDatasource()#" name="variables.rssite">
@@ -74,3 +75,4 @@
 		<cfinclude template="dsp_list.cfm" />
 	</cfdefaultcase>
 </cfswitch>
+</cfif>
