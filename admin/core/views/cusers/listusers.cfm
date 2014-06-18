@@ -50,23 +50,18 @@
 							&nbsp;
 						</th>
 						<th class="var-width">
-							<!--- <i class="icon-user"></i> --->
 							User
 						</th>
 						<th>
-							<!--- <i class="icon-envelope"></i> --->
 							Email
 						</th>
 						<th>
-							<!--- <i class="icon-calendar"></i> --->
 							Date Last Update
 						</th>
 						<th>
-							<!--- <i class="icon-time"></i> --->
 							Time Last Update
 						</th>
 						<th>
-							<!--- <i class="icon-wrench"></i> --->
 							Last Update By
 						</th>
 						<th>&nbsp;</th>

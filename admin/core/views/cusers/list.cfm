@@ -32,33 +32,18 @@
 					<thead>
 						<tr>
 							<th class="var-width">
-								<!--- <a rel="tooltip" title="Group (Total Members)"> --->
-									<!--- <i class="icon-group"></i> --->
-								<!--- </a> --->
 								Group (Total Members)
 							</th>
 							<th>
-								<!--- <a rel="tooltip" title="Email"> --->
-									<!--- <i class="icon-envelope"></i> --->
-								<!--- </a> --->
 								Email
 							</th>
 							<th>
-								<!--- <a rel="tooltip" title="Date Last Update"> --->
-									<!--- <i class="icon-calendar"></i> --->
-								<!--- </a> --->
 								Date Last Update
 							</th>
 							<th>
-								<!--- <a rel="tooltip" title="Time Last Update"> --->
-									<!--- <i class="icon-time"></i> --->
-								<!--- </a> --->
 								Time Last Update
 							</th>
 							<th>
-								<!--- <a rel="tooltip" title="Last Update By"> --->
-									<!--- <i class="icon-wrench"></i> --->
-								<!--- </a> --->
 								Last Update By
 							</th>
 							<th>&nbsp;</th>
