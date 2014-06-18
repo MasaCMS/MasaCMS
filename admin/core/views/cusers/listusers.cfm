@@ -3,9 +3,11 @@
 	<!--- Header --->
 	<cfinclude template="dsp_users_header.cfm" />
 
-	<h2>#rc.$.rbKey('user.users')#</h2>
-
 	<!--- TAB NAV --->
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+
+		<h2>#rc.$.rbKey('user.users')#</h2>
+
 		<ul class="nav nav-tabs">
 			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=1&unassigned=#rc.unassigned#')#">
@@ -18,6 +20,9 @@
 				</a>
 			</li>
 		</ul>
+	<cfelse>
+		<h2>Site Members</h2>
+	</cfif>
 
 	<!--- FILTERS --->
 		<div class="well btn-group">
@@ -45,19 +50,24 @@
 							&nbsp;
 						</th>
 						<th class="var-width">
-							<i class="icon-user"></i>
+							<!--- <i class="icon-user"></i> --->
+							User
 						</th>
 						<th>
-							<i class="icon-envelope"></i>
+							<!--- <i class="icon-envelope"></i> --->
+							Email
 						</th>
 						<th>
-							<i class="icon-calendar"></i>
+							<!--- <i class="icon-calendar"></i> --->
+							Date Last Update
 						</th>
 						<th>
-							<i class="icon-time"></i>
+							<!--- <i class="icon-time"></i> --->
+							Time Last Update
 						</th>
 						<th>
-							<i class="icon-wrench"></i>
+							<!--- <i class="icon-wrench"></i> --->
+							Last Update By
 						</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -122,12 +132,12 @@
 									<cfif local.user.getValue('perm') eq 0>
 										<li>
 											<a title="Delete" href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.user.getValue('groupname')#'")# User Group?',this.href)">
-												<i class="icon-trash"></i>
+												<i class="icon-remove-sign"></i>
 											</a>
 										</li>
 									<cfelse>
 										<li class="disabled">
-											<i class="icon-trash"></i>
+											<i class="icon-remove-sign"></i>
 										</li>
 									</cfif>
 								</ul>

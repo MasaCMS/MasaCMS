@@ -176,6 +176,10 @@ component persistent='false' accessors='true' output='false' extends='controller
 		appendRequestScope(arguments.rc);
 	}
 
+	public any function editGroupMembers(rc) {
+		editGroup(rc);
+	}
+
 	public any function deleteGroup(rc) {
 
 	}

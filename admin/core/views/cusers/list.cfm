@@ -3,9 +3,11 @@
 	<!--- Header --->
 	<cfinclude template="dsp_users_header.cfm" />
 
-	<h2>#rc.$.rbKey('user.groups')#</h2>
-
 	<!--- TAB NAV --->
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+
+		<h2>#rc.$.rbKey('user.groups')#</h2>
+
 		<ul class="nav nav-tabs">
 			<!--- Public Groups --->
 			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
@@ -20,6 +22,9 @@
 				</a>
 			</li>
 		</ul>
+	<cfelse>
+		<h2>#rc.$.rbKey('user.membergroups')#</h2>
+	</cfif>
 
 	<!--- BODY --->
 		<cfif rc.rsGroups.recordcount>
@@ -28,28 +33,33 @@
 						<tr>
 							<th class="var-width">
 								<!--- <a rel="tooltip" title="Group (Total Members)"> --->
-									<i class="icon-group"></i>
+									<!--- <i class="icon-group"></i> --->
 								<!--- </a> --->
+								Group (Total Members)
 							</th>
 							<th>
 								<!--- <a rel="tooltip" title="Email"> --->
-									<i class="icon-envelope"></i>
+									<!--- <i class="icon-envelope"></i> --->
 								<!--- </a> --->
+								Email
 							</th>
 							<th>
 								<!--- <a rel="tooltip" title="Date Last Update"> --->
-									<i class="icon-calendar"></i>
+									<!--- <i class="icon-calendar"></i> --->
 								<!--- </a> --->
+								Date Last Update
 							</th>
 							<th>
 								<!--- <a rel="tooltip" title="Time Last Update"> --->
-									<i class="icon-time"></i>
+									<!--- <i class="icon-time"></i> --->
 								<!--- </a> --->
+								Time Last Update
 							</th>
 							<th>
 								<!--- <a rel="tooltip" title="Last Update By"> --->
-									<i class="icon-wrench"></i>
+									<!--- <i class="icon-wrench"></i> --->
 								<!--- </a> --->
+								Last Update By
 							</th>
 							<th>&nbsp;</th>
 						</tr>
@@ -101,12 +111,12 @@
 										<cfif local.group.getValue('perm') eq 0>
 											<li>
 												<a title="Delete" href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.group.getValue('groupname')#'")# User Group?',this.href)">
-													<i class="icon-trash"></i>
+													<i class="icon-remove-sign"></i>
 												</a>
 											</li>
 										<cfelse>
 											<li class="disabled">
-												<i class="icon-trash"></i>
+												<i class="icon-remove-sign"></i>
 											</li>
 										</cfif>
 									</ul>

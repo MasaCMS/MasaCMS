@@ -30,22 +30,38 @@ select * from rsSubTypes where subType <> 'Default'
 				<i class="icon-circle-arrow-left"></i> 
 				#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#
 			</a>
+
+			<a class="btn" href="#buildURL(action='cusers.list')#">
+				<i class="icon-eye-open"></i>
+				View All Groups
+			</a>
+
+			<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#')#">
+				<i class="icon-group"></i>
+				View Group Users
+			</a>
 		</div>
 	</cfoutput>
 
+	<!--- <div class="alert alert-error">
+		<strong>rc.userBean.getPerm()</strong><br />
+		<cfdump var="#rc.userBean.getPerm()#" />
+	</div> --->
+
 <!--- Edit Form --->
-	<cfswitch expression="#rc.userBean.getperm()#">
-		<cfcase value="1">
-			<!---top for system groups--->
+	<!--- <cfswitch expression="#rc.userBean.getperm()#"> --->
+
+		<!---top for system groups--->
+		<!--- <cfcase value="1">
 			<cfoutput>
 				<h2>
 					<strong>#rc.$.rbKey('user.group')#:</strong> #rc.userBean.getgroupname()#
 				</h2>
 			</cfoutput>
-		</cfcase>
+		</cfcase> --->
 
-		<cfdefaultcase>
-			<!---top for non-system groups--->
+		<!---top for non-system groups--->
+		<!--- <cfdefaultcase> --->
 			<cfoutput>
 				<cfif not structIsEmpty(rc.userBean.getErrors())>
 					<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
@@ -86,6 +102,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<div class="tab-content">
 						<div id="tabBasic" class="tab-pane fade">
 			</cfif>
+
 			<cfoutput>
 				<div class="fieldset">
 					<cfif rsNonDefault.recordcount>
@@ -114,35 +131,58 @@ select * from rsSubTypes where subType <> 'Default'
 								#rc.$.rbKey('user.groupname')#
 							</label>
 							<div class="controls">
-								<input type="text" class="span12" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#" required="true" message="#rc.$.rbKey('user.groupnamerequired')#">
+								<input type="text" class="span12" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#" required="true" message="#rc.$.rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
 							</div>
 						</div>
 
 						<div class="span6">
 							<label class="control-label">
-								#rc.$.rbKey('user.email')#
+								<!--- #rc.$.rbKey('user.email')# --->
+								Group Email
 							</label>
 							<div class="controls">
 								<input type="text" class="span12" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#">
 							</div>
 						</div>
 					</div>
-						
-					<div class="control-group">
-						<label class="control-label">
-							#rc.$.rbKey('user.tablist')#
-						</label>
-						<div class="controls">
-							<select name="tablist" multiple="true">
-								<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
-								<cfloop list="#application.contentManager.getTabList()#" index="t">
-									<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
-										#rc.$.rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
-									</option>
-								</cfloop>
-							</select>
+
+					<cfif not rc.userbean.getperm()>
+						<div class="control-group">
+
+							<div class="span6">
+								<label class="control-label">
+									#rc.$.rbKey('user.tablist')#
+								</label>
+								<div class="controls">
+									<select name="tablist" multiple="true" class="span12">
+										<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
+										<cfloop list="#application.contentManager.getTabList()#" index="t">
+											<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
+												#rc.$.rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
+											</option>
+										</cfloop>
+									</select>
+								</div>
+							</div>
+
+							<div class="span6">
+								<label class="control-label">
+									Group Type
+								</label>
+								<div class="controls">
+									<label class="radio inline">
+										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.userBean.getIsPublic() eq 1>Checked</cfif>>
+										Member Group
+									</label>
+									<label class="radio inline">
+										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif rc.userBean.getIsPublic() eq 0>Checked</cfif>>
+											System Group
+									</label>
+								</div>
+							</div>
+
 						</div>
-					</div>
+					</cfif>
 				</div>
 
 				<span id="extendSetsBasic"></span>
@@ -221,113 +261,6 @@ select * from rsSubTypes where subType <> 'Default'
 			</cfif>
 
 			</form>
-		</cfdefaultcase>
-	</cfswitch>
+		<!--- </cfdefaultcase>
+	</cfswitch> --->
 <!--- /Edit Form --->
-
-<!--- Group Members --->
-	<cfif rc.userid neq ''>
-		<cfoutput> 
-			<table class="mura-table-grid">
-				<tr> 
-					<th class="var-width">#rc.$.rbKey('user.name')#</th>
-					<th>#rc.$.rbKey('user.email')#</th>
-					<th>#rc.$.rbKey('user.update')#</th>
-					<th>#rc.$.rbKey('user.time')#</th>
-					<th>#rc.$.rbKey('user.authoreditor')#</th>
-					<th>&nbsp;</th>
-				</tr>
-			</cfoutput>
-
-			<cfif rc.rsgrouplist.recordcount>
-				<cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
-					<tr> 
-						<td class="var-width">
-							<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#">
-								#rc.rsgrouplist.lname#, #rc.rsgrouplist.fname# 
-								<cfif rc.rsgrouplist.company neq ''> (#rc.rsgrouplist.company#)</cfif>
-							</a>
-						</td>
-						<td>
-							<cfif rc.rsgrouplist.email gt "">
-								<a href="mailto:#rc.rsgrouplist.email#">
-									#rc.rsgrouplist.email#
-								</a>
-							<cfelse>
-								&nbsp;
-							</cfif>
-						</td>
-						<td>#LSDateFormat(rc.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
-						<td>#LSTimeFormat(rc.rsgrouplist.lastupdate,"short")#</td>
-						<td>#rc.rsgrouplist.LastUpdateBy#</td>
-
-						<!--- Actions --->
-						<td class="actions">
-							<ul class="group">
-								<li class="edit">
-									<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
-										<i class="icon-pencil"></i>
-									</a>
-								</li>
-								<li class="remove">
-									<a href="./?muraAction=cUsers.removefromgroup&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
-										<i class="icon-remove-sign"></i>
-									</a>
-								</li>
-								<li class="delete">
-									<a href="./?muraAction=cUsers.update&amp;action=delete&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
-										<i class="icon-trash"></i>
-									</a>
-								</li>
-							</ul>
-						</td>
-					</tr>
-				</cfoutput> 
-			<cfelse>
-				<tr> 
-					<td class="noResults" colspan="6">
-						<cfoutput>#rc.$.rbKey('user.nogroupmembers')#</cfoutput>
-					</td>
-				</tr>
-			</cfif>
-		</table>
-	</cfif>
-<!--- /Group Members --->
-
-<!--- Pagination --->
-	<cfif rc.nextN.numberofpages gt 1> 
-		<cfoutput>
-			<cfset args=arrayNew(1)>
-			<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
-			<cfset args[2]=rc.nextn.totalrecords>
-			<div class="mura-results-wrapper">
-				<p class="clearfix search-showing">
-					#application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("sitemanager.paginationmeta"),args)#
-				</p> 
-				<div class="pagination">
-					<ul>
-						<cfif rc.nextN.currentpagenumber gt 1>
-							<li>
-					 			<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.previous#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
-					 		</li> 
-						</cfif>
-						<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-							<cfif rc.nextN.currentpagenumber eq i>
-								<li class="active"><a href="##">#i#</a></li>
-							<cfelse> 
-								<li>
-									<a href="./?muraAction=cUsers.editgroup&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> 
-								</li>
-							</cfif>
-						</cfloop>
-						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-							<li>
-								<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.next#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
-							</li>
-						</cfif>
-					</ul>
-				</div>
-			</div>
-		</cfoutput>
-	</cfif>
-<!--- /Pagination --->
