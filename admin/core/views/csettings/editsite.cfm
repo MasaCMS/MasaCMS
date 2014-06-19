@@ -495,7 +495,7 @@ to your own modified versions of Mura CMS.
 
           </div>
       
-      
+          <cfif application.configBean.getEmailBroadcaster()>
 	        <div class="control-group">
 	        
 		        <div class="span3">
@@ -512,9 +512,10 @@ to your own modified versions of Mura CMS.
 			        <div class="controls">
 			            <input name="EmailBroadcasterLimit" type="text" class="span4" value="#HTMLEditFormat(rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
 			        </div>
-			    </div>
+			      </div>
 			    
 	        </div>
+          </cfif>
       
       
 	        <div class="control-group">
