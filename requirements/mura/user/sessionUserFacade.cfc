@@ -191,7 +191,18 @@
 <cffunction name="validateCSRFTokens" output="false">
 	<cfargument name="$" default="">
 	<cfargument name="context" default="">
-	<cfreturn arguments.$.event('mura_token_expires') gt (now() + 0) and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
+
+	<!--- CAN ONLY USE TOKEN ONCE --->
+	<cfif not len(arguments.$.event('mura_token')) or structKeyExists(session.mura.csrfusedtokens, "#arguments.$.event('mura_token')#")>
+		<cfreturn false>
+	</cfif>
+
+	<cfif arguments.$.event('mura_token_expires') gt (now() + 0) and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
+		<cfset session.mura.csrfusedtokens["#arguments.$.event('mura_token')#"]=true>
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
+	</cfif>
 </cffunction>
 
 <cffunction name="generateCSRFTokens" output="false">
