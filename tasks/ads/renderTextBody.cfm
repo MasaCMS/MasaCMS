@@ -46,4 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfparam name="url.creativeid" default="">
+<cfif application.settingsManager.getSite(request.siteid).getAdManager()>
 <cfoutput>#application.advertiserManager.readCreative(url.creativeid).getTextBody()#</cfoutput>
+</cfif>

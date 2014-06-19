@@ -475,6 +475,7 @@ to your own modified versions of Mura CMS.
 	        </div>
 
           <div class="control-group">
+            <cfif application.configBean.getAdManager()>
             <div class="span3">
               <label class="control-label">Advertisement Manager</label>
               <div class="controls"> 
@@ -483,7 +484,7 @@ to your own modified versions of Mura CMS.
                   <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
                 </div>
             </div>
-
+            </cfif>
             <div class="span3">
               <label class="control-label">Comments Manager</label>
               <div class="controls"> 

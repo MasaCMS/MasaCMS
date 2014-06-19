@@ -352,9 +352,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDataCollection" output="false">
 	<cfif not variables.configBean.getDataCollection()>
-		<cfreturn false>
+		<cfreturn 0>
 	<cfelse>
 		<cfreturn variables.instance.dataCollection>
+	</cfif>
+</cffunction>
+
+<cffunction name="getAdManager" output="false">
+	<cfif not variables.configBean.getAdManager()>
+		<cfreturn 0>
+	<cfelse>
+		<cfreturn variables.instance.adManager>
 	</cfif>
 </cffunction>
 
