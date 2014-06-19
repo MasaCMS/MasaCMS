@@ -66,10 +66,7 @@ Mura CMS.
 		<cfset var rsPrivateGroups = "" />
 	
 		<cfquery name="rsPrivateGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select userid, groupname, ispublic from tusers where type =1 and ispublic=0
-			and 
-			userid in (select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid='#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#')
-			order by groupname
+			select * from tusers where ispublic=0 and type=1 and siteid='#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolId()#'  order by groupname
 		</cfquery>
 		
 		<cfreturn rsPrivateGroups />
