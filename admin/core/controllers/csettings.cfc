@@ -216,7 +216,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
-	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
+	<cfif arguments.rc.$.validateCSRFTokens(context='sitecopy') and arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./")>
