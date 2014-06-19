@@ -179,7 +179,6 @@
 </cffunction>
 
 <cffunction name="logout" access="public" returntype="any" output="false">
-	
 	<cfset getBean('loginManager').logout()>
 	<cfreturn this>
 </cffunction>
@@ -192,13 +191,20 @@
 	<cfargument name="$" default="">
 	<cfargument name="context" default="">
 
+	<!---CLEAR OLD TOKENS--->
+	<cfloop collection="#session.mura.csrfusedtokens#" item="local.key">
+		<cfif session.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
+			<cfset structDelete(session.mura.csrfusedtokens,'#local.key#')>
+		</cfif>
+	</cfloop>
+
 	<!--- CAN ONLY USE TOKEN ONCE --->
 	<cfif not len(arguments.$.event('mura_token')) or structKeyExists(session.mura.csrfusedtokens, "#arguments.$.event('mura_token')#")>
 		<cfreturn false>
 	</cfif>
 
 	<cfif arguments.$.event('mura_token_expires') gt (now() + 0) and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
-		<cfset session.mura.csrfusedtokens["#arguments.$.event('mura_token')#"]=true>
+		<cfset session.mura.csrfusedtokens["#arguments.$.event('mura_token')#"]=now()>
 		<cfreturn true>
 	<cfelse>
 		<cfreturn false>
