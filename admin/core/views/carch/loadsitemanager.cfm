@@ -351,5 +351,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfset data.perm=perm>
 <cfset data.sortBy=rc.sortBy>
-<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+<cfcontent type="application/json" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>
 

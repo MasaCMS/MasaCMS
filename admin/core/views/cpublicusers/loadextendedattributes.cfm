@@ -168,4 +168,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfset returnsets.basic=trim(returnsets.basic)>
-<cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>
+<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput><cfabort>
