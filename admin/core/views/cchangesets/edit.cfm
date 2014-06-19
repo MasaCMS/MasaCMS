@@ -209,6 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
   </cfif>
   <input type="hidden" name="action" value="">
+  #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="form")#
 </div>
 </form>
 </cfoutput>

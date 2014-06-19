@@ -102,21 +102,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 	<cfargument name="rc">
 
-	<cfset request.newImageIDList="">
+	<cfif rc.$.validateCSRFTokens()>
+		<cfset request.newImageIDList="">
 
-	<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc,false)>
-	
-	<cfif structIsEmpty(arguments.rc.userBean.getErrors())>
-		<cfset structDelete(session.mura,"editBean")>
+		<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc,false)>
+		
+		<cfif structIsEmpty(arguments.rc.userBean.getErrors())>
+			<cfset structDelete(session.mura,"editBean")>
 
-		<cfif len(request.newImageIDList)>
-			<cfset arguments.rc.fileid=request.newImageIDList>
-			<cfset arguments.rc.userid=arguments.rc.userBean.getUserID()>
-			<cfset arguments.rc.siteID=arguments.rc.userBean.getSiteID()>
-			<cfset variables.fw.redirect(action="cArch.imagedetails",append="userid,siteid,fileid,compactDisplay",path="./")>
+			<cfif len(request.newImageIDList)>
+				<cfset arguments.rc.fileid=request.newImageIDList>
+				<cfset arguments.rc.userid=arguments.rc.userBean.getUserID()>
+				<cfset arguments.rc.siteID=arguments.rc.userBean.getSiteID()>
+				<cfset variables.fw.redirect(action="cArch.imagedetails",append="userid,siteid,fileid,compactDisplay",path="./")>
+			</cfif>
+
+			 <cfset variables.fw.redirect(action="home.redirect",path="./")>
 		</cfif>
-
-		 <cfset variables.fw.redirect(action="home.redirect",path="./")>
 	</cfif>
 </cffunction>
 

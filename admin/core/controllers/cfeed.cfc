@@ -95,31 +95,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 	<cfargument name="rc">
 	
-	<cfif arguments.rc.action eq 'update'>
-		<cfif len(arguments.rc.assignmentID) and isJSON(arguments.rc.instanceParams)>
-			<cfset getBean("contentManager").updateContentObjectParams(arguments.rc.assignmentID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.instanceParams)>
-			<cfset arguments.rc.feedBean=variables.feedManager.read(feedID=arguments.rc.feedID)>
-		<cfelse>
-			<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
+	<cfif rc.$.validateCSRFTokens(context=arguments.rc.feedid)>
+		<cfif arguments.rc.action eq 'update'>
+			<cfif len(arguments.rc.assignmentID) and isJSON(arguments.rc.instanceParams)>
+				<cfset getBean("contentManager").updateContentObjectParams(arguments.rc.assignmentID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.instanceParams)>
+				<cfset arguments.rc.feedBean=variables.feedManager.read(feedID=arguments.rc.feedID)>
+			<cfelse>
+				<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
+			</cfif>
+		</cfif>
+
+		<cfif arguments.rc.action eq 'delete'>
+			<cfset variables.feedManager.delete(arguments.rc.feedID)>
+		</cfif>
+	  	
+		<cfif arguments.rc.action eq 'add'>
+			<cfset arguments.rc.feedBean=variables.feedManager.create(arguments.rc)>
+			<cfif structIsEmpty(arguments.rc.feedBean.getErrors())>
+				<cfset arguments.rc.feedID=rc.feedBean.getFeedID()>
+			</cfif>
+		</cfif>
+		  
+		 
+		<cfif arguments.rc.closeCompactDisplay neq 'true' and not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors()))>
+				<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="./")>
 		</cfif>
 	</cfif>
-
-	<cfif arguments.rc.action eq 'delete'>
-		<cfset variables.feedManager.delete(arguments.rc.feedID)>
-	</cfif>
-  	
-	<cfif arguments.rc.action eq 'add'>
-		<cfset arguments.rc.feedBean=variables.feedManager.create(arguments.rc)>
-		<cfif structIsEmpty(arguments.rc.feedBean.getErrors())>
-			<cfset arguments.rc.feedID=rc.feedBean.getFeedID()>
-		</cfif>
-	</cfif>
-	  
-	 
-	<cfif arguments.rc.closeCompactDisplay neq 'true' and not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors()))>
-			<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="./")>
-	</cfif>
-
+	
 	<cfif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors())>
 		<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
 		<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.siteID,arguments.rc.feedBean.getcontentID()) />

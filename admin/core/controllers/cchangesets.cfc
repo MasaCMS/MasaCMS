@@ -127,7 +127,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rollback" output="false">
 <cfargument name="rc">
-<cfset variables.changesetManager.rollback(rc.changesetID)>
+<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
+	<cfset variables.changesetManager.rollback(rc.changesetID)>
+</cfif>
 <cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
 </cffunction>
 
@@ -141,7 +143,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="removeitem" output="false">
 <cfargument name="rc">
-<cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
+<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
+	<cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
+</cfif>
 <cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="./")>
 </cffunction>
 
@@ -152,14 +156,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="save" output="false">
 <cfargument name="rc">
-<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save()>
-<cfset arguments.rc.changesetID=arguments.rc.changeset.getChangesetID()>
+<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
+	<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save()>
+	<cfset arguments.rc.changesetID=arguments.rc.changeset.getChangesetID()>
+</cfif>
 <cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 
 <cffunction name="delete" output="false">
 <cfargument name="rc">
-<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).delete()>
+<cfif rc.$.validateCSRFTokens(context=arguments.rc.changesetid)>
+	<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).delete()>
+</cfif>
 <cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 </cfcomponent>

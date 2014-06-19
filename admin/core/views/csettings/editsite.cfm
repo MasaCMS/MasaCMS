@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
       <cfif rc.action eq "updateFiles">
         <a href="./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
         <cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-        <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
+        <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
       </cfif>
       <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
       <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
@@ -1162,9 +1162,10 @@ to your own modified versions of Mura CMS.
     <script>$('.tab-preloader').spin(spinnerArgs2);</script>
      #actionButtons#
     <input type="hidden" name="action" value="update">
+    #rc.$.renderCSRFTokens(context=rc.siteID,format="form")#
     </form>
   </cfoutput>
-  <cfelse>
+<cfelseif rc.$.validateCSRFTokens(context=rc.siteid & 'updatesite')>
   <cftry>
     <cfset updated=application.autoUpdater.update(rc.siteid)>
     <cfset files=updated.files>

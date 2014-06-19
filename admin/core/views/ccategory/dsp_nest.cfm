@@ -83,9 +83,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<span>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isActive)#')#</span>
 </td>
-<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#URLEncodedFormat(attributes.siteid)#"><i class="icon-pencil"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cCategory.update&action=delete&categoryID=#rslist.categoryID#&siteid=#URLEncodedFormat(attributes.siteid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
+<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#URLEncodedFormat(attributes.siteid)#"><i class="icon-pencil"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cCategory.update&action=delete&categoryID=#rslist.categoryID#&siteid=#URLEncodedFormat(attributes.siteid)##attributes.muraScope.renderCSRFTokens(context=rslist.categoryid,format="url")#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 </tr>
-<cf_dsp_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
+<cf_dsp_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#"  muraScope="#attributes.muraScope#">
 </cfloop>
 </cfoutput>
 <cfelseif attributes.nestlevel eq 0>
