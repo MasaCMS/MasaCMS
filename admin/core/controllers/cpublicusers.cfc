@@ -219,22 +219,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	  <cfset request.newImageIDList="">
 
-	  <cfif arguments.rc.action eq 'Update'>
-	  	<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc) />
-	  </cfif>
-   
-	  <cfif arguments.rc.action eq 'Delete'>
-	  	<cfset variables.userManager.delete(arguments.rc.userid,arguments.rc.type) />
-	  </cfif>
-  
-	  <cfif arguments.rc.action eq 'Add'>
-	  	<cfset arguments.rc.userBean=variables.userManager.create(arguments.rc)/> 
-	  </cfif>
+	  <cfif rc.$.validateCSRFTokens(context=rc.userid)>
+		  <cfif arguments.rc.action eq 'Update'>
+		  	<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc) />
+		  </cfif>
+	   
+		  <cfif arguments.rc.action eq 'Delete'>
+		  	<cfset variables.userManager.delete(arguments.rc.userid,arguments.rc.type) />
+		  </cfif>
 	  
-	   <cfif arguments.rc.action eq 'Add' and structIsEmpty(arguments.rc.userBean.getErrors())>
-	   	<cfset arguments.rc.userid=rc.userBean.getUserID() />
-	   </cfif>
-	 
+		  <cfif arguments.rc.action eq 'Add'>
+		  	<cfset arguments.rc.userBean=variables.userManager.create(arguments.rc)/> 
+		  </cfif>
+		  
+		   <cfif arguments.rc.action eq 'Add' and structIsEmpty(arguments.rc.userBean.getErrors())>
+		   	<cfset arguments.rc.userid=rc.userBean.getUserID() />
+		   </cfif>
+	 	</cfif>
 	   <cfset arguments.rc.siteID=origSiteID>
 	 
 
