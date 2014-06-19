@@ -35,7 +35,14 @@
 								}
 								siteManager.hasNodeLock=false;
 								$('.form-actions').fadeIn();
-								jQuery.post("./",{muraAction:"carch.unlockNode",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
+								<cfset csrf=rc.$.generateCSRFTokens(context=rc.contentBean.getContentID() & 'unlocknode')>
+								jQuery.post("./",{
+									muraAction:"carch.unlockNode",
+									contentid:"#rc.contentBean.getContentID()#",
+									siteid:"#rc.contentBean.getSiteID()#",
+									mura_token:'#csrf.token#',
+									mura_token_expires: '#csrf.expires#'
+								})
 							}
 						);							
 					}
@@ -99,12 +106,15 @@ function applyApprovalAction(requestid,action,comment,siteid){
 	} else {
 		$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
 		
+		<cfset csrf=rc.$.generateCSRFTokens(context='approvalaction')>
 		var pars={
 					muraAction:'carch.approvalaction',
 					siteid: siteid,
 					requestid: requestid,
 					comment: comment,
-					action:action
+					action:action,
+					mura_token:'#csrf.token#',
+					mura_token_expires: '#csrf.expires#'
 				};
 
 		actionModal(

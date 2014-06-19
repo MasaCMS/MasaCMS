@@ -1,6 +1,6 @@
 <cftry>
 	
-
+<cfif rc.$.validateCSRFTokens(context="approvalaction")>
 <cfset approvalRequest=$.getBean('approvalRequest').loadBy(requestID=rc.requestID)>
 <cfif rc.action eq 'approve'>
 	<cfset approvalRequest.approve(rc.comment)>

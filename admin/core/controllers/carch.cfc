@@ -133,42 +133,44 @@
 	
 	<cfset var local=structNew()>
 	
-	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
-	<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
-	<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />  
-	<cfset local.args={}>
-	<cfset local.args.approved=1>
-	
-	<cfif arguments.rc.attribute eq "isnav">
-		<cfset local.args.isnav=arguments.rc.isnav>
-	<cfelseif arguments.rc.attribute eq "display">
-		<cfset local.args.display=arguments.rc.display>
+	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "quickedit")>
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />  
+		<cfset local.args={}>
+		<cfset local.args.approved=1>
 		
-		<cfset local.args.displayStop=arguments.rc.displayStop>
-		<!---
-		<cfset local.args.stopHour=arguments.rc.stopHour>
-		<cfset local.args.stopMinute=arguments.rc.stopMinute>
-		<cfset local.args.stopDayPart=arguments.rc.stopDayPart>
-		--->
-		<cfset local.args.displayStart=arguments.rc.displayStart>
-		<!---
-		<cfset local.args.startHour=arguments.rc.startHour>
-		<cfset local.args.startMinute=arguments.rc.startMinute>
-		<cfset local.args.startDayPart=arguments.rc.startDayPart>
-		--->
-	
-	<cfelseif arguments.rc.attribute eq "template">
-		<cfset local.args.template=arguments.rc.template>
-		<cfset local.args.childTemplate=arguments.rc.childTemplate>
-	<cfelseif arguments.rc.attribute eq "inheritObjects">
-		<cfset local.args.inheritObjects=arguments.rc.inheritObjects>
-	<cfelse>
-		<cfabort>
-	</cfif>
-	
-	<cfif local.perm eq "Editor" and not local.contentBean.hasDrafts()>
-		<cfset local.contentBean.set(local.args)>
-		<cfset local.contentBean.save()>
+		<cfif arguments.rc.attribute eq "isnav">
+			<cfset local.args.isnav=arguments.rc.isnav>
+		<cfelseif arguments.rc.attribute eq "display">
+			<cfset local.args.display=arguments.rc.display>
+			
+			<cfset local.args.displayStop=arguments.rc.displayStop>
+			<!---
+			<cfset local.args.stopHour=arguments.rc.stopHour>
+			<cfset local.args.stopMinute=arguments.rc.stopMinute>
+			<cfset local.args.stopDayPart=arguments.rc.stopDayPart>
+			--->
+			<cfset local.args.displayStart=arguments.rc.displayStart>
+			<!---
+			<cfset local.args.startHour=arguments.rc.startHour>
+			<cfset local.args.startMinute=arguments.rc.startMinute>
+			<cfset local.args.startDayPart=arguments.rc.startDayPart>
+			--->
+		
+		<cfelseif arguments.rc.attribute eq "template">
+			<cfset local.args.template=arguments.rc.template>
+			<cfset local.args.childTemplate=arguments.rc.childTemplate>
+		<cfelseif arguments.rc.attribute eq "inheritObjects">
+			<cfset local.args.inheritObjects=arguments.rc.inheritObjects>
+		<cfelse>
+			<cfabort>
+		</cfif>
+		
+		<cfif local.perm eq "Editor" and not local.contentBean.hasDrafts()>
+			<cfset local.contentBean.set(local.args)>
+			<cfset local.contentBean.save()>
+		</cfif>
 	</cfif>
 	<cfabort>
 	
@@ -451,14 +453,16 @@
 <cffunction name="lockFile" ouput="false">
 	<cfargument name="rc">
 	
-	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
-	<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
-	<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
-	
-	<cfif listFindNoCase("author,editor",local.perm)
-		or listFindNoCase(session.mura.memberships,"s2")>
-			<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
-			<cflocation url="#variables.configBean.getContext()#/tasks/render/file/?fileid=#local.contentBean.getFileID()#&method=attachment">
+	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "lockfile")>
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+		<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+		<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
+		
+		<cfif listFindNoCase("author,editor",local.perm)
+			or listFindNoCase(session.mura.memberships,"s2")>
+				<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
+				<cflocation url="#variables.configBean.getContext()#/tasks/render/file/?fileid=#local.contentBean.getFileID()#&method=attachment">
+		</cfif>
 	</cfif>
 	<cfabort>
 </cffunction>
@@ -466,17 +470,19 @@
 <cffunction name="unlockFile" ouput="false">
 	<cfargument name="rc">
 	
-	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-	<cfset local.stats=local.contentBean.getStats()> 
+	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlockfile")>
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+		<cfset local.stats=local.contentBean.getStats()> 
 
-	<cfif len(local.stats.getLockID())
-		and (
-			local.stats.getLockID() eq session.mura.userID
-			or
-			listFindNoCase(session.mura.memberships,"s2")
-			)>
-		<cfset local.stats.setLockID("").setLockType("").save()>
-	
+		<cfif len(local.stats.getLockID())
+			and (
+				local.stats.getLockID() eq session.mura.userID
+				or
+				listFindNoCase(session.mura.memberships,"s2")
+				)>
+			<cfset local.stats.setLockID("").setLockType("").save()>
+		
+		</cfif>
 	</cfif>
 	<cfabort>
 </cffunction>
@@ -484,17 +490,19 @@
 <cffunction name="unlockNode" ouput="false">
 	<cfargument name="rc">
 	
-	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
-	<cfset local.stats=local.contentBean.getStats()> 
+	<cfif rc.$.validateCSRFTokens(context=rc.contentid & "unlocknode")>
+		<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+		<cfset local.stats=local.contentBean.getStats()> 
 
-	<cfif len(local.stats.getLockID())
-		and (
-			local.stats.getLockID() eq session.mura.userID
-			or
-			listFindNoCase(session.mura.memberships,"s2")
-			)>
-		<cfset local.stats.setLockID("").setLockType("").save()>
-	
+		<cfif len(local.stats.getLockID())
+			and (
+				local.stats.getLockID() eq session.mura.userID
+				or
+				listFindNoCase(session.mura.memberships,"s2")
+				)>
+			<cfset local.stats.setLockID("").setLockType("").save()>
+		
+		</cfif>
 	</cfif>
 	<cfabort>
 </cffunction>

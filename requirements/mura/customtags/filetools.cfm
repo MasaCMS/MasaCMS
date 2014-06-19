@@ -58,6 +58,7 @@
 	<cfif attributes.property eq 'fileid' and attributes.bean.getType() eq 'File'>
 		
 		<script>
+			<cfset csrf=fileMetaData.getCurrentUser().generateCSRFTokens(context=attributes.bean.getContentID() & 'unlockfile')>
 			jQuery(".mura-file-unlock").click(
 				function(event){
 					event.preventDefault();
@@ -71,12 +72,19 @@
 							jQuery("##mura-download-locked").hide();
 							jQuery("##msg-file-locked-else").fadeOut();
 							siteManager.hasFileLock=false;
-							jQuery.post("./",{muraAction:"carch.unlockfile",contentid:"#attributes.bean.getContentID()#",siteid:"#attributes.bean.getSiteID()#"})
+							jQuery.post("./",{
+								muraAction:"carch.unlockfile",
+								contentid:"#attributes.bean.getContentID()#",
+								siteid:"#attributes.bean.getSiteID()#",
+								mura_token:'#csrf.token#',
+								mura_token_expires: '#csrf.expires#'
+							})
 						}
 					);	
 								
 				}
 			);
+
 			jQuery("##mura-file-offline-edit").click(
 				function(event){
 					event.preventDefault();
@@ -91,7 +99,7 @@
 							jQuery("##msg-file-locked-else").hide();
 							jQuery(a).fadeOut();
 							siteManager.hasFileLock=true;
-							document.location="./?muraAction=carch.lockfile&contentID=#attributes.bean.getContentID()#&siteID=#attributes.bean.getSiteID()#";
+							document.location="./?muraAction=carch.lockfile&contentID=#attributes.bean.getContentID()#&siteID=#attributes.bean.getSiteID()##fileMetaData.getCurrentUser().renderCSRFTokens(context=attributes.bean.getContentID() & 'lockfile',format='url')#";
 						}
 					);	
 				}

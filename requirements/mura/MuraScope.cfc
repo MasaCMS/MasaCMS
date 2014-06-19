@@ -541,4 +541,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderCSRFTokens" output="false">
 	<cfreturn currentUser().renderCSRFTokens(argumentCollection=arguments)>
 </cffunction>
+
+<cffunction name="generateCSRFTokens" output="false">
+	<cfreturn currentUser().generateCSRFTokens(argumentCollection=arguments)>
+</cffunction>
 </cfcomponent>

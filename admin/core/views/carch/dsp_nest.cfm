@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#rsnest.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#rsnest.sortby#" data-sortdirection="#rsnest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#rsnest.type#" class="#lcase(rsnest.type)# mura-node-data<cfif variables.restricted> restricted</cfif>">
+<li data-siteid="#HTMLEditFormat(rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#HTMLEditFormat(rsnest.sortby)#" data-sortdirection="#HTMLEditFormat(rsnest.sortdirection)#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#HTMLEditFormat(rsnest.type)#" class="#HTMLEditFormat(lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#HTMLEditFormat(attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url'))#">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
