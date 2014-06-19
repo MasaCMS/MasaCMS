@@ -209,10 +209,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSubType" type="hidden">
 <input name="siteID" value="#HTMLEditFormat(rc.siteid)#" type="hidden">
-<input type="hidden" name="baseTable" value="#subType.getBaseTable()#"/>
-<input type="hidden" name="baseKeyField" value="#subType.getBaseKeyField()#" />
-<input type="hidden" name="type" value="#subType.getType()#"/>
-<input type="hidden" name="dataTable" value="#subType.getDataTable()#" />
+<input type="hidden" name="baseTable" value="#HTMLEditFormat(subType.getBaseTable())#"/>
+<input type="hidden" name="baseKeyField" value="#HTMLEditFormat(subType.getBaseKeyField())#" />
+<input type="hidden" name="type" value="#HTMLEditFormat(subType.getType())#"/>
+<input type="hidden" name="dataTable" value="#HTMLEditFormat(subType.getDataTable())#" />
 
 </form>
 
