@@ -197,8 +197,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>	
 <div class="form-actions">
 	<cfif not len(rc.subTypeID)>
+		<cfset rc.subTypeID=createUUID()>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
-		<input type=hidden name="subTypeID" value="#createuuid()#">
+		<input type=hidden name="subTypeID" value="#rc.subTypeID#">
 	<cfelse>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
@@ -213,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="baseKeyField" value="#HTMLEditFormat(subType.getBaseKeyField())#" />
 <input type="hidden" name="type" value="#HTMLEditFormat(subType.getType())#"/>
 <input type="hidden" name="dataTable" value="#HTMLEditFormat(subType.getDataTable())#" />
-
+#rc.$.renderCSRFTokens(context=rc.subtypeid,format="form")#
 </form>
 
 <script>

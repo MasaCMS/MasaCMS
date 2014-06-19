@@ -99,8 +99,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="form-actions">
 <cfif not len(rc.relatedContentSetID)>
+	<cfset rc.relatedContentSetID=createUUID()>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
-	<input type=hidden name="relatedContentSetID" value="#createuuid()#">
+	<input type=hidden name="relatedContentSetID" value="#rc.relatedContentSetID#">
 <cfelse>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');" value="Delete" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
@@ -112,5 +113,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input name="muraAction" value="cExtend.updateRelatedContentSet" type="hidden">
 <input name="siteID" value="#HTMLEditFormat(rc.siteid)#" type="hidden">
 <input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
+#rc.$.renderCSRFTokens(context=rc.relatedContentSetID,format="form")#
 </form>
 </cfoutput>
