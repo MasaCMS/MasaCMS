@@ -166,6 +166,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.lockableNodes=false/>
 <cfset variables.instance.allowLocalFiles=false/>
 <cfset variables.instance.dataCollection=true/>
+<cfset variables.instance.adManager=true/>
+<cfset variables.instance.emailBroadcaster=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

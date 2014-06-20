@@ -71,20 +71,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="update" output="false">
 	<cfargument name="rc">
-	<cfset variables.permUtility.update(arguments.rc)  />
-	<cfset getBean('approvalChainAssignment')
-			.loadBy(siteID=arguments.rc.siteid, contentID=arguments.rc.contentID)
-			.setChainID(arguments.rc.chainID)
-			.setExemptID(arguments.rc.exemptID)
-			.save()>
 
+	<cfif rc.$.validateCSRFTokens(context=rc.contentid)>
+		<cfset variables.permUtility.update(arguments.rc)  />
+		<cfset getBean('approvalChainAssignment')
+				.loadBy(siteID=arguments.rc.siteid, contentID=arguments.rc.contentID)
+				.setChainID(arguments.rc.chainID)
+				.setExemptID(arguments.rc.exemptID)
+				.save()>
+	</cfif>
 	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,startrow,topid",path="./")>
-</cffunction>
-
-<cffunction name="updategroup" output="false">
-	<cfargument name="rc">
-	<cfset variables.permUtility.updateGroup(arguments.rc)  />
-	<cfset variables.fw.redirect(action="cUsers.list",append="siteid",path="./")>
 </cffunction>
 
 <cffunction name="main" output="false">
@@ -100,7 +96,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="updatemodule" output="false">
 	<cfargument name="rc">
-	<cfset variables.permUtility.updateModule(arguments.rc) />
+
+	<cfif rc.$.validateCSRFTokens(context=rc.moduleid)>
+		<cfset variables.permUtility.updateModule(arguments.rc) />
+	</cfif>
+	
 	<cfif arguments.rc.moduleid eq '00000000000000000000000000000000004'>
 		<cfset variables.fw.redirect(action="cUsers.list",append="siteid",path="./")>
 	</cfif>

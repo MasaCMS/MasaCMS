@@ -223,6 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   </cfif>
   <input type="hidden" name="action" value="">
+  #rc.$.renderCSRFTokens(context=rc.categoryBean.getCategoryID(),format="form")#
 </div>
 </form>
 </cfoutput>

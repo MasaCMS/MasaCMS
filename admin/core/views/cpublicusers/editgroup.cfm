@@ -92,7 +92,7 @@ select * from rsSubTypes where subType <> 'Default'
        <p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
       </cfif>
 
-     <form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cPublicUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+     <form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cPublicUsers.update&userid=#URLEncodedFormat(rc.userBean.getUserID())#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
       </cfoutput>
       <cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
         <div class="tabbable tabs-left mura-ui">
@@ -256,6 +256,7 @@ select * from rsSubTypes where subType <> 'Default'
             <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
             <input type="hidden" name="returnurl" value="#HTMLEditFormat(rc.returnurl)#">
             <cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
+            #rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
           </div>
           </cfoutput>
        </cfif>

@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;activeTab=0">
 			
-			<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.update">
+			<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.update#variables.$.renderCSRFTokens(context=request.contentBean.getContentID() & 'deleteall',format='url')#">
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;contentid=" & request.contentBean.getContentID()>
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;topid=00000000000000000000000000000000001">

@@ -78,7 +78,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset bean.set(rs) />
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn bean />

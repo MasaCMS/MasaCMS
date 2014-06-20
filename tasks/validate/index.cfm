@@ -33,6 +33,8 @@
 			.getErrors()
 		);
 	}
-
+	if(form.version > 2){
+		getpagecontext().getresponse().getresponse().setcontenttype('application/json; charset=utf-8');
+	}
 	writeOutput(serializeJSON(errors));	
 </cfscript>

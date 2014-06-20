@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h1>Change Set Content List</h1>
 <cfinclude template="dsp_secondary_menu.cfm">
-
+<cfset csrftokens=rc.$.renderCSRFTokens(context=rc.changesetid,format='url')>
 <cfif rc.changeset.getPublished()>
 <p class="alert">#application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#</p>
 <cfelse>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#JSStringFormat(rc.rslist.contentHistID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		  <li class="version-history disabled"><i class="icon-book"></i></li>
     </cfif>
-		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)##csrftokens#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 		</ul>
 		</td>
 		</tr>
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	   <li class="edit disabled"><i class="icon-pencil"></i></li>
             <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
           </cfif> 	
-      		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+      		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)##csrftokens#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
       		</ul>
       	</td>
 		    </tr>
@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <li class="edit disabled"><i class="icon-pencil"></i></li>
                <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
             </cfif>
-            <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+            <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)##csrftokens#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
             </ul>
           </td>
         </tr>

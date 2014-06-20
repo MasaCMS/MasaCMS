@@ -117,8 +117,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="form-actions">
 <cfif not len(rc.extendSetID)>
+	<cfset rc.extendSetID=createuuid()>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
-	<input type=hidden name="extendSetID" value="#createuuid()#">
+	<input type=hidden name="extendSetID" value="#rc.extendSetID#">
 <cfelse>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
@@ -130,5 +131,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input name="muraAction" value="cExtend.updateSet" type="hidden">
 <input name="siteID" value="#HTMLEditFormat(rc.siteid)#" type="hidden">
 <input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
+#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 </form>
 </cfoutput>

@@ -86,6 +86,7 @@
   </cfif>
   <input type="hidden" name="siteid" value="#chain.getSiteID()#">
   <input type=hidden name="chainID" value="#chain.getchainID()#">
+  #rc.$.renderCSRFTokens(context=chain.getchainID(),format="form")#
 </div>
 </form>
 <cfinclude template="js.cfm">

@@ -274,6 +274,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="contact" value="0">
 		<input type="hidden" name="userid" value="#rc.userBean.getuserid()#">
 		<input type="hidden" name="siteid" value="#rc.userBean.getsiteid()#">
+		#rc.$.renderCSRFTokens(format="form")#
 <!---		
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>

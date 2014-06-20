@@ -76,7 +76,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="login" output="false">
 	<cfargument name="rc">
-	<cfset application.loginManager.login(arguments.rc)>	
+	<cfif rc.$.validateCSRFTokens()>
+		<cfset application.loginManager.login(arguments.rc)>	
+	</cfif>
 </cffunction>
 
 <cffunction name="logout" output="false">
