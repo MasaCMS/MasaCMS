@@ -105,5 +105,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="entered" value="#rsData.entered#">
 <input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
 <input type="hidden" name="action" value="update">
+#rc.$.renderCSRFTokens(context=rsdata.responseID,format="form")#
 </form>
 </cfoutput>

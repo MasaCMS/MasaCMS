@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<p>#extendSetBean.getName()#</p>
 					<div class="btns">
 						<a title="Edit" href="./?muraAction=cExtend.editAttributes&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a>
-						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 					</div>
 				</li>
 			</cfoutput>
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<p>#rcsBean.getName()#</p>
 						<div class="btns">
 							<a title="Edit" href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#rc.subTypeID#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a>
-							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#rc.subTypeID#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('Delete  #jsStringFormat("'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#rc.subTypeID#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#URLEncodedFormat(rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #jsStringFormat("'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 						</div>
 					</li>
 				</cfoutput>

@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#HTMLEditFormat(rc.rslist.GroupName)#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
@@ -167,10 +167,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="form-actions no-offset">
 		 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 	</div>
-           <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
+           <input type="hidden" name="router" value="#HTMLEditFormat(cgi.HTTP_REFERER)#">
            <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-           <input type="hidden" name="startrow" value="#rc.startrow#">
-		  <input type="hidden" name="topid" value="#rc.topid#"><input type="hidden" name="moduleid" value="#rc.moduleid#"></form></td>
+           <input type="hidden" name="startrow" value="#HTMLEditFormat(rc.startrow)#">
+		  <input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
+		  <input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+		   #rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
+		</form></td>
   </tr>
 </table>
 

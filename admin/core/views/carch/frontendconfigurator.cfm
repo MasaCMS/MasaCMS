@@ -223,7 +223,7 @@ jQuery(document).ready(function(){
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
-				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
+				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams#rc.$.renderCSRFTokens(context=rsDisplayObject.contentHistID & 'add',format='url')#", {
 					'contenthistid': '#JSStringFormat(rsDisplayObject.contentHistID)#',
 					'objectid': '#JSStringFormat(rsDisplayObject.objectid)#',
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',

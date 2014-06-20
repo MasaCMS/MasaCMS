@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			                     	
 			                     	<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
 		                     	<li>
-		                     		<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore')});return false;">
+		                     		<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
 		                     			<i class="icon-bolt"></i> Update Mura Core
 		                     		</a>
 		                     	</li>
@@ -330,7 +330,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					<cfif listFind(session.mura.memberships,'S2')>
 		 					<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
 		 					<li>
-		 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(session.siteid)#&action=updateFiles')});return false;">
+		 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(session.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
 		 							<i class="icon-bolt"></i> Update Site
 		 						</a>
 		 					</li>

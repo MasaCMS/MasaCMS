@@ -74,23 +74,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="update" output="false">
 <cfargument name="rc">
-	 <cfswitch expression="#rc.action#">
-		  <cfcase value="update">
-		  	<cfset arguments.rc.categoryBean=variables.categoryManager.update(arguments.rc) />
-		  </cfcase>
-	  
-		 <cfcase value="delete">
-		  	<cfset variables.categoryManager.delete(arguments.rc.categoryid) />
-		  </cfcase>
-	  
-		  <cfcase value="add">
-		  	<cfset arguments.rc.categoryBean=variables.categoryManager.create(arguments.rc) />
-		  	<cfif structIsEmpty(arguments.rc.categoryBean.getErrors())>
-		  		<cfset arguments.rc.categoryID=rc.categoryBean.getCategoryID()>
-		  	</cfif>
-		  </cfcase>
-	 </cfswitch>
-	 
+	
+	<cfif rc.$.validateCSRFTokens(context=rc.categoryid)>
+		<cfswitch expression="#rc.action#">
+			<cfcase value="update">
+				<cfset arguments.rc.categoryBean=variables.categoryManager.update(arguments.rc) />
+			</cfcase>
+		  
+			<cfcase value="delete">
+				<cfset variables.categoryManager.delete(arguments.rc.categoryid) />
+			</cfcase>
+		  
+			<cfcase value="add">
+			  	<cfset arguments.rc.categoryBean=variables.categoryManager.create(arguments.rc) />
+			  	<cfif structIsEmpty(arguments.rc.categoryBean.getErrors())>
+			  		<cfset arguments.rc.categoryID=rc.categoryBean.getCategoryID()>
+			  	</cfif>
+			</cfcase>
+		 </cfswitch>
+	 </cfif>
 	  <cfif not (arguments.rc.action neq 'delete' and not structIsEmpty(arguments.rc.categoryBean.getErrors()))>
 		  <cfset variables.fw.redirect(action="cCategory.list",append="siteid",path="./")>
 	<cfelse>

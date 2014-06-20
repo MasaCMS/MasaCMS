@@ -49,4 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="url.siteid" default="">
 <cfparam name="url.track" default="">
 <cfparam name="url.contentHistID" default="">
+<cfif application.settingsManager.getSite(request.siteid).getAdManager()>
 <cfoutput>#application.contentRenderer.jsonEncode(application.advertiserManager.renderAdZone(url.adzoneid,url.siteid,val(url.track),cgi.REMOTE_ADDR,url.contentHistID))#</cfoutput>
+</cfif>

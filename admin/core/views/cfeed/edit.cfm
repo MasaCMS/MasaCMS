@@ -747,6 +747,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="assignmentID" value="#HTMLEditFormat(rc.assignmentID)#" />
 <input type="hidden" name="orderno" value="#HTMLEditFormat(rc.orderno)#" />
 <input type="hidden" name="regionid" value="#HTMLEditFormat(rc.regionID)#" />
+#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 <!--- Button Begins --->
 </form>
 <!---
@@ -1001,6 +1002,7 @@ jQuery(document).ready(function(){
 			<input type="hidden" name="action" value="update">
 		</cfif>
 		<input type="hidden" name="type" value="Remote">
+		#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 		</div>
 	</div>
 </div>

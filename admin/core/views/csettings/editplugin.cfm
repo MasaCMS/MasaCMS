@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label class="control-label">Site Assignment</label>
 					<div class="controls">
 						<cfloop query="rc.rsSites">
-							<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</label>
+							<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #htmlEditFormat(rc.rsSites.site)#</label>
 						</cfloop>
 					</div>
 				</div>
@@ -310,7 +310,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
-			<input type="hidden" name="moduleID" value="#rc.moduleID#">
+			<input type="hidden" name="moduleID" value="#htmlEditFormat(rc.moduleID)#">
+			#rc.$.renderCSRFTokens(context=rc.moduleID,format="form")#
 		</div>
 
 		<div class="form-actions">

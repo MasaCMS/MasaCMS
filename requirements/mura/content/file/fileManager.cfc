@@ -437,9 +437,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- create a URLconnection to the file to emulate uploading --->
 	<cfset local.filePath=replace(arguments.filePath,"\","/","all")>
 	<cfset local.results=structNew()>
-
-	<cfif not find("://",local.filePath) or find("file://",local.filePath)>
-
+	
+	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
 		<cfset local.isLocalFile=true>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file:///","")>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
@@ -535,7 +534,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="fileField">
 	<cfreturn (structKeyExists(form,arguments.fileField) and listFindNoCase("tmp,upload",listLast(form['#arguments.fileField#'],"."))) or listFindNoCase("tmp,upload",listLast(arguments.fileField,"."))>
 </cffunction>
-
 
 <cffunction name="requestHasRestrictedFiles" output="false">
 	<cfargument name="scope" default="#form#">

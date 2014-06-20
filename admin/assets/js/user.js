@@ -58,11 +58,16 @@ var userManager = {
 
 		if(d.length) {
 			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, function(data) {
-				if(data.indexOf('mura-primary-login-token') != -1) {
-					location.href = './';
+			$.ajax({
+				url: url + "?" + pars,
+				dataType: 'text', 
+				success: function(data) {
+
+					if(data.indexOf('mura-primary-login-token') != -1) {
+						location.href = './';
+					}
+					userManager.setExtendedAttributes(data);
 				}
-				userManager.setExtendedAttributes(data);
 			});
 		}
 

@@ -83,8 +83,11 @@ to your own modified versions of Mura CMS.
 		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="./")>
 	</cfif>
 	
-	<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
-	<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
+	<cfif rc.$.validateCSRFTokens(context='updatesites')>
+		<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
+		<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
+	</cfif>
+	
 	<cfset arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy) />
 	<cfset arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins() />
 </cffunction>
@@ -96,7 +99,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="deletePlugin" output="false">
 	<cfargument name="rc">
-	<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
+	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
+		<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
+	</cfif>
 	<cfset arguments.rc.activeTab=1>
 	<cfset arguments.rc.refresh=1>
 	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
@@ -118,9 +123,12 @@ to your own modified versions of Mura CMS.
 	<cfset var tempID="">
 	<cfparam name="arguments.rc.moduleID" default="" />
 	
-	<cfset tempID=variables.pluginManager.deploy(arguments.rc.moduleID) />
+	<cfif len(arguments.rc.moduleid) and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid) 
+		or arguments.rc.moduleid eq '' and arguments.rc.$.validateCSRFTokens(context='newplugin')>
+		<cfset tempID=variables.pluginManager.deploy(arguments.rc.moduleID) />
+	</cfif>
 	
-	<cfif len(tempID)>
+	<cfif isDefined('tempid') and len(tempID)>
 		<cfset arguments.rc.moduleID=tempID>
 		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
 	<cfelse>
@@ -137,7 +145,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="updatePlugin" output="false">
 	<cfargument name="rc">
-	<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
+	<cfif arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
+		<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
+	</cfif>
 	<cfset arguments.rc.activeTab=1>
 	<cfset arguments.rc.refresh=1>
 	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
@@ -145,45 +155,47 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="updateSite" output="false">
 	<cfargument name="rc">
-	<cfset var bean="">
+	<cfset var bean=variables.settingsManager.read(siteid=arguments.rc.siteid)>
 
-	<cfset request.newImageIDList="">
+	<cfif bean.getIsNew() and arguments.rc.$.validateCSRFTokens()
+		or not bean.getIsNew() and arguments.rc.$.validateCSRFTokens(context=arguments.rc.siteID)>
+		<cfset request.newImageIDList="">
 
-	<cfif arguments.rc.action eq 'Update'>
-			<cfset bean=variables.settingsManager.update(arguments.rc)  />
-			<cfset variables.clusterManager.reload() />
-			<cfif not structIsEmpty(bean.getErrors())>
-				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
-			<cfelse>
-				<cfif len(request.newImageIDList)>
-					<cfset arguments.rc.fileid=request.newImageIDList>
-					<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
+		<cfif arguments.rc.action eq 'Update'>
+				<cfset bean=variables.settingsManager.update(arguments.rc)  />
+				<cfset variables.clusterManager.reload() />
+				<cfif not structIsEmpty(bean.getErrors())>
+					<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfelse>
+					<cfif len(request.newImageIDList)>
+						<cfset arguments.rc.fileid=request.newImageIDList>
+						<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
+					</cfif>
 				</cfif>
-			</cfif>
-	</cfif>
-	<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Add'>
-			<cfset bean=variables.settingsManager.create(arguments.rc)  />
-			<cfset variables.settingsManager.setSites()  />
-			<cfset variables.clusterManager.reload() />
-			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
-			<cfset session.siteid=arguments.rc.siteid />
-			<cfif not structIsEmpty(bean.getErrors())>
-				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
-			<cfelse>
-				<cfif len(request.newImageIDList)>
-					<cfset arguments.rc.fileid=request.newImageIDList>
-					<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
+		</cfif>
+		<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Add'>
+				<cfset bean=variables.settingsManager.create(arguments.rc)  />
+				<cfset variables.settingsManager.setSites()  />
+				<cfset variables.clusterManager.reload() />
+				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
+				<cfset session.siteid=arguments.rc.siteid />
+				<cfif not structIsEmpty(bean.getErrors())>
+					<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfelse>
+					<cfif len(request.newImageIDList)>
+						<cfset arguments.rc.fileid=request.newImageIDList>
+						<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay",path="./")>
+					</cfif>
 				</cfif>
-			</cfif>
-	</cfif>
-	<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Delete'>
+		</cfif>
+		<cfif listFind(session.mura.memberships,'S2') and arguments.rc.action eq 'Delete'>
 
-			<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
-			<cfset session.siteid="default" />
-			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
-			<cfset arguments.rc.siteid="default"/>
+				<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
+				<cfset session.siteid="default" />
+				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
+				<cfset arguments.rc.siteid="default"/>
+		</cfif>
 	</cfif>
-
 	<cfif listFind(session.mura.memberships,'S2')>
 		<cfset variables.fw.redirect(action="cSettings.list",path="./")>
 	<cfelse>
@@ -204,11 +216,11 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
-	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
+	<cfif arguments.rc.$.validateCSRFTokens(context='sitecopy') and arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./")>
-	<cfdump var="test3" abort="true">
+	
 </cffunction>
 
 <cffunction name="createBundle" output="false">
@@ -263,43 +275,46 @@ to your own modified versions of Mura CMS.
 				return local.str;
 			};
 		</cfscript>
-		<cfsavecontent variable="local.str">
-			<cfoutput>
-				<cfloop list="#rc.ckUpdate#" index="local.i" delimiters=",">
-					<cftry>
-						<cfscript>
-							local.updated = application.autoUpdater.update(local.i);
-							local.files = local.updated.files;
-						</cfscript>
-						<div class="alert alert-success">
-							<dl>
-								<dt>#local.i#</dt>
-								<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
-								<dd>Updated Files (#ArrayLen(local.files)#)</dd>
-								<!---<cfif ArrayLen(local.files)>
-									<dd>
-										<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f"> 
-											#local.files[local.f]#<br />
-										</cfloop>
-									</dd>
-								</cfif>--->					
-							</dl>
-						</div>
-						<cfcatch>
-							<div class="alert alert-error">
-								<h3>An error occurred while trying to update #local.i#</h3>
-								<cfif len(trim(cfcatch.message))>
-									<p><strong>Error Message</strong><br />#cfcatch.message#</p>
-								</cfif>
-								<cfif len(trim(cfcatch.detail))>
-									<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>
-								</cfif>
+
+		<cfif arguments.rc.$.validateCSRFTokens(context='updatesites')>
+			<cfsavecontent variable="local.str">
+				<cfoutput>
+					<cfloop list="#rc.ckUpdate#" index="local.i" delimiters=",">
+						<cftry>
+							<cfscript>
+								local.updated = application.autoUpdater.update(local.i);
+								local.files = local.updated.files;
+							</cfscript>
+							<div class="alert alert-success">
+								<dl>
+									<dt>#local.i#</dt>
+									<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
+									<dd>Updated Files (#ArrayLen(local.files)#)</dd>
+									<!---<cfif ArrayLen(local.files)>
+										<dd>
+											<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f"> 
+												#local.files[local.f]#<br />
+											</cfloop>
+										</dd>
+									</cfif>--->					
+								</dl>
 							</div>
-						</cfcatch>
-					</cftry>
-				</cfloop>
-			</cfoutput>
-		</cfsavecontent>
+							<cfcatch>
+								<div class="alert alert-error">
+									<h3>An error occurred while trying to update #local.i#</h3>
+									<cfif len(trim(cfcatch.message))>
+										<p><strong>Error Message</strong><br />#cfcatch.message#</p>
+									</cfif>
+									<cfif len(trim(cfcatch.detail))>
+										<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>
+									</cfif>
+								</div>
+							</cfcatch>
+						</cftry>
+					</cfloop>
+				</cfoutput>
+			</cfsavecontent>
+		</cfif>
 		<cfreturn local.str />
 	</cffunction>
 
