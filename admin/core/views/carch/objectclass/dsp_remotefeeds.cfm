@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rc.rslist = application.feedManager.getFeeds(rc.siteid, 'Remote')/>
 		<cfloop query="rc.rslist">
 
-			<cfset tile=rc.rslist.name
+			<cfset title=rc.rslist.name
 				& ' - '  
 				& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
 
