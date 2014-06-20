@@ -844,6 +844,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsSystemObjects')#">
 	select object,name, '' as objectid, orderno from tsystemobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and name !=<cfqueryparam cfsqltype="cf_sql_varchar" value="Dragable Feeds"/>
 	order by name
 	</cfquery>
 	
