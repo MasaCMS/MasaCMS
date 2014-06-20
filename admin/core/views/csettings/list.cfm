@@ -314,7 +314,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><script type="text/javascript">
 initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 </script></cfoutput>--->
-<cfelseif rc.$.validateCSRFTokens(context='updatecore')>
+<cfelse>
+	<cfdump var="#rc.$.validateCSRFTokens(context='updatecore')#">
 	<cftry>
 		<cfset updated=application.autoUpdater.update()>
 		<cfset files=updated.files>

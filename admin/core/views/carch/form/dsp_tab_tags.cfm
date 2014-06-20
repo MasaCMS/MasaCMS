@@ -112,9 +112,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <script>
 	$(document).ready(function(){
-		$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(function(data){
+		$.ajax({
+			url: '?muraAction=carch.loadtagarray&siteid=' + siteid,
+			dataType: 'text',
+			success:function(data){
 				var tagArray=eval('(' + data + ')'); 
 				$('##tags').tagSelector(tagArray, 'tags');
+			}
 		});
 	});
 </script>
@@ -178,10 +182,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<script>
 			$(document).ready(function(){
-				$.get('?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=#g#').done(function(data){
-				var tagArray=eval('(' + data + ')'); 
-				$('###g#tags').tagSelector(tagArray, '#g#tags');
-		});
+				$.ajax({
+					url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=#g#',
+					dataType: 'text',
+					success: function(data){
+						var tagArray=eval('(' + data + ')'); 
+						$('###g#tags').tagSelector(tagArray, '#g#tags');
+					}
+				});
 			});
 		</script>
 	</cfloop>
