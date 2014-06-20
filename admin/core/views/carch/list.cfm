@@ -293,6 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}else{
 						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
 								context:{taggroup:customtaggroups[g]},
+								dataType: 'text',
 								success:function(data){
 									window[this.taggroup]=eval('(' + data + ')'); 
 									$('##' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');
