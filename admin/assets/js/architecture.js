@@ -948,8 +948,12 @@ buttons: {
 
 		siteManager.loadRelatedContentSets(contentHistID,type,subType,_siteID);
 
-		$.get(url + "?" + pars, function(data) {
-			siteManager.setExtendedAttributes(data);
+		$.ajax({
+			url:url + "?" + pars, 
+			dataType: 'text',
+			success: function(data) {
+				siteManager.setExtendedAttributes(data);
+			}
 		});
 
 		return false;

@@ -276,12 +276,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	 	var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups'),"^,"))#;
 
   	 	$(function(){
-			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(
-				function(data){
+			$.ajax({
+				url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
+				dataType: 'text',
+				success: function(data){
 					var tagArray=eval('(' + data + ')'); 
 					$('##tags').tagSelector(tagArray, 'tags');
 				}
-			);
+			});
 
 			if(customtaggroups.length){
 				for(var g=0;g < customtaggroups.length; g++){
@@ -291,6 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}else{
 						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
 								context:{taggroup:customtaggroups[g]},
+								dataType: 'text',
 								success:function(data){
 									window[this.taggroup]=eval('(' + data + ')'); 
 									$('##' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');

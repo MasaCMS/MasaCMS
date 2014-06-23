@@ -253,6 +253,9 @@ If it has not set application.appInitialized=false. --->
 <cfparam name="session.mura.requestcount" default="0">
 <cfset session.mura.requestcount=session.mura.requestcount+1>
 
+<cfparam name="session.mura.csrfsecretkey" default="#createUUID()#">
+<cfparam name="session.mura.csrfusedtokens" default="#structNew()#">
+
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
