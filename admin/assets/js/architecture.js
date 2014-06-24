@@ -1716,7 +1716,7 @@ buttons: {
 
 		$.ajax({
 			  type: "POST",
-			  url: "./index.cfm",
+			  url: "./index.cfm?" + node.attr("data-csrf"),
 			  data: pars,
 			  success:function(data) {
 					if(data.indexOf('mura-primary-login-token') != -1) {
