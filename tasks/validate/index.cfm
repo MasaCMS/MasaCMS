@@ -34,7 +34,9 @@
 		);
 	}
 	if(form.version > 2){
-		getpagecontext().getresponse().getresponse().setcontenttype('application/json; charset=utf-8');
+		try{
+			getpagecontext().getresponse().getresponse().setcontenttype('application/json; charset=utf-8');
+		} catch (any e){};
 	}
 	writeOutput(serializeJSON(errors));	
 </cfscript>
