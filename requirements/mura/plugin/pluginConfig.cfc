@@ -417,5 +417,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
 </cffunction>
 
+<cffunction name="renderAdminTemplate" returntype="any" output="false">
+<cfargument name="body">
+<cfargument name="pageTitle" default="#getName()#">
+<cfargument name="jsLib" required="true" default="jquery">
+<cfargument name="jsLibLoaded" required="true" default="false">
+<cfargument name="compactDisplay" required="false" default="false" />
+<cfargument name="moduleid" required="false" default="#getModuleID()#" />
+
+	<cfreturn getBean('pluginManager').renderAdminTemplate(argumentCollection=arguments)>
+</cffunction>
+
 </cfcomponent>
 

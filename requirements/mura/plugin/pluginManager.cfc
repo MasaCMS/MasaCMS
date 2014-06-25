@@ -2413,6 +2413,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="jsLib" required="true" default="prototype">
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
+<cfargument name="moduleid" required="false" default="" />
 
 <cfif not (isDefined('session.siteid') and isDefined('session.siteArray'))>
 	<cflocation url="#variables.configBean.getContext()#/admin/" addtoken="false">
@@ -2425,9 +2426,9 @@ select * from tplugins order by #arguments.orderby#
 
 <cfset rc.layout =arguments.body>
 <cfset rc.ajax ="">
-<cfset rc.originalcircuit="cPlugins">
+<cfset rc.originalcircuit="">
 <cfset rc.originalfuseaction="">
-<cfset rc.moduleID="">
+<cfset rc.moduleID=arguments.moduleid>
 <cfset rc.jsLib=arguments.jsLib>
 <cfset rc.jsLibLoaded=arguments.jsLibLoaded>
 <cfset rc.renderMuraAlerts=false>
