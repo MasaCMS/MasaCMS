@@ -428,5 +428,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getBean('pluginManager').renderAdminTemplate(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="currentUserAccess" output="false">
+	<cfreturn isDefined('session.siteID') and getBean('permUtility').getModulePerm(getModuleID(),session.siteID)>
+</cffunction>
+
 </cfcomponent>
 
