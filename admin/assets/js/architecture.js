@@ -948,8 +948,12 @@ buttons: {
 
 		siteManager.loadRelatedContentSets(contentHistID,type,subType,_siteID);
 
-		$.get(url + "?" + pars, function(data) {
-			siteManager.setExtendedAttributes(data);
+		$.ajax({
+			url:url + "?" + pars, 
+			dataType: 'text',
+			success: function(data) {
+				siteManager.setExtendedAttributes(data);
+			}
 		});
 
 		return false;
@@ -1148,46 +1152,54 @@ buttons: {
 
 		}
 		// return false;
-		$.get(url + "?" + pars, function(data) {
-			try {
-				var r = eval("(" + data + ")");
+		$.ajax({
+			url: url + "?" + pars,
+			dataType: 'text', 
+			success: function(data) {
+				try {
+					var r = eval("(" + data + ")");
+					if(!siteManager.activeQuickEdit) {
+						d.hide()
+						$('#gridContainer .load-inline').spin(false);
+					}
+					d.html(r.html);
+					$('#newContentMenu').addClass('hide');
+					stripe('stripe');
+					siteManager.initQuickEdits();
+					initDraftPrompt();
+					setToolTips("#gridContainer");
+					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {	
+						$("#sortableKids").sortable({
+							stop: function(event, ui) {
+								stripe('stripe');
+								siteManager.setAsSorted();
+								$(ui.item).removeClass('ui-draggable-dragging');
+							},
+							start: function(event, ui) {
+								$(ui.item).addClass('ui-draggable-dragging');
+							}
+						});
+						$("#sortableKids").disableSelection();
+					}
+
+				} catch(err) {
+					if(data.indexOf('mura-primary-login-token') != -1) {
+						location.href = './';
+					}
+					d.html(data);
+				}
+
 				if(!siteManager.activeQuickEdit) {
-					d.hide()
-					$('#gridContainer .load-inline').spin(false);
+					d.hide().animate({
+						'opacity': 'show'
+					}, 1000);
 				}
-				d.html(r.html);
-				$('#newContentMenu').addClass('hide');
-				stripe('stripe');
-				siteManager.initQuickEdits();
-				initDraftPrompt();
-				setToolTips("#gridContainer");
-				if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {	
-					$("#sortableKids").sortable({
-						stop: function(event, ui) {
-							stripe('stripe');
-							siteManager.setAsSorted();
-							$(ui.item).removeClass('ui-draggable-dragging');
-						},
-						start: function(event, ui) {
-							$(ui.item).addClass('ui-draggable-dragging');
-						}
-					});
-					$("#sortableKids").disableSelection();
-				}
-
-			} catch(err) {
-				if(data.indexOf('mura-primary-login-token') != -1) {
-					location.href = './';
-				}
-				d.html(data);
-			}
-
-			if(!siteManager.activeQuickEdit) {
-				d.hide().animate({
-					'opacity': 'show'
-				}, 1000);
-			}
-			siteManager.activeQuickEdit = false;
+				siteManager.activeQuickEdit = false;
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+		        console.log("error " + textStatus);
+		    
+		    }
 		});
 
 
@@ -1286,9 +1298,13 @@ buttons: {
 			setCheckboxTrees();
 			setToolTips(".mura-table-grid");
 
-			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(function(data){
-				var tagArray=eval('(' + data + ')'); 
-				$('#tags').tagSelector(tagArray, 'tags');
+			$.ajax({
+				url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
+				dataType: 'text',
+				success:function(data){
+					var tagArray=eval('(' + data + ')'); 
+					$('#tags').tagSelector(tagArray, 'tags');
+				}
 			});
 
 			if(customtaggroups.length){
@@ -1299,6 +1315,7 @@ buttons: {
 					}else{
 						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
 								context:{taggroup:customtaggroups[g]},
+								dataType: 'test',
 								success:function(data){
 									window[this.taggroup]=eval('(' + data + ')'); 
 									$('#' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');
@@ -1436,34 +1453,37 @@ buttons: {
 				icon.addClass('hasChildren open');
 
 				//d.find(".loadProgress").show();
-				$.get(url + "?" + pars, function(data) {
-					try {
-						var r = eval("(" + data + ")");
-					
-						node.find('.mura-section:first').remove();
+				$.ajax({
+					url: url + "?" + pars, 
+					dataType: 'text',
+					success: function(data) {
+						try {
+							var r = eval("(" + data + ")");
 						
-						node.append(r.html);
+							node.find('.mura-section:first').remove();
+							
+							node.append(r.html);
 
-						$('#newContentMenu').addClass('hide');
-						stripe('stripe');
-						initDraftPrompt();
-						siteManager.initQuickEdits();
+							$('#newContentMenu').addClass('hide');
+							stripe('stripe');
+							initDraftPrompt();
+							siteManager.initQuickEdits();
 
-						//The fadeIn in ie8 causes a rendering issue
-						if(!(document.all && document.querySelector && !document.addEventListener)) {
-							node.find('.mura-section:first').hide().fadeIn("slow");
+							//The fadeIn in ie8 causes a rendering issue
+							if(!(document.all && document.querySelector && !document.addEventListener)) {
+								node.find('.mura-section:first').hide().fadeIn("slow");
+							}
+						} catch(err) {
+							if(data.indexOf('mura-primary-login-token') != -1) {
+								location.href = './';
+							}
+							
+							node.append(data);
 						}
-					} catch(err) {
-						if(data.indexOf('mura-primary-login-token') != -1) {
-							location.href = './';
-						}
-						
-						node.append(data);
+
+						clearTimer();
+						siteManager.sectionLoading = false;
 					}
-
-					clearTimer();
-					siteManager.sectionLoading = false;
-					
 				});
 			} else {
 
@@ -1492,27 +1512,31 @@ buttons: {
 			var url = 'index.cfm';
 			var pars = 'muraAction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
-			$.get(url + "?" + pars, function(data) {
-				try {
-					var r = eval("(" + data + ")");
+			$.ajax({
+				url:url + "?" + pars, 
+				dataType: 'text',
+				success: function(data) {
+					try {
+						var r = eval("(" + data + ")");
 
-					//d.find(".loadProgress").remove();
-					node.find('.mura-section:first').remove();
-					node.append(r.html);
+						//d.find(".loadProgress").remove();
+						node.find('.mura-section:first').remove();
+						node.append(r.html);
 
-					$('#newContentMenu').addClass('hide');
-					stripe('stripe');
-					initDraftPrompt();
-					siteManager.initQuickEdits();
-				} catch(err) {
-					if(data.indexOf('mura-primary-login-token') != -1) {
-						location.href = './';
+						$('#newContentMenu').addClass('hide');
+						stripe('stripe');
+						initDraftPrompt();
+						siteManager.initQuickEdits();
+					} catch(err) {
+						if(data.indexOf('mura-primary-login-token') != -1) {
+							location.href = './';
+						}
+						node.append(data);
 					}
-					node.append(data);
-				}
 
-				siteManager.activeQuickEdit = false;
-				siteManager.sectionLoading = false;
+					siteManager.activeQuickEdit = false;
+					siteManager.sectionLoading = false;
+				}
 			});
 
 		}
@@ -1539,7 +1563,7 @@ buttons: {
 					var attribute = $(this).attr("data-attribute");
 					var node = $(this).parents("li:first");
 					var url = 'index.cfm';
-					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
+					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + node.attr("data-csrf") + '&cacheid=' + Math.random();
 
 					//location.href='?' + pars;
 					//images/icons/template_24x24.png
@@ -1692,7 +1716,7 @@ buttons: {
 
 		$.ajax({
 			  type: "POST",
-			  url: "./index.cfm",
+			  url: "./index.cfm?" + node.attr("data-csrf"),
 			  data: pars,
 			  success:function(data) {
 					if(data.indexOf('mura-primary-login-token') != -1) {
@@ -2448,57 +2472,62 @@ buttons: {
 			});
 		}
 		
-		$.post(config.url + "?" + config.pars, data, function(_resp) {
-			try {
-				resp = eval('(' + _resp + ')');
-			} catch(err) {
-				if(_resp.indexOf('mura-primary-login-token') != -1) {
-					location.href = './';
+		$.ajax({
+			url: config.url + "?" + config.pars,
+			dataType: 'text',
+			data: data, 
+			success: function(_resp) {
+				try {
+					resp = eval('(' + _resp + ')');
+				} catch(err) {
+					if(_resp.indexOf('mura-primary-login-token') != -1) {
+						location.href = './';
+					}
+					resp = _resp;
 				}
-				resp = _resp;
-			}
-			
-			if(typeof(resp) == 'object') {
-				$("#configurator").html(resp.html);
-			} else if(typeof(resp) == 'xml') {
-				$("#configurator").html(resp.toString());
-			} else {
-				$("#configurator").html(resp);
-			}
-			
-			//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
-
-			if(siteManager.configuratorMode=='frontEnd'){
-				$("#configuratorHeader").html(config.title);
-			} else {
-				$("#configuratorContainer").dialog('option','title',config.title);
-			}
-
-			if(siteManager.availableObjectTemplate == "") {
-				var availableObjectContainer = $("#availableObjectParams");
-				siteManager.availableObjectTemplate = {
-					object: availableObjectContainer.attr("data-object"),
-					objectid: availableObjectContainer.attr("data-objectid"),
-					name: availableObjectContainer.attr("data-name")
-				};
-				siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
-			}
-
-			if(typeof(config.init) != 'undefined') {
-
+				
 				if(typeof(resp) == 'object') {
-					data = $.extend(data, resp);
+					$("#configurator").html(resp.html);
+				} else if(typeof(resp) == 'xml') {
+					$("#configurator").html(resp.toString());
+				} else {
+					$("#configurator").html(resp);
 				}
-				config.init(data, config);
-			}
+				
+				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
-			if(siteManager.configuratorMode == 'backEnd') {
-				$("#configuratorContainer").dialog("option", "position", getDialogPosition());
-			} else if(siteManager.configuratorMode == 'frontEnd') {
-				$("#actionButtons").show();
-				$("#configuratorNotices").show();
+				if(siteManager.configuratorMode=='frontEnd'){
+					$("#configuratorHeader").html(config.title);
+				} else {
+					$("#configuratorContainer").dialog('option','title',config.title);
+				}
+
+				if(siteManager.availableObjectTemplate == "") {
+					var availableObjectContainer = $("#availableObjectParams");
+					siteManager.availableObjectTemplate = {
+						object: availableObjectContainer.attr("data-object"),
+						objectid: availableObjectContainer.attr("data-objectid"),
+						name: availableObjectContainer.attr("data-name")
+					};
+					siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
+				}
+
+				if(typeof(config.init) != 'undefined') {
+
+					if(typeof(resp) == 'object') {
+						data = $.extend(data, resp);
+					}
+					config.init(data, config);
+				}
+
+				if(siteManager.configuratorMode == 'backEnd') {
+					$("#configuratorContainer").dialog("option", "position", getDialogPosition());
+				} else if(siteManager.configuratorMode == 'frontEnd') {
+					$("#actionButtons").show();
+					$("#configuratorNotices").show();
+				}
+				//initConfiguratorParams();
 			}
-			//initConfiguratorParams();
 		});
 
 		return true;

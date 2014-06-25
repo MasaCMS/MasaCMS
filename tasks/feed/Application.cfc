@@ -54,25 +54,24 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfif variables.$.siteConfig('dataCollection')>
-<cfsilent>
-	<cfparam name="request.dataResponseView" default="list">
-	<cfquery datasource="#application.configBean.getDatasource()#" name="variables.rssite">
-		SELECT siteid 
-		FROM tcontent
-		WHERE contentid='#arguments.objectid#'
-			AND active=1
-	</cfquery>
-	<cfset variables.formBean=$.getBean('content').loadBy(contentID=arguments.objectID)>
-	<cfset variables.fieldlist = application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))>
-</cfsilent>
-<!--- <cfdump var="#variables.formBean.getAllValues()#"> --->
-<cfswitch expression="#$.event('dataResponseView')#">
-	<cfcase value="detail">
-		<cfinclude template="dsp_detail.cfm" />
-	</cfcase>
-	<cfdefaultcase>
-		<cfinclude template="dsp_list.cfm" />
-	</cfdefaultcase>
-</cfswitch>
-</cfif>
+<cfcomponent output="false">
+	<cfset depth=2>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
+	<cffunction name="onRequestStart">
+		<cfset var local=structNew()>
+		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm">
+		<cfoutput>Access Restricted.</cfoutput>
+		<cfabort>
+		</cfif>
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/scriptProtect_include.cfm">
+		<cfreturn true>
+	</cffunction>
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
+</cfcomponent>

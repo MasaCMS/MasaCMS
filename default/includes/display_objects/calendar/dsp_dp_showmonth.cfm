@@ -59,9 +59,9 @@
 <table class="#this.calendarTableClass#">
 <thead>
 <tr>
-<th title="#HTMLEditFormat(variables.datelong)#" id="variables.previousMonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.previousMonth#&year=#variables.previousYear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&laquo;</a></th>
+<th title="#HTMLEditFormat(variables.datelong)#" id="variables.previousMonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.previousMonth#&amp;year=#variables.previousYear#&amp;categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&amp;relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&laquo;</a></th>
 <th colspan="5" class="#this.calendarTableHeaderClass#">#variables.datelong#</th>
-<th id="variables.nextmonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.nextmonth#&year=#variables.nextyear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&raquo;</a></th>
+<th id="variables.nextmonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.nextmonth#&amp;year=#variables.nextyear#&amp;categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&amp;relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
 	<cfloop index="variables.id" from="1" to="#listLen(variables.weekdayshort)#">
@@ -82,16 +82,17 @@
 	<cfif variables.posn eq 8></tr><cfif variables.id lte variables.daysInMonth><tr></cfif>
 	<cfset variables.posn=1></cfif>
 	<cfsilent>
-	<cfset variables.calendarDay=createdate('#request.year#','#request.month#','#variables.id#')>
-	<cfquery dbType="query" name="variables.rsDay">
-	select * from variables.rssection where 
-		DisplayStart < <cfqueryparam value="#dateadd('D',1,variables.calendarDay)#" cfsqltype="CF_SQL_DATE"> 
-			AND 
-				(
-		 			DisplayStop >= <cfqueryparam value="#variables.calendarDay#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
-		  		)	
-		order by DisplayStart
-	</cfquery>
+		<cfset variables.calendarDay=createdate('#request.year#','#request.month#','#variables.id#')>
+		<cfquery dbType="query" name="variables.rsDay">
+			SELECT * 
+			FROM variables.rssection
+			WHERE DisplayStart < <cfqueryparam value="#dateadd('D',1,variables.calendarDay)#" cfsqltype="CF_SQL_DATE"> 
+				AND (
+			 		DisplayStop >= <cfqueryparam value="#variables.calendarDay#" cfsqltype="CF_SQL_DATE"> 
+			 		OR DisplayStop IS NULL
+			  )	
+			ORDER BY DisplayStart
+		</cfquery>
 	</cfsilent>
 	<td><span class="date">#variables.id#</span>#dspNestedNav('#variables.$.content('contentID')#',1,1,'calendar',variables.calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#variables.$.event('categoryID')#&relatedID=#request.relatedID#','displaystart, orderno','','#variables.$.globalConfig('context')#','#variables.$.globalConfig('stub')#','#variables.$.event('categoryID')#','#request.relatedID#',variables.rsDay)#</td>
 	<cfset variables.posn=variables.posn+1>

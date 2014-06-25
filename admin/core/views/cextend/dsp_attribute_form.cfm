@@ -192,5 +192,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input name="extendSetID" type="hidden" value="#HTMLEditFormat(attributes.attributeBean.getExtendSetID())#"/>
 <input name="subTypeID" type="hidden" value="#HTMLEditFormat(attributes.subTypeID)#"/>
 <input name="attributeID" type="hidden" value="#attributes.attributeBean.getAttributeID()#"/>
+#attributes.muraScope.renderCSRFTokens(context=attributes.attributeBean.getAttributeID(),format="form")#
 </form><cfif attributes.action eq "add"></div></cfif>
 </cfoutput>

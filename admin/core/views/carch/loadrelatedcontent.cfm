@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus-sign"></i></button><ul class="navZoom"/><li class="link"><strong>' + $('##mura-related-title').val() + '</strong></li>')
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus-sign"></i></button><ul class="navZoom"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
 			 	)
 			 ); 
 
@@ -98,8 +98,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				connectToSortable: '.rcSortable',
 				helper: 'clone',
 				revert: 'invalid',
+				appendTo: 'body',
 				start: function(event, ui) {
 					// bind mouse events to clone
+					$('##mura-rc-quickedit').hide();
 					siteManager.bindMouse();
 				},
 				zIndex: 100

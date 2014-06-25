@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#rsnest.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#rsnest.sortby#" data-sortdirection="#rsnest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#rsnest.type#" class="#lcase(rsnest.type)# mura-node-data<cfif variables.restricted> restricted</cfif>">
+<li data-siteid="#HTMLEditFormat(rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#HTMLEditFormat(rsnest.sortby)#" data-sortdirection="#HTMLEditFormat(rsnest.sortdirection)#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#HTMLEditFormat(rsnest.type)#" class="#HTMLEditFormat(lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#HTMLEditFormat(attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url'))#">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
@@ -243,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		</cfif>
         <cfif deletable and not isLockedBySomeoneElse>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
         </cfif>
@@ -288,7 +288,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    startrow="#attributes.startrow#"
    sortBy="#attributes.sortBy#"
    sortDirection="#attributes.sortDirection#"
-   pluginEvent="#attributes.pluginEvent#">
+   pluginEvent="#attributes.pluginEvent#"
+   muraScope="#attributes.muraScope#">
    </cfif>
    <cfset currentPos=currentPos+1>
    <cfif sortable>

@@ -880,7 +880,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
+	
+	<cfset arguments.parentid=getContentID()>
+	<cfset arguments.siteid=getValue('siteid')>
+	<cfreturn variables.contentManager.getKidsQuery(argumentCollection=arguments) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
@@ -888,13 +891,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
+
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
+		<cfset q=getKidsQuery(argumentCollection=arguments) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection,size=arguments.size) />
+		<cfset arguments.parentid=getContentID()>
+		<cfset arguments.siteid=getValue('siteid')>
+		<cfset q=variables.contentManager.getNest(argumentCollection=arguments) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
@@ -902,7 +908,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">
-	<cfreturn variables.contentManager.getCategoriesByParentID(siteID:variables.instance.siteID,parentID:getContentID()) />
+	<cfreturn variables.contentManager.getCategoriesByParentID(siteID=variables.instance.siteID,parentID=getContentID()) />
 </cffunction>
 
 <cffunction name="getKidsCategoryIterator">

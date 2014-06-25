@@ -70,7 +70,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")></cfsilent>
-<cfoutput><form novalidate="novalidate" action="./?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput><form novalidate="novalidate" action="./?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userBean.getUserID())#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.adminuserform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
@@ -470,7 +470,8 @@ select * from rsSubTypes where subType <> 'Default'
 <input type="hidden" name="ContactForm" value="">
 <input type="hidden" name="isPublic" value="0">
 <input type="hidden" name="returnurl" value="#HTMLEditFormat(rc.returnurl)#">
-<cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>		
+<cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
+#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#		
 </cfoutput>
 
 </form>

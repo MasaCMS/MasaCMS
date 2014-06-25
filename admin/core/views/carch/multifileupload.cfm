@@ -137,7 +137,7 @@ jQuery(document).ready(function(){
         <table role="presentation" class="mura-table-grid">
         <tbody class="files" data-toggle="modal-gallery" data-target="##modal-gallery"></tbody></table>
       <input type="hidden" name="muraAction" value="cArch.update"/>
-      <input type="hidden" name="action" value="multiFileUpload"/>
+      <input type="hidden" name="action" value="multifileupload"/>
       <input type="hidden" name="siteid" value="#htmlEditFormat(rc.siteid)#"/>
       <input type="hidden" name="moduleid" value="#htmlEditFormat(rc.moduleid)#"/>
       <input type="hidden" name="topid" value="#htmlEditFormat(rc.topid)#"/>
@@ -149,6 +149,7 @@ jQuery(document).ready(function(){
       <input type="hidden" name="startrow" value="#rc.startrow#"/>
       <input type="hidden" name="orderno" value="0"/>
       <input type="hidden" name="approved" value="<cfif rc.perm eq 'editor'>1<cfelse>0</cfif>" />
+      #rc.$.renderCSRFTokens(context=rc.parentid & 'multifileupload',format='form')#
     </form>
 </div>
 </div>
@@ -386,7 +387,9 @@ jQuery(document).ready(function(){
             <span class="size complete">{%=o.formatFileSize(file.size)%}</span>
         </td>
         <td>
+        {% if (file.edit_url !='') { %}
         <a class="btn" onclick="confirmDialog('Would you like to edit this file in the site manager?','{%=file.edit_url%}');"><i class="icon-pencil"></i> Edit in Site Manager</a>
+         {% } %}
         <!---
             <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
                 <i class="icon-trash icon-white"></i>

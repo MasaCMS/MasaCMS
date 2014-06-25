@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>
 				<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
-					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
 					<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				</cfif>
@@ -276,12 +276,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	 	var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups'),"^,"))#;
 
   	 	$(function(){
-			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(
-				function(data){
+			$.ajax({
+				url:'?muraAction=carch.loadtagarray&siteid=' + siteid,
+				dataType: 'text',
+				success: function(data){
 					var tagArray=eval('(' + data + ')'); 
 					$('##tags').tagSelector(tagArray, 'tags');
 				}
-			);
+			});
 
 			if(customtaggroups.length){
 				for(var g=0;g < customtaggroups.length; g++){
@@ -291,6 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}else{
 						$.ajax({url:'?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=' + customtaggroups[g],
 								context:{taggroup:customtaggroups[g]},
+								dataType: 'text',
 								success:function(data){
 									window[this.taggroup]=eval('(' + data + ')'); 
 									$('##' + this.taggroup + 'tags').tagSelector(window[this.taggroup], this.taggroup + 'tags');

@@ -516,7 +516,7 @@
 
 			/* Open Zip file */
 			zipFile.init(arguments.zipFilePath);
-
+			
 			/* Zip file entries */
 			entries = zipFile.entries();
 

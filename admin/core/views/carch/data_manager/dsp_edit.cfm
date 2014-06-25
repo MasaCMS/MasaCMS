@@ -68,15 +68,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 	</cftry>
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
-		<input type="hidden" name="#f#" value="#fvalue#">
+		<input type="hidden" name="#HTMLEditFormat(f)#" value="#fvalue#">
 	<cfelse>
 		<div class="control-group">
-  			<label class="control-label">#f#</label>
+  			<label class="control-label">#HTMLEditFormat(f)#</label>
   			<div class="controls">
   				<cfif len(fValue) gt 100>
-  					<textarea name="#f#">#HTMLEditFormat(fvalue)#</textarea>
+  					<textarea name="#HTMLEditFormat(f)#">#HTMLEditFormat(fvalue)#</textarea>
   				<cfelse>
-  					<input type="text" name="#f#" value="#HTMLEditFormat(fvalue)#">
+  					<input type="text" name="#HTMLEditFormat(f)#" value="#HTMLEditFormat(fvalue)#">
   			</cfif>
   		    </div>
  		 </div>
@@ -91,19 +91,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 <input type="hidden" name="muraAction" value="cArch.datamanager">
 <input type="hidden" name="responseID" value="#rsdata.responseID#">
-<input type="hidden" name="hour1" value="#rc.hour1#">
-<input type="hidden" name="hour2" value="#rc.hour2#">
-<input type="hidden" name="minute1" value="#rc.minute1#">
-<input type="hidden" name="minute2" value="#rc.minute2#">
-<input type="hidden" name="date1" value="#rc.date1#">
-<input type="hidden" name="date2" value="#rc.date2#">
-<input type="hidden" name="fieldlist" value="#rc.fieldnames#">
-<input type="hidden" name="sortBy" value="#rc.sortBy#">
-<input type="hidden" name="sortDirection" value="#rc.sortDirection#">
-<input type="hidden" name="filterBy" value="#rc.filterBy#">
+<input type="hidden" name="hour1" value="#HTMLEditFormat(rc.hour1)#">
+<input type="hidden" name="hour2" value="#HTMLEditFormat(rc.hour2)#">
+<input type="hidden" name="minute1" value="#HTMLEditFormat(rc.minute1)#">
+<input type="hidden" name="minute2" value="#HTMLEditFormat(rc.minute2)#">
+<input type="hidden" name="date1" value="#HTMLEditFormat(rc.date1)#">
+<input type="hidden" name="date2" value="#HTMLEditFormat(rc.date2)#">
+<input type="hidden" name="fieldlist" value="#HTMLEditFormat(rc.fieldnames)#">
+<input type="hidden" name="sortBy" value="#HTMLEditFormat(rc.sortBy)#">
+<input type="hidden" name="sortDirection" value="#HTMLEditFormat(rc.sortDirection)#">
+<input type="hidden" name="filterBy" value="#HTMLEditFormat(rc.filterBy)#">
 <input type="hidden" name="keywords" value="#HTMLEditFormat(rc.keywords)#">
 <input type="hidden" name="entered" value="#rsData.entered#">
-<input type="hidden" name="moduleid" value="#rc.moduleid#">
+<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
 <input type="hidden" name="action" value="update">
+#rc.$.renderCSRFTokens(context=rsdata.responseID,format="form")#
 </form>
 </cfoutput>

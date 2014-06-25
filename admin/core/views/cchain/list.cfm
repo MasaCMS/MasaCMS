@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</li>
 				<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#URLEncodedFormat(chain.getSiteID())#"><i class="icon-reorder"></i></a></li>
 				<li class="delete">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#URLEncodedFormat(rc.siteid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#URLEncodedFormat(rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
 				</li>
 			</ul>
 		</td>

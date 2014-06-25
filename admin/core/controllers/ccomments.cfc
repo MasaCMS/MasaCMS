@@ -184,9 +184,10 @@ component persistent="false" accessors="true" output="false" extends="controller
 		param name='rc.categoryID' default='';
 		
 		rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
+		rc.sortdirection = !ListFindNoCase('asc,desc', rc.sortdirection) ? 'asc' : rc.sortdirection;
 		rc.sortdirlink = rc.sortdirection == 'asc' ? 'desc' : 'asc';
 		rc.sortby = !ListFindNoCase('entered,name,flagCount', rc.sortby) ? 'entered' : rc.sortby;
-						
+	
 		switch(rc.commentStatus){
 			case "approved": 
 				rc.isapproved = 1;

@@ -179,7 +179,6 @@
 </cffunction>
 
 <cffunction name="logout" access="public" returntype="any" output="false">
-	
 	<cfset getBean('loginManager').logout()>
 	<cfreturn this>
 </cffunction>
@@ -187,4 +186,65 @@
 <cffunction name="getAllValues" output="false">
 	<cfreturn getUserBean().getAllValues()>
 </cffunction>
+
+<cffunction name="validateCSRFTokens" output="false">
+	<cfargument name="$" default="">
+	<cfargument name="context" default="">
+
+	<!---CLEAR OLD TOKENS--->
+	<cfloop collection="#session.mura.csrfusedtokens#" item="local.key">
+		<cfif session.mura.csrfusedtokens['#local.key#'] lt dateAdd('h',-3,now())>
+			<cfset structDelete(session.mura.csrfusedtokens,'#local.key#')>
+		</cfif>
+	</cfloop>
+
+	<!--- CAN ONLY USE TOKEN ONCE --->
+	<cfif not len(arguments.$.event('mura_token')) or structKeyExists(session.mura.csrfusedtokens, "#arguments.$.event('mura_token')#")>
+		<cfreturn false>
+	</cfif>
+
+	<cfif arguments.$.event('mura_token_expires') gt (now() + 0) and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
+		<cfset session.mura.csrfusedtokens["#arguments.$.event('mura_token')#"]=now()>
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
+	</cfif>
+</cffunction>
+
+<cffunction name="generateCSRFTokens" output="false">
+	<cfargument name="timespan" default="#createTimeSpan(0,0,1,0)#">
+	<cfargument name="context" default="">
+	<cfset var expires=now() + arguments.timespan>
+
+	<cfreturn {
+		expires=expires,
+		token=hash(arguments.context & session.mura.csrfsecretkey & expires)
+	}>
+</cffunction>
+
+<cffunction name="renderCSRFTokens" output="false">
+	<cfargument name="timespan" default="#createTimeSpan(0,0,3,0)#">
+	<cfargument name="context" default="">
+	<cfargument name="format" default="form">
+	<cfset var csrf=generateCSRFTokens(argumentCollection=arguments)>
+	<cfswitch expression="#arguments.format#">
+		<cfcase value="url">
+			<cfreturn "&mura_token=#csrf.token#&mura_token_expires=#csrf.expires#">
+		</cfcase>
+		<cfcase value="json">
+			<cfreturn "{mura_token:'#csrf.token#',mura_token_expires:'#csrf.expires#'}">
+		</cfcase>	
+		<cfdefaultcase>
+			<cfsavecontent variable="local.str">
+			<cfoutput>
+				<input type="hidden" name="mura_token" value="#csrf.token#" />
+				<input type="hidden" name="mura_token_expires" value="#csrf.expires#" />
+			</cfoutput>
+			</cfsavecontent>
+			<cfreturn local.str>
+		</cfdefaultcase>
+	</cfswitch>
+	
+</cffunction>
+
 </cfcomponent>

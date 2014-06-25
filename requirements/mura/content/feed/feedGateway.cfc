@@ -100,14 +100,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getFeed" access="public" output="false" returntype="query">
 	<cfargument name="feedBean" type="any">
-	<cfargument name="tag" required="true" default="" />
-	<cfargument name="aggregation" required="true" type="boolean" default="false" />
-	<cfargument name="applyPermFilter" required="true" type="boolean" default="false" />
-	<cfargument name="countOnly" required="true" type="boolean" default="false" />
-	<cfargument name="menuType" default="default"/>
+	<cfargument name="tag" required="true" default="">
+	<cfargument name="aggregation" required="true" type="boolean" default="false">
+	<cfargument name="applyPermFilter" required="true" type="boolean" default="false">
+	<cfargument name="countOnly" required="true" type="boolean" default="false">
+	<cfargument name="menuType" default="default">
 	<cfargument name="from" required="true" default="#now()#">
 	<cfargument name="to" required="true" default="#now()#">
-	
+
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
 	<cfset var contentLen =listLen(arguments.feedBean.getcontentID()) />

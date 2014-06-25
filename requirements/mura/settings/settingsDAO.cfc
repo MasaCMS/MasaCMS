@@ -78,7 +78,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset bean.set(rs) />
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn bean />
@@ -354,7 +355,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		 hasComments=#arguments.bean.getHasComments()#,
 		 hasLockableNodes=#arguments.bean.getHasLockableNodes()#
 		 
-		where siteid='#arguments.bean.getsiteid()#'
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">
    </cfquery>
    
 	
@@ -377,7 +378,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 <cfquery>
       Insert into tsettings (#variables.fieldlist#)
 	  values(
-	  	'#arguments.bean.getsiteid()#',
+	  	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
         #arguments.bean.getpagelimit()# ,
 		<cfif arguments.bean.getdomain('production') neq ''>'#trim(arguments.bean.getdomain('production'))#'<cfelse>null</cfif>,
 		<cfif arguments.bean.getdomainAlias() neq ''>'#trim(arguments.bean.getdomainAlias())#'<cfelse>null</cfif>,
@@ -460,7 +461,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000003',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000003',
@@ -478,7 +479,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
       <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000004',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000004',
@@ -499,7 +500,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  template,orderno,lastupdate,lastupdateby,
 	  restricted,responseChart,displayTitle,isFeature,isLocked,NextN,inheritObjects,sortBy,sortDirection,forceSSL,searchExclude,path,created)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000000',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000001',
@@ -535,7 +536,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
       <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000006',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000006',
@@ -555,7 +556,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000000',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000000',
@@ -575,7 +576,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	<cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000008',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000008',
@@ -596,7 +597,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL,searchExclude )
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000005',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000005',
@@ -616,7 +617,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000009',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000009',
@@ -636,7 +637,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000010',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000010',
@@ -656,7 +657,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
       <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL,searchExclude )
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000011',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000011',
@@ -677,7 +678,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000012',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000012',
@@ -697,7 +698,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	<cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000014',
 	  '00000000000000000000000000000000END',
 	  '00000000000000000000000000000000014',
@@ -722,11 +723,11 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		<cfquery>
 		  Insert into tsystemobjects (object,siteid,name,orderno)
 		  values(
-		  '#rsSystemObject.object#',
-		  '#arguments.bean.getsiteid()#',
-		  '#rsSystemObject.name#',
-		  #rsSystemObject.orderno#
-			)
+		  <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsSystemObject.object#">,
+		  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
+		  <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsSystemObject.name#">,
+		  <cfqueryparam cfsqltype="cf_sql_integer" value="#rsSystemObject.orderno#">
+		  )
 		</cfquery>
 	</cfloop>
 	
@@ -736,7 +737,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  '#createUUID()#',
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="Please Remove Me from All Lists">,
 	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-	  '#arguments.bean.getsiteid()#',
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  1,
 	  1
 	)
@@ -766,7 +767,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		  null,
 		  null, 
 		  0,
-		 '#arguments.bean.getSiteID()#',
+		 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 		  null,
 		  null,
 		  0,

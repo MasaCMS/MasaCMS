@@ -2772,9 +2772,9 @@ Display Objects
 			 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 			<cftry>
 			<cfif len(qrystr)>	
-					<cfset qrystr="#qrystr#&#item#=#url[item]#">	
+					<cfset qrystr="#qrystr#&#item#=#URLEncodedFormat(url[item])#">	
 			<cfelse>	
-				<cfset qrystr="?#item#=#url[item]#">
+				<cfset qrystr="?#item#=#URLEncodedFormat(url[item])#">
 			</cfif>
 			<cfcatch ></cfcatch>
 			</cftry>

@@ -121,6 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="muraAction" value="cLogin.login">
 		<input type="hidden" name="isAdminLogin" value="true">
 		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
+		#rc.$.renderCSRFTokens(format='form')#
 	</form>
 	</div>
 	<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>

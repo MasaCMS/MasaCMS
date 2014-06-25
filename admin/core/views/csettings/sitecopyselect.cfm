@@ -73,6 +73,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="muraAction" value="cSettings.sitecopy">
 
 <input type="submit" value="Copy" class="btn">
-
+#rc.$.renderCSRFTokens(context='sitecopy',format="form")#
 </form>
 </cfoutput>

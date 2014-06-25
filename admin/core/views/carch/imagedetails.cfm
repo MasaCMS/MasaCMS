@@ -33,6 +33,8 @@
 	<cfset rc.largeImageRatio=''>
 </cfif>
 
+<cfset csrf=rc.$.renderCSRFTokens(context=rc.fileid,format='url')>
+
 <cfsavecontent variable="rc.headertext">
 <cfoutput>
 <script src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
@@ -160,7 +162,7 @@
 	    		//alert(transpose);
 	    		actionModal(
 		    		function(){
-				   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
+				   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '#csrf#&cacheid=' + Math.random(),
 							function(){
 					    		$('##action-modal').remove();
 								$(".cropper-reset[data-fileid='" + _fileid + "']").each(function(){
@@ -169,7 +171,7 @@
 
 									$.ajax(
 								    	{
-								    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+								    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
 											success: function(data) {	
 													//alert(JSON.stringify(data));
 														
@@ -202,7 +204,7 @@
 			 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 			
 			 		if(typeof(currentCoords) == 'object'){
-				    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+				    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
 											function(data) {	
 												//alert(JSON.stringify(data));
 												reloadImg(currentSize + currentFileID);
@@ -231,7 +233,7 @@
 				actionModal(function(){
 				    $.ajax(
 				    	{
-				    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+				    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
 							success: function(data) {	
 										//alert(JSON.stringify(data));
 										

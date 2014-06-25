@@ -350,6 +350,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getDataCollection" output="false">
+	<cfif not variables.configBean.getDataCollection()>
+		<cfreturn 0>
+	<cfelse>
+		<cfreturn variables.instance.dataCollection>
+	</cfif>
+</cffunction>
+
+<cffunction name="getAdManager" output="false">
+	<cfif not variables.configBean.getAdManager()>
+		<cfreturn 0>
+	<cfelse>
+		<cfreturn variables.instance.adManager>
+	</cfif>
+</cffunction>
+
+<cffunction name="getEmailBroadcaster" output="false">
+	<cfif not variables.configBean.getEmailBroadcaster()>
+		<cfreturn 0>
+	<cfelse>
+		<cfreturn variables.instance.EmailBroadcaster>
+	</cfif>
+</cffunction>
+
 <cffunction name="setMailServerUsernameEmail" access="public" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 

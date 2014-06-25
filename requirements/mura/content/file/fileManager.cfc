@@ -410,6 +410,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 </cffunction>
 
+<cffunction name="upload" output="false">
+	<cfargument name="fileField">
+
+	<cffile action="upload" result="local.results" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+	
+	<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
+		<cftry>
+			<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
+			<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
+			<cfcatch>
+				<cfset local.results.exif={}>
+			</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfset local.results.exif={}>
+	</cfif>
+	<cfreturn local.results>
+</cffunction>
+
 <cffunction name="emulateUpload" returntype="any" output="false">
 	<cfargument name="filePath" type="string" required="true" />
 	<cfargument name="destinationDir" type="string" required="true" default="#variables.configBean.getTempDir()#"/>
@@ -516,6 +535,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn (structKeyExists(form,arguments.fileField) and listFindNoCase("tmp,upload",listLast(form['#arguments.fileField#'],"."))) or listFindNoCase("tmp,upload",listLast(arguments.fileField,"."))>
 </cffunction>
 
+<cffunction name="requestHasRestrictedFiles" output="false">
+	<cfargument name="scope" default="#form#">
+	<cfscript>
+		var tempext='';
+		var allowedExtensions=variables.configBean.getFMAllowedExtensions();
+		
+		if(!len(allowedExtensions)){
+			return false;
+		}
+
+		for (var i in arguments.scope){
+			if(structKeyExists(arguments.scope,'#i#')){
+				if(isPostedFile(i)){
+
+					temptext=listLast(getPostedClientFileName(i),'.');
+					
+					if(len(tempText) && len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
+						return true;
+					}	
+				}
+				
+				if(isValid('url',arguments.scope['#i#']) 
+					&& listLen(arguments.scope['#i#'],'.')
+					){
+					
+					tempText=listLast(arguments.scope['#i#'],'.');
+
+					if(len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
+						return true;
+					}	
+				}
+			}
+		}
+	
+		return false;
+	</cfscript>
+</cffunction>
+
+<cffunction name="getPostedClientFileName" returntype="string" output="false" hint="">
+    <cfargument name="fieldName" required="true" type="string" hint="Name of the Form field" />
+    <cftry>
+	    <cfif variables.configBean.getCompiler() eq 'Adobe'>
+		    <cfset var tmpPartsArray = Form.getPartsArray() />
+
+		    <cfif IsDefined("tmpPartsArray")>
+		        <cfloop array="#tmpPartsArray#" index="local.tmpPart">
+		            <cfif local.tmpPart.isFile() AND local.tmpPart.getName() EQ arguments.fieldName> <!---   --->
+		                <cfreturn local.tmpPart.getFileName() />
+		            </cfif>
+		        </cfloop>
+		    </cfif>
+	    <cfelse>
+	    	<cfreturn GetPageContext().formScope().getUploadResource(arguments.fieldname).getName()>	
+	    </cfif>
+	    <cfcatch>
+	    	<cflog type="Error" file="exception" text="#exception.stacktrace#">
+		</cfcatch>
+    </cftry>
+
+    <cfreturn "" />
+</cffunction>
+
 <cffunction name="purgeDeleted" output="false">
 	<cfargument name="siteid" default="">
 	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
@@ -573,24 +654,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</cfif>
-</cffunction>
-
-<cffunction name="upload" output="false">
-	<cfargument name="fileField">
-	<cffile action="upload" result="local.results" filefield="#arguments.fileField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-	
-	<cfif listFindNoCase('jpg,jpeg',local.results.clientFileExt)>
-		<cftry>
-			<cfimage source="#local.results.serverDirectory#/#local.results.serverFile#" name="local.imageObj"> 
-			<cfset local.results.exif=ImageGetEXIFMetadata(local.imageObj)>
-			<cfcatch>
-				<cfset local.results.exif={}>
-			</cfcatch>
-		</cftry>
-	<cfelse>
-		<cfset local.results.exif={}>
-	</cfif>
-	<cfreturn local.results>
 </cffunction>
 
 <cffunction name="rebuildImageCache" output="false">

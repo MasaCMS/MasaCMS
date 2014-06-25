@@ -164,6 +164,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.allowUnicodeInFilenames=false/>
 <cfset variables.instance.dashboardcomments=true/>
 <cfset variables.instance.lockableNodes=false/>
+<cfset variables.instance.allowLocalFiles=false/>
+<cfset variables.instance.dataCollection=true/>
+<cfset variables.instance.adManager=true/>
+<cfset variables.instance.emailBroadcaster=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1453,6 +1457,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.autoresetpasswords = arguments.autoresetpasswords />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+
+<cffunction name="getDataCollection" access="public" output="false">
+	<cfif isDefined('variables.instance.datacollection') and isBoolean(variables.instance.datacollection)>
+		<cfreturn variables.instance.datacollection>
+	<cfelse>
+		<cfreturn true>
+	</cfif>
 </cffunction>
 
 <cffunction name="getAutoResetPasswords" returntype="boolean" access="public" output="false">

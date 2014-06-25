@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <p class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
 <section>
-  <form novalidate="novalidate"  method="post" name="form1" action="?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
+  <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 		<table class="mura-table-grid">
           <tr> 
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfloop query="rc.rslist"> 
             <tr> 
               	<td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
-	      		<td class="var-width" nowrap>#rc.rslist.GroupName#</td>
+	      		<td class="var-width" nowrap>#HTMLEditFormat(rc.rslist.GroupName)#</td>
 			</tr>
 		 </cfloop>
 	<cfelse>
@@ -102,8 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions no-offset">
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>
-<input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
+<input type="hidden" name="router" value="#HTMLEditFormat(cgi.HTTP_REFERER)#">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-<input type="hidden" name="topid" value="#rc.topid#">
-<input type="hidden" name="moduleid" value="#rc.moduleid#">
+<input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
+<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+#rc.$.renderCSRFTokens(context=rc.moduleid,format="form")#
 </form></cfoutput>

@@ -62,9 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 
-<cfif isDefined('rc.responseid') and rc.action eq 'Update'>
+<cfif isDefined('rc.responseid') and rc.action eq 'Update' and rc.$.validateCSRFTokens(context=rc.responseid)>
 	<cfset application.dataCollectionManager.update(rc)/>
-<cfelseif isDefined('rc.responseid') and rc.action eq 'Delete'>
+<cfelseif isDefined('rc.responseid') and rc.action eq 'Delete' and rc.$.validateCSRFTokens(context=rc.responseid)>
 	<cfset application.dataCollectionManager.delete('#rc.responseID#')/>
 <cfelseif  rc.action eq 'setDisplay'>
 	<cfset rc.contentBean.setResponseDisplayFields("#rc.detailList2#~#rc.summaryList2#")/>

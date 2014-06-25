@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
  <cfif rslist.categoryID neq attributes.categoryID>
-<option value="#rslist.categoryID#" <cfif rslist.categoryID eq attributes.actualParentID>selected</cfif>><cfif attributes.nestlevel><cfloop  from="1" to="#attributes.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#rslist.name#</option>
+<option value="#rslist.categoryID#" <cfif rslist.categoryID eq attributes.actualParentID>selected</cfif>><cfif attributes.nestlevel><cfloop  from="1" to="#attributes.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#HTMLEditFormat(rslist.name)#</option>
 <cf_dsp_parents siteID="#attributes.siteID#" categoryID="#attributes.categoryID#" parentID="#rslist.categoryID#" actualParentID="#attributes.actualParentID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
  </cfif>
 </cfoutput>

@@ -62,26 +62,45 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			if(fileManager.isPostedFile(getValue('fileField'))){
 				local.tempFile=fileManager.upload(getValue('fileField'));
 			} else {
-				local.tempFile=fileManager.emulateUpload(getValue(getValue('fileField')));
+
+				if(!getBean('configBean').getAllowLocalFiles() && (not find("://",getValue('filename')) || find("file://",getValue('filename')))){
+					setValue('filename','Local files are not allowed');
+					return this;
+				}
+
+				local.tempFile=fileManager.emulateUpload(filePath=getValue(getValue('fileField')));
 			}
 
 			if(isStruct(local.tempfile.exif)){
 				local.tempFile.exif=serializeJSON(local.tempFile.exif);
 			}
 
-			structAppend(variables.instance, local.tempFile);
-			structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
-			variables.instance.fileExt=local.tempFile.serverFileExt;
-			variables.instance.filename=local.tempFile.ClientFile;
+			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
 
-			//writeDump(var=variables.instance,abort=true);
+			if(!len(allowableExtensions) || listFindNoCase(allowableExtensions,local.tempFile.serverFileExt)){
+				structAppend(variables.instance, local.tempFile);
+				structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
+				variables.instance.fileExt=local.tempFile.serverFileExt;
+				variables.instance.filename=local.tempFile.ClientFile;
 
-			param name='variables.instance.content' default='';
-			param name='variables.instance.exif' default={};
+				//writeDump(var=variables.instance,abort=true);
+
+				param name='variables.instance.content' default='';
+				param name='variables.instance.exif' default={};
+				
+				fileManager.create(argumentCollection=variables.instance);
 			
-			fileManager.create(argumentCollection=variables.instance);
-		
-			setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
+				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
+			}	else {
+				
+				var fileDelim=getBean('configBean').getFileDelim();
+
+				try{
+					fileDelete(local.tempfile.serverDirectory & fileDelim & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);
+				} catch (Any e){}
+
+				setValue('filename','Invalid file type .' & ucase(local.tempfile.serverFileExt));
+			}
 		} else {
 
 			serializeExif();

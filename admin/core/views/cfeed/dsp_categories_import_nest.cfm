@@ -67,7 +67,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.newBean.ge
 </cfsilent>
 <li>
 <ul>
-<li>#rslist.name#<cfif rslist.isOpen eq 1>
+<li>#HTMLEditFormat(rslist.name)#<cfif rslist.isOpen eq 1>
 <select  name="categoryAssign#catTrim#" #disabled#  onchange="javascript: this.selectedIndex==3?toggleDisplay2('editDates#catTrim#',true):toggleDisplay2('editDates#catTrim#',false);">
 <option <cfif not rsIsMember.recordcount>selected</cfif> value="">No</option>
 <option <cfif rsIsMember.recordcount and not rsIsMember.isFeature>selected</cfif> value="0">Yes</option>
