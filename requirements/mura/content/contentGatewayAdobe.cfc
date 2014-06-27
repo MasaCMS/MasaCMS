@@ -370,8 +370,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif dbtype eq "MSSQL">
 				<cfset tableModifier="with (nolock)">
 			</cfif>
-
-			<cfif request.muraChangesetPreview>
+			
+			<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
 				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 			</cfif>
 			
