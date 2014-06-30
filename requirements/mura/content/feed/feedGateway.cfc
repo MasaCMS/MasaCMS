@@ -104,9 +104,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" type="boolean" default="false">
 	<cfargument name="applyPermFilter" required="true" type="boolean" default="false">
 	<cfargument name="countOnly" required="true" type="boolean" default="false">
-	<cfargument name="menuType" default="">
-	<cfargument name="from" required="true" default="#now()#">
-	<cfargument name="to" required="true" default="#now()#">
+	<cfargument name="menuType" default="default">
+	<cfargument name="from" required="true" default="">
+	<cfargument name="to" required="true" default="">
 
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
@@ -135,10 +135,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var palias="">
 	<cfset var talias="">
 
-	<cfif not len(arguments.menutype)>
-		<cfset arguments.menutype=arguments.feedBean.getMenuType()>
-	</cfif>
-
 
 	<cfif not len(altTable) and len(variables.configBean.getContentGatewayTable())>
 		<cfset altTable=variables.configBean.getContentGatewayTable()>
@@ -159,9 +155,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
 		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 	</cfif>
-			
 	<cfif not isdate(nowAdjusted)>
 		<cfset nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
+	</cfif>
+
+	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
+		<cfset arguments.from=nowAdjusted>
+		<cfset arguments.to=dateAdd('m',1,nowAdjusted)>
 	</cfif>
 	
 	<cfif arguments.feedBean.getType() eq "Local">
@@ -485,7 +485,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						
 						<cfif arguments.feedBean.getLiveOnly()>	    
-					
+						AND 
+						(
+							
+							tcontent.Display = 1
+						OR
+							(	
+								tcontent.Display = 2	
+								AND 
+									(
+										(
+										tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+										AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)			 
+										)
+										OR
+										tcontent.parentID in (select contentID from tcontent 
+															where type='Calendar'
+															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
+															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#feedBean.getSiteID()#">
+														   )
+									)
+							)		
+						
+						
+						) 
+						
 						AND 
 						(
 							
@@ -511,8 +535,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						) 
 						</cfif>
 												    
-					   group by tcontent.contentID
-					   ) qKids
+											   group by tcontent.contentID
+											   ) qKids
 				on (tcontent.contentID=qKids.contentID) 
 				
 				</cfif>
@@ -744,10 +768,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.feedBean.getLiveOnly()>	    
-	and (
+	AND 
+	(
+		tcontent.Display = 1
+		OR
+			(		
+				tcontent.Display = 2
+				
+				AND
+				(	
 
-	   	#getBean('contentGateway').renderMenuTypeClause(menuType=arguments.menutype,menuDateTime=nowAdjusted,from=arguments.from,to=arguments.to)#
-	)
+					(   <cfif len(altTable)>
+							tcontent.parentType!='Calendar'
+						<cfelse>
+							tparent.type!='Calendar'
+						</cfif>
+
+						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+					)
+					OR 
+					(
+						<cfif len(altTable)>
+							tcontent.parentType='Calendar'
+						<cfelse>
+							tparent.type='Calendar'
+						</cfif>
+
+						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> 
+						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> or tcontent.DisplayStop is null)
+					
+					)
+				)			 
+			)		
+	
+	) 
 
 	and (tcontent.mobileExclude is null
 		OR 
@@ -819,10 +874,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly and arguments.applyPermFilter>
 		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 	</cfif>
-	<cfdump var="#arguments.menutype#" a>
-	<cfdump var="#rsFeed#" abort=true>
+
 	<cfif not arguments.countOnly>
-		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,from=arguments.from,to=arguments.to) />
+		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 	<cfelse>
 		<cfreturn rsFeed>
 	</cfif>

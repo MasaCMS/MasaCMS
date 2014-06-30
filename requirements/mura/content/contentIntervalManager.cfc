@@ -30,6 +30,14 @@
 		required="true"
 		hint="The To date for our date span (inclusive)."
 		/>
+
+	<cfargument
+		name="current"
+		type="numeric"
+		required="true"
+		default="0"
+		hint="The From date for our date span (inclusive)."
+		/>
 		
 	
 	<!--- Define the local scope. --->
@@ -45,7 +53,13 @@
 	--->
 	<cfset ARGUMENTS.From = Fix( ARGUMENTS.From ) />
 	<cfset ARGUMENTS.To = Fix( ARGUMENTS.To ) />
-	
+
+	<cfif isDefined('arguments.query.parentType')>
+		<cfset ARGUMENTS.Current = Fix( ARGUMENTS.Current ) />
+	<cfelse>
+		<cfset ARGUMENTS.Current=0>
+	</cfif>
+
 	<!--- 
 		Now, we will loop over the raw events and populate the 
 		calculated events query. This way, when we are rendering
@@ -79,6 +93,14 @@
 				<cfset LOCAL.DisplayStop=0>
 			</cfif>
 
+			<cfif arguments.current and arguments.query.parentType[local.currentrow] neq 'Calendar'>
+				<cfset local.from=arguments.current>
+				<cfset local.to=arguments.current>
+			<cfelse>
+				<cfset local.from=arguments.from>
+				<cfset local.to=arguments.to>
+			</cfif>
+
 			<cfif isDate(arguments.query.displayStop[local.currentrow])>
 				
 				<!--- 
@@ -87,19 +109,11 @@
 					- the end of the time period or the end date of 
 					the event.
 				--->
+
 				<cfset LOCAL.To = Min( 
 					LOCAL.DisplayStop,
-					ARGUMENTS.To
+					LOCAL.To
 					) />
-				
-			<cfelse>
-			
-				<!--- 
-					If there is no end date, then naturally,
-					we only want to go as far as the last 
-					day of the month.
-				--->
-				<cfset LOCAL.To = ARGUMENTS.To />
 			
 			</cfif>
 			
@@ -140,9 +154,12 @@
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
+
+				
+
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.From
 						) />
 					
 					<!--- 
@@ -176,7 +193,7 @@
 					--->
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.From
 						) />
 						
 					<!--- 
@@ -250,7 +267,7 @@
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.From
 						) />
 					
 					<!--- Set the loop type and increment. --->
@@ -299,7 +316,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.From
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -321,7 +338,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.From
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -388,7 +405,7 @@
 					<cfif (
 						<!--- Within window. --->
 						(
-							ARGUMENTS.From LTE LOCAL.Day) AND 
+							LOCAL.From LTE LOCAL.Day) AND 
 							(LOCAL.Day LTE LOCAL.To) AND
 							
 							<!--- Within allowable days. ---> 
