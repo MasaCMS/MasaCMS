@@ -2629,181 +2629,217 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderMenuTypeClause" output="true">
 <cfargument name="menuType">
 <cfargument name="menuDateTime">
+<cfargument name="from" default="">
+<cfargument name="to" default="">
+
 <cfoutput>
-			<cfswitch expression="#arguments.menuType#">
-					<cfcase value="Calendar,CalendarDate">
-						tcontent.Display = 2 	 
-					 	AND 
-						  (
-						  	tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
-						  	AND 
-						  		(
-						  			tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
-						  		)
-						  	)  
-					</cfcase>
-					<cfcase value="calendar_features">
-					  	tcontent.Display = 2 	 
-					 	AND
-					  		(
-					  			tcontent.DisplayStart >= #renderDateTimeArg(arguments.menuDateTime)# 
-					  			OR (tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#)
-					  		)
-					 </cfcase>
-					 <cfcase value="ReleaseDate">
-					 	(
-						 	tcontent.Display = 1 
-						 	
-						 OR
-						 	( 
-						   	tcontent.Display = 2 	 
-						 	 	AND 
-						 	 	(
-						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
-							  		AND (
-							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
-							  			)  
-								)
-							)
+	<cfif isDate(arguments.from) and isDate(arguments.to) and listFindNoCase('default,calendar',arguments.menuType)>
+		<cfswitch expression="#arguments.menuType#">
+			<cfcase value="Calendar">
+				tcontent.Display = 2 	 
+			 		AND 
+			 	 		(
+			 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.from)#
+				  			AND 
+				  				(
+				  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.to)# or tcontent.DisplayStop is null
+				  				)  
+				  		)
+			</cfcase>
+			<cfdefaultcase>
+			  
+			 	tcontent.Display = 1 
+			  	OR
+			  	(
+			  		tcontent.Display = 2 	 
+			 		AND 
+			 	 		(
+			 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.from)#
+				  			AND 
+				  				(
+				  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.to)# or tcontent.DisplayStop is null
+				  				)  
+				  		)
+				)
+			  
+			  </cfdefaultcase>
+		</cfswitch>
+	<cfelse>
+		<cfswitch expression="#arguments.menuType#">
+			<cfcase value="Calendar,CalendarDate">
+				tcontent.Display = 2 	 
+			 	AND 
+				  (
+				  	tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+				  	AND 
+				  		(
+				  			tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
+				  		)
+				  	)  
+			</cfcase>
+			<cfcase value="calendar_features">
+			  	tcontent.Display = 2 	 
+			 	AND
+			  		(
+			  			tcontent.DisplayStart >= #renderDateTimeArg(arguments.menuDateTime)# 
+			  			OR (tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#)
+			  		)
+			 </cfcase>
+			 <cfcase value="ReleaseDate">
+			 	(
+				 	tcontent.Display = 1 
+				 	
+				 OR
+				 	( 
+				   	tcontent.Display = 2 	 
+				 	 	AND 
+				 	 	(
+				 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+					  		AND (
+					  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
+					  			)  
 						)
-						  
-						AND
-						
+					)
+				)
+				  
+				AND
+				
+				(
+				  	(
+				  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+				  		AND tcontent.releaseDate >= #renderDateTimeArg(arguments.menuDateTime)#
+				  	)
+				  		
+				  	OR 
+				  	 (
+				  	 	tcontent.releaseDate is Null
+				  		AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+				  		AND tcontent.lastUpdate >= #renderDateTimeArg(arguments.menuDateTime)#
+				  	)
+			  	)	
+			  	
+			  </cfcase>
+			  <cfcase value="ReleaseMonth">
+			   (
+				 	tcontent.Display = 1 
+				 	
+				 	OR
+
+				 	( 
+				   		tcontent.Display = 2
+
+						AND 
 						(
-						  	(
-						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.releaseDate >= #renderDateTimeArg(arguments.menuDateTime)#
-						  	)
-						  		
-						  	OR 
-						  	 (
-						  	 	tcontent.releaseDate is Null
-						  		AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.lastUpdate >= #renderDateTimeArg(arguments.menuDateTime)#
-						  	)
-					  	)	
-					  	
-					  </cfcase>
-					  <cfcase value="ReleaseMonth">
-					   (
-						 	tcontent.Display = 1 
-						 	
-						 	OR
-
-						 	( 
-						   		tcontent.Display = 2
-
-								AND 
-								(
-									tcontent.DisplayStart <= #renderDateTimeArg(now())# 
-									AND tcontent.DisplayStart < #renderDateTimeArg(dateadd("M",1,arguments.menuDateTime))#
-									AND (
-										tcontent.DisplayStop >= #renderDateTimeArg(now())# 
-										or tcontent.DisplayStop is null
-									)
-
-								)
+							tcontent.DisplayStart <= #renderDateTimeArg(now())# 
+							AND tcontent.DisplayStart < #renderDateTimeArg(dateadd("M",1,arguments.menuDateTime))#
+							AND (
+								tcontent.DisplayStop >= #renderDateTimeArg(now())# 
+								or tcontent.DisplayStop is null
 							)
+
 						)
-						  
-						AND
+					)
+				)
+				  
+				AND
+				(
+				  	(
+				  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+				  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+				  		
+				  	OR 
+			  		(
+			  			tcontent.releaseDate is Null
+			  			AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+			  			AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+			  		)  
+			  	)
+			   </cfcase>
+			  <cfcase value="CalendarMonth">
+				tcontent.display=2
+				
+				AND
+					(
 						(
-						  	(
-						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
-						  		
-						  	OR 
-					  		(
-					  			tcontent.releaseDate is Null
-					  			AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-					  			AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-					  		)  
-					  	)
-					   </cfcase>
-					  <cfcase value="CalendarMonth">
-						tcontent.display=2
-						
-						AND
-							(
-								(
-									tcontent.displayStart < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-									AND  tcontent.displayStart >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-								)
-											  	
-								or 
-											  	
-								(
-									tcontent.displayStop < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-									AND  
-										(
-											tcontent.displayStop >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
-											or
-											tcontent.displayStop is null
-										)
-								)
-											  	
-								or 
-											  	
-								(
-									tcontent.displayStart < #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-									and 
-										(
-											tcontent.displayStop >= #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-											or
-											tcontent.displayStop is null
-										)
-
-								)
-							)
-					  </cfcase>
-					  <cfcase value="ReleaseYear"> 
-						  (
-							
-							    tcontent.Display = 1
-							
-							    OR
-							        (
-							            tcontent.Display = 2	
-							                AND (
-							                    tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))# AND (
-							                        tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
-							                    )
-							            )
-							    )
-							
-							) AND (
-							
-							    (
-							        tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#)
-							    OR
-							        (
-							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#			
-							        )
-							    )
-					  </cfcase> 
-					  <cfcase value="fixed">
-					  	
-					  	tcontent.Display = 1 
-					  	
-					   </cfcase>
-					  <cfdefaultcase>
-					  
-					 	tcontent.Display = 1 
-					  	OR
-					  	(
-					  		tcontent.Display = 2 	 
-					 		AND 
-					 	 		(
-					 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)#
-						  			AND 
-						  				(
-						  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
-						  				)  
-						  		)
+							tcontent.displayStart < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+							AND  tcontent.displayStart >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 						)
-					  
-					  </cfdefaultcase>
-			</cfswitch>
+									  	
+						or 
+									  	
+						(
+							tcontent.displayStop < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+							AND  
+								(
+									tcontent.displayStop >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+									or
+									tcontent.displayStop is null
+								)
+						)
+									  	
+						or 
+									  	
+						(
+							tcontent.displayStart < #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+							and 
+								(
+									tcontent.displayStop >= #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									or
+									tcontent.displayStop is null
+								)
+
+						)
+					)
+			  </cfcase>
+			  <cfcase value="ReleaseYear"> 
+				  (
+					
+					    tcontent.Display = 1
+					
+					    OR
+					        (
+					            tcontent.Display = 2	
+					                AND (
+					                    tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))# AND (
+					                        tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
+					                    )
+					            )
+					    )
+					
+					) AND (
+					
+					    (
+					        tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#)
+					    OR
+					        (
+					            tcontent.releaseDate is Null AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#			
+					        )
+					    )
+			  </cfcase> 
+			  <cfcase value="fixed">
+			  	
+			  	tcontent.Display = 1 
+			  	
+			   </cfcase>
+			  <cfdefaultcase>
+			  
+			 	tcontent.Display = 1 
+			  	OR
+			  	(
+			  		tcontent.Display = 2 	 
+			 		AND 
+			 	 		(
+			 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)#
+				  			AND 
+				  				(
+				  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
+				  				)  
+				  		)
+				)
+			  
+			  </cfdefaultcase>
+		</cfswitch>
+	</cfif>
 </cfoutput>
 </cffunction>
 

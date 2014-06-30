@@ -437,7 +437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="countOnly" default="false">
-	<cfargument name="menuType" default="default">
+	<cfargument name="menuType" default="#variables.instance.menutype#">
 	<cfargument name="from" required="true" default="#now()#">
 	<cfargument name="to" required="true" default="#now()#">
 
