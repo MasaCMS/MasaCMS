@@ -583,6 +583,7 @@
 		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
 			<cfreturn apply(
 				query=arguments.query,
+				current=menuDate,
 				from=createODBCDateTime(arguments.menuDate),
 				to=createODBCDateTime(arguments.menuDate)
 				)		
@@ -591,6 +592,7 @@
 		<cfcase value="CalendarMonth">
 			<cfreturn apply(
 				query=arguments.query,
+				current=menuDate,
 				from=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),1)),
 				to=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate)))
 				)		
@@ -599,6 +601,7 @@
 		<cfcase value="ReleaseYear,CalendarYear"> 
 			<cfreturn apply(
 				query=arguments.query,
+				current=menuDate,
 				from=createODBCDateTime(createDate(year(arguments.menuDate),1,1)),
 				to=createODBCDateTime(createDate(year(arguments.menuDate),12,31))
 				)		
