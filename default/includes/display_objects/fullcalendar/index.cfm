@@ -62,8 +62,8 @@
 <cfoutput>
 <div class="MuraCalendar-wrapper">
 	<div id="MuraCalendar-error" class="alert alert-warning" role="alert" style="display:none;">
-		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		<i class="fa fa-warning"></i> <strong>Warning!</strong> An error occurred while fetching events.
+		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
+		<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 	</div>
 	<div id="calendar" class="MuraCalendar"></div>
 	<div id="MuraCalendar-loading"><i class="fa fa-refresh fa-spin"></i> #variables.$.rbKey('calendar.loadingevents')#</div>
