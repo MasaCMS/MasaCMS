@@ -87,8 +87,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="countOnly" default="false">
 	<cfargument name="menuType" default="default">
-	<cfargument name="from" required="true" default="#now()#">
-	<cfargument name="to" required="true" default="#now()#">
+	<cfargument name="from" required="true" default="">
+	<cfargument name="to" required="true" default="">
 
 	<cfreturn variables.feedgateway.getFeed(
 		feedBean=arguments.feedBean

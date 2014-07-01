@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 --->
 <cfif isDefined("feedBean") and not is404>
-	<cfset rs=application.feedManager.getFeed(feedBean,url.tag) />
+	<cfset rs=application.feedManager.getFeed(feedBean=feedBean,tag=url.tag) />
 </cfif>
 </cfsilent>	
 <cfif is404>

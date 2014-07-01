@@ -88,7 +88,7 @@
 		
 	<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 		
-		<cfif rc.ptype neq 'Calendar'>
+		<cfif rc.parentBean.getType() neq 'Calendar'>
 			<cfinclude template="dsp_displaycontent.cfm">
 		</cfif>
 		<cfif rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form'>
