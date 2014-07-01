@@ -81,15 +81,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getFeed" returntype="query" access="public" output="false">
-	<cfargument name="feedBean"  type="any" />
-	<cfargument name="tag"  required="true" default="" />
-	<cfargument name="aggregation"  required="true" default="false" />
+	<cfargument name="feedBean"  type="any">
+	<cfargument name="tag"  required="true" default="">
+	<cfargument name="aggregation"  required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="countOnly" default="false">
-	<cfargument name="from" required="true" default="#now()#">
-	<cfargument name="to" required="true" default="#now()#">
+	<cfargument name="menuType" default="default">
+	<cfargument name="from" required="true" default="">
+	<cfargument name="to" required="true" default="">
 
-	<cfreturn variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation,arguments.applyPermFilter,arguments.countOnly,arguments.from,arguments.to) />
+	<cfreturn variables.feedgateway.getFeed(
+		feedBean=arguments.feedBean
+		, tag=arguments.tag
+		, aggregation=arguments.aggregation
+		, applyPermFilter=arguments.applyPermFilter
+		, countOnly=arguments.countOnly
+		, menuType=arguments.menuType
+		, from=arguments.from
+		, to=arguments.to
+	) />
 </cffunction>
 
 <cffunction name="getFeedIterator" returntype="any" access="public" output="false">

@@ -596,6 +596,7 @@
 				rememberLastFolder: false
 			});
 		},
+		<cfset csrfTokens=$.generateCSRFTokens(context=node.getContentHistID() & 'add')>
 		data:{
 			muraaction: 'carch.update',
 			action: 'add',
@@ -609,7 +610,9 @@
 			changesetid: '',
 			bean: 'content',
 			loadby: 'contenthistid',
-			approvalstatus: '#JSStringFormat(node.getApprovalStatus())#'
+			approvalstatus: '#JSStringFormat(node.getApprovalStatus())#',
+			mura_token: '#csrfTokens.token#',
+			mura_token_expires: '#csrfTokens.expires#'
 			},
 		attributes: {},
 		preprocessed: {

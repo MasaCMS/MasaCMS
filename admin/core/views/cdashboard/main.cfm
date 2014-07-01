@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(trim(renderedEvent))>
 			<div<cfif started> class="divide"</cfif>>
 				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-				#$.renderEvent(eventName='onDashboardPrimaryTop',index=i)#
+				#renderedEvent#
 			</div>
 			<cfset started=true>
 		</cfif>
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(trim(renderedEvent))>
 			<div<cfif started> class="divide"</cfif>>
 				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-				#$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)#
+				#renderedEvent#
 			</div>
 			<cfset started=true>
 		</cfif>
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(trim(renderedEvent))>
 			<div class="divide">
 				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-				#$.renderEvent(eventName='onDashboardSideBarTop',index=i)#
+				#renderedEvent##renderedEvent#
 			</div>
 		</cfif>
 	</cfloop>
@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(trim(renderedEvent))>
 			<div class="divide">
 				<h2><i class="icon-cog"></i> #HTMLEditformat(eventMappings[i].pluginName)#</h2>
-				#$.renderEvent(eventName='onDashboardSideBarBottom',index=i)#
+				#renderedEvent#
 			</div>
 		</cfif>
 	</cfloop>

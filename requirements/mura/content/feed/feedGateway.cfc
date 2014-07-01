@@ -100,14 +100,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getFeed" access="public" output="false" returntype="query">
 	<cfargument name="feedBean" type="any">
-	<cfargument name="tag" required="true" default="" />
-	<cfargument name="aggregation" required="true" type="boolean" default="false" />
-	<cfargument name="applyPermFilter" required="true" type="boolean" default="false" />
-	<cfargument name="countOnly" required="true" type="boolean" default="false" />
-	<cfargument name="menuType" default="default"/>
-	<cfargument name="from" required="true" default="#now()#">
-	<cfargument name="to" required="true" default="#now()#">
-	
+	<cfargument name="tag" required="true" default="">
+	<cfargument name="aggregation" required="true" type="boolean" default="false">
+	<cfargument name="applyPermFilter" required="true" type="boolean" default="false">
+	<cfargument name="countOnly" required="true" type="boolean" default="false">
+	<cfargument name="menuType" default="default">
+	<cfargument name="from" required="true" default="">
+	<cfargument name="to" required="true" default="">
+
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
 	<cfset var contentLen =listLen(arguments.feedBean.getcontentID()) />
@@ -152,12 +152,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset blockFactor=100>
 	</cfif>
 	
-	<cfif request.muraChangesetPreview>
+	<cfif request.muraChangesetPreview and isStruct(getCurrentUser().getValue("ChangesetPreviewData"))>
 		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 	</cfif>
-			
 	<cfif not isdate(nowAdjusted)>
 		<cfset nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
+	</cfif>
+
+	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
+		<cfset arguments.from=nowAdjusted>
+		<cfset arguments.to=dateAdd('m',1,nowAdjusted)>
 	</cfif>
 	
 	<cfif arguments.feedBean.getType() eq "Local">
@@ -766,26 +770,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.feedBean.getLiveOnly()>	    
 	AND 
 	(
-		
 		tcontent.Display = 1
-	OR
-		(		
-			tcontent.Display = 2
-			
-			AND
-			 (
-				(
-					tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-					AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
-				)
-				OR <cfif len(altTable)>
-						tcontent.parentType='Calendar'
-					<cfelse>
-						tparent.type='Calendar'
-					</cfif>
-			  )			 
-		)		
-	
+		OR
+			(		
+				tcontent.Display = 2
+				
+				
+				AND
+				(	
+
+					(   <cfif len(altTable)>
+							tcontent.parentType!='Calendar'
+						<cfelse>
+							tparent.type!='Calendar'
+						</cfif>
+
+						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+					)
+					OR 
+					(
+						<cfif len(altTable)>
+							tcontent.parentType='Calendar'
+						<cfelse>
+							tparent.type='Calendar'
+						</cfif>
+						
+						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> 
+						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
+						
+					)
+
+				)			 
+			)		
 	
 	) 
 
@@ -860,8 +877,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 	</cfif>
 
-	<cfif not arguments.countOnly>
-		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,from=arguments.from,to=arguments.to) />
+	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly()>
+		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 	<cfelse>
 		<cfreturn rsFeed>
 	</cfif>
