@@ -101,6 +101,9 @@
 				<cfset local.to=arguments.to>
 			</cfif>
 
+			<cfset LOCAL.FromOrig=LOCAL.from>
+			<cfset LOCAL.ToOrig=LOCAL.to>
+
 			<cfif isDate(arguments.query.displayStop[local.currentrow])>
 				
 				<!--- 
@@ -112,7 +115,7 @@
 
 				<cfset LOCAL.To = Min( 
 					LOCAL.DisplayStop,
-					LOCAL.To
+					LOCAL.ToOrig
 					) />
 			
 			</cfif>
@@ -157,7 +160,7 @@
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 					
 					<!--- 
@@ -191,7 +194,7 @@
 					--->
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- 
@@ -265,7 +268,7 @@
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 					
 					<!--- Set the loop type and increment. --->
@@ -314,7 +317,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -336,7 +339,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -357,7 +360,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						LOCAL.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -430,6 +433,7 @@
 						(
 							LOCAL.From LTE LOCAL.Day) AND 
 							(LOCAL.Day LTE LOCAL.To) AND
+							(LOCAL.Day GTE LOCAL.FromOrig) AND 
 							
 							<!--- Within allowable days. ---> 
 							(
