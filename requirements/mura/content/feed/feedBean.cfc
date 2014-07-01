@@ -456,8 +456,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
-	<cfargument name="from" required="true" default="#now()#">
-	<cfargument name="to" required="true" default="#now()#">
+	<cfargument name="from" required="true" default="">
+	<cfargument name="to" required="true" default="">
 	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to) />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q,variables.instance.nextn)>
