@@ -129,7 +129,7 @@
 				to default to allowing all days of the week.
 			--->
 			<cfset LOCAL.DaysOfWeek = "" />
-			
+				
 			<!---
 				Check to see what kind of event we have - is 
 				it a single day event or an event that repeats. If
@@ -154,8 +154,6 @@
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
-
-				
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
@@ -372,6 +370,8 @@
 			</cfswitch>
 			
 			<cfset LOCAL.found = false />
+
+
 			<!--- 
 				Check to see if we are looking at an event that need
 				to be fleshed it (ie. it has a repeat type).
@@ -413,6 +413,7 @@
 					until we are past the cut off for this time 
 					period of potential events.
 				--->
+				
 				<cfloop condition="(LOCAL.Day LTE LOCAL.To)">
 				
 					<!--- 
@@ -423,6 +424,7 @@
 						our FROM date (LOCAL.From) may be earlier than
 						the window in which we are looking.
 					--->
+
 					<cfif (
 						<!--- Within window. --->
 						(
@@ -581,7 +583,7 @@
 			</cfif>
 
 			<cfif not local.found>
-				<cfset local.deleteList=listAppend(local.deleteList,arguments.query.contentID)>
+				<cfset local.deleteList=listAppend(local.deleteList,arguments.query['contentid'][local.currentrow])>
 			</cfif>
 		</cfif>
 	</cfloop>
@@ -604,24 +606,24 @@
 		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(arguments.menuDate),
-				to=createODBCDateTime(arguments.menuDate)
+				from=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate)),
+				to=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate))
 				)		
 			/>					  	
 		</cfcase>
 		<cfcase value="CalendarMonth">
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),1)),
-				to=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate)))
+				from=createDate(year(arguments.menuDate),month(arguments.menuDate),1),
+				to=createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate))
 				)		
 			/>
 		</cfcase>
 		<cfcase value="ReleaseYear,CalendarYear"> 
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(createDate(year(arguments.menuDate),1,1)),
-				to=createODBCDateTime(createDate(year(arguments.menuDate),12,31))
+				from=createDate(year(arguments.menuDate),1,1),
+				to=createDate(year(arguments.menuDate),12,31)
 				)		
 			/>
 		</cfcase>				
