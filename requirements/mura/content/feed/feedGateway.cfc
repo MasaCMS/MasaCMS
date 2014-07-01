@@ -775,6 +775,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			(		
 				tcontent.Display = 2
 				
+				
 				AND
 				(	
 
@@ -794,11 +795,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelse>
 							tparent.type='Calendar'
 						</cfif>
-
-						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> 
-						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> or tcontent.DisplayStop is null)
-					
+						
+						and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> 
+						and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
+						
 					)
+
 				)			 
 			)		
 	
@@ -874,7 +876,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly and arguments.applyPermFilter>
 		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 	</cfif>
-
+	
 	<cfif not arguments.countOnly>
 		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 	<cfelse>

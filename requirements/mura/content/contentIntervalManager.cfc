@@ -47,6 +47,7 @@
 	<cfif not arguments.query.recordcount>
 		<cfreturn arguments.query>
 	</cfif>
+
 	<!--- 
 		Make sure that we are working with numeric dates 
 		that are DAY-only dates. 
@@ -82,8 +83,7 @@
 			end of the time period we are examining.
 		--->
 		<cfif arguments.query.display[local.currentrow] eq 2 
-		and len(arguments.query.displayInterval[local.currentrow]) 
-		and arguments.query.displayInterval[local.currentrow] neq 'daily'>
+		and len(arguments.query.displayInterval[local.currentrow]) >
 
 			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
 			
@@ -347,6 +347,27 @@
 					<cfset LOCAL.DaysOfWeek = "1,7" />
 					
 				</cfcase>
+
+				<!--- Repeat daily. --->
+				<cfdefaultcase>
+					<!--- 
+						Set the start date of the loop. For 
+						efficiency's sake, we don't want to loop 
+						from the very beginning of the event; we 
+						can get the max of the start date and first
+						day of the calendar month.
+					--->
+					<cfset LOCAL.From = Max( 
+						LOCAL.DisplayStart,
+						LOCAL.From
+						) />
+						
+					<!--- Set the loop type and increment. --->
+					<cfset LOCAL.LoopType = "d" />
+					<cfset LOCAL.LoopIncrement = 1 />
+					<cfset LOCAL.DaysOfWeek = "1,2,3,4,5,6,7" />
+				
+				</cfdefaultcase>
 			
 			</cfswitch>
 			
@@ -583,7 +604,6 @@
 		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
 			<cfreturn apply(
 				query=arguments.query,
-				current=menuDate,
 				from=createODBCDateTime(arguments.menuDate),
 				to=createODBCDateTime(arguments.menuDate)
 				)		
@@ -592,7 +612,6 @@
 		<cfcase value="CalendarMonth">
 			<cfreturn apply(
 				query=arguments.query,
-				current=menuDate,
 				from=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),1)),
 				to=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate)))
 				)		
@@ -601,7 +620,6 @@
 		<cfcase value="ReleaseYear,CalendarYear"> 
 			<cfreturn apply(
 				query=arguments.query,
-				current=menuDate,
 				from=createODBCDateTime(createDate(year(arguments.menuDate),1,1)),
 				to=createODBCDateTime(createDate(year(arguments.menuDate),12,31))
 				)		
