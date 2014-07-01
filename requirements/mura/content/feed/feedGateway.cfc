@@ -876,8 +876,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly and arguments.applyPermFilter>
 		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
 	</cfif>
-	
-	<cfif not arguments.countOnly>
+
+	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly()>
 		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
 	<cfelse>
 		<cfreturn rsFeed>
