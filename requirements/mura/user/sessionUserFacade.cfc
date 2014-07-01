@@ -224,7 +224,7 @@
 
 <cffunction name="renderCSRFTokens" output="false">
 	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
-	<cfargument name="context" default=""> 
+	<cfargument name="context" default="">
 	<cfargument name="format" default="form">
 	<cfset var csrf=generateCSRFTokens(argumentCollection=arguments)>
 	<cfswitch expression="#arguments.format#">
