@@ -36,10 +36,12 @@ select * from rsSubTypes where subType <> 'Default'
 				View All Groups
 			</a>
 
-			<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#')#">
-				<i class="icon-group"></i>
-				View Group Users
-			</a>
+			<cfif !rc.userBean.getIsNew()>
+				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#')#">
+					<i class="icon-group"></i>
+					View Group Users
+				</a>
+			</cfif>
 		</div>
 	</cfoutput>
 
