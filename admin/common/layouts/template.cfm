@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	<cfparam name="rc.jsLib" default="jquery">
 		<cfparam name="rc.jsLibLoaded" default="false">
 		<cfparam name="rc.activetab" default="0">
-		<cfparam name="rc.renderMuraAlerts" default="true">
+		<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default='#session.siteID#'>
 		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
