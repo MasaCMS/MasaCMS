@@ -97,6 +97,7 @@ jQuery(document).ready(function($) {
 			, loading: function(isLoading) {
 					$('##MuraCalendar-loading').toggle(isLoading);
 			}
+			//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 			, eventSources: [
 				{
 					url: '#variables.$.globalConfig('context')#/tasks/widgets/fullcalendar/proxy.cfc'
@@ -113,14 +114,14 @@ jQuery(document).ready(function($) {
 					, error: function() { 
 						$('##MuraCalendar-error').show();
 					}
-
 				}
+
 				// optionally include U.S. Holidays
-				// , {
-				// 	url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
-				// 	, color: 'yellow'
-				// 	, textColor: 'black'
-				// }
+				, {
+					url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
+					, color: 'yellow'
+					, textColor: 'black'
+				}
 			]
 			// example of how to open events in a separate window
 			// , eventClick: function(event) {

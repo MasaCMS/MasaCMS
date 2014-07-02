@@ -11,11 +11,11 @@ component output=false {
 		}
 
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
-		var renderer = $.getContentRenderer();
+		var calendarUtility = $.getCalendarUtility();
 
 		return 
-			renderer.fullCalendarFormat(
-				renderer.getCalendarItems(argumentCollection=arguments)
+			calendarUtility.fullCalendarFormat(
+				calendarUtility.getCalendarItems(argumentCollection=arguments)
 			);
 	}
 
