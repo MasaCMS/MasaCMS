@@ -30,6 +30,14 @@
 		required="true"
 		hint="The To date for our date span (inclusive)."
 		/>
+
+	<cfargument
+		name="current"
+		type="numeric"
+		required="true"
+		default="0"
+		hint="The From date for our date span (inclusive)."
+		/>
 		
 	
 	<!--- Define the local scope. --->
@@ -39,13 +47,20 @@
 	<cfif not arguments.query.recordcount>
 		<cfreturn arguments.query>
 	</cfif>
+
 	<!--- 
 		Make sure that we are working with numeric dates 
 		that are DAY-only dates. 
 	--->
 	<cfset ARGUMENTS.From = Fix( ARGUMENTS.From ) />
 	<cfset ARGUMENTS.To = Fix( ARGUMENTS.To ) />
-	
+
+	<cfif isDefined('arguments.query.parentType')>
+		<cfset ARGUMENTS.Current = Fix( ARGUMENTS.Current ) />
+	<cfelse>
+		<cfset ARGUMENTS.Current=0>
+	</cfif>
+
 	<!--- 
 		Now, we will loop over the raw events and populate the 
 		calculated events query. This way, when we are rendering
@@ -68,8 +83,7 @@
 			end of the time period we are examining.
 		--->
 		<cfif arguments.query.display[local.currentrow] eq 2 
-		and len(arguments.query.displayInterval[local.currentrow]) 
-		and arguments.query.displayInterval[local.currentrow] neq 'daily'>
+		and len(arguments.query.displayInterval[local.currentrow]) >
 
 			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
 			
@@ -79,6 +93,17 @@
 				<cfset LOCAL.DisplayStop=0>
 			</cfif>
 
+			<cfif arguments.current and arguments.query.parentType[local.currentrow] neq 'Calendar'>
+				<cfset local.from=arguments.current>
+				<cfset local.to=arguments.current>
+			<cfelse>
+				<cfset local.from=arguments.from>
+				<cfset local.to=arguments.to>
+			</cfif>
+
+			<cfset LOCAL.FromOrig=LOCAL.from>
+			<cfset LOCAL.ToOrig=LOCAL.to>
+
 			<cfif isDate(arguments.query.displayStop[local.currentrow])>
 				
 				<!--- 
@@ -87,19 +112,11 @@
 					- the end of the time period or the end date of 
 					the event.
 				--->
+
 				<cfset LOCAL.To = Min( 
 					LOCAL.DisplayStop,
-					ARGUMENTS.To
+					LOCAL.ToOrig
 					) />
-				
-			<cfelse>
-			
-				<!--- 
-					If there is no end date, then naturally,
-					we only want to go as far as the last 
-					day of the month.
-				--->
-				<cfset LOCAL.To = ARGUMENTS.To />
 			
 			</cfif>
 			
@@ -115,7 +132,7 @@
 				to default to allowing all days of the week.
 			--->
 			<cfset LOCAL.DaysOfWeek = "" />
-			
+				
 			<!---
 				Check to see what kind of event we have - is 
 				it a single day event or an event that repeats. If
@@ -140,9 +157,10 @@
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
+
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.FromOrig
 						) />
 					
 					<!--- 
@@ -176,7 +194,7 @@
 					--->
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- 
@@ -250,7 +268,7 @@
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.FromOrig
 						) />
 					
 					<!--- Set the loop type and increment. --->
@@ -299,7 +317,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -321,7 +339,7 @@
 					--->
 					<cfset LOCAL.From = Max( 
 						LOCAL.DisplayStart,
-						ARGUMENTS.From
+						LOCAL.FromOrig
 						) />
 						
 					<!--- Set the loop type and increment. --->
@@ -330,10 +348,33 @@
 					<cfset LOCAL.DaysOfWeek = "1,7" />
 					
 				</cfcase>
+
+				<!--- Repeat daily. --->
+				<cfdefaultcase>
+					<!--- 
+						Set the start date of the loop. For 
+						efficiency's sake, we don't want to loop 
+						from the very beginning of the event; we 
+						can get the max of the start date and first
+						day of the calendar month.
+					--->
+					<cfset LOCAL.From = Max( 
+						LOCAL.DisplayStart,
+						LOCAL.FromOrig
+						) />
+						
+					<!--- Set the loop type and increment. --->
+					<cfset LOCAL.LoopType = "d" />
+					<cfset LOCAL.LoopIncrement = 1 />
+					<cfset LOCAL.DaysOfWeek = "1,2,3,4,5,6,7" />
+				
+				</cfdefaultcase>
 			
 			</cfswitch>
 			
 			<cfset LOCAL.found = false />
+
+
 			<!--- 
 				Check to see if we are looking at an event that need
 				to be fleshed it (ie. it has a repeat type).
@@ -375,6 +416,7 @@
 					until we are past the cut off for this time 
 					period of potential events.
 				--->
+				
 				<cfloop condition="(LOCAL.Day LTE LOCAL.To)">
 				
 					<!--- 
@@ -385,11 +427,13 @@
 						our FROM date (LOCAL.From) may be earlier than
 						the window in which we are looking.
 					--->
+
 					<cfif (
 						<!--- Within window. --->
 						(
-							ARGUMENTS.From LTE LOCAL.Day) AND 
+							LOCAL.From LTE LOCAL.Day) AND 
 							(LOCAL.Day LTE LOCAL.To) AND
+							(LOCAL.Day GTE LOCAL.FromOrig) AND 
 							
 							<!--- Within allowable days. ---> 
 							(
@@ -543,7 +587,7 @@
 			</cfif>
 
 			<cfif not local.found>
-				<cfset local.deleteList=listAppend(local.deleteList,arguments.query.contentID)>
+				<cfset local.deleteList=listAppend(local.deleteList,arguments.query['contentid'][local.currentrow])>
 			</cfif>
 		</cfif>
 	</cfloop>
@@ -566,24 +610,24 @@
 		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(arguments.menuDate),
-				to=createODBCDateTime(arguments.menuDate)
+				from=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate)),
+				to=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate))
 				)		
 			/>					  	
 		</cfcase>
 		<cfcase value="CalendarMonth">
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),1)),
-				to=createODBCDateTime(createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate)))
+				from=createDate(year(arguments.menuDate),month(arguments.menuDate),1),
+				to=createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate))
 				)		
 			/>
 		</cfcase>
 		<cfcase value="ReleaseYear,CalendarYear"> 
 			<cfreturn apply(
 				query=arguments.query,
-				from=createODBCDateTime(createDate(year(arguments.menuDate),1,1)),
-				to=createODBCDateTime(createDate(year(arguments.menuDate),12,31))
+				from=createDate(year(arguments.menuDate),1,1),
+				to=createDate(year(arguments.menuDate),12,31)
 				)		
 			/>
 		</cfcase>				
