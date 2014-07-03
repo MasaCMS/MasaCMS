@@ -265,8 +265,6 @@ header, #cPlugins {
 			.active > a i {
 				color: @gray;
 				}
-			
-			
 	    	}
 	    	
 	/* Pointer on top of dropdown nav */
@@ -362,24 +360,29 @@ header, #cPlugins {
 		 	.text-overflow;
 		 	color: @white;
 		 	}
-		
-		.dropdown-menu {
-		 	min-width: 164px;
-		 	max-width: 388px;
-		 	max-height: 200px;
-		 	overflow-y: auto;
-		 	
-		 	> li {
-		 	.text-overflow;
-		 		}
-		 	}
 		 	
 		.dropdown-menu  i {
 		 	text-shadow: 0 0 0 !important;
 		 	}
 		 	  
-	} // End #select-site  
-
+	} // End #select-site
+	
+	// select-site & modules dropdown constraints
+	
+	#select-site,
+	#modules {
+	
+	.dropdown-menu {
+			 	min-width: 164px;
+			 	max-width: 388px;
+			 	max-height: 200px;
+			 	overflow-y: auto;
+			 	
+			 	> li {
+			 	.text-overflow;
+			 		}
+			 	}
+			 }
 } // End .nav-site
 
 //	Showing dropdowns on :hover instead of click
