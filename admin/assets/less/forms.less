@@ -214,6 +214,23 @@ input + .help-block {
 	}
 } // /#editObjects
 
+.form-header {
+	
+	.clearfix();
+	padding-bottom: 1em;
+	
+	h2 {
+		float: left;
+		margin-bottom: 0;
+	}
+	
+	.metadata-horizontal {
+		margin-top: 0;
+		padding: 0;
+	}
+	
+}
+
 
 fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
 	padding: 12px 0 10px;
@@ -228,6 +245,10 @@ fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy
     &.padded {
     	padding: @gridGutterWidth;
     	padding-bottom: 0;
+    }
+    
+    > .list-table:first-child {
+	    margin-top: 0;
     }
     
     h2 { // Using instead of Legend

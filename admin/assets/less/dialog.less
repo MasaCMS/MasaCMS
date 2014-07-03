@@ -572,20 +572,28 @@
 		li > a:hover i {
 			color: @blue !important;
 			}
+
 	}
 
 
-#frontEndTools > ul li.dropdown-submenu a {
+#frontEndTools > ul li.dropdown-submenu {
+
+	> .dropdown-menu {
+		margin-left: 0 !important;
+	}
+	
+	a {
 	max-width: 180px !important;
 	.text-overflow();
+	
+		&:after {
+		border-left-color: @grayLight !important;
+		margin-top: 5px !important;
+		margin-right: 0 !important;
+		margin-left: -5px !important;
+		}
 	}
-
-#frontEndTools > ul li.dropdown-submenu > a:after {
-	border-left-color: @grayLight !important;
-	margin-top: 5px !important;
-	margin-right: 0 !important;
-	margin-left: -5px !important;
-	}
+}
 
 #frontEndTools > ul > li#adminSave .dropdown-menu,
 #frontEndTools > ul > li#adminPreview .dropdown-menu
