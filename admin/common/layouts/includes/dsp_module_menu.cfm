@@ -125,8 +125,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
      <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
       <li class="divider"></li>
-      <li class="<cfif rc.originalcircuit eq 'cPlugins' > active</cfif>">
-      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
+      <li class="nav-header<cfif rc.originalcircuit eq 'cPlugins' > active</cfif>">
+      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
       </li>
     
        <cfloop query="rc.rsplugins">
