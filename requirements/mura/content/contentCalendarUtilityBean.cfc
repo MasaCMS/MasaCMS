@@ -5,7 +5,7 @@ component extends='mura.cfobject' {
     return this;
   }
 
-  remote string function getFullCalendarItems(calendarid, siteid, start, end, categoryid, tag) returnFormat='plain' {
+  remote string function getCalendarItems(calendarid, siteid, start, end, categoryid, tag) returnFormat='plain' {
 
     // validate required args
     var reqArgs = ['calendarid','siteid'];
@@ -16,11 +16,11 @@ component extends='mura.cfobject' {
     }
 
     var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
-    var renderer = $.getContentRenderer();
+    var calendarUtility = $.getCalendarUtility();
 
     return 
-      renderer.fullCalendarFormat(
-        renderer.getCalendarItems(argumentCollection=arguments)
+      calendarUtility.fullCalendarFormat(
+        calendarUtility.getCalendarItems(argumentCollection=arguments)
       );
   }
 
