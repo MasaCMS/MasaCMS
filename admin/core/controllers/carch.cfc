@@ -289,11 +289,13 @@
 	 <cfif not arguments.rc.ajaxrequest>
 		 		
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
-		 		<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload")>
+		 		<!---<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload")>--->
 			  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
+			  	<!---
 			  	<cfelse>
 
 			  	</cfif>
+			  	--->
 		 </cfif>
 		 
 		  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
