@@ -3520,6 +3520,10 @@ Display Objects
 	public any function dspFeed(string feedid,params={}) {
 		return variables.$.dspObject(object='feed',objectid=arguments.feedid,params=arguments.params);
 	}
+
+	public any function getCalendarUtility() {
+		return variables.$.getBean('contentCalendarUtilityBean').setMuraScope(variables.$);
+	}
 </cfscript>
 
 </cfcomponent>

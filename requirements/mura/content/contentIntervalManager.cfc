@@ -19,21 +19,21 @@
 	
 	<cfargument
 		name="From"
-		type="numeric"
+		type="date"
 		required="true"
 		hint="The From date for our date span (inclusive)."
 		/>
 		
 	<cfargument
 		name="To"
-		type="numeric"
+		type="date"
 		required="true"
 		hint="The To date for our date span (inclusive)."
 		/>
 
 	<cfargument
 		name="current"
-		type="numeric"
+		type="date"
 		required="true"
 		default="0"
 		hint="The From date for our date span (inclusive)."
