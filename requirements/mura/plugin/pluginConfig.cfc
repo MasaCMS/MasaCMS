@@ -423,7 +423,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="jsLib" required="true" default="jquery">
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
-<cfargument name="moduleid" required="false" default="#variables.instance.moduleid#" />
+<cfargument name="moduleid" required="false" default="#getModuleID()#" />
 
 	<cfreturn getBean('pluginManager').renderAdminTemplate(argumentCollection=arguments)>
 </cffunction>
