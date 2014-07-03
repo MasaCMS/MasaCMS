@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.upVotes=0/>
 	<cfset variables.instance.downVotes=0/>
 	<cfset variables.instance.comments=0/>
+	<cfset variables.instance.disableComments=0/>
 	<cfset variables.instance.majorVersion=0/>
 	<cfset variables.instance.minorVersion=0/>
 	<cfset variables.instance.lockID=""/>
