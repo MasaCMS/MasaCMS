@@ -66,16 +66,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfdefaultcase>
 			</cfswitch>
 		</a>
-		<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
+		<input type="hidden" id="categoryAssign#rc.catTrim#" name="categoryAssign#rc.catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
 		<cfif rc.categoryAssignment eq 2>
-			<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
-			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#HTMLEditFormat(rc.startHour)#">
-			<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
-			<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="#HTMLEditFormat(rc.startDayPart)#">
-			<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#">
-			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
-			<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
-			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
+			<input type="hidden" id="featureStart#rc.catTrim#" name="featureStart#rc.catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
+			<input type="hidden" id="startHour#rc.catTrim#" name="startHour#rc.catTrim#" value="#HTMLEditFormat(rc.startHour)#">
+			<input type="hidden" id="startMinute#rc.catTrim#" name="startMinute#rc.catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
+			<input type="hidden" id="startDayPart#rc.catTrim#" name="startDayPart#rc.catTrim#" value="#HTMLEditFormat(rc.startDayPart)#">
+			<input type="hidden" id="featureStop#rc.catTrim#" name="featureStop#rc.catTrim#" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#">
+			<input type="hidden" id="stopHour#rc.catTrim#" name="stopHour#rc.catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
+			<input type="hidden" id="stopMinute#rc.catTrim#" name="stopMinute#rc.catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
+			<input type="hidden" id="stopDayPart#rc.catTrim#" name="stopDayPart#rc.catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
 		</cfif>
 	</div>
 </cfoutput>
