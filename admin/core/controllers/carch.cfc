@@ -289,13 +289,14 @@
 	 <cfif not arguments.rc.ajaxrequest>
 		 		
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
-		 		<!---<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload")>--->
+		 		<cfparam name="session.mura.multifileupload" default="false">
+		 		<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
+			  		<cfset session.mura.multifileupload=true>
 			  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
-			  	<!---
 			  	<cfelse>
 
 			  	</cfif>
-			  	--->
+
 		 </cfif>
 		 
 		  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
