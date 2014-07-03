@@ -313,7 +313,7 @@ order by tformresponsepackets.entered asc
 		}
 		<cfif arguments.responseChart>
 			var polllist=new Array();
-			frm.find("input[type='radio]").each(function(){
+			frm.find("input[type='radio']").each(function(){
 				polllist.push($(this).val());
 			});
 			if(polllist.length > 0) {frm.attr('action','?nocache=1&polllist='+ polllist.toString());}		

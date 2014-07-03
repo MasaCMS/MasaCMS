@@ -2427,7 +2427,7 @@ select * from tplugins order by #arguments.orderby#
 
 <cfset rc.layout =arguments.body>
 <cfset rc.ajax ="">
-<cfset rc.originalcircuit="cPlugins">
+<cfset rc.originalcircuit="">
 <cfset rc.originalfuseaction="">
 <cfset rc.moduleID=arguments.moduleid>
 <cfset rc.jsLib=arguments.jsLib>
