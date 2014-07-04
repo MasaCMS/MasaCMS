@@ -633,7 +633,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs',timeout=120)#">
-	select tsessiontracking.fname,ltsessiontracking.name,tsessiontracking.company,tsessiontracking.urlToken, max(entered) AS LastRequest,
+	select tsessiontracking.fname,tsessiontracking.lname,tsessiontracking.company,tsessiontracking.urlToken, max(entered) AS LastRequest,
 	 min(entered) AS FirstRequest,
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
@@ -654,9 +654,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif onlyMembers>
 	tsessiontracking.userID is not null
+	and
 	</cfif>
 	
-	and tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+	tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
@@ -707,7 +708,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	order by LastRequest desc
 	</cfquery>
 
-	<cfreturn rs1 />
+	<cfreturn rs />
 
 </cffunction>
 
