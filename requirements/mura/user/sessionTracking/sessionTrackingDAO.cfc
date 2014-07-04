@@ -118,6 +118,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="string" required="yes"/>
 	<cfargument name="locale" type="string" required="yes"/>
 	<cfargument name="originalURLToken" type="string" required="yes"/>
+	<cfargument name="fname" type="string" required="yes"/>
+	<cfargument name="lname" type="string" required="yes"/>
+	<cfargument name="company" type="string" required="yes"/>
 
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
@@ -134,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cftry>
 		<cfquery>
 			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
-				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken)
+				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken,fname,lname,company)
 			values (
 				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.REMOTE_ADDR#" />,
 				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.SCRIPT_NAME,200)#" />,
@@ -151,7 +154,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.keywords neq '',de('no'),de('yes'))#" value="#left(arguments.keywords,200)#"/>,
 				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.user_agent,200)#"/>,
 				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.originalURLToken,130)#" />
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.originalURLToken,130)#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.fname neq '',de('no'),de('yes'))#" value="#arguments.fname#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.lname neq '',de('no'),de('yes'))#" value="#arguments.lname#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.company neq '',de('no'),de('yes'))#" value="#arguments.company#" />
 			)	
 		</cfquery>
 			
