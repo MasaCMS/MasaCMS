@@ -84,11 +84,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																		cgi.USER_AGENT,
 																		arguments.keywords,
 																		session.trackingID,
-																		iif(session.mura.isLoggedIn,de('#session.mura.userID#'),de('')),
+																		session.mura.userID,
 																		arguments.siteid,
 																		arguments.contentid,
 																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
-																		cookie.originalURLToken
+																		cookie.originalURLToken,
+																		session.mura.fname,
+																		session.mura.lname,
+																		session.mura.company
 																		)/>
 				<!---<cfcatch><cfreturn ""/></cfcatch></cftry>--->
 			</cfif>

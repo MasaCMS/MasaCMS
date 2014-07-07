@@ -276,16 +276,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset searchFailed=false/>
 <cfif not rc.newSearch>
 <cfsilent>
-	<cftry>
+	<!---<cftry>--->
 		<cfif arrayLen(session.paramArray) and session.paramCircuit eq 'cDashboard' >
 			<cfset rc.rslist=application.dashboardManager.getSessionSearch(session.paramArray,rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
 		<cfelse>
 			<cfset rc.rslist=application.dashboardManager.getSessionSearch(arrayNew(1),rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
 		</cfif>
+	<!---
 	<cfcatch>
 		<cfset searchFailed=true/>
 	</cfcatch>
 	</cftry>
+	--->
 </cfsilent>
 
 <script type="text/javascript">searchParams.setSearchButtons();</script>
@@ -311,7 +313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset endrow=(rc.startrow+rc.nextN.recordsperpage)-1/>
 <cfloop query="rc.rslist" startrow="#rc.startRow#" endrow="#endRow#">
 <tr>
-<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><cfif rc.rslist.userid eq ''>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.anonymous")#<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></a></td>
+<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><cfif rc.rslist.fname eq ''>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.anonymous")#<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></a></td>
 <td>#HTMLEditFormat(rc.rslist.locale)#</td>
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
