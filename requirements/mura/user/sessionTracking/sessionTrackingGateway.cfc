@@ -67,12 +67,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = ""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select  fname,lname,company,tsessiontracking.*, tcontent.menuTitle,tfiles.fileEXT,
+	select  tsessiontracking.*, tcontent.menuTitle,tfiles.fileEXT,
 	tcontent.Type, tcontent.filename,tcontent.targetParams
 	from tsessiontracking #variables.tableModifier#
 	inner join tcontent  #variables.tableModifier# on
 	(tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
-	left join tusers #variables.tableModifier# on (tsessiontracking.userid = tusers.userid)
 	left join tfiles #variables.tableModifier# on (tcontent.fileid=tfiles.fileid)
 	where urlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlToken#">
 	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -192,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = ""/>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select distinct fname,lname,company,urlToken,max(entered)
+	select distinct tsessiontracking.fname,tsessiontracking.lname,tsessiontracking.company,tsessiontracking.urlToken,max(entered)
 	LastRequest,min(entered)
 	firstRequest, count(urlToken) as views,
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
@@ -230,7 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	
 	)
-	group by fname,lname,company,urlToken,tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
+	group by tsessiontracking.fname,tsessiontracking.lname,tsessiontracking.company,tsessiontracking.urlToken,tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent	
 	order by LastRequest desc
 	</cfquery>
@@ -594,8 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var started=false />
 	<cfset var searchAddresses=false />
 	<cfset var paramArray =arrayNew(1) />
-	<cfset var rs1= ""/>
-	<cfset var rs2= ""/>
+	<cfset var rs= ""/>
 	<cfset var onlyMembers=arguments.membersOnly/>
 	<cfset var searchAddress=false />
 	<cfset var searchUsers=false/>
@@ -619,6 +617,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif listFirst(param.getField(),".") eq "tuseraddresses">
 						<cfset searchAddress=true />
 					</cfif>
+					<cfif listFirst(param.getField(),".") eq "tusers">
+						<cfset searchUsers=true />
+					</cfif>
 				</cfif>
 				<!--- <cfif listFirst(param.getField(),'.') eq 'tuseraddresses'>
 					<cfset searchAddresses = true />
@@ -631,79 +632,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cfif>
 	
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs1',timeout=120)#">
-	<cfif not onlyMembers>
-	select '' as fname,'' as lname,'' as company,tsessiontracking.urlToken, max(entered) AS LastRequest,
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs',timeout=120)#">
+	select tsessiontracking.fname,tsessiontracking.lname,tsessiontracking.company,tsessiontracking.urlToken, max(entered) AS LastRequest,
 	 min(entered) AS FirstRequest,
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid, tsessiontracking.siteid,tsessiontracking.user_agent
 	From tsessiontracking #variables.tableModifier#
-	inner join tcontent #variables.tableModifier# on (tsessiontracking.contentid=tcontent.contentID
-							and tsessiontracking.siteid=tcontent.siteID
-							and tcontent.active=1)
-	
-	 
-	where 
-	tsessiontracking.userID is null
-	
-	and tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-	
-	<cfif lsIsDate(arguments.startDate)>
-		<cftry>
-		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
-		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
-		</cfcatch>
-		</cftry>
+	<cfif searchUsers>
+	inner join tuserw #variables.tableModifier# on (tsessiontracking.userid=tusers.userID)
 	</cfif>
-	
-	<cfif lsIsDate(arguments.stopDate)>
-		<cftry>
-		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
-		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
-		</cfcatch>
-		</cftry>
-	</cfif>
-	
-	<cfswitch expression="#arguments.visitorStatus#">
-	<cfcase value="Return">
-	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
-	</cfcase>
-	<cfcase value="New">
-	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
-	</cfcase>
-	</cfswitch>
-	
-	<cfif arrayLen(paramArray)>
-		<cfloop from="1" to="#arrayLen(paramArray)#" index="i">
-				<cfset param=paramArray[i] />
-		 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
-		 		#param.getField()# #param.getCondition()# <cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#">  	
-		</cfloop>
-		<cfif started>)</cfif>
-	<!--- <cfelse> 
-		and 0=1 --->
-	</cfif>
-
-
-	group by tsessiontracking.urlToken, 		
-	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent 
-	
-	Union
-	
-	</cfif>
-	select fname,lname,company,tsessiontracking.urlToken, max(entered) AS LastRequest,
-	 min(entered) AS FirstRequest,
-	count(tsessiontracking.urlToken) as views,
-	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid, tsessiontracking.siteid,tsessiontracking.user_agent
-	From tsessiontracking #variables.tableModifier#
-	inner join tusers #variables.tableModifier# on (tsessiontracking.userid=tusers.userID)
 	<cfif searchAddress>
 	inner join tuseraddresses #variables.tableModifier# on (tsessiontracking.userid=tuseraddresses.userID)
 	</cfif>
@@ -714,9 +652,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 
 	where 
 	
+	<cfif onlyMembers>
 	tsessiontracking.userID is not null
+	and
+	</cfif>
 	
-	and tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+	tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
@@ -760,21 +701,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 
-	group by fname,lname,company,tsessiontracking.urlToken, 		
+	group by tsessiontracking.fname,tsessiontracking.lname,tsessiontracking.company,tsessiontracking.urlToken, 		
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent 
-	</cfquery>
-
-	<cfquery name="rs2" dbtype="query">
-	select fname,lname,company,urlToken, LastRequest,
-	FirstRequest,views,
-	country, lang, locale,
-	userid, siteid,user_agent
-	from rs1
+	
 	order by LastRequest desc
 	</cfquery>
 
-	<cfreturn rs2 />
+	<cfreturn rs />
 
 </cffunction>
 
