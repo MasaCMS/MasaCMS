@@ -419,18 +419,48 @@
 				<div id="tabGroupmemberships" class="tab-pane fade">
 					<div class="fieldset">
 
-						<!--- Private Groups --->
-						<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
-										or (application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")
-									)>
+						<!--- 
+							Private Groups 
+							** Must be an 'Admin' or Super User to add/edit Private Group Members
+						--->
+						<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2')>
+
 								<div class="control-group">
 									<label class="control-label">
 										#rc.$.rbKey('user.admingroups')#
 									</label>
-									<div class="controls">
+
+									<!--- private groups listing --->
+									<script>
+										// only show the Private Groups list, if the User is a 'System User'
+										jQuery(document).ready(function($) {
+											$('input[name="isPublic"]').on('change', function() {
+												var privateGroups = $('##privateGroupsList');
+												var msg = $('##privateGroupsNotice');
+												var isPublic = $(this).val();
+
+												if ( isPublic == 1 ) {
+													privateGroups.hide();
+													msg.show();
+												} else {
+													privateGroups.show();
+													msg.hide();
+												}
+											});
+										});
+									</script>
+
+									<cfif rc.userBean.getIsPublic() eq 1>
+										<div id="privateGroupsNotice" class="controls">
+											<p class="alert alert-notice">
+												#rc.$.rbKey('user.systemgroupmessage')#
+											</p>
+										</div>
+									</cfif>
+									<div id="privateGroupsList" class="controls"<cfif rc.userBean.getIsPublic() eq 1> style="display:none;"</cfif>>
 										<cfloop query="rc.rsPrivateGroups">
 											<label class="checkbox">
-												<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>
+												<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or Listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>
 												#rc.rsPrivateGroups.groupname#
 											</label>
 										</cfloop>
@@ -539,24 +569,32 @@
 								</div>
 							</div>
 
-							<!--- User Type --->
-							<div class="span6">
-								<label class="control-label">
-									#rc.$.rbKey('user.usertype')#
-								</label>
-
-								<div class="controls">
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.userBean.getIsPublic()> Checked</cfif>> 
-										#rc.$.rbKey('user.sitemember')#
+							<!--- 
+								User Type 
+								** Must be an 'Admin' or Super User to modify User Type
+							--->
+							<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2')>
+								<div class="span6">
+									<label class="control-label">
+										#rc.$.rbKey('user.usertype')#
 									</label>
 
-									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.userBean.getIsPublic()> Checked</cfif>> 
-										#rc.$.rbKey('user.adminuser')#
-									</label>
+									<div class="controls">
+										<label class="radio inline">
+											<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.userBean.getIsPublic()> Checked</cfif>> 
+											#rc.$.rbKey('user.sitemember')#
+										</label>
+
+										<label class="radio inline">
+											<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.userBean.getIsPublic()> Checked</cfif>> 
+											#rc.$.rbKey('user.adminuser')#
+										</label>
+									</div>
 								</div>
-							</div>
+							<cfelse>
+								<input name="isPublic" type="hidden" value="1">
+							</cfif>
+
 						</div>
 
 						<!--- Tags + RemoteID --->

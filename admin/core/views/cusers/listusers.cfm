@@ -119,14 +119,14 @@
 							<td class="actions">
 								<ul>
 									<li>
-										<a title="Edit" href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#">
+										<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
 											<i class="icon-pencil"></i>
 										</a>
 									</li>
 
 									<cfif local.user.getValue('perm') eq 0>
 										<li>
-											<a title="Delete" href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.user.getValue('groupname')#'")# User Group?',this.href)">
+											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.user.getValue('groupname')#'")# User Group?',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 												<i class="icon-remove-sign"></i>
 											</a>
 										</li>

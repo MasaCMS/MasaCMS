@@ -58,22 +58,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 		variables.settingsManager = arguments.settingsManager;
 	}
 
-/*
-	// PRIVATE before()
-	public any function before(rc) {
-		if ( 
-			!(
-				ListFind(session.mura.memberships, 'Admin;#getSettingsManager().getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') || ListFind(session.mura.memberships,'S2')
-			) && !(
-				ListFindNoCase('cUsers.editAddress,cUsers.updateAddress', ListLast(arguments.rc.muraAction,":")
-			) && rc.userID == session.mura.userID
-		) {
-			secure(arguments.rc);
-		}
-	}
-*/
-
-	// PUBLIC before()
 	public any function before(rc) {
 
 		if ( !Len(arguments.rc.siteid) ) {
