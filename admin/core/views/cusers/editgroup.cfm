@@ -238,7 +238,7 @@ select * from rsSubTypes where subType <> 'Default'
 						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
 					</cfif>
 					<input type="hidden" name="action" value="">
-					<input type="hidden" name="type" value="1">
+					<input type="hidden" name="type" value="1"><!--- 1=group, 2=user --->
 					<input type="hidden" name="contact" value="0">
 					<cfif rc.userbean.getPerm()>
 						<input type="hidden" name="isPublic" value="0">
