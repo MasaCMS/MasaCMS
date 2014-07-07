@@ -14,6 +14,7 @@ var genericConfiguratorMessage='#JSStringFormat(application.rbFactory.getKeyValu
 var contentid='#rc.contentid#';
 var parentid='#rc.parentid#';
 var contenthistid='#rc.contentBean.getContentHistID()#';
+var allowopenfeeds=#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#;
 <cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
 var pluginConfigurators=new Array();
 <cfloop query="rsPluginDisplayObjects">

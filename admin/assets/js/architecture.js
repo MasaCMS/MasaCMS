@@ -233,7 +233,7 @@ buttons: {
 */
 			open: function() {
 				$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
-				var url = 'index.cfm';
+				var url = './';
 				var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type + '&cacheid=' + Math.random();
 				$('#newContentMenuContainer .load-inline').spin(spinnerArgs2);
 				$.get(url + "?" + pars, function(data) {
@@ -475,7 +475,7 @@ buttons: {
 	loadSiteParents: function(siteid, contentid, parentid, keywords, isNew) {
 		$('#mover1').hide();
 
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#mover2');
 		
@@ -487,7 +487,7 @@ buttons: {
 	},
 
 	loadAssocImages: function(siteid, fileid, contentid, keywords, isNew) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.assocImages&compactDisplay=true&siteid=' + siteid + '&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#selectAssocImage');
 		$.get(url + "?" + pars, function(data) {
@@ -497,7 +497,7 @@ buttons: {
 	},
 
 	loadObjectClass: function(siteid, classid, subclassid, contentid, parentid, contenthistid) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 		var d = $('#classList');
 
@@ -529,7 +529,7 @@ buttons: {
 	},
 
 	loadNotify: function(siteid, contentid, parentid) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadNotify&compactDisplay=true&siteid=' + siteid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 		var d = $('#selectNotify');
 		if(d.html() == '') {
@@ -548,7 +548,7 @@ buttons: {
 	},
 
 	loadExpiresNotify: function(siteid, contenthistid, parentid) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadExpireNotify&compactDisplay=true&siteid=' + siteid + '&contenthistid=' + contenthistid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 		var d = $('#selectExpiresNotify');
 		if(d.html() == '') {
@@ -643,7 +643,7 @@ buttons: {
 	},
 	
 	loadRelatedContent: function(siteid, isNew, values, advSearch) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&siteid=' + siteid + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#selectRelatedContent');
@@ -707,7 +707,7 @@ buttons: {
 	},
 
 	loadRelatedContentSets:function(contenthistid,type,subtype,siteid){
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
 		
 		var d = $('#selectedRelatedContent');
@@ -893,7 +893,7 @@ buttons: {
 	},
 
 	copyThis: function(siteID, contentID, _copyAll) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.saveCopyInfo&siteid=' + siteID + '&contentid=' + contentID + '&copyAll=' + _copyAll + '&cacheid=' + Math.random();
 
 		$.get(url + "?" + pars);
@@ -906,7 +906,7 @@ buttons: {
 	},
 
 	pasteThis: function(parentID) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.copy&compactDisplay=true&siteid=' + this.copySiteID + '&copyAll=' + this.copyAll + '&contentid=' + this.copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
 		var d = $('#newPasteLink');
 		d.css('background', 'url(assets/images/ajax-loader.gif) no-repeat 1px 5px;');
@@ -930,7 +930,7 @@ buttons: {
 	},
 
 	loadExtendedAttributes: function(contentHistID, type, subType, _siteID, _context, _themeAssetPath) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&tablist=' + siteManager.tablist + '&cacheid=' + Math.random();
 
 		siteID = _siteID;
@@ -1124,7 +1124,7 @@ buttons: {
 		if(cat.html().length > 10) {
 			cat.toggle();
 		} else if(display == true) {
-			var url = 'index.cfm';
+			var url = './';
 			var idParam = id;
 			var pars = 'muraAction=cArch.loadCategoryFeatureStartStop&id=' + idParam.replace(/editDates/, "") + '&siteID=' + siteID + '&cacheid=' + Math.random();
 			cat.show();
@@ -1140,7 +1140,7 @@ buttons: {
 	activeQuickEdit: false,
 
 	loadSiteManager: function(siteid, topid, moduleid, sortby, sortdirection, ptype, startrow) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadSiteManager&siteid=' + siteid + '&topid=' + topid + '&moduleid=' + moduleid + '&sortby=' + sortby + '&sortdirection=' + sortdirection + '&ptype=' + ptype + '&startrow=' + startrow + '&cacheid=' + Math.random();
 		$('#newContentMenu').addClass('hide');
 		//$('#viewTabs a[href="#tabArchitectural"]').tab('show');
@@ -1274,7 +1274,7 @@ buttons: {
 	},
 
 	loadSiteFlat: function(args) {
-		var url = 'index.cfm';
+		var url = './';
 		var pars = 'muraAction=cArch.loadSiteFlat&cacheid=' + Math.random();
 
 		//location.href=url + "?" + pars;
@@ -1427,7 +1427,7 @@ buttons: {
 		if(!this.sectionLoading) {
 
 			this.sectionLoading = true;
-			var url = 'index.cfm';
+			var url = './';
 			var pars = 'muraAction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
 			//location.href=url + "?" + pars;
@@ -1509,7 +1509,7 @@ buttons: {
 	refreshSiteSection: function(node, startrow) {
 		if(!this.sectionLoading) {
 			this.sectionLoading = true;
-			var url = 'index.cfm';
+			var url = './';
 			var pars = 'muraAction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 
 			$.ajax({
@@ -1562,7 +1562,7 @@ buttons: {
 
 					var attribute = $(this).attr("data-attribute");
 					var node = $(this).parents("li:first");
-					var url = 'index.cfm';
+					var url = './';
 					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + node.attr("data-csrf") + '&cacheid=' + Math.random();
 
 					//location.href='?' + pars;
@@ -1618,7 +1618,7 @@ buttons: {
 
 				var attribute = $(this).attr("data-attribute");
 				var node = $(this).parents("li:first");
-				var url = 'index.cfm';
+				var url = './';
 				var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
 
 				//location.href='?' + pars;
@@ -1665,7 +1665,7 @@ buttons: {
 		this.activeQuickEdit = true;
 		var attribute = $("#mura-quickEditor").parent().find(".mura-quickEditItem:first").attr("data-attribute");
 		var node = $("#mura-quickEditor").parents("li:first");
-		var url = 'index.cfm';
+		var url = './';
 
 		var basePars = {
 			'muraAction': 'cArch.saveQuickEdit',
@@ -1738,7 +1738,7 @@ buttons: {
 			});
 
 		/*
-		$.post('index.cfm', pars, function(data) {
+		$.post('./', pars, function(data) {
 			if(data.indexOf('mura-primary-login-token') != -1) {
 				location.href = './';
 			}
@@ -2016,7 +2016,7 @@ buttons: {
 				checkSelection = true;
 			}
 
-			if(tmpObject.object == 'category_summary') {
+			if(allowopenfeeds && tmpObject.object == 'category_summary') {
 				if(configure) {
 					tmpObject.regionid = regionid;
 					this.initCategorySummaryConfigurator(tmpObject)
@@ -2058,7 +2058,7 @@ buttons: {
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
 			tmpValue = tmpValue + "~" + tmpObject.objectid;
-
+			
 			if(typeof(tmpObject.params) == "string") {
 				tmpValue = tmpValue + "~" + tmpObject.params;
 			} else if(typeof(tmpObject.params) == "object") {
@@ -2123,7 +2123,7 @@ buttons: {
 
 	initTagCloudConfigurator: function(data) {
 		this.initConfigurator(data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=tag_cloud&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 			title: tagCloudConfiguratorTitle
 		});
@@ -2133,7 +2133,7 @@ buttons: {
 
 	initSiteMapConfigurator: function(data) {
 		this.initConfigurator(data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=site_map&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 			title:siteMapConfiguratorTitle
 		});
@@ -2150,7 +2150,7 @@ buttons: {
 		}
 
 		this.initConfigurator(data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 			title: categorySummaryConfiguratorTitle
 		});
@@ -2169,7 +2169,7 @@ buttons: {
 		*/
 
 		this.initConfigurator(data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&feedid=' + data.objectid + '&cacheid=' + Math.random(),
 			title: "Loading...",
 			init: function(data, config) {
@@ -2226,7 +2226,7 @@ buttons: {
 		*/
 
 		this.initConfigurator(data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&feedid=' + data.objectid + '&cacheid=' + Math.random(),
 			title: slideShowConfiguratorTitle,
 			init: function(data, config) {
@@ -2258,7 +2258,7 @@ buttons: {
 
 		this.initConfigurator(
 		data, {
-			url: 'index.cfm',
+			url: './',
 			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
 			title: relatedContentConfiguratorTitle,
 			init: function(data, config) {
@@ -2352,7 +2352,7 @@ buttons: {
 				siteManager.initSlideShowConfigurator(data);
 			} else if(data.object == 'tag_cloud' && customtaggroups.length) {
 				siteManager.initTagCloudConfigurator(data);
-			} else if(data.object == 'category_summary') {
+			} else if(allowopenfeeds && data.object == 'category_summary') {
 				siteManager.initCategorySummaryConfigurator(data);
 			} else if(data.object == 'site_map') {
 				siteManager.initSiteMapConfigurator(data);
@@ -2476,6 +2476,7 @@ buttons: {
 			url: config.url + "?" + config.pars,
 			dataType: 'text',
 			data: data, 
+			type: 'post',
 			success: function(_resp) {
 				try {
 					resp = eval('(' + _resp + ')');
