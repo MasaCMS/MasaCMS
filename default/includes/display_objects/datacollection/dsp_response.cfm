@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfoutput>
 <cfif StructKeyExists(request, 'polllist') and  variables.rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
 	
@@ -53,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#variables.customResponse#
 	<cfelse>
 		<cfquery name="variables.rsTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
-		select count(pollValue) as qty from tformresponsequestions where FormID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/> and pollValue is not null
+		select count(pollValue) as qty from tformresponsequestions where FormID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('formBean').getValue('contentID')#"/> and pollValue is not null
 		</cfquery>
 	
 		<div id="dsp_response" class="dataCollection">
@@ -64,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				SELECT tformresponsequestions.pollValue, Count(tformresponsequestions.pollValue) AS qty
 				FROM tformresponsequestions
 				GROUP BY tformresponsequestions.pollValue, tformresponsequestions.formID
-				HAVING tformresponsequestions.formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/>
+				HAVING tformresponsequestions.formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('formBean').getValue('contentID')#"/>
 				and tformresponsequestions.pollValue=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.I#"/>
 				ORDER BY Count(tformresponsequestions.pollValue)
 			</cfquery>
