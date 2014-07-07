@@ -149,7 +149,11 @@ select * from rsSubTypes where subType <> 'Default'
 							</div>
 						</div>
 
-						<cfif true>
+						<!--- 
+							Group Type
+							** Only allow 'Admin' or Super Users to modify Group Types
+						--->
+						<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2')>
 							<div class="span6">
 								<label class="control-label">
 									Group Type
@@ -166,7 +170,7 @@ select * from rsSubTypes where subType <> 'Default'
 								</div>
 							</div>
 						<cfelse>
-							<input type="hidden" name="isPublic" value="1" />
+							<input type="hidden" name="isPublic" value="1">
 						</cfif>
 
 					</div>
