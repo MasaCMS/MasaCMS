@@ -11,17 +11,17 @@
 		<ul class="nav nav-tabs">
 			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=1&unassigned=#rc.unassigned#')#">
-					Site Members
+					#rc.$.rbKey('user.sitemembers')#
 				</a>
 			</li>
 			<li<cfif rc.ispublic eq 0> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=0&unassigned=#rc.unassigned#')#">
-					System Users
+					#rc.$.rbKey('user.systemusers')#
 				</a>
 			</li>
 		</ul>
 	<cfelse>
-		<h2>Site Members</h2>
+		<h2>#rc.$.rbKey('user.sitemembers')#</h2>
 	</cfif>
 
 	<!--- FILTERS --->
@@ -29,15 +29,15 @@
 			<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#">
 				<i class="icon-filter"></i> 
 				<cfif rc.unassigned EQ 0>
-					View Unassigned Only
+					#rc.$.rbKey('user.viewunassignedonly')#
 				<cfelse>
-					View All
+					#rc.$.rbKey('user.viewall')#
 				</cfif>
 			</a>
 
 			<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
 				<i class="icon-cloud-download"></i> 
-				Download CSV
+				#rc.$.rbKey('user.downloadcsv')#
 			</a>
 		</div>
 
@@ -50,19 +50,19 @@
 							&nbsp;
 						</th>
 						<th class="var-width">
-							User
+							#rc.$.rbKey('user.user')#
 						</th>
 						<th>
-							Email
+							#rc.$.rbKey('user.email')#
 						</th>
 						<th>
-							Date Last Update
+							#rc.$.rbKey('user.datelastupdate')#
 						</th>
 						<th>
-							Time Last Update
+							#rc.$.rbKey('user.timelastupdate')#
 						</th>
 						<th>
-							Last Update By
+							#rc.$.rbKey('user.lastupdatedby')#
 						</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -143,7 +143,7 @@
 			</table>
 		<cfelse>
 			<div class="alert alert-info">
-				<p>No users exist at this time &hellip; carry on.</p>
+				#rc.$.rbKey('user.nousers')#
 			</div>
 		</cfif>
 

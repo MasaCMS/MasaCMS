@@ -112,7 +112,7 @@
 				</table>
 			<cfelse>
 				<div class="alert alert-info">
-					<p>No groups exist at this time &hellip; carry on.</p>
+					#rc.$.rbKey('user.nogroups')#
 				</div>
 		</cfif>
 
