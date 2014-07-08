@@ -324,7 +324,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.siteid = '';
 		}
 
-
 		arguments.rc.rsUsers = arguments.rc.unassigned
 			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
 			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);

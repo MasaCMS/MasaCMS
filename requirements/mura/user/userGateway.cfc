@@ -462,8 +462,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsTotalAdministrators.theCount />
 </cffunction>
 
-
-
 	<cffunction name="getUsers" returntype="query" access="public" output="false">
 		<cfargument name="siteid" default="" />
 		<cfargument name="isPublic" default="" />
@@ -474,7 +472,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			WHERE 0=0
 				AND tusers.type = 2
 				<cfif Len(arguments.siteid)>
-					AND tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+					AND tusers.siteid = 
+						<cfif arguments.isPublic eq 0 >
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#" />
+						<cfelse>
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#" />
+						</cfif>
 				</cfif>
 				<cfif Len(arguments.isPublic)>
 					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.ispublic#" />

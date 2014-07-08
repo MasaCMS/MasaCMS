@@ -75,92 +75,98 @@
 
 	<!--- BODY --->
 		<cfif rc.rsGroups.recordcount>
-				<table id="temp" class="table table-striped table-condensed table-bordered mura-table-grid">
-					<thead>
+			<table id="temp" class="table table-striped table-condensed table-bordered mura-table-grid">
+				<thead>
+					<tr>
+						<th class="var-width">
+							#rc.$.rbKey('user.grouptotalmembers')#
+						</th>
+						<th>
+							#rc.$.rbKey('user.email')#
+						</th>
+						<th>
+							#rc.$.rbKey('user.datelastupdate')#
+						</th>
+						<th>
+							#rc.$.rbKey('user.timelastupdate')#
+						</th>
+						<th>
+							#rc.$.rbKey('user.lastupdatedby')#
+						</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--- RECORDS --->
+					<cfloop condition="rc.itGroups.hasNext()">
+						<cfsilent>
+							<cfscript>
+								local.group = rc.itGroups.next();
+								local.membercount = Len(local.group.getValue('counter'))
+									? local.group.getValue('counter')
+									: 0;
+							</cfscript>
+						</cfsilent>
 						<tr>
-							<th class="var-width">
-								#rc.$.rbKey('user.grouptotalmembers')#
-							</th>
-							<th>
-								#rc.$.rbKey('user.email')#
-							</th>
-							<th>
-								#rc.$.rbKey('user.datelastupdate')#
-							</th>
-							<th>
-								#rc.$.rbKey('user.timelastupdate')#
-							</th>
-							<th>
-								#rc.$.rbKey('user.lastupdatedby')#
-							</th>
-							<th>&nbsp;</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!--- RECORDS --->
-						<cfloop condition="rc.itGroups.hasNext()">
-							<cfsilent>
-								<cfscript>
-									local.group = rc.itGroups.next();
-									local.membercount = Len(local.group.getValue('counter'))
-										? local.group.getValue('counter')
-										: 0;
-								</cfscript>
-							</cfsilent>
-							<tr>
-								<td class="var-width">
-									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#">
-										#HTMLEditFormat(local.group.getValue('groupname'))#
+							<td class="var-width">
+								<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#">
+									#HTMLEditFormat(local.group.getValue('groupname'))#
+								</a>
+								(#local.membercount#)
+							</td>
+							<td>
+								<cfif Len(local.group.getValue('email'))>
+									<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
+										#HTMLEditFormat(local.group.getValue('email'))#
 									</a>
-									(#local.membercount#)
-								</td>
-								<td>
-									<cfif Len(local.group.getValue('email'))>
-										<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
-											#HTMLEditFormat(local.group.getValue('email'))#
+								<cfelse>
+									&nbsp;
+								</cfif>
+							</td>
+							<td>
+								#LSDateFormat(local.group.getValue('lastupdate'), session.dateKeyFormat)#
+							</td>
+							<td>
+								#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
+							</td>
+							<td>
+								#HTMLEditFormat(local.group.getValue('lastupdateby'))#
+							</td>
+							<td class="actions">
+								<ul>
+									<li>
+										<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
+											<i class="icon-pencil"></i>
 										</a>
-									<cfelse>
-										&nbsp;
-									</cfif>
-								</td>
-								<td>
-									#LSDateFormat(local.group.getValue('lastupdate'), session.dateKeyFormat)#
-								</td>
-								<td>
-									#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
-								</td>
-								<td>
-									#HTMLEditFormat(local.group.getValue('lastupdateby'))#
-								</td>
-								<td class="actions">
-									<ul>
+									</li>
+
+									<cfif local.group.getValue('perm') eq 0>
+										<cfscript>
+											msgDelete = application.rbFactory.getResourceBundle(session.rb).messageFormat(
+											  rc.$.rbKey('user.deleteusergroupconfim')
+											  , [local.group.getValue('groupname')]
+											 );
+										</cfscript>
 										<li>
-											<a title="#rc.$.rbKey('user.edit')#" href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
-												<i class="icon-pencil"></i>
+											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#')#" onclick="return confirmDialog('#jsStringFormat(msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+												<i class="icon-remove-sign"></i>
 											</a>
 										</li>
-
-										<cfif local.group.getValue('perm') eq 0>
-											<li>
-												<a title="#rc.$.rbKey('user.delete')#" href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.group.getValue('groupname')#'")# User Group?',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
-													<i class="icon-remove-sign"></i>
-												</a>
-											</li>
-										<cfelse>
-											<li class="disabled">
-												<i class="icon-remove-sign"></i>
-											</li>
-										</cfif>
-									</ul>
-								</td>
-							</tr>
-						</cfloop>
-					</tbody>
-				</table>
-			<cfelse>
-				<div class="alert alert-info">
-					#rc.$.rbKey('user.nogroups')#
-				</div>
+									<cfelse>
+										<li class="disabled">
+											<i class="icon-remove-sign"></i>
+										</li>
+									</cfif>
+								</ul>
+							</td>
+						</tr>
+					</cfloop>
+				</tbody>
+			</table>
+		<cfelse>
+			<div class="alert alert-info">
+				#rc.$.rbKey('user.nogroups')#
+			</div>
 		</cfif>
 
 </cfoutput>

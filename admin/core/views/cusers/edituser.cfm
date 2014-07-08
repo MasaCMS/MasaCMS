@@ -540,12 +540,14 @@
 				<div id="tabInterests" class="tab-pane fade">
 					<div class="fieldset">
 						<div id="mura-list-tree" class="control-group">
-							<cfloop collection="#application.settingsManager.getSites()#" item="site">
-								<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
-										<label class="control-label">#application.settingsManager.getSite(site).getSite()#</label>
-										<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
-								</cfif>
-							</cfloop> 
+
+							<cf_dsp_categories_nest 
+								siteID="#rc.siteID#" 
+								parentID="" 
+								categoryID="#rc.categoryID#" 
+								nestLevel="0" 
+								userBean="#rc.userBean#">
+
 						</div>
 					</div>
 				</div>
