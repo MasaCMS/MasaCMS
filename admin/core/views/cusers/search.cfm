@@ -57,105 +57,105 @@
 		<input type="hidden" name="muraAction" value="cUsers.Search" />
 		<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	</form>
-
-	<table class="mura-table-grid">
-		<tr> 
-			<th class="var-width">#rc.$.rbKey('user.name')#</th>
-			<th>#rc.$.rbKey('user.email')#</th>
-			<th>#rc.$.rbKey('user.update')#</th>
-			<th>#rc.$.rbKey('user.time')#</th>
-			<th>#rc.$.rbKey('user.authoreditor')#</th>
-			<th class="actions">&nbsp;</th>
-		</tr>
 </cfoutput>
 
-		<cfif rc.rsList.recordcount>
-
-			<cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
-				<tr> 
-					<td class="var-width">
-						<a title="Edit" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
-							#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# 
-							<cfif company neq ''> 
-								(#HTMLEditFormat(company)#)
-							</cfif>
-						</a>
-					</td>
-					<td>
-						<cfif rc.rsList.email gt "">
-							<a href="mailto:#HTMLEditFormat(rc.rsList.email)#">
-								#HTMLEditFormat(rc.rsList.email)#
-							</a>
-						<cfelse>
-							&nbsp;
-						</cfif>
-					</td>
-					<td>
-						#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#
-					</td>
-					<td>
-						#LSTimeFormat(rc.rslist.lastupdate,"short")#
-					</td>
-					<td>
-						#HTMLEditFormat(rc.rsList.LastUpdateBy)#
-					</td>
-					<td class="actions">
-						<ul>
-							<li class="edit">
-								<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
-									<i class="icon-pencil"></i>
-								</a>
-							</li>
-						</ul>
-					</td>
-				</tr>
+<cfif not rc.newSearch>
+	<cfoutput>
+		<table class="mura-table-grid">
+			<tr> 
+				<th class="var-width">#rc.$.rbKey('user.name')#</th>
+				<th>#rc.$.rbKey('user.email')#</th>
+				<th>#rc.$.rbKey('user.update')#</th>
+				<th>#rc.$.rbKey('user.time')#</th>
+				<th>#rc.$.rbKey('user.authoreditor')#</th>
+				<th class="actions">&nbsp;</th>
+			</tr>
 			</cfoutput>
 
-		<cfelse>
-
-			<tr> 
-				<td colspan="6" class="noResults">
-					<cfoutput>
-						#rc.$.rbKey('user.nosearchresults')#
-					</cfoutput>
-				</td>
-			</tr>
-
-		</cfif>
-
-	</table>
-
-<!--- Pagination --->
-	<cfif rc.nextN.numberofpages gt 1>
-		<cfoutput>
-			<cfset args=arrayNew(1)>
-			<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
-			<cfset args[2]=rc.nextn.totalrecords>
-			<div class="mura-results-wrapper">
-				<p class="clearfix search-showing">
-					#application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("sitemanager.paginationmeta"),args)#
-				</p> 
-				<div class="pagination">
-					<ul>
-						<cfif rc.nextN.currentpagenumber gt 1> 
-							<li>
-								<a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.previous#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
-							</li>
-						</cfif>	
-				 		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-							<cfif rc.nextN.currentpagenumber eq i>
-								<li class="active"><a href="##">#i#</a></li>
-							<cfelse> 
-								<li><a href="./?muraAction=cUsers.search&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">#i#</a></li>
+			<cfif rc.rsList.recordcount>
+				<cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
+					<tr> 
+						<td class="var-width">
+							<a title="Edit" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
+								#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# 
+								<cfif company neq ''> 
+									(#HTMLEditFormat(company)#)
+								</cfif>
+							</a>
+						</td>
+						<td>
+							<cfif rc.rsList.email gt "">
+								<a href="mailto:#HTMLEditFormat(rc.rsList.email)#">
+									#HTMLEditFormat(rc.rsList.email)#
+								</a>
+							<cfelse>
+								&nbsp;
 							</cfif>
-						</cfloop>
-						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-							<li><a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.next#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
-							</li>
-						</cfif> 
-					</ul>
+						</td>
+						<td>
+							#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#
+						</td>
+						<td>
+							#LSTimeFormat(rc.rslist.lastupdate,"short")#
+						</td>
+						<td>
+							#HTMLEditFormat(rc.rsList.LastUpdateBy)#
+						</td>
+						<td class="actions">
+							<ul>
+								<li class="edit">
+									<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
+										<i class="icon-pencil"></i>
+									</a>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</cfoutput>
+			<cfelse>
+				<tr> 
+					<td colspan="6" class="noResults">
+						<cfoutput>
+							#rc.$.rbKey('user.nosearchresults')#
+						</cfoutput>
+					</td>
+				</tr>
+			</cfif>
+		</table>
+
+		<!--- Pagination --->
+		<cfif rc.nextN.numberofpages gt 1>
+			<cfoutput>
+				<cfset args=arrayNew(1)>
+				<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+				<cfset args[2]=rc.nextn.totalrecords>
+				<div class="mura-results-wrapper">
+					<p class="clearfix search-showing">
+						#application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("sitemanager.paginationmeta"),args)#
+					</p> 
+					<div class="pagination">
+						<ul>
+							<cfif rc.nextN.currentpagenumber gt 1> 
+								<li>
+									<a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.previous#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
+								</li>
+							</cfif>	
+					 		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
+								<cfif rc.nextN.currentpagenumber eq i>
+									<li class="active"><a href="##">#i#</a></li>
+								<cfelse> 
+									<li><a href="./?muraAction=cUsers.search&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">#i#</a></li>
+								</cfif>
+							</cfloop>
+							<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+								<li><a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.next#&amp;lname=#urlencodedformat(rc.lname)#&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;search=#urlencodedformat(rc.search)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
+								</li>
+							</cfif> 
+						</ul>
+					</div>
 				</div>
-			</div>
-		</cfoutput>
+			</cfoutput>
+		</cfif>
+		<!--- /Pagination --->
 	</cfif>
-<!--- /Pagination --->
+	<!--- /if not rc.newSearch --->
