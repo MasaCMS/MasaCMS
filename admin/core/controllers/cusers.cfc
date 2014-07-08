@@ -123,6 +123,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		param name='arguments.rc.error' default='#{}#';
 		param name='arguments.rc.returnurl' default='';
 		param name='arguments.rc.search' default='';
+		param name='arguments.rc.newsearch' default=false;
 		param name='arguments.rc.unassigned' default='0';
 
 		if ( !IsBoolean(arguments.rc.ispublic) ) { arguments.rc.ispublic = 1; }
@@ -222,6 +223,20 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, 15
 			, arguments.rc.startrow
 		);
+	}
+
+	public any function advancedSearch(rc) {
+		param name='rc.ispublic' default='1';
+		arguments.rc.rsGroups = rc.ispublic == 1
+			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
+			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+	}
+
+	public any function advancedSearchToCSV(rc) {
+		param name='rc.ispublic' default='1';
+		arguments.rc.rsGroups = rc.ispublic == 1
+			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
+			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 	}
 
 	public any function editUser(rc) {
