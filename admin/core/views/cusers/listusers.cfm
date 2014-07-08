@@ -193,7 +193,7 @@
 
 									<cfif local.user.getValue('perm') eq 0>
 										<li>
-											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#local.user.getValue('groupname')#'")# User Group?',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.user.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 												<i class="icon-remove-sign"></i>
 											</a>
 										</li>

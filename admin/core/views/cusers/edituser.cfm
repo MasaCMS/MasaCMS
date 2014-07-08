@@ -725,5 +725,7 @@
 			<cfif not rsNonDefault.recordcount>
 				<input type="hidden" name="subtype" value="Default"/>
 			</cfif>
+
+			#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
 		</cfoutput>
 	</form>

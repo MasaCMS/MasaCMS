@@ -135,7 +135,7 @@
 									</a>
 								</li>
 								<li class="delete">
-									<a href="./?muraAction=cUsers.update&amp;action=delete&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+									<a href="./?muraAction=cUsers.update&amp;action=delete&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsgrouplist.UserID,format='url')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 										<i class="icon-remove-sign"></i>
 									</a>
 								</li>

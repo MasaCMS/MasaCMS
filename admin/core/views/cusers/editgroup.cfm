@@ -299,6 +299,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<cfif not rsNonDefault.recordcount>
 						<input type="hidden" name="subtype" value="Default"/>
 					</cfif>
+					#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
 				</div>
 			</cfoutput>
 		</cfif>
