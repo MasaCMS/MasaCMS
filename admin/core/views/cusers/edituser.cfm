@@ -80,32 +80,32 @@
 <cfoutput>
 	<form novalidate="novalidate" action="./?muraAction=cUsers.update&amp;userid=#URLEncodedFormat(rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
 
-			<h1>#rc.$.rbKey('user.usermaintenanceform')#</h1>
-			
-			<div id="nav-module-specific" class="btn-group">
-				<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
-					<i class="icon-circle-arrow-left"></i> #HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#
-				</a>
-			</div>
-			
-			<cfif len(rc.userBean.getUsername())>
-				<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
-				<cfif structKeyExists(rc,"removeBlock")>
-					<cfset strikes.clear()>
-				</cfif>
-				<cfif strikes.isBlocked()>
-					<p class="alert alert-error">
-						#rc.$.rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
-						<a href="?muraAction=cUsers.edituser&amp;userid=#URLEncodedFormat(rc.userid)#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;removeBlock">[#rc.$.rbKey('user.remove')#]</a>
-					</p>
-				</cfif>
+		<h1>#rc.$.rbKey('user.usermaintenanceform')#</h1>
+		
+		<div id="nav-module-specific" class="btn-group">
+			<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
+				<i class="icon-circle-arrow-left"></i> #HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#
+			</a>
+		</div>
+		
+		<cfif len(rc.userBean.getUsername())>
+			<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
+			<cfif structKeyExists(rc,"removeBlock")>
+				<cfset strikes.clear()>
 			</cfif>
-			
-			<cfif not structIsEmpty(rc.userBean.getErrors())>
-				<p class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+			<cfif strikes.isBlocked()>
+				<p class="alert alert-error">
+					#rc.$.rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
+					<a href="?muraAction=cUsers.edituser&amp;userid=#URLEncodedFormat(rc.userid)#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;removeBlock">[#rc.$.rbKey('user.remove')#]</a>
+				</p>
 			</cfif>
-			
-			<p>#rc.$.rbKey('user.requiredtext')#</p>
+		</cfif>
+		
+		<cfif not structIsEmpty(rc.userBean.getErrors())>
+			<p class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+		</cfif>
+		
+		<p>#rc.$.rbKey('user.requiredtext')#</p>
 		</cfoutput>
 
 		<cfsavecontent variable="tabContent">
