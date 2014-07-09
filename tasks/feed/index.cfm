@@ -107,8 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cfif>
 <cfif isDefined("feedBean")>
-	<cfif not application.feedManager.allowFeed(feedBean,url.username,url.password) >
-		This feed is restricted
+	<cfif not application.configBean.getValue(property='allowOpenFeeds',defaultValue=false) and not application.feedManager.allowFeed(feedBean,url.username,url.password) >
+		<cfoutput>This feed is restricted</cfoutput>
 		<cfabort>
 	</cfif>
 	<cfset request.muraFrontEndRequest=true>
