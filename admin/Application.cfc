@@ -43,12 +43,8 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent extends="framework" ouput="false">
+--->component extends="framework" output="false" {
 
-	<cfsetting showdebugoutput="no">
-	
-	<cfscript>
 	include "../config/applicationSettings.cfm";
 	
 	if(not hasMainMappings){
@@ -129,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		url.muraAction=url.fuseaction;
 	}
 	
-	function setupApplication(){
+	function setupApplication() output="false"{
 
 		param name="application.appInitialized" default=false;
 		
@@ -154,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	}
 
-	function onRequestStart(){
+	function onRequestStart() output="false"{
 
 		include "../config/appcfc/onRequestStart_include.cfm";
 
@@ -232,7 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		super.onRequestStart(argumentCollection=arguments);
 	}
 
-	function setupRequest(){
+	function setupRequest() output="false"{
 		
 		var siteCheck="";
 		var theParam="";
@@ -286,6 +282,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		param name="session.alerts" default=structNew();
 		param name="cookie.rb" default="";
 	
+		application.serviceFactory.getBean('utility').suppressDebugging();
+
 		if(len(request.context.rb)){
 			session.rb=request.context.rb;
 			//cookie name="rb" value="#session.rb#" expires="never";
@@ -458,24 +456,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	}
 
-	function setupSession(){
+	function setupSession() output="false"{
 		include "../config/appcfc/onSessionStart_include.cfm";
 	}
 
 	include "../config/appcfc/onSessionEnd_method.cfm";
 	
-	function onError(exception,eventname){
+	function onError(exception,eventname) output="false"{
 		include "../config/appcfc/onError_include.cfm";
 	}
 
 	include "../config/appcfc/onMissingTemplate_method.cfm";
 
-	function onRequestEnd(targetPage){
+	function onRequestEnd(targetPage) output="false"{
 		if(isdefined("request.event")){
 			application.pluginManager.announceEvent("onAdminRequestEnd",request.event);
 			include "../config/appcfc/onRequestEnd_include.cfm";
 		}
 	}
-	</cfscript>
-	
-</cfcomponent>
+
+}
