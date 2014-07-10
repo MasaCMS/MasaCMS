@@ -57,35 +57,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="url.siteid" default=""/>
 <cfparam name="url.maxItems" default="20"/>
 <cfparam name="url.tag" default=""/>
-
-<cfif url.feedID neq "">
-	<cfset feedBean=application.feedManager.read(url.feedID) />
-	<cfif feedBean.getRestricted() and application.settingsManager.getSite(feedBean.getSiteID()).getextranetssl() and  cgi.https eq 'Off'>
-		<cfif cgi.query_string eq ''>
-			<cfset location='#cgi.script_name#'>
-		<cfelse>
-			<cfset location='#cgi.script_name#?#cgi.QUERY_STRING#'>
+<cfif application.configBean.getValue(property='allowOpenFeeds',defaultValue=false)>
+	<cfif url.feedID neq "">
+		<cfset feedBean=application.feedManager.read(url.feedID) />
+		<cfif feedBean.getRestricted() and application.settingsManager.getSite(feedBean.getSiteID()).getextranetssl() and  cgi.https eq 'Off'>
+			<cfif cgi.query_string eq ''>
+				<cfset location='#cgi.script_name#'>
+			<cfelse>
+				<cfset location='#cgi.script_name#?#cgi.QUERY_STRING#'>
+			</cfif>
+			<cflocation addtoken="no" url="https://#request.rspage.domain##location#">
 		</cfif>
-		<cflocation addtoken="no" url="https://#request.rspage.domain##location#">
-	</cfif>
-	<cfif feedBean.getIsNew()>
+		<cfif feedBean.getIsNew()>
+			<cfset is404=true>
+		</cfif>
+	<cfelseif url.siteid neq "">
+		<cfset feedBean=application.feedManager.read("") />
+		<cfset feedBean.set(url)/>
+	<cfelse>
 		<cfset is404=true>
 	</cfif>
 <cfelse>
-	<cfset is404=true>
+	<cfif url.feedID neq "">
+		<cfset feedBean=application.feedManager.read(url.feedID) />
+		<cfif feedBean.getRestricted() and application.settingsManager.getSite(feedBean.getSiteID()).getextranetssl() and  cgi.https eq 'Off'>
+			<cfif cgi.query_string eq ''>
+				<cfset location='#cgi.script_name#'>
+			<cfelse>
+				<cfset location='#cgi.script_name#?#cgi.QUERY_STRING#'>
+			</cfif>
+			<cflocation addtoken="no" url="https://#request.rspage.domain##location#">
+		</cfif>
+		<cfif feedBean.getIsNew()>
+			<cfset is404=true>
+		</cfif>
+	<cfelse>
+		<cfset is404=true>
+	</cfif>	
 </cfif>
-<!---
-<cfelseif url.siteid neq "">
-	<cfset feedBean=application.feedManager.read("") />
-	<cfset feedBean.set(url)/>
-<cfelse>
-	<cfset is404=true>
-</cfif>
---->
 <cfif isDefined("feedBean") and not is404>
 	<cfset rs=application.feedManager.getFeed(feedBean=feedBean,tag=url.tag) />
 </cfif>
-</cfsilent>	
+</cfsilent>
 <cfif is404>
 	<cfheader statuscode="404" statustext="Not Found">
 	<cfoutput>
@@ -94,8 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cfif>
 <cfif isDefined("feedBean")>
-	<cfif not application.feedManager.allowFeed(feedBean,url.username,url.password) >
-		This feed is restricted
+	<cfif not application.configBean.getValue(property='allowOpenFeeds',defaultValue=false) and not application.feedManager.allowFeed(feedBean,url.username,url.password) >
+		<cfoutput>This feed is restricted</cfoutput>
 		<cfabort>
 	</cfif>
 	<cfset request.muraFrontEndRequest=true>

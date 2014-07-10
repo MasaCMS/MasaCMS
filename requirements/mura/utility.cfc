@@ -678,4 +678,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<CFRETURN sOutText>
 	</cffunction>
 
+	<cffunction name="suppressDebugging" output="false">
+		<cfsetting showdebugoutput="no">
+	</cffunction>
 </cfcomponent>
