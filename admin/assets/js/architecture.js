@@ -57,7 +57,14 @@ var siteManager = {
 	reloadURL: "",
 	tablist: "",
 
-	ckContent: function(draftremovalnotice) {
+	ckContent: function(draftremovalnotice,autosave) {
+
+		if(autosave){
+			$("#unlockfilewithnew").val("false");
+			$("#unlocknodewithpublish").val("false");
+			document.contentForm.cancelpendingapproval.value='false';
+			document.contentForm.approved.value=0;
+		}
 
 		if(typeof(saveFormBuilder) != "undefined") saveFormBuilder();
 
@@ -113,7 +120,7 @@ var siteManager = {
 		}
 
 
-		if(typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
+		if(!autosave && typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
 			confirmDialog(this.unlockfileconfirm, function() {
 				//alert('true')
 				$("#unlockfilewithnew").val("true");
@@ -134,7 +141,7 @@ var siteManager = {
 			return false;
 		}
 
-		if(typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
+		if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
 //			alert('b')
 			confirmDialog(this.unlocknodeconfirm, function() {
 				//alert('true')
@@ -160,7 +167,7 @@ var siteManager = {
 		//alert(document.contentForm.approved.value)
 		//alert(cancelPendingApproval)
 
-		if(document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
+		if(!autosave && document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
 		 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
 
 				confirmDialog(publishitemfromchangeset, function() {
@@ -190,8 +197,17 @@ var siteManager = {
 				return true;
 			}
 		} else {
+			if(autosave){
+				var data= new FormData(document.contentForm)
+				$.ajax({
+				    url: $(document.contentForm).attr("action"),
+				    type: "post",
+				    data: data
+				});
+			} else {
 			formSubmitted = true;
-			return true;
+				return true;
+			}
 		}
 
 	},
