@@ -57,8 +57,10 @@ var siteManager = {
 	reloadURL: "",
 	tablist: "",
 
-	ckContent: function(draftremovalnotice,autosave) {
+	ckContent: function(draftremovalnotice) {
 
+		var autosave=false;
+		
 		if(autosave){
 			$("#unlockfilewithnew").val("false");
 			$("#unlocknodewithpublish").val("false");
@@ -66,6 +68,9 @@ var siteManager = {
 			document.contentForm.approved.value=0;
 		}
 
+		if(!autosave){
+			alert('tst')
+		}
 		if(typeof(saveFormBuilder) != "undefined") saveFormBuilder();
 
 		if(typeof(document.contentForm.display) != 'undefined'){
