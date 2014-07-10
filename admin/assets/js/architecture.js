@@ -67,10 +67,7 @@ var siteManager = {
 			document.contentForm.cancelpendingapproval.value='false';
 			document.contentForm.approved.value=0;
 		}
-
-		if(!autosave){
-			alert('tst')
-		}
+		
 		if(typeof(saveFormBuilder) != "undefined") saveFormBuilder();
 
 		if(typeof(document.contentForm.display) != 'undefined'){
