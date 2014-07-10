@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	variables.framework=structNew();
-	variables.framework.home = "home.redirect";
+	variables.framework.home = "core:home.redirect";
 	variables.framework.action="muraAction";
 	variables.framework.base="/muraWRM/admin/";
 	variables.framework.defaultSubsystem="core";
