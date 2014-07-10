@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
 	function renderCalendar() {
 		$('##calendar').fullCalendar({
 			timezone: 'local'
-			, defaultDate: '#dateFormat(createDate(variables.$.event("year"),variables.$.event("month"),variables.$.event("day"),"yyyy-mm-dd")#'
+			, defaultDate: '#variables.$.event('year')#-#variables.$.event('month')#-#variables.$.event('day')#'
 			, buttonText: {
 				day: '#variables.$.rbKey('calendar.day')#'
 				, week: '#variables.$.rbKey('calendar.week')#'
