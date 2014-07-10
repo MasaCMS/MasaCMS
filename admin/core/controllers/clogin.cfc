@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.$.validateCSRFTokens()>
 		<cfset application.loginManager.login(arguments.rc)>	
 	<cfelse>
-		<cfset variables.fw.redirect(action="login.main",path="./")>
+		<cfset variables.fw.redirect(action="clogin.main",path="./")>
 	</cfif>
 </cffunction>
 
