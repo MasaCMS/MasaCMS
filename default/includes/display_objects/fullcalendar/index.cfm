@@ -58,16 +58,6 @@
 <cfscript>
 	variables.$.loadJsLib();
 	variables.$.addToHTMLHeadQueue('fullcalendar/queues/htmlhead.cfm');
-
-	// defaultDate
-	defaultYear = IsNumeric(variables.$.event('year')) ? variables.$.event('year') : Year(Now());
-	defaultMonth = IsNumeric(variables.$.event('month')) ? variables.$.event('month') : Month(Now());
-	defaultDay = IsNumeric(variables.$.event('day')) ? variables.$.event('day') : Day(Now());
-	try {
-		defaultDate = DateFormat(CreateDate(defaultYear, defaultMonth, defaultDay), 'yyyy-mm-dd');
-	} catch(any e) {
-		defaultDate = DateFormat(Now(), 'yyyy-mm-dd');
-	}
 </cfscript>
 <cfoutput>
 <div class="MuraCalendar-wrapper">
@@ -84,7 +74,7 @@ jQuery(document).ready(function($) {
 	function renderCalendar() {
 		$('##calendar').fullCalendar({
 			timezone: 'local'
-			, defaultDate: '#defaultDate#'
+			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 			, buttonText: {
 				day: '#variables.$.rbKey('calendar.day')#'
 				, week: '#variables.$.rbKey('calendar.week')#'
