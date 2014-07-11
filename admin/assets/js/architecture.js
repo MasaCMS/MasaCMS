@@ -207,7 +207,7 @@ var siteManager = {
 				    data: data
 				});
 			} else {
-			formSubmitted = true;
+				formSubmitted = true;
 				return true;
 			}
 		}
