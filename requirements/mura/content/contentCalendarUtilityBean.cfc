@@ -143,4 +143,19 @@ component extends='mura.cfobject' {
     return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss.000') & 'Z';
   }
 
+  public any function getDefaultDate() {
+    var defaultDate = '';
+    var defaultYear = IsNumeric(variables.$.event('year')) ? variables.$.event('year') : Year(Now());
+    var defaultMonth = IsNumeric(variables.$.event('month')) ? variables.$.event('month') : Month(Now());
+    var defaultDay = IsNumeric(variables.$.event('day')) ? variables.$.event('day') : Day(Now());
+
+    try {
+      defaultDate = DateFormat(CreateDate(defaultYear, defaultMonth, defaultDay), 'yyyy-mm-dd');
+    } catch(any e) {
+      defaultDate = DateFormat(Now(), 'yyyy-mm-dd');
+    }
+
+    return defaultDate;
+  }
+
 }
