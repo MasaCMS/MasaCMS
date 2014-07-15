@@ -228,6 +228,7 @@ select * from rsSubTypes where subType <> 'Default'
               <input type="hidden" name="isPublic" value="1">
               <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
               <cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
+              #rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
             </div>
            
         </div>
