@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td>#rc.rsLocal.lang#</td>
 	<td>#rc.rsLocal.maxItems#</td>
 	<td>
-		<cfif isFeaturesOnly>
+		<cfif rc.rsLocal.isFeaturesOnly>
 			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
 		<cfelse>
 			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</span>
 	</td>
 	<td>
-		<cfif restricted>
+		<cfif rc.rsLocal.restricted>
 			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
 		<cfelse>
 			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</span>
 	</td>
 	<td>
-	<cfif isActive>
+	<cfif rc.rsLocal.isActive>
 			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
 		<cfelse>
 			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
