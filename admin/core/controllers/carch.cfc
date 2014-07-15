@@ -290,8 +290,12 @@
 		 		
 		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multifileupload'>
 		 		<cfparam name="session.mura.multifileupload" default="false">
-		 		<cfif rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
-			  		<cfset session.mura.multifileupload=true>
+
+		 		<cflock name="multifileupload#application.instanceid#" timeout="5">
+		 			<cfset session.mura.multifileupload=rc.$.validateCSRFTokens(context=arguments.rc.parentid & "multifileupload") or session.mura.multifileupload>
+		 		</cflock>
+
+		 		<cfif session.mura.multifileupload>
 			  		<cfset variables.contentManager.multiFileUpload(arguments.rc) />
 			  	<cfelse>
 
