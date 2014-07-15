@@ -62,12 +62,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="add">
  <a href="javascript:;" onmouseover="categoryManager.showMenu('newContentMenu',this,'#rslist.categoryid#','#attributes.siteid#');"><i class="icon-plus-sign"></i></a></td>
 <td class="var-width"><ul <cfif rslist.hasKids>class="nest#variables.nestlevel#on"<cfelse>class="nest#variables.nestlevel#off"</cfif>><li class="Category#iif(rslist.restrictGroups neq '',de('Locked'),de(''))#"><a title="Edit" href="./?muraAction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(rslist.name)#</a></li></ul></td>
-<td><cfif isOpen><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i>
+<td><cfif rslist.isOpen><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i>
 <cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#"></i></cfif>
 <span>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isOpen)#')#</span></td>
 
 <td>
-	<cfif isInterestGroup>
+	<cfif rslist.isInterestGroup>
 		<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isInterestGroup)#')#"></i>
 	<cfelse>
 	<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isInterestGroup)#')#"></i>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </td>
 
 <td>
-	<cfif isActive>
+	<cfif rslist.isActive>
 		<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isActive)#')#"></i>
 	<cfelse>
 	<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(rslist.isActive)#')#"></i>
