@@ -332,7 +332,7 @@
 	<!--- generate a sorted (if specified) list of baseIDs with additional fields --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	<cfif dbType eq "oracle" and getMaxItems() >select * from (</cfif>
-	select <cfif dbtype eq "mssql" and getMaxItems()>top <cfqueryparam cfsqltype="cf_sql_integer" value="#getMaxItems()#" /></cfif>  tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
+	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif>  tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
 	<cfif hasExtendedSort>,#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# as extendedSort</cfif>
 	from #dataTable# #tableModifier#
 	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
