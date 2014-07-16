@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tclassextendattributes where 
 	<cfif getAttributeID()>
-	attributesID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
+	attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
 	<cfelse>
 	extendSetID=<cfqueryparam cfsqltype="cf_sql_char" maxlength="35" value="#getExtendSetID()#">
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" maxlength="50" value="#getName()#">
