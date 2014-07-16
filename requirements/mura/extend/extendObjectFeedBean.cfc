@@ -248,8 +248,8 @@
 	
 	<!--- Generate a list of baseIDs that match the criteria --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
-	select distinct <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 
+	<cfif dbType eq "oracle" >select * from (</cfif>
+	select distinct <cfif dbtype eq "mssql">top 900</cfif> 
 		tclassextenddata.baseID
 		from tclassextenddata
 		where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
@@ -319,6 +319,9 @@
 		</cfloop>
 		<cfif started>)</cfif>
 		</cfif>
+
+		<cfif dbType eq "mysql"> limit 900 </cfif>
+		<cfif dbType eq "oracle">) where ROWNUM <= 900 </cfif>
 	</cfquery>
 
 	<!--- convert base query to list --->
