@@ -197,7 +197,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 Find( "spider", request.userAgent ) OR
 	 FindNoCase( "80legs", request.userAgent ) OR
 	 FindNoCase( "googlebot", request.userAgent ) OR
-	 FindNoCase( "Microsoft Office Protocol", request.userAgent )
+	 FindNoCase( "Microsoft Office Protocol", request.userAgent ) OR
+	 FindNoCase( "Railo", request.userAgent )
 	 )>
 	 
 	<!--- How long do session vars persist? --->
