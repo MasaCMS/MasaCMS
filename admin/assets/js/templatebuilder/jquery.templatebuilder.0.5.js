@@ -233,6 +233,10 @@
 		function doRenderFormBlock() {
 			var templateName	= "form-form";
 
+			if(!_formData.formattributes){
+				_formData.formattributes={};
+			}
+
 			var fieldData		= _formData.formattributes;
 
 			$_field.html(_templates[templateName]);
