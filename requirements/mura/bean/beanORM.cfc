@@ -255,8 +255,10 @@ component extends="mura.bean.bean" versioned=false {
 				password=''},
 				false);
 			return arguments;
-		} else {
+		} else if (structKeyExists(arguments, "readOnly")) {
 			return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+		} else {
+			return structNew();
 		}
 	}
 
@@ -624,7 +626,7 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	function loadBy(returnFormat="self"){
-		var qs=getQueryService();
+		var qs=getQueryService(readOnly=true);
 		var sql="";
 		var props=getProperties();
 		var prop="";
@@ -779,7 +781,7 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	function toBundle(bundle,siteid){
-		var qs=getQueryService();
+		var qs=getQueryService(readOnly=true);
 		
 		if(hasColumn('siteid') && structKeyExists(arguments,'siteid')){
 			qs.setSQL("select * from #getTable()# where siteid = :siteid");
