@@ -143,8 +143,8 @@
 									<cfif local.group.getValue('perm') eq 0>
 										<cfscript>
 											msgDelete = application.rbFactory.getResourceBundle(session.rb).messageFormat(
-											  rc.$.rbKey('user.deleteusergroupconfim')
-											  , [local.group.getValue('groupname')]
+												rc.$.rbKey('user.deleteusergroupconfim')
+												, [local.group.getValue('groupname')]
 											 );
 										</cfscript>
 										<li>
@@ -168,5 +168,4 @@
 				#rc.$.rbKey('user.nogroups')#
 			</div>
 		</cfif>
-
 </cfoutput>

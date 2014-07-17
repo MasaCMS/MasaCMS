@@ -464,8 +464,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getUsers" returntype="query" access="public" output="false">
 		<cfargument name="siteid" default="" />
-		<cfargument name="isPublic" default="" />
+		<cfargument name="ispublic" default="" />
+		<cfargument name="isunassigned" default="" />
+		<cfargument name="showsuperusers" default="0" />
+
 		<cfset var rsUsers = '' />
+		<cfset var rsUsersMemb = getUsersMemb() />
+
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsers')#">
 			SELECT *
 			FROM tusers
@@ -480,8 +485,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 				</cfif>
 				<cfif Len(arguments.isPublic)>
-					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.ispublic#" />
+					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.ispublic#" />
 				</cfif>
+				<cfif IsBoolean(arguments.isunassigned) and arguments.isunassigned>
+					AND userid NOT IN (<cfqueryparam list="true" value="#ValueList(rsUsersMemb.UserID)#" />)
+				</cfif>
+				<cfif IsBoolean(arguments.showsuperusers) and arguments.showsuperusers>
+					AND s2 <> 1
+				</cfif>
+
 			ORDER BY
 				tusers.lname asc, tusers.fname asc
 		</cfquery>
@@ -500,7 +512,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getUnassignedUsers" returntype="query" access="public" output="false">
 		<cfargument name="siteid" default="" />
 		<cfargument name="isPublic" default="" />
-		<cfargument name="showSuperUsers" default="0" />
+		<cfargument name="showsuperusers" default="0" />
 
 		<cfset var rsUsers = getUsers(argumentCollection=arguments) />
 		<cfset var rsUnassignedUsers = '' />

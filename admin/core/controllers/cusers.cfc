@@ -213,10 +213,10 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, arguments.rc.type
 		);
 
-		if ( arguments.rc.rslist.recordcount == 1 ) {
-			arguments.rc.userID = rc.rslist.userid;
-			variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
-		}
+		// if ( arguments.rc.rslist.recordcount == 1 ) {
+		// 	arguments.rc.userID = rc.rslist.userid;
+		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
+		// }
 
 		arguments.rc.nextn=variables.utility.getNextN(
 			arguments.rc.rsList
@@ -339,12 +339,24 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.siteid = '';
 		}
 
-		arguments.rc.rsUsers = arguments.rc.unassigned
-			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
-			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		// arguments.rc.rsUsers = arguments.rc.unassigned
+		// 	? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
+		// 	: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+
+		arguments.rc.rsUsers = getUserManager().getUsers(
+		 siteid=arguments.rc.siteid
+		 , ispublic=arguments.rc.ispublic
+		 , isunassigned=arguments.rc.unassigned
+		);
 
 		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers);
-		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+
+		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
+		  siteid=arguments.rc.siteid
+		  , ispublic=arguments.rc.ispublic
+		  , isunassigned=1
+		 );
+
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
 	}
 
