@@ -1002,7 +1002,7 @@ and tclassextendattributes.type='File'
 				select validation from tclassextendattributes 
 				where 
 				<cfif isNumeric(arguments.attribute)>
-					attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+					attributeID=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.attribute#">
 				<cfelse>
 					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 					and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
