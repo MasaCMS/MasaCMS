@@ -1148,7 +1148,7 @@ INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`
 CREATE TABLE `tusersfavorites` (
   `favoriteID` char(35) NOT NULL default '',
   `userID` char(35) NOT NULL default '',
-  `favoriteName` varchar(100) default NULL,
+  `favoriteName` varchar(255) default NULL,
   `favorite` mediumtext,
   `type` varchar(30) NOT NULL default '',
   `siteID` varchar(35) default NULL,
