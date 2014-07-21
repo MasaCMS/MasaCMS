@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="submit" value="Deploy" class="btn"/>
 </div>
 <input type="hidden" name="moduleID" value="#rc.pluginConfig.getModuleID()#">
+#rc.$.renderCSRFTokens(context=rc.pluginConfig.getModuleID(),format="form")#
 </form>
 
 </cfoutput>

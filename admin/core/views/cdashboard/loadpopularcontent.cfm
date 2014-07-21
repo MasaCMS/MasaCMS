@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tbody>
 <cfloop query="rslist">
 <tr>
-	<td>#left(rsList.keywords,30-len(rsList.keywordCount))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
+	<td>#HTMLEditformat(left(rsList.keywords,30-len(rsList.keywordCount)))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
 </tr>
 </cfloop>
 <cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
