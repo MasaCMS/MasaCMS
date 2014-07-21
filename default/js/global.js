@@ -454,15 +454,15 @@ function validateForm(frm,customaction) {
 				{
 					type: 'post',
 					url: mura.assetpath + '/includes/display_objects/datacollection/remote.cfc?method=validate',
-					dataType: 'json',
+					dataType: 'text',
 					data: {
 							data: escape(JSON.stringify(data)),
 							validations: escape(JSON.stringify(validations)),
 							version: 4
 						},
 					success: function(resp) {
- 				 		//data=eval('(' + resp + ')');
- 				 		var data=resp
+ 				 		var data=eval('(' + resp + ')');
+ 				 		
  				 		if(jQuery.isEmptyObject(data)){
  				 			if(typeof $customaction == 'function'){
  				 				$customaction(theForm);
