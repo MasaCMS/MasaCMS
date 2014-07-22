@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
 </cfif>
 <cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
+<cfset rc.currentUser=rc.$.currentUser()> 
 </cfsilent>
 
 <cfoutput>
@@ -132,16 +133,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			                    </li>
 		                     	<li><a href="#application.configBean.getContext()#/admin/?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#" onclick="return actionModal(this.href);"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
 			                     	
-			                     	<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
-		                     	
-		                     		<cftry>
-		                     			<li>
+			                    <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
+			                    	<li>
 		                     			<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
 		                     			<i class="icon-bolt"></i> Update Mura Core
 		                     			</a>
-		                     			</li>
-		                     			<cfcatch></cfcatch>
-		                     		</cftry>
+		                     		</li>
 		                     	</cfif>
 			                    </ul>
 	                  	</li>
@@ -332,15 +329,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 						</a>
 		 					</li>
 		 					<cfif listFind(session.mura.memberships,'S2')>
-		 					<cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()>
-			 					<cftry>
+		 					<cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
 			 					<li>
 			 						<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(session.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
 			 							<i class="icon-bolt"></i> Update Site
 			 						</a>
 			 					</li>
-			 					<cfcatch></cfcatch>
-			 					</cftry>
 		 					</cfif>
 		 					</cfif>
 
