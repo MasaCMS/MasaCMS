@@ -1,11 +1,12 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'image2', 'eu', {
 	alt: 'Ordezko Testua',
 	btnUpload: 'Zerbitzarira bidalia',
 	captioned: 'Captioned image', // MISSING
+	captionPlaceholder: 'Caption', // MISSING
 	infoTab: 'Irudi informazioa',
 	lockRatio: 'Erlazioa Blokeatu',
 	menu: 'Irudi Ezaugarriak',

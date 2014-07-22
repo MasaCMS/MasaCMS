@@ -1,11 +1,12 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'image2', 'fo', {
 	alt: 'Alternativur tekstur',
 	btnUpload: 'Send til ambætaran',
 	captioned: 'Captioned image', // MISSING
+	captionPlaceholder: 'Caption', // MISSING
 	infoTab: 'Myndaupplýsingar',
 	lockRatio: 'Læs lutfallið',
 	menu: 'Myndaeginleikar',
@@ -14,6 +15,6 @@ CKEDITOR.plugins.setLang( 'image2', 'fo', {
 	resetSize: 'Upprunastødd',
 	resizer: 'Click and drag to resize', // MISSING
 	title: 'Myndaeginleikar',
-	uploadTab: 'Upload', // MISSING
+	uploadTab: 'Send til ambætaran',
 	urlMissing: 'URL til mynd manglar.'
 } );

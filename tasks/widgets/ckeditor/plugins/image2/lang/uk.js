@@ -1,19 +1,20 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'image2', 'uk', {
 	alt: 'Альтернативний текст',
 	btnUpload: 'Надіслати на сервер',
-	captioned: 'Captioned image', // MISSING
+	captioned: 'Підписане зображення',
+	captionPlaceholder: 'Caption', // MISSING
 	infoTab: 'Інформація про зображення',
 	lockRatio: 'Зберегти пропорції',
 	menu: 'Властивості зображення',
-	pathName: 'image', // MISSING
-	pathNameCaption: 'caption', // MISSING
+	pathName: 'Зображення',
+	pathNameCaption: 'заголовок',
 	resetSize: 'Очистити поля розмірів',
-	resizer: 'Click and drag to resize', // MISSING
+	resizer: 'Клікніть та потягніть для зміни розмірів',
 	title: 'Властивості зображення',
-	uploadTab: 'Upload', // MISSING
+	uploadTab: 'Надіслати',
 	urlMissing: 'Вкажіть URL зображення.'
 } );

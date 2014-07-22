@@ -8,7 +8,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
+
 	<cfoutput>
+	var lite = config.lite|| {};
+	config.lite = lite;
+	config.lite.userName='#JSStringFormat($.currentUser().getFullName())#';
+	config.lite.userId='#JSStringFormat($.currentUser().getUserID())#';
+
 	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
 	</cfoutput>
@@ -55,7 +61,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -70,7 +76,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -83,7 +89,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items: ['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items: ['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -96,7 +102,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items: ['Link','Unlink','Anchor']},
-		{name: 'group9', items: ['image2','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items: ['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 		{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
@@ -111,14 +117,14 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_htmlEditor = [
-		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
+		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 	];
 
 	config.toolbar_bbcode = [
-		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','image2']}
+		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 	];
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';

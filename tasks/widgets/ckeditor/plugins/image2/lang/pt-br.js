@@ -1,19 +1,20 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'image2', 'pt-br', {
 	alt: 'Texto Alternativo',
 	btnUpload: 'Enviar para o Servidor',
-	captioned: 'Captioned image', // MISSING
+	captioned: 'Legenda da Imagem',
+	captionPlaceholder: 'Legenda',
 	infoTab: 'Informações da Imagem',
 	lockRatio: 'Travar Proporções',
 	menu: 'Formatar Imagem',
-	pathName: 'image', // MISSING
-	pathNameCaption: 'caption', // MISSING
+	pathName: 'Imagem',
+	pathNameCaption: 'Legenda',
 	resetSize: 'Redefinir para o Tamanho Original',
-	resizer: 'Click and drag to resize', // MISSING
+	resizer: 'Click e arraste para redimensionar',
 	title: 'Formatar Imagem',
-	uploadTab: 'Upload', // MISSING
+	uploadTab: 'Enviar ao Servidor',
 	urlMissing: 'URL da imagem está faltando.'
 } );
