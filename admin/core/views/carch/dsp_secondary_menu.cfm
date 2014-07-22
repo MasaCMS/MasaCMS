@@ -64,7 +64,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<a class="btn" href="./?muraAction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#URLEncodedFormat(rc.moduleid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a>
 						<cfelse>
 							<a class="btn" href="./?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#URLEncodedFormat(rc.moduleid)#&formType=builder"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwithbuilder')#</a>
+							<cfif application.configBean.getValue('allowSimpleHTMLForms')>
 							<a class="btn" href="./?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#URLEncodedFormat(rc.moduleid)#&formType=editor"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwitheditor')#</a>
+							</cfif>
 						</cfif>
 						<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 							<a class="btn <cfif rc.originalfuseaction eq "main"> active</cfif>" href="./?muraAction=cPerm.main&contentid=#URLEncodedFormat(rc.moduleid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#URLEncodedFormat(rc.moduleid)#&startrow=#URLEncodedFormat(rc.startrow)#"><i class="icon-group"></i> Permissions</a>

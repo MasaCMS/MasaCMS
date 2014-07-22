@@ -50,6 +50,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	property name='formID' required=true dataType='string';
 	property name='siteID' required=true dataType='string';
 
+	variables.propertylist='';
+
 	function set(data){
 
 		if(isQuery(arguments.data)){
@@ -134,6 +136,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 					if(arrayLen(rules)){
 						validations.properties[prop.name]=rules;
 					}
+
+					variables.propertylist=listAppend(variables.propertylist,prop.name);
 
 				}
 			}
@@ -229,6 +233,18 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			setValue('acceptError','Spam');
 			setValue('acceptData','0');
 			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+		}
+
+		if(len(variables.propertylist)){
+			var fieldnames='';
+
+			for(var f in listToArray(getValue('fieldnames'))){
+				if(listFindNoCase(variables.propertylist,f) || listFindNoCase('siteid,formid',f)){
+					fieldnames=listAppend(fieldnames,f);
+				}
+			}
+
+			setValue('fieldnames',fieldnames);
 		}
 
 		return this;
