@@ -308,75 +308,82 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 					<!--- BEGIN CHANGESETS ---> 
 					<cfif $.siteConfig('HasChangeSets')>
-						<cfif request.muraChangesetPreview>
-							<cfset previewData=$.currentUser("ChangesetPreviewData")>
-						</cfif>
-						<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
-						<ul id="tools-changesets">
-							
-							<li id="cs-title" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#HTMLEditFormat(previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li><a href="./?changesetid=">None</a></li>
-									<cfloop query="rsChangesets">
-									<li><a href="./?changesetid=#rschangesets.changesetid#">
-											#HTMLEditFormat(rsChangesets.name)#
-											<cfif isDate(rsChangesets.publishDate)> (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</cfif>
-										</a>
-									</li>
-									</cfloop>
-								</ul>							
-							</li>
+						<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
+						<cfset customMenu=variables.$.renderEvent('onExperienceToolbarRender')>
 
+						<cfif len(customMenu)>
+							#customMenu#
+						<cfelse>
 							<cfif request.muraChangesetPreview>
 								<cfset previewData=$.currentUser("ChangesetPreviewData")>
-								<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 							</cfif>
-							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
-								<cfif request.muraChangesetPreview>
+							<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
+							<ul id="tools-changesets">
+								
+								<li id="cs-title" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#HTMLEditFormat(previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
 									<ul class="dropdown-menu">
-									<cfif changesetMembers.hasNext()>
-										<cfloop condition="changesetMembers.hasNext()">
-										<cfset changesetMember=changesetMembers.next()>
-										<li><a href="#changesetMember.getURL()#">#HTMLEditFormat(changesetMember.getMenuTitle())#</a></li>
+										<li><a href="./?changesetid=">None</a></li>
+										<cfloop query="rsChangesets">
+										<li><a href="./?changesetid=#rschangesets.changesetid#">
+												#HTMLEditFormat(rsChangesets.name)#
+												<cfif isDate(rsChangesets.publishDate)> (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</cfif>
+											</a>
+										</li>
 										</cfloop>
-									<cfelse>
-										<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
-									</cfif>
-									
-									</ul>
+									</ul>							
+								</li>
+
+								<cfif request.muraChangesetPreview>
+									<cfset previewData=$.currentUser("ChangesetPreviewData")>
+									<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 								</cfif>
-							</li>
-							
-							<!--- I can't figure out how to trigger the tooltip but here are the icons for each status:
-								In Selected Changeset - icon-check
-								In Earlier Changeset - icon-code-fork
-								Not in a Changeset - icon-ban-circle --->
-							<cfif request.muraChangesetPreview and structKeyExists(previewData.previewmap,$.content("contentID")) >
-								<cfif previewData.previewmap[$.content("contentID")].changesetID eq previewData.changesetID>
-									<li>
-										<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
-											<i class="icon-check"></i>
-											 <!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#HTMLEDitFormat(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
-										</a>
-									</li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
+									<cfif request.muraChangesetPreview>
+										<ul class="dropdown-menu">
+										<cfif changesetMembers.hasNext()>
+											<cfloop condition="changesetMembers.hasNext()">
+											<cfset changesetMember=changesetMembers.next()>
+											<li><a href="#changesetMember.getURL()#">#HTMLEditFormat(changesetMember.getMenuTitle())#</a></li>
+											</cfloop>
+										<cfelse>
+											<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
+										</cfif>
+										
+										</ul>
+									</cfif>
+								</li>
+								
+								<!--- I can't figure out how to trigger the tooltip but here are the icons for each status:
+									In Selected Changeset - icon-check
+									In Earlier Changeset - icon-code-fork
+									Not in a Changeset - icon-ban-circle --->
+								<cfif request.muraChangesetPreview and structKeyExists(previewData.previewmap,$.content("contentID")) >
+									<cfif previewData.previewmap[$.content("contentID")].changesetID eq previewData.changesetID>
+										<li>
+											<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
+												<i class="icon-check"></i>
+												 <!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#HTMLEDitFormat(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+											</a>
+										</li>
+									<cfelse>
+										<li>
+											<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
+												<i class="icon-code-fork"></i>
+												<!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#HTMLEDitFormat(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+											</a>
+										</li>
+									</cfif>
 								<cfelse>
 									<li>
-										<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
-											<i class="icon-code-fork"></i>
-											<!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#HTMLEDitFormat(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+										<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
+											<i class="icon-ban-circle"></i>
+											<!---#application.rbFactory.getKeyValue(session.rb,"changesets.previewnodenotinchangeset")#--->
 										</a>
 									</li>
 								</cfif>
-							<cfelse>
-								<li>
-									<a href="" data-toggle="tooltip" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
-										<i class="icon-ban-circle"></i>
-										<!---#application.rbFactory.getKeyValue(session.rb,"changesets.previewnodenotinchangeset")#--->
-									</a>
-								</li>
-							</cfif>
-						</ul>
+							</ul>
+						</cfif>
 					</cfif>
 				</cfif>
 				

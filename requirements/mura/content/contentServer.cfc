@@ -513,12 +513,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfif structKeyExists(url,"changesetID")>
-		<cfset getBean('changesetManager').setSessionPreviewData(url.changesetID)>
+		<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		<cfset getBean('changesetManager').setSessionPreviewData(changesetid=url.changesetID,append=isDefined('url.append'))>
 	</cfif>
 	
 	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
-	
+
 	<cfif request.muraChangesetPreview>
 		<cfif isdefined('previewData.showToolbar')>
 			<cfset request.muraChangesetPreviewToolbar=previewData.showToolbar>
@@ -526,13 +527,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.muraChangesetPreviewToolbar=true>
 		</cfif>
 
-		<cfif getBean('changeset').loadBy(changesetID=previewData.changesetID,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
-			<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetID,append=false,showToolBar=request.muraChangesetPreviewToolbar)>	
-		</cfif>
-		
 		<cfif isdefined('previewData.changesetIDList')>
+			<cfset local.reloaded=false>
+			<cfloop list="#previewData.changesetIDList#" item="local.i">
+				<cfif not local.reloaded and getBean('changeset').loadBy(changesetID=local.i,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
+					<cfloop from="1" to="#listLen(previewData.changesetIDList)#" index="local.i2">
+						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>	
+					</cfloop>
+					<cfset local.reloaded=true>
+				</cfif>
+			</cfloop>
+			
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList)>
 		<cfelse>
+			<cfif getBean('changeset').loadBy(changesetID=previewData.changesetid,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
+				<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetid,append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>	
+			</cfif>
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
 		</cfif>
 	</cfif>

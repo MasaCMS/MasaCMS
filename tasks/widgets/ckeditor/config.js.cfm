@@ -11,12 +11,30 @@ CKEDITOR.editorConfig = function( config )
 
 	<cfoutput>
 	var lite = config.lite|| {};
-	config.lite = lite;
+	
+
+	var LITE={
+			Commands:{
+				TOGGLE_TRACKING : "lite.ToggleTracking",
+				TOGGLE_SHOW : "lite.ToggleShow",
+				ACCEPT_ALL : "lite.AcceptAll",
+				REJECT_ALL : "lite.RejectAll",
+				ACCEPT_ONE : "lite.AcceptOne",
+				REJECT_ONE : "lite.RejectOne",
+				TOGGLE_TOOLTIPS: "lite.ToggleTooltips"
+			}
+	}
+	
+	config.lite=lite;
+	config.lite.commands = [LITE.Commands.TOGGLE_SHOW, LITE.Commands.ACCEPT_ALL, LITE.Commands.REJECT_ALL];
+
 	config.lite.userName='#JSStringFormat($.currentUser().getFullName())#';
 	config.lite.userId='#JSStringFormat($.currentUser().getUserID())#';
 
 	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
+	
+	
 	</cfoutput>
 	
 	<cfoutput>

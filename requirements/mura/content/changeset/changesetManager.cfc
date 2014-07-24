@@ -350,6 +350,10 @@
 
 		<cfparam name="local.data.changesetIDList" default="">
 
+		<cfif listFindNoCase(local.data.changesetIDList,local.changeset.getChangesetID())>
+			<cfreturn false>
+		</cfif>
+		
 		<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.changeset.getChangesetID())>
 	<cfelse>
 		<cfset local.data=structNew()>

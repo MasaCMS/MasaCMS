@@ -35,7 +35,7 @@ Written by (David *)Frenkiel - https://github.com/imdfl
 }
 
 .ICE-Tracking .ice-ins.ice-cts-3, .ICE-Tracking .ice-ins.ice-cts-3>*  {
-	background-color: #ffdddd !important;
+	background-color: #d1eeee !important;
 }
 
 
@@ -43,15 +43,15 @@ Written by (David *)Frenkiel - https://github.com/imdfl
 	display: inline;
 	text-decoration: line-through;
 	color: #555;
-	background-color: #e5ffcd !important;
+	background-color: #faf1f1 !important;
 }
 
 .ICE-Tracking .ice-del.ice-cts-1 {
-	background-color: #e5ffcd !important;
+	background-color: #faf1f1 !important;
 }
 
 .ICE-Tracking .ice-del.ice-cts-2 {
-	background-color: #e3ffff !important;
+	background-color: #ffe1e1 !important;
 }
 
 .ICE-Tracking .ice-del.ice-cts-3 {
