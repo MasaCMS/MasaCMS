@@ -453,7 +453,7 @@ function validateForm(frm,customaction) {
 			jQuery.ajax(
 				{
 					type: 'post',
-					url: mura.assetpath + '/includes/display_objects/datacollection/remote.cfc?method=validate',
+					url: mura.context + '/tasks/validate/remote.cfc?method=validate',
 					dataType: 'text',
 					data: {
 							data: escape(JSON.stringify(data)),
