@@ -6,13 +6,22 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       var request=new XMLHttpRequest();
       request.open('GET', baseURL, false);  // `false` makes the request synchronous
       request.send(null);
-      
+    
       var response=JSON.parse(request.responseText);
 
-      return {
-        mura_token:response.token,
-        mura_token_expires: response.expires
-      };
+      if(response.token){
+         return {
+          mura_token:response.token,
+          mura_token_expires: response.expires
+        };
+
+      } else {
+
+         return {
+          mura_token: response.TOKEN,
+          mura_token_expires: response.EXPIRES
+        };
+      }
 
     }
 
@@ -31,13 +40,13 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       } 
 
       extendObj(params,getTokens());
-    
+      
+
       // call the original function
       var result = orginalsendCommand.apply(this,[arguments[0],arguments[1],params,arguments[3],arguments[4]]);
 
       return result;
 
-      return result;
     }
 
     var orginalsendCommand = api.connector.sendCommand;
@@ -50,6 +59,8 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       } 
 
       extendObj(params,getTokens());
+
+      //alert(JSON.stringify(params))
     
       // call the original function
       var result = orginalsendCommand.apply(this,[arguments[0],params,arguments[2],arguments[3],arguments[4]]);
