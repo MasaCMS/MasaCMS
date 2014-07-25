@@ -51,6 +51,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	property name='siteID' required=true dataType='string';
 
 	variables.propertylist='';
+	variables.properties={};
 
 	function set(data){
 
@@ -137,6 +138,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 						validations.properties[prop.name]=rules;
 					}
 
+					variables.properties[prop.name]=prop;
 					variables.propertylist=listAppend(variables.propertylist,prop.name);
 
 				}
@@ -241,6 +243,15 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			for(var f in listToArray(getValue('fieldnames'))){
 				if(listFindNoCase(variables.propertylist,f) || listFindNoCase('siteid,formid',f)){
 					fieldnames=listAppend(fieldnames,f);
+				} else if (right(f,10) == 'attachment'){
+					local.prop=left(f,len(f)-11);
+
+					if(listFindNoCase(variables.propertylist,local.prop)
+						&& isDefined('variables.properties.#local.prop#.fieldtype.fieldtype')
+						&& variables.properties['#local.prop#'].fieldtype.fieldtype == 'file'
+					){
+						fieldnames=listAppend(fieldnames,f);
+					}
 				}
 			}
 
