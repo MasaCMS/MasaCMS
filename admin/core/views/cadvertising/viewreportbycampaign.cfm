@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#:</strong> #LSDateFormat(rc.date1,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(rc.date2,session.dateKeyFormat)#</li></ul>
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h2>
-<form novalidate="novalidate" action="./?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&userid=#tempEncodeForURL(rc.userid)#&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
 #application.rbFactory.getKeyValue(session.rb,'advertising.from')# 
 <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > 
 &nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
@@ -155,8 +155,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	</cfsilent>
 	
 	<tr>
-				<td class="var-width"><a href="./?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
-				<td><a href="./?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rsplacements.creative#</a></td>
+				<td class="var-width"><a href="./?muraAction=cAdvertising.editAdZone&siteid=#tempEncodeForURL(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
+				<td><a href="./?muraAction=cAdvertising.editCreative&userid=#tempEncodeForURL(rc.userid)#&creativeid=#rsplacements.creativeid#&siteid=#tempEncodeForURL(rc.siteid)#">#rsplacements.creative#</a></td>
 				<td>#LSDateFormat(rsplacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rsplacements.enddate,session.dateKeyFormat)#</td>
 				<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoFormat(rsplacements.isExclusive)#')#</td>
@@ -170,8 +170,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rsplacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rsplacements.costPerClick*Clicks)+(rsplacements.costPerImp*Imps))#</td>
 				<td class="actions"><ul>
-				<li class="edit"><a title="Edit" href="./?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
-				<li class="view-report"><a title="View Placement Report" href="./?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#"><i class="icon-bar-chart"></i></a></li></ul>
+				<li class="edit"><a title="Edit" href="./?muraAction=cAdvertising.editPlacement&userid=#tempEncodeForURL(rc.userid)#&siteid=#tempEncodeForURL(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
+				<li class="view-report"><a title="View Placement Report" href="./?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#tempEncodeForURL(rc.userid)#&siteid=#tempEncodeForURL(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#"><i class="icon-bar-chart"></i></a></li></ul>
 				</td>
 				</tr>
 		

@@ -63,13 +63,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <td class="var-width">
 <cfswitch expression="#rc.rslist.type#">
 <cfcase value="Form,Component">
-<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#">#rc.rslist.menutitle#</a>
+<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#">#rc.rslist.menutitle#</a>
 </cfcase>
 <cfdefaultcase>
 #$.dspZoom(itemcrumbdata)#</cfdefaultcase>
 </cfswitch></td>
 			<td>#rc.rslist.module#</td> 
-          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="icon-book"></i></a></li></ul></td>
+          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="icon-book"></i></a></li></ul></td>
         </tr>
 		<cfset listed=1>
 	  </cfif>

@@ -59,8 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& rc.rsForms.menutitle>
 
-					<option title="#HTMLEditFormat(title)#" value="form~#HTMLEditFormat(title)#~#rc.rsForms.contentid#">
-						#HTMLEditFormat(title)#
+					<option title="#tempEncodeForHTMLAttribute(title)#" value="form~#tempEncodeForHTML(title)#~#rc.rsForms.contentid#">
+						#tempEncodeForHTML(title)#
 					</option>
 
 					<cfif rc.rsForms.responseChart neq 1>
@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							& ' - ' 
 							& rc.rsForms.menutitle>
 							
-						<option title="#HTMLEditFormat(title)#" value="form_responses~#HTMLEditFormat(title)#~#rc.rsForms.contentid#">
-							#HTMLEditFormat(title)#
+						<option title="#tempEncodeForHTMLAttribute(title)#" value="form_responses~#tempEncodeForHTML(title)#~#rc.rsForms.contentid#">
+							#tempEncodeForHTML(title)#
 						</option>
 					</cfif>
 				</cfloop>

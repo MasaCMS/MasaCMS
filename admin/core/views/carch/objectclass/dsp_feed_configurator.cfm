@@ -59,16 +59,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif feed.getType() eq "local">
 	<div id="availableObjectParams"
 	data-object="feed" 
-	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#')#" 
+	data-name="#tempEncodeForHTMLAttribute('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#')#" 
 	data-objectid="#feed.getFeedID()#">
 	<cfelse>
 	<div id="availableObjectParams"
 	data-object="feed" 
-	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#')#" 
+	data-name="#tempEncodeForHTMLAttribute('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#')#" 
 	data-objectid="#feed.getFeedID()#">	
 	</cfif>
 	
-	<h2>#HTMLEditFormat(feed.getName())#</h2>
+	<h2>#tempEncodeForHTML(feed.getName())#</h2>
 	<cfif rc.configuratorMode eq "frontEnd"
 				and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
 		<cfsilent>
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														
 								<cfloop condition="imageSizes.hasNext()">
 									<cfset image=imageSizes.next()>
-									<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+									<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#tempEncodeForHTML(image.getName())#</option>
 								</cfloop>
 									<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 							</select>
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
 	<div>
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="250">
+		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#tempEncodeForHTMLAttribute(feed.getAltName())#" maxlength="250">
 		  </div>
 	</div>
 </div>
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 		</label>
 		<div class="controls">
-			<input name="cssclass" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getCssClass())#" maxlength="255">
+			<input name="cssclass" class="objectParam span12" type="text" value="#tempEncodeForHTMLAttribute(feed.getCssClass())#" maxlength="255">
 		</div>
 	</div>
 			
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="objectParam span12" type="text" value="#tempEncodeForHTMLAttribute(feed.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="objectParam span12" type="text" value="#tempEncodeForHTMLAttribute(feed.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
 </div>
@@ -248,7 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<div class="controls">
-					<input name="viewalllink" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="255">
+					<input name="viewalllink" class="objectParam span12" type="text" value="#tempEncodeForHTMLAttribute(feed.getViewAllLink())#" maxlength="255">
 				</div>
 			</div>
 
@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<div class="controls">
-					<input name="viewalllabel" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="100">
+					<input name="viewalllabel" class="objectParam span12" type="text" value="#tempEncodeForHTMLAttribute(feed.getViewAllLabel())#" maxlength="100">
 				</div>
 			</div>
 			</div></div>

@@ -93,7 +93,7 @@ if (window.opener)	{
 
 function goAndClose(userid)	{
 
-	mainwin.location.href='../../index.cfm?muraAction=cPrivateUsers.addtogroup&siteid=#URLEncodedFormat(url.siteid)#&groupid=#URLEncodedFormat(url.groupid)#&routeid=#URLEncodedFormat(url.groupid)#&userid='+userid;
+	mainwin.location.href='../../index.cfm?muraAction=cPrivateUsers.addtogroup&siteid=#tempEncodeForURL(url.siteid)#&groupid=#tempEncodeForURL(url.groupid)#&routeid=#tempEncodeForURL(url.groupid)#&userid='+userid;
 
 	window.close();
 }

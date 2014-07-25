@@ -44,7 +44,15 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
 
@@ -53,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.action eq "add">
 <li>
-<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';$('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
-<li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';$('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
+<a href="javascript:;" id="#tempEncodeForHTMLAttribute(attributes.formName)#open" class="btn" onclick="$('###tempEncodeForHTML(attributes.formName)#container').slideDown();this.style.display='none';$('###tempEncodeForHTML(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#tempEncodeForHTMLAttribute(attributes.formName)#close" onclick="$('###tempEncodeForHTML(attributes.formName)#container').slideUp();this.style.display='none';$('###tempEncodeForHTML(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
 <cfif isDefined('attributes.attributesArray') and ArrayLen(attributes.attributesArray)>
 <li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
 <li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
@@ -63,9 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfif attributes.action eq "add">
-<div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container" class="attr-add">
+<div style="display:none;" id="#tempEncodeForHTMLAttribute(attributes.formName)#container" class="attr-add">
 </cfif>
-<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
+<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#tempEncodeForHTMLAttribute(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <div class="fieldset">
 <cfif attributes.action neq "add">
 <div class="control-group">
@@ -80,13 +88,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Name (No spaces)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" />
+		<input class="span12" type="text" name="name" required="true" value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getName())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Label</label>
 	<div class="controls">
-		<input class="span12" type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
+		<input class="span12" type="text" name="label" value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getLabel())#" />
 	</div>
 </div>
 <div class="span4">
@@ -105,13 +113,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Default Value</label>
 	<div class="controls">
-		<input class="span12" type="text" name="defaultValue"  value="#HTMLEditFormat(attributes.attributeBean.getDefaultvalue())#" />
+		<input class="span12" type="text" name="defaultValue"  value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getDefaultvalue())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Tooltip</label>
 	<div class="controls">
-		<input class="span12" type="text" name="hint" value="#HTMLEditFormat(attributes.attributeBean.getHint())#" />
+		<input class="span12" type="text" name="hint" value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getHint())#" />
 	</div>
 </div>
 <div class="span4">
@@ -145,13 +153,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Regex</label>
 	<div class="controls">
-		<input class="span12" type="text" name="regex"  value="#HTMLEditFormat(attributes.attributeBean.getRegex())#" />
+		<input class="span12" type="text" name="regex"  value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getRegex())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Validation Message</label>
 	<div class="controls">
-		<input class="span12" type="text" name="message"  value="#HTMLEditFormat(attributes.attributeBean.getMessage())#" />
+		<input class="span12" type="text" name="message"  value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getMessage())#" />
 	</div>
 </div>
 </div>
@@ -162,13 +170,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Option List ("^" Delimiter)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="optionList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionList())#" />
+		<input class="span12" type="text" name="optionList"  value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getOptionList())#" />
 	</div>
 </div>
 <div class="span8">
 	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" />
+		<input class="span12" type="text" name="optionLabelList"  value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getOptionLabelList())#" />
 	</div>
 </div>
 </div>
@@ -176,21 +184,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="form-actions">
 <cfif attributes.action eq "add">
-	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();$('###HTMLEditFormat(attributes.formName)#close').hide();$('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#tempEncodeForHTML(attributes.formName)#,'add');" value="Add" />
+	<input type="button" class="btn" onclick="$('###tempEncodeForHTML(attributes.formName)#container').slideUp();$('###tempEncodeForHTML(attributes.formName)#close').hide();$('###tempEncodeForHTML(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();$('###HTMLEditFormat(attributes.formName)#close').hide();$('###HTMLEditFormat(attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#tempEncodeForHTML(attributes.formName)#,'update');" value="Update" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#tempEncodeForHTML(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
+	<input type="button" class="btn" onclick="$('###tempEncodeForHTML(attributes.formName)#container').slideUp();$('###tempEncodeForHTML(attributes.formName)#close').hide();$('###tempEncodeForHTML(attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
 </cfif>
 </div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>
 <input name="muraAction" type="hidden" value="cExtend.updateAttribute"/>
-<input name="action" type="hidden" value="#HTMLEditFormat(attributes.action)#"/>
-<input name="extendSetID" type="hidden" value="#HTMLEditFormat(attributes.attributeBean.getExtendSetID())#"/>
-<input name="subTypeID" type="hidden" value="#HTMLEditFormat(attributes.subTypeID)#"/>
+<input name="action" type="hidden" value="#tempEncodeForHTMLAttribute(attributes.action)#"/>
+<input name="extendSetID" type="hidden" value="#tempEncodeForHTMLAttribute(attributes.attributeBean.getExtendSetID())#"/>
+<input name="subTypeID" type="hidden" value="#tempEncodeForHTMLAttribute(attributes.subTypeID)#"/>
 <input name="attributeID" type="hidden" value="#attributes.attributeBean.getAttributeID()#"/>
 #attributes.muraScope.renderCSRFTokens(context=attributes.attributeBean.getAttributeID(),format="form")#
 </form><cfif attributes.action eq "add"></div></cfif>

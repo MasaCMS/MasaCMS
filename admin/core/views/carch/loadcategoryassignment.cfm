@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</li>
 		</ol>	
-	<input type="hidden" id="mura-quickEdit-cattrim" value="#HTMLEditFormat(rc.cattrim)#">
+	<input type="hidden" id="mura-quickEdit-cattrim" value="#tempEncodeForHTMLAttribute(rc.cattrim)#">
 	<div class="form-actions">
 	<input type="button" value="Submit" class="btn" onclick="siteManager.saveCategoryAssignment();" />
 	</div>

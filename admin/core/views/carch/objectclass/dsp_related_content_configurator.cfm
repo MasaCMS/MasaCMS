@@ -62,20 +62,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.classid eq "related_content">
 		<div id="availableObjectParams"	
 		data-object="#rc.classid#" 
-		data-name="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#" 
+		data-name="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#" 
 		data-objectid="#createUUID()#">
 	<cfelse>
 		<cfset menutitle=$.getBean("content").loadBy(contentID=rc.contentID).getMenuTitle()>
 		<div id="availableObjectParams"	
 		data-object="#rc.classid#" 
-		data-name="#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#" 
+		data-name="#tempEncodeForHTMLAttribute('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#" 
 		data-objectid="#hash('related_content')#">
 	</cfif>
 	
 <!---<cfif rc.classid eq "related_content">
-<h2>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h2>
+<h2>#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h2>
 	<cfelse>
-		<h2>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h2>
+		<h2>#tempEncodeForHTML('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h2>
 	</cfif>
 --->
 
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											
 					<cfloop condition="imageSizes.hasNext()">
 						<cfset image=imageSizes.next()>
-						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#tempEncodeForHTML(image.getName())#</option>
 					</cfloop>
 						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 				</select>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!---
 						<option value="random" <cfif feed.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
 					
-						<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif feed.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+						<cfloop query="rsExtend"><option value="#tempEncodeForHTMLAttribute(rsExtend.attribute)#" <cfif feed.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
 						</cfloop>
 					--->
 					</select>

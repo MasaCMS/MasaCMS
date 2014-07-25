@@ -45,7 +45,17 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfsilent><cfparam name="attributes.siteID" default="">
+<cfsilent>
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+<cfparam name="attributes.siteID" default="">
 <cfparam name="attributes.parentID" default="">
 <cfparam name="attributes.categoryID" default="">
 <cfparam name="attributes.actualParentID" default="">
@@ -55,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
  <cfif rslist.categoryID neq attributes.categoryID>
-<option value="#rslist.categoryID#" <cfif rslist.categoryID eq attributes.actualParentID>selected</cfif>><cfif attributes.nestlevel><cfloop  from="1" to="#attributes.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#HTMLEditFormat(rslist.name)#</option>
+<option value="#rslist.categoryID#" <cfif rslist.categoryID eq attributes.actualParentID>selected</cfif>><cfif attributes.nestlevel><cfloop  from="1" to="#attributes.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#tempEncodeForHTML(rslist.name)#</option>
 <cf_dsp_parents siteID="#attributes.siteID#" categoryID="#attributes.categoryID#" parentID="#rslist.categoryID#" actualParentID="#attributes.actualParentID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
  </cfif>
 </cfoutput>

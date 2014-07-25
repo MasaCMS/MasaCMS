@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
 			</label>
 			<div class="controls">
-				<input type="text" name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+				<input type="text" name="Name" value="#tempEncodeForHTMLAttribute(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
 			</div>
 		</div>
 	<cfelse>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
 			</label>
 			<div class="controls">
-				<input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+				<input type=text name="Name" value="#tempEncodeForHTMLAttribute(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
 			</div>
 		</div>
 	</cfif>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.masterdonotemaillistname')#
 		</label>
 		<div class="controls">
-			<input type="text" name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+			<input type="text" name="Name" value="#tempEncodeForHTMLAttribute(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
 			<input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1">
 		</div>
 	</div>
@@ -130,8 +130,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#
 	</label>
 	<div class="controls">
-		<textarea id="description" name="description" rows="6" class="span12">#HTMLEditFormat(rc.listBean.getdescription())#</textarea>
-		<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+		<textarea id="description" name="description" rows="6" class="span12">#tempEncodeForHTML(rc.listBean.getdescription())#</textarea>
+		<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
 	</div>
 </div>
 	
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type=hidden name="mlid" value="#createuuid()#">
 		<cfelse>
 			<cfif not rc.listBean.getispurge()>
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
+				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
 			</cfif> 
 			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#" />
 			<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">

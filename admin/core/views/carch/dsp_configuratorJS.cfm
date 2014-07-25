@@ -2,15 +2,15 @@
 <script>
 var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
 
-var remoteFeedConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
-var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';
-var tagCloudConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.tagcloudtitle"))#';
-var categorySummaryConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';	
-var slideShowConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';	
-var relatedContentConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';	
-var siteMapConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.sitemaptitle"))#';		
-var genericConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';	
-var genericConfiguratorMessage='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
+var remoteFeedConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
+var localIndexConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';
+var tagCloudConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.tagcloudtitle"))#';
+var categorySummaryConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';	
+var slideShowConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';	
+var relatedContentConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';	
+var siteMapConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.sitemaptitle"))#';		
+var genericConfiguratorTitle='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';	
+var genericConfiguratorMessage='#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
 var contentid='#rc.contentid#';
 var parentid='#rc.parentid#';
 var contenthistid='#rc.contentBean.getContentHistID()#';

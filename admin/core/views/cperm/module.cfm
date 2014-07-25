@@ -48,11 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
 <div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
 <p class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
 <section>
-  <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
+  <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#tempEncodeForURL(rc.contentid)#">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 		<table class="mura-table-grid">
           <tr> 
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfloop query="rc.rslist"> 
             <tr> 
               	<td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
-	      		<td class="var-width" nowrap>#HTMLEditFormat(rc.rslist.GroupName)#</td>
+	      		<td class="var-width" nowrap>#tempEncodeForHTML(rc.rslist.GroupName)#</td>
 			</tr>
 		 </cfloop>
 	<cfelse>
@@ -102,9 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions no-offset">
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>
-<input type="hidden" name="router" value="#HTMLEditFormat(cgi.HTTP_REFERER)#">
-<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-<input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
-<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+<input type="hidden" name="router" value="#tempEncodeForHTMLAttribute(cgi.HTTP_REFERER)#">
+<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
+<input type="hidden" name="topid" value="#tempEncodeForHTMLAttribute(rc.topid)#">
+<input type="hidden" name="moduleid" value="#tempEncodeForHTMLAttribute(rc.moduleid)#">
 #rc.$.renderCSRFTokens(context=rc.moduleid,format="form")#
 </form></cfoutput>

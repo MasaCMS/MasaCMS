@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-<!--- <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" />  	<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" /> --->
+<!--- <input name="keywords" value="#tempEncodeForHTMLAttribute(rc.keywords)#" type="text" class="text" />  	<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" /> --->
 	<div class="input-append">
-	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+	    <input name="keywords" value="#tempEncodeForHTMLAttribute(session.keywords)#" type="text" class="text" />
 	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
 	</div>
 	<input type="hidden" name="muraAction" value="cAdvertising.listCreatives">
-	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+	<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
 </form>
 
 <h1>#application.rbFactory.getKeyValue(session.rb,'advertising.viewcreativeassets')#</h1>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rsList">
 	<tr>
-		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#rc.rslist.name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#tempEncodeForURL(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#rc.rslist.name#</a></td>
 		<td class="var-width">#rc.rslist.company#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rslist.creativeType,' ','','all')#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#rc.rslist.mediatype#')#</td>
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</span>
 		</td>
 		<td class="actions"><ul class="creatives">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#"><i class="icon-pencil"></i></a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#tempEncodeForURL(rc.siteid)#&creativeid=#rc.rslist.creativeID#"><i class="icon-pencil"></i></a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

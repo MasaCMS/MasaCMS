@@ -52,26 +52,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="input-append">
 	    <input id="search" name="search" type="text" placeholder="Search for Users" />
 	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
-	<button type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
-  <input type="hidden" name='siteid' value="#HTMLEditFormat(rc.siteid)#"/>
+	<button type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#tempEncodeForURL(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
+  <input type="hidden" name='siteid' value="#tempEncodeForHTMLAttribute(rc.siteid)#"/>
   <input type="hidden" name='muraAction' value="cPublicUsers.search"/>
 	</div>
 
 <!---
 <input id="search" name="search" type="text" class="text"> 
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
-<input type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /><
+<input type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#tempEncodeForURL(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /><
 --->
 </form>
 
 <h1>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h1>
 	
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
-<a class="btn" href="./?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>
+<a class="btn" href="./?muraAction=cPublicUsers.edituser&siteid=#tempEncodeForURL(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
+<a class="btn" href="./?muraAction=cPublicUsers.editgroup&siteid=#tempEncodeForURL(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>
 
  <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-    <a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000008&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000008"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'user.permissions')#</a>
+    <a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000008&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000008"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'user.permissions')#</a>
   </cfif>
 </div>
 
@@ -90,16 +90,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfoutput query="rc.rsgroups"> 
                   <tr> 
                     <td class="var-width"> 
-                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgroups.groupname)#</a> (<cfif isNumeric(rc.rsgroups.counter)>#rc.rsgroups.counter#<cfelse>0</cfif>) </td>
+                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#tempEncodeForURL(rc.siteid)#">#tempEncodeForHTML(rc.rsgroups.groupname)#</a> (<cfif isNumeric(rc.rsgroups.counter)>#rc.rsgroups.counter#<cfelse>0</cfif>) </td>
                     <td> 
                       <cfif rc.rsgroups.email gt "" and not rc.rsgroups.perm>
-                        <a href="mailto:#rc.rsgroups.email#">#HTMLEditFormat(rc.rsgroups.email)#</a>
+                        <a href="mailto:#rc.rsgroups.email#">#tempEncodeForHTML(rc.rsgroups.email)#</a>
                         <cfelse>&nbsp;</cfif> 
                   </td>
                     <td><cfif not rc.rsgroups.perm>
                  #LSDateFormat(rc.rsgroups.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rsgroups.lastupdate,"short")#<cfelse>&nbsp;</cfif></td>
-                  <td><cfif not rc.rsgroups.perm>#HTMLEditFormat(rc.rsgroups.LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
-                    <td class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li><cfif not rc.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="./?muraAction=cPublicUsers.update&action=delete&userid=#rc.rsgroups.UserID#&siteid=#URLEncodedFormat(rc.siteid)#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#" onclick="return confirmDialog('Delete the #jsStringFormat("'#rc.rsGroups.groupname#'")# User Group?',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul>
+                  <td><cfif not rc.rsgroups.perm>#tempEncodeForHTML(rc.rsgroups.LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
+                    <td class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a></li><cfif not rc.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="./?muraAction=cPublicUsers.update&action=delete&userid=#rc.rsgroups.UserID#&siteid=#tempEncodeForURL(rc.siteid)#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#" onclick="return confirmDialog('Delete the #tempEncodeForJavascript("'#rc.rsGroups.groupname#'")# User Group?',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul>
                   </td>
                 </tr>
                 </cfoutput> 

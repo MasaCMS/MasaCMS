@@ -138,11 +138,11 @@ jQuery(document).ready(function(){
         <tbody class="files" data-toggle="modal-gallery" data-target="##modal-gallery"></tbody></table>
       <input type="hidden" name="muraAction" value="cArch.update"/>
       <input type="hidden" name="action" value="multifileupload"/>
-      <input type="hidden" name="siteid" value="#htmlEditFormat(rc.siteid)#"/>
-      <input type="hidden" name="moduleid" value="#htmlEditFormat(rc.moduleid)#"/>
-      <input type="hidden" name="topid" value="#htmlEditFormat(rc.topid)#"/>
-      <input type="hidden" name="ptype" value="#htmlEditFormat(rc.ptype)#"/>
-      <input type="hidden" name="parentid" value="#htmlEditFormat(rc.parentid)#"/>
+      <input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#"/>
+      <input type="hidden" name="moduleid" value="#tempEncodeForHTMLAttribute(rc.moduleid)#"/>
+      <input type="hidden" name="topid" value="#tempEncodeForHTMLAttribute(rc.topid)#"/>
+      <input type="hidden" name="ptype" value="#tempEncodeForHTMLAttribute(rc.ptype)#"/>
+      <input type="hidden" name="parentid" value="#tempEncodeForHTMLAttribute(rc.parentid)#"/>
       <input type="hidden" name="contentid" value=""/>
       <input type="hidden" name="type" value="File"/>
       <input type="hidden" name="subtype" value="Default"/>

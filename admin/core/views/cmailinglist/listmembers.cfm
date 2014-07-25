@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
 </div>
 <input type=hidden name="mlid" value="#rc.mlid#">
-<input type=hidden name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+<input type=hidden name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
 <input type=hidden name="isVerified" value="1">
 </form>
 <h2>#rc.listBean.getname()#</h2>
@@ -120,12 +120,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist" startrow="#rc.startrow#" maxrows="#rc.nextN.RecordsPerPage#">
 	<tr>
-		<td class="var-width"><a href="mailto:#HTMLEditFormat(rc.rslist.email)#">#HTMLEditFormat(rc.rslist.email)#</a></td>
-		<td>#HTMLEditFormat(rc.rslist.fname)#&nbsp;#HTMLEditFormat(rc.rslist.lname)#</td>
-		<td>#HTMLEditFormat(rc.rslist.company)#</td>
+		<td class="var-width"><a href="mailto:#tempEncodeForHTML(rc.rslist.email)#">#tempEncodeForHTML(rc.rslist.email)#</a></td>
+		<td>#tempEncodeForHTML(rc.rslist.fname)#&nbsp;#tempEncodeForHTML(rc.rslist.lname)#</td>
+		<td>#tempEncodeForHTML(rc.rslist.company)#</td>
 		<td><cfif rc.rslist.isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 		<td>#LSDateFormat(rc.rslist.created,session.dateKeyFormat)#</td>
-		<td class="actions"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="./?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#urlencodedformat(rc.rslist.email)#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li></ul></td></tr>
+		<td class="actions"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="./?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#tempEncodeForURL(rc.rslist.email)#&siteid=#tempEncodeForURL(rc.siteid)#" onclick="return confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

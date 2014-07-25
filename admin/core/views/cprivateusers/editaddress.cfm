@@ -49,83 +49,83 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
 <cfoutput>
-<form novalidate="novalidate" action="./?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off">
+<form novalidate="novalidate" action="./?muraAction=cPrivateUsers.updateAddress&userid=#tempEncodeForURL(rc.userid)#&routeid=#rc.routeid#&siteid=#tempEncodeForURL(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 	
-	<h2>#HTMLEditFormat(rc.userBean.getFname())# #HTMLEditFormat(rc.userBean.getlname())#</h2>
+	<h2>#tempEncodeForHTML(rc.userBean.getFname())# #tempEncodeForHTML(rc.userBean.getlname())#</h2>
 	
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</label>
-      <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="span6"></div>
+      <div class="controls"><input id="addressName" name="addressName" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.addressName)#"  class="span6"></div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
-      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="span12"></div>
+      <div class="controls"><input id="address1" name="address1" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.address1)#"  class="span12"></div>
       </div>
 		
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
-      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="span12"></div>
+      <div class="controls"><input id="address2" name="address2" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.address2)#"  class="span12"></div>
     </div>
 </div>
 		
 		<div class="control-group">
 		<div class="span5">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
-      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="span12"></div>
+      <div class="controls"><input id="city" name="city" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.city)#" class="span12"></div>
     </div>
 		
 		<div class="span1">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
-      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="span12"></div>
+      <div class="controls"><input id="state" name="state" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.state)#" class="span12"></div>
     </div>
 		
 		<div class="span2">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
-      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="span12"></div>
+      <div class="controls"><input id="zip" name="zip" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.zip)#" class="span12"></div>
     </div>
 		
 		<div class="span4">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
-      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="span12"></div>
+      <div class="controls"><input id="country" name="country" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.country)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
-      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="span12"></div>
+      <div class="controls"><input id="phone" name="phone" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.phone)#" class="span12"></div>
     </div>
 		
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
-      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="span12"></div>
+      <div class="controls"><input id="fax" name="fax" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.fax)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
-      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="span12"></div>
+      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.addressURL)#" class="span12"></div>
     </div>
 		
 		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="span12"></div>
+      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#tempEncodeForHTMLAttribute(rsAddress.addressEmail)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
-      <div class="controls"><textarea rows="6" class="span6" id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea>
+      <div class="controls"><textarea rows="6" class="span6" id="hours" name="hours" >#tempEncodeForHTML(rsAddress.hours)#</textarea>
       </div>
     </div>
 
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="control-group">
       <label class="control-label">
 		<cfif len(attributeBean.getHint())>
-		<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="icon-question-sign"></i></a>
+		<a href="##" rel="tooltip" title="#tempEncodeForHTMLAttribute(attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="icon-question-sign"></i></a>
 		<cfelse>
 		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 		</cfif>
@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
            <cfelse>
             	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
+				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
            </cfif>
     </div>
 		<input type="hidden" name="action" value="">

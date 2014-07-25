@@ -13,7 +13,7 @@ var currentChangesetSelection="";
 var currentChangesetID="";
 </cfif>
 
-var publishitemfromchangeset="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.publishitemfromchangeset'))#"
+var publishitemfromchangeset="#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.publishitemfromchangeset'))#"
 function removeChangesetPrompt(changesetID){
 	
 	if(currentChangesetID!="" && changesetID!=currentChangesetID){
@@ -44,7 +44,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 			resizable: false,
 			modal: true,
 			buttons: {
-				'#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
+				'#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
 					jQuery(this).dialog('close');
 					if (siteManager.configuratorMode == 'backEnd') {
 						if(siteManager.ckContent()){
@@ -70,7 +70,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 	return false;	
 }
 </script>
-<div style="display:none" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.assigntochangeset"))#" id="changesetContainer">
+<div style="display:none" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.assigntochangeset"))#" id="changesetContainer">
 
 </div>
 </cfoutput>

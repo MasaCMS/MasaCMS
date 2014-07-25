@@ -53,20 +53,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h1>Trash Detail</h1>
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-circle-arrow-left"></i>  Back to Trash Bin</a>
+<a class="btn" href="./?muraAction=cTrash.list&siteID=#tempEncodeForURL(rc.trashItem.getSiteID())#&keywords=#tempEncodeForURL(rc.keywords)#&pageNum=#tempEncodeForURL(rc.pageNum)#"><i class="icon-circle-arrow-left"></i>  Back to Trash Bin</a>
 </div>
 
 <ul class="metadata">
-<li><strong>Label:</strong> #htmlEditFormat(rc.trashItem.getObjectLabel())#</li>
-<li><strong>Type:</strong> #htmlEditFormat(rc.trashItem.getObjectType())#</li>
-<li><strong>SubType:</strong> #htmlEditFormat(rc.trashItem.getObjectSubType())#</li>
-<li><strong>ObjectID:</strong> #htmlEditFormat(rc.trashItem.getObjectID())#</li>
-<li><strong>SiteID:</strong> #htmlEditFormat(rc.trashItem.getSiteID())#</li>
-<li><strong>ParentID:</strong> #htmlEditFormat(rc.trashItem.getParentID())#</li>
-<li><strong>Object Class:</strong> #htmlEditFormat(rc.trashItem.getObjectClass())#</li>
-<li><strong>DeleteID:</strong> #htmlEditFormat(rc.trashItem.getDeleteID())#</li>
+<li><strong>Label:</strong> #tempEncodeForHTML(rc.trashItem.getObjectLabel())#</li>
+<li><strong>Type:</strong> #tempEncodeForHTML(rc.trashItem.getObjectType())#</li>
+<li><strong>SubType:</strong> #tempEncodeForHTML(rc.trashItem.getObjectSubType())#</li>
+<li><strong>ObjectID:</strong> #tempEncodeForHTML(rc.trashItem.getObjectID())#</li>
+<li><strong>SiteID:</strong> #tempEncodeForHTML(rc.trashItem.getSiteID())#</li>
+<li><strong>ParentID:</strong> #tempEncodeForHTML(rc.trashItem.getParentID())#</li>
+<li><strong>Object Class:</strong> #tempEncodeForHTML(rc.trashItem.getObjectClass())#</li>
+<li><strong>DeleteID:</strong> #tempEncodeForHTML(rc.trashItem.getDeleteID())#</li>
 <li><strong>Deleted Date:</strong> #LSDateFormat(rc.trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(rc.trashItem.getDeletedDate(),"short")#</li>
-<li><strong>Deleted By:</strong> #htmlEditFormat(rc.trashItem.getDeletedBy())#</li>
+<li><strong>Deleted By:</strong> #tempEncodeForHTML(rc.trashItem.getDeletedBy())#</li>
 </ul>
 
 <cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
@@ -83,14 +83,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 			<span id="mover1" class="text"> 
-			<cfif parentBean.getIsNew()>NA<cfelse>#htmlEditFormat(parentBean.getMenuTitle())#</cfif>
+			<cfif parentBean.getIsNew()>NA<cfelse>#tempEncodeForHTML(parentBean.getMenuTitle())#</cfif>
 
 			<button id="selectParent" name="selectParent" class="btn">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 			</button>		
 		</span>
 		</label>
-		<div class="controls" id="mover2" style="display:none"><input type="hidden" id="parentid" name="parentid" value="#HTMLEditFormat(rc.trashItem.getParentID())#"></div>
+		<div class="controls" id="mover2" style="display:none"><input type="hidden" id="parentid" name="parentid" value="#tempEncodeForHTMLAttribute(rc.trashItem.getParentID())#"></div>
 	</div>
 
 	</div>
@@ -139,9 +139,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##selectParent').click(function(e){
 			e.preventDefault();
 			siteManager.loadSiteParents(
-				'#JSStringFormat(rc.trashItem.getSiteID())#'
-				,'#JSStringFormat(rc.trashItem.getParentID())#'
-				,'#JSStringFormat(rc.trashItem.getParentID())#'
+				'#tempEncodeForJavascript(rc.trashItem.getSiteID())#'
+				,'#tempEncodeForJavascript(rc.trashItem.getParentID())#'
+				,'#tempEncodeForJavascript(rc.trashItem.getParentID())#'
 				,''
 				,1
 			);

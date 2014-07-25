@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </li>
     
        <cfloop query="rc.rsplugins">
-           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #HTMLEditFormat(rc.rsplugins.name)#</a>
+           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #tempEncodeForHTML(rc.rsplugins.name)#</a>
           </li>
        </cfloop> 
        <cfif listFind(session.mura.memberships,'S2')>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </li>
      
          <cfloop query="rc.rsplugins">
-             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #HTMLEditFormat(rc.rsplugins.name)#</a>
+             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #tempEncodeForHTML(rc.rsplugins.name)#</a>
             </li>
          </cfloop> 
          <cfif listFind(session.mura.memberships,'S2')>

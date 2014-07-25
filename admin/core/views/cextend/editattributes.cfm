@@ -60,8 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          <i class="icon-circle-arrow-left"></i> Back <span class="caret"></span>
        </a>
        <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">&hellip;to Class Extensions</a></li>
-          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
+          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#tempEncodeForURL(rc.subTypeID)#&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
        </ul>
        </div>
        <div class="btn-group">
@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          <i class="icon-pencil"></i> Edit <span class="caret"></span>
        </a>
        <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension</a></li>
-          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Attribute Set</a></li>
+          <li><a href="./?muraAction=cExtend.editSubType&subTypeID=#tempEncodeForURL(rc.subTypeID)#&siteid=#tempEncodeForURL(rc.siteid)#">Class Extension</a></li>
+          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#tempEncodeForURL(rc.subTypeID)#&extendSetID=#tempEncodeForURL(rc.extendSetID)#&siteid=#tempEncodeForURL(rc.siteid)#">Attribute Set</a></li>
        </ul>
        </div>
 </div>
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="btns">
 		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="jQuery('##editFrm#a#container').slideDown();this.style.display='none';jQuery('##editFrm#a#close').show();;$('li[attributeID=#attributeBean.getAttributeID()#]').addClass('attr-edit');return false;"><i class="icon-pencil"></i></a>
 		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="jQuery('##editFrm#a#container').slideUp();this.style.display='none';jQuery('##editFrm#a#open').show();$('li[attributeID=#attributeBean.getAttributeID()#]').removeClass('attr-edit');return false;"><i class="icon-ok"></i></a>
-		<a title="Delete" href="./?muraAction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=#attributeBean.getAttributeID()##rc.$.renderCSRFTokens(context=attributeBean.getAttributeID(),format='url')#" onClick="return confirmDialog('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+		<a title="Delete" href="./?muraAction=cExtend.updateAttribute&action=delete&subTypeID=#tempEncodeForURL(rc.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#tempEncodeForURL(rc.siteid)#&attributeID=#attributeBean.getAttributeID()##rc.$.renderCSRFTokens(context=attributeBean.getAttributeID(),format='url')#" onClick="return confirmDialog('Delete the attribute #tempEncodeForJavascript("'#attributeBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 		</div>
 	<div style="display:none;" id="editFrm#a#container">
 		<cf_dsp_attribute_form attributeBean="#attributeBean#" action="edit" subTypeID="#rc.subTypeID#" formName="editFrm#a#" muraScope="#rc.$#">

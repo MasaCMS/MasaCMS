@@ -47,7 +47,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.alttext')#
 					</label>
 					<div class="controls">
-						<input type="text" data-property="alttext" value="#HTMLEditFormat(fileMetaData.getAltText())#"  maxlength="255" class="filemeta span12">
+						<input type="text" data-property="alttext" value="#tempEncodeForHTMLAttribute(fileMetaData.getAltText())#"  maxlength="255" class="filemeta span12">
 					</div>
 				</div>
 				<div class="control-group">
@@ -58,7 +58,7 @@
 						<input type="checkbox" id="filemeta-setasdefault"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.setasdefault')#
 					</div>
 				</div>
-				<!---<input type="hidden" data-property="property" value="#HTMLEditFormat(rc.property)#" class="filemeta">--->
+				<!---<input type="hidden" data-property="property" value="#tempEncodeForHTMLAttribute(rc.property)#" class="filemeta">--->
 			</div>
 		</div>
 		<div id="tabFileMetaExifData" class="tab-pane">
@@ -70,7 +70,7 @@
 							#k#
 						</label>
 						<div class="controls">
-							<input type="text" data-property="#k#" value="#HTMLEditFormat(fileMetaData.getExifTag(k))#" class="exif span12">
+							<input type="text" data-property="#k#" value="#tempEncodeForHTMLAttribute(fileMetaData.getExifTag(k))#" class="exif span12">
 						</div>
 					</div>
 				</cfloop>
@@ -84,7 +84,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#
 					</label>
 					<div class="controls">
-						<input type="text" data-property="remoteid" value="#HTMLEditFormat(fileMetaData.getRemoteID())#"  maxlength="255" class="filemeta span12">
+						<input type="text" data-property="remoteid" value="#tempEncodeForHTMLAttribute(fileMetaData.getRemoteID())#"  maxlength="255" class="filemeta span12">
 					</div>
 				</div>
 				<div class="control-group">
@@ -92,7 +92,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#
 					</label>
 					<div class="controls">
-						<input type="text" data-property="remoteurl" value="#HTMLEditFormat(fileMetaData.getRemoteURL())#"  maxlength="255" class="filemeta span12">
+						<input type="text" data-property="remoteurl" value="#tempEncodeForHTMLAttribute(fileMetaData.getRemoteURL())#"  maxlength="255" class="filemeta span12">
 					</div>
 				</div>
 				<div class="control-group">
@@ -108,7 +108,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#
 					</label>
 					<div class="controls">
-						<input type="text" data-property="remotesource" value="#HTMLEditFormat(fileMetaData.getRemoteSource())#"  maxlength="255" class="filemeta span12">
+						<input type="text" data-property="remotesource" value="#tempEncodeForHTMLAttribute(fileMetaData.getRemoteSource())#"  maxlength="255" class="filemeta span12">
 					</div>
 				</div>
 				<div class="control-group">
@@ -116,7 +116,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#
 					</label>
 					<div class="controls">
-						<input type="text" data-property="remotesourceurl" value="#HTMLEditFormat(fileMetaData.getRemoteSourceURL())#"  maxlength="255" class="filemeta span12">
+						<input type="text" data-property="remotesourceurl" value="#tempEncodeForHTMLAttribute(fileMetaData.getRemoteSourceURL())#"  maxlength="255" class="filemeta span12">
 					</div>
 				</div>
 			</div>

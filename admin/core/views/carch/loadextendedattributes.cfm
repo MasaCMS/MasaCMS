@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
 		<div class="fieldset">
-			<h2>#HTMLEditFormat(extendSetBean.getName())#</h2>
+			<h2>#tempEncodeForHTML(extendSetBean.getName())#</h2>
 		<cfsilent>
 		<cfset attributesArray=extendSetBean.getAttributes() />
 		</cfsilent>
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 		      	<label class="control-label">
 				<cfif len(attributeBean.getHint())>
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+				<a href="##" rel="tooltip" title="#tempEncodeForHTMLAttribute(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
 				<cfelse>
 				#attributeBean.getLabel()#
 				</cfif>
@@ -96,14 +96,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     	 				 	<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
 		     	 				</a>
 		     	 				<ul class="dropdown-menu">
-		     	 					<li><a href="##" type="button" data-completepath="false" data-target="#JSStringFormat(attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+		     	 					<li><a href="##" type="button" data-completepath="false" data-target="#tempEncodeForJavascript(attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
 		     	 						<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
-		     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('#JSStringFormat(attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+		     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('#tempEncodeForJavascript(attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
 		     	 				</ul>
 		     	 			</div>
 						<cfelse>
 							<div class="btn-group">
-			     	 			<button type="button" data-target="#JSStringFormat(attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> Browse Assets</button>
+			     	 			<button type="button" data-target="#tempEncodeForJavascript(attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> Browse Assets</button>
 			     	 		</div>
 						</cfif>
 					</cfif>

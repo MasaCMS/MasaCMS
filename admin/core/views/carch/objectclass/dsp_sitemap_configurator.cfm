@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="availableObjectParams" 
 	data-object="site_map" 
-	data-name="#HTMLEditFormat('Site Map')#" 
+	data-name="#tempEncodeForHTMLAttribute('Site Map')#" 
 	data-objectid="#hash('site_map')#">
 	<div class="fieldset-wrap">
 		<div class="fieldset">

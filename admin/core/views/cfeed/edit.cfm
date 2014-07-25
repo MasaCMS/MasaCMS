@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
 
-<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
+<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif rc.compactDisplay eq "true">
 	<ul class="navTask nav nav-pills">
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 	</cfif>
 <cfelse>
-	<!---<h2>#HTMLEditFormat(rc.feedBean.getName())#</h2>--->
+	<!---<h2>#tempEncodeForHTML(rc.feedBean.getName())#</h2>--->
 	<cfsilent>
 		<cfset editlink = "?muraAction=cFeed.edit">
 		<cfset editlink = editlink & "&amp;siteid=" & rc.feedBean.getSiteID()>
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- Name --->
 			<div class="control-group">
 			  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-			  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
+			  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#tempEncodeForHTMLAttribute(rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
 			</div>
 
 			<!--- Sections --->
@@ -263,7 +263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
 							<option value="" <cfif rc.feedBean.getsortBy() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.donotapplysort')#</option>
 							<cfloop query="rsExtend">
-								<option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+								<option value="#tempEncodeForHTMLAttribute(rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
 							</cfloop>
 						</select>
 					</div>
@@ -415,7 +415,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<option value="#criterias[i][1]#" <cfif rsParams.criteria neq '' and rsParams.condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
 		</cfloop>
 		</select>
-		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#HTMLEditFormat(rsParams.criteria)#" class="span4" >
+		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#tempEncodeForHTMLAttribute(rsParams.criteria)#" class="span4" >
 			<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><i class="icon-minus-sign"></i></a>
 		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><i class="icon-plus-sign"></i></a>
 		</div>
@@ -429,7 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="tabDisplay" class="tab-pane fade">
 <div class="fieldset">
-<cfif isObjectInstance><h2>#HTMLEditFormat(rc.feedBean.getName())#</h2></cfif>
+<cfif isObjectInstance><h2>#tempEncodeForHTML(rc.feedBean.getName())#</h2></cfif>
 
 	<div class="control-group">
 		<div class="span4">
@@ -444,7 +444,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											
 					<cfloop condition="imageSizes.hasNext()">
 						<cfset image=imageSizes.next()>
-						<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.feedBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.feedBean.getImageSize()> selected</cfif>>#tempEncodeForHTML(image.getName())#</option>
 					</cfloop>
 						<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
 				</select>
@@ -482,7 +482,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <span id="altNameContainer" class="span6"<cfif NOT rc.feedBean.getDisplayName()> style="display:none;"</cfif>>
 	<div>
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="span12" name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(rc.feedBean.getAltName())#" maxlength="250">
+		<div class="controls"><input class="span12" name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getAltName())#" maxlength="250">
 		  </div>
 	</div>
 </span>
@@ -495,7 +495,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 		</label>
 		<div class="controls">
-			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#HTMLEditFormat(rc.feedBean.getCssclass())#" maxlength="255">
+			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getCssclass())#" maxlength="255">
 		</div>
 
 </div>
@@ -506,7 +506,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="span12" data-displayobjectparam="viewallink" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="span12" data-displayobjectparam="viewallink" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
@@ -515,7 +515,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="span12" data-displayobjectparam="viewalllabel" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="span12" data-displayobjectparam="viewalllabel" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
 </div>
@@ -598,7 +598,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.description')#</label>
-	<div class="controls"><textarea rows="6" class="span12" name="description" type="text" value="#HTMLEditFormat(rc.feedBean.getDescription())#"></textarea>
+	<div class="controls"><textarea rows="6" class="span12" name="description">#tempEncodeForHTMLAttribute(rc.feedBean.getDescription())#</textarea>
 	  </div>
 	</div> 
 	
@@ -651,7 +651,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="span6">
       	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
 		<div class="controls">
-			<input name="lang" type="text" value="#htmlEditFormat(rc.feedBean.getlang())#" maxlength="50">
+			<input name="lang" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getlang())#" maxlength="50">
 		</div>
 	</div>
 </div>
@@ -665,13 +665,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</label>
 		<div id="rg"  <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
 			<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+			<optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 			<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 			<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 			</optgroup>
 			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
 			<cfif rsGroups.recordcount>
-			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+			<optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 			<cfloop query="rsGroups">
 			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
 			</cfloop>
@@ -679,7 +679,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
 			<cfif rsGroups.recordcount>
-			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+			<optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 			<cfloop query="rsGroups">
 			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
 			</cfloop>
@@ -706,7 +706,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="action" value="add">
 <cfelse>
 	<cfif rc.compactDisplay neq "true">
-		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
+		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 	</cfif>
 	<cfif isObjectInstance>
 		<input type="button" class="btn" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
@@ -744,9 +744,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <input type="hidden" id="instanceParams" value='#rc.feedBean.getInstanceParams()#' name="instanceParams" />		
-<input type="hidden" name="assignmentID" value="#HTMLEditFormat(rc.assignmentID)#" />
-<input type="hidden" name="orderno" value="#HTMLEditFormat(rc.orderno)#" />
-<input type="hidden" name="regionid" value="#HTMLEditFormat(rc.regionID)#" />
+<input type="hidden" name="assignmentID" value="#tempEncodeForHTMLAttribute(rc.assignmentID)#" />
+<input type="hidden" name="orderno" value="#tempEncodeForHTMLAttribute(rc.orderno)#" />
+<input type="hidden" name="regionid" value="#tempEncodeForHTMLAttribute(rc.regionID)#" />
 #rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 <!--- Button Begins --->
 </form>
@@ -808,7 +808,7 @@ jQuery(document).ready(function(){
 #application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
 </span>
 
-<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
@@ -818,12 +818,12 @@ jQuery(document).ready(function(){
 	<div class="control-group">
 	<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-      <div class="controls"><input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50">  </div>
+      <div class="controls"><input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#tempEncodeForHTMLAttribute(rc.feedBean.getName())#" maxlength="50">  </div>
     </div>
 	<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 	      <div class="controls">
-	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(rc.feedBean.getChannelLink())#" maxlength="250">
+	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#tempEncodeForHTMLAttribute(rc.feedBean.getChannelLink())#" maxlength="250">
 	      </div>
 	</div>
 </div>
@@ -834,7 +834,7 @@ jQuery(document).ready(function(){
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="span12" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
@@ -843,7 +843,7 @@ jQuery(document).ready(function(){
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="span12" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
 </div>
@@ -916,7 +916,7 @@ jQuery(document).ready(function(){
 			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
 		</label>
 		<div class="controls">
-			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#HTMLEditFormat(rc.feedBean.getCssclass())#" maxlength="255">
+			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#tempEncodeForHTMLAttribute(rc.feedBean.getCssclass())#" maxlength="255">
 		</div>
 	</div>
 
@@ -991,7 +991,7 @@ jQuery(document).ready(function(){
 			<input type="hidden" name="action" value="add">
 		<cfelse>
 			<cfif rc.compactDisplay neq "true">
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
+				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 			</cfif>
 			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 			<cfif rc.compactDisplay eq "true">

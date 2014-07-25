@@ -50,32 +50,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfoutput>
 	<div class="categoryassignmentcontent<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
-		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
+		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#tempEncodeForHTMLAttribute(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
 			<cfswitch expression="#rc.categoryAssignment#">		
 				<cfcase value="0">
-					<i class="icon-ban-circle" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#</span>
+					<i class="icon-ban-circle" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#</span>
 				</cfcase>
 				<cfcase value="1">
-					<i class="icon-ok" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
+					<i class="icon-ok" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
 				</cfcase>
 				<cfcase value="2">
-					<i class="icon-calendar" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"></i> 
+					<i class="icon-calendar" title="#tempEncodeForHTMLAttribute(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"></i> 
 				</cfcase>
 				<cfdefaultcase>
-					<i class="icon-ban-circle" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#</span>
+					<i class="icon-ban-circle" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#</span>
 				</cfdefaultcase>
 			</cfswitch>
 		</a>
-		<input type="hidden" id="categoryAssign#rc.catTrim#" name="categoryAssign#rc.catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
+		<input type="hidden" id="categoryAssign#rc.catTrim#" name="categoryAssign#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.categoryAssignment)#"/>
 		<cfif rc.categoryAssignment eq 2>
 			<input type="hidden" id="featureStart#rc.catTrim#" name="featureStart#rc.catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
-			<input type="hidden" id="startHour#rc.catTrim#" name="startHour#rc.catTrim#" value="#HTMLEditFormat(rc.startHour)#">
-			<input type="hidden" id="startMinute#rc.catTrim#" name="startMinute#rc.catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
-			<input type="hidden" id="startDayPart#rc.catTrim#" name="startDayPart#rc.catTrim#" value="#HTMLEditFormat(rc.startDayPart)#">
+			<input type="hidden" id="startHour#rc.catTrim#" name="startHour#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.startHour)#">
+			<input type="hidden" id="startMinute#rc.catTrim#" name="startMinute#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.startMinute)#">
+			<input type="hidden" id="startDayPart#rc.catTrim#" name="startDayPart#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.startDayPart)#">
 			<input type="hidden" id="featureStop#rc.catTrim#" name="featureStop#rc.catTrim#" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#">
-			<input type="hidden" id="stopHour#rc.catTrim#" name="stopHour#rc.catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
-			<input type="hidden" id="stopMinute#rc.catTrim#" name="stopMinute#rc.catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
-			<input type="hidden" id="stopDayPart#rc.catTrim#" name="stopDayPart#rc.catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
+			<input type="hidden" id="stopHour#rc.catTrim#" name="stopHour#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.stopHour)#">
+			<input type="hidden" id="stopMinute#rc.catTrim#" name="stopMinute#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.stopMinute)#">
+			<input type="hidden" id="stopDayPart#rc.catTrim#" name="stopDayPart#rc.catTrim#" value="#tempEncodeForHTMLAttribute(rc.stopDayPart)#">
 		</cfif>
 	</div>
 </cfoutput>

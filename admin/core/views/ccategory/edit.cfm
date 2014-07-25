@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cCategory.update&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 
 #$.renderEvent("onCategoryBasicTopRender")#
 
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
   </label>
   <div class="controls">
-    <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
+    <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#tempEncodeForHTMLAttribute(rc.categoryBean.getName())#" maxlength="50">
   </div>
 </div>
 
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
   </label>
   <div class="controls">
-    <input type="text" name="urltitle" class="span12" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
+    <input type="text" name="urltitle" class="span12" value="#tempEncodeForHTMLAttribute(rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
 </div>
 
@@ -175,13 +175,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </label>
   <div class="controls">
     	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span4">
-	       <optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+	       <optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 	       <option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
 	       </optgroup>
 	       <cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
       	<cfif rsGroups.recordcount>
-      	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+      	<optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
       	<cfloop query="rsGroups">
       	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
       	</cfloop>
@@ -189,7 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	</cfif>
       	<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
       	<cfif rsGroups.recordcount>
-      	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+      	<optgroup label="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
       	<cfloop query="rsGroups">
       	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
       	</cfloop>
@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    #application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#
 	  </label>
 	  <div class="controls">
-	    <textarea name="notes" class="span12" rows="8">#HTMLEditFormat(rc.categoryBean.getNotes())#</textarea>
+	    <textarea name="notes" class="span12" rows="8">#tempEncodeForHTML(rc.categoryBean.getNotes())#</textarea>
 	  </div>
 	</div>
 	
@@ -218,7 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
     <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   <cfelse> 
-    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
+    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
     <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   </cfif>
