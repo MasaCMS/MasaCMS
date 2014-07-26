@@ -2,7 +2,8 @@
 	<cfargument name="command" required="true" type="String">
 	<!--- Check permissions, if necessary. --->
 	<cfif listcontains("CopyFiles,CreateFolder,DeleteFiles,DeleteFolder,FileUpload,GetFiles,MoveFiles,RenameFile,RenameFolder", command)>
-		<cfif isDefined('server.railo') and not application.serviceFactory.getBean('$').init(session.siteid).validateCSRFTokens()>
+		<cfset var $=application.serviceFactory.getBean('$').init(session.siteid)>
+		<cfif not $.validateCSRFTokens(context='')>
 			<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
 		</cfif>
    	</cfif>

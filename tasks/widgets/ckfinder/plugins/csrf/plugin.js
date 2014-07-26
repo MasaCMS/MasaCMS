@@ -14,9 +14,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
           mura_token:response.token,
           mura_token_expires: response.expires
         };
-
       } else {
-
          return {
           mura_token: response.TOKEN,
           mura_token_expires: response.EXPIRES
@@ -60,7 +58,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
 
       extendObj(params,getTokens());
 
-      //alert(JSON.stringify(params))
+      //alert(JSON.stringify(params));
     
       // call the original function
       var result = orginalsendCommand.apply(this,[arguments[0],params,arguments[2],arguments[3],arguments[4]]);
