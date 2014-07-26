@@ -393,8 +393,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria1" class="span4">
-		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;"><i class="icon-minus-sign"></i></a>
-		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;"><i class="icon-plus-sign"></i></a>
+		<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;"><i class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;"><i class="icon-plus-sign"></i></a>
 		</div>
 		<cfelse>
 		<cfloop query="rsParams">
@@ -416,8 +416,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#HTMLEditFormat(rsParams.criteria)#" class="span4" >
-			<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><i class="icon-minus-sign"></i></a>
-		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><i class="icon-plus-sign"></i></a>
+			<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><i class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><i class="icon-plus-sign"></i></a>
 		</div>
 		</cfloop>
 		</cfif>
@@ -755,7 +755,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 --->
 <script type="text/javascript">
-searchParams.setSearchButtons();
+$searchParams.setSearchButtons();
 </script>
 </cfoutput>
 
