@@ -531,13 +531,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isdefined('previewData.changesetIDList')>
 			<cfset local.reloaded=false>
-			<cfset local.append=listLen(previewData.changesetIDList)>
 			<cfloop list="#previewData.changesetIDList#" index="local.i">
 				<cfif not local.reloaded and getBean('changeset').loadBy(changesetID=local.i,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
 					<cfloop from="1" to="#listLen(previewData.changesetIDList)#" index="local.i2">
-						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=local.append,showToolBar=request.muraChangesetPreviewToolbar)>	
-					</cfloop>
-					<cfset local.reloaded=true>
+						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=local.reloaded,showToolBar=request.muraChangesetPreviewToolbar)>	
+						<cfset local.reloaded=true>
+					</cfloop>	
 				</cfif>
 			</cfloop>
 			
