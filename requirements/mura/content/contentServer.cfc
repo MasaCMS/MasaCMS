@@ -527,12 +527,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.muraChangesetPreviewToolbar=true>
 		</cfif>
 
+		<cfparam name="previewData.lastApplied" default="#now()#">
+
 		<cfif isdefined('previewData.changesetIDList')>
 			<cfset local.reloaded=false>
+			<cfset local.append=listLen(previewData.changesetIDList)>
 			<cfloop list="#previewData.changesetIDList#" index="local.i">
-				<cfif not local.reloaded and getBean('changeset').loadBy(changesetID=local.i,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
+				<cfif not local.reloaded and getBean('changeset').loadBy(changesetID=local.i,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
 					<cfloop from="1" to="#listLen(previewData.changesetIDList)#" index="local.i2">
-						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>	
+						<cfset getBean('changesetManager').setSessionPreviewData(changesetid=listGetAt(previewData.changesetIDList,local.i2),append=local.append,showToolBar=request.muraChangesetPreviewToolbar)>	
 					</cfloop>
 					<cfset local.reloaded=true>
 				</cfif>
@@ -540,7 +543,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetIDList)>
 		<cfelse>
-			<cfif getBean('changeset').loadBy(changesetID=previewData.changesetid,siteid=previewData.siteID).getLastUpdate() gt previewData.lastupdate>
+			<cfif getBean('changeset').loadBy(changesetID=previewData.changesetid,siteid=previewData.siteID).getLastUpdate() gt previewData.lastApplied>
 				<cfset getBean('changesetManager').setSessionPreviewData(changesetid=previewData.changesetid,append=isDefined('url.append'),showToolBar=request.muraChangesetPreviewToolbar)>	
 			</cfif>
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
