@@ -434,6 +434,7 @@
 	</cfif>
 	
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
+	<cfset local.data.lastApplied=now()>
 	<cfset local.currentUser.setValue("ChangesetPreviewData",local.data)>
 	
 <cfelseif not arguments.append>
