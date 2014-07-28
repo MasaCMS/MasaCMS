@@ -78,7 +78,7 @@
 			// Image. And since Image2 will never be Image, for sure some filebrowser logic
 			// got to be refined.
 			config.filebrowserImage2BrowseUrl = config.filebrowserImageBrowseUrl;
-			config.filebrowserImage2UploadUrl = config.filebrowserImageUploadUrl;
+			//config.filebrowserImage2UploadUrl = config.filebrowserImageUploadUrl;
 
 			// Add custom elementspath names to widget definition.
 			image.pathName = lang.pathName;
