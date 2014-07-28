@@ -10,6 +10,7 @@ CKEDITOR.editorConfig = function( config )
 {
 
 	<cfoutput>
+	/*
 	var lite = config.lite|| {};
 	
 
@@ -30,7 +31,8 @@ CKEDITOR.editorConfig = function( config )
 
 	config.lite.userName='#JSStringFormat($.currentUser().getFullName())#';
 	config.lite.userId='#JSStringFormat($.currentUser().getUserID())#';
-
+	*/
+	
 	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
 	
