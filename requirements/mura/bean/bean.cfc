@@ -290,13 +290,13 @@ component extends="mura.cfobject" output="false" {
 		//writeDump(var=properties,abort=true);
 		
 		if(getBean('configBean').getValue(property='stricthtml',defaultValue=false)){
-			var exludelist=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='')
+			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='')
 			for(p in properties){
 				prop=properties[p];
 				param name="prop.html" default=false;
 				if(!prop.html){
 					propVal=getValue(prop.column);
-					if(isSimpleValue(propVal) && !(len(exludelist) && listFind(exludelist,prop.column)) && reFindNoCase("<[\/]?[^>]*>",propVal)){
+					if(isSimpleValue(propVal) && !(len(stricthtmlexclude) && listFind(stricthtmlexclude,prop.column)) && reFindNoCase("<[\/]?[^>]*>",propVal)){
 						variables.instance.errors['#prop.name#encoding']="The field '#prop.name#' contains invalid characters.";
 					}
 				}

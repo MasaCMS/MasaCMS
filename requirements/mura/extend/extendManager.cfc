@@ -283,6 +283,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var errors=structNew()>
 <cfset var site=application.settingsManager.getSite(arguments.data.siteID) />
 <cfset var rbFactory=site.getRBFactory()>
+<cfset var stricthtml=getBean('configBean').getValue(property='stricthtml',defaultValue=false)>
+<cfset var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='')>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -335,6 +337,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 						<cfset errors[rs.name]=rbFactory.getResourceBundle().messageFormat(rbFactory.getKey("params.erroremail"),ucase(rs.name))>
 					</cfif>
 				</cfif>
+			<cfelseif stricthtml and rs.validation neq 'htmlEditor' and !(len(stricthtmlexclude) && listFind(stricthtmlexclude,rs.name)) && reFindNoCase("<[\/]?[^>]*>",theValue)>
+				<cfset errors['#rs.name#encoding']="The field '#rs.name#' contains invalid characters.">
 			</cfif>
 		</cfif>
 			

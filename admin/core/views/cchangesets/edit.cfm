@@ -49,9 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
 <cfinclude template="dsp_secondary_menu.cfm">
 
-#application.utility.displayErrors(rc.changeset.getErrors())#
-
-
+<cfif not structIsEmpty(rc.changeset.getErrors())>
+  <p class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</p>
+</cfif>
 
 <cfif rc.changeset.getPublished()>
 <p class="alert">
