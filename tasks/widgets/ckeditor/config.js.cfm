@@ -32,7 +32,7 @@ CKEDITOR.editorConfig = function( config )
 	config.lite.userName='#JSStringFormat($.currentUser().getFullName())#';
 	config.lite.userId='#JSStringFormat($.currentUser().getUserID())#';
 	*/
-	
+
 	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
 	
@@ -248,4 +248,9 @@ CKEDITOR.on('instanceReady', function(ev){
 			);	
 		};
 	};
+});
+
+CKEDITOR.on( 'dialogDefinition', function( ev ) {
+    ev.data.definition.removeContents('Upload');
+    ev.data.definition.removeContents('upload');
 });

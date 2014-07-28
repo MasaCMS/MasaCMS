@@ -523,9 +523,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						}
 					}
 				]
-			}
-			/*
-			,
+			},
 			{
 				id: 'Upload',
 				hidden: true,
@@ -546,7 +544,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						'for': [ 'Upload', 'upload' ]
 					}
 				]
-			}*/
+			}
 		]
 	};
 } );

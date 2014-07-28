@@ -635,7 +635,6 @@
 				}
 				]
 			},
-			/*
 			
 				{
 				id: 'upload',
@@ -660,7 +659,7 @@
 				}
 				]
 			},
-			*/
+			
 				{
 				id: 'advanced',
 				label: linkLang.advanced,
