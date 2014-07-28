@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- process non-file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name,validation,message from tclassextendattributes where 
+select attributeID,name,validation,message,type from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -337,7 +337,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 						<cfset errors[rs.name]=rbFactory.getResourceBundle().messageFormat(rbFactory.getKey("params.erroremail"),ucase(rs.name))>
 					</cfif>
 				</cfif>
-			<cfelseif stricthtml and rs.validation neq 'htmlEditor' and !(len(stricthtmlexclude) && listFind(stricthtmlexclude,rs.name)) && reFindNoCase("<[\/]?[^>]*>",theValue)>
+			<cfelseif stricthtml and rs.type neq 'HTMLEditor' and !(len(stricthtmlexclude) && listFind(stricthtmlexclude,rs.name)) && reFindNoCase("<[\/]?[^>]*>",theValue)>
 				<cfset errors['#rs.name#encoding']="The field '#rs.name#' contains invalid characters.">
 			</cfif>
 		</cfif>
