@@ -53,11 +53,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <ul class="metadata">
-<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#:</strong> #tempEncodeForHTML(application.dashboardManager.getUserFromSessionQuery(rc.rslist))#</li>
+<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#:</strong> #encodeForHTML(application.dashboardManager.getUserFromSessionQuery(rc.rslist))#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lastaccessed")#:</strong> <cfif LSisDate(lastAccessed)>#LSDateFormat(lastAccessed,session.dateKeyFormat)#<cfelse>Not Available</cfif></li>
 <cfif LSisDate(lastAccessed)><li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.timebetweenvisit")#:</strong> #application.dashboardManager.getTimespan(lastAccessed,rc.rslist.entered,"long")#</li></cfif> 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#:</strong> #application.dashboardManager.getTimespan(rc.rslist.entered[rc.rslist.recordcount],rc.rslist.entered[1])#</li>
-<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.useragent")#:</strong> #tempEncodeForHTML(application.dashboardManager.getUserAgentFromSessionQuery(rc.rslist))#</li>
+<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.useragent")#:</strong> #encodeForHTML(application.dashboardManager.getUserAgentFromSessionQuery(rc.rslist))#</li>
 </ul>
 
 <table class="mura-table-grid"> 
@@ -72,12 +72,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rc.rslist">
 <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 <tr>
-<td><cfif rc.rslist.fname eq ''>Anonymous<cfelse>#tempEncodeForHTML(rc.rslist.fname)# #tempEncodeForHTML(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#tempEncodeForHTML(rc.rslist.company)#)</cfif></cfif></td>
+<td><cfif rc.rslist.fname eq ''>Anonymous<cfelse>#encodeForHTML(rc.rslist.fname)# #encodeForHTML(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#encodeForHTML(rc.rslist.company)#)</cfif></cfif></td>
 <td class="var-width">#$.dspZoom(crumbdata)#</td>
 
 <td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
-<td><cfif rc.rslist.keywords neq ''>#tempEncodeForHTML(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
-<td>#tempEncodeForHTML(rc.rslist.locale)#</td>
+<td><cfif rc.rslist.keywords neq ''>#encodeForHTML(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
+<td>#encodeForHTML(rc.rslist.locale)#</td>
 <td class="actions"><ul><li class="preview"><cfswitch expression="#rc.rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rslist.targetParams#');"><i class="icon-globe"></i></a>

@@ -79,9 +79,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
 					<li class="new#i#">
 						<cfif len(rsItemTypes.description)>
-							<a href="##" rel="tooltip" data-original-title="#tempEncodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
+							<a href="##" rel="tooltip" data-original-title="#encodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
 						</cfif>
-						<a href="./?muraAction=cArch.edit&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=#i#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
+						<a href="./?muraAction=cArch.edit&contentid=&parentid=#encodeForURL(rc.contentid)#&type=#i#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
 					</li>
 				</cfif>
 				<cfquery name="rsItemTypes" dbtype="query">
@@ -94,8 +94,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#output#
 						<cfelse>
 							<li class="new#i#">
-								<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#tempEncodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
-								<a href="./?muraAction=cArch.edit&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype=rsItemTypes.subtype,siteid=rc.siteID)#"></i> <span> <!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#/ --->#rsItemTypes.subType#</span></a>
+								<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#encodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
+								<a href="./?muraAction=cArch.edit&contentid=&parentid=#encodeForURL(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype=rsItemTypes.subtype,siteid=rc.siteID)#"></i> <span> <!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#/ --->#rsItemTypes.subType#</span></a>
 							</li>
 						</cfif>
 					</cfif>
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
 					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
-					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=File&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
+					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#encodeForURL(rc.contentid)#&type=File&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
 				</li>
 			</cfif>
 		<cfelse>	
@@ -113,8 +113,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItem">
-					<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#tempEncodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
-					<a href="./?muraAction=cArch.edit&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=File&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="newGalleryItemLink"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</span></a>
+					<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#encodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
+					<a href="./?muraAction=cArch.edit&contentid=&parentid=#encodeForURL(rc.contentid)#&type=File&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="newGalleryItemLink"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</span></a>
 				</li>
 			</cfif>
 			<cfloop query="rsItemTypes">
@@ -125,9 +125,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<li class="newFile">
 							<cfif len(rsItemTypes.description)>
-								<a href="##" rel="tooltip" data-original-title="#tempEncodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
+								<a href="##" rel="tooltip" data-original-title="#encodeForHTMLAttribute(rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
 							</cfif>
-							<a href="./?muraAction=cArch.edit&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="newGalleryItem"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/ --->#rsItemTypes.subType#</span></a>
+							<a href="./?muraAction=cArch.edit&contentid=&parentid=#encodeForURL(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="newGalleryItem"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/ --->#rsItemTypes.subType#</span></a>
 						</li>
 					</cfif>
 				</cfif>
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
 					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
-					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#tempEncodeForURL(rc.contentid)#&type=File&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#tempEncodeForURL(rc.ptype)#&compactDisplay=#tempEncodeForURL(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
+					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#encodeForURL(rc.contentid)#&type=File&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#encodeForURL(rc.ptype)#&compactDisplay=#encodeForURL(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
 				</li>
 			</cfif>
 		</cfif> 

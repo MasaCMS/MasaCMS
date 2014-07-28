@@ -50,26 +50,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="nav-module-specific" class="btn-group">
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="assignments">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="./?muraAction=cChangesets.edit&siteid=#tempEncodeForURL(rc.siteid)#&changesetID=#tempEncodeForHTML(rc.changesetID)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="./?muraAction=cChangesets.edit&siteid=#encodeForURL(rc.siteid)#&changesetID=#encodeForHTML(rc.changesetID)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a>
 				<cfif not rc.changeset.getPublished()>
 					<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
-					<a class="btn" href="##" onclick="return preview('#tempEncodeForJavascript(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+					<a class="btn" href="##" onclick="return preview('#encodeForJavascript(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
 				</cfif>
 			</cfcase>
 			<cfcase value="list">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="./?muraAction=cChangesets.edit&changesetID=&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="./?muraAction=cChangesets.edit&changesetID=&siteid=#encodeForURL(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-				<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000014&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000014"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.permissions')#</a>
+				<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000014&siteid=#encodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000014"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.permissions')#</a>
 				</cfif>
 			</cfcase>
 			<cfcase value="edit">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<cfif not rc.changeset.getIsNew()>
-					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="./?muraAction=cChangesets.assignments&siteid=#tempEncodeForURL(rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#"><i class="icon-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a>
+					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="./?muraAction=cChangesets.assignments&siteid=#encodeForURL(rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#"><i class="icon-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a>
 					<cfif not rc.changeset.getPublished()>
 						<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
-						<a class="btn" href="##" onclick="return preview('#tempEncodeForJavascript(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
+						<a class="btn" href="##" onclick="return preview('#encodeForJavascript(rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
 				</cfif>
 				</cfif>
 			</cfcase>

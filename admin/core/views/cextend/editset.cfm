@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          <i class="icon-circle-arrow-left"></i> Back <span class="caret"></span>
        </a>
        <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
-          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#tempEncodeForURL(rc.subTypeID)#&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
+          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
        </ul>
 </div>
 
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="control-group">
 	<label class="control-label">Attribute Set Name</label>
 	<div class="controls">
-	<input name="name" type="text" value="#tempEncodeForHTMLAttribute(extendSetBean.getName())#" required="true"/>
+	<input name="name" type="text" value="#encodeForHTMLAttribute(extendSetBean.getName())#" required="true"/>
 	</div>
 </div>
 
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSet" type="hidden">
-<input name="siteID" value="#tempEncodeForHTMLAttribute(rc.siteid)#" type="hidden">
+<input name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#" type="hidden">
 <input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
 #rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 </form>

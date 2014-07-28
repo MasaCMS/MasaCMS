@@ -87,7 +87,7 @@ function toggleAdminToolbar(){
 				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
 				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="icon-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
 				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
-				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #tempEncodeForHTML("#session.mura.fname# #session.mura.lname#")#.</li>
+				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #encodeForHTML("#session.mura.fname# #session.mura.lname#")#.</li>
 			</ul>
 		</div>
 </cfoutput>

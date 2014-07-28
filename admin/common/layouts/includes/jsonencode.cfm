@@ -62,7 +62,7 @@ function jsonencode(arg)
 		return ToString(arg);
 	}
 	if (issimplevalue(arg)){
-		return '"' & tempEncodeForJavascript(ToString(arg)) & '"';
+		return '"' & encodeForJavascript(ToString(arg)) & '"';
 	}
 	if (IsQuery(arg)){
 		o = o & '"RECORDCOUNT":' & arg.recordcount;

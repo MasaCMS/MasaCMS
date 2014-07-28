@@ -64,24 +64,24 @@
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
 			<cfif len(rc.sourceImage)>		
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
-				<h2><i class="icon-picture"></i> #tempEncodeForHTML(rc.rsMeta.filename)#</h2>
+				<h2><i class="icon-picture"></i> #encodeForHTML(rc.rsMeta.filename)#</h2>
 				<div id="image-orientation" class="control-group">
 					<label class="control-label">
-						#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
+						#encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
 					</label>
 					<div class="controls">
 						<select id="image-actions#f#">
 							<option value="">Please Select</option>
-							<option value="90"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
-							<option value="180"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
-							<option value="270"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 270&deg;</option>
-							<option value="horizontal"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
-							<option value="vertical"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Vertical</option>
-							<option value="diagonal"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
-							<option value="antidiagonal"> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
+							<option value="90"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
+							<option value="180"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
+							<option value="270"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 270&deg;</option>
+							<option value="horizontal"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
+							<option value="vertical"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Vertical</option>
+							<option value="diagonal"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
+							<option value="antidiagonal"> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
 						</select>
 
-						<input type="button" onclick="flipImage('#tempEncodeForJavascript(f)#');" class="btn" value="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+						<input type="button" onclick="flipImage('#encodeForJavascript(f)#');" class="btn" value="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
 					</div>
 				</div>
 
@@ -107,7 +107,7 @@
 						<cfset rc.customImageRatio=''>
 					</cfif>
 					<div class="control-group">
-						<label class="control-label">#tempEncodeForHTML(customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
+						<label class="control-label">#encodeForHTML(customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 						<div class="controls">
 							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 								<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="icon-refresh"></i> Reset</button>

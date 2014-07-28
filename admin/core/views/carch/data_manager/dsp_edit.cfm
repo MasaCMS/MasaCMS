@@ -68,15 +68,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 	</cftry>
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
-		<input type="hidden" name="#tempEncodeForHTMLAttribute(f)#" value="#fvalue#">
+		<input type="hidden" name="#encodeForHTMLAttribute(f)#" value="#fvalue#">
 	<cfelse>
 		<div class="control-group">
-  			<label class="control-label">#tempEncodeForHTML(f)#</label>
+  			<label class="control-label">#encodeForHTML(f)#</label>
   			<div class="controls">
   				<cfif len(fValue) gt 100>
-  					<textarea name="#tempEncodeForHTMLAttribute(f)#">#tempEncodeForHTML(fvalue)#</textarea>
+  					<textarea name="#encodeForHTMLAttribute(f)#">#encodeForHTML(fvalue)#</textarea>
   				<cfelse>
-  					<input type="text" name="#tempEncodeForHTMLAttribute(f)#" value="#tempEncodeForHTMLAttribute(fvalue)#">
+  					<input type="text" name="#encodeForHTMLAttribute(f)#" value="#encodeForHTMLAttribute(fvalue)#">
   			</cfif>
   		    </div>
  		 </div>
@@ -86,24 +86,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions">
 <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
 </div>
-<input type="hidden" name="formid" value="#tempEncodeForHTMLAttribute(rc.contentid)#">
-<input type="hidden" name="contentid" value="#tempEncodeForHTMLAttribute(rc.contentid)#">
-<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
+<input type="hidden" name="formid" value="#encodeForHTMLAttribute(rc.contentid)#">
+<input type="hidden" name="contentid" value="#encodeForHTMLAttribute(rc.contentid)#">
+<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
 <input type="hidden" name="muraAction" value="cArch.datamanager">
 <input type="hidden" name="responseID" value="#rsdata.responseID#">
-<input type="hidden" name="hour1" value="#tempEncodeForHTMLAttribute(rc.hour1)#">
-<input type="hidden" name="hour2" value="#tempEncodeForHTMLAttribute(rc.hour2)#">
-<input type="hidden" name="minute1" value="#tempEncodeForHTMLAttribute(rc.minute1)#">
-<input type="hidden" name="minute2" value="#tempEncodeForHTMLAttribute(rc.minute2)#">
-<input type="hidden" name="date1" value="#tempEncodeForHTMLAttribute(rc.date1)#">
-<input type="hidden" name="date2" value="#tempEncodeForHTMLAttribute(rc.date2)#">
-<input type="hidden" name="fieldlist" value="#tempEncodeForHTMLAttribute(rc.fieldnames)#">
-<input type="hidden" name="sortBy" value="#tempEncodeForHTMLAttribute(rc.sortBy)#">
-<input type="hidden" name="sortDirection" value="#tempEncodeForHTMLAttribute(rc.sortDirection)#">
-<input type="hidden" name="filterBy" value="#tempEncodeForHTMLAttribute(rc.filterBy)#">
-<input type="hidden" name="keywords" value="#tempEncodeForHTMLAttribute(rc.keywords)#">
+<input type="hidden" name="hour1" value="#encodeForHTMLAttribute(rc.hour1)#">
+<input type="hidden" name="hour2" value="#encodeForHTMLAttribute(rc.hour2)#">
+<input type="hidden" name="minute1" value="#encodeForHTMLAttribute(rc.minute1)#">
+<input type="hidden" name="minute2" value="#encodeForHTMLAttribute(rc.minute2)#">
+<input type="hidden" name="date1" value="#encodeForHTMLAttribute(rc.date1)#">
+<input type="hidden" name="date2" value="#encodeForHTMLAttribute(rc.date2)#">
+<input type="hidden" name="fieldlist" value="#encodeForHTMLAttribute(rc.fieldnames)#">
+<input type="hidden" name="sortBy" value="#encodeForHTMLAttribute(rc.sortBy)#">
+<input type="hidden" name="sortDirection" value="#encodeForHTMLAttribute(rc.sortDirection)#">
+<input type="hidden" name="filterBy" value="#encodeForHTMLAttribute(rc.filterBy)#">
+<input type="hidden" name="keywords" value="#encodeForHTMLAttribute(rc.keywords)#">
 <input type="hidden" name="entered" value="#rsData.entered#">
-<input type="hidden" name="moduleid" value="#tempEncodeForHTMLAttribute(rc.moduleid)#">
+<input type="hidden" name="moduleid" value="#encodeForHTMLAttribute(rc.moduleid)#">
 <input type="hidden" name="action" value="update">
 #rc.$.renderCSRFTokens(context=rsdata.responseID,format="form")#
 </form>

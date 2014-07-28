@@ -190,11 +190,11 @@
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
 									
 									<p>
-										<!--- <strong>#tempEncodeForHTML(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
+										<!--- <strong>#encodeForHTML(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
 										<cfif local.content.getIsNew()>
 											<h1><i class="icon-external-link"></i> Content Missing</h1>
 										<cfelse>
-											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #tempEncodeForHTML(local.content.getMenuTitle())#</a></h1>
+											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #encodeForHTML(local.content.getMenuTitle())#</a></h1>
 										</cfif>
 										
 									<!---
@@ -237,14 +237,14 @@
 
 								<!--- DATE --->
 								<td>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #tempEncodeForHTML(local.content.getMenuTitle())#">
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #encodeForHTML(local.content.getMenuTitle())#">
 										#DateFormat(local.item.getEntered(), 'yy/mm/dd')#
 									</a>
 								</td>
 								
 								<!--- TIME --->
 								<td>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #tempEncodeForHTML(local.content.getMenuTitle())#">
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #encodeForHTML(local.content.getMenuTitle())#">
 										#TimeFormat(local.item.getEntered(), 'h:mm tt')#
 									</a>
 								</td>
@@ -252,7 +252,7 @@
 								<!--- USER --->
 								<td>
 									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">
-										#tempEncodeForHTML(local.item.getName())#
+										#encodeForHTML(local.item.getName())#
 									</a>
 								</td>
 								
@@ -268,7 +268,7 @@
 											theComments = item.getComments();
 										}
 									</cfscript>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#tempEncodeForHTML(theComments)#</a>
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#encodeForHTML(theComments)#</a>
 								</td>
 
 								<td>
@@ -284,7 +284,7 @@
 								</td>
 
 								<td>
-									#tempEncodeForHTML(local.item.getFlagCount())#
+									#encodeForHTML(local.item.getFlagCount())#
 								</td>
 
 								<!--- ACTIONS --->
@@ -292,11 +292,11 @@
 								<ul>
 									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
 									<cfif IsValid('url', local.item.getURL())>
-										<li><a href="#tempEncodeForHTMLAttribute(local.item.getURL())#" title="#tempEncodeForHTMLAttribute(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
+										<li><a href="#encodeForHTMLAttribute(local.item.getURL())#" title="#encodeForHTMLAttribute(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
 									<cfelse>
 										<li class="disabled"><i class="icon-link"></i></li>
 									</cfif>
-									<li><a href="mailto:#tempEncodeForHTML(local.item.getEmail())#" title="#tempEncodeForHTMLAttribute(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
+									<li><a href="mailto:#encodeForHTML(local.item.getEmail())#" title="#encodeForHTMLAttribute(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
 								</ul>
 								</td>
 							</tr>

@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </div>
 
-<input type="hidden" value="#tempEncodeForHTMLAttribute(rc.siteid)#" name="siteID"/>
+<input type="hidden" value="#encodeForHTMLAttribute(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topSearches" name="muraAction"/>
 </form>
 
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rslist.recordcount>
 <cfloop query="rslist">
 <tr>
-<td>#tempEncodeForHTML(rslist.keywords)#</td>
+<td>#encodeForHTML(rslist.keywords)#</td>
 <td>#rsList.keywordCount#</td>
 <td>#decimalFormat((rsList.keywordCount/rstotal.keywordCount)*100)#%</td>
 </tr>

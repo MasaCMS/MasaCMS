@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form novalidate="novalidate" action="./?muraAction=cFeed.import2&feedid=#tempEncodeForURL(rc.feedid)#&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
+<form novalidate="novalidate" action="./?muraAction=cFeed.import2&feedid=#encodeForURL(rc.feedid)#&siteid=#encodeForURL(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(rc.feedID) />
 	<h2>#feedBean.getName()#</h2>
 		</cfoutput>

@@ -58,19 +58,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>Plugin Settings</h1>
 
 	<ul class="metadata">
-		<li><strong>Name:</strong> #tempEncodeForHTML(rc.pluginXML.plugin.name.xmlText)#</li>
-		<li><strong>Category:</strong> #tempEncodeForHTML(rc.pluginXML.plugin.category.xmlText)#</li>
-		<li><strong>Version:</strong> #tempEncodeForHTML(rc.pluginXML.plugin.version.xmlText)#</li>
-		<li><strong>Provider:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#tempEncodeForHTML(rc.pluginXML.plugin.provider.xmlText)#</a></li>
-		<!---<li><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#tempEncodeForHTML(rc.pluginXML.plugin.providerURL.xmlText)#</a></li>--->
+		<li><strong>Name:</strong> #encodeForHTML(rc.pluginXML.plugin.name.xmlText)#</li>
+		<li><strong>Category:</strong> #encodeForHTML(rc.pluginXML.plugin.category.xmlText)#</li>
+		<li><strong>Version:</strong> #encodeForHTML(rc.pluginXML.plugin.version.xmlText)#</li>
+		<li><strong>Provider:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#encodeForHTML(rc.pluginXML.plugin.provider.xmlText)#</a></li>
+		<!---<li><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#encodeForHTML(rc.pluginXML.plugin.providerURL.xmlText)#</a></li>--->
 		<li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
-		<li><strong>Package:</strong> <cfif len(package)>#tempEncodeForHTML(package)#<cfelse>N/A</cfif></li>
+		<li><strong>Package:</strong> <cfif len(package)>#encodeForHTML(package)#<cfelse>N/A</cfif></li>
 	</ul>
 
 	<cfif rsPlugin.recordcount and rsPlugin.deployed>
 		<ul class="navTask nav nav-pills">
 			<li><a href="./?muraAction=cSettings.updatePluginVersion&moduleid=#rc.moduleid#">Update Plugin Version</a></li>
-			<li><a href="./?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#tempEncodeForURL(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
+			<li><a href="./?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#encodeForURL(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
 		</ul>
 	</cfif>
 
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 				<div class="span3">
 					<label class="control-label">Plugin Name (Alias)</label>
-					<div class="controls"><input name="pluginalias" class="span12" type="text" value="#tempEncodeForHTMLAttribute(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
+					<div class="controls"><input name="pluginalias" class="span12" type="text" value="#encodeForHTMLAttribute(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
 			    </div>
 
 				<div class="span6">
@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="control-group">
 				     	<label class="control-label">
 							<cfif len(settingBean.getHint())>
-								<a href="##" rel="tooltip" title="#tempEncodeForHTMLAttribute(settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
+								<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
 							<cfelse>
 								#settingBean.getLabel()#
 							</cfif>
@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<div class="controls">
 								<ul>
 									<cfloop from="1" to="#objectsLen#" index="i">
-									<li>#tempEncodeForHTML(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
+									<li>#encodeForHTML(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
 									</cfloop>
 								</ul>
 							</div>
@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<div class="controls">
 							<ul>
 								<cfloop from="1" to="#scriptsLen#" index="i">
-									<li><cfif structKeyExists(rc.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#tempEncodeForHTML(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.runat)#<cfelse>#tempEncodeForHTML(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.event)#</cfif></li>
+									<li><cfif structKeyExists(rc.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#encodeForHTML(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.runat)#<cfelse>#encodeForHTML(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.event)#</cfif></li>
 								</cfloop>
 							</ul>
 						</div>
@@ -270,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<div class="controls">
 							<ul>
 								<cfloop from="1" to="#eventHandlersLen#" index="i">
-									<li><cfif structKeyExists(rc.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#tempEncodeForHTML(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat)#<cfelse>#tempEncodeForHTML(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event)#</cfif></li>
+									<li><cfif structKeyExists(rc.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#encodeForHTML(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat)#<cfelse>#encodeForHTML(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event)#</cfif></li>
 								</cfloop>
 							</ul>
 						</div>
@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<div class="controls">
 							<ul>
 								<cfloop from="1" to="#extensionsLen#" index="i">
-									<li>#tempEncodeForHTML(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.type)#/<cfif structKeyExists(rc.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#tempEncodeForHTML(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.subtype)#<cfelse>Default</cfif></li>
+									<li>#encodeForHTML(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.type)#/<cfif structKeyExists(rc.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#encodeForHTML(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.subtype)#<cfelse>Default</cfif></li>
 								</cfloop>
 							</ul>
 						</div>
@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label class="control-label">Site Assignment</label>
 					<div class="controls">
 						<cfloop query="rc.rsSites">
-							<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #tempEncodeForHTML(rc.rsSites.site)#</label>
+							<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #encodeForHTML(rc.rsSites.site)#</label>
 						</cfloop>
 					</div>
 				</div>
@@ -309,8 +309,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</span>
 			</cfif>
 
-			<input name="package" type="hidden" value="#tempEncodeForHTMLAttribute(package)#"/>
-			<input type="hidden" name="moduleID" value="#tempEncodeForHTMLAttribute(rc.moduleID)#">
+			<input name="package" type="hidden" value="#encodeForHTMLAttribute(package)#"/>
+			<input type="hidden" name="moduleID" value="#encodeForHTMLAttribute(rc.moduleID)#">
 			#rc.$.renderCSRFTokens(context=rc.moduleID,format="form")#
 		</div>
 

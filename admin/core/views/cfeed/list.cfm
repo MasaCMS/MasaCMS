@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rsLocal.recordcount>
 	<cfloop query="rc.rsLocal">
 	<tr>
-	<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#tempEncodeForURL(rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
+	<td class="var-width"><a title="Edit" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#encodeForURL(rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
 	<td>#rc.rsLocal.lang#</td>
 	<td>#rc.rsLocal.maxItems#</td>
 	<td>
@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</span>
 	</td>
-	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#tempEncodeForURL(rc.siteid)#&type=Local"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.rsLocal.feedID#" target="_blank"><i class="icon-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#tempEncodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
+	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#encodeForURL(rc.siteid)#&type=Local"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.rsLocal.feedID#" target="_blank"><i class="icon-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#encodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rslocal.feedid,format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 	</tr></cfloop>
 	<cfelse>
 	<tr>
@@ -114,14 +114,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rsRemote.recordcount>
 	<cfloop query="rc.rsRemote">
 	<tr>
-	<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#tempEncodeForURL(rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
+	<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#encodeForURL(rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
 	<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
 	<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
-	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#tempEncodeForURL(rc.siteid)#&type=Remote"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank"><i class="icon-rss"></i></a></li>
+	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#encodeForURL(rc.siteid)#&type=Remote"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank"><i class="icon-rss"></i></a></li>
 	
-	<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="./?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-download-alt"></i></a></li>
+	<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="./?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-download-alt"></i></a></li>
 	
-	<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#tempEncodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
+	<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="./?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#encodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsremote.feedid,format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 	</tr></cfloop>
 	<cfelse>
 	<tr>

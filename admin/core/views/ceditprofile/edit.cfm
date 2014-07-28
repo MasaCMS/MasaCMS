@@ -105,13 +105,13 @@ select * from rsSubTypes where subType <> 'Default'
 			<div class="span6">
 	     		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
 			    <div class="controls">
-			    	<input id="fname" name="fname" type="text" class="span12" value="#tempEncodeForHTMLAttribute(rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#">
+			    	<input id="fname" name="fname" type="text" class="span12" value="#encodeForHTMLAttribute(rc.userBean.getfname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#">
 			    </div>
 		    </div>
 		    
 		    <div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
-	      		<div class="controls"><input id="lname" name="lname" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12">
+	      		<div class="controls"><input id="lname" name="lname" type="text" value="#encodeForHTMLAttribute(rc.userBean.getlname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12">
 	        </div>
 		</div>
     </div>
@@ -121,30 +121,30 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="control-group">
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
-	      		<div class="controls"><input id="organization" name="company" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getcompany())#"  class="span12"></div>
+	      		<div class="controls"><input id="organization" name="company" type="text" value="#encodeForHTMLAttribute(rc.userBean.getcompany())#"  class="span12"></div>
 	        </div>
 			
 			<div class="span6">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
-	      	<div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getjobtitle())#"  class="span12"></div>
+	      	<div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#encodeForHTMLAttribute(rc.userBean.getjobtitle())#"  class="span12"></div>
 	      	</div>
 		</div>
 		
 		<div class="control-group">
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
-	      		<div class="controls"><input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#tempEncodeForHTMLAttribute(rc.userBean.getemail())#" class="span12"></div>
+	      		<div class="controls"><input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#encodeForHTMLAttribute(rc.userBean.getemail())#" class="span12"></div>
 	      	</div>
 	      	
 			<div class="span6">
 	      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
-	      		<div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getMobilePhone())#" class="span12"></div>
+	      		<div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#encodeForHTMLAttribute(rc.userBean.getMobilePhone())#" class="span12"></div>
 			</div>
 		</div>
 		
 		<div class="control-group">
       		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.username')#**</label>
-      		<div class="controls"><input id="username" name="usernameNoCache" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getusername())#" class="span6" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
+      		<div class="controls"><input id="username" name="usernameNoCache" type="text" value="#encodeForHTMLAttribute(rc.userBean.getusername())#" class="span6" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" >
           </div>
     </div>
 		
@@ -183,7 +183,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="fieldset">
 
 			<div class="control-group">
-				<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#tempEncodeForURL(cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
+				<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#encodeForURL(cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
 				
 		      <cfset rsAddresses=rc.userBean.getAddresses()>
 				<cfif rsAddresses.recordcount>
@@ -204,8 +204,8 @@ select * from rsSubTypes where subType <> 'Default'
 					<cfif rsAddresses.addressURL neq ''>#application.rbFactory.getKeyValue(session.rb,'user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#rsAddresses.addressURL#</a><br/></cfif>
 					<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#rsAddresses.addressEmail#</a></cfif>
 					</td>
-					<td nowrap class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#tempEncodeForURL(cgi.query_string)#"><i class="icon-pencil"></i></a></li>
-					<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cPrivateUsers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#tempEncodeForURL(cgi.query_string)#" onclick="return confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
+					<td nowrap class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#encodeForURL(cgi.query_string)#"><i class="icon-pencil"></i></a></li>
+					<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cPrivateUsers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#encodeForURL(cgi.query_string)#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
 				</tr>
 				</cfloop>
 				</table>
@@ -258,7 +258,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tags')#</label>
 				<div class="controls">
-					<input id="tags" name="tags" type="text" value="#tempEncodeForHTMLAttribute(rc.userBean.getTags())#" class="span12">
+					<input id="tags" name="tags" type="text" value="#encodeForHTMLAttribute(rc.userBean.getTags())#" class="span12">
 				</div>
 			</div>
 		</div>
@@ -279,7 +279,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <script type="text/javascript">
-initTabs(Array("#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#rc.activeTab#,0,0);
+initTabs(Array("#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#rc.activeTab#,0,0);
 </script>	
 --->
 	</cfoutput>
