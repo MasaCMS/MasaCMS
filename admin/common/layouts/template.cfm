@@ -45,14 +45,25 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 ---><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
+<cfif not isdefined('request.backported')>
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+</cfif>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 9 ]><html class="mura ie ie9" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<html lang="#tempEncodeForHTMLAttribute(session.locale)#" class="mura ie ie10">
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 9 ]><html class="mura ie ie9" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura ie ie10">
 <cfelse>
-<html lang="#tempEncodeForHTMLAttribute(session.locale)#" class="mura">
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura">
 </cfif>
   <head>
   	<cfsilent>
@@ -151,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
-    <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #tempEncodeForHTML(moduleTitle)#</cfif></title>
+    <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #encodeForHTML(moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Blue River Interactive Group">
 	<meta name="robots" content="noindex, nofollow, noarchive" />
@@ -217,10 +228,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var rb='#lcase(session.rb)#';
 	var siteid='#session.siteid#';
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
-	var activepanel=#tempEncodeForJavascript(rc.activepanel)#;
-	var activetab=#tempEncodeForJavascript(rc.activetab)#;
-	var webroot='#tempEncodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
-	var fileDelim='#tempEncodeForJavascript($.globalConfig("fileDelim"))#';
+	var activepanel=#encodeForJavascript(rc.activepanel)#;
+	var activetab=#encodeForJavascript(rc.activetab)#;
+	var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	var fileDelim='#encodeForJavascript($.globalConfig("fileDelim"))#';
 	</script>
 	
 	#session.dateKey#
@@ -263,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			           						{
 				           						url:'./index.cfm',
 				           						data:{
-				           							siteid:'#tempEncodeForJavascript(session.siteid)#',
+				           							siteid:'#encodeForJavascript(session.siteid)#',
 				           							alertid:$(_alert).attr('data-alertid'),
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},

@@ -63,8 +63,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif $.siteConfig('hasLockableNodes') and draftprompdata.islocked>
 			<cfset lockedBy=$.getBean('user').loadBy(userid=draftprompdata.lockid)>
 			<div class="alert alert-error alert-locked">
-				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#tempEncodeForHTMLAttribute(lockedBy.getFName())# #tempEncodeForHTML(lockedBy.getLName())#")#.</p>
-				<p><a tabindex="-1" href="mailto:#tempEncodeForHTML(lockedBy.getEmail())#?subject=#tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
+				<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#encodeForHTMLAttribute(lockedBy.getFName())# #encodeForHTML(lockedBy.getLName())#")#.</p>
+				<p><a tabindex="-1" href="mailto:#encodeForHTML(lockedBy.getEmail())#?subject=#encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
 			</div>
 		</cfif>
 
@@ -93,20 +93,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<th colspan="4">
 								<cfif not rc.targetversion>
 									<cfif publishedVersion.getApproved()>
-										<i class="icon-check"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#
+										<i class="icon-check"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#
 									<cfelse>
-										<i class="icon-edit"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#
+										<i class="icon-edit"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#
 									</cfif>
 								<cfelse>
-									<i class="icon-edit"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.editversion'))#
+									<i class="icon-edit"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.editversion'))#
 								</cfif>
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-						<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option var-width" data-contenthistid="#draftprompdata.publishedHistoryID#">#tempEncodeForHTML(publishedVersion.getMenuTitle())#</a></td>
+						<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option var-width" data-contenthistid="#draftprompdata.publishedHistoryID#">#encodeForHTML(publishedVersion.getMenuTitle())#</a></td>
 						<td>#LSDateFormat(publishedVersion.getlastupdate(),session.dateKeyFormat)# #LSTimeFormat(publishedVersion.getLastUpdate(),"medium")#</td>
-						<td>#tempEncodeForHTML(publishedVersion.getLastUpdateBy())#</td>
+						<td>#encodeForHTML(publishedVersion.getLastUpdateBy())#</td>
 						<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.publishedHistoryID#"><i class="icon-pencil"></i></a></td>
 					</tbody>
 				</table>
@@ -118,14 +118,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<table class="mura-table-grid">
 					<thead>
 						<tr>
-							<th colspan="4"><i class="icon-edit"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#</th>
+							<th colspan="4"><i class="icon-edit"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.historyid#">#tempEncodeForHTML(draftVersion.getMenuTitle())#</a></td>
+							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.historyid#">#encodeForHTML(draftVersion.getMenuTitle())#</a></td>
 							<td>#LSDateFormat(draftVersion.getlastupdate(),session.dateKeyFormat)# #LSTimeFormat(draftVersion.getLastUpdate(),"medium")#</td>
-							<td>#tempEncodeForHTML(draftVersion.getLastUpdateBy())#</td>
+							<td>#encodeForHTML(draftVersion.getLastUpdateBy())#</td>
 							<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.historyid#"><i class="icon-pencil"></i></a></td>
 						</tr>
 					</tbody>
@@ -136,15 +136,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<table class="mura-table-grid">	
 					<thead>
 						<tr>
-							<th colspan="4"><i class="icon-list"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.changesets'))#</th>
+							<th colspan="4"><i class="icon-list"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.changesets'))#</th>
 						</tr>
 					</thead>
 					<tbody>
 						<cfloop query="draftprompdata.pendingchangesets">
 						<tr>
-							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.pendingchangesets.contenthistid#">#tempEncodeForHTML(draftprompdata.pendingchangesets.changesetName)#</a></td>
+							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.pendingchangesets.contenthistid#">#encodeForHTML(draftprompdata.pendingchangesets.changesetName)#</a></td>
 							<td>#LSDateFormat(draftprompdata.pendingchangesets.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.pendingchangesets.lastupdate,"medium")#</td>
-							<td>#tempEncodeForHTML(draftprompdata.pendingchangesets.lastupdateby)#</td>
+							<td>#encodeForHTML(draftprompdata.pendingchangesets.lastupdateby)#</td>
 							<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.pendingchangesets.contenthistid#"><i class="icon-pencil"></i></a></td>
 						</tr>
 						</cfloop>
@@ -157,21 +157,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<table class="mura-table-grid">	
 					<thead>
 						<tr>
-							<th colspan="4"><i class="icon-time"></i> #tempEncodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.awaitingapproval'))#</th>
+							<th colspan="4"><i class="icon-time"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.awaitingapproval'))#</th>
 						</tr>
 					</thead>
 					<tbody>
 						<cfloop query="draftprompdata.yourapprovals">
 							<tr>
 								<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
-									<td class="var-width"><a href="##" data-contenthistid="#draftprompdata.yourapprovals.contenthistid#"  tabindex="-1" class="draft-prompt-option">#tempEncodeForHTML(draftprompdata.yourapprovals.menutitle)#</a></td>
+									<td class="var-width"><a href="##" data-contenthistid="#draftprompdata.yourapprovals.contenthistid#"  tabindex="-1" class="draft-prompt-option">#encodeForHTML(draftprompdata.yourapprovals.menutitle)#</a></td>
 									<td>#LSDateFormat(draftprompdata.yourapprovals.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.yourapprovals.lastupdate,"medium")#</td>
-									<td>#tempEncodeForHTML(draftprompdata.yourapprovals.lastupdateby)#</td>
+									<td>#encodeForHTML(draftprompdata.yourapprovals.lastupdateby)#</td>
 									<td><a href="##" data-contenthistid="#draftprompdata.yourapprovals.contenthistid#" tabindex="-1" class="draft-prompt-option"><i class="icon-pencil"></i></a></td>
 								<cfelse>
-									<td class="var-width"><a href="#content.getURL(querystring="previewid=#draftprompdata.yourapprovals.contenthistid#")#" tabindex="-1" class="draft-prompt-approval">#tempEncodeForHTML(draftprompdata.yourapprovals.menutitle)#</a></td>
+									<td class="var-width"><a href="#content.getURL(querystring="previewid=#draftprompdata.yourapprovals.contenthistid#")#" tabindex="-1" class="draft-prompt-approval">#encodeForHTML(draftprompdata.yourapprovals.menutitle)#</a></td>
 									<td>#LSDateFormat(draftprompdata.yourapprovals.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.yourapprovals.lastupdate,"medium")#</td>
-									<td>#tempEncodeForHTML(draftprompdata.yourapprovals.lastupdateby)#</td>
+									<td>#encodeForHTML(draftprompdata.yourapprovals.lastupdateby)#</td>
 									<td><a href="#content.getURL(querystring="previewid=#draftprompdata.yourapprovals.contenthistid#")#" tabindex="-1" class="draft-prompt-approval"><i class="icon-pencil"></i></a></td>
 
 								</cfif>

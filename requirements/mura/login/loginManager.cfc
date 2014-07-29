@@ -319,7 +319,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cflogout>
-	<cfset tempSessionInvalidate()>
+	<cfset sessionInvalidate()>
 	<cfset structclear(session) />
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>

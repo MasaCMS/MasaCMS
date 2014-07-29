@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectFolder')#
 		</option>
 		<cfloop query="rc.rsSections">
-			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#tempEncodeForHTML(rc.rsSections.pathString)#</option>
+			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#encodeForHTML(rc.rsSections.pathString)#</option>
 		</cfloop>
 	</select>
 	</div>
@@ -84,8 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - '  
 						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
 
-					<option title="#tempEncodeForHTMLAttribute(title)#" value="{'object':'category_summary','name':'#tempEncodeForJavascript(title)#','objectid':'#rc.rsSections.contentid#'}">
-						#tempEncodeForHTML(title)#
+					<option title="#encodeForHTMLAttribute(title)#" value="{'object':'category_summary','name':'#encodeForJavascript(title)#','objectid':'#rc.rsSections.contentid#'}">
+						#encodeForHTML(title)#
 					</option>
 
 					<cfset title=rc.rsSections.pathString 
@@ -93,24 +93,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& application.rbFactory.getKeyValue(session.rb, 
 					                                    'sitemanager.content.fields.relatedcontent')>
 
-					<option title="#tempEncodeForHTMLAttribute(title)#" value="{'object':'related_section_content','name':'#tempEncodeForJavascript(title)#','objectid':'#rc.rsSections.contentid#'}">
-						#tempEncodeForHTML(title)#
+					<option title="#encodeForHTMLAttribute(title)#" value="{'object':'related_section_content','name':'#encodeForJavascript(title)#','objectid':'#rc.rsSections.contentid#'}">
+						#encodeForHTML(title)#
 					</option>
 
 					<cfset title=rc.rsSections.pathString
 						& ' - ' 
 						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
 
-					<option titlie="#tempEncodeForHTMLAttribute(title)#" value="calendar_nav~#tempEncodeForHTML(title)#~#rc.rsSections.contentid#">
-						#tempEncodeForHTML(title)#
+					<option titlie="#encodeForHTMLAttribute(title)#" value="calendar_nav~#encodeForHTML(title)#~#rc.rsSections.contentid#">
+						#encodeForHTML(title)#
 					</option>
 
 					<cfset title=rc.rsSections.pathString
 						& ' - '  
 						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')>
 
-					<option title="#tempEncodeForHTMLAttribute(title)#" value="archive_nav~#tempEncodeForHTML(title)#~#rc.rsSections.contentid#">
-						#tempEncodeForHTML(title)#
+					<option title="#encodeForHTMLAttribute(title)#" value="archive_nav~#encodeForHTML(title)#~#rc.rsSections.contentid#">
+						#encodeForHTML(title)#
 					</option>
 				</cfif>
 			</cfloop>

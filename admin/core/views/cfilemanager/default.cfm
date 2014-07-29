@@ -29,13 +29,13 @@ finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/
 finder.language = '#lcase(session.rb)#';
 finder.height="600";
 <cfif session.resourceType eq "assets">
-finder.resourceType="#tempEncodeForJavascript('#session.siteID#_User_Assets')#";
+finder.resourceType="#encodeForJavascript('#session.siteID#_User_Assets')#";
 <cfelseif session.resourceType eq "files" and application.configBean.getValue('fmShowSiteFiles') neq 0>
-finder.resourceType="#tempEncodeForJavascript('#session.siteID#_Site_Files')#"
+finder.resourceType="#encodeForJavascript('#session.siteID#_Site_Files')#"
 <cfelseif session.resourceType eq "root" and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-finder.resourceType="#tempEncodeForJavascript('Application_Root')#";
+finder.resourceType="#encodeForJavascript('Application_Root')#";
 <cfelse>
-finder.resourceType="#tempEncodeForJavascript('#session.siteID#_User_Assets')#";
+finder.resourceType="#encodeForJavascript('#session.siteID#_User_Assets')#";
 </cfif>
 finder.create();
 </script>

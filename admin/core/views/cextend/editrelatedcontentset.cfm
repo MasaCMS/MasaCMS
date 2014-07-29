@@ -52,8 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Extension Overview</a>
+<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
+<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Extension Overview</a>
 </div>
 
 <h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="control-group">
 	<label class="control-label">Related Content Set Name</label>
 	<div class="controls">
-	<input name="name" type="text" value="#tempEncodeForHTMLAttribute(rcsBean.getName())#" required="true"/>
+	<input name="name" type="text" value="#encodeForHTMLAttribute(rcsBean.getName())#" required="true"/>
 	</div>
 </div>
 <cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateRelatedContentSet" type="hidden">
-<input name="siteID" value="#tempEncodeForHTMLAttribute(rc.siteid)#" type="hidden">
+<input name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#" type="hidden">
 <input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
 #rc.$.renderCSRFTokens(context=rc.relatedContentSetID,format="form")#
 </form>

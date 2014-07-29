@@ -54,8 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select * from rc.rsObjects where object like '%nav%'
 		</cfquery>
 		<cfloop query="rc.rsObjects">
-			<option title="#tempEncodeForHTMLAttribute(rc.rsObjects.name)#" value='{"object":"#tempEncodeForJavascript(rc.rsobjects.object)#","name":"#tempEncodeForJavascript(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
-				#tempEncodeForHTML(rc.rsObjects.name)#
+			<option title="#encodeForHTMLAttribute(rc.rsObjects.name)#" value='{"object":"#encodeForJavascript(rc.rsobjects.object)#","name":"#encodeForJavascript(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
+				#encodeForHTML(rc.rsObjects.name)#
 			</option>
 		</cfloop>
 	</select>

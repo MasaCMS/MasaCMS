@@ -46,27 +46,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.beanExtendable" entityName="address" table="tuseraddresses" output="false">
 
-<cfproperty name="addressID" fieldtype="id" type="string" default="" required="true" />
-<cfproperty name="userID" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="isPrimary" type="numeric" default="0" required="true" />
-<cfproperty name="address1" type="string" default="" required="true" />
-<cfproperty name="address2" type="string" default="" required="true" />
-<cfproperty name="fax" type="string" default="" required="true" />
-<cfproperty name="city" type="string" default="" required="true" />
-<cfproperty name="state" type="string" default="" required="true" />
-<cfproperty name="zip" type="string" default="" required="true" />
-<cfproperty name="phone" type="string" default="" required="true" />
-<cfproperty name="country" type="string" default="" required="true" />
-<cfproperty name="addressName" type="string" default="" required="true" />
-<cfproperty name="addressEmail" type="string" default="" required="true" />
-<cfproperty name="addressNotes" type="string" default="" required="true" />
-<cfproperty name="addressURL" type="string" default="" required="true" />
-<cfproperty name="hours" type="string" default="" required="true" />
-<cfproperty name="longitude" type="numeric" default="0" required="true" />
-<cfproperty name="latitude" type="numeric" default="0" required="true" />
-<cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" required="true" />
-<cfproperty name="isNew" type="numeric" default="0" required="true" />
+<cfproperty name="addressID" fieldtype="id" type="string" default="" />
+<cfproperty name="userID" type="string" default="" />
+<cfproperty name="siteID" type="string" default="" />
+<cfproperty name="isPrimary" type="numeric" default="0" />
+<cfproperty name="address1" type="string" default="" />
+<cfproperty name="address2" type="string" default="" />
+<cfproperty name="fax" type="string" default="" />
+<cfproperty name="city" type="string" default="" />
+<cfproperty name="state" type="string" default="" />
+<cfproperty name="zip" type="string" default="" />
+<cfproperty name="phone" type="string" default="" />
+<cfproperty name="country" type="string" default="" />
+<cfproperty name="addressName" type="string" default="" />
+<cfproperty name="addressEmail" type="string" default="" />
+<cfproperty name="addressNotes" type="string" default="" />
+<cfproperty name="addressURL" type="string" default="" />
+<cfproperty name="hours" type="string" default="" />
+<cfproperty name="longitude" type="numeric" default="0" />
+<cfproperty name="latitude" type="numeric" default="0" />
+<cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" />
+<cfproperty name="isNew" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'addressid'>
 <cfset variables.entityName = 'address'>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 	
-	<cfset variables.instance.errors=structnew() />
+	<cfset super.validate()>
 		
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>

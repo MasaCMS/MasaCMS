@@ -50,9 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfabort>
 <cfelseif rc.ajaxrequest>
 <cfoutput>{success:true,location:<cfif rc.contentBean.getActive()>
-	'#tempEncodeForJavascript(rc.contentBean.getURL())#'
+	'#encodeForJavascript(rc.contentBean.getURL())#'
 <cfelse>
-	'#tempEncodeForJavascript(rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
+	'#encodeForJavascript(rc.contentBean.getURL(queryString="previewid=" & rc.contentBean.getContentHistID()))#'
 </cfif>}</cfoutput>
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>

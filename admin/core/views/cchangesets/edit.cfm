@@ -49,9 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset csrfTokens= #rc.$.renderCSRFTokens(context=rc.changeset.getchangesetID(),format="url")#>
 <cfinclude template="dsp_secondary_menu.cfm">
 
-#application.utility.displayErrors(rc.changeset.getErrors())#
-
-
+<cfif not structIsEmpty(rc.changeset.getErrors())>
+  <p class="alert alert-error">#application.utility.displayErrors(rc.changeset.getErrors())#</p>
+</cfif>
 
 <cfif rc.changeset.getPublished()>
 <p class="alert">
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onChangesetEditMessageRender", request.event)#
 </span>
 
-<form novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#tempEncodeForURL(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cChangesets.save&siteid=#encodeForURL(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 
 <cfset tablist="tabBasic">
 <cfset tablabellist="Basic">
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
         </label>
         <div class="controls">
-        <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#tempEncodeForHTMLAttribute(rc.changeset.getName())#" maxlength="50">
+        <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#encodeForHTMLAttribute(rc.changeset.getName())#" maxlength="50">
          </div>
       </div>
 
@@ -105,13 +105,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'changesets.description')#
         </label>
         <div class="controls">
-        <textarea name="description" class="span12" rows="6">#tempEncodeForHTML(rc.changeset.getDescription())#</textarea>
+        <textarea name="description" class="span12" rows="6">#encodeForHTML(rc.changeset.getDescription())#</textarea>
         </div>
       </div>
 
       <div class="control-group">
         <label class="control-label">
-          <a href="##" rel="tooltip" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
+          <a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetclosedate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.closedate')# <i class="icon-question-sign"></i></a>
           </label>
         <div class="controls">
            <cfif rc.changeset.getPublished()>
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <div class="control-group">
         <label class="control-label">
-          <a href="##" rel="tooltip" title="#tempEncodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
+          <a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#" data-container="body">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-question-sign"></i></a>
           </label>
         <div class="controls">
           <cfif rc.changeset.getPublished()>
@@ -173,8 +173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <cfif len(rc.changeset.getTags())>
                 <cfloop list="#rc.changeset.getTags()#" index="i">
                   <span class="tag">
-                  #tempEncodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-                  <input name="tags" type="hidden" value="#tempEncodeForHTMLAttribute(i)#">
+                  #encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
+                  <input name="tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
                   </span>
                 </cfloop>
               </cfif>
@@ -198,13 +198,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfif rc.changesetID eq ''>
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
   <cfelse>
-    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#tempEncodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
+    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
     <cfif not rc.changeset.getPublished() and not hasPendingApprovals>
-      <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#tempEncodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
+      <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','./?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
     </cfif>
     <cfif rc.changeset.getPublished()>
-        <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#" onclick="confirmDialog('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#tempEncodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
+        <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.rollback')#" onclick="confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.rollbackconfirm'))#','./?muraAction=cChangesets.rollback&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())##csrfTokens#')" /> 
     </cfif>
      <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
   </cfif>

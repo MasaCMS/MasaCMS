@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2> --->
 		<div class="col-lg-6">
 			<div class="input-group input-append">
-				<input class="form-control" id="parentSearch" name="parentSearch" value="#tempEncodeForHTMLAttribute(rc.keywords)#" type="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'collections.search')#">
+				<input class="form-control" id="parentSearch" name="parentSearch" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'collections.search')#">
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);"><i class="icon-search"></i></button>
 				</span>
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<tr <cfif not(counter mod 2)>class="alt"</cfif>>
 							<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 							<td class="actions">
-								<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#tempEncodeForJavascript($.dspZoomText(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+								<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#encodeForJavascript($.dspZoomText(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 							</td>
 						</tr>
 					</cfif>

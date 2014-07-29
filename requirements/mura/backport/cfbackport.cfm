@@ -4,6 +4,7 @@
 		local.product.major = ListFirst(server.coldfusion.productVersion);
 		local.product.minor = ListFirst(Replace(ListDeleteAt(server.coldfusion.productVersion, 1), ",", "."));
 		param name="backportdir" default='';
+		request.backported=true;
 	</cfscript>
 	<cfif local.product.major lt 9>
 		<cfinclude template="#backportdir#cf9.cfm" />
@@ -15,6 +16,7 @@
 		<cfinclude template="#backportdir#cf11.cfm" />
 	</cfif>
 
+	<!---
 	<cffunction name="tempEncodeForHTML" output="false">
 	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
 		<cfreturn encodeForHTML(arguments.inputString)>
@@ -47,4 +49,5 @@
 	<cffunction name="tempSessionInvalidate" output="false">
 		<cfset sessionInvalidate()>
 	</cffunction>
+	--->
 </cfsilent>

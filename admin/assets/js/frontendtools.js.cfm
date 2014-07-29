@@ -297,7 +297,7 @@
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset stats=node.getStats()>
 				<cfif stats.getLockType() eq 'node' and stats.getLockID() neq session.mura.userid>
-					alert('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.draftprompt.contentislockedbyanotheruser"))#');
+					alert('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.draftprompt.contentislockedbyanotheruser"))#');
 					return false;
 				</cfif>
 			</cfif>
@@ -379,7 +379,7 @@
 					muraInlineEditor.data.changesetid='';
 				} else {
 					if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
-						if(confirm('#tempEncodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
+						if(confirm('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
 							muraInlineEditor.data._removePreviousChangeset=true;
 						}
 					}
@@ -425,7 +425,7 @@
 
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){
-								if(confirm('#tempEncodeForJavascript(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
+								if(confirm('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
 									muraInlineEditor.data.cancelpendingapproval=true;
 								} else {
 									muraInlineEditor.data.cancelpendingapproval=false;
@@ -610,16 +610,16 @@
 			muraaction: 'carch.update',
 			action: 'add',
 			ajaxrequest: true,
-			siteid: '#tempEncodeForJavascript(node.getSiteID())#',
-			contenthistid: '#tempEncodeForJavascript(node.getContentHistID())#',
-			contentid: '#tempEncodeForJavascript(node.getContentID())#',
-			parentid: '#tempEncodeForJavascript(node.getParentID())#',
-			moduleid: '#tempEncodeForJavascript(node.getModuleID())#',
+			siteid: '#encodeForJavascript(node.getSiteID())#',
+			contenthistid: '#encodeForJavascript(node.getContentHistID())#',
+			contentid: '#encodeForJavascript(node.getContentID())#',
+			parentid: '#encodeForJavascript(node.getParentID())#',
+			moduleid: '#encodeForJavascript(node.getModuleID())#',
 			approved: 0,
 			changesetid: '',
 			bean: 'content',
 			loadby: 'contenthistid',
-			approvalstatus: '#tempEncodeForJavascript(node.getApprovalStatus())#',
+			approvalstatus: '#encodeForJavascript(node.getApprovalStatus())#',
 			mura_token: '#csrfTokens.token#',
 			mura_token_expires: '#csrfTokens.expires#'
 			},
@@ -632,7 +632,7 @@
 		for(attribute in nodeCollection)
 			if(isSimpleValue(nodeCollection[attribute]) and reFindNoCase("(\{{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})",nodeCollection[attribute])){
 				if(started){writeOutput(",");}
-				writeOutput("'#tempEncodeForJavascript(lcase(attribute))#':'#tempEncodeForJavascript(trim(nodeCollection[attribute]))#'");
+				writeOutput("'#encodeForJavascript(lcase(attribute))#':'#encodeForJavascript(trim(nodeCollection[attribute]))#'");
 				started=true;
 			}
 		</cfscript>

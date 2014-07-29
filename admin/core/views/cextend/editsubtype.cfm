@@ -56,11 +56,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          <i class="icon-circle-arrow-left"></i> Back <span class="caret"></span>
        </a>
        <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
-          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#tempEncodeForURL(rc.subTypeID)#&siteid=#tempEncodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
+          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
        </ul>
 <cfelse>
-	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#tempEncodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extension Overview</a>
+	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extension Overview</a>
 </cfif>
 </div>
 
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="span3 subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
 				<label class="control-label">Sub Type</label>
 				<div class="controls">
-					<input class="span12" name="subType" id="subType" type="text" value="#tempEncodeForHTMLAttribute(subType.getSubType())#" required="true" maxlength="25"/>
+					<input class="span12" name="subType" id="subType" type="text" value="#encodeForHTMLAttribute(subType.getSubType())#" required="true" maxlength="25"/>
 				</div>
 			</div>
 			<div class="span3 SubTypeIconSelect"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	              </div>
 	              <button type="button" class="btn" id="iconreset"><i class="icon-undo"></i> Reset</button>
 				 </div>
-	              <input name="iconclass" type="hidden" value="#tempEncodeForHTMLAttribute(subtype.getIconClass())#" id="iconclass"/>
+	              <input name="iconclass" type="hidden" value="#encodeForHTMLAttribute(subtype.getIconClass())#" id="iconclass"/>
 	              <script>
 	              	$(function(){
 	              		var defaultIcon='#defaultIcon#';
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div class="control-group">
 		<label class="control-label">Description</label>
-		<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#tempEncodeForHTML(subtype.getDescription())#</textarea></div>
+		<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#encodeForHTML(subtype.getDescription())#</textarea></div>
 		</div>
 			
 	<div class="control-group hasRow1Container" >
@@ -209,11 +209,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSubType" type="hidden">
-<input name="siteID" value="#tempEncodeForHTMLAttribute(rc.siteid)#" type="hidden">
-<input type="hidden" name="baseTable" value="#tempEncodeForHTMLAttribute(subType.getBaseTable())#"/>
-<input type="hidden" name="baseKeyField" value="#tempEncodeForHTMLAttribute(subType.getBaseKeyField())#" />
-<input type="hidden" name="type" value="#tempEncodeForHTMLAttribute(subType.getType())#"/>
-<input type="hidden" name="dataTable" value="#tempEncodeForHTMLAttribute(subType.getDataTable())#" />
+<input name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#" type="hidden">
+<input type="hidden" name="baseTable" value="#encodeForHTMLAttribute(subType.getBaseTable())#"/>
+<input type="hidden" name="baseKeyField" value="#encodeForHTMLAttribute(subType.getBaseKeyField())#" />
+<input type="hidden" name="type" value="#encodeForHTMLAttribute(subType.getType())#"/>
+<input type="hidden" name="dataTable" value="#encodeForHTMLAttribute(subType.getDataTable())#" />
 #rc.$.renderCSRFTokens(context=rc.subtypeid,format="form")#
 </form>
 

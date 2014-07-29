@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="metaKeyWords" type="string" default=""/>
 <cfproperty name="displayStart" type="date" default=""/>
 <cfproperty name="displayStop" type="date" default=""/>
-<cfproperty name="body" type="string" default=""/>
+<cfproperty name="body" type="string" default="" html="true"/>
 <cfproperty name="title" type="string" default=""/>
 <cfproperty name="menuTitle" type="string" default=""/>
 <cfproperty name="URLTitle" type="string" default=""/>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="newfile" type="string" default=""/>
 <cfproperty name="lastUpdateBy" type="string" default=""/>
 <cfproperty name="lastUpdateByID" type="string" default="" comparable="false"/>
-<cfproperty name="summary" type="string" default=""/>
+<cfproperty name="summary" type="string" default="" html="true"/>
 <cfproperty name="siteID" type="string" default=""/>
 <cfproperty name="moduleID" type="string" default="00000000000000000000000000000000000" required="true" />
 <cfproperty name="isNav" type="numeric" default="1" required="true" />
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="restrictGroups" type="string" default=""/>
 <cfproperty name="template" type="string" default=""/>
 <cfproperty name="childTemplate" type="string" default=""/>
-<cfproperty name="responseMessage" type="string" default=""/>
+<cfproperty name="responseMessage" type="string" default="" html="true" />
 <cfproperty name="responseChart" type="numeric" default="0" required="true" />
 <cfproperty name="responseSendTo" type="string" default=""/>
 <cfproperty name="responseDisplayFields" type="string" default=""/>
@@ -473,11 +473,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
 	
+
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
-	<cfset variables.instance.errors=structnew() />
+	<cfset super.validate()>
 		
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>

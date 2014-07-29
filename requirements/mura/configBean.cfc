@@ -169,6 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.adManager=true/>
 <cfset variables.instance.emailBroadcaster=true/>
 <cfset variables.instance.allowSimpleHTMLForms=true/>
+<cfset variables.instance.securecookies=false/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

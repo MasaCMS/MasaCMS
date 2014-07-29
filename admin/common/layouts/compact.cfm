@@ -58,16 +58,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(rc.frontEndProxyLoc)>
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
 </cfif>
-</cfsilent>
-<cfoutput><cfcontent reset="true"><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
+</cfsilent><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#tempEncodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="#tempEncodeForHTMLAttribute(session.locale)#" class="mura ie"><!--<![endif]-->
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="#encodeForHTMLAttribute(session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
-<html lang="#tempEncodeForHTMLAttribute(session.locale)#" class="mura">
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura">
 </cfif>
 	<head>
 		<title>#application.configBean.getTitle()#</title>
@@ -130,10 +129,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
 		var rb='#lcase(session.rb)#';
 		var siteid='#session.siteid#';
-		var activepanel=#tempEncodeForJavascript(rc.activepanel)#;
-		var activetab=#tempEncodeForJavascript(rc.activetab)#;
-		var webroot='#tempEncodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
-		var fileDelim='#tempEncodeForJavascript($.globalConfig("fileDelim"))#';
+		var activepanel=#encodeForJavascript(rc.activepanel)#;
+		var activetab=#encodeForJavascript(rc.activetab)#;
+		var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+		var fileDelim='#encodeForJavascript($.globalConfig("fileDelim"))#';
 		</script>
 		
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />

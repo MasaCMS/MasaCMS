@@ -49,12 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
 	<div class="input-append">
-	    <input id="search" name="search" type="text" value="#tempEncodeForHTMLAttribute(rc.search)#" />
+	    <input id="search" name="search" type="text" value="#encodeForHTMLAttribute(rc.search)#" />
 	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
-	   <button type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#tempEncodeForURL(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
+	   <button type="button" class="btn" onclick="window.location='./?muraAction=cPublicUsers.advancedSearch&siteid=#encodeForURL(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
 	</div>
 <input type="hidden" name="muraAction" value="cPublicUsers.Search" />
-<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
+<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
 </form>
 
 
@@ -70,12 +70,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="var-width"><a title="Edit" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#tempEncodeForURL(rc.siteid)#&returnURL=#tempEncodeForURL(rc.currentURL)#">#tempEncodeForHTML(rc.rsList.lname)#, #tempEncodeForHTML(rc.rsList.fname)# <cfif company neq ''> (#tempEncodeForHTML(company)#)</cfif></a></td>
-                <td><cfif rc.rsList.email gt ""><a href="mailto:#tempEncodeForHTML(rc.rsList.email)#">#tempEncodeForHTML(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
+                <td class="var-width"><a title="Edit" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#encodeForURL(rc.siteid)#&returnURL=#encodeForURL(rc.currentURL)#">#encodeForHTML(rc.rsList.lname)#, #encodeForHTML(rc.rsList.fname)# <cfif company neq ''> (#encodeForHTML(company)#)</cfif></a></td>
+                <td><cfif rc.rsList.email gt ""><a href="mailto:#encodeForHTML(rc.rsList.email)#">#encodeForHTML(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
-			  <td>#tempEncodeForHTML(rc.rsList.LastUpdateBy)#</td>
-                <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#tempEncodeForURL(rc.siteid)#&returnURL=#tempEncodeForURL(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
+			  <td>#encodeForHTML(rc.rsList.LastUpdateBy)#</td>
+                <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#encodeForURL(rc.siteid)#&returnURL=#encodeForURL(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
               </tr>
             </cfoutput>
 			
@@ -100,18 +100,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <ul>
 		<cfif rc.nextN.currentpagenumber gt 1> 
 		  <li>
-		    <a href="./?muraAction=cPublicUsers.search&startrow=#rc.nextN.previous#&lname=#tempEncodeForURL(rc.lname)#&siteid=#tempEncodeForURL(rc.siteid)#&search=#tempEncodeForURL(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+		    <a href="./?muraAction=cPublicUsers.search&startrow=#rc.nextN.previous#&lname=#encodeForURL(rc.lname)#&siteid=#encodeForURL(rc.siteid)#&search=#encodeForURL(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
 		  </li>
 		</cfif>	
 		 <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
 		  <cfif rc.nextN.currentpagenumber eq i>
 		    <li class="active"><a href="##">#i#</a></li>
 		  <cfelse> 
-		    <li><a href="./?muraAction=cPublicUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#tempEncodeForURL(rc.lname)#&siteid=#tempEncodeForURL(rc.siteid)#&search=#tempEncodeForURL(rc.search)#">#i#</a></li>
+		    <li><a href="./?muraAction=cPublicUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#encodeForURL(rc.lname)#&siteid=#encodeForURL(rc.siteid)#&search=#encodeForURL(rc.search)#">#i#</a></li>
 		  </cfif>
 		</cfloop>
 		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-		  <li><a href="./?muraAction=cPublicUsers.search&startrow=#rc.nextN.next#&lname=#tempEncodeForURL(rc.lname)#&siteid=#tempEncodeForURL(rc.siteid)#&search=#tempEncodeForURL(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a>
+		  <li><a href="./?muraAction=cPublicUsers.search&startrow=#rc.nextN.next#&lname=#encodeForURL(rc.lname)#&siteid=#encodeForURL(rc.siteid)#&search=#encodeForURL(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a>
 		  </li>
 		</cfif> 
 		</ul>

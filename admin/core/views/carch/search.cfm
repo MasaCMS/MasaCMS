@@ -54,9 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>Keyword Search</h2>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-	<input name="keywords" value="#tempEncodeForHTMLAttribute(session.keywords)#" type="text" class="text" maxlength="50" /><input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+	<input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" class="text" maxlength="50" /><input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#tempEncodeForHTMLAttribute(rc.siteid)#">
+	<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
 	<input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
 <script>
@@ -109,7 +109,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
         
  <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#tempEncodeForURL(rc.topid)#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-pencil"></i></a></li>
+       <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-pencil"></i></a></li>
 	   <cfswitch expression="#rc.rsList.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -121,14 +121,14 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-	   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>
+	   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="Permissions" href="./?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
+          <li class="permissions"><a title="Permissions" href="./?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#tempEncodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#tempEncodeForURL(rc.parentid)#&startrow=#rc.startrow#"
+          <li class="delete"><a title="Delete" href="./?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#encodeForURL(rc.parentid)#&startrow=#rc.startrow#"
 			<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File",rc.rsList.type)><i class="icon-remove-sign"></i></a></li>
           <cfelseif rc.locking neq 'all'>
           <li class="delete disabled">Delete</li>
@@ -171,19 +171,19 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<ul>
 		<cfif rc.nextN.currentpagenumber gt 1> 
 			<li>
-				<a href="./?muraAction=cArch.search&siteid=#tempEncodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
+				<a href="./?muraAction=cArch.search&siteid=#encodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
 			</li>
 		</cfif>	
 		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
 			<cfif rc.nextn.currentpagenumber eq i>
 				<li class="active"><a href="##">#i#</a></li>
 			<cfelse> 
-				<li><a href="./?muraAction=cArch.search&siteid=#tempEncodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+				<li><a href="./?muraAction=cArch.search&siteid=#encodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
 			</cfif>
 		</cfloop>
 		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 			<li>
-				<a href="./?muraAction=cArch.search&siteid=#tempEncodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
+				<a href="./?muraAction=cArch.search&siteid=#encodeForURL(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
 			</li>
 		</cfif> 
 		</cfoutput>

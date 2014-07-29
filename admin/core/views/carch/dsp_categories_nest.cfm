@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul<cfif not attributes.nestLevel and attributes.useID> id="mura-nodes"</cfif> class="categories<cfif not attributes.nestLevel> checkboxTree</cfif>">
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="#attributes.elementName#" class="checkbox" <cfif listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"/> </cfif>#tempEncodeForHTML(rslist.name)#
+<cfif rslist.isOpen eq 1><input type="checkbox" name="#attributes.elementName#" class="checkbox" <cfif listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"/> </cfif>#encodeForHTML(rslist.name)#
 <cfif rslist.hasKids>
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" useID="#attributes.useID#" elementName="#attributes.elementName#">
 </cfif>

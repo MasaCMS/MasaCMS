@@ -236,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 	
 <cffunction name="getParent" output="false" returntype="any">
-	<cfif len(getParentID())>
+	<cfif len(getValue('parentid'))>
 		<cfreturn getBean('category').loadBy(categoryID=variables.instance.parentID, siteid=variables.instance.siteID )>
 	<cfelse>
 		<cfthrow message="Parent category does not exist.">

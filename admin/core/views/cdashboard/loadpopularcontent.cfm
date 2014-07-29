@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid" id="topPages">
 	<thead>
 		<tr>
-			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="./?muraAction=cDashboard.topContent&siteid=#tempEncodeForURL(rc.siteid)#&startDate=#tempEncodeForURL(rc.startDate)#&stopDate=#tempEncodeForURL(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="./?muraAction=cDashboard.topContent&siteid=#encodeForURL(rc.siteid)#&startDate=#encodeForURL(rc.startDate)#&stopDate=#encodeForURL(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 		</tr>
 	</thead>
 <tbody>
@@ -59,13 +59,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 	<td><cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		<cfcase value="Link">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		</cfswitch> <span>(#rsList.hits# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset count=rsList.recordcount>
 <table id="topReferrers">
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")# <a href="./?muraAction=cDashboard.topReferers&siteid=#tempEncodeForURL(rc.siteid)#&startDate=#tempEncodeForURL(rc.startDate)#&stopDate=#tempEncodeForURL(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")# <a href="./?muraAction=cDashboard.topReferers&siteid=#encodeForURL(rc.siteid)#&startDate=#encodeForURL(rc.startDate)#&stopDate=#encodeForURL(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
@@ -97,13 +97,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid" id="topSearches">
 <thead>
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="./?muraAction=cDashboard.topSearches&siteid=#tempEncodeForURL(rc.siteid)#&startDate=#tempEncodeForURL(rc.startDate)#&stopDate=#tempEncodeForURL(rc.stopDate)#">(View Report)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="./?muraAction=cDashboard.topSearches&siteid=#encodeForURL(rc.siteid)#&startDate=#encodeForURL(rc.startDate)#&stopDate=#encodeForURL(rc.stopDate)#">(View Report)</a></th>
 </tr>
 </thead>
 <tbody>
 <cfloop query="rslist">
 <tr>
-	<td>#tempEncodeForHTML(left(rsList.keywords,30-len(rsList.keywordCount)))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
+	<td>#encodeForHTML(left(rsList.keywords,30-len(rsList.keywordCount)))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
 </tr>
 </cfloop>
 <cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
@@ -116,19 +116,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset count=rsList.recordcount>
 <table id="topRated">
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")# <a href="./?muraAction=cDashboard.topRated&siteid=#tempEncodeForURL(rc.siteid)#&startDate=#tempEncodeForURL(rc.startDate)#&stopDate=#tempEncodeForURL(rc.stopDate)#">(View Report)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")# <a href="./?muraAction=cDashboard.topRated&siteid=#encodeForURL(rc.siteid)#&startDate=#encodeForURL(rc.startDate)#&stopDate=#encodeForURL(rc.stopDate)#">(View Report)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
 	<td><cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,28))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,28))#</a>
 		</cfcase>
 		<cfcase value="Link">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,28))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,28))#</a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#tempEncodeForHTML(left(rslist.menutitle,28))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#encodeForHTML(left(rslist.menutitle,28))#</a>
 		</cfcase>
 		</cfswitch> <img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
 </tr>
