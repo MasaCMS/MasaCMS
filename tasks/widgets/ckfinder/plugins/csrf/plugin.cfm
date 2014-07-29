@@ -1,7 +1,7 @@
 <cffunction name="CheckCSRF" returntype="Boolean" output="true">
 	<cfargument name="command" required="true" type="String">
 	<!--- Check permissions, if necessary. --->
-	<cfif listcontains("CopyFiles,CreateFolder,DeleteFiles,DeleteFolder,FileUpload,GetFiles,MoveFiles,RenameFile,RenameFolder", command)>
+	<cfif structKeyExists(session,'railo') and listcontains("CopyFiles,CreateFolder,DeleteFiles,DeleteFolder,FileUpload,GetFiles,MoveFiles,RenameFile,RenameFolder", command)>
 		<cfset var $=application.serviceFactory.getBean('$').init(session.siteid)>
 		<cfif not $.validateCSRFTokens(context='')>
 			<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
