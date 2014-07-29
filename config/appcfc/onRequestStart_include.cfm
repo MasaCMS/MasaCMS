@@ -257,6 +257,7 @@ If it has not set application.appInitialized=false. --->
 <cfparam name="session.mura.csrfusedtokens" default="#structNew()#">
 
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
+	<cfset application.utility.setSessionCookies()>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
