@@ -290,7 +290,7 @@ component extends="mura.cfobject" output="false" {
 		//writeDump(var=properties,abort=true);
 		
 		if(getBean('configBean').getValue(property='stricthtml',defaultValue=false)){
-			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='')
+			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='');
 			for(p in properties){
 				prop=properties[p];
 				param name="prop.html" default=false;
