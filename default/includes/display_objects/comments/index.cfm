@@ -64,11 +64,14 @@
 
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
-			<cfparam name="cookie.name" default="">
-			<cfparam name="cookie.email" default="">
-			<cfparam name="cookie.url" default="">
-			<cfparam name="cookie.remember" default="0">
-			<cfparam name="cookie.subscribe" default="0">
+			
+			<cfif not isDefined('cookie.name')>
+				<cfcookie name="remember" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+				<cfcookie name="subscribe" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+				<cfcookie name="name" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+				<cfcookie name="url" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+				<cfcookie name="email" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+			</cfif>
 
 			<cfset errorJSTxt = "">
 
@@ -182,18 +185,12 @@
 						<cfset commentBean.sendNotification() />
 					</cfif>
 					<cfif isBoolean(request.remember) and request.remember>
-						<cfcookie name="remember" value="1">
-						<cfcookie name="subscribe" value="#request.subscribe#">
-						<cfcookie name="name" value="#request.name#">
-						<cfcookie name="url" value="#request.url#">
-						<cfcookie name="email" value="#request.email#">
-					<cfelse>
-						<cfcookie name="remember" value="0">
-						<cfcookie name="subscribe" value="0">
-						<cfcookie name="name" value="">
-						<cfcookie name="url" value="">
-						<cfcookie name="email" value="">
-					</cfif>
+						<cfcookie name="remember" value="1" httponly="true" secure="#variables.$.global('SecureCookies')#">
+						<cfcookie name="subscribe" value="#request.subscribe#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+						<cfcookie name="name" value="#request.name#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+						<cfcookie name="url" value="#request.url#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+						<cfcookie name="email" value="#request.email#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+					</cfif> 
 				<cfelse>
 					<cfsavecontent variable="errorJSTxt">
 						<script type="text/javascript">
