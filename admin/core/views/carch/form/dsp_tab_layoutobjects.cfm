@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       
         <div class="span6">
               <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+                <cfoutput><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
             </label>
             <div class="controls">
               <select name="template" class="dropdown">
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div>
         <div class="span6">
         <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+                <cfoutput><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
               </label>
               <div class="controls">
               <select name="childTemplate" class="dropdown">
@@ -99,15 +99,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
  
     <div class="control-group">
-      <label class="control-label"> <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
+      <label class="control-label"> <a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
        <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
           <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
           <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
           <div class="alert">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#: 
           <cfif listFindNoCase("author,editor",application.permUtility.getnodePerm(inheritBean.getCrumbArray()))>
-             <strong><a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#HTMLEditFormat(inheritBean.getMenuTitle())#</a></strong>
+             <strong><a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#encodeForHTML(inheritBean.getMenuTitle())#</a></strong>
           <cfelse>
-             <strong>#HTMLEditFormat(inheritBean.getMenuTitle())#</strong>
+             <strong>#encodeForHTML(inheritBean.getMenuTitle())#</strong>
           </cfif>
          
           </div>
@@ -182,11 +182,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <dd>
                 <select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple="multiple" size="4" data-regionid="#r#">
                   <cfloop query="request.rsContentObjects#r#">
-                    <option  value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">
+                    <option  value="#request["rsContentObjects#r#"].object#~#encodeForHTML(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#encodeForHTML(request["rsContentObjects#r#"].params)#">
                     #request["rsContentObjects#r#"].name#
 						      
                     </option>
-                    <cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
+                    <cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#encodeForHTML(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#encodeForHTML(request["rsContentObjects#r#"].params)#","^")>
                   </cfloop>
                 </select>
                 <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">

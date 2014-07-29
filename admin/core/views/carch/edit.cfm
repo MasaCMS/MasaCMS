@@ -77,9 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset $=event.getValue("MuraScope")>
 <cfset tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <script>
-	var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts() and not requiresApproval><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
+	var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts() and not requiresApproval><cfoutput>'#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 		siteManager.hasNodeLock=<cfif stats.getLockType() eq 'node'>true<cfelse>false</cfif>;
-		<cfoutput>siteManager.unlocknodeconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";</cfoutput>
+		<cfoutput>siteManager.unlocknodeconfirm="#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#";</cfoutput>
 </script>
 
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()>
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	function setRequestedURL(){
 		siteManager.requestedURL=this.href
-		return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
+		return conditionalExit("#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
 	}</cfoutput>
 
 	$(document).ready(function(){
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		if(siteManager.form_is_modified(document.contentForm)){
 		if(msg==null){
-			<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
+			<cfoutput>msg="#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 		}
 		
 		document.contentForm.approved.value=0;
@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset approvalRequest=rc.contentBean.getApprovalRequest()>
 		<cfif not approvalRequest.getIsNew() and approvalRequest.getStatus() eq 'Pending'>
 			var pendingApproval=true;
-			var cancelPendingApproval=<cfoutput>'#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#'</cfoutput>;
+			var cancelPendingApproval=<cfoutput>'#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#'</cfoutput>;
 		<cfelse>
 			var pendingApproval=false;
 		</cfif>
@@ -301,12 +301,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<div class="form-actions">
 	
-		 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
+		 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="icon-edit"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		 <script>
 		 
 				saveDraftPrompt=function(){
 					confirmDialog(
-						'#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
+						'#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
 						function(){
 							if(siteManager.ckContent(draftremovalnotice)){
 								document.contentForm.approved.value=0;
@@ -367,23 +367,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 		</script>
 		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
-		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
+		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
-			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"> 
+			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#encodeForHTML(rc.siteID)#','');return false;"> 
 				<cfif requiresApproval>
-					<i class="icon-list"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
+					<i class="icon-list"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
 				<cfelse>
-					<i class="icon-list"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
+					<i class="icon-list"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
 				</cfif>
 				</button>	
 		</cfif>
 		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 			<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
 				<cfif requiresApproval>
-					<i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
+					<i class="icon-share-alt"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
 				<cfelse>
-					<i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
+					<i class="icon-check"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
 				</cfif>
 			</button>
 		</cfif> 
@@ -424,12 +424,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not rc.contentBean.getIsNew()>
 						<cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>
 							<cfif len(rc.contentBean.getApprovalStatus())>
-								<a href="##" onclick="return viewStatusInfo('#JSStringFormat(rc.contentBean.getContentHistID())#','#JSStringFormat(rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
+								<a href="##" onclick="return viewStatusInfo('#encodeForJavascript(rc.contentBean.getContentHistID())#','#encodeForJavascript(rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
 							<cfelse>
 								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
 							</cfif>				
 						<cfelseif len(rc.contentBean.getApprovalStatus()) and requiresApproval >
-							<a href="##" onclick="return viewStatusInfo('#JSStringFormat(rc.contentBean.getContentHistID())#','#JSStringFormat(rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
+							<a href="##" onclick="return viewStatusInfo('#encodeForJavascript(rc.contentBean.getContentHistID())#','#encodeForJavascript(rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
 						<cfelseif rc.contentBean.getapproved() lt 1>
 							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
 						<cfelse>
@@ -442,7 +442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</li>
 			<cfset started=false>
 			<li>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(rc.type)#</strong>
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#encodeForHTML(rc.type)#</strong>
 			</li>
 		</ul>
 	</cfif>
@@ -471,13 +471,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<p class="alert">
 		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
-		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.moduleID)#&siteID=#URLEncodedFormat(rc.siteID)#&topID=#URLEncodedFormat(rc.topID)#&contentID=#URLEncodedFormat(rc.contentID)#&return=#URLEncodedFormat(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(rc.parentID)#&startrow=#URLEncodedFormat(rc.startrow)#&type=#URLEncodedFormat(rc.type)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#"><strong>#HTMLEditFormat(pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
-		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#HTMLEditFormat(currentChangeset.getName())#</strong></cfif>
+		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#encodeForURL(rc.moduleID)#&siteID=#encodeForURL(rc.siteID)#&topID=#encodeForURL(rc.topID)#&contentID=#encodeForURL(rc.contentID)#&return=#encodeForURL(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#encodeForURL(rc.parentID)#&startrow=#encodeForURL(rc.startrow)#&type=#encodeForURL(rc.type)#&compactDisplay=#encodeForURL(rc.compactDisplay)#"><strong>#encodeForHTML(pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#encodeForHTML(currentChangeset.getName())#</strong></cfif>
 		</p>
 	</cfif>
 
 	<cfif len(rc.contentBean.getNotes())>
-		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #HTMLEditFormat(rc.contentBean.getNotes())#</p>
+		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #encodeForHTML(rc.contentBean.getNotes())#</p>
 	</cfif>
 
 	<cfif not structIsEmpty(rc.contentBean.getErrors())>
@@ -635,7 +635,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="form/dsp_tab_publishing.cfm">
 	<cfelse>
 		<input type="hidden" name="ommitPublishingTab" value="true">
-		<cfoutput><input type="hidden" name="parentid" value="#HTMLEditFormat(rc.parentid)#"></cfoutput>
+		<cfoutput><input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#"></cfoutput>
 	</cfif>
 	</cfsavecontent>
 	<cfoutput>
@@ -672,7 +672,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
 		<script type="text/javascript">
-		siteManager.tablist='#JSStringFormat(lcase(tabList))#';
+		siteManager.tablist='#encodeForJavascript(lcase(tabList))#';
 		siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
 		</script>
 	</cfif>
@@ -696,19 +696,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input name="responseDisplayFields" type="hidden" value="#rc.contentBean.getResponseDisplayFields()#">
 	</cfif>
 	<input name="action" type="hidden" value="add">
-	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-	<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+	<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
+	<input type="hidden" name="moduleid" value="#encodeForHTMLAttribute(rc.moduleid)#">
 	<input type="hidden" name="contenthistid" value="#rc.contentBean.getContentHistID()#">
-	<input type="hidden" name="return" value="#HTMLEditFormat(rc.return)#">
-	<input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
+	<input type="hidden" name="return" value="#encodeForHTMLAttribute(rc.return)#">
+	<input type="hidden" name="topid" value="#encodeForHTMLAttribute(rc.topid)#">
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
-	<input type="hidden" name="ptype" value="#HTMLEditFormat(rc.ptype)#">
-	<input type="hidden" name="type" value="#HTMLEditFormat(rc.type)#">
+	<input type="hidden" name="ptype" value="#encodeForHTMLAttribute(rc.ptype)#">
+	<input type="hidden" name="type" value="#encodeForHTMLAttribute(rc.type)#">
 	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
 	<input type="hidden" name="muraAction" value="cArch.update">
-	<input type="hidden" name="startrow" value="#HTMLEditFormat(rc.startrow)#">
+	<input type="hidden" name="startrow" value="#encodeForHTMLAttribute(rc.startrow)#">
 	<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
-	<input type="hidden" name="homeID" value="#HTMLEditFormat(rc.homeID)#">
+	<input type="hidden" name="homeID" value="#encodeForHTMLAttribute(rc.homeID)#">
 	<input type="hidden" name="cancelpendingapproval" value="false">
 	<input type="hidden" name="murakeepediting" value="false">
 	<input type="hidden" name="filemetadataassign" id="filemetadataassign" value=""/>
@@ -717,8 +717,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
-	<input type="hidden" name="closeCompactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />
-	<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />	
+	<input type="hidden" name="closeCompactDisplay" value="#encodeForHTMLAttribute(rc.compactDisplay)#" />
+	<input type="hidden" name="compactDisplay" value="#encodeForHTMLAttribute(rc.compactDisplay)#" />	
 
 	#rc.$.renderCSRFTokens(context=rc.contentBean.getContentHistID() & "add",format="form")#
 

@@ -68,15 +68,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 	</cftry>
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
-		<input type="hidden" name="#HTMLEditFormat(f)#" value="#fvalue#">
+		<input type="hidden" name="#encodeForHTMLAttribute(f)#" value="#fvalue#">
 	<cfelse>
 		<div class="control-group">
-  			<label class="control-label">#HTMLEditFormat(f)#</label>
+  			<label class="control-label">#encodeForHTML(f)#</label>
   			<div class="controls">
   				<cfif len(fValue) gt 100>
-  					<textarea name="#HTMLEditFormat(f)#">#HTMLEditFormat(fvalue)#</textarea>
+  					<textarea name="#encodeForHTMLAttribute(f)#">#encodeForHTML(fvalue)#</textarea>
   				<cfelse>
-  					<input type="text" name="#HTMLEditFormat(f)#" value="#HTMLEditFormat(fvalue)#">
+  					<input type="text" name="#encodeForHTMLAttribute(f)#" value="#encodeForHTMLAttribute(fvalue)#">
   			</cfif>
   		    </div>
  		 </div>
@@ -86,24 +86,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions">
 <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
 </div>
-<input type="hidden" name="formid" value="#HTMLEditFormat(rc.contentid)#">
-<input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#">
-<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+<input type="hidden" name="formid" value="#encodeForHTMLAttribute(rc.contentid)#">
+<input type="hidden" name="contentid" value="#encodeForHTMLAttribute(rc.contentid)#">
+<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
 <input type="hidden" name="muraAction" value="cArch.datamanager">
 <input type="hidden" name="responseID" value="#rsdata.responseID#">
-<input type="hidden" name="hour1" value="#HTMLEditFormat(rc.hour1)#">
-<input type="hidden" name="hour2" value="#HTMLEditFormat(rc.hour2)#">
-<input type="hidden" name="minute1" value="#HTMLEditFormat(rc.minute1)#">
-<input type="hidden" name="minute2" value="#HTMLEditFormat(rc.minute2)#">
-<input type="hidden" name="date1" value="#HTMLEditFormat(rc.date1)#">
-<input type="hidden" name="date2" value="#HTMLEditFormat(rc.date2)#">
-<input type="hidden" name="fieldlist" value="#HTMLEditFormat(rc.fieldnames)#">
-<input type="hidden" name="sortBy" value="#HTMLEditFormat(rc.sortBy)#">
-<input type="hidden" name="sortDirection" value="#HTMLEditFormat(rc.sortDirection)#">
-<input type="hidden" name="filterBy" value="#HTMLEditFormat(rc.filterBy)#">
-<input type="hidden" name="keywords" value="#HTMLEditFormat(rc.keywords)#">
+<input type="hidden" name="hour1" value="#encodeForHTMLAttribute(rc.hour1)#">
+<input type="hidden" name="hour2" value="#encodeForHTMLAttribute(rc.hour2)#">
+<input type="hidden" name="minute1" value="#encodeForHTMLAttribute(rc.minute1)#">
+<input type="hidden" name="minute2" value="#encodeForHTMLAttribute(rc.minute2)#">
+<input type="hidden" name="date1" value="#encodeForHTMLAttribute(rc.date1)#">
+<input type="hidden" name="date2" value="#encodeForHTMLAttribute(rc.date2)#">
+<input type="hidden" name="fieldlist" value="#encodeForHTMLAttribute(rc.fieldnames)#">
+<input type="hidden" name="sortBy" value="#encodeForHTMLAttribute(rc.sortBy)#">
+<input type="hidden" name="sortDirection" value="#encodeForHTMLAttribute(rc.sortDirection)#">
+<input type="hidden" name="filterBy" value="#encodeForHTMLAttribute(rc.filterBy)#">
+<input type="hidden" name="keywords" value="#encodeForHTMLAttribute(rc.keywords)#">
 <input type="hidden" name="entered" value="#rsData.entered#">
-<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+<input type="hidden" name="moduleid" value="#encodeForHTMLAttribute(rc.moduleid)#">
 <input type="hidden" name="action" value="update">
 #rc.$.renderCSRFTokens(context=rsdata.responseID,format="form")#
 </form>

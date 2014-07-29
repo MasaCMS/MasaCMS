@@ -60,14 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 		</label>
 		<div class="controls">
-			<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+			<input type="text" id="title" name="title" value="#encodeForHTMLAttribute(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
 		</div>
 	</div>
 
 <cfif rc.type neq 'Form' and  rc.type neq 'Component' >
 	<div class="control-group">
 		<label class="control-label">
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
+			<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
 			 <i class="icon-question-sign"></i></a> 
 			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</a>
 		</label>
 		<div class="controls" id="editSummary" style="display:none;">
-			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#HTMLEditFormat(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
+			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#encodeForHTML(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
 		</div>
 	</div>
 </cfif>
@@ -106,14 +106,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 		</label>
 		<div class="controls">
-			<textarea name="responseMessage" rows="6" class="span12">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
+			<textarea name="responseMessage" rows="6" class="span12">#encodeForHTML(rc.contentBean.getresponseMessage())#</textarea>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
 		<div class="controls">
-			<input type="text" name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="span12">
+			<input type="text" name="responseSendTo" value="#encodeForHTMLAttribute(rc.contentBean.getresponseSendTo())#" class="span12">
 		</div> 
 	</div>
 </cfif>

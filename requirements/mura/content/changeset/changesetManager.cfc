@@ -84,6 +84,10 @@
 <cffunction name="save" access="public" returntype="any" output="false">
 	<cfargument name="bean"/>
 	
+	<cfset arguments.bean.validate()>
+
+	<cfif not arguments.bean.hasErrors()>
+		
 	<cfset var rs="">
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -211,6 +215,9 @@
 				tag=local.i).save()>
 		</cfloop>
 	</cfif>
+
+	</cfif>
+
 	<cfreturn bean>
 
 </cffunction>

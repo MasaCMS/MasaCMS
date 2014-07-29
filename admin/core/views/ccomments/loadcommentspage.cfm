@@ -24,13 +24,13 @@
 					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(rc.comment.getEmail())))#" /></dd>
 				</cfif>
 				<dt>
-					#htmleditformat(rc.comment.getName())#
+					#encodeForHTML(rc.comment.getName())#
 					<cfif len(rc.comment.getParentID())>
 						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#rc.comment.getParent().getName()#</a>)</em>
 					</cfif>
 				</dt>
 				<dd class="comment">
-					#rc.$.setParagraphs(htmleditformat(rc.comment.getComments()))#
+					#rc.$.setParagraphs(encodeForHTML(rc.comment.getComments()))#
 				</dd>
 				<dd class="date-time">
 					#LSDateFormat(rc.comment.getEntered(),"long")#, #LSTimeFormat(rc.comment.getEntered(),"short")#

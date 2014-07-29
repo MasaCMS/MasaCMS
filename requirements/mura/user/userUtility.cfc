@@ -314,9 +314,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 				
 		<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
-		
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
-
+		<cfset sessionRotate()>
 
 </cffunction>
 

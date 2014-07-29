@@ -48,11 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h1>Update Plugin Version</h1>
 
 <ul class="metadata">
-<li><strong>Name:</strong> #htmlEditFormat(rc.pluginConfig.getName())#</li>
-<li><strong>Category:</strong> #htmlEditFormat(rc.pluginConfig.getCategory())#</li>
-<li><strong>Version:</strong> #htmlEditFormat(rc.pluginConfig.getVersion())#</li>
-<li><strong>Provider:</strong> #htmlEditFormat(rc.pluginConfig.getProvider())#</li>
-<li><strong>Provider URL:</strong> <a href="#rc.pluginConfig.getProviderURL()#" target="_blank">#htmlEditFormat(rc.pluginConfig.getProviderURL())#</a></li>
+<li><strong>Name:</strong> #encodeForHTML(rc.pluginConfig.getName())#</li>
+<li><strong>Category:</strong> #encodeForHTML(rc.pluginConfig.getCategory())#</li>
+<li><strong>Version:</strong> #encodeForHTML(rc.pluginConfig.getVersion())#</li>
+<li><strong>Provider:</strong> #encodeForHTML(rc.pluginConfig.getProvider())#</li>
+<li><strong>Provider URL:</strong> <a href="#rc.pluginConfig.getProviderURL()#" target="_blank">#encodeForHTML(rc.pluginConfig.getProviderURL())#</a></li>
 <li><strong>Plugin ID:</strong> #rc.pluginConfig.getPluginID()#</li>
 <li><strong>Package:</strong> <cfif len(rc.pluginConfig.getPackage())>#rc.pluginConfig.getPackage()#<cfelse>N/A</cfif></li>
 </ul>

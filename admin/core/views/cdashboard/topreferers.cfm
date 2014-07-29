@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </div>
 
-<input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
+<input type="hidden" value="#encodeForHTMLAttribute(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topReferers" name="muraAction"/>
 </form>
 
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rslist.recordcount>
 <cfloop query="rslist">
 <tr>
-<td class="var-width"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#HTMLEditFormat(left(rslist.referer,120))#</a><cfelse>#HTMLEditFormat(rslist.referer)#</cfif></td>
+<td class="var-width"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#encodeForHTML(left(rslist.referer,120))#</a><cfelse>#encodeForHTML(rslist.referer)#</cfif></td>
 <td>#rsList.referals#</td>
 <td>#decimalFormat((rsList.referals/rstotal.referals)*100)#%</td>
 </tr>

@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 
-  <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#urlEncodedFormat(rc.siteID)#&moduleid=#urlEncodedFormat(rc.moduleID)#&topid=#urlEncodedFormat(rc.topID)#">
+  <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#encodeForURL(rc.siteID)#&moduleid=#encodeForURL(rc.moduleID)#&topid=#encodeForURL(rc.topID)#">
   
   
   <div class="btn-group" id="sm-modify-view">
@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
                 <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
                 <cfloop query="rsExtend">
-                  <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+                  <option value="#encodeForHTMLAttribute(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
                 </cfloop>
               </select>
               <select name="sortDirection"  onchange="siteManager.setAsSorted();">
@@ -184,20 +184,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <dl class="mura-grid-hdr">
       <dt>
       		<span class="add"></span>
-      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a>
+      		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a>
       </dt>
       <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-        <dd class="objects"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
-        <dd class="display"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
-        <dd class="template"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
+        <dd class="objects"><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
+        <dd class="display"><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
+        <dd class="template"><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
       </cfif>
-      <dd class="nav"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
-      <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
+      <dd class="nav"><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
+      <dd class="updated"><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
       <dd class="actions">&nbsp;</dd>
     </dl>
     <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
     <!-- Begin List of Nodes -->
-    <li data-siteid="#HTMLEditFormat(rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#HTMLEditFormat(rc.rstop.sortby)#" data-sortdirection="#HTMLEditFormat(rc.rstop.sortdirection)#" class="#HTMLEditFormat(lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#HTMLEditFormat(rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url'))#">
+    <li data-siteid="#encodeForHTMLAttribute(rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#encodeForHTMLAttribute(rc.moduleid)#" data-sortby="#encodeForHTMLAttribute(rc.rstop.sortby)#" data-sortdirection="#encodeForHTMLAttribute(rc.rstop.sortdirection)#" class="#encodeForHTMLAttribute(lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#encodeForHTMLAttribute(rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url'))#">
      <cfif r><div class="marker"></div></cfif>
       <dl id="top-node">
       <dt>
@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#');"><i class="icon-plus-sign"></i></a>
       
         <cfif hasKids>
-	    	<span class="hasChildren open" onclick="siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#','#JSStringFormat(rc.topid)#','#JSStringFormat(rc.moduleid)#','#JSStringFormat(rc.sortby)#','#JSStringFormat(rc.sortdirection)#','#JSStringFormat(rc.rstop.type)#',1);"></span>
+	    	<span class="hasChildren open" onclick="siteManager.loadSiteManager('#encodeForJavascript(rc.siteID)#','#encodeForJavascript(rc.topid)#','#encodeForJavascript(rc.moduleid)#','#encodeForJavascript(rc.sortby)#','#encodeForJavascript(rc.sortdirection)#','#encodeForJavascript(rc.rstop.type)#',1);"></span>
 		</cfif>
 
       <cfsilent>
@@ -219,11 +219,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfsilent>
 		
         <cfif not listFindNoCase('none,read',perm)>
-          <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+          <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#encodeForURL(rc.siteid)#&contentid=#rc.topid#&topid=#encodeForURL(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
         <cfelse>
 		      <a class="#icon# title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		    </cfif>
-		#HTMLEditFormat(left(rc.rsTop.menutitle,75))#
+		#encodeForHTML(left(rc.rsTop.menutitle,75))#
         <cfif len(rc.rsTop.menutitle) gt 75>&hellip;</cfif>
           </a>
         <!--- <div class="mura-title-fade"></div> --->
@@ -259,7 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
            	 	<cfif not (perm eq 'editor' and request.hasPublishingTab)>
-           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
+           	 		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
            	 	 </cfif>
            	 	 <i class="icon-calendar"></i>
            	 	 <cfif not (perm eq 'editor' and request.hasPublishingTab)></a></cfif>
@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	<ul>
           <cfif not listFindNoCase('none,read',perm)>
             <cfset isLockedBySomeoneElse=$.siteConfig('hasLockableNodes') and len(rc.rsTop.lockid) and rc.rsTop.lockid neq session.mura.userid>
-            <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
+            <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#encodeForURL(rc.siteid)#&contentid=#rc.topid#&topid=#encodeForURL(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
             <cfswitch expression="#rc.rsTop.type#">
               <cfcase value="Page,Folder,Calendar,Gallery">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -303,9 +303,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
             </cfswitch>
-            <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
+            <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
             <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-              <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&type=#rc.rstop.type#"><i class="icon-group"></i></a></li>
+              <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&type=#rc.rstop.type#"><i class="icon-group"></i></a></li>
               <cfelse>
               <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
             </cfif>

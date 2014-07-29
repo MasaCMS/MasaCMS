@@ -45,6 +45,15 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+	<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+	</cfscript>
 	<cfparam name="attributes.siteID" default="" />
 	<cfparam name="attributes.parentID" default="" />
 	<cfparam name="attributes.nestLevel" default="1" />
@@ -97,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<label>
 							<cfif rslist.isOpen eq 1><input name="categoryid"<cfif attributes.disabled>
 								disabled="true"
-							</cfif> value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> </cfif>#HTMLEditFormat(rslist.name)#</label>
+							</cfif> value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> </cfif>#encodeForHTML(rslist.name)#</label>
 							<cfif attributes.disabled>
 								<input name="categoryid" value="#rslist.categoryid#" type="hidden" /> 
 							</cfif>
@@ -108,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<div id="categoryLabelContainer#cattrim#" class="categoryLabelContainer">
 								<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 									<!--- Quick Edit --->
-									<a class="dropdown-toggle<cfif not attributes.disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
+									<a class="dropdown-toggle<cfif not attributes.disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#encodeForHTMLAttribute(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
 											<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
@@ -119,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
 											</cfcase>
 											<cfcase value="2">
-												<i class="icon-calendar" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"></i>
+												<i class="icon-calendar" title="#encodeForHTMLAttribute(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"></i>
 											</cfcase>
 											<cfdefaultcase>
 												<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>

@@ -58,7 +58,7 @@ Mura CMS.
 	<cfproperty name="emailID" type="string" default="" required="true" />
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="subject" type="string" default=""/>
-	<cfproperty name="bodyHTML" type="string" default=""/>
+	<cfproperty name="bodyHTML" type="string" default="" html="true" />
 	<cfproperty name="bodyText" type="string" default=""/>
 	<cfproperty name="format" type="string" default=""/>
 	<cfproperty name="createdDate" type="date" default=""/>

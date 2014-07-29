@@ -78,16 +78,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             0%
           </cfif>
           )</li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#encodeForURL(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
           <cfif sent gt 0>
 #evaluate(round((clicks/sent)*100))#%
             <cfelse>
             0%
           </cfif>
           )</li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
-        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
-        <li><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#encodeForURL(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#encodeForURL(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
+        <li><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#encodeForURL(rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
           <cfif sent gt 0>
 #evaluate(round((bounces/sent)*100))#%
             <cfelse>
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
  <cfinclude template="dsp_secondary_menu.cfm">
-<form novalidate="novalidate" action="./?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
+<form novalidate="novalidate" action="./?muraAction=cEmail.update&siteid=#encodeForURL(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
 <div class="load-inline tab-preloader"></div>
 <script>$('.tab-preloader').spin(spinnerArgs2);</script>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.subject')#
         </label>
       <div class="controls">
-          <input type="text" class="span12" name="subject" value="#HTMLEditFormat(rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
+          <input type="text" class="span12" name="subject" value="#encodeForHTMLAttribute(rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
         </div>
       </div>
         
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#
           </label>
          <div class="controls">
-          <input type="text" class="span12" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#HTMLEditFormat(rc.emailBean.getFromLabel())#"),de("#HTMLEditFormat(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
+          <input type="text" class="span12" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#encodeForHTMLAttribute(rc.emailBean.getFromLabel())#"),de("#encodeForHTMLAttribute(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
           </div>
          </div>
         </div>
@@ -207,13 +207,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
 		{
-		fckEditor.config["CustomConfigurationsPath"]=urlencodedformat('#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=Email');
+		fckEditor.config["CustomConfigurationsPath"]=encodeForURL('#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=Email');
 		}
 		
 		fckEditor.create(); // create the editor.
 	</cfscript>
               <cfelse>
-              <textarea name="bodyHTML" id="bodyHTML"><cfif len(rc.emailBean.getBodyHTML())>#HTMLEditFormat(rc.emailBean.getBodyHTML())#<cfelse><p></p></cfif>
+              <textarea name="bodyHTML" id="bodyHTML"><cfif len(rc.emailBean.getBodyHTML())>#encodeForHTML(rc.emailBean.getBodyHTML())#<cfelse><p></p></cfif>
 </textarea>
               <script type="text/javascript">
 		var loadEditorCount = 0;
@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.textmessage')#
         </label>
         <div class="controls">
-          <textarea name="bodyText" id="textEditor">#HTMLEditFormat(rc.emailBean.getbodytext())#</textarea>
+          <textarea name="bodyText" id="textEditor">#encodeForHTML(rc.emailBean.getbodytext())#</textarea>
           </div>
         </div>
 
@@ -338,11 +338,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfsilent>
 	<cfif showDelete>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
+	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
 	</cfif>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
 	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
-	<button type="button" class="btn toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+	<button type="button" class="btn toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
 	<input type="hidden" name="emailid" value="#currentEmailid#">
 </div>
        
@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </div>
            
 	          <div class="scheduler-actions">
-		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
 		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
 		       </div>
         <input type="hidden" name="action" value="">

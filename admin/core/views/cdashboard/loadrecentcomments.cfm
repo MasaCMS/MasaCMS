@@ -67,13 +67,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
 		<tr>
 			<cfset args=arrayNew(1)>
-			<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
-			<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
+			<cfset args[1]="<strong>#encodeForHTML(comment.getName())#</strong>">
+			<cfset args[2]="<strong>#encodeForHTML(content.getMenuTitle())#</strong>">
 			<td class="var-width">#left(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args),116)#</td>
 			<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 			<td class="actions">
 			<ul>
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="icon-globe"></i></a></li>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#encodeForJavascript(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="icon-globe"></i></a></li>
 			</ul>
 			</td>
 		</tr>

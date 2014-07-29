@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif rc.nextN.currentpagenumber gt 1> 
 			<li>
-				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.prev')#</a>
+				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.previous#&siteid=#encodeForURL(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.prev')#</a>
 			</li>
 		</cfif>	
 		<cfloop from="1"  to="#rc.nextN.lastPage#" index="i">
@@ -66,12 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="active"><a href="##">#i#</a></li> 
 			<cfelse> 
 				<li>
-				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> 
+				<a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#encodeForURL(rc.siteid)#">#i#</a> 
 				</li>
 			</cfif>
 		</cfloop>
 		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.next')#&nbsp;&raquo;</a></li>
+			<li><a href="./?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&startrow=#rc.nextN.next#&siteid=#encodeForURL(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.next')#&nbsp;&raquo;</a></li>
 		</cfif> 
 		</ul>
 		</div>

@@ -46,6 +46,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
 <cfparam name="attributes.parentid" default="00000000000000000000000000000000001">
 <cfparam name="attributes.locking" default="none">
 <cfparam name="attributes.isSectionRequest" default="false">
@@ -136,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#HTMLEditFormat(rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#HTMLEditFormat(rsnest.sortby)#" data-sortdirection="#HTMLEditFormat(rsnest.sortdirection)#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#HTMLEditFormat(rsnest.type)#" class="#HTMLEditFormat(lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#HTMLEditFormat(attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url'))#">
+<li data-siteid="#encodeForHTMLAttribute(rsnest.siteid)#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#encodeForHTMLAttribute(rsnest.sortby)#" data-sortdirection="#encodeForHTMLAttribute(rsnest.sortdirection)#" data-moduleid="#encodeForHTMLAttribute(attributes.moduleid)#" data-type="#encodeForHTMLAttribute(rsnest.type)#" class="#encodeForHTMLAttribute(lcase(rsnest.type))# mura-node-data<cfif variables.restricted> restricted</cfif>" data-csrf="#encodeForHTMLAttribute(attributes.muraScope.renderCSRFTOkens(context=rsnest.contentid & 'quickedit',format='url'))#">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
@@ -160,11 +169,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#encodeForURL(attributes.topid)#&siteid=#encodeForURL(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
 		<a class="<cfif rsnest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	#HTMLEditFormat(left(rsnest.menutitle,75))#
+	#encodeForHTML(left(rsnest.menutitle,75))#
 	<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 	<!--- <div class="mura-title-fade"></div> --->
@@ -196,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
+				<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
 			</cfif>
 			<i class="icon-calendar"></i>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)></a></cfif>
@@ -227,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
+       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#encodeForURL(attributes.topid)#&siteid=#encodeForURL(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
 	   <cfswitch expression="#rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,rsnest.filename)#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -236,14 +245,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#rsnest.contentid#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-book"></i></a></li>
+	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#encodeForURL(attributes.topid)#&siteid=#encodeForURL(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-book"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-group"></i></a></li>
+          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#encodeForURL(attributes.topid)#&siteid=#encodeForURL(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		</cfif>
         <cfif deletable and not isLockedBySomeoneElse>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#encodeForURL(attributes.topid)#&siteid=#encodeForURL(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#encodeForURL(attributes.parentid)#&startrow=#attributes.startrow##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
         </cfif>

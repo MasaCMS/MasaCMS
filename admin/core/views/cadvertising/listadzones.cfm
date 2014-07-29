@@ -48,12 +48,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">  
 	<div class="input-append">
-		    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+		    <input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" class="text" />
 		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
 	</div>
-<!--- <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" /> --->
+<!--- <input name="keywords" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" class="text" maxlength="50" /> --->
 	<input type="hidden" name="muraAction" value="cAdvertising.listadzones">
-	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+	<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
 </form>
 
 <h1>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h1>
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <ul class="navTask nav nav-pills">
-<li><a href="./?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
+<li><a href="./?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#encodeForURL(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
 </ul>
 
 <table class="mura-table-grid">
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#encodeForURL(rc.siteid)#">#name#</a></td>
 		<td>#creativeType#</td>
 		<td>#height#</td>
 		<td>#width#</td>
@@ -89,8 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</span>
 		</td>
 		<td class="actions"><ul>
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li>
-		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="./?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a></li>
+		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="./?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#encodeForURL(rc.siteid)#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

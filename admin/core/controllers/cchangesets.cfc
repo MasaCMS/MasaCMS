@@ -160,7 +160,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save()>
 	<cfset arguments.rc.changesetID=arguments.rc.changeset.getChangesetID()>
 </cfif>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
+
+<cfif isDefined('arguments.rc.changeset') and not arguments.rc.changeset.hasErrors()>
+	<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
+</cfif>
 </cffunction>
 
 <cffunction name="delete" output="false">

@@ -24,7 +24,7 @@ function initDraftPrompt(){
 				  
 				  if (resp.showdialog !== undefined && resp.showdialog === "true"){
 					var dialog=jQuery(resp.message).dialog({
-						title:"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
+						title:"#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 						modal:true,
 						width:"600px"
 					});

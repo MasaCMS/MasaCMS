@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 ---><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 9 ]><html class="mura ie ie9" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<html lang="#HTMLEditFormat(session.locale)#" class="mura ie ie10">
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 9 ]><html class="mura ie ie9" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura ie ie10">
 <cfelse>
-<html lang="#HTMLEditFormat(session.locale)#" class="mura">
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura">
 </cfif>
   <head>
   	<cfsilent>
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
-    <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #HTMLEditFormat(moduleTitle)#</cfif></title>
+    <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #encodeForHTML(moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Blue River Interactive Group">
 	<meta name="robots" content="noindex, nofollow, noarchive" />
@@ -217,10 +217,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var rb='#lcase(session.rb)#';
 	var siteid='#session.siteid#';
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
-	var activepanel=#JSStringFormat(rc.activepanel)#;
-	var activetab=#JSStringFormat(rc.activetab)#;
-	var webroot='#JSStringFormat(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
-	var fileDelim='#JSStringFormat($.globalConfig("fileDelim"))#';
+	var activepanel=#encodeForJavascript(rc.activepanel)#;
+	var activetab=#encodeForJavascript(rc.activetab)#;
+	var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	var fileDelim='#encodeForJavascript($.globalConfig("fileDelim"))#';
 	</script>
 	
 	#session.dateKey#
@@ -263,7 +263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			           						{
 				           						url:'./index.cfm',
 				           						data:{
-				           							siteid:'#JSStringFormat(session.siteid)#',
+				           							siteid:'#encodeForJavascript(session.siteid)#',
 				           							alertid:$(_alert).attr('data-alertid'),
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},

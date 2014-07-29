@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													
 							<cfloop condition="imageSizes.hasNext()">
 								<cfset image=imageSizes.next()>
-								<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+								<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#encodeForHTML(image.getName())#</option>
 							</cfloop>
 								<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
 						</select>

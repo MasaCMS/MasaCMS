@@ -3,7 +3,7 @@
 		<cfoutput>
 		<div class="control-group">
 	      	<label class="control-label">
-	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#">
+	      		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#
 	      		 <i class="icon-question-sign"></i></a>
 	      	</label>

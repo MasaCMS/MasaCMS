@@ -10,7 +10,7 @@
 		<ul>
 		<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 			<cfset rcsBean = relatedContentSets[s]/>
-			<li><input id="mura-rc-option-label#s#" type="checkbox" class="mura-rc-quickassign" value="#rcsBean.getRelatedContentSetID()#"/> <label for="mura-rc-option-label#s#">#htmlEditFormat(rcsBean.getName())#</label></li>
+			<li><input id="mura-rc-option-label#s#" type="checkbox" class="mura-rc-quickassign" value="#rcsBean.getRelatedContentSetID()#"/> <label for="mura-rc-option-label#s#">#encodeForHTML(rcsBean.getName())#</label></li>
 		</cfloop>
 		</ul>
 	</div>
@@ -21,7 +21,7 @@
 		<cfset emptyClass = "item empty">
 		<cfoutput>
 			<div id="rcGroup-#rcsBean.getRelatedContentSetID()#" class="list-table">
-				<div class="list-table-content-set">#htmlEditFormat(rcsBean.getName())# 
+				<div class="list-table-content-set">#encodeForHTML(rcsBean.getName())# 
 					<cfif len(rcsBean.getAvailableSubTypes()) gt 0>
 						<span class="content-type">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.restrictedmessage')#: 
 							<cfloop list="#rcsBean.getAvailableSubTypes()#" index="i">

@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset changeset=changesets.next()>
 <tr>
 <td><input name="_changesetID" type="radio" onclick="removeChangesetPrompt(this.value);" value="#changeset.getChangesetID()#"<cfif changeset.getChangesetID() eq rc.changesetid> checked="true"</cfif>/></td>
-<td class="var-width">#HTMLEditFormat(changeset.getName())#</td>
+<td class="var-width">#encodeForHTML(changeset.getName())#</td>
 </tr>
 </cfloop>
 <tr>
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </tr>
 <tr>
 <td><input name="_changesetID" type="radio" onclick="removeChangesetPrompt(this.value);" value=""<cfif not len(rc.changesetID)> checked="true"</cfif>/></td>
-<td class="var-width">#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.none"))#</td>
+<td class="var-width">#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.none"))#</td>
 </tr>
 <cfelse>
 <tr>
@@ -76,6 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </table>
 <div style="display:none" id="removeChangesetContainer">
-<input type="checkbox" id="_removePreviousChangeset" value="true"/>&nbsp;#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),'<em>"#HTMLEditFormat(currentChangeset.getName())#"</em>')#
+<input type="checkbox" id="_removePreviousChangeset" value="true"/>&nbsp;#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),'<em>"#encodeForHTMLAttribute(currentChangeset.getName())#"</em>')#
 </div>
 </cfoutput>
