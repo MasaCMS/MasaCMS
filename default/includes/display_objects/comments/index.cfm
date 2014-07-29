@@ -65,13 +65,22 @@
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
 			
-			<cfif not isDefined('cookie.name')>
+			<cfif not isDefined('cookie.remember')>
 				<cfcookie name="remember" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+			</cfif>
+			<cfif not isDefined('cookie.subscribe')>
 				<cfcookie name="subscribe" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+			</cfif>
+			<cfif not isDefined('cookie.name')>
 				<cfcookie name="name" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+			</cfif>
+			<cfif not isDefined('cookie.url')>
 				<cfcookie name="url" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+			</cfif>
+			<cfif not isDefined('cookie.email')>
 				<cfcookie name="email" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 			</cfif>
+
 
 			<cfset errorJSTxt = "">
 
@@ -190,6 +199,12 @@
 						<cfcookie name="name" value="#request.name#" httponly="true" secure="#variables.$.global('SecureCookies')#">
 						<cfcookie name="url" value="#request.url#" httponly="true" secure="#variables.$.global('SecureCookies')#">
 						<cfcookie name="email" value="#request.email#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+					<cfelse>
+						<cfcookie name="remember" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="subscribe" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="name" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="url" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="email" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 					</cfif> 
 				<cfelse>
 					<cfsavecontent variable="errorJSTxt">
