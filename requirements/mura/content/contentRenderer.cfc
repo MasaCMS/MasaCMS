@@ -531,7 +531,7 @@ Display Objects
 	<cfreturn session.mura.userID />
 	<cfelse>
 	<cfif not structKeyExists(cookie,"pid")>
-	<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#">
+	<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#" httpOnly="true" secure="#variables.$.globalConfig('sercureCookies')#">
 	</cfif>
 	<cfreturn cookie.pid />
 	</cfif>
