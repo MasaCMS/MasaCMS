@@ -1,4 +1,3 @@
-# Folders and Files to ignore
 /demo*/
 /META-INF
 /WEB-INF
@@ -29,8 +28,6 @@ compiled/
 /temp
 /mxunit
 /tests
-
-# OS or Editor folders
 *~
 .DS_Store
 ._*
@@ -46,7 +43,6 @@ Thumbs.db
 *_notes/
 *.json
 .gitignore
-
 admin/assets/js/admin.min.js
-
 admin/assets/less/css/admin.css
+admin/config.codekit
