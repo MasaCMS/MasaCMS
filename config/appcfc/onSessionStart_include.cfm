@@ -67,3 +67,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.loginAttempts" type="numeric" default="0" />
 <cfparam name="session.blockLoginUntil" type="string" default="" />
 <cfset request.doMuraGlobalSessionStart=true>
+
+<cfset application.utility.setSessionCookies()>

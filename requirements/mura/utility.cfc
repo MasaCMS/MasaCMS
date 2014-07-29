@@ -476,6 +476,18 @@ Blog: www.codfusion.com--->
 		<cfreturn local.result/>
 	</cffunction>
 
+	<cffunction name="setSessionCookies">
+		<cfif application.configBean.getSecureCookies()>
+			<cfif server.coldfusion.productname eq "Railo">
+				<cfset setCookie('cfid', session.CFID, "never", "", "/", true, true, true)>
+				<cfset setCookie('cftoken', session.CFTOKEN, "never", "", "/", true, true, true)>
+			<cfelse>
+				<cfcookie name="CFID" value="#session.CFID#" expires="never" secure="true" httpOnly="true"/>
+				<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="never" secure="true" httpOnly="true"/>
+			</cfif>
+		</cfif>
+	</cffunction>
+
 <!--- 
 Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
@@ -486,15 +498,18 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfargument name="path" type="string" default="/">
     <cfargument name="secure" type="boolean" default="false">
     <cfargument name="httponly" type="boolean" default="false">
+    <cfargument name="maintainCase" type="boolean" default="false">
     <cfset var c = "">
     <cfset var expDate = "">
-	
-	<cfif server.coldfusion.productname eq "BlueDragon">
+
+	<cfif arguments.maintainCase>
+		<cfset c = "#name#=#value#;">
+	<cfelseif server.coldfusion.productname eq "BlueDragon">
 		<cfset c = "#LCase(name)#=#value#;">
 	<cfelse>
 		<cfset c = "#UCase(name)#=#value#;">
 	</cfif>
-	
+
     <cfswitch expression="#Arguments.expires#">
         <cfcase value="">
         </cfcase>
