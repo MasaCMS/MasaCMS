@@ -305,7 +305,7 @@ component extends="framework" output="false" {
 		param name="session.keywords" default="";
 		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
-		param name="cookie.rb" default="";
+		param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
 	
 		application.serviceFactory.getBean('utility').suppressDebugging();
 
