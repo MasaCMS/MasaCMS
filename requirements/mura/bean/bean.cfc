@@ -387,11 +387,13 @@ component extends="mura.cfobject" output="false" {
 					var defaultMetaData={column="",table="",datatype="varchar","default"="null",nullable=true};
 
 					param name="application.objectMappings.#variables.entityName#" default={};
-					application.objectMappings[variables.entityName].properties={};
-					application.objectMappings[variables.entityName].synthedFunctions={};
+					param name="application.objectMappings.#variables.entityName#.synthedFunctions" default={};
+					param name="application.objectMappings.#variables.entityName#.hasMany" default=[];
+					param name="application.objectMappings.#variables.entityName#.hasOne" default=[];
+
+					application.objectMappings[variables.entityName].properties={};	
 					application.objectMappings[variables.entityName].primarykey="";
-					application.objectMappings[variables.entityName].hasMany=[];
-					application.objectMappings[variables.entityName].hasOne=[];
+					
 					
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
