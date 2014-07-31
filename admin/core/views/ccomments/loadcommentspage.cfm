@@ -21,12 +21,12 @@
 				<cfif len(rc.avatar)>
 					<dd class="gravatar"><img src="#rc.avatar#"></dd>
 				<cfelse>
-					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(rc.comment.getEmail())))#" /></dd>
+					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(encodeForHTMLAttribute(rc.comment.getEmail()))))#" /></dd>
 				</cfif>
 				<dt>
 					#encodeForHTML(rc.comment.getName())#
 					<cfif len(rc.comment.getParentID())>
-						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#rc.comment.getParent().getName()#</a>)</em>
+						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#encodeForHTML(rc.comment.getParent().getName())#</a>)</em>
 					</cfif>
 				</dt>
 				<dd class="comment">
