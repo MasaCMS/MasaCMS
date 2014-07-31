@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	function reload(){
 		if (top.location != self.location) {
-			frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+			frontEndProxy = new Porthole.WindowProxy("#encodeForJavascript(session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
 					frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent("#encodeForJavascript(href)#")});

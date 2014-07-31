@@ -9,7 +9,7 @@
 		<label class="control-label">Search for Comments</label>
 		<div class="form-inline">
 			<div class="input-append">
-				<input type="text" name="keywords" value="#$.event('keywords')#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
+				<input type="text" name="keywords" value="#encodeForHTMLAttribute($.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="icon-search"></i></button>
 			</div>
 		</div>	
@@ -31,7 +31,7 @@
 			<div class="span8 date-range-selector">
 				<label class="control-label">Comment Date Range</label>
 				<div class="controls">
-					<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="startDate" id="startDate" class="datepicker span10 mura-custom-datepicker" placeholder="Start Date" value="#$.event('startDate')#" /></div>&nbsp;&ndash;&nbsp;<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="endDate" id="endDate" class="datepicker span10 mura-custom-datepicker" placeholder="End Date" value="#$.event('endDate')#" /></div>
+					<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="startDate" id="startDate" class="datepicker span10 mura-custom-datepicker" placeholder="Start Date" value="#encodeForHTMLAttribute($.event('startDate'))#" /></div>&nbsp;&ndash;&nbsp;<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="endDate" id="endDate" class="datepicker span10 mura-custom-datepicker" placeholder="End Date" value="#encodeForHTMLAttribute($.event('endDate'))#" /></div>
 				</div>
 			</div>
 			<!--- <div class="span4">
@@ -51,10 +51,10 @@
 				</div>
 			</div>
 		</div>
-		<input type="hidden" id="sortBy" name="sortBy" value="#$.event('sortBy')#">
-		<input type="hidden" id="sortDirection" name="sortDirection" value="#$.event('sortdirection')#">
-		<input type="hidden" id="nextN" name="nextN" value="#rc.nextN#">
-		<input type="hidden" id="pageNo" name="pageNo" value="#rc.pageNo#">
+		<input type="hidden" id="sortBy" name="sortBy" value="#encodeForHTMLAttribute($.event('sortBy'))#">
+		<input type="hidden" id="sortDirection" name="sortDirection" value="#encodeForHTMLAttribute($.event('sortdirection'))#">
+		<input type="hidden" id="nextN" name="nextN" value="#encodeForHTMLAttribute(rc.nextN)#">
+		<input type="hidden" id="pageNo" name="pageNo" value="#encodeForHTMLAttribute(rc.pageNo)#">
 	</div>
 </cfoutput>
 

@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 				if (top.location != self.location) {
-					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+					frontEndProxy = new Porthole.WindowProxy("#encodeForJavascript(session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
 											'setHeight',
 											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
