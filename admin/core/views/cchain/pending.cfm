@@ -28,7 +28,7 @@
 		     <cfloop condition="requests.hasNext()">
 			    <cfsilent>
 			      <cfset item=requests.next()>
-			      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.getType()#&parentid=#item.getParentID()#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getModuleID()#&return=chain">
+			      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#encodeForURL(item.getType())#&parentid=#item.getParentID()#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getModuleID()#&return=chain">
 			    </cfsilent>
 		        <tr>  
 		          <td class="title var-width">#$.dspZoom(item.getCrumbArray())#</td>
@@ -43,7 +43,7 @@
 		            <ul>
 		           
 		              <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
-		              <cfswitch expression="#item.getType()#">
+		              <cfswitch expression="#encodeForURL(item.getType())#">
 						<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
 							<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,item.getFilename())#?previewid=#item.getContentHistID()#'>
 							<cfif rc.compactDisplay eq 'true'>
@@ -53,7 +53,7 @@
 							</cfif>
 						</cfcase>
 						</cfswitch>
-						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.getType()#&parentid=#item.getParentID()#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="icon-book"></i></a></li>
+						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#encodeForURL(item.getType())#&parentid=#item.getParentID()#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getModuleID()#"><i class="icon-book"></i></a></li>
 		            </ul>
 		          </td>
 		        </tr>

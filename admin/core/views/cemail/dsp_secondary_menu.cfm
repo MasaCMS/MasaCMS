@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfswitch expression="#rc.originalfuseaction#">
 		<cfcase value="list">
 			<a class="btn" href="./?muraAction=cEmail.edit&emailid=&siteid=#encodeForURL(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a>
-			<a class="btn<cfif rc.originalfuseaction eq "showAllBounces"> active</cfif>" href="./?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>"><i class="icon-resize-small"></i> #application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
+			<a class="btn<cfif rc.originalfuseaction eq "showAllBounces"> active</cfif>" href="./?muraAction=cEmail.showAllBounces&siteid=#encodeForURL(rc.siteid)#"><i class="icon-resize-small"></i> #application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
 			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 				<a  class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#encodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000005"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a>
 			</cfif>

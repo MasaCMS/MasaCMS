@@ -1,4 +1,5 @@
 <cfsilent>
+	<!---
 	<cfscript>
 		local.product = StructNew();
 		local.product.major = ListFirst(server.coldfusion.productVersion);
@@ -6,15 +7,19 @@
 		param name="backportdir" default='';
 		request.backported=true;
 	</cfscript>
+	
 	<cfif local.product.major lt 9>
 		<cfinclude template="#backportdir#cf9.cfm" />
 	</cfif>
-	<cfif local.product.major lt 10>
+	--->
+	<cfif ListFirst(server.coldfusion.productVersion) lt 10>
 		<cfinclude template="#backportdir#cf10.cfm" />
 	</cfif>
+	<!---
 	<cfif local.product.major lt 11 AND local.product.major gte 9>
 		<cfinclude template="#backportdir#cf11.cfm" />
 	</cfif>
+	--->
 
 	<!---
 	<cffunction name="tempEncodeForHTML" output="false">

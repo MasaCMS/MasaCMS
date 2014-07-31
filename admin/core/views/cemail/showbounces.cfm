@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rsBounces.recordcount>
 	<ul class="metadata">
 		<cfoutput query="rc.rsBounces">
-			<li>#email# - #bounceCount#</li>
+			<li>#encodeForHTML(email)# - #encodeForHTML(bounceCount)#</li>
 		</cfoutput>
 	</ul>
 </cfif>
