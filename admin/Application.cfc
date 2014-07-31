@@ -306,7 +306,7 @@ component extends="framework" output="false" {
 		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
 
-		if(ListFirst(server.coldfusion.productVersion) < 10){
+		if(ListFirst(server.coldfusion.productVersion) >= 10){
 			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
 		} else {
 			param name="cookie.rb" default='';
