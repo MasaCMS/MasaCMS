@@ -1,3 +1,4 @@
+<cfsilent>
 <cfparam name="attributes.name" default="newfile">
 <cfparam name="attributes.id" default="">
 <cfparam name="attributes.class" default="">
@@ -19,6 +20,16 @@
 	<cfset filetype='File'>
 </cfif>
 
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+</cfsilent>
 <cfoutput>
 	<div data-name="#encodeForHTMLAttribute(attributes.name)#" data-property="#encodeForHTMLAttribute(attributes.property)#" data-fileid="#encodeForHTMLAttribute(attributes.bean.getValue(attributes.property))#" data-filetype="#encodeForHTMLAttribute(filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
 		<div class="btn-group" data-toggle="buttons-radio">

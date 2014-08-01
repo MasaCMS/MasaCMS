@@ -19,6 +19,16 @@
 	<cfset attributes.defaultminute=minute(attributes.time)>
 </cfif>
 
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+
 </cfsilent>
 <cfoutput>
 	<cfif session.localeHasDayParts>
