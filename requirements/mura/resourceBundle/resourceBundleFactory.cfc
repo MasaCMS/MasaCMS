@@ -232,6 +232,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="Spanish (Modern)">
 				<cfreturn "es_ES">
 			</cfcase>
+
+			<cfcase value="Spanish (United States)">
+				<cfreturn "es_US">
+			</cfcase>
 			
 			<cfcase value="Spanish (Standard)">
 				<cfreturn "es_ES">
