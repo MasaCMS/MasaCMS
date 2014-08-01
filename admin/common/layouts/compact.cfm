@@ -127,8 +127,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 		var context='#application.configBean.getContext()#';
 		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-		var rb='#lcase(session.rb)#';
-		var siteid='#session.siteid#';
+		var rb='#lcase(encodeForJavascript(session.rb))#';
+		var siteid='#encodeForJavascript(session.siteid)#';
 		var activepanel=#encodeForJavascript(rc.activepanel)#;
 		var activetab=#encodeForJavascript(rc.activetab)#;
 		var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 	</head>
-	<body id="#rc.originalcircuit#" class="compact">
+	<body id="#encodeForHTMLAttribute(rc.originalcircuit)#" class="compact">
 		<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
 		<cfinclude template="includes/dialog.cfm">
 		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>

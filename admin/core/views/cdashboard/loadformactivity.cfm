@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rc.siteid)/>
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 	<tr>
-	<td><cfif verdict neq 'none'><a title="Version History" href="./?muraAction=cArch.datamanager&contentid=#rslist.ContentID#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#rsList.siteid#&moduleid=00000000000000000000000000000000004">#rsList.menuTitle#</a><cfelse>#rsList.menuTitle#</cfif> </td>
+	<td><cfif verdict neq 'none'><a title="Version History" href="./?muraAction=cArch.datamanager&contentid=#rslist.ContentID#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#rsList.siteid#&moduleid=00000000000000000000000000000000004">#encodeForHTML(rsList.menuTitle)#</a><cfelse>#rsList.menuTitle#</cfif> </td>
 	<td class="dateTime">#LSDateFormat(rsList.lastEntered,session.dateKeyFormat)# #LSTimeFormat(rsList.lastEntered,"short")#</td>
 	<td class="total">#rsList.submissions#</td>
 	</tr>

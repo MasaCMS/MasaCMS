@@ -20,7 +20,7 @@
 </cfif>
 
 <cfoutput>
-	<div data-name="#attributes.name#" data-property="#attributes.property#" data-fileid="#attributes.bean.getValue(attributes.property)#" data-filetype="#filetype#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
+	<div data-name="#encodeForHTMLAttribute(attributes.name)#" data-property="#encodeForHTMLAttribute(attributes.property)#" data-fileid="#encodeForHTMLAttribute(attributes.bean.getValue(attributes.property))#" data-filetype="#encodeForHTMLAttribute(filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
 		<div class="btn-group" data-toggle="buttons-radio">
 			<button type="button" style="display:none">HORRIBLE HACK</button>
 			<button type="button" class="btn mura-file-type-selector active" value="Upload"><i class="icon-upload-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
@@ -31,13 +31,13 @@
 			</cfif>
 		</div>
 
-		<div id="mura-file-upload-#attributes.name#" class="mura-file-option mura-file-upload fileTypeOption#attributes.name#">
+		<div id="mura-file-upload-#encodeForHTMLAttribute(attributes.name)#" class="mura-file-option mura-file-upload fileTypeOption#encodeForHTMLAttribute(attributes.name)#">
 			
 			<div class="control-group control-group-nested">
 				<div class="controls">
-					<input name="#attributes.name#" type="file" class="mura-file-selector-#attributes.name#"
-						data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validation="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
-					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
+					<input name="#encodeForHTMLAttribute(attributes.name)#" type="file" class="mura-file-selector-#encodeForHTMLAttribute(attributes.name)#"
+						data-label="#encodeForHTMLAttribute(attributes.label)#" data-label="#encodeForHTMLAttribute(attributes.required)#" data-validation="#encodeForHTMLAttribute(attributes.validation)#" data-regex="#encodeForHTMLAttribute(attributes.regex)#" data-message="#encodeForHTMLAttribute(attributes.message)#">
+					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#encodeForJavascript(attributes.property)#');"><i class="icon-info-sign"></i></a>
 
 				</div>
 

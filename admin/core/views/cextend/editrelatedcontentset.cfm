@@ -53,10 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Extension Overview</a>
+<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Extension Overview</a>
 </div>
 
-<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
+<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #encodeForHTML(subType.getSubType())#</h2>
 
 
 <form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">

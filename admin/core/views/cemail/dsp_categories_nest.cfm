@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul<cfif not attributes.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li>
-<input type="checkbox" name="groupID" class="checkbox" <cfif listfind(attributes.groupID,rslist.categoryID)>checked</cfif> value="#rslist.categoryID#"> #rslist.name#
+<input type="checkbox" name="groupID" class="checkbox" <cfif listfind(attributes.groupID,rslist.categoryID)>checked</cfif> value="#rslist.categoryID#"> #encodeForHTML(rslist.name)#
 <cf_dsp_categories_nest siteID="#attributes.siteID#" groupid="#attributes.groupID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
 </li>
 </cfoutput>

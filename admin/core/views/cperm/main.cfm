@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
 		   
-		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#encodeForHTML(rc.rslist.GroupName)#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 

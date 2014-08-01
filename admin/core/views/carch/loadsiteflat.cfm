@@ -433,26 +433,26 @@ if(len($.siteConfig('customTagGroups'))){
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#encodeForURL(item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#encodeForURL(item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							<cfif item.getType() eq "File">
 							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 							</cfif>
 							</cfcase>
 						</cfswitch>
 						 
-						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#topid#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-book"></i></a></li>
+						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#encodeForURL(topid)#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#encodeForURL($.event('startrow'))#"><i class="icon-book"></i></a></li>
 					      
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#topID#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-group"></i></a></li>
+					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#encodeForURL(topID)#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#encodeForURL($.event('startrow'))#"><i class="icon-group"></i></a></li>
 					    <cfelse>
 							<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						</cfif>
 					    
 					    <cfif deletable and not isLockedBySomeoneElse>
-					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#topID#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#encodeForURL(item.getParentID())#&startrow=#$.event('startrow')##rc.$.renderCSRFTokens(context=item.getContentID() & 'deleteall',format='url')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
+					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#encodeForURL(topID)#&siteid=#encodeForURL(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#encodeForURL(item.getParentID())#&startrow=#encodeForURL($.event('startrow'))##rc.$.renderCSRFTokens(context=item.getContentID() & 'deleteall',format='url')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
 							<i class="icon-remove-sign"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>
 					        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
@@ -462,10 +462,10 @@ if(len($.siteConfig('customTagGroups'))){
 					    <li class="edit disabled"><i class="icon-pencil"></i></li>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#encodeForURL(item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#encodeForURL(item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 						</cfswitch>
 						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>

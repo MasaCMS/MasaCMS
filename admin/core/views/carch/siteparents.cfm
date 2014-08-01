@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not parentBean.getIsNew()>
 			<tr class="alt"><cfoutput>  
 	         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
-			  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
+			  <td class="actions"><input type="radio" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" checked="checked"></td>
 			</tr></cfoutput>
 			<cfset hasParentID=true />
 		</cfif>
@@ -98,9 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </table>
 </td></tr></table>
 <cfif not hasParentID>
-	<cfoutput><input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" /></cfoutput>
+	<cfoutput><input type="hidden" id="parentid" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
 </cfif>
 <cfelse>
-<cfoutput><input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" /></cfoutput>
+<cfoutput><input type="hidden" id="parentid" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
 </cfif>
 
