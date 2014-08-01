@@ -696,4 +696,26 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cffunction name="suppressDebugging" output="false">
 		<cfsetting showdebugoutput="no">
 	</cffunction>
+
+	<cffunction name="queryAppend" access="public" returntype="void" output="false"
+		hint="This takes two queries and appends the second one to the first one. This actually updates the first query and does not return anything.">
+		<cfargument name="QueryOne" type="query" required="true" />
+		<cfargument name="QueryTwo" type="query" required="true" />
+		<cfset var LOCAL = StructNew() />
+		<!--- Get the column list (as an array for faster access. --->
+		<cfset LOCAL.Columns = ListToArray( ARGUMENTS.QueryTwo.ColumnList ) />
+		<!--- Loop over the second query. --->
+		<cfloop query="ARGUMENTS.QueryTwo">
+			<!--- Add a row to the first query. --->
+			<cfset QueryAddRow( ARGUMENTS.QueryOne ) />
+			<!--- Loop over the columns. --->
+			<cfloop index="LOCAL.Column" from="1" to="#ArrayLen( LOCAL.Columns )#" step="1">
+				<!--- Get the column name for easy access. --->
+				<cfset LOCAL.ColumnName = LOCAL.Columns[ LOCAL.Column ] />
+				<!--- Set the column value in the newly created row. --->
+				<cfset ARGUMENTS.QueryOne[ LOCAL.ColumnName ][ ARGUMENTS.QueryOne.RecordCount ] = ARGUMENTS.QueryTwo[ LOCAL.ColumnName ][ ARGUMENTS.QueryTwo.CurrentRow ] />
+			</cfloop>
+		</cfloop>
+	</cffunction>
+
 </cfcomponent>
