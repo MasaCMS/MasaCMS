@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getContentRenderer" output="false" returntype="any">
 	<cfif not isObject(event("contentRenderer"))>
-		<cfif structKeyExists(request,"contentRenderer")>
+		<cfif structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
 			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
@@ -141,6 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           			<cfset siteRenderer.injectMethod('#key#',themeRenderer[key])>
          		</cfloop>
 			</cfif>
+			<cfset event("contentRenderer").setValue('siteid',event('siteid'))>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
