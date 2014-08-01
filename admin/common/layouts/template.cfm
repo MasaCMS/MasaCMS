@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
-    <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #encodeForHTML(moduleTitle)#</cfif></title>
+    <title>#encodeForHTML(application.configBean.getTitle())#<cfif len(moduleTitle)> - #encodeForHTML(moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Blue River Interactive Group">
 	<meta name="robots" content="noindex, nofollow, noarchive" />
@@ -225,8 +225,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 	var context='#application.configBean.getContext()#';
 	var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-	var rb='#lcase(session.rb)#';
-	var siteid='#session.siteid#';
+	var rb='#lcase(encodeForJavascript(session.rb))#';
+	var siteid='#encodeForJavascript(session.siteid)#';
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
 	var activepanel=#encodeForJavascript(rc.activepanel)#;
 	var activetab=#encodeForJavascript(rc.activetab)#;
