@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(rc.subTypeID)>
 		<cfset rc.subTypeID=createUUID()>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
-		<input type=hidden name="subTypeID" value="#rc.subTypeID#">
+		<input type=hidden name="subTypeID" value="#encodeForHTMLAttribute(rc.subTypeID)#">
 	<cfelse>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />

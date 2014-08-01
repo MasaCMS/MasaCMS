@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<p>#application.rbFactory.getKeyValue(session.rb,"approvalchains.comments")#</p>
 				<textarea id="approval-comments" rows="4"></textarea>
-				<input id="mura-approval-apply" type="button" class="btn btn-primary" value="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.apply'))#" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#approvalRequest.getSiteID()#');"/>
+				<input id="mura-approval-apply" type="button" class="btn btn-primary" value="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.apply'))#" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#encodeForJavascript(approvalRequest.getSiteID())#');"/>
 				</dd>
 				</dl>
 			</cfif>

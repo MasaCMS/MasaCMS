@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
                 <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
                 <cfloop query="rsExtend">
-                  <option value="#encodeForHTMLAttribute(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+                  <option value="#encodeForHTMLAttribute(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#encodeForHTML(rsExtend.Type)#/#encodeForHTML(rsExtend.subType)# - #encodeForHTML(rsExtend.attribute)#</option>
                 </cfloop>
               </select>
               <select name="sortDirection"  onchange="siteManager.setAsSorted();">
@@ -155,11 +155,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
           <cfelse>
-            <input name="nextN" value="#session.mura.nextN#" type="text" class="text span4" size="2" maxlength="4" />
+            <input name="nextN" value="#encodeForHTMLAttribute(session.mura.nextN)#" type="text" class="text span4" size="2" maxlength="4" />
           </cfif>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
           <input type="button" class="btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
-        <input type="hidden" name="startrow" value="#rc.startrow#">
+        <input type="hidden" name="startrow" value="#encodeForHTMLAttribute(rc.startrow)#">
         <input type="hidden" name="orderperm" value="#perm#">
         <input type="hidden" id="sorted" name="sorted" value="false">
     </div>

@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfelse>
 		  <td class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</td>
 		 </cfif>
-		  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
+		  <td class="actions"><input type="radio" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" checked="checked"></td>
 		</tr></cfoutput>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/> 
@@ -87,11 +87,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        </cfoutput>
 	 	<cfelse>
 		<tr class="alt"><cfoutput>  
-		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#rc.parentid#" /> </td>
+		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /> </td>
 		</tr></cfoutput>
 		</cfif>
 		</tbody>
   </table>
 <cfelse>
-<cfoutput><input type="hidden" name="parentid" value="#rc.parentid#" /></cfoutput>
+<cfoutput><input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
 </cfif>

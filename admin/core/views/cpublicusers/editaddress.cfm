@@ -184,7 +184,7 @@ initTabs(Array("#encodeForJavascript(application.rbFactory.getKeyValue(session.r
 
 
 		<input type="hidden" name="action" value="">
-		<input type="hidden" name="addressID" value="#rc.addressID#">
+		<input type="hidden" name="addressID" value="#encodeForHTMLAttribute(rc.addressID)#">
 		<input type="hidden" name="isPublic" value="#rc.userBean.getIsPublic()#">
 		<cfif not rc.userBean.getAddresses().recordcount><input type="hidden" name="isPrimary" value="1"></cfif>
 	

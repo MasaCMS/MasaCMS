@@ -280,12 +280,12 @@ select * from rsSubTypes where subType <> 'Default'
           <cfif rc.rsgrouplist.recordcount>
             <cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
         <tr> 
-                <td class="var-width"><a href="./?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#encodeForURL(rc.siteid)#">#encodeForHTML(rc.rsgrouplist.lname)#, #encodeForHTML(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#encodeForHTML(rc.rsgrouplist.company)#)</cfif></a></td>
-                <td><cfif rc.rsgrouplist.email gt ""><a href="mailto:#rc.rsgrouplist.email#">#email#</a><cfelse>&nbsp;</cfif></td>
+                <td class="var-width"><a href="./?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#">#encodeForHTML(rc.rsgrouplist.lname)#, #encodeForHTML(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#encodeForHTML(rc.rsgrouplist.company)#)</cfif></a></td>
+                <td><cfif rc.rsgrouplist.email gt ""><a href="mailto:#encodeForURL(rc.rsgrouplist.email)#">#encodeForHTML(email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
         <td>#LSTimeFormat(rc.rsgrouplist.lastupdate,"short")#</td>
               <td>#rc.rsgrouplist.LastUpdateBy#</td>
-                <td class="actions"><ul class="group"><li class="edit"><a href="./?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="delete"><a href="./?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#encodeForURL(rc.siteid)#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
+                <td class="actions"><ul class="group"><li class="edit"><a href="./?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="delete"><a href="./?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
               </tr>
             </cfoutput> 
   

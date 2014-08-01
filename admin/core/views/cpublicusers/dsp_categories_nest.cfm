@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul<cfif not attributes.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#rslist.name#
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#encodeForHTML(rslist.name)#
 <cfif rslist.hasKids><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" userBean="#attributes.userBean#"></cfif>
 </li>
 </cfoutput>
