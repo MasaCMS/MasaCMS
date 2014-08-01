@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      <div class="controls"><select name="fromSiteID" required="true" message="The 'SOURCE' site is required.">
 		<option value="">--Select Source Site--</option>
 		<cfloop query="rc.rsSites">
-			<option value="#rc.rsSites.siteid#">#rc.rsSites.site#</option>
+			<option value="#rc.rsSites.siteid#">#encodeForHTML(rc.rsSites.site)#</option>
 		</cfloop>
 		</select>
 	 </div>
@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="controls"><select name="toSiteID" required="true" message="The 'DESTINATION' site is required.">
 		<option value="">--Select Destination Site--</option>
 		<cfloop query="rc.rsSites">
-			<option value="#rc.rsSites.siteid#">#rc.rsSites.site#</option>
+			<option value="#rc.rsSites.siteid#">#encodeForHTML(rc.rsSites.site)#</option>
 		</cfloop>
 		</select>
 	 </div>
