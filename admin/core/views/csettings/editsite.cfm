@@ -265,13 +265,13 @@ to your own modified versions of Mura CMS.
             <cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
                 <p class="alert alert-error help-block">The current value is not a valid directory</p>
               </cfif>
-            <input name="exportLocation" type="text" class="span12"  value="#rc.siteBean.getExportLocation()#" maxlength="100"/>
+            <input name="exportLocation" type="text" class="span12"  value="#encodeForHTMLAttribute(rc.siteBean.getExportLocation())#" maxlength="100"/>
           </div>
         </div>
          <div class="control-group">
             <label class="control-label">Custom Tag Groups <span class="help-inline">("^" Delimiter. List elements must use valid variable names.)</span></label>
             <div class="controls">
-              <input name="customTagGroups" type="text" class="span12"  value="#rc.siteBean.getCustomTagGroups()#" maxlength="255"/>
+              <input name="customTagGroups" type="text" class="span12"  value="#encodeForHTMLAttribute(rc.siteBean.getCustomTagGroups())#" maxlength="255"/>
             </div>
         </div>
 		    <div class="control-group">
@@ -696,13 +696,13 @@ to your own modified versions of Mura CMS.
 	        <div class="span6">
 	        <label class="control-label">Small (Thumbnail) Image</label>
 	            <label>Height</label>
-	            <div class="controls"><input name="smallImageHeight" type="text" class="span12" value="#rc.siteBean.getSmallImageHeight()#" /></div>
+	            <div class="controls"><input name="smallImageHeight" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getSmallImageHeight())#" /></div>
 	        </div>
 	        
 	        <div class="span6"> 
 	        <br />  
 	            <label>Width</label>
-	            <div class="controls"><input name="smallImageWidth" type="text" class="span12" value="#rc.siteBean.getSmallImageWidth()#" /></div>
+	            <div class="controls"><input name="smallImageWidth" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getSmallImageWidth())#" /></div>
 	        </div>
 	        
 	    </div>
@@ -711,13 +711,13 @@ to your own modified versions of Mura CMS.
         <div class="span6">
 	        <label class="control-label">Medium Image</label>
 	            <label>Height</label>
-	            <div class="controls"><input name="mediumImageHeight" type="text" class="span12" value="#rc.siteBean.getMediumImageHeight()#" /></div>
+	            <div class="controls"><input name="mediumImageHeight" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getMediumImageHeight())#" /></div>
 	        </div>
 	        
 	        <div class="span6"> 
 	        <br />  
 	            <label>Width</label>
-	            <div class="controls"><input name="mediumImageWidth" type="text" class="span12" value="#rc.siteBean.getMediumImageWidth()#" /></div>
+	            <div class="controls"><input name="mediumImageWidth" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getMediumImageWidth())#" /></div>
 	        </div>
       </div>
       
@@ -725,13 +725,13 @@ to your own modified versions of Mura CMS.
         <div class="span6">
 	        <label class="control-label">Large Image</label>
 	            <label>Height</label>
-	            <div class="controls"><input name="largeImageHeight" type="text" class="span12" value="#rc.siteBean.getLargeImageHeight()#" /></div>
+	            <div class="controls"><input name="largeImageHeight" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getLargeImageHeight())#" /></div>
 	        </div>
 	        
 	        <div class="span6"> 
 	        <br />  
 	            <label>Width</label>
-	            <div class="controls"><input name="largeImageWidth" type="text" class="span12" value="#rc.siteBean.getLargeImageWidth()#" /></div>
+	            <div class="controls"><input name="largeImageWidth" type="text" class="span12" value="#encodeForHTMLAttribute(rc.siteBean.getLargeImageWidth())#" /></div>
 	        </div>
       </div>
       
@@ -985,9 +985,9 @@ to your own modified versions of Mura CMS.
                     </cfif>
                   <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
                       <cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-                      <a href="./index.cfm?muraAction=cArch.imagedetails&siteid=#rc.siteBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
+                      <a href="./index.cfm?muraAction=cArch.imagedetails&siteid=#rc.siteBean.getSiteID()#&fileid=#encodeForURL(attributeValue)#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#encodeForURL(attributeValue)#&cacheID=#createUUID()#" /></a>
                     </cfif>
-                      <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a>
+                      <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#encodeForURL(attributeValue)#" target="_blank">[Download]</a>
                       <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/>
                       Delete
                     </cfif>
@@ -996,7 +996,7 @@ to your own modified versions of Mura CMS.
                   <cfif attributeBean.getType() IS "Hidden">
                   <cfset attributeBean.setType( "TextBox" ) />
                 </cfif>
-                  <div class="controls"> #attributeBean.renderAttribute(attributeValue)# </div>
+                  <div class="controls"> #encodeForHTML(attributeBean.renderAttribute(attributeValue))# </div>
                 </div>
             </cfloop>
             </div>

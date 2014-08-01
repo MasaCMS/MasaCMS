@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><strong>Name:</strong> #encodeForHTML(rc.pluginXML.plugin.name.xmlText)#</li>
 		<li><strong>Category:</strong> #encodeForHTML(rc.pluginXML.plugin.category.xmlText)#</li>
 		<li><strong>Version:</strong> #encodeForHTML(rc.pluginXML.plugin.version.xmlText)#</li>
-		<li><strong>Provider:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#encodeForHTML(rc.pluginXML.plugin.provider.xmlText)#</a></li>
+		<li><strong>Provider:</strong> <a href="#encodeForURL(rc.pluginXML.plugin.providerURL.xmlText)#" target="_blank">#encodeForHTML(rc.pluginXML.plugin.provider.xmlText)#</a></li>
 		<!---<li><strong>Provider URL:</strong> <a href="#rc.pluginXML.plugin.providerURL.xmlText#" target="_blank">#encodeForHTML(rc.pluginXML.plugin.providerURL.xmlText)#</a></li>--->
 		<li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
 		<li><strong>Package:</strong> <cfif len(package)>#encodeForHTML(package)#<cfelse>N/A</cfif></li>
@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsPlugin.recordcount and rsPlugin.deployed>
 		<ul class="navTask nav nav-pills">
-			<li><a href="./?muraAction=cSettings.updatePluginVersion&moduleid=#rc.moduleid#">Update Plugin Version</a></li>
-			<li><a href="./?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#encodeForURL(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
+			<li><a href="./?muraAction=cSettings.updatePluginVersion&moduleid=#encodeForURL(rc.moduleid)#">Update Plugin Version</a></li>
+			<li><a href="./?muraAction=cSettings.createBundle&moduleid=#encodeForURL(rc.moduleid)#&siteID=&BundleName=#encodeForURL(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
 		</ul>
 	</cfif>
 

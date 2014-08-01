@@ -290,7 +290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td>#encodeForHTML(rc.rsPlugins.directory)#</td>
 						<td>#encodeForHTML(rc.rsPlugins.category)#</td>
 						<td>#encodeForHTML(rc.rsPlugins.version)#</td>
-						<td><a class="alt" href="#rc.rsPlugins.providerurl#" target="_blank">#encodeForHTML(rc.rsPlugins.provider)#</a></td>
+						<td><a class="alt" href="#encodeForURL(rc.rsPlugins.providerurl)#" target="_blank">#encodeForHTML(rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
 						<td class="actions"><ul>
