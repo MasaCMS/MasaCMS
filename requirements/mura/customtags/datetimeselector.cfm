@@ -22,17 +22,29 @@
 <cfset attributes.hourname="">
 <cfset attributes.minutename="">
 <cfset attributes.daypartname="">
+
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+
+
 </cfsilent>
 
 <cfoutput>
-<input type="text" class="datepicker #attributes.dateclass# span3 mura-datepicker#attributes.name#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12"/><cfif attributes.break><br/></cfif>
+<input type="text" class="datepicker #encodeForHTMLAttribute(attributes.dateclass)# span3 mura-datepicker#encodeForHTMLAttribute(attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12"/><cfif attributes.break><br/></cfif>
 <cf_timeselector attributecollection="#attributes#">
-<input type="hidden" id="mura-#attributes.name#" name="#attributes.name#" value="#attributes.datetime#" data-required="#attributes.required#" data-required="#attributes.message#"/>
+<input type="hidden" id="mura-#encodeForHTMLAttribute(attributes.name)#" name="#encodeForHTMLAttribute(attributes.name)#" value="#encodeForHTMLAttribute(attributes.datetime)#" data-required="#encodeForHTMLAttribute(attributes.required)#" data-required="#encodeForHTMLAttribute(attributes.message)#"/>
 <script>
 	$(function(){
-		$('.mura-datepicker#attributes.name#').change(
+		$('.mura-datepicker#encodeForJavascript(attributes.name)#').change(
 			function(){
-				parseDateTimeSelector('#attributes.name#');
+				parseDateTimeSelector('#encodeForJavascript(attributes.name)#');
 			}
 		);
 	});
