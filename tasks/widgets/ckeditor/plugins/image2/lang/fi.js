@@ -1,19 +1,20 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'image2', 'fi', {
 	alt: 'Vaihtoehtoinen teksti',
 	btnUpload: 'Lähetä palvelimelle',
-	captioned: 'Captioned image', // MISSING
+	captioned: 'Kuva kuvatekstillä',
+	captionPlaceholder: 'Kuvateksti',
 	infoTab: 'Kuvan tiedot',
 	lockRatio: 'Lukitse suhteet',
 	menu: 'Kuvan ominaisuudet',
-	pathName: 'image', // MISSING
-	pathNameCaption: 'caption', // MISSING
+	pathName: 'kuva',
+	pathNameCaption: 'kuvateksti',
 	resetSize: 'Alkuperäinen koko',
-	resizer: 'Click and drag to resize', // MISSING
+	resizer: 'Klikkaa ja raahaa muuttaaksesi kokoa',
 	title: 'Kuvan ominaisuudet',
-	uploadTab: 'Upload', // MISSING
+	uploadTab: 'Lisää tiedosto',
 	urlMissing: 'Kuvan lähdeosoite puuttuu.'
 } );

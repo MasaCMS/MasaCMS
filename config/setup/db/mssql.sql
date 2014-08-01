@@ -609,7 +609,7 @@ GO
 CREATE TABLE [dbo].[tusersfavorites] (
 	[favoriteID] [char] (35) NOT NULL ,
 	[userID] [char] (35) NOT NULL ,
-	[favoriteName] [varchar] (100) NULL ,
+	[favoriteName] [varchar] (255) NULL ,
 	[favorite] [varchar] (1000) NOT NULL ,
 	[type] [varchar] (30) NOT NULL ,
 	[siteID] [varchar] (25) NULL ,

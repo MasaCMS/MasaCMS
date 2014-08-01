@@ -159,8 +159,8 @@ If it has not set application.appInitialized=false. --->
 --->
 <cftry>
 	<cfif (not isdefined('cookie.userid') or cookie.userid eq '') and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
-	<cfcookie name="userid" value="#session.mura.userID#" expires="never" httponly="true"/>
-	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true"/>
+	<cfcookie name="userid" value="#session.mura.userID#" expires="never" httponly="true" secure="#application.configBean.getValue(property='secureCookies',defaultValue=false)#"/>
+	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.userManager.readUserPassword(cookie.userid),'cfmx_compat','hex')#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 <cfcatch>
 	<cfset structDelete(cookie,"userid")>
@@ -189,7 +189,7 @@ If it has not set application.appInitialized=false. --->
 <cftry>
 	<cfif not structKeyExists(cookie,"originalURLToken")>
 	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
-	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" />
+	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 <cfcatch></cfcatch>
 </cftry>
@@ -211,9 +211,9 @@ If it has not set application.appInitialized=false. --->
 
 <cfif not isdefined('url.muraadminpreview')>
 	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-		<cfcookie name="mobileFormat" value="#form.mobileFormat#" />	
+		<cfcookie name="mobileFormat" value="#form.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>	
 	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
-		<cfcookie name="mobileFormat" value="#url.mobileFormat#" />
+		<cfcookie name="mobileFormat" value="#url.mobileFormat#" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 
 	<cfif not isdefined("cookie.mobileFormat")>
@@ -227,15 +227,15 @@ If it has not set application.appInitialized=false. --->
 						findNoCase("mobile",CGI.HTTP_USER_AGENT)
 						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
 					)>
-				<cfcookie name="mobileFormat" value="true" />
+				<cfcookie name="mobileFormat" value="true" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 			<cfelse>	
-				<cfcookie name="mobileFormat" value="false" />
+				<cfcookie name="mobileFormat" value="false" httponly="true" secure="#application.configBean.getSecureCookies()#" />
 			</cfif>	
 		</cfif>
 	</cfif>
 
 	<cfif not isBoolean(cookie.mobileFormat)>
-		<cfcookie name="mobileFormat" value="false" />
+		<cfcookie name="mobileFormat" value="false" httponly="true" secure="#application.configBean.getSecureCookies()#"/>
 	</cfif>
 
 	<cfset request.muraMobileRequest=cookie.mobileFormat>
@@ -257,6 +257,7 @@ If it has not set application.appInitialized=false. --->
 <cfparam name="session.mura.csrfusedtokens" default="#structNew()#">
 
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
+	<cfset application.utility.setSessionCookies()>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>

@@ -6,7 +6,7 @@
    <label class="control-label">
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
 		<cfset examplefileext="png">
-		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-question-sign"></i></a>
+		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-question-sign"></i></a>
 	<cfelse>
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 	</cfif>	
@@ -23,7 +23,7 @@
 		<cf_fileselector name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" examplefileext="#examplefileext#" >
 
 		<cfif rc.type eq 'File'>										
-			<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getFileID())#" />
+			<input type="hidden" name="fileid" value="#encodeForHTMLAttribute(rc.contentBean.getFileID())#" />
 		</cfif>
 	<cfelse>
 		<!--- Locked by someone else --->	
@@ -32,8 +32,8 @@
 		</p>
 		
 	
-		<p id="msg-file-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#.<br>
-		<a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a>
+		<p id="msg-file-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#encodeForHTMLAttribute(lockedBy.getFName())# #encodeForHTML(lockedBy.getLName())#")#.<br>
+		<a href="mailto:#encodeForHTML(lockedBy.getEmail())#?subject=#encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a>
 		<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 		 &nbsp; &nbsp;<a class="mura-file-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		</cfif>
@@ -42,11 +42,11 @@
 		<div class="mura-file-selector">
 			<cf_filetools name="newfile" property="fileid" bean="#rc.contentBean#" deleteKey="deleteFile" compactDisplay="#rc.compactDisplay#" locked="#len(stats.getLockID())#" lockedby="#lockedBy#">
 		</div>
-		<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getFileID())#" />
+		<input type="hidden" name="fileid" value="#encodeForHTMLAttribute(rc.contentBean.getFileID())#" />
 	</cfif>
 	<script>
 		siteManager.hasFileLock=<cfif stats.getLockType() neq 'node' and stats.getLockID() eq session.mura.userID>true<cfelse>false</cfif>;
-		siteManager.unlockfileconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#";
+		siteManager.unlockfileconfirm="#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#";
 	</script>
 	<input type="hidden" id="unlockfilewithnew" name="unlockfilewithnew" value="false" />
 	</div>

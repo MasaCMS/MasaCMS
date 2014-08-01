@@ -248,8 +248,7 @@
 	
 	<!--- Generate a list of baseIDs that match the criteria --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
-	select distinct <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 
+		select distinct
 		tclassextenddata.baseID
 		from tclassextenddata
 		where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
@@ -319,6 +318,9 @@
 		</cfloop>
 		<cfif started>)</cfif>
 		</cfif>
+
+		<cfif dbType eq "mysql"> limit 900 </cfif>
+		<cfif dbType eq "oracle">) where ROWNUM <= 900 </cfif>
 	</cfquery>
 
 	<!--- convert base query to list --->
@@ -328,7 +330,8 @@
 	
 	<!--- generate a sorted (if specified) list of baseIDs with additional fields --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
+	<cfif dbType eq "oracle" and getMaxItems() >select * from (</cfif>
+	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif>  tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
 	<cfif hasExtendedSort>,#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# as extendedSort</cfif>
 	from #dataTable# #tableModifier#
 	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)

@@ -118,9 +118,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var temp="">
 	<cfset var i="">
 
-	<cfparam name="application.objectMappings.#variables.instance.entityName#" default="#structNew()#">
-	<cfparam name="application.objectMappings.#variables.instance.entityName#.columns" default="#getBean('dbUtility').columns(table=variables.instance.table)#">
-	<cfparam name="application.objectMappings.#variables.instance.entityName#.columnlist" default="#structKeyList(application.objectMappings[variables.instance.entityName].columns)#">
+	<cfif not structKeyExists(application.objectMappings, variables.instance.entityName)>
+		<cfset application.objectMappings[variables.instance.entityName] = structNew()>
+	</cfif>
+	<cfif not structKeyExists(application.objectMappings[variables.instance.entityName], "columns")>
+		<cfset application.objectMappings[variables.instance.entityName].columns = getBean('dbUtility').columns(table=variables.instance.table)>
+	</cfif>
+	<cfif not structKeyExists(application.objectMappings[variables.instance.entityName], "columnlist")>
+		<cfset application.objectMappings[variables.instance.entityName].columnlist = structKeyList(application.objectMappings[variables.instance.entityName].columns)>
+	</cfif>
 </cffunction>
 
 <cffunction name="getTableFieldList" output="false">
@@ -217,7 +223,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif not len(arguments.dataType)>
 			<cfset loadTableMetaData()>
-			<cfparam name="variables.dbUtility" default="#getBean('dbUtility')#">
+			<cfif not structKeyExists(variables, "dbUtility")>
+				<cfset variables.dbUtility = getBean('dbUtility')>
+			</cfif>
 			<cfset var tempField=listLast(arguments.field,'.')>
 			<cfif structKeyExists(application.objectMappings[variables.instance.entityName].columns,tempField)>
 				<cfset arguments.dataType=variables.dbUtility.transformParamType(application.objectMappings[variables.instance.entityName].columns[tempField].dataType)>

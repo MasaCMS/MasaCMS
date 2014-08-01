@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <div class="controls"><select name="sortBy" class="span2">
 <option value="Entered" <cfif "Entered" eq rc.sortBy>selected</cfif>>Entered</option>
 <cfloop list="#rc.fieldnames#" index="f">
-<option value="#HTMLEditFormat(f)#" <cfif f eq rc.sortBy>selected</cfif>>#HTMLEditFormat(f)#</option>
+<option value="#encodeForHTMLAttribute(f)#" <cfif f eq rc.sortBy>selected</cfif>>#encodeForHTML(f)#</option>
 </cfloop>
 </select>
 <select name="sortDirection" class="span2">
@@ -109,21 +109,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="controls">
 		<select name="filterBy" class="span2">
 		<cfloop list="#rc.fieldnames#" index="f">
-		<option value="#HTMLEditFormat(f)#" <cfif f eq session.filterBy>selected</cfif>>#HTMLEditFormat(f)#</option>
+		<option value="#encodeForHTMLAttribute(f)#" <cfif f eq session.filterBy>selected</cfif>>#encodeForHTML(f)#</option>
 		</cfloop>
 		</select>
-		<input type="text" class="span6" name="keywords" value="#HTMLEditFormat(session.datakeywords)#">
+		<input type="text" class="span6" name="keywords" value="#encodeForHTMLAttribute(session.datakeywords)#">
 	</div>
 </div>
 </div>
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
-<input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#" />
-<input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
-<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#" />
+<input type="hidden" name="contentid" value="#encodeForHTMLAttribute(rc.contentid)#" />
+<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(session.siteid)#" />
+<input type="hidden" name="moduleid" value="#encodeForHTMLAttribute(rc.moduleid)#" />
 <input type="hidden" name="newSearch" value="1" />
 <div class="form-actions">
 	<button type="button" class="btn" onclick="submitForm(document.forms.download);" /><i class="icon-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</button>
-	<button type="button" class="btn" onclick="location.href='./?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#URLEncodedFormat(rc.columns)#';"><i class="icon-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
+	<button type="button" class="btn" onclick="location.href='./?muraAction=cArch.downloaddata&siteid=#encodeForURL(rc.siteid)#&contentid=#encodeForURL(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#encodeForURL(rc.columns)#';"><i class="icon-download"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</button>
 </div>
 </form></cfoutput>
 </cfif>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <th>&nbsp;</th>
 <th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
 <cfloop list="#rc.fieldnames#" index="f">
-<th><cfoutput>#HTMLEditFormat(f)#</cfoutput></th>
+<th><cfoutput>#encodeForHTML(f)#</cfoutput></th>
 </cfloop>
 </tr>
 </thead>
@@ -150,17 +150,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 		<ul>
 			<li class="edit">
-				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#URLEncodedFormat(rc.date1)#&hour1=#URLEncodedFormat(rc.hour1)#&minute1=#URLEncodedFormat(rc.minute1)#&date2=#URLEncodedFormat(rc.date2)#&hour2=#URLEncodedFormat(rc.hour2)#&minute2=#URLEncodedFormat(rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#URLEncodedFormat(rc.moduleid)#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#URLEncodedFormat(rc.sortDirection)#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#"><i class="icon-pencil"></i></a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="./?muraAction=cArch.datamanager&contentid=#encodeForURL(rc.contentid)#&siteid=#encodeForURL(rc.siteid)#&date1=#encodeForURL(rc.date1)#&hour1=#encodeForURL(rc.hour1)#&minute1=#encodeForURL(rc.minute1)#&date2=#encodeForURL(rc.date2)#&hour2=#encodeForURL(rc.hour2)#&minute2=#encodeForURL(rc.minute2)#&responseid=#rsdata.responseid#&action=edit&moduleid=#encodeForURL(rc.moduleid)#&sortBy=#encodeForURL(rc.sortBy)#&sortDirection=#encodeForURL(rc.sortDirection)#&filterBy=#encodeForURL(rc.filterBy)#&keywords=#encodeForURL(rc.keywords)#"><i class="icon-pencil"></i></a>
 			</li>
 			<li class="delete">
-				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" href="./?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#URLEncodedFormat(rc.date1)#&hour1=#URLEncodedFormat(rc.hour1)#&minute1=#URLEncodedFormat(rc.minute1)#&date2=#URLEncodedFormat(rc.date2)#&hour2=#URLEncodedFormat(rc.hour2)#&minute2=#URLEncodedFormat(rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#URLEncodedFormat(rc.moduleid)#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#URLEncodedFormat(rc.sortDirection)#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" href="./?muraAction=cArch.datamanager&contentid=#encodeForURL(rc.contentid)#&siteid=#encodeForURL(rc.siteid)#&date1=#encodeForURL(rc.date1)#&hour1=#encodeForURL(rc.hour1)#&minute1=#encodeForURL(rc.minute1)#&date2=#encodeForURL(rc.date2)#&hour2=#encodeForURL(rc.hour2)#&minute2=#encodeForURL(rc.minute2)#&responseid=#rsdata.responseid#&action=delete&moduleid=#encodeForURL(rc.moduleid)#&sortBy=#encodeForURL(rc.sortBy)#&sortDirection=#encodeForURL(rc.sortDirection)#&filterBy=#encodeForURL(rc.filterBy)#&keywords=#encodeForURL(rc.keywords)##rc.$.renderCSRFTokens(context=rsdata.responseID,format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
 			</li>
 		</ul>
 	</td>
 	<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
 	<cfloop list="#rc.fieldnames#" index="f">
 		<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-	<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#URLEncodedFormat(fvalue)#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#$.setParagraphs(htmleditformat(fvalue))#</cfif></td>
+	<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#encodeForURL(fvalue)#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#$.setParagraphs(encodeForHTML(fvalue))#</cfif></td>
 	</cfloop>
 	<cfcatch>
 		<td>Invalid Response: #rsData.responseID#</td>

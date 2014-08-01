@@ -45,7 +45,17 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfsilent><cfparam name="rc.siteID" default="">
+<cfsilent>
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+<cfparam name="rc.siteID" default="">
 <cfparam name="rc.parentID" default="">
 <cfparam name="rc.categoryID" default="">
 <cfparam name="rc.nestLevel" default="1">
@@ -55,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul<cfif not rc.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(rc.extendSetBean.getCategoryID(),rslist.categoryID) or listfind(rc.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#rslist.name#
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(rc.extendSetBean.getCategoryID(),rslist.categoryID) or listfind(rc.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#encodeForHTML(rslist.name)#
 <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="#rslist.categoryID#" categoryID="#rc.categoryID#" nestLevel="#evaluate(rc.nestLevel +1)#" extendSetBean="#rc.extendSetBean#">
 </li>
 </cfoutput>

@@ -32,11 +32,11 @@ width:#rc.width#<br/>
 <cfloop condition="images.hasNext()">
 <cfset image=images.next()>
 <tr>
-<td class="var-width">#HTMLEditFormat(image.getName())#</td>
-<td>#HTMLEditFormat(image.getHeight())#</td>
-<td>#HTMLEditFormat(image.getWidth())#</td>
+<td class="var-width">#encodeForHTML(image.getName())#</td>
+<td>#encodeForHTML(image.getHeight())#</td>
+<td>#encodeForHTML(image.getWidth())#</td>
 <td class="actions"><ul>
-	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
+	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#encodeForJavascript(image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
 </ul></td>
 </tr>
 </cfloop>

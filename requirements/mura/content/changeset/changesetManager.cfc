@@ -84,6 +84,10 @@
 <cffunction name="save" access="public" returntype="any" output="false">
 	<cfargument name="bean"/>
 	
+	<cfset arguments.bean.validate()>
+
+	<cfif not arguments.bean.hasErrors()>
+		
 	<cfset var rs="">
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
@@ -211,6 +215,9 @@
 				tag=local.i).save()>
 		</cfloop>
 	</cfif>
+
+	</cfif>
+
 	<cfreturn bean>
 
 </cffunction>
@@ -350,6 +357,10 @@
 
 		<cfparam name="local.data.changesetIDList" default="">
 
+		<cfif listFindNoCase(local.data.changesetIDList,local.changeset.getChangesetID())>
+			<cfreturn false>
+		</cfif>
+		
 		<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.changeset.getChangesetID())>
 	<cfelse>
 		<cfset local.data=structNew()>
@@ -430,6 +441,7 @@
 	</cfif>
 	
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
+	<cfset local.data.lastApplied=now()>
 	<cfset local.currentUser.setValue("ChangesetPreviewData",local.data)>
 	
 <cfelseif not arguments.append>

@@ -2600,7 +2600,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 	<cfset var previewData="">
  	<cfoutput>
-			<cfif request.muraChangesetPreview>
+			<cfif request.muraChangesetPreview and isDefined('previewData.contentIDList')>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 				<cfif len(previewData.contentIDList)>
 				and (

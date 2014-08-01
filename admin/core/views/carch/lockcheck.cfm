@@ -28,11 +28,11 @@ $(function(){
 
 	$('##configuratorContainer .load-inline').spin(spinnerArgs2);
 
-	var href = './?#JSStringFormat(cgi.query_string)#';
+	var href = './?#encodeForJavascript(cgi.query_string)#';
 	var locknode=false;
 
 	$.ajax({
-		  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=#JSStringFormat($.event('contentid'))#&siteid=#JSStringFormat($.event('siteid'))#&targetversion=true&contenthistid=#JSStringFormat($.event('contenthistid'))#&homeid=#JSStringFormat($.event('homeid'))#",
+		  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=#encodeForJavascript($.event('contentid'))#&siteid=#encodeForJavascript($.event('siteid'))#&targetversion=true&contenthistid=#encodeForJavascript($.event('contenthistid'))#&homeid=#encodeForJavascript($.event('homeid'))#",
 		  context: this,
 		  success: function(resp){
 
@@ -42,7 +42,7 @@ $(function(){
 
 				$(".draft-prompt-option").click(function(e){
 					e.preventDefault();
-					href = href.replace('carch.lockcheck','#jsStringFormat($.event("destAction"))#&locknode=' + locknode );
+					href = href.replace('carch.lockcheck','#encodeForJavascript($.event("destAction"))#&locknode=' + locknode );
 					actionModal(href);
 				});
 
@@ -51,7 +51,7 @@ $(function(){
 				});
 
 			} else {
-				href = href.replace('carch.lockcheck','#jsStringFormat($.event("destAction"))#&locknode=' + locknode );
+				href = href.replace('carch.lockcheck','#encodeForJavascript($.event("destAction"))#&locknode=' + locknode );
 				actionModal(href);
 			}
 		}

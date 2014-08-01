@@ -45,7 +45,17 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfsilent><cfparam name="attributes.siteID" default="">
+<cfsilent>
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+<cfparam name="attributes.siteID" default="">
 <cfparam name="attributes.parentID" default="">
 <cfparam name="attributes.nestLevel" default="1">
 <cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
@@ -67,7 +77,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.newBean.ge
 </cfsilent>
 <li>
 <ul>
-<li>#HTMLEditFormat(rslist.name)#<cfif rslist.isOpen eq 1>
+<li>#encodeForHTML(rslist.name)#<cfif rslist.isOpen eq 1>
 <select  name="categoryAssign#catTrim#" #disabled#  onchange="javascript: this.selectedIndex==3?toggleDisplay2('editDates#catTrim#',true):toggleDisplay2('editDates#catTrim#',false);">
 <option <cfif not rsIsMember.recordcount>selected</cfif> value="">No</option>
 <option <cfif rsIsMember.recordcount and not rsIsMember.isFeature>selected</cfif> value="0">Yes</option>

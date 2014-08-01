@@ -117,10 +117,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 		</div>
 
-		<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
+		<input name="returnUrl" type="hidden" value="#encodeForHTMLAttribute(rc.returnURL)#">
 		<input type="hidden" name="muraAction" value="cLogin.login">
 		<input type="hidden" name="isAdminLogin" value="true">
-		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
+		<input type="hidden" name="compactDisplay" value="#encodeForHTMLAttribute(rc.compactDisplay)#">
 		#rc.$.renderCSRFTokens(format='form')#
 	</form>
 	</div>
@@ -134,13 +134,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<div class="controls">
 			<p class="help-block">
 				<cfif rc.status eq 'sendLogin'>
-				  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
+				  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#encodeForURL("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
 				<cfif left(msg,2) eq "No">
 
-				#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#		
+				#encodeForHTML(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#		
 				<cfelseif left(msg,4) eq "Your">
-				#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
-				<cfelse>	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
+				#encodeForHTML(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
+				<cfelse>	#encodeForHTML(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
 				</cfif>
 				<cfelse>
 				#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
@@ -155,9 +155,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 		 </div>
 		<input type="hidden" name="status" value="sendlogin" />
-		<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
+		<input name="returnURL" type="hidden" value="#encodeForHTMLAttribute(rc.returnURL)#">
 		<input type="hidden" name="isAdminLogin" value="true">
-		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
+		<input type="hidden" name="compactDisplay" value="#encodeForHTMLAttribute(rc.compactDisplay)#">
 	   </form>
 	</cfif>
 </cfif>

@@ -47,6 +47,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 component extends="framework" output="false" {
 
 	include "../config/applicationSettings.cfm";
+
+	
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "../requirements/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='../requirements/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
 	
 	if(not hasMainMappings){
 		//Try and include global mappings;
@@ -186,6 +195,11 @@ component extends="framework" output="false" {
 				}
 
 				if(application.configBean.getScriptProtect()){
+
+					for(var u in url){
+						//url['#u#']=tempCanonicalize(url['#u#'],true,false);
+					}
+
 					if(isDefined("url")){
 						application.scriptProtectionFilter.scan(
 													object=url,
@@ -194,6 +208,11 @@ component extends="framework" output="false" {
 													useTagFilter=true,
 													useWordFilter=true);
 					}
+
+					for(var f in form){
+						//form['#f#']=tempCanonicalize(form['#f#'],true,false);
+					}
+
 					if(isDefined("form")){
 						application.scriptProtectionFilter.scan(
 													object=form,
@@ -209,7 +228,12 @@ component extends="framework" output="false" {
 														useTagFilter=true,
 														useWordFilter=true,
 														fixValues=false);
-						}			
+						}
+
+						for(var c in cookie){
+							//cookie['#c#']=tempCanonicalize(cookie['#c#'],true,false);		
+						}
+
 						if(isDefined("cookie")){
 							application.scriptProtectionFilter.scan(
 														object=cookie,
@@ -281,8 +305,13 @@ component extends="framework" output="false" {
 		param name="session.keywords" default="";
 		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
-		param name="cookie.rb" default="";
-	
+
+		if(ListFirst(server.coldfusion.productVersion) >= 10){
+			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
+		} else {
+			param name="cookie.rb" default='';
+		}
+		
 		application.serviceFactory.getBean('utility').suppressDebugging();
 
 		if(len(request.context.rb)){

@@ -156,10 +156,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfswitch expression="#arguments.lockdownExpries#">
 						<cfcase value="1,7,30,10950">
-							<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#">
+							<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
 						</cfcase>
 						<cfcase value="session">
-							<cfcookie name="passedLockdown" value="true">
+							<cfcookie name="passedLockdown" value="true" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
 						</cfcase>
 					</cfswitch>
 				</cfif>
@@ -314,9 +314,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 				
 		<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
-		
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
-
+		<cfset sessionRotate()>
+		<cfset getBean('utility').setSessionCookies()>
 
 </cffunction>
 

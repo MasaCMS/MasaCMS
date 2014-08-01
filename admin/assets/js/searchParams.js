@@ -53,7 +53,7 @@
 }*/
 
 
-var searchParams={
+var $searchParams={
 	addSearchParam: function(){
 		
 		var num =$('#searchParams > .controls').length;

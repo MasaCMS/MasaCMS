@@ -56,8 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')
 						& ' - ' 
 						& rc.rsUserDefinedTemplates.menutitle>
-					<option title="#HTMLEditFormat(title)#" value="Component~#HTMLEditFormat(title)#~#rc.rsUserDefinedTemplates.contentid#">
-						#HTMLEditFormat(title)#
+					<option title="#encodeForHTMLAttribute(title)#" value="Component~#encodeForHTML(title)#~#rc.rsUserDefinedTemplates.contentid#">
+						#encodeForHTML(title)#
 					</option>
 				</cfloop>
 			</select>

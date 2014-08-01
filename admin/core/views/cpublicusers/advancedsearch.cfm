@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,"user.advancedmembersearch")#</h1>
 <ul class="navTask nav nav-pills">
-<li><a href="./?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
+<li><a href="./?muraAction=cPublicUsers.search&siteid=#encodeForURL(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
 </ul>
 <form class="fieldset-wrap" novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
 <div class="fieldset">
@@ -141,8 +141,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 				
 				<input type="text" name="paramCriteria1" class="span4">
-				<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-remove-sign"></i></a>
-				<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
+				<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-remove-sign"></i></a>
+				<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
 				
 			<cfelse>
 				<cfloop from="1" to="#session.paramCount#" index="p">
@@ -166,8 +166,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 				
 				<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
-				<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
-				<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
+				<a class="removeCriteria" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+				<a class="addCriteria" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
 				</cfloop>
 			</cfif>
 			</div>
@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <div class="form-actions">
-<input type="hidden" name="muraAction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#"/>
+<input type="hidden" name="muraAction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#"/>
 <button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearch';submitForm(document.forms.form2);"><i class="icon-search"></i> #application.rbFactory.getKeyValue(session.rb,"user.search")#</button>
 <button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearchToCSV';submitForm(document.forms.form2);"><i class="icon-download"></i> #application.rbFactory.getKeyValue(session.rb,"user.download")#</button>
 </div>
@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset rc.rslist=application.userManager.getAdvancedSearch(session,rc.siteid,1) />
 <cfif rc.rslist.recordcount eq 1>
-	<cflocation url="./?muraAction=cPublicUsers.editUser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#" />
+	<cflocation url="./?muraAction=cPublicUsers.editUser&userid=#rc.rslist.userid#&siteid=#encodeForURL(rc.siteid)#" />
 </cfif>
 <cfset rc.nextN=application.utility.getNextN(rc.rsList,15,rc.startrow)/>
 
@@ -217,12 +217,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="var-width"><a title="Edit" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
-                <td><cfif rc.rsList.email gt ""><a href="mailto:#HTMLEditFormat(rc.rsList.email)#">#HTMLEditFormat(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
+                <td class="var-width"><a title="Edit" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#encodeForURL(rc.siteid)#&returnURL=#encodeForURL(rc.currentURL)#">#encodeForHTML(lname)#, #encodeForHTML(fname)# <cfif company neq ''> (#encodeForHTML(company)#)</cfif></a></td>
+                <td><cfif rc.rsList.email gt ""><a href="mailto:#encodeForHTML(rc.rsList.email)#">#encodeForHTML(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
-			  <td>#HTMLEditFormat(rc.rsList.LastUpdateBy)#</td>
-                <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
+			  <td>#encodeForHTML(rc.rsList.LastUpdateBy)#</td>
+                <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#encodeForURL(rc.siteid)#&returnURL=#encodeForURL(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
               </tr>
             </cfoutput>
 			
@@ -246,19 +246,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif rc.nextN.currentpagenumber gt 1>
 			<li>
-				<a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#rc.nextN.previous#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a></li>
+				<a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#rc.nextN.previous#&siteid=#encodeForURL(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a></li>
 			</cfif>
 			<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
 			<cfif rc.nextN.currentpagenumber eq i>
 				<li class="active"><a href="##">#i#</a></li> 
 			<cfelse> 
 				<li>
-					<a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> 
+					<a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#encodeForURL(rc.siteid)#">#i#</a> 
 				</li>
 			</cfif>
 			</cfloop>
 			<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-				<li><a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#rc.nextN.next#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a></li>
+				<li><a href="./?muraAction=cPublicUsers.advancedSearch&startrow=#rc.nextN.next#&siteid=#encodeForURL(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a></li>
 			</cfif> 
 			</ul>
 		</div>

@@ -453,16 +453,16 @@ function validateForm(frm,customaction) {
 			jQuery.ajax(
 				{
 					type: 'post',
-					url: mura.context + '/tasks/validate/',
+					url: mura.context + '/tasks/validate/remote.cfc?method=validate',
 					dataType: 'text',
 					data: {
 							data: escape(JSON.stringify(data)),
 							validations: escape(JSON.stringify(validations)),
-							version: 3
+							version: 4
 						},
 					success: function(resp) {
- 				 		data=eval('(' + resp + ')');
-
+ 				 		var data=eval('(' + resp + ')');
+ 				 		
  				 		if(jQuery.isEmptyObject(data)){
  				 			if(typeof $customaction == 'function'){
  				 				$customaction(theForm);

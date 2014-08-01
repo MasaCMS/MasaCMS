@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
-<form <cfif rc.adZoneID eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="./?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
+<form <cfif rc.adZoneID eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="./?muraAction=cAdvertising.updateAdZone&siteid=#encodeForURL(rc.siteid)#" onsubmit="return false;">
 
 
 <cfif rc.adZoneID neq ''>
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
 				</label>
 				<div class="controls">
-					<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.adZoneBean.getName())#" maxlength="50">
+					<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#encodeForHTMLAttribute(rc.adZoneBean.getName())#" maxlength="50">
 				</div>
 			</div><!--- // Name --->
 
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</label>
 				<div class="controls">
-				<textarea name="notes" class="textArea">#HTMLEditFormat(rc.adZoneBean.getNotes())#</textarea>
+				<textarea name="notes" class="textArea">#encodeForHTML(rc.adZoneBean.getNotes())#</textarea>
 				</div>
 			</div><!--- // Notes --->
 		
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.adZoneid eq ''>
 				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" /><input type=hidden name="adZoneID" value="">
 			<cfelse>
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 				<input type="hidden" name="adZoneID" value="#rc.adZoneBean.getAdZoneID()#">
 			</cfif>

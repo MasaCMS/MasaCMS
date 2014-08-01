@@ -120,11 +120,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.rc.closeCompactDisplay neq 'true' and not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors()))>
 				<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="./")>
 		</cfif>
-	</cfif>
 	
-	<cfif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors())>
-		<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
-		<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.siteID,arguments.rc.feedBean.getcontentID()) />
+	
+		<cfif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.feedBean.getErrors())>
+			<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
+			<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.siteID,arguments.rc.feedBean.getcontentID()) />
+		</cfif>
+	<cfelse>
+		<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="./")>
 	</cfif>
 	  
 </cffunction>

@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset counter=0 />
 <cfoutput>
 <div id="contentSearch" class="form-inline">
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" maxlength="50" placeholder="Search Content" /> <input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" maxlength="50" placeholder="Search Content" /> <input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 </div>
 </cfoutput>
 
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfelse>
 		  <td class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</td>
 		 </cfif>
-		  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
+		  <td class="actions"><input type="radio" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" checked="checked"></td>
 		</tr></cfoutput>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/> 
@@ -87,11 +87,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        </cfoutput>
 	 	<cfelse>
 		<tr class="alt"><cfoutput>  
-		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#rc.parentid#" /> </td>
+		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /> </td>
 		</tr></cfoutput>
 		</cfif>
 		</tbody>
   </table>
 <cfelse>
-<cfoutput><input type="hidden" name="parentid" value="#rc.parentid#" /></cfoutput>
+<cfoutput><input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
 </cfif>

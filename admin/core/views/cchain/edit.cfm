@@ -22,7 +22,7 @@
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.name')#
   </label>
   <div class="controls">
-  <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#HTMLEditFormat(chain.getName())#" maxlength="50">
+  <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#encodeForHTMLAttribute(chain.getName())#" maxlength="50">
    </div>
 </div>
 
@@ -31,7 +31,7 @@
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.description')#
   </label>
   <div class="controls">
-  <textarea name="description" class="span12" rows="6">#HTMLEditFormat(chain.getDescription())#</textarea>
+  <textarea name="description" class="span12" rows="6">#encodeForHTML(chain.getDescription())#</textarea>
   </div>
 </div>
 
@@ -54,7 +54,7 @@
       <cfloop condition="it.hasNext()">
         <cfset item=it.next()>
         <li class="ui-state-default">
-          #HTMLEditFormat(item.getGroupName())#
+          #encodeForHTML(item.getGroupName())#
           <input name="availableID" type="hidden" value="#item.getUserID()#">
         </li>
       </cfloop>
@@ -65,7 +65,7 @@
       <cfloop condition="it.hasNext()">
         <cfset item=it.next()>
         <li class="ui-state-highlight">
-          #HTMLEditFormat(item.getGroup().getGroupName())#
+          #encodeForHTML(item.getGroup().getGroupName())#
           <input name="groupID" type="hidden" value="#item.getGroupID()#">
         </li>
       </cfloop>
@@ -81,7 +81,7 @@
   <cfif rc.chainID eq ''>
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#" />
   <cfelse>
-    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#URLEncodedFormat(chain.getSiteID())#')" /> 
+    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#" onclick="confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#encodeForURL(chain.getSiteID())#')" /> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'save');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.update')#" />
   </cfif>
   <input type="hidden" name="siteid" value="#chain.getSiteID()#">

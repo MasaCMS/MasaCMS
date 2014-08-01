@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form novalidate="novalidate" action="./?muraAction=cFeed.import2&feedid=#URLEncodedFormat(rc.feedid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
+<form novalidate="novalidate" action="./?muraAction=cFeed.import2&feedid=#encodeForURL(rc.feedid)#&siteid=#encodeForURL(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(rc.feedID) />
 	<h2>#feedBean.getName()#</h2>
 		</cfoutput>
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfoutput>
 				<dl class="oneColumn">
-				<dt><a href="#items[i].link.xmlText#" target="_blank">#items[i].title.xmlText#<cfif not rc.newBean.getIsNew()> [#application.rbFactory.getKeyValue(session.rb,'collections.update')#]</cfif></a>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')# <input name="remoteID" value="#remoteID#" type="checkbox" checked /></dt>
+				<dt><a href="#encodeForHTMLAttribute(items[i].link.xmlText)#" target="_blank">#encodeForHTML(items[i].title.xmlText)#<cfif not rc.newBean.getIsNew()> [#application.rbFactory.getKeyValue(session.rb,'collections.update')#]</cfif></a>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'collections.import')# <input name="remoteID" value="#encodeForHTMLAttribute(remoteID)#" type="checkbox" checked /></dt>
 				<dd>#items[i].description.xmlText#</dd>
 			<!---	<cfinclude template="dsp_categories_import_nest.cfm">--->
 				</dl>

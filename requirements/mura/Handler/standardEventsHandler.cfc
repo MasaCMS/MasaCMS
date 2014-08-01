@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfset var $=arguments.event.getValue('muraScope')>
-	<cflocation addtoken="no" url="#$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))#">
+	<cflocation addtoken="no" url="#$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))#" statuscode="301">
 
 </cffunction>
 

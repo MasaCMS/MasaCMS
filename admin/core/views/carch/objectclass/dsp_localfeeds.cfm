@@ -65,8 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				& ' - '  
 				& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.localindex')>
 
-			<option title="#HTMLEditFormat(title)#" value="{'object':'feed','objectid':'#rc.rslist.feedID#','name':'#JSStringFormat(title)#'}">
-				#HTMLEditFormat(title)#
+			<option title="#encodeForHTMLAttribute(title)#" value="{'object':'feed','objectid':'#rc.rslist.feedID#','name':'#encodeForJavascript(title)#'}">
+				#encodeForHTML(title)#
 			</option>
 		</cfloop>
 	</select>

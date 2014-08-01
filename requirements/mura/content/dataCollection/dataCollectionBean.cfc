@@ -50,6 +50,9 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	property name='formID' required=true dataType='string';
 	property name='siteID' required=true dataType='string';
 
+	variables.propertylist='';
+	variables.properties={};
+
 	function set(data){
 
 		if(isQuery(arguments.data)){
@@ -134,6 +137,9 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 					if(arrayLen(rules)){
 						validations.properties[prop.name]=rules;
 					}
+
+					variables.properties[prop.name]=prop;
+					variables.propertylist=listAppend(variables.propertylist,prop.name);
 
 				}
 			}
@@ -229,6 +235,27 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			setValue('acceptError','Spam');
 			setValue('acceptData','0');
 			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+		}
+
+		if(len(variables.propertylist)){
+			var fieldnames='';
+
+			for(var f in listToArray(getValue('fieldnames'))){
+				if(listFindNoCase(variables.propertylist,f) || listFindNoCase('siteid,formid',f)){
+					fieldnames=listAppend(fieldnames,f);
+				} else if (right(f,10) == 'attachment'){
+					local.prop=left(f,len(f)-11);
+
+					if(listFindNoCase(variables.propertylist,local.prop)
+						&& isDefined('variables.properties.#local.prop#.fieldtype.fieldtype')
+						&& variables.properties['#local.prop#'].fieldtype.fieldtype == 'file'
+					){
+						fieldnames=listAppend(fieldnames,f);
+					}
+				}
+			}
+
+			setValue('fieldnames',fieldnames);
 		}
 
 		return this;

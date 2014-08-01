@@ -58,16 +58,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(rc.frontEndProxyLoc)>
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
 </cfif>
-</cfsilent>
-<cfoutput><cfcontent reset="true"><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
+</cfsilent><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura ie"><!--<![endif]-->
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="#encodeForHTMLAttribute(session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
-<html lang="#HTMLEditFormat(session.locale)#" class="mura">
+<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura">
 </cfif>
 	<head>
 		<title>#application.configBean.getTitle()#</title>
@@ -128,12 +127,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 		var context='#application.configBean.getContext()#';
 		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-		var rb='#lcase(session.rb)#';
-		var siteid='#session.siteid#';
-		var activepanel=#JSStringFormat(rc.activepanel)#;
-		var activetab=#JSStringFormat(rc.activetab)#;
-		var webroot='#JSStringFormat(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
-		var fileDelim='#JSStringFormat($.globalConfig("fileDelim"))#';
+		var rb='#lcase(encodeForJavascript(session.rb))#';
+		var siteid='#encodeForJavascript(session.siteid)#';
+		var activepanel=#encodeForJavascript(rc.activepanel)#;
+		var activetab=#encodeForJavascript(rc.activetab)#;
+		var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+		var fileDelim='#encodeForJavascript($.globalConfig("fileDelim"))#';
 		</script>
 		
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
@@ -142,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 				if (top.location != self.location) {
-					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+					frontEndProxy = new Porthole.WindowProxy("#encodeForJavascript(session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
 											'setHeight',
 											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
@@ -176,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 	</head>
-	<body id="#rc.originalcircuit#" class="compact">
+	<body id="#encodeForHTMLAttribute(rc.originalcircuit)#" class="compact">
 		<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
 		<cfinclude template="includes/dialog.cfm">
 		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>

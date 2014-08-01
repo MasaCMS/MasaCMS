@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
+<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#encodeForURL(rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
 </div>
 
 </cfoutput>
@@ -67,16 +67,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rslist">
 	<tr>
 		<!---<td class="selected-icon"><i class="#$.renderIcon(iconArgs)#"></i></td>--->
-		<td class="title"><a title="Edit" href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#"></i> #application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
+		<td class="title"><a title="Edit" href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#encodeForURL(rc.siteid)#"><i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#"></i> #application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
 		<td class="var-width">#rslist.description#</td>
 		<td>#yesNoFormat(rslist.isactive)#</td>
 		<td class="actions">
 			<ul>
 				<li class="edit">
-					<a title="Edit" href="./?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a>
+					<a title="Edit" href="./?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a>
 				</li>
 				<li class="view-sets">
-					<a href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#" title="View Sets"><i class="icon-list"></i></a>
+					<a href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#encodeForURL(rc.siteid)#" title="View Sets"><i class="icon-list"></i></a>
 				</li>
 			</ul>
 		</td>

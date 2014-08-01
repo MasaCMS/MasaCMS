@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -9,13 +9,13 @@
 
 'use strict';
 
-(function() {
+( function() {
 
 	var DRAG_HANDLER_SIZE = 15;
 
 	CKEDITOR.plugins.add( 'widget', {
-		lang: 'en,ja,uk', // %REMOVE_LINE_CORE%
-		requires: 'lineutils',
+		lang: 'ar,ca,cs,cy,de,el,en,en-gb,eo,es,fa,fi,fr,gl,he,hr,hu,it,ja,km,ko,nb,nl,no,pl,pt,pt-br,ru,sl,sv,tt,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
+		requires: 'lineutils,clipboard',
 		onLoad: function() {
 			CKEDITOR.addCss(
 				'.cke_widget_wrapper{' +
@@ -44,8 +44,13 @@
 					'position:absolute;' +
 					'width:' + DRAG_HANDLER_SIZE + 'px;' +
 					'height:0;' +
+					// Initially drag handler should not be visible, until its position will be
+					// repositioned. #11177
+					'left:-9999px;' +
 					'opacity:0.75;' +
-					'transition:height 0s 0.2s' + // Delay hiding drag handler.
+					'transition:height 0s 0.2s;' + // Delay hiding drag handler.
+					// Prevent drag handler from being misplaced (#11198).
+					'line-height:0' +
 				'}' +
 				'.cke_widget_wrapper:hover>.cke_widget_drag_handler_container{' +
 					'height:' + DRAG_HANDLER_SIZE + 'px;' +
@@ -170,11 +175,11 @@
 		this._ = {
 			nextId: 0,
 			upcasts: [],
+			upcastCallbacks: [],
 			filters: {}
 		};
 
-		setupDataProcessing( this );
-		setupWidgetsObserver( this );
+		setupWidgetsLifecycle( this );
 		setupSelectionObserver( this );
 		setupMouseObserver( this );
 		setupKeyboardObserver( this );
@@ -189,13 +194,6 @@
 		 * @private
 		 */
 		MIN_SELECTION_CHECK_INTERVAL: 500,
-
-		/**
-		 * Minimum interval between widget checks.
-		 *
-		 * @private
-		 */
-		MIN_WIDGETS_CHECK_INTERVAL: 1000,
 
 		/**
 		 * Adds a widget definition to the repository. Fires the {@link CKEDITOR.editor#widgetDefinition} event
@@ -220,13 +218,27 @@
 			addWidgetCommand( this.editor, widgetDef );
 			addWidgetProcessors( this, widgetDef );
 
-			// Register widget automatically if it does not have a button.
-			if ( !widgetDef.button )
-				this.editor.addFeature( widgetDef );
-
 			this.registered[ name ] = widgetDef;
 
 			return widgetDef;
+		},
+
+		/**
+		 * Adds a callback for element upcasting. Each callback will be executed
+		 * for every element which is later tested by upcast methods. If a callback
+		 * returns `false`, the element will not be upcasted.
+		 *
+		 *		// Images with the "banner" class will not be upcasted (e.g. to the image widget).
+		 *		editor.widgets.addUpcastCallback( function( element ) {
+		 *			if ( element.name == 'img' && element.hasClass( 'banner' ) )
+		 *				return false;
+		 *		} );
+		 *
+		 * @param {Function} callback
+		 * @param {CKEDITOR.htmlParser.element} callback.element
+		 */
+		addUpcastCallback: function( callback ) {
+			this._.upcastCallbacks.push( callback );
 		},
 
 		/**
@@ -254,7 +266,7 @@
 			var walker = new CKEDITOR.dom.walker( range ),
 				wrapper;
 
-			walker.evaluator = isWidgetWrapper2;
+			walker.evaluator = isDomWidgetWrapper;
 
 			while ( ( wrapper = walker.next() ) )
 				updater.select( this.getByElement( wrapper ) );
@@ -268,40 +280,19 @@
 		 * Reinitializes widgets on widget wrappers for which widget instances
 		 * cannot be found.
 		 *
-		 * This method is triggered by the {@link #event-checkWidgets} event.
+		 * This method triggers the {@link #event-checkWidgets} event whose listeners
+		 * can cancel the method's execution or modify its options.
+		 *
+		 * @param [options] The options object.
+		 * @param {Boolean} [options.initOnlyNew] Initializes widgets only on newly wrapped
+		 * widget elements (those which still have the `cke_widget_new` class). When this option is
+		 * set to `true`, widgets which were invalidated (e.g. by replacing with a cloned DOM structure)
+		 * will not be reinitialized. This makes the check faster.
+		 * @param {Boolean} [options.focusInited] If only one widget is initialized by
+		 * the method, it will be focused.
 		 */
-		checkWidgets: function() {
-			if ( this.editor.mode != 'wysiwyg' )
-				return;
-
-			var editable = this.editor.editable(),
-				instances = this.instances,
-				i, count, wrapper;
-
-			if ( !editable )
-				return;
-
-			// Remove widgets which have no corresponding elements in DOM.
-			for ( i in instances ) {
-				if ( !editable.contains( instances[ i ].wrapper ) )
-					this.destroy( instances[ i ], true );
-			}
-
-			var wrappers = editable.find( '.cke_widget_wrapper' );
-
-			// Create widgets on existing wrappers if they do not exists.
-			for ( i = 0, count = wrappers.count(); i < count; i++ ) {
-				wrapper = wrappers.getItem( i );
-
-				// Check if there's no instance for this widget and that
-				// wrapper is not inside some temporary element like copybin (#11088).
-				if ( !this.getByElement( wrapper, true ) && !findParent( wrapper, isTemp2 ) ) {
-					// Add cke_widget_new class because otherwise
-					// widget will not be created on such wrapper.
-					wrapper.addClass( 'cke_widget_new' );
-					this.initOn( wrapper.getFirst( isWidgetElement2 ) );
-				}
-			}
+		checkWidgets: function( options ) {
+			this.fire( 'checkWidgets', CKEDITOR.tools.copy( options || {} ) );
 		},
 
 		/**
@@ -398,7 +389,7 @@
 		 */
 		finalizeCreation: function( container ) {
 			var wrapper = container.getFirst();
-			if ( wrapper && isWidgetWrapper2( wrapper ) ) {
+			if ( wrapper && isDomWidgetWrapper( wrapper ) ) {
 				this.editor.insertElement( wrapper );
 
 				var widget = this.getByElement( wrapper );
@@ -424,20 +415,31 @@
 		 * @param {Boolean} [checkWrapperOnly] If set to `true`, the method will not check wrappers' descendants.
 		 * @returns {CKEDITOR.plugins.widget} The widget instance or `null`.
 		 */
-		getByElement: function( element, checkWrapperOnly ) {
-			if ( !element )
-				return null;
-
-			var wrapper;
-
-			for ( var id in this.instances ) {
-				wrapper = this.instances[ id ].wrapper;
-				if ( wrapper.equals( element ) || ( !checkWrapperOnly && wrapper.contains( element ) ) )
-					return this.instances[ id ];
+		getByElement: ( function() {
+			var validWrapperElements = { div: 1, span: 1 };
+			function getWidgetId( element ) {
+				return element.is( validWrapperElements ) && element.data( 'cke-widget-id' );
 			}
 
-			return null;
-		},
+			return function( element, checkWrapperOnly ) {
+				if ( !element )
+					return null;
+
+				var id = getWidgetId( element );
+
+				// There's no need to check element parents if element is a wrapper.
+				if ( !checkWrapperOnly && !id ) {
+					var limit = this.editor.editable();
+
+					// Try to find a closest ascendant which is a widget wrapper.
+					do {
+						element = element.getParent();
+					} while ( element && !element.equals( limit ) && !( id = getWidgetId( element ) ) );
+				}
+
+				return this.instances[ id ] || null;
+			};
+		} )(),
 
 		/**
 		 * Initializes a widget on a given element if the widget has not been initialized on it yet.
@@ -494,6 +496,7 @@
 		 * @param {CKEDITOR.dom.element} [container=editor.editable()] The container which will be checked for not
 		 * initialized widgets. Defaults to editor's {@link CKEDITOR.editor#editable editable} element.
 		 * @returns {CKEDITOR.plugins.widget[]} Array of widget instances which have been initialized.
+		 * Note: Only first-level widgets are returned &mdash; without nested widgets.
 		 */
 		initOnAll: function( container ) {
 			var newWidgets = ( container || this.editor.editable() ).find( '.cke_widget_new' ),
@@ -501,12 +504,41 @@
 				instance;
 
 			for ( var i = newWidgets.count(); i--; ) {
-				instance = this.initOn( newWidgets.getItem( i ).getFirst( isWidgetElement2 ) );
+				instance = this.initOn( newWidgets.getItem( i ).getFirst( isDomWidgetElement ) );
 				if ( instance )
 					newInstances.push( instance );
 			}
 
 			return newInstances;
+		},
+
+		/**
+		 * Parses element classes string and returns an object
+		 * whose keys contain class names. Skips all `cke_*` classes.
+		 *
+		 * This method is used by the {@link CKEDITOR.plugins.widget#getClasses} method and
+		 * may be used when overriding that method.
+		 *
+		 * @since 4.4
+		 * @param {String} classes String (value of `class` attribute).
+		 * @returns {Object} Object containing classes or `null` if no classes found.
+		 */
+		parseElementClasses: function( classes ) {
+			if ( !classes )
+				return null;
+
+			classes = CKEDITOR.tools.trim( classes ).split( /\s+/ );
+
+			var cl,
+				obj = {},
+				hasClasses = 0;
+
+			while ( ( cl = classes.pop() ) ) {
+				if ( cl.indexOf( 'cke_' ) == -1 )
+					obj[ cl ] = hasClasses = 1;
+			}
+
+			return hasClasses ? obj : null;
 		},
 
 		/**
@@ -625,11 +657,19 @@
 	 */
 
 	/**
-	 * An event fired to trigger the widgets check.
+	 * An event fired by the the {@link #method-checkWidgets} method.
 	 *
-	 * See {@link #method-checkWidgets} method.
+	 * It can be canceled in order to stop the {@link #method-checkWidgets}
+	 * method execution or the event listener can modify the method's options.
 	 *
 	 * @event checkWidgets
+	 * @param [data]
+	 * @param {Boolean} [data.initOnlyNew] Initialize widgets only on newly wrapped
+	 * widget elements (those which still have the `cke_widget_new` class). When this option is
+	 * set to `true`, widgets which were invalidated (e.g. by replacing with a cloned DOM structure)
+	 * will not be reinitialized. This makes the check faster.
+	 * @param {Boolean} [data.focusInited] If only one widget is initialized by
+	 * the method, it will be focused.
 	 */
 
 
@@ -712,6 +752,10 @@
 			/**
 			 * Whether this widget is an inline widget (based on an inline element unless
 			 * forced otherwise by {@link CKEDITOR.plugins.widget.definition#inline}).
+			 *
+			 * **Note:** This option does not allow to turn a block element into an inline widget.
+			 * However, it makes it possible to turn an inline element into a block widget or to
+			 * force a correct type in case when automatic recognition fails.
 			 *
 			 * @readonly
 			 * @property {Boolean}
@@ -838,10 +882,6 @@
 		 * @property {CKEDITOR.dom.element} wrapper
 		 */
 
-		// #11074 - IE8 throws exceptions when dragging widget using the native method.
-		if ( this.inline && CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
-			this.draggable = false;
-
 		widgetsRepo.fire( 'instanceCreated', this );
 
 		setupWidget( this, widgetDef );
@@ -862,6 +902,77 @@
 	}
 
 	Widget.prototype = {
+		/**
+		 * Adds a class to the widget element. This method is used by
+		 * the {@link #applyStyle} method and should be overriden by widgets
+		 * which should handle classes differently (e.g. add them to other elements).
+		 *
+		 * **Note**: This method should not be used directly. Use the {@link #setData} method to
+		 * set the `classes` property. Read more in the {@link #setData} documentation.
+		 *
+		 * See also: {@link #removeClass}, {@link #hasClass}, {@link #getClasses}.
+		 *
+		 * @since 4.4
+		 * @param {String} className The class name to be added.
+		 */
+		addClass: function( className ) {
+			this.element.addClass( className );
+		},
+
+		/**
+		 * Applies the specified style to the widget. It is highly recommended to use the
+		 * {@link CKEDITOR.editor#applyStyle} or {@link CKEDITOR.style#apply} methods instead of
+		 * using this method directly, because unlike editor's and style's methods, this one
+		 * does not perform any checks.
+		 *
+		 * By default this method handles only classes defined in the style. It clones existing
+		 * classes which are stored in the {@link #property-data widget data}'s `classes` property,
+		 * adds new classes, and calls the {@link #setData} method if at least one new class was added.
+		 * Then, using the {@link #event-data} event listener widget applies modifications passing
+		 * new classes to the {@link #addClass} method.
+		 *
+		 * If you need to handle classes differently than in the default way, you can override the
+		 * {@link #addClass} and related methods. You can also handle other style properties than `classes`
+		 * by overriding this method.
+		 *
+		 * See also: {@link #checkStyleActive}, {@link #removeStyle}.
+		 *
+		 * @since 4.4
+		 * @param {CKEDITOR.style} style The custom widget style to be applied.
+		 */
+		applyStyle: function( style ) {
+			applyRemoveStyle( this, style, 1 );
+		},
+
+		/**
+		 * Checks if the specified style is applied to this widget. It is highly recommended to use the
+		 * {@link CKEDITOR.style#checkActive} method instead of using this method directly,
+		 * because unlike style's method, this one does not perform any checks.
+		 *
+		 * By default this method handles only classes defined in the style and passes
+		 * them to the {@link #hasClass} method. You can override these methods to handle classes
+		 * differently or to handle more of the style properties.
+		 *
+		 * See also: {@link #applyStyle}, {@link #removeStyle}.
+		 *
+		 * @since 4.4
+		 * @param {CKEDITOR.style} style The custom widget style to be checked.
+		 * @returns {Boolean} Whether the style is applied to this widget.
+		 */
+		checkStyleActive: function( style ) {
+			var classes = getStyleClasses( style ),
+				cl;
+
+			if ( !classes )
+				return false;
+
+			while ( ( cl = classes.pop() ) ) {
+				if ( !this.hasClass( cl ) )
+					return false;
+			}
+			return true;
+		},
+
 		/**
 		 * Destroys this widget instance.
 		 *
@@ -919,25 +1030,27 @@
 		 * Starts widget editing.
 		 *
 		 * This method fires the {@link CKEDITOR.plugins.widget#event-edit} event
-		 * which may be cancelled in order to prevent it from opening a dialog window.
+		 * which may be canceled in order to prevent it from opening a dialog window.
 		 *
 		 * The dialog window name is obtained from the event's data `dialog` property or
 		 * from {@link CKEDITOR.plugins.widget.definition#dialog}.
+		 *
+		 * @returns {Boolean} Returns `true` if a dialog window was opened.
 		 */
 		edit: function() {
 			var evtData = { dialog: this.dialog },
 				that = this;
 
 			// Edit event was blocked, but there's no dialog to be automatically opened.
-			if ( !this.fire( 'edit', evtData ) || !evtData.dialog )
-				return;
+			if ( this.fire( 'edit', evtData ) === false || !evtData.dialog )
+				return false;
 
 			this.editor.openDialog( evtData.dialog, function( dialog ) {
 				var showListener,
 					okListener;
 
 				// Allow to add a custom dialog handler.
-				if ( !that.fire( 'dialog', dialog ) )
+				if ( that.fire( 'dialog', dialog ) === false )
 					return;
 
 				showListener = dialog.on( 'show', function() {
@@ -972,6 +1085,39 @@
 					okListener.removeListener();
 				} );
 			} );
+
+			return true;
+		},
+
+		/**
+		 * Returns widget element classes parsed to an object. This method
+		 * is used to populate the `classes` property of widget's {@link #property-data}.
+		 *
+		 * This method reuses {@link CKEDITOR.plugins.widget.repository#parseElementClasses}.
+		 * It should be overriden if a widget should handle classes differently (e.g. on other elements).
+		 *
+		 * See also: {@link #removeClass}, {@link #addClass}, {@link #hasClass}.
+		 *
+		 * @since 4.4
+		 * @returns {Object}
+		 */
+		getClasses: function() {
+			return this.repository.parseElementClasses( this.element.getAttribute( 'class' ) );
+		},
+
+		/**
+		 * Checks if the widget element has specified class. This method is used by
+		 * the {@link #checkStyleActive} method and should be overriden by widgets
+		 * which should handle classes differently (e.g. on other elements).
+		 *
+		 * See also: {@link #removeClass}, {@link #addClass}, {@link #getClasses}.
+		 *
+		 * @since 4.4
+		 * @param {String} className The class to be checked.
+		 * @param {Boolean} Whether a widget has specified class.
+		 */
+		hasClass: function( className ) {
+			return this.element.hasClass( className );
 		},
 
 		/**
@@ -1052,11 +1198,52 @@
 		focus: function() {
 			var sel = this.editor.getSelection();
 
-			if ( sel )
+			// Fake the selection before focusing editor, to avoid unpreventable viewports scrolling
+			// on Webkit/Blink/IE which is done because there's no selection or selection was somewhere else than widget.
+			if ( sel ) {
+				var isDirty = this.editor.checkDirty();
+
 				sel.fake( this.wrapper );
+
+				!isDirty && this.editor.resetDirty();
+			}
 
 			// Always focus editor (not only when focusManger.hasFocus is false) (because of #10483).
 			this.editor.focus();
+		},
+
+		/**
+		 * Removes a class from the widget element. This method is used by
+		 * the {@link #removeStyle} method and should be overriden by widgets
+		 * which should handle classes differently (e.g. on other elements).
+		 *
+		 * **Note**: This method should not be used directly. Use the {@link #setData} method to
+		 * set the `classes` property. Read more in the {@link #setData} documentation.
+		 *
+		 * See also: {@link #hasClass}, {@link #addClass}.
+		 *
+		 * @since 4.4
+		 * @param {String} className The class to be removed.
+		 */
+		removeClass: function( className ) {
+			this.element.removeClass( className );
+		},
+
+		/**
+		 * Removes the specified style from the widget. It is highly recommended to use the
+		 * {@link CKEDITOR.editor#removeStyle} or {@link CKEDITOR.style#remove} methods instead of
+		 * using this method directly, because unlike editor's and style's methods, this one
+		 * does not perform any checks.
+		 *
+		 * Read more about how applying/removing styles works in the {@link #applyStyle} method documentation.
+		 *
+		 * See also {@link #checkStyleActive}, {@link #applyStyle}, {@link #getClasses}.
+		 *
+		 * @since 4.4
+		 * @param {CKEDITOR.style} style The custom widget style to be removed.
+		 */
+		removeStyle: function( style ) {
+			applyRemoveStyle( this, style, 0 );
 		},
 
 		/**
@@ -1073,6 +1260,22 @@
 		 * Set values are stored in {@link #element}'s attribute (`data-cke-widget-data`),
 		 * in a JSON string, therefore {@link #property-data} should contain
 		 * only serializable data.
+		 *
+		 * **Note:** A special data property, `classes`, exists. It contains an object with
+		 * classes which were returned by the {@link #getClasses} method during the widget initialization.
+		 * This property is then used by the {@link #applyStyle} and {@link #removeStyle} methods.
+		 * When it is changed (the reference to object must be changed!), the widget updates its classes by
+		 * using the {@link #addClass} and {@link #removeClass} methods.
+		 *
+		 *		// Adding a new class.
+		 *		var classes = CKEDITOR.tools.clone( widget.data.classes );
+		 *		classes.newClass = 1;
+		 *		widget.setData( 'classes', classes );
+		 *
+		 *		// Removing a class.
+		 *		var classes = CKEDITOR.tools.clone( widget.data.classes );
+		 *		delete classes.newClass;
+		 *		widget.setData( 'classes', classes );
 		 *
 		 * @param {String/Object} keyOrData
 		 * @param {Object} value
@@ -1134,6 +1337,35 @@
 			this.wrapper[ selected ? 'addClass' : 'removeClass' ]( 'cke_widget_selected' );
 			this.fire(  selected ? 'select' : 'deselect' );
 			return this;
+		},
+
+		/**
+		 * Repositions drag handler according to the widget's element position. Should be called from events, like mouseover.
+		 */
+		updateDragHandlerPosition: function() {
+			var editor = this.editor,
+				domElement = this.element.$,
+				oldPos = this._.dragHandlerOffset,
+				newPos = {
+					x: domElement.offsetLeft,
+					y: domElement.offsetTop - DRAG_HANDLER_SIZE
+				};
+
+			if ( oldPos && newPos.x == oldPos.x && newPos.y == oldPos.y )
+				return;
+
+			// We need to make sure that dirty state is not changed (#11487).
+			var initialDirty = editor.checkDirty();
+
+			editor.fire( 'lockSnapshot' );
+			this.dragHandlerContainer.setStyles( {
+				top: newPos.y + 'px',
+				left: newPos.x + 'px'
+			} );
+			editor.fire( 'unlockSnapshot' );
+			!initialDirty && editor.resetDirty();
+
+			this._.dragHandlerOffset = newPos;
 		}
 	};
 
@@ -1205,7 +1437,7 @@
 
 	/**
 	 * An event fired when a dialog window for widget editing is opened.
-	 * This event can be cancelled in order to handle the editing dialog in a custom manner.
+	 * This event can be canceled in order to handle the editing dialog in a custom manner.
 	 *
 	 * @event dialog
 	 * @param {CKEDITOR.dialog} data The opened dialog window instance.
@@ -1214,7 +1446,7 @@
 	/**
 	 * An event fired when a key is pressed on a focused widget.
 	 * This event is forwarded from the {@link CKEDITOR.editor#key} event and
-	 * has the ability to block editor keystrokes if it is cancelled.
+	 * has the ability to block editor keystrokes if it is canceled.
 	 *
 	 * @event key
 	 * @param data
@@ -1224,16 +1456,29 @@
 	/**
 	 * An event fired when a widget is double clicked.
 	 *
+	 * **Note:** If a default editing action is executed on double click (i.e. a widget has a
+	 * {@link CKEDITOR.plugins.widget.definition#dialog dialog} defined and the {@link #event-doubleclick} event was not
+	 * canceled), this event will be automatically canceled, so a listener added with the default priority (10)
+	 * will not be executed. Use a listener with low priority (e.g. 5) to be sure that it will be executed.
+	 *
+	 *		widget.on( 'doubleclick', function( evt ) {
+	 *			console.log( 'widget#doubleclick' );
+	 *		}, null, null, 5 );
+	 *
+	 * If your widget handles double click in a special way (so the default editing action is not executed),
+	 * make sure you cancel this event, because otherwise it will be propagated to {@link CKEDITOR.editor#doubleclick}
+	 * and another feature may step in (e.g. a Link dialog window may be opened if your widget was inside a link).
+	 *
 	 * @event doubleclick
 	 * @param data
-	 * @param {CKEDITOR.dom.element} data.element The double clicked element.
+	 * @param {CKEDITOR.dom.element} data.element The double-clicked element.
 	 */
 
 	/**
 	 * An event fired when the context menu is opened for a widget.
 	 *
 	 * @event contextMenu
-	 * @param data The object contaning context menu options to be added
+	 * @param data The object containing context menu options to be added
 	 * for this widget. See {@link CKEDITOR.plugins.contextMenu#addListener}.
 	 */
 
@@ -1289,6 +1534,8 @@
 				enterMode: this.enterMode
 			} );
 			this.setHtml( data );
+
+			this.editor.widgets.initOnAll( this );
 		},
 
 		/**
@@ -1476,10 +1723,60 @@
 		widgetsRepo.focused = null;
 
 		if ( widget.isInited() ) {
+			var isDirty = widget.editor.checkDirty();
+
 			// Widget could be destroyed in the meantime - e.g. data could be set.
 			widgetsRepo.fire( 'widgetBlurred', { widget: widget } );
 			widget.setFocused( false );
+
+			!isDirty && widget.editor.resetDirty();
 		}
+	}
+
+	function checkWidgets( evt ) {
+		var options = evt.data;
+
+		if ( this.editor.mode != 'wysiwyg' )
+			return;
+
+		var editable = this.editor.editable(),
+			instances = this.instances,
+			newInstances, i, count, wrapper;
+
+		if ( !editable )
+			return;
+
+		// Remove widgets which have no corresponding elements in DOM.
+		for ( i in instances ) {
+			if ( !editable.contains( instances[ i ].wrapper ) )
+				this.destroy( instances[ i ], true );
+		}
+
+		// Init on all (new) if initOnlyNew option was passed.
+		if ( options && options.initOnlyNew )
+			newInstances = this.initOnAll();
+		else {
+			var wrappers = editable.find( '.cke_widget_wrapper' );
+			newInstances = [];
+
+			// Create widgets on existing wrappers if they do not exists.
+			for ( i = 0, count = wrappers.count(); i < count; i++ ) {
+				wrapper = wrappers.getItem( i );
+
+				// Check if there's no instance for this widget and that
+				// wrapper is not inside some temporary element like copybin (#11088).
+				if ( !this.getByElement( wrapper, true ) && !findParent( wrapper, isDomTemp ) ) {
+					// Add cke_widget_new class because otherwise
+					// widget will not be created on such wrapper.
+					wrapper.addClass( 'cke_widget_new' );
+					newInstances.push( this.initOn( wrapper.getFirst( isDomWidgetElement ) ) );
+				}
+			}
+		}
+
+		// If only single widget was initialized and focusInited was passed, focus it.
+		if ( options && options.focusInited && newInstances.length == 1 )
+			newInstances[ 0 ].focus();
 	}
 
 	// Unwraps widget element and clean up element.
@@ -1509,7 +1806,7 @@
 
 		for ( ; i < l; ++i ) {
 			wrapper = wrappers.getItem( i );
-			element = wrapper.getFirst( isWidgetElement2 );
+			element = wrapper.getFirst( isDomWidgetElement );
 			// If wrapper contains widget element - unwrap it and wrap again.
 			if ( element.type == CKEDITOR.NODE_ELEMENT && element.data( 'widget' ) ) {
 				element.replace( wrapper );
@@ -1548,6 +1845,83 @@
 		return filter;
 	}
 
+	// Creates an iterator function which when executed on all
+	// elements in DOM tree will gather elements that should be wrapped
+	// and initialized as widgets.
+	function createUpcastIterator( widgetsRepo ) {
+		var toBeWrapped = [],
+			upcasts = widgetsRepo._.upcasts,
+			upcastCallbacks = widgetsRepo._.upcastCallbacks;
+
+		return {
+			toBeWrapped: toBeWrapped,
+
+			iterator: function( element ) {
+				var upcast, upcasted,
+					data,
+					i,
+					upcastsLength,
+					upcastCallbacksLength;
+
+				// Wrapper found - find widget element, add it to be
+				// cleaned up (unwrapped) and wrapped and stop iterating in this branch.
+				if ( 'data-cke-widget-wrapper' in element.attributes ) {
+					element = element.getFirst( isParserWidgetElement );
+
+					if ( element )
+						toBeWrapped.push( [ element ] );
+
+					// Do not iterate over descendants.
+					return false;
+				}
+				// Widget element found - add it to be cleaned up (just in case)
+				// and wrapped and stop iterating in this branch.
+				else if ( 'data-widget' in element.attributes ) {
+					toBeWrapped.push( [ element ] );
+
+					// Do not iterate over descendants.
+					return false;
+				}
+				else if ( ( upcastsLength = upcasts.length ) ) {
+					// Ignore elements with data-cke-widget-upcasted to avoid multiple upcasts (#11533).
+					// Do not iterate over descendants.
+					if ( element.attributes[ 'data-cke-widget-upcasted' ] )
+						return false;
+
+					// Check element with upcast callbacks first.
+					// If any of them return false abort upcasting.
+					for ( i = 0, upcastCallbacksLength = upcastCallbacks.length; i < upcastCallbacksLength; ++i ) {
+						if ( upcastCallbacks[ i ]( element ) === false )
+							return;
+						// Return nothing in order to continue iterating over ascendants.
+						// See http://dev.ckeditor.com/ticket/11186#comment:6
+					}
+
+					for ( i = 0; i < upcastsLength; ++i ) {
+						upcast = upcasts[ i ];
+						data = {};
+
+						if ( ( upcasted = upcast[ 0 ]( element, data ) ) ) {
+							// If upcast function returned element, upcast this one.
+							// It can be e.g. a new element wrapping the original one.
+							if ( upcasted instanceof CKEDITOR.htmlParser.element )
+								element = upcasted;
+
+							// Set initial data attr with data from upcast method.
+							element.attributes[ 'data-cke-widget-data' ] = encodeURIComponent( JSON.stringify( data ) );
+							element.attributes[ 'data-cke-widget-upcasted' ] = 1;
+
+							toBeWrapped.push( [ element, upcast[ 1 ] ] );
+
+							// Do not iterate over descendants.
+							return false;
+						}
+					}
+				}
+			}
+		};
+	}
+
 	// Finds a first parent that matches query.
 	//
 	// @param {CKEDITOR.dom.element} element
@@ -1571,7 +1945,7 @@
 		if ( !node || node.equals( guard ) )
 			return null;
 
-		if ( isNestedEditable2( node ) )
+		if ( isDomNestedEditable( node ) )
 			return node;
 
 		return getNestedEditable( guard, node.getParent() );
@@ -1630,12 +2004,12 @@
 	}
 
 	// @param {CKEDITOR.htmlParser.element}
-	function isWidgetElement( element ) {
+	function isParserWidgetElement( element ) {
 		return element.type == CKEDITOR.NODE_ELEMENT && !!element.attributes[ 'data-widget' ];
 	}
 
 	// @param {CKEDITOR.dom.element}
-	function isWidgetElement2( element ) {
+	function isDomWidgetElement( element ) {
 		return element.type == CKEDITOR.NODE_ELEMENT && element.hasAttribute( 'data-widget' );
 	}
 
@@ -1645,35 +2019,62 @@
 	}
 
 	// @param {CKEDITOR.htmlParser.element}
-	function isWidgetWrapper( element ) {
+	function isParserWidgetWrapper( element ) {
 		return element.type == CKEDITOR.NODE_ELEMENT && element.attributes[ 'data-cke-widget-wrapper' ];
 	}
 
 	// @param {CKEDITOR.dom.element}
-	function isWidgetWrapper2( element ) {
+	function isDomWidgetWrapper( element ) {
 		return element.type == CKEDITOR.NODE_ELEMENT && element.hasAttribute( 'data-cke-widget-wrapper' );
 	}
 
 	// @param {CKEDITOR.dom.element}
-	function isNestedEditable2( node ) {
+	function isDomNestedEditable( node ) {
 		return node.type == CKEDITOR.NODE_ELEMENT && node.hasAttribute( 'data-cke-widget-editable' );
 	}
 
 	// @param {CKEDITOR.dom.element}
-	function isTemp2( element ) {
+	function isDomTemp( element ) {
 		return element.hasAttribute( 'data-cke-temp' );
 	}
 
-	function moveSelectionToDropPosition( editor, dropEvt ) {
+	// @param {CKEDITOR.dom.element}
+	function isDomDragHandler( element ) {
+		return element.type == CKEDITOR.NODE_ELEMENT && element.hasAttribute( 'data-cke-widget-drag-handler' );
+	}
+
+	// @param {CKEDITOR.dom.element}
+	function isDomDragHandlerContainer( element ) {
+		return element.type == CKEDITOR.NODE_ELEMENT && element.hasClass( 'cke_widget_drag_handler_container' );
+	}
+
+	function finalizeNativeDrop( editor, sourceWidget, range ) {
+		// Save the snapshot with the state before moving widget.
+		// Focus widget, so when we'll undo the DnD, widget will be focused.
+		sourceWidget.focus();
+		editor.fire( 'saveSnapshot' );
+
+		// Lock snapshot to group all steps of moving widget from the original place to the new one.
+		editor.fire( 'lockSnapshot', { dontUpdate: true } );
+
+		range.select();
+
+		var widgetHtml = sourceWidget.wrapper.getOuterHtml();
+		sourceWidget.wrapper.remove();
+		editor.widgets.destroy( sourceWidget, true );
+		editor.execCommand( 'paste', widgetHtml );
+
+		editor.fire( 'unlockSnapshot' );
+	}
+
+	function getRangeAtDropPosition( editor, dropEvt ) {
 		var $evt = dropEvt.data.$,
 			$range,
 			range = editor.createRange();
 
 		// Make testing possible.
-		if ( dropEvt.data.testRange ) {
-			dropEvt.data.testRange.select();
-			return;
-		}
+		if ( dropEvt.data.testRange )
+			return dropEvt.data.testRange;
 
 		// Webkits.
 		if ( document.caretRangeFromPoint ) {
@@ -1697,16 +2098,10 @@
 			range.moveToPosition( span, CKEDITOR.POSITION_BEFORE_START );
 			span.remove();
 		}
+		else
+			return null;
 
-		range.select();
-	}
-
-	function moveWidget( editor, sourceWidget ) {
-		var widgetHtml = sourceWidget.wrapper.getOuterHtml();
-		sourceWidget.wrapper.remove();
-		editor.widgets.destroy( sourceWidget, true );
-		editor.execCommand( 'paste', widgetHtml );
-		editor.fire( 'unlockSnapshot' );
+		return range;
 	}
 
 	function onEditableKey( widget, keyCode ) {
@@ -1801,115 +2196,21 @@
 		return CKEDITOR.tools.trim( wrapperHtml );
 	}
 
-	// Set up data processing like:
-	// * toHtml/toDataFormat,
-	// * pasting handling,
-	// * undo/redo handling.
-	function setupDataProcessing( widgetsRepo ) {
-		var editor = widgetsRepo.editor;
-
-		setupUpcasting( widgetsRepo );
-		setupDowncasting( widgetsRepo );
-
-		editor.on( 'contentDomUnload', function() {
-			widgetsRepo.destroyAll( true );
-		} );
-
-		// Handle pasted single widget.
-		editor.on( 'paste', function( evt ) {
-			evt.data.dataValue = evt.data.dataValue.replace( pasteReplaceRegex, pasteReplaceFn );
-		} );
-	}
-
-	function setupDowncasting( widgetsRepo ) {
-		var editor = widgetsRepo.editor,
-			downcastingSessions = {},
-			nestedEditableScope = false;
-
-		// Listen before htmlDP#htmlFilter is applied to cache all widgets, because we'll
-		// loose data-cke-* attributes.
-		editor.on( 'toDataFormat', function( evt ) {
-			// To avoid conflicts between htmlDP#toDF calls done at the same time
-			// (e.g. nestedEditable#getData called during downcasting some widget)
-			// mark every toDataFormat event chain with the downcasting session id.
-			var id = CKEDITOR.tools.getNextNumber(),
-				toBeDowncasted = [];
-			evt.data.downcastingSessionId = id;
-			downcastingSessions[ id ] = toBeDowncasted;
-
-			evt.data.dataValue.forEach( function( element ) {
-				var attrs = element.attributes,
-					widget, widgetElement;
-
-				// Wrapper.
-				// Perform first part of downcasting (cleanup) and cache widgets,
-				// because after applying DP's filter all data-cke-* attributes will be gone.
-				if ( 'data-cke-widget-id' in attrs ) {
-					widget = widgetsRepo.instances[ attrs[ 'data-cke-widget-id' ] ];
-					if ( widget ) {
-						widgetElement = element.getFirst( isWidgetElement );
-						toBeDowncasted.push( {
-							wrapper: element,
-							element: widgetElement,
-							widget: widget
-						} );
-
-						// If widget did not have data-cke-widget attribute before upcasting remove it.
-						if ( widgetElement.attributes[ 'data-cke-widget-keep-attr' ] != '1' )
-							delete widgetElement.attributes[ 'data-widget' ];
-					}
-				}
-				// Nested editable.
-				else if ( 'data-cke-widget-editable' in attrs ) {
-					delete attrs[ 'contenteditable' ];
-
-					// Replace nested editable's content with its output data.
-					var editable = toBeDowncasted[ toBeDowncasted.length - 1 ].widget.editables[ attrs[ 'data-cke-widget-editable' ] ];
-					element.setHtml( editable.getData() );
-
-					// Don't check children - there won't be next wrapper or nested editable which we
-					// should process in this session.
-					return false;
-				}
-			}, CKEDITOR.NODE_ELEMENT );
-		}, null, null, 8 );
-
-		// Listen after dataProcessor.htmlFilter and ACF were applied
-		// so wrappers securing widgets' contents are removed after all filtering was done.
-		editor.on( 'toDataFormat', function( evt ) {
-			// Ignore some unmarked sessions.
-			if ( !evt.data.downcastingSessionId )
-				return;
-
-			var toBeDowncasted = downcastingSessions[ evt.data.downcastingSessionId ],
-				toBe, widget, widgetElement, retElement;
-
-			while ( ( toBe = toBeDowncasted.shift() ) ) {
-				widget = toBe.widget;
-				widgetElement = toBe.element;
-				retElement = widget._.downcastFn && widget._.downcastFn.call( widget, widgetElement );
-
-				// Returned element always defaults to widgetElement.
-				if ( !retElement )
-					retElement = widgetElement;
-
-				toBe.wrapper.replaceWith( retElement );
-			}
-		}, null, null, 13 );
-	}
-
 	function setupDragAndDrop( widgetsRepo ) {
 		var editor = widgetsRepo.editor,
 			lineutils = CKEDITOR.plugins.lineutils;
 
 		editor.on( 'contentDom', function() {
-			var editable = editor.editable();
+			var editable = editor.editable(),
+				// #11123 Firefox needs to listen on document, because otherwise event won't be fired.
+				// #11086 IE8 cannot listen on document.
+				dropTarget = ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 ) || editable.isInline() ? editable : editor.document;
 
-			// #11123 Firefox needs to listen on document, because otherwise event won't be fired.
-			editable.attachListener( editable.isInline() ? editable : editor.document, 'drop', function( evt ) {
+			editable.attachListener( dropTarget, 'drop', function( evt ) {
 				var dataStr = evt.data.$.dataTransfer.getData( 'text' ),
 					dataObj,
-					sourceWidget;
+					sourceWidget,
+					range;
 
 				if ( !dataStr )
 					return;
@@ -1930,23 +2231,19 @@
 				if ( dataObj.editor != editor.name || !( sourceWidget = widgetsRepo.instances[ dataObj.id ] ) )
 					return;
 
-				// Save the snapshot with the state before moving widget.
-				// Focus widget, so when we'll undo the DnD, widget will be focused.
-				sourceWidget.focus();
-				editor.fire( 'saveSnapshot' );
+				// Try to determine a DOM position at which drop happened. If none of methods
+				// which we support succeeded abort.
+				range = getRangeAtDropPosition( editor, evt );
+				if ( !range )
+					return;
 
-				// Lock snapshot to group all steps of moving widget from the original place to the new one.
-				editor.fire( 'lockSnapshot', { dontUpdate: true } );
-
-				moveSelectionToDropPosition( editor, evt );
-
-				// Hack to prevent cursor loss on Firefox. Without timeout widget is
+				// #11132 Hack to prevent cursor loss on Firefox. Without timeout widget is
 				// correctly pasted but then cursor is invisible (although it works) and can be restored
 				// only by blurring editable.
 				if ( CKEDITOR.env.gecko )
-					setTimeout( moveWidget, 0, editor, sourceWidget );
+					setTimeout( finalizeNativeDrop, 0, editor, sourceWidget, range );
 				else
-					moveWidget( editor, sourceWidget );
+					finalizeNativeDrop( editor, sourceWidget, range );
 			} );
 
 			// Register Lineutils's utilities as properties of repo.
@@ -1962,7 +2259,7 @@
 								return;
 
 							while ( el ) {
-								if ( isNestedEditable2( el ) )
+								if ( isDomNestedEditable( el ) )
 									return;
 
 								el = el.getParent();
@@ -2158,11 +2455,135 @@
 		} );
 	}
 
-	function setupUpcasting( widgetsRepo ) {
+	// Set up actions like:
+	// * processing in toHtml/toDataFormat,
+	// * pasting handling,
+	// * insertion handling,
+	// * editable reload handling (setData, mode switch, undo/redo),
+	// * DOM invalidation handling,
+	// * widgets checks.
+	function setupWidgetsLifecycle( widgetsRepo ) {
+		setupWidgetsLifecycleStart( widgetsRepo );
+		setupWidgetsLifecycleEnd( widgetsRepo );
+
+		widgetsRepo.on( 'checkWidgets', checkWidgets );
+		widgetsRepo.editor.on( 'contentDomInvalidated', widgetsRepo.checkWidgets, widgetsRepo );
+	}
+
+	function setupWidgetsLifecycleEnd( widgetsRepo ) {
 		var editor = widgetsRepo.editor,
-			upcasts = widgetsRepo._.upcasts,
+			downcastingSessions = {},
+			nestedEditableScope = false;
+
+		// Listen before htmlDP#htmlFilter is applied to cache all widgets, because we'll
+		// loose data-cke-* attributes.
+		editor.on( 'toDataFormat', function( evt ) {
+			// To avoid conflicts between htmlDP#toDF calls done at the same time
+			// (e.g. nestedEditable#getData called during downcasting some widget)
+			// mark every toDataFormat event chain with the downcasting session id.
+			var id = CKEDITOR.tools.getNextNumber(),
+				toBeDowncasted = [];
+			evt.data.downcastingSessionId = id;
+			downcastingSessions[ id ] = toBeDowncasted;
+
+			evt.data.dataValue.forEach( function( element ) {
+				var attrs = element.attributes,
+					widget, widgetElement;
+
+				// Wrapper.
+				// Perform first part of downcasting (cleanup) and cache widgets,
+				// because after applying DP's filter all data-cke-* attributes will be gone.
+				if ( 'data-cke-widget-id' in attrs ) {
+					widget = widgetsRepo.instances[ attrs[ 'data-cke-widget-id' ] ];
+					if ( widget ) {
+						widgetElement = element.getFirst( isParserWidgetElement );
+						toBeDowncasted.push( {
+							wrapper: element,
+							element: widgetElement,
+							widget: widget,
+							editables: {}
+						} );
+
+						// If widget did not have data-cke-widget attribute before upcasting remove it.
+						if ( widgetElement.attributes[ 'data-cke-widget-keep-attr' ] != '1' )
+							delete widgetElement.attributes[ 'data-widget' ];
+					}
+				}
+				// Nested editable.
+				else if ( 'data-cke-widget-editable' in attrs ) {
+					// Save the reference to this nested editable in the closest widget to be downcasted.
+					// Nested editables are downcasted in the successive toDataFormat to create an opportunity
+					// for dataFilter's "excludeNestedEditable" option to do its job (that option relies on
+					// contenteditable="true" attribute) (#11372).
+					toBeDowncasted[ toBeDowncasted.length - 1 ].editables[ attrs[ 'data-cke-widget-editable' ] ] = element;
+
+					// Don't check children - there won't be next wrapper or nested editable which we
+					// should process in this session.
+					return false;
+				}
+			}, CKEDITOR.NODE_ELEMENT, true );
+		}, null, null, 8 );
+
+		// Listen after dataProcessor.htmlFilter and ACF were applied
+		// so wrappers securing widgets' contents are removed after all filtering was done.
+		editor.on( 'toDataFormat', function( evt ) {
+			// Ignore some unmarked sessions.
+			if ( !evt.data.downcastingSessionId )
+				return;
+
+			var toBeDowncasted = downcastingSessions[ evt.data.downcastingSessionId ],
+				toBe, widget, widgetElement, retElement, editableElement, e;
+
+			while ( ( toBe = toBeDowncasted.shift() ) ) {
+				widget = toBe.widget;
+				widgetElement = toBe.element;
+				retElement = widget._.downcastFn && widget._.downcastFn.call( widget, widgetElement );
+
+				// Replace nested editables' content with their output data.
+				for ( e in toBe.editables ) {
+					editableElement = toBe.editables[ e ];
+
+					delete editableElement.attributes[ 'contenteditable' ];
+					editableElement.setHtml( widget.editables[ e ].getData() );
+				}
+
+				// Returned element always defaults to widgetElement.
+				if ( !retElement )
+					retElement = widgetElement;
+
+				toBe.wrapper.replaceWith( retElement );
+			}
+		}, null, null, 13 );
+
+
+		editor.on( 'contentDomUnload', function() {
+			widgetsRepo.destroyAll( true );
+		} );
+	}
+
+	function setupWidgetsLifecycleStart( widgetsRepo ) {
+		var editor = widgetsRepo.editor,
 			processedWidgetOnly,
 			snapshotLoaded;
+
+		// Listen after ACF (so data are filtered),
+		// but before dataProcessor.dataFilter was applied (so we can secure widgets' internals).
+		editor.on( 'toHtml', function( evt ) {
+			var upcastIterator = createUpcastIterator( widgetsRepo ),
+				toBeWrapped;
+
+			evt.data.dataValue.forEach( upcastIterator.iterator, CKEDITOR.NODE_ELEMENT, true );
+
+			// Clean up and wrap all queued elements.
+			while ( ( toBeWrapped = upcastIterator.toBeWrapped.pop() ) ) {
+				cleanUpWidgetElement( toBeWrapped[ 0 ] );
+				widgetsRepo.wrapElement( toBeWrapped[ 0 ], toBeWrapped[ 1 ] );
+			}
+
+			// Used to determine whether only widget was pasted.
+			processedWidgetOnly = evt.data.dataValue.children.length == 1 &&
+				isParserWidgetWrapper( evt.data.dataValue.children[ 0 ] );
+		}, null, null, 8 );
 
 		editor.on( 'dataReady', function() {
 			// Clean up all widgets loaded from snapshot.
@@ -2178,20 +2599,6 @@
 			widgetsRepo.initOnAll();
 		} );
 
-		editor.on( 'afterPaste', function() {
-			editor.fire( 'lockSnapshot' );
-
-			// Init is enough (no clean up needed),
-			// because inserted widgets were cleaned up by toHtml.
-			var newInstances = widgetsRepo.initOnAll();
-
-			// If just a widget was pasted and nothing more focus it.
-			if ( processedWidgetOnly && newInstances.length == 1 )
-				newInstances[ 0 ].focus();
-
-			editor.fire( 'unlockSnapshot' );
-		} );
-
 		// Set flag so dataReady will know that additional
 		// cleanup is needed, because snapshot containing widgets was loaded.
 		editor.on( 'loadSnapshot', function( evt ) {
@@ -2203,98 +2610,23 @@
 			widgetsRepo.destroyAll( true );
 		}, null, null, 9 );
 
-		// Listen after ACF (so data are filtered),
-		// but before dataProcessor.dataFilter was applied (so we can secure widgets' internals).
-		editor.on( 'toHtml', function( evt ) {
-			var toBeWrapped = [],
-				toBe,
-				element;
-
-			evt.data.dataValue.forEach( function( element ) {
-				// Wrapper found - find widget element, add it to be
-				// cleaned up (unwrapped) and wrapped and stop iterating in this branch.
-				if ( 'data-cke-widget-wrapper' in element.attributes ) {
-					element = element.getFirst( isWidgetElement );
-
-					if ( element )
-						toBeWrapped.push( [ element ] );
-
-					// Do not iterate over descendants.
-					return false;
-				}
-				// Widget element found - add it to be cleaned up (just in case)
-				// and wrapped and stop iterating in this branch.
-				else if ( 'data-widget' in element.attributes ) {
-					toBeWrapped.push( [ element ] );
-
-					// Do not iterate over descendants.
-					return false;
-				}
-				else if ( upcasts.length ) {
-					var upcast, upcasted,
-						data,
-						i = 0,
-						l = upcasts.length;
-
-					for ( ; i < l; ++i ) {
-						upcast = upcasts[ i ];
-						data = {};
-
-						if ( ( upcasted = upcast[ 0 ]( element, data ) ) ) {
-							// If upcast function returned element, upcast this one.
-							// It can be e.g. a new element wrapping the original one.
-							if ( upcasted instanceof CKEDITOR.htmlParser.element )
-								element = upcasted;
-
-							// Set initial data attr with data from upcast method.
-							element.attributes[ 'data-cke-widget-data' ] = JSON.stringify( data );
-
-							toBeWrapped.push( [ element, upcast[ 1 ] ] );
-
-							// Do not iterate over descendants.
-							return false;
-						}
-					}
-				}
-			}, CKEDITOR.NODE_ELEMENT );
-
-			// Clean up and wrap all queued elements.
-			while ( ( toBe = toBeWrapped.pop() ) ) {
-				cleanUpWidgetElement( toBe[ 0 ] );
-				widgetsRepo.wrapElement( toBe[ 0 ], toBe[ 1 ] );
-			}
-
-			// Used to determine whether only widget was pasted.
-			processedWidgetOnly = evt.data.dataValue.children.length == 1 &&
-				isWidgetWrapper( evt.data.dataValue.children[ 0 ] );
-		}, null, null, 8 );
-	}
-
-	// Setup observer which will trigger checkWidgets on:
-	// * keyup.
-	function setupWidgetsObserver( widgetsRepo ) {
-		var editor = widgetsRepo.editor,
-			buffer = CKEDITOR.tools.eventsBuffer( widgetsRepo.MIN_WIDGETS_CHECK_INTERVAL, checkWidgets ),
-			ignoredKeys = { 16:1,17:1,18:1,37:1,38:1,39:1,40:1,225:1 }; // SHIFT,CTRL,ALT,LEFT,UP,RIGHT,DOWN,RIGHT ALT(FF)
-
-		editor.on( 'contentDom', function() {
-			var editable = editor.editable();
-
-			// Schedule check on keyup, but not more often than once per MIN_CHECK_DELAY.
-			editable.attachListener( editable.isInline() ? editable : editor.document, 'keyup', function( evt ) {
-				if ( !( evt.data.getKey() in ignoredKeys ) )
-					buffer.input();
-			}, null, null, 999 );
+		// Handle pasted single widget.
+		editor.on( 'paste', function( evt ) {
+			evt.data.dataValue = evt.data.dataValue.replace( pasteReplaceRegex, pasteReplaceFn );
 		} );
 
-		editor.on( 'contentDomUnload', buffer.reset );
+		// Listen with high priority to check widgets after data was inserted.
+		editor.on( 'insertText', checkNewWidgets, null, null, 999 );
+		editor.on( 'insertHtml', checkNewWidgets, null, null, 999 );
 
-		widgetsRepo.on( 'checkWidgets', widgetsRepo.checkWidgets, widgetsRepo );
+		function checkNewWidgets() {
+			editor.fire( 'lockSnapshot' );
 
-		editor.on( 'contentDomInvalidated', checkWidgets );
+			// Init only new for performance reason.
+			// Focus inited if only widget was processed.
+			widgetsRepo.checkWidgets( { initOnlyNew: true, focusInited: processedWidgetOnly } );
 
-		function checkWidgets() {
-			widgetsRepo.fire( 'checkWidgets' );
+			editor.fire( 'unlockSnapshot' );
 		}
 	}
 
@@ -2325,25 +2657,33 @@
 
 			commit: function() {
 				var focusedChanged = widgetsRepo.focused !== focused,
-					widget;
+					widget, isDirty;
 
 				widgetsRepo.editor.fire( 'lockSnapshot' );
 
-				if ( focusedChanged && ( widget = widgetsRepo.focused ) ) {
+				if ( focusedChanged && ( widget = widgetsRepo.focused ) )
 					blurWidget( widgetsRepo, widget );
-				}
 
 				while ( ( widget = toBeDeselected.pop() ) ) {
 					currentlySelected.splice( CKEDITOR.tools.indexOf( currentlySelected, widget ), 1 );
 					// Widget could be destroyed in the meantime - e.g. data could be set.
-					if ( widget.isInited() )
+					if ( widget.isInited() ) {
+						isDirty = widget.editor.checkDirty();
+
 						widget.setSelected( false );
+
+						!isDirty && widget.editor.resetDirty();
+					}
 				}
 
 				if ( focusedChanged && focused ) {
+					isDirty = widgetsRepo.editor.checkDirty();
+
 					widgetsRepo.focused = focused;
 					widgetsRepo.fire( 'widgetFocused', { widget: focused } );
 					focused.setFocused( true );
+
+					!isDirty && widgetsRepo.editor.resetDirty();
 				}
 
 				while ( ( widget = toBeSelected.pop() ) ) {
@@ -2361,9 +2701,39 @@
 	// WIDGET helpers ---------------------------------------------------------
 	//
 
-	var transparentImageData = 'data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw%3D%3D',
-		// LEFT, RIGHT, UP, DOWN, DEL, BACKSPACE - unblock default fake sel handlers.
-		keystrokesNotBlockedByWidget = { 37:1,38:1,39:1,40:1,8:1,46:1 };
+	// LEFT, RIGHT, UP, DOWN, DEL, BACKSPACE - unblock default fake sel handlers.
+	var keystrokesNotBlockedByWidget = { 37: 1, 38: 1, 39: 1, 40: 1, 8: 1, 46: 1 };
+
+	// Applies or removes style's classes from widget.
+	// @param {CKEDITOR.style} style Custom widget style.
+	// @param {Boolean} apply Whether to apply or remove style.
+	function applyRemoveStyle( widget, style, apply ) {
+		var changed = 0,
+			classes = getStyleClasses( style ),
+			updatedClasses = widget.data.classes || {},
+			cl;
+
+		// Ee... Something is wrong with this style.
+		if ( !classes )
+			return;
+
+		// Clone, because we need to break reference.
+		updatedClasses = CKEDITOR.tools.clone( updatedClasses );
+
+		while ( ( cl = classes.pop() ) ) {
+			if ( apply ) {
+				if ( !updatedClasses[ cl ] )
+					changed = updatedClasses[ cl ] = 1;
+			} else {
+				if ( updatedClasses[ cl ] ) {
+					delete updatedClasses[ cl ];
+					changed = 1;
+				}
+			}
+		}
+		if ( changed )
+			widget.setData( 'classes', updatedClasses );
+	}
 
 	function cancel( evt ) {
 		evt.cancel();
@@ -2450,6 +2820,14 @@
 		}, 100 ); // Use 100ms, so Chrome (@Mac) will be able to grab the content.
 	}
 
+	// Extracts classes array from style instance.
+	function getStyleClasses( style ) {
+		var attrs = style.getDefinition().attributes,
+			classes = attrs && attrs[ 'class' ];
+
+		return classes ? classes.split( /\s+/ ) : null;
+	}
+
 	// [IE] Force keeping focus because IE sometimes forgets to fire focus on main editable
 	// when blurring nested editable.
 	// @context widget
@@ -2481,12 +2859,32 @@
 		}
 	}
 
-	// Position drag handler according to the widget's element position.
-	function positionDragHandler( widget ) {
-		var handler = widget.dragHandlerContainer;
+	// Setup listener on widget#data which will update (remove/add) classes
+	// by comparing newly set classes with the old ones.
+	function setupDataClassesListener( widget ) {
+		// Note: previousClasses and newClasses may be null!
+		// Tip: for ( cl in null ) is correct.
+		var previousClasses = null;
 
-		handler.setStyle( 'top', widget.element.$.offsetTop - DRAG_HANDLER_SIZE + 'px' );
-		handler.setStyle( 'left', widget.element.$.offsetLeft + 'px' );
+		widget.on( 'data', function() {
+			var newClasses = this.data.classes,
+				cl;
+
+			// When setting new classes one need to remember
+			// that he must break reference.
+			if ( previousClasses == newClasses )
+				return;
+
+			for ( cl in previousClasses ) {
+				// Avoid removing and adding classes again.
+				if ( !( newClasses && newClasses[ cl ] ) )
+					this.removeClass( cl );
+			}
+			for ( cl in newClasses )
+				this.addClass( cl );
+
+			previousClasses = newClasses;
+		} );
 	}
 
 	function setupDragHandler( widget ) {
@@ -2494,35 +2892,48 @@
 			return;
 
 		var editor = widget.editor,
-			editable = editor.editable(),
-			img = new CKEDITOR.dom.element( 'img', editor.document ),
+			// Use getLast to find wrapper's direct descendant (#12022).
+			container = widget.wrapper.getLast( isDomDragHandlerContainer ),
+			img;
+
+		// Reuse drag handler if already exists (#11281).
+		if ( container )
+			img = container.findOne( 'img' );
+		else {
 			container = new CKEDITOR.dom.element( 'span', editor.document );
+			container.setAttributes( {
+				'class': 'cke_reset cke_widget_drag_handler_container',
+				// Split background and background-image for IE8 which will break on rgba().
+				style: 'background:rgba(220,220,220,0.5);background-image:url(' + editor.plugins.widget.path + 'images/handle.png)'
+			} );
 
-		container.setAttributes( {
-			'class': 'cke_reset cke_widget_drag_handler_container',
-			// Split background and background-image for IE8 which will break on rgba().
-			style: 'background:rgba(220,220,220,0.5);background-image:url(' + editor.plugins.widget.path + 'images/handle.png)'
-		} );
+			img = new CKEDITOR.dom.element( 'img', editor.document );
+			img.setAttributes( {
+				'class': 'cke_reset cke_widget_drag_handler',
+				'data-cke-widget-drag-handler': '1',
+				src: CKEDITOR.tools.transparentImageData,
+				width: DRAG_HANDLER_SIZE,
+				title: editor.lang.widget.move,
+				height: DRAG_HANDLER_SIZE
+			} );
+			widget.inline && img.setAttribute( 'draggable', 'true' );
 
-		img.setAttributes( {
-			'class': 'cke_reset cke_widget_drag_handler',
-			'data-cke-widget-drag-handler': '1',
-			src: transparentImageData,
-			width: DRAG_HANDLER_SIZE,
-			title: editor.lang.widget.move,
-			height: DRAG_HANDLER_SIZE
-		} );
+			container.append( img );
+			widget.wrapper.append( container );
+		}
+
+		widget.wrapper.on( 'mouseenter', widget.updateDragHandlerPosition, widget );
+		setTimeout( function() {
+			widget.on( 'data', widget.updateDragHandlerPosition, widget );
+		}, 50 );
 
 		if ( widget.inline ) {
-			img.setAttribute( 'draggable', 'true' );
 			img.on( 'dragstart', function( evt ) {
 				evt.data.$.dataTransfer.setData( 'text', JSON.stringify( { type: 'cke-widget', editor: editor.name, id: widget.id } ) );
 			} );
 		} else
 			img.on( 'mousedown', onBlockWidgetDrag, widget );
 
-		container.append( img );
-		widget.wrapper.append( container );
 		widget.dragHandlerContainer = container;
 	}
 
@@ -2645,12 +3056,18 @@
 		if ( !widget.mask )
 			return;
 
-		var img = new CKEDITOR.dom.element( 'img', widget.editor.document );
-		img.setAttributes( {
-			src: transparentImageData,
-			'class': 'cke_reset cke_widget_mask'
-		} );
-		widget.wrapper.append( img );
+		// Reuse mask if already exists (#11281).
+		var img = widget.wrapper.findOne( '.cke_widget_mask' );
+
+		if ( !img ) {
+			img = new CKEDITOR.dom.element( 'img', widget.editor.document );
+			img.setAttributes( {
+				src: CKEDITOR.tools.transparentImageData,
+				'class': 'cke_reset cke_widget_mask'
+			} );
+			widget.wrapper.append( img );
+		}
+
 		widget.mask = img;
 	}
 
@@ -2677,12 +3094,15 @@
 		setupEditables( widget );
 		setupMask( widget );
 		setupDragHandler( widget );
+		setupDataClassesListener( widget );
 
 		// #11145: [IE8] Non-editable content of widget is draggable.
 		if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 ) {
 			widget.wrapper.on( 'dragstart', function( evt ) {
-				// Allow text dragging inside nested editables.
-				if ( !getNestedEditable( widget, evt.data.getTarget() ) )
+				var target = evt.data.getTarget();
+
+				// Allow text dragging inside nested editables or dragging inline widget's drag handler.
+				if ( !getNestedEditable( widget, target ) && !( widget.inline && isDomDragHandler( target ) ) )
 					evt.data.preventDefault();
 			} );
 		}
@@ -2712,8 +3132,11 @@
 		// to overwrite this callback.
 
 		widget.on( 'doubleclick', function( evt ) {
-			widget.edit();
-			evt.cancel();
+			if ( widget.edit() ) {
+				// We have to cancel event if edit method opens a dialog, otherwise
+				// link plugin may open extra dialog (#12140).
+				evt.cancel();
+			}
 		} );
 
 		if ( widgetDef.data )
@@ -2721,21 +3144,19 @@
 
 		if ( widgetDef.edit )
 			widget.on( 'edit', widgetDef.edit );
-
-		if ( widget.draggable ) {
-			widget.on( 'data', function() {
-				positionDragHandler( widget );
-			}, null, null, 999 );
-		}
 	}
 
 	function setupWidgetData( widget, startupData ) {
 		var widgetDataAttr = widget.element.data( 'cke-widget-data' );
 
 		if ( widgetDataAttr )
-			widget.setData( JSON.parse( widgetDataAttr ) );
+			widget.setData( JSON.parse( decodeURIComponent( widgetDataAttr ) ) );
 		if ( startupData )
 			widget.setData( startupData );
+
+		// Populate classes if they are not preset.
+		if ( !widget.data.classes )
+			widget.setData( 'classes', widget.getClasses() );
 
 		// Unblock data and...
 		widget.dataReady = true;
@@ -2754,8 +3175,187 @@
 	}
 
 	function writeDataToElement( widget ) {
-		widget.element.data( 'cke-widget-data', JSON.stringify( widget.data ) );
+		widget.element.data( 'cke-widget-data', encodeURIComponent( JSON.stringify( widget.data ) ) );
 	}
+
+	//
+	// WIDGET STYLE HANDLER ---------------------------------------------------
+	//
+
+	( function() {
+
+		/**
+		 * The class representing a widget style. It is an {@link CKEDITOR#STYLE_OBJECT object} like
+		 * the styles handler for widgets.
+		 *
+		 * **Note:** This custom style handler does not support all methods of the {@link CKEDITOR.style} class.
+		 * Not supported methods: {@link #applyToRange}, {@link #removeFromRange}, {@link #applyToObject}.
+		 *
+		 * @since 4.4
+		 * @class CKEDITOR.style.customHandlers.widget
+		 * @extends CKEDITOR.style
+		 */
+		CKEDITOR.style.addCustomHandler( {
+			type: 'widget',
+
+			setup: function( styleDefinition ) {
+				/**
+				 * The name of widget to which this style can be applied.
+				 * It is extracted from style definition's `widget` property.
+				 *
+				 * @property {String} widget
+				 */
+				this.widget = styleDefinition.widget;
+			},
+
+			apply: function( editor ) {
+				// Before CKEditor 4.4 wasn't a required argument, so we need to
+				// handle a case when it wasn't provided.
+				if ( !( editor instanceof CKEDITOR.editor ) )
+					return;
+
+				// Theoretically we could bypass checkApplicable, get widget from
+				// widgets.focused and check its name, what would be faster, but then
+				// this custom style would work differently than the default style
+				// which checks if it's applicable before applying or removeing itself.
+				if ( this.checkApplicable( editor.elementPath(), editor ) )
+					editor.widgets.focused.applyStyle( this );
+			},
+
+			remove: function( editor ) {
+				// Before CKEditor 4.4 wasn't a required argument, so we need to
+				// handle a case when it wasn't provided.
+				if ( !( editor instanceof CKEDITOR.editor ) )
+					return;
+
+				if ( this.checkApplicable( editor.elementPath(), editor ) )
+					editor.widgets.focused.removeStyle( this );
+			},
+
+			checkActive: function( elementPath, editor ) {
+				return this.checkElementMatch( elementPath.lastElement, 0, editor );
+			},
+
+			checkApplicable: function( elementPath, editor, filter ) {
+				// Before CKEditor 4.4 wasn't a required argument, so we need to
+				// handle a case when it wasn't provided.
+				if ( !( editor instanceof CKEDITOR.editor ) )
+					return false;
+
+				return this.checkElement( elementPath.lastElement, editor );
+			},
+
+			checkElementMatch: checkElementMatch,
+
+			checkElementRemovable: checkElementMatch,
+
+			/**
+			 * Checks if an element is a {@link CKEDITOR.plugins.widget#wrapper wrapper} of a
+			 * widget whose name matches the {@link #widget widget name} specified in the style definition.
+			 *
+			 * @param {CKEDITOR.dom.element} element
+			 * @param {CKEDITOR.editor} editor
+			 * @returns {Boolean}
+			 */
+			checkElement: function( element, editor ) {
+				if ( !isDomWidgetWrapper( element ) )
+					return false;
+
+				var widgetElement = element.getFirst( isDomWidgetElement );
+				return widgetElement && widgetElement.data( 'widget' ) == this.widget;
+			},
+
+			buildPreview: function( label ) {
+				return label || this._.definition.name;
+			},
+
+			/**
+			 * Returns allowed content rules which should be registered for this style.
+			 * Uses widget's {@link CKEDITOR.plugins.widget.definition#styleableElements} to make a rule
+			 * allowing classes on specified elements or use widget's
+			 * {@link CKEDITOR.plugins.widget.definition#styleToAllowedContentRules} method to transform a style
+			 * into allowed content rules.
+			 *
+			 * @param {CKEDITOR.editor} The editor instance.
+			 * @returns {CKEDITOR.filter.allowedContentRules}
+			 */
+			toAllowedContentRules: function( editor ) {
+				if ( !editor )
+					return null;
+
+				var widgetDef = editor.widgets.registered[ this.widget ],
+					classes,
+					rule = {};
+
+				if ( !widgetDef )
+					return null;
+
+				if ( widgetDef.styleableElements ) {
+					classes = this.getClassesArray();
+					if ( !classes )
+						return null;
+
+					rule[ widgetDef.styleableElements ] = {
+						classes: classes,
+						propertiesOnly: true
+					};
+					return rule;
+				}
+				if ( widgetDef.styleToAllowedContentRules )
+					return widgetDef.styleToAllowedContentRules( this );
+				return null;
+			},
+
+			/**
+			 * Returns classes defined in the style in form of an array.
+			 *
+			 * @returns {String[]}
+			 */
+			getClassesArray: function() {
+				var classes = this._.definition.attributes && this._.definition.attributes[ 'class' ];
+
+				return classes ? CKEDITOR.tools.trim( classes ).split( /\s+/ ) : null;
+			},
+
+			/**
+			 * Not implemented.
+			 *
+			 * @method applyToRange
+			 */
+			applyToRange: notImplemented,
+
+			/**
+			 * Not implemented.
+			 *
+			 * @method removeFromRange
+			 */
+			removeFromRange: notImplemented,
+
+			/**
+			 * Not implemented.
+			 *
+			 * @method applyToObject
+			 */
+			applyToObject: notImplemented
+		} );
+
+		function notImplemented() {}
+
+		// @context style
+		function checkElementMatch( element, fullMatch, editor ) {
+			// Before CKEditor 4.4 wasn't a required argument, so we need to
+			// handle a case when it wasn't provided.
+			if ( !editor )
+				return false;
+
+			if ( !this.checkElement( element, editor ) )
+				return false;
+
+			var widget = editor.widgets.getByElement( element, true );
+			return widget && widget.checkStyleActive( this );
+		}
+
+	} )();
 
 	//
 	// EXPOSE PUBLIC API ------------------------------------------------------
@@ -2764,7 +3364,7 @@
 	CKEDITOR.plugins.widget = Widget;
 	Widget.repository = Repository;
 	Widget.nestedEditable = NestedEditable;
-})();
+} )();
 
 /**
  * An event fired when a widget definition is registered by the {@link CKEDITOR.plugins.widget.repository#add} method.
@@ -3026,6 +3626,77 @@
  * If set to `false` drag handler will not be displayed when hovering widget.
  *
  * @property {Boolean} draggable
+ */
+
+/**
+ * Names of element(s) (separated by spaces) for which the {@link CKEDITOR.filter} should allow classes
+ * defined in the widget styles. For example if your widget is upcasted from a simple `<div>`
+ * element, then in order to make it styleable you can set:
+ *
+ *		editor.widgets.add( 'customWidget', {
+ *			upcast: function( element ) {
+ *				return element.name == 'div';
+ *			},
+ *
+ *			// ...
+ *
+ *			styleableElements: 'div'
+ *		} );
+ *
+ * Then, when the following style is defined:
+ *
+ *		{
+ *			name: 'Thick border', type: 'widget', widget: 'customWidget',
+ *			attributes: { 'class': 'thickBorder' }
+ *		}
+ *
+ * a rule allowing the `thickBorder` class for `div` elements will be registered in the {@link CKEDITOR.filter}.
+ *
+ * If you need to have more freedom when transforming widget style to allowed content rules,
+ * you can use the {@link #styleToAllowedContentRules} callback.
+ *
+ * @since 4.4
+ * @property {String} styleableElements
+ */
+
+/**
+ * Function transforming custom widget's {@link CKEDITOR.style} instance into
+ * {@link CKEDITOR.filter.allowedContentRules}. It may be used when a static
+ * {@link #styleableElements} property is not enough to inform the {@link CKEDITOR.filter}
+ * what HTML features should be enabled when allowing the given style.
+ *
+ * In most cases, when style's classes just have to be added to element name(s) used by
+ * the widget element, it is recommended to use simpler {@link #styleableElements} property.
+ *
+ * In order to get parsed classes from the style definition you can use
+ * {@link CKEDITOR.style.customHandlers.widget#getClassesArray}.
+ *
+ * For example, if you want to use the [object format of allowed content rules](#!/guide/dev_allowed_content_rules-section-object-format),
+ * to specify `match` validator, your implementation could look like this:
+ *
+ *		editor.widgets.add( 'customWidget', {
+ *			// ...
+ *
+ *			styleToAllowedContentRules: funciton( style ) {
+ *				// Retrieve classes defined in the style.
+ *				var classes = style.getClassesArray();
+ *
+ *				// Do something crazy - for example return allowed content rules in object format,
+ *				// with custom match property and propertiesOnly flag.
+ *				return {
+ *					h1: {
+ *						match: isWidgetElement,
+ *						propertiesOnly: true,
+ *						classes: classes
+ *					}
+ *				};
+ *			}
+ *		} );
+ *
+ * @since 4.4
+ * @property {Function} styleToAllowedContentRules
+ * @param {CKEDITOR.style.customHandlers.widget} style The style to be transformed.
+ * @returns {CKEDITOR.filter.allowedContentRules}
  */
 
 /**

@@ -46,50 +46,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.beanExtendable" entityName="user" table="tusers" output="false">
 
-<cfproperty name="userID" fieldtype="id" type="string" default="" required="true" />
-<cfproperty name="remoteID" type="string" default="" required="true" />
-<cfproperty name="groupname" type="string" default="" required="true" />
-<cfproperty name="fname" type="string" default="" required="true" />
-<cfproperty name="lname" type="string" default="" required="true" />
-<cfproperty name="username" type="string" default="" required="true" />
-<cfproperty name="password" type="string" default="" required="true" />
-<cfproperty name="passwordCreate" type="date" default="" required="true" />
-<cfproperty name="email" type="string" default="" required="true" />
-<cfproperty name="company" type="string" default="" required="true" />
-<cfproperty name="jobTitle" type="string" default="" required="true" />
-<cfproperty name="website" type="string" default="" required="true" />
-<cfproperty name="mobilePhone" type="string" default="" required="true" />
-<cfproperty name="type" type="numeric" default="2" required="true" />
-<cfproperty name="subType" type="string" default="Default" required="true" />
-<cfproperty name="s2" type="numeric" default="0" required="true" />
-<cfproperty name="contactFormat" type="string" default="" required="true" />
-<cfproperty name="lastLogin" type="date" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
-<cfproperty name="lastUpdateByID" type="string" default="" required="true" />
-<cfproperty name="created" type="date" default="" required="true" />
-<cfproperty name="perm" type="numeric" default="0" required="true" />
-<cfproperty name="inActive" type="numeric" default="0" required="true" />
-<cfproperty name="isPublic" type="numeric" default="1" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="subscribe" type="numeric" default="1" required="true" />
-<cfproperty name="notes" type="string" default="" required="true" />
-<cfproperty name="groupID" type="string" default="" required="true" />
-<cfproperty name="categoryID" type="string" default="" required="true" />
-<cfproperty name="primaryAddressID" type="string" default="" required="true" />
-<cfproperty name="addressID" type="string" default="" required="true" />
-<cfproperty name="addresses" type="query" default="" required="true" />
-<cfproperty name="description" type="string" default="" required="true" />
-<cfproperty name="interests" type="string" default="" required="true" />
-<cfproperty name="photoFileID" type="string" default="" required="true" />
-<cfproperty name="photoFileExt" type="string" default="" required="true" />
-<cfproperty name="keepPrivate" type="numeric" default="0" required="true" />
-<cfproperty name="IMName" type="string" default="" required="true" />
-<cfproperty name="IMService" type="string" default="" required="true" />
-<cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" required="true" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
-<cfproperty name="tablist" type="string" default="" required="true" />
-<cfproperty name="newFile" type="string" default="" required="true" />
+<cfproperty name="userID" fieldtype="id" type="string" />
+<cfproperty name="remoteID" type="string" default="" />
+<cfproperty name="groupname" type="string" default="" />
+<cfproperty name="fname" type="string" default=""/>
+<cfproperty name="lname" type="string" default=""/>
+<cfproperty name="username" type="string" default=""/>
+<cfproperty name="password" type="string" default="" />
+<cfproperty name="passwordCreate" type="date" default="" />
+<cfproperty name="email" type="string" default=""/>
+<cfproperty name="company" type="string" default="" />
+<cfproperty name="jobTitle" type="string" default="" />
+<cfproperty name="website" type="string" default="" />
+<cfproperty name="mobilePhone" type="string" default="" />
+<cfproperty name="type" type="numeric" default="2"/>
+<cfproperty name="subType" type="string" default="Default"/>
+<cfproperty name="s2" type="numeric" default="0"/>
+<cfproperty name="contactFormat" type="string" default="" />
+<cfproperty name="lastLogin" type="date" default="" />
+<cfproperty name="lastUpdate" type="date" default="" />
+<cfproperty name="lastUpdateBy" type="string" default="" />
+<cfproperty name="lastUpdateByID" type="string" default="" />
+<cfproperty name="created" type="date" default="" />
+<cfproperty name="perm" type="numeric" default="0" />
+<cfproperty name="inActive" type="numeric" default="0" />
+<cfproperty name="isPublic" type="numeric" default="1" />
+<cfproperty name="siteID" type="string" default=""/>
+<cfproperty name="subscribe" type="numeric" default="1"/>
+<cfproperty name="notes" type="string" default=""/>
+<cfproperty name="groupID" type="string" default=""/>
+<cfproperty name="categoryID" type="string" default=""/>
+<cfproperty name="primaryAddressID" type="string" default=""/>
+<cfproperty name="addressID" type="string" default=""/>
+<cfproperty name="addresses" type="query" default=""/>
+<cfproperty name="description" type="string" default=""/>
+<cfproperty name="interests" type="string" default=""/>
+<cfproperty name="photoFileID" type="string" default=""/>
+<cfproperty name="photoFileExt" type="string" default=""/>
+<cfproperty name="keepPrivate" type="numeric" default="0"/>
+<cfproperty name="IMName" type="string" default=""/>
+<cfproperty name="IMService" type="string" default=""/>
+<cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity"/>
+<cfproperty name="isNew" type="numeric" default="1"/>
+<cfproperty name="tablist" type="string" default=""/>
+<cfproperty name="newFile" type="string" default=""/>
 
 <cfset variables.primaryKey = 'userid'>
 <cfset variables.entityName = 'user'>
@@ -404,7 +404,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
-	<cfset variables.instance.errors=structnew() />
+	<cfset super.validate()>
 		
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>

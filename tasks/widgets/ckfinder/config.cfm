@@ -323,6 +323,7 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
   include("plugins/fileeditor/plugin.cfm");
   include("plugins/imageresize/plugin.cfm");
   include("plugins/permissions/plugin.cfm");
+  include("plugins/csrf/plugin.cfm");
 }
 </cfscript>
 

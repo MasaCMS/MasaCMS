@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -37,6 +37,13 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 			} ),
 
 		helpers = CKEDITOR.plugins.image2,
+
+		// Editor instance configuration.
+		config = editor.config,
+
+		// Content restrictions defined by the widget which
+		// impact on dialog structure and presence of fields.
+		features = editor.widgets.registered.image.features,
 
 		// Functions inherited from image2 plugin.
 		checkHasNaturalRatio = helpers.checkHasNaturalRatio,
@@ -100,7 +107,10 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 		// @param {Function} callback.
 		return function( src, callback, scope ) {
 			addListener( 'load', function() {
-				callback.call( scope, image, image.$.width, image.$.height );
+				// Don't use image.$.(width|height) since it's buggy in IE9-10 (#11159)
+				var dimensions = getNatural( image );
+
+				callback.call( scope, image, dimensions.width, dimensions.height );
 			} );
 
 			addListener( 'error', function() {
@@ -111,7 +121,8 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 				callback( null );
 			} );
 
-			image.setAttribute( 'src', src + '?' + Math.random().toString( 16 ).substring( 2 ) );
+			image.setAttribute( 'src',
+				( config.baseHref || '' ) + src + '?' + Math.random().toString( 16 ).substring( 2 ) );
 		};
 	}
 
@@ -240,7 +251,9 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 
 		// Activate (Un)LockRatio button
 		if ( lockButton ) {
-			dialog.addFocusable( lockButton, 4 );
+			// Consider that there's an additional focusable field
+			// in the dialog when the "browse" button is visible.
+			dialog.addFocusable( lockButton, 4 + hasFileBrowser );
 
 			lockButton.on( 'click', function( evt ) {
 				toggleLockRatio();
@@ -252,7 +265,9 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 
 		// Activate the reset size button.
 		if ( resetButton ) {
-			dialog.addFocusable( resetButton, 5 );
+			// Consider that there's an additional focusable field
+			// in the dialog when the "browse" button is visible.
+			dialog.addFocusable( resetButton, 5 + hasFileBrowser );
 
 			// Fills width and height fields with the original dimensions of the
 			// image (stored in widget#data since widget#init).
@@ -327,9 +342,43 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 		heightField[ method ]();
 	}
 
-	var ret = {
+	var hasFileBrowser = !!( config.filebrowserImageBrowseUrl || config.filebrowserBrowseUrl ),
+		srcBoxChildren = [
+			{
+				id: 'src',
+				type: 'text',
+				label: commonLang.url,
+				onKeyup: onChangeSrc,
+				onChange: onChangeSrc,
+				setup: function( widget ) {
+					this.setValue( widget.data.src );
+				},
+				commit: function( widget ) {
+					widget.setData( 'src', this.getValue() );
+				},
+				validate: CKEDITOR.dialog.validate.notEmpty( lang.urlMissing )
+			}
+		];
+
+	// Render the "Browse" button on demand to avoid an "empty" (hidden child)
+	// space in dialog layout that distorts the UI.
+	if ( hasFileBrowser ) {
+		srcBoxChildren.push( {
+			type: 'button',
+			id: 'browse',
+			// v-align with the 'txtUrl' field.
+			// TODO: We need something better than a fixed size here.
+			style: 'display:inline-block;margin-top:14px;',
+			align: 'center',
+			label: editor.lang.common.browseServer,
+			hidden: true,
+			filebrowser: 'info:src'
+		} );
+	}
+
+	return {
 		title: lang.title,
-		minWidth: 450,
+		minWidth: 250,
 		minHeight: 100,
 		onLoad: function() {
 			// Create a "global" reference to the document for this dialog instance.
@@ -368,37 +417,8 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						children: [
 							{
 								type: 'hbox',
-								widths: [ '280px', '110px' ],
-								align: 'right',
-								children: [
-									{
-										id: 'src',
-										type: 'text',
-										label: commonLang.url,
-										onKeyup: onChangeSrc,
-										onChange: onChangeSrc,
-										setup: function( widget ) {
-											this.setValue( widget.data.src );
-										},
-										commit: function( widget ) {
-											widget.setData( 'src', this.getValue() );
-										},
-										validate: CKEDITOR.dialog.validate.notEmpty( lang.urlMissing )
-									},
-									{
-										// Remark: button may be removed at the very bottom of
-										// the file, if browser config is not set.
-										type: 'button',
-										id: 'browse',
-										// v-align with the 'txtUrl' field.
-										// TODO: We need something better than a fixed size here.
-										style: 'display:inline-block;margin-top:12px;',
-										align: 'center',
-										label: editor.lang.common.browseServer,
-										hidden: true,
-										filebrowser: 'info:src'
-									}
-								]
+								widths: [ '100%' ],
+								children: srcBoxChildren
 							}
 						]
 					},
@@ -416,7 +436,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 					{
 						type: 'hbox',
 						widths: [ '25%', '25%', '50%' ],
-						requiredContent: 'img[width,height]',
+						requiredContent: features.dimension.requiredContent,
 						children: [
 							{
 								type: 'text',
@@ -470,15 +490,16 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 					{
 						type: 'hbox',
 						id: 'alignment',
+						requiredContent: features.align.requiredContent,
 						children: [
 							{
 								id: 'align',
 								type: 'radio',
 								items: [
-									[ 'None', 'none' ],
-									[ 'Left', 'left' ],
-									[ 'Center', 'center' ],
-									[ 'Right', 'right' ] ],
+									[ commonLang.alignNone, 'none' ],
+									[ commonLang.alignLeft, 'left' ],
+									[ commonLang.alignCenter, 'center' ],
+									[ commonLang.alignRight, 'right' ] ],
 								label: commonLang.align,
 								setup: function( widget ) {
 									this.setValue( widget.data.align );
@@ -493,6 +514,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						id: 'hasCaption',
 						type: 'checkbox',
 						label: lang.captioned,
+						requiredContent: features.caption.requiredContent,
 						setup: function( widget ) {
 							this.setValue( widget.data.hasCaption );
 						},
@@ -512,8 +534,7 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 						type: 'file',
 						id: 'upload',
 						label: lang.btnUpload,
-						style: 'height:40px',
-						size: 38
+						style: 'height:40px'
 					},
 					{
 						type: 'fileButton',
@@ -526,11 +547,4 @@ CKEDITOR.dialog.add( 'image2', function( editor ) {
 			}
 		]
 	};
-
-	if ( !editor.config.filebrowserImageBrowseUrl && !editor.config.filebrowserBrowseUrl ) {
-		// Replaces hbox (which should contain button#browse but is hidden) with text control.
-		ret.contents[ 0 ].elements[ 0 ].children[ 0 ] = ret.contents[ 0 ].elements[ 0 ].children[ 0 ].children[ 0 ];
-	}
-
-	return ret;
 } );

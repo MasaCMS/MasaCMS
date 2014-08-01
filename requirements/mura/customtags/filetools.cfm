@@ -1,3 +1,4 @@
+<cfsilent>
 <cfparam name="attributes.bean" default="">
 <cfparam name="attributes.property" default="fileid">
 <cfparam name="attributes.size" default="medium">
@@ -6,6 +7,17 @@
 <cfparam name="attributes.locked" default="false">
 
 <cfset fileMetaData=attributes.bean.getFileMetaData(attributes.property)>
+
+<cfscript>
+	if(structKeyExists(server,'railo')){
+		backportdir='';
+		include "/mura/backport/cfbackport.cfm";
+	} else {
+		backportdir='/mura/backport/';
+		include "#backportdir#cfbackport.cfm";
+	}
+</cfscript>
+</cfsilent>
 <cfif not fileMetaData.getIsNew()>
 <div class="controls rule-dotted-top">
 <cfoutput>

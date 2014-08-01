@@ -280,8 +280,28 @@ component extends="mura.cfobject" output="false" {
 		var errorCheck={};
 		var checknum=1;
 		var checkfound=false;
+		var p='';
+		var prop={};
+		var properties=getProperties();
+		var propVal='';
 
 		variables.instance.errors=getBean('beanValidator').validate(this);
+		
+		//writeDump(var=properties,abort=true);
+		
+		if(getBean('configBean').getValue(property='stricthtml',defaultValue=false)){
+			var stricthtmlexclude=getBean('configBean').getValue(property='stricthtmlexclude',defaultValue='');
+			for(p in properties){
+				prop=properties[p];
+				param name="prop.html" default=false;
+				if(!prop.html){
+					propVal=getValue(prop.column);
+					if(isSimpleValue(propVal) && !(len(stricthtmlexclude) && listFind(stricthtmlexclude,prop.column)) && reFindNoCase("<[\/]?[^>]*>",propVal)){
+						variables.instance.errors['#prop.name#encoding']="The field '#prop.name#' contains invalid characters.";
+					}
+				}
+			}
+		} 
 
 		if(arrayLen(variables.instance.addObjects)){
 			for(var obj in variables.instance.addObjects){	
@@ -367,11 +387,13 @@ component extends="mura.cfobject" output="false" {
 					var defaultMetaData={column="",table="",datatype="varchar","default"="null",nullable=true};
 
 					param name="application.objectMappings.#variables.entityName#" default={};
-					application.objectMappings[variables.entityName].properties={};
-					application.objectMappings[variables.entityName].synthedFunctions={};
+					param name="application.objectMappings.#variables.entityName#.synthedFunctions" default={};
+					param name="application.objectMappings.#variables.entityName#.hasMany" default=[];
+					param name="application.objectMappings.#variables.entityName#.hasOne" default=[];
+
+					application.objectMappings[variables.entityName].properties={};	
 					application.objectMappings[variables.entityName].primarykey="";
-					application.objectMappings[variables.entityName].hasMany=[];
-					application.objectMappings[variables.entityName].hasOne=[];
+					
 					
 					if(structKeyExists(md,'versioned') && md.versioned){
 						application.objectMappings[variables.entityName].versioned=true;
@@ -474,6 +496,7 @@ component extends="mura.cfobject" output="false" {
 					       	 	param name="prop.nullable" default=true;
 					       	 	param name="prop.fieldtype" default="";
 					       	 	param name="prop.nested" default="false";
+					       	 	param name="prop.html" default="false";
 
 					       	 	if(prop.required){
 					       	 		prop.nullable=false;

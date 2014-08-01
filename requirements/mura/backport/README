@@ -1,0 +1,96 @@
+            __ _____ ____   ____    __ __  _ ____   ___  ____  ______
+           /  ]     |    \ /    |  /  ]  |/ ]    \ /   \|    \|      |
+          /  /|   __|  o  )  o  | /  /|  ' /|  o  )     |  D  )      |
+         /  / |  |_ |     |     |/  / |    \|   _/|  O  |    /|_|  |_|
+        /   \_|   _]|  O  |  _  /   \_|     \  |  |     |    \  |  |
+        \     |  |  |     |  |  \     |  .  |  |  |     |  .  \ |  |
+         \____|__|  |_____|__|__|\____|__|\_|__|   \___/|__|\_| |__|
+
+Author: David "Mister Dai" Boyer
+Website: http://misterdai.wordpress.com
+Version: 0.8
+Contributors: Henry Ho, David Epler
+
+----------------------
+| Description        |
+----------------------
+
+This project aims to make at least some functions from newer versions of Adobe
+ColdFusion available in older versions.  For example, SessionInvalidate() is new
+to CF10 but undocumented features make it possible in at least CF8+, possibly
+even CF7.
+
+Each set of functions is wrapped within an "if" statement to make sure they
+aren't loaded if the version already supports them.
+
+----------------------
+| Requirements       |
+----------------------
+
+Functions should work in at least ColdFusion 8+.  Where possible I've tried to
+avoid using newer syntax or functions
+
+If ColdFusion is patched with APSB11-04 or higher, ESAPI is available for 
+Encode and Decode functions.
+ 
+APSB11-04+ installs ESAPI 1.4.4 for CF8.0.x and ESAPI 2.0_rc10 for CF9.0.0/1
+CF9.0.2 already has ESAPI 2.0_rc10 installed
+
+----------------------
+| Usage              |
+----------------------
+
+Include the file cfbackport.cfm where you'd like the functions to appear.  Keep
+in mind that if you are operating within a CFC, you'll need to include them
+there to make use of them.
+
+<cfinclude template="cfbackport.cfm" />
+
+----------------------
+| Functions          |
+----------------------
+
+	* Backported from CF10 for CF9 and CF8
+
+		ArraySlice
+		CallStackDump
+		CallStackGet
+		Canonicalize
+		CsrfGenerateToken
+		CsrfVerifyToken
+		DecodeForHTML			(David Epler) [requires ESAPI 2.0+]
+		DecodeFromURL			(David Epler)
+		EncodeForCSS			(Henry Ho)
+		EncodeForHTML
+		EncodeForHTMLAttribute	(Henry Ho)
+		EncodeForJavaScript		(Henry Ho)
+		EncodeForURL			(Henry Ho)
+		EncodeForXML			(David Epler)
+		GetApplicationMetadata
+		HMac				(David Epler)
+		IsClosure
+		QueryExecute                    (Henry Ho)
+		ReEscape
+		SessionInvalidate
+		SessionStartTime
+		
+	* Backported from CF9 for CF8
+		throw				(David Epler) [required for DecodeFromURL]
+		location
+		writeDump
+		ArrayContains
+		DirectoryList
+		DirectoryRename
+
+----------------------
+| Unit Tests         |
+----------------------
+
+Unit tests were created with MXUnit 2.1.1
+
+	* As written (of course) CF10 passes them all
+	* CF9.0.x with APSB11-04+ - 13 success, 0 error, 1 failure
+	 * Failure is due to ESAPI version difference
+	* CF8.0.x with APSB11-04+ - 9 success, 1 error, 4 failure
+	 * Failure and Error is due to ESAPI version difference
+		
