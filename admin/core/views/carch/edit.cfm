@@ -297,6 +297,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
+	<!--- on{Type}{Subtype}Edit --->
+	<cfif rc.contentBean.getSubType() neq 'Default'>
+		<cfset pluginEventMappings3=$.getBean('pluginManager').getEventMappings(eventName='on#rc.type##rc.contentBean.getSubType()#Edit',siteid=rc.siteid)>
+		<cfif arrayLen(pluginEventMappings3)>
+			<cfloop from="1" to="#arrayLen(pluginEventMappings3)#" index="i">
+				<cfset pluginEventMappings3[i].eventName='on#rc.type##rc.contentBean.getSubType()#Edit'>
+				<cfset arrayAppend(pluginEventMappings,pluginEventMappings3[i])>
+			</cfloop>
+		</cfif>
+	</cfif>
+
 	<cfsavecontent variable="actionButtons">
 	<cfoutput>
 	<div class="form-actions">
@@ -618,10 +629,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arrayLen(pluginEventMappings)>
 		<cfoutput>
 		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
+			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$)>
 			<cfif len(trim(renderedEvent))>
-				<cfset tabLabelList=listAppend(tabLabelList,pluginEventMappings[i].pluginName)/>
+				<cfset tabLabel = Len($.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
+				<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
 				<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
+				<cfif ListFind(tabList,tabID)>
+					<cfset tabID = tabID & i />
+				</cfif>
 				<cfset tabList=listAppend(tabList,tabID)>
 				<cfset pluginEvent.setValue("tabList",tabLabelList)>
 				<div id="#tabID#" class="tab-pane fade">
