@@ -315,9 +315,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 		<cfset setUserStruct(rsuser,rolelist,listAppend(valueList(RsGetRoles.userID),rsuser.userid))>
 		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
-		<cfset sessionRotate()>
-		<cfset getBean('utility').setSessionCookies()>
-
+		<cfif variables.configBean.getValue(property='rotateSessions',defaultValue='false')>
+			<cfset sessionRotate()>
+			<cfset getBean('utility').setSessionCookies()>
+		</cfif>
 </cffunction>
 
 <cffunction name="getUserByEmail" returntype="query" output="false">

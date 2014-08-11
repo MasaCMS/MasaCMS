@@ -363,8 +363,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 				}
 
-				window.top.document.addEventListener("keydown", chechForSave , false);
-				
+				try{
+					window.top.document.addEventListener("keydown", chechForSave , false);
+				} catch (e){};
 		</script>
 		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>

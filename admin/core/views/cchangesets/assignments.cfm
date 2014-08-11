@@ -115,9 +115,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		  <td class="actions">
 		<ul>
 		<cfif verdict neq 'none'>
-      <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#encodeForURL(rc.rslist.contentID)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets"> <i class="icon-pencil"></i></a></li> 	
-			 <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#encodeForJavascript(rc.rslist.contenthistid)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
-		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>
+      <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#encodeForJavascript(rc.rsList.type)#&parentid=#rc.rsList.parentID#&topid=#encodeForURL(rc.rslist.contentID)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#encodeForURL(rc.startrow)#&return=changesets"> <i class="icon-pencil"></i></a></li> 	
+			 <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#encodeForJavascript(rc.rslist.contenthistid)#','#encodeForJavascript(rc.rsList.targetParams)#');"><i class="icon-globe"></i></a></li>
+		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#encodeForURL(rc.startrow)#"><i class="icon-book"></i></a></li>
     <cfelse>
       <li class="edit disabled"><i class="icon-edit"></i></li>
       <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#encodeForJavascript(rc.rslist.contentHistID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
+      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#encodeForURL(rc.startrow)#&return=changesets">
 		</cfsilent>
         <tr>  
           <td class="title var-width"><a href="#editlink#">#encodeForHTML(rc.rsList.title)#</a></td>
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       		<ul>
       		<cfif verdict neq 'none'>
             <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li> 	
-      		  <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>   
+      		  <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#encodeForURL(rc.rsList.type)#&parentid=#rc.rsList.parentID#&&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#encodeForURL(rc.startrow)#"><i class="icon-book"></i></a></li>   
           <cfelse>
       	   <li class="edit disabled"><i class="icon-pencil"></i></li>
             <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfsilent>
       <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
       <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
+      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#encodeForURL(rc.startrow)#&return=changesets">
     </cfsilent>
         <tr>  
           <td class="title var-width"><a href="#editlink#">#encodeForHTML(rc.rsList.title)#</a></td>
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <ul>
             <cfif verdict neq 'none'>
               <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
-              <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>   
+              <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#encodeForURL(rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#encodeForURL(rc.startrow)#"><i class="icon-book"></i></a></li>   
             <cfelse>
                 <li class="edit disabled"><i class="icon-pencil"></i></li>
                <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
