@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- on{Type}{Subtype}Edit --->
 	<cfif rc.contentBean.getSubType() neq 'Default'>
-		<cfset pluginEventMappings3=$.getBean('pluginManager').getEventMappings(eventName='on#rc.type##rc.contentBean.getSubType()#Edit',siteid=rc.siteid)>
+		<cfset pluginEventMappings3=duplicate($.getBean('pluginManager').getEventMappings(eventName='on#rc.type##rc.contentBean.getSubType()#Edit',siteid=rc.siteid))>
 		<cfif arrayLen(pluginEventMappings3)>
 			<cfloop from="1" to="#arrayLen(pluginEventMappings3)#" index="i">
 				<cfset pluginEventMappings3[i].eventName='on#rc.type##rc.contentBean.getSubType()#Edit'>
