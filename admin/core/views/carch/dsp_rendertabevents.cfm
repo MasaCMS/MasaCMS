@@ -1,7 +1,7 @@
 <cfset $=request.event.getValue('MuraScope')>
 <cfoutput>
 <cftry>
-<cfif  ListFindNoCase(application.contentManager.getTreeLevelList(),$.content('type'))>			
+<cfif ListFindNoCase(application.contentManager.getTreeLevelList(),$.content('type'))>			
 	#$.renderEvent("onContent#attributes.tab##attributes.context#Render")#
 	#$.renderEvent("onBaseDefault#attributes.tab##attributes.context#Render")#
 	<cfif $.content('subtype') neq "Default">
