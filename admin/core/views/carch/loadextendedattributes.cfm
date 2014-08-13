@@ -56,6 +56,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.event.setValue('contentBean',contentBean)>
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
+<cfif contentBean.getIsNew()>
+	<cfset contentBean.setType(rc.type)>
+	<cfset contentBean.setSubType(rc.subtype)>
+</cfif>
+
 <cfloop list="#application.contentManager.getTabList()#" index="container">
 	<cfif container eq 'Extended Attributes'>
 		<cfset container='Default'>

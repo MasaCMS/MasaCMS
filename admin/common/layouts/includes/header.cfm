@@ -124,7 +124,7 @@
 			                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
 			                    </li>
 			                    <li>
-			                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#</a>
+			                        <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-puzzle-piece"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#</a>
 			                    </li>
 			                    <li>
 			                      <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&siteid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>

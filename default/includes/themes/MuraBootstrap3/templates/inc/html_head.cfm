@@ -34,9 +34,10 @@
 	<![endif]-->
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
 	<script src="#$.siteConfig('themeAssetPath')#/js/html5shiv/html5shiv.js"></script>
-	<script src="#$.siteConfig('themeAssetPath')#/assets/bootstrap/js/respond.min.js"></script>
+	<script src="#$.siteConfig('themeAssetPath')#/js/respond/respond.min.js"></script>
 	<![endif]-->
 
 	<!--- jQuery --->

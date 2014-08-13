@@ -56,12 +56,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-th-large"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> <b class="caret"></b></a>
   <ul id="navSecondary" class="dropdown-menu">
     
-      <!--- Made this a main subnav item
-      <li <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cArch'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>--->
-  
-  <!--- Moved to flat view 
-  <li <cfif rc.originalfuseaction eq 'draft'>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cArch.draft&siteid=#session.siteid#" ><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>--->
-    
   <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))>
     <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
         <li <cfif  rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
@@ -94,11 +88,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </li>
       </cfif>
   
-     <!---<cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008",session.siteid)>
-        <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemembers")#</a>
-        </li>
-      </cfif>--->
-  
       <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
         <li <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/?muraAction=cAdvertising.listAdvertisers&siteid=#session.siteid#&moduleid=00000000000000000000000000000000006"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.advertising")#</a>
         </li>
@@ -116,21 +105,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_secondary_menu.cfm")> 
       <cfinclude template="/#application.configBean.getWebRootMap()#/#session.siteID#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm" >
     </cfif>
-    
-      <!--- <cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')><li<cfif rc.originalcircuit eq 'cPrivateUsers'>class="active"</cfif>><a href="./?muraAction=cPrivateUsers.list&siteid=#session.siteid#" >Administrative Users</a><cfif rc.originalcircuit eq 'cPrivateUsers'><cfinclude template="../../view/vPrivateUsers/dsp_secondary_menu.cfm"></cfif></li></cfif> --->
      
   
     <li <cfif rc.originalcircuit eq 'cFilemanager'>class="active"</cfif>><a href="./?muraAction=cFilemanager.default&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</a>
     </li>
+    <!---
      <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
      <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
       <li class="divider"></li>
       <li class="nav-header<cfif rc.originalcircuit eq 'cPlugins' > active</cfif>">
-      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
+      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-puzzle-piece"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
       </li>
     
        <cfloop query="rc.rsplugins">
-           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #encodeForHTML(rc.rsplugins.name)#</a>
+           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #encodeForHTML(rc.rsplugins.name)#</a>
           </li>
        </cfloop> 
        <cfif listFind(session.mura.memberships,'S2')>
@@ -140,16 +128,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <li><a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#</a>
       </cfif>
     </cfif>
-    <!---
+    --->
+    
     <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
      <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
-      
-      <li class="<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>">
-      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
-      </li>
+      <li class="divider"></li>
+      <li class="dropdown-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>">
+      <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-puzzle-piece"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
+       <ul class="dropdown-menu">
      
          <cfloop query="rc.rsplugins">
-             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #encodeForHTML(rc.rsplugins.name)#</a>
+             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #encodeForHTML(rc.rsplugins.name)#</a>
             </li>
          </cfloop> 
          <cfif listFind(session.mura.memberships,'S2')>
@@ -157,10 +146,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            <li class="divider"></li>
          </cfif>
           <li><a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#</a>
+          </li>
       </cfif>
+        </ul>
       </li>
     </cfif>
-    --->
+   
      <!---
      <cfif isdefined("request.event")>
       <cfset pluginEvent=request.event>
