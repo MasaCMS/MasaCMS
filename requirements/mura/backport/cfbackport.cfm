@@ -12,6 +12,8 @@
 		<cfinclude template="#backportdir#cf9.cfm" />
 	</cfif>
 	--->
+	<cfset request.backported=true>
+	
 	<cfif ListFirst(server.coldfusion.productVersion) lt 10>
 		<cfinclude template="#backportdir#cf10.cfm" />
 	</cfif>
