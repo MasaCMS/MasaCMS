@@ -7,6 +7,10 @@ Options +FollowSymLinks
 
 # -------------------------------------------------------------------------------
 # MURA REWRITE OPTIONS
+#
+# NOTE: If running on Tomcat and you will have any site(s) with their SiteID in
+#       the URL, you will need to add a custom servlet mapping for each one.
+#       For instructions, visit: http://docs.getmura.com/v6/installation-setup/how-to-add-a-servlet-mapping-for-your-siteid-to-tomcat/
 # -------------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 RewriteEngine On
