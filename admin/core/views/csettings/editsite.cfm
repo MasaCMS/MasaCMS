@@ -996,7 +996,7 @@ to your own modified versions of Mura CMS.
                   <cfif attributeBean.getType() IS "Hidden">
                   <cfset attributeBean.setType( "TextBox" ) />
                 </cfif>
-                  <div class="controls"> #encodeForHTML(attributeBean.renderAttribute(attributeValue))# </div>
+                  <div class="controls"> #attributeBean.renderAttribute(attributeValue)# </div>
                 </div>
             </cfloop>
             </div>
