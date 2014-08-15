@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(attributeBean.getHint())>
 				<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
 				<cfelse>
-				#attributeBean.getLabel()#
+				#encodeForHTML(attributeBean.getLabel())#
 				</cfif>
 				</label>
 				<div class="controls">

@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </dl>
     <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
     <!-- Begin List of Nodes -->
-    <li data-siteid="#encodeForHTMLAttribute(rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#encodeForHTMLAttribute(rc.moduleid)#" data-sortby="#encodeForHTMLAttribute(rc.rstop.sortby)#" data-sortdirection="#encodeForHTMLAttribute(rc.rstop.sortdirection)#" class="#encodeForHTMLAttribute(lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#encodeForHTMLAttribute(rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url'))#">
+    <li data-siteid="#encodeForHTMLAttribute(rc.siteid)#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#encodeForHTMLAttribute(rc.moduleid)#" data-sortby="#encodeForHTMLAttribute(rc.rstop.sortby)#" data-sortdirection="#encodeForHTMLAttribute(rc.rstop.sortdirection)#" class="#encodeForHTMLAttribute(lcase(rc.rstop.type))# mura-node-data<cfif r> restricted</cfif>" data-csrf="#rc.$.renderCSRFTOkens(context=rc.rstop.contentid & 'quickedit',format='url')#">
      <cfif r><div class="marker"></div></cfif>
       <dl id="top-node">
       <dt>
