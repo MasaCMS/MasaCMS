@@ -1,64 +1,103 @@
-﻿CKFinder.addPlugin( 'fileeditor', function( api ) {
+﻿/*
+ * Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see license.txt or http://cksource.com/ckfinder/license
+ *
+ * The software, this file and its contents are subject to the CKFinder
+ * License. Please read the license.txt file before using, installing, copying,
+ * modifying or distribute this file or part of its contents. The contents of
+ * this file is part of the Source Code of CKFinder.
+ */
 
-	var regexExt = /^(.*)\.([^\.]+)$/,
-		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl|less|properties)$/i,
-		regexCodeMirrorExt = /^(css|html|htm|js|xml|xsl|php|cfm|cfc)$/i,
+CKFinder.addPlugin( 'fileeditor', function( api )
+{
+	var regexTextExt = /^(ascx|asp|aspx|c|cfc|cfm|cpp|cs|css|htm|html|inc|java|js|less|md|mysql|php|pl|py|rb|rst|sass|scss|sql|txt|xml|xsl|xslt)$/i,
+		regexCodeMirrorExt = /^(ascx|asp|aspx|c|cfc|cfm|cpp|cs|css|htm|html|java|js|less|md|mysql|php|pl|py|rb|rst|sass|scss|sql|xml|xsl)$/i,
 		codemirror,
 		file,
 		fileLoaded = false,
-		doc;
+		doc,
 
-	var codemirrorPath = CKFinder.getPluginPath('fileeditor') + 'codemirror/';
-	var codeMirrorParsers = {
-		css : 'parsecss.js',
-		js : [ 'tokenizejavascript.js', 'parsejavascript.js' ],
-		xml : 'parsexml.js',
-		php : ['parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js'],
-		cfm : ['parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/sql/js/parsesql.js','../contrib/cfml/js/parsecfml.js','../contrib/cfml/js/parsecfmlmixed.js'],
-		cfc : ['parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/sql/js/parsesql.js','../contrib/cfml/js/parsecfml.js', '../contrib/cfml/js/parsecfmlmixed.js']
+		codeMirrorPath = CKFinder.getPluginPath( 'fileeditor' ) + 'codemirror/',
+		codeMirrorModePath = codeMirrorPath + 'mode/',
+
+		codeMirrorParsers = {
+		c: codeMirrorModePath + 'clike/clike.js',
+		css: codeMirrorModePath + 'css/css.js',
+		html: [ codeMirrorModePath + 'xml/xml.js', codeMirrorModePath + 'javascript/javascript.js', codeMirrorModePath + 'css/css.js', codeMirrorModePath + 'htmlmixed/htmlmixed.js' ],
+		js: codeMirrorModePath + 'javascript/javascript.js',
+		md: codeMirrorModePath + 'markdown/markdown.js',
+		php: [ codeMirrorModePath + 'xml/xml.js', codeMirrorModePath + 'javascript/javascript.js', codeMirrorModePath + 'css/css.js', codeMirrorModePath + 'clike/clike.js', codeMirrorModePath + 'php/php.js' ],
+		pl: codeMirrorModePath + 'perl/perl.js',
+		py: codeMirrorModePath + 'python/python.js',
+		rb: codeMirrorModePath + 'ruby/ruby.js',
+		rst: [ codeMirrorModePath + 'rst/rst.js', codeMirrorModePath + 'python/python.js', codeMirrorModePath + 'stex/stex.js', codeMirrorPath + 'addon/mode/overlay.js' ],
+		sql: codeMirrorModePath + 'sql/sql.js',
+		sass: codeMirrorModePath + 'sass/sass.js',
+		xml: codeMirrorModePath + 'xml/xml.js'
 	};
-	var codeMirrorCss = {
-		css : codemirrorPath + 'css/csscolors.css',
-		js : codemirrorPath + 'css/jscolors.css',
-		xml : codemirrorPath + 'css/xmlcolors.css',
-		php : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/php/css/phpcolors.css' ],
-		cfm : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/sql/css/sqlcolors.css'],
-		cfc : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/sql/css/sqlcolors.css']
-	};
-
-	codeMirrorCss.xsl = codeMirrorCss.xml;
-	codeMirrorCss.htm = codeMirrorCss.xml;
-	codeMirrorCss.html = codeMirrorCss.xml;
-
+	codeMirrorParsers.ascx = codeMirrorParsers.html;
+	codeMirrorParsers.asp = codeMirrorParsers.html;
+	codeMirrorParsers.aspx = codeMirrorParsers.html;
+	codeMirrorParsers.cfm = codeMirrorParsers.html;
+	codeMirrorParsers.cfc = codeMirrorParsers.html;
+	codeMirrorParsers.less = codeMirrorParsers.css;
+	codeMirrorParsers.cpp = codeMirrorParsers.c;
+	codeMirrorParsers.cs = codeMirrorParsers.c;
+	codeMirrorParsers.htm = codeMirrorParsers.html;
+	codeMirrorParsers.java = codeMirrorParsers.c;
+	codeMirrorParsers.mysql = codeMirrorParsers.sql;
+	codeMirrorParsers.scss = codeMirrorParsers.css;
 	codeMirrorParsers.xsl = codeMirrorParsers.xml;
-	codeMirrorParsers.htm = codeMirrorParsers.xml;
-	codeMirrorParsers.html = codeMirrorParsers.xml;
 
-	var isTextFile = function( file )
-	{
-		return regexTextExt.test( file.ext );
+	var codeMirrorModes = {
+		ascx : 'htmlmixed',
+		asp : 'htmlmixed',
+		aspx : 'htmlmixed',
+		c : 'clike',
+		cpp : 'clike',
+		cs : 'clike',
+		cfc : 'htmlmixed',
+		cfm : 'htmlmixed',
+		htm : 'htmlmixed',
+		html : 'htmlmixed',
+		java : 'clike',
+		js : 'javascript',
+		less : 'css',
+		md : 'markdown',
+		mysql : 'sql',
+		php : 'php',
+		pl : 'perl',
+		py : 'python',
+		rb : 'ruby',
+		rst : 'rst',
+		sass : 'sass',
+		scss : 'css',
+		sql : 'sql',
+		xsl : 'xml'
 	};
 
 	CKFinder.dialog.add( 'fileEditor', function( api )
 	{
-		var height, width;
-		var saveButton = (function()
+		var height, width,
+			saveButton = (function()
 				{
 					return {
 						id : 'save',
 						label : api.lang.Fileeditor.save,
 						type : 'button',
-						onClick : function ( evt ) {
+						onClick : function ( evt )
+						{
 							if ( !fileLoaded )
 								return true;
 
-							var dialog = evt.data.dialog;
-							var content = codemirror ? codemirror.getCode() : doc.getById( 'fileContent' ).getValue();
-							api.connector.sendCommandPost( "SaveFile", null, {
-								content : content,
-								fileName : file.name
+							var dialog = evt.data.dialog,
+								content = codemirror ? codemirror.getValue() : doc.getById( 'fileContent' ).getValue();
+							api.connector.sendCommandPost( 'SaveFile', null, {
+									content : content,
+									fileName : file.name
 								},
-								function( xml ) {
+								function( xml )
+								{
 									if ( xml.checkError() )
 										return false;
 
@@ -86,11 +125,15 @@
 			height = parentWindow.innerHeight ? parentWindow.innerHeight : parentWindow.document.documentElement.clientHeight;
 		}
 
+		var cssWidth = parseInt( parseInt( width, 10 ) * 0.6 ),
+			cssHeight = parseInt( parseInt( height, 10 ) * 0.7 - 20 );
+
 		return {
 			title : api.getSelectedFile().name,
-			minWidth : parseInt( width, 10 ) * 0.6,
-			minHeight : parseInt( height, 10 ) * 0.7,
-			onHide : function() {
+			minWidth : parseInt( parseInt( width, 10 ) * 0.6 ),
+			minHeight : parseInt( parseInt( height, 10 ) * 0.7 ),
+			onHide : function()
+			{
 				if ( fileLoaded )
 				{
 					var fileContent = doc.getById( 'fileContent' );
@@ -98,10 +141,9 @@
 						fileContent.remove();
 				}
 			},
-			onShow : function() {
+			onShow : function()
+			{
 				var dialog = this;
-				var cssWidth = parseInt( width, 10 ) * 0.6 - 10;
-				var cssHeight = parseInt( height, 10 ) * 0.7 - 20;
 
 				doc = dialog.getElement().getDocument();
 				var win = doc.getWindow();
@@ -111,16 +153,11 @@
 				var enableCodeMirror = regexCodeMirrorExt.test( file.ext );
 				this.setTitle( file.name );
 
-				if ( enableCodeMirror && win.$.CodeMirror === undefined )
-				{
-					var head= doc.$.getElementsByTagName( 'head' )[0];
-					var script= doc.$.createElement( 'script' );
-					script.type= 'text/javascript';
-					script.src = CKFinder.getPluginPath( 'fileeditor' ) + 'codemirror/js/codemirror.js';
-					head.appendChild( script );
+				if ( enableCodeMirror && win.$.CodeMirror === undefined ) {
+					doc.appendStyleSheet( codeMirrorPath + 'lib/codemirror.css' );
 				}
 
-				// If CKFinder is runninng under a different domain than baseUrl, then the following call will fail:
+				// If CKFinder is running under a different domain than baseUrl, then the following call will fail:
 				// CKFinder.ajax.load( file.getUrl() + '?t=' + (new Date().getTime()), function( data )...
 
 				var url = api.connector.composeUrl( 'DownloadFile', { FileName : file.name, format : 'text', t : new Date().getTime() },
@@ -139,39 +176,44 @@
 
 					var fileArea = doc.getById( 'fileArea' );
 
-					fileArea.setStyle('height', '100%');
+					fileArea.setStyle( 'height', '100%' );
 					fileArea.setHtml( '<textarea id="fileContent" style="height:' + cssHeight + 'px; width:' + cssWidth + 'px"></textarea>' );
-					doc.getById( 'fileContent' ).setText( data );
-					//document.getElementById( 'fileContent' ).innerHTML=data;
+
+					var fileContent = doc.getById( 'fileContent' );
+					if ( CKFinder.env.chrome || CKFinder.env.opera ) {
+						fileContent.setHtml( CKFinder.tools.htmlEncode( data ) );
+					} else {
+						fileContent.setText( data );
+					}
 
 					codemirror = null;
-					if ( enableCodeMirror && win.$.CodeMirror !== undefined )
+					if ( enableCodeMirror )
 					{
-						codemirror = win.$.CodeMirror.fromTextArea( doc.getById( 'fileContent').$,
+						CKFinder.scriptLoader.load( codeMirrorPath + 'lib/codemirror.js', function()
+						{
+							CKFinder.scriptLoader.load( codeMirrorParsers[ file.ext ], function()
 							{
-								height : cssHeight + 'px',
-								parserfile : codeMirrorParsers[ file.ext.toLowerCase() ],
-								stylesheet : codeMirrorCss[ file.ext.toLowerCase() ],
-								path : codemirrorPath + "js/"
-							}
-						);
+								codemirror = win.$.CodeMirror.fromTextArea( doc.getById( 'fileContent' ).$, { mode : codeMirrorModes[ file.ext ] || file.ext } );
+								var fileArea = doc.getById( 'fileArea' );
 
-						// TODO get rid of ugly buttons and provide something better
-						var undoB = doc.createElement( "button", { attributes: { "label" : api.lang.common.undo } } );
-						undoB.on( 'click', function()
-						{
-							codemirror.undo();
-						});
-						undoB.setHtml( api.lang.common.undo );
-						undoB.appendTo( doc.getById( 'fileArea' ) );
+								// TODO get rid of ugly buttons and provide something better
+								var undoB = doc.createElement( 'button', { attributes: { 'label' : api.lang.common.undo, 'class' : 'fileeditor-button' } } );
+								undoB.on( 'click', function()
+								{
+									codemirror.undo();
+								});
+								undoB.setHtml( api.lang.common.undo );
+								undoB.appendTo( fileArea );
 
-						var redoB = doc.createElement( 'button', { attributes: { "label" : api.lang.common.redo } } );
-						redoB.on('click', function()
-						{
-							codemirror.redo();
-						});
-						redoB.setHtml( api.lang.common.redo );
-						redoB.appendTo( doc.getById( 'fileArea' ) );
+								var redoB = doc.createElement( 'button', { attributes: { 'label' : api.lang.common.redo, 'class' : 'fileeditor-button' } } );
+								redoB.on( 'click', function()
+								{
+									codemirror.redo();
+								});
+								redoB.setHtml( api.lang.common.redo );
+								redoB.appendTo( fileArea );
+							}, this, false, doc.getHead(), doc );
+						}, this, false, doc.getHead(), doc );
 					}
 				});
 			},
@@ -189,7 +231,14 @@
 							id : 'htmlLoader',
 							html : '' +
 							'<style type="text/css">' +
-							'.CodeMirror-wrapping {background:white;}' +
+							'#fileArea .CodeMirror {background:white;height: '+ cssHeight +'px;}' +
+							'#fileArea .CodeMirror-scroll {height:' + cssHeight + 'px; width:' + cssWidth + 'px;margin-bottom:0;}' +
+							'#fileArea .CodeMirror .cm-tab {white-space:pre;}' +
+							'button.fileeditor-button {border: 1px solid #999;margin: 7px 7px 0 0;text-align: center;width: 60px;color: #222;padding: 3px 10px;}' +
+							// override .cke-compatibility issues which resolves to cursor below edited content bug
+							'#fileArea .CodeMirror * {font-family:monospace !important;white-space:pre !important;line-height: 1.2em;}' +
+							// FF >= 12 has some scrolling issue
+							( CKFinder.env.gecko && CKFinder.env.version >= 120000 ? '#fileArea .CodeMirror-scroll > div > div {position:absolute !important}' : '' ) +
 							'</style>' +
 							'<div id="fileArea"></div>'
 						}
@@ -201,7 +250,7 @@
 		};
 	} );
 
-	api.addFileContextMenuOption( { label : api.lang.Fileeditor.contextMenuName, command : "fileEditor" } , function( api, file )
+	api.addFileContextMenuOption( { label : api.lang.Fileeditor.contextMenuName, command : 'fileEditor' } , function( api, file )
 			{
 				api.openDialog( 'fileEditor' );
 			},
@@ -209,17 +258,12 @@
 			{
 				var maxSize = 1024;
 
-				if ( typeof (CKFinder.config.fileeditorMaxSize) != 'undefined' )
+				if ( typeof ( CKFinder.config.fileeditorMaxSize ) != 'undefined' )
 					maxSize = CKFinder.config.fileeditorMaxSize;
 
 				// Disable for images, binary files, large files etc.
-				if ( isTextFile( file ) && file.size <= maxSize )
-				{
-					if ( file.folder.acl.fileDelete )
-						return true;
-					else
-						return -1;
-				}
+				if ( regexTextExt.test( file.ext ) && file.size <= maxSize )
+					return file.folder.acl.fileDelete ? true : -1;
 
 				return false;
 			});
