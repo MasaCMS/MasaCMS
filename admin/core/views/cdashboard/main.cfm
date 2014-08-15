@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
 		<div class="input-append">
 		    <input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" placeholder="Enter Keywords" />
-		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="icon-search"></i></button>
 		</div>
 		<input type="hidden" name="muraAction" value="cArch.list">
 		<input type="hidden" name="activetab" value="1">

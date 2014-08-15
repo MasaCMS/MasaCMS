@@ -367,7 +367,7 @@
 		<cfset local.data.previewMap=structNew()>
 		<cfset local.data.contentIDList="">
 		<cfset local.data.contentHistIDList="">
-		<cfset local.data.prereqs=queryNew("changesetID,name,publishDate")>
+		<cfset local.data.dependentList="">
 		<cfset local.data.changesetIDList=local.changeset.getChangesetID()>
 	</cfif>
 
@@ -378,15 +378,15 @@
 	</cfif>
 
 	<cfif isDate(local.changeset.getPublishDate())>
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='local.data.prereqs')#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='local.prereqs')#">
 		select changesetID,name,publishDate
 		from tchangesets
 		where tchangesets.published=0
 		and tchangesets.publishDate is not null
 		and tchangesets.changesetID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
 		and (tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">	
-			<cfif arguments.append and local.data.prereqs.recordcount>
-			or  tchangesets.changesetID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(local.data.prereqs.changesetid)#">)
+			<cfif arguments.append and len(local.data.prereqList)>
+			or  tchangesets.changesetID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#local.data.prereqList#">)
 			</cfif>
 			)
 		and tchangesets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getSiteID()#">
@@ -394,13 +394,16 @@
 		order by tchangesets.publishDate asc
 		</cfquery>
 
-		<cfloop query="local.data.prereqs">
-			
-			<cfif not listFind(local.data.changesetIDList,local.data.prereqs.changesetid)>
-				<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.data.prereqs.changesetid)>
+		<cfloop query="local.prereqs">
+			<cfif not listFind(local.data.dependentList,local.prereqs.changesetid)>
+				<cfset local.data.dependentList=listAppend(local.data.dependentList,local.prereqs.changesetid)>
 			</cfif>
 
-			<cfset local.assignments=getAssignmentsQuery(changesetID=local.data.prereqs.changesetID)>
+			<cfif not listFind(local.data.changesetIDList,local.prereqs.changesetid)>
+				<cfset local.data.changesetIDList=listAppend(local.data.changesetIDList,local.prereqs.changesetid)>
+			</cfif>
+
+			<cfset local.assignments=getAssignmentsQuery(changesetID=local.prereqs.changesetID)>
 			<cfif local.assignments.recordcount>
 				<cfloop query="local.assignments">
 					<cfif not structKeyExists(local.data.previewMap,local.assignments.contentID)>
@@ -408,18 +411,18 @@
 					</cfif>
 					<cfset local.data.previewMap[local.assignments.contentID].contentID=local.assignments.contentID>
 					<cfset local.data.previewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
-					<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.data.prereqs.changesetID>
-					<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.data.prereqs.name>
-					<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.data.prereqs.publishDate>			
+					<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.prereqs.changesetID>
+					<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.prereqs.name>
+					<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.prereqs.publishDate>
+					<cfset local.data.previewMap[local.assignments.contentID].dependent=true>			
 				</cfloop>
 			</cfif>
 		</cfloop>
 
-		<cfset local.data.changesetIDList=listSort(local.data.changesetIDList,'text','asc')>
-
 	</cfif>
 	
 	<cfset local.assignments=getAssignmentsQuery(changesetID=local.changeset.getChangesetID())>
+	
 	<cfif local.assignments.recordcount>
 		<cfloop query="local.assignments">
 			<cfif not structKeyExists(local.data.previewMap,local.assignments.contentID)>
@@ -429,7 +432,8 @@
 			<cfset local.data.previewMap[local.assignments.contentID].contentHistID=local.assignments.contentHistID>
 			<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.changeset.getchangesetID()>
 			<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.changeset.getName()>
-			<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.changeset.getPublishDate()>			
+			<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.changeset.getPublishDate()>
+			<cfset local.data.previewMap[local.assignments.contentID].dependent=false>				
 		</cfloop>
 	</cfif>
 	
@@ -439,6 +443,9 @@
 			 <cfset local.data.contentHistIDList=listAppend(local.data.contentHistIDList,"'#local.data.previewMap[local.key].contentHistID#'")>
 		</cfloop>
 	</cfif>
+
+	<!--- Make sure that the order id predicatable to use is for caching context--->
+	<cfset local.data.changesetIDList=listSort(local.data.changesetIDList,'text','asc')>
 
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
 	<cfset local.data.lastApplied=now()>

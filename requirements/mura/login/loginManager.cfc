@@ -320,7 +320,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cflogout>
 
-	<cfset sessionInvalidate()>
+	<cfif getBean('configBean').getValue(property='rotateSessions',defaultValue='false')>
+		<cfset sessionInvalidate()>
+	</cfif>
+
 	<cfset structclear(session) />
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
