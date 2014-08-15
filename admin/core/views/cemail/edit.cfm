@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#
           </label>
          <div class="controls">
-          <input type="text" class="span12" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#encodeForHTMLAttribute(rc.emailBean.getFromLabel())#"),de("#encodeForHTMLAttribute(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
+          <input type="text" class="span12" name="fromLabel" value="#encodeForHTMLAttribute(iif(rc.emailBean.getFromLabel() neq '',de("#rc.emailBean.getFromLabel()#"),de("#application.settingsManager.getSite(rc.siteid).getsite()#")))#"  required="true" message="The 'From Label' form field is required" >
           </div>
          </div>
         </div>
