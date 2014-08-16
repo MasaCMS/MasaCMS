@@ -36,8 +36,8 @@ CKFinder.addPlugin( 'csrf', function( api ) {
     var orginalComposeUrlParams = api.connector.composeUrlParams;
     api.connector.composeUrlParams = function() {
      var params={};
-
-      if(typeof arguments[1] != 'object'){
+   
+      if(typeof arguments[0] == 'object'){
         extendObj(params,arguments[0]);
       } 
 
@@ -51,34 +51,33 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       return result;
     }
   
-
     var orginalsendCommandPost = api.connector.sendCommandPost;
     api.connector.sendCommandPost = function() {
 
       var params={};
 
-      if(typeof arguments[2] != 'object'){
-        extendObj(params,arguments[2]);
+      if(typeof arguments[1] == 'object'){
+        extendObj(params,arguments[1]);
       } 
 
       if(!params.mura_token){
         extendObj(params,getTokens());
       }
-      
+         
       // call the original function
-      var result = orginalsendCommand.apply(this,[arguments[0],arguments[1],params,arguments[3],arguments[4]]);
+      var result = orginalsendCommandPost.apply(this,[arguments[0],params,arguments[2],arguments[3],arguments[4],arguments[5]]);
 
       return result;
 
     }
-
+   
     
     var orginalsendCommand = api.connector.sendCommand;
     api.connector.sendCommand = function() {
      
      var params={};
 
-      if(typeof arguments[1] != 'object'){
+      if(typeof arguments[1] == 'object'){
         extendObj(params,arguments[1]);
       } 
 

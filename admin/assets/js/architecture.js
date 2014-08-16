@@ -1581,7 +1581,7 @@ buttons: {
 					var attribute = $(this).attr("data-attribute");
 					var node = $(this).parents("li:first");
 					var url = './';
-					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + node.attr("data-csrf") + '&cacheid=' + Math.random();
+					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute  + '&cacheid=' + Math.random();
 
 					//location.href='?' + pars;
 					//images/icons/template_24x24.png
