@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="edit,update">
 				<a class="btn" href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
-				
+				<cfif rc.contentid neq "">
 				<div class="btn-group">
 					  <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 					    <i class="icon-cogs"></i> Actions
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  </a>
 					  <ul class="dropdown-menu">
 				
-				<cfif rc.contentid neq "">
+				
 				<cfif (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 					<cfswitch expression="#rc.type#">
 					
