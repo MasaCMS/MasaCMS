@@ -2604,31 +2604,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 	<cfset var previewData="">
  	<cfoutput>
-			<cfif request.muraChangesetPreview and isDefined('previewData.contentIDList')>
-				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif len(previewData.contentIDList)>
-				and (
-						(#arguments.table#.active = 1
-						and #arguments.table#.Approved = 1
-						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-						)
-						
-						or 
-						
-						(
-						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-						)			
-					)
-				<cfelse>
-					and #arguments.table#.active = 1
+		<cfif request.muraChangesetPreview>
+			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+			<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1
 					and #arguments.table#.Approved = 1
-				</cfif>	
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)			
+				)
 			<cfelse>
 				and #arguments.table#.active = 1
 				and #arguments.table#.Approved = 1
 			</cfif>	
+		<cfelse>
+			and #arguments.table#.active = 1
+			and #arguments.table#.Approved = 1
+		</cfif>	
 	</cfoutput>
 </cffunction>
+
 
 <cffunction name="renderMenuTypeClause" output="true">
 <cfargument name="menuType">
