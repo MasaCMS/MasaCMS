@@ -249,13 +249,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 	</cfdefaultcase>
 	</cfswitch>
-	
-	<cfif not listFindNoCase("Form,Component",rc.contentBean.getType())>
+	<cfif isDefined('rc.contentBean')>
+		<cfif not listFindNoCase("Form,Component",rc.contentBean.getType())>
 		#$.renderEvent('onContentSecondaryNavRender')#
-		#$.renderEvent('onBase#rc.contentBean.getSubType()#SecondaryNavRender')#
-	</cfif>
-	#$.renderEvent('on#rc.contentBean.getType()#SecondaryNavRender')#
-	#$.renderEvent('on#rc.contentBean.getType()##rc.contentBean.getSubType()#SecondaryNavRender')#
-		
+			#$.renderEvent('onBase#rc.contentBean.getSubType()#SecondaryNavRender')#
+		</cfif>
+		#$.renderEvent('on#rc.contentBean.getType()#SecondaryNavRender')#
+		#$.renderEvent('on#rc.contentBean.getType()##rc.contentBean.getSubType()#SecondaryNavRender')#
+	</cfif>	
 </div>
 </cfoutput>
