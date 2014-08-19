@@ -84,6 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.adminBase=""/>
 			</cfif>
 			
+			<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
 			<cfset variables.targetHook=generateEditableHook()>
 			
 			<cfif $.siteConfig('hasLockableNodes')>
@@ -308,7 +309,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 					<!--- BEGIN CHANGESETS ---> 
 					<cfif $.siteConfig('HasChangeSets')>
-						<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
+						
 						<cfset customMenu=variables.$.renderEvent('onExperienceToolbarRender')>
 
 						<cfif len(customMenu)>
