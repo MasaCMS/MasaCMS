@@ -290,12 +290,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isValid("UUID",arguments.contentID)>
 			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
-			and active=1
+			#getBean('contentDAO').renderActiveClause("tcontent",arguments.siteID)#
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfelse>
-			active=1
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+			#renderActiveClause("tcontent",arguments.siteID)#
 		</cfif>
 	</cfquery>
 	<cfreturn rsHistIDFromContentID.contentHistID>
