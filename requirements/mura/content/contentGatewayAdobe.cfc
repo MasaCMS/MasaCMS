@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#getBean('contentDAO').renderActiveClause("tcontent",arguments.siteID)#
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfelse>
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
 			#renderActiveClause("tcontent",arguments.siteID)#
 		</cfif>
