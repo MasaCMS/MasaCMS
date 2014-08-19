@@ -232,7 +232,7 @@
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = 
+    	encodedString = arguments.canonicalize
         ? lc.encoder.encodeForCSS(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
         : lc.encoder.encodeForCSS(JavaCast("string", arguments.inputString));
     	
@@ -339,7 +339,7 @@
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = 
+    	encodedString = arguments.canonicalize
         ? lc.encoder.encodeForURL(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
         : lc.encoder.encodeForURL(JavaCast("string", arguments.inputString));
     	
