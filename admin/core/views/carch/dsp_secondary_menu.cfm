@@ -249,9 +249,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 	</cfdefaultcase>
 	</cfswitch>
-		
-		<!--- Add Social Button --->
-		<!--- <a class="btn" href=""><i class="icon-signal"></i> Social</a> --->
+	
+	<cfif not listFindNoCase("Form,Component",rc.contentBean.getType())>
+		#$.renderEvent('onContentSecondaryNavRender')#
+		#$.renderEvent('onBase#rc.contentBean.getSubType()#SecondaryNavRender')#
+	</cfif>
+	#$.renderEvent('on#rc.contentBean.getType()#SecondaryNavRender')#
+	#$.renderEvent('on#rc.contentBean.getType()##rc.contentBean.getSubType()#SecondaryNavRender')#
 		
 </div>
 </cfoutput>
