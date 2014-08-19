@@ -225,14 +225,16 @@
 
 <cffunction name="EncodeForCSS" output="false" returntype="string" hint="Encodes the input string for use in CSS, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
+ 	<cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
 	 
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForCSS(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = 
+        ? lc.encoder.encodeForCSS(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
+        : lc.encoder.encodeForCSS(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
  	</cfscript>
@@ -254,14 +256,16 @@
 
 <cffunction name="EncodeForHTML" output="false" returntype="string" hint="Encodes the input string for use in HTML, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
+  <cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
 	 
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForHTML(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = arguments.canonicalize
+        ? lc.encoder.encodeForHTML(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.canonicalize)))
+        : lc.encoder.encodeForHTML(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
 	</cfscript>
@@ -269,14 +273,16 @@
 
 <cffunction name="EncodeForHTMLAttribute" output="false" returntype="string" hint="Encodes the input string for use in HTML attribute, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
-	 
+ 	<cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
+
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForHTMLAttribute(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = arguments.canonicalize
+        ? lc.encoder.encodeForHTMLAttribute(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
+        : lc.encoder.encodeForHTMLAttribute(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
 	</cfscript>
@@ -284,14 +290,16 @@
 
 <cffunction name="EncodeForJavaScript" output="false" returntype="string" hint="Encodes the input string for use in JavaScript, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
+ 	<cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
 	 
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForJavaScript(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = arguments.canonicalize
+        ? lc.encoder.encodeForJavaScript(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
+        : lc.encoder.encodeForJavaScript(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
 	</cfscript>
@@ -324,14 +332,16 @@
 
 <cffunction name="EncodeForURL" output="false" returntype="string" hint="Encodes the input string for use in URLs, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
+ 	<cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
 	 
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForURL(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = 
+        ? lc.encoder.encodeForURL(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
+        : lc.encoder.encodeForURL(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
 	</cfscript>
@@ -339,14 +349,16 @@
 
 <cffunction name="EncodeForXML" output="false" returntype="string" hint="Encodes the input string for use in XML, returns Encoded string">
  	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode" />
- 	<cfargument name="strict" type="boolean" default="false" hint="Optional. If set to true, restricts multiple and mixed encoding" />
+ 	<cfargument name="canonicalize" type="boolean" default="false" hint="Optional. If set to true, canonicalization happens before encoding. If set to false, the given input string will just be encoded. The default value for canonicalize is false. When this parameter is not specified, canonicalization will not happen. By default, when canonicalization is performed, both mixed and multiple encodings will be allowed. To use any other combinations you should canonicalize using canonicalize method and then do encoding." />
 	 
 	<cfscript>
     	var lc = StructNew();
     	var encodedString = "";
     	
     	lc.encoder = CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-    	encodedString = lc.encoder.encodeForXML(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", arguments.strict)));
+    	encodedString = arguments.canonicalize
+        ? lc.encoder.encodeForXML(lc.encoder.canonicalize(JavaCast("string", arguments.inputString), JavaCast("boolean", true)))
+        : lc.encoder.encodeForXML(JavaCast("string", arguments.inputString));
     	
     	return encodedString;
 	</cfscript>
