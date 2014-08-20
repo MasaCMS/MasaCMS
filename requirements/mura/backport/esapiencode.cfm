@@ -2,7 +2,7 @@
 	<cfargument name="encodeFor" type="string" default="html" hint="encode for what, valid values are: - css: for output inside Cascading Style Sheets (CSS) - dn: for output in LDAP Distinguished Names - html: for output inside HTML - html_attr: for output inside HTML Attributes - javascript: for output inside Javascript - ldap: for output in LDAP queries - url: for output in URL - vbscript: for output inside vbscript - xml: for output inside XML - xml_attr: for output inside XML Attributes - xpath: for output in XPath">
 	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode">
 	<cfscript>
-			if(application.backports.openjava){
+			if(request.backports.openjava){
 				var encoder = '';
 				var encodedString = '';
 				
@@ -12,6 +12,7 @@
 
 				encoder = request.esapiencoder;
 
+
 				switch(arguments.encodeFor) {
 					case 'css' :
 						encodedString = encoder.encodeForCSS(JavaCast("string", arguments.inputString));
@@ -20,22 +21,22 @@
 						encodedString = encoder.encodeForDN(JavaCast("string", arguments.inputString));
 						break;
 					case 'html' :
-						encodedString = encoder.esapiEncode('html',JavaCast("string", arguments.inputString));
+						encodedString = encoder.encodeForHTML(JavaCast("string", arguments.inputString));
 						break;
 					case 'html_attr' :
-						encodedString = encoder.esapiEncode('html_attr',JavaCast("string", arguments.inputString));
+						encodedString = encoder.encodeForHTMLAttribute(JavaCast("string", arguments.inputString));
 						break;
 					case 'javascript' :
-						encodedString = encoder.esapiEncode('javascript',JavaCast("string", arguments.inputString));
+						encodedString = encoder.encodeForJavascript(JavaCast("string", arguments.inputString));
 						break;
 					case 'ldap' : 
 						encodedString = encoder.encodeForLDAP(JavaCast("string", arguments.inputString));
 						break;
 					case 'url' :
-						encodedString = encoder.esapiEncode('url',JavaCast("string", arguments.inputString));
+						encodedString = encoder.encodeForURL(JavaCast("string", arguments.inputString));
 						break;
 					case 'vbscript' :
-						encodedString = encoder.esapiEncode('html',JavaCast("string", arguments.inputString));
+						encodedString = encoder.encodeForVBScript(JavaCast("string", arguments.inputString));
 						break;
 					case 'xml' :
 						encodedString = encoder.encodeForXML(JavaCast("string", arguments.inputString));
