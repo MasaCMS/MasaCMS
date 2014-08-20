@@ -97,10 +97,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>
 		<thead>
 		<tr> 
-	      <th class="var-width"><a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&topid=#encodeForURL(rc.topid)#&parentid=#encodeForURL(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
+	      <th class="var-width"><a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
 	    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
-	      <th><a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&topid=#encodeForURL(rc.topid)#&parentid=#encodeForURL(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
-	      <th><a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&topid=#encodeForURL(rc.topid)#&parentid=#encodeForURL(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
+	      <th><a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
+	      <th><a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
 	      <th class="actions">&nbsp;</th>
 	    </tr>
 		</thead>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfsilent>
         <tr>  
-          <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
+          <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
           
 			   <td>
 			    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved)>
@@ -142,13 +142,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ul class="#lcase(rc.rstop.type)#">
 				<cfif verdict neq 'none'>
 				<li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
-					<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
+					<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#encodeForURL(rc.topid)#&parentid=#encodeForURL(rc.parentid)#&type=Form"><i class="icon-wrench"></i></a></li>
+						<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&type=Form"><i class="icon-wrench"></i></a></li>
 					</cfif>
 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
+						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
 					</cfif>
 				<cfelse>
 					<li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>
 				<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
-					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#encodeForURL(rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
 					<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				</cfif>
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfif rc.nextN.currentpagenumber gt 1>
 			
 					<li>	
-				 	<a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&topid=#encodeForURL(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+				 	<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
 				 	</li>
 				 </cfif>
 				<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i">
@@ -196,12 +196,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="active"><a href="##">#i#</a></li> 
 					<cfelse> 
 						<li>
-						<a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&topid=#encodeForURL(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
+						<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
 					</cfif>
 				</cfloop>
 				<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 					<li>
-						<a href="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&moduleid=#rc.moduleid#&topid=#encodeForURL(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+						<a href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&topid=#esapiEncode('url',rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
 					</li>
 				</cfif>
 				</ul>
@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="sidebar span3">
 	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
-    	  <input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#" />
+    	  <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#" />
     	  <input type="hidden" name="topid" value="#rc.topID#" />
     	  <input type="hidden" name="parentid" value="#rc.parentID#" />
     	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    
 		<div id="filters" class="module well">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
-	     <input type="text" name="searchString" id="searchString" value="#encodeForHTMLAttribute(rc.searchString)#" class="text" size="20">
+	     <input type="text" name="searchString" id="searchString" value="#esapiEncode('html_attr',rc.searchString)#" class="text" size="20">
 	  	</div>
 
 	  	<div class="module well" id="mura-filter-tags">
@@ -234,8 +234,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="tags" class="tagSelector">
 				<cfloop list="#$.event('tags')#" index="i">
 					<span class="tag">
-					#encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-					<input name="tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
+					#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+					<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
 				<input type="text" name="tags">
@@ -249,8 +249,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div id="#g#tags" class="tagSelector">
 						<cfloop list="#$.event('#g#tags')#" index="i">
 							<span class="tag">
-							#encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-							<input name="#g#tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
+							#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+							<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 							</span>
 						</cfloop>
 						<input type="text" name="#g#tags">
@@ -506,7 +506,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cflock>
 </cfif>
 <cfif not len(crumbdata[1].siteid)>
-  <cflocation url="./?muraAction=cArch.list&siteid=#encodeForURL(rc.siteid)#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false"/>
+  <cflocation url="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false"/>
 </cfif>
 </cfsilent>
 
@@ -528,13 +528,13 @@ copyAll = 'false';
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 	
     <div class="input-append">
-	    <input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" class="text" />
+	    <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="text" />
 	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="icon-search"></i><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.search")# ---></button>
     </div>
     
     <input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">
-    <input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
+    <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
     <input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
 
@@ -564,29 +564,29 @@ var tabsInited=false;
 var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups'),"^,"))#;
 
 function initFlatViewArgs(){
-	return {siteid:'#encodeForJavascript(session.siteID)#', 
-			moduleid:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].moduleid)#', 
-			sortby:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].sortby)#', 
-			sortdirection:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].sortdirection)#', 
-			page:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].page)#',	
-			tags:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].tags)#',
-			categoryid:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].categoryid)#',
-			lockid:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].lockid)#',
-			type:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].type)#',
-			subtype:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].subtype)#',
-			report:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].report)#',
-			keywords:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"].keywords)#',
-			filtered: '#encodeForJavascript(session.flatViewArgs["#session.siteID#"].filtered)#'
+	return {siteid:'#esapiEncode('javascript',session.siteID)#', 
+			moduleid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].moduleid)#', 
+			sortby:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortby)#', 
+			sortdirection:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].sortdirection)#', 
+			page:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].page)#',	
+			tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].tags)#',
+			categoryid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].categoryid)#',
+			lockid:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].lockid)#',
+			type:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].type)#',
+			subtype:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].subtype)#',
+			report:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].report)#',
+			keywords:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].keywords)#',
+			filtered: '#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"].filtered)#'
 			<cfif len($.siteConfig('customTagGroups'))>
 			<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			,#g#tags:'#encodeForJavascript(session.flatViewArgs["#session.siteID#"]["#g#tags"])#'	
+			,#g#tags:'#esapiEncode('javascript',session.flatViewArgs["#session.siteID#"]["#g#tags"])#'	
 			</cfloop>	
 			</cfif>
 			};
 }
 
 
-var newContentMenuTitle='#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype"))#';
+var newContentMenuTitle='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype"))#';
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
@@ -609,7 +609,7 @@ function initSiteManagerTabContent(index){
 		case 0:
 		if (!archViewLoaded) {
 			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
-			siteManager.loadSiteManager('#encodeForJavascript(rc.siteID)#', '#encodeForJavascript(rc.topid)#', '#encodeForJavascript(rc.moduleid)#', '#encodeForJavascript(rc.sortby)#', '#encodeForJavascript(rc.sortdirection)#', '#encodeForJavascript(rc.ptype)#', '#encodeForJavascript(rc.startrow)#');
+			siteManager.loadSiteManager('#esapiEncode('javascript',rc.siteID)#', '#esapiEncode('javascript',rc.topid)#', '#esapiEncode('javascript',rc.moduleid)#', '#esapiEncode('javascript',rc.sortby)#', '#esapiEncode('javascript',rc.sortdirection)#', '#esapiEncode('javascript',rc.ptype)#', '#esapiEncode('javascript',rc.startrow)#');
 			archViewLoaded = true;
 		}
 		break;

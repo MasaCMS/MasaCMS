@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,"email.filter")#" />
 <cfoutput>			  
-	<input type="hidden" name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#">
+	<input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#">
 </cfoutput>
 
 </form>
@@ -77,13 +77,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<ul class="metadata">
 			<cfoutput query="rc.rsBounces">
-				<li>#encodeForHTML(email)# - #encodeForHTML(bounceCount)#</li>
+				<li>#esapiEncode('html',email)# - #esapiEncode('html',bounceCount)#</li>
 				<cfset bouncedEmailList = listAppend(bouncedEmailList,email)>
 			</cfoutput>
 		</ul>
 		<cfoutput>
 		<input type="hidden" value="#bouncedEmailList#" name="bouncedEmail" />
-		<input type="hidden" name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#">
+		<input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#">
 		<input type="button" class="btn" onclick="submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');" value="#application.rbFactory.getKeyValue(session.rb,"email.delete")#" />
 		</cfoutput>
 	</form>

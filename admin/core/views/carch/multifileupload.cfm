@@ -138,11 +138,11 @@ jQuery(document).ready(function(){
         <tbody class="files" data-toggle="modal-gallery" data-target="##modal-gallery"></tbody></table>
       <input type="hidden" name="muraAction" value="cArch.update"/>
       <input type="hidden" name="action" value="multifileupload"/>
-      <input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#"/>
-      <input type="hidden" name="moduleid" value="#encodeForHTMLAttribute(rc.moduleid)#"/>
-      <input type="hidden" name="topid" value="#encodeForHTMLAttribute(rc.topid)#"/>
-      <input type="hidden" name="ptype" value="#encodeForHTMLAttribute(rc.ptype)#"/>
-      <input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#"/>
+      <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#"/>
+      <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#"/>
+      <input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#"/>
+      <input type="hidden" name="ptype" value="#esapiEncode('html_attr',rc.ptype)#"/>
+      <input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"/>
       <input type="hidden" name="contentid" value=""/>
       <input type="hidden" name="type" value="File"/>
       <input type="hidden" name="subtype" value="Default"/>

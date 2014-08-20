@@ -62,7 +62,7 @@ function jsonencode(arg)
 		return ToString(arg);
 	}
 	if (issimplevalue(arg)){
-		return '"' & encodeForJavascript(ToString(arg)) & '"';
+		return '"' & esapiEncode('javascript',ToString(arg)) & '"';
 	}
 	if (IsQuery(arg)){
 		o = o & '"RECORDCOUNT":' & arg.recordcount;

@@ -52,6 +52,6 @@ to your own modified versions of Mura CMS.
 </script>
 
 <h1>Deploy Bundle</h1>
-<iframe frameborder="0" src="/tasks/bundle/feedback.cfm?siteID=<cfoutput>#encodeForURL(rc.siteID)#</cfoutput>"></iframe>
+<iframe frameborder="0" src="/tasks/bundle/feedback.cfm?siteID=<cfoutput>#esapiEncode('url',rc.siteID)#</cfoutput>"></iframe>
 
 <!---<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>--->

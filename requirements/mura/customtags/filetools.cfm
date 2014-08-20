@@ -11,10 +11,10 @@
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 </cfsilent>

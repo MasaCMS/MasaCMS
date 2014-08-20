@@ -61,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				& application.rbFactory.getKeyValue(session.rb, 
 			                                    'sitemanager.content.fields.localindexslideshow')>
 
-			<option title="#encodeForHTMLAttribute(title)#" value="{'object':'feed_slideshow','objectid':'#rc.rslist.feedID#','name':'#encodeForJavascript(title)#'}">
-				#encodeForHTML(title)#
+			<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed_slideshow','objectid':'#rc.rslist.feedID#','name':'#esapiEncode('javascript',title)#'}">
+				#esapiEncode('html',title)#
 			</option>
 		</cfloop>
 	</select>

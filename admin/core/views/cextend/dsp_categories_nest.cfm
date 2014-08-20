@@ -49,10 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 <cfparam name="rc.siteID" default="">
@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul<cfif not rc.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(rc.extendSetBean.getCategoryID(),rslist.categoryID) or listfind(rc.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#encodeForHTML(rslist.name)#
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(rc.extendSetBean.getCategoryID(),rslist.categoryID) or listfind(rc.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#esapiEncode('html',rslist.name)#
 <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="#rslist.categoryID#" categoryID="#rc.categoryID#" nestLevel="#evaluate(rc.nestLevel +1)#" extendSetBean="#rc.extendSetBean#">
 </li>
 </cfoutput>

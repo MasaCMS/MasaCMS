@@ -52,14 +52,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h2>
 #application.utility.displayErrors(rc.creativeBean.getErrors())#
-<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cAdvertising.updateCreative&siteid=#encodeForURL(rc.siteid)#&userid=#encodeForURL(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cAdvertising.updateCreative&siteid=#esapiEncode('url',rc.siteid)#&userid=#esapiEncode('url',rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 <div class="fieldset">
 <div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
 	</label>
 	<div class="controls">
-		<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#encodeForHTMLAttribute(rc.creativeBean.getName())#" maxlength="50">
+		<input name="name" type="text" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#esapiEncode('html_attr',rc.creativeBean.getName())#" maxlength="50">
 	</div>
 </div>
 
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.textbody')#
 	</label>
-	<div class="controls"><textarea name="textBody" id="textBody" class="textArea htmlEditor">#encodeForHTML(rc.creativeBean.getTextBody())#</textarea>
+	<div class="controls"><textarea name="textBody" id="textBody" class="textArea htmlEditor">#esapiEncode('html',rc.creativeBean.getTextBody())#</textarea>
 	</div>
 </div>
 
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.title')#
 	</label>
-	<div class="controls"><input name="title" type="text" class="text"  value="#encodeForHTMLAttribute(rc.creativeBean.getTitle())#" maxlength="200">
+	<div class="controls"><input name="title" type="text" class="text"  value="#esapiEncode('html_attr',rc.creativeBean.getTitle())#" maxlength="200">
 	</div>
 </div>
 
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.linktitle')#
 	</label>
-	<div class="controls"><input name="linkTitle" type="text" class="text"  value="#encodeForHTMLAttribute(rc.creativeBean.getLinkTitle())#" maxlength="100">
+	<div class="controls"><input name="linkTitle" type="text" class="text"  value="#esapiEncode('html_attr',rc.creativeBean.getLinkTitle())#" maxlength="100">
 	</div>
 </div>
 </span>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,'advertising.advertisementurl')#
 	</label>
 	<div class="controls">
-		<input name="redirectURL" type="text" class="text" value="#encodeForHTMLAttribute(rc.creativeBean.getRedirectURL())#" maxlength="200">
+		<input name="redirectURL" type="text" class="text" value="#esapiEncode('html_attr',rc.creativeBean.getRedirectURL())#" maxlength="200">
 	</div>
 </div>
 
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.alttext')#
 	</label>
-	<div class="controls"><input name="altText" type="text" class="text"  value="#encodeForHTMLAttribute(rc.creativeBean.getAltText())#" maxlength="200">
+	<div class="controls"><input name="altText" type="text" class="text"  value="#esapiEncode('html_attr',rc.creativeBean.getAltText())#" maxlength="200">
 	</div>
 </div>
 
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#
 	</label>
-	<div class="controls"><textarea name="notes" class="textArea">#encodeForHTML(rc.creativeBean.getNotes())#</textarea>
+	<div class="controls"><textarea name="notes" class="textArea">#esapiEncode('html',rc.creativeBean.getNotes())#</textarea>
 	</div>
 </div>
 </div>
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="creativeID" value="">
 <cfelse> 
-	<input type="button" class="submit btn btn-delete" onclick="submitForm(document.forms.form1,'delete','#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit btn btn-delete" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="creativeid" value="#rc.creativeBean.getCreativeID()#">
 </cfif><input type="hidden" name="action" value="">

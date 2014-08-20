@@ -51,10 +51,10 @@ component extends="framework" output="false" {
 	
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "../requirements/mura/backport/cfbackport.cfm";
+		include "../requirements/mura/backport/backport.cfm";
 	} else {
 		backportdir='../requirements/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 	
 	if(not hasMainMappings){

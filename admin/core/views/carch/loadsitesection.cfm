@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset session.openSectionList=listAppend(session.openSectionList,rc.contentID)>
 
 <cfsavecontent variable="data.html">
-<cf_dsp_nest topid="#encodeForHTMLAttribute(rc.contentID)#" parentid="#encodeForHTMLAttribute(rc.contentID)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#encodeForHTMLAttribute(rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#encodeForHTMLAttribute(rc.startrow)#" sortBy="#encodeForHTMLAttribute(rc.sortBy)#" sortDirection="#encodeForHTMLAttribute(rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true" muraScope="#rc.$#">
+<cf_dsp_nest topid="#esapiEncode('html_attr',rc.contentID)#" parentid="#esapiEncode('html_attr',rc.contentID)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#esapiEncode('html_attr',rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#esapiEncode('html_attr',rc.startrow)#" sortBy="#esapiEncode('html_attr',rc.sortBy)#" sortDirection="#esapiEncode('html_attr',rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true" muraScope="#rc.$#">
 </cfsavecontent>
 
 <cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput><cfabort>

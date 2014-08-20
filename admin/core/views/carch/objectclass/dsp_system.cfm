@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfquery>
 		<cfloop query="rc.rsObjects">
-			<option title="#encodeForHTMLAttribute(rc.rsObjects.name)#" value='{"object":"#encodeForJavascript(rc.rsobjects.object)#","name":"#encodeForJavascript(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
-				#encodeForHTML(rc.rsObjects.name)#
+			<option title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript',rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
+				#esapiEncode('html',rc.rsObjects.name)#
 			</option>
 		</cfloop>
 	</select>

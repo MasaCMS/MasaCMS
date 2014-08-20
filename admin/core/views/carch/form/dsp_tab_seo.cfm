@@ -59,40 +59,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
-							<input type="text" id="menuTitle" name="menuTitle" value="#encodeForHTMLAttribute(rc.contentBean.getmenuTitle())#"  maxlength="255" class="span12">
+							<input type="text" id="menuTitle" name="menuTitle" value="#esapiEncode('html_attr',rc.contentBean.getmenuTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 							
 					<div class="control-group">
 			      		<label class="control-label">
-			      			<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#">
+			      			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
 			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
-								<input type="text" id="urlTitle" name="urlTitle" value="#encodeForHTMLAttribute(rc.contentBean.getURLTitle())#"  maxlength="255" class="span12">
+								<input type="text" id="urlTitle" name="urlTitle" value="#esapiEncode('html_attr',rc.contentBean.getURLTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 						
 					<div class="control-group">
 			      		<label class="control-label">
-			      			<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#">
+			      			<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
 			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
-							<input type="text" id="htmlTitle" name="htmlTitle" value="#encodeForHTMLAttribute(rc.contentBean.getHTMLTitle())#"  maxlength="255" class="span12">
+							<input type="text" id="htmlTitle" name="htmlTitle" value="#esapiEncode('html_attr',rc.contentBean.getHTMLTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 
 					 <div class="control-group">
 					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc" class="span12">#encodeForHTML(rc.contentBean.getMETADesc())#</textarea></div>
+					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc" class="span12">#esapiEncode('html',rc.contentBean.getMETADesc())#</textarea></div>
 					    </div>
 
 					  <div class="control-group">
 					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="span12">#encodeForHTML(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
+					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="span12">#esapiEncode('html',rc.contentBean.getMETAKEYWORDS())#</textarea></div>
 					    </div>
 
 	  </div>

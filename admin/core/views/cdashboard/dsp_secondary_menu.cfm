@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   	<cfloop query="rsChangesets">
 				<li>
 					<a href="./?muraAction=cChangesets.assignments&changesetID=#rsChangesets.changesetID#&siteid=#session.siteid#">
-						#encodeForHTML(rsChangesets.name)#
+						#esapiEncode('html',rsChangesets.name)#
 						<cfif isDate(rsChangesets.publishDate)> (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</cfif><cfif rsChangesets.pending> <span class="badge badge-important">#rsChangesets.pending#</span></cfif>
 					</a>
 				</li>

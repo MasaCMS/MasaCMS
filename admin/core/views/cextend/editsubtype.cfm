@@ -56,11 +56,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          <i class="icon-circle-arrow-left"></i> Back <span class="caret"></span>
        </a>
        <ul class="dropdown-menu">
-          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extensions</a></li>
-          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extensions</a></li>
+          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#">&hellip;to Class Extension Overview</a></li>
        </ul>
 <cfelse>
-	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extension Overview</a>
+	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extension Overview</a>
 </cfif>
 </div>
 
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="span3 subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
 				<label class="control-label">Sub Type</label>
 				<div class="controls">
-					<input class="span12" name="subType" id="subType" type="text" value="#encodeForHTMLAttribute(subType.getSubType())#" required="true" maxlength="25"/>
+					<input class="span12" name="subType" id="subType" type="text" value="#esapiEncode('html_attr',subType.getSubType())#" required="true" maxlength="25"/>
 				</div>
 			</div>
 			<div class="span3 SubTypeIconSelect"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	              </div>
 	              <button type="button" class="btn" id="iconreset"><i class="icon-undo"></i> Reset</button>
 				 </div>
-	              <input name="iconclass" type="hidden" value="#encodeForHTMLAttribute(subtype.getIconClass())#" id="iconclass"/>
+	              <input name="iconclass" type="hidden" value="#esapiEncode('html_attr',subtype.getIconClass())#" id="iconclass"/>
 	              <script>
 	              	$(function(){
 	              		var defaultIcon='#defaultIcon#';
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div class="control-group">
 		<label class="control-label">Description</label>
-		<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#encodeForHTML(subtype.getDescription())#</textarea></div>
+		<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#esapiEncode('html',subtype.getDescription())#</textarea></div>
 		</div>
 			
 	<div class="control-group hasRow1Container" >
@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(rc.subTypeID)>
 		<cfset rc.subTypeID=createUUID()>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
-		<input type=hidden name="subTypeID" value="#encodeForHTMLAttribute(rc.subTypeID)#">
+		<input type=hidden name="subTypeID" value="#esapiEncode('html_attr',rc.subTypeID)#">
 	<cfelse>
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
 		<input type="button" class="btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
@@ -209,11 +209,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSubType" type="hidden">
-<input name="siteID" value="#encodeForHTMLAttribute(rc.siteid)#" type="hidden">
-<input type="hidden" name="baseTable" value="#encodeForHTMLAttribute(subType.getBaseTable())#"/>
-<input type="hidden" name="baseKeyField" value="#encodeForHTMLAttribute(subType.getBaseKeyField())#" />
-<input type="hidden" name="type" value="#encodeForHTMLAttribute(subType.getType())#"/>
-<input type="hidden" name="dataTable" value="#encodeForHTMLAttribute(subType.getDataTable())#" />
+<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
+<input type="hidden" name="baseTable" value="#esapiEncode('html_attr',subType.getBaseTable())#"/>
+<input type="hidden" name="baseKeyField" value="#esapiEncode('html_attr',subType.getBaseKeyField())#" />
+<input type="hidden" name="type" value="#esapiEncode('html_attr',subType.getType())#"/>
+<input type="hidden" name="dataTable" value="#esapiEncode('html_attr',subType.getDataTable())#" />
 #rc.$.renderCSRFTokens(context=rc.subtypeid,format="form")#
 </form>
 

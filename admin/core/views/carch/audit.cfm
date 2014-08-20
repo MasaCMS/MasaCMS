@@ -131,9 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </td>
 <td class="title var-width">
 	<cfif not isLockedBySomeoneElse or poweruser>
-	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#encodeForURL(rc.type)#&parentid=#encodeForURL(rc.parentid)#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&startrow=#encodeForURL(rc.startrow)#&moduleid=#encodeForURL(rc.moduleid)#&return=hist&compactDisplay=#encodeForURL(rc.compactDisplay)#" class="draftprompt"  data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#">
+	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&return=hist&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" class="draftprompt"  data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#">
 	</cfif>
-	#encodeForHTML(left(rc.item.getmenutitle(),90))#
+	#esapiEncode('html',left(rc.item.getmenutitle(),90))#
 	<cfif not isLockedBySomeoneElse or poweruser>
 	</a>
 	</cfif>
@@ -146,18 +146,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</td>
 </cfif>
-<td class="notes"><cfif rc.item.getnotes() neq ''><a rel="tooltip" data-original-title="#encodeForHTMLAttribute(rc.item.getnotes())#">View&nbsp;Note</a></cfif></td>
+<td class="notes"><cfif rc.item.getnotes() neq ''><a rel="tooltip" data-original-title="#esapiEncode('html_attr',rc.item.getnotes())#">View&nbsp;Note</a></cfif></td>
 <cfif hasChangesets>
 	<td class="changeset">
 		<cfif len(rc.item.getchangesetID())>
 		<cfset changeset=$.getBean('changeset').loadby(changesetID=rc.item.getChangesetID())>
 		
-		<cfif isDate(changeset.getPublishDate())><a href="##" rel="tooltip" title="#encodeForHTMLAttribute(LSDateFormat(changeset.getPublishDate(),"short"))#"> <i class="icon-calendar"></i></a></cfif>
+		<cfif isDate(changeset.getPublishDate())><a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(changeset.getPublishDate(),"short"))#"> <i class="icon-calendar"></i></a></cfif>
 		<cfif hasChangesetAccess>
-			<a href="./?muraAction=cChangesets.assignments&siteID=#rc.item.getsiteid()#&changesetID=#rc.item.getchangesetID()#">		#encodeForHTML(changeset.getName())#
+			<a href="./?muraAction=cChangesets.assignments&siteID=#rc.item.getsiteid()#&changesetID=#rc.item.getchangesetID()#">		#esapiEncode('html',changeset.getName())#
 			</a>
 		<cfelse>
-			#encodeForHTML(changeset.getName())#
+			#esapiEncode('html',changeset.getName())#
 		</cfif>
 		</cfif>
 	</td>
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.item.getisfeature() eq 1>
 			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif rc.item.getisfeature() eq 2>
-			<a href="##" rel="tooltip" title="#encodeForHTMLAttribute('#LSDateFormat(rc.item.getfeaturestart(),"short")#&nbsp;-&nbsp;#LSDateFormat(rc.item.getfeaturestop(),"short")#')#"> <i class="icon-calendar"></i></a>
+			<a href="##" rel="tooltip" title="#esapiEncode('html_attr','#LSDateFormat(rc.item.getfeaturestart(),"short")#&nbsp;-&nbsp;#LSDateFormat(rc.item.getfeaturestop(),"short")#')#"> <i class="icon-calendar"></i></a>
 		<cfelse>
 			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
 			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
@@ -205,10 +205,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <td class="last-updated">#LSDateFormat(rc.item.getlastupdate(),session.dateKeyFormat)#</td> 
 <td class="time">#LSTimeFormat(rc.item.getlastupdate(),"short")#</td>
-<td class="user">#encodeForHTML(rc.item.getlastUpdateBy())#</td> 
+<td class="user">#esapiEncode('html',rc.item.getlastUpdateBy())#</td> 
 <td class="actions"><ul>
 	<cfif not isLockedBySomeoneElse or poweruser>
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#encodeForURL(rc.type)#&parentid=#encodeForURL(rc.parentid)#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&startrow=#encodeForURL(rc.startrow)#&moduleid=#encodeForURL(rc.moduleid)#&return=hist&compactDisplay=#encodeForURL(rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#" ><i class="icon-pencil"></i></a>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&return=hist&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" class="draftprompt" data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#" ><i class="icon-pencil"></i></a>
 	<cfelse>
 		<li class="edit disabled">
 		<i class="icon-pencil"></i>
@@ -218,14 +218,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcase value="Page,Folder,Calendar,Gallery,Link,File">
 	<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.contentBean.getFilename())#?previewid=#rc.item.getcontenthistid()#'>
 	<cfif rc.compactDisplay eq 'true'>
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#encodeForJavascript(previewURL)#')});return false;"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="icon-globe"></i></a></li>
 	<cfelse>
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('#previewURL#','#rc.item.getTargetParams()#');"><i class="icon-globe"></i></a></li>
 	</cfif>
 </cfcase>
 </cfswitch>
 
-<cfif (not rc.item.getactive() and (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')))) and not isLockedBySomeoneElse><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contenthistid=#rc.item.getContentHistID()#&action=delete&contentid=#encodeForURL(rc.contentid)#&type=#encodeForURL(rc.type)#&parentid=#encodeForURL(rc.parentid)#&topid=#encodeForURL(rc.topid)#&siteid=#encodeForURL(rc.siteid)#&startrow=#encodeForURL(rc.startrow)#&moduleid=#encodeForURL(rc.moduleid)#&compactDisplay=#encodeForURL(rc.compactDisplay)##rc.$.renderCSRFTokens(context=rc.item.getContentHistID() & 'delete',format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput>
+<cfif (not rc.item.getactive() and (rc.perm neq 'none' and application.configBean.getPurgeDrafts() or (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')))) and not isLockedBySomeoneElse><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contenthistid=#rc.item.getContentHistID()#&action=delete&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)##rc.$.renderCSRFTokens(context=rc.item.getContentHistID() & 'delete',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput>
 <cfset rc.item=rc.item.getSource()>
 <cfset started=true>
 </cfloop> 

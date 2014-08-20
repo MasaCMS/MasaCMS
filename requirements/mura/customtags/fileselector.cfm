@@ -23,15 +23,15 @@
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 </cfsilent>
 <cfoutput>
-	<div data-name="#encodeForHTMLAttribute(attributes.name)#" data-property="#encodeForHTMLAttribute(attributes.property)#" data-fileid="#encodeForHTMLAttribute(attributes.bean.getValue(attributes.property))#" data-filetype="#encodeForHTMLAttribute(filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
+	<div data-name="#esapiEncode('html_attr',attributes.name)#" data-property="#esapiEncode('html_attr',attributes.property)#" data-fileid="#esapiEncode('html_attr',attributes.bean.getValue(attributes.property))#" data-filetype="#esapiEncode('html_attr',filetype)#" data-contentid="#attributes.bean.getcontentid()#" data-siteid="#attributes.bean.getSiteID()#" class="mura-file-selector #attributes.class#">
 		<div class="btn-group" data-toggle="buttons-radio">
 			<button type="button" style="display:none">HORRIBLE HACK</button>
 			<button type="button" class="btn mura-file-type-selector active" value="Upload"><i class="icon-upload-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
@@ -42,13 +42,13 @@
 			</cfif>
 		</div>
 
-		<div id="mura-file-upload-#encodeForHTMLAttribute(attributes.name)#" class="mura-file-option mura-file-upload fileTypeOption#encodeForHTMLAttribute(attributes.name)#">
+		<div id="mura-file-upload-#esapiEncode('html_attr',attributes.name)#" class="mura-file-option mura-file-upload fileTypeOption#esapiEncode('html_attr',attributes.name)#">
 			
 			<div class="control-group control-group-nested">
 				<div class="controls">
-					<input name="#encodeForHTMLAttribute(attributes.name)#" type="file" class="mura-file-selector-#encodeForHTMLAttribute(attributes.name)#"
-						data-label="#encodeForHTMLAttribute(attributes.label)#" data-label="#encodeForHTMLAttribute(attributes.required)#" data-validation="#encodeForHTMLAttribute(attributes.validation)#" data-regex="#encodeForHTMLAttribute(attributes.regex)#" data-message="#encodeForHTMLAttribute(attributes.message)#">
-					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#encodeForJavascript(attributes.property)#');"><i class="icon-info-sign"></i></a>
+					<input name="#esapiEncode('html_attr',attributes.name)#" type="file" class="mura-file-selector-#esapiEncode('html_attr',attributes.name)#"
+						data-label="#esapiEncode('html_attr',attributes.label)#" data-label="#esapiEncode('html_attr',attributes.required)#" data-validation="#esapiEncode('html_attr',attributes.validation)#" data-regex="#esapiEncode('html_attr',attributes.regex)#" data-message="#esapiEncode('html_attr',attributes.message)#">
+					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#esapiEncode('javascript',attributes.property)#');"><i class="icon-info-sign"></i></a>
 
 				</div>
 

@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#:</strong> #dollarFormat(rc.placementBean.getCostPerClick())#</li></ul>
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h2>
-<form novalidate="novalidate" action="./?muraAction=cAdvertising.viewReportByPlacement&campaignid=#rc.campaignid#&userid=#encodeForURL(rc.userid)#&placementid=#rc.placementid#&siteid=#encodeForURL(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cAdvertising.viewReportByPlacement&campaignid=#rc.campaignid#&userid=#esapiEncode('url',rc.userid)#&placementid=#rc.placementid#&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
 #application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="text datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#"><input type="button" class="btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
 </form>
 </cfoutput>

@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td class="var-width"><a title="Edit" href="./?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">#rc.rsSites.site#</a></td>
 						<td>
 							<cfif len(rc.rsSites.domain)>
-								#encodeForHTML(rc.rsSites.domain)#
+								#esapiEncode('html',rc.rsSites.domain)#
 								<cfelse>
 								-
 							</cfif>
@@ -187,17 +187,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<li class="edit"><a title="Edit" href="./?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="icon-pencil"></i></a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
 									<cfif application.configBean.getValue('deployMode') eq "bundle">
-										<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #encodeForJavascript(rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
+										<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
 									<cfelse>
-										<li class="deploy"><a href="?muraAction=cSettings.list&action=deploy&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #encodeForJavascript(rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
+										<li class="deploy"><a href="?muraAction=cSettings.list&action=deploy&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #esapiEncode('javascript',rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
 									</cfif>
 								</cfif>
 								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#encodeForJavascript("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="icon-remove-sign"></i></a></li>
+									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid##rc.$.renderCSRFTokens(context=rc.rssites.siteid,format='url')#')});return false;"><i class="icon-remove-sign"></i></a></li>
 									<cfelse>
 									<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 								</cfif>
-								<!---<li class="export"><a title="Export" href="./?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #encodeForJavascript("'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
+								<!---<li class="export"><a title="Export" href="./?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #esapiEncode("javascript","'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
 							</ul></td>
 					</tr>
 					</cfoutput>
@@ -217,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<button type="button" class="btn" onclick="document.form1.submit();"><i class="icon-check"></i>Update Auto Deploy Settings</button>
 				</cfif>
 				<cfoutput>
-					<input type="hidden" name="siteSortBy" value="#encodeForHTMLAttribute(rc.siteSortBy)#" />
+					<input type="hidden" name="siteSortBy" value="#esapiEncode('html_attr',rc.siteSortBy)#" />
 					#rc.$.renderCSRFTokens(context='updatesites',format='form')#
 				</cfoutput>
 			</form>
@@ -286,16 +286,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif rc.rsPlugins.recordcount>
 					<cfoutput query="rc.rsPlugins">
 					<tr>
-						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#encodeForHTML(rc.rsPlugins.name)#</a></td>
-						<td>#encodeForHTML(rc.rsPlugins.directory)#</td>
-						<td>#encodeForHTML(rc.rsPlugins.category)#</td>
-						<td>#encodeForHTML(rc.rsPlugins.version)#</td>
-						<td><a class="alt" href="#encodeForURL(rc.rsPlugins.providerurl)#" target="_blank">#encodeForHTML(rc.rsPlugins.provider)#</a></td>
+						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#esapiEncode('html',rc.rsPlugins.name)#</a></td>
+						<td>#esapiEncode('html',rc.rsPlugins.directory)#</td>
+						<td>#esapiEncode('html',rc.rsPlugins.category)#</td>
+						<td>#esapiEncode('html',rc.rsPlugins.version)#</td>
+						<td><a class="alt" href="#esapiEncode('url',rc.rsPlugins.providerurl)#" target="_blank">#esapiEncode('html',rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
 						<td class="actions"><ul>
 								<li class="edit"><a title="Edit" href="./?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="icon-pencil"></i></a></li>
-								<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('Delete #encodeForJavascript("'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="icon-remove-sign"></i></a></li>
+								<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('Delete #esapiEncode("javascript","'#Ucase(rc.rsPlugins.name)#'")#?',function(){actionModal('./?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID##rc.$.renderCSRFTokens(context=rc.rsplugins.moduleid,format='url')#')});return false;"><i class="icon-remove-sign"></i></a></li>
 							</ul></td>
 					</tr>
 					</cfoutput>
