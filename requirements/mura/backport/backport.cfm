@@ -1,10 +1,7 @@
 <cfscript>
-request.backported=true;
-
 if(!structKeyExists(request,'backports')){
 	request.backports={};	
 }
-
 
 if(!structKeyExists(request.backports,'esapiencode')){
 	request.backports.esapiencode=false;
