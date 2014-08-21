@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 ---><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
-<cfif cgi.http_user_agent contains 'msie'>
 <cfif not isdefined('request.backported')>
 <cfscript>
 	if(structKeyExists(server,'railo')){
@@ -56,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 </cfscript>
 </cfif>
+<cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
 <!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
