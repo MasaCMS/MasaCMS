@@ -1768,26 +1768,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfquery> 
 	
-	<cfquery name="rsPrivateSearch" dbtype="query">
-	select *,0 as supersort from rsPrivateSearch 
-	where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-	
+	<cfif variables.configBean.getDbType() neq 'oracle'>
+		<cfquery name="rsPrivateSearch" dbtype="query">
+		select *,0 as supersort from rsPrivateSearch 
+		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+		
 
-	UNION
+		UNION
 
-	select *,1 as supersort from rsPrivateSearch 
-	where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-	
-	</cfquery>
+		select *,1 as supersort from rsPrivateSearch 
+		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+		
+		</cfquery>
 
-	<cfquery name="rsPrivateSearch" dbtype="query">
-	select * from rsPrivateSearch 
-	order by supersort, priority, title
-	</cfquery>
+		<cfquery name="rsPrivateSearch" dbtype="query">
+		select * from rsPrivateSearch 
+		order by supersort, priority, title
+		</cfquery>
+	</cfif>
 
 	<cfreturn rsPrivateSearch />
 </cffunction>
@@ -2027,31 +2029,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#renderMobileClause()#			
 	</cfquery>
 
-	<cfif variables.configBean.getDbType() eq 'oracle'>
-		<cfset rsPublicSearch=getBean('utility').fixOracleClobs(rsPublicSearch)>
+	<cfif variables.configBean.getDbType() neq 'oracle'>
+		<cfquery name="rsPublicSearch" dbtype="query">
+			select *, 0 as supersort
+			from rsPublicSearch 
+			where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+
+			UNION 
+
+			select *, 1 as supersort
+			from rsPublicSearch 
+			where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+			
+		</cfquery>
+
+		<cfquery name="rsPublicSearch" dbtype="query">
+		select * from rsPublicSearch 
+		order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+		</cfquery>
 	</cfif>
-
-	<cfquery name="rsPublicSearch" dbtype="query">
-		select *, 0 as supersort
-		from rsPublicSearch 
-		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-
-		UNION 
-
-		select *, 1 as supersort
-		from rsPublicSearch 
-		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-		
-	</cfquery>
-
-	<cfquery name="rsPublicSearch" dbtype="query">
-	select * from rsPublicSearch 
-	order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
-	</cfquery>
 	
 	<cfreturn rsPublicSearch />
 </cffunction>
