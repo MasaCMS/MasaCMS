@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif len(trim(renderedEvent))>
 				<div class="divide">
 					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
-					#renderedEvent##renderedEvent#
+					#renderedEvent#
 				</div>
 			</cfif>
 		</cfloop>
