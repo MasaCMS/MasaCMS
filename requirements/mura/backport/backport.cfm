@@ -1,5 +1,5 @@
 <cfscript>
-request.backported=true
+request.backported=true;
 
 if(!structKeyExists(request,'backports')){
 	request.backports={};	
