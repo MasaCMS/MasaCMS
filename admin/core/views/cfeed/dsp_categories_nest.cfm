@@ -49,10 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 <cfparam name="attributes.siteID" default="">
@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="categories<cfif not attributes.nestLevel> checkboxTree</cfif>">
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.feedBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#encodeForHTML(rslist.name)#
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.feedBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#esapiEncode('html',rslist.name)#
 <cfif rslist.hasKids>
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#"  feedBean="#attributes.feedBean#">
 </cfif>

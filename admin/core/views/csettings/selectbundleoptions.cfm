@@ -89,7 +89,7 @@ function checkAll (form) {
 
   <h1>Create Site Bundle</h1>
   <div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#encodeForURL(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+  <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
   </div>
   <p class="alert alert-info">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
   
@@ -131,7 +131,7 @@ function checkAll (form) {
           <cfloop query="rc.rsplugins">
               <label class="checkbox">
                 <input type="checkbox" name="moduleID" value="#rc.rsplugins.moduleID#">
-                #encodeForHTML(rc.rsplugins.name)#</label>
+                #esapiEncode('html',rc.rsplugins.name)#</label>
           </cfloop>
           <cfelse>
           <p class="alert">This site currently has no plugins assigned to it.</p>
@@ -147,7 +147,7 @@ function checkAll (form) {
           You can set the complete server path to the directory where you would like the bundle to be created.  If left blank the bundle file will immediately download from your browser after creation.
         </p>
          <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp</p>
-          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#encodeForJavascript('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp')#');" value="Select this Directory">
+          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#esapiEncode('javascript','#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp')#');" value="Select this Directory">
          
         <input class="text" type="text" name="saveFileDir" id="saveFileDir">
       </div>
@@ -164,6 +164,6 @@ function checkAll (form) {
     </div>
     
     <input type="hidden" name="muraAction" value="cSettings.createBundle"/>
-    <input type="hidden" name="siteID" value="#encodeForHTMLAttribute(rc.siteID)#"/>
+    <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteID)#"/>
   </form>
 </cfoutput>

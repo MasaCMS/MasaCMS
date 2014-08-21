@@ -56,10 +56,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 	<div id="availableObjectParams"
 	data-object="feed_slideshow" 
-	data-name="#encodeForHTMLAttribute('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
+	data-name="#esapiEncode('html_attr','#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
 	data-objectid="#feed.getFeedID()#">
 	
-	<h2>#encodeForHTML(feed.getName())#</h2>
+	<h2>#esapiEncode('html',feed.getName())#</h2>
 	<cfif rc.configuratorMode eq "frontEnd"
 		and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
 		<cfsilent>
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											
 					<cfloop condition="imageSizes.hasNext()">
 						<cfset image=imageSizes.next()>
-						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#encodeForHTML(image.getName())#</option>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
 					</cfloop>
 						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 				</select>
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div id="altNameContainer" class="span6"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-			<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#encodeForHTMLAttribute(feed.getAltName())#" maxlength="50">
+			<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',feed.getAltName())#" maxlength="50">
 			  </div>
 	</div>
 

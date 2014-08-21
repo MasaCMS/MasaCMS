@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset bounces=application.emailManager.getStat(rslist.emailid,'bounce')/>
 </cfsilent>				  
 <tr>
-<td class="title"><a href="./?muraAction=cEmail.edit&siteid=#encodeForURL(rc.siteid)#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
+<td class="title"><a href="./?muraAction=cEmail.edit&siteid=#esapiEncode('url',rc.siteid)#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
 </tr>
 </cfloop>
 <cfelse>

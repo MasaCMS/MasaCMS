@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
 </div>
 
-<input type="hidden" value="#encodeForHTMLAttribute(rc.siteid)#" name="siteID"/>
+<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="muraAction"/>
 </form>
 <table class="mura-table-grid">

@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h2>
 #application.utility.displayErrors(rc.placementBean.getErrors())#
 
-<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cAdvertising.updatePlacement&siteid=#encodeForURL(rc.siteid)#&userid=#encodeForURL(rc.userid)#&campaignid=#encodeForURL(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cAdvertising.updatePlacement&siteid=#esapiEncode('url',rc.siteid)#&userid=#esapiEncode('url',rc.userid)#&campaignid=#esapiEncode('url',rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
 <div class="fieldset">
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</label>
@@ -202,7 +202,7 @@ function uncheckAllHours() {
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="placementID" value="">
 <cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="placementID" value="#rc.placementBean.getplacementID()#"></cfif><input type="hidden" name="action" value="">
 </div>

@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tsessiontracking.userid is null and 
 	urlToken not in (
 		select distinct urlToken from tsessiontracking where siteid='#arguments.siteid#' 
-		and userid is not null
+		and fname is not null
 	)
 	
 	
@@ -269,7 +269,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---</cfif>--->
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -329,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -370,7 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -525,7 +525,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -561,7 +561,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 	<cfif arguments.membersOnly>
-	and tsessiontracking.userID is not null
+	and tsessiontracking.fname is not null
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
@@ -653,7 +653,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where 
 	
 	<cfif onlyMembers>
-	tsessiontracking.userID is not null
+	tsessiontracking.fname is not null
 	and
 	</cfif>
 	

@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h2>
-	<input id="parentSearch" name="parentSearch" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" class="text" maxlength="50"/> <input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50"/> <input type="button" class="btn" onclick="siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" />
 </cfoutput>
 </div>
 <cfif not rc.isNew>
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not parentBean.getIsNew()>
 			<tr class="alt"><cfoutput>  
 	         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
-			  <td class="actions"><input type="radio" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" checked="checked"></td>
+			  <td class="actions"><input type="radio" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" checked="checked"></td>
 			</tr></cfoutput>
 			<cfset hasParentID=true />
 		</cfif>
@@ -98,9 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </table>
 </td></tr></table>
 <cfif not hasParentID>
-	<cfoutput><input type="hidden" id="parentid" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
+	<cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
 </cfif>
 <cfelse>
-<cfoutput><input type="hidden" id="parentid" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#" /></cfoutput>
+<cfoutput><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#" /></cfoutput>
 </cfif>
 

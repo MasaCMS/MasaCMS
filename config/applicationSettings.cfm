@@ -296,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset this.javaSettings = {
 		loadPaths=[evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib'))]
-		, loadColdFusionClassPath=evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',false))
+		, loadColdFusionClassPath=evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',true))
 		, reloadOnChange=evalSetting(properties.getProperty('javaSettingsReloadOnChange',false))
 		, watchInterval=evalSetting(properties.getProperty('javaSettingsWatchInterval',60))
 		, watchExtensions=evalSetting(properties.getProperty('javaSettingsWatchExtensions','jar,class'))

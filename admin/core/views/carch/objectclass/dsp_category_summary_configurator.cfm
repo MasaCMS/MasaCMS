@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="availableObjectParams" 
 	data-object="category_summary" 
-	data-name="#encodeForHTMLAttribute('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
+	data-name="#esapiEncode('html_attr','#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
 	data-objectid="#content.getContentID()#">
 	<div class="fieldset-wrap">
 		<div class="fieldset">

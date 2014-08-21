@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryTop',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div<cfif started> class="divide"</cfif>>
-					<h2><i class="icon-cog"></i> #encodeForHTML(eventMappings[i].pluginName)#</h2>
+					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 				<cfset started=true>
@@ -78,17 +78,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif application.configBean.getSessionHistory() >	
 	<cfif not application.sessionTrackingThrottle>
 	<div id="userActivity"<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="./?muraAction=cDashboard.sessionSearch&siteid=#encodeForURL(rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
+	<h2><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="./?muraAction=cDashboard.sessionSearch&siteid=#esapiEncode('url',rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
 	<span id="userActivityData"></span>
 	</div>
-	<script type="text/javascript">dashboardManager.loadUserActivity('#encodeForJavascript(rc.siteid)#');</script>
+	<script type="text/javascript">dashboardManager.loadUserActivity('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 
 	<div id="popularContent"<cfif started> class="divide"</cfif>>
 	<h2><i class="icon-thumbs-up"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 	<span id="popularContentData"></span>
 	</div>
-	<script type="text/javascript">dashboardManager.loadPopularContent('#encodeForJavascript(rc.siteid)#');</script>
+	<script type="text/javascript">dashboardManager.loadPopularContent('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 	<cfelse>
 	<div id="userActivity"<cfif started> class="divide"</cfif>>
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h2><i class="icon-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cComments.default&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewall")#)</a></span></h2>
 	<span id="recentCommentsData"></span>
 	</div>
-	<script type="text/javascript">dashboardManager.loadRecentComments('#encodeForJavascript(rc.siteid)#');</script>
+	<script type="text/javascript">dashboardManager.loadRecentComments('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 	</cfif>
 
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h2><i class="icon-list"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
 	<span id="recentFormActivityData"></span>
 	</div>
-	<script type="text/javascript">dashboardManager.loadFormActivity('#encodeForJavascript(rc.siteid)#');</script>
+	<script type="text/javascript">dashboardManager.loadFormActivity('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 	</cfif>
 
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<span id="emailBroadcastsData"></span>
 	</div>
 
-	<script type="text/javascript">dashboardManager.loadEmailActivity('#encodeForJavascript(rc.siteid)#');</script>
+	<script type="text/javascript">dashboardManager.loadEmailActivity('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 	</cfif>
 
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div<cfif started> class="divide"</cfif>>
-					<h2><i class="icon-cog"></i> #encodeForHTML(eventMappings[i].pluginName)#</h2>
+					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 				<cfset started=true>
@@ -154,15 +154,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h2> --->
 	<!--- <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</p> --->
 	<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-		<!--- <input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" class="search-query" placeholder="Enter Keywords" />
+		<!--- <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="search-query" placeholder="Enter Keywords" />
 		<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
 		<div class="input-append">
-		    <input name="keywords" value="#encodeForHTMLAttribute(session.keywords)#" type="text" placeholder="Enter Keywords" />
-		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+		    <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" placeholder="Enter Keywords" />
+		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="icon-search"></i></button>
 		</div>
 		<input type="hidden" name="muraAction" value="cArch.list">
 		<input type="hidden" name="activetab" value="1">
-		<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
+		<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 		<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 	</form>
 	</div> 
@@ -173,8 +173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarTop',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div class="divide">
-					<h2><i class="icon-cog"></i> #encodeForHTML(eventMappings[i].pluginName)#</h2>
-					#renderedEvent##renderedEvent#
+					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
+					#renderedEvent#
 				</div>
 			</cfif>
 		</cfloop>
@@ -206,8 +206,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rc.siteid)/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		<cfif verdict neq 'none'>
-		<li><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rslist.moduleid#">#encodeForHTML(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #encodeForHTML(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
-		<cfelse><li>#encodeForHTML(rslist.menuTitle)# #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #encodeForHTML(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
+		<li><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rslist.moduleid#">#esapiEncode('html',rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #esapiEncode('html',rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
+		<cfelse><li>#esapiEncode('html',rslist.menuTitle)# #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #esapiEncode('html',rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
 		</cfif>
 		</cfloop>
 	</ul>
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarBottom',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div class="divide">
-					<h2><i class="icon-cog"></i> #encodeForHTML(eventMappings[i].pluginName)#</h2>
+					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 			</cfif>

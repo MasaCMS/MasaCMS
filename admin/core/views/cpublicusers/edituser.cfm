@@ -71,11 +71,11 @@ select * from rsSubTypes where subType <> 'Default'
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 </cfsilent>
-<cfoutput><form novalidate="novalidate" action="./?muraAction=cPublicUsers.update&userid=#encodeForURL(rc.userBean.getUserID())#&routeid=#rc.routeid#&siteid=#encodeForURL(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput><form novalidate="novalidate" action="./?muraAction=cPublicUsers.update&userid=#esapiEncode('url',rc.userBean.getUserID())#&routeid=#rc.routeid#&siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 	
 	<cfif len(rc.userBean.getUsername())>
@@ -86,7 +86,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfif strikes.isBlocked()>
 			<p class="alert alert-error">
 			#application.rbFactory.getKeyValue(session.rb,'user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
-			<a href="?muraAction=cPublicUsers.edituser&userid=#encodeForURL(rc.userid)#&type=2&siteid=#encodeForURL(rc.siteid)#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
+			<a href="?muraAction=cPublicUsers.edituser&userid=#esapiEncode('url',rc.userid)#&type=2&siteid=#esapiEncode('url',rc.siteid)#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
 			</p>
 		</cfif>
 	</cfif>
@@ -119,14 +119,14 @@ select * from rsSubTypes where subType <> 'Default'
 			<div class="span6">
 		    	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
 			    <div class="controls">
-			    	<input id="fname" name="fname" type="text" value="#encodeForHTMLAttribute(rc.userBean.getfname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#" class="span12">
+			    	<input id="fname" name="fname" type="text" value="#esapiEncode('html_attr',rc.userBean.getfname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#" class="span12">
 			  	</div>
 		    </div>
 			
 			<div class="span6">
 			    <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
 			    <div class="controls">
-			      	<input id="lname" name="lname" type="text" value="#encodeForHTMLAttribute(rc.userBean.getlname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12">
+			      	<input id="lname" name="lname" type="text" value="#esapiEncode('html_attr',rc.userBean.getlname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12">
 			  	</div>
 		    </div>
 	    </div>
@@ -134,31 +134,31 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="control-group">
 			<div class="span6">
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
-		      <div class="controls"><input id="organization" name="company" type="text" value="#encodeForHTMLAttribute(rc.userBean.getcompany())#"  class="span12"></div>
+		      <div class="controls"><input id="organization" name="company" type="text" value="#esapiEncode('html_attr',rc.userBean.getcompany())#"  class="span12"></div>
 		    </div>
 				
 			<div class="span6">
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
-		      <div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#encodeForHTMLAttribute(rc.userBean.getjobtitle())#"  class="span12"></div>
+		      <div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html_attr',rc.userBean.getjobtitle())#"  class="span12"></div>
 		    </div>
 		</div>
 		
 		<div class="control-group">
 			<div class="span6">
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
-		      <div class="controls"><input id="email" name="email" type="text" value="#encodeForHTMLAttribute(rc.userBean.getemail())#" class="span12" required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
+		      <div class="controls"><input id="email" name="email" type="text" value="#esapiEncode('html_attr',rc.userBean.getemail())#" class="span12" required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
 		    </div>
 				
 			<div class="span6">
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
-		      <div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#encodeForHTMLAttribute(rc.userBean.getMobilePhone())#" class="span12"></div>
+		      <div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html_attr',rc.userBean.getMobilePhone())#" class="span12"></div>
 		    </div>
 	    </div>
 			
 		<div class="control-group">
 			<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.username')#*</label>
-	      <div class="controls"><input id="username"  name="usernameNoCache" type="text" value="#encodeForHTMLAttribute(rc.userBean.getusername())#" class="span12" required="true" message="The 'Username' field is required" autocomplete="off"></div>
+	      <div class="controls"><input id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html_attr',rc.userBean.getusername())#" class="span12" required="true" message="The 'Username' field is required" autocomplete="off"></div>
 	    	</div>
 		</div>
 			
@@ -217,71 +217,71 @@ select * from rsSubTypes where subType <> 'Default'
 	<div class="control-group">
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
-	      <div class="controls"><input id="address1" name="address1" type="text" value="#encodeForHTMLAttribute(rc.address1)#"  class="span12"></div>
+	      <div class="controls"><input id="address1" name="address1" type="text" value="#esapiEncode('html_attr',rc.address1)#"  class="span12"></div>
 	    </div>
 			
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
-	      <div class="controls"><input id="address2" name="address2" type="text" value="#encodeForHTMLAttribute(rc.address2)#"  class="span12"></div>
+	      <div class="controls"><input id="address2" name="address2" type="text" value="#esapiEncode('html_attr',rc.address2)#"  class="span12"></div>
 	    </div>
     </div>		
 
 	<div class="control-group">
 		<div class="span5">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
-	      <div class="controls"><input id="city" name="city" type="text" value="#encodeForHTMLAttribute(rc.city)#" class="span12"></div>
+	      <div class="controls"><input id="city" name="city" type="text" value="#esapiEncode('html_attr',rc.city)#" class="span12"></div>
 	    </div>
 			
 		<div class="span1">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
-	      <div class="controls"><input id="state" name="state" type="text" value="#encodeForHTMLAttribute(rc.state)#" class="span12"></div>
+	      <div class="controls"><input id="state" name="state" type="text" value="#esapiEncode('html_attr',rc.state)#" class="span12"></div>
 	    </div>
 		
 		<div class="span2">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
-	      <div class="controls"><input id="zip" name="zip" type="text" value="#encodeForHTMLAttribute(rc.zip)#" class="span12"></div>
+	      <div class="controls"><input id="zip" name="zip" type="text" value="#esapiEncode('html_attr',rc.zip)#" class="span12"></div>
 	    </div>
 		
 		<div class="span4">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
-	      <div class="controls"><input id="country" name="country" type="text" value="#encodeForHTMLAttribute(rc.country)#" class="span12"></div>
+	      <div class="controls"><input id="country" name="country" type="text" value="#esapiEncode('html_attr',rc.country)#" class="span12"></div>
 	    </div>
     </div>
 		
 	<div class="control-group">
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
-	      <div class="controls"><input id="phone" name="phone" type="text" value="#encodeForHTMLAttribute(rc.phone)#" class="span12"></div>
+	      <div class="controls"><input id="phone" name="phone" type="text" value="#esapiEncode('html_attr',rc.phone)#" class="span12"></div>
 	    </div>	
 			
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
-	      <div class="controls"><input id="fax" name="fax" type="text" value="#encodeForHTMLAttribute(rc.fax)#" class="span12"></div>
+	      <div class="controls"><input id="fax" name="fax" type="text" value="#esapiEncode('html_attr',rc.fax)#" class="span12"></div>
 	    </div> 
 	</div>		
 	
 	<div class="control-group">
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
-	      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#encodeForHTMLAttribute(rc.addressURL)#" class="span12"></div>
+	      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#esapiEncode('html_attr',rc.addressURL)#" class="span12"></div>
 	    </div>
 			
 		<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-	      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#encodeForHTMLAttribute(rc.addressEmail)#" class="span12"></div>
+	      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#esapiEncode('html_attr',rc.addressEmail)#" class="span12"></div>
 	    </div>
 	</div>
 		
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
-      <div class="controls"><textarea id="hours" name="hours" rows="6" class="span6" >#encodeForHTML(rc.hours)#</textarea></div>
+      <div class="controls"><textarea id="hours" name="hours" rows="6" class="span6" >#esapiEncode('html',rc.hours)#</textarea></div>
     </div>
 
 	<input type="hidden" name="isPrimary" value="1" />
 		
 	<cfelse>
 		<div class="control-group">
-			<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cPublicUsers.editAddress&userid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#&routeID=#rc.routeid#&addressID="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
+			<ul class="navTask nav nav-pills"><li><a href="./?muraAction=cPublicUsers.editAddress&userid=#esapiEncode('url',rc.userid)#&siteid=#esapiEncode('url',rc.siteid)#&routeID=#rc.routeid#&addressID="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul>
 			<cfset rsAddresses=rc.userBean.getAddresses()>
 		
 			<cfif rsAddresses.recordcount>
@@ -293,17 +293,17 @@ select * from rsSubTypes where subType <> 'Default'
 					<input type="radio" name="primaryAddressID" value="#rsAddresses.addressID#" <cfif rsAddresses.isPrimary eq 1 or rsAddresses.recordcount eq 1>checked</cfif>>
 					</td>
 					<td class="var-width">
-					<cfif rsAddresses.addressName neq ''><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editAddress&userid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#&routeID=#encodeForURL(rc.routeid)#&addressID=#rsAddresses.addressID#">#rsAddresses.addressName#</a><br /></cfif>
-					<cfif rsAddresses.address1 neq ''>#encodeForHTML(rsAddresses.address1)#<br /></cfif>
-					<cfif rsAddresses.address2 neq ''>#encodeForHTML(rsAddresses.address2)#<br /></cfif>
-					<cfif rsAddresses.city neq ''>#encodeForHTML(rsAddresses.city)# </cfif><cfif rsAddresses.state neq ''><cfif rsaddresses.city neq ''>,</cfif> #encodeForHTML(rsAddresses.state)# </cfif><cfif rsaddresses.zip neq ''> #encodeForHTML(rsAddresses.zip)#</cfif><cfif rsAddresses.city neq '' or rsAddresses.state neq '' or rsAddresses.zip neq ''><br/></cfif>
-					<cfif rsAddresses.phone neq ''>#application.rbFactory.getKeyValue(session.rb,'user.phone')#: #encodeForHTML(rsAddresses.phone)#<br/></cfif>
-					<cfif rsAddresses.fax neq ''>#application.rbFactory.getKeyValue(session.rb,'user.fax')#: #encodeForHTML(rsAddresses.fax)#<br/></cfif>
-					<cfif rsAddresses.addressURL neq ''>#application.rbFactory.getKeyValue(session.rb,'user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#encodeForHTML(rsAddresses.addressURL)#</a><br/></cfif>
-					<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#encodeForHTML(rsAddresses.addressEmail)#</a></cfif>
+					<cfif rsAddresses.addressName neq ''><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editAddress&userid=#esapiEncode('url',rc.userid)#&siteid=#esapiEncode('url',rc.siteid)#&routeID=#esapiEncode('url',rc.routeid)#&addressID=#rsAddresses.addressID#">#rsAddresses.addressName#</a><br /></cfif>
+					<cfif rsAddresses.address1 neq ''>#esapiEncode('html',rsAddresses.address1)#<br /></cfif>
+					<cfif rsAddresses.address2 neq ''>#esapiEncode('html',rsAddresses.address2)#<br /></cfif>
+					<cfif rsAddresses.city neq ''>#esapiEncode('html',rsAddresses.city)# </cfif><cfif rsAddresses.state neq ''><cfif rsaddresses.city neq ''>,</cfif> #esapiEncode('html',rsAddresses.state)# </cfif><cfif rsaddresses.zip neq ''> #esapiEncode('html',rsAddresses.zip)#</cfif><cfif rsAddresses.city neq '' or rsAddresses.state neq '' or rsAddresses.zip neq ''><br/></cfif>
+					<cfif rsAddresses.phone neq ''>#application.rbFactory.getKeyValue(session.rb,'user.phone')#: #esapiEncode('html',rsAddresses.phone)#<br/></cfif>
+					<cfif rsAddresses.fax neq ''>#application.rbFactory.getKeyValue(session.rb,'user.fax')#: #esapiEncode('html',rsAddresses.fax)#<br/></cfif>
+					<cfif rsAddresses.addressURL neq ''>#application.rbFactory.getKeyValue(session.rb,'user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#esapiEncode('html',rsAddresses.addressURL)#</a><br/></cfif>
+					<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#esapiEncode('html',rsAddresses.addressEmail)#</a></cfif>
 					</td>
-					<td nowrap class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editAddress&userid=#encodeForURL(rc.userid)#&siteid=#encodeForURL(rc.siteid)#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#"><i class="icon-pencil"></i></a></li>
-					<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cPublicUsers.updateAddress&userid=#encodeForURL(rc.userid)#&action=delete&siteid=#encodeForURL(rc.siteid)#&routeID=#encodeForURL(rc.routeid)#&addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
+					<td nowrap class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPublicUsers.editAddress&userid=#esapiEncode('url',rc.userid)#&siteid=#esapiEncode('url',rc.siteid)#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#"><i class="icon-pencil"></i></a></li>
+					<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="./?muraAction=cPublicUsers.updateAddress&userid=#esapiEncode('url',rc.userid)#&action=delete&siteid=#esapiEncode('url',rc.siteid)#&routeID=#esapiEncode('url',rc.routeid)#&addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
 				</tr>
 				</cfloop>
 				</table>
@@ -408,11 +408,11 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="control-group">
 		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tags')#</label>
-     	 <div class="controls"><input id="tags" name="tags" type="text" value="#encodeForHTMLAttribute(rc.userBean.getTags())#" class="span12"></div>
+     	 <div class="controls"><input id="tags" name="tags" type="text" value="#esapiEncode('html_attr',rc.userBean.getTags())#" class="span12"></div>
      	 </div>
 		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.remoteid')#</label>
-      <div class="controls"><input id="remoteID" name="remoteID" type="text" value="#encodeForHTMLAttribute(rc.userBean.getRemoteID())#"  class="span12"></div>
+      <div class="controls"><input id="remoteID" name="remoteID" type="text" value="#esapiEncode('html_attr',rc.userBean.getRemoteID())#"  class="span12"></div>
 		</div>
     </div>
 </div>		
@@ -451,7 +451,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfif rc.userid eq ''>
 		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
     <cfelse>
-        <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
+        <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
 		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 	</cfif>
 </div>
@@ -464,7 +464,7 @@ select * from rsSubTypes where subType <> 'Default'
 <input type="hidden" name="groupid" value="">
 <input type="hidden" name="ContactForm" value="">
 <input type="hidden" name="isPublic" value="1">
-<input type="hidden" name="returnurl" value="#encodeForHTMLAttribute(rc.returnurl)#">
+<input type="hidden" name="returnurl" value="#esapiEncode('html_attr',rc.returnurl)#">
 <cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>		
 #rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
 </cfoutput>

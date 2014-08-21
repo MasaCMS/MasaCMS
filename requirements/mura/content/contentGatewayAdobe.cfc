@@ -290,12 +290,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isValid("UUID",arguments.contentID)>
 			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
-			and active=1
+			#getBean('contentDAO').renderActiveClause("tcontent",arguments.siteID)#
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfelse>
-			active=1
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+			#renderActiveClause("tcontent",arguments.siteID)#
 		</cfif>
 	</cfquery>
 	<cfreturn rsHistIDFromContentID.contentHistID>
@@ -1768,26 +1768,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfquery> 
 	
-	<cfquery name="rsPrivateSearch" dbtype="query">
-	select *,0 as supersort from rsPrivateSearch 
-	where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-	
+	<cfif variables.configBean.getDbType() neq 'oracle'>
+		<cfquery name="rsPrivateSearch" dbtype="query">
+		select *,0 as supersort from rsPrivateSearch 
+		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+		
 
-	UNION
+		UNION
 
-	select *,1 as supersort from rsPrivateSearch 
-	where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-	
-	</cfquery>
+		select *,1 as supersort from rsPrivateSearch 
+		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+		
+		</cfquery>
 
-	<cfquery name="rsPrivateSearch" dbtype="query">
-	select * from rsPrivateSearch 
-	order by supersort, priority, title
-	</cfquery>
+		<cfquery name="rsPrivateSearch" dbtype="query">
+		select * from rsPrivateSearch 
+		order by supersort, priority, title
+		</cfquery>
+	</cfif>
 
 	<cfreturn rsPrivateSearch />
 </cffunction>
@@ -2027,31 +2029,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#renderMobileClause()#			
 	</cfquery>
 
-	<cfif variables.configBean.getDbType() eq 'oracle'>
-		<cfset rsPublicSearch=getBean('utility').fixOracleClobs(rsPublicSearch)>
+	<cfif variables.configBean.getDbType() neq 'oracle'>
+		<cfquery name="rsPublicSearch" dbtype="query">
+			select *, 0 as supersort
+			from rsPublicSearch 
+			where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+
+			UNION 
+
+			select *, 1 as supersort
+			from rsPublicSearch 
+			where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+				)
+			
+		</cfquery>
+
+		<cfquery name="rsPublicSearch" dbtype="query">
+		select * from rsPublicSearch 
+		order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+		</cfquery>
 	</cfif>
-
-	<cfquery name="rsPublicSearch" dbtype="query">
-		select *, 0 as supersort
-		from rsPublicSearch 
-		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-
-		UNION 
-
-		select *, 1 as supersort
-		from rsPublicSearch 
-		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-			)
-		
-	</cfquery>
-
-	<cfquery name="rsPublicSearch" dbtype="query">
-	select * from rsPublicSearch 
-	order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
-	</cfquery>
 	
 	<cfreturn rsPublicSearch />
 </cffunction>
@@ -2604,31 +2604,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 	<cfset var previewData="">
  	<cfoutput>
-			<cfif request.muraChangesetPreview and isDefined('previewData.contentIDList')>
-				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif len(previewData.contentIDList)>
-				and (
-						(#arguments.table#.active = 1
-						and #arguments.table#.Approved = 1
-						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-						)
-						
-						or 
-						
-						(
-						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-						)			
-					)
-				<cfelse>
-					and #arguments.table#.active = 1
+		<cfif request.muraChangesetPreview>
+			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+			<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1
 					and #arguments.table#.Approved = 1
-				</cfif>	
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)			
+				)
 			<cfelse>
 				and #arguments.table#.active = 1
 				and #arguments.table#.Approved = 1
 			</cfif>	
+		<cfelse>
+			and #arguments.table#.active = 1
+			and #arguments.table#.Approved = 1
+		</cfif>	
 	</cfoutput>
 </cffunction>
+
 
 <cffunction name="renderMenuTypeClause" output="true">
 <cfargument name="menuType">

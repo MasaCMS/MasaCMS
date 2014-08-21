@@ -6,7 +6,7 @@
       	<div class="control-group">
             <label class="control-label">Name</label>
             <div class="controls">
-                <input id="custom-image-name" type="text" class="span12" value="#encodeForHTMLAttribute(rc.customImage.getName())#"  onchange="removePunctuation(this);" maxlength="50"/>
+                <input id="custom-image-name" type="text" class="span12" value="#esapiEncode('html_attr',rc.customImage.getName())#"  onchange="removePunctuation(this);" maxlength="50"/>
              </div>
         </div>
          <div class="control-group">

@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
@@ -61,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.action eq "add">
 <li>
-<a href="javascript:;" id="#encodeForHTMLAttribute(attributes.formName)#open" class="btn" onclick="$('###encodeForHTML(attributes.formName)#container').slideDown();this.style.display='none';$('###encodeForHTML(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
-<li><a href="javascript:;" class="btn" style="display:none;" id="#encodeForHTMLAttribute(attributes.formName)#close" onclick="$('###encodeForHTML(attributes.formName)#container').slideUp();this.style.display='none';$('###encodeForHTML(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
+<a href="javascript:;" id="#esapiEncode('html_attr',attributes.formName)#open" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideDown();this.style.display='none';$('###esapiEncode('html',attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#close" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();this.style.display='none';$('###esapiEncode('html',attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
 <cfif isDefined('attributes.attributesArray') and ArrayLen(attributes.attributesArray)>
 <li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
 <li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
@@ -71,9 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfif attributes.action eq "add">
-<div style="display:none;" id="#encodeForHTMLAttribute(attributes.formName)#container" class="attr-add">
+<div style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#container" class="attr-add">
 </cfif>
-<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#encodeForHTMLAttribute(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
+<form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <div class="fieldset">
 <cfif attributes.action neq "add">
 <div class="control-group">
@@ -88,13 +88,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Name (No spaces)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="name" required="true" value="#encodeForHTMLAttribute(attributes.attributeBean.getName())#" />
+		<input class="span12" type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Label</label>
 	<div class="controls">
-		<input class="span12" type="text" name="label" value="#encodeForHTMLAttribute(attributes.attributeBean.getLabel())#" />
+		<input class="span12" type="text" name="label" value="#esapiEncode('html_attr',attributes.attributeBean.getLabel())#" />
 	</div>
 </div>
 <div class="span4">
@@ -113,13 +113,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Default Value</label>
 	<div class="controls">
-		<input class="span12" type="text" name="defaultValue"  value="#encodeForHTMLAttribute(attributes.attributeBean.getDefaultvalue())#" />
+		<input class="span12" type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Tooltip</label>
 	<div class="controls">
-		<input class="span12" type="text" name="hint" value="#encodeForHTMLAttribute(attributes.attributeBean.getHint())#" />
+		<input class="span12" type="text" name="hint" value="#esapiEncode('html_attr',attributes.attributeBean.getHint())#" />
 	</div>
 </div>
 <div class="span4">
@@ -153,13 +153,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Regex</label>
 	<div class="controls">
-		<input class="span12" type="text" name="regex"  value="#encodeForHTMLAttribute(attributes.attributeBean.getRegex())#" />
+		<input class="span12" type="text" name="regex"  value="#esapiEncode('html_attr',attributes.attributeBean.getRegex())#" />
 	</div>
 </div>
 <div class="span4">
 	<label class="control-label">Validation Message</label>
 	<div class="controls">
-		<input class="span12" type="text" name="message"  value="#encodeForHTMLAttribute(attributes.attributeBean.getMessage())#" />
+		<input class="span12" type="text" name="message"  value="#esapiEncode('html_attr',attributes.attributeBean.getMessage())#" />
 	</div>
 </div>
 </div>
@@ -170,13 +170,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">Option List ("^" Delimiter)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="optionList"  value="#encodeForHTMLAttribute(attributes.attributeBean.getOptionList())#" />
+		<input class="span12" type="text" name="optionList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionList())#" />
 	</div>
 </div>
 <div class="span8">
 	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
 	<div class="controls">
-		<input class="span12" type="text" name="optionLabelList"  value="#encodeForHTMLAttribute(attributes.attributeBean.getOptionLabelList())#" />
+		<input class="span12" type="text" name="optionLabelList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionLabelList())#" />
 	</div>
 </div>
 </div>
@@ -184,21 +184,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="form-actions">
 <cfif attributes.action eq "add">
-	<input type="button" class="btn" onclick="submitForm(document.forms.#encodeForHTML(attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="btn" onclick="$('###encodeForHTML(attributes.formName)#container').slideUp();$('###encodeForHTML(attributes.formName)#close').hide();$('###encodeForHTML(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');" value="Add" />
+	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-	<input type="button" class="btn" onclick="submitForm(document.forms.#encodeForHTML(attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="btn" onclick="submitForm(document.forms.#encodeForHTML(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="btn" onclick="$('###encodeForHTML(attributes.formName)#container').slideUp();$('###encodeForHTML(attributes.formName)#close').hide();$('###encodeForHTML(attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'update');" value="Update" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
+	<input type="button" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();$('###esapiEncode('html',attributes.formName)#close').hide();$('###esapiEncode('html',attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
 </cfif>
 </div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>
 <input name="muraAction" type="hidden" value="cExtend.updateAttribute"/>
-<input name="action" type="hidden" value="#encodeForHTMLAttribute(attributes.action)#"/>
-<input name="extendSetID" type="hidden" value="#encodeForHTMLAttribute(attributes.attributeBean.getExtendSetID())#"/>
-<input name="subTypeID" type="hidden" value="#encodeForHTMLAttribute(attributes.subTypeID)#"/>
+<input name="action" type="hidden" value="#esapiEncode('html_attr',attributes.action)#"/>
+<input name="extendSetID" type="hidden" value="#esapiEncode('html_attr',attributes.attributeBean.getExtendSetID())#"/>
+<input name="subTypeID" type="hidden" value="#esapiEncode('html_attr',attributes.subTypeID)#"/>
 <input name="attributeID" type="hidden" value="#attributes.attributeBean.getAttributeID()#"/>
 #attributes.muraScope.renderCSRFTokens(context=attributes.attributeBean.getAttributeID(),format="form")#
 </form><cfif attributes.action eq "add"></div></cfif>

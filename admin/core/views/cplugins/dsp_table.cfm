@@ -61,11 +61,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rscategorylist">
 	<cfset started=true>
 	<tr>
-	<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#encodeForHTML(rscategorylist.name)#</a></td>
-	<td>#encodeForHTML(rscategorylist.directory)#</td>
-	<td>#encodeForHTML(rscategorylist.category)#</td>
-	<td>#encodeForHTML(rscategorylist.version)#</td>
-	<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#encodeForHTML(rscategorylist.provider)#</a></td>
+	<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#esapiEncode('html',rscategorylist.name)#</a></td>
+	<td>#esapiEncode('html',rscategorylist.directory)#</td>
+	<td>#esapiEncode('html',rscategorylist.category)#</td>
+	<td>#esapiEncode('html',rscategorylist.version)#</td>
+	<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#esapiEncode('html',rscategorylist.provider)#</a></td>
 	<td>#rscategorylist.pluginID#</td>
 	<td class="actions">
 	<ul>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="edit disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 	</cfif>
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#encodeForURL(rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="icon-group"></i></a></li>
+		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="icon-group"></i></a></li>
 	<cfelse>
 		<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 	</cfif>

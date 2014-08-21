@@ -58,8 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h1>Class Extension Overview</h1>
 <cfoutput>
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#encodeForURL(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-		<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i> Edit Class Extension</a>
+		<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
+		<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i> Edit Class Extension</a>
 		<cfif showRelatedContentSets>
 		
 		<div class="btn-group">
@@ -67,12 +67,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	         <i class="icon-plus-sign"></i> Add <span class="caret"></span>
 	       </a>
 	       <ul class="dropdown-menu">
-	          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#&extendSetID=">Add Attribute Set</a></li>
-	          <li><a href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#&relatedContentSetID=">Add Related Content Set</a></li>
+	          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">Add Attribute Set</a></li>
+	          <li><a href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&relatedContentSetID=">Add Related Content Set</a></li>
 	       </ul>
 	   </div>
 		<cfelse>
-			<a class="btn" href="./?muraAction=cExtend.editSet&subTypeID=#encodeForURL(rc.subTypeID)#&siteid=#encodeForURL(rc.siteid)#&extendSetID="><i class="icon-plus-sign"></i> Add Attribute Set</a>
+			<a class="btn" href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID="><i class="icon-plus-sign"></i> Add Attribute Set</a>
 		</cfif>
 		</div>
 	</div>
@@ -90,8 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<span id="handle#s#" class="handle" style="display:none;"><i class="icon-move"></i></span>
 					<p>#extendSetBean.getName()#</p>
 					<div class="btns">
-						<a title="Edit" href="./?muraAction=cExtend.editAttributes&subTypeID=#encodeForURL(rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a>
-						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#encodeForURL(rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#encodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #encodeForJavascript("'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+						<a title="Edit" href="./?muraAction=cExtend.editAttributes&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
+						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 					</div>
 				</li>
 			</cfoutput>
@@ -114,8 +114,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<span id="handleRelated#s#" class="handleRelated" style="display:none;"><i class="icon-move"></i></span>
 						<p>#rcsBean.getName()#</p>
 						<div class="btns">
-							<a title="Edit" href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#encodeForURL(rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#encodeForURL(rc.siteid)#"><i class="icon-pencil"></i></a>
-							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#encodeForURL(rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#encodeForURL(rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #encodeForJavascript("'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+							<a title="Edit" href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
+							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 						</div>
 					</li>
 				</cfoutput>

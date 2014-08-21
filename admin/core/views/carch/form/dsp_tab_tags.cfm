@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 						<cfset args = ArrayNew(1)>
 					    <cfset args[1] = tags.tagcount>
-					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#encodeForHTML(tags.tag)#</a></li>
+					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#esapiEncode('html',tags.tag)#</a></li>
 					</cfloop>
 				</ol>
 			</div>
@@ -100,8 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(rc.contentBean.getTags())>
 			<cfloop list="#rc.contentBean.getTags()#" index="i">
 				<span class="tag">
-				#encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-				<input name="tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
+				#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+				<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 				</span>
 			</cfloop>
 		</cfif>
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 								<cfset args = ArrayNew(1)>
 							    <cfset args[1] = tags.tagcount>
-							</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#encodeForHTML(tags.tag)#</a></li>
+							</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#esapiEncode('html',tags.tag)#</a></li>
 							</cfloop>
 						</ol>
 					</div>
@@ -171,8 +171,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   		<cfif len(rc.contentBean.getvalue('#g#tags'))>
 					<cfloop list="#rc.contentBean.getvalue('#g#tags')#" index="i">
 						<span class="tag">
-						#encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-						<input name="#g#tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
+						#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+						<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 						</span>
 					</cfloop>
 				</cfif>

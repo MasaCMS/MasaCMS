@@ -59,8 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& rc.rsForms.menutitle>
 
-					<option title="#encodeForHTMLAttribute(title)#" value="form~#encodeForHTML(title)#~#rc.rsForms.contentid#">
-						#encodeForHTML(title)#
+					<option title="#esapiEncode('html_attr',title)#" value="form~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+						#esapiEncode('html',title)#
 					</option>
 
 					<cfif rc.rsForms.responseChart neq 1>
@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							& ' - ' 
 							& rc.rsForms.menutitle>
 							
-						<option title="#encodeForHTMLAttribute(title)#" value="form_responses~#encodeForHTML(title)#~#rc.rsForms.contentid#">
-							#encodeForHTML(title)#
+						<option title="#esapiEncode('html_attr',title)#" value="form_responses~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+							#esapiEncode('html',title)#
 						</option>
 					</cfif>
 				</cfloop>

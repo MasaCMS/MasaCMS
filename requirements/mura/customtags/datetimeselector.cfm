@@ -26,10 +26,10 @@
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 
@@ -37,14 +37,14 @@
 </cfsilent>
 
 <cfoutput>
-<input type="text" class="datepicker #encodeForHTMLAttribute(attributes.dateclass)# span3 mura-datepicker#encodeForHTMLAttribute(attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12"/><cfif attributes.break><br/></cfif>
+<input type="text" class="datepicker #esapiEncode('html_attr',attributes.dateclass)# span3 mura-datepicker#esapiEncode('html_attr',attributes.name)#" value="#LSDateFormat(attributes.datetime,session.dateKeyFormat)#" maxlength="12"/><cfif attributes.break><br/></cfif>
 <cf_timeselector attributecollection="#attributes#">
-<input type="hidden" id="mura-#encodeForHTMLAttribute(attributes.name)#" name="#encodeForHTMLAttribute(attributes.name)#" value="#encodeForHTMLAttribute(attributes.datetime)#" data-required="#encodeForHTMLAttribute(attributes.required)#" data-required="#encodeForHTMLAttribute(attributes.message)#"/>
+<input type="hidden" id="mura-#esapiEncode('html_attr',attributes.name)#" name="#esapiEncode('html_attr',attributes.name)#" value="#esapiEncode('html_attr',attributes.datetime)#" data-required="#esapiEncode('html_attr',attributes.required)#" data-required="#esapiEncode('html_attr',attributes.message)#"/>
 <script>
 	$(function(){
-		$('.mura-datepicker#encodeForJavascript(attributes.name)#').change(
+		$('.mura-datepicker#esapiEncode('javascript',attributes.name)#').change(
 			function(){
-				parseDateTimeSelector('#encodeForJavascript(attributes.name)#');
+				parseDateTimeSelector('#esapiEncode('javascript',attributes.name)#');
 			}
 		);
 	});

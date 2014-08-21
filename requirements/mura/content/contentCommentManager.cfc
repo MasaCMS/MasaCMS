@@ -347,9 +347,9 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 					} else {
 						elemChecked = "";
 					}
-					o &= '<input type="checkbox" name="#encodeForHTMLAttribute(arguments.elementName)#" class="checkbox" value="#encodeForHTMLAttribute(rsList.categoryID[row])#"#elemChecked#/> ';
+					o &= '<input type="checkbox" name="#esapiEncode('html_attr',arguments.elementName)#" class="checkbox" value="#esapiEncode('html_attr',rsList.categoryID[row])#"#elemChecked#/> ';
 				}
-				o &= encodeForHTML(rsList.name[row]);
+				o &= esapiEncode('html',rsList.name[row]);
 				if (rsList.hasKids[row]) {
 					o &= dspCategoriesNestSelect(arguments.siteID, rsList.categoryID[row], arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName);
 				}
