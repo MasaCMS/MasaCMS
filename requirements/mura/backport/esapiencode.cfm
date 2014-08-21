@@ -14,10 +14,6 @@
 			if(isObject(request.esapiencoder)){
 				var encoder = '';
 				var encodedString = '';
-				
-				if(!isDefined('request.esapiencoder')){
-					request.esapiencoder=CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
-				}
 
 				encoder = request.esapiencoder;
 
