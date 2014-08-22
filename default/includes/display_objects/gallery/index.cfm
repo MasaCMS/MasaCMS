@@ -192,7 +192,7 @@
 								</cfif>
 						 	</cfcase>
 							<cfcase value="Rating">
-						 		<dd class="ratings stars">#variables.$.rbKey('list.rating')#: <img class="ratestars" src="#variables.$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(variables.item.getValue('rating'))#.png" alt="<cfif isNumeric(variables.item.getValue('rating'))>#variables.item.getValue('rating')# star<cfif variables.item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+						 		<dd class="rating stars">#variables.$.rbKey('list.rating')#: <img class="ratestars" src="#variables.$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(variables.item.getValue('rating'))#.png" alt="<cfif isNumeric(variables.item.getValue('rating'))>#variables.item.getValue('rating')# star<cfif variables.item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 						 	</cfcase>
 						 	<cfdefaultcase>
 								<cfif len(variables.item.getValue(field))>
