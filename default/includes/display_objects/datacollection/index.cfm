@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#$.getBean('dataCollectionBean')
 		.set($.event().getAllValues())
 		.render($)#
+		#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	</cfoutput>
 <cfelse>
 	<cfset request.muraValidObject=false>
