@@ -65,15 +65,25 @@
 </cfsilent>
 <cfoutput>
 	<div id="svMasterEmail" class="mura-master-email #this.mailingListWrapperClass#">
-		<cfif variables.$.event('doaction') eq 'masterSubscribe'>
+		<cfif variables.$.event('doaction') eq 'unsubscribe'>
+			<p class="#this.alertSuccessClass#">
+				#variables.$.rbKey('mailinglist.youhaveunsubscribed')#
+			</p>
+		<cfelseif variables.$.event('doaction') eq 'masterSubscribe'>
 			<cfif variables.$.event("passedProtect")>
-				<p class="#this.alertSuccessClass#">#variables.$.rbKey('mailinglist.selectionssaved')#</p>
+				<p class="#this.alertSuccessClass#">
+					#variables.$.rbKey('mailinglist.selectionssaved')#
+				</p>
 			<cfelse>
-				<p class="#this.alertDangerClass#">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.alertDangerClass#">
+					#variables.$.rbKey('captcha.spam')#
+				</p>
 			</cfif>
 		<cfelseif variables.$.event('doaction') eq 'validateMember'>
 			<cfset application.mailinglistManager.validateMember(variables.$.event().getAllValues())/>
-			<p class="#this.alertSuccessClass#">#variables.$.rbKey('mailinglist.hasbeenvalidated')#</p>
+			<p class="#this.alertSuccessClass#">
+				#variables.$.rbKey('mailinglist.hasbeenvalidated')#
+			</p>
 		<cfelse>
 
 			<!--- THE FORM --->

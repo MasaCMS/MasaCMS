@@ -72,22 +72,28 @@
 	<div class="svMailingList mura-mailing-list #this.mailingListWrapperClass#" id="#createCSSID(variables.rslist.name)#">
 		
 		<cfif variables.$.event('doaction') eq 'unsubscribe'>
-			<cfif variables.$.event("passedProtect")>
-				<p class="#this.alertSuccessClass#">#variables.$.rbKey('mailinglist.youhaveunsubscribed')#</p>
-			<cfelse>
-				<p class="#this.alertDangerClass#">#variables.$.rbKey('captcha.spam')#</p>
-			</cfif>
+				<p class="#this.alertSuccessClass#">
+					#variables.$.rbKey('mailinglist.youhaveunsubscribed')#
+				</p>
 		<cfelseif variables.$.event('doaction') eq 'subscribe' and variables.rslist.isPurge neq 1>
 			<cfif variables.$.event("passedProtect")>
-				<p class="#this.alertSuccessClass#">#variables.$.rbKey('mailinglist.youhavesubscribed')#</p>
+				<p class="#this.alertSuccessClass#">
+					#variables.$.rbKey('mailinglist.youhavesubscribed')#
+				</p>
 			<cfelse>
-				<p class="#this.alertDangerClass#">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.alertDangerClass#">
+					#variables.$.rbKey('captcha.spam')#
+				</p>
 			</cfif>
 		<cfelseif variables.$.event('doaction') eq 'subscribe' and variables.rslist.isPurge eq 1>
 			<cfif variables.$.event("passedProtect")>
-				<p class="#this.alertSuccessClass#">#variables.$.rbKey('mailinglist.emailremoved')#</p>
+				<p class="#this.alertSuccessClass#">
+					#variables.$.rbKey('mailinglist.emailremoved')#
+				</p>
 			<cfelse>
-				<p class="#this.alertDangerClass#">#variables.$.rbKey('captcha.spam')#</p>
+				<p class="#this.alertDangerClass#">
+					#variables.$.rbKey('captcha.spam')#
+				</p>
 			</cfif>	
 		<cfelse>
 
