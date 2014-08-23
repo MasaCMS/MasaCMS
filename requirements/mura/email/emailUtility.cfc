@@ -1,57 +1,58 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+	This file is part of Mura CMS.
 
-Mura CMS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, Version 2 of the License.
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-Mura CMS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes 
-the preparation of a derivative work based on Mura CMS. Thus, the terms 
-and conditions of the GNU General Public License version 2 ("GPL") cover 
-the entire combined work.
+	Linking Mura CMS statically or dynamically with other modules constitutes 
+	the preparation of a derivative work based on Mura CMS. Thus, the terms 
+	and conditions of the GNU General Public License version 2 ("GPL") cover 
+	the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant 
-you permission to combine Mura CMS with programs or libraries that are 
-released under the GNU Lesser General Public License version 2.1.
+	However, as a special exception, the copyright holders of Mura CMS grant 
+	you permission to combine Mura CMS with programs or libraries that are 
+	released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS 
-grant you permission to combine Mura CMS with independent software modules 
-(plugins, themes and bundles), and to distribute these plugins, themes and 
-bundles without Mura CMS under the license of your choice, provided that 
-you follow these specific guidelines: 
+	In addition, as a special exception, the copyright holders of Mura CMS 
+	grant you permission to combine Mura CMS with independent software modules 
+	(plugins, themes and bundles), and to distribute these plugins, themes and 
+	bundles without Mura CMS under the license of your choice, provided that 
+	you follow these specific guidelines: 
 
-Your custom code 
+	Your custom code 
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories:
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories:
 
-	/admin/
-	/tasks/
-	/config/
-	/requirements/mura/
-	/Application.cfc
-	/index.cfm
-	/MuraProxy.cfc
+		/admin/
+		/tasks/
+		/config/
+		/requirements/mura/
+		/Application.cfc
+		/index.cfm
+		/MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
-meets the above guidelines as a combined work under the terms of GPL for 
-Mura CMS, provided that you include the source code of that other code when 
-and as the GNU GPL requires distribution of source code.
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
+	meets the above guidelines as a combined work under the terms of GPL for 
+	Mura CMS, provided that you include the source code of that other code when 
+	and as the GNU GPL requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not 
-obligated to grant this special exception for your modified version; it is 
-your choice whether to do so, or to make such modified version available 
-under the GNU General Public License version 2 without this exception.  You 
-may, if you choose, apply this exception to your own modified versions of 
-Mura CMS.
+	For clarity, if you create a modified version of Mura CMS, you are not 
+	obligated to grant this special exception for your modified version; it is 
+	your choice whether to do so, or to make such modified version available 
+	under the GNU General Public License version 2 without this exception.  You 
+	may, if you choose, apply this exception to your own modified versions of 
+	Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -110,21 +111,21 @@ Mura CMS.
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 			</cfquery>
-			
+
 			<cfquery name="rsEmail" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select temails.*, tsettings.* from temails inner join tsettings on (temails.siteid=tsettings.siteid) where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 			</cfquery>
-			
+
 			<cfquery name="rsReturnForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 				and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
 			</cfquery>
-			
+
 			<cfquery name="rsForwardForm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
-			and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
+				and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
 			</cfquery>
-			
+
 			<cfif rsemail.grouplist neq '' and (rsemail.bodyhtml neq '' or rsemail.bodytext neq '')>
 				<cfset prevEmail=""/>
 				<cfset counter=0/>
@@ -163,7 +164,7 @@ Mura CMS.
 
 				<cfloop query="rsAddresses">
 					<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 and prevEmail neq rsAddresses.email>
-						<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&email=#rsaddresses.email#&nocache=1">
+						<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
 						<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
 						<cfset forward="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
 						
@@ -184,7 +185,7 @@ Mura CMS.
 						</cfif>
 
 						<cftry>
-							 <cfswitch expression="#rsemail.format#">
+							<cfswitch expression="#rsemail.format#">
 								<cfcase value="HTML">
 									<cfsavecontent variable="bodyHTML">
 										<cfinclude template="#template#">
@@ -225,7 +226,7 @@ Mura CMS.
 										"mura_BROADCASTER_START#rsemail.EmailID#mura_BROADCASTER_END"
 									) />
 								</cfcase>
-							</cfswitch> 
+							</cfswitch>
 							<cfset track(rsemail.emailID, rsAddresses.email, "sent") />
 							<cfset prevEmail=rsAddresses.email />
 							<cfset counter=counter+1 />
@@ -241,7 +242,7 @@ Mura CMS.
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						update temails set status=1, NumberSent=#counter#+numbersent where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 					</cfquery>
-					<cfelse>
+				<cfelse>
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						update temails set status=1, NumberSent=#counter# where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.emailID#" />
 					</cfquery>
@@ -514,7 +515,7 @@ Mura CMS.
 					
 					<!--- now track the bounce --->
 					<cfset track(emailID, email, "bounce") />               
-	       			<cfset messageList = listAppend(messageList, UID) />				
+							<cfset messageList = listAppend(messageList, UID) />				
 				</cfif>
 			</cfif>
 		</cfloop>
@@ -556,30 +557,28 @@ Mura CMS.
 		<cfset var f=0/>
 
 		<cfquery name="rsAddressesPre" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-					
-					SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company
-					FROM         tusersmemb INNER JOIN
-								 tusers ON tusersmemb.UserID = tusers.UserID
-					WHERE     
-					<cfif Len(arguments.grouplist)>  
-						tusersmemb.GroupID IN (
-						<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>
-						)
-					<cfelse>
-						0=1  
-					</cfif>
-					
-					AND tusers.InActive = 0 AND tusers.subscribe = 1 
-					
-					
-					<cfif len(arguments.grouplist)>
-					Union
-					
-					SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company
-					FROM         tusersinterests INNER JOIN
-								 tusers ON tusersinterests.UserID = tusers.UserID
-								 INNER JOIN tcontentcategories ON (tusersinterests.categoryID=tcontentcategories.categoryID)
-					WHERE
+			SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company, NULL AS mlid
+			FROM tusersmemb 
+				INNER JOIN tusers ON tusersmemb.UserID = tusers.UserID
+			WHERE     
+				<cfif Len(arguments.grouplist)>  
+					tusersmemb.GroupID IN (
+					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>
+					)
+				<cfelse>
+					0=1  
+				</cfif>
+				
+				AND tusers.InActive = 0 AND tusers.subscribe = 1 
+
+			<cfif len(arguments.grouplist)>
+				UNION
+				
+				SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company, NULL AS mlid
+				FROM tusersinterests 
+					INNER JOIN tusers ON tusersinterests.UserID = tusers.UserID
+					INNER JOIN tcontentcategories ON (tusersinterests.categoryID=tcontentcategories.categoryID)
+				WHERE
 					<cfif Len(arguments.grouplist)>       
 						(
 						<cfloop from=1 to="#listLen(arguments.grouplist)#" index="f">
@@ -591,44 +590,48 @@ Mura CMS.
 						0=1  
 					</cfif>
 					AND tusers.InActive = 0 AND tusers.subscribe = 1
-					</cfif> 
-						
-					Union
-					
-					SELECT DISTINCT tmailinglistmembers.Email, tmailinglistmembers.fname, tmailinglistmembers.lname, tmailinglistmembers.company
-					FROM         tmailinglistmembers   INNER JOIN tmailinglist ON(tmailinglistmembers.mlid=tmailinglist.mlid)               
-					WHERE     
-					<cfif Len(arguments.grouplist)>     
-						tmailinglistmembers.mlid IN (
-						<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>) 
-					<cfelse>
-						0=1  
-					</cfif>
-					AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
-					and tmailinglistmembers.isVerified = 1
-					</cfquery>
-					
-					<cfquery name="rsUnsubscribe" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-					select tmailinglistmembers.email from tmailinglistmembers INNER JOIN tmailinglist ON (tmailinglistmembers.mlid=tmailinglist.mlid)
-					WHERE tmailinglist.ispurge=1 and  tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					
-					union 
-					
-					select email from tusers where 
-						(
-						siteid='#variables.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
-						or siteid='#variables.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
-						)
-					and subscribe=0
-					</cfquery>
-					
-					
-					<cfquery name="rsAddresses" dbtype="query">
-					select distinct email, fname, lname, company from rsAddressesPre 
-					<cfif rsUnsubscribe.recordcount>
-					where email not in (''<cfloop query="rsUnsubscribe">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUnsubscribe.email#" /></cfloop>)
-					</cfif>
-		</cfquery>			
+			</cfif>
+				
+			UNION
+			
+			SELECT DISTINCT tmailinglistmembers.Email, tmailinglistmembers.fname, tmailinglistmembers.lname, tmailinglistmembers.company, tmailinglistmembers.mlid
+			FROM tmailinglistmembers   
+				INNER JOIN tmailinglist ON(tmailinglistmembers.mlid=tmailinglist.mlid)               
+			WHERE     
+				<cfif Len(arguments.grouplist)>     
+					tmailinglistmembers.mlid IN (
+					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>) 
+				<cfelse>
+					0=1  
+				</cfif>
+				AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
+				AND tmailinglistmembers.isVerified = 1
+		</cfquery>
+
+		<cfquery name="rsUnsubscribe" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			SELECT tmailinglistmembers.email 
+			FROM tmailinglistmembers 
+				INNER JOIN tmailinglist ON (tmailinglistmembers.mlid=tmailinglist.mlid)
+			WHERE tmailinglist.ispurge=1 
+				AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+			
+			UNION 
+			
+			SELECT email 
+			FROM tusers 
+			WHERE (
+				siteid='#variables.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+				OR siteid='#variables.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				) AND subscribe=0
+		</cfquery>
+
+		<cfquery name="rsAddresses" dbtype="query">
+			SELECT DISTINCT email, fname, lname, company, mlid
+			FROM rsAddressesPre 
+			<cfif rsUnsubscribe.recordcount>
+				where email not in (''<cfloop query="rsUnsubscribe">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsUnsubscribe.email#" /></cfloop>)
+			</cfif>
+		</cfquery>
 		<cfreturn rsAddresses>
 	</cffunction>
 
