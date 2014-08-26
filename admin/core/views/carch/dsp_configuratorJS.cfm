@@ -11,8 +11,8 @@ var relatedContentConfiguratorTitle='#esapiEncode('javascript',application.rbFac
 var siteMapConfiguratorTitle='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.sitemaptitle"))#';		
 var genericConfiguratorTitle='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';	
 var genericConfiguratorMessage='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
-var contentid='#rc.contentid#';
-var parentid='#rc.parentid#';
+var contentid='#esapiEncode("javascript",rc.contentid)#';
+var parentid='#esapiEncode("javascript",rc.parentid)#';
 var contenthistid='#rc.contentBean.getContentHistID()#';
 var allowopenfeeds=#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#;
 <cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
