@@ -56,8 +56,8 @@ CKFinder.addPlugin( 'csrf', function( api ) {
 
       var params={};
 
-      if(typeof arguments[1] == 'object'){
-        extendObj(params,arguments[1]);
+      if(typeof arguments[2] == 'object'){
+        extendObj(params,arguments[2]);
       } 
 
       if(!params.mura_token){
@@ -65,7 +65,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       }
          
       // call the original function
-      var result = orginalsendCommandPost.apply(this,[arguments[0],params,arguments[2],arguments[3],arguments[4],arguments[5]]);
+      var result = orginalsendCommandPost.apply(this,[arguments[0],arguments[1],params,arguments[3],arguments[4],arguments[5]]);
 
       return result;
 
@@ -77,9 +77,6 @@ CKFinder.addPlugin( 'csrf', function( api ) {
      
      var params={};
 
-      if(typeof arguments[1] == 'object'){
-        extendObj(params,arguments[1]);
-      } 
 
       if(!params.mura_token){
         extendObj(params,getTokens());
@@ -88,7 +85,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
       //alert(JSON.stringify(params));
     
       // call the original function
-      var result = orginalsendCommand.apply(this,[arguments[0],params,arguments[2],arguments[3],arguments[4]]);
+      var result = orginalsendCommandPost.apply(this,[arguments[0],arguments[1],params,arguments[2],arguments[3],arguments[4]]);
 
       return result;
     }
