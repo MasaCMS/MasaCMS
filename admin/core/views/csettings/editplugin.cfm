@@ -135,10 +135,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfsilent>
 
-			<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#license.txt">
+			<cfset licenseFile="#application.configBean.getPluginDir()#/#rsPlugin.directory#/license.txt">
 
 			<cfif not fileExists(licenseFile)>
-				<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#plugin#application.configBean.getFileDelim()#license.txt">
+				<cfset licenseFile="#application.configBean.getPluginDir()#/#rsPlugin.directory#/plugin/license.txt">
 			</cfif>
 
 			<cfset hasLicense= isNumeric(rsPlugin.deployed) and not rsPlugin.deployed eq 1

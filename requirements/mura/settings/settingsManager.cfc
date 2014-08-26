@@ -268,15 +268,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
 	<cftry>
-	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
 	</cftry>
 	<cftry>
-	<cfset variables.utility.deleteDir("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfset variables.utility.deleteDir("#variables.configBean.getFileDir()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
 	</cftry>
 	<cftry>
-	<cfset variables.utility.deleteDir("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfset variables.utility.deleteDir("#variables.configBean.getAssetDir()#/#arguments.siteid#/") />
 	<cfcatch></cfcatch>
 	</cftry>
 

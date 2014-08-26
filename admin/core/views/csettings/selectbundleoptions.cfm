@@ -146,8 +146,8 @@ function checkAll (form) {
         <p class="help-block">
           You can set the complete server path to the directory where you would like the bundle to be created.  If left blank the bundle file will immediately download from your browser after creation.
         </p>
-         <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp</p>
-          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#esapiEncode('javascript','#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp')#');" value="Select this Directory">
+         <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()#/admin/temp</p>
+          <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#esapiEncode('javascript','#application.configBean.getWebRoot()#/admin/temp')#');" value="Select this Directory">
          
         <input class="text" type="text" name="saveFileDir" id="saveFileDir">
       </div>

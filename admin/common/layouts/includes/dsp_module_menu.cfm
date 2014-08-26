@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </li>
       </cfif>
   
-    <cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_secondary_menu.cfm")> 
+    <cfif fileExists("#application.configBean.getWebRoot()#/#session.siteid#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm")> 
       <cfinclude template="/#application.configBean.getWebRootMap()#/#session.siteID#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm" >
     </cfif>
      

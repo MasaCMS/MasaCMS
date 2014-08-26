@@ -235,7 +235,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteFile" returntype="void" access="public" output="false">
 <cfargument name="contentBean" type="any"/>
-<cfset var file= replacelist(contentBean.getfilename(),"/","#variables.filedelim#") />
 <cfset var tempfile= ""/>
 <cfset var pass = 0 />
 <cfset var oldlen="">
@@ -1392,9 +1391,9 @@ and parentID is null
 		<cfset var extendData = "" />
 		<cfset var newFileID = "" />
 		<cfset var childrenIterator = "" />
-		<cfset var delim = variables.configBean.getFileDelim() />
-		<cfset var sourceFileLocation = "#variables.configBean.getFileDir()##delim##arguments.sourceSiteID##delim#cache#delim#file#delim#" />
-		<cfset var destFileLocation = "#variables.configBean.getFileDir()##delim##arguments.destinationSiteID##delim#cache#delim#file#delim#" />
+		<cfset var delim ="/" />
+		<cfset var sourceFileLocation = "#variables.configBean.getFileDir()#/#arguments.sourceSiteID#/cache/file/" />
+		<cfset var destFileLocation = "#variables.configBean.getFileDir()#/#arguments.destinationSiteID#/cache/file/" />
 		<cfset var sArgs={}>
 		<cfset var rsFileDate="">
 		<cfset var tempFile="">
@@ -1538,7 +1537,7 @@ and parentID is null
 	<!---	
 							</cfif>
 	--->
-							<cfif structCount(tempFile) and fileExists("#tempFile.serverDirectory##delim##tempfile.serverfile#")>
+							<cfif structCount(tempFile) and fileExists("#tempFile.serverDirectory#/#tempfile.serverfile#")>
 								<cfset theFileStruct = getBean('fileManager').process(tempFile,newContentBean.getSiteID()) />
 								<cfset newContentBean.setValue(rsFileIDs.name,getBean('fileManager').create(theFileStruct.fileObj,newContentBean.getcontentID(),newContentBean.getSiteID(),rsfileData.filename,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newContentBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,getBean('utility').getUUID(),theFileStruct.fileObjSource))>
 							<cfelse>

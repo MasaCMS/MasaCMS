@@ -55,14 +55,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.zipTool	= createObject("component","mura.Zip") />
 		<cfset variables.fileWriter	= getBean("fileWriter")>
 		<cfset variables.utility	= application.utility.getBean("utility")>
-		<cfset variables.fileDelim	= application.configBean.getFileDelim()>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />
 		<cfset variables.BundleDir	= variables.dirName />
-		<cfset variables.workDir	= "#expandPath('/muraWRM/admin/')#temp#variables.fileDelim#">
-		<cfset variables.procDir	= "#workdir#proc#variables.fileDelim#" />
-		<cfset variables.unpackPath	= "#procDir##BundleDir##variables.fileDelim#" />
-		<cfset variables.backupDir	= "#variables.procDir##variables.dirName##variables.fileDelim#" />
-		<cfset variables.unpackPath	= "#variables.procDir##variables.BundleDir##variables.fileDelim#" />
+		<cfset variables.workDir	= "#expandPath('/muraWRM/admin/')#temp/">
+		<cfset variables.procDir	= "#workdir#proc/" />
+		<cfset variables.unpackPath	= "#procDir##BundleDir#/" />
+		<cfset variables.backupDir	= "#variables.procDir##variables.dirName#/" />
+		<cfset variables.unpackPath	= "#variables.procDir##variables.BundleDir#/" />
 		
 		<cfif not directoryExists(variables.workDir)>
 			<cfset variables.fileWriter.createDir(directory="#variables.workDir#")>
@@ -100,7 +99,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfdirectory action="list" directory="#variables.unpackPath#" name="rsImportFiles" filter="*.xml">
-
 		<!--- this is done for cf7 compatability --->
 		<cfquery name="rsImportFiles" dbtype="query">
 			select * from rsImportFiles where lower(type)='file'
@@ -129,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="keyFactory" type="any" required="true">
 		<cfargument name="dsn" type="string" default="#variables.configBean.getDatasource()#" required="true">
 
-		<cfset var filePath = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID & variables.fileDelim & "cache#variables.fileDelim#file#variables.fileDelim#" />
+		<cfset var filePath = variables.configBean.getValue('filedir') & '/' & arguments.siteID & '/' & "cache/file/" />
 		<cfset var toName	= "" />
 		<cfset var keys		= arguments.keyFactory />
 		<cfset var nFileID	= "" />
@@ -143,9 +141,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rstfiles">
 			<cfset nFileID = rstfiles.fileID />
 			<cfdirectory name="rsNameFiles" directory="#filePath#" filter="#nFileID#*.*">
+
 			<cfloop query="rsNameFiles">
 				<cfset toName = replace(rsNameFiles.name,nFileID,keys.get(nFileID))>
-				<cfset variables.fileWriter.renameFile(source="#filePath##variables.fileDelim##rsNameFiles.name#", destination="#filePath##variables.fileDelim##toName#")>
+				<cfset variables.fileWriter.renameFile(source="#filePath#/#rsNameFiles.name#", destination="#filePath#/#toName#")>
 			</cfloop>
 		</cfloop>
 	</cffunction>
@@ -158,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
 		
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & variables.fileDelim & arguments.siteID /> 
+		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var zipDir	= "" />
 		<cfset var rstplugins = "" />
 		<cfset var rsInActivefiles = "" />
@@ -212,25 +211,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			
 			<cfloop query="rsInActivefiles">
-				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim##filePoolID##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
-								
+				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')#/#filePoolID#/cache/file/" filter="#rsInActivefiles.fileID#*">	
 				<cfif rscheck.recordcount>
 					<cfloop query="rscheck">
-						<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rscheck.name#","|")>
+						<cfset deleteList=listAppend(deleteList,"cache/file/#rscheck.name#","|")>
 					</cfloop>
 				</cfif>
 						
 			</cfloop>
 
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
-				<cfset zipDir = variables.configBean.getValue('assetdir') & variables.fileDelim & filePoolID />
-				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
+				<cfset zipDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
+				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />  
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
 			</cfif> 
 			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getValue('webroot')>
-				<cfset zipDir = variables.configBean.getValue('filedir') & variables.fileDelim & filePoolID /> 
-				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
+				<cfset zipDir = variables.configBean.getValue('filedir') & '/' & filePoolID /> 
+				<cffile action="write" file="#zipDir#/blank.txt" output="empty file" />  
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=zipDir,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
 						
 				<cfif len(deleteList)>
 					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
@@ -261,10 +259,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rstplugins.recordcount>
 			<cfif not directoryExists("#variables.backupDir#plugins/")>
 				<cfdirectory action="create" directory="#variables.backupDir#plugins/">
-				<cffile action="write" file="#variables.backupDir#plugins#variables.fileDelim#blank.txt" output="empty file" /> 
+				<cffile action="write" file="#variables.backupDir#plugins/blank.txt" output="empty file" /> 
 			</cfif>
 			<cfloop query="rstplugins">
-				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()##variables.fileDelim##rstplugins.directory#","#variables.backupDir#plugins#variables.fileDelim##rstplugins.directory#" )>
+				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()#/#rstplugins.directory#","#variables.backupDir#plugins/#rstplugins.directory#" )>
 			</cfloop>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#pluginfiles.zip",directory="#variables.backupDir#plugins/",recurse="true")>
 		</cfif>
@@ -286,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="themeDir" type="string" default="" required="true">
 		
 		<cfset var zipPath = "" />
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & variables.fileDelim & arguments.siteID /> 
+		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var tmpDir = "" />
 		<cfset var destDir = "" />
 		<cfset var qCheck = "" />
@@ -310,31 +308,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfif not isDate(arguments.sinceDate) and not site.getHasSharedFilePool()>
 					<!---
-					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & variables.fileDelim  & filePoolID & variables.fileDelim & "assets"  )>
+					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "assets"  )>
 					--->
-					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & variables.fileDelim  & filePoolID & variables.fileDelim & "cache"  )>
+					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & '/'  & filePoolID & '/' & "cache"  )>
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
 					
 					<cfif not fileExists( getBundle() & "filefiles.zip" )>
-						<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & filePoolID />
+						<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
 					</cfif>
 
 					<cfif not fileExists( getBundle() & "assetfiles.zip" )>
-						<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & filePoolID />
+						<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
 					</cfif>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
-					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & filePoolID />
+					<cfset destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID />
 					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 				</cfif>
 				<cfif fileExists( getBundle() & "filefiles.zip" )>
 					<cfset zipPath = getBundle() & "filefiles.zip" />
-					<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & filePoolID />
+					<cfset destDir = variables.configBean.getValue('filedir') & '/' & filePoolID />
 					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 				</cfif>
 			</cfif>
@@ -343,7 +341,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>
 			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes#variables.fileDelim#themes#variables.fileDelim##arguments.themeDir#")>
+				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes/themes/#arguments.themeDir#")>
 			</cfif>
 		</cfif>
 		
@@ -371,12 +369,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfquery>
 					
 					<cfif qCheck.recordcount and len(qCheck.directory)>
-						<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & qCheck.directory>
+						<cfset pluginDir=variables.configBean.getPluginDir() & '/' & qCheck.directory>
 					<cfelse>
-						<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
+						<cfset pluginDir=variables.configBean.getPluginDir() & '/' & rstplugins.directory>
 					</cfif>
 				
-					<cfset variables.utility.copyDir( getBundle() & "plugins" & variables.fileDelim & rstplugins.directory, pluginDir )>
+					<cfset variables.utility.copyDir( getBundle() & "plugins" & '/' & rstplugins.directory, pluginDir )>
 			
 				</cfif>
 			</cfloop>

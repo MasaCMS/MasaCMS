@@ -192,9 +192,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getLocation" returntype="string" access="public" output="false">
 <cfargument name="directory">
-	<cfset var delim=variables.configBean.getFileDelim() />
 	
-	<cfreturn "#variables.configBean.getPluginDir()##delim##arguments.directory##delim#">
+	<cfreturn "#variables.configBean.getPluginDir()#/#arguments.directory#/">
 </cffunction>
 
 <cffunction name="getAllPlugins" returntype="query" access="public" output="false">
@@ -215,7 +214,6 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="pluginDir" required="true" default="">
 <cfargument name="autoDeploy" required="true" default="true">
 
-<cfset var delim=variables.configBean.getFileDelim() />
 <cfset var location="">
 <cfset var modID=arguments.moduleID />
 <cfset var rsPlugin="" />
@@ -261,7 +259,7 @@ select * from tplugins order by #arguments.orderby#
 		<!--- Check if a file from a form was submitted --->
 		<cfelseif getBean("fileManager").isPostedFile(form.NewPlugin)>
 			<cffile action="upload" result="cffileData" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#" >	
-			<cfset serverFile="#variables.configBean.getTempDir()##delim##cffileData.serverFile#">
+			<cfset serverFile="#variables.configBean.getTempDir()#/#cffileData.serverFile#">
 		
 		</cfif>
 	</cfif>
@@ -443,7 +441,6 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler=""/>
 	<cfset var rsPlugin=getPlugin(modID,'',false) />
 	<cfset var location=getLocation(rsPlugin.directory) />
-	<cfset var delim=variables.configBean.getFileDelim() />
 	<cfset var pluginXML=getPluginXML(modID)>
 
 	
@@ -759,6 +756,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfelse>
 					<cfset item="#baseDir#/#rsRequirements.name#">
 					<cfset rsCheckDiscoveredPlugin=createObject("component","mura.Zip").list(item)>
+
 					<cfquery name="rsCheckDiscoveredPlugin" dbtype="query">
 						select * from rsCheckDiscoveredPlugin 
 						where entry like '%plugin#variables.configBean.getFileDelim()#config.xml'
@@ -847,15 +845,14 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="pluginDir" default="">
 	<cfset var theXML="">
 	<cfset var rsPlugin="">
-	<cfset var delim=variables.configBean.getFileDelim() />
 
 	<cfif not len(arguments.pluginDir)>
 		<cfset rsPlugin=getPlugin(arguments.moduleID,'',false)>	
 		<cfset arguments.pluginDir=rsPlugin.directory>
 	</cfif>
 	
-	<cfif fileExists("#getLocation(arguments.pluginDir)#plugin#delim#config.xml")>
-		<cffile action="read" file="#getLocation(arguments.pluginDir)#plugin#delim#config.xml" variable="theXML">
+	<cfif fileExists("#getLocation(arguments.pluginDir)#plugin/config.xml")>
+		<cffile action="read" file="#getLocation(arguments.pluginDir)#plugin/config.xml" variable="theXML">
 	<cfelse>
 		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#arguments.pluginDir#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 	</cfif>
@@ -941,8 +938,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="" />
 	<cfset var pluginCFC= ""/>
 	<cfset var adminDir="">
-	<cfset var siteDir="">
-	<cfset var delim=variables.configBean.getFileDelim() >
+	<cfset var siteDir="">() >
 	<cfset var distroList="" />
 	<cfset var dopID=""/>
 	<cfset var rsObjects="">
@@ -1069,36 +1065,6 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 	
 	<cfset loadPlugins() />
-
-	<!---
-	<cfif arguments.args.location eq "local" and structKeyExists(arguments.args,"siteAssignID") and len(arguments.args.siteAssignID)>
-		<cfquery name="rsObjects" dbType="query">
-		select * from variables.rsDisplayObjects
-		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
-		</cfquery>
-		
-		<cfif rsObjects.recordcount>
-		<cfloop list="#arguments.args.siteAssignID#" index="i">
-			<cfset dopID=variables.settingsManager.getSite(i).getDisplayPoolID()/>
-			<cfset siteDir=variables.configBean.getWebRoot() & delim & dopID & delim & "includes" & delim & "plugins" & delim & pluginConfig.getDirectory() & delim>
-			<cfset adminDir=variables.configBean.getWebRoot() & delim  & "plugins" & delim & pluginConfig.getDirectory() & delim>
-			
-			<cfif not listFind(distroList,dopID)>
-				
-				<cfif isNumeric(rsObjects.pluginID) and arguments.args.overwrite and directoryExists(siteDir)>
-					<cfdirectory action="delete" directory="#siteDir#" recurse="true">
-				</cfif>
-				
-				<cfif not directoryExists(siteDir)>			
-					<cfset variables.utility.copyDir(baseDir=adminDir,destDir=siteDir,excludeHiddenFiles=false)>
-				</cfif>
-				
-				<cfset distroList=listAppend(distroList,dopID)>
-			</cfif>
-		</cfloop>
-		</cfif>
-	</cfif>
-	--->
 	
 	<cfif not isDefined("arguments.args.autoDeploy") or arguments.args.autoDeploy>
 		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
@@ -2481,7 +2447,7 @@ select * from rs order by name
 
 <cffunction name="getIDFromPath" returntype="any" output="false">
 <cfargument name="path">
-	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(getDirectoryFromPath(arguments.path),variables.configBean.getFileDelim())-1,variables.configBean.getFileDelim()),"_")>
+	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(replace(getDirectoryFromPath(arguments.path),'\','/','all'),'/')-1,'/'),"_")>
 </cffunction>
 
 <cffunction name="addEventHandler" output="false" returntype="void">
@@ -2773,7 +2739,7 @@ select * from rs order by name
 	<cfset var zipTrim="">
 	<cfset var delim=variables.configBean.getFileDelim() />
 	<cfset var rsZipFiles=variables.zipTool.list(zipFilePath=arguments.pluginFile)>
-		
+
 	<cfquery name="rsZipFiles" dbtype="query">
 		select * from rsZipFiles
 		where entry like '%#delim#plugin#delim#%'
