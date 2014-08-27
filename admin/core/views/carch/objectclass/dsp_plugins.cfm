@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</option>
 		<cfloop query="rc.rsPlugins">
 			<cfif application.permUtility.getModulePerm(rc.rsPlugins.moduleID, rc.siteid)>
-				<option title="#encodeForHTMLAttribute(rc.rsPlugins.title)#" value="#rc.rsPlugins.moduleID#" <cfif rc.rsPlugins.moduleID eq rc.subclassid>selected</cfif>>#encodeForHTML(rc.rsPlugins.title)#</option>
+				<option title="#esapiEncode('html_attr',rc.rsPlugins.title)#" value="#rc.rsPlugins.moduleID#" <cfif rc.rsPlugins.moduleID eq rc.subclassid>selected</cfif>>#esapiEncode('html',rc.rsPlugins.title)#</option>
 			</cfif>
 		</cfloop>
 	</select>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</option>
 				<cfloop query="rs">
 					<cfif application.permUtility.getModulePerm(rs.moduleID, rc.siteid)>
-						<option title="#encodeForHTMLAttribute(rs.name)#" value="#rs.moduleID#,#rs.objectID#" <cfif rs.objectID eq rc.objectID>selected</cfif>>#encodeForHTML(rs.name)#</option>
+						<option title="#esapiEncode('html_attr',rs.name)#" value="#rs.moduleID#,#rs.objectID#" <cfif rs.objectID eq rc.objectID>selected</cfif>>#esapiEncode('html',rs.name)#</option>
 					</cfif>
 				</cfloop>
 			</select>
@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				        style="width:310px;">
 			</cfoutput>
 			<cfoutput query="rs">
-				<option value="{'object':'plugin','name':'#encodeForJavascript('#rs.title# - #rs.name#')#','objectid':'#rs.objectID#'}">
+				<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.title# - #rs.name#')#','objectid':'#rs.objectID#'}">
 					#rs.name#					
 				</option>
 			</cfoutput>

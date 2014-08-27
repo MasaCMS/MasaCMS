@@ -9,7 +9,7 @@
 		<label class="control-label">Search for Comments</label>
 		<div class="form-inline">
 			<div class="input-append">
-				<input type="text" name="keywords" value="#encodeForHTMLAttribute($.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
+				<input type="text" name="keywords" value="#esapiEncode('html_attr',$.event('keywords'))#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="icon-search"></i></button>
 			</div>
 		</div>	
@@ -31,7 +31,7 @@
 			<div class="span8 date-range-selector">
 				<label class="control-label">Comment Date Range</label>
 				<div class="controls">
-					<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="startDate" id="startDate" class="datepicker span10 mura-custom-datepicker" placeholder="Start Date" value="#encodeForHTMLAttribute($.event('startDate'))#" /></div>&nbsp;&ndash;&nbsp;<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="endDate" id="endDate" class="datepicker span10 mura-custom-datepicker" placeholder="End Date" value="#encodeForHTMLAttribute($.event('endDate'))#" /></div>
+					<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="startDate" id="startDate" class="datepicker span10 mura-custom-datepicker" placeholder="Start Date" value="#esapiEncode('html_attr',$.event('startDate'))#" /></div>&nbsp;&ndash;&nbsp;<div class="input-prepend"><span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="endDate" id="endDate" class="datepicker span10 mura-custom-datepicker" placeholder="End Date" value="#esapiEncode('html_attr',$.event('endDate'))#" /></div>
 				</div>
 			</div>
 			<!--- <div class="span4">
@@ -51,10 +51,10 @@
 				</div>
 			</div>
 		</div>
-		<input type="hidden" id="sortBy" name="sortBy" value="#encodeForHTMLAttribute($.event('sortBy'))#">
-		<input type="hidden" id="sortDirection" name="sortDirection" value="#encodeForHTMLAttribute($.event('sortdirection'))#">
-		<input type="hidden" id="nextN" name="nextN" value="#encodeForHTMLAttribute(rc.nextN)#">
-		<input type="hidden" id="pageNo" name="pageNo" value="#encodeForHTMLAttribute(rc.pageNo)#">
+		<input type="hidden" id="sortBy" name="sortBy" value="#esapiEncode('html_attr',$.event('sortBy'))#">
+		<input type="hidden" id="sortDirection" name="sortDirection" value="#esapiEncode('html_attr',$.event('sortdirection'))#">
+		<input type="hidden" id="nextN" name="nextN" value="#esapiEncode('html_attr',rc.nextN)#">
+		<input type="hidden" id="pageNo" name="pageNo" value="#esapiEncode('html_attr',rc.pageNo)#">
 	</div>
 </cfoutput>
 
@@ -190,11 +190,11 @@
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
 									
 									<p>
-										<!--- <strong>#encodeForHTML(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
+										<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
 										<cfif local.content.getIsNew()>
 											<h1><i class="icon-external-link"></i> Content Missing</h1>
 										<cfelse>
-											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #encodeForHTML(local.content.getMenuTitle())#</a></h1>
+											<h1><a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #esapiEncode('html',local.content.getMenuTitle())#</a></h1>
 										</cfif>
 										
 									<!---
@@ -237,14 +237,14 @@
 
 								<!--- DATE --->
 								<td>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #encodeForHTML(local.content.getMenuTitle())#">
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #esapiEncode('html',local.content.getMenuTitle())#">
 										#DateFormat(local.item.getEntered(), 'yy/mm/dd')#
 									</a>
 								</td>
 								
 								<!--- TIME --->
 								<td>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #encodeForHTML(local.content.getMenuTitle())#">
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Commented on: #esapiEncode('html',local.content.getMenuTitle())#">
 										#TimeFormat(local.item.getEntered(), 'h:mm tt')#
 									</a>
 								</td>
@@ -252,7 +252,7 @@
 								<!--- USER --->
 								<td>
 									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">
-										#encodeForHTML(local.item.getName())#
+										#esapiEncode('html',local.item.getName())#
 									</a>
 								</td>
 								
@@ -268,7 +268,7 @@
 											theComments = item.getComments();
 										}
 									</cfscript>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#encodeForHTML(theComments)#</a>
+									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#esapiEncode('html',theComments)#</a>
 								</td>
 
 								<td>
@@ -284,7 +284,7 @@
 								</td>
 
 								<td>
-									#encodeForHTML(local.item.getFlagCount())#
+									#esapiEncode('html',local.item.getFlagCount())#
 								</td>
 
 								<!--- ACTIONS --->
@@ -292,11 +292,11 @@
 								<ul>
 									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
 									<cfif IsValid('url', local.item.getURL())>
-										<li><a href="#encodeForHTMLAttribute(local.item.getURL())#" title="#encodeForHTMLAttribute(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
+										<li><a href="#esapiEncode('html_attr',local.item.getURL())#" title="#esapiEncode('html_attr',local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
 									<cfelse>
 										<li class="disabled"><i class="icon-link"></i></li>
 									</cfif>
-									<li><a href="mailto:#encodeForHTML(local.item.getEmail())#" title="#encodeForHTMLAttribute(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
+									<li><a href="mailto:#esapiEncode('html',local.item.getEmail())#" title="#esapiEncode('html_attr',local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
 								</ul>
 								</td>
 							</tr>

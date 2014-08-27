@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 	
-	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
+	<cfset NewImageLocal = listLast(replace(NewImageLocal,"\","/","all"),'/')>
 	
 	<cfif not FileExists(NewImageSource)>
 		
@@ -314,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fileObjSource=""/>
 		<cfset var refused=false />
 		<cfset var serverFilename=arguments.file.serverfilename />
-		<cfset var serverDirectory=arguments.file.serverDirectory & variables.configBean.getFileDelim() />
+		<cfset var serverDirectory=arguments.file.serverDirectory & "/" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
 		<cfset var pid=createUUID()>
 
@@ -323,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileStruct.fileObjMedium =  ''/>
 		<cfset fileStruct.fileObjSource =  ''/>
 	
-		<cfset touchDir("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteID#")> 
+		<cfset touchDir("#variables.configBean.getFileDir()#/#arguments.siteID#")> 
 				
 		<cfif listLen(serverfilename," ") gt 1>
 			<cfset serverFilename=replace(serverFilename," ","-","ALL") />

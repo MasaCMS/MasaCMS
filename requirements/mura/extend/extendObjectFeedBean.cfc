@@ -331,13 +331,15 @@
 	<!--- generate a sorted (if specified) list of baseIDs with additional fields --->
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	<cfif dbType eq "oracle" and getMaxItems() >select * from (</cfif>
-	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif>  tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
+	select distinct <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif>  tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
 	<cfif hasExtendedSort>,#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# as extendedSort</cfif>
 	from #dataTable# #tableModifier#
 	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 	INNER JOIN tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
 	where tclassextenddata.baseID IN (#PreserveSingleQuotes(baseIDList)#)
+	and tclassextend.type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getType()#"> 
+	and tclassextend.subtype= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubType()#">))
 		
 	<cfif len(getSortBy())>
 		and tclassextendattributes.name = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">

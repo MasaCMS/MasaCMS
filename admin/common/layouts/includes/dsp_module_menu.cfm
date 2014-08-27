@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </li>
       </cfif>
   
-    <cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_secondary_menu.cfm")> 
+    <cfif fileExists("#application.configBean.getWebRoot()#/#session.siteid#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm")> 
       <cfinclude template="/#application.configBean.getWebRootMap()#/#session.siteID#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm" >
     </cfif>
      
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </li>
     
        <cfloop query="rc.rsplugins">
-           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #encodeForHTML(rc.rsplugins.name)#</a>
+           <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #esapiEncode('html',rc.rsplugins.name)#</a>
           </li>
        </cfloop> 
        <cfif listFind(session.mura.memberships,'S2')>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <ul class="dropdown-menu">
      
          <cfloop query="rc.rsplugins">
-             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #encodeForHTML(rc.rsplugins.name)#</a>
+             <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-puzzle-piece"></i> #esapiEncode('html',rc.rsplugins.name)#</a>
             </li>
          </cfloop> 
          <cfif listFind(session.mura.memberships,'S2')>

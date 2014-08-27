@@ -48,10 +48,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---
 <form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<div class="input-append">
-	<input name="keywords" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" class="text" maxlength="50" />
+	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" />
 	<button type="button" class="btn" onclick="submitForm(document.forms.changesetSearch);"><i class="icon-search"></i></button>
 	<input type="hidden" name="muraAction" value="cChangesets.list">
-	<input type="hidden" name="siteid" value="#encodeForHTMLAttribute(rc.siteid)#">
+	<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 	</div>
 </form>
 --->
@@ -75,19 +75,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop condition="rc.changesets.hasNext()">
 	<cfset rc.changeset=rc.changesets.next()>
 	<tr>
-		<td class="var-width"><a title="Edit" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.siteID)#&categoryid=#encodeForURL(rc.categoryid)#&tags=#encodeForURL(rc.tags)#">#encodeForHTML(rc.changeset.getName())#</a></td>
+		<td class="var-width"><a title="Edit" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.siteID)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">#esapiEncode('html',rc.changeset.getName())#</a></td>
 		<td><cfif isDate(rc.changeset.getPublishDate())>#LSDateFormat(rc.changeset.getPublishDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getPublishDate(),"medium")#<cfelse>NA</cfif></td>
 		<td>#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#</td>
 		<td class="actions">
 			<ul>
-				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())#&categoryid=#encodeForURL(rc.categoryid)#&tags=#encodeForURL(rc.tags)#"><i class="icon-pencil"></i></a></li>
+				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="icon-pencil"></i></a></li>
 				<cfif rc.changeset.getPublished()>
 					<li class="preview disabled"><i class="icon-globe"></i></li>
 				<cfelse>
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#encodeForJavascript(rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#esapiEncode('javascript',rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
 				</cfif>
-				<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())#&categoryid=#encodeForURL(rc.categoryid)#"><i class="icon-reorder"></i></a></li>
-				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#encodeForURL(rc.changeset.getSiteID())#&categoryid=#encodeForURL(rc.categoryid)#&tags=#encodeForURL(rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+				<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#"><i class="icon-reorder"></i></a></li>
+				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 			</ul>
 		</td>
 	</tr></cfloop>
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ul class="moreResults">
 			<cfif rc.changesets.getPageIndex() gt 1>
 			<li>
-				<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#encodeForURL(rc.siteid)#&keywords=#encodeForURL(rc.keywords)#&startdate=#encodeForURL(rc.startdate)#&stopdate=#encodeForURL(rc.stopdate)#&categoryid=#encodeForURL(rc.categoryid)#&tags=#encodeForURL(rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+				<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
 			</li>
 			</cfif>
 			<cfloop from="1" to="#rc.changesets.pageCount()#" index="i">
@@ -118,13 +118,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="active"><a href="##">#i#</a></li>
 				<cfelse> 
 					<li>
-						<a href="./?muraAction=cChangesets.list&page=#i#&siteid=#encodeForURL(rc.siteid)#&keywords=#encodeForURL(rc.keywords)#&startdate=#encodeForURL(rc.startdate)#&stopdate=#encodeForURL(rc.stopdate)#&categoryid=#encodeForURL(rc.categoryid)#"&tags=#encodeForURL(rc.tags)#>#i#</a>
+						<a href="./?muraAction=cChangesets.list&page=#i#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#"&tags=#esapiEncode('url',rc.tags)#>#i#</a>
 					</li>
 				</cfif>
 			</cfloop>
 			<cfif rc.changesets.getPageIndex() lt rc.changesets.pagecount()>
 				<li>
-					<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#encodeForURL(rc.siteid)#&keywords=#encodeForURL(rc.keywords)#&startdate=#encodeForURL(rc.startdate)#&stopdate=#encodeForURL(rc.stopdate)#&categoryid=#encodeForURL(rc.categoryid)#&tags=#encodeForURL(rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.next')#</a>
+					<a href="./?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&startdate=#esapiEncode('url',rc.startdate)#&stopdate=#esapiEncode('url',rc.stopdate)#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.next')#</a>
 				</li>
 			</cfif>
 			</ul>
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<div class="module well">
 			<h3>#application.rbFactory.getKeyValue(session.rb,"params.keywords")#</h3>
-		  	<input name="keywords" value="#encodeForHTMLAttribute(rc.keywords)#" type="text" class="span12"  maxlength="50" />
+		  	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="span12"  maxlength="50" />
 		</div>
 
 		<div class="module well">
@@ -156,8 +156,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="tags" class="tagSelector">
 				<cfloop list="#$.event('tags')#" index="i">
 					<span class="tag">
-					#encodeForHTML(i)# <a><i class="icon-remove-sign"></i></a>
-					<input name="tags" type="hidden" value="#encodeForHTMLAttribute(i)#">
+					#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
+					<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
 				<input type="text" name="tags">
@@ -173,9 +173,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" />
 		<cfif len($.event('categoryID') & $.event('tags') & $.event('keywords') & $.event('startdate') & $.event('stopdate'))>
-	  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="location.href='./?siteID=#encodeForURL($.event('siteid'))#&muraAction=cChangesets.list'"/>
+	  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="location.href='./?siteID=#esapiEncode('url',$.event('siteid'))#&muraAction=cChangesets.list'"/>
 	  	</cfif>
-		<input type="hidden" value="#encodeForHTMLAttribute(rc.siteid)#" name="siteID"/>
+		<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
 		<input type="hidden" name="muraAction" value="cChangesets.list">
 
 		 <script>

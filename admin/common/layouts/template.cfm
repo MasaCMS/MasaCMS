@@ -44,26 +44,26 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 ---><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
-<cfif cgi.http_user_agent contains 'msie'>
 <cfif not isdefined('request.backported')>
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 </cfif>
+<cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<!--[if IE 9 ]><html class="mura ie ie9" lang="#encodeForHTMLAttribute(session.locale)#"> <![endif]-->
-<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura ie ie10">
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+<!--[if IE 9 ]><html class="mura ie ie9" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+<html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie ie10">
 <cfelse>
-<html lang="#encodeForHTMLAttribute(session.locale)#" class="mura">
+<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
 </cfif>
   <head>
   	<cfsilent>
@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
-    <title>#encodeForHTML(application.configBean.getTitle())#<cfif len(moduleTitle)> - #encodeForHTML(moduleTitle)#</cfif></title>
+    <title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Blue River Interactive Group">
 	<meta name="robots" content="noindex, nofollow, noarchive" />
@@ -225,13 +225,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 	var context='#application.configBean.getContext()#';
 	var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-	var rb='#lcase(encodeForJavascript(session.rb))#';
-	var siteid='#encodeForJavascript(session.siteid)#';
+	var rb='#lcase(esapiEncode('javascript',session.rb))#';
+	var siteid='#esapiEncode('javascript',session.siteid)#';
 	var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
-	var activepanel=#encodeForJavascript(rc.activepanel)#;
-	var activetab=#encodeForJavascript(rc.activetab)#;
-	var webroot='#encodeForJavascript(left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
-	var fileDelim='#encodeForJavascript($.globalConfig("fileDelim"))#';
+	var activepanel=#esapiEncode('javascript',rc.activepanel)#;
+	var activetab=#esapiEncode('javascript',rc.activetab)#;
+	var webroot='#esapiEncode('javascript',left($.globalConfig("webroot"),len($.globalConfig("webroot"))-len($.globalConfig("context"))))#';
+	var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 	</script>
 	
 	#session.dateKey#
@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			           						{
 				           						url:'./index.cfm',
 				           						data:{
-				           							siteid:'#encodeForJavascript(session.siteid)#',
+				           							siteid:'#esapiEncode('javascript',session.siteid)#',
 				           							alertid:$(_alert).attr('data-alertid'),
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},

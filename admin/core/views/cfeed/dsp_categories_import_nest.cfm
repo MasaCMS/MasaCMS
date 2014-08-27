@@ -49,10 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 <cfparam name="attributes.siteID" default="">
@@ -77,7 +77,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.newBean.ge
 </cfsilent>
 <li>
 <ul>
-<li>#encodeForHTML(rslist.name)#<cfif rslist.isOpen eq 1>
+<li>#esapiEncode('html',rslist.name)#<cfif rslist.isOpen eq 1>
 <select  name="categoryAssign#catTrim#" #disabled#  onchange="javascript: this.selectedIndex==3?toggleDisplay2('editDates#catTrim#',true):toggleDisplay2('editDates#catTrim#',false);">
 <option <cfif not rsIsMember.recordcount>selected</cfif> value="">No</option>
 <option <cfif rsIsMember.recordcount and not rsIsMember.isFeature>selected</cfif> value="0">Yes</option>

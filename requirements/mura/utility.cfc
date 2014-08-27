@@ -546,6 +546,15 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfheader name="Set-Cookie" value="#c#" />
 </cffunction>
 
+<cffunction name="fixQueryPaths" output="false">
+	<cfargument name="rsDir">
+	<cfargument name="path" default="directory">
+	<cfloop query="rsDir">
+		<cfset querySetCell(rsDir,arguments.path,pathFormat(rsDir[arguments.path][rsDir.currentrow]),rsDir.currentrow)>
+	</cfloop>
+	<cfreturn rsDir>
+</cffunction>
+
 <cffunction name="getCryptoSalt" returntype="string" output="false">
     <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
     <cfargument name="reseedFrequency" default="#variables.configBean.getBCryptReseedFrequency()#" hint="How often to re-seed." >

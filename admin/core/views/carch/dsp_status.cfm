@@ -11,8 +11,8 @@
 		<cfelse>
 			<!--- Locked by someone else --->	
 			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>	
-			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#encodeForHTMLAttribute(lockedBy.getFName())# #encodeForHTML(lockedBy.getLName())#")#.<br>
-			<a href="mailto:#encodeForHTML(lockedBy.getEmail())#?subject=#encodeForHTML(application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
+			<p id="msg-node-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.<br>
+			<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a>
 				<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()> &nbsp; &nbsp;<a class="mura-node-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknode')#</a>
 				</cfif>
 			</p>
@@ -24,7 +24,7 @@
 					function(event){
 						event.preventDefault();
 						confirmDialog(
-							"#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#",
+							"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlocknodeconfirm'))#",
 							function(){
 								jQuery("##msg-node-locked").fadeOut();
 								jQuery(".mura-node-unlock").hide();
@@ -67,7 +67,7 @@
 		<cfelse>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.pendingmessage")#: 
 		</cfif>
-		<strong><a href="##" onclick="return viewStatusInfo('#encodeForJavascript(rc.contentBean.getContentHistID())#','#encodeForJavascript(rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
+		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
 	</p>
 </cfif>
 <script>
@@ -102,7 +102,7 @@ function viewStatusInfo(contenthistid,siteid){
 function applyApprovalAction(requestid,action,comment,siteid){
 	
 	if(action == 'Reject' && comment == ''){
-		alertDialog('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
+		alertDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 	} else {
 		$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
 		
@@ -138,7 +138,7 @@ function applyApprovalAction(requestid,action,comment,siteid){
 	}
 }
 </script>
-<div style="display:none;" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
+<div style="display:none;" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
 
 </div>
 </cfif>

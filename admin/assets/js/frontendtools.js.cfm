@@ -2,10 +2,10 @@
 <cfscript>
 	if(structKeyExists(server,'railo')){
 		backportdir='';
-		include "/mura/backport/cfbackport.cfm";
+		include "/mura/backport/backport.cfm";
 	} else {
 		backportdir='/mura/backport/';
-		include "#backportdir#cfbackport.cfm";
+		include "#backportdir#backport.cfm";
 	}
 </cfscript>
 <cfif isDefined("url.siteID")>
@@ -297,7 +297,7 @@
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset stats=node.getStats()>
 				<cfif stats.getLockType() eq 'node' and stats.getLockID() neq session.mura.userid>
-					alert('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"sitemanager.draftprompt.contentislockedbyanotheruser"))#');
+					alert('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.draftprompt.contentislockedbyanotheruser"))#');
 					return false;
 				</cfif>
 			</cfif>
@@ -379,7 +379,7 @@
 					muraInlineEditor.data.changesetid='';
 				} else {
 					if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
-						if(confirm('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
+						if(confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
 							muraInlineEditor.data._removePreviousChangeset=true;
 						}
 					}
@@ -425,7 +425,7 @@
 
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){
-								if(confirm('#encodeForJavascript(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
+								if(confirm('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
 									muraInlineEditor.data.cancelpendingapproval=true;
 								} else {
 									muraInlineEditor.data.cancelpendingapproval=false;
@@ -610,16 +610,16 @@
 			muraaction: 'carch.update',
 			action: 'add',
 			ajaxrequest: true,
-			siteid: '#encodeForJavascript(node.getSiteID())#',
-			contenthistid: '#encodeForJavascript(node.getContentHistID())#',
-			contentid: '#encodeForJavascript(node.getContentID())#',
-			parentid: '#encodeForJavascript(node.getParentID())#',
-			moduleid: '#encodeForJavascript(node.getModuleID())#',
+			siteid: '#esapiEncode('javascript',node.getSiteID())#',
+			contenthistid: '#esapiEncode('javascript',node.getContentHistID())#',
+			contentid: '#esapiEncode('javascript',node.getContentID())#',
+			parentid: '#esapiEncode('javascript',node.getParentID())#',
+			moduleid: '#esapiEncode('javascript',node.getModuleID())#',
 			approved: 0,
 			changesetid: '',
 			bean: 'content',
 			loadby: 'contenthistid',
-			approvalstatus: '#encodeForJavascript(node.getApprovalStatus())#',
+			approvalstatus: '#esapiEncode('javascript',node.getApprovalStatus())#',
 			mura_token: '#csrfTokens.token#',
 			mura_token_expires: '#csrfTokens.expires#'
 			},
@@ -632,7 +632,7 @@
 		for(attribute in nodeCollection)
 			if(isSimpleValue(nodeCollection[attribute]) and reFindNoCase("(\{{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})",nodeCollection[attribute])){
 				if(started){writeOutput(",");}
-				writeOutput("'#encodeForJavascript(lcase(attribute))#':'#encodeForJavascript(trim(nodeCollection[attribute]))#'");
+				writeOutput("'#esapiEncode('javascript',lcase(attribute))#':'#esapiEncode('javascript',trim(nodeCollection[attribute]))#'");
 				started=true;
 			}
 		</cfscript>

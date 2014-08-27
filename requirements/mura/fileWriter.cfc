@@ -250,13 +250,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.baseDir neq arguments.destDir>	
 		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
+		
+		<cfset rsAll=fixQueryPaths(rsAll)>
+		
 		<cfquery name="rsAll" dbtype="query">
 			SELECT * FROM rsAll
 			WHERE 
 			1=1
 			<cfif arguments.excludeHiddenFiles>
-				and directory NOT LIKE '%#application.configBean.getFileDelim()#.svn%'
-				and directory NOT LIKE '%#application.configBean.getFileDelim()#.git%'
+				and directory NOT LIKE '%/.svn%'
+				and directory NOT LIKE '%/.git%'
 				and name not like '.%'
 			</cfif>
 			<cfif len(arguments.excludeList)>
@@ -281,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##application.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##application.configBean.getFileDelim()#">
+			<cfset copyItem="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##rs.name#/">
 			<cfif not DirectoryExists(copyItem)>
 			<cftry>
 				<cfset createDir(directory=copyItem)>
@@ -295,13 +298,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##application.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
+			<cfset copyItem="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)#">
 			<cfif fileExists(copyItem)>
 				<cffile action="delete" file="#copyItem#">
 			</cfif>
 			
 			<cftry>
-				<cfset copyFile(source="#rs.directory##application.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
+				<cfset copyFile(source="#rs.directory#/#rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
 				<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
 			</cftry>
 		</cfloop>
@@ -375,14 +378,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
 	<cfargument name="path" required="yes" type="string" hint="The path to convert.">
-
-	<cfif FindNoCase("Windows", Server.OS.Name)>
-		<cfset arguments.path = Replace(arguments.path, "/", "\", "ALL")>
-	<cfelse>
-		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
-	</cfif>
-
+	<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 	<cfreturn arguments.path>
+</cffunction>
+
+<cffunction name="fixQueryPaths" output="false">
+	<cfargument name="rsDir">
+	<cfargument name="path" default="directory">
+	<cfloop query="rsDir">
+		<cfset querySetCell(rsDir,arguments.path,pathFormat(rsDir[arguments.path][rsDir.currentrow]),rsDir.currentrow)>
+	</cfloop>
+	<cfreturn rsDir>
 </cffunction>
 
 </cfcomponent>

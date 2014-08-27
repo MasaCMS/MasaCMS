@@ -21,16 +21,16 @@
 				<cfif len(rc.avatar)>
 					<dd class="gravatar"><img src="#rc.avatar#"></dd>
 				<cfelse>
-					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(encodeForHTMLAttribute(rc.comment.getEmail()))))#" /></dd>
+					<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(esapiEncode('html_attr',rc.comment.getEmail()))))#" /></dd>
 				</cfif>
 				<dt>
-					#encodeForHTML(rc.comment.getName())#
+					#esapiEncode('html',rc.comment.getName())#
 					<cfif len(rc.comment.getParentID())>
-						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#encodeForHTML(rc.comment.getParent().getName())#</a>)</em>
+						<em>(in reply to: <a href="##" class="inReplyTo" data-parentid="#rc.comment.getParentID()#" data-contentid="#rc.comment.getContentID()#">#esapiEncode('html',rc.comment.getParent().getName())#</a>)</em>
 					</cfif>
 				</dt>
 				<dd class="comment">
-					#rc.$.setParagraphs(encodeForHTML(rc.comment.getComments()))#
+					#rc.$.setParagraphs(esapiEncode('html',rc.comment.getComments()))#
 				</dd>
 				<dd class="date-time">
 					#LSDateFormat(rc.comment.getEntered(),"long")#, #LSTimeFormat(rc.comment.getEntered(),"short")#

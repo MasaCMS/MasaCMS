@@ -95,6 +95,8 @@
 			var entryFile = "";
 			var skip="no";
 
+			arguments.excludeDirs=PathFormat(arguments.excludeDirs);
+
 			try
 			{
 				/* Initialize Zip file */

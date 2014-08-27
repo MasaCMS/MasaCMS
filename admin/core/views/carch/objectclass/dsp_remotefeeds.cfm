@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				& ' - '  
 				& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
 
-			<option title="#encodeForHTMLAttribute(title)#" value="{'object':'feed','name':'#encodeForJavascript(title)#','objectid':'#rc.rslist.feedID#'}">
-				#encodeForHTML(title)#
+			<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rslist.feedID#'}">
+				#esapiEncode('html',title)#
 			</option>
 		</cfloop>
 	</select>

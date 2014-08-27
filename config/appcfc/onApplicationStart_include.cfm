@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
-				exclude=["/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
+				exclude=["/.","/mura/autoUpdater/global","/mura/bean/beanFactory.cfc"],
 				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$" 
 				});
@@ -334,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 					
 	<cfdirectory action="list" directory="#variables.basedir#/requirements/" name="variables.rsRequirements">
-	
+
 	<cfloop query="variables.rsRequirements">
 		<cfif variables.rsRequirements.type eq "dir" and variables.rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#variables.rsRequirements.name#")>
 			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.basedir & "/requirements/#variables.rsRequirements.name#">')>				
@@ -385,11 +385,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 						
 	<cfif application.configBean.getCreateRequiredDirectories()>
-		<cfif not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
+		<cfif not directoryExists("#application.configBean.getWebRoot()#/plugins")> 
 			<cftry>
-				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
+				<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()#/plugins"> 
 				<cfcatch>
-					<cfdirectory action="create" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
+					<cfdirectory action="create" directory="#application.configBean.getWebRoot()#/plugins"> 
 				</cfcatch>
 			</cftry>
 		</cfif>

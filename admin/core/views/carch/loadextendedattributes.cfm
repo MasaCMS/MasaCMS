@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
 		<div class="fieldset">
-			<h2>#encodeForHTML(extendSetBean.getName())#</h2>
+			<h2>#esapiEncode('html',extendSetBean.getName())#</h2>
 		<cfsilent>
 		<cfset attributesArray=extendSetBean.getAttributes() />
 		</cfsilent>
@@ -87,9 +87,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 		      	<label class="control-label">
 				<cfif len(attributeBean.getHint())>
-				<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
 				<cfelse>
-				#encodeForHTML(attributeBean.getLabel())#
+				#esapiEncode('html',attributeBean.getLabel())#
 				</cfif>
 				</label>
 				<div class="controls">
@@ -101,14 +101,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     	 				 	<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
 		     	 				</a>
 		     	 				<ul class="dropdown-menu">
-		     	 					<li><a href="##" type="button" data-completepath="false" data-target="#encodeForJavascript(attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+		     	 					<li><a href="##" type="button" data-completepath="false" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
 		     	 						<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
-		     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('#encodeForJavascript(attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+		     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('#esapiEncode('javascript',attributeBean.getName())#');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
 		     	 				</ul>
 		     	 			</div>
 						<cfelse>
 							<div class="btn-group">
-			     	 			<button type="button" data-target="#encodeForJavascript(attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> Browse Assets</button>
+			     	 			<button type="button" data-target="#esapiEncode('javascript',attributeBean.getName())#" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> Browse Assets</button>
 			     	 		</div>
 						</cfif>
 					</cfif>

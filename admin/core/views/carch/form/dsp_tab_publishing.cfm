@@ -12,7 +12,7 @@
 		<div class="control-group">
   				
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-			      <div class="controls"><input type="text" id="credits" name="credits" value="#encodeForHTMLAttribute(rc.contentBean.getCredits())#"  maxlength="255" class="span12"></div>
+			      <div class="controls"><input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255" class="span12"></div>
 			    </div> <!--- /end control-group --->
 					
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
@@ -24,13 +24,13 @@
 					</div> 
 	      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
 						<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-						<optgroup label="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+						<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 						<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 						<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 						</optgroup>
 						<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
 						<cfif rsGroups.recordcount>
-							<optgroup label="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+							<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
 							<cfloop query="rsGroups">
 								<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
 							</cfloop>
@@ -38,7 +38,7 @@
 						</cfif>
 						<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
 						<cfif rsGroups.recordcount>
-							<optgroup label="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+							<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
 							<cfloop query="rsGroups">
 								<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
 							</cfloop>
@@ -53,7 +53,7 @@
 		     <div class="controls">
 		      	<label for="isNav" class="checkbox">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
-		      		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
+		      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
 		      		 <i class="icon-question-sign"></i></a>
 		      	</label>
 		    </div>
@@ -63,7 +63,7 @@
 		    <div class="controls">
 		     	<label for="Target" class="checkbox">
 		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" > 
-		     		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
+		     		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
 		     		 <i class="icon-question-sign"></i></a>
 		     	</label>
 		     </div>  
@@ -76,7 +76,7 @@
 	
 		<div class="control-group">
 	      	<label class="control-label">
-	      		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
+	      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
 	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
@@ -105,15 +105,15 @@
 						</button>
 					</span>
 	      		</label>
-	      		<div class="controls" id="mover2" style="display:none"><input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#"></div>	
+	      		<div class="controls" id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></div>	
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){
 							e.preventDefault();
 							siteManager.loadSiteParents(
-								'#encodeForJavascript(rc.siteid)#'
-								,'#encodeForJavascript(rc.contentid)#'
-								,'#encodeForJavascript(rc.parentid)#'
+								'#esapiEncode('javascript',rc.siteid)#'
+								,'#esapiEncode('javascript',rc.contentid)#'
+								,'#esapiEncode('javascript',rc.parentid)#'
 								,''
 								,1
 							);
@@ -124,19 +124,19 @@
 				
 			</div> <!--- /end control-group --->
 		<cfelse>
-		 	<input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#">
+		 	<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 		</cfif>
 	<cfelse>
 		<cfif rc.type neq 'Component' and rc.type neq 'Form'>	
 			<input type="hidden" name="display" value="#rc.contentBean.getdisplay()#">
 				<cfif rc.contentid eq '00000000000000000000000000000000001' or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'top') or application.settingsManager.getSite(rc.siteid).getlocking() eq 'all'>
-					<input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#">
+					<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 				</cfif>
 			<input type="hidden" name="displayStart" value="">
 			<input type="hidden" name="displayStop" value="">
 		<cfelse>
 			<input type="hidden" name="display" value="1">
-			<input type="hidden" name="parentid" value="#encodeForHTMLAttribute(rc.parentid)#">
+			<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 		</cfif>
 		
 	</cfif>
@@ -151,7 +151,7 @@
 			</div>
 			<div class="controls" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
-					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#encodeForJavascript(rc.siteid)#','#encodeForJavascript(rc.contenthistid)#','#encodeForJavascript(rc.parentid)#');"  class="checkbox">
+					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 				</label>
 			</div>
@@ -198,8 +198,8 @@
 		<div class="controls">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
 	   		<label for="dspnotify" class="checkbox">
-	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#encodeForJavascript(rc.siteid)#','#encodeForJavascript(rc.contentid)#','#encodeForJavascript(rc.parentid)#');"  class="checkbox"> 
-	      		<a href="##" rel="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
+	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox"> 
+	      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
 	      		 <i class="icon-question-sign"></i></a>
 	      	</label>

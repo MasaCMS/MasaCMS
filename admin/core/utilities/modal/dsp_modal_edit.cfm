@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			document.write(unescape('%3Cscript src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"%3E%3C/script%3E'));
 		}
 	</script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#encodeForURL(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#esapiEncode('url',variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>
 
 	<!---[if LT IE9]>
 	   <style type="text/css">
@@ -84,6 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.adminBase=""/>
 			</cfif>
 			
+			<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
 			<cfset variables.targetHook=generateEditableHook()>
 			
 			<cfif $.siteConfig('hasLockableNodes')>
@@ -218,9 +219,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<a class="mura-inline-save" data-approved="1" data-changesetid="">
 											<i class="icon-ok"></i> 
 											<cfif $.content().requiresApproval()>
-												#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
+												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
 											<cfelse>
-												#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
+												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
 											</cfif>
 											</a>
 										</li>
@@ -229,14 +230,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<li>
 											<a class="mura-inline-save" data-approved="0" data-changesetid="">
 												<i class="icon-edit"></i>  
-												#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
+												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
 											</a>
 										</li>
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 										<li class="dropdown-submenu">
 											<a href=""><i class="icon-list"></i> 
-											#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
+											#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 											<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
 											<ul class="dropdown-menu">
@@ -244,18 +245,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<cfloop condition="changesets.hasNext()">
 													<cfset changeset=changesets.next()>
 													<li>
-														<a class="mura-inline-save" data-approved="0" data-changesetid="#changeset.getChangesetID()#">#encodeForHTML(changeset.getName())#</a>
+														<a class="mura-inline-save" data-approved="0" data-changesetid="#changeset.getChangesetID()#">#esapiEncode('html',changeset.getName())#</a>
 													</li>
 												</cfloop>
 												<cfelse>
 													<li>
-														<a class="mura-inline-cancel">#encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.noneavailable"))#</a>
+														<a class="mura-inline-cancel">#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.noneavailable"))#</a>
 													</li>
 												</cfif>
 											</ul>
 										</li>
 									</cfif>
-									<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> #encodeForHTML(application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
+									<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
 								</ul>
 							</li>
 						</cfif>
@@ -301,14 +302,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
-								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#encodeForJavascript(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')# ---></a></li>
+								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')# ---></a></li>
 							</cfif>
 						</ul>
 					</cfif>
 				
 					<!--- BEGIN CHANGESETS ---> 
 					<cfif $.siteConfig('HasChangeSets')>
-						<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
+						
 						<cfset customMenu=variables.$.renderEvent('onExperienceToolbarRender')>
 
 						<cfif len(customMenu)>
@@ -320,12 +321,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
 							<ul id="tools-changesets">
 								
-								<li id="cs-title" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#encodeForHTML(previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
+								<li id="cs-title" class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i>CS</i><cfif request.muraChangesetPreview>#esapiEncode('html',previewData.name)#<cfif isDate(previewData.publishDate)> (#LSDateFormat(previewData.publishDate,session.dateKeyFormat)#)</cfif><cfelse>None Selected</cfif><b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li><a href="./?changesetid=">None</a></li>
 										<cfloop query="rsChangesets">
 										<li><a href="./?changesetid=#rschangesets.changesetid#">
-												#encodeForHTML(rsChangesets.name)#
+												#esapiEncode('html',rsChangesets.name)#
 												<cfif isDate(rsChangesets.publishDate)> (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</cfif>
 											</a>
 										</li>
@@ -338,13 +339,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 								</cfif>
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
 									<cfif request.muraChangesetPreview>
 										<ul class="dropdown-menu">
 										<cfif changesetMembers.hasNext()>
 											<cfloop condition="changesetMembers.hasNext()">
 											<cfset changesetMember=changesetMembers.next()>
-											<li><a href="#changesetMember.getURL()#">#encodeForHTML(changesetMember.getMenuTitle())#</a></li>
+											<li><a href="#changesetMember.getURL()#">#esapiEncode('html',changesetMember.getMenuTitle())#</a></li>
 											</cfloop>
 										<cfelse>
 											<li><a onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'changesets.noassignedcontent')#</a></li>
@@ -361,22 +362,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif request.muraChangesetPreview and structKeyExists(previewData.previewmap,$.content("contentID")) >
 									<cfif previewData.previewmap[$.content("contentID")].changesetID eq previewData.changesetID>
 										<li>
-											<a href="" data-toggle="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
+											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
 												<i class="icon-check"></i>
-												 <!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#encodeForHTMLAttribute(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+												 <!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#esapiEncode('html_attr',previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
 											</a>
 										</li>
 									<cfelse>
 										<li>
-											<a href="" data-toggle="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
+											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
 												<i class="icon-code-fork"></i>
-												<!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#encodeForHTMLAttribute(previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+												<!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#esapiEncode('html_attr',previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
 											</a>
 										</li>
 									</cfif>
 								<cfelse>
 									<li>
-										<a href="" data-toggle="tooltip" title="#encodeForHTMLAttribute(application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
+										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
 											<i class="icon-ban-circle"></i>
 											<!---#application.rbFactory.getKeyValue(session.rb,"changesets.previewnodenotinchangeset")#--->
 										</a>
@@ -395,7 +396,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
 						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="icon-signout"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
-						<li id="adminWelcome"><i class="icon-user"></i> #encodeForHTML("#session.mura.fname# #session.mura.lname#")#</li>
+						<li id="adminWelcome"><i class="icon-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
 
