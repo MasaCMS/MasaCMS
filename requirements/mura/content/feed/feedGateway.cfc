@@ -879,9 +879,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
 										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
-									)
-									OR 
-									(
+									) OR (
 										<cfif len(altTable)>
 											tcontent.parentType='Calendar'
 										<cfelse>
@@ -890,9 +888,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										
 										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> 
 										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
-										
 									)
-
 								)			 
 							)		
 					

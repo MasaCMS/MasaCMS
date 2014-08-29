@@ -1019,7 +1019,7 @@ and tclassextendattributes.type='File'
 	<cfcase value="Numeric">
 		<cfreturn "numericvalue">
 	</cfcase>
-	<cfcase value="Date,DateTime">
+	<cfcase value="Date,DateTime,timestamp">
 		<cfreturn "datetimevalue">
 	</cfcase>
 	<cfdefaultcase>

@@ -187,6 +187,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 
+	<cfif IsValid('date', tmp)>
+		<cfset setDataType('datetime') />	
+	</cfif>
+
 	<cfif tmp eq "null">
 		<cfset variables.criteria="null">
 	<cfelse>
