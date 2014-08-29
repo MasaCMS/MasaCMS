@@ -131,6 +131,8 @@ component extends='mura.cfobject' {
       local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
     }
 
+    local.rs = filterCalendarItems(data=local.rs, maxItems=0);
+
     variables.$.commitTracePoint(tp);
 
     return arguments.returnFormat == 'iterator'
@@ -156,6 +158,19 @@ component extends='mura.cfobject' {
     }
 
     return defaultDate;
+  }
+
+  public any function filterCalendarItems(required query data, numeric maxItems=1000) {
+    var maxRows = !arguments.maxItems ? 100000 : arguments.maxItems;
+    var qoq = new Query();
+    qoq.setDBType('query');
+    qoq.setAttributes(rs=arguments.data, maxRows=maxRows);
+    qoq.setSQL('
+      SELECT *
+      FROM rs
+      ORDER BY displaystart ASC
+    ');
+    return qoq.execute().getResult();
   }
 
 }
