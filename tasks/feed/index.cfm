@@ -115,6 +115,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.siteid=feedBean.getSiteID()>
 	<cfset feedIt = application.serviceFactory.getBean("contentIterator").setQuery(rs)>
 	<cfset setLocale(application.settingsManager.getSite(feedBean.getSiteID()).getJavaLocale()) />
+	<cfif cgi.user_agent contains "Mozilla">
+		<cfheader name="Content-Type" value="text/xml">
+	<cfelse>
+		<cfheader name="Content-Type" value="application/rss+xml">
+	</cfif>
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920">
 			<cfinclude template="rss0920.cfm">
