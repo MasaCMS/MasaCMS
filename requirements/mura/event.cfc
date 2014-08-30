@@ -166,7 +166,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getServiceFactory" returntype="any" access="public" output="false">
-	<cfreturn application.serviceFactory />	
+	<cfif isDefined('application') and structKeyExists(application,'serviceFactory')>
+		<cfreturn application.serviceFactory />
+	<cfelseif structKeyExists(variables,'applicationScope')><!--- in case this is called in the onRequestEnd() --->
+		<cfreturn variables.applicationScope />
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="getMuraScope" returntype="any" access="public" output="false">
