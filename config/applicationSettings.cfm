@@ -310,8 +310,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 
 		// Amazon S3 Credentials
-		this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
-		this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
+		//this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
+		//this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
 	</cfscript>
 
 	<cffunction name="evalSetting" output="false">
