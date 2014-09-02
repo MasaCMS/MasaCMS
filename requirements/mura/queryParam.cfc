@@ -72,6 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setDataType(arguments.dataType) />
 	<cfset setCondition(arguments.condition) />
 	<cfset setCriteria(arguments.criteria,arguments.condition) />
+
 	<cfset validate()>
 	<cfreturn this>
 </cffunction>
@@ -181,14 +182,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="criteria">
 	<cfargument name="condition">
 	<cfset var tmp="" />
-	
+
 	<cftry>
 		<cfset tmp=getContentRenderer().setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 
-	<cfif IsValid('date', tmp)>
-		<cfset setDataType('datetime') />	
+	<cfif LSIsDate(tmp) or IsDate(tmp)>
+			<cfset setDataType('datetime') />
 	</cfif>
 
 	<cfif tmp eq "null">
@@ -200,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="Begins" >
 					<cfset variables.criteria="#tmp#%" />
 				</cfcase>
-				<cfcase value="Contains" >
+				<cfcase value="Contains,Like" >
 					<cfset variables.criteria="%#tmp#%" />
 				</cfcase>
 				<cfdefaultcase>
@@ -220,12 +221,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setIsValid(false) />
 			</cfif>
 		</cfcase>
-		<cfcase value="timestamp,datetime" >
+		<cfcase value="timestamp,datetime">
 			<cfif lsIsDate(tmp)>
-				<cfset tmp=lsParseDateTime(tmp)>
+				<cftry>
+					<cfset tmp=lsParseDateTime(tmp)>
+					<cfcatch><!--- already parsed ---></cfcatch>
+				</cftry>
 				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
 			<cfelseif isDate(tmp)>
-				<cfset tmp=parseDateTime(tmp)>
+				<cftry>
+					<cfset tmp=parseDateTime(tmp)>
+					<cfcatch><!--- already parsed ---></cfcatch>
+				</cftry>
 				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
 			<cfelse>
 				<cfset variables.criteria="" />
@@ -250,7 +257,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		</cfswitch>
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="getCriteria">
@@ -259,7 +265,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn variables.criteria />
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="setDataType">
