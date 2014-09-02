@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 
-	<cfif LSIsDate(tmp) or IsDate(tmp)>
+	<cfif len(tmp) and (LSIsDate(tmp) or IsDate(tmp))>
 			<cfset setDataType('datetime') />
 	</cfif>
 
