@@ -1014,7 +1014,6 @@ and tclassextendattributes.type='File'
 		</cfquery>
 		<cfset arguments.datatype=rs.validation>
 	</cfif>
-	
 	<cfswitch expression="#arguments.datatype#">
 	<cfcase value="Numeric">
 		<cfreturn "numericvalue">
