@@ -60,6 +60,7 @@
 <cfset variables.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
 <cfset variables.frmForm		= variables.frm.form />
 <cfset variables.frmData		= variables.frm.datasets />
+<cfset variables.attributes		= variables.frm.form.formattributes />
 <cfset variables.frmFields	= variables.frmForm.fields />
 <cfset variables.dataset		= "" />
 <cfset variables.isMultipart	= false />
@@ -119,7 +120,7 @@
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<form id="#variables.frmID#" class="#variables.$.siteConfig('bsFormLayout')# mura-form-builder" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
+<form id="#variables.frmID#" class="<cfif len(variables.attributes.class)>#variables.attributes.class# </cfif>mura-form-builder" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#variables.frmFieldContents#
 	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
