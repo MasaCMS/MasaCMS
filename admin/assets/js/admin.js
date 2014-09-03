@@ -672,12 +672,14 @@ function submitForm(frm, action, msg) {
 
 function actionModal(action) {
 	$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
-	if(typeof(action)=='string'){
-		$('#action-modal').spin(spinnerArgs);
-		location.href=action;
-	} else {
-		$('#action-modal').spin(spinnerArgs);
-		action();
+	$('#action-modal').spin(spinnerArgs);
+	
+	if(action){
+		if(typeof(action)=='string'){
+			location.href=action;
+		} else {
+			action();
+		}
 	}
  
 	return false;
