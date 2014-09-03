@@ -85,6 +85,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset object=variables.instance.event>
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),arguments.MissingMethodName)>
 			<cfset object=getContentRenderer()>
+		<cfelseif structKeyExists(request.customMuraScopeKeys,arguments.MissingMethodName)>
+			<cfreturn request.customMuraScopeKeys[arguments.MissingMethodName]>
 		<cfelseif isObject(getContentBean())>
 			<cfif structKeyExists(getContentBean(),arguments.MissingMethodName)>
 				<cfset object=getContentBean()>
@@ -100,8 +102,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 				</cfif>
 			</cfif>
-		<cfelseif structKeyExists(request.customMuraScopeKeys,arguments.MissingMethodName)>
-			<cfreturn request.customMuraScopeKeys[arguments.MissingMethodName]>
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
