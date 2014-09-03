@@ -100,6 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 				</cfif>
 			</cfif>
+		<cfelseif structKeyExists(request.customMuraScopeKeys,arguments.MissingMethodName)>
+			<cfreturn request.customMuraScopeKeys[arguments.MissingMethodName]>
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
