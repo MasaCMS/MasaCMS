@@ -60,6 +60,9 @@
 <cfset variables.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
 <cfset variables.frmForm		= variables.frm.form />
 <cfset variables.frmData		= variables.frm.datasets />
+<cfif not isDefined('variables.frm.form.formattributes')>
+	<cfset variables.frm.form.formattributes={class=''}>
+</cfif>
 <cfset variables.attributes		= variables.frm.form.formattributes />
 <cfset variables.frmFields	= variables.frmForm.fields />
 <cfset variables.dataset		= "" />
