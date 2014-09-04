@@ -210,14 +210,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
-				<cfset delim=variables.configBean.getFileDelim() />
+				
 				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>				
-					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
+					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
 					<cfif not fileExists(theFileLocation)>
-						<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
+						<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#.#rsFileData.fileExt#" />
 					</cfif>
 				<cfelse>
-					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
+					<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFileData.siteid#/cache/file/#arguments.fileID#.#rsFileData.fileExt#" />
 				</cfif>
 				
 				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsfileData.created)>
@@ -244,7 +244,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="method" type="string" required="true" default="inline">
 
 	<cfset var rsFile="" />
-	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	<cfset var fileCheck="" />
@@ -272,8 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfset delim=variables.configBean.getFileDelim() />
-				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
+				<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFile.siteid#/cache/file/#arguments.fileID#_small.#rsFile.fileExt#" />
 				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
 			</cfcase>
 			<cfcase value="S3">
@@ -288,7 +286,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="method" type="string" required="true" default="inline">
 
 	<cfset var rsFile="" />
-	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	<cfset var fileCheck="" />
@@ -316,8 +313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not rsFile.recordcount>
 					<cfset getBean("contentServer").render404()>
 				</cfif>
-				<cfset delim=variables.configBean.getFileDelim() />
-				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
+				<cfset theFileLocation="#variables.configBean.getFileDir()#/#rsFile.siteid#/cache/file/#arguments.fileID#_medium.#rsFile.fileExt#" />
 				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
 			</cfcase>
 			<cfcase value="S3">
@@ -828,7 +824,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 		<cfelseif arguments.size neq 'custom'>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
 		<cfelse>
 			<cfif not len(arguments.width)>
 				<cfset arguments.width="auto">
@@ -836,7 +832,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(arguments.height)>
 				<cfset arguments.height="auto">
 			</cfif>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
+			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 		</cfif>
 	<cfelse>
 		<cfif arguments.size eq "large">

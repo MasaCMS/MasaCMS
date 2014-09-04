@@ -294,13 +294,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.ormenabled=false>
 	</cfif>
 
-	<cfset this.javaSettings = {
-		loadPaths=[evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib'))]
-		, loadColdFusionClassPath=evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',true))
-		, reloadOnChange=evalSetting(properties.getProperty('javaSettingsReloadOnChange',false))
-		, watchInterval=evalSetting(properties.getProperty('javaSettingsWatchInterval',60))
-		, watchExtensions=evalSetting(properties.getProperty('javaSettingsWatchExtensions','jar,class'))
-	}>
+	<cfscript>
+		// if true, CF converts form fields as an array instead of a list (not recommended)
+		this.sameformfieldsasarray=evalSetting(properties.getProperty('sameformfieldsasarray',false));
+
+		// Custom Java library paths with dynamic loading
+		try {
+			variables.loadPaths = ListToArray(evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib')));
+		} catch(any e) {
+			variables.loadPaths = ['#properties.getProperty('context','')#/requirements/lib'];
+		}
+
+		this.javaSettings = {
+			loadPaths=variables.loadPaths
+			, loadColdFusionClassPath = evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',true))
+			, reloadOnChange=evalSetting(properties.getProperty('javaSettingsReloadOnChange',false))
+			, watchInterval=evalSetting(properties.getProperty('javaSettingsWatchInterval',60))
+			, watchExtensions=evalSetting(properties.getProperty('javaSettingsWatchExtensions','jar,class'))
+		};
+
+		// Amazon S3 Credentials
+		try {
+			this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
+			this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
+		} catch(any e) {
+			// not supported
+		}
+	</cfscript>
 
 	<cffunction name="evalSetting" output="false">
 		<cfargument name="value">

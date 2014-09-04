@@ -1493,7 +1493,7 @@ Display Objects
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
 <cfargument name="taggroup"  type="any"  required="true"  default="" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
-	<cfset var fileDelim = application.configBean.getFileDelim() />
+	<cfset var fileDelim = "/" />
 	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
 	<cfset var theContent = "" />
 	<cfset var theme =variables.$.siteConfig("theme")>
@@ -1567,7 +1567,7 @@ Display Objects
 	
 	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 	</cfif>
 	
 	<cfswitch expression="#arguments.type#">
@@ -1607,7 +1607,7 @@ Display Objects
 	
 	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-		<cfset arguments.filename=replace(arguments.filename,'%2F','/')>
+		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 	</cfif>
 
 	<cfswitch expression="#arguments.type#">
@@ -1738,7 +1738,7 @@ Display Objects
 	<cfargument name="contentHistID" required="true" default="0">
 	<cfargument name="throwError" default="true">
 	
-	<cfset var fileDelim = application.configBean.getFileDelim() />
+	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = variables.$.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
 	<cfset var themePath = variables.$.siteConfig('themeAssetPath') />
@@ -2084,7 +2084,7 @@ Display Objects
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
-	<cfset var fileDelim= application.configBean.getFileDelim() />
+	<cfset var fileDelim="/" />
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">

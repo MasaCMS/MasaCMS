@@ -93,7 +93,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
 			}	else {
 				
-				var fileDelim=getBean('configBean').getFileDelim();
+				var fileDelim='/';
 
 				try{
 					fileDelete(local.tempfile.serverDirectory & fileDelim & local.tempfile.serverFilename & '.' & local.tempfile.serverFileExt);

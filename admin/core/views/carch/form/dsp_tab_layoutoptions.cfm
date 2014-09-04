@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <dl>
             <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
             <dd>
-              <select name="classSelector" onchange="siteManager.loadObjectClass('#rc.siteid#',this.value,'','#rc.contentBean.getContentID()#','#rc.parentID#','#rc.contentBean.getContentHistID()#',0);"  id="dragme">
+              <select name="classSelector" onchange="siteManager.loadObjectClass('#esapiEncode("Javascript",rc.siteid)#',this.value,'','#rc.contentBean.getContentID()#','#esapiEncode("Javascript",rc.parentID)#','#rc.contentBean.getContentHistID()#',0);"  id="dragme">
                 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
                 <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
                <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
                   <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
                 </cfif>
-                <cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##rc.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClassLabel.cfm")>
+                <cfif fileExists("#application.configBean.getWebRoot()#/#rc.siteid#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm")>
                   <cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
                 </cfif>
                 <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>

@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(arguments.config,"pluginDir") and len(trim(arguments.config.pluginDir))>
 		<cfset setPluginDir(arguments.config.pluginDir)/>
 	<cfelse>
-		<cfset setPluginDir("#getWebRoot()##getFileDelim()#plugins")/>
+		<cfset setPluginDir("#getWebRoot()#/plugins")/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">

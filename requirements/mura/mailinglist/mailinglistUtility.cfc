@@ -48,10 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
-		<cfset var fileDelim="/"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.utility=arguments.utility />
-		<cfset fileDelim=variables.configBean.getFileDelim() />
 		<cfreturn this />
 </cffunction>
 

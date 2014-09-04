@@ -304,11 +304,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset openGrouping=false />
 									<cfloop query="rsParams">
 										<cfset param=createObject("component","mura.queryParam").init(
-											rsParams.relationship,
-											rsParams.field,
-											rsParams.dataType,
-											rsParams.condition,
-											rsParams.criteria
+											relationship=rsParams.relationship,
+											field=rsParams.field,
+											dataType=rsParams.dataType,
+											condition=rsParams.condition,
+											criteria=rsParams.criteria
 										) />
 																 
 										<cfif param.getIsValid() and (param.isGroupingParam() or listLen(param.getField(),".") gt 1)>
@@ -620,11 +620,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					<cfloop query="rsParams">
 						<cfset param=createObject("component","mura.queryParam").init(
-							rsParams.relationship,
-							rsParams.field,
-							rsParams.dataType,
-							rsParams.condition,
-							rsParams.criteria
+							relationship=rsParams.relationship,
+							field=rsParams.field,
+							datatype=rsParams.datatype,
+							condition=rsParams.condition,
+							criteria=rsParams.criteria
 						) />
 
 						<cfif param.getIsValid()>
@@ -879,9 +879,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
 										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
-									)
-									OR 
-									(
+									) OR (
 										<cfif len(altTable)>
 											tcontent.parentType='Calendar'
 										<cfelse>
@@ -890,9 +888,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										
 										and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.to#"> 
 										and (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.from#"> or tcontent.DisplayStop is null)
-										
 									)
-
 								)			 
 							)		
 					
