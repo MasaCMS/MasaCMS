@@ -299,7 +299,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		this.sameformfieldsasarray=evalSetting(properties.getProperty('sameformfieldsasarray',false));
 
 		// Custom Java library paths with dynamic loading
-		variables.loadPaths = ListToArray(evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib')));
+		try {
+			variables.loadPaths = ListToArray(evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib')));
+		} catch(any e) {
+			variables.loadPaths = ['#properties.getProperty('context','')#/requirements/lib'];
+		}
 
 		this.javaSettings = {
 			loadPaths=variables.loadPaths
@@ -310,8 +314,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 
 		// Amazon S3 Credentials
-		//this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
-		//this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
+		try {
+			this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
+			this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
+		} catch(any e) {
+			// not supported
+		}
 	</cfscript>
 
 	<cffunction name="evalSetting" output="false">
