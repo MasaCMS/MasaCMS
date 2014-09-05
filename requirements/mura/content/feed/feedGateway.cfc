@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
 		<cfset arguments.from=nowAdjusted>
-		<cfset arguments.to=dateAdd('m',1,nowAdjusted)>
+		<cfset arguments.to=dateAdd('y',1,nowAdjusted)>
 	</cfif>
 	
 	<cfif arguments.feedBean.getType() eq "Local">
@@ -973,10 +973,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif not arguments.countOnly and arguments.feedBean.getLiveOnly()>
-		<cfreturn variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
-	<cfelse>
-		<cfreturn rsFeed>
-	</cfif>	
+		<cfset rsfeed=variables.contentIntervalManager.apply(query=rsFeed,current=nowAdjusted,from=arguments.from,to=arguments.to) />
+	</cfif>
+
+	<cfif arguments.feedBean.getMaxItems() and rsFeed.recordcount gt arguments.feedBean.getMaxItems()>
+		<cfquery name="rsfeed" dbtype="query" maxrows="#arguments.feedBean.getMaxItems()#">
+			select * from rsfeed 
+		</cfquery>
+	</cfif>
+
+	<cfreturn rsFeed>
+	
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">
