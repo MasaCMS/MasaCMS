@@ -150,7 +150,7 @@
 						<cfset variables.class=listAppend(variables.class,"last"," ")/> 
 					</cfif>
 				</cfsilent>
-				<li class="#variables.class#"<cfif isNumeric(variables.imageWidth)> style="width:#variables.imageWidth#px;"</cfif>>
+				<li class="#variables.class# #this.galleryLIClass#"<cfif isNumeric(variables.imageWidth) && this.galleryImageStyles eq true> style="width:#variables.imageWidth#px;"</cfif>>
 					<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery #this.galleryThumbnailClass#"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 				 	<dl>
 				 	<cfloop list="#variables.$.content("displayList")#" index="field">

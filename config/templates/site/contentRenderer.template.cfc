@@ -344,8 +344,10 @@
 		this.formBuilderCheckboxClass="";
 		
 		//gallery/index.cfm
+		this.galleryImageStyles=true;
 		this.galleryWrapperClass="";
 		this.galleryULClass="";
+		this.galleryLIClass="";
 		this.galleryThumbnailClass="";
 		
 		//nav/calendarNav/navTools.cfc
