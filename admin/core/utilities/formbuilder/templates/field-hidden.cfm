@@ -75,6 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>
 							<input class="text long" type="text" name="value" value="" maxlength="250" />
 						</li>
+						#application.serviceFactory.getBean('$').init(session.siteid).renderEvent('onFormElementBasicTabRender')#
 					</ul>
 			</div>		
 		</div>
