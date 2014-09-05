@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not(isDate(arguments.from) and isDate(arguments.to))>
 		<cfset arguments.from=nowAdjusted>
-		<cfset arguments.to=dateAdd('y',1,nowAdjusted)>
+		<cfset arguments.to=dateAdd('m',12,nowAdjusted)>
 	</cfif>
 	
 	<cfif arguments.feedBean.getType() eq "Local">
