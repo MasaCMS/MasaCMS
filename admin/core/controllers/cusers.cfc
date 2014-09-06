@@ -165,9 +165,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 		editGroup(rc);
 	}
 
-	public any function deleteGroup(rc) {
+	// public any function deleteGroup(rc) {
 
-	}
+	// }
 
 	public any function addToGroup(rc) {
 		getUserManager().createUserInGroup(arguments.rc.userid, arguments.rc.groupid);
@@ -206,13 +206,17 @@ component persistent='false' accessors='true' output='false' extends='controller
 		variables.fw.redirect(action='cUsers', append='siteid', path='./');
 	}
 
+
+// ----------------- SEARCH ----------------------------- //
 	public any function search(rc) {
+		param name='rc.isPublic' default='1';
 		arguments.rc.rslist=getUserManager().getSearch(
-			arguments.rc.search
-			, arguments.rc.siteid
-			, arguments.rc.type
+			search=arguments.rc.search
+			, siteid=arguments.rc.siteid
+			, isPublic=rc.isPublic
 		);
 
+		// if only one match, then go to edit user form
 		// if ( arguments.rc.rslist.recordcount == 1 ) {
 		// 	arguments.rc.userID = rc.rslist.userid;
 		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
@@ -261,19 +265,21 @@ component persistent='false' accessors='true' output='false' extends='controller
 		var origSiteID = arguments.rc.siteID;
 		request.newImageIDList = '';
 
-		switch(arguments.rc.action) {
-			case 'Update' :
-				arguments.rc.userBean=getUserManager().update(arguments.rc);
-				break;
-			case 'Delete' :
-				getUserManager().delete(arguments.rc.userid,arguments.rc.type);
-				break;
-			case 'Add' :
-				arguments.rc.userBean=getUserManager().create(arguments.rc);
-				if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
-					arguments.rc.userid=arguments.rc.userBean.getUserID();
-				}
-				break;
+		if ( rc.$.validateCSRFTokens(context=rc.userid) ) {
+			switch(arguments.rc.action) {
+				case 'Update' :
+					arguments.rc.userBean=getUserManager().update(arguments.rc);
+					break;
+				case 'Delete' :
+					getUserManager().delete(arguments.rc.userid,arguments.rc.type);
+					break;
+				case 'Add' :
+					arguments.rc.userBean=getUserManager().create(arguments.rc);
+					if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
+						arguments.rc.userid=arguments.rc.userBean.getUserID();
+					}
+					break;
+			}
 		}
 	  
 	  arguments.rc.siteID = origSiteID;

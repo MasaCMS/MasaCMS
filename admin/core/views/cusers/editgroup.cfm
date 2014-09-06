@@ -73,9 +73,9 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfoutput>
 		<h1>#rc.$.rbKey('user.groupform')#</h1>
 		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
+			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
 				<i class="icon-circle-arrow-left"></i> 
-				#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#
+				#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
 			</a>
 
 			<a class="btn" href="#buildURL(action='cusers.list')#">
@@ -84,7 +84,7 @@ select * from rsSubTypes where subType <> 'Default'
 			</a>
 
 			<cfif !rc.userBean.getIsNew()>
-				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#')#">
+				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#">
 					<i class="icon-group"></i>
 					View Group Users
 				</a>
@@ -98,7 +98,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 		</cfif>
 
-		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cUsers.update&amp;userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cUsers.update&amp;userid=#esapiEncode('url',rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 	</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
@@ -106,12 +106,12 @@ select * from rsSubTypes where subType <> 'Default'
 				<ul class="nav nav-tabs tabs initActiveTab">
 					<cfoutput>
 						<li>
-							<a href="##tabBasic" onclick="return false;"><span>#HTMLEditFormat(rc.$.rbKey('user.basic'))#</span></a>
+							<a href="##tabBasic" onclick="return false;"><span>#esapiEncode('html',rc.$.rbKey('user.basic'))#</span></a>
 						</li>
 						<cfif rsSubTypes.recordcount>
 							<li id="tabExtendedattributesLI" class="hide">
 								<a href="##tabExtendedattributes" onclick="return false;">
-									<span>#HTMLEditFormat(rc.$.rbKey('user.extendedattributes'))#</span>
+									<span>#esapiEncode('html',rc.$.rbKey('user.extendedattributes'))#</span>
 								</a>
 							</li>
 						</cfif>
@@ -122,7 +122,7 @@ select * from rsSubTypes where subType <> 'Default'
 								<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
 								<li id="###tabID#LI">
 									<a href="###tabID#" onclick="return false;">
-										<span>#HTMLEditFormat(pluginEventMappings[i].pluginName)#</span>
+										<span>#esapiEncode('html',pluginEventMappings[i].pluginName)#</span>
 									</a>
 								</li>
 							</cfloop>
@@ -162,7 +162,7 @@ select * from rsSubTypes where subType <> 'Default'
 							#rc.$.rbKey('user.groupname')#
 						</label>
 						<div class="controls">
-							<input type="text" class="span12" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#" required="true" message="#rc.$.rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
+							<input type="text" class="span12" name="groupname" value="#esapiEncode('html',rc.userBean.getgroupname())#" required="true" message="#rc.$.rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
 						</div>
 					</div>
 
@@ -172,7 +172,7 @@ select * from rsSubTypes where subType <> 'Default'
 							Group Email
 						</label>
 						<div class="controls">
-							<input type="text" class="span12" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#">
+							<input type="text" class="span12" name="email" value="#esapiEncode('html',rc.userBean.getemail())#">
 						</div>
 					</div>
 				</div>
@@ -264,7 +264,7 @@ select * from rsSubTypes where subType <> 'Default'
 							<cfif rc.userbean.getPerm()>
 								<input type="hidden" name="isPublic" value="0">
 							</cfif>
-							<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+							<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
 							<cfif not rsNonDefault.recordcount>
 								<input type="hidden" name="subtype" value="Default"/>
 							</cfif>
@@ -294,8 +294,8 @@ select * from rsSubTypes where subType <> 'Default'
 					<cfif rc.userbean.getPerm()>
 						<input type="hidden" name="isPublic" value="0">
 					</cfif>
-					<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-					<input type="hidden" name="returnurl" value="#HTMLEditFormat(rc.returnurl)#">
+					<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
+					<input type="hidden" name="returnurl" value="#esapiEncode('html',rc.returnurl)#">
 					<cfif not rsNonDefault.recordcount>
 						<input type="hidden" name="subtype" value="Default"/>
 					</cfif>

@@ -59,7 +59,7 @@
 
 		<cfif attributes.nestlevel eq 0>
 			<label class="control-label">
-				#HTMLEditFormat(rslist.site)#
+				#esapiEncode('html',rslist.site)#
 			</label>
 		</cfif>
 

@@ -157,14 +157,14 @@
 							<!--- Last Name, First Name --->
 							<td class="var-width">
 								<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#">
-									#HTMLEditFormat(local.user.getValue('lname'))#, #HTMLEditFormat(local.user.getValue('fname'))#
+									#esapiEncode('html',local.user.getValue('lname'))#, #esapiEncode('html',local.user.getValue('fname'))#
 								</a>
 							</td>
 							<!--- Email --->
 							<td>
 								<cfif Len(local.user.getValue('email'))>
 									<a href="mailto:#URLEncodedFormat(local.user.getValue('email'))#">
-										#HTMLEditFormat(local.user.getValue('email'))#
+										#esapiEncode('html',local.user.getValue('email'))#
 									</a>
 								<cfelse>
 									&nbsp;
@@ -180,7 +180,7 @@
 							</td>
 							<!--- Last Update By --->
 							<td>
-								#HTMLEditFormat(local.user.getValue('lastupdateby'))#
+								#esapiEncode('html',local.user.getValue('lastupdateby'))#
 							</td>
 							<!--- Actions --->
 							<td class="actions">

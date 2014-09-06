@@ -112,11 +112,11 @@
 </cfsilent>
 
 <cfoutput>
-	<h1>#rc.$.rbKey("user.advancedmembersearch")#</h1>
+	<h1>#rc.$.rbKey("user.advancedusersearch")#</h1>
 
 	<ul class="navTask nav nav-pills">
 		<li>
-			<a href="./?muraAction=cUsers.search&amp;siteid=#URLEncodedFormat(rc.siteid)#">
+			<a href="./?muraAction=cUsers.search&amp;siteid=#esapiEncode('url',rc.siteid)#">
 				#rc.$.rbKey("user.basicsearch")#
 			</a>
 		</li>
@@ -154,11 +154,11 @@
 						<input type="text" name="paramCriteria1" class="span4">
 
 						<!--- remove --->
-						<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#rc.$.rbKey("params.removecriteria")#">
+						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rc.$.rbKey("params.removecriteria")#">
 							<i class="icon-remove-sign"></i>
 						</a>
 						<!--- add --->
-						<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#rc.$.rbKey("params.addcriteria")#">
+						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey("params.addcriteria")#">
 							<i class="icon-plus-sign"></i>
 						</a>
 					<cfelse>
@@ -192,10 +192,10 @@
 							</select>
 							
 							<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
-							<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.removecriteria')#">
+							<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.removecriteria')#">
 								<i class="icon-remove-sign"></i>
 							</a>
-							<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.addcriteria')#">
+							<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.addcriteria')#">
 								<i class="icon-plus-sign"></i>
 							</a><br>
 						</cfloop>
@@ -223,7 +223,7 @@
 		<!--- Form Buttons --->
 		<div class="form-actions">
 			<input type="hidden" name="muraAction" value="cUsers.advancedSearch">
-			<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+			<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
 			
 			<!--- Search Button --->
 			<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
@@ -247,7 +247,7 @@
 	<cfsilent>
 		<cfset rc.rslist=application.userManager.getAdvancedSearch(session,rc.siteid,1) />
 		<cfif rc.rslist.recordcount eq 1>
-			<cflocation url="./?muraAction=cUsers.editUser&amp;userid=#rc.rslist.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" />
+			<cflocation url="./?muraAction=cUsers.editUser&amp;userid=#rc.rslist.userid#&amp;siteid=#esapiEncode('url',rc.siteid)#" />
 		</cfif>
 		<cfset rc.nextN=application.utility.getNextN(rc.rsList,15,rc.startrow)/>
 	</cfsilent>
@@ -268,17 +268,17 @@
 				<cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
 					<tr> 
 						<td class="var-width">
-							<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
-								#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# 
+							<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
+								#esapiEncode('html',lname)#, #esapiEncode('html',fname)# 
 								<cfif company neq ''> 
-									(#HTMLEditFormat(company)#)
+									(#esapiEncode('html',company)#)
 								</cfif>
 							</a>
 						</td>
 						<td>
 							<cfif rc.rsList.email gt "">
-								<a href="mailto:#HTMLEditFormat(rc.rsList.email)#">
-									#HTMLEditFormat(rc.rsList.email)#
+								<a href="mailto:#esapiEncode('html',rc.rsList.email)#">
+									#esapiEncode('html',rc.rsList.email)#
 								</a>
 							<cfelse>
 								&nbsp;
@@ -291,12 +291,12 @@
 							#LSTimeFormat(rc.rslist.lastupdate,"short")#
 						</td>
 						<td>
-							#HTMLEditFormat(rc.rsList.LastUpdateBy)#
+							#esapiEncode('html',rc.rsList.LastUpdateBy)#
 						</td>
 						<td class="actions">
 							<ul>
 								<li class="edit">
-									<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;returnURL=#URLEncodedFormat(rc.currentURL)#">
+									<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
 										<i class="icon-pencil"></i>
 									</a>
 								</li>
@@ -329,7 +329,7 @@
 					<ul>
 						<cfif rc.nextN.currentpagenumber gt 1>
 							<li>
-								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.previous#&amp;siteid=#URLEncodedFormat(rc.siteid)#">
+								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.previous#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 									&laquo;&nbsp;#rc.$.rbKey('user.prev')#
 								</a>
 							</li>
@@ -339,7 +339,7 @@
 								<li class="active"><a href="##">#i#</a></li> 
 							<cfelse> 
 								<li>
-									<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;siteid=#URLEncodedFormat(rc.siteid)#">
+									<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 										#i#
 									</a> 
 								</li>
@@ -347,7 +347,7 @@
 						</cfloop>
 						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 							<li>
-								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.next#&amp;siteid=#URLEncodedFormat(rc.siteid)#">
+								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.next#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 									#rc.$.rbKey('user.next')#&nbsp;&raquo;
 								</a>
 							</li>

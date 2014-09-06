@@ -95,7 +95,7 @@ if (window.opener)	{
 
 function goAndClose(userid)	{
 	<cfoutput>
-	mainwin.location.href='../../index.cfm?muraAction=cUsers.addtogroup&amp;groupid=#URLEncodedFormat(url.groupid)#&amp;routeid=#URLEncodedFormat(url.groupid)#&amp;siteid=#URLEncodedFormat(url.siteid)#&amp;userid='+userid;
+	mainwin.location.href='../../index.cfm?muraAction=cUsers.addtogroup&amp;groupid=#esapiEncode('url',url.groupid)#&amp;routeid=#esapiEncode('url',url.groupid)#&amp;siteid=#esapiEncode('url',url.siteid)#&amp;userid='+userid;
 	</cfoutput>
 	window.close();
 }

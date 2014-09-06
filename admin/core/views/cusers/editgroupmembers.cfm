@@ -64,9 +64,9 @@
 		<!--- Buttons --->
 		<div id="nav-module-specific" class="btn-group">
 			<!--- Back --->
-			<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
+			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
 				<i class="icon-circle-arrow-left"></i> 
-				#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#
+				#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
 			</a>
 			<!--- View All Groups --->
 			<a class="btn" href="#buildURL(action='cusers.list')#">
@@ -74,7 +74,7 @@
 				#rc.$.rbKey('user.viewallgroups')#
 			</a>
 			<!--- Edit Group Settings --->
-			<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#')#">
+			<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#">
 				<i class="icon-pencil"></i>
 				#rc.$.rbKey('user.editgroupsettings')#
 			</a>
@@ -103,7 +103,7 @@
 				<cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
 					<tr> 
 						<td class="var-width">
-							<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#">
+							<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 								#rc.rsgrouplist.lname#, #rc.rsgrouplist.fname# 
 								<cfif rc.rsgrouplist.company neq ''> (#rc.rsgrouplist.company#)</cfif>
 							</a>
@@ -125,17 +125,17 @@
 						<td class="actions">
 							<ul class="group">
 								<li class="edit">
-									<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
+									<a href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;siteid=#esapiEncode('url',rc.siteid)#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
 										<i class="icon-pencil"></i>
 									</a>
 								</li>
 								<li class="remove">
-									<a href="./?muraAction=cUsers.removefromgroup&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
+									<a href="./?muraAction=cUsers.removefromgroup&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
 										<i class="icon-minus-sign"></i>
 									</a>
 								</li>
 								<li class="delete">
-									<a href="./?muraAction=cUsers.update&amp;action=delete&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#URLEncodedFormat(rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsgrouplist.UserID,format='url')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+									<a href="./?muraAction=cUsers.update&amp;action=delete&amp;userid=#rc.rsgrouplist.UserID#&amp;routeid=#rc.userid#&amp;groupid=#rc.userid#&amp;siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rc.rsgrouplist.UserID,format='url')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 										<i class="icon-remove-sign"></i>
 									</a>
 								</li>
@@ -168,7 +168,7 @@
 					<ul>
 						<cfif rc.nextN.currentpagenumber gt 1>
 							<li>
-					 			<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.previous#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
+					 			<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.previous#&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
 					 		</li> 
 						</cfif>
 						<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextN.lastPage#" index="i">
@@ -176,13 +176,13 @@
 								<li class="active"><a href="##">#i#</a></li>
 							<cfelse> 
 								<li>
-									<a href="./?muraAction=cUsers.editgroup&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> 
+									<a href="./?muraAction=cUsers.editgroup&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#">#i#</a> 
 								</li>
 							</cfif>
 						</cfloop>
 						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 							<li>
-								<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.next#&amp;userid=#URLEncodedFormat(rc.userid)#&amp;siteid=#URLEncodedFormat(rc.siteid)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
+								<a href="./?muraAction=cUsers.editgroup&amp;startrow=#rc.nextN.next#&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
 							</li>
 						</cfif>
 					</ul>

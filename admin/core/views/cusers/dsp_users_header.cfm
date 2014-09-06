@@ -50,15 +50,16 @@
 	<!--- User Search --->		
 		<form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
 			<div class="input-append">
-				<input id="search" name="search" type="text" placeholder="Search for Users" />
+				<input id="search" name="search" type="text" placeholder="#rc.$.rbKey('user.searchforusers')#" />
 				<button type="button" class="btn" onclick="submitForm(document.forms.form1);">
 					<i class="icon-search"></i>
 				</button>
-				<button type="button" class="btn" onclick="window.location='./?muraAction=cUsers.advancedSearch&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
+				<button type="button" class="btn" onclick="window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
 					#rc.$.rbKey('user.advanced')#
 				</button>
-				<input type="hidden" name='siteid' value="#HTMLEditFormat(rc.siteid)#"/>
-				<input type="hidden" name='muraAction' value="cUsers.search"/>
+				<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#" />
+				<input type="hidden" name="muraAction" value="cUsers.search" />
+				<input type="hidden" name="ispublic" value="#esapiEncode('html',rc.ispublic)#" />
 			</div>
 		</form>
 
@@ -69,26 +70,26 @@
 		<div id="nav-module-specific" class="btn-group">
 
 			<!--- Add User --->
-			<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#URLEncodedFormat(rc.siteid)#&userid=')#">
+			<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
 		  	<i class="icon-plus-sign"></i> 
 		  	#rc.$.rbKey('user.adduser')#
 		  </a>
 
 		  <!--- Add Group --->
-		  <a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#URLEncodedFormat(rc.siteid)#&userid=')#">
+		  <a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
 		  	<i class="icon-plus-sign"></i> 
 		  	#rc.$.rbKey('user.addgroup')#
 		  </a>
 
 			<cfif rc.muraaction eq 'core:cusers.listusers'>
 				<!--- View Groups --->
-				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#URLEncodedFormat(rc.siteid)#')#">
+				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
 		  		<i class="icon-eye-open"></i>
 		  		#rc.$.rbKey('user.viewgroups')#
 		  	</a>
 		  <cfelse>
 		  	<!--- View Users --->
-				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#URLEncodedFormat(rc.siteid)#')#">
+				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
 					<i class="icon-eye-open"></i>
 					#rc.$.rbKey('user.viewusers')#
 				</a>
@@ -96,7 +97,7 @@
 
 			<!--- Permissions --->
 			<cfif ( ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2') ) AND ( rc.ispublic )>
-				<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#URLEncodedFormat(rc.siteid)#&amp;moduleid=00000000000000000000000000000000008">
+				<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008">
 					<i class="icon-legal"></i> 
 					#rc.$.rbKey('user.permissions')#
 				</a>

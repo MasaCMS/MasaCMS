@@ -49,82 +49,82 @@
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
 <cfoutput>
-<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#URLEncodedFormat(rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h1>#rc.$.rbKey('user.memberaddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(rc.$.rbKey('sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',rc.$.rbKey('sitemanager.back'))#</a>
 	</div>
 	
-	<h2>#HTMLEditFormat(rc.userBean.getFname())# #HTMLEditFormat(rc.userBean.getlname())#</h2>
+	<h2>#esapiEncode('html',rc.userBean.getFname())# #esapiEncode('html',rc.userBean.getlname())#</h2>
 		<div class="fieldset-wrap">
 		<div class="fieldset">
 		<div class="control-group">
       <label class="control-label">#rc.$.rbKey('user.addressname')#</label>
-      <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="span6"></div>
+      <div class="controls"><input id="addressName" name="addressName" type="text" value="#esapiEncode('html',rsAddress.addressName)#"  class="span6"></div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.address1')#</label>
-      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="span12"></div>
+      <div class="controls"><input id="address1" name="address1" type="text" value="#esapiEncode('html',rsAddress.address1)#"  class="span12"></div>
     </div>
 		
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.address2')#</label>
-      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="span12"></div>
+      <div class="controls"><input id="address2" name="address2" type="text" value="#esapiEncode('html',rsAddress.address2)#"  class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
 		<div class="span5">
       <label class="control-label">#rc.$.rbKey('user.city')#</label>
-      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="span12"></div>
+      <div class="controls"><input id="city" name="city" type="text" value="#esapiEncode('html',rsAddress.city)#" class="span12"></div>
     </div>
 		
 		<div class="span1">
       <label class="control-label">#rc.$.rbKey('user.state')#</label>
-      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="span12"></div>
+      <div class="controls"><input id="state" name="state" type="text" value="#esapiEncode('html',rsAddress.state)#" class="span12"></div>
     </div>
 		
 		<div class="span2">
       <label class="control-label">#rc.$.rbKey('user.zip')#</label>
-      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="span12"></div>
+      <div class="controls"><input id="zip" name="zip" type="text" value="#esapiEncode('html',rsAddress.zip)#" class="span12"></div>
     </div>
 		
 		<div class="span4">
       <label class="control-label">#rc.$.rbKey('user.country')#</label>
-      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="span12"></div>
+      <div class="controls"><input id="country" name="country" type="text" value="#esapiEncode('html',rsAddress.country)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.phone')#</label>
-      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="span12"></div>
+      <div class="controls"><input id="phone" name="phone" type="text" value="#esapiEncode('html',rsAddress.phone)#" class="span12"></div>
     </div>
 		
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.fax')#</label>
-      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="span12"></div>
+      <div class="controls"><input id="fax" name="fax" type="text" value="#esapiEncode('html',rsAddress.fax)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.website')# (#rc.$.rbKey('user.includehttp')#)</label>
-      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="span12"></div>
+      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#esapiEncode('html',rsAddress.addressURL)#" class="span12"></div>
     </div>
 		
 		<div class="span6">
       <label class="control-label">#rc.$.rbKey('user.email')#</label>
-      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#rc.$.rbKey('user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="span12"></div>
+      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#rc.$.rbKey('user.emailvalidate')#" type="text" value="#esapiEncode('html',rsAddress.addressEmail)#" class="span12"></div>
     </div>
     </div>
 		
 		<div class="control-group">
       <label class="control-label">#rc.$.rbKey('user.hours')#</label>
-      <div class="controls"><textarea id="hours" rows="6" class="span6" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></div>
+      <div class="controls"><textarea id="hours" rows="6" class="span6" name="hours" >#esapiEncode('html',rsAddress.hours)#</textarea></div>
     </div>
 
 <!--- extended attributes as defined in the class extension manager --->
@@ -146,7 +146,7 @@
 		<div class="control-group">
       <label class="control-label">
 		<cfif len(attributeBean.getHint())>
-		<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="icon-question-sign"></i></a>
+		<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="icon-question-sign"></i></a>
 		<cfelse>
 		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 		</cfif>

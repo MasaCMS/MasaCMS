@@ -110,14 +110,14 @@
 						<tr>
 							<td class="var-width">
 								<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#">
-									#HTMLEditFormat(local.group.getValue('groupname'))#
+									#esapiEncode('html',local.group.getValue('groupname'))#
 								</a>
 								(#local.membercount#)
 							</td>
 							<td>
 								<cfif Len(local.group.getValue('email'))>
 									<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
-										#HTMLEditFormat(local.group.getValue('email'))#
+										#esapiEncode('html',local.group.getValue('email'))#
 									</a>
 								<cfelse>
 									&nbsp;
@@ -130,7 +130,7 @@
 								#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
 							</td>
 							<td>
-								#HTMLEditFormat(local.group.getValue('lastupdateby'))#
+								#esapiEncode('html',local.group.getValue('lastupdateby'))#
 							</td>
 							<td class="actions">
 								<ul>
