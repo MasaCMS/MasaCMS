@@ -72,6 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
 							<input id="tb-name" class="text  disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
 						</li>
+						#application.serviceFactory.getBean('$').init(session.siteid).renderEvent('onFormElementBasicTabRender')#
 					</ul>
 				</div>
 				<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">

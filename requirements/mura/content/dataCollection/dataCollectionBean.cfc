@@ -50,8 +50,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	property name='formID' required=true dataType='string';
 	property name='siteID' required=true dataType='string';
 
-	variables.propertylist='';
-	variables.properties={};
+	variables.formpropertylist='';
+	variables.formproperties={};
 
 	function set(data){
 
@@ -138,8 +138,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 						validations.properties[prop.name]=rules;
 					}
 
-					variables.properties[prop.name]=prop;
-					variables.propertylist=listAppend(variables.propertylist,prop.name);
+					variables.formproperties[prop.name]=prop;
+					variables.formpropertylist=listAppend(variables.formpropertylist,prop.name);
 
 				}
 			}
@@ -148,6 +148,16 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		return validations;
 
+	}
+
+	function getFormProperties(){
+		if(!isJSON(getFormBean().getBody())){
+			return {};
+		} else if (!isdefined('variables.formproperties')){
+			validate();
+		}
+
+		return variables.formproperties;
 	}
 
 	function getFormBean(){
@@ -237,18 +247,18 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
 		}
 
-		if(len(variables.propertylist)){
+		if(len(variables.formpropertylist)){
 			var fieldnames='';
 
 			for(var f in listToArray(getValue('fieldnames'))){
-				if(listFindNoCase(variables.propertylist,f) || listFindNoCase('siteid,formid',f)){
+				if(listFindNoCase(variables.formpropertylist,f) || listFindNoCase('siteid,formid',f)){
 					fieldnames=listAppend(fieldnames,f);
 				} else if (right(f,10) == 'attachment'){
 					local.prop=left(f,len(f)-11);
 
-					if(listFindNoCase(variables.propertylist,local.prop)
-						&& isDefined('variables.properties.#local.prop#.fieldtype.fieldtype')
-						&& variables.properties['#local.prop#'].fieldtype.fieldtype == 'file'
+					if(listFindNoCase(variables.formpropertylist,local.prop)
+						&& isDefined('variables.formproperties.#local.prop#.fieldtype.fieldtype')
+						&& variables.formproperties['#local.prop#'].fieldtype.fieldtype == 'file'
 					){
 						fieldnames=listAppend(fieldnames,f);
 					}

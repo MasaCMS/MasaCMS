@@ -373,8 +373,10 @@ Display Objects
 <cfset this.formBuilderCheckboxClass="checkbox">
 
 <!--- Gallery/Index.cfm --->
+<cfset this.galleryImageStyles=true>
 <cfset this.galleryWrapperClass="">
 <cfset this.galleryULClass="clearfix">
+<cfset this.galleryLIClass="">
 <cfset this.galleryThumbnailClass="thumbnail">
 
 <!--- Nav/CalendarNav/index --->

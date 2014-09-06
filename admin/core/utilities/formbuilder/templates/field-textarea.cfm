@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>
 							<textarea class="textarea" name="value"></textarea>
 						</li>
+						#application.serviceFactory.getBean('$').init(session.siteid).renderEvent('onFormElementBasicTabRender')#
 					</ul>
 			</div>
 			<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">
