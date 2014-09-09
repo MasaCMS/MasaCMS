@@ -328,6 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset structDelete(cookie,"userid")>
 	<cfset structDelete(cookie,"userhash")>
 	<cfset variables.userUtility.setUserStruct()/>
+	<cfset getBean('changesetManager').removeSessionPreviewData()>
 
 	<cfif len(pluginEvent.getValue("siteID"))>
 		<cfset getPluginManager().announceEvent('onAfterSiteLogout',pluginEvent)/>
