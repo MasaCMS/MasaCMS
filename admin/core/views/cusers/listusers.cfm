@@ -213,5 +213,4 @@
 				#rc.$.rbKey('user.nousers')#
 			</div>
 		</cfif>
-
 </cfoutput>

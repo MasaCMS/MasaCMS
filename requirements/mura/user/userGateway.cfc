@@ -470,6 +470,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset var rsUsers = '' />
 		<cfset var rsUsersMemb = getUsersMemb() />
+		<cfset var dbtype=variables.configBean.getDbType() />
 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsers')#">
 			SELECT *
