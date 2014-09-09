@@ -564,12 +564,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset arguments.event.getValidator("standardTrackSession").validate(arguments.event)>
 		
-		<cfset arguments.event.getHandler("standardSetPermissions").handle(arguments.event)>
-
 		<cfset arguments.event.getHandler("standardSetIsOnDisplay").handle(arguments.event)>
 		
 		<cfset arguments.event.getHandler("standardDoActions").handle(arguments.event)>
-		
+
+		<cfset arguments.event.getHandler("standardSetPermissions").handle(arguments.event)>
+	
 		<cfset arguments.event.getValidator("standardRequireLogin").validate(arguments.event)>
 		
 		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
