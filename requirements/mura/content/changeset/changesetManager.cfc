@@ -458,6 +458,7 @@
 
 <cffunction name="removeSessionPreviewData" access="public" returntype="any" output="false">
 	<cfset getCurrentUser().setValue("ChangesetPreviewData","")>
+	<cfset request.muraChangesetPreviewToolbar=false>
 </cffunction>
 
 <cffunction name="publish" access="public" returntype="any" output="false">

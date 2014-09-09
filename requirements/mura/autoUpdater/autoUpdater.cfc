@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
 							<cfcatch>
 								<!--- patch to make sure autoupdates do not stop for mode errors --->
-								<cfif not findNoCase("change mode of file",cfcatch.message) and listLast(rs.entry,".") neq "jar">
+								<cfif not findNoCase("change mode of file",cfcatch.message) and not listFindNoCase('jar,class',listLast(rs.entry,"."))>
 									<cfrethrow>
 								</cfif>
 							</cfcatch>
