@@ -947,11 +947,11 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
             </cfquery>
             
 	        <!--- if a permissions record exists, break loop and return value --->
-			<cfif loc.qPerm.RecordCount gt 0>
-            	<cfset loc.return = loc.qPerm.type>
-                <cfbreak>
-            </cfif>
-        </cfif>
+					<cfif loc.perm.RecordCount gt 0>
+						<cfset loc.return = loc.perm.type>
+						<cfbreak>
+					</cfif>
+				</cfif>
         
     </cfloop>
 
