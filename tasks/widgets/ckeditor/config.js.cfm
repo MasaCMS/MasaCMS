@@ -59,7 +59,7 @@ CKEDITOR.editorConfig = function( config )
 	</cfoutput>
 
 	config.startupFocus = false;
-	config.skin = 'mura'; // 'moono'
+	config.skin = 'bootstrapck'; // 'moono'
 	config.allowedContent = true;
 	//config.uiColor = '#ff3405';
 	//config.ignoreEmptyParagraph = false;
