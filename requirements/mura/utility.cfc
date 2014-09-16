@@ -95,23 +95,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset nextN.lastPage =nextn.firstPage + (2 * arguments.pageBuffer) + 1/>
+	
 	<cfif nextn.NumberOfPages lt nextN.lastPage>
 		<cfset nextN.lastPage=nextn.NumberOfPages />
 	</cfif>
 	
 	<cfset nextn.next=nextn.CurrentPageNumber+1 />
-	<cfif nextn.next gt nextn.NumberOfPages>
-		<cfset nextn.next=1 />
-	</cfif>
+	
 	<cfset nextn.next=(nextn.next*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
 	
 	<cfset nextn.previous=nextn.CurrentPageNumber-1 />
+	
 	<cfif nextn.previous lt 1>
 		<cfset nextn.previous=1 />
 	</cfif>
+	
 	<cfset nextn.previous=(nextn.previous*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
 	
-	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)> 
+	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)>
+
+	<cfif nextn.next gt nextn.totalrecords>
+		<cfset nextn.next=1 />
+	</cfif>
+
 	<cfset nextn.startrow=arguments.startrow>
 	
 	<cfreturn nextn />
