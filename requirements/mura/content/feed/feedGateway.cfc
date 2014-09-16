@@ -1067,7 +1067,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.activeOnly>
 			<cfif request.muraChangesetPreview>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif len(previewData.contentIDList)>
+				<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
 				and (
 						(#arguments.table#.active = 1
 						<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
