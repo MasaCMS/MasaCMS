@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
 
 	function renderCalendar() {
 		$('##calendar').fullCalendar({
-			timezone: 'local'
+			timezone: 'UTC'
 			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 			, buttonText: {
 				day: '#variables.$.rbKey('calendar.day')#'
