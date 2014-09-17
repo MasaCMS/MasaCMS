@@ -1504,7 +1504,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfoutput>
 			<cfif request.muraChangesetPreview>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif len(previewData.contentIDList)>
+				<cfif isDefined('previewData') and len(previewData.contentIDList)>
 					and (
 							(#arguments.table#.active = 1			
 							and #arguments.table#.contentID not in (#previewData.contentIDList#)	
