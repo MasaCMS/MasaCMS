@@ -679,7 +679,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif FileExists(currentSource)>
 			<cfloop list="small,medium,large" index="i">
-				<cfset cropAndScale(fileID=rsDB.fileID,size=i)>
+				<cfset cropAndScale(fileID=rsDB.fileID,size=i,siteid=arguments.siteid)>
 			</cfloop>
 		</cfif>
 	</cfloop>
