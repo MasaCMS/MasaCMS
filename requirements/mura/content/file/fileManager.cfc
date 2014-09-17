@@ -654,6 +654,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rebuildImageCache" output="false">
 <cfargument name="siteID">
+<cfargument name="size" default="">
 
 	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 
@@ -672,14 +673,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and fileEXT in ('jpg','jpeg','png','gif')
 	</cfquery>
 	
+	<cfif len(arguments.size)>
+		<cfset sizeList=arguments.size>
+	<cfelse>
+		<cfset var sizeList="small,medium,large">
+		<cfset var rsSize=currentSite.getCustomImageSizeQuery()>
+
+		<cfloop query="rsSize">
+			<cfset sizeList=listAppend(sizeList,rsSize.name)>
+		</cfloop>
+	</cfif>
+
 	<cfloop query="rsDB">
 		<cfset currentSource=filepath & rsDB.fileID & "_source." & rsDB.fileEXT>
 		<cfif not fileExists(currentSource)>
 			<cfset currentSource=filepath & rsDB.fileID & "." & rsDB.fileEXT>
 		</cfif>
 		<cfif FileExists(currentSource)>
-			<cfloop list="small,medium,large" index="i">
-				<cfset cropAndScale(fileID=rsDB.fileID,size=i)>
+			<cfloop list="#sizeList#" index="i">
+				<cfset cropAndScale(fileID=rsDB.fileID,size=i,siteid=arguments.siteid)>
 			</cfloop>
 		</cfif>
 	</cfloop>
@@ -687,12 +699,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
 	
 	<cfquery name="rsCheck" dbType="query">
-	select * from rsDIR where name like '%_H%'
+		select * from rsDIR where name like '%_H%'
 	</cfquery>
 
 	<cfif rsCheck.recordcount>
 		<cfset check=listGetAt(rsCheck.name,2,"_")>
-		<cfif len(check) gt 1>s
+		<cfif len(check) gt 1>
 			<cfset check=mid(check,2,1)>
 			<cfif isNumeric(check)>
 				<cffile action="delete" file="#filepath##rsCheck.name#">
