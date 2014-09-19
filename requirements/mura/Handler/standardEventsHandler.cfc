@@ -612,7 +612,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.event.getValue('trackSession') 
 			and len(arguments.event.getValue('contentBean').getcontentID()) 
 			and arguments.event.getValue('contentBean').getIsNew() eq 0 
-			and arguments.event.getValue('contentBean').getActive() eq 1
 			and not arguments.event.valueExists('previewID')>
 			<cfset arguments.event.getHandler("standardTrackSession").handle(arguments.event)>
 	</cfif>
