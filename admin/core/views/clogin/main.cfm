@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		      	<select name="rb">
 					<option value="en">English</option>
 					<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
-					<option value="nl"<cfif cookie.rb eq "de"> selected</cfif>>Dutch</option>
+					<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
 					<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
 					<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
 					<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
