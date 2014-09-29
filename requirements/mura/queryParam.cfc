@@ -188,8 +188,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 
-	<cfif len(tmp) and (LSIsDate(tmp) or IsDate(tmp))>
-			<cfset setDataType('datetime') />
+	<cfif not len(getDataType()) and len(tmp) and (LSIsDate(tmp) or IsDate(tmp))>
+		<cfset setDataType('datetime') />
 	</cfif>
 
 	<cfif tmp eq "null">
