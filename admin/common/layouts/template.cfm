@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      						<cfelse>
      						<div class="alert alertr">
      						</cfif>
-		     				#esapiEncode('html',alerts['#alert#'].text)#
+		     				#alerts['#alert#'].text#
 				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 		     			</cfif>
      				</cfloop>
