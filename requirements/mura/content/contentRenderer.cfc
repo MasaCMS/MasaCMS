@@ -440,13 +440,19 @@ Display Objects
 	<cfif structKeyExists(this,'ulNestedCustomString') and len(this.ulNestedCustomString)>
 		<cfset this.ulNestedAttributes=this.ulNestedCustomString>
 	</cfif>
-	<!--- --->
 	
 	<cfset variables.contentGateway=getBean('contentGateway')>
 
 	<cfif not isDefined('this.enableMuraTag')>
 		<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 	</cfif>
+	<cfscript>
+		this.enableFrontEndTools = IsDefined('this.enableFrontEndTools')
+			? this.enableFrontEndTools
+			: IsBoolean(getConfigBean().getEnableFrontEndTools())
+				? getConfigBean().getEnableFrontEndTools()
+				: true;
+	</cfscript>
 	
 <cfreturn this />
 </cffunction>
@@ -2973,19 +2979,19 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowModal" output="false">
-<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML) />
+<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML and this.enableFrontEndTools) />
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-<cfreturn (request.muraChangesetPreviewToolbar and (this.showMemberToolBar or this.showAdminToolBar) or ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar()) and not request.muraExportHTML />
+<cfreturn this.enableFrontEndTools and (request.muraChangesetPreviewToolbar and (this.showMemberToolBar or this.showAdminToolBar) or ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar()) and not request.muraExportHTML />
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
-<cfreturn getShowToolbar() />
+<cfreturn getShowToolbar() and this.enableFrontEndTools />
 </cffunction>
 
 <cffunction name="getShowInlineEditor" output="false">
-<cfreturn  getShowToolbar() and this.showInlineEditor/>
+<cfreturn  getShowToolbar() and this.showInlineEditor and this.enableFrontEndTools />
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">
@@ -3030,7 +3036,7 @@ Display Objects
 				<cfif getJSLib() eq "prototype">
 					<cfset loadShadowboxJS() />
 				</cfif>--->
-				<cfif this.showEditableObjects>
+				<cfif this.showEditableObjects and this.enableFrontEndTools>
 					<cfsavecontent variable="headerStr">
 					<cfoutput>
 					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
@@ -3256,7 +3262,7 @@ Display Objects
 		<cfargument name="isConfigurator" default="false">
 		<cfset var str = "">
 		
-		<cfif this.showEditableObjects>		
+		<cfif this.showEditableObjects and this.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
@@ -3274,7 +3280,7 @@ Display Objects
 		<cfargument name="customWrapperString" required="yes" default="">
 		<cfset var str = "">
 		
-		<cfif this.showEditableObjects>		
+		<cfif this.showEditableObjects and this.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<span class="editableObject #arguments.class#" #customWrapperString#><span class="editableObjectContents">
@@ -3289,7 +3295,7 @@ Display Objects
 		<cfargument name="control" required="yes" default="">
 		<cfset var str = "">
 		
-		<cfif this.showEditableObjects>		
+		<cfif this.showEditableObjects and this.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<cfoutput></span>#arguments.control#</cfoutput></span>
