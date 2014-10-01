@@ -2979,7 +2979,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowModal" output="false">
-<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML and this.enableFrontEndTools) />
+<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML) />
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
@@ -2987,11 +2987,11 @@ Display Objects
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
-<cfreturn getShowToolbar() and this.enableFrontEndTools />
+<cfreturn getShowToolbar() />
 </cffunction>
 
 <cffunction name="getShowInlineEditor" output="false">
-<cfreturn  getShowToolbar() and this.showInlineEditor and this.enableFrontEndTools />
+<cfreturn  getShowToolbar() and this.showInlineEditor />
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">
