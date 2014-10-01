@@ -2979,7 +2979,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowModal" output="false">
-<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML) />
+<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML and this.enableFrontEndTools) />
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
