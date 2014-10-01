@@ -2991,7 +2991,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowInlineEditor" output="false">
-<cfreturn  getShowToolbar() and this.showInlineEditor />
+<cfreturn  getShowToolbar() and this.showInlineEditor/>
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">
