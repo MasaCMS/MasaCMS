@@ -109,7 +109,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset application.clusterManager.clearOldCommands()>
 
-<cfset pluginEvent = createObject("component","#application.configBean.getMapDir()#.event") />
-<cfset application.pluginManager.executeScripts('onSiteMonitor','',pluginEvent)/>
+<cfset application.serviceFactory.getBean('$').announceEvent('onGlobalMonitor') />
+
+<cfset rsSites=application.serviceFactory.getBean('settingsManager').getList()>
+
+<cfloop query="rsSites">
+	<cfset application.serviceFactory.getBean('$').init(rsSites.siteid).announceEvent('onSiteMonitor') />
+</cfloop>
 
 <cfset application.lastMonitored=theTime/>
