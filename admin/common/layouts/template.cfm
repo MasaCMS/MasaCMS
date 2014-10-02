@@ -258,10 +258,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          		listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
          		)
          	>
-         		
-     			<cfparam name="session.mura.alerts" default="#structNew()#">
- 				<cfparam name="session.mura.alerts.#session.siteid#" default="#structNew()#">
-     		
+
+          <cfparam name="session.mura.alerts" default="#structNew()#">
+          <cfparam name="session.mura.alerts['#session.siteid#']" default="#structNew()#">
+
      			<cfif not structIsEmpty(session.mura.alerts['#session.siteid#'])>
      				<cfset alerts=session.mura.alerts['#session.siteid#']>
      				<cfloop collection="#alerts#" item="alert">
