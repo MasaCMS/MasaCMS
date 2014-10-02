@@ -260,7 +260,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          	>
 
           <cfparam name="session.mura.alerts" default="#structNew()#">
-          <cfparam name="session.mura.alerts['#session.siteid#']" default="#structNew()#">
+          <cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
+          	<cfset session.mura.alerts['#session.siteid#']={}>
+          </cfif>
 
      			<cfif not structIsEmpty(session.mura.alerts['#session.siteid#'])>
      				<cfset alerts=session.mura.alerts['#session.siteid#']>
