@@ -1977,7 +1977,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				<cfif len(arguments.tag)>
-					and #renderTextParamColumn('tcontenttags.Tag')#= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+					and (
+							#renderTextParamColumn('tcontenttags.tag')# in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.tag)#"/> )
+							<cfif len(arguments.tagGroup) and arguments.tagGroup neq 'default'>
+								and #renderTextParamColumn('tcontenttags.taggroup')#=<cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.taggroup)#"/>
+							</cfif>
+						)	
 				<cfelse>
 					<!---
 					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">

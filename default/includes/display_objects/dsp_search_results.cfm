@@ -55,6 +55,11 @@
 	Mura CMS.
 --->
 <cfsilent>
+	<!--- In case someone is attempting to use the search box after clicking a tag --->
+	<cfif Len($.event('tag')) and Len($.event('keywords'))>
+		<cfset $.event('tag', '') />
+	</cfif>
+
 	<cfparam name="variables.rsnewsearch" default="#queryNew('empty')#"/>
 	<cfparam name="request.aggregation" default="false">
 	<cfparam name="request.searchSectionID" default="">
