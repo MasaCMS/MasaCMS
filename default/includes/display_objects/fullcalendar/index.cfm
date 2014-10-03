@@ -65,14 +65,14 @@
 		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
 		<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 	</div>
-	<div id="calendar" class="MuraCalendar"></div>
+	<div id="MuraCalendar" class="MuraCalendar"></div>
 	<div id="MuraCalendar-loading"><i class="fa fa-refresh fa-spin"></i> #variables.$.rbKey('calendar.loadingevents')#</div>
 </div>
 <script>
 jQuery(document).ready(function($) {
 
 	function renderCalendar() {
-		$('##calendar').fullCalendar({
+		$('##MuraCalendar').fullCalendar({
 			timezone: 'UTC'
 			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 			, buttonText: {
