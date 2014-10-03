@@ -59,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
 </cfif>
 </cfsilent><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
+
 <cfif cgi.http_user_agent contains 'msie'>
 <meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
@@ -69,6 +70,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
 </cfif>
 	<head>
+		<cfif Len(application.configBean.getWindowDocumentDomain())>
+			<script type="text/javascript">
+				window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
+			</script>
+		</cfif>
+
 		<title>#application.configBean.getTitle()#</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
