@@ -194,11 +194,11 @@
 						<cfset commentBean.sendNotification() />
 					</cfif>
 					<cfif isBoolean(request.remember) and request.remember>
-						<cfcookie name="remember" value="1" httponly="true" secure="#variables.$.global('SecureCookies')#">
-						<cfcookie name="subscribe" value="#request.subscribe#" httponly="true" secure="#variables.$.global('SecureCookies')#">
-						<cfcookie name="name" value="#request.name#" httponly="true" secure="#variables.$.global('SecureCookies')#">
-						<cfcookie name="url" value="#request.url#" httponly="true" secure="#variables.$.global('SecureCookies')#">
-						<cfcookie name="email" value="#request.email#" httponly="true" secure="#variables.$.global('SecureCookies')#">
+						<cfcookie name="remember" value="1" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="subscribe" value="#request.subscribe#" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="name" value="#request.name#" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="url" value="#request.url#" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
+						<cfcookie name="email" value="#request.email#" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 					<cfelse>
 						<cfcookie name="remember" value="0" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">
 						<cfcookie name="subscribe" value="" httponly="true" secure="#variables.$.globalConfig('SecureCookies')#">

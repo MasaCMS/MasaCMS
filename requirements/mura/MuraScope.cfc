@@ -131,7 +131,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
-			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+			<!-- temp fix, may become permanent--->
+			<cfif globalConfig().getValue(property='alwaysUseLocalRenderer',defaultValue=false)>
+				<cfset event("contentRenderer",createObject("component","#event('siteid')#.includes.contentRenderer") )>
+			<cfelse>
+				<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer") )>
+			</cfif>
+			<!-- end temp fix --->
 			<cfset event("contentRenderer").init(event=event(),$=event("muraScope"),mura=event("muraScope") )>
 			<cfif fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
 				<cfset var themeRenderer=createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer")>
@@ -548,4 +554,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="generateCSRFTokens" output="false">
 	<cfreturn currentUser().generateCSRFTokens(argumentCollection=arguments)>
 </cffunction>
+
+<cffunction name="setAdminAlert" output="false">
+	<cfargument name="key">
+	<cfargument name="text">
+	<cfargument name="type" default="">
+
+	<cfif len(event('siteid'))>
+		<cfif len(arguments.type) and arguments.type neq 'error'>
+			<cfset arguments.type=''>
+		</cfif>
+		<cfparam name="session.mura.alerts" default="#structNew()#">
+		<cfif structKeyExists(session.mura.alerts,'#event('siteid')#')>
+			<cfset session.mura.alerts['#event('siteid')#']={}>
+		</cfif>
+		<cfset session.mura.alerts['#event('siteid')#']['#arguments.key#']={text=arguments.text,type=arguments.type}>
+	</cfif>
+</cffunction>
+
+<cffunction name="removeAdminAlert" output="false">
+	<cfargument name="key">
+	<cfargument name="text">
+	<cfif len(event('siteid'))>
+		<cfparam name="session.mura.alerts" default="#structNew()#">
+		<cfif structKeyExists(session.mura.alerts,'#event('siteid')#')>
+			<cfset session.mura.alerts['#event('siteid')#']={}>
+		</cfif>
+		<cfset structDelete(session.mura.alerts['#event('siteid')#'],'#arguments.key#')>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

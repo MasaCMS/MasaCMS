@@ -253,44 +253,67 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="main">
       <div class="main-inner">
          <div class="container">
-         		<cfif request.action neq "core:cLogin.main" and rc.renderMuraAlerts>
-	         		<cfif isdefined('session.siteID') and isdefined('session.alerts') and structKeyExists(session.alerts,'#session.siteid#')
-	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
-	         			
-	         			<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.alerts['#session.siteID#'],'defaultpasswordnotice')>
-	         					<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
-				           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
-	         			</cfif>
-	         			<cfif not application.settingsManager.getSite(session.siteID).getCache() and not structKeyExists(session.alerts['#session.siteID#'],'cachenotice')>
-				           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
-				           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
-			           	</cfif>
-			           	<script>
-			           		$(document).ready(function(){
-			           			$('.alert-dismiss').click(
-			           				function(){
-			           					var _alert=this;
-			           					$.ajax(
-			           						{
-				           						url:'./index.cfm',
-				           						data:{
-				           							siteid:'#esapiEncode('javascript',session.siteid)#',
-				           							alertid:$(_alert).attr('data-alertid'),
-				           							muraaction:'cdashboard.dismissAlert'
-				           						},
-				           						success: function(){
-				           							$(_alert).parent('.alert').fadeOut();
-				           							//$('##system-notice').html(data);
-			           							}
-			           						}
-			           					);
-			           				}
-			           			);
-			           		});
-			           	</script>
-	         			
-	         		</cfif>
-         		</cfif>
+         	<cfif request.action neq "core:cLogin.main" and isdefined('session.siteID')
+         		and (
+         		listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
+         		)
+         	>
+
+          <cfparam name="session.mura.alerts" default="#structNew()#">
+          <cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
+          	<cfset session.mura.alerts['#session.siteid#']={}>
+          </cfif>
+
+     			<cfif not structIsEmpty(session.mura.alerts['#session.siteid#'])>
+     				<cfset alerts=session.mura.alerts['#session.siteid#']>
+     				<cfloop collection="#alerts#" item="alert">
+     					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
+     						<cfif len(alerts['#alert#'].type)>
+     						<div class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#">
+     						<cfelse>
+     						<div class="alert alertr">
+     						</cfif>
+		     				#alerts['#alert#'].text#
+				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
+		     			</cfif>
+     				</cfloop>
+     			</cfif>
+
+     			<cfif rc.renderMuraAlerts>
+     				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
+     					<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
+	     			</cfif>
+	     			<cfif not application.settingsManager.getSite(session.siteID).getCache() and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
+			           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
+		           	</cfif>
+     			</cfif>
+     			
+	           	<script>
+	           		$(document).ready(function(){
+	           			$('.alert-dismiss').click(
+	           				function(){
+	           					var _alert=this;
+	           					$.ajax(
+	           						{
+		           						url:'./',
+		           						data:{
+		           							siteid:'#esapiEncode('javascript',session.siteid)#',
+		           							alertid:$(_alert).attr('data-alertid'),
+		           							muraaction:'cdashboard.dismissAlert'
+		           						},
+		           						success: function(){
+		           							$(_alert).parent('.alert').fadeOut();
+		           							//$('##system-notice').html(data);
+	           							}
+	           						}
+	           					);
+	           				}
+	           			);
+	           		});
+	           	</script>
+         	</cfif>
          	<div class="row-fluid">
          		<cfif request.action neq "core:cDashboard.main" 
          			and request.action neq "core:cLogin.main">
