@@ -361,6 +361,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstformresponsepackets="">
 		<cfset var rstformresponsequestions="">
 		<cfset var rstimagesizes="">
+
 			<!--- pushed tables --->
 		
 			<!--- tcontent --->
@@ -369,7 +370,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					select * from tcontent 
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> 
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-					and type <>'Module'
+					<cfif arguments.pluginMode neq 'none'>
+						and type <>'Module'
+					<cfelse>
+						and type not in ('Module','Plugin')
+					</cfif>
 					<cfif isDate(arguments.lastDeployment)>
 						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
@@ -380,7 +385,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontent 
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and type <>'Module'
+				<cfif arguments.pluginMode neq 'none'>
+					and type <>'Module'
+				<cfelse>
+					and type not in ('Module','Plugin')
+				</cfif>
+				
 				<cfif isDate(arguments.lastDeployment)>
 					<cfif rstcontent.recordcount or rsDeleted.recordcount>
 						and (
