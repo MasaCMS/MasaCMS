@@ -2202,7 +2202,7 @@ Display Objects
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail file">
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
-								<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2&amp;ext=.#variables.event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
+								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
 								</div>
 								</cfoutput>
 						</cfif>				
@@ -2211,7 +2211,7 @@ Display Objects
 						<cfoutput>
 						<div id="svAssetDetail" class="mura-asset-detail link">
 							#renderEditableAttribute(attribute="summary",type="htmlEditor")#	
-							<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>							
+							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>							
 						</div>
 						</cfoutput>
 					</cfcase>
