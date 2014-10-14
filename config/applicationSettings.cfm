@@ -200,7 +200,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "Microsoft Office Protocol", request.userAgent ) OR
 	 FindNoCase( "Railo", request.userAgent )
 	 )>
-	 
+
+	<cfif request.tracksession>
+		<cfset checklist=properties.getProperty("donottrackagents","")>
+		<cfif len(checklist)>
+			<cfloop list="#checklist#" index="i">
+				<cfif FindNoCase( i, request.userAgent )>
+					<cfset request.tracksession=false>
+					<cfbreak>
+				</cfif>
+			</cfloop>
+		</cfif>
+	</cfif>
+
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
 		<cfset this.sessionTimeout = ( evalSetting(properties.getProperty("sessionTimeout","180")) / 24) / 60>
