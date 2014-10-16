@@ -893,4 +893,8 @@ component extends="mura.cfobject" output="false" {
 		return feed;
 	}
 
+	function exists() {
+		return !variables.instance.isNew;
+	}
+
 }
