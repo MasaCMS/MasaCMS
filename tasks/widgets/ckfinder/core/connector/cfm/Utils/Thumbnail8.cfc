@@ -57,7 +57,7 @@
 		<cfset destination="#ARGUMENTS.thumbPath#">
 	</cfif>
 	<cfimage action="read" source="#ARGUMENTS.filePath#" name="oImage" />
-	<cfset ImageResize(oImage, oSize.Width, oSize.Height, "highQuality")>
+	<cfset ImageResize(oImage, oSize.Width, oSize.Height, application.configBean.getImageInterpolation())>
 	<cfset quality = (quality/100)>
 	<cfimage action="write" source="#oImage#" destination="#destination#" quality="#quality#" overwrite="yes">
 
