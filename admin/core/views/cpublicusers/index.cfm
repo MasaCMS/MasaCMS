@@ -114,7 +114,7 @@ function goAndClose(userid)	{
 
 	<div class="input-append">
 	    <input name="search" style="width: 208px;" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#" type="text" />
-	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#"><i class="icon-search"></i></button>
 	</div>
 
 <!---
