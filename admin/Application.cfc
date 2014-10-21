@@ -217,7 +217,9 @@ component extends="framework" output="false" {
 						application.scriptProtectionFilter.scan(
 													object=form,
 													objectname="form",
-													ipAddress=request.remoteAddr);
+													ipAddress=request.remoteAddr,
+													useTagFilter=true,
+													useWordFilter=true);
 					}
 					try{	
 						if(isDefined("cgi")){

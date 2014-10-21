@@ -43,7 +43,7 @@
 	<cfset variables.instance.escapeChars = false/>									<!---So HtmlEditFormat and XMLFormat does not catch everything - we have a better method here--->
 	<cfset variables.instance.checkReferer = true/> 								<!---For form variables only--->
 	<cfset variables.instance.safeReferers = ""/> 									<!---Comma delimited list of sites that can send submit form variables to this site--->
-	<cfset variables.instance.exceptionFields = "comments,summary,body,tags,title,menutitle,description,notes"/>							 	<!---Comma delimited list of fields not to scan--->
+	<cfset variables.instance.exceptionFields = application.configBean.getScriptProtectExceptions() />						 	<!---Comma delimited list of fields not to scan--->
 	<cfset variables.instance.allowJSAccessCookies = true/>						<!---Turn off Javascript access to cookies with the HttpOnly attribute - supported by only some browsers--->					
 	<cfset variables.instance.blockCRLF = false/>									<!---Block CRLF (carriage return line feed) hacks, this particular hack has limited abilities so this could be overkill--->
 	
