@@ -22,7 +22,7 @@
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
 						</label>
 					</div> 
-	      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
+	      	<div class="controls" id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
 						<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
 						<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 						<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>

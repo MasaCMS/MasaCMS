@@ -47,25 +47,25 @@
 --->
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif not isdefined('request.backported')>
-<cfscript>
-	if(structKeyExists(server,'railo')){
-		backportdir='';
-		include "/mura/backport/backport.cfm";
-	} else {
-		backportdir='/mura/backport/';
-		include "#backportdir#backport.cfm";
-	}
-</cfscript>
+	<cfscript>
+		if(structKeyExists(server,'railo')){
+			backportdir='';
+			include "/mura/backport/backport.cfm";
+		} else {
+			backportdir='/mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
+	</cfscript>
 </cfif>
 <cfif cgi.http_user_agent contains 'msie'>
-<meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
-<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-<!--[if IE 9 ]><html class="mura ie ie9" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-<html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie ie10">
+	<meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
+	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<!--[if IE 9 ]><html class="mura ie ie9" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie ie10">
 <cfelse>
-<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
+	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
 </cfif>
   <head>
   	<cfsilent>
@@ -85,79 +85,79 @@
 		</cfif>
 		<cfparam name="moduleTitle" default="">
 		<cfif not len(moduleTitle)>
-		<cfswitch expression="#rc.originalcircuit#">
-		<cfcase value="cArch">
-			<cfswitch expression="#rc.moduleID#">
-			<cfcase value="00000000000000000000000000000000003">
-				<cfset moduleTitle="Components Manager"/>
-			</cfcase>
-			<cfcase value="00000000000000000000000000000000004">
-				<cfset moduleTitle="Forms Manager"/>
-			</cfcase>
-			<cfcase value="00000000000000000000000000000000000">
-				<cfset moduleTitle="Site Manager"/>
-			</cfcase>
-			<cfdefaultcase>
-				<cfif rc.originalfuseaction eq "imagedetails">
-					<cfset moduleTitle="Image Details">
-				<cfelse>
-					<cfset moduleTitle="Drafts">
-				</cfif>	
-			</cfdefaultcase>
+			<cfswitch expression="#rc.originalcircuit#">
+				<cfcase value="cArch">
+					<cfswitch expression="#rc.moduleID#">
+						<cfcase value="00000000000000000000000000000000003">
+							<cfset moduleTitle="Components Manager"/>
+						</cfcase>
+						<cfcase value="00000000000000000000000000000000004">
+							<cfset moduleTitle="Forms Manager"/>
+						</cfcase>
+						<cfcase value="00000000000000000000000000000000000">
+							<cfset moduleTitle="Site Manager"/>
+						</cfcase>
+						<cfdefaultcase>
+							<cfif rc.originalfuseaction eq "imagedetails">
+								<cfset moduleTitle="Image Details">
+							<cfelse>
+								<cfset moduleTitle="Drafts">
+							</cfif>	
+						</cfdefaultcase>
+					</cfswitch>
+				</cfcase>
+				<cfcase value="cSettings">
+					<cfset moduleTitle="Settings Manager"/>
+				</cfcase>
+				<cfcase value="cPrivateUsers">
+					<cfset moduleTitle="Admin Users"/>
+				</cfcase>
+				<cfcase value="cPublicUsers">
+					<cfset moduleTitle="Site Members"/>
+				</cfcase>
+				<cfcase value="cEmail">
+					<cfset moduleTitle="Email Broadcaster"/>
+				</cfcase>
+				<cfcase value="cLogin">
+					<cfset moduleTitle="Login"/>
+				</cfcase>
+				<cfcase value="cMailingList">
+					<cfset moduleTitle="Mailing Lists"/>
+				</cfcase>
+				<cfcase value="cMessage">
+					<cfset moduleTitle="Message"/>
+				</cfcase>
+				<cfcase value="cAdvertising">
+					<cfset moduleTitle="Advertising Manager"/>
+				</cfcase>
+				<cfcase value="cEditProfile">
+					<cfset moduleTitle="Edit Profile"/>
+				</cfcase>
+				<cfcase value="cFeed">
+					<cfset moduleTitle="Content Collections"/>
+				</cfcase>
+				<cfcase value="cFilemanager">
+					<cfset moduleTitle="File Manager"/>
+				</cfcase>
+				<cfcase value="cDashboard">
+					<cfset moduleTitle="Dashboard"/>
+				</cfcase>
+				<cfcase value="cCategory">
+					<cfset moduleTitle="Category Manager"/>
+				</cfcase>
+				<cfcase value="cExtend">
+					<cfset moduleTitle="Class Extension Manager"/>
+				</cfcase>
+				<cfcase value="cPerm">
+					<cfset moduleTitle="Permissions"/>
+				</cfcase>
+				<cfcase value="cPlugin">
+					<cfset moduleTitle="Plugins"/>
+				</cfcase>
+				<cfdefaultcase>
+					<cfset moduleTitle="">
+				</cfdefaultcase>
 			</cfswitch>
-		</cfcase>
-		<cfcase value="cSettings">
-		<cfset moduleTitle="Settings Manager"/>
-		</cfcase>
-		<cfcase value="cPrivateUsers">
-		<cfset moduleTitle="Admin Users"/>
-		</cfcase>
-		<cfcase value="cPublicUsers">
-		<cfset moduleTitle="Site Members"/>
-		</cfcase>
-		<cfcase value="cEmail">
-		<cfset moduleTitle="Email Broadcaster"/>
-		</cfcase>
-		<cfcase value="cLogin">
-		<cfset moduleTitle="Login"/>
-		</cfcase>
-		<cfcase value="cMailingList">
-		<cfset moduleTitle="Mailing Lists"/>
-		</cfcase>
-		<cfcase value="cMessage">
-		<cfset moduleTitle="Message"/>
-		</cfcase>
-		<cfcase value="cAdvertising">
-		<cfset moduleTitle="Advertising Manager"/>
-		</cfcase>
-		<cfcase value="cEditProfile">
-		<cfset moduleTitle="Edit Profile"/>
-		</cfcase>
-		<cfcase value="cFeed">
-		<cfset moduleTitle="Content Collections"/>
-		</cfcase>
-		<cfcase value="cFilemanager">
-		<cfset moduleTitle="File Manager"/>
-		</cfcase>
-		<cfcase value="cDashboard">
-		<cfset moduleTitle="Dashboard"/>
-		</cfcase>
-		<cfcase value="cCategory">
-		<cfset moduleTitle="Category Manager"/>
-		</cfcase>
-		<cfcase value="cExtend">
-		<cfset moduleTitle="Class Extension Manager"/>
-		</cfcase>
-		<cfcase value="cPerm">
-		<cfset moduleTitle="Permissions"/>
-		</cfcase>
-		<cfcase value="cPlugin">
-		<cfset moduleTitle="Plugins"/>
-		</cfcase>
-		<cfdefaultcase>
-		<cfset moduleTitle="">
-		</cfdefaultcase>
-		</cfswitch>
 		</cfif>
 		<cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
 		<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
