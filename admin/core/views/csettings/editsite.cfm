@@ -436,10 +436,39 @@ to your own modified versions of Mura CMS.
               </cfloop>
           </select>
           </div>
+        </div>
+
+        <div class="span3">
+          <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
+          <div class="controls">
+            <select class="span12" id="categoryPoolID" name="categoryPoolID">
+              <option value="">This site</option>
+              <cfloop query="rsSites">
+                <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                  <option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getCategoryPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+                </cfif>
+              </cfloop>
+            </select>
           </div>
+        </div>
+
+        <div class="span3">
+           <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.contentpool')#</label>
+           <div class="controls">
+              <select class="span12" id="contentPoolID" name="contentPoolID" multiple>
+                <option value="#$.event('siteid')#" <cfif listFind(rc.siteBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
+                <cfloop query="rsSites">
+                  <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                    <option value="#rsSites.siteid#" <cfif listFind(rc.siteBean.getContentPoolID(), rsSites.siteid)>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+                  </cfif>
+                </cfloop>
+              </select>
            </div>
         </div>
+
+      </div>
     </div>
+  </div>
     
     <!--- Modules --->
     <div id="tabModules" class="tab-pane fade">
