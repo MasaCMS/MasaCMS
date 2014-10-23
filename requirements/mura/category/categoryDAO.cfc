@@ -51,7 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.settingsManager=arguments.settingsManager />
 	<cfreturn this />
 </cffunction>
 
@@ -130,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -169,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlTitle#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -208,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -247,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -366,7 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(arguments.orderno,i)#" />
 	where contentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.orderid,i)#" />
 	and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
+	and siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
 	</cfquery>
 	</cfloop>
 
@@ -385,7 +387,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and tcontentcategoryassign.siteid=tcontent.siteid)
 	where tcontent.contentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and 		
 	categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" /> 
-	and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
+	and tcontent.siteID IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
 	and tcontent.active=1
 	</cfquery>
 
@@ -455,7 +457,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery>
 		update tcontentcategoryassign set orderno=OrderNo+1 where 
-		categoryid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+		categoryid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" /> 
+		and siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
 	</cfquery>
 
 </cffunction>

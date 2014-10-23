@@ -2175,7 +2175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							AND tcontent.parentID in (select contentID from tcontent 
 															where type='Calendar'
 															#renderActiveClause("tcontent",arguments.siteID)#
-															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+															and siteid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getContentPoolID()#" list="true">)
 														   ) 
 						 )	
 					   OR 
