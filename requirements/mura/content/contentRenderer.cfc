@@ -90,6 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead5="h6">
 <!--- These settings are for navigational display objects --->
 <cfset this.navWrapperClass="sidebar-nav well">
+<cfset this.navLIClass="">
 <cfset this.liHasKidsClass="">
 <cfset this.liHasKidsAttributes="">
 <cfset this.liCurrentClass="current">
@@ -942,6 +943,7 @@ Display Objects
 		<cfargument name="relatedID" type="string" default="">
 		<cfargument name="rs" required="true" default="">
 		<cfargument name="subNavExpression" required="true" default="">
+		<cfargument name="navLIClass" required="true" default="#this.navLIClass#">
 		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
 		<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
@@ -1032,7 +1034,7 @@ Display Objects
 					<cfset nestedArgs.class="">
 					<cfset nestedArgs.ulTopClass="">
 					<cfset structAppend(nestedArgs,arguments,false)>
-					<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
+					<cfset nest=dspNestedNav(argumentCollection=nestedArgs)>
 					<cfset subnav=subnav and find("<li",nest)>
 				</cfif>
 				
@@ -1042,6 +1044,10 @@ Display Objects
 					<cfset itemClass="">
 				</cfif>
 
+				<cfif Len(arguments.navLIClass)>
+					<cfset itemClass=ListAppend(itemClass, arguments.navLIClass, ' ')>
+				</cfif>
+
 				<cfif current eq 1>
 					<cfset itemClass=listAppend(itemClass,'first',' ')>
 				</cfif>
@@ -1049,13 +1055,13 @@ Display Objects
 					<cfset itemClass=listAppend(itemClass,'last',' ')>
 				</cfif>
 				
-				<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
+				<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
 			
 				<cfif isCurrent and len(arguments.liCurrentClass)>
 					<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 				</cfif>
 				<cfif subnav and len(arguments.liHasKidsClass)>
-					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
+					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")>
 				</cfif>
 
 				<cfset linkArgs=structNew()>
