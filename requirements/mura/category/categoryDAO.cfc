@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlTitle#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -247,7 +247,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" />
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	
 	<cfif rsCategory.recordcount gt 1>
@@ -366,7 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(arguments.orderno,i)#" />
 	where contentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.orderid,i)#" />
 	and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	</cfquery>
 	</cfloop>
 
@@ -385,7 +385,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and tcontentcategoryassign.siteid=tcontent.siteid)
 	where tcontent.contentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and 		
 	categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" /> 
-	and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	and tcontent.active=1
 	</cfquery>
 

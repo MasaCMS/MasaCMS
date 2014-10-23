@@ -891,7 +891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset rstcontentcategories = arguments.Bundle.getValue("rstcontentcategories")>
 		</cfif>
 		<cfquery datasource="#arguments.toDSN#">
-			delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.tositeid).getCategoryPoolID()#"/>
 			<cfif isDate(arguments.lastDeployment)>
 				<cfif rstcontentcategories.recordcount or rsDeleted.recordcount>
 					and (
@@ -1023,7 +1023,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.restricted),de(rstcontentfeeds.restricted),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.restrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#application.settingsManager.getSite(arguments.toSiteID).getCategoryPoolID()#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.Type neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.Type#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.version neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.version#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortBy#">,

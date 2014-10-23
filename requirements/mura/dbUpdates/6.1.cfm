@@ -152,7 +152,9 @@
 	.addIndex('siteid');
 
 	dbUtility.setTable('tsettings')
-	.addColumn(column="filePoolID",datatype="varchar",length=25);
+	.addColumn(column="filePoolID",datatype="varchar",length=25)
+	.addColumn(column="categoryPoolID",datatype="varchar",length=25)
+	.addColumn(column="contentPoolID",datatype="text");
 
 	dbUtility.setTable('tcontentstats')
 	.addColumn(column="lockType",datatype="varchar",length=50)
