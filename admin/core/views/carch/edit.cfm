@@ -63,8 +63,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subtypefilter=rc.parentBean.getClassExtension().getAvailableSubTypes()>
 <cfif rc.contentBean.getIsNew()>
 	<cfset requiresApproval=rc.parentBean.requiresApproval()>
+	<cfset showApprovalStatus=rc.parentBean.requiresApproval(applyExemptions=false)>
 <cfelse>
 	<cfset requiresApproval=rc.contentBean.requiresApproval()>
+	<cfset showApprovalStatus=rc.contentBean.requiresApproval(applyExemptions=false)>
 </cfif>
 
 <cfif hasChangesets>
@@ -178,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif> 
 
 <script>
-	<cfif requiresApproval>
+	<cfif requiresApproval or showApprovalStatus>
 		<cfset approvalRequest=rc.contentBean.getApprovalRequest()>
 		<cfif not approvalRequest.getIsNew() and approvalRequest.getStatus() eq 'Pending'>
 			var pendingApproval=true;
@@ -440,7 +442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfelse>
 								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
 							</cfif>				
-						<cfelseif len(rc.contentBean.getApprovalStatus()) and requiresApproval >
+						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
 							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
 						<cfelseif rc.contentBean.getapproved() lt 1>
 							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#

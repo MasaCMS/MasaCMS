@@ -1238,6 +1238,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="requiresApproval" output="false">
+	<cfargument name="applyExemptions" default="true">
 	<cfset var crumbs=getCrumbIterator()>
 	<cfset var crumb="">
 	<cfset var chain="">
@@ -1247,7 +1248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(crumb.getChainID())>
 			<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
 			<cfif not chain.getIsNew()>
-				<cfif len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
+				<cfif arguments.applyExemptions and len(crumb.getExemptID()) and isdefined('session.mura.membershipids')>
 					<cfloop list="#crumb.getExemptID()#" index="i">
 						<cfif listFind(session.mura.membershipids,i)>
 							<cfreturn false>

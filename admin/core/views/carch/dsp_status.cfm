@@ -57,8 +57,8 @@
 			</script>
 	</cfif>
 </cfif>
-<cfif isdefined('requiresApproval')>
-<cfif requiresApproval and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
+<cfif isdefined('showApprovalStatus')>
+<cfif showApprovalStatus and listFindNoCase('Pending,Rejected',rc.contentBean.getApprovalStatus())  >
 	<p class="alert alert-error">
 		<cfif rc.contentBean.getApprovalStatus() eq 'Rejected'>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.rejectedmessage")#: 

@@ -279,7 +279,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!--- Cross-Site Related Search --->
-		<cfloop list="#contentPoolSiteIDs#" item="siteId">
+		<cfloop list="#contentPoolSiteIDs#" index="siteId">
 			<cfif len($.event("keywords"))>
 				<cfset feed.clearParams()>
 				<cfset subList = $.getBean("contentManager").getPrivateSearch(siteId, $.event("keywords"))>
