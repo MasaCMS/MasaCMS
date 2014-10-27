@@ -465,25 +465,26 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 Author: John Mason, mason@fusionlink.com
 Blog: www.codfusion.com--->
 <cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
-		<cfargument name="text" required="true" type="String">
-		<cfset var local = StructNew()/>	
-		<cfset local.result = true/>
+	<cfargument name="text" required="true" type="String">
+	<cfset var local = StructNew()/>	
+	<cfset local.result = true/>
 
-		<cfif len(arguments.text) eq 0>
-			<cfset local.result = false/>
-		<cfelseif FindNoCase(".",arguments.text) gt 0>
-			<cfset local.result = false/>
-		<cfelseif FindNoCase(" ",arguments.text) gt 0>
-			<cfset local.result = false/>
-		<cfelseif ReFindNoCase("^[A-Za-z][A-Za-z0-9_]*",arguments.text) eq 0>
-			<cfset local.result = false/>
-		</cfif>
+	<cfif len(arguments.text) eq 0>
+		<cfset local.result = false/>
+	<cfelseif FindNoCase(".",arguments.text) gt 0>
+		<cfset local.result = false/>
+	<cfelseif FindNoCase(" ",arguments.text) gt 0>
+		<cfset local.result = false/>
+	<cfelseif ReFindNoCase("^[A-Za-z][A-Za-z0-9_]*",arguments.text) eq 0>
+		<cfset local.result = false/>
+	</cfif>
 
-		<cfreturn local.result/>
-	</cffunction>
+	<cfreturn local.result/>
+</cffunction>
 
-	<cffunction name="setSessionCookies">
-		<cfif application.configBean.getSecureCookies()>
+<cffunction name="setSessionCookies">
+	<cfif application.configBean.getSecureCookies()>
+		<cfif isdefined('session.CFID')>
 			<cfif server.coldfusion.productname eq "Railo">
 				<cfset setCookie('cfid', session.CFID, "never", "", "/", true, true, true)>
 				<cfset setCookie('cftoken', session.CFTOKEN, "never", "", "/", true, true, true)>
@@ -492,7 +493,11 @@ Blog: www.codfusion.com--->
 				<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="never" secure="true" httpOnly="true"/>
 			</cfif>
 		</cfif>
-	</cffunction>
+		<cfif isdefined('session.jsessionid')>
+			<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="never" secure="true" httpOnly="true"/>
+		</cfif>
+	</cfif>
+</cffunction>
 
 <!--- 
 Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->

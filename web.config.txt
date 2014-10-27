@@ -78,6 +78,11 @@
 					</conditions>
 					<action type="Rewrite" url="/siteID/robots.txt" />
 				</rule>
+
+				<rule name="CF10 update 14 Patch:Content does not work with url parameters and no cfm in url." enabled="true" stopProcessing="true">
+					<match url="^tasks/render/file/$" ignoreCase="true" />
+					<action type="Rewrite" url="/tasks/render/file/index.cfm"  />
+				</rule>
 				
 			</rules>
 		</rewrite>
