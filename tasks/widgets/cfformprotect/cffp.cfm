@@ -45,5 +45,5 @@
 	<!--- A lot of spam bots automatically fill in all form fields.  cffpVerify.cfm will
 				test to see if this field is blank. The "leave this empty" text is there for blind people,
 				who might see this hidden field --->
-	<span style="display:none">Leave this field empty <input id="fp<cfoutput>#createuuid()#</cfoutput>" type="text" name="formfield1234567894" value="" /></span>
+	<label style="display:none">Leave this field empty <input id="fp<cfoutput>#createuuid()#</cfoutput>" type="text" name="formfield1234567894" value="" /></label>
 </cfif>
