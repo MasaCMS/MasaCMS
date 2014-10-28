@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<description>#XMLFormat(itemdescription)#</description>
 			<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category>	
 			</cfloop><!---<cfif item.getType() eq "Page" and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded>
-			</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+			</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 		</item>
 </cfloop></channel>
 </rss></cfoutput>
