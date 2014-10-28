@@ -242,7 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('url',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#rsnest.contentid#','#esapiEncode('url',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('url',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',attributes.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="icon-book"></i></a></li>
@@ -263,7 +263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#'));"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 		<li class="version-history disabled"><a><i class="icon-book"></i></a></li>

@@ -1416,7 +1416,7 @@ Display Objects
 			<cfoutput>
 			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq variables.event.getValue('contentBean').getContentID()>
-			<li ><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li ><a href="./index.cfm?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
@@ -1426,7 +1426,7 @@ Display Objects
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq variables.event.getValue('contentBean').getContentID()>
-			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
+			<li><a href="./index.cfm?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</cfsavecontent>
@@ -1626,10 +1626,10 @@ Display Objects
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
 			</cfcase>
 			<cfcase value="File">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
@@ -2818,7 +2818,7 @@ Display Objects
 	<cfelse>
 		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
 		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "index.cfm?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelseif not findNocase("linkServID",qrystr)>
 			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr & "&linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelse>
@@ -3396,7 +3396,7 @@ Display Objects
 		if ( not rsFileData.recordcount ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+			return '#application.configBean.getContext()#/tasks/render/file/index.cfm?method=#arguments.method#&amp;fileID=#arguments.fileid#';
 		}
 	</cfscript>
 </cffunction>

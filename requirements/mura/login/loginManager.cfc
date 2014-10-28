@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif arguments.data.redirect eq '' and arguments.data.returnUrl eq ''>
 				<cfif len(arguments.data.linkServID)>
-					<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+					<cflocation url="./index.cfm?LinkServID=#arguments.data.linkServID#" addtoken="false">
 				<cfelse>
 					<cflocation url="./" addtoken="false">
 				</cfif>
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>
-				<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+				<cflocation url="./index.cfm?LinkServID=#arguments.data.linkServID#" addtoken="false">
 			<cfelse>
 				<cflocation url="./" addtoken="false">
 			</cfif>
