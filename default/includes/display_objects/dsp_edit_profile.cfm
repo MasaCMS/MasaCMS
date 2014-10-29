@@ -87,7 +87,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
 						</div>
 					</div>
 
@@ -98,7 +98,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
 						</div>
 					</div>
 
@@ -109,7 +109,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
 						</div>
 					</div>
 
@@ -128,7 +128,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" required="true" placeholder="#variables.$.rbKey('user.email')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.email')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
 						</div>
 					</div>
 
@@ -140,7 +140,7 @@
 								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 							</label>
 							<div class="#this.editProfileFormFieldsWrapperClass#">
-								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" required="true" data-validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
+								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" data-required="true" data-validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 							</div>
 						</div>
 					</cfif>
@@ -156,7 +156,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" data-validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" data-validate="match" matchfield="password2" value=""  maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.password')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
 						</div>
 					</div>
 
@@ -167,7 +167,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
 						</div>
 					</div>
 

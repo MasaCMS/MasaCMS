@@ -76,7 +76,7 @@
 					<ul class="template-form">
 						<li>
 							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
-							<input class="text  tb-label" type="text" name="label" value="" maxlength="50" required='true' data-label="true" />
+							<input class="text  tb-label" type="text" name="label" value="" maxlength="50" data-required='true' data-label="true" />
 						</li>
 						<li>
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
@@ -93,15 +93,15 @@
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
-							<input class="text " type="text" name="size" value="" maxlength="50" required='false' />
+							<input class="text " type="text" name="size" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssid">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssid')#</label>
-							<input class="text " type="text" name="cssid" value="" maxlength="50" required='false' />
+							<input class="text " type="text" name="cssid" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssclass">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssclass')#</label>
-							<input class="text " type="text" name="cssclass" value="" maxlength="50" required='false' />
+							<input class="text " type="text" name="cssclass" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>

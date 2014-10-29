@@ -84,10 +84,10 @@
 
 	<cffunction name="renderCommentsPage" access="remote" output="true">
 		<cfargument name="contentID">
-		<cfargument name="pageNo" required="true" default="1">
-		<cfargument name="nextN" required="true" default="3">
-		<cfargument name="sortDirection" required="true" default="desc">
-		<cfargument name="commentID" required="true" default="">
+		<cfargument name="pageNo" data-required="true" default="1">
+		<cfargument name="nextN" data-required="true" default="3">
+		<cfargument name="sortDirection" data-required="true" default="desc">
+		<cfargument name="commentID" data-required="true" default="">
 		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
 		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
 		<cfset var renderer = $.getContentRenderer()>
