@@ -50,17 +50,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfset VARIABLES.cart = structNew()>
 
   <cffunction name="Add" access="public" returnType="void" output="false" >
-	<cfargument name="item_number" type="string" required="Yes">
-	<cfargument name="item_name" type="string" required="Yes">
-	<cfargument name="amount" type="numeric" required="Yes"  default="0">
-	<cfargument name="quantity" type="numeric" required="no" default="1">
-	<cfargument name="shipping" type="numeric" required="Yes" default="0">
-	<cfargument name="shipping2" type="numeric" required="Yes"  default="0">
-	<cfargument name="handling" type="numeric" required="Yes"  default="0">
-	<cfargument name="on0" type="string" required="Yes"  default="">
-	<cfargument name="os0" type="string" required="Yes"  default="">
-	<cfargument name="on1" type="string" required="Yes"  default="">
-	<cfargument name="os1" type="string" required="Yes"  default="">
+	<cfargument name="item_number" type="string" data-required="Yes">
+	<cfargument name="item_name" type="string" data-required="Yes">
+	<cfargument name="amount" type="numeric" data-required="Yes"  default="0">
+	<cfargument name="quantity" type="numeric" data-required="no" default="1">
+	<cfargument name="shipping" type="numeric" data-required="Yes" default="0">
+	<cfargument name="shipping2" type="numeric" data-required="Yes"  default="0">
+	<cfargument name="handling" type="numeric" data-required="Yes"  default="0">
+	<cfargument name="on0" type="string" data-required="Yes"  default="">
+	<cfargument name="os0" type="string" data-required="Yes"  default="">
+	<cfargument name="on1" type="string" data-required="Yes"  default="">
+	<cfargument name="os1" type="string" data-required="Yes"  default="">
  
 	
     <cfif structKeyExists(VARIABLES.cart, arguments.item_number)>
@@ -85,8 +85,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
   <cffunction name="Update" access="public" returnType="void" output="false"
               hint="Updates an items quantity in the shopping cart">
-    <cfargument name="item_number" type="string" required="Yes">
-    <cfargument name="quantity" type="numeric" required="Yes">
+    <cfargument name="item_number" type="string" data-required="Yes">
+    <cfargument name="quantity" type="numeric" data-required="Yes">
 
     <cfif arguments.quantity gt 0>
       <cfset VARIABLES.cart[arguments.item_number].quantity = arguments.quantity>    
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
   <cffunction name="Remove" access="public" returnType="void" output="false"
               hint="Removes an item from the shopping cart">
-    <cfargument name="item_number" type="string" required="Yes">
+    <cfargument name="item_number" type="string" data-required="Yes">
 
     <cfset structDelete(VARIABLES.cart, arguments.item_number)>
   </cffunction> 

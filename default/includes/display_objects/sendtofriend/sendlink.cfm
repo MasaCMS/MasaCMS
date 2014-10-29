@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset passedProtect=false/>
 <cftry>
 <cfif not $.currentUser().isLoggedIn()>
-	<cfthrow message="User must be logged in">
+	<cfthrow data-message="User must be logged in">
 </cfif>
 <cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 <cfif $.siteConfig().getContactEmail() neq "">
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset passedProtect=variables.cffp.testSubmission(form)>
 <cfif not passedProtect>
-	<cfthrow message="Spam form submission">
+	<cfthrow data-message="Spam form submission">
 </cfif>
 
 <cfsavecontent variable="notifyText"><cfoutput>
