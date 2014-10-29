@@ -89,6 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="privateUserPoolID" type="string" default=""/>
 <cfproperty name="advertiserUserPoolID" type="string" default=""/>
 <cfproperty name="displayPoolID" type="string" default=""/>
+<cfproperty name="contentPoolID" type="string" default=""/>
+<cfproperty name="categoryPoolID" type="string" default=""/>
 <cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
@@ -175,6 +177,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.PrivateUserPoolID=""/>
 	<cfset variables.instance.AdvertiserUserPoolID=""/>
 	<cfset variables.instance.DisplayPoolID=""/>
+	<cfset variables.instance.ContentPoolID=""/>
+	<cfset variables.instance.CategoryPoolID=""/>
 	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
@@ -272,6 +276,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif variables.instance.filePoolID eq ''>
 		<cfset variables.instance.filePoolID=variables.instance.siteID />
+	</cfif>
+
+	<cfif variables.instance.categoryPoolID eq ''>
+		<cfset variables.instance.categoryPoolID=variables.instance.siteID />
+	</cfif>
+
+	<cfif variables.instance.contentPoolID eq ''>
+		<cfset variables.instance.contentPoolID=variables.instance.siteID />
 	</cfif>
 
 	<cfreturn this>

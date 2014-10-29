@@ -429,13 +429,13 @@
 					--->
 
 					<cfif (
-						<!--- Within window. --->
+				
 						(
 							LOCAL.From LTE LOCAL.Day) AND 
 							(LOCAL.Day LTE LOCAL.To) AND
 							(LOCAL.Day GTE LOCAL.FromOrig) AND 
 							
-							<!--- Within allowable days. ---> 
+							
 							(
 								(NOT Len( LOCAL.DaysOfWeek )) OR
 								ListFind( 

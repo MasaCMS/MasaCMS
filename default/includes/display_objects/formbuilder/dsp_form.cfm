@@ -91,7 +91,7 @@
 			dataset=variables.dataset
 			)#			
 		<cfelseif variables.field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#">
+			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif isDefined('variables.field.wrappercssclass') and len(variables.field.wrappercssclass)> #variables.field.wrappercssclass#</cfif>">
 			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
 				field=variables.field,
 				dataset=variables.dataset

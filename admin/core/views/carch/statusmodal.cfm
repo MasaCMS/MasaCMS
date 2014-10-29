@@ -48,9 +48,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset content=$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
 	<cfset $.event('contentBean',content)>
 	<cfset requiresApproval=content.requiresApproval()>
+	<cfset showApprovalStatus=content.requiresApproval(applyExemptions=false)>
 	<cfset user=content.getUser()>
 	<cfset islocked=false>
-	<cfif requiresApproval>
+	<cfif requiresApproval or showApprovalStatus>
 		<cfset approvalRequest=content.getApprovalRequest()>
 		<cfset group=approvalRequest.getGroup()>
 		<cfset actions=approvalRequest.getActionsIterator()>
@@ -100,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif content.getactive() gt 0 and content.getapproved() gt 0>
 				<i class="icon-ok-sign"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</p>
-			<cfelseif len(content.getApprovalStatus()) and requiresApproval >
+			<cfelseif len(content.getApprovalStatus()) and (requiresApproval or showApprovalStatus)>
 				<i class="icon-time"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#content.getApprovalStatus()#")#</p>
 			<cfelseif content.getapproved() lt 1>
@@ -126,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 					
 	
-		<cfif requiresApproval>
+		<cfif requiresApproval or showApprovalStatus>
 			<cfif not content.getApproved() and approvalRequest.getStatus() eq 'Pending'>
 			<dl class="approval-status">
 				<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.approvalstatus')#</dt>
@@ -192,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.mode eq 'frontend'>
 </div>
-	<cfif not content.getApproved() and requiresApproval>
+	<cfif not content.getApproved() and (requiresApproval or showApprovalStatus)>
 		<script>
 		function applyApprovalAction(requestid,action,comment,siteid){
 			

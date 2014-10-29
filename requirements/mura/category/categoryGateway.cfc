@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	,tcontentcategories.restrictGroups,tcontentcategories.isfeatureable from 
 	tcontentcategories left join tcontentcategories tcontentcategories2 ON
 	(tcontentcategories.categoryID = tcontentcategories2.parentID)
-	where tcontentcategories.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	where tcontentcategories.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	and tcontentcategories.parentID <cfif arguments.parentID neq ''> = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" /><cfelse> is null </cfif>
 	<cfif arguments.keywords neq ''>and tcontentcategories.name like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%" /></cfif> 
 	<cfif arguments.activeOnly>and tcontentcategories.isActive=1</cfif>
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsInterestGroupCount')#">
 	select count(*) as theCount from tcontentcategories
-	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	and isInterestGroup=1
 	<cfif arguments.activeOnly>
 	and isactive=1
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCategoryCount')#">
 	select count(*) as theCount from tcontentcategories
-	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	<cfif arguments.activeOnly>
 	and isactive=1
 	</cfif>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCategoriesBySiteID ="" />
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCategoriesBySiteID')#">
-	select * from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	select * from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	<cfif arguments.keywords neq ''>and tcontentcategories.name like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%" /></cfif> 
 	order by name
 	</cfquery>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsInterestGroupsBySiteID ="" />
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsInterestGroupsBySiteID')#">
-	select * from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	select * from tcontentcategories where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#" />
 	and isInterestGroup=1
 	<cfif arguments.keywords neq ''>and tcontentcategories.name like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%" /></cfif> 
 	order by name
@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif> 
 		from tcontentcategories where 
 		categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
-		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.settingsManager.getSite(arguments.siteID).getCategoryPoolID()#"/>
 		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
 	</cfquery>	
 	

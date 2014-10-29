@@ -743,7 +743,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
 		
     	<cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
-    	<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">		
+    	<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">
+    	<cfset FileClose(local.fileCheck)>	
     </cfif>
 
 	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>
@@ -852,7 +853,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset imgSuffix=arguments.size>
 		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
+		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/index.cfm?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
 	</cfif>
 	
 	<cfreturn begin & returnURL>

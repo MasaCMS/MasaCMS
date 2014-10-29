@@ -153,10 +153,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			str="";
 			str= str + '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab##version=#version#,0,0,0" width="#arguments.creativeBean.getWidth()#" height="#arguments.creativeBean.getHeight()#">\n';
-			str=str+'<param name="movie" value="#variables.instance.configBean.getContext()#/tasks/render/file/?fileID=#arguments.creativeBean.getFileID()#&adUrl=#urlEncodedFormat(link)#">\n';
+			str=str+'<param name="movie" value="#variables.instance.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#arguments.creativeBean.getFileID()#&adUrl=#urlEncodedFormat(link)#">\n';
 			str=str+'<param name="quality" value="high">\n';
 			str=str+'<param name="adUrl" value="#urlEncodedFormat(link)#">\n';
-			str=str+'<embed src="#variables.instance.configBean.getContext()#/tasks/render/file/?fileID=#arguments.creativeBean.getFileID()#&adUrl=#urlEncodedFormat(link)#" quality="high" width="#arguments.creativeBean.getWidth()#" height="#arguments.creativeBean.getHeight()#" name="nav" align="" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"><'+'/embed>\n';
+			str=str+'<embed src="#variables.instance.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#arguments.creativeBean.getFileID()#&adUrl=#urlEncodedFormat(link)#" quality="high" width="#arguments.creativeBean.getWidth()#" height="#arguments.creativeBean.getHeight()#" name="nav" align="" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"><'+'/embed>\n';
 			str=str+'<'+'/object>';
 			document.write(str);
 		
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "http://#variables.instance.configBean.getFileStoreEndPoint()#/#variables.instance.bucket#/#arguments.creativeBean.getSiteID()#/#arguments.creativeBean.getFileID()#.#arguments.creativeBean.getFileExt()#">
 	</cfcase>
 	<cfcase value="database">
-		<cfreturn "#variables.instance.configBean.getContext()#/tasks/render/file/?fileID=#arguments.creativeBean.getFileID()#" />
+		<cfreturn "#variables.instance.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#arguments.creativeBean.getFileID()#" />
 	</cfcase>
 	<cfcase value="fileDir">
 		<cfreturn "#variables.instance.configBean.getAssetPath()#/#arguments.creativeBean.getSiteID()#/cache/file/#arguments.creativeBean.getFileID()#.#arguments.creativeBean.getFileExt()#" />

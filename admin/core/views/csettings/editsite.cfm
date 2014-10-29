@@ -76,12 +76,12 @@ to your own modified versions of Mura CMS.
     <cfoutput>
       <div class="form-actions">
         <cfif rc.siteBean.getsiteid() eq ''>
-          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"  /><i class="icon-plus-sign"></i> Add</button>
+          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="icon-plus-sign"></i> Add</button>
           <cfelse>
           <cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
-            <button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
+            <button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});"><i class="icon-remove-sign"></i> Delete</button>
           </cfif>
-          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" /><i class="icon-ok-sign"></i> Update</button>
+          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="icon-ok-sign"></i> Update</button>
         </cfif>
       </div>
     </cfoutput>
@@ -436,10 +436,39 @@ to your own modified versions of Mura CMS.
               </cfloop>
           </select>
           </div>
+        </div>
+        <!---
+        <div class="span3">
+          <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
+          <div class="controls">
+            <select class="span12" id="categoryPoolID" name="categoryPoolID">
+              <option value="">This site</option>
+              <cfloop query="rsSites">
+                <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                  <option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getCategoryPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+                </cfif>
+              </cfloop>
+            </select>
           </div>
+        </div>
+    
+        <div class="span3">
+           <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.contentpool')#</label>
+           <div class="controls">
+              <select class="span12" id="contentPoolID" name="contentPoolID" multiple>
+                <option value="#$.event('siteid')#" <cfif listFind(rc.siteBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
+                <cfloop query="rsSites">
+                  <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                    <option value="#rsSites.siteid#" <cfif listFind(rc.siteBean.getContentPoolID(), rsSites.siteid)>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+                  </cfif>
+                </cfloop>
+              </select>
            </div>
         </div>
+        --->
+      </div>
     </div>
+  </div>
     
     <!--- Modules --->
     <div id="tabModules" class="tab-pane fade">
@@ -987,7 +1016,7 @@ to your own modified versions of Mura CMS.
                       <cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
                       <a href="./index.cfm?muraAction=cArch.imagedetails&siteid=#rc.siteBean.getSiteID()#&fileid=#esapiEncode('url',attributeValue)#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#esapiEncode('url',attributeValue)#&cacheID=#createUUID()#" /></a>
                     </cfif>
-                      <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#esapiEncode('url',attributeValue)#" target="_blank">[Download]</a>
+                      <a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#esapiEncode('url',attributeValue)#" target="_blank">[Download]</a>
                       <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/>
                       Delete
                     </cfif>

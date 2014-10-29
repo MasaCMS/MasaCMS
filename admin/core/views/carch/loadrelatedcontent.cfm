@@ -53,6 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout=false>
 <cfset baseTypeList = "Page,Folder,Calendar,Gallery,File,Link"/>
 <cfset rsSubTypes = application.classExtensionManager.getSubTypes(siteID=rc.siteID, activeOnly=true) />
+<cfset contentPoolSiteIDs = $.getBean('settingsManager').getSite($.event('siteId')).getContentPoolID()>
+<cfset contentPoolSiteIDs = listDeleteAt(contentPoolSiteIDs, listFind(contentPoolSiteIDs, $.event('siteid')))>
 
 <cfoutput>
 	<script>
@@ -255,7 +257,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
-				<div class="list-table-content-set"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput></label></div>
+				<div class="list-table-content-set">
+					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif> 
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
+				</div>
 				<ul class="rcDraggable list-table-items">
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
@@ -272,6 +277,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
 			</cfoutput>
 		</cfif>
+
+		<!--- Cross-Site Related Search --->
+		<cfloop list="#contentPoolSiteIDs#" index="siteId">
+			<cfif len($.event("keywords"))>
+				<cfset feed.clearParams()>
+				<cfset subList = $.getBean("contentManager").getPrivateSearch(siteId, $.event("keywords"))>
+				<cfset feed.setSiteId( siteId )>
+				<cfset feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID))>
+				<cfset rc.rslist=feed.getQuery()>
+
+				<cfif rc.rslist.recordcount>
+					<div id="draggableContainmentInternal" class="list-table search-results">
+						<div class="list-table-content-set">
+							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#: 
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
+						</div>
+						<ul class="rcDraggable list-table-items">
+							<cfoutput query="rc.rslist" startrow="1" maxrows="100">
+								<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, siteId)/>
+								<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
+									<li class="item" data-content-type="#rc.rslist.type#/#rc.rslist.subtype#" data-contentid="#rc.rslist.contentID#">
+										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="icon-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
+									</li>
+								</cfif>
+							</cfoutput>
+						</ul>
+					</div>
+				<cfelse>
+					<cfoutput>  
+						<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
+					</cfoutput>
+				</cfif>
+			</cfif>
+		</cfloop>
 	</div>
 </cfif>
 <cfoutput>

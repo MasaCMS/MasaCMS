@@ -192,7 +192,7 @@
 							</li>
 							<li class="col">
 								<cfif len(request.userBean.getPhotoFileID())>
-									<img src="#variables.$.globalConfig('context')#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+									<img src="#variables.$.globalConfig('context')#/tasks/render/small/index.cfm?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
 									<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo
 							</cfif>
 							</li>
@@ -266,7 +266,7 @@
 														</div>
 													</div>
 													<div class="#this.editProfileExtAttributeDownloadClass#">
-														<span class="#this.editProfileHelpBlockClass#"><a class="#this.editProfileExtAttributeDownloadButtonClass#" href="#variables.$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">Download</a></span>
+														<span class="#this.editProfileHelpBlockClass#"><a class="#this.editProfileExtAttributeDownloadButtonClass#" href="#variables.$.globalConfig('context')#/tasks/render/file/index.cfm?fileID=#attributeValue#" target="_blank">Download</a></span>
 													</div>
 												</div>
 											</cfif>

@@ -963,7 +963,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>
 						) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> 
-					ss</cfif>
+					</cfif>
 				</cfif>
 		</cfquery>
 	</cfprocessingdirective>

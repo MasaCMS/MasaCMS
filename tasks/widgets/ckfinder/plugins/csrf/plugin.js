@@ -9,7 +9,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
   
     var getTokens = function(){
       var request=new XMLHttpRequest();
-      request.open('GET', baseURL, false);  // `false` makes the request synchronous
+      request.open('GET', baseURL + "&cacheid" + Math.random(), false);  // `false` makes the request synchronous
       request.send(null);
     
       var response=JSON.parse(request.responseText);

@@ -90,6 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead5="h6">
 <!--- These settings are for navigational display objects --->
 <cfset this.navWrapperClass="sidebar-nav well">
+<cfset this.navLIClass="">
 <cfset this.liHasKidsClass="">
 <cfset this.liHasKidsAttributes="">
 <cfset this.liCurrentClass="current">
@@ -942,6 +943,7 @@ Display Objects
 		<cfargument name="relatedID" type="string" default="">
 		<cfargument name="rs" required="true" default="">
 		<cfargument name="subNavExpression" required="true" default="">
+		<cfargument name="navLIClass" required="true" default="#this.navLIClass#">
 		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
 		<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
@@ -1032,7 +1034,7 @@ Display Objects
 					<cfset nestedArgs.class="">
 					<cfset nestedArgs.ulTopClass="">
 					<cfset structAppend(nestedArgs,arguments,false)>
-					<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
+					<cfset nest=dspNestedNav(argumentCollection=nestedArgs)>
 					<cfset subnav=subnav and find("<li",nest)>
 				</cfif>
 				
@@ -1042,6 +1044,10 @@ Display Objects
 					<cfset itemClass="">
 				</cfif>
 
+				<cfif Len(arguments.navLIClass)>
+					<cfset itemClass=ListAppend(itemClass, arguments.navLIClass, ' ')>
+				</cfif>
+
 				<cfif current eq 1>
 					<cfset itemClass=listAppend(itemClass,'first',' ')>
 				</cfif>
@@ -1049,13 +1055,13 @@ Display Objects
 					<cfset itemClass=listAppend(itemClass,'last',' ')>
 				</cfif>
 				
-				<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
+				<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
 			
 				<cfif isCurrent and len(arguments.liCurrentClass)>
 					<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 				</cfif>
 				<cfif subnav and len(arguments.liHasKidsClass)>
-					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
+					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")>
 				</cfif>
 
 				<cfset linkArgs=structNew()>
@@ -1410,7 +1416,7 @@ Display Objects
 			<cfoutput>
 			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq variables.event.getValue('contentBean').getContentID()>
-			<li ><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li ><a href="./index.cfm?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
@@ -1420,7 +1426,7 @@ Display Objects
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq variables.event.getValue('contentBean').getContentID()>
-			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
+			<li><a href="./index.cfm?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</cfsavecontent>
@@ -1620,10 +1626,10 @@ Display Objects
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
 			</cfcase>
 			<cfcase value="File">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
@@ -2202,7 +2208,7 @@ Display Objects
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail file">
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
-								<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2&amp;ext=.#variables.event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
+								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
 								</div>
 								</cfoutput>
 						</cfif>				
@@ -2211,7 +2217,7 @@ Display Objects
 						<cfoutput>
 						<div id="svAssetDetail" class="mura-asset-detail link">
 							#renderEditableAttribute(attribute="summary",type="htmlEditor")#	
-							<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>							
+							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>							
 						</div>
 						</cfoutput>
 					</cfcase>
@@ -2812,7 +2818,7 @@ Display Objects
 	<cfelse>
 		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
 		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "index.cfm?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelseif not findNocase("linkServID",qrystr)>
 			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr & "&linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelse>
@@ -3390,7 +3396,7 @@ Display Objects
 		if ( not rsFileData.recordcount ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+			return '#application.configBean.getContext()#/tasks/render/file/index.cfm?method=#arguments.method#&amp;fileID=#arguments.fileid#';
 		}
 	</cfscript>
 </cffunction>

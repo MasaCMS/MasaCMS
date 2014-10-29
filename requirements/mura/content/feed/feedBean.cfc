@@ -97,6 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="cssClass" type="string" default="" />
 <cfproperty name="useCategoryIntersect" type="numeric" default="0" />
 <cfproperty name="altTable" type="string" default=""/>
+<cfproperty name="contentpoolid" type="string" default=""/>
 
 <cfset variables.primaryKey = 'feedid'>
 <cfset variables.entityName = 'feed'>
@@ -159,6 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.cssClass="" />
 	<cfset variables.instance.useCategoryIntersect=0 />
 	<cfset variables.instance.altTable="" />
+	<cfset variables.instance.contentpoolid="" />
 	
 	<cfreturn this />
 </cffunction>
@@ -233,6 +235,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getContentPoolID" access="public" output="false">
+
+	<cfif not len(variables.instance.contentpoolid)>
+		<cfset variables.instance.contentpoolid=variables.instance.siteid />
+	</cfif>
+	
+	<cfreturn variables.instance.contentpoolid>
 </cffunction>
 
 <cffunction name="setCategoryID" access="public" output="false">

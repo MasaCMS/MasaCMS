@@ -86,9 +86,11 @@ var userManager = {
 		}
 		//checkExtendSetTargeting();
 		setHTMLEditors(context, themeAssetPath);
-		setDatePickers(".tabcontent .datepicker", dtLocale);
-		setColorPickers(".tabcontent .colorpicker");
-		setToolTips(".tabcontent");
+		setDatePickers(".tab-content .datepicker", dtLocale);
+		setColorPickers(".tab-content .colorpicker");
+		setFinders(".tab-content .mura-ckfinder");
+		setToolTips(".tab-content");
+		setFileSelectors();
 
 	},
 

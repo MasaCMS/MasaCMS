@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 <td>#esapiEncode('html',rslist.keywords)#</td>
 <td>#rsList.keywordCount#</td>
-<td>#decimalFormat((rsList.keywordCount/rstotal.keywordCount)*100)#%</td>
+<td><cfif rstotal.keywordCount>0%<cfelse>#decimalFormat((rsList.keywordCount/rstotal.keywordCount)*100)#%</cfif></td>
 </tr>
 </cfloop>
 <cfelse>
