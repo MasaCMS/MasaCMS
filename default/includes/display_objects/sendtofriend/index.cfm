@@ -65,13 +65,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <legend>#$.rbKey('stf.sendtoafriend')#</legend>
 <input type="hidden" name="link" value="#HTMLEditFormat(url.link)#">
 <ol>
-<li class="req"><label>#$.rbKey('stf.fname')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text"  name="fname" required="yes" message="#$.rbKey('stf.fnamerequired')#" size="20" maxlength="16" value="" class="text"></li>
-<li class="req"><label>#$.rbKey('stf.lname')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text" name="lname" message="#$.rbKey('stf.lnamerequired')#" required="yes" size="20" maxlength="16" value="" class="text" /></li>
-<li class="req"><label>#$.rbKey('stf.email')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text" name="email" message="#$.rbKey('stf.emailrequired')#"  required="yes" size="20" maxlength="47" value="" class="text" /></li>
+<li class="req"><label>#$.rbKey('stf.fname')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text"  name="fname" required="yes" data-message="#$.rbKey('stf.fnamerequired')#" size="20" maxlength="16" value="" class="text"></li>
+<li class="req"><label>#$.rbKey('stf.lname')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text" name="lname" data-message="#$.rbKey('stf.lnamerequired')#" required="yes" size="20" maxlength="16" value="" class="text" /></li>
+<li class="req"><label>#$.rbKey('stf.email')#<ins> (#$.rbKey('stf.required')#)</ins></label><cfinput type="text" name="email" data-message="#$.rbKey('stf.emailrequired')#"  required="yes" size="20" maxlength="47" value="" class="text" /></li>
 <li><label>#$.rbKey('stf.copyme')#</label><input type="checkbox" name="ccself" value="1"></li>
 <li><label>#$.rbKey('stf.recipientaddresses')#</label>
 	<ul class="multiInputs">
-	<li><span class="req"><cfinput type="text" name="sendto1" size="20" required="yes" message="#$.rbKey('stf.recipientrequired')#" maxlength="47" value="" class="text" /><ins> (#$.rbKey('stf.required')#)</ins></span></li>
+	<li><span class="req"><cfinput type="text" name="sendto1" size="20" required="yes" data-message="#$.rbKey('stf.recipientrequired')#" maxlength="47" value="" class="text" /><ins> (#$.rbKey('stf.required')#)</ins></span></li>
 	<li><input type="text" name="sendto2" size="20" maxlength="47" value="" class="text" /></li>
 	<li><input type="text" name="sendto3" size="20" maxlength="47" value="" class="text" /></li>
 	</ul>

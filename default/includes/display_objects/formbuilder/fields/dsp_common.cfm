@@ -57,7 +57,7 @@
 <cfsilent>
 <cfset variables.strField = "" />
 <cfif arguments.field.isrequired>
-	<cfset variables.strField = variables.strField & ' data-required="true"' />
+	<cfset variables.strField = variables.strField & ' required="true"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'size') and len(arguments.field.size)>
 	<cfset variables.strField = strField & ' size="#arguments.field.size#"' />

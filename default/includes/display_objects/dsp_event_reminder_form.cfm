@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<fieldset>
 	<ol>
 	<li class="req control-group"><label class="control-label" for="email">#variables.$.rbKey('event.email')#*</label>
-	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat(variables.$.rbKey('event.emailvalidate'))#"></li>
+	<input id="email" name="email" required="true" data-validate="email" data-message="#htmlEditFormat(variables.$.rbKey('event.emailvalidate'))#"></li>
 	<li class="req control-group"><label class="control-label" for="interval">#variables.$.rbKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
 	<option value="0">0 #variables.$.rbKey('event.minutes')#</option>

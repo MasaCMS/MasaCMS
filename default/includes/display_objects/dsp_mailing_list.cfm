@@ -116,7 +116,7 @@
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
 							<div class="#this.mailingListFormFieldWrapperClass#">
-								<input type="text" id="txtNameFirst" class="#this.mailingListFormInputClass#" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
+								<input type="text" id="txtNameFirst" class="#this.mailingListFormInputClass#" name="fname" maxlength="50" required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#"/>
 							</div>
 						</div>
 
@@ -127,7 +127,7 @@
 								<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 							</label>
 							<div class="#this.mailingListFormFieldWrapperClass#">
-								<input type="text" id="txtNameLast" class="#this.mailingListFormInputClass#" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
+								<input type="text" id="txtNameLast" class="#this.mailingListFormInputClass#" name="lname" maxlength="50" required="true" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#"/>
 							</div>
 						</div>
 
@@ -149,7 +149,7 @@
 							<ins>(#variables.$.rbKey('mailinglist.required')#)</ins>
 						</label>
 						<div class="#this.mailingListFormFieldWrapperClass#">
-							<input type="text" id="txtEmail" class="#this.mailingListFormInputClass#" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
+							<input type="text" id="txtEmail" class="#this.mailingListFormInputClass#" name="email" maxlength="50" required="true" data-validate="email" data-message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#"/>
 						</div>
 					</div>
 				</fieldset>

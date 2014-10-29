@@ -114,7 +114,7 @@
 		</cfif>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
 	<cfelse>
-		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
+		<!---<cfthrow data-message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
 </cfloop>
 <cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>

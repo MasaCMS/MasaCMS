@@ -276,7 +276,7 @@
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
+									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
 								</div>
 							</div>
 
@@ -284,7 +284,7 @@
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
+									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
 								</div>
 							</div>
 
@@ -300,7 +300,7 @@
 							<div class="req #this.commentFieldWrapperClass#">
 								<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 								</div>
 							</div>
 
