@@ -51,18 +51,18 @@
 	<cfinclude template="dsp_users_header.cfm" />
 
 	<!--- TAB NAV --->
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	<cfif ListFind(session.mura.memberships,'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(session.mura.memberships,'S2')>
 
 		<h2>#rc.$.rbKey('user.groups')#</h2>
 
 		<ul class="nav nav-tabs">
-			<!--- Public Groups --->
+			<!--- Member/Public Groups --->
 			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#">
 					#rc.$.rbKey('user.membergroups')#
 				</a>
 			</li>
-			<!--- Private Groups --->
+			<!--- System/Private Groups --->
 			<li<cfif rc.ispublic eq 0> class="active"</cfif>>
 				<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#">
 					#rc.$.rbKey('user.adminusergroups')#
@@ -81,6 +81,13 @@
 						<th class="var-width">
 							#rc.$.rbKey('user.grouptotalmembers')#
 						</th>
+
+						<!--- TEMP!!! Take out!! --->
+						<th>
+							<cfset poolheading = !rc.ispublic ? rc.$.rbKey('siteconfig.sharedresources.systemuserpool') : rc.$.rbKey('siteconfig.sharedresources.memberuserpool') />
+							#poolheading#
+						</th>
+
 						<th>
 							#rc.$.rbKey('user.email')#
 						</th>
@@ -114,6 +121,13 @@
 								</a>
 								(#local.membercount#)
 							</td>
+
+							<!--- TEMP!! Take Out!! --->
+							<td>
+								<cfset poolid = !rc.ispublic ? rc.$.siteConfig('publicUserPoolID') : rc.$.siteConfig('privateUserPoolID') />
+								#poolid#
+							</td>
+
 							<td>
 								<cfif Len(local.group.getValue('email'))>
 									<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">

@@ -46,6 +46,15 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+	<cfscript>
+		if(structKeyExists(server,'railo')){
+			backportdir='';
+			include "/mura/backport/backport.cfm";
+		} else {
+			backportdir='/mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
+	</cfscript>
 	<cfparam name="attributes.siteID" default="">
 	<cfparam name="attributes.parentID" default="">
 	<cfparam name="attributes.categoryID" default="">
@@ -71,7 +80,7 @@
 						<input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> 
 					</cfif>
 
-					#rslist.name#
+					#esapiEncode('html',rslist.name)#
 						
 					<cfif rslist.hasKids>
 

@@ -46,34 +46,35 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
+<cfparam name="url.siteid" default="#rc.$.event('siteid')#" />
 <cfparam name="url.groupid" default="">
 <cfparam name="url.s2" default="0">
 <cfparam name="form.search" default="">
-<cfset rsList = application.serviceFactory.getBean('userGateway').getSearch(form.search, url.siteid, 1)>
+<cfset rsList = rc.$.getBean('userGateway').getSearch(form.search, url.siteid, 1)>
 <html>
 
 <head><cfoutput>
 <title>#rc.$.rbKey('user.selectuser')#</title>
-<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+<link href="#rc.$.globalConfig('context')#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->
-<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
-<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+<script src="#rc.$.globalConfig('context')#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#rc.$.globalConfig('context')#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#rc.$.globalConfig('context')#/admin/assets/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<!--- <link href="#rc.$.globalConfig('context')#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->
+<script src="#rc.$.globalConfig('context')#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<cfif rc.$.globalConfig("htmlEditorType") eq "fckeditor">
+<script type="text/javascript" src="#rc.$.globalConfig('context')#/wysiwyg/fckeditor.js"></script>
 <cfelse>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+<script type="text/javascript" src="#rc.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="#rc.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="#rc.$.globalConfig('context')#/tasks/widgets/ckfinder/ckfinder.js"></script>
 </cfif>
 <script type="text/javascript">
-var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
-var context='#application.configBean.getContext()#';
-var themepath='#application.settingsManager.getSite(session.siteID).getThemeAssetPath()#';
+var htmlEditorType='#rc.$.globalConfig("htmlEditorType")#';
+var context='#rc.$.globalConfig('context')#';
+var themepath='#rc.$.siteConfig('themeAssetPath')#';
 var rb='#lcase(session.rb)#';
-var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
+var sessionTimeout=#evaluate("rc.$.globalConfig('sessionTimeout') * 60")#;
 </script>
 #session.dateKey#
 <script type="text/javascript">

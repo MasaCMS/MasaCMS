@@ -104,4 +104,6 @@
 			</cfif>
 		</div>
 
+		<h4><span style="color:orange;">Memberships:</span> #rc.$.currentUser().getMemberships()#</h4>
+
 </cfoutput>

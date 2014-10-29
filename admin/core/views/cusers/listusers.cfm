@@ -50,29 +50,40 @@
 	<!--- Header --->
 	<cfinclude template="dsp_users_header.cfm" />
 
-	<!--- TAB NAV --->
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+
+	<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
 
 		<h2>#rc.$.rbKey('user.users')#</h2>
 
-		<ul class="nav nav-tabs">
-			<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-				<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=1&unassigned=#rc.unassigned#')#">
-					#rc.$.rbKey('user.sitemembers')#
-				</a>
-			</li>
-			<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-				<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=0&unassigned=#rc.unassigned#')#">
-					#rc.$.rbKey('user.systemusers')#
-				</a>
-			</li>
-		</ul>
+		<!--- Tab Nav --->
+			<ul class="nav nav-tabs">
+
+				<!--- Site Members Tab --->
+				<li<cfif rc.ispublic eq 1> class="active"</cfif>>
+					<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=1&unassigned=#rc.unassigned#')#">
+						#rc.$.rbKey('user.sitemembers')#
+					</a>
+				</li>
+
+				<!--- System Users Tab --->
+				<li<cfif rc.ispublic eq 0> class="active"</cfif>>
+					<a href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=0&unassigned=#rc.unassigned#')#">
+						#rc.$.rbKey('user.systemusers')#
+					</a>
+				</li>
+			</ul>
+		<!--- /Tab Nav --->
+
 	<cfelse>
+
 		<h2>#rc.$.rbKey('user.sitemembers')#</h2>
+
 	</cfif>
 
-	<!--- FILTERS --->
+	<!--- Filters --->
 		<div class="well btn-group">
+
+			<!--- View All / Unassigned Only --->
 			<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#">
 				<i class="icon-filter"></i> 
 				<cfif rc.unassigned EQ 0>
@@ -82,15 +93,19 @@
 				</cfif>
 			</a>
 
+			<!--- Download .CSV --->
 			<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
 				<i class="icon-cloud-download"></i> 
 				#rc.$.rbKey('user.downloadcsv')#
 			</a>
-		</div>
 
-	<!--- BODY --->
+		</div>
+	<!--- /Filters --->
+
+	<!--- Body --->
 		<cfif rc.rsUsers.recordcount>
 			<table id="tbl-users" class="table table-striped table-condensed table-bordered mura-table-grid">
+
 				<thead>
 					<tr>
 						<th>
@@ -99,6 +114,12 @@
 						<th class="var-width">
 							#rc.$.rbKey('user.user')#
 						</th>
+
+						<!--- TEMP!!!! - TAKE OUT --->
+						<th>
+							SiteID
+						</th>
+
 						<th>
 							#rc.$.rbKey('user.email')#
 						</th>
@@ -111,11 +132,15 @@
 						<th>
 							#rc.$.rbKey('user.lastupdatedby')#
 						</th>
-						<th>&nbsp;</th>
+						<th>
+							&nbsp;
+						</th>
 					</tr>
 				</thead>
+
 				<tbody>
-					<!--- RECORDS --->
+
+					<!--- Users Iterator --->
 					<cfloop condition="rc.itUsers.hasNext()">
 						<cfsilent>
 							<cfscript>
@@ -123,6 +148,7 @@
 							</cfscript>
 						</cfsilent>
 						<tr>
+
 							<!--- Icons --->
 							<td class="actions">
 								<ul>
@@ -154,12 +180,20 @@
 									</cfif>
 								</ul>
 							</td>
+							<!--- /Icons --->
+
 							<!--- Last Name, First Name --->
 							<td class="var-width">
 								<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#">
 									#esapiEncode('html',local.user.getValue('lname'))#, #esapiEncode('html',local.user.getValue('fname'))#
 								</a>
 							</td>
+
+							<!--- TEMP!!!! - TAKE OUT! --->
+							<td>
+								#local.user.getSiteID()#
+							</td>
+
 							<!--- Email --->
 							<td>
 								<cfif Len(local.user.getValue('email'))>
@@ -170,27 +204,34 @@
 									&nbsp;
 								</cfif>
 							</td>
+
 							<!--- Date Lastupdate --->
 							<td>
 								#LSDateFormat(local.user.getValue('lastupdate'), session.dateKeyFormat)#
 							</td>
+
 							<!--- Time Lastupdate --->
 							<td>
 								#LSTimeFormat(local.user.getValue('lastupdate'), 'short')#
 							</td>
+
 							<!--- Last Update By --->
 							<td>
 								#esapiEncode('html',local.user.getValue('lastupdateby'))#
 							</td>
+
 							<!--- Actions --->
 							<td class="actions">
 								<ul>
+
+									<!--- Edit --->
 									<li>
 										<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
 											<i class="icon-pencil"></i>
 										</a>
 									</li>
 
+									<!--- Delete --->
 									<cfif local.user.getValue('perm') eq 0>
 										<li>
 											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.user.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
@@ -202,15 +243,21 @@
 											<i class="icon-remove-sign"></i>
 										</li>
 									</cfif>
+
 								</ul>
 							</td>
+							<!--- /Actions --->
+
 						</tr>
 					</cfloop>
 				</tbody>
 			</table>
 		<cfelse>
+
+			<!--- No Users Message --->
 			<div class="alert alert-info">
 				#rc.$.rbKey('user.nousers')#
 			</div>
+
 		</cfif>
 </cfoutput>
