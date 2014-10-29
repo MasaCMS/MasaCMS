@@ -1529,7 +1529,7 @@ and tclassextendattributes.type='File'
 
 	<cfset documentXML.XmlRoot = xmlRoot />
 
-	<cfset extensionXML = extension.getAsXML(documentXML) />
+	<cfset extensionXML = extension.getAsXML(documentXML,arguments.includeIDs) />
 
 	<cfset ArrayAppend(
 		documentXML.XmlRoot.XmlChildren,
@@ -1554,7 +1554,7 @@ and tclassextendattributes.type='File'
 	<cfloop from="1" to="#ArrayLen(arguments.subTypes)#" index="i">
 		<cfset subType = arguments.subTypes[i] />
 		<cfif not subType.getIsNew()>
-			<cfset extensionXML = subType.getAsXML(documentXML) />
+			<cfset extensionXML = subType.getAsXML(documentXML,arguments.includeIDs) />
 		
 			<cfset ArrayAppend(
 				documentXML.XmlRoot.XmlChildren,
