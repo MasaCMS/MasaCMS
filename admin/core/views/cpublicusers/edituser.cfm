@@ -336,18 +336,22 @@ select * from rsSubTypes where subType <> 'Default'
 	</div>
 </div>
 	
-<div id="tabInterests" class="tab-pane fade">
-	<div class="fieldset">
-		<div class="control-group" id="mura-list-tree">
-			<cfloop collection="#application.settingsManager.getSites()#" item="site">
-				<cfif application.settingsManager.getSite(site).getPublicUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPublicUserPoolID()>
-						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
-						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
-				</cfif>
-			</cfloop> 
+<!--- Interests Tab --->
+	<div id="tabInterests" class="tab-pane fade">
+		<div class="fieldset">
+			<div id="mura-list-tree" class="control-group">
+
+				<cf_dsp_categories_nest 
+					siteID="#rc.siteID#" 
+					parentID="" 
+					categoryID="#rc.categoryID#" 
+					nestLevel="0" 
+					userBean="#rc.userBean#">
+
+			</div>
 		</div>
 	</div>
-</div>
+<!--- /Interests Tab --->
 	
 <cfif rsSubTypes.recordcount>
 <div id="tabExtendedattributes" class="tab-pane fade">
