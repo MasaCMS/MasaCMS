@@ -289,8 +289,8 @@
 					<fieldset>
 
 						<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
-						<legend id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</legend>
-						<legend id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
+						<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
+						<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
 
 						<!--- Name --->
 							<div class="req #this.commentFieldWrapperClass#">
