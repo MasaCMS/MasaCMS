@@ -200,8 +200,8 @@
 								</cfif>
 							</cfdefaultcase>
 						</cfswitch>
-					 	</dl>
 					 </cfloop>
+					 </dl>
 				</li>
 			</cfloop>
 		</ul>		
