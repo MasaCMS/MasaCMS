@@ -80,13 +80,13 @@ select * from rsSubTypes where subType <> 'Default'
 
 			<a class="btn" href="#buildURL(action='cusers.list')#">
 				<i class="icon-eye-open"></i>
-				View All Groups
+				#rc.$.rbKey('user.viewallgroups')#
 			</a>
 
 			<cfif !rc.userBean.getIsNew()>
 				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#">
 					<i class="icon-group"></i>
-					View Group Users
+					#rc.$.rbKey('user.viewgroupsusers')#
 				</a>
 			</cfif>
 		</div>
@@ -168,8 +168,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 					<div class="span6">
 						<label class="control-label">
-							<!--- #rc.$.rbKey('user.email')# --->
-							Group Email
+							#rc.$.rbKey('user.groupemail')#
 						</label>
 						<div class="controls">
 							<input type="text" class="span12" name="email" value="#esapiEncode('html',rc.userBean.getemail())#">

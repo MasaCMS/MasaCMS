@@ -126,7 +126,16 @@ component persistent='false' accessors='true' output='false' extends='controller
 		param name='arguments.rc.newsearch' default=false;
 		param name='arguments.rc.unassigned' default='0';
 
-		if ( !IsBoolean(arguments.rc.ispublic) ) { arguments.rc.ispublic = 1; }
+		if ( 
+		  !IsBoolean(arguments.rc.ispublic) 
+		  || (
+		      !ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') 
+		  		&& !ListFind(rc.$.currentUser().getMemberships(), 'S2')
+		  )
+		) { 
+			arguments.rc.ispublic = 1; 
+		}
+
 		if ( !IsBoolean(arguments.rc.unassigned) ) { arguments.rc.unassigned = 0; }
 		arguments.rc.unassignedlink = arguments.rc.unassigned == 0 ? 1 : 0;
 
@@ -146,7 +155,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function list(rc) {
 		param name='rc.ispublic' default='0';
 		rc.rsGroups = getUserManager().getUserGroups(siteid=rc.siteid, ispublic=rc.ispublic);
-		rc.itGroups = getUserManager().getIterator().setQuery(rc.rsGroups);
+		rc.itGroups = getUserManager().getIterator().setQuery(rc.rsGroups).setNextN(0);
 	}
 
 	public any function editGroup(rc) {
@@ -164,10 +173,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function editGroupMembers(rc) {
 		editGroup(rc);
 	}
-
-	// public any function deleteGroup(rc) {
-
-	// }
 
 	public any function addToGroup(rc) {
 		getUserManager().createUserInGroup(arguments.rc.userid, arguments.rc.groupid);
@@ -209,12 +214,31 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 // ----------------- SEARCH ----------------------------- //
 	public any function search(rc) {
-		param name='rc.isPublic' default='1';
-		arguments.rc.rslist=getUserManager().getSearch(
+
+		arguments.rc.rsUsers = getUserManager().getSearch(
 			search=arguments.rc.search
 			, siteid=arguments.rc.siteid
-			, isPublic=rc.isPublic
+			, ispublic=arguments.rc.isPublic
 		);
+
+		arguments.rc.noUsersMessage = rc.$.rbKey('user.nosearchresults');
+		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
+
+		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
+			siteid=arguments.rc.siteid
+			, ispublic=arguments.rc.ispublic
+			, isunassigned=1
+		);
+
+		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
+
+		// param name='rc.isPublic' default='1';
+
+		// arguments.rc.rslist=getUserManager().getSearch(
+		// 	search=arguments.rc.search
+		// 	, siteid=arguments.rc.siteid
+		// 	, isPublic=rc.isPublic
+		// );
 
 		// if only one match, then go to edit user form
 		// if ( arguments.rc.rslist.recordcount == 1 ) {
@@ -222,11 +246,14 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
 		// }
 
-		arguments.rc.nextn=variables.utility.getNextN(
-			arguments.rc.rsList
-			, 15
-			, arguments.rc.startrow
-		);
+		// arguments.rc.nextn=variables.utility.getNextN(
+		// 	arguments.rc.rsList
+		// 	, 15
+		// 	, arguments.rc.startrow
+		// );
+
+
+
 	}
 
 	public any function advancedSearch(rc) {
@@ -340,14 +367,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function listUsers(rc) {
-
 		if ( arguments.rc.siteid == 'all' ) {
 			arguments.rc.siteid = '';
 		}
 
-		// arguments.rc.rsUsers = arguments.rc.unassigned
-		// 	? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
-		// 	: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		arguments.rc.noUsersMessage = rc.$.rbKey('user.nousers');
 
 		arguments.rc.rsUsers = getUserManager().getUsers(
 		 siteid=arguments.rc.siteid
@@ -355,13 +379,13 @@ component persistent='false' accessors='true' output='false' extends='controller
 		 , isunassigned=arguments.rc.unassigned
 		);
 
-		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers);
+		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
 
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
-		  siteid=arguments.rc.siteid
-		  , ispublic=arguments.rc.ispublic
-		  , isunassigned=1
-		 );
+			siteid=arguments.rc.siteid
+			, ispublic=arguments.rc.ispublic
+			, isunassigned=1
+		);
 
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
 	}

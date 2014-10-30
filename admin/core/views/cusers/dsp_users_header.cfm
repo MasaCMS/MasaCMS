@@ -70,40 +70,43 @@
 		<div id="nav-module-specific" class="btn-group">
 
 			<!--- Add User --->
-			<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-		  	<i class="icon-plus-sign"></i> 
-		  	#rc.$.rbKey('user.adduser')#
-		  </a>
+				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
+					<i class="icon-plus-sign"></i> 
+					#rc.$.rbKey('user.adduser')#
+				</a>
 
 		  <!--- Add Group --->
-		  <a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-		  	<i class="icon-plus-sign"></i> 
-		  	#rc.$.rbKey('user.addgroup')#
-		  </a>
+				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
+					<i class="icon-plus-sign"></i> 
+					#rc.$.rbKey('user.addgroup')#
+				</a>
 
 			<cfif rc.muraaction eq 'core:cusers.listusers'>
+
 				<!--- View Groups --->
-				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-		  		<i class="icon-eye-open"></i>
-		  		#rc.$.rbKey('user.viewgroups')#
-		  	</a>
+					<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
+						<i class="icon-eye-open"></i>
+						#rc.$.rbKey('user.viewgroups')#
+					</a>
+
 		  <cfelse>
-		  	<!--- View Users --->
-				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="icon-eye-open"></i>
-					#rc.$.rbKey('user.viewusers')#
-				</a>
+
+				<!--- View Users --->
+					<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
+						<i class="icon-eye-open"></i>
+						#rc.$.rbKey('user.viewusers')#
+					</a>
+
 			</cfif>
 
 			<!--- Permissions --->
-			<cfif ( ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2') ) AND ( rc.ispublic )>
-				<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008">
-					<i class="icon-legal"></i> 
-					#rc.$.rbKey('user.permissions')#
-				</a>
-			</cfif>
-		</div>
+				<cfif ( ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2') ) AND ( rc.ispublic )>
+					<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008">
+						<i class="icon-legal"></i> 
+						#rc.$.rbKey('user.permissions')#
+					</a>
+				</cfif>
 
-		<h4><span style="color:orange;">Memberships:</span> #rc.$.currentUser().getMemberships()#</h4>
+		</div>
 
 </cfoutput>
