@@ -47,24 +47,24 @@
 --->
 <cfset request.layout=false>
 <cfsilent>
-       <cfset str = "" />
-       <!--- get records --->
-       <cfset records = application.userManager.getAdvancedSearch(session,rc.siteid,1) />
-       <!--- get orig list --->
-       <cfset origColumnList = records.columnlist />
-       <!--- get column lists --->
-       <cfset qualifiedColumns = ListQualify( origColumnList, '"', ",", "CHAR" ) />
-       <!--- assign columns to string --->
-       <cfset str = str & qualifiedColumns & chr(10) />
-       <!--- query over records and append --->
-       <cfloop query="records">
-               <cfset record = "" />
-               <!--- loop over columns --->
-               <cfloop list="#origColumnList#" index="column">
-                       <cfset record = listAppend( record, replace( records[column][records.currentrow], ",", "**comma**", "ALL" ) & " " ) />
-               </cfloop>
-               <cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
-       </cfloop>
+  <cfset str = "" />
+  <!--- get records --->
+  <cfset records = application.userManager.getAdvancedSearch(session,rc.siteid,1) />
+  <!--- get orig list --->
+  <cfset origColumnList = records.columnlist />
+  <!--- get column lists --->
+  <cfset qualifiedColumns = ListQualify( origColumnList, '"', ",", "CHAR" ) />
+  <!--- assign columns to string --->
+  <cfset str = str & qualifiedColumns & chr(10) />
+  <!--- query over records and append --->
+  <cfloop query="records">
+    <cfset record = "" />
+    <!--- loop over columns --->
+    <cfloop list="#origColumnList#" index="column">
+      <cfset record = listAppend( record, replace( records[column][records.currentrow], ",", "**comma**", "ALL" ) & " " ) />
+    </cfloop>
+    <cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
+  </cfloop>
 </cfsilent>
 <cfheader name="Content-Disposition" value="disposition;filename=members.csv">
 <cfcontent type="text/csv"><cfoutput>#replace( str, "**comma**", ",", "ALL" )#</cfoutput>

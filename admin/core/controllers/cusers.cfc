@@ -64,6 +64,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
 		}
 
+		arguments.rc.isAdmin = ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') || ListFind(rc.$.currentUser().getMemberships(), 'S2');
+
 		if ( !(
 					IsDefined('arguments.rc.baseID') 
 					&& ListLast(arguments.rc.muraAction, ':') == 'cUsers.loadExtendedAttributes'
@@ -74,9 +76,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 				)
 		) {
 			if ( 
-				( 
-					!ListFind(session.mura.memberships, 'Admin;#getSettingsManager().getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') && !ListFind(session.mura.memberships, 'S2')
-				) && !( 
+			  !arguments.rc.isAdmin 
+				&& !( 
 					variables.permUtility.getModulePerm(
 						'00000000000000000000000000000000008'
 						, arguments.rc.siteid
@@ -90,52 +91,44 @@ component persistent='false' accessors='true' output='false' extends='controller
 			}
 		}
 
-		param name='arguments.rc.error' default='#{}#';
-		param name='arguments.rc.startrow' default='1';
-		param name='arguments.rc.userid' default='';
-		param name='arguments.rc.routeid' default='';
-		param name='arguments.rc.categoryid' default='';
-		param name='arguments.rc.Type' default='0';
-		param name='arguments.rc.ContactForm' default='0';
-		param name='arguments.rc.isPublic' default='1';
-		param name='arguments.rc.email' default='';
-		param name='arguments.rc.jobtitle' default='';
-		param name='arguments.rc.lastupdate' default='';
-		param name='arguments.rc.lastupdateby' default='';
-		param name='arguments.rc.lastupdatebyid' default='0';
-		param name='arguments.rc.rsGrouplist.recordcount' default='0';
-		param name='arguments.rc.groupname' default='';
-		param name='arguments.rc.fname' default='';
-		param name='arguments.rc.lname' default='';
-		param name='arguments.rc.address' default='';
-		param name='arguments.rc.city' default='';
-		param name='arguments.rc.state' default='';
-		param name='arguments.rc.zip' default='';
-		param name='arguments.rc.phone1' default='';
-		param name='arguments.rc.phone2' default='';
-		param name='arguments.rc.fax' default='';
-		param name='arguments.rc.perm' default='0';
-		param name='arguments.rc.groupid' default='';
-		param name='arguments.rc.routeid' default='';
-		param name='arguments.rc.s2' default='0';
-		param name='arguments.rc.InActive' default='0';
-		param name='arguments.rc.startrow' default='1';
-		param name='arguments.rc.error' default='#{}#';
-		param name='arguments.rc.returnurl' default='';
-		param name='arguments.rc.search' default='';
-		param name='arguments.rc.newsearch' default=false;
-		param name='arguments.rc.unassigned' default='0';
+		// defaults
+			param name='arguments.rc.error' default='#{}#';
+			param name='arguments.rc.startrow' default='1';
+			param name='arguments.rc.userid' default='';
+			param name='arguments.rc.routeid' default='';
+			param name='arguments.rc.categoryid' default='';
+			param name='arguments.rc.Type' default='0';
+			param name='arguments.rc.ContactForm' default='0';
+			param name='arguments.rc.isPublic' default='1';
+			param name='arguments.rc.email' default='';
+			param name='arguments.rc.jobtitle' default='';
+			param name='arguments.rc.lastupdate' default='';
+			param name='arguments.rc.lastupdateby' default='';
+			param name='arguments.rc.lastupdatebyid' default='0';
+			param name='arguments.rc.rsGrouplist.recordcount' default='0';
+			param name='arguments.rc.groupname' default='';
+			param name='arguments.rc.fname' default='';
+			param name='arguments.rc.lname' default='';
+			param name='arguments.rc.address' default='';
+			param name='arguments.rc.city' default='';
+			param name='arguments.rc.state' default='';
+			param name='arguments.rc.zip' default='';
+			param name='arguments.rc.phone1' default='';
+			param name='arguments.rc.phone2' default='';
+			param name='arguments.rc.fax' default='';
+			param name='arguments.rc.perm' default='0';
+			param name='arguments.rc.groupid' default='';
+			param name='arguments.rc.routeid' default='';
+			param name='arguments.rc.s2' default='0';
+			param name='arguments.rc.InActive' default='0';
+			param name='arguments.rc.startrow' default='1';
+			param name='arguments.rc.error' default='#{}#';
+			param name='arguments.rc.returnurl' default='';
+			param name='arguments.rc.search' default='';
+			param name='arguments.rc.newsearch' default=false;
+			param name='arguments.rc.unassigned' default='0';
 
-		if ( 
-		  !IsBoolean(arguments.rc.ispublic) 
-		  || (
-		      !ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') 
-		  		&& !ListFind(rc.$.currentUser().getMemberships(), 'S2')
-		  )
-		) { 
-			arguments.rc.ispublic = 1; 
-		}
-
+		if ( !IsBoolean(arguments.rc.ispublic) || !arguments.rc.isAdmin ) { arguments.rc.ispublic = 1; }
 		if ( !IsBoolean(arguments.rc.unassigned) ) { arguments.rc.unassigned = 0; }
 		arguments.rc.unassignedlink = arguments.rc.unassigned == 0 ? 1 : 0;
 
@@ -145,7 +138,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 	  	param name='arguments.rc.action' default='Update';
 		}
 
-		arguments.rc.rsUserSites=application.settingsManager.getUserSites(session.siteArray,ListFind(session.mura.memberships,'S2'));
+		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray,ListFind(rc.$.currentUser().getMemberships(),'S2'));
 	}
 
 	public any function default(rc) {
@@ -257,18 +250,22 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function advancedSearch(rc) {
-		param name='rc.ispublic' default='1';
+		arguments.rc.nousersmessage = rc.$.rbKey('user.nosearchresults');
+
 		arguments.rc.rsGroups = rc.ispublic == 1
 			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+
+		arguments.rc.rslist = getUserManager().getAdvancedSearch(session, rc.siteid, arguments.rc.ispublic);
+		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rslist).setNextN(0);
 	}
 
-	public any function advancedSearchToCSV(rc) {
-		param name='rc.ispublic' default='1';
-		arguments.rc.rsGroups = rc.ispublic == 1
-			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
-			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
-	}
+	// public any function advancedSearchToCSV(rc) {
+	// 	param name='rc.ispublic' default='1';
+	// 	arguments.rc.rsGroups = rc.ispublic == 1
+	// 		? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
+	// 		: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+	// }
 
 	public any function editUser(rc) {
 		if ( !IsDefined('arguments.rc.userBean') ) {

@@ -48,34 +48,31 @@
 <cfoutput>
 
 	<!--- Header --->
-	<cfinclude template="dsp_users_header.cfm" />
+	<cfinclude template="inc/dsp_users_header.cfm" />
 
-	<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
-
+	<!--- Subheading --->
 		<h2>#rc.$.rbKey('user.groups')#</h2>
 
-		<!--- Tab Nav --->
-			<ul class="nav nav-tabs">
-				<!--- Member/Public Groups --->
-				<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-					<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#">
-						#rc.$.rbKey('user.membergroups')#
-					</a>
-				</li>
-				<!--- System/Private Groups --->
-				<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-					<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#">
-						#rc.$.rbKey('user.adminusergroups')#
-					</a>
-				</li>
-			</ul>
-		<!--- /Tab Nav --->
-
-	<cfelse>
-
-		<h2>#rc.$.rbKey('user.membergroups')#</h2>
-
-	</cfif>
+	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
+		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
+				<ul class="nav nav-tabs">
+					<!--- Member/Public Groups --->
+					<li<cfif rc.ispublic eq 1> class="active"</cfif>>
+						<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#">
+							#rc.$.rbKey('user.membergroups')#
+						</a>
+					</li>
+					<!--- System/Private Groups --->
+					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
+						<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#">
+							#rc.$.rbKey('user.adminusergroups')#
+						</a>
+					</li>
+				</ul>
+		<cfelse>
+			<h3>#rc.$.rbKey('user.membergroups')#</h3>
+		</cfif>
+	<!--- /Tab Nav --->
 
 	<!--- BODY --->
 		<cfif rc.rsGroups.recordcount>

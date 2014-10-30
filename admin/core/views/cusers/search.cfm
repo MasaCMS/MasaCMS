@@ -48,20 +48,7 @@
 <cfoutput>
 
 	<!--- User Search --->
-		<form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
-			<div class="input-append">
-				<input id="search" name="search" type="text" value="#rc.$.event('search')#" placeholder="#rc.$.rbKey('user.searchforusers')#" />
-				<button type="button" class="btn" onclick="submitForm(document.forms.form1);">
-					<i class="icon-search"></i>
-				</button>
-				<button type="button" class="btn" onclick="window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
-					#rc.$.rbKey('user.advanced')#
-				</button>
-				<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#" />
-				<input type="hidden" name="muraAction" value="cUsers.search" />
-				<input type="hidden" name="ispublic" value="#esapiEncode('html',rc.ispublic)#" />
-			</div>
-		</form>
+		<cfinclude template="inc/dsp_search_form.cfm" />
 
 	<!--- Page Title --->
 		<h1>#rc.$.rbKey('user.usersearchresults')#</h1>
@@ -94,10 +81,33 @@
 				</a>
 
 		</div>
+	<!--- /Buttons --->
 
-<!--- <cfdump var="#rc.rsUsers#" /> --->
 
-	<cfinclude template="dsp_users_list.cfm" />
+	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
+    <cfif rc.isAdmin>
+        <ul class="nav nav-tabs">
+          <!--- Site Members Tab --->
+	          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
+	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
+	              #rc.$.rbKey('user.sitemembers')#
+	            </a>
+	          </li>
+
+          <!--- System Users Tab --->
+	          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
+	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
+	              #rc.$.rbKey('user.systemusers')#
+	            </a>
+	          </li>
+        </ul>
+    <cfelse>
+      <h3>#rc.$.rbKey('user.sitemembers')#</h3>
+    </cfif>
+  <!--- /Tab Nav --->
+
+
+	<cfinclude template="inc/dsp_users_list.cfm" />
 </cfoutput>
 
 <!---
