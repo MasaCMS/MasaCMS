@@ -45,4 +45,6 @@
   modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="inc/dsp_download.cfm" />
+<cfset request.layout=false>
+<cfheader name="Content-Disposition" value="attachment;filename=users.csv">
+<cfcontent type="text/csv"><cfoutput>#replace(rc.str, "**comma**", ",", "ALL")#</cfoutput>

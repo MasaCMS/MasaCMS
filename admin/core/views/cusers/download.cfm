@@ -45,15 +45,4 @@
   modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset request.layout=false>
-<cfsilent>
-  <cfloop query="rc.records">
-    <cfset local.record = '' />
-    <cfloop list="#rc.origColumnList#" index="local.column">
-      <cfset local.record = ListAppend( local.record, Replace( rc.records[local.column][rc.records.currentrow], ",", "**comma**", "ALL" ) & " " ) />
-    </cfloop>
-    <cfset rc.str = rc.str & ListQualify( local.record, '"', ",", "CHAR" ) & chr(10) />
-  </cfloop>
-</cfsilent>
-<cfheader name="Content-Disposition" value="disposition;filename=users.csv">
-<cfcontent type="text/csv"><cfoutput>#replace( rc.str, "**comma**", ",", "ALL" )#</cfoutput>
+<cfinclude template="inc/dsp_download.cfm" />

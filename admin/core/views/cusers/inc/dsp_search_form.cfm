@@ -45,4 +45,19 @@
   modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="inc/dsp_download.cfm" />
+<cfoutput>
+  <form class="form-inline" novalidate="novalidate" action="" method="get" name="form1" id="siteSearch">
+    <div class="input-append">
+      <input id="search" name="search" type="text" value="#esapiEncode('html', rc.$.event('search'))#" placeholder="#rc.$.rbKey('user.searchforusers')#" />
+      <button type="button" class="btn" onclick="submitForm(document.forms.form1);">
+        <i class="icon-search"></i>
+      </button>
+      <button type="button" class="btn" onclick="window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
+        #rc.$.rbKey('user.advanced')#
+      </button>
+      <input type="hidden" name="siteid" value="#esapiEncode('html', rc.siteid)#" />
+      <input type="hidden" name="ispublic" value="#esapiEncode('html', rc.ispublic)#" />
+      <input type="hidden" name="muraAction" value="cUsers.search" />
+    </div>
+  </form>
+</cfoutput>

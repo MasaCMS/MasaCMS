@@ -126,81 +126,81 @@
 			<div class="fieldset">
 
 				<!--- Search Params --->
-				<div class="control-group" id="searchParams">
-					<label class="control-label">#rc.$.rbKey("user.searchcriteria")#</label>
-					<div class="controls">
-						<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
-							<select name="paramRelationship1" style="display:none;" class="span2">
-								<option value="and">#rc.$.rbKey("params.and")#</option>
-								<option value="or">#rc.$.rbKey("params.or")#</option>
-							</select>
-
-							<input type="hidden" name="param" value="1" />
-
-							<select name="paramField1" class="span2">
-								<option value="">#rc.$.rbKey("params.selectfield")#</option>
-								<cfloop from="1" to="#arrayLen(options)#" index="i">
-									<option value="#options[i][1]#">#options[i][2]#</option>
-								</cfloop>
-							</select>
-								
-							<select name="paramCondition1" class="span2">
-								<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-									<option value="#criterias[i][1]#">#criterias[i][2]#</option>
-								</cfloop>
-							</select>
-					
-							<input type="text" name="paramCriteria1" class="span4">
-
-							<!--- remove --->
-							<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rc.$.rbKey("params.removecriteria")#">
-								<i class="icon-remove-sign"></i>
-							</a>
-							<!--- add --->
-							<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey("params.addcriteria")#">
-								<i class="icon-plus-sign"></i>
-							</a>
-						<cfelse>
-							<cfloop from="1" to="#session.paramCount#" index="p">
-								<select name="paramRelationship#p#" class="span2">
-									<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif>>
-										#rc.$.rbKey("params.and")#
-									</option>
-									<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif>>
-										#rc.$.rbKey("params.or")#
-									</option>
+					<div class="control-group" id="searchParams">
+						<label class="control-label">#rc.$.rbKey("user.searchcriteria")#</label>
+						<div class="controls">
+							<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
+								<select name="paramRelationship1" style="display:none;" class="span2">
+									<option value="and">#rc.$.rbKey("params.and")#</option>
+									<option value="or">#rc.$.rbKey("params.or")#</option>
 								</select>
 
-								<input type="hidden" name="param" value="#p#" />
-								
-								<select name="paramField#p#" class="span2">
+								<input type="hidden" name="param" value="1" />
+
+								<select name="paramField1" class="span2">
 									<option value="">#rc.$.rbKey("params.selectfield")#</option>
 									<cfloop from="1" to="#arrayLen(options)#" index="i">
-										<option value="#options[i][1]#" <cfif session.paramArray[p].field eq options[i][1]>selected</cfif>>
-											#options[i][2]#
-										</option>
+										<option value="#options[i][1]#">#options[i][2]#</option>
 									</cfloop>
 								</select>
-								
-								<select name="paramCondition#p#" class="span2">
+									
+								<select name="paramCondition1" class="span2">
 									<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-										<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>
-											#criterias[i][2]#
-										</option>
+										<option value="#criterias[i][1]#">#criterias[i][2]#</option>
 									</cfloop>
 								</select>
-								
-								<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
-								<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.removecriteria')#">
+						
+								<input type="text" name="paramCriteria1" class="span4">
+
+								<!--- remove --->
+								<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rc.$.rbKey("params.removecriteria")#">
 									<i class="icon-remove-sign"></i>
 								</a>
-								<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.addcriteria')#">
+								<!--- add --->
+								<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey("params.addcriteria")#">
 									<i class="icon-plus-sign"></i>
-								</a><br>
-							</cfloop>
-						</cfif>
+								</a>
+							<cfelse>
+								<cfloop from="1" to="#session.paramCount#" index="p">
+									<select name="paramRelationship#p#" class="span2">
+										<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif>>
+											#rc.$.rbKey("params.and")#
+										</option>
+										<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif>>
+											#rc.$.rbKey("params.or")#
+										</option>
+									</select>
+
+									<input type="hidden" name="param" value="#p#" />
+									
+									<select name="paramField#p#" class="span2">
+										<option value="">#rc.$.rbKey("params.selectfield")#</option>
+										<cfloop from="1" to="#arrayLen(options)#" index="i">
+											<option value="#options[i][1]#" <cfif session.paramArray[p].field eq options[i][1]>selected</cfif>>
+												#options[i][2]#
+											</option>
+										</cfloop>
+									</select>
+									
+									<select name="paramCondition#p#" class="span2">
+										<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+											<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>
+												#criterias[i][2]#
+											</option>
+										</cfloop>
+									</select>
+									
+									<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
+									<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.removecriteria')#">
+										<i class="icon-remove-sign"></i>
+									</a>
+									<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.addcriteria')#">
+										<i class="icon-plus-sign"></i>
+									</a><br>
+								</cfloop>
+							</cfif>
+						</div>
 					</div>
-				</div>
 				<!--- /Search Params --->
 
 				<!--- Active --->
@@ -220,22 +220,23 @@
 			<!--- /fieldset --->
 
 			<!--- Form Buttons --->
-			<div class="form-actions">
-				<input type="hidden" name="muraAction" value="cUsers.advancedSearch">
-				<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
-				
-				<!--- Search Button --->
-				<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
-					<i class="icon-search"></i> 
-					#rc.$.rbKey("user.search")#
-				</button>
-				
-				<!--- Download Button --->
-				<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);">
-					<i class="icon-download"></i> 
-					#rc.$.rbKey("user.download")#
-				</button>
-			</div>
+				<div class="form-actions">
+					<input type="hidden" name="muraAction" value="cUsers.advancedSearch">
+					<input type="hidden" name="siteid" value="#esapiEncode('html', rc.siteid)#">
+					<input type="hidden" name="ispublic" value="#esapiEncode('html', rc.ispublic)#">
+					
+					<!--- Search Button --->
+						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
+							<i class="icon-search"></i> 
+							#rc.$.rbKey("user.search")#
+						</button>
+					
+					<!--- Download Button --->
+						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);">
+							<i class="icon-download"></i> 
+							#rc.$.rbKey("user.download")#
+						</button>
+				</div>
 			<!--- /Form Buttons --->
 		</form>
 	<!--- /Search Form --->
@@ -244,37 +245,21 @@
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
-    	<cfscript>
-					querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
+			<ul class="nav nav-tabs">
+				<!--- Site Members Tab --->
+					<li<cfif rc.ispublic eq 1> class="active"</cfif>>
+						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#">
+							#rc.$.rbKey('user.sitemembers')#
+						</a>
+					</li>
 
-					StructDelete(querystruct, 'ispublic', 0);	
-					StructDelete(querystruct, 'muraaction', 0);
-
-					newqs = '';
-					for ( key in querystruct ){
-						i = querystruct[key][1];
-
-						if ( Len(i) ) {
-							newqs &= key & '=' & item & '&';
-						}
-					}
-;
-				</cfscript>
-        <ul class="nav nav-tabs">
-          <!--- Site Members Tab --->
-						<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-							<a href="#buildURL(action='cusers.advancedsearch', querystring='#newqs#ispublic=1')#">
-								#rc.$.rbKey('user.sitemembers')#
-							</a>
-						</li>
-
-          <!--- System Users Tab --->
-						<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-							<a href="#buildURL(action='cusers.advancedsearch', querystring='#newqs#ispublic=0')#">
-								#rc.$.rbKey('user.systemusers')#
-							</a>
-						</li>
-        </ul>
+        <!--- System Users Tab --->
+					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
+						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#">
+							#rc.$.rbKey('user.systemusers')#
+						</a>
+					</li>
+      </ul>
     <cfelse>
       <h3>#rc.$.rbKey('user.sitemembers')#</h3>
     </cfif>

@@ -138,7 +138,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 	  	param name='arguments.rc.action' default='Update';
 		}
 
-		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray,ListFind(rc.$.currentUser().getMemberships(),'S2'));
+		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray, ListFind(rc.$.currentUser().getMemberships(),'S2'));
 	}
 
 	public any function default(rc) {
@@ -146,7 +146,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function list(rc) {
-		param name='rc.ispublic' default='0';
 		rc.rsGroups = getUserManager().getUserGroups(siteid=rc.siteid, ispublic=rc.ispublic);
 		rc.itGroups = getUserManager().getIterator().setQuery(rc.rsGroups).setNextN(0);
 	}
@@ -155,6 +154,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		if ( !IsDefined('arguments.rc.userBean') ) {
 			arguments.rc.userBean = getUserManager().read(arguments.rc.userid);
 		}
+
 		arguments.rc.rsSiteList = getSettingsManager().getList();
 		arguments.rc.rsGroupList = getUserManager().readGroupMemberships(arguments.rc.userid);
 		arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow);
@@ -214,7 +214,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, ispublic=arguments.rc.isPublic
 		);
 
-		arguments.rc.noUsersMessage = rc.$.rbKey('user.nosearchresults');
 		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
 
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
@@ -224,17 +223,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 		);
 
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
+		arguments.rc.noUsersMessage = rc.$.rbKey('user.nosearchresults');
 
-		// param name='rc.isPublic' default='1';
-
-		// arguments.rc.rslist=getUserManager().getSearch(
-		// 	search=arguments.rc.search
-		// 	, siteid=arguments.rc.siteid
-		// 	, isPublic=rc.isPublic
-		// );
 
 		// if only one match, then go to edit user form
-		// if ( arguments.rc.rslist.recordcount == 1 ) {
+		// if ( arguments.rc.rsUsers.recordcount == 1 ) {
 		// 	arguments.rc.userID = rc.rslist.userid;
 		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
 		// }
@@ -244,28 +237,36 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// 	, 15
 		// 	, arguments.rc.startrow
 		// );
-
-
-
 	}
 
 	public any function advancedSearch(rc) {
+		var i = '';
+
 		arguments.rc.nousersmessage = rc.$.rbKey('user.nosearchresults');
 
-		arguments.rc.rsGroups = rc.ispublic == 1
+		arguments.rc.rsGroups = arguments.rc.ispublic == 1
 			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 
 		arguments.rc.rslist = getUserManager().getAdvancedSearch(session, rc.siteid, arguments.rc.ispublic);
 		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rslist).setNextN(0);
-	}
 
-	// public any function advancedSearchToCSV(rc) {
-	// 	param name='rc.ispublic' default='1';
-	// 	arguments.rc.rsGroups = rc.ispublic == 1
-	// 		? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
-	// 		: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
-	// }
+
+		arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
+
+		StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
+		StructDelete(arguments.rc.querystruct, 'muraaction', 0);
+
+		arguments.rc.qs = '';
+		for ( var key in arguments.rc.querystruct ){
+			i = arguments.rc.querystruct[key][1];
+
+			if ( Len(i) ) {
+				arguments.rc.qs &= key & '=' & i & '&';
+			}
+		}
+
+	}
 
 	public any function editUser(rc) {
 		if ( !IsDefined('arguments.rc.userBean') ) {
@@ -351,18 +352,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 		variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
 	}
 
-	public any function download(rc) {
-		arguments.rc.rsUsers = arguments.rc.unassigned
-			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
-			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
-
-		rc.str = '';
-		rc.records = arguments.rc.rsUsers;
-		rc.origColumnList = ListDeleteAt(rc.records.columnlist, ListFindNoCase(rc.records.columnlist, 'password'));
-		rc.qualifiedColumns = ListQualify( rc.origColumnList, '"', ",", "CHAR" );
-		rc.str = rc.str & rc.qualifiedColumns & chr(10);
-	}
-
 	public any function listUsers(rc) {
 		if ( arguments.rc.siteid == 'all' ) {
 			arguments.rc.siteid = '';
@@ -378,6 +367,12 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
 
+		// arguments.rc.nextn = variables.utility.getNextN(
+		// 	arguments.rc.itUsers.getQuery()
+		// 	, 2
+		// 	, arguments.rc.startrow
+		// );
+
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
 			siteid=arguments.rc.siteid
 			, ispublic=arguments.rc.ispublic
@@ -385,6 +380,47 @@ component persistent='false' accessors='true' output='false' extends='controller
 		);
 
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
+	}
+
+	public any function download(rc) {
+		arguments.rc.rsUsers = arguments.rc.unassigned
+			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
+			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+
+		arguments.rc.records = arguments.rc.rsUsers;
+		setDownloadData(arguments.rc);
+	}
+
+	public any function advancedSearchToCSV(rc) {
+		arguments.rc.rsGroups = arguments.rc.ispublic == 1
+			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
+			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+
+		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
+		setDownloadData(arguments.rc);
+	}
+
+	private any function setDownloadData(rc) {
+		var i = '';
+		var r = '';
+		var col = '';
+		var cols = '';
+
+		rc.str = '';
+		arguments.rc.rs = arguments.rc.records;
+		arguments.rc.origColumnList = ListDeleteAt(arguments.rc.rs.columnlist, ListFindNoCase(arguments.rc.rs.columnlist, 'password'));
+		arguments.rc.qualifiedColumns = ListQualify(arguments.rc.origColumnList, '"', ",", "CHAR");
+		arguments.rc.str = arguments.rc.str & arguments.rc.qualifiedColumns & chr(10);
+
+		cols = ListToArray(arguments.rc.rs.columnlist);
+
+		for ( i=1; i <= arguments.rc.rs.recordcount; i++ ) {
+			r = '';
+			for ( col in cols ) {
+				r = ListAppend( r, Replace( arguments.rc.rs[col][i], ",", "**comma**", "ALL" ) & " " );
+			}
+			arguments.rc.str = arguments.rc.str & ListQualify(r, '"', ",", "CHAR") & chr(10);
+		}
 	}
 
 }

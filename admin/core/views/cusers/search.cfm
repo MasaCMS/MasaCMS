@@ -86,7 +86,9 @@
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
+
         <ul class="nav nav-tabs">
+
           <!--- Site Members Tab --->
 	          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
 	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
@@ -100,9 +102,13 @@
 	              #rc.$.rbKey('user.systemusers')#
 	            </a>
 	          </li>
+
         </ul>
+
     <cfelse>
+
       <h3>#rc.$.rbKey('user.sitemembers')#</h3>
+
     </cfif>
   <!--- /Tab Nav --->
 
