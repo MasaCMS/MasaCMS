@@ -100,7 +100,7 @@
 <cfelseif attributes.parentID eq ''>
   <cfoutput>
     <p class="alert">
-      #rc.$.rbKey('user.nointerestcategories')#
+      #application.rbFactory.getKeyValue(session.rb, 'user.nointerestcategories')#
     </p>
   </cfoutput>
 </cfif> 
