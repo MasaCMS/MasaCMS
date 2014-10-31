@@ -89,10 +89,12 @@
 				</a>
 
 			<!--- Download .CSV --->
-				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
-					<i class="icon-download"></i> 
-					#rc.$.rbKey('user.download')#
-				</a>
+        <cfif rc.it.hasNext()>
+  				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
+  					<i class="icon-download"></i> 
+  					#rc.$.rbKey('user.download')#
+  				</a>
+        </cfif>
 
 		</div>
 	<!--- /Filters --->

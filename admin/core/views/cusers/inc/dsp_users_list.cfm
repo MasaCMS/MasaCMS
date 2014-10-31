@@ -46,9 +46,9 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<cfif IsDefined('rc.itUsers')>
+	<cfif IsDefined('rc.it')>
 
-		<cfif rc.itUsers.getRecordcount()>
+		<cfif rc.it.hasNext()>
 			
 			<table id="tbl-users" class="table table-striped table-condensed table-bordered mura-table-grid">
 
@@ -81,27 +81,27 @@
 				<tbody>
 
 					<!--- Users Iterator --->
-						<cfloop condition="rc.itUsers.hasNext()">
-							<cfset local.user = rc.itUsers.next() />
+						<cfloop condition="rc.it.hasNext()">
+							<cfset local.item = rc.it.next() />
 							<tr>
 
 								<!--- Icons --->
 									<td class="actions">
 										<ul>
-											<cfif IsDefined('rc.listUnassignedUsers') and ListFindNoCase(rc.listUnassignedUsers, local.user.getValue('userid'))>
+											<cfif IsDefined('rc.listUnassignedUsers') and ListFindNoCase(rc.listUnassignedUsers, local.item.getValue('userid'))>
 												<li>
 													<a rel="tooltip" title="Unassigned">
 														<i class="icon-exclamation"></i>
 													</a>
 												</li>
 											</cfif>
-											<cfif local.user.getValue('s2') EQ 1>
+											<cfif local.item.getValue('s2') EQ 1>
 												<li>
 													<a rel="tooltip" title="#rc.$.rbKey('user.superuser')#">
 														<i class="icon-bolt"></i>
 													</a>
 												</li>
-											<cfelseif local.user.getValue('isPublic') EQ 0>
+											<cfelseif local.item.getValue('isPublic') EQ 0>
 												<li>
 													<a rel="tooltip" title="#rc.$.rbKey('user.adminuser')#">
 														<i class="icon-user"></i>
@@ -120,20 +120,20 @@
 
 								<!--- Last Name, First Name --->
 									<td class="var-width">
-										<cfif local.user.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
-											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
-												#esapiEncode('html', local.user.getValue('lname'))#, #esapiEncode('html', local.user.getValue('fname'))#
+										<cfif local.item.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
+											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
+												#esapiEncode('html', local.item.getValue('lname'))#, #esapiEncode('html', local.item.getValue('fname'))#
 											</a>
 										<cfelse>
-											#esapiEncode('html', local.user.getValue('lname'))#, #esapiEncode('html', local.user.getValue('fname'))#
+											#esapiEncode('html', local.item.getValue('lname'))#, #esapiEncode('html', local.item.getValue('fname'))#
 										</cfif>
 									</td>
 
 								<!--- Email --->
 									<td>
-										<cfif Len(local.user.getValue('email'))>
-											<a href="mailto:#esapiEncode('url',local.user.getValue('email'))#">
-												#esapiEncode('html',local.user.getValue('email'))#
+										<cfif Len(local.item.getValue('email'))>
+											<a href="mailto:#esapiEncode('url',local.item.getValue('email'))#">
+												#esapiEncode('html',local.item.getValue('email'))#
 											</a>
 										<cfelse>
 											&nbsp;
@@ -142,17 +142,17 @@
 
 								<!--- Date Lastupdate --->
 									<td>
-										#LSDateFormat(local.user.getValue('lastupdate'), session.dateKeyFormat)#
+										#LSDateFormat(local.item.getValue('lastupdate'), session.dateKeyFormat)#
 									</td>
 
 								<!--- Time Lastupdate --->
 									<td>
-										#LSTimeFormat(local.user.getValue('lastupdate'), 'short')#
+										#LSTimeFormat(local.item.getValue('lastupdate'), 'short')#
 									</td>
 
 								<!--- Last Update By --->
 									<td>
-										#esapiEncode('html',local.user.getValue('lastupdateby'))#
+										#esapiEncode('html',local.item.getValue('lastupdateby'))#
 									</td>
 
 								<!--- Actions --->
@@ -160,9 +160,9 @@
 										<ul>
 
 											<!--- Edit --->
-												<cfif local.user.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
+												<cfif local.item.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
 													<li>
-														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
+														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 															<i class="icon-pencil"></i>
 														</a>
 													</li>
@@ -182,9 +182,9 @@
 												</cfif>
 
 											<!--- Delete --->
-												<cfif rc.$.currentUser().isSuperUser() or (local.user.getValue('perm') eq 0 and local.user.getValue('S2') eq 0)>
+												<cfif rc.$.currentUser().isSuperUser() or (local.item.getValue('perm') eq 0 and local.item.getValue('S2') eq 0)>
 													<li>
-														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.user.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.user.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 															<i class="icon-remove-sign"></i>
 														</a>
 													</li>
@@ -204,23 +204,7 @@
 				</tbody>
 			</table>
 
-			<!--- <div class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-					Records Per Page
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu">
-					<li><a href="##" class="nextN" data-nextn="10">10</a></li>
-					<li><a href="##" class="nextN" data-nextn="25">25</a></li>
-					<li><a href="##" class="nextN" data-nextn="50">50</a></li>
-					<li><a href="##" class="nextN" data-nextn="100">100</a></li>
-					<li><a href="##" class="nextN" data-nextn="250">250</a></li>
-					<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-					<li><a href="##" class="nextN" data-nextn="1000">1000</a></li>
-					<li <cfif 1 eq 1> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
-				</ul>
-			</div> --->
-
+			<cfinclude template="dsp_nextn.cfm" />
 
 		<cfelse>
 

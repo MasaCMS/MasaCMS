@@ -94,6 +94,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// defaults
 			param name='arguments.rc.error' default='#{}#';
 			param name='arguments.rc.startrow' default='1';
+			param name='arguments.rc.recordsperpage' default='1';
 			param name='arguments.rc.userid' default='';
 			param name='arguments.rc.routeid' default='';
 			param name='arguments.rc.categoryid' default='';
@@ -105,7 +106,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 			param name='arguments.rc.lastupdate' default='';
 			param name='arguments.rc.lastupdateby' default='';
 			param name='arguments.rc.lastupdatebyid' default='0';
-			param name='arguments.rc.rsGrouplist.recordcount' default='0';
 			param name='arguments.rc.groupname' default='';
 			param name='arguments.rc.fname' default='';
 			param name='arguments.rc.lname' default='';
@@ -121,16 +121,20 @@ component persistent='false' accessors='true' output='false' extends='controller
 			param name='arguments.rc.routeid' default='';
 			param name='arguments.rc.s2' default='0';
 			param name='arguments.rc.InActive' default='0';
-			param name='arguments.rc.startrow' default='1';
 			param name='arguments.rc.error' default='#{}#';
 			param name='arguments.rc.returnurl' default='';
 			param name='arguments.rc.search' default='';
 			param name='arguments.rc.newsearch' default=false;
 			param name='arguments.rc.unassigned' default='0';
 
-		if ( !IsBoolean(arguments.rc.ispublic) || !arguments.rc.isAdmin ) { arguments.rc.ispublic = 1; }
-		if ( !IsBoolean(arguments.rc.unassigned) ) { arguments.rc.unassigned = 0; }
-		arguments.rc.unassignedlink = arguments.rc.unassigned == 0 ? 1 : 0;
+		// var scrubbing
+			if ( !IsBoolean(arguments.rc.ispublic) || !arguments.rc.isAdmin ) { arguments.rc.ispublic = 1; }
+			if ( !IsBoolean(arguments.rc.unassigned) ) { arguments.rc.unassigned = 0; }
+			arguments.rc.unassignedlink = arguments.rc.unassigned == 0 ? 1 : 0;
+			arguments.rc.startRow = Val(arguments.rc.startRow);
+			if ( arguments.rc.startRow < 1 ) { arguments.rc.startRow = 1; }
+			arguments.rc.recordsperpage = Val(arguments.rc.recordsperpage);
+			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 1; }
 
 		if ( !Len(arguments.rc.userid) ) {
 			param name='arguments.rc.action' default='Add';
@@ -146,8 +150,57 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function list(rc) {
-		arguments.rc.rsGroups = getUserManager().getUserGroups(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
-		arguments.rc.itGroups = getUserManager().getIterator().setQuery(arguments.rc.rsGroups).setNextN(0);
+		arguments.rc.rs = getUserManager().getUserGroups(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		arguments.rc.it = getUserManager().getIterator().setQuery(arguments.rc.rs).setNextN(0);
+	}
+
+	public any function listUsers(rc) {
+		if ( arguments.rc.siteid == 'all' ) {
+			arguments.rc.siteid = '';
+		}
+
+		arguments.rc.msgArg = arguments.rc.unassigned == 1
+			? "'" & arguments.rc.$.rbKey('user.unassigned') & "'"
+			: '';
+
+		arguments.rc.noUsersMessage = getBean('resourceBundle').messageFormat(
+			arguments.rc.$.rbKey('user.nousers')
+			, [arguments.rc.msgArg]
+		);
+
+
+		arguments.rc.rs= getUserManager().getUsers(
+		 siteid=arguments.rc.siteid
+		 , ispublic=arguments.rc.ispublic
+		 , isunassigned=arguments.rc.unassigned
+		);
+
+		// pagination setup
+			if ( arguments.rc.startRow > arguments.rc.rs.recordcount ) {
+				arguments.rc.startRow = 1;
+			}
+
+			arguments.rc.nextn = variables.utility.getNextN(
+				data=arguments.rc.rs
+				, recordsPerPage=10
+				, startRow=arguments.rc.startRow
+				, pageBuffer=3
+			);
+
+		// iterator
+			arguments.rc.it = getBean('userIterator')
+				.setQuery(arguments.rc.rs)
+				.setNextN(arguments.rc.nextn.recordsperpage)
+				.setPage(arguments.rc.nextn.currentpagenumber);
+
+		// unassigned users
+			arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
+				siteid=arguments.rc.siteid
+				, ispublic=arguments.rc.ispublic
+				, isunassigned=1
+			);
+
+			arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
 	}
 
 	public any function editGroup(rc) {
@@ -156,10 +209,10 @@ component persistent='false' accessors='true' output='false' extends='controller
 		}
 		arguments.rc.nousersmessage = arguments.rc.$.rbKey('user.nogroupmembers');
 		arguments.rc.rsSiteList = getSettingsManager().getList();
-		arguments.rc.rsGroupList = getUserManager().readGroupMemberships(arguments.rc.userid);
-		arguments.rc.itUsers = getUserManager().getIterator().setQuery(arguments.rc.rsGroupList).setNextN(0);
+		arguments.rc.rs = getUserManager().readGroupMemberships(arguments.rc.userid);
+		arguments.rc.it = getUserManager().getIterator().setQuery(arguments.rc.rs).setNextN(0);
 
-		//arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow);
+		//arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rs,15,arguments.rc.startrow);
 	
 		// This is here for backward plugin compatibility
 		appendRequestScope(arguments.rc);
@@ -177,6 +230,81 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function removeFromGroup(rc) {
 		getUserManager().deleteUserFromGroup(arguments.rc.userid, arguments.rc.groupid);
 		variables.fw.redirect(action='cUsers.editGroupMembers');
+	}
+
+	public any function editUser(rc) {
+		if ( !IsDefined('arguments.rc.userBean') ) {
+			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
+		}
+		
+		arguments.rc.rsPrivateGroups = getUserManager().getPrivateGroups(arguments.rc.siteid);
+		arguments.rc.rsPublicGroups = getUserManager().getPublicGroups(arguments.rc.siteid);
+
+		// This is here for backward plugin compatibility
+		appendRequestScope(arguments.rc);
+	}
+
+	public any function editAddress(rc) {
+		if ( !IsDefined('arguments.rc.userBean') ) {
+			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
+		}
+	}
+
+	public any function update(rc) {
+		var origSiteID = arguments.rc.siteID;
+		request.newImageIDList = '';
+
+		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid) ) {
+			switch(arguments.rc.action) {
+				case 'Update' :
+					arguments.rc.userBean=getUserManager().update(arguments.rc);
+					break;
+				case 'Delete' :
+					getUserManager().delete(arguments.rc.userid,arguments.rc.type);
+					break;
+				case 'Add' :
+					arguments.rc.userBean=getUserManager().create(arguments.rc);
+					if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
+						arguments.rc.userid=arguments.rc.userBean.getUserID();
+					}
+					break;
+			}
+		}
+	  
+	  arguments.rc.siteID = origSiteID;
+	   
+	  // image processing
+		if ( Len(request.newImageIDList) ) {
+			arguments.rc.fileid = request.newImageIDList;
+			arguments.rc.userid = arguments.rc.userBean.getUserID();
+			variables.fw.redirect(action='cArch.imagedetails', append='userid,siteid,fileid,compactDisplay', path='./');
+		}
+
+		// errors?
+		if ( !StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
+			if ( arguments.rc.type == 2 ) {
+				session.mura.editBean = arguments.rc.userBean;
+			}
+			variables.fw.redirect(action='cUsers.edituser', preserve='all', path='./');
+		}
+
+		variables.fw.redirect(action='cUsers.listUsers', preserve='ispublic');
+	}
+
+	public any function updateAddress(rc) {
+		switch(arguments.rc.action) {
+			case 'Update' :
+				getUserManager().updateAddress(arguments.rc);
+				break;
+			case 'Delete' :
+				getUserManager().deleteAddress(arguments.rc.addressid);
+				break;
+			case 'Add' :
+				getUserManager().createAddress(arguments.rc);
+				break;
+		}
+
+		variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
 	}
 
 	public any function route(rc) {
@@ -210,13 +338,13 @@ component persistent='false' accessors='true' output='false' extends='controller
 // ----------------- SEARCH ----------------------------- //
 	public any function search(rc) {
 
-		arguments.rc.rsUsers = getUserManager().getSearch(
+		arguments.rc.rs = getUserManager().getSearch(
 			search=arguments.rc.search
 			, siteid=arguments.rc.siteid
 			, ispublic=arguments.rc.isPublic
 		);
 
-		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
+		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
 
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
 			siteid=arguments.rc.siteid
@@ -229,7 +357,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 
 		// if only one match, then go to edit user form
-		// if ( arguments.rc.rsUsers.recordcount == 1 ) {
+		// if ( arguments.rc.rs.recordcount == 1 ) {
 		// 	arguments.rc.userID = rc.rslist.userid;
 		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
 		// }
@@ -250,19 +378,19 @@ component persistent='false' accessors='true' output='false' extends='controller
 			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 
-		arguments.rc.rslist = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rslist).setNextN(0);
+		arguments.rc.rs = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
+		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
 
+		// scrub the query string for links
 		arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
-
 		StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
 		StructDelete(arguments.rc.querystruct, 'muraaction', 0);
-
 		arguments.rc.qs = '';
 		for ( var key in arguments.rc.querystruct ){
 			i = arguments.rc.querystruct[key][1];
 			arguments.rc.qs &= key & '=' & i & '&';
 		}
+
 	}
 
 	public any function advancedSearchToCSV(rc) {
@@ -274,129 +402,17 @@ component persistent='false' accessors='true' output='false' extends='controller
 		setDownloadData(arguments.rc);
 	}
 
-	public any function editUser(rc) {
-		if ( !IsDefined('arguments.rc.userBean') ) {
-			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
-		}
-		
-		arguments.rc.rsPrivateGroups = getUserManager().getPrivateGroups(arguments.rc.siteid);
-		arguments.rc.rsPublicGroups = getUserManager().getPublicGroups(arguments.rc.siteid);
-
-		// This is here for backward plugin compatibility
-		appendRequestScope(arguments.rc);
-	}
-
-	public any function editAddress(rc) {
-		if ( !IsDefined('arguments.rc.userBean') ) {
-			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
-		}
-	}
-
-	public any function update(rc) {
-		var origSiteID = arguments.rc.siteID;
-		request.newImageIDList = '';
-
-		if ( rc.$.validateCSRFTokens(context=rc.userid) ) {
-			switch(arguments.rc.action) {
-				case 'Update' :
-					arguments.rc.userBean=getUserManager().update(arguments.rc);
-					break;
-				case 'Delete' :
-					getUserManager().delete(arguments.rc.userid,arguments.rc.type);
-					break;
-				case 'Add' :
-					arguments.rc.userBean=getUserManager().create(arguments.rc);
-					if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
-						arguments.rc.userid=arguments.rc.userBean.getUserID();
-					}
-					break;
-			}
-		}
-	  
-	  arguments.rc.siteID = origSiteID;
-	   
-		if ( Len(request.newImageIDList) ) {
-			arguments.rc.fileid = request.newImageIDList;
-			arguments.rc.userid = arguments.rc.userBean.getUserID();
-			variables.fw.redirect(action='cArch.imagedetails', append='userid,siteid,fileid,compactDisplay', path='./');
-		}
-
-		if ( 
-			arguments.rc.action == 'delete' ||
-			( 
-				arguments.rc.action != 'delete' 
-				&& StructIsEmpty(arguments.rc.userBean.getErrors())
-			)
-		) {
-			route(arguments.rc);
-		}
-
-		if ( 
-			arguments.rc.action != 'delete'
-			&& !StructIsEmpty(arguments.rc.userBean.getErrors()) 
-		) {
-			if ( arguments.rc.type == 2 ) {
-				session.mura.editBean = arguments.rc.userBean;
-			}
-			variables.fw.redirect(action='cUsers.edituser', preserve='all', path='./');
-		}
-	}
-
-	public any function updateAddress(rc) {
-		switch(arguments.rc.action) {
-			case 'Update' :
-				getUserManager().updateAddress(arguments.rc);
-				break;
-			case 'Delete' :
-				getUserManager().deleteAddress(arguments.rc.addressid);
-				break;
-			case 'Add' :
-				getUserManager().createAddress(arguments.rc);
-				break;
-		}
-
-		variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
-	}
-
-	public any function listUsers(rc) {
-		if ( arguments.rc.siteid == 'all' ) {
-			arguments.rc.siteid = '';
-		}
-
-		arguments.rc.noUsersMessage = rc.$.rbKey('user.nousers');
-
-		arguments.rc.rsUsers = getUserManager().getUsers(
-		 siteid=arguments.rc.siteid
-		 , ispublic=arguments.rc.ispublic
-		 , isunassigned=arguments.rc.unassigned
-		);
-
-		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rsUsers).setNextN(0);
-
-		// arguments.rc.nextn = variables.utility.getNextN(
-		// 	arguments.rc.itUsers.getQuery()
-		// 	, 2
-		// 	, arguments.rc.startrow
-		// );
-
-		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
-			siteid=arguments.rc.siteid
-			, ispublic=arguments.rc.ispublic
-			, isunassigned=1
-		);
-
-		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
-	}
-
+// ----------------- DOWNLOAD ----------------------------- //
 	public any function download(rc) {
-		arguments.rc.rsUsers = arguments.rc.unassigned
+		arguments.rc.rs = arguments.rc.unassigned
 			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
 			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
 
-		arguments.rc.records = arguments.rc.rsUsers;
+		arguments.rc.records = arguments.rc.rs;
 		setDownloadData(arguments.rc);
 	}
 
+// ----------------- HELPERS ----------------------------- //
 	private any function setDownloadData(rc) {
 		var i = '';
 		var r = '';
@@ -421,5 +437,4 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.str = arguments.rc.str & ListQualify(r, '"', ",", "CHAR") & chr(10);
 		}
 	}
-
 }

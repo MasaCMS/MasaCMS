@@ -79,7 +79,7 @@
 	<!--- /Tab Nav --->
 
 	<!--- Group Listing --->
-		<cfif rc.rsGroups.recordcount>
+		<cfif rc.it.hasNext()>
 			<table id="temp" class="table table-striped table-condensed table-bordered mura-table-grid">
 
 				<thead>
@@ -104,12 +104,12 @@
 				</thead>
 
 				<tbody>
-					<cfloop condition="rc.itGroups.hasNext()">
+					<cfloop condition="rc.it.hasNext()">
 						<cfsilent>
 							<cfscript>
-								local.group = rc.itGroups.next();
-								local.membercount = Len(local.group.getValue('counter'))
-									? local.group.getValue('counter')
+								local.item = rc.it.next();
+								local.membercount = Len(local.item.getValue('counter'))
+									? local.item.getValue('counter')
 									: 0;
 							</cfscript>
 						</cfsilent>
@@ -117,16 +117,16 @@
 
 							<!--- Group Name --->
 								<td class="var-width">
-									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
-										#esapiEncode('html',local.group.getValue('groupname'))#</a>
+									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
+										#esapiEncode('html',local.item.getValue('groupname'))#</a>
 									(#Val(local.membercount)#)
 								</td>
 
 							<!--- Group Email --->
 								<td>
-									<cfif Len(local.group.getValue('email'))>
-										<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
-											#esapiEncode('html',local.group.getValue('email'))#
+									<cfif Len(local.item.getValue('email'))>
+										<a href="mailto:#URLEncodedFormat(local.item.getValue('email'))#">
+											#esapiEncode('html',local.item.getValue('email'))#
 										</a>
 									<cfelse>
 										&nbsp;
@@ -135,17 +135,17 @@
 
 							<!--- Date Last Update --->
 								<td>
-									#LSDateFormat(local.group.getValue('lastupdate'), session.dateKeyFormat)#
+									#LSDateFormat(local.item.getValue('lastupdate'), session.dateKeyFormat)#
 								</td>
 
 							<!--- Time Last Update --->
 								<td>
-									#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
+									#LSTimeFormat(local.item.getValue('lastupdate'), 'short')#
 								</td>
 
 							<!--- Last Update By --->
 								<td>
-									#esapiEncode('html',local.group.getValue('lastupdateby'))#
+									#esapiEncode('html',local.item.getValue('lastupdateby'))#
 								</td>
 
 							<!--- Actions --->
@@ -154,21 +154,21 @@
 
 										<!--- Edit --->
 											<li>
-												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
+												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 													<i class="icon-pencil"></i>
 												</a>
 											</li>
 
 										<!--- Delete --->
-											<cfif local.group.getValue('perm') eq 0>
+											<cfif local.item.getValue('perm') eq 0>
 
 												<cfset msgDelete = rc.$.getBean('resourceBundle').messageFormat(
 														rc.$.rbKey('user.deleteusergroupconfim')
-														, [local.group.getValue('groupname')]
+														, [local.item.getValue('groupname')]
 												) />
 
 												<li>
-													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
 														<i class="icon-remove-sign"></i>
 													</a>
 												</li>

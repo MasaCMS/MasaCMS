@@ -1,46 +1,124 @@
+<!--- 
+	This file is part of Mura CMS.
+
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
+
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+
+	Your custom code 
+
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+--->
 <cfoutput>
-<cfif rc.itComments.pageCount() gt 1>
-				<div class="pagination pull-right">
-					<ul>
-						<!--- PREVIOUS --->
-						<cfscript>
-							if ( rc.pageno eq 1 ) {
-								local.prevClass = 'disabled';
-								local.prevNo = '';
-							} else {
-								local.prevClass = 'pageNo';
-								local.prevNo = rc.pageno - 1;
-							}
-						</cfscript>
-						<li class="#local.prevClass#">
-							<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
+	<cfif IsDefined('rc.nextn')>
+
+		<!--- Records Per Page --->
+			<div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+					#rc.$.rbKey('user.usersperpage')#
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li <cfif rc.recordsperpage eq 1> class="active"</cfif>><a href="##" class="nextN" data-nextn="1">1</a></li>
+					<li <cfif rc.recordsperpage eq 2> class="active"</cfif>><a href="##" class="nextN" data-nextn="2">2</a></li>
+					<li <cfif rc.recordsperpage eq 3> class="active"</cfif>><a href="##" class="nextN" data-nextn="3">3</a></li>
+					<li <cfif rc.recordsperpage eq 10> class="active"</cfif>><a href="##" class="nextN" data-nextn="10">10</a></li>
+					<li <cfif rc.recordsperpage eq 25> class="active"</cfif>><a href="##" class="nextN" data-nextn="25">25</a></li>
+					<li <cfif rc.recordsperpage eq 50> class="active"</cfif>><a href="##" class="nextN" data-nextn="50">50</a></li>
+					<li <cfif rc.recordsperpage eq 100> class="active"</cfif>><a href="##" class="nextN" data-nextn="100">100</a></li>
+					<li <cfif rc.recordsperpage eq 250> class="active"</cfif>><a href="##" class="nextN" data-nextn="250">250</a></li>
+					<li <cfif rc.recordsperpage eq 500> class="active"</cfif>><a href="##" class="nextN" data-nextn="500">500</a></li>
+					<li <cfif rc.recordsperpage eq 1000> class="active"</cfif>><a href="##" class="nextN" data-nextn="1000">1000</a></li>
+					<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
+				</ul>
+			</div>
+
+
+		<!--- <div class="pull-left">
+			<cfdump var="#rc.nextN#" label="NextN" />
+		</div> --->
+
+		<div class="pagination pull-right">
+			<ul>
+
+				<!--- Previous Link --->
+					<cfscript>
+						if ( rc.nextn.currentpagenumber == 1 || rc.nextn.previous == 1 ) {
+							local.prevClass = 'disabled';
+							local.prevNo = '';
+						} else {
+							local.prevClass = 'pageNo';
+							local.prevNo = rc.nextn.currentpagenumber - 1;
+						}
+					</cfscript>
+					<li class="#local.prevClass#">
+						<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
+					</li>
+
+				<!--- Page Number Links --->
+					<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="p">
+						<li<cfif rc.nextn.currentpagenumber eq p> class="disabled"</cfif>>
+							<cfset lClass = "pageNo">
+							<cfif val(rc.nextn.currentpagenumber) eq p>
+								<cfset lClass = listAppend("lClass", "active", " ")>
+							</cfif>
+							<a href="##" data-pageno="#p#" class="#lClass#">
+								#p#
+							</a>
 						</li>
-						<!--- LINKS --->
-						<cfloop from="#rc.startPage#" to="#rc.endPage#" index="p">
-							<li<cfif rc.pageno eq p> class="disabled"</cfif>>
-								<cfset lClass = "pageNo">
-								<cfif val(rc.pageno) eq p>
-									<cfset lClass = listAppend("lClass", "active", " ")>
-								</cfif>
-								<a href="##" data-pageno="#p#" class="#lClass#">
-									#p#
-								</a>
-							</li>
-						</cfloop>
-						<!--- NEXT --->
-						<cfscript>
-							if ( rc.pageno == rc.totalPages ) {
-								rc.nextClass = 'disabled';
-								rc.prevNo = '';
-							} else {
-								rc.nextClass = 'pageNo';
-								rc.prevNo = rc.pageno + 1;
-							}
-						</cfscript>
-						<li class="#rc.nextClass#">
-							<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
-						</li>
-					</ul>
-				</div>
-			</cfif>
+					</cfloop>
+
+				<!--- Next Link --->
+					<cfscript>
+						if ( rc.nextn.currentpagenumber == rc.nextn.numberofpages || rc.nextn.next == rc.nextn.numberofpages ) {
+							rc.nextClass = 'disabled';
+							rc.prevNo = '';
+						} else {
+							rc.nextClass = 'pageNo';
+							rc.prevNo = rc.nextn.currentpagenumber + 1;
+						}
+					</cfscript>
+					<li class="#rc.nextClass#">
+						<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
+					</li>
+
+			</ul>
+		</div>
+	</cfif>
 </cfoutput>
