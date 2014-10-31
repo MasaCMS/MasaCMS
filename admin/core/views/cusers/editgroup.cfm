@@ -297,7 +297,8 @@ select * from rsSubTypes where subType <> 'Default'
 						<input type="hidden" name="isPublic" value="0">
 					</cfif>
 					<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
-					<input type="hidden" name="returnurl" value="#esapiEncode('html',rc.returnurl)#">
+					<!--- <input type="hidden" name="returnurl" value="#esapiEncode('html',rc.returnurl)#"> --->
+					<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.userbean.getValue('ispublic')#')#">
 					<cfif not rsNonDefault.recordcount>
 						<input type="hidden" name="subtype" value="Default"/>
 					</cfif>

@@ -175,7 +175,7 @@
 											<!--- Remove From Group --->
 												<cfif ListLast(rc.muraAction, '.') eq 'editgroupmembers'>
 													<li class="remove">
-														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
+														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
 															<i class="icon-minus-sign"></i>
 														</a>
 													</li>

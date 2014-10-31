@@ -722,7 +722,8 @@
 			<input type="hidden" name="contact" value="0">
 			<input type="hidden" name="groupid" value="">
 			<input type="hidden" name="ContactForm" value="">
-			<input type="hidden" name="returnurl" value="#esapiEncode('html',rc.returnurl)#">
+			<!--- <input type="hidden" name="returnurl" value="#esapiEncode('html_attr',rc.returnurl)#"> --->
+			<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.userbean.getValue('ispublic')#')#">
 
 			<cfif not rsNonDefault.recordcount>
 				<input type="hidden" name="subtype" value="Default"/>

@@ -94,7 +94,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// defaults
 			param name='arguments.rc.error' default='#{}#';
 			param name='arguments.rc.startrow' default='1';
-			param name='arguments.rc.recordsperpage' default='1';
+			param name='arguments.rc.recordsperpage' default='20';
 			param name='arguments.rc.userid' default='';
 			param name='arguments.rc.routeid' default='';
 			param name='arguments.rc.categoryid' default='';
@@ -134,7 +134,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.startRow = Val(arguments.rc.startRow);
 			if ( arguments.rc.startRow < 1 ) { arguments.rc.startRow = 1; }
 			arguments.rc.recordsperpage = Val(arguments.rc.recordsperpage);
-			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 1; }
+			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 15; }
+
 
 		if ( !Len(arguments.rc.userid) ) {
 			param name='arguments.rc.action' default='Add';
@@ -168,30 +169,14 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, [arguments.rc.msgArg]
 		);
 
-
 		arguments.rc.rs= getUserManager().getUsers(
 		 siteid=arguments.rc.siteid
 		 , ispublic=arguments.rc.ispublic
 		 , isunassigned=arguments.rc.unassigned
 		);
 
-		// pagination setup
-			if ( arguments.rc.startRow > arguments.rc.rs.recordcount ) {
-				arguments.rc.startRow = 1;
-			}
-
-			arguments.rc.nextn = variables.utility.getNextN(
-				data=arguments.rc.rs
-				, recordsPerPage=10
-				, startRow=arguments.rc.startRow
-				, pageBuffer=3
-			);
-
-		// iterator
-			arguments.rc.it = getBean('userIterator')
-				.setQuery(arguments.rc.rs)
-				.setNextN(arguments.rc.nextn.recordsperpage)
-				.setPage(arguments.rc.nextn.currentpagenumber);
+		// Iterator
+			setUsersIterator(rc);
 
 		// unassigned users
 			arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
@@ -204,15 +189,18 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function editGroup(rc) {
+		if ( IsDefined('arguments.rc.groupid') && Len(arguments.rc.groupid) ) {
+			arguments.rc.userid = arguments.rc.groupid;
+		}
 		if ( !IsDefined('arguments.rc.userBean') ) {
 			arguments.rc.userBean = getUserManager().read(arguments.rc.userid);
 		}
 		arguments.rc.nousersmessage = arguments.rc.$.rbKey('user.nogroupmembers');
 		arguments.rc.rsSiteList = getSettingsManager().getList();
 		arguments.rc.rs = getUserManager().readGroupMemberships(arguments.rc.userid);
-		arguments.rc.it = getUserManager().getIterator().setQuery(arguments.rc.rs).setNextN(0);
-
-		//arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rs,15,arguments.rc.startrow);
+		
+		// Iterator
+			setUsersIterator(rc);
 	
 		// This is here for backward plugin compatibility
 		appendRequestScope(arguments.rc);
@@ -229,7 +217,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function removeFromGroup(rc) {
 		getUserManager().deleteUserFromGroup(arguments.rc.userid, arguments.rc.groupid);
-		variables.fw.redirect(action='cUsers.editGroupMembers');
+		variables.fw.redirect(action='cUsers.editGroupMembers', preserve='groupid,siteid');
 	}
 
 	public any function editUser(rc) {
@@ -280,15 +268,16 @@ component persistent='false' accessors='true' output='false' extends='controller
 			variables.fw.redirect(action='cArch.imagedetails', append='userid,siteid,fileid,compactDisplay', path='./');
 		}
 
-		// errors?
-		if ( !StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
-			if ( arguments.rc.type == 2 ) {
-				session.mura.editBean = arguments.rc.userBean;
-			}
-			variables.fw.redirect(action='cUsers.edituser', preserve='all', path='./');
+		if ( arguments.rc.action != 'delete' && StructIsEmpty(arguments.rc.userBean.getErrors()) || arguments.rc.action == 'delete' ) {
+			route(arguments.rc);
 		}
 
-		variables.fw.redirect(action='cUsers.listUsers', preserve='ispublic');
+		if ( arguments.rc.action != 'delete' && !StructIsEmpty(arguments.rc.userBean.getErrors()) && arguments.rc.type == 1 ) {
+			variables.fw.redirect(action='cUsers.editgroup', preserve='all', path='./');
+		} else if ( arguments.rc.action != 'delete' && !StructIsEmpty(arguments.rc.userBean.getErrors()) && arguments.rc.type == 2 ) {
+			session.mura.editBean = arguments.rc.userBean;
+			variables.fw.redirect(action='cUsers.edituser', preserve='all', path='./');
+		}
 	}
 
 	public any function updateAddress(rc) {
@@ -330,7 +319,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.userid = rc.routeid;
 			variables.fw.redirect(action='cUsers.editgroup', append='siteid,userid', path='./');
 		}
-	
+
 		variables.fw.redirect(action='cUsers', append='siteid', path='./');
 	}
 
@@ -436,5 +425,29 @@ component persistent='false' accessors='true' output='false' extends='controller
 			}
 			arguments.rc.str = arguments.rc.str & ListQualify(r, '"', ",", "CHAR") & chr(10);
 		}
+	}
+
+	private any function setUsersIterator(rc) {
+		// pagination setup
+			if ( arguments.rc.startRow > arguments.rc.rs.recordcount ) {
+				arguments.rc.startRow = 1;
+			}
+
+			arguments.rc.nextn = variables.utility.getNextN(
+				data=arguments.rc.rs
+				, recordsPerPage=arguments.rc.recordsperpage
+				, startRow=arguments.rc.startRow
+				, pageBuffer=3
+			);
+
+			arguments.rc.nextn.currentpagenumber = IsDefined('arguments.rc.pageno')
+				? arguments.rc.pageno
+				: arguments.rc.nextn.currentpagenumber;
+
+		// iterator
+			arguments.rc.it = getBean('userIterator')
+				.setQuery(arguments.rc.rs)
+				.setNextN(arguments.rc.nextn.recordsperpage)
+				.setPage(arguments.rc.nextn.currentpagenumber);
 	}
 }

@@ -46,7 +46,37 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<cfif IsDefined('rc.nextn')>
+
+	<script>
+	jQuery(document).ready(function($){
+
+		$('a.nextN').click(function(e){
+			e.preventDefault();
+			actionModal();
+			$('form##frmNextN input[name="recordsperpage"]').val($(this).attr('data-nextn'));
+			$('form##frmNextN input[name="pageno"]').val(1);
+			$('form##frmNextN').submit();
+		});
+
+		$('a.pageNo').click(function(e){
+			e.preventDefault();
+			actionModal();
+			$('form##frmNextN input[name="pageno"]').val($(this).attr('data-pageno'));
+			$('form##frmNextN').submit();
+		});
+
+	});
+	</script>
+
+	<cfif IsDefined('rc.nextn') and rc.nextn.numberofpages gt 1>
+		<form id="frmNextN" action="" method="post">
+			<input type="hidden" name="muraAction" value="#rc.muraAction#">
+			<input type="hidden" name="siteid" value="#rc.siteid#">
+			<input type="hidden" name="ispublic" value="#rc.ispublic#">
+			<input type="hidden" name="unassigned" value="#rc.unassigned#">
+			<input type="hidden" name="recordsperpage" value="#rc.nextn.recordsperpage#">
+			<input type="hidden" name="pageno" value="#rc.nextn.currentpagenumber#">
+		</form>
 
 		<!--- Records Per Page --->
 			<div class="btn-group">
@@ -54,71 +84,62 @@
 					#rc.$.rbKey('user.usersperpage')#
 					<span class="caret"></span>
 				</a>
+
+				<cfset local.arrPages = [5,10,20,50,100,250,500,1000] />
 				<ul class="dropdown-menu">
-					<li <cfif rc.recordsperpage eq 1> class="active"</cfif>><a href="##" class="nextN" data-nextn="1">1</a></li>
-					<li <cfif rc.recordsperpage eq 2> class="active"</cfif>><a href="##" class="nextN" data-nextn="2">2</a></li>
-					<li <cfif rc.recordsperpage eq 3> class="active"</cfif>><a href="##" class="nextN" data-nextn="3">3</a></li>
-					<li <cfif rc.recordsperpage eq 10> class="active"</cfif>><a href="##" class="nextN" data-nextn="10">10</a></li>
-					<li <cfif rc.recordsperpage eq 25> class="active"</cfif>><a href="##" class="nextN" data-nextn="25">25</a></li>
-					<li <cfif rc.recordsperpage eq 50> class="active"</cfif>><a href="##" class="nextN" data-nextn="50">50</a></li>
-					<li <cfif rc.recordsperpage eq 100> class="active"</cfif>><a href="##" class="nextN" data-nextn="100">100</a></li>
-					<li <cfif rc.recordsperpage eq 250> class="active"</cfif>><a href="##" class="nextN" data-nextn="250">250</a></li>
-					<li <cfif rc.recordsperpage eq 500> class="active"</cfif>><a href="##" class="nextN" data-nextn="500">500</a></li>
-					<li <cfif rc.recordsperpage eq 1000> class="active"</cfif>><a href="##" class="nextN" data-nextn="1000">1000</a></li>
+					<cfloop array="#local.arrPages#" index="local.p">
+						<li <cfif rc.recordsperpage eq local.p> class="active"</cfif>><a href="##" class="nextN" data-nextn="#local.p#">#local.p#</a></li>
+					</cfloop>
 					<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
 				</ul>
 			</div>
 
+		<!--- Pagination --->
+			<div class="pagination pull-right">
+				<ul>
 
-		<!--- <div class="pull-left">
-			<cfdump var="#rc.nextN#" label="NextN" />
-		</div> --->
-
-		<div class="pagination pull-right">
-			<ul>
-
-				<!--- Previous Link --->
-					<cfscript>
-						if ( rc.nextn.currentpagenumber == 1 || rc.nextn.previous == 1 ) {
-							local.prevClass = 'disabled';
-							local.prevNo = '';
-						} else {
-							local.prevClass = 'pageNo';
-							local.prevNo = rc.nextn.currentpagenumber - 1;
-						}
-					</cfscript>
-					<li class="#local.prevClass#">
-						<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
-					</li>
-
-				<!--- Page Number Links --->
-					<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="p">
-						<li<cfif rc.nextn.currentpagenumber eq p> class="disabled"</cfif>>
-							<cfset lClass = "pageNo">
-							<cfif val(rc.nextn.currentpagenumber) eq p>
-								<cfset lClass = listAppend("lClass", "active", " ")>
-							</cfif>
-							<a href="##" data-pageno="#p#" class="#lClass#">
-								#p#
-							</a>
+					<!--- Previous Link --->
+						<cfscript>
+							if ( rc.nextn.currentpagenumber == 1 ) {
+								local.prevClass = 'disabled';
+								local.prevNo = '';
+							} else {
+								local.prevClass = 'pageNo';
+								local.prevNo = rc.nextn.currentpagenumber - 1;
+							}
+						</cfscript>
+						<li class="#local.prevClass#">
+							<a hre="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;</a>
 						</li>
-					</cfloop>
 
-				<!--- Next Link --->
-					<cfscript>
-						if ( rc.nextn.currentpagenumber == rc.nextn.numberofpages || rc.nextn.next == rc.nextn.numberofpages ) {
-							rc.nextClass = 'disabled';
-							rc.prevNo = '';
-						} else {
-							rc.nextClass = 'pageNo';
-							rc.prevNo = rc.nextn.currentpagenumber + 1;
-						}
-					</cfscript>
-					<li class="#rc.nextClass#">
-						<a href="##" data-pageno="#rc.prevNo#">&raquo;</a>
-					</li>
+					<!--- Page Number Links --->
+						<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="p">
+							<li<cfif rc.nextn.currentpagenumber eq p> class="disabled"</cfif>>
+								<cfset lClass = "pageNo">
+								<cfif Val(rc.nextn.currentpagenumber) eq p>
+									<cfset lClass &= ' active' />
+								</cfif>
+								<a href="##" data-pageno="#p#" class="#lClass#">
+									#p#
+								</a>
+							</li>
+						</cfloop>
 
-			</ul>
-		</div>
+					<!--- Next Link --->
+						<cfscript>
+							if ( rc.nextn.currentpagenumber == rc.nextn.numberofpages || rc.nextn.next == rc.nextn.numberofpages ) {
+								rc.nextClass = 'disabled';
+								rc.prevNo = '';
+							} else {
+								rc.nextClass = 'pageNo';
+								rc.prevNo = rc.nextn.currentpagenumber + 1;
+							}
+						</cfscript>
+						<li class="#rc.nextClass#">
+							<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">&raquo;</a>
+						</li>
+
+				</ul>
+			</div>
 	</cfif>
 </cfoutput>
