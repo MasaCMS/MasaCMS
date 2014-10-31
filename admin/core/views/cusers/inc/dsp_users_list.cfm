@@ -121,7 +121,7 @@
 								<!--- Last Name, First Name --->
 									<td class="var-width">
 										<cfif local.user.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
-											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#">
+											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
 												#esapiEncode('html', local.user.getValue('lname'))#, #esapiEncode('html', local.user.getValue('fname'))#
 											</a>
 										<cfelse>
@@ -162,13 +162,22 @@
 											<!--- Edit --->
 												<cfif local.user.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
 													<li>
-														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
+														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.user.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 															<i class="icon-pencil"></i>
 														</a>
 													</li>
 												<cfelse>
 													<li class="disabled">
 														<i class="icon-pencil"></i>
+													</li>
+												</cfif>
+
+											<!--- Remove From Group --->
+												<cfif ListLast(rc.muraAction, '.') eq 'editgroupmembers'>
+													<li class="remove">
+														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
+															<i class="icon-minus-sign"></i>
+														</a>
 													</li>
 												</cfif>
 

@@ -58,14 +58,14 @@
         <ul class="nav nav-tabs">
           <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>
-            <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=1&unassigned=#rc.unassigned#')#">
+            <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=1&unassigned=#rc.unassigned#')#" onclick="actionModal();">
               #rc.$.rbKey('user.sitemembers')#
             </a>
           </li>
 
           <!--- System Users Tab --->
           <li<cfif rc.ispublic eq 0> class="active"</cfif>>
-            <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=0&unassigned=#rc.unassigned#')#">
+            <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=0&unassigned=#rc.unassigned#')#" onclick="actionModal();">
               #rc.$.rbKey('user.systemusers')#
             </a>
           </li>
@@ -79,7 +79,7 @@
 		<div class="well btn-group">
 
 			<!--- View All / Unassigned Only --->
-				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#">
+				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#" onclick="actionModal();">
 					<i class="icon-filter"></i> 
 					<cfif rc.unassigned EQ 0>
 						#rc.$.rbKey('user.viewunassignedonly')#
@@ -90,8 +90,8 @@
 
 			<!--- Download .CSV --->
 				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
-					<i class="icon-cloud-download"></i> 
-					#rc.$.rbKey('user.downloadcsv')#
+					<i class="icon-download"></i> 
+					#rc.$.rbKey('user.download')#
 				</a>
 
 		</div>

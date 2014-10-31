@@ -73,18 +73,18 @@ select * from rsSubTypes where subType <> 'Default'
 	<cfoutput>
 		<h1>#rc.$.rbKey('user.groupform')#</h1>
 		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;">
+			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
 				<i class="icon-circle-arrow-left"></i> 
 				#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
 			</a>
 
-			<a class="btn" href="#buildURL(action='cusers.list')#">
+			<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
 				<i class="icon-eye-open"></i>
 				#rc.$.rbKey('user.viewallgroups')#
 			</a>
 
 			<cfif !rc.userBean.getIsNew()>
-				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#">
+				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 					<i class="icon-group"></i>
 					#rc.$.rbKey('user.viewgroupsusers')#
 				</a>
@@ -168,7 +168,10 @@ select * from rsSubTypes where subType <> 'Default'
 
 					<div class="span6">
 						<label class="control-label">
-							#rc.$.rbKey('user.groupemail')#
+							<a href="##" rel="tooltip" data-original-title="#rc.$.rbKey('user.groupemailmessage')#">
+								#rc.$.rbKey('user.groupemail')#
+								<i class="icon-question-sign"></i>
+							</a>
 						</label>
 						<div class="controls">
 							<input type="text" class="span12" name="email" value="#esapiEncode('html',rc.userBean.getemail())#">

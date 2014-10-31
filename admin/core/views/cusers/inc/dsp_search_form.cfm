@@ -52,7 +52,7 @@
       <button type="button" class="btn" onclick="submitForm(document.forms.form1);">
         <i class="icon-search"></i>
       </button>
-      <button type="button" class="btn" onclick="window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
+      <button type="button" class="btn" onclick="actionModal();window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rc.$.rbKey('user.advanced')#">
         #rc.$.rbKey('user.advanced')#
       </button>
       <input type="hidden" name="siteid" value="#esapiEncode('html', rc.siteid)#" />

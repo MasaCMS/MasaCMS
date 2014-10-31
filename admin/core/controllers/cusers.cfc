@@ -146,25 +146,27 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function list(rc) {
-		rc.rsGroups = getUserManager().getUserGroups(siteid=rc.siteid, ispublic=rc.ispublic);
-		rc.itGroups = getUserManager().getIterator().setQuery(rc.rsGroups).setNextN(0);
+		arguments.rc.rsGroups = getUserManager().getUserGroups(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		arguments.rc.itGroups = getUserManager().getIterator().setQuery(arguments.rc.rsGroups).setNextN(0);
 	}
 
 	public any function editGroup(rc) {
 		if ( !IsDefined('arguments.rc.userBean') ) {
 			arguments.rc.userBean = getUserManager().read(arguments.rc.userid);
 		}
-
+		arguments.rc.nousersmessage = arguments.rc.$.rbKey('user.nogroupmembers');
 		arguments.rc.rsSiteList = getSettingsManager().getList();
 		arguments.rc.rsGroupList = getUserManager().readGroupMemberships(arguments.rc.userid);
-		arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow);
+		arguments.rc.itUsers = getUserManager().getIterator().setQuery(arguments.rc.rsGroupList).setNextN(0);
+
+		//arguments.rc.nextn = variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow);
 	
 		// This is here for backward plugin compatibility
 		appendRequestScope(arguments.rc);
 	}
 
 	public any function editGroupMembers(rc) {
-		editGroup(rc);
+		editGroup(arguments.rc);
 	}
 
 	public any function addToGroup(rc) {
@@ -174,7 +176,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function removeFromGroup(rc) {
 		getUserManager().deleteUserFromGroup(arguments.rc.userid, arguments.rc.groupid);
-		route(arguments.rc);
+		variables.fw.redirect(action='cUsers.editGroupMembers');
 	}
 
 	public any function route(rc) {
@@ -223,7 +225,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		);
 
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
-		arguments.rc.noUsersMessage = rc.$.rbKey('user.nosearchresults');
+		arguments.rc.noUsersMessage = arguments.rc.$.rbKey('user.nosearchresults');
 
 
 		// if only one match, then go to edit user form
@@ -242,15 +244,14 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function advancedSearch(rc) {
 		var i = '';
 
-		arguments.rc.nousersmessage = rc.$.rbKey('user.nosearchresults');
+		arguments.rc.nousersmessage = arguments.rc.$.rbKey('user.nosearchresults');
 
 		arguments.rc.rsGroups = arguments.rc.ispublic == 1
 			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 
-		arguments.rc.rslist = getUserManager().getAdvancedSearch(session, rc.siteid, arguments.rc.ispublic);
+		arguments.rc.rslist = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
 		arguments.rc.itUsers = getBean('userIterator').setQuery(arguments.rc.rslist).setNextN(0);
-
 
 		arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
 
@@ -260,12 +261,17 @@ component persistent='false' accessors='true' output='false' extends='controller
 		arguments.rc.qs = '';
 		for ( var key in arguments.rc.querystruct ){
 			i = arguments.rc.querystruct[key][1];
-
-			if ( Len(i) ) {
-				arguments.rc.qs &= key & '=' & i & '&';
-			}
+			arguments.rc.qs &= key & '=' & i & '&';
 		}
+	}
 
+	public any function advancedSearchToCSV(rc) {
+		arguments.rc.rsGroups = arguments.rc.ispublic == 1
+			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
+			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+
+		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
+		setDownloadData(arguments.rc);
 	}
 
 	public any function editUser(rc) {
@@ -391,15 +397,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 		setDownloadData(arguments.rc);
 	}
 
-	public any function advancedSearchToCSV(rc) {
-		arguments.rc.rsGroups = arguments.rc.ispublic == 1
-			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
-			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
-
-		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		setDownloadData(arguments.rc);
-	}
-
 	private any function setDownloadData(rc) {
 		var i = '';
 		var r = '';
@@ -408,7 +405,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 		rc.str = '';
 		arguments.rc.rs = arguments.rc.records;
-		arguments.rc.origColumnList = ListDeleteAt(arguments.rc.rs.columnlist, ListFindNoCase(arguments.rc.rs.columnlist, 'password'));
+		arguments.rc.origColumnList = ListFindNoCase(arguments.rc.rs.columnlist, 'password')
+			? ListDeleteAt(arguments.rc.rs.columnlist, ListFindNoCase(arguments.rc.rs.columnlist, 'password'))
+			: arguments.rc.rs.columnlist;
 		arguments.rc.qualifiedColumns = ListQualify(arguments.rc.origColumnList, '"', ",", "CHAR");
 		arguments.rc.str = arguments.rc.str & arguments.rc.qualifiedColumns & chr(10);
 

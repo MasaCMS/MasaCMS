@@ -45,7 +45,7 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="inc/js.cfm">
+<cfinclude template="inc/js.cfm" />
 <cfsilent>
 	<cfset options=arrayNew(2) />
 	<cfset criterias=arrayNew(2) />
@@ -115,7 +115,7 @@
 
 	<!--- Basic Search Button --->
 		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
+			<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 				<i class="icon-search"></i> 
 				#rc.$.rbKey('user.basicsearch')#
 			</a>
@@ -232,30 +232,33 @@
 						</button>
 					
 					<!--- Download Button --->
-						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);">
-							<i class="icon-download"></i> 
-							#rc.$.rbKey("user.download")#
-						</button>
+						<cfif rc.itUsers.getRecordcount()>
+							<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
+								<i class="icon-download"></i> 
+								#rc.$.rbKey("user.download")#
+							</button>
+						</cfif>
 				</div>
 			<!--- /Form Buttons --->
 		</form>
 	<!--- /Search Form --->
 
-	<script type="text/javascript">setSearchButtons();</script>
+<script type="text/javascript">$searchParams.setSearchButtons();</script>
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
 			<ul class="nav nav-tabs">
 				<!--- Site Members Tab --->
 					<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#">
+						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">
 							#rc.$.rbKey('user.sitemembers')#
 						</a>
 					</li>
 
         <!--- System Users Tab --->
 					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#">
+						<!--- <a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#"> --->
+						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
 							#rc.$.rbKey('user.systemusers')#
 						</a>
 					</li>

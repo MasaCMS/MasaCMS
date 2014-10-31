@@ -57,13 +57,13 @@
 		<div id="nav-module-specific" class="btn-group">
 
 			<!--- Add User --->
-				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
+				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#" onclick="actionModal();">
 					<i class="icon-plus-sign"></i> 
 					#rc.$.rbKey('user.adduser')#
 				</a>
 
 		  <!--- Add Group --->
-				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
+				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#" onclick="actionModal();">
 					<i class="icon-plus-sign"></i> 
 					#rc.$.rbKey('user.addgroup')#
 				</a>
@@ -71,7 +71,7 @@
 			<cfif rc.muraaction eq 'core:cusers.listusers'>
 
 				<!--- View Groups --->
-					<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
+					<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 						<i class="icon-eye-open"></i>
 						#rc.$.rbKey('user.viewgroups')#
 					</a>
@@ -79,7 +79,7 @@
 		  <cfelse>
 
 				<!--- View Users --->
-					<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
+					<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 						<i class="icon-eye-open"></i>
 						#rc.$.rbKey('user.viewusers')#
 					</a>
@@ -88,7 +88,7 @@
 
 			<!--- Permissions --->
 				<cfif rc.isAdmin AND rc.ispublic>
-					<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008">
+					<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008" onclick="actionModal();">
 						<i class="icon-legal"></i> 
 						#rc.$.rbKey('user.permissions')#
 					</a>

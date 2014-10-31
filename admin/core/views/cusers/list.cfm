@@ -47,7 +47,6 @@
 --->
 <cfoutput>
 
-	<!--- Header --->
 	<cfinclude template="inc/dsp_users_header.cfm" />
 
 	<!--- Subheading --->
@@ -55,42 +54,41 @@
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
+
 				<ul class="nav nav-tabs">
+
 					<!--- Member/Public Groups --->
-					<li<cfif rc.ispublic eq 1> class="active"</cfif>>
-						<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#">
-							#rc.$.rbKey('user.membergroups')#
-						</a>
-					</li>
+						<li<cfif rc.ispublic eq 1> class="active"</cfif>>
+							<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#" onclick="actionModal();">
+								#rc.$.rbKey('user.membergroups')#
+							</a>
+						</li>
+
 					<!--- System/Private Groups --->
-					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-						<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#">
-							#rc.$.rbKey('user.adminusergroups')#
-						</a>
-					</li>
+						<li<cfif rc.ispublic eq 0> class="active"</cfif>>
+							<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#" onclick="actionModal();">
+								#rc.$.rbKey('user.adminusergroups')#
+							</a>
+						</li>
+
 				</ul>
+
 		<cfelse>
 			<h3>#rc.$.rbKey('user.membergroups')#</h3>
 		</cfif>
 	<!--- /Tab Nav --->
 
-	<!--- BODY --->
+	<!--- Group Listing --->
 		<cfif rc.rsGroups.recordcount>
 			<table id="temp" class="table table-striped table-condensed table-bordered mura-table-grid">
+
 				<thead>
 					<tr>
 						<th class="var-width">
 							#rc.$.rbKey('user.grouptotalmembers')#
 						</th>
-
-						<!--- TEMP!!! Take out!! --->
 						<th>
-							<cfset poolheading = !rc.ispublic ? rc.$.rbKey('siteconfig.sharedresources.systemuserpool') : rc.$.rbKey('siteconfig.sharedresources.memberuserpool') />
-							#poolheading#
-						</th>
-
-						<th>
-							#rc.$.rbKey('user.email')#
+							#rc.$.rbKey('user.groupemail')#
 						</th>
 						<th>
 							#rc.$.rbKey('user.datelastupdate')#
@@ -104,8 +102,8 @@
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
+
 				<tbody>
-					<!--- RECORDS --->
 					<cfloop condition="rc.itGroups.hasNext()">
 						<cfsilent>
 							<cfscript>
@@ -116,69 +114,79 @@
 							</cfscript>
 						</cfsilent>
 						<tr>
-							<td class="var-width">
-								<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#">
-									#esapiEncode('html',local.group.getValue('groupname'))#
-								</a>
-								(#local.membercount#)
-							</td>
 
-							<!--- TEMP!! Take Out!! --->
-							<td>
-								<cfset poolid = !rc.ispublic ? rc.$.siteConfig('publicUserPoolID') : rc.$.siteConfig('privateUserPoolID') />
-								#poolid#
-							</td>
+							<!--- Group Name --->
+								<td class="var-width">
+									<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
+										#esapiEncode('html',local.group.getValue('groupname'))#</a>
+									(#Val(local.membercount)#)
+								</td>
 
-							<td>
-								<cfif Len(local.group.getValue('email'))>
-									<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
-										#esapiEncode('html',local.group.getValue('email'))#
-									</a>
-								<cfelse>
-									&nbsp;
-								</cfif>
-							</td>
-							<td>
-								#LSDateFormat(local.group.getValue('lastupdate'), session.dateKeyFormat)#
-							</td>
-							<td>
-								#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
-							</td>
-							<td>
-								#esapiEncode('html',local.group.getValue('lastupdateby'))#
-							</td>
-							<td class="actions">
-								<ul>
-									<li>
-										<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#">
-											<i class="icon-pencil"></i>
+							<!--- Group Email --->
+								<td>
+									<cfif Len(local.group.getValue('email'))>
+										<a href="mailto:#URLEncodedFormat(local.group.getValue('email'))#">
+											#esapiEncode('html',local.group.getValue('email'))#
 										</a>
-									</li>
-
-									<cfif local.group.getValue('perm') eq 0>
-										<cfscript>
-											msgDelete = application.rbFactory.getResourceBundle(session.rb).messageFormat(
-												rc.$.rbKey('user.deleteusergroupconfim')
-												, [local.group.getValue('groupname')]
-											 );
-										</cfscript>
-										<li>
-											<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#')#" onclick="return confirmDialog('#jsStringFormat(msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
-												<i class="icon-remove-sign"></i>
-											</a>
-										</li>
 									<cfelse>
-										<li class="disabled">
-											<i class="icon-remove-sign"></i>
-										</li>
+										&nbsp;
 									</cfif>
-								</ul>
-							</td>
+								</td>
+
+							<!--- Date Last Update --->
+								<td>
+									#LSDateFormat(local.group.getValue('lastupdate'), session.dateKeyFormat)#
+								</td>
+
+							<!--- Time Last Update --->
+								<td>
+									#LSTimeFormat(local.group.getValue('lastupdate'), 'short')#
+								</td>
+
+							<!--- Last Update By --->
+								<td>
+									#esapiEncode('html',local.group.getValue('lastupdateby'))#
+								</td>
+
+							<!--- Actions --->
+								<td class="actions">
+									<ul>
+
+										<!--- Edit --->
+											<li>
+												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.group.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
+													<i class="icon-pencil"></i>
+												</a>
+											</li>
+
+										<!--- Delete --->
+											<cfif local.group.getValue('perm') eq 0>
+
+												<cfset msgDelete = rc.$.getBean('resourceBundle').messageFormat(
+														rc.$.rbKey('user.deleteusergroupconfim')
+														, [local.group.getValue('groupname')]
+												) />
+
+												<li>
+													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.group.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=rc.rsgroups.UserID,format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+														<i class="icon-remove-sign"></i>
+													</a>
+												</li>
+											<cfelse>
+												<li class="disabled">
+													<i class="icon-remove-sign"></i>
+												</li>
+											</cfif>
+
+									</ul>
+								</td>
+							<!--- /Actions --->
+
 						</tr>
 					</cfloop>
 				</tbody>
-			</table>
 
+			</table>
 		<cfelse>
 
 			<!--- No groups message --->
