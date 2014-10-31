@@ -57,11 +57,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<fieldset>
 	<legend>#variables.$.rbKey('email.uptofive')#<legend>
 	<ul>
-	<li><input name="to1" message="#htmlEditFormat(variables.$.rbKey('email.emailrequired'))#" validate="email" required="true"></li>
-	<li><input name="to2" message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to3" message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to4" message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to5" message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
+	<li><input name="to1" data-message="#htmlEditFormat(variables.$.rbKey('email.emailrequired'))#" data-validate="email" data-required="true"></li>
+	<li><input name="to2" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+	<li><input name="to3" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+	<li><input name="to4" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
+	<li><input name="to5" data-message="#htmlEditFormat(variables.$.rbKey('email.emailvalidate'))#" data-validate="email" data-required="no"></li>
 	</ul>
 	<input name="doaction" value="forwardEmail" type="hidden"/>
 	<input name="emailid" value="#HTMLEditFormat(variables.$.event('emailID'))#" type="hidden"/>

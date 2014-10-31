@@ -90,7 +90,7 @@
 								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 							</label>
 							<div class="#this.loginFormFieldWrapperClass#">
-								<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
+								<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
 							</div>
 						</div>
 	
@@ -101,7 +101,7 @@
 								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 							</label>
 							<div class="#this.loginFormFieldWrapperClass#">
-								<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
+								<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
 							</div>
 						</div>
 	
@@ -146,7 +146,7 @@
 						<div class="#this.loginFormGroupWrapperClass#">
 							<label class="#this.loginFormFieldLabelClass#" for="txtEmail">#variables.$.rbKey('user.email')#</label>
 							<div class="#this.loginFormFieldWrapperClass#">
-								<input id="txtEmail" name="email" class="#this.loginFormFieldClass#" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
+								<input id="txtEmail" name="email" class="#this.loginFormFieldClass#" type="text" placeholder="#variables.$.rbKey('user.email')#" data-validate="email" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
 							</div>
 						</div>
 	

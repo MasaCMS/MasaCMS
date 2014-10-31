@@ -24,7 +24,7 @@ Mura CMS under the license of your choice, provided that you follow these specif
 
 Your custom code 
 
-• Must not alter any" default objects in the Mura CMS database and
+• Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
@@ -110,7 +110,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
-<!-- this is legacy--->
+<!-- This is temp only for backward compatibility--->
+<cfset this.shadowboxattribute="rel">
+<!--- this is legacy--->
 <cfset this.size=50>
 <!-- use this--->
 <cfset this.navsize=this.size>
@@ -2200,7 +2202,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -2229,7 +2231,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 									<div id="svAsset" class="mura-asset">
 									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
@@ -3257,7 +3259,7 @@ Display Objects
 
 <cffunction name="generateEditableHook" output="false">
 	<cfif getJSLib() eq "prototype">
-		<cfreturn 'rel="shadowbox;width=1050;"'>
+		<cfreturn '#this.shadowboxattribute#="shadowbox;width=1050;"'>
 	<cfelse>
 		<cfreturn 'class="frontEndToolsModal"'>
 	</cfif>

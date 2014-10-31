@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </li>
 <li>
 <label for="uKey">#variables.$.rbKey('captcha.securitycode')# <span>(#variables.$.rbKey('captcha.instructions')#)</span></label>
-<input type="text" class="text" message="#application.settingsManager.getSite(variables.$.event('siteID')).getRBFactory().getKey('captcha.required')#" required="true" name="uKey" size="20">
+<input type="text" class="text" data-message="#application.settingsManager.getSite(variables.$.event('siteID')).getRBFactory().getKey('captcha.required')#" data-required="true" name="uKey" size="20">
 <input type="hidden" name="hkey" value="#hash(lcase(captchaStr))#">
 </li>
 </cfoutput>
