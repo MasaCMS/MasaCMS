@@ -427,6 +427,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 				arguments.rc.startRow = 1;
 			}
 
+			// nextN
 			arguments.rc.nextn = variables.utility.getNextN(
 				data=arguments.rc.rs.recordcount
 				, recordsPerPage=arguments.rc.recordsperpage
