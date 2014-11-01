@@ -45,28 +45,57 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset event=request.event>
-<cfhtmlhead text="#session.dateKey#">
-<cfset userPoolID=application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
-<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=1,siteid=userPoolID,activeOnly=true) />
-<cfquery name="rsNonDefault" dbtype="query">
-select * from rsSubTypes where subType <> 'Default'
-</cfquery>
+<cfhtmlhead text="#session.dateKey#" />
+<cfsilent>
+	<cfscript>
+		event = request.event;
+		userPoolID = rc.ispublic == 0 && rc.isAdmin
+			? rc.$.siteConfig('privateUserPoolID')
+			: rc.$.siteConfig('publicUserPoolID');
 
-<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+		rsSubTypes = application.classExtensionManager.getSubTypesByType(type=1, siteid=userPoolID, activeOnly=true);
 
-<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onGroupEdit',siteid=rc.siteid))>
- <cfif arrayLen(pluginEventMappings)>
-		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-				<cfset pluginEventMappings[i].eventName='onGroupEdit'>
-		</cfloop>
- </cfif>
+		q = new Query();
+		q.setDbType('query');
+		q.setAttributes(rs=rsSubTypes);
+		q.addParam(name='subType', value='Default', cfsqltype='cf_sql_varchar');
+		q.setSQL('SELECT * FROM rs WHERE subtype <> :subType');
+		rsNonDefault = q.execute().getResult();
 
-<cfset tabLabelList='#rc.$.rbKey('user.basic')#'>
-<cfset tablist="tabBasic">
-<cfif rsSubTypes.recordcount>
-	<cfset tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.extendedattributes'))>
-	<cfset tabList=listAppend(tabList,"tabExtendedattributes")>
+		variables.pluginEvent = CreateObject("component","mura.event").init(event.getAllValues());
+		pluginEventMappings = Duplicate(rc.$.getBean('pluginManager').getEventMappings(eventName='onGroupEdit', siteid=rc.siteid));
+
+		if ( ArrayLen(pluginEventMappings) ) {
+			for ( i=1; i <= ArrayLen(pluginEventMappings); i++) {
+				pluginEventMappings[i].eventName = 'onGroupEdit';
+			}
+		}
+
+		tabLabelList='#rc.$.rbKey('user.basic')#';
+		tablist="tabBasic";
+		if ( rsSubTypes.recordcount ) {
+			tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.extendedattributes'));
+			tabList=listAppend(tabList,"tabExtendedattributes");
+		}
+	</cfscript>
+</cfsilent>
+
+<cfif rc.isAdmin>
+	<script>
+		jQuery(document).ready(function($){
+
+			$('input[name="isPublic"]').click(function(e){
+				e.preventDefault();
+				actionModal();
+				$('form#frmTemp input[name="setispublic"]').val($(this).val());
+				$('form#frmTemp').submit();
+			});
+
+		});
+	</script>
+	<form id="frmTemp" action="" method="post">
+		<input type="hidden" name="setispublic" value="1">
+	</form>
 </cfif>
 
 <!--- Header --->
@@ -75,7 +104,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<div id="nav-module-specific" class="btn-group">
 			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
 				<i class="icon-circle-arrow-left"></i> 
-				#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
+				#rc.$.rbKey('sitemanager.back')#
 			</a>
 
 			<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
@@ -98,7 +127,8 @@ select * from rsSubTypes where subType <> 'Default'
 			<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 		</cfif>
 
-		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="./?muraAction=cUsers.update&amp;userid=#esapiEncode('url',rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+
+		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 	</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
@@ -202,19 +232,19 @@ select * from rsSubTypes where subType <> 'Default'
 							Group Type
 							** Only allow 'Admin' or Super Users to modify Group Types
 						--->
-						<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') OR ListFind(session.mura.memberships,'S2')>
+						<cfif rc.isAdmin>
 							<div class="span6">
 								<label class="control-label">
-									Group Type
+									#rc.$.rbKey('user.grouptype')#
 								</label>
 								<div class="controls">
 									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.userBean.getIsPublic() eq 1>Checked</cfif>>
-										Member Group
+										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
+										#rc.$.rbKey('user.membergroup')#
 									</label>
 									<label class="radio inline">
-										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif rc.userBean.getIsPublic() eq 0>Checked</cfif>>
-											System Group
+										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
+											#rc.$.rbKey('user.systemgroup')#
 									</label>
 								</div>
 							</div>
@@ -260,16 +290,17 @@ select * from rsSubTypes where subType <> 'Default'
 								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rc.$.rbKey('user.deletegroupconfirm'))#');" value="#rc.$.rbKey('user.delete')#" />
 								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
 							</cfif>
-							<input type="hidden" name="action" value="">
+
+							<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+							<input type="hidden" name="action" value="#tempAction#">
 							<input type="hidden" name="type" value="1">
 							<input type="hidden" name="contact" value="0">
-							<cfif rc.userbean.getPerm()>
-								<input type="hidden" name="isPublic" value="0">
-							</cfif>
 							<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
+							<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
 							<cfif not rsNonDefault.recordcount>
 								<input type="hidden" name="subtype" value="Default"/>
 							</cfif>
+							#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
 						</div> 
 					</div>
 				</div>
@@ -290,15 +321,12 @@ select * from rsSubTypes where subType <> 'Default'
 						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rc.$.rbKey('user.deletegroupconfirm'))#');" value="#rc.$.rbKey('user.delete')#" />
 						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
 					</cfif>
-					<input type="hidden" name="action" value="">
+					<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+					<input type="hidden" name="action" value="#tempAction#">
 					<input type="hidden" name="type" value="1"><!--- 1=group, 2=user --->
 					<input type="hidden" name="contact" value="0">
-					<cfif rc.userbean.getPerm()>
-						<input type="hidden" name="isPublic" value="0">
-					</cfif>
-					<input type="hidden" name="siteid" value="#esapiEncode('html',rc.siteid)#">
-					<!--- <input type="hidden" name="returnurl" value="#esapiEncode('html',rc.returnurl)#"> --->
-					<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.userbean.getValue('ispublic')#')#">
+					<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+					<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.list', querystring='ispublic=#rc.tempIsPublic#')#">
 					<cfif not rsNonDefault.recordcount>
 						<input type="hidden" name="subtype" value="Default"/>
 					</cfif>

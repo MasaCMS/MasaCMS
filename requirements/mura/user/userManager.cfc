@@ -1030,12 +1030,6 @@
 		<cfreturn rs.password>
 	</cffunction>
 
-	<!--- <cffunction name="getUsers" output="false">
-		<cfargument name="siteid" default="" />
-		<cfargument name="ispublic" default="1" />
-		<cfreturn variables.userGateway.getUsers(argumentCollection=arguments) />
-	</cffunction> --->
-
 	<cffunction name="getUnassignedUsers" output="false">
 		<cfargument name="siteid" default="" />
 		<cfargument name="ispublic" default="1" />

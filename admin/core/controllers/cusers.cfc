@@ -59,7 +59,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function before(rc) {
-
 		if ( !Len(arguments.rc.siteid) ) {
 			arguments.rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
 		}
@@ -134,14 +133,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.startRow = Val(arguments.rc.startRow);
 			if ( arguments.rc.startRow < 1 ) { arguments.rc.startRow = 1; }
 			arguments.rc.recordsperpage = Val(arguments.rc.recordsperpage);
-			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 15; }
-
-
-		if ( !Len(arguments.rc.userid) ) {
-			param name='arguments.rc.action' default='Add';
-		} else {
-	  	param name='arguments.rc.action' default='Update';
-		}
+			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 20; }
 
 		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray, ListFind(rc.$.currentUser().getMemberships(),'S2'));
 	}
@@ -195,6 +187,12 @@ component persistent='false' accessors='true' output='false' extends='controller
 		if ( !IsDefined('arguments.rc.userBean') ) {
 			arguments.rc.userBean = getUserManager().read(arguments.rc.userid);
 		}
+
+		// this is used to populate the radio button
+		arguments.rc.tempIsPublic = IsDefined('arguments.rc.setispublic') && rc.isAdmin
+			? arguments.rc.setispublic
+			: arguments.rc.userBean.getIsPublic();
+
 		arguments.rc.nousersmessage = arguments.rc.$.rbKey('user.nogroupmembers');
 		arguments.rc.rsSiteList = getSettingsManager().getList();
 		arguments.rc.rs = getUserManager().readGroupMemberships(arguments.rc.userid);
@@ -202,6 +200,23 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// Iterator
 			setUsersIterator(rc);
 	
+		// This is here for backward plugin compatibility
+		appendRequestScope(arguments.rc);
+	}
+
+	public any function editUser(rc) {
+		if ( !IsDefined('arguments.rc.userBean') ) {
+			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
+		}	
+
+		// this is used to populate the radio button
+		arguments.rc.tempIsPublic = IsDefined('arguments.rc.setispublic') && rc.isAdmin
+			? arguments.rc.setispublic
+			: arguments.rc.userBean.getIsPublic();
+
+		arguments.rc.rsPrivateGroups = getUserManager().getPrivateGroups(arguments.rc.siteid);
+		arguments.rc.rsPublicGroups = getUserManager().getPublicGroups(arguments.rc.siteid);
+
 		// This is here for backward plugin compatibility
 		appendRequestScope(arguments.rc);
 	}
@@ -220,18 +235,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 		variables.fw.redirect(action='cUsers.editGroupMembers', preserve='groupid,siteid');
 	}
 
-	public any function editUser(rc) {
-		if ( !IsDefined('arguments.rc.userBean') ) {
-			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
-		}
-		
-		arguments.rc.rsPrivateGroups = getUserManager().getPrivateGroups(arguments.rc.siteid);
-		arguments.rc.rsPublicGroups = getUserManager().getPublicGroups(arguments.rc.siteid);
-
-		// This is here for backward plugin compatibility
-		appendRequestScope(arguments.rc);
-	}
-
 	public any function editAddress(rc) {
 		if ( !IsDefined('arguments.rc.userBean') ) {
 			arguments.rc.userBean=getUserManager().read(arguments.rc.userid);
@@ -241,8 +244,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 	public any function update(rc) {
 		var origSiteID = arguments.rc.siteID;
 		request.newImageIDList = '';
-
-					writedump(arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid));abort;
 
 		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid) ) {
 			switch(arguments.rc.action) {
@@ -257,7 +258,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 					if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
 						arguments.rc.userid=arguments.rc.userBean.getUserID();
 					}
-
 					break;
 			}
 		}
@@ -329,7 +329,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 // ----------------- SEARCH ----------------------------- //
 	public any function search(rc) {
-
 		arguments.rc.rs = getUserManager().getSearch(
 			search=arguments.rc.search
 			, siteid=arguments.rc.siteid
@@ -347,18 +346,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 		arguments.rc.listUnassignedUsers = ValueList(arguments.rc.rsUnassignedUsers.userid);
 		arguments.rc.noUsersMessage = arguments.rc.$.rbKey('user.nosearchresults');
 
-
 		// if only one match, then go to edit user form
 		// if ( arguments.rc.rs.recordcount == 1 ) {
 		// 	arguments.rc.userID = rc.rslist.userid;
 		// 	variables.fw.redirect(action='cUsers.editUser', append='siteid,userid', path='./');
 		// }
-
-		// arguments.rc.nextn=variables.utility.getNextN(
-		// 	arguments.rc.rsList
-		// 	, 15
-		// 	, arguments.rc.startrow
-		// );
 	}
 
 	public any function advancedSearch(rc) {
@@ -382,7 +374,6 @@ component persistent='false' accessors='true' output='false' extends='controller
 			i = arguments.rc.querystruct[key][1];
 			arguments.rc.qs &= key & '=' & i & '&';
 		}
-
 	}
 
 	public any function advancedSearchToCSV(rc) {

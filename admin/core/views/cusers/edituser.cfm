@@ -45,40 +45,63 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfhtmlhead text="#session.dateKey#" />
 <cfsilent>
-	<cfset event=request.event />
-	<cfhtmlhead text="#session.dateKey#" />
-	<cfparam name="rc.activeTab" default="0" />
-	<cfset userPoolID=application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID() />
-	<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=2,siteID=userPoolID,activeOnly=true) />
-	<cfquery name="rsNonDefault" dbtype="query">
-		SELECT * 
-		FROM rsSubTypes 
-		WHERE subType <> 'Default'
-	</cfquery>
+	<cfscript>
+		event = request.event;
+		userPoolID = rc.ispublic == 0 && rc.isAdmin
+			? rc.$.siteConfig('privateUserPoolID')
+			: rc.$.siteConfig('publicUserPoolID');
 
-	<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues()) />
-	<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onUserEdit',siteid=rc.siteid))>
-	 <cfif arrayLen(pluginEventMappings)>
-			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-					<cfset pluginEventMappings[i].eventName='onUserEdit'>
-			</cfloop>
-	 </cfif>
-	 
-	<cfset tabLabelList='#rc.$.rbKey('user.basic')#,#rc.$.rbKey('user.addressinformation')#,#rc.$.rbKey('user.groupmemberships')#,#rc.$.rbKey('user.interests')#' />
-	<cfset tablist="tabBasic,tabAddressinformation,tabGroupmemberships,tabInterests" />
+		rsSubTypes = application.classExtensionManager.getSubTypesByType(type=2, siteid=userPoolID, activeOnly=true);
 
-	<cfif rsSubTypes.recordcount>
-		<cfset tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.extendedattributes')) />
-		<cfset tabList=listAppend(tabList,"tabExtendedattributes") />
-	</cfif>
+		q = new Query();
+		q.setDbType('query');
+		q.setAttributes(rs=rsSubTypes);
+		q.addParam(name='subType', value='Default', cfsqltype='cf_sql_varchar');
+		q.setSQL('SELECT * FROM rs WHERE subtype <> :subType');
+		rsNonDefault = q.execute().getResult();
 
-	<cfset tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.advanced')) />
-	<cfset tabList=listAppend(tabList,"tabAdvanced") />
+		variables.pluginEvent = CreateObject("component","mura.event").init(event.getAllValues());
+		pluginEventMappings = Duplicate(rc.$.getBean('pluginManager').getEventMappings(eventName='onUserEdit', siteid=rc.siteid));
+
+		if ( ArrayLen(pluginEventMappings) ) {
+			for ( i=1; i <= ArrayLen(pluginEventMappings); i++) {
+				pluginEventMappings[i].eventName = 'onUserEdit';
+			}
+		}
+
+		tabLabelList = '#rc.$.rbKey('user.basic')#,#rc.$.rbKey('user.addressinformation')#,#rc.$.rbKey('user.groupmemberships')#,#rc.$.rbKey('user.interests')#';
+		tablist = 'tabBasic,tabAddressinformation,tabGroupmemberships,tabInterests';
+		if ( rsSubTypes.recordcount ) {
+			tabLabelList = ListAppend(tabLabelList,rc.$.rbKey('user.extendedattributes'));
+			tabList = ListAppend(tabList,"tabExtendedattributes");
+		}
+		tabLabelList = ListAppend(tabLabelList,rc.$.rbKey('user.advanced'));
+		tabList = ListAppend(tabList,"tabAdvanced");
+	</cfscript>
 </cfsilent>
 
+<cfif rc.isAdmin>
+	<script>
+		jQuery(document).ready(function($){
+
+			$('input[name="isPublic"]').click(function(e){
+				e.preventDefault();
+				$('form#frmTemp input[name="setispublic"]').val($(this).val());
+				actionModal();
+				$('form#frmTemp').submit();
+			});
+
+		});
+	</script>
+	<form id="frmTemp" action="" method="post">
+		<input type="hidden" name="setispublic" value="1">
+	</form>
+</cfif>
+
 <cfoutput>
-	<form novalidate="novalidate" action="./?muraAction=cUsers.update&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
+	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
 
 		<h1>#rc.$.rbKey('user.usermaintenanceform')#</h1>
 		
@@ -478,6 +501,7 @@
 										</label>
 
 										<!--- private groups listing --->
+										<!---
 										<script>
 											// only show the Private Groups list, if the User is a 'System User'
 											jQuery(document).ready(function($) {
@@ -496,15 +520,16 @@
 												});
 											});
 										</script>
+										--->
 
-										<cfif rc.userBean.getIsPublic() eq 1>
+										<cfif rc.tempIsPublic>
 											<div id="privateGroupsNotice" class="controls">
 												<p class="alert alert-notice">
 													#rc.$.rbKey('user.systemgroupmessage')#
 												</p>
 											</div>
 										</cfif>
-										<div id="privateGroupsList" class="controls"<cfif rc.userBean.getIsPublic() eq 1> style="display:none;"</cfif>>
+										<div id="privateGroupsList" class="controls"<cfif rc.tempIsPublic and rc.isAdmin> style="display:none;"</cfif>>
 											<cfloop query="rc.rsPrivateGroups">
 												<label class="checkbox">
 													<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or Listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>
@@ -571,7 +596,7 @@
 
 							<!--- Super Admin + Email Broadcaster --->
 							<div class="control-group">
-								<cfif listFind(session.mura.memberships,'S2')>
+								<cfif rc.$.currentUser().isSuperUser()>
 									<div class="span6">
 										<label class="control-label">
 											#rc.$.rbKey('user.superadminaccount')#
@@ -630,12 +655,12 @@
 
 										<div class="controls">
 											<label class="radio inline">
-												<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.userBean.getIsPublic()> Checked</cfif>> 
+												<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>> 
 												#rc.$.rbKey('user.sitemember')#
 											</label>
 
 											<label class="radio inline">
-												<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.userBean.getIsPublic()> Checked</cfif>> 
+												<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>> 
 												#rc.$.rbKey('user.adminuser')#
 											</label>
 										</div>
@@ -718,12 +743,13 @@
 			</div>
 			
 			<input type="hidden" name="type" value="2"><!--- 2=user, 1=group --->
-			<input type="hidden" name="action" value="">
+			<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
+			<input type="hidden" name="action" value="#tempAction#">
 			<input type="hidden" name="contact" value="0">
 			<input type="hidden" name="groupid" value="">
 			<input type="hidden" name="ContactForm" value="">
-			<!--- <input type="hidden" name="returnurl" value="#esapiEncode('html_attr',rc.returnurl)#"> --->
-			<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.userbean.getValue('ispublic')#')#">
+			<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+			<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.tempIsPublic#')#">
 
 			<cfif not rsNonDefault.recordcount>
 				<input type="hidden" name="subtype" value="Default"/>
