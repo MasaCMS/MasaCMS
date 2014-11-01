@@ -61,7 +61,7 @@
 		$('a.pageNo').click(function(e){
 			e.preventDefault();
 			actionModal();
-			$('form##frmNextN input[name="pageno"]').val($(this).attr('data-pageno'));
+			$('form##frmNextN input[name="startrow"]').val($(this).attr('data-pageno'));
 			$('form##frmNextN').submit();
 		});
 
@@ -69,77 +69,84 @@
 	</script>
 
 	<cfif IsDefined('rc.nextn') and rc.nextn.numberofpages gt 1>
+
 		<form id="frmNextN" action="" method="post">
 			<input type="hidden" name="muraAction" value="#rc.muraAction#">
 			<input type="hidden" name="siteid" value="#rc.siteid#">
 			<input type="hidden" name="ispublic" value="#rc.ispublic#">
 			<input type="hidden" name="unassigned" value="#rc.unassigned#">
 			<input type="hidden" name="recordsperpage" value="#rc.nextn.recordsperpage#">
-			<input type="hidden" name="pageno" value="#rc.nextn.currentpagenumber#">
+			<input type="hidden" name="startrow" value="#rc.nextn.startrow#">
 		</form>
 
-		<!--- Records Per Page --->
-			<div class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-					#rc.$.rbKey('user.usersperpage')#
-					<span class="caret"></span>
-				</a>
+		<div class="container">
+			<div class="row-fluid">
 
-				<cfset local.arrPages = [5,10,20,50,100,250,500,1000] />
-				<ul class="dropdown-menu">
-					<cfloop array="#local.arrPages#" index="local.p">
-						<li <cfif rc.recordsperpage eq local.p> class="active"</cfif>><a href="##" class="nextN" data-nextn="#local.p#">#local.p#</a></li>
-					</cfloop>
-					<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
-				</ul>
+				<!--- Records Per Page --->
+					<div class="btn-group">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+							#rc.$.rbKey('user.usersperpage')#
+							<span class="caret"></span>
+						</a>
+
+						<cfset local.arrPages = [10,25,50,100,250,500,1000] />
+						<ul class="dropdown-menu">
+							<cfloop array="#local.arrPages#" index="local.p">
+								<li <cfif rc.recordsperpage eq local.p> class="active"</cfif>><a href="##" class="nextN" data-nextn="#local.p#">#local.p#</a></li>
+							</cfloop>
+							<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
+						</ul>
+					</div>
+
+				<!--- Pagination --->
+					<div class="pagination pull-right">
+						<ul>
+
+							<!--- Previous Link --->
+								<cfscript>
+									if ( rc.it.getPageIndex() == 1 ) {
+										local.prevClass = 'disabled';
+										local.prevNo = '';
+									} else {
+										local.prevClass = 'pageNo';
+										local.prevNo = rc.it.getPageIndex() - 1;
+									}
+								</cfscript>
+								<li class="#local.prevClass#">
+									<a hre="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;</a>
+								</li>
+
+							<!--- Page Number Links --->
+								<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="p">
+									<li<cfif rc.it.getPageIndex() eq p> class="disabled"</cfif>>
+										<cfset lClass = "pageNo">
+										<cfif Val(rc.it.getPageIndex()) eq p>
+											<cfset lClass &= ' active' />
+										</cfif>
+										<a href="##" data-pageno="#p#" class="#lClass#">
+											#p#
+										</a>
+									</li>
+								</cfloop>
+
+							<!--- Next Link --->
+								<cfscript>
+									if ( rc.it.getPageIndex() == rc.nextn.numberofpages ) {
+										rc.nextClass = 'disabled';
+										rc.prevNo = '';
+									} else {
+										rc.nextClass = 'pageNo';
+										rc.prevNo = rc.it.getPageIndex() + 1;
+									}
+								</cfscript>
+								<li class="#rc.nextClass#">
+									<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">&raquo;</a>
+								</li>
+
+						</ul>
+					</div>
+
 			</div>
-
-		<!--- Pagination --->
-			<div class="pagination pull-right">
-				<ul>
-
-					<!--- Previous Link --->
-						<cfscript>
-							if ( rc.nextn.currentpagenumber == 1 ) {
-								local.prevClass = 'disabled';
-								local.prevNo = '';
-							} else {
-								local.prevClass = 'pageNo';
-								local.prevNo = rc.nextn.currentpagenumber - 1;
-							}
-						</cfscript>
-						<li class="#local.prevClass#">
-							<a hre="##" data-pageno="#local.prevNo#" class="#local.prevClass#">&laquo;</a>
-						</li>
-
-					<!--- Page Number Links --->
-						<cfloop from="#rc.nextn.firstpage#" to="#rc.nextn.lastpage#" index="p">
-							<li<cfif rc.nextn.currentpagenumber eq p> class="disabled"</cfif>>
-								<cfset lClass = "pageNo">
-								<cfif Val(rc.nextn.currentpagenumber) eq p>
-									<cfset lClass &= ' active' />
-								</cfif>
-								<a href="##" data-pageno="#p#" class="#lClass#">
-									#p#
-								</a>
-							</li>
-						</cfloop>
-
-					<!--- Next Link --->
-						<cfscript>
-							if ( rc.nextn.currentpagenumber == rc.nextn.numberofpages || rc.nextn.next == rc.nextn.numberofpages ) {
-								rc.nextClass = 'disabled';
-								rc.prevNo = '';
-							} else {
-								rc.nextClass = 'pageNo';
-								rc.prevNo = rc.nextn.currentpagenumber + 1;
-							}
-						</cfscript>
-						<li class="#rc.nextClass#">
-							<a href="##" data-pageno="#rc.prevNo#" class="#rc.nextClass#">&raquo;</a>
-						</li>
-
-				</ul>
-			</div>
+		</div>
 	</cfif>
 </cfoutput>

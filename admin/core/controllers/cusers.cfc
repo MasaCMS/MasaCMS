@@ -93,7 +93,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// defaults
 			param name='arguments.rc.error' default='#{}#';
 			param name='arguments.rc.startrow' default='1';
-			param name='arguments.rc.recordsperpage' default='20';
+			param name='arguments.rc.recordsperpage' default='10';
 			param name='arguments.rc.userid' default='';
 			param name='arguments.rc.routeid' default='';
 			param name='arguments.rc.categoryid' default='';
@@ -133,7 +133,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.startRow = Val(arguments.rc.startRow);
 			if ( arguments.rc.startRow < 1 ) { arguments.rc.startRow = 1; }
 			arguments.rc.recordsperpage = Val(arguments.rc.recordsperpage);
-			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 20; }
+			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 10; }
 
 		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray, ListFind(rc.$.currentUser().getMemberships(),'S2'));
 	}
@@ -428,20 +428,17 @@ component persistent='false' accessors='true' output='false' extends='controller
 			}
 
 			arguments.rc.nextn = variables.utility.getNextN(
-				data=arguments.rc.rs
+				data=arguments.rc.rs.recordcount
 				, recordsPerPage=arguments.rc.recordsperpage
 				, startRow=arguments.rc.startRow
 				, pageBuffer=3
 			);
 
-			arguments.rc.nextn.currentpagenumber = IsDefined('arguments.rc.pageno')
-				? arguments.rc.pageno
-				: arguments.rc.nextn.currentpagenumber;
-
 		// iterator
 			arguments.rc.it = getBean('userIterator')
 				.setQuery(arguments.rc.rs)
 				.setNextN(arguments.rc.nextn.recordsperpage)
-				.setPage(arguments.rc.nextn.currentpagenumber);
+				.setStartRow(arguments.rc.nextn.startrow)
+				.setPage(arguments.rc.nextn.startrow);
 	}
 }
