@@ -242,6 +242,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 		var origSiteID = arguments.rc.siteID;
 		request.newImageIDList = '';
 
+					writedump(arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid));abort;
+
 		if ( arguments.rc.$.validateCSRFTokens(context=arguments.rc.userid) ) {
 			switch(arguments.rc.action) {
 				case 'Update' :
@@ -255,6 +257,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 					if ( StructIsEmpty(arguments.rc.userBean.getErrors()) ) {
 						arguments.rc.userid=arguments.rc.userBean.getUserID();
 					}
+
 					break;
 			}
 		}
