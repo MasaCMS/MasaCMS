@@ -47,7 +47,7 @@
 var userManager = {
 	loadExtendedAttributes: function(baseID, type, subType, _siteID, _context, _themeAssetPath) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cUsers.loadExtendedAttributes&baseID=' + baseID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
 
 		siteID = _siteID;
 		context = _context;

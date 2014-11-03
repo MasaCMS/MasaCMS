@@ -500,4 +500,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn str/>
 </cffunction>
 
+<cffunction name="getAllValues" ouput="false">
+	<cfset var extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+
+	<cfreturn extensionData />
+</cffunction>	
+
+<cffunction name="getAsXML" ouput="false" returntype="xml">
+	<cfargument name="documentXML">
+	<cfargument name="includeIDs" type="boolean" default="false" >
+	
+	<cfset var extensionData = {} />
+	<cfset var item = "" />
+	<cfset var i = 0 />
+
+	<cfset var xmlAttributes = XmlElemNew( documentXML, "", "ATTRIBUTE" ) />
+
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+	<cfif not(arguments.includeIDs)>
+		<cfset structDelete(extensionData,"extendsetID") />
+	</cfif>
+
+	<!--- Append the personality to the root. --->
+	<cfloop collection="#extensionData#" item="item">
+		<cfif isSimpleValue(extensionData[item])>
+			<cfset xmlAttributes.XmlAttributes[item] = extensionData[item] />
+		</cfif>
+	</cfloop>
+
+	<cfreturn xmlAttributes />	
+
+</cffunction>
+
 </cfcomponent>
