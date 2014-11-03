@@ -203,7 +203,7 @@
 		<cfreturn false>
 	</cfif>
 
-	<cfif arguments.$.event('mura_token_expires') gt replace(evaluate('now() + 0'),'.','') and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
+	<cfif arguments.$.event('mura_token_expires') gt (now() + 0) and arguments.$.event('mura_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('mura_token_expires'))>
 		<cfset session.mura.csrfusedtokens["#arguments.$.event('mura_token')#"]=now()>
 		<cfreturn true>
 	<cfelse>
@@ -212,9 +212,9 @@
 </cffunction>
 
 <cffunction name="generateCSRFTokens" output="false">
-	<cfargument name="timespan" default="#createTimeSpan(0,0,1,0)#">
+	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
 	<cfargument name="context" default="">
-	<cfset var expires=replace(evaluate('now() + arguments.timespan'),'.','')>
+	<cfset var expires=now() + arguments.timespan>
 
 	<cfreturn {
 		expires=expires,
