@@ -47,28 +47,29 @@
 --->
 <cfoutput>
 
-	<script>
-	jQuery(document).ready(function($){
-
-		$('a.nextN').click(function(e){
-			e.preventDefault();
-			actionModal();
-			$('form##frmNextN input[name="recordsperpage"]').val($(this).attr('data-nextn'));
-			$('form##frmNextN input[name="pageno"]').val(1);
-			$('form##frmNextN').submit();
-		});
-
-		$('a.pageNo').click(function(e){
-			e.preventDefault();
-			actionModal();
-			$('form##frmNextN input[name="startrow"]').val($(this).attr('data-pageno'));
-			$('form##frmNextN').submit();
-		});
-
-	});
-	</script>
-
 	<cfif IsDefined('rc.nextn') and rc.nextn.numberofpages gt 1>
+
+
+		<script>
+		jQuery(document).ready(function($){
+
+			$('a.nextN').click(function(e){
+				e.preventDefault();
+				actionModal();
+				$('form##frmNextN input[name="recordsperpage"]').val($(this).attr('data-nextn'));
+				$('form##frmNextN input[name="pageno"]').val(1);
+				$('form##frmNextN').submit();
+			});
+
+			$('a.pageNo').click(function(e){
+				e.preventDefault();
+				actionModal();
+				$('form##frmNextN input[name="startrow"]').val($(this).attr('data-pageno'));
+				$('form##frmNextN').submit();
+			});
+
+		});
+		</script>
 
 		<form id="frmNextN" action="" method="post">
 			<input type="hidden" name="muraAction" value="#rc.muraAction#">
