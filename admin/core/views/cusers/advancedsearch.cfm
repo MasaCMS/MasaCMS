@@ -232,7 +232,7 @@
 						</button>
 					
 					<!--- Download Button --->
-						<cfif rc.itUsers.getRecordcount()>
+						<cfif rc.it.getRecordcount()>
 							<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
 								<i class="icon-download"></i> 
 								#rc.$.rbKey("user.download")#
@@ -257,7 +257,6 @@
 
         <!--- System Users Tab --->
 					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
-						<!--- <a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#"> --->
 						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
 							#rc.$.rbKey('user.systemusers')#
 						</a>
@@ -271,123 +270,3 @@
 	<!--- Search Results --->
 		<cfinclude template="inc/dsp_users_list.cfm" />
 </cfoutput>
-
-<!--- <cfdump var="#rc.rslist#" /> --->
-
-<!--- <cfif not rc.newSearch>
-
-	<cfsilent>
-		<cfset rc.rslist=application.userManager.getAdvancedSearch(session,rc.siteid,1) />
-		<cfif rc.rslist.recordcount eq 1>
-			<cflocation url="./?muraAction=cUsers.editUser&amp;userid=#rc.rslist.userid#&amp;siteid=#esapiEncode('url',rc.siteid)#" />
-		</cfif>
-		<cfset rc.nextN=application.utility.getNextN(rc.rsList,15,rc.startrow)/>
-	</cfsilent>
-
-	<cfoutput>
-		<table class="mura-table-grid">
-			<tr> 
-				<th class="var-width">#rc.$.rbKey("user.name")#</th>
-				<th>#rc.$.rbKey("user.email")#</th>
-				<th>#rc.$.rbKey("user.update")#</th>
-				<th>#rc.$.rbKey("user.time")#</th>
-				<th>#rc.$.rbKey("user.authoreditor")#</th>
-				<th>&nbsp;</th>
-			</tr>
-			</cfoutput>
-
-			<cfif rc.rsList.recordcount>
-				<cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
-					<tr> 
-						<td class="var-width">
-							<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
-								#esapiEncode('html',lname)#, #esapiEncode('html',fname)# 
-								<cfif company neq ''> 
-									(#esapiEncode('html',company)#)
-								</cfif>
-							</a>
-						</td>
-						<td>
-							<cfif rc.rsList.email gt "">
-								<a href="mailto:#esapiEncode('html',rc.rsList.email)#">
-									#esapiEncode('html',rc.rsList.email)#
-								</a>
-							<cfelse>
-								&nbsp;
-							</cfif>
-						</td>
-						<td>
-							#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#
-						</td>
-						<td>
-							#LSTimeFormat(rc.rslist.lastupdate,"short")#
-						</td>
-						<td>
-							#esapiEncode('html',rc.rsList.LastUpdateBy)#
-						</td>
-						<td class="actions">
-							<ul>
-								<li class="edit">
-									<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
-										<i class="icon-pencil"></i>
-									</a>
-								</li>
-							</ul>
-						</td>
-					</tr>
-				</cfoutput>
-			<cfelse>
-				<tr> 
-					<td colspan="6" class="noResults">
-						<cfoutput>
-							#rc.$.rbKey('user.nosearchresults')#
-						</cfoutput>
-					</td>
-				</tr>
-			</cfif>
-		</table>
-
-	<cfif rc.nextN.numberofpages gt 1>
-		<cfoutput>
-			<cfset args=arrayNew(1)>
-			<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
-			<cfset args[2]=rc.nextn.totalrecords>
-			<div class="mura-results-wrapper">
-				<p class="clearfix search-showing">
-					#application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("sitemanager.paginationmeta"),args)#
-				</p> 
-				<div class="pagination">
-					<ul>
-						<cfif rc.nextN.currentpagenumber gt 1>
-							<li>
-								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.previous#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-									&laquo;&nbsp;#rc.$.rbKey('user.prev')#
-								</a>
-							</li>
-						</cfif>
-						<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-							<cfif rc.nextN.currentpagenumber eq i>
-								<li class="active"><a href="##">#i#</a></li> 
-							<cfelse> 
-								<li>
-									<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-										#i#
-									</a> 
-								</li>
-							</cfif>
-						</cfloop>
-						<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-							<li>
-								<a href="./?muraAction=cUsers.advancedSearch&amp;startrow=#rc.nextN.next#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-									#rc.$.rbKey('user.next')#&nbsp;&raquo;
-								</a>
-							</li>
-						</cfif> 
-					</ul>
-				</div>
-			</div>
-		</cfoutput>
-	</cfif>
-
-</cfif> --->
-<!--- /if not rc.newsearch --->

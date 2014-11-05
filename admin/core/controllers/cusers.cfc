@@ -144,7 +144,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function list(rc) {
 		arguments.rc.rs = getUserManager().getUserGroups(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
-		arguments.rc.it = getUserManager().getIterator().setQuery(arguments.rc.rs).setNextN(0);
+
+		// Iterator
+			setUsersIterator(rc);
 	}
 
 	public any function listUsers(rc) {
@@ -157,7 +159,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			: '';
 
 		arguments.rc.noUsersMessage = getBean('resourceBundle').messageFormat(
-			arguments.rc.$.rbKey('user.nousers')
+			arguments.rc.$.rbKey('user.nousersavailable')
 			, [arguments.rc.msgArg]
 		);
 
@@ -223,6 +225,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function editGroupMembers(rc) {
 		editGroup(arguments.rc);
+	}
+
+	public any function downloadGroupMembers(rc) {
+		arguments.rc.records = getUserManager().readGroupMemberships(userid=arguments.rc.userid);
+		variables.fw.redirect(action='cUsers.download', preserve='records');
 	}
 
 	public any function addToGroup(rc) {
@@ -335,7 +342,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, ispublic=arguments.rc.isPublic
 		);
 
-		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
+		// Iterator
+			setUsersIterator(rc);
 
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
 			siteid=arguments.rc.siteid
@@ -363,39 +371,41 @@ component persistent='false' accessors='true' output='false' extends='controller
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 
 		arguments.rc.rs = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
+
+		// Iterator
+			setUsersIterator(rc);
 
 		// scrub the query string for links
-		arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
-		StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
-		StructDelete(arguments.rc.querystruct, 'muraaction', 0);
-		arguments.rc.qs = '';
-		for ( var key in arguments.rc.querystruct ){
-			i = arguments.rc.querystruct[key][1];
-			arguments.rc.qs &= key & '=' & i & '&';
-		}
+			arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
+			StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
+			StructDelete(arguments.rc.querystruct, 'muraaction', 0);
+			arguments.rc.qs = '';
+			for ( var key in arguments.rc.querystruct ){
+				i = arguments.rc.querystruct[key][1];
+				arguments.rc.qs &= key & '=' & i & '&';
+			}
 	}
 
 	public any function advancedSearchToCSV(rc) {
-		arguments.rc.rsGroups = arguments.rc.ispublic == 1
-			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
-			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
+		arguments.rc.records = getUserManager().getAdvancedSearch(data=session, siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		variables.fw.redirect(action='cUsers.download', preserve='records');
 
-		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		setDownloadData(arguments.rc);
 	}
 
 // ----------------- DOWNLOAD ----------------------------- //
 	public any function download(rc) {
-		arguments.rc.rs = arguments.rc.unassigned
-			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
-			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		if ( !IsDefined('arguments.rc.records') ) {
+			arguments.rc.rs = arguments.rc.unassigned
+				? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
+				: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
 
-		arguments.rc.records = arguments.rc.rs;
+			arguments.rc.records = arguments.rc.rs;
+		}
+
 		setDownloadData(arguments.rc);
 	}
 
-// ----------------- HELPERS ----------------------------- //
+// ----------------- PRIVATE / HELPERS ----------------------------- //
 	private any function setDownloadData(rc) {
 		var i = '';
 		var r = '';

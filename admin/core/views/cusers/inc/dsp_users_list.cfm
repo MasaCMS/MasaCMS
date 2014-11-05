@@ -210,7 +210,11 @@
 
 			<!--- No Users Message --->
 				<div class="alert alert-info">
-					#rc.noUsersMessage#
+					<cfif IsDefined('rc.noUsersMessage')>
+						#rc.noUsersMessage#
+					<cfelse>
+						#rc.$.rbKey('user.nousers')#
+					</cfif>
 				</div>
 
 		</cfif>
