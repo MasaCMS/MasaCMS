@@ -382,17 +382,21 @@ component persistent='false' accessors='true' output='false' extends='controller
 	}
 
 	public any function advancedSearchToCSV(rc) {
-		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		setDownloadData(arguments.rc);
+		arguments.rc.records = getUserManager().getAdvancedSearch(data=session, siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		variables.fw.redirect(action='cUsers.download', preserve='records');
+
 	}
 
 // ----------------- DOWNLOAD ----------------------------- //
 	public any function download(rc) {
-		arguments.rc.rs = arguments.rc.unassigned
-			? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
-			: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
+		if ( !IsDefined('arguments.rc.records') ) {
+			arguments.rc.rs = arguments.rc.unassigned
+				? getUserManager().getUnassignedUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic)
+				: getUserManager().getUsers(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
 
-		arguments.rc.records = arguments.rc.rs;
+			arguments.rc.records = arguments.rc.rs;
+		}
+
 		setDownloadData(arguments.rc);
 	}
 
