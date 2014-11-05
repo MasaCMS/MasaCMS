@@ -133,7 +133,7 @@
 									<td>
 										<cfif Len(local.item.getValue('email'))>
 											<a href="mailto:#esapiEncode('url',local.item.getValue('email'))#">
-												#esapiEncode('html',local.item.getValue('email'))#
+												#esapiEncode('html', local.item.getValue('email'))#
 											</a>
 										<cfelse>
 											&nbsp;
@@ -152,7 +152,7 @@
 
 								<!--- Last Update By --->
 									<td>
-										#esapiEncode('html',local.item.getValue('lastupdateby'))#
+										#esapiEncode('html', local.item.getValue('lastupdateby'))#
 									</td>
 
 								<!--- Actions --->
@@ -211,7 +211,7 @@
 			<!--- No Users Message --->
 				<div class="alert alert-info">
 					<cfif IsDefined('rc.noUsersMessage')>
-						#rc.noUsersMessage#
+						#esapiEncode('html', rc.noUsersMessage)#
 					<cfelse>
 						#rc.$.rbKey('user.nousers')#
 					</cfif>
