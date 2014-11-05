@@ -93,7 +93,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		// defaults
 			param name='arguments.rc.error' default='#{}#';
 			param name='arguments.rc.startrow' default='1';
-			param name='arguments.rc.recordsperpage' default='10';
+			param name='arguments.rc.recordsperpage' default='25';
 			param name='arguments.rc.userid' default='';
 			param name='arguments.rc.routeid' default='';
 			param name='arguments.rc.categoryid' default='';
@@ -133,7 +133,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			arguments.rc.startRow = Val(arguments.rc.startRow);
 			if ( arguments.rc.startRow < 1 ) { arguments.rc.startRow = 1; }
 			arguments.rc.recordsperpage = Val(arguments.rc.recordsperpage);
-			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 10; }
+			if ( arguments.rc.recordsperpage < 1 ) { arguments.rc.recordsperpage = 25; }
 
 		arguments.rc.rsUserSites=getSettingsManager().getUserSites(session.siteArray, ListFind(rc.$.currentUser().getMemberships(),'S2'));
 	}
