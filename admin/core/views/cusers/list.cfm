@@ -187,6 +187,8 @@
 				</tbody>
 
 			</table>
+
+			<cfinclude template="inc/dsp_nextn.cfm" />
 		<cfelse>
 
 			<!--- No groups message --->

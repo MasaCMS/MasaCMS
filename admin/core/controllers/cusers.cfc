@@ -144,7 +144,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function list(rc) {
 		arguments.rc.rs = getUserManager().getUserGroups(siteid=arguments.rc.siteid, ispublic=arguments.rc.ispublic);
-		arguments.rc.it = getUserManager().getIterator().setQuery(arguments.rc.rs).setNextN(0);
+
+		// Iterator
+			setUsersIterator(rc);
 	}
 
 	public any function listUsers(rc) {
@@ -335,7 +337,8 @@ component persistent='false' accessors='true' output='false' extends='controller
 			, ispublic=arguments.rc.isPublic
 		);
 
-		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
+		// Iterator
+			setUsersIterator(rc);
 
 		arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
 			siteid=arguments.rc.siteid
@@ -363,24 +366,22 @@ component persistent='false' accessors='true' output='false' extends='controller
 			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
 
 		arguments.rc.rs = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
-		arguments.rc.it = getBean('userIterator').setQuery(arguments.rc.rs).setNextN(0);
+
+		// Iterator
+			setUsersIterator(rc);
 
 		// scrub the query string for links
-		arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
-		StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
-		StructDelete(arguments.rc.querystruct, 'muraaction', 0);
-		arguments.rc.qs = '';
-		for ( var key in arguments.rc.querystruct ){
-			i = arguments.rc.querystruct[key][1];
-			arguments.rc.qs &= key & '=' & i & '&';
-		}
+			arguments.rc.querystruct = Duplicate(getPageContext().getRequest().getParameterMap());
+			StructDelete(arguments.rc.querystruct, 'ispublic', 0);	
+			StructDelete(arguments.rc.querystruct, 'muraaction', 0);
+			arguments.rc.qs = '';
+			for ( var key in arguments.rc.querystruct ){
+				i = arguments.rc.querystruct[key][1];
+				arguments.rc.qs &= key & '=' & i & '&';
+			}
 	}
 
 	public any function advancedSearchToCSV(rc) {
-		arguments.rc.rsGroups = arguments.rc.ispublic == 1
-			? variables.userManager.getPublicGroups(arguments.rc.siteid, 1)
-			: variables.userManager.getPrivateGroups(arguments.rc.siteid, 1);
-
 		arguments.rc.records = getUserManager().getAdvancedSearch(session, arguments.rc.siteid, arguments.rc.ispublic);
 		setDownloadData(arguments.rc);
 	}
