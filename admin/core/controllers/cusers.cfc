@@ -159,7 +159,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 			: '';
 
 		arguments.rc.noUsersMessage = getBean('resourceBundle').messageFormat(
-			arguments.rc.$.rbKey('user.nousers')
+			arguments.rc.$.rbKey('user.nousersavailable')
 			, [arguments.rc.msgArg]
 		);
 
@@ -225,6 +225,11 @@ component persistent='false' accessors='true' output='false' extends='controller
 
 	public any function editGroupMembers(rc) {
 		editGroup(arguments.rc);
+	}
+
+	public any function downloadGroupMembers(rc) {
+		arguments.rc.records = getUserManager().readGroupMemberships(userid=arguments.rc.userid);
+		variables.fw.redirect(action='cUsers.download', preserve='records');
 	}
 
 	public any function addToGroup(rc) {
@@ -400,7 +405,7 @@ component persistent='false' accessors='true' output='false' extends='controller
 		setDownloadData(arguments.rc);
 	}
 
-// ----------------- HELPERS ----------------------------- //
+// ----------------- PRIVATE / HELPERS ----------------------------- //
 	private any function setDownloadData(rc) {
 		var i = '';
 		var r = '';

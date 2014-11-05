@@ -70,6 +70,14 @@
 			#rc.$.rbKey('user.editgroupsettings')#
 		</a>
 
+		<!--- Download Users --->
+	    <cfif rc.it.hasNext()>
+				<a class="btn" href="#buildURL(action='cusers.downloadgroupmembers', querystring='userid=#rc.userid#')#">
+					<i class="icon-download"></i> 
+					#rc.$.rbKey('user.download')#
+				</a>
+	    </cfif>
+
 	</div>
 
 	<h2>
