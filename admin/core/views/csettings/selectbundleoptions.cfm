@@ -93,7 +93,7 @@ function checkAll (form) {
   </div>
   <p class="alert alert-info">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
   
-  <form id="pluginSelectFrm" class="fieldset-wrap" name="pluginSelectFrm" action="./">
+  <form id="pluginSelectFrm" class="fieldset-wrap" name="pluginSelectFrm" action="./index.cfm">
   <div class="fieldset">
     <div class="control-group">
       <label class="control-label">Include in Site Bundle:</label>
