@@ -82,24 +82,6 @@
 	</cfscript>
 </cfsilent>
 
-<cfif rc.isAdmin>
-	<script>
-		jQuery(document).ready(function($){
-
-			$('input[name="isPublic"]').click(function(e){
-				e.preventDefault();
-				$('form#frmTemp input[name="setispublic"]').val($(this).val());
-				actionModal();
-				$('form#frmTemp').submit();
-			});
-
-		});
-	</script>
-	<form id="frmTemp" action="" method="post">
-		<input type="hidden" name="setispublic" value="1">
-	</form>
-</cfif>
-
 <cfoutput>
 	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
 
@@ -385,7 +367,7 @@
 									<cfset rsAddresses=rc.userBean.getAddresses()>
 
 									<cfif rsAddresses.recordcount>
-										<table class="mura-table-grid">
+										<table class="table table-striped table-condensed table-bordered mura-table-grid">
 											<tr>
 												<th>#rc.$.rbKey('user.primary')#</th>
 												<th>#rc.$.rbKey('user.address')#</th>
@@ -452,22 +434,20 @@
 													</td>
 
 													<td nowrap class="actions">
-														<ul class="users">
+														<ul>
 															<li class="edit">
 																<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=#rsAddresses.addressID#">
 																	<i class="icon-pencil"></i>
 																</a>
 															</li>
 															<cfif rsAddresses.isPrimary neq 1>
-																<li class="delete">
+																<li class="icon-remove-sign">
 																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteaddressconfirm'))#',this.href);">
 																		<i class="icon-remove-sign"></i>
 																	</a>
 																</li>
 															<cfelse>
-																<li class="delete disabled">
-																	#rc.$.rbKey('user.delete')#
-																</li>
+																<li class="icon-remove-sign"></li>
 															</cfif>
 														</ul>
 													</td>
@@ -489,15 +469,55 @@
 				<!--- Group Memberships Tab --->
 					<div id="tabGroupmemberships" class="tab-pane fade">
 						<div class="fieldset">
+							<!--- 
+								User Type 
+								** Must be an 'Admin' or Super User to modify User Type
+							--->
+							<cfif rc.isAdmin>
+								<div class="control-group">
+									<label class="control-label">
+										#rc.$.rbKey('user.usertype')#
+									</label>
+
+									<div class="controls">
+										<label class="radio inline">
+											<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>> 
+											#rc.$.rbKey('user.sitemember')#
+										</label>
+
+										<label class="radio inline">
+											<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>> 
+											#rc.$.rbKey('user.adminuser')#
+										</label>
+									</div>
+								</div>
+
+								<script>
+									jQuery(document).ready(function($){
+
+										$('input[name="isPublic"]').click(function(e){
+											
+											if($('input[name="isPublic"]:checked').val()==1){
+												$('##privateGroupsList').hide();
+											} else {
+												$('##privateGroupsList').show();
+											}
+										});
+
+									});
+								</script>
+							<cfelse>
+								<input name="isPublic" type="hidden" value="1">
+							</cfif>
 
 							<!--- 
 								Private Groups 
 								** Must be an 'Admin' or Super User to add/edit Private Group Members
 							--->
 								<cfif rc.isAdmin>
-									<div class="control-group">
+									<div id="privateGroupsList" class="control-group"<cfif rc.tempIsPublic> style="display:none"</cfif>>
 										<label class="control-label">
-											#rc.$.rbKey('user.admingroups')#
+											#rc.$.rbKey('user.admingroups')# #rc.tempIsPublic#
 										</label>
 
 										<!--- private groups listing --->
@@ -521,7 +541,7 @@
 											});
 										</script>
 										--->
-
+										<!---
 										<cfif rc.tempIsPublic>
 											<div id="privateGroupsNotice" class="controls">
 												<p class="alert alert-notice">
@@ -529,34 +549,44 @@
 												</p>
 											</div>
 										</cfif>
-										<div id="privateGroupsList" class="controls"<cfif rc.tempIsPublic and rc.isAdmin> style="display:none;"</cfif>>
-											<cfloop query="rc.rsPrivateGroups">
-												<label class="checkbox">
-													<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or Listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>
-													#rc.rsPrivateGroups.groupname#
-												</label>
-											</cfloop>
+										--->
+										<div class="controls">
+											<cfif rc.rsPrivateGroups.recordcount>
+												<cfloop query="rc.rsPrivateGroups">
+													<label class="checkbox">
+														<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or Listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>
+														#rc.rsPrivateGroups.groupname#
+													</label>
+												</cfloop>
+											<cfelse>
+												<p class="alert alert-notice">
+													#rc.$.rbKey('user.nogroups')#
+												</p>
+											</cfif>
 										</div>
 									</div>
 								</cfif>
 								
 							<!--- Public Groups --->
-								<cfif rc.rsPublicGroups.recordcount>
-									<div class="control-group">
-										<label class="control-label">
-											#rc.$.rbKey('user.membergroups')#
-										</label>
-										<div class="controls">
-											<cfloop query="rc.rsPublicGroups">
-												<label class="checkbox">
-													<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPublicGroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>>
-														#rc.rsPublicGroups.site# - #rc.rsPublicGroups.groupname#
-												</label>
-											</cfloop>
-										</div>
-									</div>
-								</cfif>
-
+							<div class="control-group">
+								<label class="control-label">
+									#rc.$.rbKey('user.membergroups')#
+								</label>
+								<div class="controls">
+									<cfif rc.rsPublicGroups.recordcount>
+										<cfloop query="rc.rsPublicGroups">
+											<label class="checkbox">
+												<input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPublicGroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>>
+													#rc.rsPublicGroups.site# - #rc.rsPublicGroups.groupname#
+											</label>
+										</cfloop>
+									<cfelse>
+										<p class="alert alert-notice">
+											#rc.$.rbKey('user.nogroups')#
+										</p>
+									</cfif>
+								</div>
+							</div>
 						</div>
 					</div>
 				<!--- /Group Memberships Tab --->
@@ -642,32 +672,6 @@
 										</label>
 									</div>
 								</div>
-
-								<!--- 
-									User Type 
-									** Must be an 'Admin' or Super User to modify User Type
-								--->
-								<cfif rc.isAdmin>
-									<div class="span6">
-										<label class="control-label">
-											#rc.$.rbKey('user.usertype')#
-										</label>
-
-										<div class="controls">
-											<label class="radio inline">
-												<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>> 
-												#rc.$.rbKey('user.sitemember')#
-											</label>
-
-											<label class="radio inline">
-												<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>> 
-												#rc.$.rbKey('user.adminuser')#
-											</label>
-										</div>
-									</div>
-								<cfelse>
-									<input name="isPublic" type="hidden" value="1">
-								</cfif>
 
 							</div>
 

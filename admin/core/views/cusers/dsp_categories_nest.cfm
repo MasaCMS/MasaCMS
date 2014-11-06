@@ -100,7 +100,7 @@
 <cfelseif attributes.parentID eq ''>
 	<cfoutput>
 		<p class="alert">
-			#rc.$.rbKey('user.nointerestcategories')#
+			#request.context.$.rbKey('user.nointerestcategories')#
 		</p>
 	</cfoutput>
 </cfif> 
