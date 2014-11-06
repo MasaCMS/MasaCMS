@@ -517,7 +517,7 @@
 								<cfif rc.isAdmin>
 									<div id="privateGroupsList" class="control-group"<cfif rc.tempIsPublic> style="display:none"</cfif>>
 										<label class="control-label">
-											#rc.$.rbKey('user.admingroups')# #rc.tempIsPublic#
+											#rc.$.rbKey('user.admingroups')#
 										</label>
 
 										<!--- private groups listing --->
