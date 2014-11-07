@@ -62,6 +62,10 @@
 	<cfset variables.diff = variables.max - variables.min>
 	<cfset variables.distribution = variables.diff>
 	<cfset variables.rbFactory=getSite().getRbFactory()>
+
+	<cfif not isDefined("arguments.filename")>
+		<cfset arguments.filename=variables.$.event('currentFilenameAdjusted')>
+	</cfif>
 </cfsilent>
 <cfoutput>
 	<div id="svTagCloud" class="mura-tag-cloud #this.tagCloudWrapperClass#">
@@ -93,9 +97,9 @@
 							</cfif>
 						</span>
 						<cfif len(arguments.taggroup)>
-							<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#/_/taggroup/#urlEncodedFormat(arguments.taggroup)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#/_/taggroup/#urlEncodedFormat(arguments.taggroup)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
 						<cfelse>
-							<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+							<a href="#variables.$.createHREF(filename='#arguments.filename#/tag/#urlEncodedFormat(variables.tags.tag)#')#" class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
 						</cfif>
 					</li>
 				</cfloop>
