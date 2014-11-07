@@ -56,16 +56,21 @@ var feedManager = {
 	},
 
 	addContentFilter: function(contentID, contentType, title) {
+
 		var tbody = document.getElementById('contentFilters').getElementsByTagName("TBODY")[0];
 		var row = document.createElement("TR");
 		row.id = "c" + contentID;
+		
 		var name = document.createElement("TD");
-		name.appendChild(document.createTextNode(title));
 		name.className = "var-width";
+		$(name).html(decodeURI(title));
+
 		var type = document.createElement("TD");
-		type.appendChild(document.createTextNode(contentType));
+		$(type).html(decodeURI(contentType));
+		
 		var admin = document.createElement("TD");
 		admin.className = "actions";
+		
 		var deleteLink = document.createElement("A");
 		deleteLink.setAttribute("href", "#");
 		deleteLink.setAttribute("title", "Delete");
