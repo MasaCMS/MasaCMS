@@ -988,22 +988,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">
-	<cfargument name="siteID" type="String">
-	<cfargument name="ContentID" type="String">
+	<cfargument name="feedBean">
 	
 	<cfset var rsFeedItems ="" />
-	<cfset var theListLen =listLen(arguments.contentID) />
+	<cfset var theListLen =listLen(arguments.feedBean.getContentID()) />
 	<cfset var I = 0 />
 
 	<cfquery name="rsFeedItems" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contentID, menutitle, type from tcontent where
+	select contentID, menutitle, type, siteid from tcontent where
 	active=1 and
 	<cfif theListLen>
 	(<cfloop from="1" to="#theListLen#" index="I">
-	contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.contentID,I)#" /> 
+	contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getContentID(),I)#" /> 
 	<cfif I lt theListLen> or </cfif>
 	</cfloop>)
-	AND siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	AND siteID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#" />)
 	<cfelse>
 	0=1
 	</cfif>

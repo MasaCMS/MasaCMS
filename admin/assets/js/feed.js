@@ -44,9 +44,9 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 var feedManager = {
-	loadSiteFilters: function(siteid, keywords, isNew) {
+	loadSiteFilters: function(siteid, keywords, isNew, contentPoolID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&contentPoolID=' + contentPoolID +'&cacheid=' + Math.random();
 		var d = $('#selectFilter');
 		d.html('<div class="load-inline"></div>');
 		$('#selectFilter .load-inline').spin(spinnerArgs2); 

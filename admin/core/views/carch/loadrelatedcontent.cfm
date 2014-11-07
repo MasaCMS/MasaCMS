@@ -282,6 +282,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 		</cfif>
 
+		
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
 			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>		

@@ -229,11 +229,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               		</select>
 				</div>
 			</div>
+			<cfelse>
+				<input type="hidden" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
 			</cfif>
 
 			<!--- Sections --->
 			<div class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="controls">
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
@@ -244,16 +246,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</tr>
 						</thead>
 						<tbody id="ContentFilters">
+							<cfset started=false>
 							<cfif rc.rslist.recordcount>
 								<cfloop query="rc.rslist">
-									<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-									<tr id="c#rc.rslist.contentID#">
-										<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
-										<td>#rc.rslist.type#</td>
-										<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
-									</tr>
+									<cfscript>
+										item=$.getBean('content').loadBy(contentid=rc.rslist.contentid,siteid=rc.rslist.siteid);
+										
+									</cfscript>
+									<cfif item.exists()>
+										<cfset started=true>
+										<tr id="c#rc.rslist.contentID#">
+											<td class="var-width">#$.dspZoomNoLinks(item.getCrumbArray())#</td>
+											<td>#rc.rslist.type#</td>
+											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
+										</tr>	
+									</cfif>
 								</cfloop>
-							<cfelse>
+							</cfif>
+							<cfif not started>
 								<tr>
 									<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
 								</tr>
