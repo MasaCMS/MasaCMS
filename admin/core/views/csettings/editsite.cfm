@@ -437,7 +437,7 @@ to your own modified versions of Mura CMS.
           </select>
           </div>
         </div>
-        <!---
+       
         <div class="span3">
           <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
           <div class="controls">
@@ -465,7 +465,7 @@ to your own modified versions of Mura CMS.
               </select>
            </div>
         </div>
-        --->
+       
       </div>
     </div>
   </div>

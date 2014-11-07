@@ -914,6 +914,15 @@ s
 	<cfreturn variables.razunaSettings>
 </cffunction>
 
+<cffunction name="getContentPoolID" output="false">
+
+	<cfif not listFindNoCase(variables.instance.contentPoolID,getValue('siteid'))>
+		<cfset variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'))>
+	</cfif>
+
+	<cfreturn variables.instance.contentPoolID>
+</cffunction>
+
 <cffunction name="getHasSharedFilePool" output="false">
 	<cfif not isBoolean(variables.instance.hasSharedFilePool)>
 		<cfif getValue('siteid') neq getValue('filePoolID')>

@@ -212,6 +212,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
 			</div>
 
+
+			<cfif listLen($.siteConfig('contentPoolID')) gt 1>
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.contentpool')#
+				</label>
+				<div class="controls">
+					<select id="contentPoolID" name="contentPoolID" multiple>
+	                <option value="#$.event('siteid')#" <cfif listFind(rc.feedBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
+	                <cfloop list="#$.siteConfig('contentPoolID')#" index="p">
+	                  	<cfif p neq rc.feedBean.getSiteID()>
+	                    	<option value="#esapiEncode('html_attr',p)#" <cfif listFind(rc.feedBean.getContentPoolID(), p)>selected</cfif>>#HTMLEditFormat($.getBean('settingsManager').getSite(p).getSite())#</option>
+	                	</cfif>
+              		</cfloop>
+              		</select>
+				</div>
+			</div>
+			</cfif>
+
 			<!--- Sections --->
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>

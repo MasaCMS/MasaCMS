@@ -232,7 +232,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					Left Join tcontent tparent #tableModifier# on (tcontent.parentid=tparent.contentid
 						and tcontent.siteid=tparent.siteid
 						and tparent.active=1) 
-					Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
+					Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid 
+						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
 				</cfif>
 
 				<cfif not arguments.countOnly and isExtendedSort>
@@ -243,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						FROM tclassextenddata #tableModifier# 
 							inner join tclassextendattributes #tableModifier#
 								on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
-						WHERE tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+						WHERE tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 							AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSortBy()#">
 					) qExtendedSort
 						ON (tcontent.contenthistid=qExtendedSort.baseID)
@@ -277,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								
 							WHERE 
-								tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
+								tcontent.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 								#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 								#renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 								
@@ -375,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														<cfelse>
 															inner join tclassextendattributes 
 																on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-															where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#">
+															where tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 																and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 														</cfif>
 
@@ -556,7 +557,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														WHERE 
 															type='Calendar'
 															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-															AND siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#feedBean.getSiteID()#">
+															AND siteid  in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 													)
 											)
 										)
@@ -577,7 +578,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														FROM tcontent 
 														WHERE type='Calendar'
 															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-															AND siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#feedBean.getSiteID()#">
+															AND in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 													)
 											)
 										)
@@ -591,7 +592,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- end qKids --->
 
 			WHERE
-				tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
+				tcontent.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 				#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly(),arguments.feedBean.getActiveOnly())#
 				<cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>
 					AND tcontent.isNav = 1
@@ -698,7 +699,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										INNER JOIN tclassextendattributes 
 											ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 										WHERE 
-											tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#">
+											tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 											AND tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">				
 									</cfif>
 
