@@ -71,10 +71,10 @@
 			}
 		}
 
-		tabLabelList='#rc.$.rbKey('user.basic')#';
+		tabLabelList='#rbKey('user.basic')#';
 		tablist="tabBasic";
 		if ( rsSubTypes.recordcount ) {
-			tabLabelList=listAppend(tabLabelList,rc.$.rbKey('user.extendedattributes'));
+			tabLabelList=listAppend(tabLabelList,rbKey('user.extendedattributes'));
 			tabList=listAppend(tabList,"tabExtendedattributes");
 		}
 	</cfscript>
@@ -100,22 +100,22 @@
 
 <!--- Header --->
 	<cfoutput>
-		<h1>#rc.$.rbKey('user.groupform')#</h1>
+		<h1>#rbKey('user.groupform')#</h1>
 		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
+			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
 				<i class="icon-circle-arrow-left"></i> 
-				#rc.$.rbKey('sitemanager.back')#
+				#rbKey('sitemanager.back')#
 			</a>
 
 			<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
 				<i class="icon-eye-open"></i>
-				#rc.$.rbKey('user.viewallgroups')#
+				#rbKey('user.viewallgroups')#
 			</a>
 
 			<cfif !rc.userBean.getIsNew()>
 				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 					<i class="icon-group"></i>
-					#rc.$.rbKey('user.viewgroupsusers')#
+					#rbKey('user.viewgroupsusers')#
 				</a>
 			</cfif>
 		</div>
@@ -136,12 +136,12 @@
 				<ul class="nav nav-tabs tabs initActiveTab">
 					<cfoutput>
 						<li>
-							<a href="##tabBasic" onclick="return false;"><span>#esapiEncode('html',rc.$.rbKey('user.basic'))#</span></a>
+							<a href="##tabBasic" onclick="return false;"><span>#esapiEncode('html',rbKey('user.basic'))#</span></a>
 						</li>
 						<cfif rsSubTypes.recordcount>
 							<li id="tabExtendedattributesLI" class="hide">
 								<a href="##tabExtendedattributes" onclick="return false;">
-									<span>#esapiEncode('html',rc.$.rbKey('user.extendedattributes'))#</span>
+									<span>#esapiEncode('html',rbKey('user.extendedattributes'))#</span>
 								</a>
 							</li>
 						</cfif>
@@ -169,12 +169,12 @@
 				<cfif rsNonDefault.recordcount>
 					<div class="control-group">
 						<label class="control-label">
-							#rc.$.rbKey('user.type')#
+							#rbKey('user.type')#
 						</label>
 						<div class="controls">
 							<select name="subtype" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 								<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>>
-									#rc.$.rbKey('user.default')#
+									#rbKey('user.default')#
 								</option>
 								<cfloop query="rsNonDefault">
 									<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>
@@ -189,17 +189,17 @@
 				<div class="control-group">
 					<div class="span6">
 						<label class="control-label">
-							#rc.$.rbKey('user.groupname')#
+							#rbKey('user.groupname')#
 						</label>
 						<div class="controls">
-							<input type="text" class="span12" name="groupname" value="#esapiEncode('html',rc.userBean.getgroupname())#" required="true" message="#rc.$.rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
+							<input type="text" class="span12" name="groupname" value="#esapiEncode('html',rc.userBean.getgroupname())#" required="true" message="#rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
 						</div>
 					</div>
 
 					<div class="span6">
 						<label class="control-label">
-							<a href="##" rel="tooltip" data-original-title="#rc.$.rbKey('user.groupemailmessage')#">
-								#rc.$.rbKey('user.groupemail')#
+							<a href="##" rel="tooltip" data-original-title="#rbKey('user.groupemailmessage')#">
+								#rbKey('user.groupemail')#
 								<i class="icon-question-sign"></i>
 							</a>
 						</label>
@@ -214,14 +214,14 @@
 
 						<div class="span6">
 							<label class="control-label">
-								#rc.$.rbKey('user.tablist')#
+								#rbKey('user.tablist')#
 							</label>
 							<div class="controls">
 								<select name="tablist" multiple="true" class="span12">
 									<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
 									<cfloop list="#application.contentManager.getTabList()#" index="t">
 										<option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>
-											#rc.$.rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
+											#rbKey("sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
 										</option>
 									</cfloop>
 								</select>
@@ -235,16 +235,16 @@
 						<cfif rc.isAdmin>
 							<div class="span6">
 								<label class="control-label">
-									#rc.$.rbKey('user.grouptype')#
+									#rbKey('user.grouptype')#
 								</label>
 								<div class="controls">
 									<label class="radio inline">
 										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
-										#rc.$.rbKey('user.membergroup')#
+										#rbKey('user.membergroup')#
 									</label>
 									<label class="radio inline">
 										<input name="isPublic" type="radio" class="radio inline" value="0" <cfif not rc.tempIsPublic>Checked</cfif>>
-											#rc.$.rbKey('user.systemgroup')#
+											#rbKey('user.systemgroup')#
 									</label>
 								</div>
 							</div>
@@ -285,10 +285,10 @@
 			<cfoutput>
 						<div class="form-actions">
 							<cfif rc.userid eq ''>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rc.$.rbKey('user.add')#" />
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
 							<cfelse>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rc.$.rbKey('user.deletegroupconfirm'))#');" value="#rc.$.rbKey('user.delete')#" />
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');" value="#rbKey('user.delete')#" />
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
 							</cfif>
 
 							<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
@@ -316,10 +316,10 @@
 			<cfoutput>
 				<div class="form-actions">
 					<cfif rc.userid eq ''>
-						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rc.$.rbKey('user.add')#" />
+						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
 					<cfelse>
-						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rc.$.rbKey('user.deletegroupconfirm'))#');" value="#rc.$.rbKey('user.delete')#" />
-						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
+						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deletegroupconfirm'))#');" value="#rbKey('user.delete')#" />
+						<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
 					</cfif>
 					<cfset tempAction = !Len(rc.userid) ? 'Add' : 'Update' />
 					<input type="hidden" name="action" value="#tempAction#">

@@ -47,41 +47,41 @@
 --->
 <cfoutput>
 
-	<h1>#rc.$.rbKey('user.groupform')#</h1>
+	<h1>#rbKey('user.groupform')#</h1>
 
 	<!--- Buttons --->
 	<div id="nav-module-specific" class="btn-group">
 
 		<!--- Back --->
-		<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
+		<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
 			<i class="icon-circle-arrow-left"></i> 
-			#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
+			#esapiEncode('html',rbKey('sitemanager.back'))#
 		</a>
 
 		<!--- View All Groups --->
 		<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
 			<i class="icon-eye-open"></i>
-			#rc.$.rbKey('user.viewallgroups')#
+			#rbKey('user.viewallgroups')#
 		</a>
 
 		<!--- Edit Group Settings --->
 		<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 			<i class="icon-pencil"></i>
-			#rc.$.rbKey('user.editgroupsettings')#
+			#rbKey('user.editgroupsettings')#
 		</a>
 
 		<!--- Download Users --->
 	    <cfif rc.it.hasNext()>
 				<a class="btn" href="#buildURL(action='cusers.downloadgroupmembers', querystring='userid=#rc.userid#')#">
 					<i class="icon-download"></i> 
-					#rc.$.rbKey('user.download')#
+					#rbKey('user.download')#
 				</a>
 	    </cfif>
 
 	</div>
 
 	<h2>
-		<strong>#esapiEncode('html', rc.userBean.getgroupname())#</strong> #rc.$.rbKey('user.users')#
+		<strong>#esapiEncode('html', rc.userBean.getgroupname())#</strong> #rbKey('user.users')#
 	</h2>
 
 	<cfinclude template="inc/dsp_users_list.cfm" />

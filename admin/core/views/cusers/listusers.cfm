@@ -51,7 +51,7 @@
 		<cfinclude template="inc/dsp_users_header.cfm" />
 
 	<!--- Subheading --->
-		<h2>#rc.$.rbKey('user.users')#</h2>
+		<h2>#rbKey('user.users')#</h2>
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
@@ -59,19 +59,19 @@
           <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>
             <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=1&unassigned=#rc.unassigned#')#" onclick="actionModal();">
-              #rc.$.rbKey('user.sitemembers')#
+              #rbKey('user.sitemembers')#
             </a>
           </li>
 
           <!--- System Users Tab --->
           <li<cfif rc.ispublic eq 0> class="active"</cfif>>
             <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=0&unassigned=#rc.unassigned#')#" onclick="actionModal();">
-              #rc.$.rbKey('user.systemusers')#
+              #rbKey('user.systemusers')#
             </a>
           </li>
         </ul>
     <cfelse>
-      <h3>#rc.$.rbKey('user.sitemembers')#</h3>
+      <h3>#rbKey('user.sitemembers')#</h3>
     </cfif>
   <!--- /Tab Nav --->
 
@@ -82,9 +82,9 @@
 				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#" onclick="actionModal();">
 					<i class="icon-filter"></i> 
 					<cfif rc.unassigned EQ 0>
-						#rc.$.rbKey('user.viewunassignedonly')#
+						#rbKey('user.viewunassignedonly')#
 					<cfelse>
-						#rc.$.rbKey('user.viewall')#
+						#rbKey('user.viewall')#
 					</cfif>
 				</a>
 
@@ -92,7 +92,7 @@
         <cfif rc.it.hasNext()>
   				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
   					<i class="icon-download"></i> 
-  					#rc.$.rbKey('user.download')#
+  					#rbKey('user.download')#
   				</a>
         </cfif>
 

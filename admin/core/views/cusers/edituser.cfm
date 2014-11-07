@@ -70,14 +70,14 @@
 				pluginEventMappings[i].eventName = 'onUserEdit';
 			}
 		}
-
-		tabLabelList = '#rc.$.rbKey('user.basic')#,#rc.$.rbKey('user.addressinformation')#,#rc.$.rbKey('user.groupmemberships')#,#rc.$.rbKey('user.interests')#';
+		
+		tabLabelList = '#rbKey('user.basic')#,#rbKey('user.addressinformation')#,#rbKey('user.groupmemberships')#,#rbKey('user.interests')#';
 		tablist = 'tabBasic,tabAddressinformation,tabGroupmemberships,tabInterests';
 		if ( rsSubTypes.recordcount ) {
-			tabLabelList = ListAppend(tabLabelList,rc.$.rbKey('user.extendedattributes'));
+			tabLabelList = ListAppend(tabLabelList,rbKey('user.extendedattributes'));
 			tabList = ListAppend(tabList,"tabExtendedattributes");
 		}
-		tabLabelList = ListAppend(tabLabelList,rc.$.rbKey('user.advanced'));
+		tabLabelList = ListAppend(tabLabelList,rbKey('user.advanced'));
 		tabList = ListAppend(tabList,"tabAdvanced");
 	</cfscript>
 </cfsilent>
@@ -85,11 +85,11 @@
 <cfoutput>
 	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
 
-		<h1>#rc.$.rbKey('user.usermaintenanceform')#</h1>
+		<h1>#rbKey('user.usermaintenanceform')#</h1>
 		
 		<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="##" title="#esapiEncode('html',rc.$.rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-				<i class="icon-circle-arrow-left"></i> #esapiEncode('html',rc.$.rbKey('sitemanager.back'))#
+			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
+				<i class="icon-circle-arrow-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#
 			</a>
 		</div>
 		
@@ -100,8 +100,8 @@
 			</cfif>
 			<cfif strikes.isBlocked()>
 				<p class="alert alert-error">
-					#rc.$.rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
-					<a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rc.$.rbKey('user.remove')#]</a>
+					#rbKey('user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
+					<a href="?muraAction=cUsers.edituser&amp;userid=#esapiEncode('url',rc.userid)#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;removeBlock">[#rbKey('user.remove')#]</a>
 				</p>
 			</cfif>
 		</cfif>
@@ -110,7 +110,7 @@
 			<p class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 		</cfif>
 		
-		<p>#rc.$.rbKey('user.requiredtext')#</p>
+		<p>#rbKey('user.requiredtext')#</p>
 		</cfoutput>
 
 		<cfsavecontent variable="tabContent">
@@ -123,11 +123,11 @@
 							<!--- Subtype --->
 							<cfif rsNonDefault.recordcount>
 								<div class="control-group">
-									<label class="control-label">#rc.$.rbKey('user.type')#</label>
+									<label class="control-label">#rbKey('user.type')#</label>
 									<div class="controls">
 										<select name="subtype"  onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','2',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');">
 											<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> 
-												#rc.$.rbKey('user.default')#
+												#rbKey('user.default')#
 											</option>
 											<cfloop query="rsNonDefault">
 												<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>
@@ -142,16 +142,16 @@
 							<!--- Name --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label" for="fname">#rc.$.rbKey('user.fname')#*</label>
+									<label class="control-label" for="fname">#rbKey('user.fname')#*</label>
 									<div class="controls">
-										<input id="fname" name="fname" type="text" value="#esapiEncode('html',rc.userBean.getfname())#"  required="true" message="#rc.$.rbKey('user.fnamerequired')#" class="span12">
+										<input id="fname" name="fname" type="text" value="#esapiEncode('html',rc.userBean.getfname())#"  required="true" message="#rbKey('user.fnamerequired')#" class="span12">
 									</div>
 								</div>
 						
 								<div class="span6">
-									<label class="control-label" for="lname">#rc.$.rbKey('user.lname')#*</label>
+									<label class="control-label" for="lname">#rbKey('user.lname')#*</label>
 									<div class="controls">
-										<input id="lname" name="lname" type="text" value="#esapiEncode('html',rc.userBean.getlname())#"  required="true" message="#rc.$.rbKey('user.lnamerequired')#" class="span12">
+										<input id="lname" name="lname" type="text" value="#esapiEncode('html',rc.userBean.getlname())#"  required="true" message="#rbKey('user.lnamerequired')#" class="span12">
 									</div>
 								</div>
 							</div>
@@ -159,14 +159,14 @@
 							<!--- Company + Title --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label" for="organization">#rc.$.rbKey('user.company')#</label>
+									<label class="control-label" for="organization">#rbKey('user.company')#</label>
 									<div class="controls">
 										<input id="organization" name="company" type="text" value="#esapiEncode('html',rc.userBean.getcompany())#"  class="span12">
 									</div>
 								</div>
 
 								<div class="span6">
-									<label class="control-label" for="jobtitle">#rc.$.rbKey('user.jobtitle')#</label>
+									<label class="control-label" for="jobtitle">#rbKey('user.jobtitle')#</label>
 									<div class="controls">
 										<input id="jobtitle" name="jobtitle" type="text" value="#esapiEncode('html',rc.userBean.getjobtitle())#"  class="span12">
 									</div>
@@ -176,14 +176,14 @@
 							<!--- Email + Phone --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label" for="email">#rc.$.rbKey('user.email')#*</label>
+									<label class="control-label" for="email">#rbKey('user.email')#*</label>
 									<div class="controls">
-										<input id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" class="span12" required="true" validate="email" message="#rc.$.rbKey('user.emailvalidate')#">
+										<input id="email" name="email" type="text" value="#esapiEncode('html',rc.userBean.getemail())#" class="span12" required="true" validate="email" message="#rbKey('user.emailvalidate')#">
 									</div>
 								</div>
 							
 								<div class="span6">
-									<label class="control-label" for="mobilePhone">#rc.$.rbKey('user.mobilephone')#</label>
+									<label class="control-label" for="mobilePhone">#rbKey('user.mobilephone')#</label>
 									<div class="controls">
 										<input id="mobilePhone" name="mobilePhone" type="text" value="#esapiEncode('html',rc.userBean.getMobilePhone())#" class="span12">
 									</div>
@@ -193,7 +193,7 @@
 							<!--- Username --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label" for="username">#rc.$.rbKey('user.username')#*</label>
+									<label class="control-label" for="username">#rbKey('user.username')#*</label>
 									<div class="controls">
 										<input id="username"  name="usernameNoCache" type="text" value="#esapiEncode('html',rc.userBean.getusername())#" class="span12" required="true" message="The 'Username' field is required" autocomplete="off">
 									</div>
@@ -203,23 +203,23 @@
 							<!--- Password --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label" for="passwordNoCache">#rc.$.rbKey('user.newpassword')#**</label>
+									<label class="control-label" for="passwordNoCache">#rbKey('user.newpassword')#**</label>
 									<div class="controls">
-										<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="span12"  message="#rc.$.rbKey('user.passwordmatchvalidate')#">
+										<input id="passwordNoCache" name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="span12"  message="#rbKey('user.passwordmatchvalidate')#">
 									</div>
 								</div>
 								
 								<div class="span6">
-									<label class="control-label" for="password2">#rc.$.rbKey('user.newpasswordconfirm')#**</label>
+									<label class="control-label" for="password2">#rbKey('user.newpasswordconfirm')#**</label>
 									<div class="controls">
-										<input id="password2" name="password2" autocomplete="off" type="password" value="" class="span12"  message="#rc.$.rbKey('user.passwordconfirm')#">
+										<input id="password2" name="password2" autocomplete="off" type="password" value="" class="span12"  message="#rbKey('user.passwordconfirm')#">
 									</div>
 								</div>
 							</div>
 					
 							<!--- Image --->
 							<div class="control-group">
-								<label class="control-label" for="newFile">#rc.$.rbKey('user.image')#</label>
+								<label class="control-label" for="newFile">#rbKey('user.image')#</label>
 								<div class="controls">
 									<input type="file" id="newFile" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
 								</div>
@@ -230,7 +230,7 @@
 										</a>
 										<label class="checkbox inline">
 											<input type="checkbox" name="removePhotoFile" value="true"> 
-											#rc.$.rbKey('user.delete')#
+											#rbKey('user.delete')#
 										</label>
 									</div>
 								</cfif>
@@ -263,14 +263,14 @@
 								<!--- Address1 + Address2 --->
 								<div class="control-group">
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.address1')#</label>
+										<label class="control-label">#rbKey('user.address1')#</label>
 										<div class="controls">
 											<input id="address1" name="address1" type="text" value="#esapiEncode('html',rc.address1)#"  class="span12">
 										</div>
 									</div>
 										
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.address2')#</label>
+										<label class="control-label">#rbKey('user.address2')#</label>
 										<div class="controls">
 											<input id="address2" name="address2" type="text" value="#esapiEncode('html',rc.address2)#"  class="span12">
 										</div>
@@ -280,28 +280,28 @@
 								<!--- City, State, Zip, Country --->
 								<div class="control-group">
 									<div class="span5">
-										<label class="control-label">#rc.$.rbKey('user.city')#</label>
+										<label class="control-label">#rbKey('user.city')#</label>
 										<div class="controls">
 											<input id="city" name="city" type="text" value="#esapiEncode('html',rc.city)#" class="span12">
 										</div>
 									</div>
 										
 									<div class="span1">
-										<label class="control-label">#rc.$.rbKey('user.state')#</label>
+										<label class="control-label">#rbKey('user.state')#</label>
 										<div class="controls">
 											<input id="state" name="state" type="text" value="#esapiEncode('html',rc.state)#" class="span12">
 										</div>
 									</div>
 									
 									<div class="span2">
-										<label class="control-label">#rc.$.rbKey('user.zip')#</label>
+										<label class="control-label">#rbKey('user.zip')#</label>
 										<div class="controls">
 											<input id="zip" name="zip" type="text" value="#esapiEncode('html',rc.zip)#" class="span12">
 										</div>
 									</div>
 									
 									<div class="span4">
-										<label class="control-label">#rc.$.rbKey('user.country')#</label>
+										<label class="control-label">#rbKey('user.country')#</label>
 										<div class="controls">
 											<input id="country" name="country" type="text" value="#esapiEncode('html',rc.country)#" class="span12">
 										</div>
@@ -311,14 +311,14 @@
 								<!--- Phone + Fax --->
 								<div class="control-group">
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.phone')#</label>
+										<label class="control-label">#rbKey('user.phone')#</label>
 										<div class="controls">
 											<input id="phone" name="phone" type="text" value="#esapiEncode('html',rc.phone)#" class="span12">
 										</div>
 									</div>	
 										
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.fax')#</label>
+										<label class="control-label">#rbKey('user.fax')#</label>
 										<div class="controls">
 											<input id="fax" name="fax" type="text" value="#esapiEncode('html',rc.fax)#" class="span12">
 										</div>
@@ -328,23 +328,23 @@
 								<!---URL + Email --->
 								<div class="control-group">
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.website')# (#rc.$.rbKey('user.includehttp')#)</label>
+										<label class="control-label">#rbKey('user.website')# (#rbKey('user.includehttp')#)</label>
 										<div class="controls">
 											<input id="addressURL" name="addressURL" type="text" value="#esapiEncode('html',rc.addressURL)#" class="span12">
 										</div>
 									</div>
 										
 									<div class="span6">
-										<label class="control-label">#rc.$.rbKey('user.email')#</label>
+										<label class="control-label">#rbKey('user.email')#</label>
 										<div class="controls">
-											<input id="addressEmail" name="addressEmail" validate="email" message="#rc.$.rbKey('user.emailvalidate')#" type="text" value="#esapiEncode('html',rc.addressEmail)#" class="span12">
+											<input id="addressEmail" name="addressEmail" validate="email" message="#rbKey('user.emailvalidate')#" type="text" value="#esapiEncode('html',rc.addressEmail)#" class="span12">
 										</div>
 									</div>
 								</div>
 
 								<!--- Hours --->
 								<div class="control-group">
-									<label class="control-label">#rc.$.rbKey('user.hours')#</label>
+									<label class="control-label">#rbKey('user.hours')#</label>
 									<div class="controls">
 										<textarea id="hours" name="hours" rows="6" class="span6" >#esapiEncode('html',rc.hours)#</textarea>
 									</div>
@@ -359,7 +359,7 @@
 									<ul class="navTask nav nav-pills">
 										<li>
 											<a href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=">
-												<i class="icon-plus-sign"></i> #rc.$.rbKey('user.addnewaddress')#
+												<i class="icon-plus-sign"></i> #rbKey('user.addnewaddress')#
 											</a>
 										</li>
 									</ul>
@@ -369,8 +369,8 @@
 									<cfif rsAddresses.recordcount>
 										<table class="table table-striped table-condensed table-bordered mura-table-grid">
 											<tr>
-												<th>#rc.$.rbKey('user.primary')#</th>
-												<th>#rc.$.rbKey('user.address')#</th>
+												<th>#rbKey('user.primary')#</th>
+												<th>#rbKey('user.address')#</th>
 												<th class="adminstration"></th>
 											</tr>
 											<cfloop query="rsAddresses">
@@ -380,7 +380,7 @@
 													</td>
 													<td class="var-width">
 														<cfif rsAddresses.addressName neq ''>
-															<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#">
+															<a title="#rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#">
 																#rsAddresses.addressName#
 															</a><br />
 														</cfif>
@@ -411,22 +411,22 @@
 														</cfif>
 
 														<cfif rsAddresses.phone neq ''>
-															#rc.$.rbKey('user.phone')#: #esapiEncode('html',rsAddresses.phone)#<br/>
+															#rbKey('user.phone')#: #esapiEncode('html',rsAddresses.phone)#<br/>
 														</cfif>
 
 														<cfif rsAddresses.fax neq ''>
-															#rc.$.rbKey('user.fax')#: #esapiEncode('html',rsAddresses.fax)#<br/>
+															#rbKey('user.fax')#: #esapiEncode('html',rsAddresses.fax)#<br/>
 														</cfif>
 
 														<cfif rsAddresses.addressURL neq ''>
-															#rc.$.rbKey('user.website')#: 
+															#rbKey('user.website')#: 
 															<a href="#rsAddresses.addressURL#" target="_blank">
 																#esapiEncode('html',rsAddresses.addressURL)#
 															</a><br/>
 														</cfif>
 
 														<cfif rsAddresses.addressEmail neq ''>
-															#rc.$.rbKey('user.email')#: 
+															#rbKey('user.email')#: 
 															<a href="mailto:#rsAddresses.addressEmail#">
 																#esapiEncode('html',rsAddresses.addressEmail)#
 															</a>
@@ -436,13 +436,13 @@
 													<td nowrap class="actions">
 														<ul>
 															<li class="edit">
-																<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=#rsAddresses.addressID#">
+																<a title="#rbKey('user.edit')#" href="./?muraAction=cUsers.editAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#rc.routeid#&amp;addressID=#rsAddresses.addressID#">
 																	<i class="icon-pencil"></i>
 																</a>
 															</li>
 															<cfif rsAddresses.isPrimary neq 1>
 																<li class="icon-remove-sign">
-																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.deleteaddressconfirm'))#',this.href);">
+																	<a title="Delete" href="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;action=delete&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;routeID=#esapiEncode('url',rc.routeid)#&amp;addressID=#rsAddresses.addressID#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.deleteaddressconfirm'))#',this.href);">
 																		<i class="icon-remove-sign"></i>
 																	</a>
 																</li>
@@ -455,7 +455,7 @@
 											</cfloop>
 										</table>
 									<cfelse>
-										<em>#rc.$.rbKey('user.noaddressinformation')#</em>
+										<em>#rbKey('user.noaddressinformation')#</em>
 									</cfif>
 								</div>
 								<!--- /Add Address --->
@@ -476,18 +476,18 @@
 							<cfif rc.isAdmin>
 								<div class="control-group">
 									<label class="control-label">
-										#rc.$.rbKey('user.usertype')#
+										#rbKey('user.usertype')#
 									</label>
 
 									<div class="controls">
 										<label class="radio inline">
 											<input name="isPublic" type="radio" class="radio inline" value="1"<cfif rc.tempIsPublic> Checked</cfif>> 
-											#rc.$.rbKey('user.sitemember')#
+											#rbKey('user.sitemember')#
 										</label>
 
 										<label class="radio inline">
 											<input name="isPublic" type="radio" class="radio inline" value="0"<cfif not rc.tempIsPublic> Checked</cfif>> 
-											#rc.$.rbKey('user.adminuser')#
+											#rbKey('user.adminuser')#
 										</label>
 									</div>
 								</div>
@@ -517,7 +517,7 @@
 								<cfif rc.isAdmin>
 									<div id="privateGroupsList" class="control-group"<cfif rc.tempIsPublic> style="display:none"</cfif>>
 										<label class="control-label">
-											#rc.$.rbKey('user.admingroups')#
+											#rbKey('user.admingroups')#
 										</label>
 
 										<!--- private groups listing --->
@@ -545,7 +545,7 @@
 										<cfif rc.tempIsPublic>
 											<div id="privateGroupsNotice" class="controls">
 												<p class="alert alert-notice">
-													#rc.$.rbKey('user.systemgroupmessage')#
+													#rbKey('user.systemgroupmessage')#
 												</p>
 											</div>
 										</cfif>
@@ -560,7 +560,7 @@
 												</cfloop>
 											<cfelse>
 												<p class="alert alert-notice">
-													#rc.$.rbKey('user.nogroups')#
+													#rbKey('user.nogroups')#
 												</p>
 											</cfif>
 										</div>
@@ -570,7 +570,7 @@
 							<!--- Public Groups --->
 							<div class="control-group">
 								<label class="control-label">
-									#rc.$.rbKey('user.membergroups')#
+									#rbKey('user.membergroups')#
 								</label>
 								<div class="controls">
 									<cfif rc.rsPublicGroups.recordcount>
@@ -582,7 +582,7 @@
 										</cfloop>
 									<cfelse>
 										<p class="alert alert-notice">
-											#rc.$.rbKey('user.nogroups')#
+											#rbKey('user.nogroups')#
 										</p>
 									</cfif>
 								</div>
@@ -629,27 +629,27 @@
 								<cfif rc.$.currentUser().isSuperUser()>
 									<div class="span6">
 										<label class="control-label">
-											#rc.$.rbKey('user.superadminaccount')#
+											#rbKey('user.superadminaccount')#
 										</label>
 										<div class="controls">
 											<label class="radio inline"><input name="s2" type="radio" class="radio inline" value="1" <cfif rc.userBean.gets2() eq 1>Checked</cfif>>
-												#rc.$.rbKey('user.yes')#
+												#rbKey('user.yes')#
 											</label>
 											<label class="radio inline"><input name="s2" type="radio" class="radio inline" value="0" <cfif rc.userBean.gets2() eq 0>Checked</cfif>>
-												#rc.$.rbKey('user.no')#
+												#rbKey('user.no')#
 											</label>
 										</div>
 									</div>
 								</cfif>
 					
 								<div class="span6">
-									<label class="control-label">#rc.$.rbKey('user.emailbroadcaster')#</label>
+									<label class="control-label">#rbKey('user.emailbroadcaster')#</label>
 									<div class="controls">
 										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>
-											#rc.$.rbKey('user.yes')#
+											#rbKey('user.yes')#
 										</label>
 										<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>
-											#rc.$.rbKey('user.no')#
+											#rbKey('user.no')#
 										</label>
 									</div>
 								</div>
@@ -660,15 +660,15 @@
 								<!--- Active --->							
 								<div class="span6">
 									<label class="control-label">
-										#rc.$.rbKey('user.inactive')#
+										#rbKey('user.inactive')#
 									</label>
 									<div class="controls">
 										<label class="radio inline">
 											<input name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>> 
-											#rc.$.rbKey('user.yes')#
+											#rbKey('user.yes')#
 										</label>
 										<label class="radio inline"><input name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>> 
-											#rc.$.rbKey('user.no')#
+											#rbKey('user.no')#
 										</label>
 									</div>
 								</div>
@@ -678,14 +678,14 @@
 							<!--- Tags + RemoteID --->
 							<div class="control-group">
 								<div class="span6">
-									<label class="control-label">#rc.$.rbKey('user.tags')#</label>
+									<label class="control-label">#rbKey('user.tags')#</label>
 									<div class="controls">
 										<input id="tags" name="tags" type="text" value="#esapiEncode('html',rc.userBean.getTags())#" class="span12">
 									</div>
 								</div>
 
 								<div class="span6">
-									<label class="control-label">#rc.$.rbKey('user.remoteid')#</label>
+									<label class="control-label">#rbKey('user.remoteid')#</label>
 									<div class="controls">
 										<input id="remoteID" name="remoteID" type="text" value="#esapiEncode('html',rc.userBean.getRemoteID())#"  class="span12">
 									</div>
@@ -736,10 +736,10 @@
 						<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 						<div class="form-actions">
 							<cfif rc.userid eq ''>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rc.$.rbKey('user.add')#" />
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
 							<cfelse>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rc.$.rbKey('user.deleteuserconfirm'))#');" value="#rc.$.rbKey('user.delete')#" /> 
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rc.$.rbKey('user.update')#" />
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');" value="#rbKey('user.delete')#" /> 
+								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
 							</cfif>
 						</div>
 					</div>

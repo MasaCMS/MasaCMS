@@ -95,7 +95,7 @@
 					<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#userBean.getUserID()#&amp;siteid=#userBean.getSiteID()#&amp;fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&amp;cacheID=#createUUID()#" /></a>
 				</cfif>
 
-				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rc.$.rbKey('user.delete')# </cfif>
+				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #rbKey('user.delete')# </cfif>
 			</label>
 			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 			<cfif attributeBean.getType() IS "Hidden">

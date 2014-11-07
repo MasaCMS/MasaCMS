@@ -50,7 +50,7 @@
 	<cfinclude template="inc/dsp_users_header.cfm" />
 
 	<!--- Subheading --->
-		<h2>#rc.$.rbKey('user.groups')#</h2>
+		<h2>#rbKey('user.groups')#</h2>
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
@@ -60,21 +60,21 @@
 					<!--- Member/Public Groups --->
 						<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 							<a href="#buildURL(action='cusers.list', querystring='ispublic=1')#" onclick="actionModal();">
-								#rc.$.rbKey('user.membergroups')#
+								#rbKey('user.membergroups')#
 							</a>
 						</li>
 
 					<!--- System/Private Groups --->
 						<li<cfif rc.ispublic eq 0> class="active"</cfif>>
 							<a href="#buildURL(action='cusers.list', querystring='ispublic=0')#" onclick="actionModal();">
-								#rc.$.rbKey('user.adminusergroups')#
+								#rbKey('user.adminusergroups')#
 							</a>
 						</li>
 
 				</ul>
 
 		<cfelse>
-			<h3>#rc.$.rbKey('user.membergroups')#</h3>
+			<h3>#rbKey('user.membergroups')#</h3>
 		</cfif>
 	<!--- /Tab Nav --->
 
@@ -85,19 +85,19 @@
 				<thead>
 					<tr>
 						<th class="var-width">
-							#rc.$.rbKey('user.grouptotalmembers')#
+							#rbKey('user.grouptotalmembers')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.groupemail')#
+							#rbKey('user.groupemail')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.datelastupdate')#
+							#rbKey('user.datelastupdate')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.timelastupdate')#
+							#rbKey('user.timelastupdate')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.lastupdatedby')#
+							#rbKey('user.lastupdatedby')#
 						</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -154,7 +154,7 @@
 
 										<!--- Edit --->
 											<li>
-												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
+												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 													<i class="icon-pencil"></i>
 												</a>
 											</li>
@@ -163,12 +163,12 @@
 											<cfif local.item.getValue('perm') eq 0>
 
 												<cfset msgDelete = rc.$.getBean('resourceBundle').messageFormat(
-														rc.$.rbKey('user.deleteusergroupconfim')
+														rbKey('user.deleteusergroupconfim')
 														, [local.item.getValue('groupname')]
 												) />
 
 												<li>
-													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
 														<i class="icon-remove-sign"></i>
 													</a>
 												</li>
@@ -193,7 +193,7 @@
 
 			<!--- No groups message --->
 			<div class="alert alert-info">
-				#rc.$.rbKey('user.nogroups')#
+				#rbKey('user.nogroups')#
 			</div>
 
 		</cfif>

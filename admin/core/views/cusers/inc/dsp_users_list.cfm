@@ -58,19 +58,19 @@
 							&nbsp;
 						</th>
 						<th class="var-width">
-							#rc.$.rbKey('user.user')#
+							#rbKey('user.user')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.email')#
+							#rbKey('user.email')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.datelastupdate')#
+							#rbKey('user.datelastupdate')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.timelastupdate')#
+							#rbKey('user.timelastupdate')#
 						</th>
 						<th>
-							#rc.$.rbKey('user.lastupdatedby')#
+							#rbKey('user.lastupdatedby')#
 						</th>
 						<th>
 							&nbsp;
@@ -97,19 +97,19 @@
 											</cfif>
 											<cfif local.item.getValue('s2') EQ 1>
 												<li>
-													<a rel="tooltip" title="#rc.$.rbKey('user.superuser')#">
+													<a rel="tooltip" title="#rbKey('user.superuser')#">
 														<i class="icon-bolt"></i>
 													</a>
 												</li>
 											<cfelseif local.item.getValue('isPublic') EQ 0>
 												<li>
-													<a rel="tooltip" title="#rc.$.rbKey('user.adminuser')#">
+													<a rel="tooltip" title="#rbKey('user.adminuser')#">
 														<i class="icon-user"></i>
 													</a>
 												</li>
 											<cfelse>
 												<li>
-													<a rel="tooltip" title="#rc.$.rbKey('user.sitemember')#">
+													<a rel="tooltip" title="#rbKey('user.sitemember')#">
 														<i class="icon-user"></i>
 													</a>
 												</li>
@@ -162,7 +162,7 @@
 											<!--- Edit --->
 												<cfif local.item.getValue('S2') eq 0 or rc.$.currentUser().isSuperUser()>
 													<li>
-														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rc.$.rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
+														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 															<i class="icon-pencil"></i>
 														</a>
 													</li>
@@ -175,7 +175,7 @@
 											<!--- Remove From Group --->
 												<cfif ListLast(rc.muraAction, '.') eq 'editgroupmembers'>
 													<li class="remove">
-														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rc.$.rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.removeconfirm')#">
+														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rbKey('user.removeconfirm')#">
 															<i class="icon-minus-sign"></i>
 														</a>
 													</li>
@@ -184,7 +184,7 @@
 											<!--- Delete --->
 												<cfif rc.$.currentUser().isSuperUser() or (local.item.getValue('perm') eq 0 and local.item.getValue('S2') eq 0)>
 													<li>
-														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rc.$.rbKey('user.delete')#">
+														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
 															<i class="icon-remove-sign"></i>
 														</a>
 													</li>
@@ -213,7 +213,7 @@
 					<cfif IsDefined('rc.noUsersMessage')>
 						#esapiEncode('html', rc.noUsersMessage)#
 					<cfelse>
-						#rc.$.rbKey('user.nousers')#
+						#rbKey('user.nousers')#
 					</cfif>
 				</div>
 

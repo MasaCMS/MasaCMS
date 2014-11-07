@@ -51,7 +51,7 @@
 		<cfinclude template="inc/dsp_search_form.cfm" />
 
 	<!--- Page Title --->
-		<h1>#rc.$.rbKey('user.usersearchresults')#</h1>
+		<h1>#rbKey('user.usersearchresults')#</h1>
 
 	<!--- Buttons --->
 		<div id="nav-module-specific" class="btn-group">
@@ -59,25 +59,25 @@
 			<!--- Add User --->
 				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
 					<i class="icon-plus-sign"></i> 
-					#rc.$.rbKey('user.adduser')#
+					#rbKey('user.adduser')#
 				</a>
 
 		  <!--- Add Group --->
 				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
 					<i class="icon-plus-sign"></i> 
-					#rc.$.rbKey('user.addgroup')#
+					#rbKey('user.addgroup')#
 				</a>
 
 			<!--- View Groups --->
 				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
 					<i class="icon-eye-open"></i>
-					#rc.$.rbKey('user.viewgroups')#
+					#rbKey('user.viewgroups')#
 				</a>
 
 			<!--- View Users --->
 				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
 					<i class="icon-eye-open"></i>
-					#rc.$.rbKey('user.viewusers')#
+					#rbKey('user.viewusers')#
 				</a>
 
 		</div>
@@ -92,14 +92,14 @@
           <!--- Site Members Tab --->
 	          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
 	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
-	              #rc.$.rbKey('user.sitemembers')#
+	              #rbKey('user.sitemembers')#
 	            </a>
 	          </li>
 
           <!--- System Users Tab --->
 	          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
 	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
-	              #rc.$.rbKey('user.systemusers')#
+	              #rbKey('user.systemusers')#
 	            </a>
 	          </li>
 
@@ -107,7 +107,7 @@
 
     <cfelse>
 
-      <h3>#rc.$.rbKey('user.sitemembers')#</h3>
+      <h3>#rbKey('user.sitemembers')#</h3>
 
     </cfif>
   <!--- /Tab Nav --->
@@ -121,11 +121,11 @@
 	<cfoutput>
 		<table class="mura-table-grid">
 			<tr> 
-				<th class="var-width">#rc.$.rbKey('user.name')#</th>
-				<th>#rc.$.rbKey('user.email')#</th>
-				<th>#rc.$.rbKey('user.update')#</th>
-				<th>#rc.$.rbKey('user.time')#</th>
-				<th>#rc.$.rbKey('user.authoreditor')#</th>
+				<th class="var-width">#rbKey('user.name')#</th>
+				<th>#rbKey('user.email')#</th>
+				<th>#rbKey('user.update')#</th>
+				<th>#rbKey('user.time')#</th>
+				<th>#rbKey('user.authoreditor')#</th>
 				<th class="actions">&nbsp;</th>
 			</tr>
 			</cfoutput>
@@ -162,7 +162,7 @@
 						<td class="actions">
 							<ul>
 								<li class="edit">
-									<a title="#rc.$.rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
+									<a title="#rbKey('user.edit')#" href="./?muraAction=cUsers.edituser&amp;userid=#rc.rsList.UserID#&amp;type=2&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;returnURL=#esapiEncode('url',rc.currentURL)#">
 										<i class="icon-pencil"></i>
 									</a>
 								</li>
@@ -174,7 +174,7 @@
 				<tr> 
 					<td colspan="6" class="noResults">
 						<cfoutput>
-							#rc.$.rbKey('user.nosearchresults')#
+							#rbKey('user.nosearchresults')#
 						</cfoutput>
 					</td>
 				</tr>
@@ -190,13 +190,13 @@
 				<cfset args[2]=rc.nextn.totalrecords>
 				<div class="mura-results-wrapper">
 					<p class="clearfix search-showing">
-						#application.rbFactory.getResourceBundle(session.rb).messageFormat(rc.$.rbKey("sitemanager.paginationmeta"),args)#
+						#application.rbFactory.getResourceBundle(session.rb).messageFormat(rbKey("sitemanager.paginationmeta"),args)#
 					</p> 
 					<div class="pagination">
 						<ul>
 							<cfif rc.nextN.currentpagenumber gt 1> 
 								<li>
-									<a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.previous#&amp;lname=#esapiEncode('url',rc.lname)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;search=#esapiEncode('url',rc.search)#">&laquo;&nbsp;#rc.$.rbKey('user.prev')#</a>
+									<a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.previous#&amp;lname=#esapiEncode('url',rc.lname)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;search=#esapiEncode('url',rc.search)#">&laquo;&nbsp;#rbKey('user.prev')#</a>
 								</li>
 							</cfif>	
 					 		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
@@ -207,7 +207,7 @@
 								</cfif>
 							</cfloop>
 							<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-								<li><a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.next#&amp;lname=#esapiEncode('url',rc.lname)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;search=#esapiEncode('url',rc.search)#">#rc.$.rbKey('user.next')#&nbsp;&raquo;</a>
+								<li><a href="./?muraAction=cUsers.search&amp;startrow=#rc.nextN.next#&amp;lname=#esapiEncode('url',rc.lname)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;search=#esapiEncode('url',rc.search)#">#rbKey('user.next')#&nbsp;&raquo;</a>
 								</li>
 							</cfif> 
 						</ul>

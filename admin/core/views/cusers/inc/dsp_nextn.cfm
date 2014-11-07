@@ -86,7 +86,7 @@
 				<!--- Records Per Page --->
 					<div class="btn-group">
 						<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-							#rc.$.rbKey('user.recordsperpage')#
+							#rbKey('user.recordsperpage')#
 							<span class="caret"></span>
 						</a>
 
@@ -95,7 +95,7 @@
 							<cfloop array="#local.arrPages#" index="local.pagecount">
 								<li <cfif rc.recordsperpage eq local.pagecount> class="active"</cfif>><a href="##" class="nextN" data-nextn="#local.pagecount#">#local.pagecount#</a></li>
 							</cfloop>
-							<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rc.$.rbKey('user.all')#</a></li>
+							<li <cfif rc.recordsperpage eq 100000> class="active"</cfif>><a href="##" class="nextN" data-nextn="100000">#rbKey('user.all')#</a></li>
 						</ul>
 					</div>
 

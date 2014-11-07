@@ -51,39 +51,39 @@
 	<cfset criterias=arrayNew(2) />
 
 	<cfset options[1][1]="tusers.fname^varchar">
-	<cfset options[1][2]= rc.$.rbKey('user.fname') >
+	<cfset options[1][2]= rbKey('user.fname') >
 	<cfset options[2][1]="tusers.lname^varchar">
-	<cfset options[2][2]= rc.$.rbKey('user.lname')>
+	<cfset options[2][2]= rbKey('user.lname')>
 	<cfset options[3][1]="tusers.username^varchar">
-	<cfset options[3][2]= rc.$.rbKey('user.username') >
+	<cfset options[3][2]= rbKey('user.username') >
 	<cfset options[4][1]="tusers.email^varchar">
-	<cfset options[4][2]= rc.$.rbKey('user.email')>
+	<cfset options[4][2]= rbKey('user.email')>
 	<cfset options[5][1]="tusers.company^varchar">
-	<cfset options[5][2]= rc.$.rbKey('user.company')>
+	<cfset options[5][2]= rbKey('user.company')>
 	<cfset options[6][1]="tusers.jobTitle^varchar">
-	<cfset options[6][2]= rc.$.rbKey('user.jobtitle')>
+	<cfset options[6][2]= rbKey('user.jobtitle')>
 	<cfset options[7][1]="tusers.website^varchar">
-	<cfset options[7][2]= rc.$.rbKey('user.website')>
+	<cfset options[7][2]= rbKey('user.website')>
 	<!---<cfset options[8][1]="tusers.IMName^varchar">
 	<cfset options[8][2]="IM Name">
 	<cfset options[8][1]="tusers.IMService^varchar">
 	<cfset options[8][2]="IM Service">--->
 	<cfset options[8][1]="tusers.mobilePhone^varchar">
-	<cfset options[8][2]= rc.$.rbKey('user.mobilephone')>
+	<cfset options[8][2]= rbKey('user.mobilephone')>
 	<cfset options[9][1]="tuseraddresses.address1^varchar">
-	<cfset options[9][2]= rc.$.rbKey('user.address1')>
+	<cfset options[9][2]= rbKey('user.address1')>
 	<cfset options[10][1]="tuseraddresses.address2^varchar">
-	<cfset options[10][2]= rc.$.rbKey('user.address2')>
+	<cfset options[10][2]= rbKey('user.address2')>
 	<cfset options[11][1]="tuseraddresses.city^varchar">
-	<cfset options[11][2]= rc.$.rbKey('user.city')>
+	<cfset options[11][2]= rbKey('user.city')>
 	<cfset options[12][1]="tuseraddresses.state^varchar">
-	<cfset options[12][2]= rc.$.rbKey('user.state')>
+	<cfset options[12][2]= rbKey('user.state')>
 	<cfset options[13][1]="tuseraddresses.Zip^varchar">
-	<cfset options[13][2]= rc.$.rbKey('user.zip')>
+	<cfset options[13][2]= rbKey('user.zip')>
 	<cfset options[14][1]="tusers.created^date">
-	<cfset options[14][2]= rc.$.rbKey('user.created')>
+	<cfset options[14][2]= rbKey('user.created')>
 	<cfset options[15][1]="tusers.tags^varchar">
-	<cfset options[15][2]= rc.$.rbKey('user.tag')>
+	<cfset options[15][2]= rbKey('user.tag')>
 
 	<!--- Extended Attributes --->
 		<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tusers",activeOnly=true)>
@@ -94,30 +94,30 @@
 
 	<!--- Criteria --->
 		<cfset criterias[1][1]="Equals">
-		<cfset criterias[1][2]=rc.$.rbKey('params.equals')>
+		<cfset criterias[1][2]=rbKey('params.equals')>
 		<cfset criterias[2][1]="GT">
-		<cfset criterias[2][2]=rc.$.rbKey('params.gt')>
+		<cfset criterias[2][2]=rbKey('params.gt')>
 		<cfset criterias[3][1]="GTE">
-		<cfset criterias[3][2]=rc.$.rbKey('params.gte')>
+		<cfset criterias[3][2]=rbKey('params.gte')>
 		<cfset criterias[4][1]="LT">
-		<cfset criterias[4][2]=rc.$.rbKey('params.lt')>
+		<cfset criterias[4][2]=rbKey('params.lt')>
 		<cfset criterias[5][1]="LTE">
-		<cfset criterias[5][2]=rc.$.rbKey('params.lte')>
+		<cfset criterias[5][2]=rbKey('params.lte')>
 		<cfset criterias[6][1]="NEQ">
-		<cfset criterias[6][2]=rc.$.rbKey('params.neq')>
+		<cfset criterias[6][2]=rbKey('params.neq')>
 		<cfset criterias[7][1]="Begins">
-		<cfset criterias[7][2]=rc.$.rbKey('params.beginswith')>
+		<cfset criterias[7][2]=rbKey('params.beginswith')>
 		<cfset criterias[8][1]="Contains">
-		<cfset criterias[8][2]=rc.$.rbKey('params.contains')>
+		<cfset criterias[8][2]=rbKey('params.contains')>
 </cfsilent>
 <cfoutput>
-	<h1>#rc.$.rbKey("user.advancedusersearch")#</h1>
+	<h1>#rbKey("user.advancedusersearch")#</h1>
 
 	<!--- Basic Search Button --->
 		<div id="nav-module-specific" class="btn-group">
 			<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
 				<i class="icon-search"></i> 
-				#rc.$.rbKey('user.basicsearch')#
+				#rbKey('user.basicsearch')#
 			</a>
 		</div>
 
@@ -127,18 +127,18 @@
 
 				<!--- Search Params --->
 					<div class="control-group" id="searchParams">
-						<label class="control-label">#rc.$.rbKey("user.searchcriteria")#</label>
+						<label class="control-label">#rbKey("user.searchcriteria")#</label>
 						<div class="controls">
 							<cfif rc.newSearch or (session.paramCircuit neq 'cUsers' or not session.paramCount)>
 								<select name="paramRelationship1" style="display:none;" class="span2">
-									<option value="and">#rc.$.rbKey("params.and")#</option>
-									<option value="or">#rc.$.rbKey("params.or")#</option>
+									<option value="and">#rbKey("params.and")#</option>
+									<option value="or">#rbKey("params.or")#</option>
 								</select>
 
 								<input type="hidden" name="param" value="1" />
 
 								<select name="paramField1" class="span2">
-									<option value="">#rc.$.rbKey("params.selectfield")#</option>
+									<option value="">#rbKey("params.selectfield")#</option>
 									<cfloop from="1" to="#arrayLen(options)#" index="i">
 										<option value="#options[i][1]#">#options[i][2]#</option>
 									</cfloop>
@@ -153,28 +153,28 @@
 								<input type="text" name="paramCriteria1" class="span4">
 
 								<!--- remove --->
-								<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rc.$.rbKey("params.removecriteria")#">
+								<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rbKey("params.removecriteria")#">
 									<i class="icon-remove-sign"></i>
 								</a>
 								<!--- add --->
-								<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey("params.addcriteria")#">
+								<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
 									<i class="icon-plus-sign"></i>
 								</a>
 							<cfelse>
 								<cfloop from="1" to="#session.paramCount#" index="p">
 									<select name="paramRelationship#p#" class="span2">
 										<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif>>
-											#rc.$.rbKey("params.and")#
+											#rbKey("params.and")#
 										</option>
 										<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif>>
-											#rc.$.rbKey("params.or")#
+											#rbKey("params.or")#
 										</option>
 									</select>
 
 									<input type="hidden" name="param" value="#p#" />
 									
 									<select name="paramField#p#" class="span2">
-										<option value="">#rc.$.rbKey("params.selectfield")#</option>
+										<option value="">#rbKey("params.selectfield")#</option>
 										<cfloop from="1" to="#arrayLen(options)#" index="i">
 											<option value="#options[i][1]#" <cfif session.paramArray[p].field eq options[i][1]>selected</cfif>>
 												#options[i][2]#
@@ -191,10 +191,10 @@
 									</select>
 									
 									<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
-									<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.removecriteria')#">
+									<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rbKey('params.removecriteria')#">
 										<i class="icon-remove-sign"></i>
 									</a>
-									<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rc.$.rbKey('params.addcriteria')#">
+									<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey('params.addcriteria')#">
 										<i class="icon-plus-sign"></i>
 									</a><br>
 								</cfloop>
@@ -205,12 +205,12 @@
 
 				<!--- Active --->
 					<div class="control-group">
-						<label class="control-label">#rc.$.rbKey('user.inactive')#</label>
+						<label class="control-label">#rbKey('user.inactive')#</label>
 						<div class="controls">
 							<select name="inActive">
-								<option value="">#rc.$.rbKey('user.all')#</option>
-								<option value="0" <cfif session.inactive eq 0>selected</cfif>>#rc.$.rbKey('user.yes')#</option>
-								<option value="1" <cfif session.inactive eq 1>selected</cfif>>#rc.$.rbKey('user.no')#</option>
+								<option value="">#rbKey('user.all')#</option>
+								<option value="0" <cfif session.inactive eq 0>selected</cfif>>#rbKey('user.yes')#</option>
+								<option value="1" <cfif session.inactive eq 1>selected</cfif>>#rbKey('user.no')#</option>
 							</select>
 						</div>
 					</div>
@@ -228,14 +228,14 @@
 					<!--- Search Button --->
 						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
 							<i class="icon-search"></i> 
-							#rc.$.rbKey("user.search")#
+							#rbKey("user.search")#
 						</button>
 					
 					<!--- Download Button --->
 						<cfif rc.it.getRecordcount()>
 							<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
 								<i class="icon-download"></i> 
-								#rc.$.rbKey("user.download")#
+								#rbKey("user.download")#
 							</button>
 						</cfif>
 				</div>
@@ -251,19 +251,19 @@
 				<!--- Site Members Tab --->
 					<li<cfif rc.ispublic eq 1> class="active"</cfif>>
 						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=1')#" onclick="actionModal();">
-							#rc.$.rbKey('user.sitemembers')#
+							#rbKey('user.sitemembers')#
 						</a>
 					</li>
 
         <!--- System Users Tab --->
 					<li<cfif rc.ispublic eq 0> class="active"</cfif>>
 						<a href="#buildURL(action='cusers.advancedsearch', querystring='#rc.qs#ispublic=0')#" onclick="actionModal();">
-							#rc.$.rbKey('user.systemusers')#
+							#rbKey('user.systemusers')#
 						</a>
 					</li>
       </ul>
     <cfelse>
-      <h3>#rc.$.rbKey('user.sitemembers')#</h3>
+      <h3>#rbKey('user.sitemembers')#</h3>
     </cfif>
   <!--- /Tab Nav --->
 
