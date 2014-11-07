@@ -239,7 +239,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+	<cfargument name="secure" type="string" required="true" default="0">
+	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta,arguments.secure)>
 </cffunction>			
 
 <cffunction name="getImageURL" output="false">

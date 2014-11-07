@@ -1557,10 +1557,20 @@ Display Objects
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	<cfargument name="bean" hint="The contentBean that link is being generated for">
+	<cfargument name="secure" type="string" required="true" default="0">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+
+	<cfif arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+		<cfif arguments.secure>
+			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfelse>
+			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin="">
+	</cfif>
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
