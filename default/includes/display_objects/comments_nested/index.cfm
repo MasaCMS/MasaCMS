@@ -60,7 +60,7 @@
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
 		<cfsilent>
-			<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
+			<cfset variables.$.addToHTMLHeadQueue("comments_nested/htmlhead/comments-jquery.cfm")>
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
 			
@@ -240,7 +240,7 @@
 
 		<!--- COMMENTS --->
 		<div id="svComments" class="mura-comments">
-			<a name="comments"></a>
+			<a name="mura-comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
 			#variables.$.dspObject_Include(thefile='comments_nested/dsp_comments.cfm')#
@@ -259,24 +259,24 @@
 			</cfif>
 
 			<!--- COMMENT FORM --->
-			<div id="postcomment-form" class="#this.commentFormWrapperClass#">
+			<div id="mura-comment-post-comment-form" class="#this.commentFormWrapperClass#">
 				
-				<span id="postcomment-comment" style="display: none"><a class="btn btn-default" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
+				<span id="mura-comment-post-comment-comment" style="display: none"><a class="btn btn-default" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a></span>
 
 				<!--- THE FORM --->
-				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
-					<a name="postcomment"></a>
+				<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comment-post-comment" onsubmit="return validate(this);" novalidate="novalidate">
+					<a name="mura-comment-post-comment"></a>
 					<fieldset>
 
-						<legend id="postacomment">#variables.$.rbKey('comments.postacomment')#</legend>
-						<legend id="editcomment" style="display:none">#variables.$.rbKey('comments.editcomment')#</legend>
-						<legend id="replytocomment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
+						<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>
+						<div id="mura-comment-edit-comment" style="display:none">#variables.$.rbKey('comments.editcomment')#</div>
+						<div id="mura-comment-reply-to-comment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</div>
 
 						<!--- Name --->
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
+									<input id="txtName" name="name" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#">
 								</div>
 							</div>
 
@@ -284,7 +284,7 @@
 							<div class="req #this.commentFieldWrapperClass#">
 								<label class="#this.commentFieldLabelClass#" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
+									<input id="txtEmail" name="email" type="text" class="#this.commentInputClass#" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#">
 								</div>
 							</div>
 
@@ -300,7 +300,7 @@
 							<div class="req #this.commentFieldWrapperClass#">
 								<label for="txtComment" class="#this.commentFieldLabelClass#">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
 								<div class="#this.commentInputWrapperClass#">
-									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" data-message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" data-required="true">#HTMLEditFormat(request.comments)#</textarea>
+									<textarea rows="5" id="txtComment" class="#this.commentInputClass#" name="comments" message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 								</div>
 							</div>
 
@@ -333,13 +333,13 @@
 						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 					</div>
 
-					<div class="col-lg-offset-3 col-lg-9">
+					<div class="#this.commentRequiredWrapperClass#">
 						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
 					</div>
 					
 					<!--- SUBMIT BUTTON --->
-					<div class="form-group">
-						<div class="col-lg-offset-3 col-lg-9">
+					<div class="#this.commentFieldWrapperClass#">
+						<div class="#this.commentSubmitButtonWrapperClass#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
 							<input type="hidden" name="commentid" value="#createuuid()#">
 							<input type="hidden" name="parentid" value="">
