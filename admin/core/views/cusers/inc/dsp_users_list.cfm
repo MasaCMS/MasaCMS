@@ -98,7 +98,7 @@
 											<cfif local.item.getValue('s2') EQ 1>
 												<li>
 													<a rel="tooltip" title="#rbKey('user.superuser')#">
-														<i class="icon-bolt"></i>
+														<i class="icon-star"></i>
 													</a>
 												</li>
 											<cfelseif local.item.getValue('isPublic') EQ 0>

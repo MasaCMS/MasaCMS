@@ -89,7 +89,7 @@
 			<!--- Permissions --->
 				<cfif rc.isAdmin AND rc.ispublic>
 					<a class="btn" href="./?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000008&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;moduleid=00000000000000000000000000000000008" onclick="actionModal();">
-						<i class="icon-legal"></i> 
+						<i class="icon-group"></i> 
 						#rbKey('user.permissions')#
 					</a>
 				</cfif>
