@@ -530,4 +530,13 @@
 		
 </cffunction>
 
+<cffunction name="getImageSizeURL" output="true">
+	<cfargument name="rc">
+
+	<cfcontent type="application/json">
+	<cfoutput>#createObject("component","mura.json").encode(rc.$.getURLForImage(fileID=rc.fileid,size=rc.size))#</cfoutput>
+	<cfabort>
+		
+</cffunction>
+
 </cfcomponent>
