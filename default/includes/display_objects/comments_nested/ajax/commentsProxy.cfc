@@ -64,5 +64,13 @@
 		<cfoutput>#createobject("component","mura.json").encode(data)#</cfoutput>
 		<cfabort>
 	</cffunction>
+	
+	<cffunction name="flag" access="remote" output="true">
+		<cfargument name="commentID">
+		<cfargument name="siteid" default="#application.contentServer.bindToDomain()#" />
+		<cfset var $ = getBean("MuraScope").init(arguments.siteid)>
+		<cfset var comment = $.getBean("contentManager").getCommentBean()>
+		<cfset comment.setCommentID(arguments.commentID).load().flag()>
+	</cffunction>
 
 </cfcomponent>
