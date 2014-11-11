@@ -54,18 +54,31 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 */
+
+$.fn.changeElementType = function(newType) {
+    var attrs = {};
+
+    $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.value;
+    });
+
+    var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
+    this.replaceWith(newelement);
+    return newelement;
+};
+
 jQuery(document).ready(function() {
-	$editor = jQuery('#postcomment');
-	$commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
-	$newcommentid=jQuery("#postcomment [name=commentid]").val();
-	$name=jQuery("#postcomment [name=name]").val();
-	$url=jQuery("#postcomment [name=url]").val();
-	$email=jQuery("#postcomment [name=email]").val();
+	$editor = jQuery('#mura-comment-post-comment');
+	$commentsProxyPath = assetpath + "/includes/display_objects/comments_nested/ajax/commentsProxy.cfc";
+	$newcommentid=jQuery("#mura-comment-post-comment [name=commentid]").val();
+	$name=jQuery("#mura-comment-post-comment [name=name]").val();
+	$url=jQuery("#mura-comment-post-comment [name=url]").val();
+	$email=jQuery("#mura-comment-post-comment [name=email]").val();
 	$currentedit="";
 	
-	jQuery(document).on('click', '.reply a', function( event ) {
+	jQuery(document).on('click', '.mura-comment-reply a', function( event ) {
 		var id = jQuery(this).attr('data-id');
-	
+		jQuery(".mura-comment-reply-wrapper").hide();
 		if($.currentedit != ''){
 			jQuery($currentedit).show();
 			$currentedit='';
@@ -74,24 +87,44 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		$editor.hide();
 		$editor.detach();
-		jQuery("#postcomment-" + id).append($editor);
-		jQuery("#postacomment").hide();
-		jQuery("#editcomment").hide();
-		jQuery("#replytocomment").show();
-		jQuery("#postcomment-" + id + " [name=name]").val($name);
-		jQuery("#postcomment-" + id + " [name=email]").val($email);
-		jQuery("#postcomment-" + id + " [name=url]").val($url);
-		jQuery("#postcomment-" + id + " [name=comments]").val("");
-		jQuery("#postcomment-" + id + " [name=parentid]").val(id);
-		jQuery("#postcomment-" + id + " [name=commentid]").val($newcommentid);
-		jQuery("#postcomment-" + id + " [name=commenteditmode]").val("add");
-		jQuery("#postcomment-comment").show();
+		jQuery("#mura-comment-post-comment-" + id).append($editor).show();
+		jQuery("#mura-comment-post-a-comment").changeElementType('div').hide();
+		jQuery("#mura-comment-edit-comment").changeElementType('div').hide();
+		jQuery("#mura-comment-reply-to-comment").changeElementType('legend').show();
+		jQuery("#mura-comment-post-comment-" + id + " [name=name]").val($name);
+		jQuery("#mura-comment-post-comment-" + id + " [name=email]").val($email);
+		jQuery("#mura-comment-post-comment-" + id + " [name=url]").val($url);
+		jQuery("#mura-comment-post-comment-" + id + " [name=comments]").val("");
+		jQuery("#mura-comment-post-comment-" + id + " [name=parentid]").val(id);
+		jQuery("#mura-comment-post-comment-" + id + " [name=commentid]").val($newcommentid);
+		jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val("add");
+		jQuery("#mura-comment-post-comment-comment").show();
 		$editor.slideDown();
 	});
 	
-	jQuery(document).on('click', '.editcomment', function( event ) {
+	jQuery("a.mura-comment-flag-as-spam").on('click', function( event ) {
+		event.preventDefault();
+		var a = jQuery(this);
+		var id = a.attr('data-id');
+		var siteid = a.attr('data-siteidid')
+		
+		var actionURL = $commentsProxyPath + "?method=flag&commentID=" + id + "&siteid=" + siteid;
+		jQuery.get(
+			actionURL,
+			function(data){
+				a.html('Flagged as Spam');
+				a.unbind('click');
+				a.on('click', function( event ) {
+					event.preventDefault();
+				});
+			}
+		);
+	});
+	
+	jQuery(document).on('click', '.mura-comment-edit-comment', function( event ) {
 		event.preventDefault();
 		var id = jQuery(this).attr('data-id');
+		jQuery(".mura-comment-reply-wrapper").hide();
 		var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
 		jQuery.get(
 			actionURL,
@@ -105,29 +138,30 @@ jQuery(document).ready(function() {
 				
 				$editor.hide();
 				$editor.detach();
-				jQuery("#postcomment-" + id).append($editor);
-				jQuery("#postacomment").hide();
-				jQuery("#editcomment").show();
-				jQuery("#replytocomment").hide();
+				jQuery("#mura-comment-post-comment-" + id).append($editor).show();
+				jQuery("#mura-comment-post-a-comment").changeElementType('div').hide();
+				jQuery("#mura-comment-edit-comment").changeElementType('legend').show();
+				jQuery("#mura-comment-reply-to-comment").changeElementType('div').hide();
 				
 				jQuery("#comment-" + id + " .comment").hide();
 				$currentedit="#comment-" + id + " .comment";
 				
-				jQuery("#postcomment-" + id + " [name=parentid]").val(data.parentid);
-				jQuery("#postcomment-" + id + " [name=name]").val(data.name);
-				jQuery("#postcomment-" + id + " [name=email]").val(data.email);
-				jQuery("#postcomment-" + id + " [name=url]").val(data.url);
-				jQuery("#postcomment-" + id + " [name=comments]").val(data.comments);
-				jQuery("#postcomment-" + id + " [name=commentid]").val(data.commentid);
-				jQuery("#postcomment-" + id + " [name=commenteditmode]").val("edit");
-				jQuery("#postcomment-comment").show();
+				jQuery("#mura-comment-post-comment-" + id + " [name=parentid]").val(data.parentid);
+				jQuery("#mura-comment-post-comment-" + id + " [name=name]").val(data.name);
+				jQuery("#mura-comment-post-comment-" + id + " [name=email]").val(data.email);
+				jQuery("#mura-comment-post-comment-" + id + " [name=url]").val(data.url);
+				jQuery("#mura-comment-post-comment-" + id + " [name=comments]").val(data.comments);
+				jQuery("#mura-comment-post-comment-" + id + " [name=commentid]").val(data.commentid);
+				jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val("edit");
+				jQuery("#mura-comment-post-comment-comment").show();
 				$editor.slideDown();
 			}
 		);
 	});
 	
-	jQuery("#postcomment-comment a").on('click', function( event ) {
-		jQuery("#postcomment-comment").hide();
+	jQuery("#mura-comment-post-comment-comment a").on('click', function( event ) {
+		jQuery("#mura-comment-post-comment-comment").hide();
+		jQuery(".mura-comment-reply-wrapper").hide();
 		
 		if($.currentedit != ''){
 			 jQuery($currentedit).show();
@@ -137,17 +171,17 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		$editor.hide();
 		$editor.detach();
-		jQuery("#postcomment-form").append($editor);
-		jQuery("#postacomment").show();
-		jQuery("#editcomment").hide();
-		jQuery("#replytocomment").hide();
-		jQuery("#postcomment [name=parentid]").val("");
-		jQuery("#postcomment [name=name]").val($name);
-		jQuery("#postcomment [name=email]").val($email);
-		jQuery("#postcomment [name=url]").val($url);
-		jQuery("#postcomment [name=comments]").val("");
-		jQuery("#postcomment [name=commentid]").val($newcommentid);
-		jQuery("#postcomment [name=commenteditmode]").val("add");
+		jQuery("#mura-comment-post-comment-form").append($editor).show();
+		jQuery("#mura-comment-post-a-comment").changeElementType('legend').show();
+		jQuery("#mura-comment-edit-comment").changeElementType('div').hide();
+		jQuery("#mura-comment-reply-to-comment").changeElementType('div').hide();
+		jQuery("#mura-comment-post-comment [name=parentid]").val("");
+		jQuery("#mura-comment-post-comment [name=name]").val($name);
+		jQuery("#mura-comment-post-comment [name=email]").val($email);
+		jQuery("#mura-comment-post-comment [name=url]").val($url);
+		jQuery("#mura-comment-post-comment [name=comments]").val("");
+		jQuery("#mura-comment-post-comment [name=commentid]").val($newcommentid);
+		jQuery("#mura-comment-post-comment [name=commenteditmode]").val("add");
 		$editor.slideDown();
 	});
 	
