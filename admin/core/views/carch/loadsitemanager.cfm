@@ -300,7 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rsTop.filename#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="File">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
             </cfswitch>
             <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
@@ -322,7 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rsTop.filename#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="File">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
             </cfswitch>
             <li class="version-history disabled"><a><i class="icon-book"></i></a></li>

@@ -54,6 +54,19 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 */
+
+$.fn.changeElementType = function(newType) {
+    var attrs = {};
+
+    $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.value;
+    });
+
+    var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
+    this.replaceWith(newelement);
+    return newelement;
+};
+
 $(function(){
 	var $editor = jQuery('#mura-comment-post-comment');
 	var $commentsProxyPath = mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
@@ -290,9 +303,9 @@ $(function(){
 			$editor.hide();
 			$editor.detach();
 			jQuery("#mura-comment-post-comment-" + id).append($editor).show();
-			jQuery("#mura-comment-post-a-comment").hide();
-			jQuery("#mura-comment-edit-comment").hide();
-			jQuery("#mura-comment-reply-to-comment").show();
+			jQuery("#mura-comment-post-a-comment").changeElementType('div').hide();
+			jQuery("#mura-comment-edit-comment").changeElementType('div').hide();
+			jQuery("#mura-comment-reply-to-comment").changeElementType('legend').show();
 			jQuery("#mura-comment-post-comment-" + id + " [name=name]").val($name);
 			jQuery("#mura-comment-post-comment-" + id + " [name=email]").val($email);
 			jQuery("#mura-comment-post-comment-" + id + " [name=url]").val($url);
@@ -323,9 +336,9 @@ $(function(){
 					$editor.hide();
 					$editor.detach();
 					jQuery("#mura-comment-post-comment-" + id).append($editor).show();
-					jQuery("#mura-comment-post-a-comment").hide();
-					jQuery("#mura-comment-edit-comment").show();
-					jQuery("#mura-comment-reply-to-comment").hide();
+					jQuery("#mura-comment-post-a-comment").changeElementType('div').hide();
+					jQuery("#mura-comment-edit-comment").changeElementType('legend').show();
+					jQuery("#mura-comment-reply-to-comment").changeElementType('div').hide();
 					
 					jQuery("#comment-" + id + " .comment").hide();
 					$currentedit="#comment-" + id + " .comment";
@@ -355,9 +368,9 @@ $(function(){
 			$editor.hide();
 			$editor.detach();
 			jQuery("#mura-comment-post-comment-form").append($editor).show();
-			jQuery("#mura-comment-post-a-comment").show();
-			jQuery("#mura-comment-edit-comment").hide();
-			jQuery("#mura-comment-reply-to-comment").hide();
+			jQuery("#mura-comment-post-a-comment").changeElementType('legend').show();
+			jQuery("#mura-comment-edit-comment").changeElementType('div').hide();
+			jQuery("#mura-comment-reply-to-comment").changeElementType('div').hide();
 			jQuery("#mura-comment-post-comment [name=parentid]").val("");
 			jQuery("#mura-comment-post-comment [name=name]").val($name);
 			jQuery("#mura-comment-post-comment [name=email]").val($email);

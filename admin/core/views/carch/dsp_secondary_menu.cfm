@@ -182,9 +182,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="File">	
 						<!---
-						<a href="##" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+						<a href="##" href="##" onclick="return openPreviewDialog('#application.utility.getRequestProtocol()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
 						--->
-						<li><a href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i></a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+						<li><a href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i></a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 					</cfcase>
 					</cfswitch>
 				</cfif>

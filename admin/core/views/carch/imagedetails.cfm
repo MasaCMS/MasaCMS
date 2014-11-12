@@ -115,7 +115,7 @@
 							</div>
 						</div>
 						<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-						<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
+						<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
 					</div>
 				</cfloop>
 			</cfif>
@@ -137,6 +137,19 @@
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
+		 
+		   var pos = src.indexOf('?');
+		   if (pos >= 0) {
+		      src = src.substr(0, pos);
+		   }
+			
+		   obj.src = src + '?v=' + Math.random();
+
+		   return false;
+		}
+
+		function setImg(id,src) {
+		   var obj = document.getElementById(id);
 		 
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
@@ -295,6 +308,20 @@
 		
 		$(document).ready(function(){
 			$('.load-inline').spin(spinnerArgs2);
+
+			$('.mura-custom-image').each(
+				function(){
+					var self=this;
+
+					$.getJSON('./?muraAction=carch.getImageSizeURL&siteid=#esapiEncode("url",rc.siteid)#&fileid=' + $(this).data('fileid') + '&size=' + $(this).data('size'))
+					.then(function(data){
+						var target=$(self).data('size') + $(self).data('fileid');
+
+						setImg(target,data);
+					});
+
+				}
+			);
 
 			<cfif rc.compactDisplay eq "true">
 			if (top.location != self.location) {

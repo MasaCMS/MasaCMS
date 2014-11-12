@@ -87,7 +87,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
 						</div>
 					</div>
 
@@ -98,7 +98,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
 						</div>
 					</div>
 
@@ -109,7 +109,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
 						</div>
 					</div>
 
@@ -128,7 +128,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" required="true" placeholder="#variables.$.rbKey('user.email')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
+							<input class="#this.editProfileFormFieldsClass#" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.email')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
 						</div>
 					</div>
 
@@ -140,7 +140,7 @@
 								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 							</label>
 							<div class="#this.editProfileFormFieldsWrapperClass#">
-								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
+								<input class="#this.editProfileFormFieldsClass#" type="text" id="email2xt" name="email2" value="" maxlength="50" data-required="true" data-validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 							</div>
 						</div>
 					</cfif>
@@ -156,7 +156,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="passwordNoCache" id="passwordtxt" data-validate="match" matchfield="password2" value=""  maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.password')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
 						</div>
 					</div>
 
@@ -167,7 +167,7 @@
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
 						<div class="#this.editProfileFormFieldsWrapperClass#">
-							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
+							<input class="#this.editProfileFormFieldsClass#" type="password" name="password2" id="password2txt" value=""  maxlength="50" data-required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" data-message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
 						</div>
 					</div>
 
@@ -188,11 +188,11 @@
 						<ul class="columns2">
 							<li class="col">
 								<p class="inputNote">Photo must be JPG format optimized for up to 150 pixels wide.</p>
-									<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
+									<input type="file" name="newFile" data-validate="regex" regex="(.+)(\.)(jpg|JPG)" data-message="Your logo must be a .JPG" value=""/>
 							</li>
 							<li class="col">
 								<cfif len(request.userBean.getPhotoFileID())>
-									<img src="#variables.$.globalConfig('context')#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+									<img src="#variables.$.globalConfig('context')#/tasks/render/small/index.cfm?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
 									<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo
 							</cfif>
 							</li>
@@ -266,7 +266,7 @@
 														</div>
 													</div>
 													<div class="#this.editProfileExtAttributeDownloadClass#">
-														<span class="#this.editProfileHelpBlockClass#"><a class="#this.editProfileExtAttributeDownloadButtonClass#" href="#variables.$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">Download</a></span>
+														<span class="#this.editProfileHelpBlockClass#"><a class="#this.editProfileExtAttributeDownloadButtonClass#" href="#variables.$.globalConfig('context')#/tasks/render/file/index.cfm?fileID=#attributeValue#" target="_blank">Download</a></span>
 													</div>
 												</div>
 											</cfif>

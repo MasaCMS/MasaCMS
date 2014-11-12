@@ -122,6 +122,7 @@
 		//this.enablemuratag=true;
 		//this.bodyMetaImageSizeArgs={size="medium"};
 		//this.defaultnavsize=50;
+		this.shadowboxattribute="data-rel"; //This is the new value and will not be needed overtime.
 		
 		this.alertSuccessClass = "";
 		this.alertInfoClass = "";

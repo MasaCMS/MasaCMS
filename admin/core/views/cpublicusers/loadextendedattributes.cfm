@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#userBean.getUserID()#&siteid=#userBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
 				</cfif>
 
-				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #application.rbFactory.getKeyValue(session.rb,'user.delete')# </cfif>
+				<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> #application.rbFactory.getKeyValue(session.rb,'user.delete')# </cfif>
 			</label>
 			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 			<cfif attributeBean.getType() IS "Hidden">
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#userBean.getUserID()#&siteid=#userBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
 				</cfif>
 
-				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+				<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 			</label>
 			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 			<cfif attributeBean.getType() IS "Hidden">

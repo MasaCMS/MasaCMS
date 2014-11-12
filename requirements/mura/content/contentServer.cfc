@@ -197,6 +197,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif not structKeyExists(request,"preformated")>
 			<cfif find(".",last)>
+				<cfif last eq 'index.json'>
+		 			<cfset request.returnFormat="JSON">
+		 		</cfif>
 				<cfset indexFile=last>
 			</cfif>
 			<cfif last neq indexFile and right(url.path,1) neq "/">
@@ -295,6 +298,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
+
+	<cfif listLast(url.path,'/') eq 'index.json'>
+		<cfset request.returnFormat="JSON">
+	</cfif>
 	
 	<cfreturn parseURL()>
 </cffunction>
@@ -327,6 +334,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset last=listLast(url.path,"/") />
 		
 		<cfif find(".",last)>
+			<cfif last eq 'index.json'>
+	 			<cfset request.returnFormat="JSON">
+	 		</cfif>
 			<cfset indexFile=last>
 		</cfif>
 		
@@ -374,8 +384,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileoutput="">
 
 	<cfset url.path=arguments.filename>
+	<cfset var last=listLast(arguments.filename,"/")>
 
- 	<cfif find(".",listLast(arguments.filename,"/"))>
+ 	<cfif find(".",last)>
+ 		<cfif last eq 'index.json'>
+ 			<cfset request.returnFormat="JSON">
+ 		</cfif>
  		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
  	</cfif>
  

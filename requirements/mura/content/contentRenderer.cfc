@@ -24,7 +24,7 @@ Mura CMS under the license of your choice, provided that you follow these specif
 
 Your custom code 
 
-• Must not alter any" default objects in the Mura CMS database and
+• Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
@@ -110,7 +110,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.aNotCurrentClass="">
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.bodyMetaImageClass="thumbnail">
-<!-- this is legacy--->
+<!-- This is temp only for backward compatibility--->
+<cfset this.shadowboxattribute="rel">
+<!--- this is legacy--->
 <cfset this.size=50>
 <!-- use this--->
 <cfset this.navsize=this.size>
@@ -1416,7 +1418,7 @@ Display Objects
 			<cfoutput>
 			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq variables.event.getValue('contentBean').getContentID()>
-			<li ><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li ><a href="./index.cfm?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
@@ -1426,7 +1428,7 @@ Display Objects
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq variables.event.getValue('contentBean').getContentID()>
-			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
+			<li><a href="./index.cfm?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</cfsavecontent>
@@ -1626,10 +1628,10 @@ Display Objects
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
 			</cfcase>
 			<cfcase value="File">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
@@ -2200,7 +2202,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -2229,7 +2231,7 @@ Display Objects
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 									<div id="svAsset" class="mura-asset">
 									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
@@ -2818,7 +2820,7 @@ Display Objects
 	<cfelse>
 		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
 		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "index.cfm?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelseif not findNocase("linkServID",qrystr)>
 			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr & "&linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
 		<cfelse>
@@ -3257,7 +3259,7 @@ Display Objects
 
 <cffunction name="generateEditableHook" output="false">
 	<cfif getJSLib() eq "prototype">
-		<cfreturn 'rel="shadowbox;width=1050;"'>
+		<cfreturn '#this.shadowboxattribute#="shadowbox;width=1050;"'>
 	<cfelse>
 		<cfreturn 'class="frontEndToolsModal"'>
 	</cfif>
@@ -3396,7 +3398,7 @@ Display Objects
 		if ( not rsFileData.recordcount ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+			return '#application.configBean.getContext()#/tasks/render/file/index.cfm?method=#arguments.method#&amp;fileID=#arguments.fileid#';
 		}
 	</cfscript>
 </cffunction>

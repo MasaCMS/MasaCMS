@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#rc.rslist.filename#','#rc.rslist.targetParams#');"><i class="icon-globe"></i></a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rc.rslist.contentid#','#rc.rslist.targetParams#');"><i class="icon-globe"></i></a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rc.rslist.contentid#','#rc.rslist.targetParams#');"><i class="icon-globe"></i></a>
 		</cfcase>
 		</cfswitch></li></ul></td>
 </tr></cfloop>

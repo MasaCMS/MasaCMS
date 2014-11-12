@@ -63,7 +63,7 @@ SELECT userid, fname, lname, email, type FROM tusers WHERE type=2 and Email>'' A
 <cfelse>
 <li class="req">
 	<label for="sendto">#$.rbKey('email.sendto')#<ins> (#$.rbKey('email.required')#)</ins></label>
-	<select id="sendto" name="sendto" class="dropdown" required="true" message="#htmlEditFormat($.rbKey('email.sendtorequired'))#">
+	<select id="sendto" name="sendto" class="dropdown" data-required="true" data-message="#htmlEditFormat($.rbKey('email.sendtorequired'))#">
 		<option value="">#$.rbKey('email.pleaseselect')#</option>
 		<cfif rsEmail1.recordcount>
 		<optgroup label="#htmlEditFormat($.rbKey('email.group'))#">

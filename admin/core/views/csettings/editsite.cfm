@@ -1016,7 +1016,7 @@ to your own modified versions of Mura CMS.
                       <cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
                       <a href="./index.cfm?muraAction=cArch.imagedetails&siteid=#rc.siteBean.getSiteID()#&fileid=#esapiEncode('url',attributeValue)#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#esapiEncode('url',attributeValue)#&cacheID=#createUUID()#" /></a>
                     </cfif>
-                      <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#esapiEncode('url',attributeValue)#" target="_blank">[Download]</a>
+                      <a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#esapiEncode('url',attributeValue)#" target="_blank">[Download]</a>
                       <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/>
                       Delete
                     </cfif>

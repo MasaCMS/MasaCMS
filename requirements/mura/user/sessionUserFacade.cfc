@@ -212,9 +212,9 @@
 </cffunction>
 
 <cffunction name="generateCSRFTokens" output="false">
-	<cfargument name="timespan" default="#createTimeSpan(0,0,1,0)#">
+	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
 	<cfargument name="context" default="">
-	<cfset var expires=now() + arguments.timespan>
+	<cfset var expires=numberFormat((now() + arguments.timespan),'99999.9999999')>
 
 	<cfreturn {
 		expires=expires,
