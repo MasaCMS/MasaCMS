@@ -57,7 +57,7 @@ uses the query string as the key --->
 <cfparam name="request.cacheItem" default="true">
 <cfparam name="request.cacheItemTimeSpan" default="">
 
-<cfset attributes.key=attributes.key & request.muraOutputCacheOffset>
+<cfset variables.tempKey=attributes.key & request.muraOutputCacheOffset>
 
 <cfif not isBoolean(request.cacheItem)>
   <cfset request.cacheItem=true/>
@@ -75,8 +75,8 @@ uses the query string as the key --->
   <cfset attributes.purgeCache = false />
 </cfif> 
 
-<cfif attributes.purgeCache and attributes.cacheFactory.has(attributes.key)>
-  <cfset attributes.cacheFactory.purge(attributes.key) />
+<cfif attributes.purgeCache and attributes.cacheFactory.has(variables.tempKey)>
+  <cfset attributes.cacheFactory.purge(variables.tempKey) />
 </cfif>
 
 <cfif thisTag.executionMode IS "Start">
@@ -88,20 +88,21 @@ uses the query string as the key --->
   <cfset cacheFactory=attributes.cacheFactory/>
        
   <cfif thisTag.executionMode IS "Start">
-    <cfif cacheFactory.has( attributes.key )>
+
+    <cfif cacheFactory.has( variables.tempKey )>
       <cftry>
-        <cfset content=cacheFactory.get( attributes.key )>
+        <cfset content=cacheFactory.get( variables.tempKey )>
         <cfoutput>#content#</cfoutput>
         <cfsetting enableCFOutputOnly="No">
         <cfexit method="EXITTAG">   
         <cfcatch></cfcatch>
       </cftry>
     </cfif>
-  <cfelse>        
+  <cfelse>
 	 <cfif isDate(request.cacheItemTimeSpan)>
-		  <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
+		  <cfset cacheFactory.set( key=variables.tempKey, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
 	 <cfelse>
-      <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
+      <cfset cacheFactory.set( key=variables.tempKey, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
 	 </cfif>
   </cfif>
 </cfif>
