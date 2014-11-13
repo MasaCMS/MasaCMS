@@ -67,31 +67,37 @@
 			<cfelse>
 				#htmleditformat(request.rsSubCommentsLevel.name[arguments.currentrow])#
 			</cfif>
-			<cfif request.isEditor and request.rsSubCommentsLevel.email[arguments.currentrow] neq ''>
-				<a class="#this.emailLinkClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
-			</cfif>
 			<cfif request.isEditor>
-				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-					 <a class="mura-comment-edit-comment #this.commentsLinkClass#" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
-				</cfif>
-				<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
-					 <a class="#this.approveCommentLinkClass#" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
-				</cfif>
-				 <a class="#this.deleteCommentLinkClass#" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+				<div class="mura-comment-admin-button-wrapper #this.commentAdminButtonWrapperClass#">
+					<cfif request.isEditor and request.rsSubCommentsLevel.email[arguments.currentrow] neq ''>
+						<a class="#this.emailLinkClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
+					</cfif>
+					<cfif request.isEditor>
+						<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+							 <a class="mura-comment-edit-comment #this.commentsLinkClass#" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
+						</cfif>
+						<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
+							 <a class="#this.approveCommentLinkClass#" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
+						</cfif>
+						 <a class="#this.deleteCommentLinkClass#" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+					</cfif>
+				</div>
 			</cfif>
 		</dt>
 		<cfif len(variables.$.currentUser().getPhotoFileID())>
-			<dd class="gravatar"><img src="#variables.$.createHREFForImage(variables.$.currentUser().getSiteID(),variables.$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
+			<dd class="mura-comment-thumb"><img src="#variables.$.createHREFForImage(variables.$.currentUser().getSiteID(),variables.$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
 		<cfelse>
-			<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email[arguments.currentrow])))#" /></dd>
+			<dd class="mura-comment-thumb"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email[arguments.currentrow])))#" /></dd>
 		</cfif>
-		<dd class="comment">
+		<dd class="mura-comment">
 			#setParagraphs(htmleditformat(request.rsSubCommentsLevel.comments[arguments.currentrow]))#
 		</dd>
-		<dd class="dateTime">
+		<dd class="mura-comment-date-time">
 			#LSDateFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"long")#, #LSTimeFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"short")#
 		</dd>
-		<dd class="reply"><a data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
-		<dd id="postcomment-#request.rsSubCommentsLevel.commentid[arguments.currentrow]#"></dd>
+		<dd class="mura-comment-reply"><a data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
+		<dd class="mura-comment-spam #this.commentSpamClass#"><a data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" data-siteid="#request.rsSubCommentsLevel.siteid[arguments.currentrow]#" class="mura-comment-flag-as-spam #this.commentSpamLinkClass#" href="##">Flag as Spam</a></dd>
 	</dl>
+	<!--- Add the target for the reply form --->
+	<dd id="mura-comment-post-comment-#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" class="mura-comment-reply-wrapper #this.commentFormWrapperClass#" style="display:none;"></dd>
 </cfoutput>

@@ -239,7 +239,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+	<cfargument name="secure" default="false">
+	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta, arguments.secure)>
 </cffunction>			
 
 <cffunction name="getImageURL" output="false">
@@ -249,6 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfargument name="default" default=""/>
+	<cfargument name="secure" default="false">
 	<cfset arguments.bean=this>
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>

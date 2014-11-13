@@ -1557,10 +1557,20 @@ Display Objects
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	<cfargument name="bean" hint="The contentBean that link is being generated for">
+	<cfargument name="secure" default="false">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+
+	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+		<cfif arguments.secure>
+			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfelse>
+			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin="">
+	</cfif>
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
@@ -1616,10 +1626,20 @@ Display Objects
 	<cfargument name="indexFile" type="string" default="">
 	<cfargument name="showMeta" type="string" default="0">
 	<cfargument name="fileExt" type="string" default="" required="true">
+	<cfargument name="secure" default="false">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
+
+	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+		<cfif arguments.secure>
+			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfelse>
+			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin="">
+	</cfif>
 	
 	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
@@ -1650,6 +1670,7 @@ Display Objects
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
+<cfargument name="secure" default="false">
 
 	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 	
@@ -1678,6 +1699,7 @@ Display Objects
 	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="isParent" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
+	<cfargument name="secure" default="false">
 			
 	<cfset var link ="">
 	<cfset var href ="">
@@ -1704,7 +1726,7 @@ Display Objects
 		<cfset theClass=listAppend(theClass,arguments.aHasKidsClass," ") />
 	</cfif>
 		
-	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
+	<cfset href=createHREF(type=arguments.type,filename=arguments.filename,siteid=arguments.siteid,contentid=arguments.contentid,target=arguments.target,targetparams=iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),querystring=arguments.queryString,context=arguments.context,stub=arguments.stub,indexfile=arguments.indexFile,complete=arguments.complete,showmeta=arguments.showMeta,secure=arguments.secure)>
 	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 	<cfreturn link>
 </cffunction>
@@ -3411,6 +3433,7 @@ Display Objects
 	<cfargument name="height" required="false" default="AUTO" />
 	<cfargument name="width" required="false" default="AUTO" />
 	<cfargument name="siteID" required="false" default="#variables.$.event('siteID')#" />
+	<cfargument name="secure" default="false">
 	<cfscript>
 		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
 		if ( IsSimpleValue(imageURL) ) {

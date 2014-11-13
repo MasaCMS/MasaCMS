@@ -507,4 +507,8 @@ component extends="framework" output="false" {
 		}
 	}
 
+	function rbKey(key){
+		return application.rbFactory.getKeyValue(session.rb,arguments.key);
+	}
+
 }

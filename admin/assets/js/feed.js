@@ -44,9 +44,9 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 var feedManager = {
-	loadSiteFilters: function(siteid, keywords, isNew) {
+	loadSiteFilters: function(siteid, keywords, isNew, contentPoolID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&contentPoolID=' + contentPoolID +'&cacheid=' + Math.random();
 		var d = $('#selectFilter');
 		d.html('<div class="load-inline"></div>');
 		$('#selectFilter .load-inline').spin(spinnerArgs2); 
@@ -56,16 +56,21 @@ var feedManager = {
 	},
 
 	addContentFilter: function(contentID, contentType, title) {
+
 		var tbody = document.getElementById('contentFilters').getElementsByTagName("TBODY")[0];
 		var row = document.createElement("TR");
 		row.id = "c" + contentID;
+		
 		var name = document.createElement("TD");
-		name.appendChild(document.createTextNode(title));
 		name.className = "var-width";
+		$(name).html(decodeURI(title));
+
 		var type = document.createElement("TD");
-		type.appendChild(document.createTextNode(contentType));
+		$(type).html(decodeURI(contentType));
+		
 		var admin = document.createElement("TD");
 		admin.className = "actions";
+		
 		var deleteLink = document.createElement("A");
 		deleteLink.setAttribute("href", "#");
 		deleteLink.setAttribute("title", "Delete");

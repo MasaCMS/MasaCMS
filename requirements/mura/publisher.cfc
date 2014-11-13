@@ -1005,6 +1005,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.cssclass")>
 					,cssclass
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.contentpoolid")>
+					,contentpoolid
+					</cfif>
 					)
 					values
 					(
@@ -1064,7 +1067,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.cssclass")>
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.cssclass neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.cssclass#">			
-					</cfif>					
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.contentpoolid")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.contentpoolid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.contentpoolid#">			
+					</cfif>						
 					)
 				</cfquery>
 			</cfloop>

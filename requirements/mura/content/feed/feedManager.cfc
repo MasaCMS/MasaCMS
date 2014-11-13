@@ -117,10 +117,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getcontentItems" returntype="query" access="public" output="false">
-	<cfargument name="siteID"  type="string" />
+	<cfargument name="feedBean" />
 	<cfargument name="contentID"  type="string" />
 
-	<cfreturn variables.feedgateway.getcontentItems(arguments.siteID,arguments.contentID) />
+	<cfreturn variables.feedgateway.getcontentItems(arguments.feedBean) />
 </cffunction>
 
 <cffunction name="create" access="public" returntype="any" output="false">

@@ -349,8 +349,9 @@
 								<!--- /Modules --->
 
 								<!--- Users --->
-									<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
-										<li class="dropdown<cfif listFindNoCase('cPrivateUsers,cPublicUsers',rc.originalcircuit) or (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> active</cfif>">
+									<cfif ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or (application.settingsManager.getSite(session.siteid).getextranet() and application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
+										<li class="dropdown<cfif listFindNoCase('cUsers,cPrivateUsers,cPublicUsers',rc.originalcircuit) or (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> active</cfif>">
+
 											<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 												<i class="icon-group"></i> 
 												<span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
@@ -359,48 +360,44 @@
 											
 											<cfparam name="rc.userid" default="">
 											<ul class="dropdown-menu">
-												<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-													<li <cfif request.action eq "core:cprivateusers.list" or (rc.originalcircuit eq 'cprivateusers' and len(rc.userid))> class="active"</cfif>>
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPrivateUsers.list&amp;siteid=#session.siteid#">
-															<i class="icon-group"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#
-														</a>
-													</li>
-													<li<cfif request.action eq "core:cprivateusers.edituser" and not len(rc.userID)> class="active"</cfif>>
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPrivateUsers.edituser&amp;siteid=#session.siteid#&userid=">
-															<i class="icon-plus-sign"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.addadministrativeuser")#
-														</a>
-													</li>
-													<li class="last<cfif request.action eq "core:cprivateusers.editgroup" and not len(rc.userID)> active</cfif>">
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPrivateUsers.editgroup&amp;siteid=#session.siteid#&amp;userid=">
-															<i class="icon-plus-sign"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.addadministrativegroup")#
-														</a>
-													</li>
+												<cfif ( 
+													ListFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
+													) OR ( 
+														application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")
+												)>
+													<!--- View Groups --->
+														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#session.siteid#">
+																<i class="icon-group"></i> 
+																#application.rbFactory.getKeyValue(session.rb,"user.viewgroups")#
+															</a>
+														</li>
+
+													<!--- View Users --->
+														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.listusers' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.listUsers&amp;siteid=#session.siteid#">
+																<i class="icon-group"></i> 
+																#application.rbFactory.getKeyValue(session.rb,"user.viewusers")#
+															</a>
+														</li>
 
 													<li class="divider"></li>
-												</cfif>
 
-												<cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
-													<li <cfif request.action eq 'core:cpublicusers.list' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cpublicusers' and len(rc.userid))>class="active"</cfif>>
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.list&amp;siteid=#session.siteid#">
-															<i class="icon-group"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#
-														</a>
-													</li>
-													<li<cfif request.action eq "core:cpublicusers.edituser" and not len(rc.userID)> class="active"</cfif>>
-														<a href="./?muraAction=cPublicUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
-															<i class="icon-plus-sign"></i> 
-															#application.rbFactory.getKeyValue(session.rb,'user.addmember')#
-														</a>
-													</li>
-													<li<cfif request.action eq "core:cpublicusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
-														<a href="./?muraAction=cPublicUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
-															<i class="icon-plus-sign"></i> 
-															#application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#
-														</a>
-													</li>
+													<!--- Add Group --->
+														<li<cfif request.action eq "core:cusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
+															<a href="./?muraAction=cUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+																<i class="icon-plus-sign"></i> 
+																#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#
+															</a>
+														</li>
+
+													<!--- Add User --->
+														<li<cfif request.action eq "core:cusers.edituser" and not len(rc.userID)> class="active"</cfif>>
+															<a href="./?muraAction=cUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+																<i class="icon-plus-sign"></i> 
+														 		#application.rbFactory.getKeyValue(session.rb,'user.adduser')#
+														 	</a>
+														</li>
 												</cfif>
 											</ul>			
 										</li>

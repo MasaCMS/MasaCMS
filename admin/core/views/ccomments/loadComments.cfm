@@ -77,9 +77,9 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="icon-flag"></i> Spam</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
 								</ul>
 							</div>
 							<div class="btn-group">
@@ -95,7 +95,7 @@
 									<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 									<li><a href="##" class="nextN" data-nextn="500">500</a></li>
 									<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
-									<li><a href="##" class="nextN" data-nextn="10000">#rc.$.rbKey('comments.all')#</a></li>
+									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 								</ul>
 							</div>
 						</div>
@@ -153,16 +153,16 @@
 					<thead>
 						<tr>
 							<th>
-								<a id="checkall" href="##" title="#rc.$.rbKey('comments.selectall')#"><i class="icon-check"></i></a>
+								<a id="checkall" href="##" title="#rbKey('comments.selectall')#"><i class="icon-check"></i></a>
 							</th>
 							<th>
-								<a class="sort" data-sortby="entered" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rc.$.rbKey('comments.sortbydatetime')#" href="##">Date</a>
+								<a class="sort" data-sortby="entered" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rbKey('comments.sortbydatetime')#" href="##">Date</a>
 							</th>
 							<th>
-								<a class="sort" data-sortby="entered" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rc.$.rbKey('comments.sortbydatetime')#" href="##">Time</a>
+								<a class="sort" data-sortby="entered" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rbKey('comments.sortbydatetime')#" href="##">Time</a>
 							</th>
 							<th>
-								<a class="sort" data-sortby="name" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rc.$.rbKey('comments.sortbyname')#" href="##">User</a>
+								<a class="sort" data-sortby="name" data-sortdirection="#rc.sortdirlink#" data-nextn="#Val(rc.nextn)#" title="#rbKey('comments.sortbyname')#" href="##">User</a>
 							</th>
 							<th class="var-width">Comment</th>
 							<th>Status</th>
@@ -190,7 +190,7 @@
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
 									
 									<p>
-										<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br /> --->
+										<!--- <strong>#esapiEncode('html',local.item.getName())#</strong> <em>#rbKey('comments.commentedon')#:</em><br /> --->
 										<cfif local.content.getIsNew()>
 											<h1><i class="icon-external-link"></i> Content Missing</h1>
 										<cfelse>
@@ -208,19 +208,19 @@
 								</div>
 								<div class="modal-footer">
 									<div class="pull-right">
-										<!--- <a href="##" class="btn  btn-primary" data-dismiss="modal"><i class="icon-undo"></i> #rc.$.rbKey('comments.cancel')#</a> --->
+										<!--- <a href="##" class="btn  btn-primary" data-dismiss="modal"><i class="icon-undo"></i> #rbKey('comments.cancel')#</a> --->
 										<cfif local.item.getIsDeleted()>
 											<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="icon-trash"></i> Undelete</a>
 										<cfelse>
-											<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
+											<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="icon-trash"></i> #rbKey('comments.delete')#</a>
 											<cfif local.item.getIsSpam()>
 												<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="icon-flag"></i> Unspam</a>
 											<cfelse>
 												<a href="##" class="singleEdit btn btn-primary" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="icon-flag"></i> Spam</a>
 												<cfif local.item.getIsApproved()>
-													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="icon-ban-circle"></i> #rc.$.rbKey('comments.unapprove')#</a>
+													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="icon-ban-circle"></i> #rbKey('comments.unapprove')#</a>
 												<cfelse>
-													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="icon-ok"></i> #rc.$.rbKey('comments.approve')#</a>
+													<a href="##" class="singleEdit btn  btn-primary" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="icon-ok"></i> #rbKey('comments.approve')#</a>
 												</cfif>
 											</cfif>
 										</cfif>
@@ -314,9 +314,9 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="icon-flag"></i> Spam</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
 								</ul>
 							</div>
 							<div class="btn-group">
@@ -332,7 +332,7 @@
 									<li><a href="##" class="nextN" data-nextn="250">250</a></li>
 									<li><a href="##" class="nextN" data-nextn="500">500</a></li>
 									<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
-									<li><a href="##" class="nextN" data-nextn="10000">#rc.$.rbKey('comments.all')#</a></li>
+									<li><a href="##" class="nextN" data-nextn="10000">#rbKey('comments.all')#</a></li>
 								</ul>
 							</div>
 				
