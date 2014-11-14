@@ -224,13 +224,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("mailingList","mailingListBean");
 		variables.serviceFactory.addAlias("mailingListMember","memberBean");
 		variables.serviceFactory.addAlias("groupDAO","userDAO");
-		variables.serviceFactory.addAlias("placement","placementBean");
-		variables.serviceFactory.addAlias("creative","creativeBean");
+
+		//The ad manager has been removed, but may be there in certain legacy conditions
+		if(variables.serviceFactory.containsBean('placementBean')){
+			variables.serviceFactory.addAlias("placement","placementBean");
+			variables.serviceFactory.addAlias("creative","creativeBean");
+			variables.serviceFactory.addAlias("adZone","adZoneBean");
+			variables.serviceFactory.addAlias("campaign","campaignBean");
+		}
+	
 		variables.serviceFactory.addAlias("rate","rateBean");
 		variables.serviceFactory.addAlias("favorite","favoriteBean");
-		variables.serviceFactory.addAlias("campaign","campaignBean");
 		variables.serviceFactory.addAlias("email","emailBean");
-		variables.serviceFactory.addAlias("adZone","adZoneBean");
 		variables.serviceFactory.addAlias("imageSize","settingsImageSizeBean");
 		variables.serviceFactory.addAlias("imageSizeIterator","settingsImageSizeIterator");
 		variables.serviceFactory.addAlias("$","MuraScope");
@@ -293,8 +298,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfset application.appAutoUpdated=false>
 				
-	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
+	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
 		
+	<!--- The ad manager has been removed, but may be there in certain legacy conditions --->
+	<cfif application.serviceFactory.containsBean('advertiserManager')>
+		<cfset variables.serviceList=listAppend(variablies.serviceList,'advertiserManager')>
+	</cfif>
+
 	<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
 	<cfloop list="#variables.serviceList#" index="variables.i">			
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")> 	

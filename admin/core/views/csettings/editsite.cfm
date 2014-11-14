@@ -504,7 +504,8 @@ to your own modified versions of Mura CMS.
 	        </div>
 
           <div class="control-group">
-            <cfif application.configBean.getAdManager()>
+            <!--- The ad manager is now gone, but can exist in limited legacy situations --->
+            <cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
             <div class="span3">
               <label class="control-label">Advertisement Manager</label>
               <div class="controls"> 
