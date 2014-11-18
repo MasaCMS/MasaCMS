@@ -54,7 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset baseTypeList = "Page,Folder,Calendar,Gallery,File,Link"/>
 <cfset rsSubTypes = application.classExtensionManager.getSubTypes(siteID=rc.siteID, activeOnly=true) />
 <cfset contentPoolSiteIDs = $.getBean('settingsManager').getSite($.event('siteId')).getContentPoolID()>
-<cfset contentPoolSiteIDs = listDeleteAt(contentPoolSiteIDs, listFind(contentPoolSiteIDs, $.event('siteid')))>
+<cfif listFind(contentPoolSiteIDs, $.event('siteid'))>
+	<cfset contentPoolSiteIDs = listDeleteAt(contentPoolSiteIDs, listFind(contentPoolSiteIDs, $.event('siteid')))>
+</cfif>
 
 <cfoutput>
 	<script>
