@@ -426,10 +426,12 @@ NOTES       : Dave Shuck - created
 
 			Result.Pass = true;
 			for (checkfield in arguments.FormStruct)   {
-				UrlCount = arrayLen(rematch(urlRegex,arguments.FormStruct[checkfield])) - 1;
-				if (UrlCount GTE getConfig().tooManyUrlsMaxUrls)   {
-					Result.Pass = false;
-					break;
+				if ( IsSimpleValue(arguments.FormStruct[checkfield])) {
+					UrlCount = arrayLen(rematch(urlRegex,arguments.FormStruct[checkfield])) - 1;
+					if (UrlCount GTE getConfig().tooManyUrlsMaxUrls)   {
+						Result.Pass = false;
+						break;
+					}
 				}
 			}
 			return Result;
@@ -461,7 +463,7 @@ NOTES       : Dave Shuck - created
 
 		// Loop through the list of spam strings to see if they are found in the form submission
 		for (checkfield in arguments.FormStruct)	{
-			if (Result.Pass IS true)	{
+			if (Result.Pass IS true && IsSimpleValue(arguments.FormStruct[checkfield]))	{
 				Result.Pass = listFindOneOf(arguments.FormStruct[checkfield],teststrings);
 			}
 		}
