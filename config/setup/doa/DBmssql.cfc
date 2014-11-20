@@ -86,6 +86,15 @@
 			stcArgs.password = Arguments.Password;
 			stcArgs.description=Arguments.Description;
 			stcArgs.selectmethod = "direct";
+			stcArgs.storedProc = true;
+		    stcArgs.alter = true;
+		    stcArgs.grant = true;
+		    stcArgs.select = true;
+		    stcArgs.update = true;
+		    stcArgs.create = true;
+		    stcArgs.delete = true;
+		    stcArgs.drop = true;
+		    stcArgs.revoke = true;
 			//stcArgs.url = "jdbc:mysql://" & stcArgs.host & ":" & stcArgs.port & "/" & stcArgs.database;
 			//stcArgs.class= "com.mysql.jdbc.Driver";
 			//stcArgs.driver="Mura MySQL Driver";
