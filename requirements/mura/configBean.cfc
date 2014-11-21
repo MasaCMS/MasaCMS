@@ -172,6 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.allowSimpleHTMLForms=true/>
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.javaEnabled=true/>
+<cfset variables.instance.bCryptPasswords=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

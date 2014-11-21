@@ -117,7 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 variables.configBean.getEncryptPasswords()
 			 and 
 			 	(
-			 		(variables.configBean.getJavaEnabled() and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password))
+			 		(
+			 			variables.configBean.getJavaEnabled() 
+			 			and variables.configBean.getBCryptPasswords()
+			 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
+			 		)
 					OR
 					hash(arguments.password) eq rsUser.password	
 				)
@@ -128,8 +132,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				where 0=1
 			</cfquery>
 		</cfif>
-		
-		<cfif variables.configBean.getJavaEnabled() and rsUser.recordcount 
+		<cfif variables.configBean.getJavaEnabled()
+			and variables.configBean.getBCryptPasswords()
+			and rsUser.recordcount 
 			and variables.configBean.getEncryptPasswords() 
 			and hash(arguments.password) eq rsuser.password>
 			<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>

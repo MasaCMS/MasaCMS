@@ -622,7 +622,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="encryptPassword" output="false">
 	<cfargument name="password">
-	<cfif variables.configBean.getJavaEnabled()>
+	<cfif variables.configBean.getJavaEnabled() and variables.configBean.getBCryptPasswords()>
 		<cfreturn variables.utility.toBCryptHash(arguments.password)>
 	<cfelse>
 		<cfreturn hash(arguments.password)>
