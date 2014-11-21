@@ -128,10 +128,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.baseDir=baseDir>
 		
 	<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
+
+	<cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
+	<cfset variables.iniSection=getProfileString(variables.iniPath, 'settings', 'mode')>
+
+	<!---
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
-	<cfset properties.load( fileStream )>
+	<cfset load( fileStream )>
 	<cfset fileStream.close()>
+	--->
 	<cfset commitTracePoint(variables.tracePoint)>
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
@@ -147,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.mappings["/config"] = variables.baseDir & "/config">
 	
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
+		<cfinclude template="#getProperty("context","")#/config/mappings.cfm">
 		<cfset hasMainMappings=true>
 		<cfcatch>
 			<cfset hasMainMappings=false>
@@ -155,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 	
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/mappings.cfm">
+		<cfinclude template="#getProperty("context","")#/plugins/mappings.cfm">
 		<cfset hasPluginMappings=true>
 		<cfcatch>
 			<cfset hasPluginMappings=false>
@@ -202,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 )>
 
 	<cfif request.tracksession>
-		<cfset checklist=properties.getProperty("donottrackagents","")>
+		<cfset checklist=getProperty("donottrackagents","")>
 		<cfif len(checklist)>
 			<cfloop list="#checklist#" index="i">
 				<cfif FindNoCase( i, request.userAgent )>
@@ -215,54 +221,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
-		<cfset this.sessionTimeout = ( evalSetting(properties.getProperty("sessionTimeout","180")) / 24) / 60>
+		<cfset this.sessionTimeout = ( evalSetting(getProperty("sessionTimeout","180")) / 24) / 60>
 	<cfelse>
 		<cfset this.sessionTimeout = createTimeSpan(0,0,0,2)>
 	</cfif>
 	
-	<cfset this.timeout =  evalSetting(properties.getProperty("requesttimeout","1000"))>
+	<cfset this.timeout =  evalSetting(getProperty("requesttimeout","1000"))>
 
 	<!--- define a list of custom tag paths. --->
-	<cfset this.customtagpaths =  evalSetting(properties.getProperty("customtagpaths","")) />
+	<cfset this.customtagpaths =  evalSetting(getProperty("customtagpaths","")) />
 	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/requirements/mura/customtags/")>
-	<cfset this.clientManagement = evalSetting(properties.getProperty("clientManagement","false")) />
+	<cfset this.clientManagement = evalSetting(getProperty("clientManagement","false")) />
 	
-	<cfset variables.clientStorageCheck=evalSetting(properties.getProperty("clientStorage",""))>
+	<cfset variables.clientStorageCheck=evalSetting(getProperty("clientStorage",""))>
 	
 	<cfif len(variables.clientStorageCheck)>
 		<cfset this.clientStorage = variables.clientStorageCheck />
 	</cfif>
 	
-	<cfset this.ormenabled =  evalSetting(properties.getProperty("ormenabled","true")) />
+	<cfset this.ormenabled =  evalSetting(getProperty("ormenabled","true")) />
 	<cfset this.ormSettings={}>
 	<cfset this.ormSettings.cfclocation=[]>
 
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
+		<cfinclude template="#getProperty("context","")#/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
 		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
 	
-	<cfif len(properties.getProperty("datasource",""))>
+	<cfif len(getProperty("datasource",""))>
 
 		<!--- You can't depend on 9 supporting datasource as struct --->
 		<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
 			or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
 			<cfset this.datasource = structNew()>
-			<cfset this.datasource.name = evalSetting(properties.getProperty("datasource","")) />
-			<cfset this.datasource.username = evalSetting(properties.getProperty("dbusername",""))>
-			<cfset this.datasource.password = evalSetting(properties.getProperty("dbpassword",""))>
+			<cfset this.datasource.name = evalSetting(getProperty("datasource","")) />
+			<cfset this.datasource.username = evalSetting(getProperty("dbusername",""))>
+			<cfset this.datasource.password = evalSetting(getProperty("dbpassword",""))>
 		<cfelse>
-			<cfset this.datasource =  evalSetting(properties.getProperty("datasource","")) >			
+			<cfset this.datasource =  evalSetting(getProperty("datasource","")) >			
 		</cfif>
 	<cfelse>
 		<cfset this.ormenabled=false>
 	</cfif>
 	
 	<cfif this.ormenabled>
-		<cfswitch expression="#properties.getProperty('dbtype','')#">
+		<cfswitch expression="#getProperty('dbtype','')#">
 			<cfcase value="mssql">
 				<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
 			</cfcase>
@@ -279,22 +285,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset this.ormSettings.dialect = "nuodb" />
 			</cfcase>
 		</cfswitch>
-		<cfset this.ormSettings.dbcreate = evalSetting(properties.getProperty("ormdbcreate","update")) />
-		<cfif len(properties.getProperty("ormcfclocation",""))>
-			<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(properties.getProperty("ormcfclocation"))) />
+		<cfset this.ormSettings.dbcreate = evalSetting(getProperty("ormdbcreate","update")) />
+		<cfif len(getProperty("ormcfclocation",""))>
+			<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getProperty("ormcfclocation"))) />
 		</cfif>
-		<cfset this.ormSettings.flushAtRequestEnd = evalSetting(properties.getProperty("ormflushAtRequestEnd","false")) />
-		<cfset this.ormsettings.eventhandling = evalSetting(properties.getProperty("ormeventhandling","true")) />
-		<cfset this.ormSettings.automanageSession = evalSetting(properties.getProperty("ormautomanageSession","false")) />
-		<cfset this.ormSettings.savemapping= evalSetting(properties.getProperty("ormsavemapping","false")) />
-		<cfset this.ormSettings.skipCFCwitherror= evalSetting(properties.getProperty("ormskipCFCwitherror","false")) />
-		<cfset this.ormSettings.useDBforMapping= evalSetting(properties.getProperty("ormuseDBforMapping","true")) />
-		<cfset this.ormSettings.autogenmap= evalSetting(properties.getProperty("ormautogenmap","true")) />
-		<cfset this.ormSettings.logsql= evalSetting(properties.getProperty("ormlogsql","false")) />
+		<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getProperty("ormflushAtRequestEnd","false")) />
+		<cfset this.ormsettings.eventhandling = evalSetting(getProperty("ormeventhandling","true")) />
+		<cfset this.ormSettings.automanageSession = evalSetting(getProperty("ormautomanageSession","false")) />
+		<cfset this.ormSettings.savemapping= evalSetting(getProperty("ormsavemapping","false")) />
+		<cfset this.ormSettings.skipCFCwitherror= evalSetting(getProperty("ormskipCFCwitherror","false")) />
+		<cfset this.ormSettings.useDBforMapping= evalSetting(getProperty("ormuseDBforMapping","true")) />
+		<cfset this.ormSettings.autogenmap= evalSetting(getProperty("ormautogenmap","true")) />
+		<cfset this.ormSettings.logsql= evalSetting(getProperty("ormlogsql","false")) />
 	</cfif>
 
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
+		<cfinclude template="#getProperty("context","")#/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>
 		<cfcatch>
 			<cfset hasPluginCFApplication=false>
@@ -308,27 +314,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfscript>
 		// if true, CF converts form fields as an array instead of a list (not recommended)
-		this.sameformfieldsasarray=evalSetting(properties.getProperty('sameformfieldsasarray',false));
+		this.sameformfieldsasarray=evalSetting(getProperty('sameformfieldsasarray',false));
 
 		// Custom Java library paths with dynamic loading
 		try {
-			variables.loadPaths = ListToArray(evalSetting(properties.getProperty('javaSettingsLoadPaths','#properties.getProperty('context','')#/requirements/lib')));
+			variables.loadPaths = ListToArray(evalSetting(getProperty('javaSettingsLoadPaths','#getProperty('context','')#/requirements/lib')));
 		} catch(any e) {
-			variables.loadPaths = ['#properties.getProperty('context','')#/requirements/lib'];
+			variables.loadPaths = ['#getProperty('context','')#/requirements/lib'];
 		}
 
 		this.javaSettings = {
 			loadPaths=variables.loadPaths
-			, loadColdFusionClassPath = evalSetting(properties.getProperty('javaSettingsLoadColdFusionClassPath',true))
-			, reloadOnChange=evalSetting(properties.getProperty('javaSettingsReloadOnChange',false))
-			, watchInterval=evalSetting(properties.getProperty('javaSettingsWatchInterval',60))
-			, watchExtensions=evalSetting(properties.getProperty('javaSettingsWatchExtensions','jar,class'))
+			, loadColdFusionClassPath = evalSetting(getProperty('javaSettingsLoadColdFusionClassPath',true))
+			, reloadOnChange=evalSetting(getProperty('javaSettingsReloadOnChange',false))
+			, watchInterval=evalSetting(getProperty('javaSettingsWatchInterval',60))
+			, watchExtensions=evalSetting(getProperty('javaSettingsWatchExtensions','jar,class'))
 		};
 
 		// Amazon S3 Credentials
 		try {
-			this.s3.accessKeyId=evalSetting(properties.getProperty('s3accessKeyId',''));
-			this.s3.awsSecretKey=evalSetting(properties.getProperty('s3awsSecretKey',''));
+			this.s3.accessKeyId=evalSetting(getProperty('s3accessKeyId',''));
+			this.s3.awsSecretKey=evalSetting(getProperty('s3awsSecretKey',''));
 		} catch(any e) {
 			// not supported
 		}
@@ -346,4 +352,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.value = evaluate(arguments.value)>
 			</cfif>	
 		<cfreturn arguments.value>
+	</cffunction>
+
+	<cffunction name="getProperty" output="false">
+		<cfargument name="property">
+		<cfargument name="defaultValue" default="">
+		
+		<cfset var tempval=GetProfileString(variables.iniPath, variables.iniSection, arguments.property)>
+
+		<cfif not len(tempval) and len(arguments.defaultValue)>
+			<cfreturn arguments.defaultValue>
+		<cfelse>
+			<cfreturn tempval>
+		</cfif>
+
 	</cffunction>

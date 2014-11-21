@@ -54,10 +54,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.fileWriter=arguments.fileWriter />
 
-<cfset variables.javaVersion=listGetAt(createObject("java", "java.lang.System").getProperty("java.version"),2,".") />
-<cfset variables.bCrypt=arguments.javaloader.create("BCrypt")>
 <cfreturn this >
 </cffunction>
+
+<cffunction name="getBCrypt" output="false">
+	<cfif not isDefined('variables.bCrypt')>
+		<cfset variables.bCrypt=arguments.javaloader.create("BCrypt")>
+	</cfif>
+	<cfreturn variables.bCrypt>
+</cffunction>
+
 
 <cffunction name="displayErrors" access="public" output="true">
 <cfargument name="error" type="struct" required="yes" default="#structnew()#"/>
@@ -295,17 +301,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn redirectID />
 </cffunction>
 
+
+<!--- deprecated, just user createUUID() --->
 <cffunction name="getUUID" output="false" returntype="string">
-	<cfset var u=""/>
-	<cfif variables.configBean.getCompiler() eq "Adobe" and variables.javaVersion gte 5>
-	<cfset u = ucase(createObject("java","java.util.UUID").randomUUID().toString()) />
-	<cfset u = listToArray(u,"-") />
-	<cfset u[4]=u[4] & u[5] />
-	<cfset arrayDeleteAt(u,5) />
-	<cfreturn arrayToList(u,"-") />
-	<cfelse>
-		<cfreturn createUUID() />
-	</cfif>
+	<cfreturn createUUID() />
 </cffunction>
 
 <cffunction name="fixLineBreaks" output="false" returntype="string">
@@ -596,7 +595,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cffunction name="setCryptoSalt" returntype="void" output="true" >
         <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
         <cfset variables.cryptoSaltSct.salt =
-                variables.bCrypt.gensalt(JavaCast('int',arguments.logRounds))
+                getBCrypt().gensalt(JavaCast('int',arguments.logRounds))
         />
         <cfset variables.cryptoSaltSct.dateTimeCreated = now() />
 </cffunction>
@@ -604,7 +603,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cffunction name="toBCryptHash" output="false">
         <cfargument name="string">
         <cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">        
-        <cfset var hash = variables.bCrypt.hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
+        <cfset var hash = getBCrypt().hashpw(JavaCast('string',arguments.string), this.getCryptoSalt(logRounds=arguments.logRounds) )>
         <cfreturn hash >
 </cffunction>
 
@@ -613,7 +612,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
         <cfargument name="hash">
         <cfset var match = "" />
         <cftry>
-        <cfset match = variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
+        <cfset match = getBCrypt().checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
         <cfcatch>
                 <cfset match = false>
         </cfcatch>

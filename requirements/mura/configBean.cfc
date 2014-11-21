@@ -507,10 +507,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileDelim" access="public" output="false">
-	
-	 <cfset var fileObj = createObject("java", "java.io.File")/>
-     <cfset variables.instance.fileDelim = fileObj.separator />
-      <cfreturn this>
+	<cfif FindNoCase("Windows", server.os.name)>
+		 <cfset variables.instance.fileDelim = "\" />
+	<cfelse>
+		<cfset variables.instance.fileDelim = "/" />
+	</cfif>
+    <cfreturn this>
 </cffunction>
 
 <cffunction name="getDbType" returntype="any" access="public" output="false">
