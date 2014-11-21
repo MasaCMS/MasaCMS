@@ -52,8 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
-<a class="btn" href="./?muraAction=cExtend.exportSubType&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signout"></i> Export Class Extension(s)</a>
-<a class="btn" href="./?muraAction=cExtend.importSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signin"></i> Import Class Extension(s)</a>
 </div>
 
 </cfoutput>

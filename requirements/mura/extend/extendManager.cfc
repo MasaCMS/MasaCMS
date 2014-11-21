@@ -48,13 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.definitionsQuery="">
 <cfset variables.iconlookup={}>
-<cfset variables.indent="">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	
 	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.indent = createObject("component","tasks.widgets.indentXML.indentXML") />
 	
 	<cfset buildIconClassLookup()>
 
@@ -1516,83 +1514,10 @@ and tclassextendattributes.type='File'
 </cfloop>
 </cffunction>
 
-<cffunction name="getSubTypeAsXML" returntype="xml">
-	<cfargument name="type">
-	<cfargument name="subtype">
-	<cfargument name="siteid">
-	<cfargument name="includeIDs" type="boolean" default="false" >
-	
-	<cfset var documentXML = xmlNew(false) />
-	<cfset var extension = getSubTypeByName( argumentCollection=arguments) />
-	<cfset var extensionXML = "" />
-	<cfset var item = "" />
-
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "MURA" ) />
-	<cfset var xmlNode = XmlElemNew( documentXML, "", "EXTENSIONS" ) />
-
-	<cfset documentXML.XmlRoot = xmlRoot />
-
-	<cfset extensionXML = extension.getAsXML(documentXML,arguments.includeIDs) />
-
-	<cfset ArrayAppend(
-		documentXML.XmlRoot.XmlChildren,
-		extensionXML
-		) />
-
-	<cfreturn documentXML />
-</cffunction>
-
-<cffunction name="getSubTypesAsXML">
-	<cfargument name="subTypes" type="array" >
-	<cfargument name="includeIDs" type="boolean" default="false" >
-	
-	<cfset var documentXML = xmlNew(false) />
-	<cfset var extensionXML = "" />
-	<cfset var i = 0 />
-	<cfset var subType = "" />
-
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "mura" ) />
-	<cfset var xmlNode = XmlElemNew( documentXML, "", "extensions" ) />
-
-	<cfset documentXML.XmlRoot = xmlRoot />
-		
-	<cfloop from="1" to="#ArrayLen(arguments.subTypes)#" index="i">
-		<cfset subType = arguments.subTypes[i] />
-		
-		<!--- if is an id, get the bean --->
-		<cfif isSimpleValue( subType ) and len(subType) eq 35>
-			<cfset subType = getSubTypeByID( subType ) /> 
-		</cfif>
-		
-		<cfif not subType.getIsNew()>
-			<cfset extensionXML = subType.getAsXML(documentXML,arguments.includeIDs) />
-		
-			<cfset ArrayAppend(
-				xmlNode.XmlChildren,
-				extensionXML
-				) />
-		</cfif>
-	</cfloop>
-
-	<cfset ArrayAppend(
-		xmlRoot.XmlChildren,
-		xmlNode
-		) />
-	
-	<cfreturn indentXml(toString(documentXML),"	") />
-</cffunction>
-
-<cffunction name="indentXml" output="false" returntype="string">
-	<cfargument name="xml" type="string" required="true" />
-	<cfargument name="indent" type="string" default="  " />
-	
-	<cfreturn variables.indent.indentXML( argumentCollection=arguments ) />
-</cffunction>
-
 <cffunction name="loadConfigXML" output="false">
 	<cfargument name="configXML">
 	<cfargument name="siteID">
-	<cfset var documentXML="">
+	<cfset var extXML="">
 	<cfset var ext="">
 	<cfset var subtype="">
 	<cfset var extset="">
@@ -1616,8 +1541,6 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="plugin">
 	<cfelseif isDefined("arguments.configXML.theme")>
 		<cfset baseElement="theme">
-	<cfelseif isDefined("arguments.configXML.mura")>
-		<cfset baseElement="mura">
 	</cfif>
 
 	<cfif len(baseElement) 
@@ -1628,55 +1551,55 @@ and tclassextendattributes.type='File'
 	<cfscript>
 		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].extensions.xmlChildren); ext=ext+1){
 						
-			documentXML=arguments.configXML[baseElement].extensions.extension[ext];
+			extXML=arguments.configXML[baseElement].extensions.extension[ext];
 
 			subType = application.classExtensionManager.getSubTypeBean();
 			
 
-			if(isDefined("documentXML.xmlAttributes.type")){
-				if(documentXML.xmlAttributes.type eq 'User'){
+			if(isDefined("extXML.xmlAttributes.type")){
+				if(extXML.xmlAttributes.type eq 'User'){
 					subType.setType( 2 );
-				} else if(documentXML.xmlAttributes.type eq 'Group'){
+				} else if(extXML.xmlAttributes.type eq 'Group'){
 					subType.setType( 1);
 				} else {
-					subType.setType( documentXML.xmlAttributes.type );
+					subType.setType( extXML.xmlAttributes.type );
 				}
 			}
 						
-			if(isDefined("documentXML.xmlAttributes.subtype")){
-				subType.setSubType( documentXML.xmlAttributes.subtype );
+			if(isDefined("extXML.xmlAttributes.subtype")){
+				subType.setSubType( extXML.xmlAttributes.subtype );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.description")){
-				subType.setDescription( documentXML.xmlAttributes.description );
+			if(isDefined("extXML.xmlAttributes.description")){
+				subType.setDescription( extXML.xmlAttributes.description );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.availableSubTypes")){
-				subType.setAvailableSubTypes( documentXML.xmlAttributes.availableSubTypes );
+			if(isDefined("extXML.xmlAttributes.availableSubTypes")){
+				subType.setAvailableSubTypes( extXML.xmlAttributes.availableSubTypes );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.hassummary")){
-				subType.setHasSummary( documentXML.xmlAttributes.hassummary );
+			if(isDefined("extXML.xmlAttributes.hassummary")){
+				subType.setHasSummary( extXML.xmlAttributes.hassummary );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.hasassocfile")){
-				subType.setHasAssocfile( documentXML.xmlAttributes.hasassocfile );
+			if(isDefined("extXML.xmlAttributes.hasassocfile")){
+				subType.setHasAssocfile( extXML.xmlAttributes.hasassocfile );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.hasconfigurator")){
-				subType.setHasConfigurator( documentXML.xmlAttributes.hasconfigurator );
+			if(isDefined("extXML.xmlAttributes.hasconfigurator")){
+				subType.setHasConfigurator( extXML.xmlAttributes.hasconfigurator );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.hasbody")){
-				subType.setHasBody( documentXML.xmlAttributes.hasbody );
+			if(isDefined("extXML.xmlAttributes.hasbody")){
+				subType.setHasBody( extXML.xmlAttributes.hasbody );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.isactive")){
-				subType.setIsActive( documentXML.xmlAttributes.isactive );
+			if(isDefined("extXML.xmlAttributes.isactive")){
+				subType.setIsActive( extXML.xmlAttributes.isactive );
 			}
 
-			if(isDefined("documentXML.xmlAttributes.iconClass")){
-				subType.setIconClass( documentXML.xmlAttributes.iconClass );
+			if(isDefined("extXML.xmlAttributes.iconClass")){
+				subType.setIconClass( extXML.xmlAttributes.iconClass );
 			}
 				      	
 			subType.setSiteID( arguments.siteID );
@@ -1699,9 +1622,9 @@ and tclassextendattributes.type='File'
 				subType.save();
 			}
 
-			for(extset=1;extset lte arraylen(documentXML.xmlChildren); extset=extset+1){
+			for(extset=1;extset lte arraylen(extXML.xmlChildren); extset=extset+1){
 				      	
-				extendSetXML=documentXML.xmlChildren[extset];
+				extendSetXML=extXML.xmlChildren[extset];
 
 				if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
 					extsetorder=extsetorder+1;
