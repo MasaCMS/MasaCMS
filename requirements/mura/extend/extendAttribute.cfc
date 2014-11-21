@@ -515,7 +515,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var item = "" />
 	<cfset var i = 0 />
 
-	<cfset var xmlAttributes = XmlElemNew( documentXML, "", "ATTRIBUTE" ) />
+	<cfset var xmlAttributes = XmlElemNew( documentXML, "", "attribute" ) />
 
 	<cfset extensionData = duplicate(variables.instance) />
 	<cfset structDelete(extensionData,"errors") />
@@ -523,10 +523,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset structDelete(extensionData,"extendsetID") />
 	</cfif>
 
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
+
 	<!--- Append the personality to the root. --->
 	<cfloop collection="#extensionData#" item="item">
 		<cfif isSimpleValue(extensionData[item])>
-			<cfset xmlAttributes.XmlAttributes[item] = extensionData[item] />
+			<cfif arguments.includeIDs or item neq "attributeid">
+				<cfset xmlAttributes.XmlAttributes[lcase(item)] = extensionData[item] />
+			</cfif>
 		</cfif>
 	</cfloop>
 

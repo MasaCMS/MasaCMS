@@ -850,7 +850,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var setStruct = {} />
 	<cfset var item = "" />
 	<cfset var i = 0 />
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "EXTENSION" ) />
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "extension" ) />
 
 	<cfset var xmlAttributeSet = "" />
 	
@@ -861,10 +861,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not(arguments.includeIDs)>
 		<cfset structDelete(extensionData,"SubTypeID") />
 	</cfif>
+
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
 	 
 	<cfloop collection="#extensionData#" item="item">
 		<cfif isSimpleValue(extensionData[item])>
-			<cfset xmlRoot.XmlAttributes[item] = extensionData[item] />
+			<cfset xmlRoot.XmlAttributes[lcase(item)] = extensionData[item] />
 		</cfif>
 	</cfloop>
 	

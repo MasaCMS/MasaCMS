@@ -44,48 +44,34 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
-<h1>Class Extension Manager</h1>
 
+<h1>Export Attribute Set(s)</h1>
 <cfoutput>
 
-
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
-<a class="btn" href="./?muraAction=cExtend.exportSubType&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-download"></i> Export Class Extension(s)</a>
+	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
 </div>
 
+<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+
+<div class="fieldset">
+
+<div class="control-group">
+	<div class="controls">
+		<cfloop query="rc.subtypes">
+		<label class="checkbox"><input name="exportClassExtensionID" type="checkbox" class="checkbox" value="#subtypeid#">#type# / #subtype#</label>
+		</cfloop>
+	</div>
+</div>
+
+</div>
+<div class="form-actions">
+	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Export" />
+</div>
+
+<input type="hidden" name="action" value="export">
+<input name="muraAction" value="cExtend.export" type="hidden">
+<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
+#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
+</form>
 </cfoutput>
-<table class="mura-table-grid">
-<tr>
-	<!---<th>Icon</th>--->
-	<th class="title">Class Extension</th>	
-	<th class="var-width">Description</th>
-	<th>Active</th>
-	<th class="actions">&nbsp;</th>
-</tr>
-<cfif rslist.recordcount>
-<cfoutput query="rslist">
-	<tr>
-		<!---<td class="selected-icon"><i class="#$.renderIcon(iconArgs)#"></i></td>--->
-		<td class="title"><a title="Edit" href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#"></i> #application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
-		<td class="var-width">#rslist.description#</td>
-		<td>#yesNoFormat(rslist.isactive)#</td>
-		<td class="actions">
-			<ul>
-				<li class="edit">
-					<a title="Edit" href="./?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
-				</li>
-				<li class="view-sets">
-					<a href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#" title="View Sets"><i class="icon-list"></i></a>
-				</li>
-			</ul>
-		</td>
-	</tr>
-</cfoutput>
-<cfelse>
-<tr>
-		<td class="noResults" colspan="3">There are currently no available sub types.</td>
-	</tr>
-</cfif>
-</table>

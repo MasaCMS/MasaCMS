@@ -48,11 +48,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.definitionsQuery="">
 <cfset variables.iconlookup={}>
+<cfset variables.indent="">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.indent = createObject("component","tasks.widgets.indentXML.indentXML") />
 	
 	<cfset buildIconClassLookup()>
 
@@ -1525,7 +1527,8 @@ and tclassextendattributes.type='File'
 	<cfset var extensionXML = "" />
 	<cfset var item = "" />
 
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "EXTENSIONS" ) />
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "MURA" ) />
+	<cfset var xmlNode = XmlElemNew( documentXML, "", "EXTENSIONS" ) />
 
 	<cfset documentXML.XmlRoot = xmlRoot />
 
@@ -1539,7 +1542,7 @@ and tclassextendattributes.type='File'
 	<cfreturn documentXML />
 </cffunction>
 
-<cffunction name="getSubTypesAsXML" returntype="xml">
+<cffunction name="getSubTypesAsXML">
 	<cfargument name="subTypes" type="array" >
 	<cfargument name="includeIDs" type="boolean" default="false" >
 	
@@ -1547,26 +1550,44 @@ and tclassextendattributes.type='File'
 	<cfset var extensionXML = "" />
 	<cfset var i = 0 />
 	<cfset var subType = "" />
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "EXTENSIONS" ) />
+
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "mura" ) />
+	<cfset var xmlNode = XmlElemNew( documentXML, "", "extensions" ) />
 
 	<cfset documentXML.XmlRoot = xmlRoot />
-
+		
 	<cfloop from="1" to="#ArrayLen(arguments.subTypes)#" index="i">
 		<cfset subType = arguments.subTypes[i] />
+		
+		<!--- if is an id, get the bean --->
+		<cfif isSimpleValue( subType ) and len(subType) eq 35>
+			<cfset subType = getSubTypeByID( subType ) /> 
+		</cfif>
+		
 		<cfif not subType.getIsNew()>
 			<cfset extensionXML = subType.getAsXML(documentXML,arguments.includeIDs) />
 		
 			<cfset ArrayAppend(
-				documentXML.XmlRoot.XmlChildren,
+				xmlNode.XmlChildren,
 				extensionXML
 				) />
 		</cfif>
 	</cfloop>
+
+	<cfset ArrayAppend(
+		xmlRoot.XmlChildren,
+		xmlNode
+		) />
 	
-	<cfreturn documentXML />
+	<cfreturn indentXml(toString(documentXML),"	") />
 </cffunction>
 
-
+<cffunction name="indentXml" output="false" returntype="string">
+	<cfargument name="xml" type="string" required="true" />
+	<cfargument name="indent" type="string" default="  " />
+	
+	<cfreturn variables.indent.indentXML( argumentCollection=arguments ) />
+</cffunction>
 
 <cffunction name="loadConfigXML" output="false">
 	<cfargument name="configXML">
