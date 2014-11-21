@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfloop>
 			</cfloop>
-			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
+			<cfif application.configBean.getValue(property='allowmultiupload',defaultValue=true) and not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
 					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
 					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfif>
 			</cfloop>
-			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
+			<cfif application.configBean.getValue(property='allowmultiupload',defaultValue=true) and not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
 					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
 					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
