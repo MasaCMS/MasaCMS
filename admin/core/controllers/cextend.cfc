@@ -78,6 +78,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="importsubtypes" output="false">
+	<cfargument name="rc">
+	
+	<cfset var file = "" />
+	<cfset var fileContent = "" />
+	<cfset var fileManager=getBean("fileManager")>
+	
+	<cfparam name="arguments.rc.action" default="" />
+
+	<cfif arguments.rc.action eq 'import' and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
+		<cfif structKeyExists(arguments.rc,"newfile") and len(arguments.rc.newfile)>
+			<cfset file = fileManager.upload( "newFile" ) />
+
+			<cffile action="read" variable="fileContent" file="#file.serverdirectory#/#file.serverfile#" >
+			
+			<cfset application.classExtensionManager.loadConfigXML( xmlParse(filecontent) ,arguments.rc.siteid) />
+			<cfset variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="./")>
+		</cfif>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="export" output="false">
 	<cfargument name="rc">
 	
