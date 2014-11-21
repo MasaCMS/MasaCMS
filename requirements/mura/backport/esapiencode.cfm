@@ -3,7 +3,7 @@
 	<cfargument name="inputString" type="string" required="true" hint="Required. String to encode">
 	<cfscript>
 
-			if(!isDefined('request.esapiencoder')){
+			if(application.configBean.getJavaEnabled() && !isDefined('request.esapiencoder')){
 				try{
 					request.esapiencoder=CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
 				} catch (any e){

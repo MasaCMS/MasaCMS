@@ -282,7 +282,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 #arguments.userBean.gets2()#, 
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getFname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getFname()#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLname()#">, 
-         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
+         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
 		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
          <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupName()#">, 
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	 GroupName =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupname()#">,  
          Email =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
         <cfif arguments.userBean.getPassword() neq ''>
-		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
+		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
 		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 </cfif>
 		 s2 =#arguments.userBean.gets2()#,
@@ -620,13 +620,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsInterestGroupIDs />
 </cffunction>
 
+<cffunction name="encryptPassword" output="false">
+	<cfargument name="password">
+	<cfif variables.configBean.getJavaEnabled()>
+		<cfreturn variables.utility.toBCryptHash(arguments.password)>
+	<cfelse>
+		<cfreturn hash(arguments.password)>
+	</cfif>
+</cffunction>
+
 <cffunction name="savePassword" returntype="void" output="false" access="public">
 	<cfargument name="userid" type="string" />
 	<cfargument name="password" type="string" />
 	
 	 <cfquery>
       UPDATE tusers SET
-	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.password)#'),de('#arguments.password#'))#">,
+	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#encryptPassword(arguments.password)#'),de('#arguments.password#'))#">,
 		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
        WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> 
    </CFQUERY>

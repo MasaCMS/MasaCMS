@@ -50,7 +50,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="fileWriter" type="any" required="yes"/>
-<cfargument name="javaloader" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.fileWriter=arguments.fileWriter />
 
@@ -59,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getBCrypt" output="false">
 	<cfif not isDefined('variables.bCrypt')>
-		<cfset variables.bCrypt=arguments.javaloader.create("BCrypt")>
+		<cfset variables.bCrypt=getBean("javaLoader").create("BCrypt")>
 	</cfif>
 	<cfreturn variables.bCrypt>
 </cffunction>
