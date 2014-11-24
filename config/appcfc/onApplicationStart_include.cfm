@@ -103,39 +103,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
 		
-	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
-		
-	<cfset variables.iniSections=getProfileSections(variables.iniPath)>
-		
-	<cfset variables.iniProperties=structNew()>
-	<cfloop list="#variables.iniSections.settings#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>			
-		<cfif left(variables.iniProperties[variables.p],2) eq "${"
-			and right(variables.iniProperties[variables.p],1) eq "}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
-			and right(variables.iniProperties[variables.p],2) eq "}}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>		
-	</cfloop>		
-		
-	<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="variables.p">
-		<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
-		<cfif left(variables.iniProperties[variables.p],2) eq "${"
-			and right(variables.iniProperties[variables.p],1) eq "}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
-			and right(variables.iniProperties[variables.p],2) eq "}}">
-			<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
-			<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-		</cfif>		
-	</cfloop>
-		
+	<cfset variables.iniProperties={}>
+	<cfset structAppend(variables.iniProperties,variables.ini.settings )>
+	<cfset structAppend(variables.iniProperties,variables.ini[variables.ini.settings.mode] )>
+	
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
-		
 	<cfset variables.mode = variables.iniProperties.mode />
 	<cfset variables.mapdir = variables.iniProperties.mapdir />
 	<cfset variables.webroot = variables.iniProperties.webroot />
@@ -278,6 +250,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 		<cfset application.configBean.applyDbUpdates() />
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
+	<cfelseif fileExists(ExpandPath("/muraWRM/config/objectMappings.json.cfm"))>
+		<cffile variable="variables.objectMappingJSON" action="read" file="#ExpandPath("/muraWRM/config/objectMappings.json.cfm")#"  />
+		<cfset application.objectMappings=deserializeJSON(variables.objectMappingJSON)>
 	<cfelse>
 		<cfscript>
 			variables.serviceFactory.getBean('approvalChain');
