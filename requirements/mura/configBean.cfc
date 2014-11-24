@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
 	<cfset setAssetPath(arguments.config.assetPath)/>
-	<cfset setFileDelim()/>
+	<cfset setFileDelim(arguments.config.fileDelim)/>
 	<!--- setFileDir must be after setWebRoot and setFileDelim and setAssetPath--->
 	<cfset setFileDir(arguments.config.fileDir)/>
 	<cfset setDefaultLocale(arguments.config.locale)>
@@ -509,7 +509,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileDelim" access="public" output="false">
-	<cfif FindNoCase("Windows", server.os.name)>
+	<cfargument name="fileDelim" default="" />
+	<cfif Len(arguments.fileDelim)>
+		<cfset variables.instance.fileDelim = arguments.fileDelim />
+	<cfelseif FindNoCase("Windows", server.os.name)>
 		 <cfset variables.instance.fileDelim = "\" />
 	<cfelse>
 		<cfset variables.instance.fileDelim = "/" />

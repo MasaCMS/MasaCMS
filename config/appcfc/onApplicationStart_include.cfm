@@ -143,6 +143,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(variables.iniProperties,"useFileMode")>
 		<cfset variables.iniProperties.useFileMode=true>
 	</cfif>
+
+	<cfif not StructKeyExists(variables.iniProperties, 'fileDelim')>
+		<cfset variables.iniProperties.fileDelim = '' />
+	</cfif>
 		
 	<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
 		
