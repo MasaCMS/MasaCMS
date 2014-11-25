@@ -204,15 +204,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var prop="">
 	<cfset var tempFunc="">
 	
-	<cfset setWebRoot(arguments.config.webroot)/>
-	<cfset setContext(arguments.config.context)/>
-	<cfset setAssetPath(arguments.config.assetPath)/>
-	<cfset setFileDelim()/>
-	<!--- setFileDir must be after setWebRoot and setFileDelim and setAssetPath--->
-	<cfset setFileDir(arguments.config.fileDir)/>
-	<cfset setDefaultLocale(arguments.config.locale)>
-	<cfset setServerPort(arguments.config.port)>
-	
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
 			<cfif isDefined("this.set#prop#")>
@@ -223,6 +214,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	</cfloop>
+
+	<cfset setWebRoot(arguments.config.webroot)/>
+	<cfset setContext(arguments.config.context)/>
+	<cfset setAssetPath(arguments.config.assetPath)/>
+	<cfset setFileDir(arguments.config.fileDir)/>
+	<cfset setDefaultLocale(arguments.config.locale)>
+	<cfset setServerPort(arguments.config.port)>
 	
 	<cfif not len(variables.instance.tempDir)>
 		<cfset variables.instance.tempDir=getTempDirectory()>
@@ -513,7 +511,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileDelim" access="public" output="false">
-	<cfif FindNoCase("Windows", server.os.name)>
+	<cfargument name="fileDelim" default="" />
+	<cfif Len(arguments.fileDelim)>
+		<cfset variables.instance.fileDelim = arguments.fileDelim />
+	<cfelseif FindNoCase("Windows", server.os.name)>
 		 <cfset variables.instance.fileDelim = "\" />
 	<cfelse>
 		<cfset variables.instance.fileDelim = "/" />
