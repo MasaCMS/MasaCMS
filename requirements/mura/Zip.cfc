@@ -322,7 +322,7 @@
 			var entryHash= "";
 			var started = false;
 
-			if FindNoCase("Windows", this.os){
+			if (FindNoCase("Windows", this.os)) {
 				var delim="\";
 			} else {
 				var delim="/";
