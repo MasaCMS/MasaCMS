@@ -321,13 +321,7 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
-
-			if (FindNoCase("Windows", this.os)) {
-				var delim="\";
-			} else {
-				var delim="/";
-			}
-
+			var delim = FindNoCase("Windows", this.os) ? '\' : '/';
 			var lastChr="";
 			var lenPath=0;
 			var inStream="";
