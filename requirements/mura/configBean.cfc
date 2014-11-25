@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.sessionTimeout=180 />
-<cfset variables.instance.tempDir=getTempDirectory() />
+<cfset variables.instance.tempDir="" />
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
 <cfset variables.instance.uselegacysessions=true />
@@ -221,6 +221,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setFileDir(arguments.config.fileDir)/>
 	<cfset setDefaultLocale(arguments.config.locale)>
 	<cfset setServerPort(arguments.config.port)>
+	
+	<cfif not len(variables.instance.tempDir)>
+		<cfset variables.instance.tempDir=getTempDirectory()>
+	</cfif>
 	
 	<cfif structKeyExists(arguments.config,"assetDir")>
 		<cfset setAssetDir(arguments.config.assetDir)/>

@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.globalListeners=structNew()>
 <cfset variables.pluginConfigs=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
-<cfset variables.zipTool=createObject("component","mura.Zip")>
 <cfset variables.eventHandlersLoaded = false>
+<cfset variables.zipTool="">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean" required="true">
@@ -70,6 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility=arguments.utility>
 	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
 	<cfset variables.fileWriter=arguments.fileWriter>
+
+	<cfif variables.configBean.getJavaEnabled()>
+		<cfset variables.zipTool=createObject("component","mura.Zip")>
+	</cfif>
 
 	<cfif isdefined("url.safemode") and isDefined("session.mura.memberships") and listFindNoCase(session.mura.memberships,"S2")>
 		<cfset loadPlugins(safeMode=true)>
