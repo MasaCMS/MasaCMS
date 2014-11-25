@@ -68,14 +68,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- do a settings setup check --->
 <cfif NOT application.setupComplete OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
-	<cfif getProfileString( variables.basedir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
+	<cfif getINIProperty(entry="mode",section="settings") eq "production">
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset application.setupComplete = false />
 			<!--- check the settings --->
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 			
-			<cfif trim( getProfileString( variables.basedir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
+			<cfif trim( getINIProperty("datasource") ) IS NOT ""
 					AND (
 						NOT isDefined( "FORM.#application.setupSubmitButton#" )
 						AND
@@ -157,7 +157,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayRailo");
 		}
 
-		variables.serviceFactory.addBean('javaLoader',
+		if(getINIProperty("javaEnabled",true)){
+			variables.serviceFactory.addBean('javaLoader',
 					new mura.javaloader.JavaLoader(
 						loadPaths=[
 									expandPath('/mura/lib/mura.jar'),
@@ -166,13 +167,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								]
 					)
 				);
+		}
+
 		variables.serviceFactory.addBean("fileWriter",
 			new mura.fileWriter()
 		);
-		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
-			
-		//variables.serviceFactory.addBean('validationService',new mura.bean.beanValidator());
 
+		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
+		
 		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");
@@ -229,14 +231,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
-	<cfif listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) or application.serviceFactory.getBean('dbUtility').version().database_productname eq 'h2'>
+	<cfif listfindnocase('oracle,postgresql,nuodb', application.configBean.getDbType()) >
 		<cfset application.configBean.setDbCaseSensitive(true)>
 	</cfif>
+	
+	<cftry>
+		<cfif not application.configBean.getDbCaseSensitive() and application.serviceFactory.getBean('dbUtility').version().database_productname eq 'h2'>
+			<cfset application.configBean.setDbCaseSensitive(true)>
+		</cfif>
+		<cfcatch></cfcatch>
+	</cftry>
 
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-		
-	<cfobjectcache action="clear" />
-		
+	
+
+	<cftry>
+		<cfobjectcache action="clear" />
+		<cfcatch></cfcatch>
+	</cftry>
+	
 	<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
@@ -277,7 +290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<!--- The ad manager has been removed, but may be there in certain legacy conditions --->
 	<cfif application.serviceFactory.containsBean('advertiserManager')>
-		<cfset variables.serviceList=listAppend(variablies.serviceList,'advertiserManager')>
+		<cfset variables.serviceList=listAppend(variables.serviceList,'advertiserManager')>
 	</cfif>
 
 	<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
@@ -292,7 +305,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	</cfloop>	
-		
+	
+
 	<!--- End beanServicePlaceHolders --->
 
 	<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>

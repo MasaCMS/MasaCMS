@@ -105,16 +105,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.baseDir=baseDir>
 	
 <cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
-
 <cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
 <cfset initINI(variables.iniPath)>
-
-<!---
-<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
-<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
-<cfset load( fileStream )>
-<cfset fileStream.close()>
---->
 <cfset commitTracePoint(variables.tracePoint)>
 
 <!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
