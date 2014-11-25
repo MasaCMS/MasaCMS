@@ -723,7 +723,7 @@
 			type = 'File'
 			or
 			(	type='Dir'
-				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#arguments.excludeDirs#">) 
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">) 
 			)
 			</cfquery>
 		</cfif>
