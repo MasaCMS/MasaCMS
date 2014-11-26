@@ -208,12 +208,23 @@
 
 		from tusers 
 		left join tfiles on tusers.photofileID=tfiles.fileID
-		<cfloop list="#jointables#" index="jointable">
-		inner join #jointable# on (tusers.userid=#jointable#.userid)
-		</cfloop>
 		
-		<cfloop array="#params.getJoins()#" index="join">
-			#join.joinType# join #join.table# on #preserveSingleQuotes(join.clause)#
+		<cfloop list="#jointables#" index="jointable">
+			<cfset started=false>
+
+			<cfif arrayLen(params.getJoins())>
+				<cfset local.specifiedjoins=params.getJoins()>
+				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
+					<cfif local.specifiedjoins[local.i] eq jointable>
+						<cfset started=true>
+						#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+						<cfbreak>
+					</cfif>
+				</cfloop>
+			</cfif>
+			<cfif not started>
+				inner join #jointable# on (tusers.userid=#jointable#.userid)
+			</cfif>
 		</cfloop>
 		
 		<cfif not arguments.countOnly and isExtendedSort>
