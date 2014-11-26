@@ -218,10 +218,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent
 		
 				<cfloop list="#jointables#" index="jointable">
-					<cfif listFindNoCase(histtables,jointable)>
-						inner join #jointable# #tableModifier# on (tcontent.contenthistid=#jointable#.contenthistid)
-					<cfelse>
-						inner join #jointable# #tableModifier# on (tcontent.contentid=#jointable#.contentid)
+					<cfset started=false>
+
+					<cfif arrayLen(arguments.feedBean.getJoins())>
+						<cfset local.specifiedjoins=arguments.feedBean.getJoins()>
+						<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
+							<cfif local.specifiedjoins[local.i] eq jointable>
+								<cfset started=true>
+								#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
+								<cfbreak>
+							</cfif>
+						</cfloop>
+					</cfif>
+					<cfif not started>
+						<cfif listFindNoCase(histtables,jointable)>
+							inner join #jointable# #tableModifier# on (tcontent.contenthistid=#jointable#.contenthistid)
+						<cfelse>
+							inner join #jointable# #tableModifier# on (tcontent.contentid=#jointable#.contentid)
+						</cfif>
 					</cfif>
 				</cfloop>
 				
