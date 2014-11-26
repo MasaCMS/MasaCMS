@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.isAdmin>
 			<cfreturn rsSites.siteid>
 		<cfelse>
-			<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
+			<cflocation addtoken="no" statuscode="301" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 		</cfif>
 	</cfif>
 	<cfcatch></cfcatch>

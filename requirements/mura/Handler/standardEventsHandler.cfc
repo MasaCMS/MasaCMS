@@ -377,6 +377,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standard404Handler" output="false" returnType="any">
 	<cfargument name="event" required="true">
+	<cfargument name="$" required="true">
 	
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
@@ -414,6 +415,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.event.getContentBean().setBody("The requested version of this content could not be found.")>
 		</cfif>
 		<cfheader statuscode="404" statustext="Content Not Found" /> 
+		<cfset arguments.$.noIndex()>
 	</cfif>
 	
 </cffunction>

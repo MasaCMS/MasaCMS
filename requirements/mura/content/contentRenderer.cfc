@@ -1103,8 +1103,8 @@ Display Objects
 <cfset var I = 0 />
 <cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
 	<cfsavecontent variable="theNav">
-		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
-			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li></cfif></cfloop>
+		<cfoutput><ul itemscope itemtype="http://data-vocabulary.org/Breadcrumb"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
+			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(type=this.crumbdata[I].type,filename=this.crumbdata[I].filename,title=this.crumbdata[I].menutitle,target='_self',targetparams='',contentid=this.crumbdata[I].contentid,siteid=this.crumbdata[I].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexFile=application.configBean.getIndexFile(),showMeta=variables.event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(type=this.crumbdata[1].type,filename=this.crumbdata[1].filename,title=this.crumbdata[1].menutitle,target='_self',targetparams='',contentid=this.crumbdata[1].contentid,siteid=this.crumbdata[1].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexfile=application.configBean.getIndexFile(),showMeta=variables.event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li></cfif></cfloop>
 		</ul></cfoutput>
 	</cfsavecontent>
 </cfif>
@@ -1700,6 +1700,7 @@ Display Objects
 	<cfargument name="isParent" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 	<cfargument name="secure" default="false">
+	<cfargument name="isBreadCrumb" default="false">
 			
 	<cfset var link ="">
 	<cfset var href ="">
@@ -1727,7 +1728,12 @@ Display Objects
 	</cfif>
 		
 	<cfset href=createHREF(type=arguments.type,filename=arguments.filename,siteid=arguments.siteid,contentid=arguments.contentid,target=arguments.target,targetparams=iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),querystring=arguments.queryString,context=arguments.context,stub=arguments.stub,indexfile=arguments.indexFile,complete=arguments.complete,showmeta=arguments.showMeta,secure=arguments.secure)>
-	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfif arguments.isBreadCrumb>
+		<cfset link='<a itemprop="url" href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#><span itemprop="title">#HTMLEditFormat(arguments.title)#</span></a>' />
+	<cfelse>
+		<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	</cfif>
+	
 	<cfreturn link>
 </cffunction>
 
@@ -2136,6 +2142,7 @@ Display Objects
 			<cfif variables.event.getValue('display') neq ''>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset variables.event.setValue('forceSSL',getSite().getExtranetSSL())/>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
@@ -2146,6 +2153,7 @@ Display Objects
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2155,6 +2163,7 @@ Display Objects
 						</cfif>
 					</cfcase> 
 					<cfcase value="login">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2164,6 +2173,7 @@ Display Objects
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onDisplayRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2297,6 +2307,7 @@ Display Objects
 				</cfif>		
 			</cfif> 
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
+			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
@@ -2304,6 +2315,7 @@ Display Objects
 			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
 			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
+			<cfset variables.$.noIndex()>
 			<cfset variables.event.setValue('noCache',1)>
 			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 			<cfif len(eventOutput)>
@@ -2312,7 +2324,9 @@ Display Objects
 			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 			</cfif>
 		<cfelse>
+			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
+			<cfheader statuscode="404" statustext="Content Not Found" /> 
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
@@ -2987,24 +3001,28 @@ Display Objects
 <cffunction name="addToHTMLHeadQueue" output="false">
 	<cfargument name="text">
 	<cfargument name="action" default="append">
-	<cfif not listFind(variables.event.getValue('HTMLHeadQueue'),arguments.text)>
+	<cfset var q=variables.event.getValue(property='HTMLHeadQueue',defaultValue=[])>
+	<cfif not arrayFind(q,arguments.text)>
 		<cfif arguments.action eq "append">
-			<cfset variables.event.setValue('HTMLHeadQueue',listappend(variables.event.getValue('HTMLHeadQueue'),arguments.text)) />
+			<cfset arrayAppend(q,arguments.text)>
 		<cfelse>
-			<cfset variables.event.setValue('HTMLHeadQueue',listprepend(variables.event.getValue('HTMLHeadQueue'),arguments.text)) />
+			<cfset arrayPrepend(q,arguments.text)>
 		</cfif>
+		<cfset variables.event.setValue('HTMLHeadQueue',q) />
 	</cfif>
 </cffunction>
 
 <cffunction name="addToHTMLFootQueue" output="false">
 	<cfargument name="text">
 	<cfargument name="action" default="append">	
-	<cfif not listFind(variables.event.getValue('HTMLFootQueue'),arguments.text)>
+	<cfset var q=variables.event.getValue(property='HTMLFootQueue',defaultValue=[])>
+	<cfif not arrayFind(q,arguments.text)>
 		<cfif arguments.action eq "append">
-			<cfset variables.event.setValue('HTMLFootQueue',listappend(variables.event.getValue('HTMLFootQueue'),arguments.text)) />
+			<cfset arrayAppend(q,arguments.text)>
 		<cfelse>
-			<cfset variables.event.setValue('HTMLFootQueue',listprepend(variables.event.getValue('HTMLFootQueue'),arguments.text)) />
+			<cfset arrayPrepend(q,arguments.text)>
 		</cfif>
+		<cfset variables.event.setValue('HTMLFootQueue',q) />
 	</cfif>
 </cffunction>
 
@@ -3093,129 +3111,139 @@ Display Objects
 				</cfif>
 		</cfif>
 		<!--- Loop through the HTML Head Que--->
-		<cfset HTMLQueue=variables.event.getValue('HTML#arguments.queueType#Queue') />
+		<cfset HTMLQueue=variables.event.getValue(property='HTML#arguments.queueType#Queue',defaultValue=[]) />
 		
-		<cfloop list="#HTMLQueue#" index="i">
-		<cfset headerFound=false/>
-		<cfsavecontent variable="itemStr">
-			<!--- look in default htmlHead directory --->
-			<cfif not refind('[\\/]',i)>
-				
-				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-					<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-					<cfset commitTracePoint(tracePoint)>
-					<cfset headerFound=true />
-				</cfif>
-				
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-			
-			<cfelse>
-			
-				<!--- If not found, look in look in your theme --->
-				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-					<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset commitTracePoint(tracePoint)>
-					<cfset headerFound=true />
-				</cfif>
-
-				<!--- if not found, try the path that was passed --->
-				<cfif not headerFound and fileExists(expandPath(i))>
-					<cfinclude template="#i#" />
-					<cfset headerFound = true />
-				</cfif>
+		<cfif arrayLen(HTMLQueue)>
+			<cfloop from="1" to="#arrayLen(HTMLQueue)#" index="item">
+				<cfset headerFound=false/>
+				<cfset i=HTMLQueue[item]>
+					
+				<cfif refind('[<>]',i)>
+						<cfset itemStr=i>
+				<cfelse>
+					<cfsavecontent variable="itemStr">
+					
+						<!--- look in default htmlHead directory --->
+						<cfif not refind('[\\/]',i)>
+							
+							<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+							
+							<cfif not headerFound>
+								<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
+								<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+									<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+									<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+									<cfset commitTracePoint(tracePoint)>
+									<cfset headerFound=true />
+								</cfif>
+							</cfif>
 						
-				<!--- If not found, look in display_objects directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-					</cfif>
+						<cfelse>
+						
+							<!--- If not found, look in look in your theme --->
+							<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+
+							<!--- if not found, try the path that was passed --->
+							<cfif not headerFound and fileExists(expandPath(i))>
+								<cfinclude template="#i#" />
+								<cfset headerFound = true />
+							</cfif>
+									
+							<!--- If not found, look in display_objects directory --->
+							<cfif not headerFound>
+								<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
+								<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+									<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+									<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+									<cfset commitTracePoint(tracePoint)>
+									<cfset headerFound=true />
+								</cfif>
+							</cfif>
+							
+							<!--- If not found, look in top of theme directory
+							<cfif not headerFound>
+								<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
+								<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+									<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+									<cfset headerFound=true />
+								</cfif>
+							</cfif>
+							 --->
+							 
+							<!--- If not found, look in includes directory --->
+							<cfif not headerFound>
+								<cfset pluginBasePath="/#displayPoolID#/includes/">
+								<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+									<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+									<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+									<cfset commitTracePoint(tracePoint)>
+									<cfset headerFound=true />
+								</cfif>
+							</cfif>
+							
+							<!--- If not found, look in local plugins directory --->
+							<cfif not headerFound>
+								<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
+								<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+									<cfset pluginID=listLast(listFirst(i,"/"),"_")>
+									<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+									<cfset pluginConfig=variables.event.getValue('pluginConfig')>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+									<cfset variables.event.setValue('pluginPath',pluginPath)>		
+									<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+									<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+									<cfset commitTracePoint(tracePoint)>
+									<cfset headerFound=true />
+									<cfset variables.event.removeValue("pluginPath")>
+									<cfset variables.event.removeValue("pluginConfig")>
+								</cfif>
+							</cfif>
+							
+							<!--- If not found, look in global plugins directory --->
+							<cfif not headerFound>
+								<cfset pluginBasePath="/plugins/">
+								<cfif fileExists(expandPath("#pluginbasePath##i#"))>
+									<cfset pluginID=listLast(listFirst(i,"/"),"_")>
+									<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+									<cfset pluginConfig=variables.event.getValue('pluginConfig')>
+									<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+									<cfset variables.event.setValue('pluginPath',pluginPath)>
+									<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
+									<cfinclude  template="#pluginBasePath##i#">
+									<cfset commitTracePoint(tracePoint)>
+									<cfset headerFound=true />
+									<cfset variables.event.removeValue("pluginPath")>
+									<cfset variables.event.removeValue("pluginConfig")>
+								</cfif>
+							</cfif>
+						</cfif>
+						<cfif not headerFound>
+							<cfoutput><!-- missing header include- #i# --></cfoutput>
+						</cfif>
+					
+					</cfsavecontent>
 				</cfif>
-				
-				<!--- If not found, look in top of theme directory
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-				 --->
-				 
-				<!--- If not found, look in includes directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-				
-				<!--- If not found, look in local plugins directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
-						<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-						<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-						<cfset variables.event.setValue('pluginPath',pluginPath)>		
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-						<cfset variables.event.removeValue("pluginPath")>
-						<cfset variables.event.removeValue("pluginConfig")>
-					</cfif>
-				</cfif>
-				
-				<!--- If not found, look in global plugins directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/plugins/">
-					<cfif fileExists(expandPath("#pluginbasePath##i#"))>
-						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
-						<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-						<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-						<cfset variables.event.setValue('pluginPath',pluginPath)>
-						<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
-						<cfinclude  template="#pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-						<cfset variables.event.removeValue("pluginPath")>
-						<cfset variables.event.removeValue("pluginConfig")>
-					</cfif>
-				</cfif>
-			</cfif>
-			<cfif not headerFound>
-			<cfoutput><!-- missing header include- #i# --></cfoutput>
-			</cfif>
-		</cfsavecontent>
-		<cfset headerStr=headerStr & " " & trim(itemStr)>
-		</cfloop>
+				<cfset headerStr=headerStr & " " & trim(itemStr)>
+			</cfloop>
+		</cfif>
 	</cfif>	
 	<cfreturn headerStr>
 </cffunction>
@@ -3562,6 +3590,10 @@ Display Objects
 
 	public any function getCalendarUtility() {
 		return variables.$.getBean('contentCalendarUtilityBean').setMuraScope(variables.$);
+	}
+
+	public any function noIndex(){
+		addToHTMLHeadQueue('<meta name="robots" content="noindex, follow" />');
 	}
 </cfscript>
 
