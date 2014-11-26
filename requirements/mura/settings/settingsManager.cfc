@@ -347,7 +347,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="missingOnly" default="false">
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
-	<cfobjectcache action="clear"/>
+
+	<cftry>
+		<cfobjectcache action="clear"/>
+		<cfcatch></cfcatch>
+	</cftry>
+
+	
 	<cfset rs=getList() />
 
 	<cfloop query="rs">

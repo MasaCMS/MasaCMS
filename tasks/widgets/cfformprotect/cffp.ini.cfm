@@ -23,7 +23,7 @@ akismetFormEmailField=
 akismetFormURLField=
 akismetFormBodyField=
 tooManyUrlsMaxUrls=6
-spamstrings='free music,download music,music downloads,viagra,phentermine,viagra,tramadol,ultram,prescription soma,cheap soma,cialis,levitra,weight loss,buy cheap'
+spamstrings='free music,download music,music downloads,phentermine,viagra,tramadol,ultram,prescription soma,cheap soma,cialis,levitra,weight loss,buy cheap,payday_loan,best_cialis,cialis_sale'
 projectHoneyPotAPIKey=
 
 #the points each test costs for failure

@@ -57,7 +57,9 @@ to your own modified versions of Mura CMS.
         <cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
         <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
       </cfif>
+      <cfif application.configBean.getJavaEnabled()>
       <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
+      </cfif>
       <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
         <a  class="btn" href="##"  onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="icon-share"></i> Export Static HTML (BETA)</a>
       </cfif>
@@ -504,7 +506,8 @@ to your own modified versions of Mura CMS.
 	        </div>
 
           <div class="control-group">
-            <cfif application.configBean.getAdManager()>
+            <!--- The ad manager is now gone, but can exist in limited legacy situations --->
+            <cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
             <div class="span3">
               <label class="control-label">Advertisement Manager</label>
               <div class="controls"> 
@@ -1037,6 +1040,7 @@ to your own modified versions of Mura CMS.
     
     <!--- Site Bundles --->
     <div id="tabBundles" class="tab-pane fade">
+      <cfif application.configBean.getJavaEnabled()>
     	<div class="fieldset">
     		<cfif listFind(session.mura.memberships,'S2')>
           
@@ -1125,6 +1129,15 @@ to your own modified versions of Mura CMS.
       </cfif>
       
     	</div>
+      <cfelse>
+      <div class="fieldset">
+        <div class="control-group">
+          <div class="alert">
+            Java is currently disabled. So this feature is not currently available.
+          </div>
+        </div>
+      </div>
+      </cfif>
     </div>
 
     <cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>

@@ -321,7 +321,7 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
-			var delim=application.configBean.getFileDelim();
+			var delim = FindNoCase("Windows", this.os) ? '\' : '/';
 			var lastChr="";
 			var lenPath=0;
 			var inStream="";

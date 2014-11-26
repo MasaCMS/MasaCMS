@@ -48,7 +48,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="advertiserGateway" type="any" required="yes"/>
 <cfargument name="userGateway" type="any" required="yes"/>
 <cfargument name="contentGateway" type="any" required="yes"/>
 <cfargument name="sessionTrackingGateway" type="any" required="yes"/>
@@ -58,7 +57,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="feedGateway" type="any" required="yes"/>
 
 		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.advertiserGateway=arguments.advertiserGateway />
 		<cfset variables.userGateway=arguments.userGateway />
 		<cfset variables.contentGateway=arguments.contentGateway />
 		<cfset variables.sessionTrackingGateway=arguments.sessionTrackingGateway />
