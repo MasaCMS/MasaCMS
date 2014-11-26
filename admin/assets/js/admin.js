@@ -830,9 +830,11 @@ function setColorPickers(target) {
 }
 
 function setToolTips(target) {
-	$(target).tooltip({
-		selector: "a[rel=tooltip]"
-	});
+	if(typeof $(target).tooltip =='function'){
+		$(target).tooltip({
+			selector: "a[rel=tooltip]"
+		});
+	}
 
 	$(target + ' a[rel=tooltip]').click(function(e) {
 		e.preventDefault();
@@ -1445,69 +1447,73 @@ function removePunctuation(item){
 
 
 // search site drop down menu
-$.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
-	_suggest: function( items ) {
-		// todo: make the ul id an options config (string or object?)
-		var ul = this.element.closest("ul");
-		ul.children("li").remove();
-		
-		this._renderMenu( ul, items );
-		this.isNewMenu = true;
-		this.menu.refresh();
-
-		ul.show();
-		this._resizeMenu();
-
-		if ( this.options.autoFocus ) {
-			this.menu.next();
-		}
-	},
-
-	_renderItem: function( ul, item ) {
-		return $( "<li>" )
-			.append(
-				$( "<a>" ).attr(
-					"href", "?muraAction=cDashboard.main&siteID=" + item.id
-				).append(
-					$( "<i>" ).addClass( "icon-globe" )
-				).append( item.label )
-			).appendTo( ul );
-	},
-
-	options: {
-		create: function( event ) {
+if(typeof $.ui != 'undefined'){
+	$.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
+		_suggest: function( items ) {
+			// todo: make the ul id an options config (string or object?)
+			var ul = this.element.closest("ul");
+			ul.children("li").remove();
 			
-			// we clear the results list if search string get is using backspace for example
-			$( event.target ).keyup(function( event, ui ) {
-				var input = $( this );
-				if ( input.val().length < $( this ).data("customMuraSiteSelector").option("minLength") ) {
-					var ul = input.closest("ul");
-					ul.children("li").remove();
-				}
-			});
-			
-		}
-	}
-});
+			this._renderMenu( ul, items );
+			this.isNewMenu = true;
+			this.menu.refresh();
 
-$(function() {
-	$( 'input[name="site-search"]' ).muraSiteSelector({
-		source: function( request, response ) {
-			$.ajax({
-				url: "./index.cfm?muraAction=cnav.searchsitedata",
-				dataType: "json",
-				method: "POST",
-				data: {
-					searchString: request.term
-				},
-				success: function( data ) {
-					return response( data );
-				}
-			});
+			ul.show();
+			this._resizeMenu();
+
+			if ( this.options.autoFocus ) {
+				this.menu.next();
+			}
 		},
-		minLength: 2
+
+		_renderItem: function( ul, item ) {
+			return $( "<li>" )
+				.append(
+					$( "<a>" ).attr(
+						"href", "?muraAction=cDashboard.main&siteID=" + item.id
+					).append(
+						$( "<i>" ).addClass( "icon-globe" )
+					).append( item.label )
+				).appendTo( ul );
+		},
+
+		options: {
+			create: function( event ) {
+				
+				// we clear the results list if search string get is using backspace for example
+				$( event.target ).keyup(function( event, ui ) {
+					var input = $( this );
+					if ( input.val().length < $( this ).data("customMuraSiteSelector").option("minLength") ) {
+						var ul = input.closest("ul");
+						ul.children("li").remove();
+					}
+				});
+				
+			}
+		}
 	});
-});
+
+	$(function() {
+		$( 'input[name="site-search"]' ).muraSiteSelector({
+			source: function( request, response ) {
+				$.ajax({
+					url: "./index.cfm?muraAction=cnav.searchsitedata",
+					dataType: "json",
+					method: "POST",
+					data: {
+						searchString: request.term
+					},
+					success: function( data ) {
+						return response( data );
+					}
+				});
+			},
+			minLength: 2
+		});
+	});
+}
+
+
 
 function setLowerCaseKeys(obj) {
   var keys = Object.keys(obj);
@@ -1559,10 +1565,16 @@ function setFinders(selector){
 $(function(){
 	
 	setFinders(".mura-ckfinder");
-	setDatePickers(".datepicker",dtLocale);
-	setTabs(".tabs",activetab);
+	if(typeof dtLocale != 'undefined'){
+		setDatePickers(".datepicker",dtLocale);
+	}
+	if(typeof activetab != 'undefined'){
+		setTabs(".tabs",activetab);
+	}
 	setHTMLEditors();
-	setAccordions(".accordion",activepanel);
+	if(typeof activepanel != 'undefined'){
+		setAccordions(".accordion",activepanel);
+	}
 	setCheckboxTrees();
 	setColorPickers(".colorpicker");
 	setToolTips(".container");
