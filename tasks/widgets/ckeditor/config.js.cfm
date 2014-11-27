@@ -8,35 +8,39 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
-
+	
 	<cfoutput>
-	/*
-	var lite = config.lite|| {};
-	
+	<!---
+	var LITE = {
+		Events : {
+			INIT : "lite:init",
+			ACCEPT : "lite:accept",
+			REJECT : "lite:reject",
+			SHOW_HIDE : "lite:showHide",
+			TRACKING : "lite:tracking",
+			CHANGE: "lite:change"
+		},
+		
+		Commands : {
+			TOGGLE_TRACKING : "lite_ToggleTracking",
+			TOGGLE_SHOW : "lite_ToggleShow",
+			ACCEPT_ALL : "lite_AcceptAll",
+			REJECT_ALL : "lite_RejectAll",
+			ACCEPT_ONE : "lite_AcceptOne",
+			REJECT_ONE : "lite_RejectOne",
+			TOGGLE_TOOLTIPS: "lite_ToggleTooltips"
+		}
+	};
 
-	var LITE={
-			Commands:{
-				TOGGLE_TRACKING : "lite.ToggleTracking",
-				TOGGLE_SHOW : "lite.ToggleShow",
-				ACCEPT_ALL : "lite.AcceptAll",
-				REJECT_ALL : "lite.RejectAll",
-				ACCEPT_ONE : "lite.AcceptOne",
-				REJECT_ONE : "lite.RejectOne",
-				TOGGLE_TOOLTIPS: "lite.ToggleTooltips"
-			}
-	}
-	
-	config.lite=lite;
-	config.lite.commands = [LITE.Commands.TOGGLE_SHOW, LITE.Commands.ACCEPT_ALL, LITE.Commands.REJECT_ALL];
+	var lite =  config.lite = config.lite|| {};
+	lite.isTracking = false;
 
-	config.lite.userName='#JSStringFormat($.currentUser().getFullName())#';
-	config.lite.userId='#JSStringFormat($.currentUser().getUserID())#';
-	*/
+	lite.userName='#JSStringFormat($.currentUser().getFullName())#';
+	lite.userId='#JSStringFormat($.currentUser().getUserID())#';
+	--->
 
 	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
-	
-	
 	</cfoutput>
 	
 	<cfoutput>

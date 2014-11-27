@@ -81,7 +81,7 @@ uses the query string as the key --->
 
 <cfif thisTag.executionMode IS "Start">
   <cfset request.cacheItem=true/>
-	 <cfset request.cacheItemTimeSpan="">
+   <cfset request.cacheItemTimeSpan="">
 </cfif>
 
 <cfif request.cacheItem and NOT attributes.nocache AND (application.settingsManager.getSite(attributes.siteid).getCache()  OR request.forceCache IS true)>
@@ -99,10 +99,10 @@ uses the query string as the key --->
       </cftry>
     </cfif>
   <cfelse>
-	 <cfif isDate(request.cacheItemTimeSpan)>
-		  <cfset cacheFactory.set( key=variables.tempKey, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
-	 <cfelse>
+   <cfif isDate(request.cacheItemTimeSpan)>
+      <cfset cacheFactory.set( key=variables.tempKey, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
+   <cfelse>
       <cfset cacheFactory.set( key=variables.tempKey, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
-	 </cfif>
+   </cfif>
   </cfif>
 </cfif>
