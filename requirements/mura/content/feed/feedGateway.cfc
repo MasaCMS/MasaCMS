@@ -759,7 +759,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and tcontent.parentid in (
 					<cfloop from="1" to="#contentLen#" index="c">
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.feedBean.getcontentID(),c)#">, 
-					</cfloop>'')
+					</cfloop>)
 				</cfif>
 
 				<cfif categoryLen>
