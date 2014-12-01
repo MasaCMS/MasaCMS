@@ -215,7 +215,7 @@
 			<cfif arrayLen(params.getJoins())>
 				<cfset local.specifiedjoins=params.getJoins()>
 				<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
-					<cfif local.specifiedjoins[local.i] eq jointable>
+					<cfif local.specifiedjoins[local.i].table eq jointable>
 						<cfset started=true>
 						#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
 						<cfbreak>

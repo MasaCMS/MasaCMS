@@ -223,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif arrayLen(arguments.feedBean.getJoins())>
 						<cfset local.specifiedjoins=arguments.feedBean.getJoins()>
 						<cfloop from="1" to="#arrayLen(local.specifiedjoins)#" index="local.i">
-							<cfif local.specifiedjoins[local.i] eq jointable>
+							<cfif local.specifiedjoins[local.i].table eq jointable>
 								<cfset started=true>
 								#local.specifiedjoins[local.i].jointype# join #jointable# #tableModifier# on (#local.specifiedjoins[local.i].clause#)
 								<cfbreak>

@@ -397,7 +397,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset started=false>
 			<cfif arrayLen(variables.instance.jointables)>
 				<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
-					<cfif variables.instance.jointables[local.i] eq jointable>
+					<cfif variables.instance.jointables[local.i].table eq jointable>
 						<cfset started=true>
 						#variables.instance.jointables[local.i].jointype# join #jointable# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
 						<cfbreak>
