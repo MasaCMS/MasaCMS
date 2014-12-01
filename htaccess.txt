@@ -30,7 +30,7 @@ RewriteRule ^([a-zA-Z0-9/].+)$ /index.cfm/$1 [NC,QSA,PT]
 
 # OPTION 2 :: WITH SiteID
 # Set indexFileInURLs to 0 in your /config/setting.ini.cfm and reload Mura.
-#RewriteRule ^([a-zA-Z0-9]{1,})/([a-zA-Z0-9/].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
+#RewriteRule ^([a-zA-Z0-9.\-_]{1,})/([a-zA-Z0-9/].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
 
 
 # OPTION 3 :: Advanced Configuration ::
