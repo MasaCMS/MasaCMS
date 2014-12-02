@@ -437,7 +437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var item = "" />
 	<cfset var i = 0 />
 
-	<cfset var xmlAttributeSet = XmlElemNew( documentXML, "", "ATTRIBUTESET" ) />
+	<cfset var xmlAttributeSet = XmlElemNew( documentXML, "", "attributeset" ) />
 	<cfset var xmlAttributes = "" />
 
 	<cfset extensionData = duplicate(variables.instance) />
@@ -448,9 +448,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset structDelete(extensionData,"subTypeID") />
 	</cfif>
 
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
 	<cfloop collection="#extensionData#" item="item">
 		<cfif isSimpleValue(extensionData[item])>
-			<cfset xmlAttributeSet.XmlAttributes[item] = extensionData[item] />
+			<cfset xmlAttributeSet.XmlAttributes[lcase(item)] = extensionData[item] />
 		</cfif>
 	</cfloop>
 

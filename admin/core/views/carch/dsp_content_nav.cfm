@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <li id="newContent"><a href="" id="newContentLink"><i class="icon-plus"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
     <li id="newCopy"><a href="" id="newCopyLink"><i class="icon-copy"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#</a></li>
     <li id="newCopyAll"><a href="" id="newCopyAllLink"><i class="icon-sitemap"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a></li>
+    <li id="newCopyAll"><a href="" id="newCopyAllLink"><i class="icon-signin"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.importnode")#</a></li>
 	<li id="newPaste"><a href="" id="newPasteLink"><i class="icon-paste"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
   </ul>
 </div>

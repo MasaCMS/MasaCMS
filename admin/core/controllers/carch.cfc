@@ -93,6 +93,17 @@
 	
 </cffunction>
 
+<cffunction name="export" output="false">
+	<cfargument name="rc">
+
+	<cfset var settingsBundle = rc.$.getBean('settingsBundle') />
+	<cfset var contentBean = rc.$.getBean('content').loadBy(siteid=session.siteid,contentid=arguments.rc.contentID) />
+	
+	<cfset settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#') />
+
+</cffunction>
+
+
 <cffunction name="list" output="false">
 	<cfargument name="rc">
 
