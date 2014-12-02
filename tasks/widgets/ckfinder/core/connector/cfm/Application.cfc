@@ -32,13 +32,13 @@
 		<cfif LCase(requestData.method) eq "post">
 			<!--- ColdFusion 9 does not use CFID/CFTOKEN passed in the URL, so we need to do it manually. --->
 			<cfif isDefined('URL.CFID')>
-				<cfcookie name="CFID" value="#URL.CFID#" />
+				<cfcookie name="CFID" value="#URL.CFID#" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#" />
 			</cfif>
 			<cfif isDefined('URL.CFTOKEN')>
-				<cfcookie name="CFTOKEN" value="#URL.CFTOKEN#" />
+				<cfcookie name="CFTOKEN" value="#URL.CFTOKEN#" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#" />
 			</cfif>
 			<cfif isDefined('URL.JSESSIONID')>
-				<cfcookie name="JSESSIONID" value="#URL.JSESSIONID#" />
+				<cfcookie name="JSESSIONID" value="#URL.JSESSIONID#" httpOnly="true" secure="#application.configBean.getValue('secureCookies')#" />
 			</cfif>
 		</cfif>
 		<cfreturn />
