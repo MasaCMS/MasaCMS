@@ -318,7 +318,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    
   <!---  <cfif arguments.userBean.getType() eq 2> --->
    <cfset createUserMemberships(arguments.userBean.getUserID(),arguments.userBean.getGroupID()) />
-   <cfset clearBadMembeships(arguments.userBean) />
+   <cfset clearBadMemberships(arguments.userBean) />
    <cfset createUserInterests(arguments.userBean.getUserID(),arguments.userBean.getCategoryID()) />
    <cfset createTags(arguments.userBean) />
   <!---  </cfif> --->
@@ -421,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.updateGroups>
 		<cfset deleteUserMemberships(arguments.userBean.getUserID(),arguments.originID) />
 		<cfset createUserMemberships(arguments.userBean.getUserID(),arguments.userBean.getGroupID()) />
-		<cfset clearBadMembeships(arguments.userBean) />
+		<cfset clearBadMemberships(arguments.userBean) />
 		</cfif>
 		
 		<cfif arguments.updateInterests>
@@ -805,7 +805,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn  rsAddresses />
 </cffunction>
 
-<cffunction name="clearBadMembeships" access="public" output="false" returntype="void">
+<cffunction name="clearBadMemberships" access="public" output="false" returntype="void">
 		<cfargument name="userBean" type="any" />
 
 	<cfif not arguments.userBean.getS2() and  arguments.userBean.getIsPublic()>
