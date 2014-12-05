@@ -78,3 +78,4 @@ allowAutoUpdates=1
 maxArchivedVersions=50
 strictfactory=true
 rendermuraalerts=true
+secureCookies=false
