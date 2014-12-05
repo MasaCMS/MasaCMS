@@ -301,8 +301,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cftry>
 			<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
 			<cfcatch>
-				<cfdump var="#variables.i#">
-				<cfdump var="#cfcatch#" abort="true">
+				<cfif application.configBean.getDebuggingEnabled()>
+					<cfdump var="#variables.i#">
+					<cfdump var="#cfcatch#" abort="true">
+				</cfif>
 			</cfcatch>
 		</cftry>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
