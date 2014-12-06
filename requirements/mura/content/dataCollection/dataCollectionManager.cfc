@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thefield = "" />
 	<cfset var f = "" />
 	<cfset var theXml = "" />
+	<cfset var ignoreList = 'DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,g-recaptcha-response' />
 	
 	<cfparam name="info.fieldnames" default=""/>
 	
@@ -91,8 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif> 
 	
 	<cfloop list="#fieldlist#" index="f">
-	<cfif f neq 'DOACTION' and f neq 'SUBMIT' and f neq 'MLID' and f neq 'SITEID' and f neq 'FORMID' and f neq 'POLLLIST' and f neq 'REDIRECT_URL' and f neq 'REDIRECT_LABEL' and f neq 'X' and f neq 'Y' and f neq 'UKEY' and f neq 'HKEY'
-		and f neq 'formfield1234567891' and f neq 'formfield1234567892' and f neq 'formfield1234567893' and f neq 'formfield1234567894' and f neq 'useProtect' and f neq "linkservid">
+	<cfif Not ListFindNoCase(ignoreList, f)>
 	
 		<cfif action eq 'create' and right(f,8) eq '_default'>
 			<cfset rf=left(f,len(f)-8)>
