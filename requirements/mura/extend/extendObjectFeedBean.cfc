@@ -339,7 +339,7 @@
 	INNER JOIN tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
 	where tclassextenddata.baseID IN (#PreserveSingleQuotes(baseIDList)#)
 	and tclassextend.type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getType()#"> 
-	and tclassextend.subtype= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubType()#">))
+	and tclassextend.subtype= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubType()#">
 		
 	<cfif len(getSortBy())>
 		and tclassextendattributes.name = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">
