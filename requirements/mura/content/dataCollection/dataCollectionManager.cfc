@@ -77,7 +77,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var f = "" />
 	<cfset var theXml = "" />
 	<cfset var ignoreList = 'DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,g-recaptcha-response' />
-	<cfset var i = "" />
 	
 	<cfparam name="info.fieldnames" default=""/>
 
