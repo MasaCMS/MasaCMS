@@ -606,6 +606,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs.recordcount>
 </cffunction>	
 
+<cffunction name="isPartialBundle" output="false">
+	<cfargument name="BundleFile">
+	<cfset var rs=createObject("component","mura.Zip").List(zipFilePath="#arguments.BundleFile#")>
+
+	<cfquery name="rs" dbType="query">
+		select entry from rs where entry in ('assetfiles.zip')
+	</cfquery>
+	<cfreturn rs.recordcount>
+</cffunction>	
+
 <cffunction name="createCacheFactory" output="false">
 	<cfargument name="capacity" required="true" default="0">
 	<cfargument name="freeMemoryThreshold" required="true" default="60">

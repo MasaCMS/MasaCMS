@@ -122,6 +122,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn true />
 	</cffunction>
 
+	<cffunction name="restorePartial" returntype="boolean">
+		<cfargument name="BundleFile" type="string" required="yes"/>
+		<cfset var rsStruct			= StructNew() />
+		<cfset var importValue	= "" />
+		<cfset var fname			= "" />
+		<cfset var sArgs			= StructNew() />
+		<cfset var rsImportFiles = "" />
+		<cfset var importWDDX = "" />
+		<cfset var importExtensions = "" />
+		<cfset var extendManager	= getBean("extendManager") />
+		
+		<cfset variables.Bundle	= variables.unpackPath />
+
+		<cfsetting requestTimeout = "7200">
+				
+		<cfif fileExists( arguments.BundleFile )>
+			<cfif application.settingsManager.isPartialBundle(arguments.BundleFile)>
+				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
+			<cfelse>
+				<cffile action="delete" file="#arguments.BundleFile#">
+				<cfthrow message="The submitted Bundle is not valid.">
+			</cfif>
+		<cfelse>
+			<cfoutput>NOT FOUND!!!: #arguments.BundleFile#</cfoutput><cfabort>
+			<cfreturn false />
+		</cfif>
+
+		<cfdirectory action="list" directory="#variables.unpackPath#" name="rsImportFiles" filter="*.xml">
+		<!--- this is done for cf7 compatability --->
+		<cfquery name="rsImportFiles" dbtype="query">
+			select * from rsImportFiles where lower(type)='file'
+		</cfquery>
+		
+		<cfloop query="rsImportFiles">
+			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
+			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">
+			<cftry>
+				<cfset importWDDX =REReplace(importWDDX,'[\x0]','','ALL')>
+				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
+			<cfcatch>
+				<cfdump var="An error happened while trying to deserialize #rsImportFiles.name#.">
+				<cfdump var="#cfcatch#">
+				<cfabort>
+			</cfcatch>
+			</cftry>
+			<cfset variables.data[fname] = importValue />
+		</cfloop>
+
+		<cfreturn true />
+	</cffunction>
+
+
 	<cffunction name="renameFiles" returntype="void">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
@@ -280,10 +332,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var zipDir	= "" />
+		<cfset var extendManager = getBean('extendManager') />
 		<cfset var rstcontent=getValue("rstcontent")>
 		<cfset var rstfiles=getValue("rstfiles")>
 		<cfset var rscheck="">
 		<cfset var fileArray = "" />
+		<cfset var extensions = {} />
+		<cfset var extension = "" />
+		<cfset var extensionsArray = [] />
+		<cfset var item = "" />
+		
 		<cfset var started=false>
 		
 		<cfset var i="" />
@@ -320,6 +378,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rstcontent">
 				<cfset fileArray = parseFilePaths( arguments.siteID,rstcontent.body )>
 				
+				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
+					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
+				</cfif>
+								
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
 					<cfif not directoryExists( "#variables.backupDir#/#fileArray[i]['path']#" )>
 						<cfset directoryCreate( "#variables.backupDir#/#fileArray[i]['path']#" )/>
@@ -328,6 +390,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 				
 			</cfloop>
+
+			<cfloop collection="#extensions#" item="i">
+				<cfset item = ListToArray( i,"." ) >
+				<cfset extension = extendManager.getSubTypeByName( item[1],item[2],arguments.siteID ) />
+				<cfif not extension.getIsNew()>
+					<cfset arrayAppend(extensionsArray,extension) >
+				</cfif>
+			</cfloop>
+
+			<cfset extensionXML = extendManager.getSubTypesAsXML( extensionsArray,false ) />
+			
+			<cffile action="write" file="#variables.backupDir#/extensions.txt" output="#extensionXML#" > 
+			
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory="#variables.backupDir#/assets/",recurse="true",sinceDate=arguments.sinceDate)>
 		</cfif>
 	</cffunction>
@@ -635,6 +710,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					order by LENGTH(path),orderno
 				</cfquery>
 			</cfif>
+
 			<cfquery name="rstcontent">
 				select tcontent.* from tcontent
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
@@ -647,8 +723,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif len(arguments.changesetID)>
 					and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+					and tcontent.active = 1
 				<cfelseif len(arguments.parentid)>
 					and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+					and tcontent.active = 1
 				</cfif>
 			</cfquery>
 
@@ -663,8 +741,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and (active = 1 or (changesetID is not null and approved=0))
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
 						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and tcontent.active = 1
 					</cfif>
 				)
 				</cfif>
@@ -692,6 +772,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and (active = 1 or (changesetID is not null and approved=0))
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+						and tcontent.active = 1
+					<cfelseif len(arguments.parentid)>
+						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and tcontent.active = 1
 					</cfif>
 				)
 				</cfif>
@@ -707,8 +791,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					select distinct contentID from tcontent
 					<cfif len(arguments.changesetID)>
 						where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
 						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and tcontent.active = 1
 					</cfif>
 				)
 				</cfif>
@@ -774,45 +860,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setValue("rstadplacementcategories",rstadplacementcategories)>
 			--->
 			<!--- END ADVERTISING --->
-	
-			<!--- tcontentcategoryassign --->
-			<cfquery name="rstcontentcategoryassign">
-				select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-				and contentHistID in
-				(
-					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-					and (active = 1 or (changesetID is not null and approved=0))
-					<cfif len(arguments.changesetID)>
-						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-					<cfelseif len(arguments.parentid)>
-						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
-					</cfif>
-				)
-				</cfif>
-				<cfif isDate(arguments.sinceDate)>
-					<cfif rstcontent.recordcount>
-						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
-					<cfelse>
-						0=1
-					</cfif>
-				</cfif>
-				<cfif not arguments.includeTrash>
-				and categoryID in (select categoryID from tcontentcategories)
-				and contentID in (
-					select distinct contentID from tcontent
-					<cfif len(arguments.changesetID)>
-						where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-					<cfelseif len(arguments.parentid)>
-						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
-					</cfif>
-					)
-				</cfif>
-			</cfquery>
-	
-			<cfset setValue("rstcontentcategoryassign",rstcontentcategoryassign)>
-	
+		
 			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
+				<!--- tcontentcategoryassign --->
+				<cfquery name="rstcontentcategoryassign">
+					select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif not arguments.includeVersionHistory>
+					and contentHistID in
+					(
+						select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and (active = 1 or (changesetID is not null and approved=0))
+						<cfif len(arguments.changesetID)>
+							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
+						<cfelseif len(arguments.parentid)>
+							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
+						</cfif>
+					)
+					</cfif>
+					<cfif isDate(arguments.sinceDate)>
+						<cfif rstcontent.recordcount>
+							and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+						<cfelse>
+							0=1
+						</cfif>
+					</cfif>
+					<cfif not arguments.includeTrash>
+					and categoryID in (select categoryID from tcontentcategories)
+					and contentID in (
+						select distinct contentID from tcontent
+						<cfif len(arguments.changesetID)>
+							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
+						<cfelseif len(arguments.parentid)>
+							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
+						</cfif>
+						)
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstcontentcategoryassign",rstcontentcategoryassign)>
+
 				<cfquery name="rstsystemobjects">
 					select * from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				</cfquery>
@@ -1040,47 +1130,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and feedID in (select feedID from tcontentfeeds)
 					</cfif>
 				</cfquery>
-			
+				<cfset setValue("rstcontentfeedadvancedparams",rstcontentfeedadvancedparams)>
+
+				<!--- tcontentrelated --->
+				<cfquery name="rstcontentrelated">
+					select * from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif not arguments.includeVersionHistory>
+					and contenthistID in 
+					(
+						select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and (active = 1 or (changesetID is not null and approved=0))
+						<cfif len(arguments.changesetID)>
+							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
+						<cfelseif len(arguments.parentid)>
+							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
+						</cfif>
+					)
+					</cfif>
+					<cfif isDate(arguments.sinceDate)>
+						<cfif rstcontent.recordcount>
+							and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+						<cfelse>
+							and 0=1
+						</cfif>
+					</cfif>
+					<cfif not arguments.includeTrash>
+					and contentID in (
+						select distinct contentID from tcontent
+						<cfif len(arguments.changesetID)>
+							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
+						<cfelseif len(arguments.parentid)>
+							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
+						</cfif>
+					)
+					and relatedID in (select distinct contentID from tcontent)
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstcontentrelated",rstcontentrelated)>
 			</cfif>
-	
-			<cfset setValue("rstcontentfeedadvancedparams",rstcontentfeedadvancedparams)>
-	
-			<!--- tcontentrelated --->
-			<cfquery name="rstcontentrelated">
-				select * from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-				and contenthistID in 
-				(
-					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-					and (active = 1 or (changesetID is not null and approved=0))
-					<cfif len(arguments.changesetID)>
-						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-					<cfelseif len(arguments.parentid)>
-						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
-					</cfif>
-				)
-				</cfif>
-				<cfif isDate(arguments.sinceDate)>
-					<cfif rstcontent.recordcount>
-						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
-					<cfelse>
-						and 0=1
-					</cfif>
-				</cfif>
-				<cfif not arguments.includeTrash>
-				and contentID in (
-					select distinct contentID from tcontent
-					<cfif len(arguments.changesetID)>
-						where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-					<cfelseif len(arguments.parentid)>
-						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
-					</cfif>
-				)
-				and relatedID in (select distinct contentID from tcontent)
-				</cfif>
-			</cfquery>
-	
-			<cfset setValue("rstcontentrelated",rstcontentrelated)>
 			
 			<!--- tfiles --->
 			<cfquery name="rstfiles">
@@ -1097,8 +1189,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and (active = 1 or (changesetID is not null and approved=0))
 						<cfif len(arguments.changesetID)>
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
 							and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
 						</cfif>
 					)
 					
@@ -1110,8 +1204,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							tclassextenddata.baseID=tcontent.contenthistid
 							<cfif len(arguments.changesetID)>
 								and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+								and tcontent.active = 1
 							<cfelseif len(arguments.parentid)>
 								and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+								and tcontent.active = 1
 							</cfif>
 							)
 						inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
@@ -1158,7 +1254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset setValue("hasmetadata",arguments.includeMetaData)>
 			
-			<cfif arguments.includeMetaData>
+			<cfif arguments.includeMetaData and not len(arguments.changesetID) and not len(arguments.parentid)>
 				<cfquery name="rstcontentstats">
 					select * from tcontentstats where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 					<cfif isDate(arguments.sinceDate)>
@@ -1173,8 +1269,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						select distinct contentID from tcontent
 						<cfif len(arguments.changesetid)>
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
 							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
 						</cfif>
 					)
 					</cfif>
@@ -1192,8 +1290,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						select distinct contentID from tcontent
 						<cfif len(arguments.changesetid)>
 							where changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
 						<cfelseif len(arguments.parentid)>
 							where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
 						</cfif>
 						)
 					</cfif>
@@ -1211,79 +1311,106 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfquery>
 			</cfif>
+
+			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
+				
+				<cfquery name="rstclassextend">
+					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif not arguments.includeUsers>
+					and type not in ('1','2','User','Group')
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstclassextend",rstclassextend)>
+		
+				<cfquery name="rstclassextendsets">
+					select * from tclassextendsets 
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif rstclassextend.recordcount>
+						and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfquery>
 			
-			<cfquery name="rstclassextend">
-				select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeUsers>
-				and type not in ('1','2','User','Group')
-				</cfif>
-			</cfquery>
+				<cfset setValue("rstclassextendsets",rstclassextendsets)>
 	
-			<cfset setValue("rstclassextend",rstclassextend)>
+				<cfquery name="rstclassextendrcsets">
+					select * from tclassextendrcsets 
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif rstclassextend.recordcount>
+						and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfquery>
+			
+				<cfset setValue("tclassextendrcsets",rstclassextendrcsets)>
+			
+				<cfquery name="rstclassextendattributes">
+					select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif rstclassextendsets.recordcount>
+						and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfquery>
+			
+				<cfset setValue("rstclassextendattributes",rstclassextendattributes)>
+		
+				<cfquery name="rstclassextenddata">
+					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
+					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
+					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif not arguments.includeVersionHistory>
+						and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
+						and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+					</cfif>
+					<cfif isDate(arguments.sinceDate)>
+						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+					and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
+						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 	
-			<cfquery name="rstclassextendsets">
-				select * from tclassextendsets 
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif rstclassextend.recordcount>
-					and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
-				<cfelse>
-					and 0=1
-				</cfif>
-			</cfquery>
-		
-			<cfset setValue("rstclassextendsets",rstclassextendsets)>
+					union all
+	
+					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
+					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
+					inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+					inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
+					inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
+					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					and tclassextend.type in ('Site','Custom')
+	
+				</cfquery>
+			
+				<cfset setValue("rstclassextenddata",rstclassextenddata)>
+			<cfelse>
+				<cfquery name="rstclassextenddata">
+					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
+					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID,
+					tcontent.contentid,tclassextendattributes.name
+					from tclassextenddata 
+					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+					join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
+					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif isDate(arguments.sinceDate)>
+						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+					and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
+						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+					<cfif len(arguments.changesetid)>
+						and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+						and tcontent.active = 1
+					<cfelseif len(arguments.parentid)>
+						and tcontent.contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and tcontent.active = 1
+					</cfif>
+				</cfquery>
 
-			<cfquery name="rstclassextendrcsets">
-				select * from tclassextendrcsets 
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif rstclassextend.recordcount>
-					and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
-				<cfelse>
-					and 0=1
-				</cfif>
-			</cfquery>
-		
-			<cfset setValue("tclassextendrcsets",rstclassextendrcsets)>
-		
-			<cfquery name="rstclassextendattributes">
-				select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif rstclassextendsets.recordcount>
-					and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
-				<cfelse>
-					and 0=1
-				</cfif>
-			</cfquery>
-		
-			<cfset setValue("rstclassextendattributes",rstclassextendattributes)>
-		
-			<cfquery name="rstclassextenddata">
-				select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
-				tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
-				inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
-				where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-					and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-				</cfif>
-				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-				</cfif>
-				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
-					where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-
-				union all
-
-				select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
-				tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
-				inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
-				inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
-				inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
-				where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and tclassextend.type in ('Site','Custom')
-
-			</cfquery>
-		
-			<cfset setValue("rstclassextenddata",rstclassextenddata)>
+				<cfset setValue("rstclassextenddata",rstclassextenddata)>
+			</cfif>
 				
 			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
 				<!--- tmailinglist --->
@@ -1531,17 +1658,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset BundleFiles( argumentCollection=sArgs ) />
 		<cfelse>
 			<cfquery name="rsthierarchy">
-				select contentid,filename,type,orderno,path,0 AS depth from tcontent
+				select contentid,contenthistid,filename,type,subtype,orderno,path,0 AS depth from tcontent
 				where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				and active = 1
-				and type IN ("Page","Folder","Calendar","Gallery")
+				<cfif len(arguments.changesetID)>
+					and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+				<cfelseif len(arguments.parentid)>
+					and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+				</cfif>
 				order by LENGTH(path),orderno
 			</cfquery>
-			
+					
 			<cfloop query="rsthierarchy">
 				<cfset rsthierarchy['depth'][rsthierarchy.currentrow] = ArrayLen( ListToArray(rsthierarchy['path'][rsthierarchy.currentrow]) ) /> 
 			</cfloop>
-			
+
 			<cfset setValue("rsthierarchy",rsthierarchy)>
 			<cfset sArgs.rstfiles = rstfiles />
 			<cfset BundlePartialFiles( argumentCollection=sArgs ) />

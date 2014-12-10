@@ -1646,7 +1646,7 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="theme">
 	<cfelseif isDefined("arguments.configXML.mura")>
 		<cfset baseElement="mura">
-	</cfif>
+	</cfif>	
 
 	<cfif len(baseElement) 
 		and (

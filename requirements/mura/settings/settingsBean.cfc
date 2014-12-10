@@ -917,7 +917,7 @@ s
 <cffunction name="getContentPoolID" output="false">
 
 	<cfif not listFindNoCase(variables.instance.contentPoolID,getValue('siteid'))>
-		<cfset variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'))>
+		<!---<cfset variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'))>--->
 	</cfif>
 
 	<cfreturn variables.instance.contentPoolID>

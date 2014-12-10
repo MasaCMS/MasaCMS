@@ -103,6 +103,18 @@
 
 </cffunction>
 
+<cffunction name="importcontent" output="false">
+	<cfargument name="rc">
+
+	<cfset var contentUtility = arguments.rc.$.getBean('contentUtility') />
+	
+	<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile") />
+	<!--- serverBundlePath='' --->
+		
+	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>
+ 
+</cffunction>
+
 
 <cffunction name="list" output="false">
 	<cfargument name="rc">

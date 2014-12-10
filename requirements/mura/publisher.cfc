@@ -318,6 +318,130 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn arguments.errors>
 	</cffunction>
+
+	<cffunction name="getToWorkPartial" returntype="any" output="false">
+		<cfargument name="siteID" type="string" default="" required="true">
+		<cfargument name="parentID" type="string" default="">
+		<cfargument name="Bundle" type="any" required="false">
+		<cfargument name="errors" type="any" required="true" default="#structNew()#">
+		<cfargument name="keyMode" type="string" default="copy" required="true">
+
+		<cfset var rstplugins="">
+		<cfset var bundleAssetPath="">
+		<cfset var extendManager	= getBean("extendManager") />
+
+		<cfset var keys = {}>
+
+		<cfset var rstContent=""/>
+		<cfset var rsContent=""/>
+
+		<cfset var rstClassExtendData=""/>
+		<cfset var rsExtendData=""/>
+
+		<cfset var rstContentTags=""/>
+		<cfset var rsContentTags=""/>
+
+		<cfset var contentBean=""/>
+		<cfset var contentData={}/>
+		<cfset var utility = getBean("utility") />
+
+		<cfsetting requestTimeout = "7200">
+
+		<cfif structKeyExists(arguments,"Bundle")>
+			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
+		</cfif>
+
+		<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+		<cfif structKeyExists(arguments, "bundle")>
+			<cfset var bundleablebeans=arguments.Bundle.getValue("bundleablebeans",'')>	
+			<cfif len(bundleablebeans)>
+				<cfset var bb="">
+
+				<cfloop list="#bundleablebeans#" index="bb">
+					<cfif getServiceFactory().containsBean(bb)>
+						<cfset getBean(bb).fromBundle(bundle=this,siteid=arguments.toSiteID)>
+					</cfif>
+				</cfloop>
+			</cfif>
+		</cfif>
+
+		<cfif fileExists("#Bundle.getBundle()#extensions.txt")>
+			<cffile action="read" file="#Bundle.getBundle()#extensions.txt" variable="importExtensions" >
+			<cfif len( importExtensions ) gt 30>
+				<cfset extendManager.loadConfigXML(xmlParse(importExtensions),arguments.siteid) />
+			</cfif>
+		</cfif>
+		
+		<cfset rstcontent = arguments.Bundle.getValue("rstcontent")>
+		<cfset rsthierarchy = arguments.Bundle.getValue("rsthierarchy")>
+		<cfset rstfiles = arguments.Bundle.getValue("rstfiles")>
+		<cfset rstClassExtendData = arguments.Bundle.getValue("rstClassExtendData")>
+		<cfset rsthasmetadata = arguments.Bundle.getValue("rsthasmetadata")>
+		<cfset rstContentTags = arguments.Bundle.getValue("rstContentTags")>
+
+		<cfloop query="rsthierarchy">
+			<cfset contentBean = getBean('content').loadBy(remoteID=rsthierarchy.contentID,siteid=arguments.siteid) />
+
+			<cfquery name="rsContent" dbtype="query">
+				select * from rstcontent
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsthierarchy.contentid#"/>
+			</cfquery>
+	
+			<cfset contentData = utility.queryRowToStruct(rsContent) />
+
+			<cfquery name="rsExtendData" dbtype="query">
+				select * from rstClassExtendData
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+			</cfquery>
+
+			<cfif rsExtendData.recordCount>
+				<cfloop query="rsExtendData">
+					<cfset contentData[rsExtendData.name] = rsExtendData.attributeValue />
+				</cfloop>
+			</cfif>
+
+			<cfquery name="rsContentTags" dbtype="query">
+				select tag from rstContentTags
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+			</cfquery>
+			
+			<cfif rsContentTags.recordCount>
+				<cfset contentData.tags = valuelist(rsContentTags.tag) />
+			</cfif>
+
+			<cfset contentData.remoteID = contentData.contentID />
+
+			<cfif contentBean.getIsNew()>
+				<cfset contentBean.setContentID( createUUID() ) />
+
+				<cfset contentData.remoteID = contentData.contentID />
+				<cfif StructKeyExists(keys,contentData.parentid)>
+					<cfset contentData.parentID = keys[contentData.parentid] />
+				<cfelse>
+					<cfset contentData.parentID = arguments.parentid />
+				</cfif>
+			</cfif>
+
+			<cfset keys[rsContent.contentID] = contentBean.getContentID() />
+
+			<cfset structDelete(contentData,"siteID") />
+			<cfset structDelete(contentData,"lastUpdate") />
+			<cfset structDelete(contentData,"lastUpdateBy") />
+			<cfset structDelete(contentData,"lastUpdateByID") />
+			<cfset structDelete(contentData,"contentID") />
+			<cfset structDelete(contentData,"contentHistID") />
+			<cfset structDelete(contentData,"path") />
+			<cfset structDelete(contentData,"filename") />
+			<cfset contentBean.set( contentData ) />
+			
+			<cfset contentBean.save() />
+		</cfloop>	
+		
+		<cfreturn arguments.errors>
+	</cffunction>
 	
 	<cffunction name="getToWorkSite" returntype="void" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">

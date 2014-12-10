@@ -78,6 +78,90 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+	<cffunction name="deployPartialBundle" returntype="any" access="public" output="false">
+		<cfargument name="bundleFile">
+		<cfargument name="serverBundlePath">
+		<cfargument name="siteID">
+		<cfargument name="parentID">
+		<cfargument name="errors" default="">
+
+		<cfset var fileManager=getBean("fileManager")>
+		<cfset var tempfile="">
+		<cfset var deletetempfile=true>
+		
+		<cfif isDefined("arguments.serverBundlePath") and len(arguments.serverBundlePath) and fileExists(arguments.serverBundlePath)>
+			<cfset arguments.bundleFile=arguments.serverBundlePath>
+		</cfif>
+		
+		<cfif structKeyExists(arguments,"bundleFile") and len(arguments.bundleFile)>
+			<cfif fileManager.isPostedFile(arguments.bundleFile)>
+				<cfset tempFile = fileManager.upload( "newFile" ) />
+				<!---<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">--->
+			<cfelse>
+				<cfset tempFile=fileManager.emulateUpload(arguments.bundleFile)>
+				<cfset deletetempfile=false>
+			</cfif>
+			<cfparam name="arguments.bundleImportKeyMode" default="copy">
+
+			<cfset restorePartialBundle(
+				"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
+				arguments.siteID,
+				arguments.parentID,
+				arguments.errors
+				)>
+				
+			<cfif deletetempfile>
+				<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
+			</cfif>
+		</cfif>
+	</cffunction>
+	
+	<cffunction name="restorePartialBundle" output="false">
+		<cfargument name="bundleFile">
+		<cfargument name="siteID" default="">
+		<cfargument name="parentID" default="">
+		<cfargument name="errors" default="#structNew()#">
+		<cfargument name="keyMode" default="copy">
+	
+	    <cfset var sArgs			= structNew()>
+		<cfset var config 			= application.configBean />
+		<cfset var Bundle			= getBean("bundle") />
+		<cfset var publisher 		= getBean("publisher") />
+		<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+		<cfsetting requestTimeout = "7200">
+		
+		<cfset Bundle.restorePartial( arguments.BundleFile)>
+		
+		<cfset sArgs.fromDSN		= config.getDatasource() />
+		<cfset sArgs.toDSN			= config.getDatasource() />
+		<cfset sArgs.siteID			= arguments.siteID />
+		<cfset sArgs.parentID		= arguments.parentID />
+		<cfset sArgs.keyFactory		= keyFactory />
+		<cfset sArgs.Bundle			= Bundle />
+		<cfset sArgs.errors			= arguments.errors />
+		
+
+		<cfset arguments.errors = publisher.getToWorkPartial( argumentCollection=sArgs )>
+
+		<cftry>
+			<cfset application.appInitialized=false>
+		<cfcatch>
+			<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
+			<cfif findNoCase("duplicate",errors.message)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+			</cfif>
+			<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>SQL: " & cfcatch.sql>
+			</cfif>
+			<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
+			</cfif>
+		</cfcatch>
+		</cftry>
+		<cfreturn arguments.errors>
+	</cffunction>
+
+
 <cffunction name="getNotify" returntype="query" access="public" output="false">
 <cfargument name="crumbData" type="array" />
 	<cfset var rs = "">
