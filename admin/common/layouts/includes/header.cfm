@@ -112,7 +112,7 @@
 															<a href="##">
 																<strong>#rc.$.rbKey('version.cfmlengine')#</strong>
 																#server.coldfusion.productname#
-																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'version') >(#server.coldfusion.version#)</cfif>
+																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >(#server.coldfusion.productversion#)</cfif>
 															</a>
 														</li>
 														<cfif rc.$.globalConfig('javaEnabled')>
