@@ -122,6 +122,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="customTagGroups" type="string" default="" />
 <cfproperty name="hasComments" type="numeric" default="1" required="true" />
 <cfproperty name="hasLockableNodes" type="numeric" default="0" required="true" />
+<cfproperty name="reCAPTCHASiteKey" type="string" default="" />
+<cfproperty name="reCAPTCHASecret" type="string" default="" />
+<cfproperty name="reCAPTCHALanguage" type="string" default="en" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -220,6 +223,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.hasSharedFilePool=""/>
 	<cfset variables.instance.hasComments=1/>
 	<cfset variables.instance.hasLockableNodes=0/>
+	<cfset variables.instance.reCAPTCHASiteKey=""/>
+	<cfset variables.instance.reCAPTCHASecret=""/>
+	<cfset variables.instance.reCAPTCHALanguage="en"/>
 
 	<cfreturn this />
 </cffunction>

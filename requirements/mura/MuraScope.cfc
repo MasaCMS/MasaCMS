@@ -287,7 +287,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset site.setValue(arguments.property,arguments.propertyValue)>
 				<cfreturn this>
 			<cfelse>
-				<cfreturn site.getValue(arguments.property)>
+				<cfreturn (IsSimpleValue(site.getValue(arguments.property)) and Len(site.getValue(arguments.property))) || !IsSimpleValue(site.getValue(arguments.property))
+					? site.getValue(arguments.property)
+					: globalConfig(arguments.property) />
 			</cfif>
 		<cfelse>
 			<cfreturn site>
@@ -300,7 +302,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="globalConfig" output="false" returntype="any">
 	<cfargument name="property">
-	<cfset var site="">
 	<cfset var theValue="">
 	
 	<cfif structKeyExists(arguments,"property")>

@@ -1,48 +1,58 @@
-<!--- This file is part of Mura CMS.
+<!--- 
+  This file is part of Mura CMS.
 
-Mura CMS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, Version 2 of the License.
+  Mura CMS is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, Version 2 of the License.
 
-Mura CMS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+  Mura CMS is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+  Linking Mura CMS statically or dynamically with other modules constitutes 
+  the preparation of a derivative work based on Mura CMS. Thus, the terms 
+  and conditions of the GNU General Public License version 2 ("GPL") cover 
+  the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+  However, as a special exception, the copyright holders of Mura CMS grant 
+  you permission to combine Mura CMS with programs or libraries that are 
+  released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+  In addition, as a special exception, the copyright holders of Mura CMS 
+  grant you permission to combine Mura CMS with independent software modules 
+  (plugins, themes and bundles), and to distribute these plugins, themes and 
+  bundles without Mura CMS under the license of your choice, provided that 
+  you follow these specific guidelines: 
 
-Your custom code 
+  Your custom code 
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+  • Must not alter any default objects in the Mura CMS database and
+  • May not alter the default display of the Mura CMS logo within Mura CMS and
+  • Must not alter any files in the following directories:
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+    /admin/
+    /tasks/
+    /config/
+    /requirements/mura/
+    /Application.cfc
+    /index.cfm
+    /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
+  You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
+  meets the above guidelines as a combined work under the terms of GPL for 
+  Mura CMS, provided that you include the source code of that other code when 
+  and as the GNU GPL requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+  For clarity, if you create a modified version of Mura CMS, you are not 
+  obligated to grant this special exception for your modified version; it is 
+  your choice whether to do so, or to make such modified version available 
+  under the GNU General Public License version 2 without this exception.  You 
+  may, if you choose, apply this exception to your own modified versions of 
+  Mura CMS.
 --->
 
 <cfcomponent extends="mura.cfobject" output="false">
@@ -736,4 +746,86 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		</cfloop>
 	</cffunction>
 
+	<cfscript>
+		public boolean function reCAPTCHA(required event) {
+			var verified = false;
+			var $ = arguments.event.getValue('muraScope');
+			var secret = $.siteConfig('reCAPTCHASecret');
+
+			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
+				var reCaptcha = new mura.ReCAPTCHA(secret);
+				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
+			}
+
+			return verified;
+		}
+
+		public struct function getReCAPTCHAKeys(required event) {
+			var $ = arguments.event.getValue('muraScope');
+			return {
+				'siteKey' = $.siteConfig('reCAPTCHASiteKey')
+				, 'secret' = $.siteConfig('reCAPTCHASecret')
+				, 'language' = $.siteConfig('reCAPTCHALanguage')
+			};
+		}
+
+		public boolean function isHuman(required event) {
+			var reCAPTCHAKeys = getReCAPTCHAKeys(argumentCollection=arguments);
+
+			return Len(reCAPTCHAKeys.siteKey) && Len(reCAPTCHAKeys.secret)
+				? reCAPTCHA(argumentCollection=arguments)
+				: cfformprotect(argumentCollection=arguments);
+		}
+
+		public struct function getReCAPTCHALanguages() {
+			return {
+				'Arabic'='ar'
+				,'Bulgarian'='bg'
+				,'Catalan'='ca'
+				,'Chinese (Simplified)'='zh-CN'
+				,'Chinese (Traditional)'='zh-TW'
+				,'Croatian'='hr'
+				,'Czech'='cs'
+				,'Danish'='da'
+				,'Dutch'='nl'
+				,'English (UK)'='en-GB'
+				,'English (US)'='en'
+				,'Filipino'='fil'
+				,'Finnish'='fi'
+				,'French'='fr'
+				,'French (Canadian)'='fr-CA'
+				,'German'='de'
+				,'German (Austria)'='de-AT'
+				,'German (Switzerland)'='de-CH'
+				,'Greek'='el'
+				,'Hebrew'='iw'
+				,'Hindi'='hi'
+				,'Hungarain'='hu'
+				,'Indonesian'='id'
+				,'Italian'='it'
+				,'Japanese'='ja'
+				,'Korean'='ko'
+				,'Latvian'='lv'
+				,'Lithuanian'='lt'
+				,'Norwegian'='no'
+				,'Persian'='fa'
+				,'Polish'='pl'
+				,'Portuguese'='pt'
+				,'Portuguese (Brazil)'='pt-BR'
+				,'Portuguese (Portugal)'='pt-PT'
+				,'Romanian'='ro'
+				,'Russian'='ru'
+				,'Serbian'='sr'
+				,'Slovak'='sk'
+				,'Slovenian'='sl'
+				,'Spanish'='es'
+				,'Spanish (Latin America)'='es-419'
+				,'Swedish'='sv'
+				,'Thai'='th'
+				,'Turkish'='tr'
+				,'Ukrainian'='uk'
+				,'Vietnamese'='vi'
+			};
+		}
+	</cfscript>
 </cfcomponent>

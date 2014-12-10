@@ -281,6 +281,13 @@
 				</cfif>
 				<!--- @END Extended Attributes --->
 
+				<!--- form protection --->
+				<div class="#this.editProfileFormGroupWrapperClass#">
+					<div class="#this.editProfileSubmitButtonWrapperClass#">
+						<cfinclude template="dsp_form_protect.cfm"/>
+					</div>
+				</div>
+
 				<!--- EDIT PROFILE BUTTON --->
 				<div class="#this.editProfileFormGroupWrapperClass#">
 					<div class="#this.editProfileSubmitButtonWrapperClass#">
@@ -300,8 +307,7 @@
 						<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#">
 						<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#">
 						<input type="hidden" name="display" value="editprofile">
-						<!--- <cfinclude template="dsp_captcha.cfm"/> --->
-						<cfinclude template="dsp_form_protect.cfm"/>
+						<!--- <cfinclude template="dsp_form_protect.cfm"/> --->
 					</div>
 				</div>
 			</form>

@@ -124,9 +124,11 @@
 <cfoutput>
 <form id="#variables.frmID#" class="<cfif len(variables.attributes.class)>#variables.attributes.class# </cfif>mura-form-builder" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#variables.frmFieldContents#
+
+	<!--- Form Protection --->
+	<div>#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#</div>
+
 	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
-	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
-	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>
 </cfoutput>
 
