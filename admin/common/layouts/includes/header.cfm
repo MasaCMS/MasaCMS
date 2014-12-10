@@ -96,16 +96,50 @@
 												<ul class="dropdown-menu">
 													<li>
 														<a href="##">
-															<strong>Core Version</strong> 
+															<strong>#rc.$.rbKey('version.core')#</strong> 
 															#application.autoUpdater.getCurrentCompleteVersion()#
 														</a>
 													</li>
 													<li>
 														<a href="##">
-															<strong>Site Version</strong> 
+															<strong>#rc.$.rbKey('version.site')#</strong> 
 															#application.autoUpdater.getCurrentCompleteVersion(session.siteid)#
 														</a>
 													</li>
+													<cfif rc.currentUser.isSuperUser() >
+														<li class="divider"></li>
+														<li>
+															<a href="##">
+																<strong>#rc.$.rbKey('version.cfmlengine')#</strong>
+																#server.coldfusion.productname#
+																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'version') >(#server.coldfusion.version#)</cfif>
+															</a>
+														</li>
+														<cfif rc.$.globalConfig('javaEnabled')>
+															<li>
+																<a href="##">
+																	<strong>#rc.$.rbKey('version.dbengine')#</strong>
+																	#rc.$.getBean('dbUtility').version().database_productname# (#rc.$.getBean('dbUtility').version().database_version#)
+																</a>
+															</li>
+														</cfif>
+														<cfif structKeyExists(server,'java') and structKeyExists(server.java,'version') >
+															<li>
+																<a href="##">
+																	<strong>#rc.$.rbKey('version.java')#</strong>
+																	#server.java.version#
+																</a>
+															</li>
+														</cfif>
+														<cfif structKeyExists(server,'os') and structKeyExists(server.os,'name') >
+															<li>
+																<a href="##">
+																	<strong>#rc.$.rbKey('version.os')#</strong>
+																	#server.os.name# (#server.os.version#)
+																</a>
+															</li>
+														</cfif>
+													</cfif>
 													<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and session.mura.isLoggedIn>
 														<li>
 															<a href="##">

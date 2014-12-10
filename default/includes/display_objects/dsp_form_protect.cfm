@@ -54,12 +54,8 @@
   may, if you choose, apply this exception to your own modified versions of 
   Mura CMS.
 --->
-<cfscript>
-  request.cacheItem = false;
-  reCAPTCHAKeys = getBean('utility').getReCAPTCHAKeys($.event());
-</cfscript>
-
-<cfif Len(reCAPTCHAKeys.siteKey) and Len(reCAPTCHAKeys.secret)>
+<cfset request.cacheItem = false />
+<cfif Len($.siteConfig('reCAPTCHASiteKey')) and Len($.siteConfig('reCAPTCHASecret'))>
   <cfoutput>#$.dspReCAPTCHA()#</cfoutput>
 <cfelse>
   <cfinclude template="/murawrm/tasks/widgets/cfformprotect/cffp.cfm" />
