@@ -106,6 +106,38 @@
 															#application.autoUpdater.getCurrentCompleteVersion(session.siteid)#
 														</a>
 													</li>
+													<cfif rc.currentUser.isSuperUser() >
+														<li class="divider"></li>
+														<li>
+															<a href="##">
+																<strong>CFML Engine</strong>
+																#server.coldfusion.productname#
+																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'version') >(#server.coldfusion.version#)</cfif>
+															</a>
+														</li>
+														<li>
+															<a href="##">
+																<strong>DB Engine</strong>
+																#application.serviceFactory.getBean('dbUtility').version().database_productname# (#application.serviceFactory.getBean('dbUtility').version().database_version#)
+															</a>
+														</li>
+														<cfif structKeyExists(server,'java') and structKeyExists(server.java,'version') >
+															<li>
+																<a href="##">
+																	<strong>Java Version</strong>
+																	#server.java.version#
+																</a>
+															</li>
+														</cfif>
+														<cfif structKeyExists(server,'os') and structKeyExists(server.os,'name') >
+															<li>
+																<a href="##">
+																	<strong>OS Version</strong>
+																	#server.os.name# (#server.os.version#)
+																</a>
+															</li>
+														</cfif>
+													</cfif>
 													<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and session.mura.isLoggedIn>
 														<li>
 															<a href="##">
