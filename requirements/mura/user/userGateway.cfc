@@ -218,9 +218,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly and isExtendedSort>
 	left Join (select 
 			#variables.classExtensionManager.getCastString(data.getSortBy(),data.getSiteID())# extendedSort
-			 ,tclassextenddatauseractivityuseractivity.baseID 
-			from tclassextenddatauseractivityuseractivity inner join tclassextendattributes
-			on (tclassextenddatauseractivityuseractivity.attributeID=tclassextendattributes.attributeID)
+			 ,tclassextenddatauseractivity.baseID 
+			from tclassextenddatauseractivity inner join tclassextendattributes
+			on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSortBy()#">
 	) qExtendedSort
