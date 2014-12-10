@@ -3595,6 +3595,34 @@ Display Objects
 	public any function noIndex(){
 		addToHTMLHeadQueue('<meta name="robots" content="noindex, follow" />');
 	}
+
+	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image') {
+		var str = '';
+
+		if ( Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret')) ) {
+
+			// scrub args
+			arguments.reCAPTCHATheme = ListFindNoCase('light,dark', arguments.reCAPTCHATheme)
+				? LCase(arguments.reCAPTCHATheme)
+				: 'light';
+
+			arguments.reCAPTCHAType = ListFindNoCase('audio,image', arguments.reCAPTCHAType)
+				? LCase(arguments.reCAPTCHAType)
+				: 'image';
+
+			savecontent variable='str' {
+				WriteOutput('<div class="g-recaptcha" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
+			};
+
+			// load Google ReCAPTCHA script
+			addToHTMLHeadQueue('<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=#$.siteConfig('reCAPTCHALanguage')#"></script>');
+		} else {
+			str = '<div class="alert alert-warning"><h4><i class="fa fa-warning"></i> #$.rbKey('recaptcha.warning')#</h4><p>#$.rbKey('recaptcha.nokeys')#</p></div>';
+		}
+
+		return str;
+	}
+
 </cfscript>
 
 </cfcomponent>

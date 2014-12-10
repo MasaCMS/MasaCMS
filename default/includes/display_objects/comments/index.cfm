@@ -135,30 +135,15 @@
 			</cfif>
 
 			<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
-
-				<cfset variables.passedProtect = true>
 				<cfscript>
 					variables.myRequest = structNew();
 					StructAppend(variables.myRequest, url, "no");
 					StructAppend(variables.myRequest, form, "no");
+					// form protection
+					variables.passedProtect = variables.$.getBean('utility').isHuman(variables.$.event());
 				</cfscript>
 
-				<!---<cfif structKeyExists(variables.myRequest, "useProtect")>--->
-					<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
-					<cfif $.siteConfig().getContactEmail() neq "">
-						<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
-						<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
-						<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
-						<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
-						<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
-						<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
-					</cfif>
-				<!---</cfif>--->
-				
-				<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
-								
-
-				<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and variables.passedProtect>
+				<cfif variables.passedProtect>
 
 					<cfset variables.submittedData=variables.$.getBean('utility').filterArgs(request,application.badwords)/>
 					<cfset variables.submittedData.contentID=variables.theContentID />
@@ -167,9 +152,7 @@
 					</cfif>
 			
 					<cfset variables.submittedData.isApproved=application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() />
-					
-					
-					
+
 					<cfif request.commenteditmode eq "add">
 						<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />
 					<cfelseif request.commenteditmode eq "edit" and request.isEditor>
@@ -214,13 +197,7 @@
 							});
 						</script>
 					</cfsavecontent>
-
-					<cfif variables.passedProtect>
-						<cfset variables.errors["SecurityCode"]=variables.$.rbKey('captcha.error')>
-					<cfelse>
-						<cfset variables.errors["Spam"] = variables.$.rbKey("captcha.spam")>
-					</cfif>
-
+					<cfset variables.errors["Spam"] = variables.$.rbKey("captcha.spam")>
 				</cfif>
 			</cfif>
 
@@ -348,13 +325,13 @@
 
 					</fieldset>
 
-					<!--- Form Protect --->
-					<div>
-						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
-					</div>
-
 					<div class="#this.commentRequiredWrapperClass#">
 						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
+					</div>
+
+					<!--- Form Protect --->
+					<div class="#this.commentFieldWrapperClass#">
+						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 					</div>
 					
 					<!--- SUBMIT BUTTON --->

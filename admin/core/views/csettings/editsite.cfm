@@ -205,7 +205,7 @@ to your own modified versions of Mura CMS.
                 <input name="nextN" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getnextN())#" size="5" maxlength="5">
               </div>
           </div>
-          </div>
+        </div>
         <div class="control-group">
             <div class="span6">
             <label class="control-label">Site Caching</label>
@@ -285,7 +285,41 @@ to your own modified versions of Mura CMS.
                 	<option value="maintenance"<cfif rc.siteBean.getEnableLockdown() eq "maintenance"> selected</cfif>>Maintenance</option>
                 </select>
             </div>
-        </div> 
+        </div>
+
+        <!--- Google reCAPTCHA API Keys --->
+        <div class="control-group">
+          <!--- reCAPTCHA Site Key --->
+          <div class="span4">
+            <label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="icon-question-sign"></i></a></label>
+            <div class="controls">
+                <input name="reCAPTCHASiteKey" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
+              </div>
+          </div>
+          <!--- reCAPTCHA Secret --->
+          <div class="span4">
+            <label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.secret')# <i class="icon-question-sign"></i></a></label>
+            <div class="controls">
+                <input name="reCAPTCHASecret" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
+              </div>
+          </div>
+          <!--- reCAPTCHA Language --->
+          <div class="span4">
+            <label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.languageoptions')#">#$.rbKey('siteconfig.recaptcha.language')# <i class="icon-question-sign"></i></a></label>
+            <div class="controls">
+              <cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
+              <cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
+              <select name="reCAPTCHALanguage" class="span12">
+                <option value=""<cfif Not Len(rc.siteBean.getReCAPTACHALanguage())>
+                  selected</cfif>>- #$.rbKey('siteconfig.recaptcha.selectlanguage')# -</option>
+                <cfloop array="#rc.sortedLangs#" index="lang">
+                  <option value="#rc.langs[lang]#"<cfif rc.siteBean.getReCAPTCHALanguage() eq rc.langs[lang]> selected</cfif>>#lang#</option>
+                </cfloop>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <cfif application.configBean.getLockableNodes()>
         <div class="control-group">      
             <label class="control-label">Allow Content Locking</label>

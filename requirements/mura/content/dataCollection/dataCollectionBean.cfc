@@ -241,10 +241,16 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			variables.instance.errors.SecurityCode=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.error");
 		}
 
-		if(yesNoFormat(getValue('useProtect')) && !getBean('utility').cfformprotect(arguments.$.event())){
-			setValue('acceptError','Spam');
-			setValue('acceptData','0');
-			variables.instance.errors.Spam=getBean('settingsManager').getSite(getValue('siteid')).getRBFactory().getKey("captcha.spam");
+		var useReCAPTCHA = Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret'));
+
+		if ( useReCAPTCHA && !getBean('utility').reCAPTCHA(arguments.$.event()) ) {
+			setValue('acceptError', 'reCAPTCHA');
+			setValue('acceptData', '0');
+			variables.instance.errors.reCAPTCHA = arguments.$.rbKey('recaptcha.error');
+		} else if ( !useReCAPTCHA && !getBean('utility').cfformprotect(arguments.$.event()) ){
+			setValue('acceptError', 'Spam');
+			setValue('acceptData', '0');
+			variables.instance.errors.Spam = arguments.$.rbKey('captcha.spam');
 		}
 
 		if(len(variables.formpropertylist)){
@@ -269,8 +275,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		}
 
 		return this;
-
 	}
+
 	function submit($){
 
 		if(!isDefined('arguments.$')){

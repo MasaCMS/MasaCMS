@@ -76,9 +76,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thefield = "" />
 	<cfset var f = "" />
 	<cfset var theXml = "" />
-	<cfset var ignoreList = 'DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,g-recaptcha-response' />
+	<cfset var ignoreList = 'DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse' />
 	
 	<cfparam name="info.fieldnames" default=""/>
+
+	<cfif IsDefined('arguments.data.ignoreFields') and IsSimpleValue(arguments.data.ignoreFields) and Len(arguments.data.ignoreFields)>
+		<cfset ignoreList = ListAppend(ignoreList, arguments.data.ignoreFields) />
+	</cfif>
 	
 	<cfif isdefined('arguments.data.responseid')>
 		<cfset responseid=arguments.data.responseid>

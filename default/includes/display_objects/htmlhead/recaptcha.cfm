@@ -1,4 +1,4 @@
-<!--- 
+<!---
   This file is part of Mura CMS.
 
   Mura CMS is free software: you can redistribute it and/or modify
@@ -54,13 +54,6 @@
   may, if you choose, apply this exception to your own modified versions of 
   Mura CMS.
 --->
-<cfscript>
-  request.cacheItem = false;
-  reCAPTCHAKeys = getBean('utility').getReCAPTCHAKeys($.event());
-</cfscript>
-
-<cfif Len(reCAPTCHAKeys.siteKey) and Len(reCAPTCHAKeys.secret)>
-  <cfoutput>#$.dspReCAPTCHA()#</cfoutput>
-<cfelse>
-  <cfinclude template="/murawrm/tasks/widgets/cfformprotect/cffp.cfm" />
-</cfif>
+<!--- Google reCAPTCHA language codes: https://developers.google.com/recaptcha/docs/language --->
+<cfparam name="request.recaptchaLang" default="en" />
+<cfoutput><script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=#request.recaptchaLang#"></script></cfoutput>

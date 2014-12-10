@@ -53,7 +53,7 @@ publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,filePoolID
 largeImageHeight, largeImageWidth, smallImageHeight, smallImageWidth, mediumImageHeight, mediumImageWidth,
 sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups,hasComments,hasLockableNodes</cfoutput></cfsavecontent>
+googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups,hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -355,8 +355,11 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		 enableLockdown=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
 		 customTagGroups=<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
 		 hasComments=#arguments.bean.getHasComments()#,
-		 hasLockableNodes=#arguments.bean.getHasLockableNodes()#
-		 
+		 hasLockableNodes=#arguments.bean.getHasLockableNodes()#,
+		 reCAPTCHASiteKey=<cfif Len(Trim(arguments.bean.getReCAPTCHASiteKey()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHASiteKey())#" /><cfelse>null</cfif>,
+		 reCAPTCHASecret=<cfif Len(Trim(arguments.bean.getReCAPTCHASecret()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHASecret())#" /><cfelse>null</cfif>,
+		 reCAPTCHALanguage=<cfif Len(Trim(arguments.bean.getReCAPTCHALanguage()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHALanguage())#" /><cfelse>null</cfif>
+
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">
    </cfquery>
    
@@ -457,7 +460,10 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
 		<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
 		#arguments.bean.getHasComments()#,
-		#arguments.bean.getHasLockableNodes()#
+		#arguments.bean.getHasLockableNodes()#,
+		<cfif Len(Trim(arguments.bean.getReCAPTCHASiteKey()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHASiteKey())#" /><cfelse>null</cfif>,
+		<cfif Len(Trim(arguments.bean.getReCAPTCHASecret()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHASecret())#" /><cfelse>null</cfif>,
+		<cfif Len(Trim(arguments.bean.getReCAPTCHALanguage()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHALanguage())#" /><cfelse>null</cfif>
 		)
    </cfquery>
   

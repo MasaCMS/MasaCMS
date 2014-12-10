@@ -1,48 +1,58 @@
-<!--- This file is part of Mura CMS.
+<!---
+  This file is part of Mura CMS.
 
-Mura CMS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, Version 2 of the License.
+  Mura CMS is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, Version 2 of the License.
 
-Mura CMS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+  Mura CMS is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+  You should have received a copy of the GNU General Public License
+  along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+  Linking Mura CMS statically or dynamically with other modules constitutes 
+  the preparation of a derivative work based on Mura CMS. Thus, the terms 
+  and conditions of the GNU General Public License version 2 ("GPL") cover 
+  the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+  However, as a special exception, the copyright holders of Mura CMS grant 
+  you permission to combine Mura CMS with programs or libraries that are 
+  released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+  In addition, as a special exception, the copyright holders of Mura CMS 
+  grant you permission to combine Mura CMS with independent software modules 
+  (plugins, themes and bundles), and to distribute these plugins, themes and 
+  bundles without Mura CMS under the license of your choice, provided that 
+  you follow these specific guidelines: 
 
-Your custom code 
+  Your custom code 
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+  • Must not alter any default objects in the Mura CMS database and
+  • May not alter the default display of the Mura CMS logo within Mura CMS and
+  • Must not alter any files in the following directories:
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+    /admin/
+    /tasks/
+    /config/
+    /requirements/mura/
+    /Application.cfc
+    /index.cfm
+    /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
+  You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
+  meets the above guidelines as a combined work under the terms of GPL for 
+  Mura CMS, provided that you include the source code of that other code when 
+  and as the GNU GPL requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+  For clarity, if you create a modified version of Mura CMS, you are not 
+  obligated to grant this special exception for your modified version; it is 
+  your choice whether to do so, or to make such modified version available 
+  under the GNU General Public License version 2 without this exception.  You 
+  may, if you choose, apply this exception to your own modified versions of 
+  Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -421,157 +431,143 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="standardDoActionsHandler" output="false" returnType="any">
-<cfargument name="event" required="true">
+	<cfargument name="event" required="true">
+	<cfargument name="$" />
 
-<cfset var a=""/>
+	<cfset var a=""/>
 
-<cfif arguments.event.getValue('doaction') neq ''>
-<cfloop list="#arguments.event.getValue('doaction')#" index="a">
-<cfset doAction(a,arguments.event)>
-</cfloop>
-</cfif>
-
+	<cfif arguments.event.getValue('doaction') neq ''>
+		<cfloop list="#arguments.event.getValue('doaction')#" index="a">
+			<cfset doAction(a,arguments.event,arguments.$)>
+		</cfloop>
+	</cfif>
 </cffunction>
 
 <cffunction name="doAction" output="false">
-<cfargument name="theaction" type="string" default="">
-<cfargument name="event" required="true">
+	<cfargument name="theaction" type="string" default="">
+	<cfargument name="event" required="true">
+	<cfargument name="$" />
 
-		<cfswitch expression="#arguments.theaction#">
-			<cfcase value="login">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
-					<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
+	<cfswitch expression="#arguments.theaction#">
+		<cfcase value="login">
+			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
+				<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
+			<cfelse>
+				<cfset application.loginManager.login(arguments.event.getAllValues(),'') />
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="return">
+			<cfset application.emailManager.track(arguments.event.getValue('emailID'),arguments.event.getValue('email'),'returnClick')>
+		</cfcase>
+		
+		<cfcase value="logout">
+			<cfset application.loginManager.logout()>
+			<cfset arguments.event.getHandler("standardPostLogout").handle(arguments.event)>
+		</cfcase>
+		
+		<cfcase value="updateprofile">
+			<cfif session.mura.isLoggedIn>
+				<cfset var eventStruct=arguments.event.getAllValues()>
+
+				<cfset structDelete(eventStruct,'isPublic')>
+				<cfset structDelete(eventStruct,'s2')>
+				<cfset structDelete(eventStruct,'type')>
+				<cfset structDelete(eventStruct,'groupID')>
+				<cfset eventStruct.userid=session.mura.userID>
+
+				<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+
+				<cfset arguments.event.setValue("userID",session.mura.userID)>
+				<cfif isDefined('request.addressAction')>
+					<cfif arguments.event.getValue('addressAction') eq "create">
+						<cfset application.userManager.createAddress(eventStruct)>
+					<cfelseif arguments.event.getValue('addressAction') eq "update">
+						<cfset application.userManager.updateAddress(eventStruct)>
+					<cfelseif arguments.event.getValue('addressAction') eq "delete">
+						<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
+					</cfif>
+					<!--- reset the form --->
+					<cfset arguments.event.setValue('addressID','')>
+					<cfset arguments.event.setValue('addressAction','')>
 				<cfelse>
-					<cfset application.loginManager.login(arguments.event.getAllValues(),'') />
-				</cfif>
-			</cfcase>
-			
-			<cfcase value="return">
-				<cfset application.emailManager.track(arguments.event.getValue('emailID'),arguments.event.getValue('email'),'returnClick')>
-			</cfcase>
-			
-			<cfcase value="logout">
-				<cfset application.loginManager.logout()>
-				<cfset arguments.event.getHandler("standardPostLogout").handle(arguments.event)>
-			</cfcase>
-			
-			<cfcase value="updateprofile">
-				<cfif session.mura.isLoggedIn>
-					<cfset var eventStruct=arguments.event.getAllValues()>
-					<cfset structDelete(eventStruct,'isPublic')>
-					<cfset structDelete(eventStruct,'s2')>
-					<cfset structDelete(eventStruct,'type')>
-					<cfset structDelete(eventStruct,'groupID')>
-					<cfset eventStruct.userid=session.mura.userID>
-
-					<cfset arguments.event.setValue("userID",session.mura.userID)>
-					<cfif isDefined('request.addressAction')>
-						<cfif arguments.event.getValue('addressAction') eq "create">
-							<cfset application.userManager.createAddress(eventStruct)>
-						<cfelseif arguments.event.getValue('addressAction') eq "update">
-							<cfset application.userManager.updateAddress(eventStruct)>
-						<cfelseif arguments.event.getValue('addressAction') eq "delete">
-							<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
-						</cfif>
-						<!--- reset the form --->
-						<cfset arguments.event.setValue('addressID','')>
-						<cfset arguments.event.setValue('addressAction','')>
-					<cfelse>
-						<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
-						<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
-							<cfset application.loginManager.loginByUserID(eventStruct)>
-						</cfif>
-					</cfif>
-				</cfif>
-			</cfcase>
-			
-			<cfcase value="createprofile">
-				<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
-					<cfset var eventStruct=arguments.event.getAllValues()>
-					<cfset structDelete(eventStruct,'isPublic')>
-					<cfset structDelete(eventStruct,'s2')>
-					<cfset structDelete(eventStruct,'type')>
-					<cfset structDelete(eventStruct,'groupID')>
-					<cfset eventStruct.userid=''>
-					
-					<cfif arguments.event.valueExists("useProtect")>
-						<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
-					</cfif>
-					
-					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />		
-					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
-						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
-					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>	
-						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
+					<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
+					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
 						<cfset application.loginManager.loginByUserID(eventStruct)>
 					</cfif>
 				</cfif>
-			</cfcase>
-			
-			<cfcase value="contactsend">
-				<cfparam name="request.company" default="">
-				<cfset getBean("mailer").send(arguments.event.getAllValues(),arguments.event.getValue('sendTo'),'#iif(arguments.event.getValue('fname') eq '' and arguments.event.getValue('lname') eq '',de('#arguments.event.getValue('company')#'),de('#arguments.event.getValue('fname')# #arguments.event.getValue('lname')#'))#',arguments.event.getValue('subject'),arguments.event.getValue('siteID'),arguments.event.getValue('email'))>
-			</cfcase>
-			
-			<cfcase value="subscribe">
-				<cfif arguments.event.valueExists("useProtect")>
-					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
-				<cfelse>
-					<cfset arguments.event.setValue("passedProtect",true)>
-				</cfif>
-				
-				<cfif arguments.event.getValue("passedProtect")>
-					<cfset application.mailinglistManager.createMember(arguments.event.getAllValues())>
-				</cfif>
-			</cfcase>
-			
-			<cfcase value="unsubscribe">
-				<cfset application.mailinglistManager.deleteMember(arguments.event.getAllValues())>
-			</cfcase>
-			
-			<cfcase value="masterSubscribe">
-				<cfif arguments.event.valueExists("useProtect")>
-					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
-				<cfelse>
-					<cfset arguments.event.setValue("passedProtect",true)>
-				</cfif>
-				
-				<cfif arguments.event.getValue("passedProtect")>
-					<cfset application.mailinglistManager.masterSubscribe(arguments.event.getAllValues())/>
-				</cfif>
-			</cfcase>
-			
-			<cfcase value="setReminder">
-				<cfif arguments.event.valueExists("useProtect")>
-					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
-				<cfelse>
-					<cfset arguments.event.setValue("passedProtect",true)>
-				</cfif>
-				
-				<cfif arguments.event.getValue("passedProtect")>
-					<cfset application.contentManager.setReminder(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getValue('siteID'),arguments.event.getValue('email'),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('interval')) />
-				</cfif>
-			</cfcase>
-			
-			<cfcase value="forwardEmail">
-				<cfif arguments.event.valueExists("useProtect")>
-					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
-				<cfelse>
-					<cfset arguments.event.setValue("passedProtect",true)>
-				</cfif>
-				
-				<cfif arguments.event.getValue("passedProtect")>
-					<cfset arguments.event.setValue('to',arguments.event.getValue('to1'))/>
-					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to2'))) />
-					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to3'))) />
-					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to4'))) />
-					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to5'))) />
-					<cfset application.emailManager.forward(arguments.event.getAllValues()) />
-				</cfif>
-			</cfcase>
-			
-		</cfswitch>
 
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="createprofile">
+			<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
+				<cfset var eventStruct=arguments.event.getAllValues()>
+				<cfset structDelete(eventStruct,'isPublic')>
+				<cfset structDelete(eventStruct,'s2')>
+				<cfset structDelete(eventStruct,'type')>
+				<cfset structDelete(eventStruct,'groupID')>
+				<cfset eventStruct.userid=''>
+				
+				<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+				
+				<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(eventStruct).save() ) />		
+				<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
+					<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
+				<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>	
+					<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
+					<cfset application.loginManager.loginByUserID(eventStruct)>
+				</cfif>
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="contactsend">
+			<cfparam name="request.company" default="">
+			<cfset getBean("mailer").send(arguments.event.getAllValues(),arguments.event.getValue('sendTo'),'#iif(arguments.event.getValue('fname') eq '' and arguments.event.getValue('lname') eq '',de('#arguments.event.getValue('company')#'),de('#arguments.event.getValue('fname')# #arguments.event.getValue('lname')#'))#',arguments.event.getValue('subject'),arguments.event.getValue('siteID'),arguments.event.getValue('email'))>
+		</cfcase>
+		
+		<cfcase value="subscribe">
+			<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+			
+			<cfif arguments.event.getValue("passedProtect")>
+				<cfset application.mailinglistManager.createMember(arguments.event.getAllValues())>
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="unsubscribe">
+			<cfset application.mailinglistManager.deleteMember(arguments.event.getAllValues())>
+		</cfcase>
+		
+		<cfcase value="masterSubscribe">
+			<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+			
+			<cfif arguments.event.getValue("passedProtect")>
+				<cfset application.mailinglistManager.masterSubscribe(arguments.event.getAllValues())/>
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="setReminder">
+			<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+			
+			<cfif arguments.event.getValue("passedProtect")>
+				<cfset application.contentManager.setReminder(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getValue('siteID'),arguments.event.getValue('email'),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('interval')) />
+			</cfif>
+		</cfcase>
+		
+		<cfcase value="forwardEmail">
+			<cfset arguments.event.setValue('passedProtect', arguments.$.getBean('utility').isHuman(arguments.event)) />
+			
+			<cfif arguments.event.getValue("passedProtect")>
+				<cfset arguments.event.setValue('to',arguments.event.getValue('to1'))/>
+				<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to2'))) />
+				<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to3'))) />
+				<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to4'))) />
+				<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to5'))) />
+				<cfset application.emailManager.forward(arguments.event.getAllValues()) />
+			</cfif>
+		</cfcase>
+		
+	</cfswitch>
 </cffunction> 
 
 <!--- VALIDATORS --->
@@ -675,7 +671,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.event.getValue('contentBean').getIsNew() eq 1>
 		<cfset arguments.event.getHandler("standard404").handle(arguments.event)>
 	</cfif>
-
 </cffunction>
 
 <!--- TRANSLATORS --->
