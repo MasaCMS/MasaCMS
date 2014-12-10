@@ -320,20 +320,22 @@ config.hooks = arrayNew(1);
 config.plugins = arrayNew(1);
 
 if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
-  include("plugins/fileeditor/plugin.cfm");
-  include("plugins/imageresize/plugin.cfm");
-  include("plugins/permissions/plugin.cfm");
-  include("plugins/csrf/plugin.cfm");
+  include "plugins/fileeditor/plugin.cfm";
+  include "plugins/imageresize/plugin.cfm";
+  include "plugins/permissions/plugin.cfm";
+  include "plugins/csrf/plugin.cfm";
 }
+
+$ = application.serviceFactory.getBean("MuraScope").init(session.siteid);
+
+if ( fileExists(expandPath($.siteConfig("includePath") & '/js/finder/config.cfm') ) ) {
+  include "#$.siteConfig('includePath')#/js/finder/config.cfm";
+}
+
+if ( fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) ) {
+  include "#$.siteConfig('themeIncludePath')#/js/finder/config.cfm";
+}
+
+$.event("config",config);
+$.announceEvent("onSiteCKFinderConfig");
 </cfscript>
-
-<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteid)>
-<cfif (fileExists(expandPath($.siteConfig("includePath") & '/js/finder/config.cfm') ) )>
-     <cfinclude template="#$.siteConfig('includePath')#/js/finder/config.cfm">
-</cfif>
-<cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
-     <cfinclude template="#$.siteConfig('themeIncludePath')#/js/finder/config.cfm">
-</cfif>
-
-<cfset $.event("config",config)>
-<cfset $.announceEvent("onSiteCKFinderConfig")>
