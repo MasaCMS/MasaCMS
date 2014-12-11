@@ -63,8 +63,8 @@ component extends='mura.cfobject' {
     }
 
     // start and end dates
-    local.displaystart = arguments.start;
-    local.displaystop = arguments.end;
+    local.displaystart = DateFormat(arguments.start, 'yyyy-mm-dd');
+    local.displaystop = DateFormat(arguments.end, 'yyyy-mm-dd');
 
     // the calendar feed
     local.feed = variables.$.getBean('feed')
