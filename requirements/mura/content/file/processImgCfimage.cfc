@@ -361,25 +361,28 @@
 				<cfset fileStruct.fileObjSource = fileStruct.fileObj>
 			</cfif>
 		
-			<cfset fileStruct.fileObjSmall = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getSmallImageHeight(),width=site.getSmallImageWidth())#" />
-			
-			<cfif variables.configBean.getFileStore() neq "fileDir">
-				<cfset fileStruct.fileObjSmall=fromPath2Binary(fileStruct.fileObjSmall,false) />
-				<cftry><cffile action="delete" file="#fileStruct.fileObjSmall#"><cfcatch></cfcatch></cftry>
-			</cfif>
-			
-			<cfset fileStruct.fileObjMedium = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getMediumImageHeight(),width=site.getMediumImageWidth())#" />
-			
-			<cfif variables.configBean.getFileStore() neq "fileDir">
-				<cfset fileStruct.fileObjMedium=fromPath2Binary(fileStruct.fileObjMedium,false) />
-				<cftry><cffile action="delete" file="#fileStruct.fileObjMedium#"><cfcatch></cfcatch></cftry>
-			</cfif>
+			<!--- Small --->	
+				<cfset fileStruct.fileObjSmall = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getSmallImageHeight(),width=site.getSmallImageWidth())#" />
+				
+				<cfif variables.configBean.getFileStore() neq "fileDir">
+					<cfset fileStruct.fileObjSmall=fromPath2Binary(fileStruct.fileObjSmall,false) />
+					<cftry><cffile action="delete" file="#fileStruct.fileObjSmall#"><cfcatch></cfcatch></cftry>
+				</cfif>
+	
+			<!--- Medium --->		
+				<cfset fileStruct.fileObjMedium = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getMediumImageHeight(),width=site.getMediumImageWidth())#" />
+				
+				<cfif variables.configBean.getFileStore() neq "fileDir">
+					<cfset fileStruct.fileObjMedium=fromPath2Binary(fileStruct.fileObjMedium,false) />
+					<cftry><cffile action="delete" file="#fileStruct.fileObjMedium#"><cfcatch></cfcatch></cftry>
+				</cfif>
 
-			<cfset fileStruct.fileObjLarge = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getLargeImageHeight(),width=site.getLargeImageWidth())#" />			
-			<cffile action="delete" file="#fileStruct.fileObj#">
-			<cffile action="rename" destination="#fileStruct.fileObj#" source="#fileStruct.fileObjLarge#">
-			<cfset structDelete(fileStruct,"fileObjLarge")>
-
+			<!--- Large --->
+				<cfset fileStruct.fileObjLarge = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getLargeImageHeight(),width=site.getLargeImageWidth())#" />
+				<cftry><cffile action="delete" file="#fileStruct.fileObj#"><cfcatch></cfcatch></cftry>
+				<cfset variables.fileWriter.copyFile(source=fileStruct.fileObjLarge,destination=fileStruct.fileObj) />
+				<cftry><cffile action="delete" file="#fileStruct.fileObjLarge#"><cfcatch></cfcatch></cftry>
+				<cfset StructDelete(fileStruct,"fileObjLarge")>
 			
 			<cfif variables.configBean.getFileStore() neq "fileDir">		
 				<!--- clean up source--->
