@@ -101,11 +101,11 @@
 		<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 		<cfif variables.useMode >
 			<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
-			<cffile action="delete" file="#arguments.source#" />
+			<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
 			<!---<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />--->
 		<cfelse>
 			<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
-			<cffile action="delete" file="#arguments.source#" />
+			<cftry><cffile action="delete" file="#arguments.source#" /><cfcatch></cfcatch></cftry>
 			<!---<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />--->
 		</cfif>
 		<cfreturn this />
