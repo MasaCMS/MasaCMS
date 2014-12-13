@@ -54,18 +54,14 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfif variables.$.getJsLib() eq 'jQuery'>
-<cfscript>
-	variables.$.loadJsLib();
-	variables.$.addToHTMLHeadQueue('fullcalendar/queues/htmlhead.cfm');
-</cfscript>
+<cfset variables.$.addToHTMLHeadQueue('fullcalendar/queues/htmlhead.cfm') />
 <cfoutput>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
 		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
 		<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 	</div>
-	<div id="mura-calendar" class="mura-calendar"></div>
+	<div id="mura-calendar" class="mura-calendar-object"></div>
 	<div id="mura-calendar-loading"><i class="fa fa-refresh fa-spin"></i> #variables.$.rbKey('calendar.loadingevents')#</div>
 </div>
 <script>
@@ -118,8 +114,10 @@ jQuery(document).ready(function($) {
 				}
 
 				// optionally include U.S. Holidays
+				// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
 				// , {
-				// 	url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
+				// 	googleCalendarApiKey: '<YOUR API KEY>'
+				// 	, url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
 				// 	, color: 'yellow'
 				// 	, textColor: 'black'
 				// }
@@ -134,4 +132,4 @@ jQuery(document).ready(function($) {
 
 	renderCalendar();
 });
-</script></cfoutput></cfif>
+</script></cfoutput>
