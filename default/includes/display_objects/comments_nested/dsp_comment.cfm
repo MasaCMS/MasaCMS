@@ -83,7 +83,8 @@
 		<cfif len(variables.$.currentUser().getPhotoFileID())>
 			<dd class="gravatar"><img src="#variables.$.createHREFForImage(variables.$.currentUser().getSiteID(),variables.$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
 		<cfelse>
-			<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email[arguments.currentrow])))#" /></dd>
+			<cfset gravatarURL = $.getBean('utility').isHTTPS() ? 'https://secure.gravatar.com' : 'http://www.gravatar.com' />
+			<dd class="gravatar"><img src="#gravatarURL#/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email[arguments.currentrow])))#" /></dd>
 		</cfif>
 		<dd class="comment">
 			#setParagraphs(htmleditformat(request.rsSubCommentsLevel.comments[arguments.currentrow]))#
