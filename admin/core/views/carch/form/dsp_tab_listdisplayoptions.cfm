@@ -100,13 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</p>							
 					
 						<cfset displayList=rc.contentBean.getDisplayList()>
-						<cfset availableList=rc.contentBean.getAvailableDisplayList()>
-						<cfif rc.type eq "Gallery">
-							<cfset finder=listFindNoCase(availableList,"Image")>
-							<cfif finder>
-								<cfset availableList=listDeleteAt(availableList,finder)>
-							</cfif>
-						</cfif>			
+						<cfset availableList=rc.contentBean.getAvailableDisplayList()>		
 						<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
 							<cfloop list="#availableList#" index="i">
 								<li class="ui-state-default">#trim(i)#</li>
