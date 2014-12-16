@@ -283,6 +283,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(properties.getProperty("ormcfclocation",""))>
 			<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(properties.getProperty("ormcfclocation"))) />
 		</cfif>
+		<cfif len(properties.getProperty("ormdatasource",""))>
+			<cfset this.ormSettings.datasource = evalSetting(properties.getProperty("ormdatasource","")) />
+		</cfif>
 		<cfset this.ormSettings.flushAtRequestEnd = evalSetting(properties.getProperty("ormflushAtRequestEnd","false")) />
 		<cfset this.ormsettings.eventhandling = evalSetting(properties.getProperty("ormeventhandling","true")) />
 		<cfset this.ormSettings.automanageSession = evalSetting(properties.getProperty("ormautomanageSession","false")) />
