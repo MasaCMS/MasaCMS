@@ -164,7 +164,7 @@
 						<input type="hidden" name="isVerified" value="1" />
 						<!--- Subscribe --->
 						<div class="#this.mailingListFormGroupWrapperClass#">
-							<div class="#this.mailingListCheckboxWrapperClass#">
+							<div class="#this.mailingListSubmitWrapperClass#">
 								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.subscribe'))#" />
 							</div>
 						</div>
@@ -173,7 +173,7 @@
 						<input type="hidden" name="isVerified" value="1"  />
 						<!--- Unsubscribe --->
 						<div class="#this.mailingListFormGroupWrapperClass#">
-							<div class="#this.mailingListCheckboxWrapperClass#">
+							<div class="#this.mailingListSubmitWrapperClass#">
 								<input type="submit" class="#this.mailingListSubmitClass#" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.unsubscribe'))#" />
 							</div>
 						</div>
