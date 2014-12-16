@@ -258,6 +258,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(getINIProperty("ormcfclocation",""))>
 		<cfset arrayAppend(this.ormSettings.cfclocation,getINIProperty("ormcfclocation")) />
 	</cfif>
+	<cfif len(getINIProperty("ormdatasource",""))>
+			<cfset this.ormSettings.datasource = getINIProperty("ormdatasource","") />
+	</cfif>
 	<cfset this.ormSettings.flushAtRequestEnd = getINIProperty("ormflushAtRequestEnd","false") />
 	<cfset this.ormsettings.eventhandling = getINIProperty("ormeventhandling","true") />
 	<cfset this.ormSettings.automanageSession = getINIProperty("ormautomanageSession","false") />
