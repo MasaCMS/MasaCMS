@@ -62,7 +62,43 @@
   .box-shadow(0 1px 2px rgba(0,0,0,.075));
 }
 
+figure {
+	display: table;
 
+	img {
+		display: block;
+		max-width: 100%;
+	}
+}
+figcaption {
+	display: table-caption;
+	caption-side: bottom;
+	padding: 0 0.5em 0.5em;
+	margin-top: 0.75em;
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+.image-left {
+	float: left;
+	padding: 0;
+	margin: 0 1em 0.75em 0;
+}
+.image-center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 40%;
+}
+.image-right {
+	float: right;
+	padding: 0;
+	margin: 0 0 0.75em 1em;
+}
+
+.embeddedContent {
+	margin: 1em;
+}
 
 //
 // Dropdowns

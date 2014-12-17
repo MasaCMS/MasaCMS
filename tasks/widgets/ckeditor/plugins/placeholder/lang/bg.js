@@ -1,6 +1,12 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+/**
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-CKEDITOR.plugins.setLang('placeholder','bg',{placeholder:{title:'Настройки на контейнера',toolbar:'Нов контейнер',text:'Текст за контейнера',edit:'Промяна на контейнер',textMissing:'Контейнера трябва да съдържа текст.'}});
+CKEDITOR.plugins.setLang( 'placeholder', 'bg', {
+	title: 'Настройки на контейнера',
+	toolbar: 'Нов контейнер',
+	name: 'Placeholder Name', // MISSING
+	invalidName: 'The placeholder can not be empty and can not contain any of following characters: [, ], <, >', // MISSING
+	pathName: 'placeholder' // MISSING
+} );

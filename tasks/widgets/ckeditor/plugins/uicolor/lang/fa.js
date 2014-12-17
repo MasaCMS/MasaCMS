@@ -1,6 +1,11 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+﻿/**
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-CKEDITOR.plugins.setLang('uicolor','fa',{uicolor:{title:'انتخاب رنگ UI',preview:'پیشنمایش زنده',config:'این رشته را در فایل config.js خود بچسبانید.',predefined:'مجموعه رنگ از پیش تعریف شده'}});
+CKEDITOR.plugins.setLang( 'uicolor', 'fa', {
+	title: 'انتخاب رنگ رابط کاربری',
+	preview: 'پیش‌نمایش زنده',
+	config: 'این رشته را در پروندهٔ config.js خود رونوشت کنید.',
+	predefined: 'مجموعه رنگ از پیش تعریف شده'
+} );

@@ -1,6 +1,12 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+/**
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-CKEDITOR.plugins.setLang('placeholder','fa',{placeholder:{title:'ویژگیهای محل نگهداری',toolbar:'ایجاد یک محل نگهداری',text:'متن محل نگهداری',edit:'ویرایش محل نگهداری',textMissing:'محل نگهداری باید محتوی متن باشد.'}});
+CKEDITOR.plugins.setLang( 'placeholder', 'fa', {
+	title: 'ویژگی‌های محل نگهداری',
+	toolbar: 'ایجاد یک محل نگهداری',
+	name: 'نام مکان نگهداری',
+	invalidName: 'مکان نگهداری نمی‌تواند خالی باشد و همچنین نمی‌تواند محتوی نویسه‌های مقابل باشد: [, ], <, >',
+	pathName: 'مکان نگهداری'
+} );
