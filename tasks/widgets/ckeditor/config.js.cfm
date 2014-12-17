@@ -75,7 +75,8 @@ CKEDITOR.editorConfig = function( config )
 	config.pasteFromWordRemoveFontStyles = true;
 	config.pasteFromWordRemoveStyles = true;
 
-	
+	<!--- Toolbars --->
+
 	config.toolbar_Default = [
 		{name: 'group1', items:['Source']},
 		{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
@@ -85,7 +86,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['Image','Flash','oembed','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -100,7 +101,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items:['Image','Flash','oembed','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -113,7 +114,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items: ['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items: ['Image','Flash','oembed','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
 
@@ -126,7 +127,7 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 		{name: 'group8', items: ['Link','Unlink','Anchor']},
-		{name: 'group9', items: ['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group9', items: ['Image','Flash','oembed','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
 		{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
 	];
@@ -148,7 +149,9 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
 	];
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog';
+	<!--- /Toolbars --->
+
+	config.extraPlugins = 'SelectComponent,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
@@ -172,7 +175,7 @@ CKEDITOR.editorConfig = function( config )
 	//config.protectedSource.push( /\[mura\][\s\S]*?\[\/mura\]/g );
 	
 	// Media Plugin - http://forge.clermont-universite.fr/projects/show/ckmedia
-	config.menu_groups = 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,removeMedia';
+	//config.menu_groups = 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,removeMedia';
 	
 	// Google Maps plugin - https://github.com/cakemail/GoogleMap-CKeditor-Plugin
 
@@ -181,13 +184,18 @@ CKEDITOR.editorConfig = function( config )
 		autoCloseTags: false
 	};
 
+	// Classes applied based on 'Alignment' selection on the Image Properities window
+	config.image2_alignClasses = [ 'image-left', 'image-center', 'image-right' ];
+	config.image2_captionedClass = 'image-captioned';
+
+	// oEmbed Plugin - http://ckeditor.com/addon/oembed + http://w8tcha.github.io/CKEditor-oEmbed-Plugin/
+	//config.oembed_maxWidth = '560';
+	//config.oembed_maxHeight = '315';
+	config.oembed_WrapperClass = 'embeddedContent';
+
 <cfoutput>
-	<cfif len($.siteConfig('GoogleAPIKey'))>
-		config.GoogleMaps_Key='#$.siteConfig('GoogleAPIKey')#';
-	<cfelse>
-		config.GoogleMaps_Key='none';
-	</cfif>	
-	
+
+	<!--- contentsCss --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
@@ -198,6 +206,7 @@ CKEDITOR.editorConfig = function( config )
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
 	</cfif>
 	
+	<!--- templates --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
 		config.templates='default';
 		config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js.cfm'];
@@ -206,12 +215,14 @@ CKEDITOR.editorConfig = function( config )
 		config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js'];
 	</cfif>
 	
+	<!--- styleSet --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
 		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
 		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
 	</cfif>
 	
+	<!--- customConfig --->
 	<cfif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
 		config.customConfig='#$.siteConfig('assetPath')#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>

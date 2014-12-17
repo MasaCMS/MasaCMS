@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="controls" >
 				<div class="alert help-block">
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
-					<button id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
+					<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
 				</div>
 				
 				<script>

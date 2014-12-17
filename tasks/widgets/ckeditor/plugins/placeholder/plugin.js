@@ -1,6 +1,96 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+﻿
+/**
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-(function(){var a=/\[\[[^\]]+\]\]/g;CKEDITOR.plugins.add('placeholder',{requires:['dialog'],lang:['bg','cs','cy','da','de','el','en','eo','et','fa','fi','fr','he','hr','it','nb','nl','no','pl','pt-br','tr','ug','uk','vi','zh-cn'],init:function(b){var c=b.lang.placeholder;b.addCommand('createplaceholder',new CKEDITOR.dialogCommand('createplaceholder'));b.addCommand('editplaceholder',new CKEDITOR.dialogCommand('editplaceholder'));b.ui.addButton('CreatePlaceholder',{label:c.toolbar,command:'createplaceholder',icon:this.path+'placeholder.gif'});if(b.addMenuItems){b.addMenuGroup('placeholder',20);b.addMenuItems({editplaceholder:{label:c.edit,command:'editplaceholder',group:'placeholder',order:1,icon:this.path+'placeholder.gif'}});if(b.contextMenu)b.contextMenu.addListener(function(d,e){if(!d||!d.data('cke-placeholder'))return null;return{editplaceholder:CKEDITOR.TRISTATE_OFF};});}b.on('doubleclick',function(d){if(CKEDITOR.plugins.placeholder.getSelectedPlaceHoder(b))d.data.dialog='editplaceholder';});b.addCss('.cke_placeholder{background-color: #ffff00;'+(CKEDITOR.env.gecko?'cursor: default;':'')+'}');b.on('contentDom',function(){b.document.getBody().on('resizestart',function(d){if(b.getSelection().getSelectedElement().data('cke-placeholder'))d.data.preventDefault();});});CKEDITOR.dialog.add('createplaceholder',this.path+'dialogs/placeholder.js');CKEDITOR.dialog.add('editplaceholder',this.path+'dialogs/placeholder.js');},afterInit:function(b){var c=b.dataProcessor,d=c&&c.dataFilter,e=c&&c.htmlFilter;if(d)d.addRules({text:function(f){return f.replace(a,function(g){return CKEDITOR.plugins.placeholder.createPlaceholder(b,null,g,1);});}});if(e)e.addRules({elements:{span:function(f){if(f.attributes&&f.attributes['data-cke-placeholder'])delete f.name;}}});}});})();CKEDITOR.plugins.placeholder={createPlaceholder:function(a,b,c,d){var e=new CKEDITOR.dom.element('span',a.document);e.setAttributes({contentEditable:'false','data-cke-placeholder':1,'class':'cke_placeholder'});c&&e.setText(c);if(d)return e.getOuterHtml();if(b){if(CKEDITOR.env.ie){e.insertAfter(b);setTimeout(function(){b.remove();e.focus();},10);}else e.replace(b);}else a.insertElement(e);return null;},getSelectedPlaceHoder:function(a){var b=a.getSelection().getRanges()[0];b.shrink(CKEDITOR.SHRINK_TEXT);var c=b.startContainer;while(c&&!(c.type==CKEDITOR.NODE_ELEMENT&&c.data('cke-placeholder')))c=c.getParent();return c;}};
+/**
+ * @fileOverview The "placeholder" plugin.
+ *
+ */
+
+'use strict';
+
+( function() {
+	CKEDITOR.plugins.add( 'placeholder', {
+		requires: 'widget,dialog',
+		lang: 'af,ar,bg,ca,cs,cy,da,de,el,en,en-gb,eo,es,et,eu,fa,fi,fr,fr-ca,gl,he,hr,hu,id,it,ja,km,ko,ku,lv,nb,nl,no,pl,pt,pt-br,ru,si,sk,sl,sq,sv,th,tr,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
+		icons: 'placeholder', // %REMOVE_LINE_CORE%
+		hidpi: true, // %REMOVE_LINE_CORE%
+
+		onLoad: function() {
+			// Register styles for placeholder widget frame.
+			CKEDITOR.addCss( '.cke_placeholder{background-color:#ff0}' );
+		},
+
+		init: function( editor ) {
+
+			var lang = editor.lang.placeholder;
+
+			// Register dialog.
+			CKEDITOR.dialog.add( 'placeholder', this.path + 'dialogs/placeholder.js' );
+
+			// Put ur init code here.
+			editor.widgets.add( 'placeholder', {
+				// Widget code.
+				dialog: 'placeholder',
+				pathName: lang.pathName,
+				// We need to have wrapping element, otherwise there are issues in
+				// add dialog.
+				template: '<span class="cke_placeholder">[[]]</span>',
+
+				downcast: function() {
+					return new CKEDITOR.htmlParser.text( '[[' + this.data.name + ']]' );
+				},
+
+				init: function() {
+					// Note that placeholder markup characters are stripped for the name.
+					this.setData( 'name', this.element.getText().slice( 2, -2 ) );
+				},
+
+				data: function( data ) {
+					this.element.setText( '[[' + this.data.name + ']]' );
+				}
+			} );
+
+			editor.ui.addButton && editor.ui.addButton( 'CreatePlaceholder', {
+				label: lang.toolbar,
+				command: 'placeholder',
+				toolbar: 'insert,5',
+				icon: 'placeholder'
+			} );
+		},
+
+		afterInit: function( editor ) {
+			var placeholderReplaceRegex = /\[\[([^\[\]])+\]\]/g;
+
+			editor.dataProcessor.dataFilter.addRules( {
+				text: function( text, node ) {
+					var dtd = node.parent && CKEDITOR.dtd[ node.parent.name ];
+
+					// Skip the case when placeholder is in elements like <title> or <textarea>
+					// but upcast placeholder in custom elements (no DTD).
+					if ( dtd && !dtd.span )
+						return;
+
+					return text.replace( placeholderReplaceRegex, function( match ) {
+						// Creating widget code.
+						var widgetWrapper = null,
+							innerElement = new CKEDITOR.htmlParser.element( 'span', {
+								'class': 'cke_placeholder'
+							} );
+
+						// Adds placeholder identifier as innertext.
+						innerElement.add( new CKEDITOR.htmlParser.text( match ) );
+						widgetWrapper = editor.widgets.wrapElement( innerElement, 'placeholder' );
+
+						// Return outerhtml of widget wrapper so it will be placed
+						// as replacement.
+						return widgetWrapper.getOuterHtml();
+					} );
+				}
+			} );
+		}
+	} );
+
+} )();
