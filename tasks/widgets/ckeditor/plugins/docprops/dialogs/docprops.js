@@ -1,10 +1,609 @@
-﻿/*
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
-*/
+﻿/**
+ * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
-CKEDITOR.dialog.add('docProps',function(a){var b=a.lang.docprops,c=a.lang.common,d={};function e(n,o){var p=function(){q(this);o(this,this._.parentDialog);},q=function(s){s.removeListener('ok',p);s.removeListener('cancel',q);},r=function(s){s.on('ok',p);s.on('cancel',q);};a.execCommand(n);if(a._.storedDialogs.colordialog)r(a._.storedDialogs.colordialog);else CKEDITOR.on('dialogDefinition',function(s){if(s.data.name!=n)return;var t=s.data.definition;s.removeListener();t.onLoad=CKEDITOR.tools.override(t.onLoad,function(u){return function(){r(this);t.onLoad=u;if(typeof u=='function')u.call(this);};});});};function f(){var n=this.getDialog(),o=n.getContentElement('general',this.id+'Other');if(!o)return;if(this.getValue()=='other'){o.getInputElement().removeAttribute('readOnly');o.focus();o.getElement().removeClass('cke_disabled');}else{o.getInputElement().setAttribute('readOnly',true);o.getElement().addClass('cke_disabled');}};function g(n,o,p){return function(q,r,s){var t=d,u=typeof p!='undefined'?p:this.getValue();if(!u&&n in t)t[n].remove();else if(u&&n in t)t[n].setAttribute('content',u);else if(u){var v=new CKEDITOR.dom.element('meta',a.document);v.setAttribute(o?'http-equiv':'name',n);v.setAttribute('content',u);s.append(v);}};};function h(n,o){return function(){var p=d,q=n in p?p[n].getAttribute('content')||'':'';if(o)return q;this.setValue(q);return null;};};function i(n){return function(o,p,q,r){r.removeAttribute('margin'+n);var s=this.getValue();if(s!=='')r.setStyle('margin-'+n,CKEDITOR.tools.cssLength(s));else r.removeStyle('margin-'+n);};};function j(n){var o={},p=n.getElementsByTag('meta'),q=p.count();for(var r=0;r<q;r++){var s=p.getItem(r);o[s.getAttribute(s.hasAttribute('http-equiv')?'http-equiv':'name').toLowerCase()]=s;}return o;};function k(n,o,p){n.removeStyle(o);if(n.getComputedStyle(o)!=p)n.setStyle(o,p);};var l=function(n,o,p){return{type:'hbox',padding:0,widths:['60%','40%'],children:[CKEDITOR.tools.extend({type:'text',id:n,label:b[o]},p||{},1),{type:'button',id:n+'Choose',label:b.chooseColor,className:'colorChooser',onClick:function(){var q=this;e('colordialog',function(r){var s=q.getDialog();s.getContentElement(s._.currentTabId,n).setValue(r.getContentElement('picker','selectedColor').getValue());});}}]};},m='javascript:void((function(){'+encodeURIComponent('document.open();'+(CKEDITOR.env.isCustomDomain()?"document.domain='"+document.domain+"';":'')+'document.write( \'<html style="background-color: #ffffff; height: 100%"><head></head><body style="width: 100%; height: 100%; margin: 0px">'+b.previewHtml+"</body></html>' );"+'document.close();')+'})())';
-return{title:b.title,minHeight:330,minWidth:500,onShow:function(){var n=a.document,o=n.getElementsByTag('html').getItem(0),p=n.getHead(),q=n.getBody();d=j(n);this.setupContent(n,o,p,q);},onHide:function(){d={};},onOk:function(){var n=a.document,o=n.getElementsByTag('html').getItem(0),p=n.getHead(),q=n.getBody();this.commitContent(n,o,p,q);},contents:[{id:'general',label:c.generalTab,elements:[{type:'text',id:'title',label:b.docTitle,setup:function(n){this.setValue(n.getElementsByTag('title').getItem(0).data('cke-title'));},commit:function(n,o,p,q,r){if(r)return;n.getElementsByTag('title').getItem(0).data('cke-title',this.getValue());}},{type:'hbox',children:[{type:'select',id:'dir',label:c.langDir,style:'width: 100%',items:[[c.notSet,''],[c.langDirLtr,'ltr'],[c.langDirRtl,'rtl']],setup:function(n,o,p,q){this.setValue(q.getDirection()||'');},commit:function(n,o,p,q){var r=this.getValue();if(r)q.setAttribute('dir',r);else q.removeAttribute('dir');q.removeStyle('direction');}},{type:'text',id:'langCode',label:c.langCode,setup:function(n,o){this.setValue(o.getAttribute('xml:lang')||o.getAttribute('lang')||'');},commit:function(n,o,p,q,r){if(r)return;var s=this.getValue();if(s)o.setAttributes({'xml:lang':s,lang:s});else o.removeAttributes({'xml:lang':1,lang:1});}}]},{type:'hbox',children:[{type:'select',id:'charset',label:b.charset,style:'width: 100%',items:[[c.notSet,''],[b.charsetASCII,'us-ascii'],[b.charsetCE,'iso-8859-2'],[b.charsetCT,'big5'],[b.charsetCR,'iso-8859-5'],[b.charsetGR,'iso-8859-7'],[b.charsetJP,'iso-2022-jp'],[b.charsetKR,'iso-2022-kr'],[b.charsetTR,'iso-8859-9'],[b.charsetUN,'utf-8'],[b.charsetWE,'iso-8859-1'],[b.other,'other']],'default':'',onChange:function(){var n=this;n.getDialog().selectedCharset=n.getValue()!='other'?n.getValue():'';f.call(n);},setup:function(){var q=this;q.metaCharset='charset' in d;var n=h(q.metaCharset?'charset':'content-type',1,1),o=n.call(q);!q.metaCharset&&o.match(/charset=[^=]+$/)&&(o=o.substring(o.indexOf('=')+1));if(o){q.setValue(o.toLowerCase());if(!q.getValue()){q.setValue('other');var p=q.getDialog().getContentElement('general','charsetOther');p&&p.setValue(o);}q.getDialog().selectedCharset=o;}f.call(q);},commit:function(n,o,p,q,r){var v=this;if(r)return;var s=v.getValue(),t=v.getDialog().getContentElement('general','charsetOther');s=='other'&&(s=t?t.getValue():'');s&&!v.metaCharset&&(s=(d['content-type']?d['content-type'].getAttribute('content').split(';')[0]:'text/html')+'; charset='+s);var u=g(v.metaCharset?'charset':'content-type',1,s);
-u.call(v,n,o,p);}},{type:'text',id:'charsetOther',label:b.charsetOther,onChange:function(){this.getDialog().selectedCharset=this.getValue();}}]},{type:'hbox',children:[{type:'select',id:'docType',label:b.docType,style:'width: 100%',items:[[c.notSet,''],['XHTML 1.1','<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'],['XHTML 1.0 Transitional','<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'],['XHTML 1.0 Strict','<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'],['XHTML 1.0 Frameset','<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">'],['HTML 5','<!DOCTYPE html>'],['HTML 4.01 Transitional','<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'],['HTML 4.01 Strict','<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">'],['HTML 4.01 Frameset','<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">'],['HTML 3.2','<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">'],['HTML 2.0','<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">'],[b.other,'other']],onChange:f,setup:function(){var o=this;if(a.docType){o.setValue(a.docType);if(!o.getValue()){o.setValue('other');var n=o.getDialog().getContentElement('general','docTypeOther');n&&n.setValue(a.docType);}}f.call(o);},commit:function(n,o,p,q,r){if(r)return;var s=this.getValue(),t=this.getDialog().getContentElement('general','docTypeOther');a.docType=s=='other'?t?t.getValue():'':s;}},{type:'text',id:'docTypeOther',label:b.docTypeOther}]},{type:'checkbox',id:'xhtmlDec',label:b.xhtmlDec,setup:function(){this.setValue(!!a.xmlDeclaration);},commit:function(n,o,p,q,r){if(r)return;if(this.getValue()){a.xmlDeclaration='<?xml version="1.0" encoding="'+(this.getDialog().selectedCharset||'utf-8')+'"?>';o.setAttribute('xmlns','http://www.w3.org/1999/xhtml');}else{a.xmlDeclaration='';o.removeAttribute('xmlns');}}}]},{id:'design',label:b.design,elements:[{type:'hbox',widths:['60%','40%'],children:[{type:'vbox',children:[l('txtColor','txtColor',{setup:function(n,o,p,q){this.setValue(q.getComputedStyle('color'));},commit:function(n,o,p,q,r){if(this.isChanged()||r){q.removeAttribute('text');var s=this.getValue();if(s)q.setStyle('color',s);else q.removeStyle('color');}}}),l('bgColor','bgColor',{setup:function(n,o,p,q){var r=q.getComputedStyle('background-color')||'';
-this.setValue(r=='transparent'?'':r);},commit:function(n,o,p,q,r){if(this.isChanged()||r){q.removeAttribute('bgcolor');var s=this.getValue();if(s)q.setStyle('background-color',s);else k(q,'background-color','transparent');}}}),{type:'hbox',widths:['60%','40%'],padding:1,children:[{type:'text',id:'bgImage',label:b.bgImage,setup:function(n,o,p,q){var r=q.getComputedStyle('background-image')||'';if(r=='none')r='';else r=r.replace(/url\(\s*(["']?)\s*([^\)]*)\s*\1\s*\)/i,function(s,t,u){return u;});this.setValue(r);},commit:function(n,o,p,q){q.removeAttribute('background');var r=this.getValue();if(r)q.setStyle('background-image','url('+r+')');else k(q,'background-image','none');}},{type:'button',id:'bgImageChoose',label:c.browseServer,style:'display:inline-block;margin-top:10px;',hidden:true,filebrowser:'design:bgImage'}]},{type:'checkbox',id:'bgFixed',label:b.bgFixed,setup:function(n,o,p,q){this.setValue(q.getComputedStyle('background-attachment')=='fixed');},commit:function(n,o,p,q){if(this.getValue())q.setStyle('background-attachment','fixed');else k(q,'background-attachment','scroll');}}]},{type:'vbox',children:[{type:'html',id:'marginTitle',html:'<div style="text-align: center; margin: 0px auto; font-weight: bold">'+b.margin+'</div>'},{type:'text',id:'marginTop',label:b.marginTop,style:'width: 80px; text-align: center',align:'center',inputStyle:'text-align: center',setup:function(n,o,p,q){this.setValue(q.getStyle('margin-top')||q.getAttribute('margintop')||'');},commit:i('top')},{type:'hbox',children:[{type:'text',id:'marginLeft',label:b.marginLeft,style:'width: 80px; text-align: center',align:'center',inputStyle:'text-align: center',setup:function(n,o,p,q){this.setValue(q.getStyle('margin-left')||q.getAttribute('marginleft')||'');},commit:i('left')},{type:'text',id:'marginRight',label:b.marginRight,style:'width: 80px; text-align: center',align:'center',inputStyle:'text-align: center',setup:function(n,o,p,q){this.setValue(q.getStyle('margin-right')||q.getAttribute('marginright')||'');},commit:i('right')}]},{type:'text',id:'marginBottom',label:b.marginBottom,style:'width: 80px; text-align: center',align:'center',inputStyle:'text-align: center',setup:function(n,o,p,q){this.setValue(q.getStyle('margin-bottom')||q.getAttribute('marginbottom')||'');},commit:i('bottom')}]}]}]},{id:'meta',label:b.meta,elements:[{type:'textarea',id:'metaKeywords',label:b.metaKeywords,setup:h('keywords'),commit:g('keywords')},{type:'textarea',id:'metaDescription',label:b.metaDescription,setup:h('description'),commit:g('description')},{type:'text',id:'metaAuthor',label:b.metaAuthor,setup:h('author'),commit:g('author')},{type:'text',id:'metaCopyright',label:b.metaCopyright,setup:h('copyright'),commit:g('copyright')}]},{id:'preview',label:c.preview,elements:[{type:'html',id:'previewHtml',html:'<iframe src="'+m+'" style="width: 100%; height: 310px" hidefocus="true" frameborder="0" '+'id="cke_docProps_preview_iframe"></iframe>',onLoad:function(){this.getDialog().on('selectPage',function(n){if(n.data.page=='preview'){var o=this;
-setTimeout(function(){var p=CKEDITOR.document.getById('cke_docProps_preview_iframe').getFrameDocument(),q=p.getElementsByTag('html').getItem(0),r=p.getHead(),s=p.getBody();o.commitContent(p,q,r,s,1);},50);}});CKEDITOR.document.getById('cke_docProps_preview_iframe').getAscendant('table').setStyle('height','100%');}}]}]};});
+CKEDITOR.dialog.add( 'docProps', function( editor ) {
+	var lang = editor.lang.docprops,
+		langCommon = editor.lang.common,
+		metaHash = {};
+
+	function getDialogValue( dialogName, callback ) {
+		var onOk = function() {
+				releaseHandlers( this );
+				callback( this, this._.parentDialog );
+			};
+		var releaseHandlers = function( dialog ) {
+				dialog.removeListener( 'ok', onOk );
+				dialog.removeListener( 'cancel', releaseHandlers );
+			};
+		var bindToDialog = function( dialog ) {
+				dialog.on( 'ok', onOk );
+				dialog.on( 'cancel', releaseHandlers );
+			};
+		editor.execCommand( dialogName );
+		if ( editor._.storedDialogs.colordialog )
+			bindToDialog( editor._.storedDialogs.colordialog );
+		else {
+			CKEDITOR.on( 'dialogDefinition', function( e ) {
+				if ( e.data.name != dialogName )
+					return;
+
+				var definition = e.data.definition;
+
+				e.removeListener();
+				definition.onLoad = CKEDITOR.tools.override( definition.onLoad, function( orginal ) {
+					return function() {
+						bindToDialog( this );
+						definition.onLoad = orginal;
+						if ( typeof orginal == 'function' )
+							orginal.call( this );
+					};
+				} );
+			} );
+		}
+	}
+
+	function handleOther() {
+		var dialog = this.getDialog(),
+			other = dialog.getContentElement( 'general', this.id + 'Other' );
+		if ( !other )
+			return;
+		if ( this.getValue() == 'other' ) {
+			other.getInputElement().removeAttribute( 'readOnly' );
+			other.focus();
+			other.getElement().removeClass( 'cke_disabled' );
+		} else {
+			other.getInputElement().setAttribute( 'readOnly', true );
+			other.getElement().addClass( 'cke_disabled' );
+		}
+	}
+
+	function commitMeta( name, isHttp, value ) {
+		return function( doc, html, head ) {
+			var hash = metaHash,
+				val = typeof value != 'undefined' ? value : this.getValue();
+			if ( !val && ( name in hash ) )
+				hash[ name ].remove();
+			else if ( val && ( name in hash ) )
+				hash[ name ].setAttribute( 'content', val );
+			else if ( val ) {
+				var meta = new CKEDITOR.dom.element( 'meta', editor.document );
+				meta.setAttribute( isHttp ? 'http-equiv' : 'name', name );
+				meta.setAttribute( 'content', val );
+				head.append( meta );
+			}
+		};
+	}
+
+	function setupMeta( name, ret ) {
+		return function() {
+			var hash = metaHash,
+				result = ( name in hash ) ? hash[ name ].getAttribute( 'content' ) || '' : '';
+			if ( ret )
+				return result;
+			this.setValue( result );
+			return null;
+		};
+	}
+
+	function commitMargin( name ) {
+		return function( doc, html, head, body ) {
+			body.removeAttribute( 'margin' + name );
+			var val = this.getValue();
+			if ( val !== '' )
+				body.setStyle( 'margin-' + name, CKEDITOR.tools.cssLength( val ) );
+			else
+				body.removeStyle( 'margin-' + name );
+		};
+	}
+
+	function createMetaHash( doc ) {
+		var hash = {},
+			metas = doc.getElementsByTag( 'meta' ),
+			count = metas.count();
+
+		for ( var i = 0; i < count; i++ ) {
+			var meta = metas.getItem( i );
+			hash[ meta.getAttribute( meta.hasAttribute( 'http-equiv' ) ? 'http-equiv' : 'name' ).toLowerCase() ] = meta;
+		}
+		return hash;
+	}
+	// We cannot just remove the style from the element, as it might be affected from non-inline stylesheets.
+	// To get the proper result, we should manually set the inline style to its default value.
+	function resetStyle( element, prop, resetVal ) {
+		element.removeStyle( prop );
+		if ( element.getComputedStyle( prop ) != resetVal )
+			element.setStyle( prop, resetVal );
+	}
+
+	// Utilty to shorten the creation of color fields in the dialog.
+	var colorField = function( id, label, fieldProps ) {
+			return {
+				type: 'hbox',
+				padding: 0,
+				widths: [ '60%', '40%' ],
+				children: [
+					CKEDITOR.tools.extend( {
+					type: 'text',
+					id: id,
+					label: lang[ label ]
+				}, fieldProps || {}, 1 ),
+				{
+					type: 'button',
+					id: id + 'Choose',
+					label: lang.chooseColor,
+					className: 'colorChooser',
+					onClick: function() {
+						var self = this;
+						getDialogValue( 'colordialog', function( colorDialog ) {
+							var dialog = self.getDialog();
+							dialog.getContentElement( dialog._.currentTabId, id ).setValue( colorDialog.getContentElement( 'picker', 'selectedColor' ).getValue() );
+						} );
+					}
+				}
+				]
+			};
+		};
+	var previewSrc = 'javascript:' +
+		'void((function(){' + encodeURIComponent(
+			'document.open();' +
+			( CKEDITOR.env.ie ? '(' + CKEDITOR.tools.fixDomain + ')();' : '' ) +
+			'document.write( \'<html style="background-color: #ffffff; height: 100%"><head></head><body style="width: 100%; height: 100%; margin: 0px">' + lang.previewHtml + '</body></html>\' );' +
+			'document.close();'
+		) + '})())';
+
+	return {
+		title: lang.title,
+		minHeight: 330,
+		minWidth: 500,
+		onShow: function() {
+			var doc = editor.document,
+				html = doc.getElementsByTag( 'html' ).getItem( 0 ),
+				head = doc.getHead(),
+				body = doc.getBody();
+			metaHash = createMetaHash( doc );
+			this.setupContent( doc, html, head, body );
+		},
+		onHide: function() {
+			metaHash = {};
+		},
+		onOk: function() {
+			var doc = editor.document,
+				html = doc.getElementsByTag( 'html' ).getItem( 0 ),
+				head = doc.getHead(),
+				body = doc.getBody();
+			this.commitContent( doc, html, head, body );
+		},
+		contents: [
+			{
+			id: 'general',
+			label: langCommon.generalTab,
+			elements: [
+				{
+				type: 'text',
+				id: 'title',
+				label: lang.docTitle,
+				setup: function( doc ) {
+					this.setValue( doc.getElementsByTag( 'title' ).getItem( 0 ).data( 'cke-title' ) );
+				},
+				commit: function( doc, html, head, body, isPreview ) {
+					if ( isPreview )
+						return;
+					doc.getElementsByTag( 'title' ).getItem( 0 ).data( 'cke-title', this.getValue() );
+				}
+			},
+				{
+				type: 'hbox',
+				children: [
+					{
+					type: 'select',
+					id: 'dir',
+					label: langCommon.langDir,
+					style: 'width: 100%',
+					items: [
+						[ langCommon.notSet, '' ],
+						[ langCommon.langDirLtr, 'ltr' ],
+						[ langCommon.langDirRtl, 'rtl' ]
+						],
+					setup: function( doc, html, head, body ) {
+						this.setValue( body.getDirection() || '' );
+					},
+					commit: function( doc, html, head, body ) {
+						var val = this.getValue();
+						if ( val )
+							body.setAttribute( 'dir', val );
+						else
+							body.removeAttribute( 'dir' );
+						body.removeStyle( 'direction' );
+					}
+				},
+					{
+					type: 'text',
+					id: 'langCode',
+					label: langCommon.langCode,
+					setup: function( doc, html ) {
+						this.setValue( html.getAttribute( 'xml:lang' ) || html.getAttribute( 'lang' ) || '' );
+					},
+					commit: function( doc, html, head, body, isPreview ) {
+						if ( isPreview )
+							return;
+						var val = this.getValue();
+						if ( val )
+							html.setAttributes( { 'xml:lang': val, lang: val } );
+						else
+							html.removeAttributes( { 'xml:lang': 1, lang: 1 } );
+					}
+				}
+				]
+			},
+				{
+				type: 'hbox',
+				children: [
+					{
+					type: 'select',
+					id: 'charset',
+					label: lang.charset,
+					style: 'width: 100%',
+					items: [
+						[ langCommon.notSet, '' ],
+						[ lang.charsetASCII, 'us-ascii' ],
+						[ lang.charsetCE, 'iso-8859-2' ],
+						[ lang.charsetCT, 'big5' ],
+						[ lang.charsetCR, 'iso-8859-5' ],
+						[ lang.charsetGR, 'iso-8859-7' ],
+						[ lang.charsetJP, 'iso-2022-jp' ],
+						[ lang.charsetKR, 'iso-2022-kr' ],
+						[ lang.charsetTR, 'iso-8859-9' ],
+						[ lang.charsetUN, 'utf-8' ],
+						[ lang.charsetWE, 'iso-8859-1' ],
+						[ lang.other, 'other' ]
+						],
+					'default': '',
+					onChange: function() {
+						this.getDialog().selectedCharset = this.getValue() != 'other' ? this.getValue() : '';
+						handleOther.call( this );
+					},
+					setup: function() {
+						this.metaCharset = ( 'charset' in metaHash );
+
+						var func = setupMeta( this.metaCharset ? 'charset' : 'content-type', 1, 1 ),
+							val = func.call( this );
+
+						!this.metaCharset && val.match( /charset=[^=]+$/ ) && ( val = val.substring( val.indexOf( '=' ) + 1 ) );
+
+						if ( val ) {
+							this.setValue( val.toLowerCase() );
+							if ( !this.getValue() ) {
+								this.setValue( 'other' );
+								var other = this.getDialog().getContentElement( 'general', 'charsetOther' );
+								other && other.setValue( val );
+							}
+							this.getDialog().selectedCharset = val;
+						}
+
+						handleOther.call( this );
+					},
+					commit: function( doc, html, head, body, isPreview ) {
+						if ( isPreview )
+							return;
+						var value = this.getValue(),
+							other = this.getDialog().getContentElement( 'general', 'charsetOther' );
+
+						value == 'other' && ( value = other ? other.getValue() : '' );
+
+						value && !this.metaCharset && ( value = ( metaHash[ 'content-type' ] ? metaHash[ 'content-type' ].getAttribute( 'content' ).split( ';' )[ 0 ] : 'text/html' ) + '; charset=' + value );
+
+						var func = commitMeta( this.metaCharset ? 'charset' : 'content-type', 1, value );
+						func.call( this, doc, html, head );
+					}
+				},
+					{
+					type: 'text',
+					id: 'charsetOther',
+					label: lang.charsetOther,
+					onChange: function() {
+						this.getDialog().selectedCharset = this.getValue();
+					}
+				}
+				]
+			},
+				{
+				type: 'hbox',
+				children: [
+					{
+					type: 'select',
+					id: 'docType',
+					label: lang.docType,
+					style: 'width: 100%',
+					items: [
+						[ langCommon.notSet, '' ],
+						[ 'XHTML 1.1', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' ],
+						[ 'XHTML 1.0 Transitional', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' ],
+						[ 'XHTML 1.0 Strict', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' ],
+						[ 'XHTML 1.0 Frameset', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">' ],
+						[ 'HTML 5', '<!DOCTYPE html>' ],
+						[ 'HTML 4.01 Transitional', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' ],
+						[ 'HTML 4.01 Strict', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' ],
+						[ 'HTML 4.01 Frameset', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">' ],
+						[ 'HTML 3.2', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">' ],
+						[ 'HTML 2.0', '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">' ],
+						[ lang.other, 'other' ]
+						],
+					onChange: handleOther,
+					setup: function() {
+						if ( editor.docType ) {
+							this.setValue( editor.docType );
+							if ( !this.getValue() ) {
+								this.setValue( 'other' );
+								var other = this.getDialog().getContentElement( 'general', 'docTypeOther' );
+								other && other.setValue( editor.docType );
+							}
+						}
+						handleOther.call( this );
+					},
+					commit: function( doc, html, head, body, isPreview ) {
+						if ( isPreview )
+							return;
+						var value = this.getValue(),
+							other = this.getDialog().getContentElement( 'general', 'docTypeOther' );
+						editor.docType = value == 'other' ? ( other ? other.getValue() : '' ) : value;
+					}
+				},
+					{
+					type: 'text',
+					id: 'docTypeOther',
+					label: lang.docTypeOther
+				}
+				]
+			},
+				{
+				type: 'checkbox',
+				id: 'xhtmlDec',
+				label: lang.xhtmlDec,
+				setup: function() {
+					this.setValue( !!editor.xmlDeclaration );
+				},
+				commit: function( doc, html, head, body, isPreview ) {
+					if ( isPreview )
+						return;
+					if ( this.getValue() ) {
+						editor.xmlDeclaration = '<?xml version="1.0" encoding="' + ( this.getDialog().selectedCharset || 'utf-8' ) + '"?>';
+						html.setAttribute( 'xmlns', 'http://www.w3.org/1999/xhtml' );
+					} else {
+						editor.xmlDeclaration = '';
+						html.removeAttribute( 'xmlns' );
+					}
+				}
+			}
+			]
+		},
+			{
+			id: 'design',
+			label: lang.design,
+			elements: [
+				{
+				type: 'hbox',
+				widths: [ '60%', '40%' ],
+				children: [
+					{
+					type: 'vbox',
+					children: [
+						colorField( 'txtColor', 'txtColor', {
+						setup: function( doc, html, head, body ) {
+							this.setValue( body.getComputedStyle( 'color' ) );
+						},
+						commit: function( doc, html, head, body, isPreview ) {
+							if ( this.isChanged() || isPreview ) {
+								body.removeAttribute( 'text' );
+								var val = this.getValue();
+								if ( val )
+									body.setStyle( 'color', val );
+								else
+									body.removeStyle( 'color' );
+							}
+						}
+					} ),
+						colorField( 'bgColor', 'bgColor', {
+						setup: function( doc, html, head, body ) {
+							var val = body.getComputedStyle( 'background-color' ) || '';
+							this.setValue( val == 'transparent' ? '' : val );
+						},
+						commit: function( doc, html, head, body, isPreview ) {
+							if ( this.isChanged() || isPreview ) {
+								body.removeAttribute( 'bgcolor' );
+								var val = this.getValue();
+								if ( val )
+									body.setStyle( 'background-color', val );
+								else
+									resetStyle( body, 'background-color', 'transparent' );
+							}
+						}
+					} ),
+					{
+						type: 'hbox',
+						widths: [ '60%', '40%' ],
+						padding: 1,
+						children: [
+							{
+							type: 'text',
+							id: 'bgImage',
+							label: lang.bgImage,
+							setup: function( doc, html, head, body ) {
+								var val = body.getComputedStyle( 'background-image' ) || '';
+								if ( val == 'none' )
+									val = '';
+								else {
+									val = val.replace( /url\(\s*(["']?)\s*([^\)]*)\s*\1\s*\)/i, function( match, quote, url ) {
+										return url;
+									} );
+								}
+								this.setValue( val );
+							},
+							commit: function( doc, html, head, body ) {
+								body.removeAttribute( 'background' );
+								var val = this.getValue();
+								if ( val )
+									body.setStyle( 'background-image', 'url(' + val + ')' );
+								else
+									resetStyle( body, 'background-image', 'none' );
+							}
+						},
+							{
+							type: 'button',
+							id: 'bgImageChoose',
+							label: langCommon.browseServer,
+							style: 'display:inline-block;margin-top:10px;',
+							hidden: true,
+							filebrowser: 'design:bgImage'
+						}
+						]
+					},
+						{
+						type: 'checkbox',
+						id: 'bgFixed',
+						label: lang.bgFixed,
+						setup: function( doc, html, head, body ) {
+							this.setValue( body.getComputedStyle( 'background-attachment' ) == 'fixed' );
+						},
+						commit: function( doc, html, head, body ) {
+							if ( this.getValue() )
+								body.setStyle( 'background-attachment', 'fixed' );
+							else
+								resetStyle( body, 'background-attachment', 'scroll' );
+						}
+					}
+					]
+				},
+					{
+					type: 'vbox',
+					children: [
+						{
+						type: 'html',
+						id: 'marginTitle',
+						html: '<div style="text-align: center; margin: 0px auto; font-weight: bold">' + lang.margin + '</div>'
+					},
+						{
+						type: 'text',
+						id: 'marginTop',
+						label: lang.marginTop,
+						style: 'width: 80px; text-align: center',
+						align: 'center',
+						inputStyle: 'text-align: center',
+						setup: function( doc, html, head, body ) {
+							this.setValue( body.getStyle( 'margin-top' ) || body.getAttribute( 'margintop' ) || '' );
+						},
+						commit: commitMargin( 'top' )
+					},
+						{
+						type: 'hbox',
+						children: [
+							{
+							type: 'text',
+							id: 'marginLeft',
+							label: lang.marginLeft,
+							style: 'width: 80px; text-align: center',
+							align: 'center',
+							inputStyle: 'text-align: center',
+							setup: function( doc, html, head, body ) {
+								this.setValue( body.getStyle( 'margin-left' ) || body.getAttribute( 'marginleft' ) || '' );
+							},
+							commit: commitMargin( 'left' )
+						},
+							{
+							type: 'text',
+							id: 'marginRight',
+							label: lang.marginRight,
+							style: 'width: 80px; text-align: center',
+							align: 'center',
+							inputStyle: 'text-align: center',
+							setup: function( doc, html, head, body ) {
+								this.setValue( body.getStyle( 'margin-right' ) || body.getAttribute( 'marginright' ) || '' );
+							},
+							commit: commitMargin( 'right' )
+						}
+						]
+					},
+						{
+						type: 'text',
+						id: 'marginBottom',
+						label: lang.marginBottom,
+						style: 'width: 80px; text-align: center',
+						align: 'center',
+						inputStyle: 'text-align: center',
+						setup: function( doc, html, head, body ) {
+							this.setValue( body.getStyle( 'margin-bottom' ) || body.getAttribute( 'marginbottom' ) || '' );
+						},
+						commit: commitMargin( 'bottom' )
+					}
+					]
+				}
+				]
+			}
+			]
+		},
+			{
+			id: 'meta',
+			label: lang.meta,
+			elements: [
+				{
+				type: 'textarea',
+				id: 'metaKeywords',
+				label: lang.metaKeywords,
+				setup: setupMeta( 'keywords' ),
+				commit: commitMeta( 'keywords' )
+			},
+				{
+				type: 'textarea',
+				id: 'metaDescription',
+				label: lang.metaDescription,
+				setup: setupMeta( 'description' ),
+				commit: commitMeta( 'description' )
+			},
+				{
+				type: 'text',
+				id: 'metaAuthor',
+				label: lang.metaAuthor,
+				setup: setupMeta( 'author' ),
+				commit: commitMeta( 'author' )
+			},
+				{
+				type: 'text',
+				id: 'metaCopyright',
+				label: lang.metaCopyright,
+				setup: setupMeta( 'copyright' ),
+				commit: commitMeta( 'copyright' )
+			}
+			]
+		},
+			{
+			id: 'preview',
+			label: langCommon.preview,
+			elements: [
+				{
+				type: 'html',
+				id: 'previewHtml',
+				html: '<iframe src="' + previewSrc + '" style="width: 100%; height: 310px" hidefocus="true" frameborder="0"></iframe>',
+				onLoad: function() {
+					var iframe = this.getElement();
+
+					this.getDialog().on( 'selectPage', function( ev ) {
+						if ( ev.data.page == 'preview' ) {
+							var self = this;
+							setTimeout( function() {
+								var doc = iframe.getFrameDocument(),
+									html = doc.getElementsByTag( 'html' ).getItem( 0 ),
+									head = doc.getHead(),
+									body = doc.getBody();
+								self.commitContent( doc, html, head, body, 1 );
+							}, 50 );
+						}
+					} );
+					iframe.getAscendant( 'table' ).setStyle( 'height', '100%' );
+				}
+			}
+			]
+		}
+		]
+	};
+} );

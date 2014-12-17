@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 CKEDITOR.plugins.setLang( 'forms', 'da', {
 	button: {
@@ -60,9 +60,9 @@ CKEDITOR.plugins.setLang( 'forms', 'da', {
 		type: 'Type',
 		typeText: 'Tekst',
 		typePass: 'Adgangskode',
-		typeEmail: 'Email', // MISSING
-		typeSearch: 'Search', // MISSING
-		typeTel: 'Telephone Number', // MISSING
-		typeUrl: 'URL' // MISSING
+		typeEmail: 'E-mail',
+		typeSearch: 'Søg',
+		typeTel: 'Telefon nummer',
+		typeUrl: 'URL'
 	}
-});
+} );
