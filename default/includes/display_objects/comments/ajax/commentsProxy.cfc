@@ -216,7 +216,8 @@
 							<cfif len(avatar)>
 								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="#avatar#"></dd>
 							<cfelse>
-								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
+								<cfset gravatarURL = $.getBean('utility').isHTTPS() ? 'https://secure.gravatar.com' : 'http://www.gravatar.com' />
+								<dd class="mura-comment-thumb #renderer.commentThumbClass#"><img src="#gravatarURL#/avatar/#lcase(Hash(lcase(local.commenterEmail)))#" /></dd>
 							</cfif>
 							<dd class="mura-comment #renderer.commentClass#">
 								#$.setParagraphs(htmleditformat(comment.getComments()))#
