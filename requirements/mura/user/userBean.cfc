@@ -510,11 +510,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save" output="false" access="public">
 	<cfset var i="">
 	<cfset var address="">
+	<cfset var newAddressArr=variables.newAddresses />
 	<cfset setAllValues(variables.userManager.save(this).getAllValues())>
 	
-	<cfif arrayLen(variables.newAddresses)>
-		<cfloop from="1" to="#arrayLen(variables.newAddresses)#" index="i">
-			<cfset address=variables.newAddresses[i]>
+	<cfif !structCount(getErrors()) and arrayLen(newAddressArr)>
+		<cfloop from="1" to="#arrayLen(newAddressArr)#" index="i">
+			<cfset address=newAddressArr[i]>
 			<cfset address.save()>
 		</cfloop>
 	</cfif>
