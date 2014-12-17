@@ -331,7 +331,7 @@ select * from rsSubTypes where subType <> 'Default'
 			</div>
 		</div>
 		<cfelse>
-		<div class="control-group"><div class="cotnrols"><p class="alert">#application.rbFactory.getKeyValue(session.rb,'user.nogroups')#</p></div></div>
+		<div class="control-group"><div class="controls"><p class="alert">#application.rbFactory.getKeyValue(session.rb,'user.nogroups')#</p></div></div>
 		</cfif>
 	</div>
 </div>
