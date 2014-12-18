@@ -2394,10 +2394,10 @@ Display Objects
 		<cfreturn "sys" & rereplace(id,"[^a-zA-Z0-9]","","ALL")>	
 </cffunction>
 
-<cffunction name="createCSSClass"  output="false" returntype="string">
+<cffunction name="createCSSHook"  output="false" returntype="string">
 		<cfargument name="title" type="string" required="true" default="">
-		<cfset var class=lCase(arguments.title)>
-		<cfreturn rereplace(class, '[[:space:]]+', '-', 'all')>	
+		<cfset var hook=lCase(arguments.title)>
+		<cfreturn rereplace(hook, '[[:space:]]+', '-', 'all')>	
 </cffunction>
 
 <cffunction name="getTemplate"  output="false" returntype="string">
