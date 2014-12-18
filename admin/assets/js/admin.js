@@ -322,6 +322,7 @@ function toggleDisplay2(id, display) {
 	document.getElementById(id).style.display = (display == true) ? '' : 'none';
 }
 
+/* These aren't used anymore that I can see
 
 function intuserselect(groupid, route, s2, siteid) {
 	newWindow = window.open("view/vPrivateUsers/index.cfm?groupid=" + groupid + "&route=" + route + "&s2=" + s2 + "&siteid=" + siteid, "newWin", "toolbar=no,location=no,scrollbars=yes,resize=yes,width=322,height=302,left=200,top=200")
@@ -333,6 +334,7 @@ function extuserselect(groupid, route, s2, siteid) {
 	newWindow = window.open("view/vPublicUsers/index.cfm?groupid=" + groupid + "&route=" + route + "&s2=" + s2 + "&siteid=" + siteid, "newWin", "toolbar=no,location=no,scrollbars=yes,resize=yes,width=400,height=400,left=200,top=200")
 	newWindow.focus();
 }
+*/
 
 
 function validate(theForm) {
