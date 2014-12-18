@@ -64,7 +64,17 @@ CKEDITOR.editorConfig = function( config )
 
 	config.startupFocus = false;
 	config.skin = 'bootstrapck'; // 'moono'
-	config.allowedContent = true;
+	config.allowedContent = {
+		$1: {
+		// specify elements as an object
+		elements: CKEDITOR.dtd,
+		attributes: true,
+		styles: true,
+		classes: true
+		}
+	};
+	config.disallowedContent = 'table[cellspacing,cellpadding,border]';
+
 	//config.uiColor = '#ff3405';
 	//config.ignoreEmptyParagraph = false;
 
