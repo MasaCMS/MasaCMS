@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var categoryLen =listLen(arguments.feedBean.getCategoryID()) />
 	<cfset var rsParams=arguments.feedBean.getAdvancedParams() />
 	<cfset var started =false />
+	<cfset var isNull=false>
 	<cfset var param =createObject("component","mura.queryParam")/>
 	<cfset var doKids =false />
 	<cfset var doTags =false />
