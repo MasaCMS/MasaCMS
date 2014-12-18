@@ -248,7 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn getContentBean().getValue(arguments.property)>
 			</cfif>
 		<cfelse>
-			<cfthrow message="The content is not set ine the Mura Scope.">
+			<cfthrow message="The content is not set in the Mura Scope.">
 		</cfif>
 	<cfelse>
 		<cfreturn getContentBean()>
