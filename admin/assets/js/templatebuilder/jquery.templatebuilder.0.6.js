@@ -187,7 +187,7 @@
 					goLoadField( jQuery(this).attr('data-object'),_formData.formid );
 				});
 			});
-			jQuery("#mura-tb-fields li div").live( 'click', function() {
+			jQuery(document).on( 'click',"#mura-tb-fields li div", function() {
 				doField( this );
 			});			
 		}
@@ -232,6 +232,10 @@
 
 		function doRenderFormBlock() {
 			var templateName	= "form-form";
+
+			if(!_formData.formattributes){
+				_formData.formattributes={};
+			}
 
 			var fieldData		= _formData.formattributes;
 
@@ -347,7 +351,7 @@
 //			jQuery("#ui-tabs").tabs('select',0);
 
 			if(fieldData.fieldtype.fieldtype == "textblock") {
-				jQuery('#field_textblock').ckeditor( {toolbar: 'Basic', customConfig: 'config.js.cfm'},onCKEditorChange );
+				jQuery('#field_textblock').ckeditor( {toolbar: 'FormBuilder', customConfig: 'config.js.cfm'},onCKEditorChange );
 				_ckeditor = true;
 			}
 		}
@@ -467,7 +471,12 @@
 				}
 			});
 			
-			jQuery(".mura-tb-grid-radio",$_grid).live('click',function() {
+			jQuery(document).on('click',".mura-tb-grid-radio",function() {
+				id = jQuery(this).attr('data-id');
+				_currentDataset.defaultid = id;
+			});
+
+			jQuery(document).on('click',$_grid,function() {
 				id = jQuery(this).attr('data-id');
 				_currentDataset.defaultid = id;
 			});

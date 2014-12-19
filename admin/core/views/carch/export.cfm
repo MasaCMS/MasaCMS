@@ -44,27 +44,8 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsilent>
-	<cfset hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
-	<cfset enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
-</cfsilent>
 
-
-<h1>Import Content</h1>
-<script language="JavaScript">
-jQuery(document).ready( function(){
-
-	jQuery("#savetochangesetname").hide();
-	jQuery("#import_status").change( function() {
-		if( jQuery("#import_status").val() == "Changeset" ) {
-			jQuery("#savetochangesetname").show();
-		}
-		else {
-			jQuery("#savetochangesetname").hide();
-		}
-	});
-});
-</script>
+<h1>Export Content</h1>
 <cfoutput>
 
 <div id="nav-module-specific" class="btn-group">
@@ -75,48 +56,26 @@ jQuery(document).ready( function(){
 
 <div class="fieldset">
 
-	<div class="control-group">
-		<label class="control-label">
-			Import Content
-		</label>
-		<div class="controls"><input type="file" name="newFile">
-		</div>
-	</div>
-	<cfif not enforceChangesets>
-	<div class="control-group">
-		<label class="control-label">
-			Content Status
-		</label>
-		<div class="controls">
-			<select name="import_status" id="import_status">
-				<option value="Display">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</option>				
-				<option value="Hide">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.hide')#</option>
-				<cfif hasChangesets or enforceChangesets>
-				<option value="Changeset">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.savetochangeset')#</option>
-				</cfif>
-			</select>
-		</div>
-	</div>
-	<cfelse>
-	<input type="hidden" name="import_status" value="Changeset" />
-	</cfif>
-	<div id="savetochangesetname">
-	<div class="control-group">
-		<label class="control-label">
-			Changeset Name
-		</label>
-		<div class="controls"><input type="text" name="changeset_name">
-		</div>
-	</div>
-	</div>
+ 		<div class="control-group">
+		     <div class="controls">
+		      	<label for="doChildrenOnly" class="checkbox">
+		      		<input name="doChildrenOnly" id="doChildrenOnly" type="CHECKBOX" value="1" checked class="checkbox"> 
+		      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.doChildrenOnly')#
+		      	</label>
+		    </div>
+		</div> <!--- /end control-group --->
+
+
+
+</div>
 
 </div>
 <div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="Import" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'export');" value="Export" />
 </div>
 
 <input type="hidden" name="action" value="import">
-<input name="muraAction" value="cArch.importcontent" type="hidden">
+<input name="muraAction" value="cArch.exportcontent" type="hidden">
 <input name="siteID" value="#esapiEncode('html_attr',session.siteid)#" type="hidden">
 <input name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" type="hidden">
 <input name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" type="hidden">

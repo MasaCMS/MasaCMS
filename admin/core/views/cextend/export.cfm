@@ -52,13 +52,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
 </div>
 
-
-<div>
-<pre>
-	#htmlEditFormat(rc.exportXML)#	
-</pre>	
-	
+<form class="fieldset-wrap" >
+<div class="fieldset">
+	<div class="control-group">
+		<div class="controls">
+		<textarea rows="12" style="height: 250px" class="span12">#htmlEditFormat(rc.exportXML)#</textarea>	
+		</div>
+	</div>
 </div>
-
+</form>
 
 </cfoutput>

@@ -324,9 +324,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="parentID" type="string" default="">
 		<cfargument name="Bundle" type="any" required="false">
 		<cfargument name="errors" type="any" required="true" default="#structNew()#">
+		<cfargument name="isDisplay" type="numeric" required="false" default="0">
+		<cfargument name="changesetBean" type="any" required="false">
 		<cfargument name="keyMode" type="string" default="copy" required="true">
 
-		<cfset var rstplugins="">
 		<cfset var bundleAssetPath="">
 		<cfset var extendManager	= getBean("extendManager") />
 
@@ -341,9 +342,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstContentTags=""/>
 		<cfset var rsContentTags=""/>
 
+		<cfset var rsfile="">
+		<cfset var newFileID="">
+
 		<cfset var contentBean=""/>
 		<cfset var contentData={}/>
 		<cfset var utility = getBean("utility") />
+		<cfset var changesetID = "" />
+
+		<cfif isObject( arguments.changesetBean )>
+			<cfset changesetID = arguments.changesetBean.getChangesetID() />
+		</cfif>
 
 		<cfsetting requestTimeout = "7200">
 
@@ -389,6 +398,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 	
 			<cfset contentData = utility.queryRowToStruct(rsContent) />
+			<!--- asset paths --->
+			<cfset contentData.body = replaceNoCase( contentData.body,"^^siteid^^",arguments.siteid,"all" ) />
 
 			<cfquery name="rsExtendData" dbtype="query">
 				select * from rstClassExtendData
@@ -435,10 +446,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset structDelete(contentData,"contentHistID") />
 			<cfset structDelete(contentData,"path") />
 			<cfset structDelete(contentData,"filename") />
+						
+			<!--- asset paths --->
+			
 			<cfset contentBean.set( contentData ) />
+			
+			<cfset contentBean.setChangesetID( changesetID ) />
+			<cfset contentBean.setDisplay( arguments.isDisplay ) />
+
+			<cfif len(contentdata.fileid)>
+				<cfquery name="rsfile" dbtype="query">
+					Select * from rstfiles
+					where fileid = <cfqueryparam value="#contentdata.fileid#" cfsqltype="cf_sql_varchar">
+				</cfquery>
+				<cfif rsFile.recordcount>
+					<cfset newFileID = arguments.bundle.unpackPartialFile( arguments.siteid,contentdata.fileid,contentBean.getContentID(),rsfile,arguments.toDSN, arguments.errors ) />
+					<cfset contentBean.setFileID(newFileID) />
+				</cfif>
+			</cfif>
 			
 			<cfset contentBean.save() />
 		</cfloop>	
+
+		<cfset arguments.Bundle.unpackPartialAssets( arguments.siteid ) />
 		
 		<cfreturn arguments.errors>
 	</cffunction>

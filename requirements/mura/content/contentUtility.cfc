@@ -83,6 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="serverBundlePath">
 		<cfargument name="siteID">
 		<cfargument name="parentID">
+		<cfargument name="importstatus" required="false" default="Display">
+		<cfargument name="changesetname" required="false" default="partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#">
 		<cfargument name="errors" default="">
 
 		<cfset var fileManager=getBean("fileManager")>
@@ -107,6 +109,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
 				arguments.siteID,
 				arguments.parentID,
+				arguments.importstatus,
+				arguments.changesetname,
 				arguments.errors
 				)>
 				
@@ -120,6 +124,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="bundleFile">
 		<cfargument name="siteID" default="">
 		<cfargument name="parentID" default="">
+		<cfargument name="importstatus" required="false" default="Display">
+		<cfargument name="changesetname" required="false" default="">
 		<cfargument name="errors" default="#structNew()#">
 		<cfargument name="keyMode" default="copy">
 	
@@ -128,6 +134,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var Bundle			= getBean("bundle") />
 		<cfset var publisher 		= getBean("publisher") />
 		<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+		<cfset var changeSetBean 	= "" />
+		<cfset var isDisplay	 	= 0 />
+
+		<cfif arguments.importstatus eq "Changeset">
+			<cfset changeSetBean = getBean('changeset') />
+			<cfset changeSetBean.setValue( 'changesetID',createUUID() ) />
+			<cfset changeSetBean.setValue( 'name',arguments.changesetname ) />
+			<cfset changeSetBean.setValue( 'isNew',1 ) />
+			<cfset changeSetBean.setValue('published',0) />
+			<cfset changeSetBean.setValue('siteID',arguments.siteid) />
+			<cfset changeSetBean.save() />
+		<cfelseif arguments.importstatus eq "Display">
+			<cfset isDisplay = 1 />
+		</cfif>
+
 		<cfsetting requestTimeout = "7200">
 		
 		<cfset Bundle.restorePartial( arguments.BundleFile)>
@@ -137,10 +158,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset sArgs.siteID			= arguments.siteID />
 		<cfset sArgs.parentID		= arguments.parentID />
 		<cfset sArgs.keyFactory		= keyFactory />
+		<cfset sArgs.isDisplay		= isDisplay />
 		<cfset sArgs.Bundle			= Bundle />
+		<cfset sArgs.changeSetBean	= changeSetBean />
 		<cfset sArgs.errors			= arguments.errors />
 		
-
 		<cfset arguments.errors = publisher.getToWorkPartial( argumentCollection=sArgs )>
 
 		<cftry>
