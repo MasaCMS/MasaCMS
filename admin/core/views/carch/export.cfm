@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 <div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-circle-arrow-left"></i> Back to Site Manager</a>
+	<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',session.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&moduleid=#esapiEncode('url',"00000000000000000000000000000000000")#"><i class="icon-circle-arrow-left"></i> Back to Site Manager</a>
 </div>
 
 <form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
