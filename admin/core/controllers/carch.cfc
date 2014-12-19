@@ -93,22 +93,29 @@
 	
 </cffunction>
 
-<cffunction name="export" output="false">
+<cffunction name="exportcontent" output="false">
 	<cfargument name="rc">
 
 	<cfset var settingsBundle = rc.$.getBean('settingsBundle') />
 	<cfset var contentBean = rc.$.getBean('content').loadBy(siteid=session.siteid,contentid=arguments.rc.contentID) />
+	<cfparam name="rc.doChildrenOnly" default="0" />
 	
-	<cfset settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#') />
-
+	<cfset settingsBundle.bundle(siteid=session.siteid,parentid=arguments.rc.contentID,bundlename='export_#rereplace(contentBean.getValue('filename'),"[^[:alnum:]]{1,}","_","all")#',doChildrenOnly=rc.doChildrenOnly) />
 </cffunction>
 
 <cffunction name="importcontent" output="false">
 	<cfargument name="rc">
 
 	<cfset var contentUtility = arguments.rc.$.getBean('contentUtility') />
+	<cfset var hasChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('hasChangesets') />
+	<cfset var enforceChangesets = rc.$.getBean('settingsManager').getSite(rc.$.event('siteID')).getValue('enforceChangesets') />
+
+	<cfif (arguments.rc.import_status eq "Changeset" or enforceChangesets) and (not structKeyExists(arguments.rc,"changeset_name") or not len(arguments.rc.changeset_name))>
+		<cfset arguments.rc.changeset_name = "partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#" />
+		<cfset arguments.rc.import_status = "Changeset" />
+	</cfif>
 	
-	<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile") />
+	<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name) />
 	<!--- serverBundlePath='' --->
 		
 	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>

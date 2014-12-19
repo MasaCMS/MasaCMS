@@ -451,12 +451,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn fileArray />
 	</cffunction>
 
+	<cffunction name="unpackPartialFile" returntype="string">
+		<cfargument name="siteID" type="string" default="" required="true">
+		<cfargument name="fileid" type="string" required="true">
+		<cfargument name="contentid" type="string" required="true">
+		<cfargument name="rsfile" type="query" required="true">
+		<cfargument name="dsn" type="string" default="#variables.configBean.getDatasource()#" required="true">
+		<cfargument name="errors" type="any" required="true" default="#structNew()#">
 
+		<cfset var zipPath = "" />
+		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
+		<cfset var fileManager = getBean('fileManager') />
+		<cfset var tmpDir = "" />
+		<cfset var destDir = "" />
+		<cfset var qCheck = "" />
+		<cfset var rsDirectory = "" />
+		<cfset var tempFile = "" />
+		<cfset var theFileStruct = "" />
+		<cfset var newFileID = "" />
+		<cfset destDir = getBundle() & "cachefiles" />
 
+		<cfif not directoryExists(getBundle() & "cachefiles") >
+			<cfset zipPath = getBundle() & "cachefiles.zip" />
+			<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
+		</cfif>
+		
+		<cfset rsDirectory = directoryList(destDir,true,"query","#arguments.fileid#*.*")>
+		<cfif rsDirectory.recordCount>
+			<cfset tempfile = fileManager.emulateUpload( rsDirectory.directory & "/" & rsDirectory.name ) />
+			<cfset theFileStruct=fileManager.process(tempFile,arguments.siteID) />
+			<cfset newFileID = fileManager.create( theFileStruct.fileObj,arguments.contentid,arguments.siteid,arguments.rsfile.filename,arguments.rsfile.contenttype,arguments.rsfile.contentsubtype,
+				arguments.rsfile.filesize,arguments.rsfile.moduleid,arguments.rsfile.fileext,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,createuuid(),theFileStruct.fileObjSource,arguments.rsfile.credits,arguments.rsfile.caption,arguments.rsfile.alttext ) >
+		</cfif>
 
+		<cfreturn newFileID />
+	</cffunction>
 
+	<cffunction name="unpackPartialAssets" returntype="string">
+		<cfargument name="siteID" type="string" default="" required="true">
 
-
+		<cfset var zipPath = getBundle() & "assetfiles.zip" />
+		<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+		<cfset var filePoolID=site.getFilePoolID()>
+		<cfset var destDir = variables.configBean.getValue('assetdir') & '/' & filePoolID & "/assets" />
+				
+		<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
+	</cffunction>
 
 	<cffunction name="unpackFiles" returntype="string">
 		<cfargument name="siteID" type="string" default="" required="true">
@@ -586,6 +626,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="saveFileDir" type="string" default="" required="true">
 		<cfargument name="changesetID" default="">
 		<cfargument name="parentID" default="">
+		<cfargument name="doChildrenOnly" default="1">
 		
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
@@ -703,8 +744,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
 					and
 					path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%">
+					<cfif arguments.doChildrenOnly>
 					and
 					contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentid#">
+					</cfif>
 					and
 					active = 1
 					order by LENGTH(path),orderno
@@ -731,6 +774,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfset setValue("rstcontent",rstcontent)>
+			<cfif len(arguments.changesetID) or len(arguments.parentid)>
+				<cfset fixAssetPath(arguments.siteid) />
+			</cfif>
 													
 			<cfquery name="rstcontentobjects">
 				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1751,6 +1797,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn QueryNew("null") />
 			</cfif>
 		</cfif>
+	</cffunction>
+	
+	<cffunction name="fixAssetPath" returntype="void">
+		<cfargument name="siteID" type="string" default="" required="true">
+
+		<cfset var content = "" />
+		
+		<cffile action="read" variable="content" file="#variables.backupDir#wddx_rstcontent.xml">
+		<cfset content = rereplaceNoCase( content,'src=\"\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cffile action="write" output="#content#" file="#variables.backupDir#wddx_rstcontent.xml"  charset="utf-8">
 	</cffunction>
 	
 	<cffunction name="setValue" returntype="void">

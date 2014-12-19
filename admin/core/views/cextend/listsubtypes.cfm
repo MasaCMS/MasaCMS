@@ -52,8 +52,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
-<a class="btn" href="./?muraAction=cExtend.exportSubType&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signout"></i> Export Class Extension(s)</a>
-<a class="btn" href="./?muraAction=cExtend.importSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signin"></i> Import Class Extension(s)</a>
+	<div class="btn-group">
+	<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+		<i class="icon-cogs"></i> Actions
+		<span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="./?muraAction=cExtend.exportSubType&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signout"></i> Export</a></li>
+		<li><a href="./?muraAction=cExtend.importSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signin"></i> Import</a></li>
+	</ul>
+	</div>
 </div>
 
 </cfoutput>
