@@ -19,7 +19,7 @@ component extends="mura.cfobject" {
 	406 - Not Acceptable - The user requested a return format (ex. JSON, XML) that is not currently supported.
 	*/
 
-
+	variables.pluginid="api";
 
 	function init(){
 
