@@ -278,6 +278,7 @@ component extends="mura.cfobject" {
 									result=serializeJSON(findQuery(argumentCollection=params));
 								} else {
 									if(listLen(params.id)){
+										params.ids=params.id;
 										result=serializeJSON(findMany(argumentCollection=params));
 									} else {
 										result=serializeJSON(findOne(argumentCollection=params));
@@ -287,6 +288,7 @@ component extends="mura.cfobject" {
 							}
 						} else {
 							if(listLen(params.id)){
+								params.ids=params.id;
 								result=serializeJSON(findMany(argumentCollection=params));
 							} else {
 								result=serializeJSON(findOne(argumentCollection=params));
@@ -751,7 +753,7 @@ component extends="mura.cfobject" {
 		return {'items'=returnArray};
 	}
 
-	function findMany(entityName,id,siteid){
+	function findMany(entityName,ids,siteid){
 		
 		var $=getBean('$').init(arguments.siteid);
 
@@ -774,7 +776,7 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
-		feed.addParam(column=pk,criteria=arguments.id,condition='in');
+		feed.addParam(column=pk,criteria=arguments.ids,condition='in');
 		
 		if(len($.event('orderby'))){
 			feed.setOrderBy($.event('orderby'));
