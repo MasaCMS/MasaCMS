@@ -277,12 +277,20 @@ component extends="mura.cfobject" {
 								if(params.relationship.fieldtype=='one-to-many'){
 									result=serializeJSON(findQuery(argumentCollection=params));
 								} else {
-									result=serializeJSON(findOne(argumentCollection=params));
+									if(listLen(params.id)){
+										result=serializeJSON(findMany(argumentCollection=params));
+									} else {
+										result=serializeJSON(findOne(argumentCollection=params));
+									}	
 								}
 								
 							}
 						} else {
-							result=serializeJSON(findOne(argumentCollection=params));
+							if(listLen(params.id)){
+								result=serializeJSON(findMany(argumentCollection=params));
+							} else {
+								result=serializeJSON(findOne(argumentCollection=params));
+							}
 						}
 
 					} else {
@@ -743,7 +751,70 @@ component extends="mura.cfobject" {
 		return {'items'=returnArray};
 	}
 
-	
+	function findMany(entityName,id,siteid){
+		
+		var $=getBean('$').init(arguments.siteid);
+
+		if($.event('entityName')=='content' && len($.event('feedid'))){
+			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+		} else {
+			var entity=$.getBean(arguments.entityName);
+			var feed=entity.getFeed();
+
+			if(arguments.entityName=='group'){
+				feed.setType(1);
+			}
+		}
+
+		setFeedProps(feed,$);
+
+		if($.event('entityName')=='content'){
+			var pk="contentid";
+		} else {
+			var pk=entity.getPrimaryKey();
+		}
+
+		feed.addParam(column=pk,criteria=arguments.id,condition='in');
+		
+		if(len($.event('orderby'))){
+			feed.setOrderBy($.event('orderby'));
+		}
+
+		var iterator=feed.getIterator();
+
+		//writeDump(var=iterator.getQUery(),abort=1);
+		var returnArray=[];
+		var itemStruct={};
+		var item='';
+		var subIterator='';
+		var subItem='';
+		var subItemArray=[];
+		var p='';
+
+		while(iterator.hasNext()){
+			item=iterator.next();
+			itemStruct=getFilteredValues(item,$,false);
+			if(len(pk)){
+				itemStruct.id=itemStruct[pk];
+			}
+
+			if(listFindNoCase('content,contentnav',arguments.entityName)){
+				itemStruct.images=setImageURLS(item,$);
+				itemStruct.url=item.getURL();
+			}
+
+			itemStruct.links=getLinks(item);
+
+			/*
+			var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+			*/
+
+			arrayAppend(returnArray, setLowerCaseKeys(itemStruct) );
+		}
+
+		return formatArray(returnArray);
+	}
 
 	function findQuery(entityName,siteid){
 		
