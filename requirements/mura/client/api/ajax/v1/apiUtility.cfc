@@ -422,24 +422,38 @@ component extends="mura.cfobject" {
 		return (isDefined('session.siteid') && isDefined('session.mura.requestcount') && session.mura.requestcount > 1);
 	}
 
-	function AllowAction(bean){
+	function AllowAccess(bean,$){
+		if(isObject(arguments.bean)){
+			var entityName=arguments.bean.getEntityName();
+		} else {
+			var entityName=arguments.bean;
+		}
+		
+		if(listFind(entityName,'user') && !($.currentUser().isAdminUser() || $.currentUser().isSuperUser())){
+			return false;
+		}
+
+		return true;
+	}
+
+	function AllowAction(bean,$){
 
 		if(isDefined('arguments.bean')){
 			switch(arguments.bean.getEntityName()){
 				case 'content':
 					switch(arguments.bean.getType()){
 						case 'Form':	
-							if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
+							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
 								return false;
 							}
 						break;
 						case 'Component':
-							if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000003',session.siteid)){
+							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000003',session.siteid)){
 								return false;
 							}
 						break;
 						default:	
-							if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000004',session.siteid)){
+							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',session.siteid)){
 								return false;
 							}
 						break;
@@ -447,7 +461,7 @@ component extends="mura.cfobject" {
 
 					local.currentBean=getBean("content").loadBy(contentID=arguments.bean.getContentID(), siteID= arguments.bean.getSiteID()); 
 					
-					if(not local.currentBean.getIsNew()){
+					if(!local.currentBean.getIsNew()){
 						local.crumbData=arguments.bean.getCrumbArray(); 
 						local.perm=getBean('permUtility').getNodePerm(local.crumbData);
 					}
@@ -468,39 +482,41 @@ component extends="mura.cfobject" {
 				break;
 				case 'user':
 				case 'address':
-					if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000008',session.siteid)){
-						return false;
+					if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+						if(param.userid!=$.currentUser('userid')){
+							return false;
+						}
 					}
 				break;
 				case 'category':
-					if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000010',session.siteid)){
+					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',session.siteid)){
 						return false;
 					}
 				break;
 				case 'feed':
-					if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',session.siteid))){
+					if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',session.siteid))){
 						return false;
 					}
 				break;
 				case 'changeset':
-					if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000014',session.siteid)){
+					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',session.siteid)){
 						return false;
 					}
 				break;
 				case 'comment':
-					if(not getBean('permUtility').getModulePerm('00000000000000000000000000000000015',session.siteid)){
+					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',session.siteid)){
 						return false;
 					}
 				break;
 				default:
-					if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
+					if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
 						return false;
 					}
 			}
 
 			return true;
 		} else {
-			if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
+			if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
 				return false;
 			} else {
 				return true;
@@ -557,7 +573,7 @@ component extends="mura.cfobject" {
 
 		var entity=$.getBean(arguments.entityName);
 
-		if(!allowAction(entity)){
+		if(!allowAction(entity,$)){
 			throw(type="authorization");
 		}
 
@@ -682,6 +698,10 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 		}
 		
+		if(!allowAccess(entity,$)){
+			throw(type="authorization");
+		}
+
 		var returnStruct=getFilteredValues(entity,$);
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
@@ -704,6 +724,11 @@ component extends="mura.cfobject" {
 		
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean(arguments.entityName);
+
+		if(!allowAccess(entity,$)){
+			throw(type="authorization");
+		}
+
 		var feed=entity.getFeed();
 		
 		if(arguments.entityName=='group'){
@@ -756,6 +781,10 @@ component extends="mura.cfobject" {
 	function findMany(entityName,ids,siteid){
 		
 		var $=getBean('$').init(arguments.siteid);
+
+		if(!allowAccess(entityName,$)){
+			throw(type="authorization");
+		}
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
@@ -821,6 +850,10 @@ component extends="mura.cfobject" {
 	function findQuery(entityName,siteid){
 		
 		var $=getBean('$').init(arguments.siteid);
+
+		if(!allowAccess(arguments.entityName,$)){
+			throw(type="authorization");
+		}
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
@@ -925,6 +958,10 @@ component extends="mura.cfobject" {
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean(arguments.entityName);
 		
+		if(!allowAccess(entity,$)){
+			throw(type="authorization");
+		}
+
 		if(arguments.entityName=='content'){
 			var pk="contentid";
 		} else {
@@ -973,7 +1010,7 @@ component extends="mura.cfobject" {
 
 		var entity=$.getBean(arguments.entityName);
 
-		if(!allowAction(entity)){
+		if(!allowAction(entity,$)){
 			throw(type="authorization");
 		}
 		
