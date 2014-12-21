@@ -493,14 +493,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
+	<cfset var endpoint="/_api/ajax/v1">
 
-	<cfif listFirst(cgi.path_info,'/') eq '_api'>
+	<cfif left(cgi.path_info,len(endpoint)) eq endpoint>
 		<cfif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest()>	
 		<cfelseif isDefined('url.siteid')>
 			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest()>	
 		<cfelseif listLen(cgi.path_info,'/') gte 4>
 			<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,4,'/')).getApi('ajax','v1').processRequest()>	
+		<cfelse>
+			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest()>	
 		</cfif>
 	</cfif>
 
