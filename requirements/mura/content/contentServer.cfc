@@ -502,7 +502,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif listLen(cgi.path_info,'/') gte 4>
 			<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,4,'/')).getApi('ajax','v1').processRequest()>	
 		</cfif>
-		
 	</cfif>
 
 	<cfif application.configBean.getSiteIDInURLS()>
