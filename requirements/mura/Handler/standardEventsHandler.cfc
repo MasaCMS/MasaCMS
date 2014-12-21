@@ -72,10 +72,16 @@
 </cffunction>
 
 <cffunction name="standardTranslationHandler" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	
-	<cfset arguments.event.getTranslator('standardHTML').translate(arguments.event)/>
+	<cfargument name="$" required="true">
+	<cfscript>
+		param name="request.returnFormat" default="HTML";
 
+		if(!listFindNoCase("HTML,JSON",request.returnFormat)){
+			request.returnFormat="HTML";
+		}
+
+		$.event().getTranslator('standard#uCase(request.returnFormat)#').translate(arguments.$);
+	</cfscript>
 </cffunction>
 
 <cffunction name="standardTrackSessionHandler" output="false" returnType="any">
@@ -270,8 +276,9 @@
 <cffunction name="standardPostLogoutHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
-
+	<cfif not request.returnFormat eq 'HTML'>
+		<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
+	</cfif>
 </cffunction>
 
 <cffunction name="standardMobileHandler" output="false" returnType="any">
@@ -314,10 +321,12 @@
 <cffunction name="standardForceSSLHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif application.utility.isHTTPS()>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
-	<cfelse>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+	<cfif request.returnFormat eq 'HTML'>
+		<cfif application.utility.isHTTPS()>
+			<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+		<cfelse>
+			<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+		</cfif>
 	</cfif>
 </cffunction>
 
@@ -393,7 +402,7 @@
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
 	</cfif>
 
-	<cfif arguments.event.getValue("contentBean").getIsNew()>
+	<cfif request.returnFormat neq 'json' and arguments.event.getValue("contentBean").getIsNew()>
 		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
 
 		<cfloop condition="listLen(local.filename,'/')">		
@@ -597,11 +606,11 @@
 <cffunction name="standardWrongDomainValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif not len(arguments.event.getValue("previewID")) and (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
-				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true)) 
-				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
-			<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
-		</cfif>
+	<cfif request.returnFormat eq 'HTML' and not len(arguments.event.getValue("previewID")) and (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
+		and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true)) 
+			and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
+		<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
+	</cfif>
 </cffunction>
 
 <cffunction name="standardTrackSessionValidator" output="false" returnType="any">
@@ -618,7 +627,7 @@
 <cffunction name="standardRequireLoginValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict 
+	<cfif request.returnFormat eq 'HTML' and arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict 
 			and not arguments.event.getValue('r').loggedIn 
 			and (arguments.event.getValue('display') neq 'login' and arguments.event.getValue('display') neq 'editProfile')>
 			<cfset arguments.event.getHandler("standardRequireLogin").handle(arguments.event)>
@@ -640,7 +649,7 @@
 	<cfset var requestedfilename=arguments.event.getValue('currentFilenameAdjusted')>
 	<cfset var contentFilename=arguments.event.getValue('contentBean').getFilename()>
 
-	<cfif arguments.event.getValue('muraForceFilename') and contentFilename neq '404' and len(requestedfilename) and requestedfilename neq contentFilename>
+	<cfif request.returnFormat eq 'HTML' and  arguments.event.getValue('muraForceFilename') and contentFilename neq '404' and len(requestedfilename) and requestedfilename neq contentFilename>
 		<cfset arguments.event.getHandler("standardWrongFilename").handle(arguments.event)>
 	</cfif>
 </cffunction>
@@ -649,7 +658,7 @@
 	<cfargument name="event" required="true">
 	<cfset var isHTTPS=application.utility.isHTTPS()>
 
-	<cfif not (len(arguments.event.getValue('previewID')) and isHTTPS)
+	<cfif request.returnFormat eq 'HTML' and not (len(arguments.event.getValue('previewID')) and isHTTPS)
 		and (
 			arguments.event.getValue("contentBean").getFilename() neq "404" 
 			and 
@@ -688,5 +697,44 @@
 	</cfif>
 	<cflocation addtoken="no" statuscode="301" url="#theLink#">
 </cffunction>
+
+<cfscript>
+	function standardJSONTranslator($){
+		
+		var result=$.content().getAllValues();
+		var renderer=$.getContentRenderer();
+		var apiUtility=$.siteConfig().getApi('ajax','v1');
+		
+		renderer.injectMethod('showInlineEditor',false);
+		renderer.injectMethod('showAdminToolBar',false);
+		renderer.injectMethod('showMemberToolBar',false);
+		renderer.injectMethod('showEditableObjects',false);
+
+		request.cffpJS=true;
+			
+		result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=false));
+	
+		result.displayRegions={};
+
+		for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
+			result.displayRegions['#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#']=$.dspObjects(columnid=r);
+		}
+
+		for(r in result.displayRegions){
+			result.displayRegions[r]=apiUtility.applyRemoteFormat(result.displayRegions[r]);
+		}
+
+		result.HTMLHeadQueue=$.renderHTMLQueue('head');
+		result.HTMLFootQueue=$.renderHTMLQueue('foot');
+
+		result.id=result.contentid;
+		result.links=apiUtility.getLinks($.content());
+		result.images=apiUtility.setImageUrls($.content(),$);
+
+		getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
+		$.event('__MuraResponse__',serializeJSON(apiUtility.setLowerCaseKeys(result)));
+
+	}
+</cfscript>
 
 </cfcomponent>

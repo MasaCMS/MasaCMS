@@ -558,6 +558,13 @@ to your own modified versions of Mura CMS.
                   <label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> CHECKED</CFIF>>On</label>
                 </div>
             </div>
+             <div class="span3">
+              <label class="control-label">Javascript API (ALPHA)</label>
+              <div class="controls"> 
+                  <label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> CHECKED</CFIF>>Off</label>
+                  <label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> CHECKED</CFIF>>On</label>
+                </div>
+            </div>
 
           </div>
       

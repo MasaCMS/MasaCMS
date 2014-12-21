@@ -294,6 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="url.path" default="" />
 	
 	<cfset cgi_path=setCGIPath(siteId)>
+
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
@@ -492,6 +493,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
+
+	<cfif listFirst(cgi.path_info,'/') eq '_api'>
+		<cfif isDefined('url.siteid')>
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest()>	
+		<cfelse>
+			<cfif listLen(cgi.path_info,'/') gte 4>
+				<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,4,'/')).getApi('ajax','v1').processRequest()>	
+			</cfif>
+		</cfif>
+	</cfif>
+
 	<cfif application.configBean.getSiteIDInURLS()>
 		<cfset application.contentServer.redirect()>
 	<cfelse>
@@ -513,6 +525,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var changeset=""/>
 
 	<cfset request.muraFrontEndRequest=true>
+	<cfparam name="request.returnFormat" default="HTML">
 
 	<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
 

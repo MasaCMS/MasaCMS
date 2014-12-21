@@ -125,6 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="reCAPTCHASiteKey" type="string" default="" />
 <cfproperty name="reCAPTCHASecret" type="string" default="" />
 <cfproperty name="reCAPTCHALanguage" type="string" default="en" />
+<cfproperty name="JSONApi" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -226,6 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.reCAPTCHASiteKey=""/>
 	<cfset variables.instance.reCAPTCHASecret=""/>
 	<cfset variables.instance.reCAPTCHALanguage="en"/>
+	<cfset variables.instance.JSONApi=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -857,6 +859,16 @@ s
 </cfif>
 </cffunction>
 
+<cffunction name="getApi" output="false">
+<cfargument name="type" default="ajax">
+<cfargument name="version" default="v1">
+	<cfif not isDefined('variables.instance.api#arguments.type##arguments.version#')>
+		<cfset variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.apiUtility(siteid=getValue("siteid"))')>
+	</cfif>
+
+	<cfreturn variables.instance['api#arguments.type##arguments.version#']>
+</cffunction>
+
 <cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
 <cfargument name="$" default="">
 	<cfreturn getContentRenderer(arguments.$)>
@@ -954,6 +966,13 @@ s
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setJSONApi" access="public" output="false">
+	<cfargument name="JSONApi" type="String" />
+	<cfif isNumeric(arguments.JSONApi)>
+	<cfset variables.instance.JSONApi = arguments.JSONApi />
+	</cfif>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
 	<cfset var thelist="http://#getValue('domain')#">
