@@ -50,7 +50,13 @@ component extends="mura.cfobject" {
 				},
 				content={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
-				}
+				},
+				user={},
+				address={},
+				changetset={},
+				feed={},
+				category={},
+				comment={}
 			}
 		};
 
@@ -80,6 +86,10 @@ component extends="mura.cfobject" {
 		}
 
 		return this;
+	}
+
+	function registerPublicEntity(entityName, config={}){
+		variables.config.entities['#arguments.entityName#']=arguments.config;
 	}
 
 	function registerLinkMethod(method){
@@ -428,8 +438,10 @@ component extends="mura.cfobject" {
 		} else {
 			var entityName=arguments.bean;
 		}
-		
-		if(listFind(entityName,'user') && !($.currentUser().isAdminUser() || $.currentUser().isSuperUser())){
+
+		if(!structKeyExists(variables.config.entities,entityName)){
+			return false;
+		} else if(listFind(entityName,'user') && !($.currentUser().isAdminUser() || $.currentUser().isSuperUser())){
 			return false;
 		}
 
