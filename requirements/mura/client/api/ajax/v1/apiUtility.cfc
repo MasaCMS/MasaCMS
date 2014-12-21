@@ -493,14 +493,14 @@ component extends="mura.cfobject" {
 					}
 				break;
 				default:
-					if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && isDefined('variables.pluginid') && getBean('permUtility').getModulePerm(getBean('pluginManager').getConfig(variables.pluginid).getValue('plugnid'),session.siteid))){
+					if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
 						return false;
 					}
 			}
 
 			return true;
 		} else {
-			if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && isDefined('variables.pluginid') && getBean('permUtility').getModulePerm(getBean('pluginManager').getConfig(variables.pluginid).getValue('plugnid'),session.siteid))){
+			if(not (getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
 				return false;
 			} else {
 				return true;
