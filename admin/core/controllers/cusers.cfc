@@ -219,6 +219,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 		arguments.rc.rsPrivateGroups = getUserManager().getPrivateGroups(arguments.rc.siteid);
 		arguments.rc.rsPublicGroups = getUserManager().getPublicGroups(arguments.rc.siteid);
 
+		// used to populate the SiteID dropdown
+		arguments.rc.rsSiteList = getSettingsManager().getList();
+
 		// This is here for backward plugin compatibility
 		appendRequestScope(arguments.rc);
 	}

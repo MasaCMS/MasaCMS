@@ -1,4 +1,4 @@
-<!--- 
+	<!--- 
 	This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
@@ -673,6 +673,23 @@
 									</div>
 								</div>
 
+								<!--- SiteID --->
+								<cfif rc.$.currentUser().isSuperUser()>
+									<div class="span6">
+										<label class="control-label">
+											#rbKey('user.site')#
+										</label>
+										<select name="siteid">
+											<cfloop query="rc.rsSiteList">
+												<option value="#esapiEncode('html_attr', siteid)#" <cfif rc.userBean.getSiteID() eq siteid>selected="selected"</cfif>>
+													#esapiEncode('html', site)#
+												</option>
+											</cfloop>
+										</select>
+									</div>
+								<cfelse>
+									<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+								</cfif>
 							</div>
 
 							<!--- Tags + RemoteID --->
@@ -752,7 +769,6 @@
 			<input type="hidden" name="contact" value="0">
 			<input type="hidden" name="groupid" value="">
 			<input type="hidden" name="ContactForm" value="">
-			<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 			<input type="hidden" name="returnurl" value="#buildURL(action='cUsers.listUsers', querystring='ispublic=#rc.tempIsPublic#')#">
 
 			<cfif not rsNonDefault.recordcount>
