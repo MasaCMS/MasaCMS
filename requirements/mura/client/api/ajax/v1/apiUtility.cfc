@@ -263,6 +263,8 @@ component extends="mura.cfobject" {
 			} else if(params.entityName=="user"){
 				params.type=2;
 				var primaryKey='userid';
+			} else if(params.entityName=="feed"){
+				var primaryKey='feedid';
 			} else {
 				var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
 			}
@@ -459,11 +461,27 @@ component extends="mura.cfobject" {
 
 		if(!structKeyExists(variables.config.entities,entityName)){
 			return false;
-		} else if(listFind(entityName,'user') && !($.currentUser().isAdminUser() || $.currentUser().isSuperUser())){
+		} else if (
+				listFind('address,user',entityName) 
+				&& !(
+					$.currentUser().isAdminUser() 
+					|| $.currentUser().isSuperUser()
+					|| $.event('id') == $.currentUser().getUserID()
+				)
+			){
 			return false;
 		}
 
-		return true;
+		var config=variables.config.entities[entityName];
+
+		if(!listFind('content,contentnav,feed',entityName)){
+			return true;
+		} else if (structKeyExists(config,'pluginid')) {
+			return getBean('permUtility').getModulePerm(config.pluginid,session.siteid);
+		} else {
+			return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid);
+		}
+
 	}
 
 	function AllowAction(bean,$){
@@ -512,7 +530,7 @@ component extends="mura.cfobject" {
 			case 'user':
 			case 'address':
 				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
-					if(param.userid!=$.currentUser('userid')){
+					if(arguments.bean.getValue('userid')!=$.currentUser('userid')){
 						return false;
 					}
 				}
@@ -538,8 +556,14 @@ component extends="mura.cfobject" {
 				}
 			break;
 			default:
-				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
-					return false;
+				if (isDefined('variables.config.entities.#arguments.bean.getEntityName()#.pluginid')) {
+					if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].pluginid,session.siteid)){
+						return false;
+					}
+				} else {
+					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
+						return false;
+					}
 				}
 		}
 
@@ -716,7 +740,13 @@ component extends="mura.cfobject" {
 			
 		} else {
 			var entity=$.getBean(arguments.entityName);
-			var pk=entity.getPrimaryKey();
+
+			if($.event('entityName')=='feed'){
+				var pk="feedid";
+			} else {
+				var pk=entity.getPrimaryKey();
+			}
+			
 			var loadparams={'#pk#'=arguments.id};
 			entity.loadBy(argumentCollection=loadparams);
 		}
@@ -762,8 +792,10 @@ component extends="mura.cfobject" {
 
 		var iterator=feed.getIterator();
 
-		if($.event('entityName')=='content'){
+		if(arguments.entityName=='content'){
 			var pk="contentid";
+		} else if(arguments.entityName=='feed'){
+			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
 		}
@@ -824,6 +856,8 @@ component extends="mura.cfobject" {
 
 		if($.event('entityName')=='content'){
 			var pk="contentid";
+		} else if($.event('entityName')=='feed'){
+			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
 		}
@@ -893,6 +927,8 @@ component extends="mura.cfobject" {
 
 		if($.event('entityName')=='content'){
 			var pk="contentid";
+		} else if($.event('entityName')=='feed'){
+			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
 		}
@@ -1057,7 +1093,12 @@ component extends="mura.cfobject" {
 			}
 			var pk="contentid";
 		} else {
-			var pk=entity.getPrimaryKey();
+			
+			if($.event('entityName')=='feed'){
+				var pk="feedid";
+			} else {
+				var pk=entity.getPrimaryKey();
+			}
 
 			var loadparams={'#pk#'=$.event('id')};
 			entity.loadBy(argumentCollection=loadparams);

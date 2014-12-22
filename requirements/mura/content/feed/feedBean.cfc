@@ -592,5 +592,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAvailableCount" output="false">
 	<cfreturn getQuery(countOnly=true).count>
 </cffunction>
+
+<cfscript>
+ function getFeed(){		
+		var feed=getBean('beanFeed').setEntityName('feed').setTable('tcontentfeeds');
 	
+		if(hasProperty('siteid')){
+			feed.setSiteID(getValue('siteID'));
+		}
+
+		if(len(getOrderBy())){
+			feed.setOrderBy(getOrderBy());
+		}
+
+		return feed;	
+	}
+</cfscript>	
+
 </cfcomponent>
