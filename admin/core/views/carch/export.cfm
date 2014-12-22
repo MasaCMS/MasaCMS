@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 
     <div class="form-actions">
-    	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'export');" value="Export" />
+    	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'export');" value="#rc.$.rbKey('sitemanager.content.exportcontent')#" />
     </div>
 
     <input type="hidden" name="action" value="import">
