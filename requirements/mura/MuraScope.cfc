@@ -269,7 +269,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn getCurrentUser()>
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="siteConfig" output="false" returntype="any">
@@ -277,7 +276,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="propertyValue">
 	<cfset var site="">
 	<cfset var theValue="">
-	<cfset var siteID=event('siteid')>
+	<cfset var siteID = Len(event('siteid')) 
+		? event('siteid') 
+		: IsDefined('session') && StructKeyExists(session, 'siteid') 
+			? session.siteid 
+			: '' />
 	
 	<cfif len(siteid)>
 		<cfset site=application.settingsManager.getSite(siteid)>
@@ -294,10 +297,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn site>
 		</cfif>
+
 	<cfelse>
-		<cfthrow message="The siteid is not set in the current Mura Scope event.">
-	</cfif>
-	
+		<cfthrow message="The SiteID is not set in the current Mura Scope event.">
+	</cfif>	
 </cffunction>
 
 <cffunction name="globalConfig" output="false" returntype="any">
@@ -317,7 +320,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn application.configBean>
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="component" output="false" returntype="any">
@@ -344,7 +346,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfthrow message="No component has been set in the Mura Scope.">
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="currentURL" output="false" returntype="any">

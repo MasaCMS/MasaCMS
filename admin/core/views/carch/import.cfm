@@ -49,8 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
 </cfsilent>
 
-
-<h1>Import Content</h1>
 <script language="JavaScript">
 jQuery(document).ready( function(){
 
@@ -66,61 +64,65 @@ jQuery(document).ready( function(){
 });
 </script>
 <cfoutput>
+	<h1>
+		#rc.$.rbKey('sitemanager.content.importcontent')#
+	</h1>
 
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-circle-arrow-left"></i> Back to Site Manager</a>
-</div>
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-circle-arrow-left"></i> #rc.$.rbKey('sitemanager.backtositemanager')#</a>
+	</div>
 
-<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+		<div class="fieldset">
+			<div class="control-group">
+				<label class="control-label">
+					#rc.$.rbKey('sitemanager.content.importcontent')#
+				</label>
+				<div class="controls">
+					<input type="file" name="newFile">
+				</div>
+			</div>
 
-<div class="fieldset">
+			<cfif not enforceChangesets>
+				<div class="control-group">
+					<label class="control-label">
+						#rc.$.rbKey('sitemanager.content.contentstatus')#
+					</label>
+					<div class="controls">
+						<select name="import_status" id="import_status">
+							<option value="Display">#rc.$.rbKey('sitemanager.content.displayyes')#</option>				
+							<option value="Hide">#rc.$.rbKey('sitemanager.content.displayno')#</option>
+							<cfif hasChangesets or enforceChangesets>
+							<option value="Changeset">#rc.$.rbKey('sitemanager.content.savetochangeset')#</option>
+							</cfif>
+						</select>
+					</div>
+				</div>
+			<cfelse>
+				<input type="hidden" name="import_status" value="Changeset" />
+			</cfif>
 
-	<div class="control-group">
-		<label class="control-label">
-			Import Content
-		</label>
-		<div class="controls"><input type="file" name="newFile">
+			<div id="savetochangesetname">
+				<div class="control-group">
+					<label class="control-label">
+						#rc.$.rbKey('sitemanager.content.changesetname')#
+					</label>
+					<div class="controls">
+						<input type="text" name="changeset_name">
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
-	<cfif not enforceChangesets>
-	<div class="control-group">
-		<label class="control-label">
-			Content Status
-		</label>
-		<div class="controls">
-			<select name="import_status" id="import_status">
-				<option value="Display">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</option>				
-				<option value="Hide">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.hide')#</option>
-				<cfif hasChangesets or enforceChangesets>
-				<option value="Changeset">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.savetochangeset')#</option>
-				</cfif>
-			</select>
+
+		<div class="form-actions">
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="Import" />
 		</div>
-	</div>
-	<cfelse>
-	<input type="hidden" name="import_status" value="Changeset" />
-	</cfif>
-	<div id="savetochangesetname">
-	<div class="control-group">
-		<label class="control-label">
-			Changeset Name
-		</label>
-		<div class="controls"><input type="text" name="changeset_name">
-		</div>
-	</div>
-	</div>
 
-</div>
-<div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="Import" />
-</div>
-
-<input type="hidden" name="action" value="import">
-<input name="muraAction" value="cArch.importcontent" type="hidden">
-<input name="siteID" value="#esapiEncode('html_attr',session.siteid)#" type="hidden">
-<input name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" type="hidden">
-<input name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" type="hidden">
-#rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
-</form>
-
+		<input type="hidden" name="action" value="import">
+		<input name="muraAction" value="cArch.importcontent" type="hidden">
+		<input name="siteID" value="#esapiEncode('html_attr',session.siteid)#" type="hidden">
+		<input name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" type="hidden">
+		<input name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" type="hidden">
+		#rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
+	</form>
 </cfoutput>
