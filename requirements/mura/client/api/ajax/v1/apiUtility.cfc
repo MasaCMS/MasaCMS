@@ -1,11 +1,12 @@
 component extends="mura.cfobject" {
 	/*
-	GET/:siteid/:entityName/:id => /?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
-	GET/:siteid/:entityName/:id/:relatedEntity/$ => /?method=findMany&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
-	GET/:siteid/:entityName/new => /?method=findOne&entityName=:entityname&siteid=:siteid&id=
-	GET/:siteid/:entityName/$ => /?method=findMany&entityName=:entityname&siteid=:siteid
-	POST/:siteid/:entityName/ => /?method=save&entityName=:entityname&siteid=:siteid
-	DELETE/:siteid/:entityName/:id => /?method=delete&entityName=:entityname&siteid=:siteid
+	FindONe: GET /_api/ajax/v1/:siteid/:entityName/:id => /_api/ajax/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
+	FindRelatedEntity: GET /_api/ajax/v1/:siteid/:entityName/:id/:relatedEntity/$ => /_api/ajax/v1/?method=findQuery&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
+	FinNew: GET /_api/ajax/v1/:siteid/:entityName/new => /_api/ajax/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=
+	FindQuery: GET /_api/ajax/v1/:siteid/:entityName/$ => /_api/ajax/v1/?method=findQuery&entityName=:entityname&siteid=:siteid
+	FindMany: GET /_api/ajax/v1/:siteid/:entityName/:ids/$ => /_api/ajax/v1/?method=findMany&entityName=:entityname&siteid=:siteid&ids=:ids
+	Save: POST /_api/ajax/v1/:siteid/:entityName/ => /_api/ajax/v1/?method=save&entityName=:entityname&siteid=:siteid
+	Delete: DELETE /_api/ajax/v1/:siteid/:entityName/:id => /_api/ajax/v1/?method=delete&entityName=:entityname&siteid=:siteid
 
 	200 - OK - Everything went fine.
 	400s - all caused by user interaction
@@ -53,7 +54,7 @@ component extends="mura.cfobject" {
 				},
 				user={},
 				address={},
-				changetset={},
+				changeset={},
 				feed={},
 				category={},
 				comment={}
@@ -67,12 +68,29 @@ component extends="mura.cfobject" {
 		return this;
 	}
 
+	function getSerializer(){
+		return variables.serializer;
+	}
+
 	function getConfig(){
 		return variables.config;
 	}
 
 	function setConfig(conifg){
 		variables.config=arguments.config;
+		return this;
+	}
+
+	function getEntityConfig(){
+		if(structKeyExists(variables.config.entities,arguments.entityName)){
+			return variables.config;
+		} else {
+			return {};
+		}
+	}
+
+	function setEntityConfig(enitytName,config={}){
+		registerPublicEntity(argumentCollection=arguments);
 		return this;
 	}
 
@@ -450,90 +468,83 @@ component extends="mura.cfobject" {
 
 	function AllowAction(bean,$){
 
-		if(isDefined('arguments.bean')){
-			switch(arguments.bean.getEntityName()){
-				case 'content':
-					switch(arguments.bean.getType()){
-						case 'Form':	
-							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
-								return false;
-							}
-						break;
-						case 'Component':
-							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000003',session.siteid)){
-								return false;
-							}
-						break;
-						default:	
-							if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',session.siteid)){
-								return false;
-							}
-						break;
-					}
-
-					local.currentBean=getBean("content").loadBy(contentID=arguments.bean.getContentID(), siteID= arguments.bean.getSiteID()); 
-					
-					if(!local.currentBean.getIsNew()){
-						local.crumbData=arguments.bean.getCrumbArray(); 
-						local.perm=getBean('permUtility').getNodePerm(local.crumbData);
-					}
-					 
-					if(local.currentBean.getIsNew() && len(arguments.rc.parentID)){
-						local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
-						local.perm=etBean('permUtility').getNodePerm(local.crumbData);  
-					}
-					 
-					if(!listFindNoCase('author,editor',local.perm)){
-						return false;
-					}
-
-					if(local.perm=='author'){
-						arguments.bean.setApproved(0);
-					}
-
-				break;
-				case 'user':
-				case 'address':
-					if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
-						if(param.userid!=$.currentUser('userid')){
+		switch(arguments.bean.getEntityName()){
+			case 'content':
+				switch(arguments.bean.getType()){
+					case 'Form':	
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
 							return false;
 						}
-					}
-				break;
-				case 'category':
-					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',session.siteid)){
-						return false;
-					}
-				break;
-				case 'feed':
-					if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',session.siteid))){
-						return false;
-					}
-				break;
-				case 'changeset':
-					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',session.siteid)){
-						return false;
-					}
-				break;
-				case 'comment':
-					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',session.siteid)){
-						return false;
-					}
-				break;
-				default:
-					if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
-						return false;
-					}
-			}
+					break;
+					case 'Component':
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000003',session.siteid)){
+							return false;
+						}
+					break;
+					default:	
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',session.siteid)){
+							return false;
+						}
+					break;
+				}
 
-			return true;
-		} else {
-			if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
-				return false;
-			} else {
-				return true;
-			}
+				local.currentBean=getBean("content").loadBy(contentID=arguments.bean.getContentID(), siteID= arguments.bean.getSiteID()); 
+				
+				if(!local.currentBean.getIsNew()){
+					local.crumbData=arguments.bean.getCrumbArray(); 
+					local.perm=getBean('permUtility').getNodePerm(local.crumbData);
+				}
+				 
+				if(local.currentBean.getIsNew() && len(arguments.rc.parentID)){
+					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
+					local.perm=etBean('permUtility').getNodePerm(local.crumbData);  
+				}
+				 
+				if(!listFindNoCase('author,editor',local.perm)){
+					return false;
+				}
+
+				if(local.perm=='author'){
+					arguments.bean.setApproved(0);
+				}
+
+			break;
+			case 'user':
+			case 'address':
+				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+					if(param.userid!=$.currentUser('userid')){
+						return false;
+					}
+				}
+			break;
+			case 'category':
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',session.siteid)){
+					return false;
+				}
+			break;
+			case 'feed':
+				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',session.siteid))){
+					return false;
+				}
+			break;
+			case 'changeset':
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',session.siteid)){
+					return false;
+				}
+			break;
+			case 'comment':
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',session.siteid)){
+					return false;
+				}
+			break;
+			default:
+				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) )){
+					return false;
+				}
 		}
+
+		return true;
+
 	}
 	
 	function validateEmail() {
