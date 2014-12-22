@@ -45,32 +45,30 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<script>
-	function exportPartial(){
+	<script>
+		function exportPartial(){
+			var message = jQuery('input[name="doChildrenOnly"]').prop('checked')
+				? '#rbKey('sitemanager.content.exportchildrenonlymessage')#'
+				: '#rbKey('sitemanager.content.exportnodeandchildrenmessage')#';
 
-		var message = jQuery('input[name="doChildrenOnly"]').prop('checked')
-			? '#rbKey('sitemanager.content.exportchildrenonlymessage')#'
-			: '#rbKey('sitemanager.content.exportnodeandchildrenmessage')#';
-
-		jQuery('##alertDialogMessage').html(message);
-		jQuery('##alertDialog').dialog({
-				resizable: false,
-				modal: true,
-				buttons: {
-					'YES': function() {
-						jQuery(this).dialog('close');
-						jQuery('##partialExportForm').submit();
-						},
-					'NO': function() {
-						jQuery(this).dialog('close');
+			jQuery('##alertDialogMessage').html(message);
+			jQuery('##alertDialog').dialog({
+					resizable: false,
+					modal: true,
+					buttons: {
+						'YES': function() {
+							jQuery(this).dialog('close');
+							jQuery('##partialExportForm').submit();
+							},
+						'NO': function() {
+							jQuery(this).dialog('close');
+						}
 					}
-				}
-			});
+				});
 
-		return false; 
-	}
-</script>
-
+			return false; 
+		}
+	</script>
 
 	<h1>
 		#rbKey('sitemanager.content.exportcontent')#
