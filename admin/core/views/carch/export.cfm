@@ -44,42 +44,37 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<h1>Export Content</h1>
 <cfoutput>
 
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',session.siteid)#&contentid=#esapiEncode('url',rc.contentid)#&moduleid=#esapiEncode('url',"00000000000000000000000000000000000")#"><i class="icon-circle-arrow-left"></i> Back to Site Manager</a>
-</div>
+  <h1>
+    #rc.$.rbKey('sitemanager.content.exportcontent')#
+  </h1>
 
-<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+  <div id="nav-module-specific" class="btn-group">
+  	<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url','00000000000000000000000000000000000')#"><i class="icon-circle-arrow-left"></i> #rc.$.rbKey('sitemanager.backtositemanager')#</a>
+  </div>
 
-<div class="fieldset">
+  <form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+    <div class="fieldset">
+      <div class="control-group">
+        <div class="controls">
+          <label for="doChildrenOnly" class="checkbox">
+            <input name="doChildrenOnly" id="doChildrenOnly" type="CHECKBOX" value="1" checked class="checkbox">
+            #rc.$.rbKey('sitemanager.content.exportchildrenonly')#
+          </label>
+        </div>
+      </div>
+    </div>
 
- 		<div class="control-group">
-		     <div class="controls">
-		      	<label for="doChildrenOnly" class="checkbox">
-		      		<input name="doChildrenOnly" id="doChildrenOnly" type="CHECKBOX" value="1" checked class="checkbox"> 
-		      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.doChildrenOnly')#
-		      	</label>
-		    </div>
-		</div> <!--- /end control-group --->
+    <div class="form-actions">
+    	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'export');" value="#rc.$.rbKey('sitemanager.content.exportcontent')#" />
+    </div>
 
-
-
-</div>
-
-</div>
-<div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'export');" value="Export" />
-</div>
-
-<input type="hidden" name="action" value="import">
-<input name="muraAction" value="cArch.exportcontent" type="hidden">
-<input name="siteID" value="#esapiEncode('html_attr',session.siteid)#" type="hidden">
-<input name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" type="hidden">
-<input name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" type="hidden">
-#rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
-</form>
-
+    <input type="hidden" name="action" value="import">
+    <input name="muraAction" value="cArch.exportcontent" type="hidden">
+    <input name="siteID" value="#esapiEncode('html_attr',session.siteid)#" type="hidden">
+    <input name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#" type="hidden">
+    <input name="contentid" value="#esapiEncode('html_attr',rc.contentid)#" type="hidden">
+    #rc.$.renderCSRFTokens(context=rc.contentid,format="form")#
+  </form>
 </cfoutput>
