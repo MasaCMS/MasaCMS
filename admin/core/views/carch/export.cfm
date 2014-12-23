@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 		function exportPartial(){
 			var message = jQuery('input[name="doChildrenOnly"]').prop('checked')
-				? '#rbKey('sitemanager.content.exportchildrenonlymessage')#'
-				: '#rbKey('sitemanager.content.exportnodeandchildrenmessage')#';
+				? "#rbKey('sitemanager.content.exportchildrenonlymessage')#"
+				: "#rbKey('sitemanager.content.exportnodeandchildrenmessage')#";
 
 			jQuery('##alertDialogMessage').html(message);
 			jQuery('##alertDialog').dialog({
