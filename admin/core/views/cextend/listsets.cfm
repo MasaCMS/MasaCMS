@@ -44,18 +44,18 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="js.cfm">
-<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
-<cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
-<cfset extendSets=subType.getExtendSets()/>
-
-<cfset showRelatedContentSets = not listFindNoCase("1,2,User,Group,Address,Site,Component,Form", subType.getType())>
-
-<cfif showRelatedContentSets>
-	<cfset relatedContentsets = subType.getRelatedContentSets(includeInheritedSets=false)>
-</cfif>
-
 <cfoutput>
+	<cfinclude template="js.cfm">
+	<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
+	<cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
+	<cfset extendSets=subType.getExtendSets()/>
+
+	<cfset showRelatedContentSets = not listFindNoCase("1,2,User,Group,Address,Site,Component,Form", subType.getType())>
+
+	<cfif showRelatedContentSets>
+		<cfset relatedContentsets = subType.getRelatedContentSets(includeInheritedSets=false)>
+	</cfif>
+
 	<h1>#rbKey('sitemanager.extension.classextensionoverview')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
@@ -124,14 +124,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 		</cfif>
 	</h3>
-</cfoutput>
 
-<cfif arrayLen(extendSets)>
-
-	<ul id="attr-set" class="attr-list">
-		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
-			<cfset extendSetBean=extendSets[s]/>
-			<cfoutput>
+	<cfif arrayLen(extendSets)>
+		<ul id="attr-set" class="attr-list">
+			<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+				<cfset extendSetBean=extendSets[s]/>
 				<li extendSetID="#extendSetBean.getExtendSetID()#">
 					<span id="handle#s#" class="handle" style="display:none;"><i class="icon-move"></i></span>
 					<p>#extendSetBean.getName()#</p>
@@ -140,22 +137,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 					</div>
 				</li>
-			</cfoutput>
-		</cfloop>
-	</ul>
- <cfelse>
-	<p class="alert">#rbKey('sitemanager.extension.noattributesets')#</p>
-</cfif>
+			</cfloop>
+		</ul>
+	<cfelse>
+		<p class="alert">#rbKey('sitemanager.extension.noattributesets')#</p>
+	</cfif>
 
-<cfif showRelatedContentSets>
-	<cfif arrayLen(relatedContentsets)>
-		<hr />
-		<h3>#rbKey('sitemanager.extension.relatedcontentsets')# <cfif arrayLen(relatedContentsets) gt 1>(<a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;"><i class="icon-check"></i> #rbKey('sitemanager.extension.saveorder')#</a><a href="javascript:;"  id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;"><i class="icon-move"></i> #rbKey('sitemanager.extension.reorder')#</a>)</cfif></h3>
-		
-		<ul id="related-set" class="attr-list">
-			<cfloop from="1" to="#arrayLen(relatedContentsets)#" index="s">	
-				<cfset rcsBean=relatedContentsets[s]/>
-				<cfoutput>
+	<cfif showRelatedContentSets>
+		<cfif arrayLen(relatedContentsets)>
+			<hr />
+			<h3>
+				#rbKey('sitemanager.extension.relatedcontentsets')# 
+				<cfif arrayLen(relatedContentsets) gt 1>
+					(
+						<a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;">
+							<i class="icon-check"></i> 
+							#rbKey('sitemanager.extension.saveorder')#
+						</a>
+						<a href="javascript:;" id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;">
+							<i class="icon-move"></i> 
+							#rbKey('sitemanager.extension.reorder')#
+						</a>
+					)
+				</cfif>
+			</h3>
+			<ul id="related-set" class="attr-list">
+				<cfloop from="1" to="#arrayLen(relatedContentsets)#" index="s">	
+					<cfset rcsBean=relatedContentsets[s]/>
 					<li relatedContentSetID="#rcsBean.getRelatedContentSetID()#">
 						<span id="handleRelated#s#" class="handleRelated" style="display:none;"><i class="icon-move"></i></span>
 						<p>#rcsBean.getName()#</p>
@@ -164,11 +172,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 						</div>
 					</li>
-				</cfoutput>
-			</cfloop>
-		</ul>
-	<cfelse>
-		<p class="alert">#rbKey('sitemanager.extension.norelatedcontentsets')#</p>
+				</cfloop>
+			</ul>
+		<cfelse>
+			<p class="alert">#rbKey('sitemanager.extension.norelatedcontentsets')#</p>
+		</cfif>
 	</cfif>
-</cfif>
-
+</cfoutput>
