@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="fieldset">
 			<div class="control-group">
 				<div id="copymessage" class="controls">
-					<label class="info-box"></label>
+					<div class="info-box alert alert-info"></div>
 				</div>
 				<div class="controls">
 						<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
