@@ -50,8 +50,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			var $defaultmsg, $thecode, $clipboardContainer, $doc, $focusInput, $infoBox, onKeydown, onKeyup, value;
 
-			$defaultmsg = "#rbKey('sitemanager.extension.copymessage.default')#";
-			$copiedmsg = "#rbKey('sitemanager.extension.copymessage.copied')#";
+			$defaultmsg = "#rc.$.rbKey('sitemanager.extension.copymessage.default')#";
+			$copiedmsg = "#rc.$.rbKey('sitemanager.extension.copymessage.copied')#";
 			$focusInput = $('<input class="absolute-hidden" type="text"/>').appendTo(document.body).focus().remove();
 			$doc = $(document);
 			$thecode = $('##thecode');
@@ -101,12 +101,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div id="clipboard-container" style="position:fixed;left:0px;top:0px;width:0px;height:0px;z-index:100;display:none;opacity:0;"><textarea id="clipboard" style="width:1px;height:1px;padding:0px;margin:0px;"></textarea></div>
 
-	<h1>#rbKey('sitemanager.extension.exportclassextensions')#</h1>
+	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-circle-arrow-left"></i> 
-			#rbKey('sitemanager.extension.backtoclassextensions')#
+			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
 
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="info-box alert alert-info"></div>
 				</div>
 				<div class="controls">
-						<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
+					<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
 				</div>
 			</div>
 		</div>
