@@ -56,19 +56,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubit="return validateForm(this);"  enctype="multipart/form-data">
-
 		<div class="fieldset">
-
-		<div class="control-group">
-			<label class="control-label">
-				#rbKey('sitemanager.extension.uploadfile')#
-			</label>
-			<div class="controls">
-				<input type="file" name="newFile">
+			<div class="control-group">
+				<label class="control-label">
+					#rbKey('sitemanager.extension.uploadfile')#
+				</label>
+				<div class="controls">
+					<input type="file" name="newFile">
+				</div>
 			</div>
 		</div>
 
-		</div>
 		<div class="form-actions">
 			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="#rbKey('sitemanager.extension.import')#" />
 		</div>
