@@ -276,6 +276,7 @@ order by tformresponsepackets.entered asc
 <cfargument name="preBody" type="string">
 <cfargument name="responseChart" type="numeric" required="yes" default="0">
 <cfargument name="linkServID" type="string" required="yes" default="">
+<cfargument name="$">
 
 <cfset var frm=""/>
 <cfset var finder=""/>

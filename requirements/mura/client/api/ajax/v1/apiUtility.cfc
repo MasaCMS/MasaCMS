@@ -40,7 +40,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems",
+			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,renderForm",
 			entities={
 				site={
 					fields="domain,siteid",
@@ -432,7 +432,7 @@ component extends="mura.cfobject" {
 		return {};
 	}
 	
-	function saveForm(){
+	function requestform(){
 		
 		if(!isValidRequest()){
 			throw(type="badRequest");
@@ -1247,6 +1247,67 @@ component extends="mura.cfobject" {
 		}
 
 		return returnStruct;
+
+	}
+
+	function validate(data={},validations={}) {
+
+		data=deserializeJSON(urlDecode(arguments.data));
+		validations=deserializeJSON(urlDecode(arguments.validations));
+		
+		errors={};
+
+		if(!structIsEmpty(validations)){
+
+			structAppend(errors,new mura.bean.bean()
+				.set(data)
+				.setValidations(validations)
+				.validate()
+				.getErrors()
+			);
+		}
+
+		if(isDefined('arguments.data.bean') && isDefined('arguments.data.loadby')){
+			structAppend(errors,
+				getBean(data.bean)
+				.loadBy(data.loadby=arguments.data[arguments.data.loadby],siteid=arguments.data.siteid)
+				.set(arguments.data)
+				.validate()
+				.getErrors()
+			);
+		}
+		
+		
+		return errors;	
+
+	}
+
+	function renderForm(siteid,contenthistid,formid){
+		var $=getBean('$').init(arguments.siteid);
+		
+		$.event('contentBean',$.getBean('content').loadBy(contenthistid=arguments.contenthistid));
+
+		if($.siteConfig('dataCollection')){
+			//Turn off cfformprotext js
+			request.cffpJS=true;
+
+			if(isValid("UUID",arguments.formid)){
+				var bean = $.getBean("content").loadBy(contentID=arguments.formid,siteID=arguments.siteID);
+			} else {
+				var bean = $.getBean("content").loadBy(title=arguments.formid,siteID=arguments.siteID,type='Form');
+			}
+			//variables.rsForm=bean.getAllValues();
+			$.event("formBean",bean);
+		
+			if(!bean.getIsNew() && bean.getIsOnDisplay()){
+				return {html=$.getBean('dataCollectionBean')
+					.set($.event().getAllValues())
+					.render($)};
+				
+			}
+		}
+
+		return '';
 
 	}
 

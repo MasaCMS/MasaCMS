@@ -200,10 +200,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returntype="any" output="true" access="public">
-	<cfargument name="config" type="struct"> 	
+	<cfargument name="property" required="true">
+	<cfargument name="propertyValue">  	
+	
+	<cfif not isDefined('arguments.config')>
+		<cfif isSimpleValue(arguments.property)>
+			<cfreturn setValue(argumentCollection=arguments)>
+		</cfif>
+
+		<cfset arguments.config=arguments.property>
+	</cfif>
+	
 	<cfset var prop="">
 	<cfset var tempFunc="">
-	
+
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
 			<cfif isDefined("this.set#prop#")>
@@ -1585,6 +1595,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "" />
 	</cfif>
 
+</cffunction>
+
+<cffunction name="get" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="defaultValue">
+	<cfreturn getValue(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="cleanFilePath" output="false">
