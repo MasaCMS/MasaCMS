@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		});
 	</script>
 
-	<h1>#rbKey('sitemanager.extension.exportattributeset')#</h1>
+	<h1>#rbKey('sitemanager.extension.exportclassextensions')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">

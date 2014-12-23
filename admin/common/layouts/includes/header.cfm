@@ -482,7 +482,7 @@
 												<li class="dropdown-submenu">
 													<a href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
 														<i class="icon-wrench"></i> 
-														Class Extension Manager
+														#rbKey('layout.classextensionmanager')#
 													</a>
 													<ul class="dropdown-menu">
 														<!--- This is here solely for autoupdates--->
@@ -494,12 +494,28 @@
 															<cfset exp="">
 														</cfif>
 
+														<!--- Add Class Extension --->
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',session.siteid)#">
 																<i class="icon-plus-sign"></i> 
 																#rbKey("layout.addclassextension")#
 															</a>
 														</li>
+														<!--- Import Class Extension --->
+														<li>
+															<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+																<i class="icon-signin"></i> 
+																#rbKey('layout.importclassextensions')#
+															</a>
+														</li>
+														<!--- Export Class Extension --->
+														<li>
+															<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+																<i class="icon-signout"></i> 
+																#rbKey('layout.exportclassextensions')#
+															</a>
+														</li>
+
 														<cfif rsExts.recordcount>
 															<li class="divider"></li>
 														</cfif>
