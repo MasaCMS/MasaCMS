@@ -90,7 +90,7 @@
 											<li id="navVersion" class="dropdown">
 												<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 													<i class="icon-info-sign"></i> 
-													#rbKey("layout.version")#
+													#rc.$.rbKey("layout.version")#
 													<b class="caret"></b>
 												</a>
 												<ul class="dropdown-menu">
@@ -162,7 +162,7 @@
 												<li id="navGlobalSettings" class="dropdown">
 													<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 														<i class="icon-cogs"></i> 
-														#rbKey("layout.settings")#
+														#rc.$.rbKey("layout.settings")#
 														<b class="caret"></b>
 													</a>
 													
@@ -172,7 +172,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list">
 																<i class="icon-cogs"></i> 
-																#rbKey("layout.globalsettings")#
+																#rc.$.rbKey("layout.globalsettings")#
 															</a>
 														</li>
 
@@ -180,7 +180,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins">
 																<i class="icon-puzzle-piece"></i> 
-																#rbKey("layout.globalsettings-plugins")#
+																#rc.$.rbKey("layout.globalsettings-plugins")#
 															</a>
 														</li>
 
@@ -188,7 +188,7 @@
 														<li>
 														  <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=">
 														  	<i class="icon-plus-sign"></i> 
-														  	#rbKey("layout.addsite")#
+														  	#rc.$.rbKey("layout.addsite")#
 														  </a>
 														</li>
 
@@ -196,7 +196,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.sitecopyselect">
 																<i class="icon-copy"></i> 
-																#rbKey("layout.sitecopytool")#
+																#rc.$.rbKey("layout.sitecopytool")#
 															</a>
 														</li>
 
@@ -204,7 +204,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?#esapiEncode('url',application.appreloadkey)#&amp;reload=#esapiEncode('url',application.appreloadkey)#" onclick="return actionModal(this.href);">
 																<i class="icon-refresh"></i> 
-																#rbKey("layout.reloadapplication")#
+																#rc.$.rbKey("layout.reloadapplication")#
 															</a>
 														</li>
 														
@@ -213,7 +213,7 @@
 																<li>
 																	<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
 																		<i class="icon-bolt"></i> 
-																		#rbKey('layout.updatemuracore')#
+																		#rc.$.rbKey('layout.updatemuracore')#
 																	</a>
 																</li>
 															</cfif>
@@ -228,7 +228,7 @@
 											<li id="navHelp" class="dropdown">
 												<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 													<i class="icon-question-sign"></i> 
-													#rbKey("layout.help")#
+													#rc.$.rbKey("layout.help")#
 													<b class="caret"></b>
 												</a>
 												
@@ -238,7 +238,7 @@
 													<li>
 														<a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank">
 															<i class="icon-bookmark"></i> 
-															#rbKey("layout.developers")#
+															#rc.$.rbKey("layout.developers")#
 														</a>
 													</li>
 
@@ -246,7 +246,7 @@
 													<li>
 														<a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">
 															<i class="icon-bookmark"></i> 
-															#rbKey("layout.editordocumentation")#
+															#rc.$.rbKey("layout.editordocumentation")#
 														</a>
 													</li>
 
@@ -262,7 +262,7 @@
 													<li>
 														<a id="navHelpDocs" href="http://www.getmura.com/support/professional-support/" target="_blank">
 															<i class="icon-group"></i> 
-															#rbKey("layout.support")#
+															#rc.$.rbKey("layout.support")#
 														</a>
 													</li>
 
@@ -270,7 +270,7 @@
 													<li class="last">
 														<a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank">
 															<i class="icon-bullhorn"></i> 
-															#rbKey("layout.supportforum")#
+															#rc.$.rbKey("layout.supportforum")#
 														</a>
 													</li>
 												</ul>
@@ -290,14 +290,14 @@
 													<li>
 														<a href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit">
 															<i class="icon-pencil"></i> 
-															#rbKey("layout.editprofile")#
+															#rc.$.rbKey("layout.editprofile")#
 														</a>
 													</li>
 													<!--- Logout --->
 													<li id="navLogout">
 														<a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout">
 															<i class="icon-signout"></i> 
-															#rbKey("layout.logout")#
+															#rc.$.rbKey("layout.logout")#
 														</a>
 													</li>
 												</ul>
@@ -337,7 +337,7 @@
 											<ul id="select-site-ul" class="dropdown-menu ui-front">
 												<cfif theSiteList.recordCount gt 20> 
 													<div class="ui-widget">
-														<input name="site-search" class="form-control input-sm" type="text" placeholder="#rbKey("dashboard.search")#...">
+														<input name="site-search" class="form-control input-sm" type="text" placeholder="#rc.$.rbKey("dashboard.search")#...">
 													</div>
 												</cfif>
 												<cfloop query="theSiteList" startrow="1" endrow="100">
@@ -359,7 +359,7 @@
 										<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
 											<a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#session.siteid#&amp;span=#session.dashboardSpan#"> 
 												<i class="icon-dashboard"></i>
-												<span>#rbKey("layout.dashboard")#</span>
+												<span>#rc.$.rbKey("layout.dashboard")#</span>
 											</a>
 										</li>
 									</cfif>
@@ -369,7 +369,7 @@
 									<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleID) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif>>
 										<a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
 											<i class="icon-list-alt"></i> 
-											<span>#rbKey("layout.sitemanager")#</span>
+											<span>#rc.$.rbKey("layout.sitemanager")#</span>
 										</a>	    				
 									</li>
 								<!--- /Site Manager --->
@@ -388,7 +388,7 @@
 
 											<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 												<i class="icon-group"></i> 
-												<span>#rbKey("layout.users")#</span>
+												<span>#rc.$.rbKey("layout.users")#</span>
 												<b class="caret"></b>
 											</a>
 											
@@ -403,7 +403,7 @@
 														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#session.siteid#">
 																<i class="icon-group"></i> 
-																#rbKey("user.viewgroups")#
+																#rc.$.rbKey("user.viewgroups")#
 															</a>
 														</li>
 
@@ -411,7 +411,7 @@
 														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.listusers' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.listUsers&amp;siteid=#session.siteid#">
 																<i class="icon-group"></i> 
-																#rbKey("user.viewusers")#
+																#rc.$.rbKey("user.viewusers")#
 															</a>
 														</li>
 
@@ -421,7 +421,7 @@
 														<li<cfif request.action eq "core:cusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
 															<a href="./?muraAction=cUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
-																#rbKey('user.addgroup')#
+																#rc.$.rbKey('user.addgroup')#
 															</a>
 														</li>
 
@@ -429,7 +429,7 @@
 														<li<cfif request.action eq "core:cusers.edituser" and not len(rc.userID)> class="active"</cfif>>
 															<a href="./?muraAction=cUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
-														 		#rbKey('user.adduser')#
+														 		#rc.$.rbKey('user.adduser')#
 														 	</a>
 														</li>
 												</cfif>
@@ -444,7 +444,7 @@
 
 											<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 												<i class="icon-wrench"></i> 
-												<span>#rbKey("layout.sitesettings")#</span>
+												<span>#rc.$.rbKey("layout.sitesettings")#</span>
 												<b class="caret"></b>
 											</a>
 										
@@ -454,7 +454,7 @@
 												<li>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid#">
 														<i class="icon-pencil"></i>
-														#rbKey("layout.editcurrentsite")#
+														#rc.$.rbKey("layout.editcurrentsite")#
 													</a>
 												</li>
 												<!--- Edit Current Site --->
@@ -463,7 +463,7 @@
 												<li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
 														<i class="icon-group"></i> 
-														#rbKey("layout.permissions")#
+														#rc.$.rbKey("layout.permissions")#
 													</a>
 												</li>
 												<!--- /Permissions --->
@@ -472,7 +472,7 @@
 												<li <cfif rc.originalcircuit eq 'cChain'>class='active'</cfif>>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#session.siteid#">
 														<i class="icon-ok"></i> 
-														#rbKey("layout.approvalchains")#
+														#rc.$.rbKey("layout.approvalchains")#
 													</a>
 												</li>
 												<!--- /Approval Chains --->
@@ -482,7 +482,7 @@
 												<li class="dropdown-submenu">
 													<a href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
 														<i class="icon-wrench"></i> 
-														#rbKey('layout.classextensionmanager')#
+														#rc.$.rbKey('layout.classextensionmanager')#
 													</a>
 													<ul class="dropdown-menu">
 														<!--- This is here solely for autoupdates--->
@@ -498,21 +498,21 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',session.siteid)#">
 																<i class="icon-plus-sign"></i> 
-																#rbKey("layout.addclassextension")#
+																#rc.$.rbKey("layout.addclassextension")#
 															</a>
 														</li>
 														<!--- Import Class Extension --->
 														<li>
 															<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 																<i class="icon-signin"></i> 
-																#rbKey('layout.importclassextensions')#
+																#rc.$.rbKey('layout.importclassextensions')#
 															</a>
 														</li>
 														<!--- Export Class Extension --->
 														<li>
 															<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
 																<i class="icon-signout"></i> 
-																#rbKey('layout.exportclassextensions')#
+																#rc.$.rbKey('layout.exportclassextensions')#
 															</a>
 														</li>
 
@@ -524,9 +524,9 @@
 																<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rsExts.subtypeID#&amp;siteid=#esapiEncode('url',session.siteid)#">
 																	<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i>				 								
 																	<cfif rsExts.type eq 1>
-																		#rbKey('user.group')#
+																		#rc.$.rbKey('user.group')#
 																	<cfelseif rsExts.type eq 2>
-																		#rbKey('user.user')#
+																		#rc.$.rbKey('user.user')#
 																	<cfelse>
 																		#esapiEncode('html',rsExts.type)#
 																	</cfif>
@@ -541,7 +541,7 @@
 												<li>
 													<a href="?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
 														<i class="icon-gift"></i> 
-														#rbKey('layout.createsitebundle')#
+														#rc.$.rbKey('layout.createsitebundle')#
 													</a>
 												</li>
 												<!--- /Create Site Bundle --->
@@ -550,7 +550,7 @@
 												<li>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid###tabBundles">
 														<i class="icon-download-alt"></i> 
-														#rbKey('layout.deploysitebundle')#
+														#rc.$.rbKey('layout.deploysitebundle')#
 													</a>
 												</li>
 												<!--- /Trash Bin --->
@@ -559,7 +559,7 @@
 												<li>
 													<a href="./?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
 														<i class="icon-trash"></i> 
-														#rbKey('layout.trashbin')#
+														#rc.$.rbKey('layout.trashbin')#
 													</a>
 												</li>
 												<!--- /Trash Bin --->
@@ -570,7 +570,7 @@
 														<li>
 															<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
 																<i class="icon-bolt"></i> 
-																#rbKey('layout.updatesite')#
+																#rc.$.rbKey('layout.updatesite')#
 															</a>
 														</li>
 													</cfif>
@@ -582,7 +582,7 @@
 													<li>
 														<a href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;">
 															<i class="icon-cog"></i> 
-															#rbKey('layout.exportstatichtml')#
+															#rc.$.rbKey('layout.exportstatichtml')#
 														</a>
 													</li>
 												</cfif>
