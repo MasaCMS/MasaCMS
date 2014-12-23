@@ -50,8 +50,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			var $defaultmsg, $thecode, $clipboardContainer, $doc, $focusInput, $infoBox, onKeydown, onKeyup, value;
 
-			$defaultmsg = '#rbKey('sitemanager.extension.copymessage.default')#';
-			$copiedmsg = '#rbKey('sitemanager.extension.copymessage.copied')#';
+			$defaultmsg = "#rbKey('sitemanager.extension.copymessage.default')#";
+			$copiedmsg = "#rbKey('sitemanager.extension.copymessage.copied')#";
 			$focusInput = $('<input class="absolute-hidden" type="text"/>').appendTo(document.body).focus().remove();
 			$doc = $(document);
 			$thecode = $('##thecode');
