@@ -510,7 +510,7 @@
 														</li>
 														<!--- Export Class Extension --->
 														<li>
-															<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
 																<i class="icon-signout"></i> 
 																#rc.$.rbKey('layout.exportclassextensions')#
 															</a>
@@ -539,7 +539,7 @@
 
 												<!--- Create Site Bundle --->
 												<li>
-													<a href="?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
 														<i class="icon-gift"></i> 
 														#rc.$.rbKey('layout.createsitebundle')#
 													</a>
@@ -557,7 +557,7 @@
 
 												<!--- Trash Bin --->
 												<li>
-													<a href="./?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
 														<i class="icon-trash"></i> 
 														#rc.$.rbKey('layout.trashbin')#
 													</a>
@@ -580,7 +580,7 @@
 												<!--- Export Static HTML --->
 												<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 													<li>
-														<a href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;">
+														<a href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;">
 															<i class="icon-cog"></i> 
 															#rc.$.rbKey('layout.exportstatichtml')#
 														</a>
