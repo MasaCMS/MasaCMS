@@ -106,11 +106,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput query="rslist">
 				<tr>
 					<td class="selected-icon">
-						<i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#" style="font-size:14px;"></i>
+						<a href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+							<i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#" style="font-size:14px;"></i>
+						</a>
 					</td>
 					<td class="title">
 						<a title="#rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
-							<!--- <i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#"></i>  --->
 							#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#
 						</a>
 					</td>
@@ -118,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#esapiEncode('html', rslist.description)#
 					</td>
 					<td>
-						#yesNoFormat(rslist.isactive)#
+						#YesNoFormat(rslist.isactive)#
 					</td>
 					<td class="actions">
 						<ul>
