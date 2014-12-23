@@ -47,30 +47,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
-	<h1>#rbKey('sitemanager.extension.classextensionmanager')#</h1>
+	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="./?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-plus-sign"></i> 
-			#rbKey('sitemanager.extension.addclassextension')#
+			#rc.$.rbKey('sitemanager.extension.addclassextension')#
 		</a>
 		<div class="btn-group">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 				<i class="icon-cogs"></i> 
-				#rbKey('sitemanager.extension.actions')#
+				#rc.$.rbKey('sitemanager.extension.actions')#
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
 				<li>
 					<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
 						<i class="icon-signout"></i> 
-						#rbKey('sitemanager.extension.export')#
+						#rc.$.rbKey('sitemanager.extension.export')#
 					</a>
 				</li>
 				<li>
 					<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 						<i class="icon-signin"></i> 
-						#rbKey('sitemanager.extension.import')#
+						#rc.$.rbKey('sitemanager.extension.import')#
 					</a>
 				</li>
 			</ul>
@@ -83,16 +83,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<thead>
 			<tr>
 				<th>
-					#rbKey('sitemanager.extension.icon')#
+					#rc.$.rbKey('sitemanager.extension.icon')#
 				</th>
 				<th class="title">
-					#rbKey('sitemanager.extension.classextension')#
+					#rc.$.rbKey('sitemanager.extension.classextension')#
 				</th>	
 				<th class="var-width">
-					#rbKey('sitemanager.extension.description')#
+					#rc.$.rbKey('sitemanager.extension.description')#
 				</th>
 				<th>
-					#rbKey('sitemanager.extension.active')#
+					#rc.$.rbKey('sitemanager.extension.active')#
 				</th>
 				<th class="actions">
 					&nbsp;
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</a>
 					</td>
 					<td class="title">
-						<a title="#rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 							#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#
 						</a>
 					</td>
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<td class="actions">
 						<ul>
 							<li class="edit">
-								<a title="#rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 									<i class="icon-pencil"></i>
 								</a>
 							</li>
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<tr>
 				<td class="noResults" colspan="3">
 					<cfoutput>
-						#rbKey('sitemanager.extension.nosubtypes')#
+						#rc.$.rbKey('sitemanager.extension.nosubtypes')#
 					</cfoutput>
 				</td>
 			</tr>
