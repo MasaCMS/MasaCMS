@@ -58,11 +58,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}).get();
 
 				if ( n.length === 0 ) {
-					alert("#rbKey('sitemanager.extension.selectatleastone')#");
+					jQuery('##alertDialogMessage').html("#rbKey('sitemanager.extension.selectatleastone')#");
+					jQuery('##alertDialog').dialog({
+						resizable: false,
+						modal: true,
+						buttons: {
+							"#rbKey('sitemanager.extension.ok')#": function() {
+								jQuery(this).dialog('close');
+							}
+						}
+					});
+					return false;
 				} else {
 					submitForm(document.forms.form1, 'add');
 				}
 			});
+
+
 		});
 	</script>
 
