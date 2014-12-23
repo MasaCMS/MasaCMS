@@ -50,6 +50,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			$("##checkall").click(function(){
 				$('input:checkbox').not(this).prop('checked', this.checked);
 			});
+
+			// make sure at least one class extension has been selected
+			$('##btnSubmit').on('click', function(e){
+				var n = $('.checkbox:checkbox:checked').map(function(){
+					return $(this).val();
+				}).get();
+
+				if ( n.length === 0 ) {
+					alert("#rbKey('sitemanager.extension.selectatleastone')#");
+				} else {
+					submitForm(document.forms.form1, 'add');
+				}
+			});
 		});
 	</script>
 
@@ -63,7 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubit="return validateForm(this);">
-
 		<div class="fieldset">
 			<div class="control-group">
 				<div class="controls">
@@ -87,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		
 		<div class="form-actions">
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('sitemanager.extension.export')#" />
+			<input id="btnSubmit" type="button" class="btn" value="#rbKey('sitemanager.extension.export')#" />
 		</div>
 
 		<input type="hidden" name="action" value="export">

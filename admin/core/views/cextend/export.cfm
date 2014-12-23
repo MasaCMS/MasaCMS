@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div id="clipboard-container" style="position:fixed;left:0px;top:0px;width:0px;height:0px;z-index:100;display:none;opacity:0;"><textarea id="clipboard" style="width:1px;height:1px;padding:0px;margin:0px;"></textarea></div>
 
-	<h1>#rbKey('sitemanager.extension.exportattributeset')#</h1>
+	<h1>#rbKey('sitemanager.extension.exportclassextensions')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
