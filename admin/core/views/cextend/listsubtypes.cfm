@@ -58,8 +58,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span class="caret"></span>
 	</a>
 	<ul class="dropdown-menu">
-		<li><a href="./?muraAction=cExtend.exportSubType&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signout"></i> Export</a></li>
-		<li><a href="./?muraAction=cExtend.importSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-signin"></i> Import</a></li>
+		<li>
+			<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+				<i class="icon-signout"></i> 
+				#rbKey('sitemanager.extension.export')#
+			</a>
+		</li>
+		<li>
+			<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+				<i class="icon-signin"></i> 
+				#rbKey('sitemanager.extension.import')#
+			</a>
+		</li>
 	</ul>
 	</div>
 </div>
