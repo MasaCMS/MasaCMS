@@ -523,8 +523,10 @@
 															<li>
 																<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rsExts.subtypeID#&amp;siteid=#esapiEncode('url',session.siteid)#">
 																	<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i>				 								
-																	<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>
-																		User
+																	<cfif rsExts.type eq 1>
+																		#rbKey('user.group')#
+																	<cfelseif rsExts.type eq 2>
+																		#rbKey('user.user')#
 																	<cfelse>
 																		#esapiEncode('html',rsExts.type)#
 																	</cfif>
@@ -539,7 +541,7 @@
 												<li>
 													<a href="?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
 														<i class="icon-gift"></i> 
-														Create Site Bundle
+														#rbKey('layout.createsitebundle')#
 													</a>
 												</li>
 												<!--- /Create Site Bundle --->
@@ -548,7 +550,7 @@
 												<li>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid###tabBundles">
 														<i class="icon-download-alt"></i> 
-														Deploy Site Bundle
+														#rbKey('layout.deploysitebundle')#
 													</a>
 												</li>
 												<!--- /Trash Bin --->
@@ -557,7 +559,7 @@
 												<li>
 													<a href="./?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
 														<i class="icon-trash"></i> 
-														Trash Bin
+														#rbKey('layout.trashbin')#
 													</a>
 												</li>
 												<!--- /Trash Bin --->
@@ -568,7 +570,7 @@
 														<li>
 															<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
 																<i class="icon-bolt"></i> 
-																Update Site
+																#rbKey('layout.updatesite')#
 															</a>
 														</li>
 													</cfif>
@@ -580,7 +582,7 @@
 													<li>
 														<a href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&amp;siteID=#rc.siteBean.getSiteID()#')});return false;">
 															<i class="icon-cog"></i> 
-															Export Static HTML (BETA)
+															#rbKey('layout.exportstatichtml')#
 														</a>
 													</li>
 												</cfif>
