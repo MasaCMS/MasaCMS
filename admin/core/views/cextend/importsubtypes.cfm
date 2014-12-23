@@ -46,12 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 
-	<h1>#rbKey('sitemanager.extension.importclassextensions')#</h1>
+	<h1>#rc.$.rbKey('sitemanager.extension.importclassextensions')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-circle-arrow-left"></i> 
-			#rbKey('sitemanager.extension.backtoclassextensions')#
+			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
 
@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">
-					#rbKey('sitemanager.extension.uploadfile')#
+					#rc.$.rbKey('sitemanager.extension.uploadfile')#
 				</label>
 				<div class="controls">
 					<input type="file" name="newFile">
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<div class="form-actions">
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="#rbKey('sitemanager.extension.import')#" />
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="#rc.$.rbKey('sitemanager.extension.import')#" />
 		</div>
 
 		<input type="hidden" name="action" value="import">
