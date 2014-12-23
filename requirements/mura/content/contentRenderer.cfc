@@ -1113,32 +1113,29 @@ Display Objects
 </cffunction>
 
 <cffunction name="renderIcon" returntype="string" output="false">
-<cfargument name="data">
+	<cfargument name="data">
 
-<cfset var iconclass=application.configBean.getClassExtensionManager().getCustomIconClass(argumentCollection=arguments.data)>
+	<cfset var iconclass=application.configBean.getClassExtensionManager().getIconClass(argumentCollection=arguments.data)>
 
-<cfif len(iconclass)>
-	<cfreturn iconclass>
-</cfif>
-
-<cfif arguments.data.type eq 'File'>
-	<cfif structKeyExists(arguments.data,"fileExt")>
-		<cfreturn lcase(arguments.data.fileExt)>
-	<cfelse>
-		<cfreturn "page">
+	<cfif len(iconclass)>
+		<cfreturn iconclass>
 	</cfif>
-	
-<cfelse>
-	<cfreturn lcase(arguments.data.type)>
-</cfif>
 
+	<cfif arguments.data.type eq 'File'>
+		<cfif structKeyExists(arguments.data,"fileExt")>
+			<cfreturn lcase(arguments.data.fileExt)>
+		<cfelse>
+			<cfreturn "page">
+		</cfif>
+	<cfelse>
+		<cfreturn lcase(arguments.data.type)>
+	</cfif>
 </cffunction>
 
 <!--- For backward compatibility --->
 <cffunction name="dspPortalNav" output="false" returntype="string">
 	<cfreturn dspFolderNav(argumentCollection=arguments)>
 </cffunction>
-<!--- --->
 
 <cffunction name="dspFolderNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
