@@ -74,7 +74,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			});
 
-
 		});
 	</script>
 

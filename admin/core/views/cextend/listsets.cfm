@@ -55,31 +55,77 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset relatedContentsets = subType.getRelatedContentSets(includeInheritedSets=false)>
 </cfif>
 
-<h1>Class Extension Overview</h1>
 <cfoutput>
+	<h1>#rbKey('sitemanager.extension.classextensionoverview')#</h1>
+
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-		<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i> Edit Class Extension</a>
-		<cfif showRelatedContentSets>
-		
-		<div class="btn-group">
-	      <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-	         <i class="icon-plus-sign"></i> Add <span class="caret"></span>
-	       </a>
-	       <ul class="dropdown-menu">
-	          <li><a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">Add Attribute Set</a></li>
-	          <li><a href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&relatedContentSetID=">Add Related Content Set</a></li>
-	       </ul>
-	   </div>
-		<cfelse>
-			<a class="btn" href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID="><i class="icon-plus-sign"></i> Add Attribute Set</a>
+		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<i class="icon-circle-arrow-left"></i> 
+			#rbKey('sitemanager.extension.backtoclassextensions')#
+		</a>
+		<a class="btn" href="./?muraAction=cExtend.editSubType&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<i class="icon-pencil"></i> 
+			#rbKey('sitemanager.extension.editclassextension')#
+		</a>
+
+		<!--- Export --->
+		<cfif rc.$.currentUser().isSuperUser()>
+			<a class="btn" href="./?muraAction=cExtend.export&amp;exportClassExtensionID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+				<i class="icon-signout"></i> 
+				#rbKey('sitemanager.extension.exportclassextension')#
+			</a>
 		</cfif>
-		</div>
+
+		<cfif showRelatedContentSets>
+			<div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+					<i class="icon-plus-sign"></i> 
+					#rbKey('sitemanager.extension.add')# 
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">
+							#rbKey('sitemanager.extension.addattributeset')#
+						</a>
+					</li>
+					<li>
+						<a href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&relatedContentSetID=">
+							#rbKey('sitemanager.extension.addrelatedcontentset')#
+						</a>
+					</li>
+				</ul>
+			</div>
+		<cfelse>
+			<a class="btn" href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">
+				<i class="icon-plus-sign"></i> 
+				#rbKey('sitemanager.extension.addattributeset')#
+			</a>
+		</cfif>
 	</div>
-	<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
+
+	<h2>
+		<i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> 
+		#application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#
+	</h2>
+
+	<h3>
+		#rbKey('sitemanager.extension.extendedattributesets')# 
+		<cfif arrayLen(extendSets) gt 1>
+			(
+				<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;">
+					<i class="icon-check"></i> 
+					#rbKey('sitemanager.extension.saveorder')#
+				</a>
+				<a href="javascript:;" id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;">
+					<i class="icon-move"></i> 
+					#rbKey('sitemanager.extension.reorder')#
+				</a>
+			)
+		</cfif>
+	</h3>
 </cfoutput>
 
-<h3>Extended Attribute Sets <cfif arrayLen(extendSets) gt 1>(<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('attr-set');return false;"><i class="icon-check"></i>Save Order</a><a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('attr-set');return false;"><i class="icon-move"></i>Reorder</a>)</cfif></h3>
 <cfif arrayLen(extendSets)>
 
 	<ul id="attr-set" class="attr-list">
@@ -98,13 +144,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</ul>
  <cfelse>
-	<p class="alert">There are currently no available attribute sets.</p>
+	<p class="alert">#rbKey('sitemanager.extension.noattributesets')#</p>
 </cfif>
 
 <cfif showRelatedContentSets>
 	<cfif arrayLen(relatedContentsets)>
 		<hr />
-		<h3>Related Content Sets <cfif arrayLen(relatedContentsets) gt 1>(<a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;"><i class="icon-check"></i> Save Order</a><a href="javascript:;"  id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;"><i class="icon-move"></i> Reorder</a>)</cfif></h3>
+		<h3>#rbKey('sitemanager.extension.relatedcontentsets')# <cfif arrayLen(relatedContentsets) gt 1>(<a href="javascript:;" style="display:none;" id="saveRelatedSort" onclick="extendManager.saveRelatedSetSort('related-set');return false;"><i class="icon-check"></i> #rbKey('sitemanager.extension.saveorder')#</a><a href="javascript:;"  id="showRelatedSort" onclick="extendManager.showRelatedSaveSort('related-set');return false;"><i class="icon-move"></i> #rbKey('sitemanager.extension.reorder')#</a>)</cfif></h3>
 		
 		<ul id="related-set" class="attr-list">
 			<cfloop from="1" to="#arrayLen(relatedContentsets)#" index="s">	
@@ -122,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</ul>
 	<cfelse>
-		<p class="alert">There are currently no Related Content sets.</p>
+		<p class="alert">#rbKey('sitemanager.extension.norelatedcontentsets')#</p>
 	</cfif>
 </cfif>
 
