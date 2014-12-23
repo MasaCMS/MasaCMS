@@ -40,7 +40,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm",
+			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems",
 			entities={
 				site={
 					fields="domain,siteid",
@@ -62,8 +62,13 @@ component extends="mura.cfobject" {
 		};
 
 		variables.serializer = new mura.jsonSerializer()
-	      .asString('expires')
-	      .asString('token');
+	      .asString('mura_token_expires')
+	      .asString('mura_token')
+	      .asString('id')
+	      .asString('url')
+	      .asDate('start')
+	      .asDate('end')
+	      .asString('title');
 
 		return this;
 	}
@@ -143,7 +148,7 @@ component extends="mura.cfobject" {
 			arrayDeleteAt(pathInfo,1);
 
 			//writeDump(var=pathInfo,abort=1);
-			//responseObject.setcontenttype('application/json; charset=utf-8');
+			responseObject.setcontenttype('application/json; charset=utf-8');
 
 			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
 				throw(type='authorization');
@@ -167,8 +172,9 @@ component extends="mura.cfobject" {
 					result=evaluate('#params.method#(argumentCollection=params)');
 					
 					if(!isJson(result)){
-						result=serializeJSON(setLowerCaseKeys(result));
+						result=getSerializer().serialize({'data'=result});
 					}
+
 					getpagecontext().getresponse().setStatus(200);
 					return result;
 				}
@@ -354,38 +360,38 @@ component extends="mura.cfobject" {
 				}
 			} catch (Any e){}
 
-			return serializeJSON(result);
+			return getSerializer().serialize({'data'=result});
 		} 
 
 		catch (authorization e){
 			responseObject.setStatus(401);
-			return serializeJSON({'error'='Insufficient Account Permissions'});
+			return getSerializer().serialize({'error'={'message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidParameters e){
 			responseObject.setStatus(400);
-			return serializeJSON({'error'='Insufficient parameters'});
+			return getSerializer().serialize({'error'={'message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
 			responseObject.setStatus(400);
-			return serializeJSON({error="Invalid method call"});
+			return getSerializer().serialize({'error'={'message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
 			responseObject.setStatus(400);
-			return serializeJSON({error="Bad Request"});
+			return getSerializer().serialize({'error'={'message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
 			responseObject.setStatus(400);
-			return serializeJSON({error="Invalid CSRF tokens"});
+			return getSerializer().serialize({'error'={'message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.getresponse().setStatus(500);
-			return serializeJSON({error="Unhandeld Exception",stacktrace=e});
+			return getSerializer().serialize({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
 		}
 
 	}
@@ -592,7 +598,7 @@ component extends="mura.cfobject" {
 		var result=httpService.send().getPrefix();
 
 		try{
-			var response=deserializeJSON(result.filecontent);
+			var response=degetSerializer().serialize(result.filecontent);
 		} catch(any e){
 			var response={status='invalid'};
 		}
@@ -604,17 +610,52 @@ component extends="mura.cfobject" {
 		var result=getBean('userUtility').login(argumentCollection=arguments);
 
 		if(result){
-			return {status="success"};
+			return {'status'='success'};
 		} else {
-			return {status="failed"};
+			return {'status'='failed'};
 		}
 	}
 
 	function logout(){
 		var $=getBean('loginManager').logout();
-		return {status="success"};
+		return {'status'='success'};
 	}
 
+	function findCalendarItems(calendarid, siteid, start, end, categoryid, tag,format='') {
+
+		// validate required args
+		var reqArgs = ['calendarid','siteid'];
+		for ( arg in reqArgs ) {
+			if ( !StructKeyExists(arguments, arg) || !Len(arguments[arg]) ) {
+				return 'Please provide a <strong>#arg#</strong>.';
+			}
+		}
+
+		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
+		var calendarUtility = $.getCalendarUtility();
+		var items=$.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
+		
+		if(arguments.format=='fullcalendar'){
+		 	var qoq = new Query();
+		    qoq.setDBType('query');
+		    qoq.setAttributes(rs=items);
+		    qoq.setSQL('
+		      SELECT 
+		        url as [url]
+		        , contentid as [id]
+		        , menutitle as [title]
+		        , displaystart as [start]
+		        , displaystop as [end]
+		      FROM rs
+		    ');
+
+		    local.rsQoQ = qoq.execute().getResult();
+
+		    return local.rsQoQ;
+		} else {
+			return items;
+		}
+	}
 	
 	// MURA ORM ADAPTER
 
@@ -673,7 +714,7 @@ component extends="mura.cfobject" {
 		structAppend(returnStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 		*/
 		
-		return setLowerCaseKeys(returnStruct);
+		return returnStruct;
 	}
 
 	function getFilteredValues(entity,$,expand=true){
@@ -723,6 +764,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'errors');
 			structDelete(vals,'isNew');
 			structDelete(vals,'instanceid');
+			structDelete(vals,'primaryKey');
 		}
 
 		return vals;
@@ -781,7 +823,7 @@ component extends="mura.cfobject" {
 		structAppend(returnStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 		*/
 
-		return setLowerCaseKeys(returnStruct);
+		return returnStruct;
 	}
 
 	function findAll(siteid,entityName){
@@ -838,7 +880,7 @@ component extends="mura.cfobject" {
 			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 			*/
 
-			arrayAppend(returnArray, setLowerCaseKeys(itemStruct) );
+			arrayAppend(returnArray, itemStruct);
 		}
 
 		return {'items'=returnArray};
@@ -909,7 +951,7 @@ component extends="mura.cfobject" {
 			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 			*/
 
-			arrayAppend(returnArray, setLowerCaseKeys(itemStruct) );
+			arrayAppend(returnArray, itemStruct );
 		}
 
 		return formatArray(returnArray);
@@ -991,7 +1033,7 @@ component extends="mura.cfobject" {
 			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 			*/
 
-			arrayAppend(returnArray, setLowerCaseKeys(itemStruct) );
+			arrayAppend(returnArray, itemStruct );
 		}
 
 		return formatArray(returnArray);
@@ -1068,7 +1110,7 @@ component extends="mura.cfobject" {
 			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
 			*/
 			
-			arrayAppend(returnArray, setLowerCaseKeys(itemStruct) );
+			arrayAppend(returnArray, itemStruct );
 		}
 
 		return formatArray(returnArray);
@@ -1171,21 +1213,6 @@ component extends="mura.cfobject" {
 		return links;
 	}
 
-	function setLowerCaseKeys(data){
-		var returnStruct={};
-
-		for(var i in arguments.data){
-
-			if(isStruct(arguments.data[i])){
-				returnStruct[lcase(i)]=setLowerCaseKeys(arguments.data[i]);
-			} else {
-				returnStruct[lcase(i)]=arguments.data[i];
-			}
-		}
-
-		return returnStruct;
-	}
-
 	function applyRemoteFormat(str){
 		arguments.str=replaceNoCase(str,"/index.cfm/","index.html##/",'all');
 		arguments.str=replaceNoCase(str,'href="/','href="##/','all');
@@ -1224,7 +1251,9 @@ component extends="mura.cfobject" {
 	}
 
 	function generateCSRFTokens(siteid,context){
-		return variables.serializer.serialize(setLowerCaseKeys(getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context)));
+		var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
+
+		return {mura_token=tokens.token,mura_token_expires=tokens.expires};
 	}
 
 }
