@@ -44,35 +44,55 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<h1>Export Attribute Set(s)</h1>
 <cfoutput>
+	<script>
+		jQuery(function ($) {
+			$("##checkall").click(function(){
+				$('input:checkbox').not(this).prop('checked', this.checked);
+			});
+		});
+	</script>
 
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-</div>
+	<h1>#rbKey('sitemanager.extension.exportattributeset')#</h1>
 
-<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
-
-<div class="fieldset">
-
-<div class="control-group">
-	<div class="controls">
-		<cfloop query="rc.subtypes">
-		<label class="checkbox"><input name="exportClassExtensionID" type="checkbox" class="checkbox" value="#subtypeid#">#type# / #subtype#</label>
-		</cfloop>
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<i class="icon-circle-arrow-left"></i> 
+			#rbKey('sitemanager.extension.backtoclassextensions')#
+		</a>
 	</div>
-</div>
 
-</div>
-<div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Export" />
-</div>
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubit="return validateForm(this);">
 
-<input type="hidden" name="action" value="export">
-<input name="muraAction" value="cExtend.export" type="hidden">
-<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
-#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
-</form>
+		<div class="fieldset">
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox">
+						<input type="checkbox" name="checkall" id="checkall" /> 
+						<strong>#rbKey('sitemanager.extension.selectall')#</strong>
+					</label>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<cfloop query="rc.subtypes">
+						<label class="checkbox">
+							<input name="exportClassExtensionID" type="checkbox" class="checkbox" value="#subtypeid#">
+							#esapiEncode('html', type)# / #esapiEncode('html', subtype)#
+						</label>
+					</cfloop>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-actions">
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('sitemanager.extension.export')#" />
+		</div>
+
+		<input type="hidden" name="action" value="export">
+		<input name="muraAction" value="cExtend.export" type="hidden">
+		<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
+		#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
+	</form>
 </cfoutput>
-

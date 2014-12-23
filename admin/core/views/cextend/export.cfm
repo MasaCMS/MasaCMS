@@ -44,22 +44,82 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<h1>Export Attribute Set(s)</h1>
 <cfoutput>
+	<script>
+		jQuery(document).ready(function($){
 
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-</div>
+			var $defaultmsg, $thecode, $clipboardContainer, $doc, $focusInput, $infoBox, onKeydown, onKeyup, value;
 
-<form class="fieldset-wrap" >
-<div class="fieldset">
-	<div class="control-group">
-		<div class="controls">
-		<textarea rows="12" style="height: 250px" class="span12">#htmlEditFormat(rc.exportXML)#</textarea>	
-		</div>
+			$defaultmsg = '#rbKey('sitemanager.extension.copymessage.default')#';
+			$copiedmsg = '#rbKey('sitemanager.extension.copymessage.copied')#';
+			$focusInput = $('<input class="absolute-hidden" type="text"/>').appendTo(document.body).focus().remove();
+			$doc = $(document);
+			$thecode = $('##thecode');
+			$infoBox = $('.info-box');
+			$clipboardContainer = $("##clipboard-container");
+			value = '';
+
+			$infoBox.html($defaultmsg);			
+
+			onKeydown = function(e) {
+			  var $target;
+			  $target = $(e.target);
+
+			  return setTimeout((function() {
+			    $clipboardContainer.empty().show();
+			    $("<textarea id='clipboard'></textarea>").val(value).appendTo($clipboardContainer).focus().select();
+			    $infoBox.html($copiedmsg);
+			    return setTimeout((function() {
+			      return true;
+			    }), 0);
+			  }), 0);
+			};
+
+			onKeyup = function(e) {
+			  if ($(e.target).is('##clipboard')) {
+			    return $('##clipboard-container').empty().hide();
+			  }
+			};
+
+			$doc.on('keydown', function(e) {
+			  if (value && (e.ctrlKey || e.metaKey) && (e.which === 67)) {
+			    return onKeydown(e);
+			  }
+			}).on('keyup', onKeyup);
+
+			$thecode.bind('mouseenter focusin', function(e){
+				return value = $(this).val();
+			});
+
+			$thecode.bind('mouseleave focusout', function(e){
+				$infoBox.html($defaultmsg);
+				return value = '';
+			});
+
+		});
+	</script>
+
+	<div id="clipboard-container" style="position:fixed;left:0px;top:0px;width:0px;height:0px;z-index:100;display:none;opacity:0;"><textarea id="clipboard" style="width:1px;height:1px;padding:0px;margin:0px;"></textarea></div>
+
+	<h1>#rbKey('sitemanager.extension.exportattributeset')#</h1>
+
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<i class="icon-circle-arrow-left"></i> 
+			#rbKey('sitemanager.extension.backtoclassextensions')#
+		</a>
 	</div>
-</div>
-</form>
 
+	<form class="fieldset-wrap">
+		<div class="fieldset">
+			<div class="control-group">
+				<div id="copymessage" class="controls">
+					<label class="info-box"></label>
+				</div>
+				<div class="controls">
+						<textarea id="thecode" class="form-control span12" rows="20" style="height:100% !important;">#esapiEncode('html', rc.exportXML)#</textarea>	
+				</div>
+			</div>
+		</div>
+	</form>
 </cfoutput>
