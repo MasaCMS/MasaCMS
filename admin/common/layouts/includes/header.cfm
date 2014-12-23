@@ -90,7 +90,7 @@
 											<li id="navVersion" class="dropdown">
 												<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 													<i class="icon-info-sign"></i> 
-													#application.rbFactory.getKeyValue(session.rb,"layout.version")#
+													#rbKey("layout.version")#
 													<b class="caret"></b>
 												</a>
 												<ul class="dropdown-menu">
@@ -162,7 +162,7 @@
 												<li id="navGlobalSettings" class="dropdown">
 													<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 														<i class="icon-cogs"></i> 
-														#application.rbFactory.getKeyValue(session.rb,"layout.settings")#
+														#rbKey("layout.settings")#
 														<b class="caret"></b>
 													</a>
 													
@@ -172,7 +172,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list">
 																<i class="icon-cogs"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#
+																#rbKey("layout.globalsettings")#
 															</a>
 														</li>
 
@@ -180,7 +180,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins">
 																<i class="icon-puzzle-piece"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#
+																#rbKey("layout.globalsettings-plugins")#
 															</a>
 														</li>
 
@@ -188,7 +188,7 @@
 														<li>
 														  <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=">
 														  	<i class="icon-plus-sign"></i> 
-														  	#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#
+														  	#rbKey("layout.addsite")#
 														  </a>
 														</li>
 
@@ -196,7 +196,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.sitecopyselect">
 																<i class="icon-copy"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#
+																#rbKey("layout.sitecopytool")#
 															</a>
 														</li>
 
@@ -204,7 +204,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?#esapiEncode('url',application.appreloadkey)#&amp;reload=#esapiEncode('url',application.appreloadkey)#" onclick="return actionModal(this.href);">
 																<i class="icon-refresh"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#
+																#rbKey("layout.reloadapplication")#
 															</a>
 														</li>
 														
@@ -213,7 +213,7 @@
 																<li>
 																	<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
 																		<i class="icon-bolt"></i> 
-																		Update Mura Core
+																		#rbKey('layout.updatemuracore')#
 																	</a>
 																</li>
 															</cfif>
@@ -228,7 +228,7 @@
 											<li id="navHelp" class="dropdown">
 												<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 													<i class="icon-question-sign"></i> 
-													#application.rbFactory.getKeyValue(session.rb,"layout.help")#
+													#rbKey("layout.help")#
 													<b class="caret"></b>
 												</a>
 												
@@ -238,7 +238,7 @@
 													<li>
 														<a id="navCSS-API" href="http://docs.getmura.com/v6/" target="_blank">
 															<i class="icon-bookmark"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.developers")#
+															#rbKey("layout.developers")#
 														</a>
 													</li>
 
@@ -246,7 +246,7 @@
 													<li>
 														<a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">
 															<i class="icon-bookmark"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#
+															#rbKey("layout.editordocumentation")#
 														</a>
 													</li>
 
@@ -262,7 +262,7 @@
 													<li>
 														<a id="navHelpDocs" href="http://www.getmura.com/support/professional-support/" target="_blank">
 															<i class="icon-group"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.support")#
+															#rbKey("layout.support")#
 														</a>
 													</li>
 
@@ -270,7 +270,7 @@
 													<li class="last">
 														<a id="navHelpForums" href="http://www.getmura.com/support/community-support/" target="_blank">
 															<i class="icon-bullhorn"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#
+															#rbKey("layout.supportforum")#
 														</a>
 													</li>
 												</ul>
@@ -290,14 +290,14 @@
 													<li>
 														<a href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit">
 															<i class="icon-pencil"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#
+															#rbKey("layout.editprofile")#
 														</a>
 													</li>
 													<!--- Logout --->
 													<li id="navLogout">
 														<a href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout">
 															<i class="icon-signout"></i> 
-															#application.rbFactory.getKeyValue(session.rb,"layout.logout")#
+															#rbKey("layout.logout")#
 														</a>
 													</li>
 												</ul>
@@ -337,7 +337,7 @@
 											<ul id="select-site-ul" class="dropdown-menu ui-front">
 												<cfif theSiteList.recordCount gt 20> 
 													<div class="ui-widget">
-														<input name="site-search" class="form-control input-sm" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,"dashboard.search")#...">
+														<input name="site-search" class="form-control input-sm" type="text" placeholder="#rbKey("dashboard.search")#...">
 													</div>
 												</cfif>
 												<cfloop query="theSiteList" startrow="1" endrow="100">
@@ -359,7 +359,7 @@
 										<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
 											<a href="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main&amp;siteid=#session.siteid#&amp;span=#session.dashboardSpan#"> 
 												<i class="icon-dashboard"></i>
-												<span>#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</span>
+												<span>#rbKey("layout.dashboard")#</span>
 											</a>
 										</li>
 									</cfif>
@@ -369,7 +369,7 @@
 									<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleID) and not (rc.originalfuseaction eq 'imagedetails' and isDefined('url.userID'))> class="active"</cfif>>
 										<a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
 											<i class="icon-list-alt"></i> 
-											<span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
+											<span>#rbKey("layout.sitemanager")#</span>
 										</a>	    				
 									</li>
 								<!--- /Site Manager --->
@@ -388,7 +388,7 @@
 
 											<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 												<i class="icon-group"></i> 
-												<span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
+												<span>#rbKey("layout.users")#</span>
 												<b class="caret"></b>
 											</a>
 											
@@ -403,7 +403,7 @@
 														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.list' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.list&amp;siteid=#session.siteid#">
 																<i class="icon-group"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"user.viewgroups")#
+																#rbKey("user.viewgroups")#
 															</a>
 														</li>
 
@@ -411,7 +411,7 @@
 														<li <cfif not Len(rc.userid) and IsDefined('rc.ispublic') and rc.ispublic eq 1 and ( request.action eq 'core:cusers.listusers' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000008') or (rc.originalcircuit eq 'cusers' and len(rc.userid)) )>class="active"</cfif>>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.listUsers&amp;siteid=#session.siteid#">
 																<i class="icon-group"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"user.viewusers")#
+																#rbKey("user.viewusers")#
 															</a>
 														</li>
 
@@ -421,7 +421,7 @@
 														<li<cfif request.action eq "core:cusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
 															<a href="./?muraAction=cUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
-																#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#
+																#rbKey('user.addgroup')#
 															</a>
 														</li>
 
@@ -429,7 +429,7 @@
 														<li<cfif request.action eq "core:cusers.edituser" and not len(rc.userID)> class="active"</cfif>>
 															<a href="./?muraAction=cUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
-														 		#application.rbFactory.getKeyValue(session.rb,'user.adduser')#
+														 		#rbKey('user.adduser')#
 														 	</a>
 														</li>
 												</cfif>
@@ -444,7 +444,7 @@
 
 											<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 												<i class="icon-wrench"></i> 
-												<span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
+												<span>#rbKey("layout.sitesettings")#</span>
 												<b class="caret"></b>
 											</a>
 										
@@ -454,7 +454,7 @@
 												<li>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#session.siteid#">
 														<i class="icon-pencil"></i>
-														#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
+														#rbKey("layout.editcurrentsite")#
 													</a>
 												</li>
 												<!--- Edit Current Site --->
@@ -463,7 +463,7 @@
 												<li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cPerm.module&amp;contentid=00000000000000000000000000000000000&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000000">
 														<i class="icon-group"></i> 
-														#application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
+														#rbKey("layout.permissions")#
 													</a>
 												</li>
 												<!--- /Permissions --->
@@ -472,7 +472,7 @@
 												<li <cfif rc.originalcircuit eq 'cChain'>class='active'</cfif>>
 													<a href="#application.configBean.getContext()#/admin/?muraAction=cChain.list&amp;siteid=#session.siteid#">
 														<i class="icon-ok"></i> 
-														#application.rbFactory.getKeyValue(session.rb,"layout.approvalchains")#
+														#rbKey("layout.approvalchains")#
 													</a>
 												</li>
 												<!--- /Approval Chains --->
@@ -497,7 +497,7 @@
 														<li>
 															<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',session.siteid)#">
 																<i class="icon-plus-sign"></i> 
-																#application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#
+																#rbKey("layout.addclassextension")#
 															</a>
 														</li>
 														<cfif rsExts.recordcount>
