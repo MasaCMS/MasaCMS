@@ -16,13 +16,13 @@ CKFinder.addPlugin( 'csrf', function( api ) {
 
       if(response.token){
          return {
-          mura_token:response.token,
-          mura_token_expires: response.expires
+          csrf_token:response.token,
+          csrf_token_expires: response.expires
         };
       } else {
          return {
-          mura_token: response.TOKEN,
-          mura_token_expires: response.EXPIRES
+          csrf_token: response.TOKEN,
+          csrf_token_expires: response.EXPIRES
         };
       }
 
@@ -41,7 +41,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
         extendObj(params,arguments[0]);
       } 
 
-      if(!params.mura_token){
+      if(!params.csrf_token){
         extendObj(params,getTokens());
       }
     
@@ -60,7 +60,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
         extendObj(params,arguments[2]);
       } 
 
-      if(!params.mura_token){
+      if(!params.csrf_token){
         extendObj(params,getTokens());
       }
          
@@ -78,7 +78,7 @@ CKFinder.addPlugin( 'csrf', function( api ) {
      var params={};
 
 
-      if(!params.mura_token){
+      if(!params.csrf_token){
         extendObj(params,getTokens());
       }
 

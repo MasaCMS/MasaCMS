@@ -620,8 +620,8 @@
 			bean: 'content',
 			loadby: 'contenthistid',
 			approvalstatus: '#esapiEncode('javascript',node.getApprovalStatus())#',
-			mura_token: '#csrfTokens.token#',
-			mura_token_expires: '#csrfTokens.expires#'
+			csrf_token: '#csrfTokens.token#',
+			csrf_token_expires: '#csrfTokens.expires#'
 			},
 		attributes: {},
 		preprocessed: {

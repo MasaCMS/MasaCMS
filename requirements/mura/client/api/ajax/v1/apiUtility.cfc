@@ -62,8 +62,8 @@ component extends="mura.cfobject" {
 		};
 
 		variables.serializer = new mura.jsonSerializer()
-	      .asString('mura_token_expires')
-	      .asString('mura_token')
+	      .asString('csrf_token_expires')
+	      .asString('csrf_token')
 	      .asString('id')
 	      .asString('url')
 	      .asDate('start')
@@ -716,7 +716,7 @@ component extends="mura.cfobject" {
 	
 		/*
 		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		*/
 		
 		return returnStruct;
@@ -825,7 +825,7 @@ component extends="mura.cfobject" {
 
 		/*
 		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		*/
 
 		return returnStruct;
@@ -882,7 +882,7 @@ component extends="mura.cfobject" {
 
 			/*
 			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 			*/
 
 			arrayAppend(returnArray, itemStruct);
@@ -953,7 +953,7 @@ component extends="mura.cfobject" {
 
 			/*
 			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 			*/
 
 			arrayAppend(returnArray, itemStruct );
@@ -1035,7 +1035,7 @@ component extends="mura.cfobject" {
 
 			/*
 			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 			*/
 
 			arrayAppend(returnArray, itemStruct );
@@ -1112,7 +1112,7 @@ component extends="mura.cfobject" {
 			
 			/*
 			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{mura_token=tokens.token,mura_token_expires='#tokens.expires#'});
+			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 			*/
 			
 			arrayAppend(returnArray, itemStruct );
@@ -1319,7 +1319,7 @@ component extends="mura.cfobject" {
 	function generateCSRFTokens(siteid,context){
 		var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
 
-		return {mura_token=tokens.token,mura_token_expires=tokens.expires};
+		return {csrf_token=tokens.token,csrf_token_expires=tokens.expires};
 	}
 
 }

@@ -88,8 +88,8 @@
 								muraAction:"carch.unlockfile",
 								contentid:"#attributes.bean.getContentID()#",
 								siteid:"#attributes.bean.getSiteID()#",
-								mura_token:'#csrf.token#',
-								mura_token_expires: '#csrf.expires#'
+								csrf_token:'#csrf.token#',
+								csrf_token_expires: '#csrf.expires#'
 							})
 						}
 					);	
