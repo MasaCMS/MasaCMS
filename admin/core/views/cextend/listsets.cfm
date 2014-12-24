@@ -59,18 +59,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionoverview')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-circle-arrow-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
-		<a class="btn" href="./?muraAction=cExtend.editSubType&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-pencil"></i> 
 			#rc.$.rbKey('sitemanager.extension.editclassextension')#
 		</a>
 
 		<!--- Export --->
 		<cfif rc.$.currentUser().isSuperUser()>
-			<a class="btn" href="./?muraAction=cExtend.export&amp;exportClassExtensionID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.export&amp;exportClassExtensionID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 				<i class="icon-signout"></i> 
 				#rc.$.rbKey('sitemanager.extension.exportclassextension')#
 			</a>
@@ -85,19 +85,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</a>
 				<ul class="dropdown-menu">
 					<li>
-						<a href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSet&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;extendSetID=">
 							#rc.$.rbKey('sitemanager.extension.addattributeset')#
 						</a>
 					</li>
 					<li>
-						<a href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&relatedContentSetID=">
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editRelatedContentSet&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;relatedContentSetID=">
 							#rc.$.rbKey('sitemanager.extension.addrelatedcontentset')#
 						</a>
 					</li>
 				</ul>
 			</div>
 		<cfelse>
-			<a class="btn" href="./?muraAction=cExtend.editSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#&extendSetID=">
+			<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSet&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;extendSetID=">
 				<i class="icon-plus-sign"></i> 
 				#rc.$.rbKey('sitemanager.extension.addattributeset')#
 			</a>
@@ -133,8 +133,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<span id="handle#s#" class="handle" style="display:none;"><i class="icon-move"></i></span>
 					<p>#extendSetBean.getName()#</p>
 					<div class="btns">
-						<a title="Edit" href="./?muraAction=cExtend.editAttributes&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
-						<a title="Delete" href="./?muraAction=cExtend.updateSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editAttributes&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;extendSetID=#extendSetBean.getExtendSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
+						<a title="#rc.$.rbKey('sitemanager.extension.delete')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.updateSet&amp;action=delete&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;extendSetID=#extendSetBean.getExtendSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=extendSetBean.getExtendSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 					</div>
 				</li>
 			</cfloop>
@@ -168,8 +168,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<span id="handleRelated#s#" class="handleRelated" style="display:none;"><i class="icon-move"></i></span>
 						<p>#rcsBean.getName()#</p>
 						<div class="btns">
-							<a title="Edit" href="./?muraAction=cExtend.editRelatedContentSet&subTypeID=#esapiEncode('url',rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
-							<a title="Delete" href="./?muraAction=cExtend.updateRelatedContentSet&action=delete&subTypeID=#esapiEncode('url',rc.subTypeID)#&relatedContentSetID=#rcsBean.getRelatedContentSetID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
+							<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editRelatedContentSet&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;relatedContentSetID=#rcsBean.getRelatedContentSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
+							<a title="#rc.$.rbKey('sitemanager.extension.delete')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.updateRelatedContentSet&amp;action=delete&amp;subTypeID=#esapiEncode('url',rc.subTypeID)#&amp;relatedContentSetID=#rcsBean.getRelatedContentSetID()#&amp;siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=rcsBean.getRelatedContentSetID(),format='url')#" onclick="return confirmDialog('Delete  #esapiEncode("javascript","'#rcsBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 						</div>
 					</li>
 				</cfloop>

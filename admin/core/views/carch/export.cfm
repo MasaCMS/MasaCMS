@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 		function exportPartial(){
 			var message = jQuery('input[name="doChildrenOnly"]').prop('checked')
-				? "#rbKey('sitemanager.content.exportchildrenonlymessage')#"
-				: "#rbKey('sitemanager.content.exportnodeandchildrenmessage')#";
+				? "#rc.$.rbKey('sitemanager.content.exportchildrenonlymessage')#"
+				: "#rc.$.rbKey('sitemanager.content.exportnodeandchildrenmessage')#";
 
 			jQuery('##alertDialogMessage').html(message);
 			jQuery('##alertDialog').dialog({
@@ -71,28 +71,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</script>
 
 	<h1>
-		#rbKey('sitemanager.content.exportcontent')#
+		#rc.$.rbKey('sitemanager.content.exportcontent')#
 	</h1>
 
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url','00000000000000000000000000000000000')#"><i class="icon-circle-arrow-left"></i> #rbKey('sitemanager.backtositemanager')#</a>
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url','00000000000000000000000000000000000')#">
+			<i class="icon-circle-arrow-left"></i> 
+			#rc.$.rbKey('sitemanager.backtositemanager')#
+		</a>
 	</div>
+
+	#rc.$.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 
 	<form id="partialExportForm" class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
 		<div class="fieldset">
 			<div class="control-group">
+
 				<div class="controls">
-					<label for="doChildrenOnly" class="checkbox">
-						<input name="doChildrenOnly" id="doChildrenOnly" type="CHECKBOX" value="1" checked class="checkbox">
-						#rbKey('sitemanager.content.exportchildrenonly')#
+					#rc.$.rbKey('sitemanager.content.exportinstructions')#
+				</div>
+
+				<div class="controls">
+					<label class="radio-inline radio inline">
+						<input type="radio" name="doChildrenOnly" id="doChildrenOnly1" value="1" checked="checked"> 
+						#rc.$.rbKey('sitemanager.content.exportchildrenonly')#
+					</label>
+					<label class="radio-inline radio inline">
+						<input type="radio" name="doChildrenOnly" id="doChildrenOnly0" value="0"> 
+						#rc.$.rbKey('sitemanager.content.exportall')#
 					</label>
 				</div>
 			</div>
 		</div>
 
 		<div class="form-actions">
-			<!--- onclick="submitForm(document.forms.form1,'export');" --->
-			<input type="button" class="btn" onClick="return exportPartial();" value="#rbKey('sitemanager.content.exportcontent')#" />
+			<button type="button" class="btn" onclick="return history.go(-1);">
+				<i class="icon-circle-arrow-left"></i> 
+				#rc.$.rbKey('sitemanager.cancel')#
+			</button>
+
+			<button type="button" class="btn" onClick="return exportPartial();">
+				<i class="icon-signout"></i> 
+				#rc.$.rbKey('sitemanager.content.exportcontent')#
+			</button>
 		</div>
 
 		<input type="hidden" name="action" value="import">

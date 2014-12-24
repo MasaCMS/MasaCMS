@@ -93,6 +93,25 @@
 	
 </cffunction>
 
+	<cffunction name="export" output="false">
+		<cfargument name="rc" />
+		<cfscript>
+			var local = {};
+
+			local.currentBean = getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid);
+
+			if ( local.currentBean.getIsNew() ) {
+				rc.moduleid = '00000000000000000000000000000000000';
+				variables.fw.redirect(action='cArch.list', append='siteid,moduleid', path='./');
+			} else if ( !local.currentBean.getKidsIterator().getRecordCount() ) {
+				variables.fw.redirect(action='cArch.exportcontent', append='contentid,siteid', path='./');
+			}
+
+			arguments.rc.crumbdata = variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true);
+		</cfscript>
+	</cffunction>
+
+
 <cffunction name="exportcontent" output="false">
 	<cfargument name="rc">
 
