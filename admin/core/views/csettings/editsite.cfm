@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
               </div>
           </div>
             <div class="span6">
-            <label class="control-label">Site</label>
+            <label class="control-label">Site Name</label>
             <div class="controls">
                 <input name="site" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getsite())#" size="50" maxlength="50">
               </div>
@@ -134,38 +134,59 @@ to your own modified versions of Mura CMS.
             <div class="controls">
             <input name="tagline" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getTagline())#" size="50" maxlength="255">
           </div>
-          </div>
+        </div>
+
+        <!--- Domain --->
         <div class="control-group">
-            <div class="span6">
-            <label class="control-label">Domain <span>(Example: www.google.com)</span></label>
-            <div class="controls">
-                <input name="domain" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
+          <div class="span6">
+            <div>
+              <label class="control-label">Domain <span>(Example: www.google.com)</span></label>
+              <div class="controls">
+                <input name="domain" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
               </div>
-            <label class="control-label">Enforce Primary Domain</label>
-            <div class="controls">
-            
-	            <!--- How to submit the selected option to the form?
-<div class="btn-group" data-toggle="buttons-radio">
-				  <button type="button" class="btn btn-primary" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>On</button>
-				  <button type="button" class="btn btn-primary" data-toggle="button" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>Off</button>
-				</div>
---->
-            
-                <label class="radio inline">
-                <input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
-                Off</label>
-                <label class="radio inline">
-                <input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>
-                On</label>
-              </div>
+            </div>
           </div>
-            <div class="span6">
+
+          <div class="span6">
             <label class="control-label">Domain Alias List <span>(Line Delimited)</span></label>
             <div class="controls">
-                <textarea rows="6" class="span12" name="domainAlias" rows="6" class="span12" >#esapiEncode('html',rc.siteBean.getDomainAlias())#</textarea>
-              </div>
+              <textarea rows="6" class="span12" name="domainAlias" rows="6" class="span12" >#esapiEncode('html',rc.siteBean.getDomainAlias())#</textarea>
+            </div>
           </div>
+        </div>
+
+        <div class="control-group">          
+          <!--- Enforce Primary --->
+          <div class="span6">
+            <label class="control-label">Enforce Primary Domain</label>
+            <div class="controls">
+              <label class="radio inline">
+                <input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
+                Off
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>
+                On
+              </label>
+            </div>
           </div>
+
+          <!--- Use SSL (Sitewide) --->
+          <div class="span6">
+            <label class="control-label">Use SSL (Sitewide)</label>
+            <div class="controls">
+              <label class="radio inline">
+                <input type="radio" name="useSSL" value="0"<cfif rc.siteBean.getUseSSL() neq 1> CHECKED</CFIF>>
+                No
+              </label>
+              <label class="radio inline">
+                <input type="radio" name="useSSL" value="1"<cfif rc.siteBean.getUseSSL() eq 1> CHECKED</CFIF>>
+                Yes
+              </label>
+            </div>
+          </div>
+        </div>
+
         <div class="control-group">
             <div class="span6">
             <label class="control-label">Locale</label>

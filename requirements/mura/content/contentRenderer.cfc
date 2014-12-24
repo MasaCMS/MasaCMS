@@ -1560,7 +1560,7 @@ Display Objects
 	<cfset var tp=""/>
 
 	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
-		<cfif arguments.secure>
+		<cfif arguments.secure or YesNoFormat(variables.$.siteConfig('useSSL'))>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
 			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
@@ -1629,7 +1629,7 @@ Display Objects
 	<cfset var tp=""/>
 
 	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
-		<cfif arguments.secure>
+		<cfif arguments.secure or YesNoFormat(variables.$.siteConfig('useSSL'))>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
 			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
@@ -2449,10 +2449,10 @@ Display Objects
 	<cfargument name="siteID" type="string">
 	<cfset var returnstring=arguments.str/>
 	
-	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 	<cfreturn returnstring />
 </cffunction>
 
@@ -2845,13 +2845,14 @@ Display Objects
 			</cfif>
 	</cfif>
 	
-	<cfif arguments.complete>
+	<!--- <cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
 			<cfset host='https://#arguments.domain##application.configBean.getServerPort()#'>
 		<cfelse>
 			<cfset host='http://#arguments.domain##application.configBean.getServerPort()#'>
 		</cfif>
-	</cfif>
+	</cfif> --->
+	<cfset host = '#variables.$.siteConfig('scheme')#://#arguments.domain##application.configBean.getServerPort()#' />
 	
 	<!--- Using request.servletEvent for backward compatibility --->
 	<cfif request.servletEvent.valueExists("contentBean") and not listFind("Link,File",request.servletEvent.getValue('contentBean').getType())>		

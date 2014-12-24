@@ -329,7 +329,7 @@
 
 <cffunction name="getRequestProtocol" output="false">
 	<cftry>
-	<cfreturn listFirst(getPageContext().getRequest().getRequestURL(),":")>
+	<cfreturn getPageContext().getRequest().getScheme()>
 	<cfcatch>
 		<!--- Legacy --->
 		<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
