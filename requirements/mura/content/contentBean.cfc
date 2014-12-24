@@ -265,7 +265,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-    <cfargument name="content" type="any" required="true">
+   	<cfargument name="property" required="true">
+	<cfargument name="propertyValue">
+	
+	<cfif not isDefined('arguments.content')>
+		<cfif isSimpleValue(arguments.property)>
+			<cfreturn getValue(argumentCollection=arguments)>
+		</cfif>
+
+		<cfset arguments.content=arguments.property>
+	</cfif>
 	
 	<cfset var starthour = 0 />
 	<cfset var stophour = 0 />

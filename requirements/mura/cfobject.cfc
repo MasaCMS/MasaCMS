@@ -65,9 +65,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
-
 	<cfset variables["#arguments.property#"]=arguments.propertyValue />
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="set" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="propertyValue" default="" >
+	<cfreturn setValue(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -83,6 +88,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "" />
 	</cfif>
 
+</cffunction>
+
+<cffunction name="get" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="defaultValue">
+	<cfreturn getValue(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="valueExists" returntype="any" access="public" output="false">

@@ -53,8 +53,16 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	variables.formpropertylist='';
 	variables.formproperties={};
 
-	function set(data){
+	function set(property,propertyValue){
 
+		if(!isDefined('arguments.data')){
+	    	if(isSimpleValue(arguments.property)){
+	    		return getValue(argumentCollection=arguments);
+	    	}
+
+	    	arguments.data=arguments.property;
+    	}
+    	
 		if(isQuery(arguments.data)){
 			arguments.data=getBean('utility').queryRowToStruct(arguments.data);
 		}
@@ -378,7 +386,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		
 		param name="form.formid" default="";
 
-		if(len(getValue('formid')) && getValue('formid') == bean.getContentID()){
+		if(getHTTPRequestData().method == 'POST' && len(getValue('formid')) && getValue('formid') == bean.getContentID()){
 			
 			submit(arguments.$);
 				

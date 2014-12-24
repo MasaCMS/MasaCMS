@@ -172,7 +172,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-	<cfargument name="feed" type="any" required="true">
+	<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.feed')>
+	    <cfif isSimpleValue(arguments.property)>
+	      <cfreturn getValue(argumentCollection=arguments)>
+	    </cfif>
+
+	    <cfset arguments.feed=arguments.property>
+    </cfif>
+    
 	<cfset var prop=""/>
 		
 	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>

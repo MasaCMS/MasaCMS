@@ -252,7 +252,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-	<cfargument name="data" type="any" required="true">
+	<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.config')>
+	    <cfif isSimpleValue(arguments.property)>
+	      <cfreturn getValue(argumentCollection=arguments)>
+	    </cfif>
+
+	    <cfset arguments.data=arguments.property>
+    </cfif>
+
 	<cfset var prop="">
 	<cfif isQuery(arguments.data) and arguments.data.recordcount>
 		<cfloop list="#arguments.data.columnlist#" index="prop">

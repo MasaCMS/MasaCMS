@@ -172,7 +172,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-	<cfargument name="user" type="any" required="true">
+	<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.user')>
+	    <cfif isSimpleValue(arguments.property)>
+	      <cfreturn getValue(argumentCollection=arguments)>
+	    </cfif>
+
+	    <cfset arguments.user=arguments.property>
+    </cfif>
 
 	<cfset var prop="" />
 		
