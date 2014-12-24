@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-circle-arrow-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>

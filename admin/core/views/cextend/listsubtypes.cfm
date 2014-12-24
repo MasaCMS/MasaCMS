@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
 			<i class="icon-plus-sign"></i> 
 			#rc.$.rbKey('sitemanager.extension.addclassextension')#
 		</a>
@@ -62,13 +62,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</a>
 			<ul class="dropdown-menu">
 				<li>
-					<a href="./?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
 						<i class="icon-signout"></i> 
 						#rc.$.rbKey('sitemanager.extension.export')#
 					</a>
 				</li>
 				<li>
-					<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 						<i class="icon-signin"></i> 
 						#rc.$.rbKey('sitemanager.extension.import')#
 					</a>
@@ -106,12 +106,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput query="rslist">
 				<tr>
 					<td class="selected-icon">
-						<a href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 							<i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#" style="font-size:14px;"></i>
 						</a>
 					</td>
 					<td class="title">
-						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 							#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#
 						</a>
 					</td>
@@ -124,12 +124,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<td class="actions">
 						<ul>
 							<li class="edit">
-								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="./?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 									<i class="icon-pencil"></i>
 								</a>
 							</li>
 							<li class="view-sets">
-								<a href="./?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#" title="View Sets">
+								<a title="#rc.$.rbKey('sitemanager.extension.viewsets')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
 									<i class="icon-list"></i>
 								</a>
 							</li>
