@@ -143,16 +143,24 @@ component extends="mura.cfobject" {
 			var method="GET";
 			var httpRequestData=getHTTPRequestData();
 
+			if(!isDefined('session.siteid')){
+				lock
+			        scope="session"
+			        type="exlusive"
+			        timeout="1"
+			        {
+
+			       session.siteid=variables.siteid;	
+
+			    }
+			}
+			
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 
 			//writeDump(var=pathInfo,abort=1);
 			responseObject.setcontenttype('application/json; charset=utf-8');
-
-			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
-				throw(type='authorization');
-			}
 
 			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
 				params.method=pathInfo[1];
@@ -162,6 +170,10 @@ component extends="mura.cfobject" {
 
 				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
 					throw(type="invalidMethodCall");
+				}
+
+				if(!(listFindNoCase('renderform,validate',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
+					throw(type='authorization');
 				}
 
 				if(arrayLen(pathInfo) > 1){
@@ -180,12 +192,13 @@ component extends="mura.cfobject" {
 				}
 			}
 
-			
+			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
+				throw(type='authorization');
+			}
+
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
 			}
-
-			session.siteid=variables.siteid;
 
 			if(arrayLen(pathInfo) > 1){
 				params.entityName=pathInfo[2];
@@ -432,7 +445,7 @@ component extends="mura.cfobject" {
 		return {};
 	}
 	
-	function requestform(){
+	function requestForm(){
 		
 		if(!isValidRequest()){
 			throw(type="badRequest");
@@ -485,11 +498,11 @@ component extends="mura.cfobject" {
 		if(listFind('content,contentnav,feed',entityName)){
 			return true;
 		} else if (structKeyExists(config,'moduleid')) {
-			//return true;
-			return getBean('permUtility').getModulePerm(config.moduleid,session.siteid);
+			return true;
+			return getBean('permUtility').getModulePerm(config.moduleid,variables.siteid);
 		} else {
-			//return true;
-			return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid);
+			return true;
+			return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid);
 		}
 
 	}
@@ -500,17 +513,17 @@ component extends="mura.cfobject" {
 			case 'content':
 				switch(arguments.bean.getType()){
 					case 'Form':	
-						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
 							return false;
 						}
 					break;
 					case 'Component':
-						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000003',session.siteid)){
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000003',variables.siteid)){
 							return false;
 						}
 					break;
 					default:	
-						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',session.siteid)){
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',variables.siteid)){
 							return false;
 						}
 					break;
@@ -546,32 +559,32 @@ component extends="mura.cfobject" {
 				}
 			break;
 			case 'category':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',session.siteid)){
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',variables.siteid)){
 					return false;
 				}
 			break;
 			case 'feed':
-				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',session.siteid))){
+				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',variables.siteid))){
 					return false;
 				}
 			break;
 			case 'changeset':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',session.siteid)){
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',variables.siteid)){
 					return false;
 				}
 			break;
 			case 'comment':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',session.siteid)){
+				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',variables.siteid)){
 					return false;
 				}
 			break;
 			default:
 				if (isDefined('variables.config.entities.#arguments.bean.getEntityName()#.moduleid')) {
-					if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,session.siteid)){
+					if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
 						return false;
 					}
 				} else {
-					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',session.siteid)){
+					if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
 						return false;
 					}
 				}
@@ -587,7 +600,7 @@ component extends="mura.cfobject" {
 			throw(type="badRequest");
 		}
 
-		var $=getBean('$').init(session.siteid);
+		var $=getBean('$').init(variables.siteid);
 		var result='invalid';
 
 
