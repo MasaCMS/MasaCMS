@@ -33,9 +33,9 @@ component extends="mura.cfobject" {
 		}
 
 		if(configBean.getIndexfileinurls()){
-			variables.endpoint="#protocol##site.getDomain()##configBean.getContext()#/index.cfm/_api/ajax/v1/";	
+			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/ajax/v1/";	
 		} else {
-			variables.endpoint="#protocol##site.getDomain()##configBean.getContext()#/_api/ajax/v1/";	
+			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/_api/ajax/v1/";	
 		}
 
 		variables.config={
@@ -143,18 +143,8 @@ component extends="mura.cfobject" {
 			var method="GET";
 			var httpRequestData=getHTTPRequestData();
 
-			if(!isDefined('session.siteid')){
-				lock
-			        scope="session"
-			        type="exlusive"
-			        timeout="1"
-			        {
+			session.siteid=variables.siteid;	
 
-			       session.siteid=variables.siteid;	
-
-			    }
-			}
-			
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
@@ -274,7 +264,6 @@ component extends="mura.cfobject" {
 				}
 
 			}
-
 
 			if(params.entityName=='content'){
 				var primaryKey='contentid';
@@ -474,6 +463,7 @@ component extends="mura.cfobject" {
 	}
 
 	function AllowAccess(bean,$){
+
 		if(isObject(arguments.bean)){
 			var entityName=arguments.bean.getEntityName();
 		} else {
@@ -498,10 +488,12 @@ component extends="mura.cfobject" {
 		if(listFind('content,contentnav,feed',entityName)){
 			return true;
 		} else if (structKeyExists(config,'moduleid')) {
-			return true;
+			//return true;
+			//writeOutput(serializeJSON(session.mura));
+			//abort;
 			return getBean('permUtility').getModulePerm(config.moduleid,variables.siteid);
 		} else {
-			return true;
+			//return true;
 			return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid);
 		}
 
@@ -620,6 +612,7 @@ component extends="mura.cfobject" {
 	}
 
 	function login(username,password,siteid,lockdownCheck=false,lockdownExpires=''){
+		
 		var result=getBean('userUtility').login(argumentCollection=arguments);
 
 		if(result){
@@ -630,7 +623,6 @@ component extends="mura.cfobject" {
 	}
 
 	function logout(){
-		var $=getBean('loginManager').logout();
 		return {'status'='success'};
 	}
 
