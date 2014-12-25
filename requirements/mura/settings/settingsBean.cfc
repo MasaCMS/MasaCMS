@@ -126,6 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="reCAPTCHASecret" type="string" default="" />
 <cfproperty name="reCAPTCHALanguage" type="string" default="en" />
 <cfproperty name="JSONApi" type="numeric" default="0" />
+<cfproperty name="useSSL" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -228,6 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.reCAPTCHASecret=""/>
 	<cfset variables.instance.reCAPTCHALanguage="en"/>
 	<cfset variables.instance.JSONApi=0/>
+	<cfset variables.instance.useSSL=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -932,7 +934,12 @@ s
 
 <cffunction name="getScheme">
 	<!--- Temporary : will eventually be a Site Setting, but for now, pull from extranetSSL --->
-	<cfreturn getValue('extranetSSL') ? 'https' : 'http' />
+	<!--- <cfreturn getValue('extranetSSL') ? 'https' : 'http' /> --->
+	<cfreturn YesNoFormat(getValue('useSSL')) ? 'https' : 'http' />
+</cffunction>
+
+<cffunction name="getProtocol">
+	<cfreturn UCase(getScheme()) />
 </cffunction>
 
 <cffunction name="getRazunaSettings" output="false">
@@ -985,33 +992,32 @@ s
 </cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
-	<cfset var thelist="http://#getValue('domain')#">
+	<cfset var thelist="#getScheme()#://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 
-	<cfif adminSSL>
+	<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
 		<cfset thelist = listAppend(thelist,"https://#getValue('domain')#")>
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()#")>
-		<cfif adminSSL>
+		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()#")>
+		<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
 			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()#")>
 		</cfif>
 	</cfif>
 	
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset thelist = listAppend(thelist,"http://#i#")>
-			<cfif adminSSL>
+			<cfset thelist = listAppend(thelist,"#getScheme()#://#i#")>
+			<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
 				<cfset thelist = listAppend(thelist,"https://#i#")>
 			</cfif>	
 		</cfloop>
 	</cfif>
 
 	<cfreturn thelist>
-
 </cffunction>
 
 </cfcomponent>

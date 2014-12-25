@@ -322,7 +322,7 @@
 							<ul>
 								<!--- Site List --->
 									<li id="select-site" class="dropdown">
-										<a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">
+										<a id="select-site-btn" href="#rc.$.siteConfig('scheme')#://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">
 											Current Site
 										</a>
 
@@ -332,7 +332,7 @@
 											</div>
 											<b class="caret"></b>
 										</a>
-										
+									
 										<!--- Site Selector --->
 											<ul id="select-site-ul" class="dropdown-menu ui-front">
 												<cfif theSiteList.recordCount gt 20> 
