@@ -493,9 +493,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
-	<cfset var endpoint="/_api/ajax/v1">
+	<cfset var ajaxendpoint="/_api/ajax/v1">
+	<cfset var feedendpoint="/_feed/">
+	<cfset var fileendpoint="/_render/">
+	<cfset var emailendpoint="/_email/trackopen">
+	<cfset var bundleendpoint="/_bundle/feedback">
 
-	<cfif left(cgi.path_info,len(endpoint)) eq endpoint>
+	<cfif left(cgi.path_info,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest()>	
 		<cfelseif isDefined('url.siteid')>
@@ -505,18 +509,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest()>	
 		</cfif>
-	</cfif>
-
-	<cfif application.configBean.getSiteIDInURLS()>
-		<cfset application.contentServer.redirect()>
+	<cfelseif isDefined('url.feedid') and listLen(cgi.path_info,'/') gte 2 and left(cgi.path_info,len(feedendpoint)) eq feedendpoint>
+		<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,2,'/')).getApi('feed','v1').processRequest()>	
+	<cfelseif isDefined('url.emailid') and left(cgi.path_info,len(emailendpoint)) eq emailendpoint>
+		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
+		<cfset var theImg="">
+		<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
+		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
+		<cfreturn>
+	<cfelseif isDefined('url.fileid') and listLen(cgi.path_info,'/') gte 2 and  left(cgi.path_info,len(fileendpoint)) eq fileendpoint>
+		<cfswitch expression="#listGetAt(cgi.path_info,2,'/')#">
+			<cfcase value="file">
+				<cfparam name="url.method" default="inline">
+				<cfparam name="url.size" default="">
+				<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
+			</cfcase>
+			<cfcase value="small">
+				<cfreturn application.contentRenderer.renderSmall(url.fileID)>
+			</cfcase>
+			<cfcase value="medium">
+				<cfreturn application.contentRenderer.renderMedium(url.fileID)>
+			</cfcase>
+		</cfswitch>
 	<cfelse>
-		<cfif len(application.configBean.getStub())>
-			<cfset pageContent = application.contentServer.parseURLRootStub()>
-		<cfelse>	
-			<cfset pageContent = application.contentServer.parseURLRoot()>
-		</cfif>
-		<cfreturn pageContent>
-	</cfif> 
+		<cfif application.configBean.getSiteIDInURLS()>
+			<cfset application.contentServer.redirect()>
+		<cfelse>
+			<cfif len(application.configBean.getStub())>
+				<cfset pageContent = application.contentServer.parseURLRootStub()>
+			<cfelse>	
+				<cfset pageContent = application.contentServer.parseURLRoot()>
+			</cfif>
+			<cfreturn pageContent>
+		</cfif> 
+	</cfif>
+	
 	<cfreturn "">
 </cffunction>
 

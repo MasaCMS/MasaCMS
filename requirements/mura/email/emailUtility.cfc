@@ -165,7 +165,7 @@
 				<cfloop query="rsAddresses">
 					<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 and prevEmail neq rsAddresses.email>
 						<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
-						<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
+						<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/index.cfm/_email/trackopen/?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
 						<cfset forward="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
 						
 						<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#rsAddresses.email#&nocache=1">
@@ -336,7 +336,7 @@
 			<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(t)) neq 0>
 				<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&email=#t#&nocache=1">
 				<cfset forward="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#t#&origin=#arguments.data.origin#&nocache=1">
-				<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#t#&emailid=#rsemail.emailid#" style="display:none;">'/>
+				<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/index.cfm/_email/trackopen/?email=#t#&emailid=#rsemail.emailid#" style="display:none;">'/>
 
 				<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#t#&nocache=1">
 				<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>		

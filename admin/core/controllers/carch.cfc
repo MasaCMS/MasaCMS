@@ -517,7 +517,7 @@
 		<cfif listFindNoCase("author,editor",local.perm)
 			or listFindNoCase(session.mura.memberships,"s2")>
 				<cfset local.contentBean.getStats().setLockID(session.mura.userID).setLockType('file').save()>
-				<cflocation url="#variables.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#local.contentBean.getFileID()#&method=attachment">
+				<cflocation url="#variables.configBean.getContext()#/index.cfm/_render/file/?fileid=#local.contentBean.getFileID()#&method=attachment">
 		</cfif>
 	</cfif>
 	<cfabort>

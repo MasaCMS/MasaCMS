@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
 					
 					<cfset redirectID=createUUID() />
-					<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#fields["#form_element#"]#&method=attachment' />
+					<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
 		
 					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					insert into tredirects (redirectID,URL,created) values(

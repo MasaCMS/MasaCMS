@@ -192,7 +192,7 @@
 							</li>
 							<li class="col">
 								<cfif len(request.userBean.getPhotoFileID())>
-									<img src="#variables.$.globalConfig('context')#/tasks/render/small/index.cfm?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+									<img src="#variables.$.globalConfig('context')#/index.cfm/_render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
 									<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo
 							</cfif>
 							</li>
