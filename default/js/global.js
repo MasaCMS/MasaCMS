@@ -658,7 +658,7 @@ function htmlEditorOnComplete( editorInstance ) {
 		var instance=jQuery(editorInstance).ckeditorGet();
 		instance.resetDirty();
 		var totalIntances=CKEDITOR.instances;
-		//CKFinder.setupCKEditor( instance, { basePath : context + '/tasks/widgets/ckfinder/', rememberLastFolder : false } ) ;
+		//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
 	}
  
 }

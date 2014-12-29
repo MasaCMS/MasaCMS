@@ -492,46 +492,133 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="handleRootRequest" output="false">
-	<cfset var pageContent="">
-	<cfset var ajaxendpoint="/_api/ajax/v1">
-	<cfset var feedendpoint="/_feed/">
-	<cfset var fileendpoint="/_render/">
-	<cfset var emailendpoint="/_email/trackopen">
-	<cfset var bundleendpoint="/_bundle/feedback">
+	
+	<cfif listFirst(cgi.path_info,'/') eq "_api">
+		
+		<cfset var pageContent="">
+		<cfset var ajaxendpoint="/_api/ajax/v1">
+		<cfset var feedendpoint="/_api/feed/">
+		<cfset var fileendpoint="/_api/render/">
+		<cfset var emailendpoint="/_api/email/trackopen">
+		<cfset var sitemonitorendpoint="/_api/sitemonitor">
 
-	<cfif left(cgi.path_info,len(ajaxendpoint)) eq ajaxendpoint>
-		<cfif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest()>	
-		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest()>	
-		<cfelseif listLen(cgi.path_info,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,4,'/')).getApi('ajax','v1').processRequest()>	
-		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest()>	
+		<cfif left(cgi.path_info,len(ajaxendpoint)) eq ajaxendpoint>
+			<cfif isDefined('form.siteid')>
+				<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest()>	
+			<cfelseif isDefined('url.siteid')>
+				<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest()>	
+			<cfelseif listLen(cgi.path_info,'/') gte 4>
+				<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,4,'/')).getApi('ajax','v1').processRequest()>	
+			<cfelse>
+				<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest()>	
+			</cfif>
+		<cfelseif isDefined('url.feedid') and listLen(cgi.path_info,'/') gte 2 and left(cgi.path_info,len(feedendpoint)) eq feedendpoint>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,2,'/')).getApi('feed','v1').processRequest()>	
+		<cfelseif isDefined('url.emailid') and left(cgi.path_info,len(emailendpoint)) eq emailendpoint>
+			<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
+			<cfset var theImg="">
+			<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
+			<cfcontent type="image/gif" variable="#theImg#" reset="yes">
+			<cfreturn>
+		<cfelseif isDefined('url.fileid') and listLen(cgi.path_info,'/') gte 2 and  left(cgi.path_info,len(fileendpoint)) eq fileendpoint>
+			<cfswitch expression="#listGetAt(cgi.path_info,2,'/')#">
+				<cfcase value="file">
+					<cfparam name="url.method" default="inline">
+					<cfparam name="url.size" default="">
+					<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
+				</cfcase>
+				<cfcase value="small">
+					<cfreturn application.contentRenderer.renderSmall(url.fileID)>
+				</cfcase>
+				<cfcase value="medium">
+					<cfreturn application.contentRenderer.renderMedium(url.fileID)>
+				</cfcase>
+			</cfswitch>
+		<cfelseif left(cgi.path_info,len(sitemonitorendpoint)) eq sitemonitorendpoint>
+			<cfset var theTime=now()/>
+			<cfset var emailList="" />
+			<cfset var theemail="" />
+			<cfset var site="" />
+			<cfset var rsChanges="" />
+
+			<cfparam name="application.lastMonitored" default="#dateadd('n',-1,theTime)#"/>
+			<cfset var addPrev=minute(application.lastMonitored) neq minute(dateadd("n",-30,theTime))/>
+
+			<cfif addPrev>
+				<cfset application.contentManager.sendReminders(dateadd("n",-30,theTime)) />
+			</cfif>
+
+			<cfset application.contentManager.sendReminders(theTime) />
+
+			<cfset application.emailManager.send() />
+
+			<cfset application.changesetManager.publishBySchedule()>
+
+			<cfloop collection="#application.settingsManager.getSites()#" item="site"> 
+				<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
+				<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
+					<cfif not listFind(emailList,theEmail)>
+						<cfset application.emailManager.trackBounces(site) />
+						<cfset listAppend(emailList,theEmail) />
+					</cfif>
+				</cfif>
+				<cfif application.settingsManager.getSite(site).getFeedManager()>
+					<cfset application.feedManager.doAutoImport(site)>
+				</cfif>
+			</cfloop>
+
+			<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+				select tcontent.siteid, tcontent.contentid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
+				where tcontent.approved=1 and tcontent.active=1 and tcontent.display=2 and tcontent2.type <> 'Calendar'
+				and ((tcontent.displaystart >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
+				and tcontent.displaystart <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">)
+				or
+				(tcontent.displaystop >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
+				and tcontent.displaystop <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">))
+				group by tcontent.siteid, tcontent.contentid
+			</cfquery>
+
+			<cfif rsChanges.recordcount>
+				<cfloop query="rsChanges">
+					<cfset application.serviceFactory
+						.getBean('contentManager')
+							.purgeContentCache(
+								contentBean=application.serviceFactory
+									.getBean('content')
+									.loadBy(
+										contentID=rsChanges.contentid,
+										siteid=rsChanges.siteid
+									)
+							)>
+				</cfloop>
+
+				<cfquery name="rsChanges" dbtype="query">
+					select distinct siteid from rsChanges
+				</cfquery>
+				<cfloop query="rsChanges">
+					<cfset application.settingsManager.getSite(rsChanges.siteid).purgeCache() />
+				</cfloop>
+			</cfif>
+
+			<cfset application.clusterManager.clearOldCommands()>
+
+			<cfset application.serviceFactory.getBean('$').announceEvent('onGlobalMonitor') />
+
+			<cfset var rsSites=application.serviceFactory.getBean('settingsManager').getList()>
+
+			<cfloop query="rsSites">
+				<cfset application.serviceFactory.getBean('$').init(rsSites.siteid).announceEvent('onSiteMonitor') />
+			</cfloop>
+
+			<cfset application.lastMonitored=theTime/>
+
+			<cfreturn "">
+
+		
 		</cfif>
-	<cfelseif isDefined('url.feedid') and listLen(cgi.path_info,'/') gte 2 and left(cgi.path_info,len(feedendpoint)) eq feedendpoint>
-		<cfreturn getBean('settingsManager').getSite(listGetAt(cgi.path_info,2,'/')).getApi('feed','v1').processRequest()>	
-	<cfelseif isDefined('url.emailid') and left(cgi.path_info,len(emailendpoint)) eq emailendpoint>
-		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
-		<cfset var theImg="">
-		<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
-		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
-		<cfreturn>
-	<cfelseif isDefined('url.fileid') and listLen(cgi.path_info,'/') gte 2 and  left(cgi.path_info,len(fileendpoint)) eq fileendpoint>
-		<cfswitch expression="#listGetAt(cgi.path_info,2,'/')#">
-			<cfcase value="file">
-				<cfparam name="url.method" default="inline">
-				<cfparam name="url.size" default="">
-				<cfreturn application.contentRenderer.renderFile(url.fileID,url.method,url.size)>
-			</cfcase>
-			<cfcase value="small">
-				<cfreturn application.contentRenderer.renderSmall(url.fileID)>
-			</cfcase>
-			<cfcase value="medium">
-				<cfreturn application.contentRenderer.renderMedium(url.fileID)>
-			</cfcase>
-		</cfswitch>
+
 	<cfelse>
+		
 		<cfif application.configBean.getSiteIDInURLS()>
 			<cfset application.contentServer.redirect()>
 		<cfelse>
@@ -543,8 +630,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn pageContent>
 		</cfif> 
 	</cfif>
-	
-	<cfreturn "">
+		
 </cffunction>
 
 <cffunction name="doRequest" output="false" returntype="any">

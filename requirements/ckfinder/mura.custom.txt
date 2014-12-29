@@ -1,0 +1,21 @@
+/ckfinder.html
+  * add <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+
+
+/core/connector/cfm/Application.cfc
+  * remove the 'this.' settings from the top of the component
+  * add the following to the top of the component
+    <!---
+    Run the pseudo constructor to set up default
+    data structures.
+    --->
+    <cfinclude template="../../../../../../config/applicationSettings.cfm">
+    <cfinclude template="../../../../../../config/mappings.cfm">
+    <cfinclude template="../../../../../../plugins/mappings.cfm">
+    <cfscript>
+    THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/requirements/ckfinder/core/connector/cfm/";
+    </cfscript>
+
+  * add the following to all of the CFCookies
+    httpOnly="true" secure="#application.configBean.getValue('secureCookies')#"
+

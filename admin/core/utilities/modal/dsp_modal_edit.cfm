@@ -51,11 +51,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 	<script>
 		if(!window.CKEDITOR){
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"%3E%3C/script%3E'));
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
+			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/requirements/ckeditor/ckeditor.js"%3E%3C/script%3E'));
+			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/requirements/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
 		}
 		if(!window.CKFinder){
-			document.write(unescape('%3Cscript src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"%3E%3C/script%3E'));
+			document.write(unescape('%3Cscript src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"%3E%3C/script%3E'));
 		}
 	</script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#esapiEncode('url',variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>

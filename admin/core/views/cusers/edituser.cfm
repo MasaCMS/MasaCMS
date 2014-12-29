@@ -226,7 +226,7 @@
 								<cfif len(rc.userBean.getPhotoFileID())>
 									<div class="controls">
 										<a href="./index.cfm?muraAction=cArch.imagedetails&amp;userid=#rc.userBean.getUserID()#&amp;siteid=#rc.userBean.getSiteID()#&amp;fileid=#rc.userBean.getPhotoFileID()#">
-											<img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_render/medium/?fileid=#rc.userBean.getPhotoFileID()#&amp;cacheID=#createUUID()#" />
+											<img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/medium/?fileid=#rc.userBean.getPhotoFileID()#&amp;cacheID=#createUUID()#" />
 										</a>
 										<label class="checkbox inline">
 											<input type="checkbox" name="removePhotoFile" value="true"> 

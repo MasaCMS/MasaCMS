@@ -3452,7 +3452,7 @@ Display Objects
 		if ( not rsFileData.recordcount ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/index.cfm/_render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+			return '#application.configBean.getContext()#/index.cfm/_api/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
 		}
 	</cfscript>
 </cffunction>

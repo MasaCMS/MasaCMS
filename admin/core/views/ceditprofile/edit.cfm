@@ -168,7 +168,7 @@ select * from rsSubTypes where subType <> 'Default'
         </div>
         <cfif len(rc.userBean.getPhotoFileID())>
 	        <div class="controls">
-	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
+	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
 	        	
 	        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')# 
 	        </div>

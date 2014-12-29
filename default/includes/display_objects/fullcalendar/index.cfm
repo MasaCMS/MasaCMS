@@ -97,7 +97,7 @@ jQuery(document).ready(function($) {
 			//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 			, eventSources: [
 				{
-					url: '#variables.$.globalConfig('context')#/tasks/widgets/fullcalendar/proxy.cfc'
+					url: '#variables.$.globalConfig('context')#/requirements/fullcalendar/proxy.cfc'
 					, type: 'POST'
 					, data: {
 						method: 'getFullCalendarItems'

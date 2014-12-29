@@ -46,6 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <cfoutput><script type="text/javascript" src="#variables.$.globalConfig('context')#/wysiwyg/fckeditor.js"></script></cfoutput>
-<cfelse><cfoutput><script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"></script></cfoutput>
+<cfelse><cfoutput><script type="text/javascript" src="#variables.$.globalConfig('context')#/requirements/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="#variables.$.globalConfig('context')#/requirements/ckeditor/adapters/jquery.js"></script></cfoutput>
 </cfif>

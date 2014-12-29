@@ -771,7 +771,7 @@ function htmlEditorOnComplete(editorInstance) {
 		var totalIntances = CKEDITOR.instances;
 		CKFinder.setupCKEditor(
 		instance, {
-			basePath: context + '/tasks/widgets/ckfinder/',
+			basePath: context + '/requirements/ckfinder/',
 			rememberLastFolder: false
 		});
 	}
@@ -1216,7 +1216,7 @@ function CountDown() {
 
 function fileManagerPopUp() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/tasks/widgets/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.resourceType = '[Advanced] Mura Root';
 	finder.popup();
 	return false;
@@ -1224,7 +1224,7 @@ function fileManagerPopUp() {
 
 function fileManagerCreate() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/tasks/widgets/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.create();
 	return false;
 }
@@ -1538,7 +1538,7 @@ function setFinders(selector){
 	$(selector).unbind('click').on('click',function(){
 		var target=$(this).attr('data-target');
 		var finder = new CKFinder();
-		finder.basePath = context + '/tasks/widgets/ckfinder/';
+		finder.basePath = context + '/requirements/ckfinder/';
 		var completepath=$(this).attr('data-completepath');
 
 		if(completepath.toLowerCase() == 'true'){

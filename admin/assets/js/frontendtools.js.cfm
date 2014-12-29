@@ -601,7 +601,7 @@
 			var totalInstances = CKEDITOR.instances;
 			CKFinder.setupCKEditor(
 			instance, {
-				basePath: '#application.configBean.getContext()#/tasks/widgets/ckfinder/',
+				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
 				rememberLastFolder: false
 			});
 		},

@@ -862,7 +862,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset imgSuffix=arguments.size>
 		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/index.cfm/_render/#imgSuffix#/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
+		<cfset returnURL=application.configBean.getContext() & "/index.cfm/_api/render/#imgSuffix#/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
 	</cfif>
 	
 	<cfreturn begin & returnURL>
