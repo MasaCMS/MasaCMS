@@ -126,6 +126,8 @@ component extends="mura.cfobject" {
 					serializer.asInteger(properties[p].name);
 				} else if(listFindNoCase('float,numeric,double',properties[p].datatype)){
 					serializer.asFloat(properties[p].name);
+				} else if(listFindNoCase('date,datetime,timestamp',properties[p].datatype)){
+					//serializer.asDate(properties[p].name);
 				}
 			} catch(Any e){}
 		}
