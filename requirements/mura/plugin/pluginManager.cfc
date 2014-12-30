@@ -641,7 +641,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfif not isDefined("currentConfig.plugin.createmapping.xmlText")
 					or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 					<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-						<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">')>
+						<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/#m#"] = pluginDir & "#rsRequirements.name#">')>
 						<cfset done[mHash]=true>
 					</cfif>
 				</cfif>
@@ -665,7 +665,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfset currentPath=currentDir & "/" & p>
 							<cfif len(p) and directoryExists(currentPath)>
 								<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-								<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
+								<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "#rsRequirements.name#/#p#"></cfif>')>
 							</cfif>
 						</cfif>
 					</cfloop>
@@ -681,7 +681,7 @@ select * from tplugins order by #arguments.orderby#
 						</cfif>
 						<cfset currentPath=currentDir & "/" & p>
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#" )>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "#rsRequirements.name#/#p#" )>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -697,7 +697,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset currentPath=currentDir & "/" & p>
 						<cfdump var="#currentpath#">
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "/#rsRequirements.name#/#p#")>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "#rsRequirements.name#/#p#")>')>
 						</cfif>
 					</cfloop>
 				</cfif>

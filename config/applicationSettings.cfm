@@ -137,6 +137,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcatch>
 </cftry>
 
+<cfset this.mappings["/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
+
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
 <!--- Should we even use sessions? --->

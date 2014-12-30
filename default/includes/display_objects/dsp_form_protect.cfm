@@ -58,5 +58,5 @@
 <cfif Len($.siteConfig('reCAPTCHASiteKey')) and Len($.siteConfig('reCAPTCHASecret'))>
   <cfoutput>#$.dspReCAPTCHA()#</cfoutput>
 <cfelse>
-  <cfinclude template="/murawrm/requirements/cfformprotect/cffp.cfm" />
+  <cfinclude template="/cfformprotect/cffp.cfm" />
 </cfif>

@@ -116,9 +116,9 @@ the rest of the app to read a half-written file.
 				or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 			<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">' mode="775">
+					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] = pluginDir & "#rsRequirements.name#">' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] =pluginDir & "/#rsRequirements.name#">'>		
+					<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfset this.mappings["/#m#"] =pluginDir & "#rsRequirements.name#">'>		
 				</cfif>
 				<cfset this.mappings["/#m#"] = rsRequirements.directory & "/" & rsRequirements.name>
 			</cfif>
@@ -142,9 +142,9 @@ the rest of the app to read a half-written file.
 				<cfif len(p) and directoryExists(currentPath)>
 					<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
 					<cfif canWriteMode>
-						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>' mode="775">
+						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "#rsRequirements.name#/#p#"></cfif>' mode="775">
 					<cfelseif canWriteMappings>
-						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>'>		
+						<cffile action="append" file="#pluginMappingsTempFilePathName#" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "#rsRequirements.name#/#p#"></cfif>'>		
 					</cfif>
 				</cfif>
 			</cfif>
