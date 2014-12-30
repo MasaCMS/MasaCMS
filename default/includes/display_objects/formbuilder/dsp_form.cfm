@@ -118,7 +118,7 @@
 			prefix=local.prefix
 			)#			
 		<cfelseif local.field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#local.field.fieldtype.fieldtype#<cfif local.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif isDefined('local.field.wrappercssclass') and len(local.field.wrappercssclass)> #local.field.wrappercssclass#</cfif>">
+			<div class="mura-form-#local.field.fieldtype.fieldtype#<cfif local.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif structKeyExists(local.field,'wrappercssclass')> #local.field.wrappercssclass#</cfif>">
 			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
 				field=local.field,
 				dataset=local.dataset,
