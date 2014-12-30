@@ -497,7 +497,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var pageContent="">
 		<cfset var ajaxendpoint="/_api/ajax/v1">
-		<cfset var feedendpoint="/_api/feed/">
+		<cfset var feedendpoint="/_api/feed/v1">
 		<cfset var fileendpoint="/_api/render/">
 		<cfset var emailendpoint="/_api/email/trackopen">
 		<cfset var sitemonitorendpoint="/_api/sitemonitor">

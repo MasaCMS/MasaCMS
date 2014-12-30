@@ -620,7 +620,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
 		</label>
 		<div class="controls">
-	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#</a>
+	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#</a>
 	     </div>
 		</div>
 	</cfif>
