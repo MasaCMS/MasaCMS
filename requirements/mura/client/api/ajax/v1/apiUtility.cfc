@@ -42,22 +42,9 @@ component extends="mura.cfobject" {
 			linkMethods=[],
 			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,renderForm",
 			entities={
-				site={
-					fields="domain,siteid",
-					allowfieldselect=false
-				},
-				contentnav={
-					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
-				},
-				content={
-					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
-				},
-				user={},
-				address={},
-				changeset={},
-				feed={},
-				category={},
-				comment={}
+				'contentnav'={
+			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
+		}
 			}
 		};
 
@@ -69,6 +56,22 @@ component extends="mura.cfobject" {
 	      .asDate('start')
 	      .asDate('end')
 	      .asString('title');
+
+	    registerPublicEntity('site',{
+			fields="domain,siteid",
+			allowfieldselect=false
+		});
+
+		registerPublicEntity('content',{
+			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
+		});
+
+		registerPublicEntity('user');
+		registerPublicEntity('address');
+		registerPublicEntity('changeset');
+		registerPublicEntity('feed');
+		registerPublicEntity('category');
+		registerPublicEntity('comment');
 
 		return this;
 	}
@@ -113,6 +116,19 @@ component extends="mura.cfobject" {
 
 	function registerPublicEntity(entityName, config={}){
 		variables.config.entities['#arguments.entityName#']=arguments.config;
+
+		var properties=getBean(arguments.entityName).getProperties();
+		var serializer=getSerializer();
+
+		for(var p in properties){
+			try{
+				if(listFindNoCase('int,tinyint,integer',properties[p].datatype)){
+					serializer.asInteger(properties[p].name);
+				} else if(listFindNoCase('float,numeric,double',properties[p].datatype)){
+					serializer.asFloat(properties[p].name);
+				}
+			} catch(Any e){}
+		}
 	}
 
 	function registerLinkMethod(method){
