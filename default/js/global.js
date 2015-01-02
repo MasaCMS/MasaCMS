@@ -841,8 +841,8 @@ $(function(){
 					}
 				}
 
-				if(!('objectparams' in checkdata) && typeof checkdata['objectparams']=='object'){
-					data.append('objectparams', escape(JSON.stringify($(self).data('objectparams'))));
+				if('objectparams' in checkdata){
+					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
 				}
 				
 				var params={
@@ -857,7 +857,7 @@ $(function(){
 			} else {
 				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
 
-				if(!('objectparams' in data) && typeof data['objectparams']=='object'){
+				if('objectparams' in data){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));
 				}
 
@@ -921,7 +921,7 @@ $(function(){
 
 		var data=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
 		
-		if(!('objectparams' in data) && typeof data['objectparams']=='object'){
+		if('objectparams' in data){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));
 		}
 

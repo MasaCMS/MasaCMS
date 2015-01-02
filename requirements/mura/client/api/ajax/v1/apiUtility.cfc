@@ -1328,6 +1328,10 @@ component extends="mura.cfobject" {
 			$.event('nocache',1);
 		}
 		
+		if(len($.event('objectparams2'))){
+			$.event('objectparams2',$.event('objectparams2'));
+		}
+		
 		//Turn off cfformprotext js
 		request.cffpJS=true;
 
@@ -1439,8 +1443,8 @@ component extends="mura.cfobject" {
 		
 		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
 		//writeLog(text=serializeJSON(logdata));
-
-		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid,params=$.event('objectparams'))};
+		//return $.event('objectparams');
+		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid,params=urlDecode($.event('objectparams')))};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){
 			return {redirect=request.muraAjaxRedirectURL};
