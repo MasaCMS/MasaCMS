@@ -830,7 +830,30 @@ $(function(){
 		var self=frm;
 		var validateFormAjax=function(frm) {
 
-			if($(frm).attr('enctype')=='multipart/form-data'){
+			if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
+				var data==new FormData(frm);
+				var checkdata=setLowerCaseKeys($(frm).serializeObject());
+
+				if(!('contentid' in checkdata)){
+					data.append('contentid', $(self).data('contentid'));
+				}
+
+				if(!('contenthistid' in checkdata)){
+					data.append('contenthistid', $(self).data('contenthistid'));
+				}
+
+				if(!('siteid' in checkdata)){
+					data.append('siteid', $(self).data('siteid'));
+				}
+
+				if(!('object' in checkdata)){
+					data.append('object', $(self).data('object'));
+				}
+
+				if(!('objectid' in checkdata)){
+					data.append('objectid', $(self).data('objectid'));
+				}
+
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 				      type: 'POST',
