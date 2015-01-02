@@ -311,6 +311,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			sendNotification(arguments.$);
 			
 		}
+
+		request.cacheItem=false;
 		
 		return this;
 
@@ -387,7 +389,6 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		param name="form.formid" default="";
 
 		if(getHTTPRequestData().method == 'POST' && len(getValue('formid')) && getValue('formid') == bean.getContentID()){
-			
 			submit(arguments.$);
 				
 			var response=dspResponse();

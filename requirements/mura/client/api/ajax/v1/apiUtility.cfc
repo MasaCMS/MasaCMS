@@ -1335,6 +1335,9 @@ component extends="mura.cfobject" {
 
 		}
 		
+		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
+		//writeLog(text=serializeJSON(logdata));
+
 		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid)};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){

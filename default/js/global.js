@@ -833,7 +833,6 @@ $(function(){
 			if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
-
 				var keys=['contentid','contenthistid','siteid','object','objectid'];
 
 				for(var k in keys){
@@ -845,7 +844,7 @@ $(function(){
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 				      type: 'POST',
-				      data: new FormData(frm),
+				      data: data,
 				      processData: false,
 				      contentType: false
 				    } 
