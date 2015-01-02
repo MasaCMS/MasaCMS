@@ -850,7 +850,8 @@ $(function(){
 				      type: 'POST',
 				      data: data,
 				      processData: false,
-				      contentType: false
+				      contentType: false,
+				      dataType: 'JSON'
 				    } 
 			
 			} else {
@@ -863,7 +864,8 @@ $(function(){
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 				      type: 'POST',
-				      data: data
+				      data: data,
+				      dataType: 'JSON'
 				    } 
 			}
 
@@ -926,7 +928,8 @@ $(function(){
 		$.ajax( {
 	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 	      type: 'GET',
-	      data: data
+	      data: data,
+	      dataType: 'JSON'
 		}).then(function(resp){
 
 	 			$(self).html(resp.data.html);

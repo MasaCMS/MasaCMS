@@ -1315,12 +1315,17 @@ component extends="mura.cfobject" {
 		$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
 		$.event('crumbdata',$.content().getCrumbArray());
 		$.event().getHandler('standardSetPermissions').handle($.event());
-		
+		setLocale($.siteConfig().getJavaLocale());
+		//$.event().getHandler('standardMobile').handle($.event());
+
+		if($.event('object')=='comments'){
+			$.event().getHandler('standardSetCommentPermissions').handle($.event());
+		}
+
 		if($.event('r').restrict){
 			$.event('nocache',1);
 		}
 		
-
 		//Turn off cfformprotext js
 		request.cffpJS=true;
 
