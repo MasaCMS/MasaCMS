@@ -1845,7 +1845,6 @@ Display Objects
 	<cfset var tempObject="">
 	<cfset var args={}>
 	<cfset request.muraValidObject=true>
-	<cfset request.muraAsyncObject=false>
 
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
