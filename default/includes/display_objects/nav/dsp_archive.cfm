@@ -45,9 +45,9 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif request.muraFrontEndRequest>
+	<cfset request.muraAsyncObject=true>
 	<cfoutput>
 		<div class="mura-async-object" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectparams=#serializeJSON(objectParams)#>
-			
 		</div>
 	</cfoutput>
 <cfelse>

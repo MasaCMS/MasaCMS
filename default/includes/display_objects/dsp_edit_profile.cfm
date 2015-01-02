@@ -55,6 +55,7 @@
 	Mura CMS.
 --->
 <cfif request.muraFrontEndRequest>
+	<cfset request.muraAsyncObject=true>
 	<cfoutput>
 		<div class="mura-async-object" data-object="editprofile" data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#" />
 	</cfoutput>
