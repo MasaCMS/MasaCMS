@@ -1309,9 +1309,17 @@ component extends="mura.cfobject" {
 		request.siteid=arguments.siteid;
 		session.siteid=request.siteid;
 		request.servletEvent=new mura.servletEvent();
+		
 		var $=request.servletEvent.getValue("MuraScope");
+		
 		$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
-		request.crumbdata=$.content().getCrumbArray();
+		$.event('crumbdata',$.content().getCrumbArray());
+		$.event().getHandler('standardSetPermissions').handle($.event());
+		
+		if($.event('r').restrict){
+			$.event('nocache',1);
+		}
+		
 
 		//Turn off cfformprotext js
 		request.cffpJS=true;

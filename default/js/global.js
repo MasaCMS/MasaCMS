@@ -894,16 +894,18 @@ $(function(){
 				 			});
 
 
-				 			$(self).find(".frontEndToolsModal").each(
-								function(){
-										jQuery(this).click(function(event){
+				 			if(typeof resizeEditableObjects == 'function') {
+					 			$(self).find(".frontEndToolsModal").each(
+									function(){
+										$(this).click(function(event){
 											event.preventDefault();
 											openFrontEndToolsModal(this);
 										}
 									);
 								});
 
-							resizeEditableObjects(self);
+								resizeEditableObjects(self);
+							}
 				    	}
 				    	
 				    });
@@ -926,8 +928,9 @@ $(function(){
 	      type: 'GET',
 	      data: data
 		}).then(function(resp){
+
 	 			$(self).html(resp.data.html);
-	 			
+	 		
 	 			if($(self).data('object')=='comments'){
 				    initMuraComments();
 	 			}
@@ -937,25 +940,27 @@ $(function(){
 	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 	 			});
 
-	 			$(self).find(".frontEndToolsModal").each(
-					function(){
-						jQuery(this).click(function(event){
-							event.preventDefault();
-							openFrontEndToolsModal(this);
-						}
-					);
-				});
+	 			if(typeof resizeEditableObjects == 'function') {
+		 			$(self).find(".frontEndToolsModal").each(
+						function(){
+							$(this).click(function(event){
+								event.preventDefault();
+								openFrontEndToolsModal(this);
+							}
+						);
+					});
 
-				resizeEditableObjects(self);
+					resizeEditableObjects(self);
+				}
 
 		});
 	}
 
 	$( ".mura-async-object" ).each( function() {
-		renderAsyncObject(this);
+		new renderAsyncObject(this);
 	});
 
 	$(document).arrive( ".mura-async-object",function() {
-	 	renderAsyncObject(this);
+	 	new renderAsyncObject(this);
 	});
 });

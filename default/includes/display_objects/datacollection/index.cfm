@@ -67,7 +67,7 @@
 
 	<cfoutput>
     <cfif request.muraFrontEndRequest>
-        <div class="mura-async-object" data-object="form" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" data-objectparams="#serializeJSON(objectParams)#" />
+        <div class="mura-async-object" data-object="form" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" data-objectparams=#serializeJSON(objectParams)# />
     <cfelse>
         <cfif not bean.getIsNew() and bean.getIsOnDisplay()>
           <cfset variables.rsForm=bean.getAllValues()>
