@@ -834,26 +834,14 @@ $(function(){
 				var data==new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
 
-				if(!('contentid' in checkdata)){
-					data.append('contentid', $(self).data('contentid'));
-				}
+				var keys=['contentid','contenthistid','siteid','object','objectid'];
 
-				if(!('contenthistid' in checkdata)){
-					data.append('contenthistid', $(self).data('contenthistid'));
+				for(var k in keys){
+					if(!(keys[k] in checkdata)){
+						data.append(keys[k], $(self).data(keys[k]));
+					}
 				}
-
-				if(!('siteid' in checkdata)){
-					data.append('siteid', $(self).data('siteid'));
-				}
-
-				if(!('object' in checkdata)){
-					data.append('object', $(self).data('object'));
-				}
-
-				if(!('objectid' in checkdata)){
-					data.append('objectid', $(self).data('objectid'));
-				}
-
+				
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 				      type: 'POST',
