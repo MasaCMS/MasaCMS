@@ -1845,6 +1845,7 @@ Display Objects
 	<cfset var tempObject="">
 	<cfset var args={}>
 	<cfset request.muraValidObject=true>
+	<cfset request.muraAsyncEditableObject=false>
 
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
@@ -2064,7 +2065,7 @@ Display Objects
 		<!--- END DEPRICATED --->
 	</cfswitch>
 
-	<cfif request.muraValidObject and showEditable and request.muraFrontEndRequest>
+	<cfif request.muraValidObject and showEditable and ((request.muraFrontEndRequest and not request.muraAsyncEditableObject) or (not request.muraFrontEndRequest and request.muraAsyncEditableObject))>
 		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
 	<cfelseif not request.muraValidObject>
 		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
