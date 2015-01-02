@@ -1314,6 +1314,8 @@ component extends="mura.cfobject" {
 		
 		$.event('contentBean',$.getBean('content').loadBy(contenthistid=$.event('contenthistid')));
 		$.event('crumbdata',$.content().getCrumbArray());
+		$.event().getHandler('standardSetContentRenderer').handle($.event());
+		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"))
 		$.event().getHandler('standardSetPermissions').handle($.event());
 		setLocale($.siteConfig().getJavaLocale());
 		//$.event().getHandler('standardMobile').handle($.event());
