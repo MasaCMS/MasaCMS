@@ -1975,32 +1975,32 @@ Display Objects
 	</cfif>
 
 	<cfswitch expression="#arguments.object#">
-		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="folder_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_folder.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm",cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
-		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="contact"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")></cfcase>
-		<cfcase value="calendar_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")></cfcase>
+		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sub.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_peer.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_standard.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_portal.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="folder_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_folder.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_multilevel.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sequential.cfm",cachekey=cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
+		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_top.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="contact"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
+		<cfcase value="calendar_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm")></cfcase>
 		<cfcase value="plugin">
 			<cfset theObject=theObject & application.pluginManager.displayObject(object=arguments.objectid,event=variables.event,params=arguments.params)>
 		</cfcase>
-		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")></cfcase>
-		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")></cfcase>
+		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm")></cfcase>
+		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm")></cfcase>
 		<cfcase value="site_map"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable)></cfcase>							
 		<cfcase value="category_summary"><cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & variables.event.getValue('categoryID'),params=arguments.params)></cfcase>
-		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId & variables.event.getValue("responseID") & variables.event.getValue("startrow"))></cfcase>
+		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_archive.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="datacollection/index.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dataresponses/index.cfm",cachekey=cacheKeyObjectId & variables.event.getValue("responseID") & variables.event.getValue("startrow"))></cfcase>
 		<cfcase value="component"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable)></cfcase>
-		<cfcase value="ad"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")></cfcase>
-		<cfcase value="comments"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")></cfcase>
-		<cfcase value="event_reminder_form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")></cfcase>
-		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")></cfcase>
+		<cfcase value="ad"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm")></cfcase>
+		<cfcase value="comments"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm")></cfcase>
+		<cfcase value="event_reminder_form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm")></cfcase>
+		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_adZone.cfm")></cfcase>
 		<cfcase value="feed">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
 		</cfcase>	
@@ -2012,10 +2012,10 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="feed_table"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)></cfcase>
-		<cfcase value="payPalCart"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")></cfcase>
-		<cfcase value="rater"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")></cfcase>
-		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
-		<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
+		<cfcase value="payPalCart"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="paypalcart/index.cfm")></cfcase>
+		<cfcase value="rater"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="rater/index.cfm")></cfcase>
+		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="favorites/index.cfm")></cfcase>
+		<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
 			<cfif isJSON(arguments.params)>
 				<cfset arguments.params=deserializeJSON(arguments.params)>
@@ -2028,16 +2028,16 @@ Display Objects
 		<cfcase value="related_section_content">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
-		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")></cfcase>
+		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
 			<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#variables.event.getValue('nocache')#"><cfoutput>#dspTagCloud(argumentCollection=args)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 			<cfset theObject=theObject & tempObject> 
 		</cfcase>
-		<cfcase value="goToFirstChild"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")></cfcase>
+		<cfcase value="goToFirstChild"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="act_goToFirstChild.cfm")></cfcase>
 		<!--- BEGIN DEPRICATED --->
-		<cfcase value="submit_event"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_submit_event.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="promo"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_promo.cfm")></cfcase>
-		<cfcase value="public_content_form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_public_content_form.cfm")></cfcase>
+		<cfcase value="submit_event"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_submit_event.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="promo"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_promo.cfm")></cfcase>
+		<cfcase value="public_content_form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_public_content_form.cfm")></cfcase>
 		<cfcase value="category_summary_rss"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & variables.event.getValue('categoryID'),useRss=true)></cfcase>
 		<cfcase value="feed_no_summary">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable)>
@@ -2050,28 +2050,28 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="related_section_content_no_summary">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,hasSummary=false)>
 		</cfcase>	
 		<cfcase value="features">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId)>
 		</cfcase>
 		<cfcase value="features_no_summary">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)>
 		</cfcase>		
-		<cfcase value="category_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="category_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)></cfcase>
-		<cfcase value="category_Folder_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_Folder_features.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_Folder_features.cfm",cacheKeyObjectId,false)></cfcase>
+		<cfcase value="category_features"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="category_features_no_summary"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)></cfcase>
+		<cfcase value="category_Folder_features"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)></cfcase>
 		<!--- END DEPRICATED --->
 	</cfswitch>
 
-	<cfif request.muraValidObject and showEditable and not request.muraAsyncObject>
+	<cfif request.muraValidObject and showEditable and request.muraFrontEndRequest>
 		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
 	<cfelseif not request.muraValidObject>
 		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
 		<cfset request.muraValidObject=true>
 	</cfif>
-	
+
 	<cfreturn trim(theObject) />
 </cffunction>
 

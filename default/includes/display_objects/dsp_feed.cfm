@@ -56,7 +56,6 @@
 --->
 <!--- <cftry> --->
 <cfif request.muraFrontEndRequest>
-	<cfset request.muraAsyncObject=true>
 	<cfoutput>
 		<div class="mura-async-object" 
 			data-object="#esapiEncode('html_attr',arguments.object)#" 

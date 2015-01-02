@@ -1327,11 +1327,7 @@ component extends="mura.cfobject" {
 		if($.event('r').restrict){
 			$.event('nocache',1);
 		}
-		
-		if(len($.event('objectparams2'))){
-			$.event('objectparams2',$.event('objectparams2'));
-		}
-		
+
 		//Turn off cfformprotext js
 		request.cffpJS=true;
 
@@ -1441,10 +1437,20 @@ component extends="mura.cfobject" {
 
 		}
 		
+		if(len($.event('objectparams2'))){
+			$.event('objectparams2',$.event('objectparams2'));
+		}
+
 		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
 		//writeLog(text=serializeJSON(logdata));
 		//return $.event('objectparams');
-		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid,params=urlDecode($.event('objectparams')))};
+		var result={html=$.dspObject(
+				object=$.event('object'),
+				objectid=$.event('objectid'),
+				siteid=arguments.siteid,
+				params=urlDecode($.event('objectparams'))
+			)
+		};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){
 			return {redirect=request.muraAjaxRedirectURL};
