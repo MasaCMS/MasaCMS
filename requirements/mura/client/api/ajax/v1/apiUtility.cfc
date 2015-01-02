@@ -1312,7 +1312,7 @@ component extends="mura.cfobject" {
 		
 		var $=request.servletEvent.getValue("MuraScope");
 		
-		$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
+		$.event('contentBean',$.getBean('content').loadBy(contenthistid=$.event('contenthistid')));
 		$.event('crumbdata',$.content().getCrumbArray());
 		$.event().getHandler('standardSetPermissions').handle($.event());
 		setLocale($.siteConfig().getJavaLocale());

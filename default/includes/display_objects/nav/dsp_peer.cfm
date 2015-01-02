@@ -50,7 +50,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			data-object="#esapiEncode('html_attr',arguments.object)#" 
 			data-objectid="#esapiEncode('html_attr',arguments.objectid)#" 
 			data-objectparams=#serializeJSON(objectParams)#>
-			...
 		</div>
 	</cfoutput>
 <cfelse>
