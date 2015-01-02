@@ -831,7 +831,7 @@ $(function(){
 		var validateFormAjax=function(frm) {
 
 			if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
-				var data==new FormData(frm);
+				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
 
 				var keys=['contentid','contenthistid','siteid','object','objectid'];
