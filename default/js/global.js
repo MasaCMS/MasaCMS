@@ -840,6 +840,10 @@ $(function(){
 						data.append(keys[k], $(self).data(keys[k]));
 					}
 				}
+
+				if(!('objectparams' in checkdata) && typeof checkdata['objectparams']=='object'){
+					data.append('objectparams', escape(JSON.stringify($(self).data('objectparams'))));
+				}
 				
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
@@ -850,10 +854,16 @@ $(function(){
 				    } 
 			
 			} else {
+				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
+
+				if(!('objectparams' in data) && typeof data['objectparams']=='object'){
+					data['objectparams']= escape(JSON.stringify(data['objectparams']));
+				}
+
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 				      type: 'POST',
-				      data: $.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid})
+				      data: data
 				    } 
 			}
 
@@ -905,12 +915,16 @@ $(function(){
 			
 		}
 
-		var params=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
+		var data=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
 		
+		if(!('objectparams' in data) && typeof data['objectparams']=='object'){
+			data['objectparams']= escape(JSON.stringify(data['objectparams']));
+		}
+
 		$.ajax( {
 	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
 	      type: 'GET',
-	      data: params
+	      data: data
 		}).then(function(resp){
 	 			$(self).html(resp.data.html);
 	 			

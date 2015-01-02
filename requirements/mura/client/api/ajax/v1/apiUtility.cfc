@@ -1321,7 +1321,11 @@ component extends="mura.cfobject" {
 				if(getHTTPRequestData().method == 'POST' && len($.event('username')) && len($.event('password'))){
 
 					if(getBean('loginManager').remoteLogin($.event().getAllValues(),'')){
-						return {redirect=$.event('returnURL')};
+						if(len($.event('returnurl'))){
+							return {redirect=$.event('returnurl')};
+						} else {
+							return {redirect="./"};
+						}
 					} else {
 						$.event('status','failed');
 					}
@@ -1331,14 +1335,97 @@ component extends="mura.cfobject" {
 					html=$.dspObject_Include(theFile='dsp_login.cfm')
 				};
 
-				break;
+			break;
+
+			case 'editprofile':
+				switch($.event('doaction')){
+					case 'updateprofile':
+						if(session.mura.isLoggedIn){
+							var eventStruct=$.event().getAllValues();
+
+							structDelete(eventStruct,'isPublic');
+							structDelete(eventStruct,'s2');
+							structDelete(eventStruct,'type');
+							structDelete(eventStruct,'groupID');
+							eventStruct.userid=session.mura.userID;
+
+							$.setValue('passedProtect', $.getBean('utility').isHuman($.event()));
+
+							$.event().setValue("userID",session.mura.userID);
+
+							if(isDefined('request.addressAction')){
+								if($.event().getValue('addressAction') == "create"){
+									$.getBean('userManager').createAddress(eventStruct);
+								} else if($.event().getValue('addressAction') == "update"){
+									$.getBean('userManager').updateAddress(eventStruct);
+								} else if($.event().getValue('addressAction') == "delete"){
+									$.getBean('userManager').deleteAddress($.event().getValue('addressID'));
+								}
+								//reset the form 
+								$.event().setValue('addressID','');
+								$.event().setValue('addressAction','');
+							} else {
+								$.event().setValue('userBean',$.getBean('userManager').update( getBean("user").loadBy(userID=$.event().getValue("userID")).set(eventStruct).getAllValues() , iif($.event().valueExists('groupID'),de('true'),de('false')),true,$.event().getValue('siteID')));
+								if(structIsEmpty($.event().getValue('userBean').getErrors())){
+									$.getBean('userUtility').loginByUserID(userid=$.event('userBean').getUserID(),siteid=$.event('userBean').getSiteID());
+
+									if(len($.event('returnurl'))){
+										return {redirect=$.event('returnurl')};
+									} else {
+										return {redirect="./"};
+									}
+								}
+							}
+						}
+
+					break;
+
+
+					case 'createprofile':
+
+						if(getBean('settingsManager').getSite($.event().getValue('siteid')).getextranetpublicreg() == 1){
+							var eventStruct=$.event().getAllValues();
+							structDelete(eventStruct,'isPublic');
+							structDelete(eventStruct,'s2');
+							structDelete(eventStruct,'type');
+							structDelete(eventStruct,'groupID');
+							eventStruct.userid='';
+							
+							$.event().setValue('passedProtect', getBean('utility').isHuman($.event()));
+							
+							$.event().setValue('userBean',  getBean("user").loadBy(userID=$.event().getValue("userID")).set(eventStruct).save() );		
+							
+							if(structIsEmpty($.event().getValue('userBean').getErrors()) && !$.event().valueExists('passwordNoCache')){
+								$.getBean('userManager').sendLoginByUser($.event().getValue('userBean'),$.event().getValue('siteid'),$.event().getValue('contentRenderer').getCurrentURL(),true);
+								return {redirect=$.event('returnurl')};
+
+							} else if (structIsEmpty($.event().getValue('userBean').getErrors()) && $.event().valueExists('passwordNoCache') && $.event().getValue('userBean').getInactive() eq 0){
+								$.event().setValue('userID',$.event().getValue('userBean').getUserID());
+								$.getBean('userUtility').loginByUserID(userid=$.event('userid'),siteid=$.event('siteid'));
+
+								if(len($.event('returnurl'))){
+									return {redirect=$.event('returnurl')};
+								} else {
+									return {redirect="./"};
+								}
+							}
+						}
+
+					break;
+				}
+
+				
+				return {
+						html=$.dspObject_Include(theFile='dsp_edit_profile.cfm')
+					};
+			break;
 
 		}
 		
 		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
 		//writeLog(text=serializeJSON(logdata));
 
-		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid)};
+		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid,params=$.event('objectparams'))};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){
 			return {redirect=request.muraAjaxRedirectURL};
