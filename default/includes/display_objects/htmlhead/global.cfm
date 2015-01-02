@@ -54,14 +54,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>--->
 </cfsilent>
 <cfoutput>
-<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.min.js"></script>
+<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.js"></script>
 <script type="text/javascript">
 <cfif Len(application.configBean.getWindowDocumentDomain())>
 	window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
 </cfif>
 var mura={
 	loginURL:"#variables.loginURL#",
-	siteid:"#variables.$.event('siteID')#", 
+	siteid:"#variables.$.event('siteID')#",
+	contentid:"#variables.$.content('contentid')#", 
+	contenthistid:"#variables.$.content('contenthistid')#", 
 	siteID:"#variables.$.event('siteID')#", 
 	context:"#variables.$.globalConfig('context')#", 
 	jslib:"#variables.$.getJsLib()#",

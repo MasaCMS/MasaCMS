@@ -430,7 +430,8 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 				bean.getSiteID(),
 				renderedForm,
 				bean.getResponseChart(), 
-				arguments.$.content('contentID')
+				arguments.$.content('contentID'),
+				arguments.$
 			);
 			
 			returnStr=returnStr & renderedForm;

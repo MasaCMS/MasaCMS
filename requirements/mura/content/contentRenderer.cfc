@@ -1848,7 +1848,6 @@ Display Objects
 
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
 
-
 		<cfif variables.$.siteConfig('hasLockableNodes')>
 			<cfset var configuratorAction="carch.lockcheck&destAction=">
 		<cfelse>
@@ -1972,8 +1971,6 @@ Display Objects
 		</cfif>
 
 		<cfset this.hasEditableObjects=true>
-	
-		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class)>
 	</cfif>
 
 	<cfswitch expression="#arguments.object#">
@@ -2067,14 +2064,13 @@ Display Objects
 		<!--- END DEPRICATED --->
 	</cfswitch>
 
-	<cfif request.muraValidObject and showEditable>
-		<cfset theObject=theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+	<cfif request.muraValidObject and showEditable and not findNoCase(theObject,"mura-async-object")>
+		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
 	<cfelseif not request.muraValidObject>
 		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
 		<cfset request.muraValidObject=true>
 	</cfif>
-
-
+	
 	<cfreturn trim(theObject) />
 </cffunction>
 

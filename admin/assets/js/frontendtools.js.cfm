@@ -232,8 +232,13 @@
 		}
 	}
 
-	function resizeEditableObjects(){
-		$(".editableObjectContents").each(	
+	function resizeEditableObjects(target){
+
+		if(typeof target=='undefined'){
+			target=document;
+		}
+		
+		$(target).find(".editableObjectContents").each(	
 			function(el){
 				var display="inline";	
 				var width=0;

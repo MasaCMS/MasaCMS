@@ -40,7 +40,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,renderForm",
+			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,renderAsyncObject",
 			entities={
 				'contentnav'={
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
@@ -127,7 +127,7 @@ component extends="mura.cfobject" {
 				} else if(listFindNoCase('float,numeric,double',properties[p].datatype)){
 					serializer.asFloat(properties[p].name);
 				} else if(listFindNoCase('date,datetime,timestamp',properties[p].datatype)){
-					//serializer.asDate(properties[p].name);
+					serializer.asDate(properties[p].name);
 				}
 			} catch(Any e){}
 		}
@@ -180,7 +180,7 @@ component extends="mura.cfobject" {
 					throw(type="invalidMethodCall");
 				}
 
-				if(!(listFindNoCase('renderform,validate',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
+				if(!(listFindNoCase('validate,renderAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
 					throw(type='authorization');
 				}
 
@@ -1305,33 +1305,44 @@ component extends="mura.cfobject" {
 
 	}
 
-	function renderForm(siteid,contenthistid,formid){
-		var $=getBean('$').init(arguments.siteid);
-		
-		$.event('contentBean',$.getBean('content').loadBy(contenthistid=arguments.contenthistid));
+	function renderAsyncObject(siteid){
+		request.siteid=arguments.siteid;
+		session.siteid=request.siteid;
+		request.servletEvent=new mura.servletEvent();
+		var $=request.servletEvent.getValue("MuraScope");
+		$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
+		request.crumbdata=$.content().getCrumbArray();
 
-		if($.siteConfig('dataCollection')){
-			//Turn off cfformprotext js
-			request.cffpJS=true;
+		//Turn off cfformprotext js
+		request.cffpJS=true;
 
-			if(isValid("UUID",arguments.formid)){
-				var bean = $.getBean("content").loadBy(contentID=arguments.formid,siteID=arguments.siteID);
-			} else {
-				var bean = $.getBean("content").loadBy(title=arguments.formid,siteID=arguments.siteID,type='Form');
-			}
-			//variables.rsForm=bean.getAllValues();
-			$.event("formBean",bean);
-		
-			if(!bean.getIsNew() && bean.getIsOnDisplay()){
-				return {html=$.getBean('dataCollectionBean')
-					.set($.event().getAllValues())
-					.render($)};
-				
-			}
+		switch($.event('object')){
+			case 'login':
+				if(getHTTPRequestData().method == 'POST' && len($.event('username')) && len($.event('password'))){
+
+					if(getBean('loginManager').remoteLogin($.event().getAllValues(),'')){
+						return {redirect=$.event('returnURL')};
+					} else {
+						$.event('status','failed');
+					}
+				}
+
+				return {
+					html=$.dspObject_Include(theFile='dsp_login.cfm')
+				};
+
+				break;
+
 		}
-
-		return '';
-
+		
+		var result={html=$.dspObject(object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid)};
+		
+		if(isdefined('request.muraAjaxRedirectURL')){
+			return {redirect=request.muraAjaxRedirectURL};
+		} else {
+			return result;
+		}
+	
 	}
 
 	function generateCSRFTokens(siteid,context){

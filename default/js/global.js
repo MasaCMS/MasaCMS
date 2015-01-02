@@ -78,6 +78,131 @@ cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('
 if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j;}
 throw new SyntaxError('JSON.parse');}};}();}
 
+/*
+ * arrive.js
+ * v2.0.0
+ * https://github.com/uzairfarooq/arrive
+ * MIT licensed
+ *
+ * Copyright (c) 2014 Uzair Farooq
+ */
+
+(function(q,r,m){function n(a,b,e){for(var d=0,c;c=a[d];d++)f.matchesSelector(c,b.selector)&&-1==b.firedElems.indexOf(c)&&(b.firedElems.push(c),e.push({callback:b.callback,elem:c})),0<c.childNodes.length&&n(c.childNodes,b,e)}function s(a){for(var b=0,e;e=a[b];b++)e.callback.call(e.elem)}function g(a){a.arrive=h.bindEvent;f.addMethod(a,"unbindArrive",h.unbindEvent);f.addMethod(a,"unbindArrive",h.unbindEventWithSelectorOrCallback);f.addMethod(a,"unbindArrive",h.unbindEventWithSelectorAndCallback);a.leave=
+k.bindEvent;f.addMethod(a,"unbindLeave",k.unbindEvent);f.addMethod(a,"unbindLeave",k.unbindEventWithSelectorOrCallback);f.addMethod(a,"unbindLeave",k.unbindEventWithSelectorAndCallback)}var f=function(){var a=HTMLElement.prototype.matches||HTMLElement.prototype.webkitMatchesSelector||HTMLElement.prototype.mozMatchesSelector||HTMLElement.prototype.msMatchesSelector;return{matchesSelector:function(b,e){return b instanceof HTMLElement&&a.call(b,e)},addMethod:function(b,a,d){var c=b[a];b[a]=function(){if(d.length==
+arguments.length)return d.apply(this,arguments);if("function"==typeof c)return c.apply(this,arguments)}}}}(),t=function(){var a=function(){this._eventsBucket=[];this._beforeRemoving=this._beforeAdding=null};a.prototype.addEvent=function(b,a,d,c){b={target:b,selector:a,options:d,callback:c,firedElems:[]};this._beforeAdding&&this._beforeAdding(b);this._eventsBucket.push(b);return b};a.prototype.removeEvent=function(b){for(var a=this._eventsBucket.length-1,d;d=this._eventsBucket[a];a--)b(d)&&(this._beforeRemoving&&
+this._beforeRemoving(d),this._eventsBucket.splice(a,1))};a.prototype.beforeAdding=function(b){this._beforeAdding=b};a.prototype.beforeRemoving=function(b){this._beforeRemoving=b};return a}();m=function(a,b,e){function d(b){"number"!==typeof b.length&&(b=[b]);return b}var c=new t;c.beforeAdding(function(b){var c=b.target,d;if(c===q.document||c===q)c=document.getElementsByTagName("html")[0];d=new MutationObserver(function(a){e.call(this,a,b)});var l=a(b.options);d.observe(c,l);b.observer=d});c.beforeRemoving(function(b){b.observer.disconnect()});
+this.bindEvent=function(a,e,p){"undefined"===typeof p&&(p=e,e=b);for(var l=d(this),f=0;f<l.length;f++)c.addEvent(l[f],a,e,p)};this.unbindEvent=function(){var b=d(this);c.removeEvent(function(a){for(var c=0;c<b.length;c++)if(a.target===b[c])return!0;return!1})};this.unbindEventWithSelectorOrCallback=function(b){var a=d(this);c.removeEvent("function"===typeof b?function(c){for(var d=0;d<a.length;d++)if(c.target===a[d]&&c.callback===b)return!0;return!1}:function(c){for(var d=0;d<a.length;d++)if(c.target===
+a[d]&&c.selector===b)return!0;return!1})};this.unbindEventWithSelectorAndCallback=function(b,a){var e=d(this);c.removeEvent(function(c){for(var d=0;d<e.length;d++)if(c.target===e[d]&&c.selector===b&&c.callback===a)return!0;return!1})};return this};var h=new m(function(a){var b={attributes:!1,childList:!0,subtree:!0};a.fireOnAttributesModification&&(b.attributes=!0);return b},{fireOnAttributesModification:!1},function(a,b){a.forEach(function(a){var d=a.addedNodes,c=a.target,g=[];null!==d&&0<d.length?
+n(d,b,g):"attributes"===a.type&&f.matchesSelector(c,b.selector)&&-1==b.firedElems.indexOf(c)&&(b.firedElems.push(c),g.push({callback:b.callback,elem:c}));s(g)})}),k=new m(function(a){return{childList:!0,subtree:!0}},{},function(a,b){a.forEach(function(a){a=a.removedNodes;var d=[];null!==a&&0<a.length&&n(a,b,d);s(d)})});r&&g(r.fn);g(HTMLElement.prototype);g(NodeList.prototype);g(HTMLCollection.prototype);g(HTMLDocument.prototype);g(Window.prototype)})(this,"undefined"===typeof jQuery?null:jQuery);
+
+
+(function($){
+    $.fn.serializeObject = function(){
+
+        var self = this,
+            json = {},
+            push_counters = {},
+            patterns = {
+                "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+                "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
+                "push":     /^$/,
+                "fixed":    /^\d+$/,
+                "named":    /^[a-zA-Z0-9_]+$/
+            };
+
+
+        this.build = function(base, key, value){
+            base[key] = value;
+            return base;
+        };
+
+        this.push_counter = function(key){
+            if(push_counters[key] === undefined){
+                push_counters[key] = 0;
+            }
+            return push_counters[key]++;
+        };
+
+        $.each($(this).serializeArray(), function(){
+
+            // skip invalid keys
+            if(!patterns.validate.test(this.name)){
+                return;
+            }
+
+            var k,
+                keys = this.name.match(patterns.key),
+                merge = this.value,
+                reverse_key = this.name;
+
+            while((k = keys.pop()) !== undefined){
+
+                // adjust reverse_key
+                reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+                // push
+                if(k.match(patterns.push)){
+                    merge = self.build([], self.push_counter(reverse_key), merge);
+                }
+
+                // fixed
+                else if(k.match(patterns.fixed)){
+                    merge = self.build([], k, merge);
+                }
+
+                // named
+                else if(k.match(patterns.named)){
+                    merge = self.build({}, k, merge);
+                }
+            }
+
+            json = $.extend(true, json, merge);
+        });
+
+        return json;
+    };
+})(jQuery);
+
+if (!Object.keys) {
+	  Object.keys = (function () {
+	    'use strict';
+	    var hasOwnProperty = Object.prototype.hasOwnProperty,
+	        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+	        dontEnums = [
+	          'toString',
+	          'toLocaleString',
+	          'valueOf',
+	          'hasOwnProperty',
+	          'isPrototypeOf',
+	          'propertyIsEnumerable',
+	          'constructor'
+	        ],
+	        dontEnumsLength = dontEnums.length;
+
+	    return function (obj) {
+	      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+	        throw new TypeError('Object.keys called on non-object');
+	      }
+
+	      var result = [], prop, i;
+
+	      for (prop in obj) {
+	        if (hasOwnProperty.call(obj, prop)) {
+	          result.push(prop);
+	        }
+	      }
+
+	      if (hasDontEnumBug) {
+	        for (i = 0; i < dontEnumsLength; i++) {
+	          if (hasOwnProperty.call(obj, dontEnums[i])) {
+	            result.push(dontEnums[i]);
+	          }
+	        }
+	      }
+	      return result;
+	    };
+	  }());
+	}
 var mura={dtCh: "/",
 		minYear:1900,
 		maxYear:2100,
@@ -468,6 +593,7 @@ function validateForm(frm,customaction) {
  				 		if(jQuery.isEmptyObject(data)){
  				 			if(typeof $customaction == 'function'){
  				 				$customaction(theForm);
+ 				 				return false;
  				 			} else {
  				 				theForm.submit();
  				 			}
@@ -682,20 +808,130 @@ function extendObject(obj1,obj2){
 	return obj1;
 }
 
-function setLowerCaseKeys(obj) {
-  var keys = Object.keys(obj);
-  var n = keys.length;
-  while (n--) {
-    var key = keys[n]; // "cache" it, for less lookups to the array
-    if (key !== key.toLowerCase()) { // might already be in its lower case version
-        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
-        delete obj[key] // delete the old key
-    }
-   	if(typeof obj[key.toLowerCase()] == 'object'){
-   		setLowerCaseKeys(obj[key.toLowerCase()]);
-   	}
-  }
-  return (obj);
+var setLowerCaseKeys=function (obj) {
+	$.map(obj, function(value, key) {
+	   
+	    if (key !== key.toLowerCase()) { // might already be in its lower case version
+	        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
+	        delete obj[key] // delete the old key
+	    }
+	   	if(typeof obj[key.toLowerCase()] == 'object'){
+	   		setLowerCaseKeys(obj[key.toLowerCase()]);
+	   	}
+	});
+
+	return (obj);
 }
 
-$(document).ready(setMuraLoginCheck);
+$(function(){
+	setMuraLoginCheck();
+
+	var renderAsyncObject=function(frm){
+		var self=frm;
+		var validateFormAjax=function(frm) {
+
+			if($(frm).attr('enctype')=='multipart/form-data'){
+				var params={
+				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				      type: 'POST',
+				      data: new FormData(frm),
+				      processData: false,
+				      contentType: false
+				    } 
+			
+			} else {
+				var params={
+				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				      type: 'POST',
+				      data: $.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid})
+				    } 
+			}
+
+			validateForm(frm,
+				function(frm){
+					$.ajax(params).then(function(resp){
+				    	
+				    	if('redirect' in resp.data){
+				    		location.href=resp.data.redirect;
+				    	} else {
+				    		$(self).html(resp.data.html);
+
+				    		if($(self).data('object')=='comments'){
+				    			initMuraComments();
+				    		} else if($(self).data('object')=='form' && $(self).data('responsechart')==1){
+								var polllist=new Array();
+								frm.find("input[type='radio']").each(function(){
+									polllist.push($(this).val());
+								});
+								if(polllist.length > 0) {
+									frm.append('<input type="hidden" name="polllist" value="' + polllist.toString() + '">');
+								}		
+							}
+
+				    		$(self).find('form').each(function(){
+				 				$(this).removeAttr('onsubmit');
+				 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+				 			});
+
+
+				 			$(self).find(".frontEndToolsModal").each(
+								function(){
+										jQuery(this).click(function(event){
+											event.preventDefault();
+											openFrontEndToolsModal(this);
+										}
+									);
+								});
+
+							resizeEditableObjects(self);
+				    	}
+				    	
+				    });
+
+				}
+			);
+
+			return false;
+			
+		}
+
+		var params=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
+		
+		$.ajax( {
+	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+	      type: 'GET',
+	      data: params
+		}).then(function(resp){
+	 			$(self).html(resp.data.html);
+	 			
+	 			if($(self).data('object')=='comments'){
+				    initMuraComments();
+	 			}
+
+	 			$(self).find('form').each(function(){
+	 				$(this).removeAttr('onsubmit');
+	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+	 			});
+
+	 			$(self).find(".frontEndToolsModal").each(
+					function(){
+						jQuery(this).click(function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
+				});
+
+				resizeEditableObjects(self);
+
+		});
+	}
+
+	$( ".mura-async-object" ).each( function() {
+		renderAsyncObject(this);
+	});
+
+	$(document).arrive( ".mura-async-object",function() {
+	 	renderAsyncObject(this);
+	});
+});

@@ -67,7 +67,8 @@ $.fn.changeElementType = function(newType) {
     return newelement;
 };
 
-$(function(){
+initMuraComments=function(){
+
 	var $editor = jQuery('#mura-comment-post-comment');
 	var $commentsProxyPath = mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
 	var $newcommentid = jQuery("#mura-comment-post-comment [name=commentid]").val();
@@ -81,6 +82,7 @@ $(function(){
 	};
 
 	 var initPage=function() {
+
 		loadPage(params).success(function(data){
 			data=setLowerCaseKeys(data);
 			if (data.count > 0) {
@@ -93,47 +95,6 @@ $(function(){
 			handleHash();
 		})
 			
-	}
-
-	if (!Object.keys) {
-	  Object.keys = (function () {
-	    'use strict';
-	    var hasOwnProperty = Object.prototype.hasOwnProperty,
-	        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-	        dontEnums = [
-	          'toString',
-	          'toLocaleString',
-	          'valueOf',
-	          'hasOwnProperty',
-	          'isPrototypeOf',
-	          'propertyIsEnumerable',
-	          'constructor'
-	        ],
-	        dontEnumsLength = dontEnums.length;
-
-	    return function (obj) {
-	      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-	        throw new TypeError('Object.keys called on non-object');
-	      }
-
-	      var result = [], prop, i;
-
-	      for (prop in obj) {
-	        if (hasOwnProperty.call(obj, prop)) {
-	          result.push(prop);
-	        }
-	      }
-
-	      if (hasDontEnumBug) {
-	        for (i = 0; i < dontEnumsLength; i++) {
-	          if (hasOwnProperty.call(obj, dontEnums[i])) {
-	            result.push(dontEnums[i]);
-	          }
-	        }
-	      }
-	      return result;
-	    };
-	  }());
 	}
 
 	var handleHash=function() {
@@ -162,23 +123,8 @@ $(function(){
 		}
 	}
 
-	var setLowerCaseKeys=function (obj) {
-
-		$.map(obj, function(value, key) {
-		   
-		    if (key !== key.toLowerCase()) { // might already be in its lower case version
-		        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
-		        delete obj[key] // delete the old key
-		    }
-		   	if(typeof obj[key.toLowerCase()] == 'object'){
-		   		setLowerCaseKeys(obj[key.toLowerCase()]);
-		   	}
-		});
-
-		return (obj);
-	}
-
 	var loadPage=function(ext) {
+
 		var params = {
 			method: "renderCommentsPage",
 			contentID: jQuery('#mura-comments-page').attr('data-contentid'),
@@ -188,7 +134,7 @@ $(function(){
 		};
 
 		jQuery.extend(params, ext);
-		
+
 		return jQuery.ajax({
 			dataType: "json",
 			url: $commentsProxyPath,
@@ -384,4 +330,4 @@ $(function(){
 
 	initPage();
 
-});
+}

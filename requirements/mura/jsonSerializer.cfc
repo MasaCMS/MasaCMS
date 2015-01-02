@@ -127,6 +127,8 @@ component
 
 		if ( structKeyExists( fullKeyList, key ) ) {
 
+			return this;
+			
 			throw( 
 				type = "DuplicateKey",
 				message = "The key [#key#] has already been defined within the serializer.",
@@ -207,7 +209,7 @@ component
 
 				// Write the date in ISO 8601 time string format. We're going to assume that the 
 				// date is already in the dezired timezone. 
-				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss.l" ) & "Z""" );
+				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & """" );
 
 			} else {
 
