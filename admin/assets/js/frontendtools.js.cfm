@@ -238,36 +238,49 @@
 		var width=0;
 		var float;
 
-		jQuery(target).find(".frontEndToolsModal").each(
+		jQuery(target).find(".editableObjectContents").each(
 			function(){
-				jQuery(this).click(function(event){
-					event.preventDefault();
-					openFrontEndToolsModal(this);
+				jQuery(this).find(".frontEndToolsModal").each(
+					function(){
+						jQuery(this).click(function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
+				});
+					
+				jQuery(this).children().each(
+					function(el){			
+						if ($(this).css("display") == "block") {
+							display = "block";
+							float=$(this).css("float");
+							width=$(this).outerWidth();
+						}											
+					}	
+				);
+					
+				jQuery(this).css("display",display).parent().css("display",display);
+					
+				if(width){
+					jQuery(this).width(width).parent().width(width);
+					jQuery(this).css("float",float).parent().css("float",float);
 				}
-			);
+
 		});
-				
-		jQuery(target).children().each(
-			function(el){			
-				if ($(this).css("display") == "block") {
-					display = "block";
-					float=$(this).css("float");
-					width=$(this).outerWidth();
-				}											
-			}	
-		);
-			
-		jQuery(target).css("display",display).parent().css("display",display);
-			
-		if(width){
-			jQuery(target).width(width).parent().width(width);
-			jQuery(target).css("float",float).parent().css("float",float);
+
+		if($('HTML').hasClass('mura-edit-mode')){
+			$(target).removeClass('editableObjectHide');
+		} else {
+			$(target).addClass('editableObjectHide');
 		}
-	
+		
 	}
 
 	jQuery(document).ready(		
 		function(){
+
+			checkToolbarDisplay();
+
 			jQuery(".frontEndToolsModal").each(
 				function(){
 					jQuery(this).click(function(event){
@@ -286,15 +299,15 @@
 				);
 			});
 
-			jQuery(".editableObjectContents").each(function(){
+			jQuery(".editableObject").each(function(){
 				resizeEditableObject(this);
 			});
 
-			jQuery(document).arrive(".editableObjectContents",function(){
+			jQuery(document).arrive(".editableObject",function(){
 				resizeEditableObject(this);
 			});
 			
-			checkToolbarDisplay();
+			
 			initAdminProxy();
 			
 			if(frontEndModalIE8){
@@ -304,7 +317,9 @@
 	);
 
 	$(window).resize(function() {
-  		resizeEditableObjects();
+  		jQuery(".editableObjectContents").each(function(){
+				resizeEditableObject(this);
+		});
 	});
 </cfoutput>
 </cfif>

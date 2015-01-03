@@ -896,7 +896,7 @@ $(function(){
 				 			});
 
 				 			if(typeof resizeEditableObject == 'function' ){
-				 				$(this).closest('.editableObjectContents').each(function(){ 
+				 				$(this).closest('.editableObject').each(function(){ 
 				 					resizeEditableObject(this);
 				 				});	
 				 			}
@@ -936,7 +936,7 @@ $(function(){
  			});
 
  			if(typeof resizeEditableObject == 'function' ){
- 				$(this).closest('.editableObjectContents').each(function(){ 
+ 				$(this).closest('.editableObject').each(function(){ 
  					resizeEditableObject(this);
  				});	
  			}
