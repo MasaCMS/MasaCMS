@@ -1753,7 +1753,7 @@ Display Objects
 
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
-		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#variables.event.getValue('nocache')#">
+		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
 			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>

@@ -446,7 +446,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 		if(bean.getIsOnDisplay() && bean.getForceSSL()){
 			request.forceSSL = 1;
 			request.cacheItem=false;
-		} else {
+		} else if (!bean.getDoCache()) {
 			request.cacheItem=bean.getDoCache();
 		}
 		return returnStr;
