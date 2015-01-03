@@ -894,20 +894,6 @@ $(function(){
 				 				$(this).removeAttr('onsubmit');
 				 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 				 			});
-
-
-				 			if(typeof resizeEditableObjects == 'function') {
-					 			$(self).find(".frontEndToolsModal").each(
-									function(){
-										$(this).click(function(event){
-											event.preventDefault();
-											openFrontEndToolsModal(this);
-										}
-									);
-								});
-
-								resizeEditableObjects(self);
-							}
 				    	}
 				    	
 				    });
@@ -942,19 +928,6 @@ $(function(){
 	 				$(this).removeAttr('onsubmit');
 	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 	 			});
-
-	 			if(typeof resizeEditableObjects == 'function') {
-		 			$(self).find(".frontEndToolsModal").each(
-						function(){
-							$(this).click(function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							}
-						);
-					});
-
-					resizeEditableObjects(self);
-				}
 
 		});
 	}
