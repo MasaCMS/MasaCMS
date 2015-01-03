@@ -894,6 +894,12 @@ $(function(){
 				 				$(this).removeAttr('onsubmit');
 				 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 				 			});
+
+				 			if(typeof resizeEditableObject == 'function' ){
+				 				$(this).closest('.editableObjectContents').each(function(){ 
+				 					resizeEditableObject(this);
+				 				});	
+				 			}
 				    	}
 				    	
 				    });
@@ -918,17 +924,22 @@ $(function(){
 	      dataType: 'JSON'
 		}).then(function(resp){
 
-	 			$(self).html(resp.data.html);
-	 		
-	 			if($(self).data('object')=='comments'){
-				    initMuraComments();
-	 			}
+ 			$(self).html(resp.data.html);
+ 		
+ 			if($(self).data('object')=='comments'){
+			    initMuraComments();
+ 			}
 
-	 			$(self).find('form').each(function(){
-	 				$(this).removeAttr('onsubmit');
-	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-	 			});
+ 			$(self).find('form').each(function(){
+ 				$(this).removeAttr('onsubmit');
+ 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+ 			});
 
+ 			if(typeof resizeEditableObject == 'function' ){
+ 				$(this).closest('.editableObjectContents').each(function(){ 
+ 					resizeEditableObject(this);
+ 				});	
+ 			}
 		});
 	}
 
