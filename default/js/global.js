@@ -844,6 +844,10 @@ $(function(){
 				if('objectparams' in checkdata){
 					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
 				}
+
+				if('nocache' in checkdata){
+					data.append('nocache',1);
+				}
 				
 				var params={
 				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
@@ -855,7 +859,7 @@ $(function(){
 				    } 
 			
 			} else {
-				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
+				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid,nocache:1});
 
 				if('objectparams' in data){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));
@@ -911,7 +915,7 @@ $(function(){
 			
 		}
 
-		var data=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid});
+		var data=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid,nocache:mura.nocache});
 		
 		if('objectparams' in data){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));

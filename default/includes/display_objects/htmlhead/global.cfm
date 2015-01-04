@@ -67,6 +67,7 @@ var mura={
 	siteID:"#variables.$.event('siteID')#", 
 	context:"#variables.$.globalConfig('context')#", 
 	jslib:"#variables.$.getJsLib()#",
+	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
 	htmlEditorType:"#variables.$.globalConfig('htmlEditorType')#",
