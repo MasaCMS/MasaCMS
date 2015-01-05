@@ -46,8 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 ---><cfoutput>
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.js"></script>
 <script type="text/javascript">
-$(function(){
-	initMura({
+initMura({
 	loginURL:"#variables.$.siteConfig('LoginURL')#",
 	siteid:"#variables.$.event('siteID')#",
 	contentid:"#variables.$.content('contentid')#",
@@ -63,13 +62,12 @@ $(function(){
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 	});
 <cfif structKeyExists(url,'muraadminpreview')>
-	$(function(){
-	   	$("a").attr('href', function(i, h) {
-	    return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#" : "?muraadminpreview&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#");
-		});
+$(function(){
+   	$("a").attr('href', function(i, h) {
+    return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#" : "?muraadminpreview&muraadminpreview&mobileformat=#$.event('muraMobileRequest')#");
 	});
-</cfif>
 });
+</cfif>
 <cfif Len(application.configBean.getWindowDocumentDomain())>
 window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
 </cfif>

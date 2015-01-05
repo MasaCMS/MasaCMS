@@ -59,13 +59,14 @@
 --->
 <cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfif request.muraFrontEndRequest>
-		<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 		<cfoutput>
 			<div class="mura-async-object" 
 				data-object="comments" 
 				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
+				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#"
+				data-script="#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.js"
+				data-script-init="initMuraComments">
 			</div>
 		</cfoutput>
 	<cfelse>

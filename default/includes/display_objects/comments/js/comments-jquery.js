@@ -331,3 +331,5 @@ initMuraComments=function(){
 	initPage();
 
 }
+
+initMuraComments();

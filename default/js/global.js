@@ -213,51 +213,59 @@ var initMura=function(config){
 		window.location = locationstring;
 	}
 
-	var setHTMLEditors=function(height,width,config) {
-		var allPageTags = document.getElementsByTagName("textarea");
-		var editors = new Array();
-		for (i = 0; i < allPageTags.length; i++) {
-			if (allPageTags[i].className.toLowerCase() == "htmleditor") {		
-				var instance=CKEDITOR.instances[allPageTags[i].id];
-				var conf={height:height,width:width};
-				if(config != null){
-					conf=extendObject(conf,config)
+	var CKEditorLoaded=false;
+
+	var setHTMLEditor=function(el) {
+		if(!CKEditorLoaded){
+			$.getScript(config.context + '/requirements/ckeditor/ckeditor.js').done(function(){
+				
+				$.getScript(config.context + '/requirements/ckeditor/adapters/jquery.js').done(function(){
+					CKEditorLoaded=true;
+					initEditor();
+				});
+			});
+		} else {
+			initEditor();
+		}
+
+		var initEditor=function(){
+			var instance=CKEDITOR.instances[$(el).attr('id')];
+			var conf={height:200,width:'70%'};
+			
+			if($(el).data('editorconfig')){
+				$.extend(conf,$(el).data('editorconfig'));
+			}
+				
+			if (instance) {
+				CKEDITOR.remove(instance);
+			} 
+
+			$('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);	
+
+			
+		}
+
+		var htmlEditorOnComplete=function( editorInstance ) { 		
+			var instance=jQuery(editorInstance).ckeditorGet();
+			instance.resetDirty();
+			var totalIntances=CKEDITOR.instances;
+			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;	
+		}
+
+		var getHTMLEditorConfig=function(customConfig) {
+			var attrname='';
+			var htmlEditorConfig={
+				toolbar:'htmlEditor',
+				customConfig : 'config.js.cfm'
 				}
-				if (instance) {
-					CKEDITOR.remove(instance);
-				} 
-				
-				/*
-				if(jQuery('#' + allPageTags[i].id).html() == ''){
-					jQuery('#' + allPageTags[i].id).html("<p></p>")
-				}*/
-				
-				jQuery('#' + allPageTags[i].id).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);		
+			
+			if(typeof(customConfig)== 'object'){	
+				$.extend(htmlEditorConfig,customConfig);
 			}
+			
+			return htmlEditorConfig;
 		}
-	}
 
-	var HTMLEditorLoadCount=0;
-
-	var htmlEditorOnComplete=function( editorInstance ) { 		
-		var instance=jQuery(editorInstance).ckeditorGet();
-		instance.resetDirty();
-		var totalIntances=CKEDITOR.instances;
-		//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;	
-	}
-
-	var getHTMLEditorConfig=function(customConfig) {
-		var attrname='';
-		var htmlEditorConfig={
-			toolbar:'htmlEditor',
-			customConfig : 'config.js.cfm'
-			}
-		
-		if(typeof(customConfig)== 'object'){	
-			htmlEditorConfig=extendObject(htmlEditorConfig,customConfig);
-		}
-		
-		return htmlEditorConfig;
 	}
 
 	var loginCheck=function(e){
@@ -780,9 +788,7 @@ var initMura=function(config){
 				    	} else {
 				    		$(self).html(resp.data.html);
 
-				    		if($(self).data('object')=='comments'){
-				    			initMuraComments();
-				    		} else if($(self).data('object')=='form' && $(self).data('responsechart')==1){
+				    		if($(self).data('object')=='form' && $(self).data('responsechart')==1){
 								var polllist=new Array();
 								frm.find("input[type='radio']").each(function(){
 									polllist.push($(this).val());
@@ -791,6 +797,10 @@ var initMura=function(config){
 									frm.append('<input type="hidden" name="polllist" value="' + polllist.toString() + '">');
 								}		
 							}
+
+							if($(self).data('script-init')){
+					    		eval('(' + $(self).data('script-init') + ')');
+					    	}
 
 				    		$(self).find('form').each(function(){
 				 				$(this).removeAttr('onsubmit');
@@ -828,8 +838,12 @@ var initMura=function(config){
 
  			$(self).html(resp.data.html);
  		
- 			if($(self).data('object')=='comments'){
-			    initMuraComments();
+ 			if($(self).data('script')){
+			    $.getScript($(self).data('script')).done(function(){
+			    	if($(self).data('script-init')){
+			    		eval('(' + $(self).data('script-init') + ')');
+			    	}
+			    });
  			}
 
  			$(self).find('form').each(function(){
@@ -845,25 +859,35 @@ var initMura=function(config){
 		});
 	}
 
-	var mura={};
-
-	$.extend(mura,config,{
+	$.extend(config,{
 		vaildateForm:validateForm,
 		processAsyncObject:processAsyncObject,
 		setLowerCaseKeys:setLowerCaseKeys,
 		vaildateForm:noSpam
 	});
 
+	mura=config;
 
-	$( ".mura-async-object" ).each( function() {
-		processAsyncObject(this);
+	$(function(){
+		$( ".mura-async-object" ).each( function() {
+			processAsyncObject(this);
+		});
+
+		$(document).arrive( ".mura-async-object",function() {
+		 processAsyncObject(this);
+		});
+
+		$( ".htmlEditor" ).each( function() {
+			setHTMLEditor(this);
+		});
+
+		$(document).arrive( ".htmlEditor",function() {
+		 	setHTMLEditor(this);
+		});
+
+		$(document).on('onkeydown',loginCheck);
+
+		$(document).trigger('muraReady');
 	});
 
-	$(document).arrive( ".mura-async-object",function() {
-	 processAsyncObject(this);
-	});
-
-	$(document).on('onkeydown',loginCheck);
-
-	return config;
 };
