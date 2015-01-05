@@ -738,6 +738,10 @@ var initMura=function(config){
 		return (obj);
 	}
 
+	if(!config.apiEndpoint){
+		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
+	}
+
 	var processAsyncObject=function(frm){
 		var self=frm;
 		var validateFormAjax=function(frm) {
@@ -762,7 +766,7 @@ var initMura=function(config){
 				}
 				
 				var postconfig={
-				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
+				      url:  config.apiEndpoint + '?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      processData: false,
@@ -778,7 +782,7 @@ var initMura=function(config){
 				}
 
 				var postconfig={
-				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
+				      url:  config.apiEndpoint + '?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      dataType: 'JSON'
@@ -836,7 +840,7 @@ var initMura=function(config){
 		}
 
 		$.ajax( {
-	      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
+	      url:  config.apiEndpoint + '?method=processAsyncObject',
 	      type: 'GET',
 	      data: data,
 	      dataType: 'JSON'
