@@ -447,89 +447,90 @@ var initMura=function(config){
 
 	}
 
-	var getValidationFieldName=function(theField){
-		if(theField.getAttribute('data-label')!=undefined){
-			return theField.getAttribute('data-label');
-		}else if(theField.getAttribute('label')!=undefined){
-			return theField.getAttribute('label');
-		}else{
-			return theField.getAttribute('name');
-		}
-	}
-
-	var getValidationIsRequired=function(theField){
-		if(theField.getAttribute('data-required')!=undefined){
-			return (theField.getAttribute('data-required').toLowerCase() =='true');
-		}else if(theField.getAttribute('required')!=undefined){
-			return (theField.getAttribute('required').toLowerCase() =='true');
-		}else{
-			return false;
-		}
-	}
-
-	var getValidationMessage=function(theField, defaultMessage){
-		if(theField.getAttribute('data-message') != undefined){
-			return theField.getAttribute('data-message');
-		} else if(theField.getAttribute('message') != undefined){
-			return theField.getAttribute('message') ;
-		} else {
-			return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-		}	
-	}
-
-	var getValidationType=function(theField){
-		if(theField.getAttribute('data-validate')!=undefined){
-			return theField.getAttribute('data-validate').toUpperCase();
-		}else if(theField.getAttribute('validate')!=undefined){
-			return theField.getAttribute('validate').toUpperCase();
-		}else{
-			return '';
-		}
-	}
-
-	var hasValidationMatchField=function(theField){
-		if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
-			return true;
-		}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
-			return true;
-		}else{
-			return false;
-		}
-	}
-
-	var getValidationMatchField=function (theField){
-		if(theField.getAttribute('data-matchfield')!=undefined){
-			return theField.getAttribute('data-matchfield');
-		}else if(theField.getAttribute('matchfield')!=undefined){
-			return theField.getAttribute('matchfield');
-		}else{
-			return '';
-		}
-	}
-
-	var hasValidationRegex=function(theField){
-		if(theField.value != undefined){
-			if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
-				return true;
-			}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
-				return true;
-			}
-		}else{
-			return false;
-		}
-	}
-
-	var getValidationRegex=function(theField){
-		if(theField.getAttribute('data-regex')!=undefined){
-			return theField.getAttribute('data-regex');
-		}else if(theField.getAttribute('regex')!=undefined){
-			return theField.getAttribute('regex');
-		}else{
-			return '';
-		}
-	}
-
 	var validateForm=function(frm,customaction) {
+
+			var getValidationFieldName=function(theField){
+				if(theField.getAttribute('data-label')!=undefined){
+					return theField.getAttribute('data-label');
+				}else if(theField.getAttribute('label')!=undefined){
+					return theField.getAttribute('label');
+				}else{
+					return theField.getAttribute('name');
+				}
+			}
+
+			var getValidationIsRequired=function(theField){
+				if(theField.getAttribute('data-required')!=undefined){
+					return (theField.getAttribute('data-required').toLowerCase() =='true');
+				}else if(theField.getAttribute('required')!=undefined){
+					return (theField.getAttribute('required').toLowerCase() =='true');
+				}else{
+					return false;
+				}
+			}
+
+			var getValidationMessage=function(theField, defaultMessage){
+				if(theField.getAttribute('data-message') != undefined){
+					return theField.getAttribute('data-message');
+				} else if(theField.getAttribute('message') != undefined){
+					return theField.getAttribute('message') ;
+				} else {
+					return getValidationFieldName(theField).toUpperCase() + defaultMessage;
+				}	
+			}
+
+			var getValidationType=function(theField){
+				if(theField.getAttribute('data-validate')!=undefined){
+					return theField.getAttribute('data-validate').toUpperCase();
+				}else if(theField.getAttribute('validate')!=undefined){
+					return theField.getAttribute('validate').toUpperCase();
+				}else{
+					return '';
+				}
+			}
+
+			var hasValidationMatchField=function(theField){
+				if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+					return true;
+				}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+					return true;
+				}else{
+					return false;
+				}
+			}
+
+			var getValidationMatchField=function (theField){
+				if(theField.getAttribute('data-matchfield')!=undefined){
+					return theField.getAttribute('data-matchfield');
+				}else if(theField.getAttribute('matchfield')!=undefined){
+					return theField.getAttribute('matchfield');
+				}else{
+					return '';
+				}
+			}
+
+			var hasValidationRegex=function(theField){
+				if(theField.value != undefined){
+					if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
+						return true;
+					}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
+						return true;
+					}
+				}else{
+					return false;
+				}
+			}
+
+			var getValidationRegex=function(theField){
+				if(theField.getAttribute('data-regex')!=undefined){
+					return theField.getAttribute('data-regex');
+				}else if(theField.getAttribute('regex')!=undefined){
+					return theField.getAttribute('regex');
+				}else{
+					return '';
+				}
+			}
+
 			var theForm=frm;
 			var errors="";
 			var setFocus=0;
@@ -803,7 +804,7 @@ var initMura=function(config){
 								}		
 							}
 
-							if($(self).data('object-init')){
+							if($(self).data('objectinit')){
 					    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
 					    	}
 
@@ -844,8 +845,8 @@ var initMura=function(config){
  			$(self).html(resp.data.html);
  		
  			if($(self).data('objectscript')){
-			    $.getScript($(self).data('object-script')).done(function(){
-			    	if($(self).data('object-init')){
+			    $.getScript($(self).data('objectscript')).done(function(){
+			    	if($(self).data('objectinit')){
 			    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
 			    	}
 			    });
