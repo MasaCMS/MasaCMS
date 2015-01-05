@@ -40,7 +40,7 @@ component extends="mura.cfobject" {
 
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,renderAsyncObject",
+			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject",
 			entities={
 				'contentnav'={
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
@@ -180,7 +180,7 @@ component extends="mura.cfobject" {
 					throw(type="invalidMethodCall");
 				}
 
-				if(!(listFindNoCase('validate,renderAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
+				if(!(listFindNoCase('validate,processAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
 					throw(type='authorization');
 				}
 
@@ -1305,7 +1305,7 @@ component extends="mura.cfobject" {
 
 	}
 
-	function renderAsyncObject(siteid){
+	function processAsyncObject(siteid){
 
 		if(!isDefined('arguments.siteid')){
 			throw(type="invalidParameters");

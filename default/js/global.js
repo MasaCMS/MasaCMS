@@ -850,7 +850,7 @@ $(function(){
 				}
 				
 				var params={
-				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      processData: false,
@@ -866,7 +866,7 @@ $(function(){
 				}
 
 				var params={
-				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      dataType: 'JSON'
@@ -922,7 +922,7 @@ $(function(){
 		}
 
 		$.ajax( {
-	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 	      type: 'GET',
 	      data: data,
 	      dataType: 'JSON'
