@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listfind(variables.$.event('doaction'),"setReminder")>
 	<em>#variables.$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
-	<form class="well" name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
+	<form class="well" name="reminderFrm" action="?nocache=1" method="post" onsubmit="return mura.validateForm(this);" novalidate="novalidate" >
 	<fieldset>
 	<ol>
 	<li class="req control-group"><label class="control-label" for="email">#variables.$.rbKey('event.email')#*</label>

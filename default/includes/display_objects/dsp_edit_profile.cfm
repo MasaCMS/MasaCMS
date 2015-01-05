@@ -84,7 +84,7 @@
 
 				<!--- EDIT PROFILE FORM --->
 				<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
-				<form role="form" name="profile" id="profile" action="?nocache=1" class="#this.editProfileFormClass# <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data" novalidate="novalidate">
+				<form role="form" name="profile" id="profile" action="?nocache=1" class="#this.editProfileFormClass# <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return mura.validateForm(this);"  enctype="multipart/form-data" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.contactinformation')#</legend>
 

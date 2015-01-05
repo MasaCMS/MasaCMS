@@ -191,7 +191,7 @@
 				<cfelse>
 					<cfsavecontent variable="errorJSTxt">
 						<script type="text/javascript">
-							addLoadEvent(function(){
+							$(document).ready(function(){
 								window.location.hash="errors";
 							});
 						</script>
@@ -243,7 +243,7 @@
 				<span id="postcomment-comment" style="display: none"><a class="btn btn-default" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
 
 				<!--- THE FORM --->
-				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 					<a name="postcomment"></a>
 					<fieldset>
 

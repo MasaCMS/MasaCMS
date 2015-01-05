@@ -63,7 +63,7 @@
 	<cfif listfind(variables.$.event('doaction'),"forwardEmail")>
 	<p>#variables.$.rbKey('email.forwarded')#</p>
 	</cfif>
-	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate" >
+	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return mura.validateForm(this);" novalidate="novalidate" >
 	<fieldset>
 	<legend>#variables.$.rbKey('email.uptofive')#<legend>
 	<ul>
