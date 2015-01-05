@@ -65,7 +65,8 @@
 				data-object="comments" 
 				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#"/>
+				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
+			</div>
 		</cfoutput>
 	<cfelse>
 		<cfoutput>

@@ -56,7 +56,10 @@
 --->
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
-		<div class="mura-async-object" data-object="login" data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#" />
+		<div class="mura-async-object" 
+			data-object="login" 
+			data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#">
+		</div>
 	</cfoutput>
 <cfelse>
 	<cfif not isBoolean(variables.$.event('isBlocked'))>

@@ -1306,6 +1306,10 @@ component extends="mura.cfobject" {
 	}
 
 	function renderAsyncObject(siteid){
+
+		if(!isDefined('arguments.siteid')){
+			throw(type="invalidParameters");
+		}
 		request.siteid=arguments.siteid;
 		session.siteid=request.siteid;
 		request.servletEvent=new mura.servletEvent();

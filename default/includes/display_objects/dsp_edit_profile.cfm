@@ -56,7 +56,10 @@
 --->
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
-		<div class="mura-async-object" data-object="editprofile" data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#" />
+		<div class="mura-async-object" 
+			data-object="editprofile" 
+			data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#">
+		</div>
 	</cfoutput>
 <cfelse>
 	<cfsilent>

@@ -46,7 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
-		<div class="mura-async-object" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectparams=#serializeJSON(objectParams)#>
+		<div class="mura-async-object" 
+			data-object="#esapiEncode('html_attr',arguments.object)#" 
+			data-objectid="#esapiEncode('html_attr',arguments.objectid)#" 
+			data-objectparams=#serializeJSON(objectParams)#>
 		</div>
 	</cfoutput>
 <cfelse>
