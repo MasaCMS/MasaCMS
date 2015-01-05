@@ -45,6 +45,8 @@ function setHeightPrototype(theLI,theHeight){
 }
 
 
-addLoadEvent(setGallery);
+$(document).ready(function(){
+	setGallery();
+});
 
 

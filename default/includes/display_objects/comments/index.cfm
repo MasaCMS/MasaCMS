@@ -59,13 +59,14 @@
 --->
 <cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfif request.muraFrontEndRequest>
-		<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 		<cfoutput>
 			<div class="mura-async-object" 
 				data-object="comments" 
 				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
+				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#"
+				data-objectscript="#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.js"
+				data-objectinit="initMuraComments">
 			</div>
 		</cfoutput>
 	<cfelse>
@@ -201,7 +202,7 @@
 					<cfelse>
 						<cfsavecontent variable="errorJSTxt">
 							<script type="text/javascript">
-								addLoadEvent(function(){
+								$(document).ready(function(){
 									window.location.hash="errors";
 								});
 							</script>
@@ -271,7 +272,7 @@
 					<a id="mura-comment-post-comment-comment" style="display: none" class="#this.commentNewClass#" href="##mura-comment-post-comment">#variables.$.rbKey('comments.newcomment')#</a>
 
 					<!--- THE FORM --->
-					<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" onsubmit="return validate(this);" novalidate="novalidate">
+					<form role="form" id="mura-comment-post-comment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##mura-comments" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 						<fieldset>
 
 							<legend id="mura-comment-post-a-comment">#variables.$.rbKey('comments.postacomment')#</legend>

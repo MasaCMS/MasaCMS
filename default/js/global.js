@@ -164,669 +164,572 @@ n(d,b,g):"attributes"===a.type&&f.matchesSelector(c,b.selector)&&-1==b.firedElem
 })(jQuery);
 
 if (!Object.keys) {
-	  Object.keys = (function () {
-	    'use strict';
-	    var hasOwnProperty = Object.prototype.hasOwnProperty,
-	        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-	        dontEnums = [
-	          'toString',
-	          'toLocaleString',
-	          'valueOf',
-	          'hasOwnProperty',
-	          'isPrototypeOf',
-	          'propertyIsEnumerable',
-	          'constructor'
-	        ],
-	        dontEnumsLength = dontEnums.length;
+  Object.keys = (function () {
+    'use strict';
+    var hasOwnProperty = Object.prototype.hasOwnProperty,
+        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+        dontEnums = [
+          'toString',
+          'toLocaleString',
+          'valueOf',
+          'hasOwnProperty',
+          'isPrototypeOf',
+          'propertyIsEnumerable',
+          'constructor'
+        ],
+        dontEnumsLength = dontEnums.length;
 
-	    return function (obj) {
-	      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-	        throw new TypeError('Object.keys called on non-object');
-	      }
+    return function (obj) {
+      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+        throw new TypeError('Object.keys called on non-object');
+      }
 
-	      var result = [], prop, i;
+      var result = [], prop, i;
 
-	      for (prop in obj) {
-	        if (hasOwnProperty.call(obj, prop)) {
-	          result.push(prop);
-	        }
-	      }
+      for (prop in obj) {
+        if (hasOwnProperty.call(obj, prop)) {
+          result.push(prop);
+        }
+      }
 
-	      if (hasDontEnumBug) {
-	        for (i = 0; i < dontEnumsLength; i++) {
-	          if (hasOwnProperty.call(obj, dontEnums[i])) {
-	            result.push(dontEnums[i]);
-	          }
-	        }
-	      }
-	      return result;
-	    };
-	  }());
+      if (hasDontEnumBug) {
+        for (i = 0; i < dontEnumsLength; i++) {
+          if (hasOwnProperty.call(obj, dontEnums[i])) {
+            result.push(dontEnums[i]);
+          }
+        }
+      }
+      return result;
+    };
+  }());
+} 
+
+
+
+var initMura=function(config){
+
+	var noSpam=function(user,domain) {
+		locationstring = "mailto:" + user + "@" + domain;
+		window.location = locationstring;
 	}
-var mura={dtCh: "/",
-		minYear:1900,
-		maxYear:2100,
-		dtFormat:[0,1,2],
-		dtExample:"12/31/2017",
-		context:""
-	}
 
+	var CKEditorLoaded=false;
 
-function noSpam(user,domain) {
-	locationstring = "mailto:" + user + "@" + domain;
-	window.location = locationstring;
-}
-
-function isInteger(s){
-	var i;
-    for (i = 0; i < s.length; i++){   
-        // Check that current character is number.
-        var c = s.charAt(i);
-        if (((c < "0") || (c > "9"))) return false;
-    }
-    // All characters are numbers.
-    return true;
-}
-
-function createDate(str){
-					
-	var valueArray = str.split("/");
+	var setHTMLEditor=function(el) {
+		if(!CKEditorLoaded){
+			$.getScript(config.context + '/requirements/ckeditor/ckeditor.js').done(function(){
 				
-	var mon = valueArray[0];
-	var dt = valueArray[1];
-	var yr = valueArray[2];
-			
-	var date = new Date(yr, mon-1, dt);
-					
-	if(!isNaN(date.getMonth())){
-		return date;
-	} else {
-		return new Date();	
-	}
-						
-}
-				
-function dateToString(date){
-	var mon   = date.getMonth()+1;
-	var dt  = date.getDate();
-	var yr   = date.getFullYear();
-			
-	if(mon < 10){ mon="0" + mon;}
-	if(dt < 10){ dt="0" + dt;}
-					
-					
-	return mon + "/" + dt + "/20" + new String(yr).substring(2,4);			
-}
-				
-
-function stripCharsInBag(s, bag){
-	var i;
-    var returnString = "";
-    // Search through string's characters one by one.
-    // If character is not in bag, append to returnString.
-    for (i = 0; i < s.length; i++){   
-        var c = s.charAt(i);
-        if (bag.indexOf(c) == -1) returnString += c;
-    }
-    return returnString;
-}
-
-function daysInFebruary (year){
-	// February has 29 days in any year evenly divisible by four,
-    // EXCEPT for centurial years which are not also divisible by 400.
-    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
-}
-
-function DaysArray(n) {
-	for (var i = 1; i <= n; i++) {
-		this[i] = 31
-		if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
-		if (i==2) {this[i] = 29}
-   } 
-   return this
-}
-
-function isDate(dtStr,fldName){
-	var daysInMonth = DaysArray(12);
-	var dtArray= dtStr.split(mura.dtCh);
-	
-	if (dtArray.length != 3){
-		//alert("The date format for the "+fldName+" field should be : short")
-		return false
-	}
-	var strMonth=dtArray[mura.dtFormat[0]];
-	var strDay=dtArray[mura.dtFormat[1]];
-	var strYear=dtArray[mura.dtFormat[2]];
-	
-	/*
-	if(strYear.length == 2){
-		strYear="20" + strYear;
-	}
-	*/
-	strYr=strYear;
-	
-	if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
-	if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
-	for (var i = 1; i <= 3; i++) {
-		if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
-	}
-	
-	month=parseInt(strMonth)
-	day=parseInt(strDay)
-	year=parseInt(strYr)
-		
-	if (month<1 || month>12){
-		//alert("Please enter a valid month in the "+fldName+" field")
-		return false
-	}
-	if (day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
-		//alert("Please enter a valid day  in the "+fldName+" field")
-		return false
-	}
-	if (strYear.length != 4 || year==0 || year<mura.minYear || year>mura.maxYear){
-		//alert("Please enter a valid 4 digit year between "+mura.minYear+" and "+mura.maxYear +" in the "+fldName+" field")
-		return false
-	}
-	if (isInteger(stripCharsInBag(dtStr, mura.dtCh))==false){
-		//alert("Please enter a valid date in the "+fldName+" field")
-		return false
-	}
-return true;
-}
-
-function isEmail(cur){
-			var string1=cur
-			if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
-			{
-			return false;
-			}else{
-			return true;}
-
-}
-
-function validate(theForm) {
-	return validateForm(theForm);
-}
-
-function getValidationFieldName(theField){
-	if(theField.getAttribute('data-label')!=undefined){
-		return theField.getAttribute('data-label');
-	}else if(theField.getAttribute('label')!=undefined){
-		return theField.getAttribute('label');
-	}else{
-		return theField.getAttribute('name');
-	}
-}
-
-function getValidationIsRequired(theField){
-	if(theField.getAttribute('data-required')!=undefined){
-		return (theField.getAttribute('data-required').toLowerCase() =='true');
-	}else if(theField.getAttribute('required')!=undefined){
-		return (theField.getAttribute('required').toLowerCase() =='true');
-	}else{
-		return false;
-	}
-}
-
-function getValidationMessage(theField, defaultMessage){
-	if(theField.getAttribute('data-message') != undefined){
-		return theField.getAttribute('data-message');
-	} else if(theField.getAttribute('message') != undefined){
-		return theField.getAttribute('message') ;
-	} else {
-		return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-	}	
-}
-
-function getValidationType(theField){
-	if(theField.getAttribute('data-validate')!=undefined){
-		return theField.getAttribute('data-validate').toUpperCase();
-	}else if(theField.getAttribute('validate')!=undefined){
-		return theField.getAttribute('validate').toUpperCase();
-	}else{
-		return '';
-	}
-}
-
-function hasValidationMatchField(theField){
-	if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
-		return true;
-	}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
-		return true;
-	}else{
-		return false;
-	}
-}
-
-function getValidationMatchField(theField){
-	if(theField.getAttribute('data-matchfield')!=undefined){
-		return theField.getAttribute('data-matchfield');
-	}else if(theField.getAttribute('matchfield')!=undefined){
-		return theField.getAttribute('matchfield');
-	}else{
-		return '';
-	}
-}
-
-function hasValidationRegex(theField){
-	if(theField.value != undefined){
-		if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
-			return true;
-		}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
-			return true;
+				$.getScript(config.context + '/requirements/ckeditor/adapters/jquery.js').done(function(){
+					CKEditorLoaded=true;
+					initEditor();
+				});
+			});
+		} else {
+			initEditor();
 		}
-	}else{
-		return false;
-	}
-}
 
-function getValidationRegex(theField){
-	if(theField.getAttribute('data-regex')!=undefined){
-		return theField.getAttribute('data-regex');
-	}else if(theField.getAttribute('regex')!=undefined){
-		return theField.getAttribute('regex');
-	}else{
-		return '';
-	}
-}
+		var initEditor=function(){
+			var instance=CKEDITOR.instances[$(el).attr('id')];
+			var conf={height:200,width:'70%'};
+			
+			if($(el).data('editorconfig')){
+				$.extend(conf,$(el).data('editorconfig'));
+			}
+				
+			if (instance) {
+				CKEDITOR.remove(instance);
+			} 
 
-function validateForm(frm,customaction) {
-		var theForm=frm;
-		var errors="";
-		var setFocus=0;
-		var started=false;
-		var startAt;
-		var firstErrorNode;
-		var validationType='';
-		var validations={properties:{}};
-		var frmInputs = theForm.getElementsByTagName("input");	
-		var rules=new Array();
-		var data={};
-		var $customaction=customaction;
+			$('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);	
+
+			
+		}
+
+		var htmlEditorOnComplete=function( editorInstance ) { 		
+			var instance=jQuery(editorInstance).ckeditorGet();
+			instance.resetDirty();
+			var totalIntances=CKEDITOR.instances;
+			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;	
+		}
+
+		var getHTMLEditorConfig=function(customConfig) {
+			var attrname='';
+			var htmlEditorConfig={
+				toolbar:'htmlEditor',
+				customConfig : 'config.js.cfm'
+				}
+			
+			if(typeof(customConfig)== 'object'){	
+				$.extend(htmlEditorConfig,customConfig);
+			}
+			
+			return htmlEditorConfig;
+		}
+
+	}
+
+	var pressed_keys='';
+
+	var loginCheck=function(key){
 		
-		for (var f=0; f < frmInputs.length; f++) {
-		 var theField=frmInputs[f];
-		 validationType=getValidationType(theField).toUpperCase();
+		if(key==27){
+			pressed_keys = key.toString();
+			
+		} else if(key == 76){
+			pressed_keys = pressed_keys + "" + key.toString();
+		}
+
+		if (key !=27  && key !=76) {
+		pressed_keys = "";
+		}
+
+		if (pressed_keys != "") {
 		
-			rules=new Array();
-	
-			if(theField.style.display==""){
-				if(getValidationIsRequired(theField))
+		var aux = pressed_keys;
+		
+		if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
+			
+			if(typeof(config.loginURL) == "undefined"){
+				lu="?display=login";
+			} else{
+				lu=config.loginURL;
+			}
+			
+			if(typeof(config.returnURL) == "undefined"){
+				ru=location.href;
+			} else{
+				ru=config.returnURL;
+			}
+			pressed_keys = "";
+			
+			lu = new String(lu);
+			if(lu.indexOf('?') != -1){
+				location.href=lu + "&returnUrl=" + escape(ru);
+			} else {
+				location.href=lu + "?returnUrl=" + escape(ru);
+			}
+		}
+	    }
+	}
+
+	var isInteger=function(s){
+		var i;
+	    for (i = 0; i < s.length; i++){   
+	        // Check that current character is number.
+	        var c = s.charAt(i);
+	        if (((c < "0") || (c > "9"))) return false;
+	    }
+	    // All characters are numbers.
+	    return true;
+	}
+
+	var createDate=function(str){
+						
+		var valueArray = str.split("/");
+					
+		var mon = valueArray[0];
+		var dt = valueArray[1];
+		var yr = valueArray[2];
+				
+		var date = new Date(yr, mon-1, dt);
+						
+		if(!isNaN(date.getMonth())){
+			return date;
+		} else {
+			return new Date();	
+		}
+							
+	}
+					
+	var dateToString=function(date){
+		var mon   = date.getMonth()+1;
+		var dt  = date.getDate();
+		var yr   = date.getFullYear();
+				
+		if(mon < 10){ mon="0" + mon;}
+		if(dt < 10){ dt="0" + dt;}
+						
+						
+		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);			
+	}
+					
+
+	var stripCharsInBag=function(s, bag){
+		var i;
+	    var returnString = "";
+	    // Search through string's characters one by one.
+	    // If character is not in bag, append to returnString.
+	    for (i = 0; i < s.length; i++){   
+	        var c = s.charAt(i);
+	        if (bag.indexOf(c) == -1) returnString += c;
+	    }
+	    return returnString;
+	}
+
+	var daysInFebruary=function(year){
+		// February has 29 days in any year evenly divisible by four,
+	    // EXCEPT for centurial years which are not also divisible by 400.
+	    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
+	}
+
+	var DaysArray=function(n) {
+		for (var i = 1; i <= n; i++) {
+			this[i] = 31
+			if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
+			if (i==2) {this[i] = 29}
+	   } 
+	   return this
+	}
+
+	var isDate=function(dtStr,fldName){
+		var daysInMonth = DaysArray(12);
+		var dtArray= dtStr.split(config.dtCh);
+		
+		if (dtArray.length != 3){
+			//alert("The date format for the "+fldName+" field should be : short")
+			return false
+		}
+		var strMonth=dtArray[config.dtFormat[0]];
+		var strDay=dtArray[config.dtFormat[1]];
+		var strYear=dtArray[config.dtFormat[2]];
+		
+		/*
+		if(strYear.length == 2){
+			strYear="20" + strYear;
+		}
+		*/
+		strYr=strYear;
+		
+		if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
+		if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
+		for (var i = 1; i <= 3; i++) {
+			if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
+		}
+		
+		month=parseInt(strMonth)
+		day=parseInt(strDay)
+		year=parseInt(strYr)
+			
+		if (month<1 || month>12){
+			//alert("Please enter a valid month in the "+fldName+" field")
+			return false
+		}
+		if (day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
+			//alert("Please enter a valid day  in the "+fldName+" field")
+			return false
+		}
+		if (strYear.length != 4 || year==0 || year<config.minYear || year>config.maxYear){
+			//alert("Please enter a valid 4 digit year between "+config.minYear+" and "+config.maxYear +" in the "+fldName+" field")
+			return false
+		}
+		if (isInteger(stripCharsInBag(dtStr, config.dtCh))==false){
+			//alert("Please enter a valid date in the "+fldName+" field")
+			return false
+		}
+	return true;
+	}
+
+	var isEmail=function(cur){
+				var string1=cur
+				if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
+				{
+				return false;
+				}else{
+				return true;}
+
+	}
+
+	var getValidationFieldName=function(theField){
+		if(theField.getAttribute('data-label')!=undefined){
+			return theField.getAttribute('data-label');
+		}else if(theField.getAttribute('label')!=undefined){
+			return theField.getAttribute('label');
+		}else{
+			return theField.getAttribute('name');
+		}
+	}
+
+	var getValidationIsRequired=function(theField){
+		if(theField.getAttribute('data-required')!=undefined){
+			return (theField.getAttribute('data-required').toLowerCase() =='true');
+		}else if(theField.getAttribute('required')!=undefined){
+			return (theField.getAttribute('required').toLowerCase() =='true');
+		}else{
+			return false;
+		}
+	}
+
+	var getValidationMessage=function(theField, defaultMessage){
+		if(theField.getAttribute('data-message') != undefined){
+			return theField.getAttribute('data-message');
+		} else if(theField.getAttribute('message') != undefined){
+			return theField.getAttribute('message') ;
+		} else {
+			return getValidationFieldName(theField).toUpperCase() + defaultMessage;
+		}	
+	}
+
+	var getValidationType=function(theField){
+		if(theField.getAttribute('data-validate')!=undefined){
+			return theField.getAttribute('data-validate').toUpperCase();
+		}else if(theField.getAttribute('validate')!=undefined){
+			return theField.getAttribute('validate').toUpperCase();
+		}else{
+			return '';
+		}
+	}
+
+	var hasValidationMatchField=function(theField){
+		if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+			return true;
+		}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	var getValidationMatchField=function (theField){
+		if(theField.getAttribute('data-matchfield')!=undefined){
+			return theField.getAttribute('data-matchfield');
+		}else if(theField.getAttribute('matchfield')!=undefined){
+			return theField.getAttribute('matchfield');
+		}else{
+			return '';
+		}
+	}
+
+	var hasValidationRegex=function(theField){
+		if(theField.value != undefined){
+			if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
+				return true;
+			}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
+				return true;
+			}
+		}else{
+			return false;
+		}
+	}
+
+	var getValidationRegex=function(theField){
+		if(theField.getAttribute('data-regex')!=undefined){
+			return theField.getAttribute('data-regex');
+		}else if(theField.getAttribute('regex')!=undefined){
+			return theField.getAttribute('regex');
+		}else{
+			return '';
+		}
+	}
+
+	var validateForm=function(frm,customaction) {
+			var theForm=frm;
+			var errors="";
+			var setFocus=0;
+			var started=false;
+			var startAt;
+			var firstErrorNode;
+			var validationType='';
+			var validations={properties:{}};
+			var frmInputs = theForm.getElementsByTagName("input");	
+			var rules=new Array();
+			var data={};
+			var $customaction=customaction;
+			
+			for (var f=0; f < frmInputs.length; f++) {
+			 var theField=frmInputs[f];
+			 validationType=getValidationType(theField).toUpperCase();
+			
+				rules=new Array();
+		
+				if(theField.style.display==""){
+					if(getValidationIsRequired(theField))
+						{	
+							rules.push({
+								required: true,
+								message: getValidationMessage(theField,' is required.')
+							});
+							
+							 			
+						}
+					if(validationType != ''){
+							
+						if(validationType=='EMAIL' && theField.value != '')
+						{	
+							rules.push({
+								dataType: 'EMAIL',
+								message: getValidationMessage(theField,' must be a valid email address.')
+							});
+							
+									
+						}
+		
+						else if(validationType=='NUMERIC' && theField.value != '')
+						{	
+							rules.push({
+								dataType: 'NUMERIC',
+								message: getValidationMessage(theField,' must be numeric.')
+							});
+										
+						}
+						
+						else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
+						{	
+							rules.push({
+								regex: getValidationRegex(theField),
+								message: getValidationMessage(theField,' is not valid.')
+							});
+											
+						}
+						
+						else if(validationType=='MATCH' 
+								&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
+						{	
+							rules.push({
+								eq: theForm[getValidationMatchField(theField)].value,
+								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+							});
+										
+						}
+						
+						else if(validationType=='DATE' && theField.value != '')
+						{
+							rules.push({
+								dataType: 'DATE',
+								message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+							});
+							 
+						}
+					}
+					
+					if(rules.length){
+						validations.properties[theField.getAttribute('name')]=rules;
+						data[theField.getAttribute('name')]=theField.value;
+					}
+				}
+			}
+			var frmTextareas = theForm.getElementsByTagName("textarea");	
+			for (f=0; f < frmTextareas.length; f++) {
+			
+				
+					theField=frmTextareas[f];
+					validationType=getValidationType(theField);
+
+					rules=new Array();
+					 
+					if(theField.style.display=="" && getValidationIsRequired(theField))
 					{	
 						rules.push({
 							required: true,
-							message: getValidationMessage(theField,' is required.')
+							message: getValidationMessage(theField, ' is required.' )
 						});
 						
-						 			
+					}	
+
+					else if(validationType != ''){
+						if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
+						{	
+							rules.push({
+								regex: getValidationRegex(theField),
+								message: getValidationMessage(theField, ' is not valid.' )
+							});
+											
+						}
 					}
-				if(validationType != ''){
-						
-					if(validationType=='EMAIL' && theField.value != '')
-					{	
-						rules.push({
-							dataType: 'EMAIL',
-							message: getValidationMessage(theField,' must be a valid email address.')
-						});
-						
-								
+
+					if(rules.length){
+						validations.properties[theField.getAttribute('name')]=rules;
+						data[theField.getAttribute('name')]=theField.value;
 					}
-	
-					else if(validationType=='NUMERIC' && theField.value != '')
-					{	
-						rules.push({
-							dataType: 'NUMERIC',
-							message: getValidationMessage(theField,' must be numeric.')
-						});
-									
-					}
-					
-					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-					{	
-						rules.push({
-							regex: getValidationRegex(theField),
-							message: getValidationMessage(theField,' is not valid.')
-						});
-										
-					}
-					
-					else if(validationType=='MATCH' 
-							&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-					{	
-						rules.push({
-							eq: theForm[getValidationMatchField(theField)].value,
-							message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
-						});
-									
-					}
-					
-					else if(validationType=='DATE' && theField.value != '')
-					{
-						rules.push({
-							dataType: 'DATE',
-							message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
-						});
-						 
-					}
-				}
-				
-				if(rules.length){
-					validations.properties[theField.getAttribute('name')]=rules;
-					data[theField.getAttribute('name')]=theField.value;
-				}
 			}
-		}
-		var frmTextareas = theForm.getElementsByTagName("textarea");	
-		for (f=0; f < frmTextareas.length; f++) {
-		
 			
-				theField=frmTextareas[f];
-				validationType=getValidationType(theField);
+			var frmSelects = theForm.getElementsByTagName("select");	
+			for (f=0; f < frmSelects.length; f++) {
+					theField=frmSelects[f];
+					validationType=getValidationType(theField);
 
-				rules=new Array();
-				 
-				if(theField.style.display=="" && getValidationIsRequired(theField))
-				{	
-					rules.push({
-						required: true,
-						message: getValidationMessage(theField, ' is required.' )
-					});
-					
-				}	
+					rules=new Array();
 
-				else if(validationType != ''){
-					if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
+					if(theField.style.display=="" && getValidationIsRequired(theField))
 					{	
 						rules.push({
-							regex: getValidationRegex(theField),
-							message: getValidationMessage(theField, ' is not valid.' )
+							required: true,
+							message: getValidationMessage(theField, ' is required.' )
 						});
-										
 					}
-				}
 
-				if(rules.length){
-					validations.properties[theField.getAttribute('name')]=rules;
-					data[theField.getAttribute('name')]=theField.value;
-				}
-		}
-		
-		var frmSelects = theForm.getElementsByTagName("select");	
-		for (f=0; f < frmSelects.length; f++) {
-				theField=frmSelects[f];
-				validationType=getValidationType(theField);
+					if(rules.length){
+						validations.properties[theField.getAttribute('name')]=rules;
+						data[theField.getAttribute('name')]=theField.value;
+					}	
+			}
 
-				rules=new Array();
+			try{
+				//alert(JSON.stringify(validations));
 
-				if(theField.style.display=="" && getValidationIsRequired(theField))
-				{	
-					rules.push({
-						required: true,
-						message: getValidationMessage(theField, ' is required.' )
-					});
-				}
+				jQuery.ajax(
+					{
+						type: 'post',
+						url: config.context + '/index.cfm/_api/ajax/v1/?method=validate',
+						dataType: 'text',
+						data: {
+								data: escape(JSON.stringify(data)),
+								validations: escape(JSON.stringify(validations)),
+								version: 4
+							},
+						success: function(resp) {
+	 				 		var _data=eval('(' + resp + ')');
+	 				 		
+	 				 		data=_data.data;
+	 				 		
+	 				 		if(jQuery.isEmptyObject(data)){
+	 				 			if(typeof $customaction == 'function'){
+	 				 				$customaction(theForm);
+	 				 				return false;
+	 				 			} else {
+	 				 				theForm.submit();
+	 				 			}
+	 				 		} else {
+		 				 		var msg='';
+		 				 		for(var e in data){
+		 				 			msg=msg + data[e] + '\n';
+		 				 		}
 
-				if(rules.length){
-					validations.properties[theField.getAttribute('name')]=rules;
-					data[theField.getAttribute('name')]=theField.value;
-				}	
-		}
-
-		try{
-			//alert(JSON.stringify(validations));
-
-			jQuery.ajax(
-				{
-					type: 'post',
-					url: mura.context + '/index.cfm/_api/ajax/v1/?method=validate',
-					dataType: 'text',
-					data: {
-							data: escape(JSON.stringify(data)),
-							validations: escape(JSON.stringify(validations)),
-							version: 4
-						},
-					success: function(resp) {
- 				 		var _data=eval('(' + resp + ')');
- 				 		
- 				 		data=_data.data;
- 				 		
- 				 		if(jQuery.isEmptyObject(data)){
- 				 			if(typeof $customaction == 'function'){
- 				 				$customaction(theForm);
- 				 				return false;
- 				 			} else {
- 				 				theForm.submit();
- 				 			}
- 				 		} else {
-	 				 		var msg='';
-	 				 		for(var e in data){
-	 				 			msg=msg + data[e] + '\n';
+		 				 		alert(msg);
 	 				 		}
+						},
+						error: function(resp) {
+	 				 		
+	 				 		alert(JSON.stringify(resp));
+						}
 
-	 				 		alert(msg);
- 				 		}
-					},
-					error: function(resp) {
- 				 		
- 				 		alert(JSON.stringify(resp));
-					}
+					}		 
+				);
+			} 
+			catch(err){ 
+				console.log(err);
 
-				}		 
-			);
-		} 
-		catch(err){ 
-			console.log(err);
-
-		}
-
-	return false;
-		
-}
-
-function submitForm(frm,action,theClass){
-
-	if(validateForm(frm)){
-		
-		if(typeof(action) != 'undefined' && (action=='delete' && confirm('Delete ' + theClass +'?') || action!='delete')){
-			var frmInputs = frm.getElementsByTagName("input");	
-			for (f=0; f < frmInputs.length; f++){
-				if(frmInputs[f].getAttribute('name')=='action'){
-				frmInputs[f].setAttribute('value',action);
-				}
 			}
-	
-		}
 
-		frm.submit();
-		formSubmitted = true;
-	}	
-	return false;
-}
-
-function createCookie(name,value,days) {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
-}
-
-function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return unescape(c.substring(nameEQ.length,c.length));
-	}
-	return "";
-}
-
-function eraseCookie(name) {
-	createCookie(name,"",-1);
-}
-
-function addLoadEvent(func) {
-   var oldonload = window.onload;
-   if (typeof window.onload != 'function') {
-    window.onload = func;
-   } else {
-    window.onload = function() {
-     oldonload();
-     func();
-    }
-   }
-  }
- 
-function muraLoginCheck(e){
-	var key = (window.event) ? event.keyCode : e.keyCode;
-	
-	if(typeof(pressed_keys)=='undefined'){
-		pressed_keys="";
-	}
-	//alert(key);
-	if(key==27){
-		pressed_keys = key;
-		
-	} else if(key == 76){
-		pressed_keys = pressed_keys+""+key;
+		return false;
+			
 	}
 
-	if (key !=27  && key !=76) {
-	pressed_keys = "";
-	}
-
-	if (pressed_keys != "") {
-	
-	var aux = pressed_keys;
-	
-	if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
-		
-		if(typeof(mura.loginURL) == "undefined"){
-			lu="?display=login";
-		} else{
-			lu=mura.loginURL;
-		}
-		
-		if(typeof(mura.returnURL) == "undefined"){
-			ru=location.href;
-		} else{
-			ru=mura.returnURL;
-		}
-		pressed_keys = "";
-		
-		lu = new String(lu);
-		if(lu.indexOf('?') != -1){
-			location.href=lu + "&returnUrl=" + escape(ru);
-		} else {
-			location.href=lu + "?returnUrl=" + escape(ru);
-		}
-	}
-    }
-}
-
-
-function setMuraLoginCheck(){
-	document.onkeydown=muraLoginCheck;
-}
-
-function setHTMLEditors(height,width,config) {
-	var allPageTags = document.getElementsByTagName("textarea");
-	var editors = new Array();
-	for (i = 0; i < allPageTags.length; i++) {
-		if (allPageTags[i].className.toLowerCase() == "htmleditor") {
-			if (mura.htmlEditorType=='fckeditor') {
-				var oFCKeditor = new FCKeditor(allPageTags[i].id);
-				oFCKeditor.ToolbarSet			= "htmlEditor";
-				oFCKeditor.Config.EditorAreaCSS	= mura.themepath + '/css/editor.css';
-				oFCKeditor.Config.StylesXmlPath = mura.themepath + '/css/fckstyles.xml';
-				oFCKeditor.BasePath = context + '/wysiwyg/';
-				oFCKeditor.Height = height;
-				oFCKeditor.Width = width;
-				oFCKeditor.Config.ImageBrowser=false;
-				oFCKeditor.Config.ImageUpload=false;
-				oFCKeditor.Config.ForcePasteAsPlainText = true;
-				oFCKeditor.Config.StartupFocus = false;
-				oFCKeditor.ReplaceTextarea();
-				editors.push(oFCKeditor);
-			} else {
-				var instance=CKEDITOR.instances[allPageTags[i].id];
-				var conf={height:height,width:width};
-				if(config != null){
-					conf=extendObject(conf,config)
-				}
-				if (instance) {
-					CKEDITOR.remove(instance);
-				} 
-				
-				/*
-				if(jQuery('#' + allPageTags[i].id).html() == ''){
-					jQuery('#' + allPageTags[i].id).html("<p></p>")
-				}*/
-				
-				jQuery('#' + allPageTags[i].id).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);
-					
-			}
-		}
-	}
-}
-
-var HTMLEditorLoadCount=0;
-
-function htmlEditorOnComplete( editorInstance ) { 	
-	
-	if( mura.htmlEditorType=='fckeditor'){
-		editorInstance.ResetIsDirty();
-		var totalIntances=FCKeditorAPI.Instances;
-	}else{
-		var instance=jQuery(editorInstance).ckeditorGet();
-		instance.resetDirty();
-		var totalIntances=CKEDITOR.instances;
-		//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
-	}
- 
-}
-
-function getHTMLEditorConfig(customConfig) {
-	var attrname='';
-	var htmlEditorConfig={
-		toolbar:'htmlEditor',
-		customConfig : 'config.js.cfm'
-		}
-	
-	if(typeof(customConfig)== 'object'){	
-		htmlEditorConfig=extendObject(htmlEditorConfig,customConfig);
-	}
-	
-	return htmlEditorConfig;
-}
-
-function extendObject(obj1,obj2){
-	for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
-	return obj1;
-}
-
-var setLowerCaseKeys=function (obj) {
-	$.map(obj, function(value, key) {
+	var setLowerCaseKeys=function (obj) {
+		$.map(obj, function(value, key) {
 	   
-	    if (key !== key.toLowerCase()) { // might already be in its lower case version
-	        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
-	        delete obj[key] // delete the old key
-	    }
-	   	if(typeof obj[key.toLowerCase()] == 'object'){
-	   		setLowerCaseKeys(obj[key.toLowerCase()]);
-	   	}
-	});
+		   if (key !== key.toLowerCase()) { // might already be in its lower case version
+		        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
+		        delete obj[key] // delete the old key
+		    }
+		   	if(typeof obj[key.toLowerCase()] == 'object'){
+		   		setLowerCaseKeys(obj[key.toLowerCase()]);
+		   	}
+		});
 
-	return (obj);
-}
+		return (obj);
+	}
 
-$(function(){
-	setMuraLoginCheck();
-
-	var renderAsyncObject=function(frm){
+	var processAsyncObject=function(frm){
 		var self=frm;
 		var validateFormAjax=function(frm) {
 
@@ -849,8 +752,8 @@ $(function(){
 					data.append('nocache',1);
 				}
 				
-				var params={
-				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				var postconfig={
+				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      processData: false,
@@ -859,14 +762,14 @@ $(function(){
 				    } 
 			
 			} else {
-				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid,nocache:1});
+				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
 
 				if('objectparams' in data){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));
 				}
 
-				var params={
-				      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+				var postconfig={
+				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
 				      dataType: 'JSON'
@@ -875,16 +778,14 @@ $(function(){
 
 			validateForm(frm,
 				function(frm){
-					$.ajax(params).then(function(resp){
-				    	
+					$.ajax(postconfig).then(function(resp){
+				    
 				    	if('redirect' in resp.data){
 				    		location.href=resp.data.redirect;
 				    	} else {
 				    		$(self).html(resp.data.html);
 
-				    		if($(self).data('object')=='comments'){
-				    			initMuraComments();
-				    		} else if($(self).data('object')=='form' && $(self).data('responsechart')==1){
+				    		if($(self).data('object')=='form' && $(self).data('responsechart')==1){
 								var polllist=new Array();
 								frm.find("input[type='radio']").each(function(){
 									polllist.push($(this).val());
@@ -893,6 +794,10 @@ $(function(){
 									frm.append('<input type="hidden" name="polllist" value="' + polllist.toString() + '">');
 								}		
 							}
+
+							if($(self).data('object-init')){
+					    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+					    	}
 
 				    		$(self).find('form').each(function(){
 				 				$(this).removeAttr('onsubmit');
@@ -915,14 +820,14 @@ $(function(){
 			
 		}
 
-		var data=$.extend($(self).data(),{siteid:mura.siteid,contentid:mura.contentid,contenthistid:mura.contenthistid,nocache:mura.nocache});
+		var data=$.extend($(self).data(),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache});
 		
 		if('objectparams' in data){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));
 		}
 
 		$.ajax( {
-	      url:  mura.context + '/index.cfm/_api/ajax/v1/?method=renderAsyncObject',
+	      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 	      type: 'GET',
 	      data: data,
 	      dataType: 'JSON'
@@ -930,9 +835,15 @@ $(function(){
 
  			$(self).html(resp.data.html);
  		
- 			if($(self).data('object')=='comments'){
-			    initMuraComments();
- 			}
+ 			if($(self).data('objectscript')){
+			    $.getScript($(self).data('object-script')).done(function(){
+			    	if($(self).data('object-init')){
+			    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+			    	}
+			    });
+ 			} else if($(self).data('objectinit')){
+			    eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+			}
 
  			$(self).find('form').each(function(){
  				$(this).removeAttr('onsubmit');
@@ -947,11 +858,37 @@ $(function(){
 		});
 	}
 
-	$( ".mura-async-object" ).each( function() {
-		new renderAsyncObject(this);
+	$.extend(config,{
+		vaildateForm:validateForm,
+		processAsyncObject:processAsyncObject,
+		setLowerCaseKeys:setLowerCaseKeys,
+		vaildateForm:noSpam
 	});
 
-	$(document).arrive( ".mura-async-object",function() {
-	 	new renderAsyncObject(this);
+	mura=config;
+
+	$(function(){
+		$( ".mura-async-object" ).each( function() {
+			processAsyncObject(this);
+		});
+
+		$(document).arrive( ".mura-async-object",function() {
+		 processAsyncObject(this);
+		});
+
+		$( ".htmlEditor" ).each( function() {
+			setHTMLEditor(this);
+		});
+
+		$(document).arrive( ".htmlEditor",function() {
+		 	setHTMLEditor(this);
+		});
+
+		$(document).on('keydown',function(event){
+			loginCheck(event.which);
+		});
+
+		$(document).trigger('muraReady');
 	});
-});
+
+};

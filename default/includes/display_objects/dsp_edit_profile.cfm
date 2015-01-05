@@ -55,6 +55,7 @@
 	Mura CMS.
 --->
 <cfif request.muraFrontEndRequest>
+	<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>
 	<cfoutput>
 		<div class="mura-async-object" 
 			data-object="editprofile" 
@@ -68,7 +69,6 @@
 		</cfif>
 
 		<cfparam name="msg" default="#variables.$.rbKey('user.message')#">
-		<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>
 	</cfsilent>
 	<cfoutput>
 		<#variables.$.getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#variables.$.rbKey('user.createprofile')#<cfelse>#variables.$.rbKey('user.editprofile')#</cfif></#variables.$.getHeaderTag('headline')#>
@@ -84,7 +84,7 @@
 
 				<!--- EDIT PROFILE FORM --->
 				<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
-				<form role="form" name="profile" id="profile" action="?nocache=1" class="#this.editProfileFormClass# <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data" novalidate="novalidate">
+				<form role="form" name="profile" id="profile" action="?nocache=1" class="#this.editProfileFormClass# <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return mura.validateForm(this);"  enctype="multipart/form-data" novalidate="novalidate">
 					<fieldset>
 						<legend>#variables.$.rbKey('user.contactinformation')#</legend>
 
@@ -323,7 +323,6 @@
 
 			<script type="text/javascript">
 				document.getElementById("profile").elements[0].focus();
-				setHTMLEditors(200,"70%");
 			</script>
 		<cfelse>
 

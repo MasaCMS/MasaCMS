@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <script src="#variables.$.siteConfig('assetPath')#/js/shadowbox.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-addLoadEvent(function(){
-    Shadowbox.init();
+$(function(){
+	Shadowbox.init();
 });
 </script>
 <link href="#variables.$.siteConfig('assetPath')#/css/shadowbox.min.css" rel="stylesheet" type="text/css" />

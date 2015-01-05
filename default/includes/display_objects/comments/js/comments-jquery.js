@@ -84,7 +84,7 @@ initMuraComments=function(){
 	 var initPage=function() {
 
 		loadPage(params).success(function(data){
-			data=setLowerCaseKeys(data);
+			data=mura.setLowerCaseKeys(data);
 			if (data.count > 0) {
 				jQuery('#mura-comments-page').html(data.htmloutput);
 				jQuery('#mura-comments-sort').show();
@@ -111,7 +111,7 @@ initMuraComments=function(){
 				};
 
 				loadPage(params).success(function(data){
-					data=setLowerCaseKeys(data);
+					data=mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
@@ -175,7 +175,7 @@ initMuraComments=function(){
 				};
 
 				loadPage(params).success(function(data){
-					data=setLowerCaseKeys(data);
+					data=mura.setLowerCaseKeys(data);
 					jQuery("#mura-more-comments").parent().remove();
 					jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 					bindEvents();
@@ -215,7 +215,7 @@ initMuraComments=function(){
 			};
 			
 			loadPage(params).success(function(data){
-				data=setLowerCaseKeys(data);
+				data=mura.setLowerCaseKeys(data);
 				a.parent().remove();
 				jQuery(data.htmloutput).appendTo('#mura-comments-page').hide().fadeIn();
 				bindEvents();
@@ -230,7 +230,7 @@ initMuraComments=function(){
 			};
 			
 			loadPage(params).success(function(data){
-				data=setLowerCaseKeys(data);
+				data=mura.setLowerCaseKeys(data);
 				jQuery('#mura-comments-page').html(data.htmloutput);	
 				bindEvents();
 			})
@@ -331,3 +331,5 @@ initMuraComments=function(){
 	initPage();
 
 }
+
+initMuraComments();
