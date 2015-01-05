@@ -748,14 +748,14 @@ var initMura=function(config){
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
+					data.append('objectparams', escape(JSON.stringify($(self).data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
 					data.append('nocache',1);
 				}
 				
-				var params={
+				var config={
 				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
@@ -771,7 +771,7 @@ var initMura=function(config){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));
 				}
 
-				var params={
+				var config={
 				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
@@ -781,7 +781,7 @@ var initMura=function(config){
 
 			validateForm(frm,
 				function(frm){
-					$.ajax(params).then(function(resp){
+					$.ajax(config).then(function(resp){
 				    	
 				    	if('redirect' in resp.data){
 				    		location.href=resp.data.redirect;
@@ -799,7 +799,7 @@ var initMura=function(config){
 							}
 
 							if($(self).data('object-init')){
-					    		eval('(' + $(self).data('object-init') + ')');
+					    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
 					    	}
 
 				    		$(self).find('form').each(function(){
@@ -838,14 +838,14 @@ var initMura=function(config){
 
  			$(self).html(resp.data.html);
  		
- 			if($(self).data('object-script')){
+ 			if($(self).data('objectscript')){
 			    $.getScript($(self).data('object-script')).done(function(){
 			    	if($(self).data('object-init')){
-			    		eval('(' + $(self).data('object-init') + ')');
+			    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
 			    	}
 			    });
- 			} else if($(self).data('object-init')){
-			    eval('(' + $(self).data('object-init') + ')');
+ 			} else if($(self).data('objectinit')){
+			    eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
 			}
 
  			$(self).find('form').each(function(){

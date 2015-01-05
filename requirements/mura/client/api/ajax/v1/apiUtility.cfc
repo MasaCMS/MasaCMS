@@ -1442,7 +1442,7 @@ component extends="mura.cfobject" {
 		}
 		
 		if(len($.event('objectparams2'))){
-			$.event('objectparams2',$.event('objectparams2'));
+			$.event('objectparams',$.event('objectparams2'));
 		}
 
 		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
