@@ -798,8 +798,8 @@ var initMura=function(config){
 								}		
 							}
 
-							if($(self).data('script-init')){
-					    		eval('(' + $(self).data('script-init') + ')');
+							if($(self).data('object-init')){
+					    		eval('(' + $(self).data('object-init') + ')');
 					    	}
 
 				    		$(self).find('form').each(function(){
@@ -838,13 +838,15 @@ var initMura=function(config){
 
  			$(self).html(resp.data.html);
  		
- 			if($(self).data('script')){
-			    $.getScript($(self).data('script')).done(function(){
-			    	if($(self).data('script-init')){
-			    		eval('(' + $(self).data('script-init') + ')');
+ 			if($(self).data('object-script')){
+			    $.getScript($(self).data('object-script')).done(function(){
+			    	if($(self).data('object-init')){
+			    		eval('(' + $(self).data('object-init') + ')');
 			    	}
 			    });
- 			}
+ 			} else if($(self).data('object-init')){
+			    eval('(' + $(self).data('object-init') + ')');
+			}
 
  			$(self).find('form').each(function(){
  				$(this).removeAttr('onsubmit');

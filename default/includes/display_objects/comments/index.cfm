@@ -65,8 +65,8 @@
 				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
 				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#"
-				data-script="#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.js"
-				data-script-init="initMuraComments">
+				data-object-script="#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.js"
+				data-object-init="initMuraComments">
 			</div>
 		</cfoutput>
 	<cfelse>
