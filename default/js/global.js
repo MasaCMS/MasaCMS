@@ -268,18 +268,15 @@ var initMura=function(config){
 
 	}
 
-	var loginCheck=function(e){
-		var key = (window.event) ? event.keyCode : e.keyCode;
+	var pressed_keys='';
+
+	var loginCheck=function(key){
 		
-		if(typeof(pressed_keys)=='undefined'){
-			pressed_keys="";
-		}
-		//alert(key);
 		if(key==27){
-			pressed_keys = key;
+			pressed_keys = key.toString();
 			
 		} else if(key == 76){
-			pressed_keys = pressed_keys+""+key;
+			pressed_keys = pressed_keys + "" + key.toString();
 		}
 
 		if (key !=27  && key !=76) {
