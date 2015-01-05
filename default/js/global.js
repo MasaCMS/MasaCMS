@@ -213,14 +213,22 @@ var initMura=function(config){
 		window.location = locationstring;
 	}
 
-	var CKEditorLoaded=false;
+	var initReCAPCHTA=function(el) {
+		if (!window['___grecaptcha_cfg']){
+			$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+		}
+	}
+
+	var initCFFormProtect=function(el) {
+		if(!window.CFFormProtect){
+			$.getScript(config.context + '/requirements/cfformprotect/js/cffp.js');
+		}
+	}
 
 	var setHTMLEditor=function(el) {
-		if(!CKEditorLoaded){
+		if(!window.CKEDITOR){
 			$.getScript(config.context + '/requirements/ckeditor/ckeditor.js').done(function(){
-				
 				$.getScript(config.context + '/requirements/ckeditor/adapters/jquery.js').done(function(){
-					CKEditorLoaded=true;
 					initEditor();
 				});
 			});
@@ -865,23 +873,39 @@ var initMura=function(config){
 		vaildateForm:noSpam
 	});
 
-	mura=config;
+	window.mura=config;
 
 	$(function(){
-		$( ".mura-async-object" ).each( function() {
+		$( ".mura-async-object" ).each( function(){
 			processAsyncObject(this);
 		});
 
-		$(document).arrive( ".mura-async-object",function() {
-		 processAsyncObject(this);
+		$(document).arrive( ".mura-async-object",function(){
+			processAsyncObject(this);
 		});
 
 		$( ".htmlEditor" ).each( function() {
 			setHTMLEditor(this);
 		});
 
-		$(document).arrive( ".htmlEditor",function() {
+		$(document).arrive( ".htmlEditor",function(){
 		 	setHTMLEditor(this);
+		});
+
+		if($( ".ffp_mm" ).length){
+			initCFFormProtect();
+		}
+
+		$(document).arrive( ".ffp_mm",function(){
+		 	initCFFormProtect();
+		});
+
+		if($( ".g-recaptcha" ).length){
+			initReCAPCHTA();
+		}
+
+		$(document).arrive( ".g-recaptcha",function(){
+		 	initReCAPCHTA();
 		});
 
 		$(document).on('keydown',function(event){

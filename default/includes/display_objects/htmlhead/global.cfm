@@ -57,8 +57,8 @@ initMura({
 	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
-	htmlEditorType:"#variables.$.globalConfig('htmlEditorType')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
+	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 	});
 <cfif structKeyExists(url,'muraadminpreview')>
