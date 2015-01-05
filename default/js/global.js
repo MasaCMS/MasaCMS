@@ -748,14 +748,14 @@ var initMura=function(config){
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams', escape(JSON.stringify($(self).data('objectparams'))));
+					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
 					data.append('nocache',1);
 				}
 				
-				var config={
+				var postconfig={
 				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
@@ -771,7 +771,7 @@ var initMura=function(config){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));
 				}
 
-				var config={
+				var postconfig={
 				      url:  config.context + '/index.cfm/_api/ajax/v1/?method=processAsyncObject',
 				      type: 'POST',
 				      data: data,
@@ -781,8 +781,8 @@ var initMura=function(config){
 
 			validateForm(frm,
 				function(frm){
-					$.ajax(config).then(function(resp){
-				    	
+					$.ajax(postconfig).then(function(resp){
+				    
 				    	if('redirect' in resp.data){
 				    		location.href=resp.data.redirect;
 				    	} else {
@@ -887,7 +887,9 @@ var initMura=function(config){
 		 	setHTMLEditor(this);
 		});
 
-		$(document).on('onkeydown',loginCheck);
+		$(document).on('keydown',function(event){
+			loginCheck(event.which);
+		});
 
 		$(document).trigger('muraReady');
 	});
