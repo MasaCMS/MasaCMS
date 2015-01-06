@@ -59,6 +59,7 @@ initMura({
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 	});
 <cfif structKeyExists(url,'muraadminpreview')>

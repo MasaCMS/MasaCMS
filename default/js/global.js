@@ -791,7 +791,7 @@ var initMura=function(config){
 
 			validateForm(frm,
 				function(frm){
-					$(self).html('<i class="fa fa-refresh fa-spin"></i>');
+					$(self).html(config.preloaderMarkup);
 					$.ajax(postconfig).then(function(resp){
 				    
 				    	if('redirect' in resp.data){
@@ -841,8 +841,8 @@ var initMura=function(config){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));
 		}
 
-		$(self).html('<i class="fa fa-refresh fa-spin"></i>');
-		
+		$(self).html(config.preloaderMarkup);
+
 		$.ajax({
 	      url:  config.apiEndpoint + '?method=processAsyncObject',
 	      type: 'GET',

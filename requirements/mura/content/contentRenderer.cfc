@@ -88,6 +88,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead4="h6">
 <!--- This is duplicated for when the page title gets set to h1 ---> 
 <cfset this.subHead5="h6">
+<!--- This is the preloader markup for async objects--->
+<cfset this.preloaderMarkup=''>
 <!--- These settings are for navigational display objects --->
 <cfset this.navWrapperClass="sidebar-nav well">
 <cfset this.navLIClass="">
