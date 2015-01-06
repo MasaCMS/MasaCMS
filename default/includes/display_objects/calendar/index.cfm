@@ -63,7 +63,7 @@
 		<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 	</div>
 	<div id="mura-calendar" class="mura-calendar-object"></div>
-	<div id="mura-calendar-loading">#this.preloaderMarkup#
+	<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 </div>
 <script>
 jQuery(document).ready(function($) {
