@@ -491,7 +491,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="handleAPIRequest" output="false">
-	<cfargument name="path_info">
+	<cfargument name="path" default="#cgi.path_info#">
 	<cfset var pageContent="">
 	<cfset var ajaxendpoint="/_api/ajax/v1">
 	<cfset var feedendpoint="/_api/feed/v1">
@@ -499,26 +499,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var emailendpoint="/_api/email/trackopen">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 
-	<cfif left(path_info,len(ajaxendpoint)) eq ajaxendpoint>
+	<cfif left(path,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest()>	
+			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest()>	
-		<cfelseif listLen(path_info,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path_info,4,'/')).getApi('ajax','v1').processRequest()>	
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
+		<cfelseif listLen(path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('ajax','v1').processRequest(arguments.path)>	
 		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest()>	
+			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest(arguments.path)>	
 		</cfif>
-	<cfelseif isDefined('url.feedid') and listLen(path_info,'/') gte 2 and left(path_info,len(feedendpoint)) eq feedendpoint>
-		<cfreturn getBean('settingsManager').getSite(listGetAt(path_info,2,'/')).getApi('feed','v1').processRequest()>	
-	<cfelseif isDefined('url.emailid') and left(path_info,len(emailendpoint)) eq emailendpoint>
+	<cfelseif isDefined('url.feedid') and listLen(path,'/') gte 2 and left(path,len(feedendpoint)) eq feedendpoint>
+		<cfreturn getBean('settingsManager').getSite(listGetAt(path,2,'/')).getApi('feed','v1').processRequest(arguments.path)>	
+	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>
 		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
 		<cfset var theImg="">
 		<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
 		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
 		<cfreturn>
-	<cfelseif isDefined('url.fileid') and listLen(path_info,'/') gte 2 and  left(path_info,len(fileendpoint)) eq fileendpoint>
-		<cfswitch expression="#listGetAt(path_info,2,'/')#">
+	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and  left(path,len(fileendpoint)) eq fileendpoint>
+		<cfswitch expression="#listGetAt(path,2,'/')#">
 			<cfcase value="file">
 				<cfparam name="url.method" default="inline">
 				<cfparam name="url.size" default="">
@@ -531,7 +531,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.contentRenderer.renderMedium(url.fileID)>
 			</cfcase>
 		</cfswitch>
-	<cfelseif left(path_info,len(sitemonitorendpoint)) eq sitemonitorendpoint>
+	<cfelseif left(path,len(sitemonitorendpoint)) eq sitemonitorendpoint>
 		<cfset var theTime=now()/>
 		<cfset var emailList="" />
 		<cfset var theemail="" />

@@ -145,7 +145,7 @@ component extends="mura.cfobject" {
 		return {'items'=arguments._array};
 	}
 
-	function processRequest(){
+	function processRequest(path=cgi.path_info){
 
 		try {
 			var responseObject=getpagecontext().getresponse();
@@ -157,7 +157,7 @@ component extends="mura.cfobject" {
 			structAppend(form,params);
 
 			var paramsArray=[];
-			var pathInfo=listToArray(cgi.path_info,'/');
+			var pathInfo=listToArray(arguments.path,'/');
 			var method="GET";
 			var httpRequestData=getHTTPRequestData();
 
