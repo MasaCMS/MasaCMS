@@ -26,7 +26,7 @@ component extends="mura.cfobject" {
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 		
-		if(getBean('utility').isHTTPS()){
+		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ){
 			var protocol="https://";
 		} else {
 			var protocol="http://";

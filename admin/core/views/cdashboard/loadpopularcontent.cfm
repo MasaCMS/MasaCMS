@@ -59,13 +59,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 	<td><cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		<cfcase value="Link">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		</cfswitch> <span>(#rsList.hits# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
@@ -122,13 +122,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
 	<td><cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
 		</cfcase>
 		<cfcase value="Link">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
 		</cfcase>
 		</cfswitch> <img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
 </tr>

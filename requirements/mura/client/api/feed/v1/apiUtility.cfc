@@ -20,7 +20,7 @@
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 		
-		if(getBean('utility').isHTTPS()){
+		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ) {
 			var protocol="https://";
 		} else {
 			var protocol="http://";
@@ -282,7 +282,7 @@
 		<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" >
 			<channel>
 				<title>#XMLFormat(arguments.feed.renderName())#</title> 
-				<link>http://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link> 
+				<link>#application.settingsManager.getSite(arguments.feed.getSiteID()).getScheme()#://#application.settingsManager.getSite(arguments.feed.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link> 
 				<description>#XMLFormat(arguments.feed.getDescription())#</description> 
 				<webMaster>#application.settingsManager.getSite(arguments.feed.getSiteID()).getContact()#</webMaster>
 				<generator>http://www.getmura.com</generator>
@@ -350,7 +350,7 @@
 					<description>#XMLFormat(itemdescription)#</description>
 					<cfloop query="rsCats"><category>#XMLFormat(rsCats.name)#</category>	
 					</cfloop><!---<cfif item.getType() eq "Page" and len(itemcontent)><content:encoded><![CDATA[#itemcontent#]]></content:encoded>
-					</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+					</cfif>---><cfif len(item.getFileID())><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('#application.settingsManager.getSite(item.getValue('siteid')).getScheme()#://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 				</item>
 		</cfloop></channel>
 		</rss></cfoutput>

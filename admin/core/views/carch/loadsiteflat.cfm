@@ -433,12 +433,12 @@ if(len($.siteConfig('customTagGroups'))){
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#application.settingsManager.getSite(item.getSiteID()).getScheme()#://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#application.settingsManager.getSite(item.getSiteID()).getScheme()#://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							<cfif item.getType() eq "File">
-							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/index.cfm?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
+							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 							</cfif>
 							</cfcase>
 						</cfswitch>
@@ -462,10 +462,10 @@ if(len($.siteConfig('customTagGroups'))){
 					    <li class="edit disabled"><i class="icon-pencil"></i></li>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="Preview" href="##" onclick="return preview('#application.settingsManager.getSite(item.getSiteID()).getScheme()#://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#application.settingsManager.getSite(item.getSiteID()).getScheme()#://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 						</cfswitch>
 						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
