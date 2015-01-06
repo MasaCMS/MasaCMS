@@ -67,8 +67,8 @@ $.fn.changeElementType = function(newType) {
     return newelement;
 };
 
-initMuraComments=function(){
-
+initMuraComments=function(config){
+	
 	var $editor = jQuery('#mura-comment-post-comment');
 	var $commentsProxyPath = mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
 	var $newcommentid = jQuery("#mura-comment-post-comment [name=commentid]").val();
@@ -331,5 +331,3 @@ initMuraComments=function(){
 	initPage();
 
 }
-
-initMuraComments();

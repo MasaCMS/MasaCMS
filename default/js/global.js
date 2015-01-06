@@ -809,7 +809,8 @@ var initMura=function(config){
 							}
 
 							if($(self).data('objectinit')){
-					    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+					    		var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
+			    				eval('(' + $(self).data('objectinit') + '(params)' + ')');
 					    	}
 
 				    		$(self).find('form').each(function(){
@@ -851,11 +852,13 @@ var initMura=function(config){
  			if($(self).data('objectscript')){
 			    $.getScript($(self).data('objectscript')).done(function(){
 			    	if($(self).data('objectinit')){
-			    		eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+			    		var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
+			   			eval('(' + $(self).data('objectinit') + '(params)' + ')');
 			    	}
 			    });
  			} else if($(self).data('objectinit')){
-			    eval('(' + $(self).data('objectinit') + '(' + $(self).data('objectparams') + ')' + ')');
+ 				var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
+			    eval('(' + $(self).data('objectinit') + '(params)' + ')');
 			}
 
  			$(self).find('form').each(function(){
