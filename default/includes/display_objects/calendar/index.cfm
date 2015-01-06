@@ -54,7 +54,8 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfset variables.$.addToHTMLHeadQueue('fullcalendar/queues/htmlhead.cfm') />
+<cfset variables.$.addToHTMLHeadQueue('calendar/queues/htmlhead.cfm') />
+<cfset request.cacheItem=false>
 <cfoutput>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
