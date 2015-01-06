@@ -45,7 +45,7 @@
 		              <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
 		              <cfswitch expression="#esapiEncode('url',item.getType())#">
 						<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
-							<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,item.getFilename())#?previewid=#item.getContentHistID()#'>
+							<cfset previewURL='#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,item.getFilename())#?previewid=#item.getContentHistID()#'>
 							<cfif rc.compactDisplay eq 'true'>
 								<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="icon-globe"></i></a></li>
 							<cfelse>

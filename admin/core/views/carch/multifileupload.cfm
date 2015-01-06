@@ -409,7 +409,7 @@ jQuery(document).ready(function(){
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
 
 <!-- blueimp Gallery script 
-<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
+<script src="#application.settingsManager.getSite(rc.siteid).getScheme()#://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
 -->
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>

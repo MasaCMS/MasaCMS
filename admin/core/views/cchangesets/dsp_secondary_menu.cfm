@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="./?muraAction=cChangesets.list&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="./?muraAction=cChangesets.edit&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('html',rc.changesetID)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a>
 				<cfif not rc.changeset.getPublished()>
-					<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
+					<cfset rc.previewLink="#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
 					<a class="btn" href="##" onclick="return preview('#esapiEncode('javascript',rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
 				</cfif>
 			</cfcase>
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not rc.changeset.getIsNew()>
 					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="./?muraAction=cChangesets.assignments&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#"><i class="icon-reorder"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a>
 					<cfif not rc.changeset.getPublished()>
-						<cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
+						<cfset rc.previewLink="#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
 						<a class="btn" href="##" onclick="return preview('#esapiEncode('javascript',rc.previewLink)#','');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.previewchangeset')#</a>
 				</cfif>
 				</cfif>
