@@ -55,6 +55,8 @@
   Mura CMS.
 --->
 <cfoutput>
+<cfset variables.bean=$.event('formBean')>
+<cfset variables.rsform=variables.bean.getAllValues()>
 <cfif StructKeyExists(request, 'polllist') and  variables.rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
 	
 	<cfset variables.customResponse=application.pluginManager.renderEvent("onFormSubmitPollRender",variables.event)>
@@ -128,7 +130,12 @@
 				<cfif isdefined("request.redirect_label")>
 					<p class="#this.alertSuccessClass#"><a href="#request.redirect_url#">#request.redirect_label#</a></p>
 				<cfelse>
-					<cflocation addtoken="false" url="#request.redirect_url#">
+					<cfif request.muraFrontEndRequest>
+						<cflocation addtoken="false" url="#request.redirect_url#">
+					<cfelse>
+						<cfset request.muraAjaxRedirectURL=request.redirect_url>
+					</cfif>
+					
 				</cfif>
 			</cfif>
 		</cfif>

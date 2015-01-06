@@ -87,7 +87,7 @@
 		<cfelse>
 
 			<!--- THE FORM --->
-			<form role="form" class="#this.mailingListFormClass#" id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
+			<form role="form" class="#this.mailingListFormClass#" id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return mura.validateForm(this);" novalidate="novalidate" >
 				<fieldset>
 					<legend>#variables.$.rbKey('mailinglist.mydetails')#</legend>
 

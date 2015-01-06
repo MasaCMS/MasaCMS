@@ -56,21 +56,34 @@
 --->
 <cfif variables.$.siteConfig('dataCollection')>
 	<cfsilent>
+    <cfset request.muraAsyncEditableObject=true>
+
 		<cfif isValid("UUID",arguments.objectID)>
 			<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 		<cfelse>
 			<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID,type='Form')>
 		</cfif>
-		<cfset variables.rsForm=bean.getAllValues()>
+	
 		<cfset variables.event.setValue("formBean",bean)>
 	</cfsilent>
-	<cfif not bean.getIsNew() and bean.getIsOnDisplay()>
-		<cfoutput>
-			#$.getBean('dataCollectionBean')
-			.set($.event().getAllValues())
-			.render($)#
-		</cfoutput>
-	<cfelse>
-		<cfset request.muraValidObject=false>
-	</cfif>
+
+	<cfoutput>
+    <cfif request.muraFrontEndRequest>
+        <div class="mura-async-object" 
+          data-object="form" 
+          data-objectid="#esapiEncode('html_attr',arguments.objectid)#" 
+          data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" 
+          data-objectparams=#serializeJSON(objectParams)#>
+        </div>
+    <cfelse>
+        <cfif not bean.getIsNew() and bean.getIsOnDisplay()>
+          <cfset variables.rsForm=bean.getAllValues()>
+          #$.getBean('dataCollectionBean')
+            .set($.event().getAllValues())
+            .render($)#
+          <cfelse>
+            <cfset request.muraValidObject=false>
+        </cfif>
+    </cfif>	
+	</cfoutput>
 </cfif>

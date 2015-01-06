@@ -305,8 +305,10 @@ order by tformresponsepackets.entered asc
 	<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
 </cfif>
 
+
 <cfsavecontent variable="frm"><cfoutput>
 #body#
+<cfif request.muraFrontEndRequest>
 <script type="text/javascript">
 	$(function(){
 		frm=$('###frmID#');
@@ -314,7 +316,7 @@ order by tformresponsepackets.entered asc
 		frm.attr('method','post');
 
 		if(frm.attr('onsubmit') == undefined){
-			frm.on('submit',function(){return validateForm(this);})
+			frm.on('submit',function(){return mura.validateForm(this);})
 		}
 		<cfif arguments.responseChart>
 			var polllist=new Array();
@@ -325,7 +327,7 @@ order by tformresponsepackets.entered asc
 		</cfif>
 		frm.attr('action',frm.attr('action') + '###frmID#');
 	});
-</script></cfoutput>
+</script></cfif></cfoutput>
 </cfsavecontent>
 
 <cfreturn trim(frm) />

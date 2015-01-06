@@ -159,9 +159,8 @@
 </cfif>
 	#local.frmFieldContents#
 <cfif not arguments.isNested>
-	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
-	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
+	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 </form>
 </cfif>
 </cfoutput>

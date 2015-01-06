@@ -43,35 +43,25 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfsilent>
-<cfset variables.loginURL=variables.$.siteConfig('LoginURL')>
-<!---
-<cfif find("?",variables.loginURL)>
-<cfset variables.loginURL=variables.LoginURL & "&LinkServID=" & variables.$.content('contentID')>
-<cfelse>
-<cfset variables.loginURL=variables.LoginURL & "?LinkServID=" & variables.$.content('contentID')>
-</cfif>--->
-</cfsilent>
-<cfoutput>
-<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.min.js"></script>
+---><cfoutput>
+<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.js"></script>
 <script type="text/javascript">
-<cfif Len(application.configBean.getWindowDocumentDomain())>
-	window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
-</cfif>
-var mura={
-	loginURL:"#variables.loginURL#",
-	siteid:"#variables.$.event('siteID')#", 
-	siteID:"#variables.$.event('siteID')#", 
-	context:"#variables.$.globalConfig('context')#", 
+initMura({
+	loginURL:"#variables.$.siteConfig('LoginURL')#",
+	siteid:"#variables.$.event('siteID')#",
+	contentid:"#variables.$.content('contentid')#",
+	contenthistid:"#variables.$.content('contenthistid')#",
+	siteID:"#variables.$.event('siteID')#",
+	context:"#variables.$.globalConfig('context')#",
 	jslib:"#variables.$.getJsLib()#",
+	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
-	htmlEditorType:"#variables.$.globalConfig('htmlEditorType')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
-	#variables.$.siteConfig('JSDateKeyObjInc')#
-}
-$.extend(window,mura);
+	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
+	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
+	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
+	});
 <cfif structKeyExists(url,'muraadminpreview')>
 $(function(){
    	$("a").attr('href', function(i, h) {
@@ -79,4 +69,8 @@ $(function(){
 	});
 });
 </cfif>
-</script></cfoutput>
+<cfif Len(application.configBean.getWindowDocumentDomain())>
+window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
+</cfif>
+</script>
+</cfoutput>
