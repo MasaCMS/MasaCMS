@@ -54,8 +54,6 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfset variables.$.addToHTMLHeadQueue('calendar/queues/htmlhead.cfm') />
-<cfset request.cacheItem=false>
 <cfoutput>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
@@ -68,7 +66,7 @@
 <script>
 jQuery(document).ready(function($) {
 
-	function renderCalendar() {
+	function initMuraCalendar() {
 		$('##mura-calendar').fullCalendar({
 			timezone: 'UTC'
 			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
@@ -131,6 +129,15 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	renderCalendar();
+	$("html").append("<link rel='stylesheet' type='text/css' href='" +  mura.context +  "/requirements/fullcalendar/fullcalendar.css' />");
+	$("html").append("<link rel='stylesheet' type='text/css' href='" +  mura.context +  "/requirements/fullcalendar/fullcalendar.print.css' />");
+	$.getScript(mura.context + '/requirements/fullcalendar/lib/moment.min.js').done(function(){
+		$.getScript(mura.context + '/requirements/fullcalendar/fullcalendar.min.js').done(function(){
+			$.getScript(mura.context + '/requirements/fullcalendar/gcal.js').done(function(){
+				renderCalendar();
 });
+			});
+		});
+	});
+	
 </script></cfoutput>

@@ -492,7 +492,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleAPIRequest" output="false">
 	<cfargument name="path" default="#cgi.path_info#">
-	<cfset var pageContent="">
 	<cfset var ajaxendpoint="/_api/ajax/v1">
 	<cfset var feedendpoint="/_api/feed/v1">
 	<cfset var fileendpoint="/_api/render/">
@@ -518,7 +517,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
 		<cfreturn>
 	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and  left(path,len(fileendpoint)) eq fileendpoint>
-		<cfswitch expression="#listGetAt(path,2,'/')#">
+		<cfswitch expression="#listGetAt(path,3,'/')#">
 			<cfcase value="file">
 				<cfparam name="url.method" default="inline">
 				<cfparam name="url.size" default="">
@@ -615,7 +614,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="handleRootRequest" output="false">
-	
+	<cfset var pageContent="">
 	<cfif listFirst(cgi.path_info,'/') eq "_api">
 		<cfreturn handleAPIRequest(cgi.path_info)>
 	<cfelse>
