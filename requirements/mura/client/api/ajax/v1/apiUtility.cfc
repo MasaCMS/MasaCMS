@@ -1308,15 +1308,26 @@ component extends="mura.cfobject" {
 	function processAsyncObject(siteid){
 
 		if(!isDefined('arguments.siteid')){
-			throw(type="invalidParameters");
+			if(isDefined('session.siteid')){
+				arguments.siteid=session.siteid;
+			} else {
+				throw(type="invalidParameters");
+			}
+			
 		}
+		
 		request.siteid=arguments.siteid;
 		session.siteid=request.siteid;
 		request.servletEvent=new mura.servletEvent();
 		
 		var $=request.servletEvent.getValue("MuraScope");
 		
-		$.event('contentBean',$.getBean('content').loadBy(contenthistid=$.event('contenthistid')));
+		if(len($.event('contenthistid'))){
+			$.event('contentBean',$.getBean('content').loadBy(contenthistid=$.event('contenthistid')));
+		} else {
+			$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
+		}
+		
 		$.event('crumbdata',$.content().getCrumbArray());
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
@@ -1352,6 +1363,27 @@ component extends="mura.cfobject" {
 
 				return {
 					html=$.dspObject_Include(theFile='dsp_login.cfm')
+				};
+
+			break;
+
+			case 'calendar':
+				return {
+					html=$.dspObject_Include(theFile='calendar/index.cfm')
+				};
+
+			break;
+
+			case 'folder':
+				return {
+					html=$.dspObject_Include(theFile='dsp_folder.cfm')
+				};
+
+			break;
+
+			case 'gallery':
+				return {
+					html=$.dspObject_Include(theFile='gallery/index.cfm')
 				};
 
 			break;

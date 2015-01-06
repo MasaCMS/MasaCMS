@@ -55,7 +55,6 @@
 	Mura CMS.
 --->
 <cfif request.muraFrontEndRequest>
-	<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>
 	<cfoutput>
 		<div class="mura-async-object" 
 			data-object="editprofile" 

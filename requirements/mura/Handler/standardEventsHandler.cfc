@@ -732,7 +732,7 @@
 		result.images=apiUtility.setImageUrls($.content(),$);
 
 		getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
-		$.event('__MuraResponse__',serializeJSON(apiUtility.getSerializer().serialize(result)));
+		$.event('__MuraResponse__',apiUtility.getSerializer().serialize(result));
 
 	}
 </cfscript>

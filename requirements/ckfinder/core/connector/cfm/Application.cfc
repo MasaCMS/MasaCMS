@@ -16,9 +16,9 @@
 	Run the pseudo constructor to set up default
 	data structures.
 	--->
-	<cfinclude template="../../../../../../config/applicationSettings.cfm">
-	<cfinclude template="../../../../../../config/mappings.cfm">
-	<cfinclude template="../../../../../../plugins/mappings.cfm">
+	<cfinclude template="../../../../../config/applicationSettings.cfm">
+	<cfinclude template="../../../../../config/mappings.cfm">
+	<cfinclude template="../../../../../plugins/mappings.cfm">
 	<cfscript>
 	THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/requirements/ckfinder/core/connector/cfm/";
 	</cfscript>

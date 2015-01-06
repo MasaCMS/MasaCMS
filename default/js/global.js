@@ -678,7 +678,7 @@ var initMura=function(config){
 				jQuery.ajax(
 					{
 						type: 'post',
-						url: config.context + '/index.cfm/_api/ajax/v1/?method=validate',
+						url: config.apiEndpoint + '?method=validate',
 						dataType: 'text',
 						data: {
 								data: escape(JSON.stringify(data)),
