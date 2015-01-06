@@ -932,13 +932,11 @@ s
 	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getScheme">
-	<!--- Temporary : will eventually be a Site Setting, but for now, pull from extranetSSL --->
-	<!--- <cfreturn getValue('extranetSSL') ? 'https' : 'http' /> --->
+<cffunction name="getScheme" returntype="string" output="false">
 	<cfreturn YesNoFormat(getValue('useSSL')) ? 'https' : 'http' />
 </cffunction>
 
-<cffunction name="getProtocol">
+<cffunction name="getProtocol" returntype="string" output="false">
 	<cfreturn UCase(getScheme()) />
 </cffunction>
 
