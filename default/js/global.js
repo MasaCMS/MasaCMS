@@ -839,7 +839,7 @@ var initMura=function(config){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));
 		}
 
-		$.ajax( {
+		$.ajax({
 	      url:  config.apiEndpoint + '?method=processAsyncObject',
 	      type: 'GET',
 	      data: data,
