@@ -1016,6 +1016,7 @@ var initMura=function(config){
 	    	} else {
 	    		$(self).html(resp.data.html);
 
+	 			/*
 	 			if($(self).data('objectscript')){
 	 				loader().loadjs(
 						$(self).data('objectscript'),
@@ -1030,7 +1031,8 @@ var initMura=function(config){
 	 				var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
 				    eval('(' + $(self).data('objectinit') + '(params)' + ')');
 				}
-
+				*/
+				
 				$(self).find( ".mura-async-object" ).each( function(){
 					processAsyncObject(this);
 				});
