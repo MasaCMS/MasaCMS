@@ -53,4 +53,11 @@
 	under the GNU General Public License version 2 without this exception.  You 
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
----><cfoutput><link media="all" rel="stylesheet" href="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css"><link media="print" rel="stylesheet" href="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css"><script src="#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js"></script><script src="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js"></script><script src="#$.globalConfig('context')#/requirements/fullcalendar/gcal.js"></script></cfoutput>
+--->
+<cfoutput>
+<link media="all" rel="stylesheet" href="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css">
+<link media="print" rel="stylesheet" href="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css">
+<script src="#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js"></script>
+<script src="#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js"></script>
+<script src="#$.globalConfig('context')#/requirements/fullcalendar/gcal.js"></script>
+</cfoutput>

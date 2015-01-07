@@ -54,6 +54,8 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+<cfset variables.$.addToHTMLHeadQueue('calendar/queues/htmlhead.cfm') />
+<cfset request.cacheItem=false>
 <cfoutput>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
@@ -66,7 +68,7 @@
 <script>
 jQuery(document).ready(function($) {
 
-	function initMuraCalendar() {
+	function renderCalendar() {
 		$('##mura-calendar').fullCalendar({
 			timezone: 'UTC'
 			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
@@ -83,11 +85,12 @@ jQuery(document).ready(function($) {
 			, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
 			, weekends: true // show weekends?
 			, weekMode: 'fixed' // fixed, liquid, or variable
+			/*
 			, header: {
 				left: 'today prev,next'
 				, center: 'title'
 				, right: 'agendaDay,agendaWeek,month'
-			}
+			}*/
 			, defaultView: 'month'
 			, allDayDefault: false
 			, loading: function(isLoading) {
@@ -129,15 +132,6 @@ jQuery(document).ready(function($) {
 		});
 	}
 
-	$("html").append("<link rel='stylesheet' type='text/css' href='" +  mura.context +  "/requirements/fullcalendar/fullcalendar.css' />");
-	$("html").append("<link rel='stylesheet' type='text/css' href='" +  mura.context +  "/requirements/fullcalendar/fullcalendar.print.css' />");
-	$.getScript(mura.context + '/requirements/fullcalendar/lib/moment.min.js').done(function(){
-		$.getScript(mura.context + '/requirements/fullcalendar/fullcalendar.min.js').done(function(){
-			$.getScript(mura.context + '/requirements/fullcalendar/gcal.js').done(function(){
-				renderCalendar();
+	renderCalendar();
 });
-			});
-		});
-	});
-	
 </script></cfoutput>
