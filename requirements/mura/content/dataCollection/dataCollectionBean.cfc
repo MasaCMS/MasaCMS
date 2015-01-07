@@ -104,61 +104,70 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 	}
 
-	function getValidations(){
-		try{
-			var content=getFormBean();
-		} catch(Any e){ 
-			return false;
+	function getValidations( content = '',prefix='' ) {
+
+		if( isSimpleValue(arguments.content) ) {
+			try{
+				arguments.content=getFormBean();
+			} catch(Any e){ 
+				return false;
+			}
 		}
-		
+				
 		var validations={properties={}};
 		var i=1;
 		var prop={};
 		var rules=[];
 		var message='';
+		var fields='';
+		var nestedform = '';
 
-		if(isJSON(content.getBody())){
+		if(isJSON(arguments.content.getBody())){
 			var formDef=deserializeJSON(content.getBody());
+
 			if(isdefined('formDef.form.fieldOrder') && isdefined('formDef.form.fieldOrder')){
 				for(i=1;i lte arrayLen(formDef.form.fieldOrder);i=i+1){
+					
 					prop=formDef.form.fields[formDef.form.fieldOrder[i]];
 					rules=[];
-
-					if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
-						message=prop.validateMessage;
-					} else {
-						message='';
+					
+					if( prop.fieldtype.fieldtype eq 'nested' ) {
+						nestedform = getBean('content').loadBy( contentID=prop.formid,siteid=getValue('siteID') );
+						structAppend(validations, getValidations( nestedform,prop.name & "_" ) );						
 					}
-
-					if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
-						arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
+					else {
+						if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
+							message=prop.validateMessage;
+						} else {
+							message='';
+						}
+	
+						if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
+							arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
+						}
+	
+						if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
+							arrayAppend(rules,{required=true,message=message});
+						}
+	
+						if(structkeyExists(prop,'validateType') && len(prop.validateType)){
+							arrayAppend(rules,{dataType=prop.validateType,message=message});
+						}
+	
+						if(arrayLen(rules)){
+							validations.properties[prop.name]=rules;
+						}
+						variables.formproperties[prop.name]=prop;
+						variables.formpropertylist=listAppend(variables.formpropertylist,arguments.prefix & prop.name);
 					}
-
-					if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
-						arrayAppend(rules,{required=true,message=message});
-					}
-
-					if(structkeyExists(prop,'validateType') && len(prop.validateType)){
-						arrayAppend(rules,{dataType=prop.validateType,message=message});
-					}
-
-					if(arrayLen(rules)){
-						validations.properties[prop.name]=rules;
-					}
-
-					variables.formproperties[prop.name]=prop;
-					variables.formpropertylist=listAppend(variables.formpropertylist,prop.name);
-
 				}
 			}
-
 		}
 
 		return validations;
-
 	}
 
-	function getFormProperties(){
+	function getFormProperties() {
 		if(!isJSON(getFormBean().getBody())){
 			return {};
 		} else if (!isdefined('variables.formproperties')){
@@ -169,7 +178,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 	}
 
 	function getFormBean(){
-		param name="variables.instance.formBean" default=getBean('content').loadBy(contentID=getValue('formID'),siteID=getValue('siteID'));
+		param name='variables.instance.formBean' default='#getBean('content').loadBy(contentID=getValue('formID'),siteID=getValue('siteID'))#';
 		return variables.instance.formBean;
 	}
 
@@ -281,7 +290,6 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 			setValue('fieldnames',fieldnames);
 		}
-
 		return this;
 	}
 
