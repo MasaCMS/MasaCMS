@@ -133,12 +133,11 @@
 		<cfset arguments.rc.changeset_name = "partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#" />
 		<cfset arguments.rc.import_status = "Changeset" />
 	</cfif>
-	
-	<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name) />
-	<!--- serverBundlePath='' --->
-		
-	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>
- 
+
+	<cfif structKeyExists(arguments.rc,"newfile") and len(arguments.rc.newfile)>
+		<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name) />
+		<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>
+ 	</cfif>
 </cffunction>
 
 

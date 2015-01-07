@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</a>
 	</div>
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data">
 		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">

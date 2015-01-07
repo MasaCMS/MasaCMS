@@ -69,10 +69,13 @@ jQuery(document).ready( function(){
 	</h1>
 
 	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-circle-arrow-left"></i> #rc.$.rbKey('sitemanager.backtositemanager')#</a>
+		<a class="btn" href="./?muraAction=cArch.list&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url',rc.moduleid)#">
+			<i class="icon-circle-arrow-left"></i> 
+			#rc.$.rbKey('sitemanager.backtositemanager')#
+		</a>
 	</div>
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data">
 		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">

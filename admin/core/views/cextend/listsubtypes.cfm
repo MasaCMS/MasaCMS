@@ -54,6 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<i class="icon-plus-sign"></i> 
 			#rc.$.rbKey('sitemanager.extension.addclassextension')#
 		</a>
+
+		<!--- Actions --->
 		<div class="btn-group">
 			<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 				<i class="icon-cogs"></i> 
@@ -61,12 +63,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<span class="caret"></span>
 			</a>
 			<ul class="dropdown-menu">
-				<li>
-					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
-						<i class="icon-signout"></i> 
-						#rc.$.rbKey('sitemanager.extension.export')#
-					</a>
-				</li>
+				<cfif rslist.recordcount>
+					<li>
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+							<i class="icon-signout"></i> 
+							#rc.$.rbKey('sitemanager.extension.export')#
+						</a>
+					</li>
+				</cfif>
 				<li>
 					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 						<i class="icon-signin"></i> 
@@ -75,6 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</li>
 			</ul>
 		</div>
+		<!--- /Actions --->
 	</div>
 </cfoutput>
 
@@ -139,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 		<cfelse>
 			<tr>
-				<td class="noResults" colspan="3">
+				<td class="noResults" colspan="5">
 					<cfoutput>
 						#rc.$.rbKey('sitemanager.extension.nosubtypes')#
 					</cfoutput>
