@@ -1480,13 +1480,18 @@ component extends="mura.cfobject" {
 		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
 		//writeLog(text=serializeJSON(logdata));
 		//return $.event('objectparams');
-		var result={html=$.dspObject(
+		
+		var args={
 				object=$.event('object'),
 				objectid=$.event('objectid'),
-				siteid=arguments.siteid,
-				params=urlDecode($.event('objectparams'))
-			)
-		};
+				siteid=arguments.siteid
+			};
+
+		if(len($.event('objectparams'))){
+			args.params=urlDecode($.event('objectparams'));
+		}
+
+		var result={html=$.dspObject(argumentCollection=args)};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){
 			return {redirect=request.muraAjaxRedirectURL};

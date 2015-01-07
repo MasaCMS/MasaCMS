@@ -54,4 +54,15 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfoutput><link href="#variables.$.globalConfig('context')#/requirements/prettify/themes/tomorrow-night.min.css" type="text/css" rel="stylesheet"><script src="#variables.$.globalConfig('context')#/requirements/prettify/prettify.min.js"></script><script>!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)</script></cfoutput>
+<cfoutput>
+<script>
+$(function(){
+	mura.loader()
+	.loadcss("#variables.$.globalConfig('context')#/requirements/prettify/themes/tomorrow-night.min.css")
+	.loadjs("#variables.$.globalConfig('context')#/requirements/prettify/prettify.min.js",
+	function(){
+		!function($){$(function(){window.prettyPrint && prettyPrint()});}(window.jQuery)
+	});
+});
+</script>
+</cfoutput>

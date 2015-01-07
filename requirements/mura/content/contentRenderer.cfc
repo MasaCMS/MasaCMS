@@ -3599,7 +3599,7 @@ Display Objects
 			};
 
 			// load Google ReCAPTCHA script
-			addToHTMLHeadQueue('<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=#$.siteConfig('reCAPTCHALanguage')#"></script>');
+			//addToHTMLHeadQueue('<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=#$.siteConfig('reCAPTCHALanguage')#"></script>');
 		} else {
 			str = '<div class="alert alert-warning"><h4><i class="fa fa-warning"></i> #$.rbKey('recaptcha.warning')#</h4><p>#$.rbKey('recaptcha.nokeys')#</p></div>';
 		}

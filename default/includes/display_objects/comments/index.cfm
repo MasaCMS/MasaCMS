@@ -64,10 +64,9 @@
 				data-object="comments" 
 				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
 				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#"
-				data-objectscript="#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js"
-				data-objectinit="initMuraComments" >
+				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
 			</div>
+
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
@@ -234,6 +233,17 @@
 			<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 			<!--- COMMENTS --->
+			<script>
+				$(function(){
+					mura.loader().loadjs(
+						"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
+						function(){
+							initMuraComments();
+						}
+					);
+				});
+			</script>
+
 			<div id="svComments" class="mura-comments #this.commentsWrapperClass#">
 				<a name="mura-comments"></a>
 			

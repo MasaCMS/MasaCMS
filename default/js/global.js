@@ -428,6 +428,8 @@ if (!Object.keys) {
 
 var initMura=function(config){
 
+	!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="' + config.assetpath + '/jquery/jquery.js"%3E%3C/script%3E'))
+
 	var createCookie=function(name,value,days) {
 		if (days) {
 			var date = new Date();
@@ -691,6 +693,20 @@ var initMura=function(config){
 				}else{
 				return true;}
 
+	}
+
+	var initShadowBox=function(el){
+
+		if($(el).find( '[data-rel^="shadowbox"]').length){
+			loader().load(
+				config.assetpath +'/css/shadowbox.min.css',
+				config.assetpath +'/js/adapter/shadowbox-jquery.min.js',
+				config.assetpath +'/js/shadowbox.min.js',
+					function(){
+						window.Shadowbox.init();
+					}
+				);
+		}
 	}
 
 	var validateForm=function(frm,customaction) {
@@ -1054,6 +1070,8 @@ var initMura=function(config){
 						resizeEditableObject(this);
 					});
 	 			}
+
+	 			initShadowBox(self);
 	 		}
 		};
 
@@ -1149,6 +1167,7 @@ var initMura=function(config){
 			processAsyncObject(this);
 		});
 
+		initShadowBox(document);
 
 		$(document).on('keydown',function(event){
 			loginCheck(event.which);
