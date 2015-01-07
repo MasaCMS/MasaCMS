@@ -45,10 +45,10 @@ META-INF/
 WEB-INF/
 
 # ignored 'config' directory files
+/config/cfapplication.cfm
+/config/mappings.cfm
 /config/settings.ini.cfm
 /config/version.cfm
-/config/mappings.cfm
-/config/cfapplication.cfm
 
 # ignored 'default' site files & directories
 /default/assets/
