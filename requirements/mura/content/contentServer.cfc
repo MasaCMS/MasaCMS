@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.isAdmin>
 			<cfreturn rsSites.siteid>
 		<cfelse>
-			<cflocation addtoken="no" statuscode="301" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
+			<cflocation addtoken="no" statuscode="301" url="#application.settingsManager.getSite(rsSites.siteID).getScheme()#://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 		</cfif>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -372,7 +372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
-		<cfset getBean('contentRenderer').redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
+		<cfset getBean('contentRenderer').redirect("#application.settingsManager.getSite(rsSites.siteID).getScheme()#://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	
 </cffunction>

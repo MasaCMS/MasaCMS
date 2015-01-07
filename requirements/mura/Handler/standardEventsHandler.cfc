@@ -230,7 +230,9 @@
 
 	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
 	
-	<cfif arguments.event.getValue('contentBean').getForceSSL()>
+	<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getUseSSL()>
+		<cfset arguments.event.setValue('forcessl', true) />
+	<cfelseif arguments.event.getValue('contentBean').getForceSSL()>
 		<cfset arguments.event.setValue('forceSSL',arguments.event.getValue('contentBean').getForceSSL())/>
 	</cfif>
 
@@ -307,15 +309,13 @@
 		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
 	</cfif>
 
-	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false" statuscode="301">
-
+	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)#" addtoken="false" statuscode="301">
 </cffunction>
 
 <cffunction name="standardLinkTranslationHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
 	<cfset arguments.event.getTranslator('standardLink').translate(arguments.event) />
-
 </cffunction>
 
 <cffunction name="standardForceSSLHandler" output="false" returnType="any">
@@ -334,7 +334,6 @@
 	<cfargument name="event" required="true">
 
 	<cfset arguments.event.getTranslator('standardFile').translate(arguments.event) />
-
 </cffunction>
 
 <cffunction name="standardDoResponseHandler" output="false" returnType="any">
@@ -343,6 +342,8 @@
 	<cfset var showMeta=0>
 	<cfset var renderer=arguments.event.getContentRenderer()>
 	<cfset var translator="">
+
+	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
 	
 	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 	
@@ -390,8 +391,6 @@
 	<cfset translator.handle(arguments.event) />
 	
 	<cfset application.pluginManager.announceEvent('onRenderEnd', arguments.event)/>
-	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
-
 </cffunction>
 
 <cffunction name="standard404Handler" output="false" returnType="any">
@@ -658,16 +657,20 @@
 	<cfargument name="event" required="true">
 	<cfset var isHTTPS=application.utility.isHTTPS()>
 
-	<cfif request.returnFormat eq 'HTML' and not (len(arguments.event.getValue('previewID')) and isHTTPS)
-		and (
-			arguments.event.getValue("contentBean").getFilename() neq "404" 
-			and 
-		
-			(
-				(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
-			)
-			or	(
-				not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	
+	<cfif application.settingsManager.getSite(arguments.event.getValue('siteID')).getUseSSL()
+		or (
+			request.returnFormat eq 'HTML' 
+			and not (len(arguments.event.getValue('previewID')) and isHTTPS)
+			and (
+				arguments.event.getValue("contentBean").getFilename() neq "404" 
+				and 
+			
+				(
+					(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
+				)
+				or	(
+					not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	
+				)
 			)
 		)>
 		<cfset arguments.event.getHandler("standardForceSSL").handle(arguments.event)>

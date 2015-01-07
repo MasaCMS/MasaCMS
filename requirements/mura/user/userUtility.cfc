@@ -471,7 +471,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset contactEmail=site.getContact()/>
 	<cfset contactName=site.getSite()/>
 
-	<cfif site.getExtranetSSL()>
+	<cfif site.getExtranetSSL() or site.getUseSSL()>
 		<cfset protocol="https://">
 	</cfif>
 	
