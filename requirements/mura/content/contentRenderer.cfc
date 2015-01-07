@@ -1562,10 +1562,10 @@ Display Objects
 	<cfset var tp=""/>
 
 	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
-		<cfif arguments.secure or YesNoFormat(variables.$.siteConfig('useSSL'))>
+		<cfif arguments.secure>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
-			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		</cfif>
 	<cfelse>
 		<cfset var begin="">
@@ -1631,10 +1631,10 @@ Display Objects
 	<cfset var tp=""/>
 
 	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
-		<cfif arguments.secure or YesNoFormat(variables.$.siteConfig('useSSL'))>
+		<cfif arguments.secure>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
-			<cfset begin='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		</cfif>
 	<cfelse>
 		<cfset var begin="">
@@ -1956,7 +1956,7 @@ Display Objects
 			<cfif application.configBean.getAdminSSL()>
 				<cfset editableControl.editLink="https://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
 			<cfelse>
-				<cfset editableControl.editLink="http://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+				<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
 			</cfif>
 		</cfif>
 			
@@ -2844,14 +2844,13 @@ Display Objects
 			</cfif>
 	</cfif>
 	
-	<!--- <cfif arguments.complete>
+	<cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
 			<cfset host='https://#arguments.domain##application.configBean.getServerPort()#'>
 		<cfelse>
-			<cfset host='http://#arguments.domain##application.configBean.getServerPort()#'>
+			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##application.configBean.getServerPort()#'>
 		</cfif>
-	</cfif> --->
-	<cfset host = '#variables.$.siteConfig('scheme')#://#arguments.domain##application.configBean.getServerPort()#' />
+	</cfif>
 	
 	<!--- Using request.servletEvent for backward compatibility --->
 	<cfif request.servletEvent.valueExists("contentBean") and not listFind("Link,File",request.servletEvent.getValue('contentBean').getType())>		

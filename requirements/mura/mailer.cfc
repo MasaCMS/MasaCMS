@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
 					
 					<cfset redirectID=createUUID() />
-					<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
+					<cfset reviewLink='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
 		
 					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					insert into tredirects (redirectID,URL,created) values(
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 					</cfquery>
 					
-					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
+					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
 					
 				<cfelse>
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>

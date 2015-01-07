@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfif len(variables.instance.url) and 
 			not listFindNoCase("http:,https:",listFirst(variables.instance.url,"//"))>
-		<cfset variables.instance.url = "http://" & variables.instance.url />
+		<cfset variables.instance.url = "#variables.settingsManager.getSite(variables.instance.siteID).getScheme()#://" & variables.instance.url />
 	</cfif>
 	<cfreturn this>		
 </cffunction>
@@ -476,7 +476,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 			and active=1
 		</cfquery>
-		<cfset serverpath = "http://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
+		<cfset serverpath = "#settingsManager.getSite(variables.instance.siteID).getScheme()#://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
 		<cfif configBean.getSiteIDInURLS()>
 			<cfset serverpath &= '#variables.instance.siteID#/'>
 		</cfif>
