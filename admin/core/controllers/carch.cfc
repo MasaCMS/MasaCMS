@@ -136,8 +136,6 @@
 
 	<cfif structKeyExists(arguments.rc,"newfile") and len(arguments.rc.newfile)>
 		<cfset contentUtility.deployPartialBundle(siteid=session.siteid,parentid=arguments.rc.contentid,bundlefile="newFile",importstatus=rc.import_status,changesetname=rc.changeset_name) />
-		<!--- serverBundlePath='' --->
-			
 		<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid",path="./")>
  	</cfif>
 </cffunction>
