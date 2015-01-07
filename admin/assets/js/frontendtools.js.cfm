@@ -290,23 +290,9 @@
 				);
 			});
 
-			jQuery(document).arrive(".frontEndToolsModal",
-				function(){
-					jQuery(this).click(function(event){
-						event.preventDefault();
-						openFrontEndToolsModal(this);
-					}
-				);
-			});
-
 			jQuery(".editableObject").each(function(){
 				resizeEditableObject(this);
 			});
-
-			jQuery(document).arrive(".editableObject",function(){
-				resizeEditableObject(this);
-			});
-			
 			
 			initAdminProxy();
 			
