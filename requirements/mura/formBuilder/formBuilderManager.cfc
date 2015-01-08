@@ -273,14 +273,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getForms" access="public" output="false">
 		<cfargument name="$" required="true" type="any" />
 		<cfargument name="siteid" required="true" type="any" />
+		<cfargument name="excludeformid" required="false" type="string" default="" />
+
+		<cfdump var="#arguments#">
 
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contentid,title from tcontent
 			where type='form'
 			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-			and active=1 order by title
+			and active=1
+			<cfif len(arguments.excludeformid)>
+				and contentid != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.excludeformid#" />
+			</cfif>
+			order by title
 		</cfquery>
-	
+
 		<cfreturn rs />
 	</cffunction>
 	

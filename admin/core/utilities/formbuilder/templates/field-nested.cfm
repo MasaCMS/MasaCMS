@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 	<cfset $ = application.serviceFactory.getBean('$').init(session.siteid) />
-	<cfset rsFormList = $.getBean('formBuilderManager').getForms($,session.siteid) />
+	<cfset rsFormList = $.getBean('formBuilderManager').getForms($,session.siteid,form.formid) />
 </cfsilent>
 <cfoutput><span>
 		<div class="mura-tb-form">

@@ -49,6 +49,7 @@
 	var _dataSets		= {};
 	var _formStatus		= {};
 	var _selected		= "";
+	var _nameEnabled	= false;
 	
 	var _ckeditor		= "";
 
@@ -69,9 +70,14 @@
 						
 			_submitdata.form = _formData;
 			_submitdata.datasets = _dataSets;
-			
+
+			if( action == 'iscomplete' && !isComplete() ) {
+				return false;
+			}
+						
 			jQuery('#mura-formdata').val(  JSON.stringify( _submitdata ) );
-			return false;
+
+			return true;
 		}
 		
 		var settings		= jQuery.extend({},jQuery.fn.templatebuilder.defaults,settings);
@@ -114,6 +120,12 @@
 			doActivateMenu();
 
 			doRenderForm( data );
+			
+			console.log(_formData.formattributes);
+			
+			if ( _formData.formattributes['name-unrestricted'] == 1) {
+				_nameEnabled = true;
+			}
 		}
 
 		function doRenderForm( response ) {
@@ -258,6 +270,15 @@
 					
 				}
 			});
+
+			jQuery("#tb-name-restricted").change(function() {
+				if( jQuery("#tb-name-restricted").is(":checked") ) {
+					_nameEnabled = true;
+				}
+				else {
+					_nameEnabled = false;
+				}
+			});
 		}
 
 		function doField( fieldBtn ) {
@@ -312,10 +333,20 @@
 			var templateName	= "field-" + fieldData.fieldtype.fieldtype;
 
 			jQuery(".tb-label").unbind();
+			jQuery(".tb-name").unbind();
 
 			jQuery('#mura-tb-field-form').unbind();
 			$_field.html(_templates[templateName]);
 			$_field.show();
+			
+			if( _nameEnabled ) {
+				jQuery("#tb-name").removeClass("disabled");
+				jQuery("#tb-name").removeAttr("disabled");
+			}
+			else {
+				jQuery("#tb-name").addClass("disabled");
+				jQuery("#tb-name").attr("disabled","true");
+			}
 
 			jQuery('#mura-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
 
@@ -338,15 +369,31 @@
 
 			jQuery(".tb-label").keyup(function() {
 				var val = jQuery(this).val();
-				var fval = val.replace(/^[\d\s\W]*|[^\w\d]/g,"").toLowerCase();
+				var fval = val.replace(/[^a-zA-Z0-9_]/gi,'').toLowerCase();
 
-				jQuery("#tb-name").val( fval );
-				jQuery("#tb-name").trigger('change');
+				if(!_nameEnabled) {
+					fval = fval.replace(/^[^a-zA-Z]*/,'');
+					
+					jQuery("#" + _currentFieldID).removeClass('tb-fieldIsEmpty');
+	
+					jQuery("#tb-name").val( fval );
+					jQuery("#tb-name").trigger('change');
+				}
 				
 				jQuery("span",_currentFieldBtn).html( val );				
 				jQuery("#mura-tb-form-label").html( val );
 			});
-			
+
+			jQuery("#tb-name").keyup(function() {
+				var val = jQuery(this).val();
+				var fval = val.replace(/[^a-zA-Z0-9_]/gi,'').toLowerCase();
+				fval = fval.replace(/^[^a-zA-Z]*/,'');
+				
+				jQuery("#" + _currentFieldID).removeClass('tb-fieldIsEmpty');
+				jQuery("#tb-name").val( fval );
+				jQuery("#tb-name").trigger('change');
+			});
+						
 			jQuery("#ui-tabs").tabs();
 //			jQuery("#ui-tabs").tabs('select',0);
 
@@ -739,6 +786,7 @@
 			var newID 			= uuid();
 			var newDataRecord	= jQuery.extend({},data.model);
 
+			data.iscomplete = 0;
 			data.isdirty = 1;
 			newDataRecord.config = {};
 			
@@ -971,6 +1019,7 @@
 			var iefix 		= Math.floor(Math.random()*9999999);
 
 			data.fieldType = template;
+			data.formid = _formData.formid;
 
 			jQuery.ajax({
 				url: settings.url + "?muraAction=cform.getfieldtemplate&i=" + iefix,
@@ -1064,6 +1113,25 @@
 			}
 			return sData;
 		}
+		
+		function isComplete() {
+			var formFields = _formData.fields;
+			var pass = true;
+			console.log('on');
+			console.log(formFields);
+			
+			for(var i in formFields) {
+				if(formFields[i].name.length < 1) {
+					jQuery("#" + i).addClass("tb-fieldIsEmpty");
+					pass = false;
+				}
+				else {
+					jQuery("#" + i).removeClass("tb-fieldIsEmpty");
+				}
+			}
+			return pass;
+		}
+		
 	};
 
 	jQuery.templatebuilder = {};

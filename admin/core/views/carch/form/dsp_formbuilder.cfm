@@ -47,14 +47,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <script>
 
-	function saveFormBuilder(){
-		jQuery("##mura-templatebuilder").templatebuilder('save');
+	function saveFormBuilder() {
+		var iscomplete = jQuery("##mura-templatebuilder").templatebuilder('iscomplete');
+
+		if(iscomplete) {
+			jQuery("##mura-templatebuilder").templatebuilder('save');
+			return true;
+		}
+		else {
+			return false;			
+		}
 	}
 
 	jQuery(document).ready(function() {
 		jQuery("##mura-templatebuilder").templatebuilder();
 	});
 </script>
+<style>
+.tb-fieldIsEmpty {
+	border: 1px solid ##ff0000 !important;
+}	
+</style>
+
 	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/">
 		<div class="mura-tb-menu">
 			<ul class="mura-tb-form-menu">
