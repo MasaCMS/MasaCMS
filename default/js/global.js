@@ -114,7 +114,8 @@ throw new SyntaxError('JSON.parse');}};}();}
 		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
-	if( ! window.ljs ){
+	
+	//if( true || ! window.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -289,6 +290,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 				}
 			}
 		;
+
 		if( checkLoaded ){
 			var i,l,links,url;
 			for(i=0,l=scripts[length];i<l;i++){
@@ -302,7 +304,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 		//export ljs
 		window.ljs = loader;
 		// eval inside tag code if any
-	}
+	//}
 	script && gEval(script);
 })(window);
 
@@ -1032,7 +1034,7 @@ var initMura=function(config){
 				    eval('(' + $(self).data('objectinit') + '(params)' + ')');
 				}
 				*/
-				
+
 				$(self).find( ".mura-async-object" ).each( function(){
 					processAsyncObject(this);
 				});
