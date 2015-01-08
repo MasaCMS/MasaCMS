@@ -106,6 +106,38 @@
 															#application.autoUpdater.getCurrentCompleteVersion(session.siteid)#
 														</a>
 													</li>
+													<cfif rc.currentUser.isSuperUser() >
+														<li class="divider"></li>
+														<li>
+															<a href="##">
+																<strong>CFML Engine</strong>
+																#listFirst(server.coldfusion.productname,' ')#
+																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >(#server.coldfusion.productversion#)</cfif>
+															</a>
+														</li>
+														<li>
+															<a href="##">
+																<strong>DB Engine</strong>
+																#application.serviceFactory.getBean('dbUtility').version().database_productname# (#application.serviceFactory.getBean('dbUtility').version().database_version#)
+															</a>
+														</li>
+														<cfif structKeyExists(server,'java') and structKeyExists(server.java,'version') >
+															<li>
+																<a href="##">
+																	<strong>Java Version</strong>
+																	#server.java.version#
+																</a>
+															</li>
+														</cfif>
+														<cfif structKeyExists(server,'os') and structKeyExists(server.os,'name') >
+															<li>
+																<a href="##">
+																	<strong>OS Version</strong>
+																	#server.os.name# (#server.os.version#)
+																</a>
+															</li>
+														</cfif>
+													</cfif>
 													<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and session.mura.isLoggedIn>
 														<li>
 															<a href="##">
@@ -390,13 +422,13 @@
 														</a>
 													</li>
 													<li<cfif request.action eq "core:cpublicusers.edituser" and not len(rc.userID)> class="active"</cfif>>
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+														<a href="./?muraAction=cPublicUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 															<i class="icon-plus-sign"></i> 
 															#application.rbFactory.getKeyValue(session.rb,'user.addmember')#
 														</a>
 													</li>
 													<li<cfif request.action eq "core:cpublicusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
-														<a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+														<a href="./?muraAction=cPublicUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 															<i class="icon-plus-sign"></i> 
 															#application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#
 														</a>
@@ -449,7 +481,7 @@
 												<!--- Class Extension Manager --->
 												<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
 												<li class="dropdown-submenu">
-													<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
+													<a href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
 														<i class="icon-wrench"></i> 
 														Class Extension Manager
 													</a>
@@ -490,7 +522,7 @@
 
 												<!--- Create Site Bundle --->
 												<li>
-													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
+													<a href="?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
 														<i class="icon-gift"></i> 
 														Create Site Bundle
 													</a>
@@ -508,7 +540,7 @@
 
 												<!--- Trash Bin --->
 												<li>
-													<a href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
+													<a href="./?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
 														<i class="icon-trash"></i> 
 														Trash Bin
 													</a>
