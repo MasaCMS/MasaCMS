@@ -1081,24 +1081,6 @@ var initMura=function(config){
 	    		location.href=resp.data.redirect;
 	    	} else {
 	    		$(self).html(resp.data.html);
-
-	 			/*
-	 			if($(self).data('objectscript')){
-	 				loader().loadjs(
-						$(self).data('objectscript'),
-						function(){
-							if($(self).data('objectinit')){
-					    		var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
-					   			eval('(' + $(self).data('objectinit') + '(params)' + ')');
-				    		}
-						}
-					);
-	 			} else if($(self).data('objectinit')){
-	 				var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
-				    eval('(' + $(self).data('objectinit') + '(params)' + ')');
-				}
-				*/
-
 				processHandlers(self);
 			}
 		};
