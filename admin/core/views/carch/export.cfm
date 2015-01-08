@@ -85,8 +85,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<form id="partialExportForm" class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);"  enctype="multipart/form-data">
 		<div class="fieldset">
-			<div class="control-group">
 
+			<h2>#rc.$.rbKey('sitemanager.content.exportoptions')#</h2>
+			<div class="control-group">
 				<div class="controls">
 					#rc.$.rbKey('sitemanager.content.exportinstructions')#
 				</div>
