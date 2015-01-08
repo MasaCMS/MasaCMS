@@ -44,10 +44,10 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 if(window.Prototype) {
-    delete Object.prototype.toJSON;
-    delete Array.prototype.toJSON;
-    delete Hash.prototype.toJSON;
-    delete String.prototype.toJSON;
+		delete Object.prototype.toJSON;
+		delete Array.prototype.toJSON;
+		delete Hash.prototype.toJSON;
+		delete String.prototype.toJSON;
 }
 
 if(!this.JSON){JSON=function(){function f(n){return n<10?'0'+n:n;}
@@ -189,7 +189,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 						attrs={};
 					}
 
-					var parts = urlParse(url);	
+					var parts = urlParse(url);  
 					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
 					
 					for(var i=0;i<partToAttrs.length;i++){
@@ -252,7 +252,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 							url=attrs.href;
 							cb=undefined;
 						}
-					}	else if (typeof attrs=='function' ) {
+					} else if (typeof attrs=='function' ) {
 						cb = attrs;
 						attrs = {};
 					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
@@ -309,123 +309,123 @@ throw new SyntaxError('JSON.parse');}};}();}
 })(window);
 
 (function($){
-    $.fn.serializeObject = function(){
+		$.fn.serializeObject = function(){
 
-        var self = this,
-            json = {},
-            push_counters = {},
-            patterns = {
-                "validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
-                "key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
-                "push":     /^$/,
-                "fixed":    /^\d+$/,
-                "named":    /^[a-zA-Z0-9_]+$/
-            };
+				var self = this,
+						json = {},
+						push_counters = {},
+						patterns = {
+								"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+								"key":      /[a-zA-Z0-9_]+|(?=\[\])/g,
+								"push":     /^$/,
+								"fixed":    /^\d+$/,
+								"named":    /^[a-zA-Z0-9_]+$/
+						};
 
 
-        this.build = function(base, key, value){
-            base[key] = value;
-            return base;
-        };
+				this.build = function(base, key, value){
+						base[key] = value;
+						return base;
+				};
 
-        this.push_counter = function(key){
-            if(push_counters[key] === undefined){
-                push_counters[key] = 0;
-            }
-            return push_counters[key]++;
-        };
+				this.push_counter = function(key){
+						if(push_counters[key] === undefined){
+								push_counters[key] = 0;
+						}
+						return push_counters[key]++;
+				};
 
-        $.each($(this).serializeArray(), function(){
+				$.each($(this).serializeArray(), function(){
 
-            // skip invalid keys
-            if(!patterns.validate.test(this.name)){
-                return;
-            }
+						// skip invalid keys
+						if(!patterns.validate.test(this.name)){
+								return;
+						}
 
-            var k,
-                keys = this.name.match(patterns.key),
-                merge = this.value,
-                reverse_key = this.name;
+						var k,
+								keys = this.name.match(patterns.key),
+								merge = this.value,
+								reverse_key = this.name;
 
-            while((k = keys.pop()) !== undefined){
+						while((k = keys.pop()) !== undefined){
 
-                // adjust reverse_key
-                reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+								// adjust reverse_key
+								reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
 
-                // push
-                if(k.match(patterns.push)){
-                    merge = self.build([], self.push_counter(reverse_key), merge);
-                }
+								// push
+								if(k.match(patterns.push)){
+										merge = self.build([], self.push_counter(reverse_key), merge);
+								}
 
-                // fixed
-                else if(k.match(patterns.fixed)){
-                    merge = self.build([], k, merge);
-                }
+								// fixed
+								else if(k.match(patterns.fixed)){
+										merge = self.build([], k, merge);
+								}
 
-                // named
-                else if(k.match(patterns.named)){
-                    merge = self.build({}, k, merge);
-                }
-            }
+								// named
+								else if(k.match(patterns.named)){
+										merge = self.build({}, k, merge);
+								}
+						}
 
-            json = $.extend(true, json, merge);
-        });
+						json = $.extend(true, json, merge);
+				});
 
-        return json;
-    };
+				return json;
+		};
 })(jQuery);
 
 $.fn.changeElementType = function(newType) {
-    var attrs = {};
+		var attrs = {};
 
-    $.each(this[0].attributes, function(idx, attr) {
-        attrs[attr.nodeName] = attr.value;
-    });
+		$.each(this[0].attributes, function(idx, attr) {
+				attrs[attr.nodeName] = attr.value;
+		});
 
-    var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
-    this.replaceWith(newelement);
-    return newelement;
+		var newelement = $("<" + newType + "/>", attrs).append($(this).contents());
+		this.replaceWith(newelement);
+		return newelement;
 };
 
 if (!Object.keys) {
-  Object.keys = (function () {
-    'use strict';
-    var hasOwnProperty = Object.prototype.hasOwnProperty,
-        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-        dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
-        ],
-        dontEnumsLength = dontEnums.length;
+	Object.keys = (function () {
+		'use strict';
+		var hasOwnProperty = Object.prototype.hasOwnProperty,
+				hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+				dontEnums = [
+					'toString',
+					'toLocaleString',
+					'valueOf',
+					'hasOwnProperty',
+					'isPrototypeOf',
+					'propertyIsEnumerable',
+					'constructor'
+				],
+				dontEnumsLength = dontEnums.length;
 
-    return function (obj) {
-      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-        throw new TypeError('Object.keys called on non-object');
-      }
+		return function (obj) {
+			if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+				throw new TypeError('Object.keys called on non-object');
+			}
 
-      var result = [], prop, i;
+			var result = [], prop, i;
 
-      for (prop in obj) {
-        if (hasOwnProperty.call(obj, prop)) {
-          result.push(prop);
-        }
-      }
+			for (prop in obj) {
+				if (hasOwnProperty.call(obj, prop)) {
+					result.push(prop);
+				}
+			}
 
-      if (hasDontEnumBug) {
-        for (i = 0; i < dontEnumsLength; i++) {
-          if (hasOwnProperty.call(obj, dontEnums[i])) {
-            result.push(dontEnums[i]);
-          }
-        }
-      }
-      return result;
-    };
-  }());
+			if (hasDontEnumBug) {
+				for (i = 0; i < dontEnumsLength; i++) {
+					if (hasOwnProperty.call(obj, dontEnums[i])) {
+						result.push(dontEnums[i]);
+					}
+				}
+			}
+			return result;
+		};
+	}());
 } 
 
 var initMura=function(config){
@@ -458,15 +458,15 @@ var initMura=function(config){
 	}
 
 	var addLoadEvent=function(func) {
-	   var oldonload = window.onload;
-	   if (typeof window.onload != 'function') {
-	    window.onload = func;
-	   } else {
-	    window.onload = function() {
-	     oldonload();
-	     func();
-	    }
-	   }
+		 var oldonload = window.onload;
+		 if (typeof window.onload != 'function') {
+			window.onload = func;
+		 } else {
+			window.onload = function() {
+			 oldonload();
+			 func();
+			}
+		 }
 	}
 
 	var noSpam=function(user,domain) {
@@ -496,16 +496,16 @@ var initMura=function(config){
 				CKEDITOR.remove(instance);
 			} 
 
-			$('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);	
+			$('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete); 
 
 			
 		}
 
-		var htmlEditorOnComplete=function( editorInstance ) { 		
+		var htmlEditorOnComplete=function( editorInstance ) {     
 			var instance=jQuery(editorInstance).ckeditorGet();
 			instance.resetDirty();
 			var totalIntances=CKEDITOR.instances;
-			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;	
+			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;  
 		}
 
 		var getHTMLEditorConfig=function(customConfig) {
@@ -515,7 +515,7 @@ var initMura=function(config){
 				customConfig : 'config.js.cfm'
 				}
 			
-			if(typeof(customConfig)== 'object'){	
+			if(typeof(customConfig)== 'object'){  
 				$.extend(htmlEditorConfig,customConfig);
 			}
 			
@@ -565,18 +565,18 @@ var initMura=function(config){
 				location.href=lu + "?returnUrl=" + escape(ru);
 			}
 		}
-	    }
+			}
 	}
 
 	var isInteger=function(s){
 		var i;
-	    for (i = 0; i < s.length; i++){   
-	        // Check that current character is number.
-	        var c = s.charAt(i);
-	        if (((c < "0") || (c > "9"))) return false;
-	    }
-	    // All characters are numbers.
-	    return true;
+			for (i = 0; i < s.length; i++){   
+					// Check that current character is number.
+					var c = s.charAt(i);
+					if (((c < "0") || (c > "9"))) return false;
+			}
+			// All characters are numbers.
+			return true;
 	}
 
 	var createDate=function(str){
@@ -592,7 +592,7 @@ var initMura=function(config){
 		if(!isNaN(date.getMonth())){
 			return date;
 		} else {
-			return new Date();	
+			return new Date();  
 		}
 							
 	}
@@ -606,26 +606,26 @@ var initMura=function(config){
 		if(dt < 10){ dt="0" + dt;}
 						
 						
-		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);			
+		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);      
 	}
 					
 
 	var stripCharsInBag=function(s, bag){
 		var i;
-	    var returnString = "";
-	    // Search through string's characters one by one.
-	    // If character is not in bag, append to returnString.
-	    for (i = 0; i < s.length; i++){   
-	        var c = s.charAt(i);
-	        if (bag.indexOf(c) == -1) returnString += c;
-	    }
-	    return returnString;
+			var returnString = "";
+			// Search through string's characters one by one.
+			// If character is not in bag, append to returnString.
+			for (i = 0; i < s.length; i++){   
+					var c = s.charAt(i);
+					if (bag.indexOf(c) == -1) returnString += c;
+			}
+			return returnString;
 	}
 
 	var daysInFebruary=function(year){
 		// February has 29 days in any year evenly divisible by four,
-	    // EXCEPT for centurial years which are not also divisible by 400.
-	    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
+			// EXCEPT for centurial years which are not also divisible by 400.
+			return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
 	}
 
 	var DaysArray=function(n) {
@@ -633,8 +633,8 @@ var initMura=function(config){
 			this[i] = 31
 			if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
 			if (i==2) {this[i] = 29}
-	   } 
-	   return this
+		 } 
+		 return this
 	}
 
 	var isDate=function(dtStr,fldName){
@@ -739,7 +739,7 @@ var initMura=function(config){
 					return theField.getAttribute('message') ;
 				} else {
 					return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-				}	
+				} 
 			}
 
 			var getValidationType=function(theField){
@@ -802,7 +802,7 @@ var initMura=function(config){
 			var firstErrorNode;
 			var validationType='';
 			var validations={properties:{}};
-			var frmInputs = theForm.getElementsByTagName("input");	
+			var frmInputs = theForm.getElementsByTagName("input");  
 			var rules=new Array();
 			var data={};
 			var $customaction=customaction;
@@ -815,18 +815,18 @@ var initMura=function(config){
 		
 				if(theField.style.display==""){
 					if(getValidationIsRequired(theField))
-						{	
+						{ 
 							rules.push({
 								required: true,
 								message: getValidationMessage(theField,' is required.')
 							});
 							
-							 			
+										
 						}
 					if(validationType != ''){
 							
 						if(validationType=='EMAIL' && theField.value != '')
-						{	
+						{ 
 							rules.push({
 								dataType: 'EMAIL',
 								message: getValidationMessage(theField,' must be a valid email address.')
@@ -836,7 +836,7 @@ var initMura=function(config){
 						}
 		
 						else if(validationType=='NUMERIC' && theField.value != '')
-						{	
+						{ 
 							rules.push({
 								dataType: 'NUMERIC',
 								message: getValidationMessage(theField,' must be numeric.')
@@ -845,7 +845,7 @@ var initMura=function(config){
 						}
 						
 						else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-						{	
+						{ 
 							rules.push({
 								regex: getValidationRegex(theField),
 								message: getValidationMessage(theField,' is not valid.')
@@ -855,7 +855,7 @@ var initMura=function(config){
 						
 						else if(validationType=='MATCH' 
 								&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-						{	
+						{ 
 							rules.push({
 								eq: theForm[getValidationMatchField(theField)].value,
 								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
@@ -879,7 +879,7 @@ var initMura=function(config){
 					}
 				}
 			}
-			var frmTextareas = theForm.getElementsByTagName("textarea");	
+			var frmTextareas = theForm.getElementsByTagName("textarea");  
 			for (f=0; f < frmTextareas.length; f++) {
 			
 				
@@ -889,17 +889,17 @@ var initMura=function(config){
 					rules=new Array();
 					 
 					if(theField.style.display=="" && getValidationIsRequired(theField))
-					{	
+					{ 
 						rules.push({
 							required: true,
 							message: getValidationMessage(theField, ' is required.' )
 						});
 						
-					}	
+					} 
 
 					else if(validationType != ''){
 						if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-						{	
+						{ 
 							rules.push({
 								regex: getValidationRegex(theField),
 								message: getValidationMessage(theField, ' is not valid.' )
@@ -914,7 +914,7 @@ var initMura=function(config){
 					}
 			}
 			
-			var frmSelects = theForm.getElementsByTagName("select");	
+			var frmSelects = theForm.getElementsByTagName("select");  
 			for (f=0; f < frmSelects.length; f++) {
 					theField=frmSelects[f];
 					validationType=getValidationType(theField);
@@ -922,7 +922,7 @@ var initMura=function(config){
 					rules=new Array();
 
 					if(theField.style.display=="" && getValidationIsRequired(theField))
-					{	
+					{ 
 						rules.push({
 							required: true,
 							message: getValidationMessage(theField, ' is required.' )
@@ -932,7 +932,7 @@ var initMura=function(config){
 					if(rules.length){
 						validations.properties[theField.getAttribute('name')]=rules;
 						data[theField.getAttribute('name')]=theField.value;
-					}	
+					} 
 			}
 
 			try{
@@ -949,32 +949,32 @@ var initMura=function(config){
 								version: 4
 							},
 						success: function(resp) {
-	 				 		var _data=eval('(' + resp + ')');
-	 				 		
-	 				 		data=_data.data;
-	 				 		
-	 				 		if(jQuery.isEmptyObject(data)){
-	 				 			if(typeof $customaction == 'function'){
-	 				 				$customaction(theForm);
-	 				 				return false;
-	 				 			} else {
-	 				 				theForm.submit();
-	 				 			}
-	 				 		} else {
-		 				 		var msg='';
-		 				 		for(var e in data){
-		 				 			msg=msg + data[e] + '\n';
-		 				 		}
+							var _data=eval('(' + resp + ')');
+							
+							data=_data.data;
+							
+							if(jQuery.isEmptyObject(data)){
+								if(typeof $customaction == 'function'){
+									$customaction(theForm);
+									return false;
+								} else {
+									theForm.submit();
+								}
+							} else {
+								var msg='';
+								for(var e in data){
+									msg=msg + data[e] + '\n';
+								}
 
-		 				 		alert(msg);
-	 				 		}
+								alert(msg);
+							}
 						},
 						error: function(resp) {
-	 				 		
-	 				 		alert(JSON.stringify(resp));
+							
+							alert(JSON.stringify(resp));
 						}
 
-					}		 
+					}    
 				);
 			} 
 			catch(err){ 
@@ -988,14 +988,14 @@ var initMura=function(config){
 
 	var setLowerCaseKeys=function (obj) {
 		$.map(obj, function(value, key) {
-	   
-		   if (key !== key.toLowerCase()) { // might already be in its lower case version
-		        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
-		        delete obj[key] // delete the old key
-		    }
-		   	if(typeof obj[key.toLowerCase()] == 'object'){
-		   		setLowerCaseKeys(obj[key.toLowerCase()]);
-		   	}
+		 
+			 if (key !== key.toLowerCase()) { // might already be in its lower case version
+						obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
+						delete obj[key] // delete the old key
+				}
+				if(typeof obj[key.toLowerCase()] == 'object'){
+					setLowerCaseKeys(obj[key.toLowerCase()]);
+				}
 		});
 
 		return (obj);
@@ -1035,18 +1035,18 @@ var initMura=function(config){
 
 			function(){
 				$(scope).find('form').each(function(){
-	 				$(this).removeAttr('onsubmit');
-	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-	 			});
+					$(this).removeAttr('onsubmit');
+					$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+				});
 			},
 
 			function(){
-	 			if(typeof resizeEditableObject == 'function' ){
-	 				$(scope).closest('.editableObject').each(function(){ 
-	 					resizeEditableObject(this);
-	 				});	
+				if(typeof resizeEditableObject == 'function' ){
+					$(scope).closest('.editableObject').each(function(){ 
+						resizeEditableObject(this);
+					}); 
 
-	 				$(scope).find(".frontEndToolsModal").each(
+					$(scope).find(".frontEndToolsModal").each(
 						function(){
 							jQuery(this).click(function(event){
 								event.preventDefault();
@@ -1058,12 +1058,12 @@ var initMura=function(config){
 					$(scope).find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
-	 			}
-	 		},
+				}
+			},
 
-	 		function(){
-	 			initShadowBox(scope);
-	 		}
+			function(){
+				initShadowBox(scope);
+			}
 		];
 
 		for(var h in handlers){
@@ -1075,11 +1075,11 @@ var initMura=function(config){
 		var self=el;
 
 		var handleResponse=function(resp){
- 			
- 			if('redirect' in resp.data){
-	    		location.href=resp.data.redirect;
-	    	} else {
-	    		$(self).html(resp.data.html);
+			
+			if('redirect' in resp.data){
+					location.href=resp.data.redirect;
+				} else {
+					$(self).html(resp.data.html);
 				processHandlers(self);
 			}
 		};
@@ -1106,13 +1106,13 @@ var initMura=function(config){
 				}
 				
 				var postconfig={
-				      url:  config.apiEndpoint + '?method=processAsyncObject',
-				      type: 'POST',
-				      data: data,
-				      processData: false,
-				      contentType: false,
-				      dataType: 'JSON'
-				    } 
+							url:  config.apiEndpoint + '?method=processAsyncObject',
+							type: 'POST',
+							data: data,
+							processData: false,
+							contentType: false,
+							dataType: 'JSON'
+						} 
 			
 			} else {
 				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
@@ -1122,11 +1122,11 @@ var initMura=function(config){
 				}
 
 				var postconfig={
-				      url:  config.apiEndpoint + '?method=processAsyncObject',
-				      type: 'POST',
-				      data: data,
-				      dataType: 'JSON'
-				    } 
+							url:  config.apiEndpoint + '?method=processAsyncObject',
+							type: 'POST',
+							data: data,
+							dataType: 'JSON'
+						} 
 			}
 
 			validateForm(frm,
@@ -1149,10 +1149,10 @@ var initMura=function(config){
 		$(self).html(config.preloaderMarkup);
 
 		$.ajax({
-	      url:  config.apiEndpoint + '?method=processAsyncObject',
-	      type: 'GET',
-	      data: data,
-	      dataType: 'JSON'
+				url:  config.apiEndpoint + '?method=processAsyncObject',
+				type: 'GET',
+				data: data,
+				dataType: 'JSON'
 		}).then(handleResponse);
 	}
 
@@ -1208,4 +1208,3 @@ var initMura=function(config){
 	});
 
 };
-

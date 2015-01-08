@@ -35,7 +35,6 @@ web.xml
 compiled/
 logs/
 mxunit/
-plugins/
 tests/
 unitTests/
 
@@ -43,6 +42,9 @@ unitTests/
 CFIDE/
 META-INF/
 WEB-INF/
+
+# ignore 'plugins'
+/plugins/
 
 # ignored 'config' directory files
 /config/cfapplication.cfm
