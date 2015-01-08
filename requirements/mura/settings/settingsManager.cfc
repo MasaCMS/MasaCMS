@@ -240,6 +240,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.update(bean) />
 
+		<cfset validateDisplayPool(bean) />
+
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>
@@ -322,14 +324,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var fileDelim=variables.configBean.getFileDelim()>
 
-		<cfset variables.utility.copyDir(
-			baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
-			destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
-			excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
-		)>
+		<cfset validateDisplayPool(bean) />
 	
 		<cfif variables.configBean.getCreateRequiredDirectories()>
-			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID()) />
+			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID(),bean.getDisplayPoolID()) />
 		</cfif>
 
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
@@ -341,6 +339,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn bean />
+</cffunction>
+
+<cffunction name="validateDisplayPool" access="public" output="false" returntype="void">
+	<cfargument name="bean" required="true" >
+
+	<cfset var fileDelim=variables.configBean.getFileDelim()>
+
+	<cfif bean.getSiteID() eq bean.getDisplayPoolID() and !directoryExists('#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#')>
+
+		<cfset variables.utility.copyDir(
+				baseDir="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#",
+				destDir="#variables.configBean.getWebRoot()##fileDelim##bean.getSiteID()##fileDelim#",
+				excludeList="#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#cache,#variables.configBean.getWebRoot()##fileDelim#default#fileDelim#assets"
+			)>
+	</cfif>
 </cffunction>
 
 <cffunction name="setSites" access="public" output="false" returntype="void">
