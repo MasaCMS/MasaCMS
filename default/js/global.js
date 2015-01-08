@@ -1008,6 +1008,70 @@ var initMura=function(config){
 		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
 	}
 
+	var processHandlers=function(scope){
+		var handlers=[
+			function(){
+				$(scope).find( ".mura-async-object" ).each( function(){
+					processAsyncObject(this);
+				});
+			},
+
+			function(){
+				$(scope).find( ".htmlEditor" ).each( function() {
+					setHTMLEditor(this);
+				});
+			},
+
+			function(){
+				if($(scope).find( ".ffp_mm" ).length){
+					loader().loadjs(config.context + '/requirements/cfformprotect/js/cffp.js');
+				}
+			},
+
+			function(){
+				if($(scope).find( ".g-recaptcha" ).length){
+					loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+				}
+			},
+
+			function(){
+				$(scope).find('form').each(function(){
+	 				$(this).removeAttr('onsubmit');
+	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+	 			});
+			},
+
+			function(){
+	 			if(typeof resizeEditableObject == 'function' ){
+	 				$(scope).closest('.editableObject').each(function(){ 
+	 					resizeEditableObject(this);
+	 				});	
+
+	 				$(scope).find(".frontEndToolsModal").each(
+						function(){
+							jQuery(this).click(function(event){
+								event.preventDefault();
+								openFrontEndToolsModal(this);
+							}
+						);
+					});
+
+					$(scope).find(".editableObject").each(function(){
+						resizeEditableObject(this);
+					});
+	 			}
+	 		},
+
+	 		function(){
+	 			initShadowBox(scope);
+	 		}
+		];
+
+		for(var h in handlers){
+			handlers[h]();
+		}
+	}
+
 	var processAsyncObject=function(frm){
 		var self=frm;
 
@@ -1035,48 +1099,8 @@ var initMura=function(config){
 				}
 				*/
 
-				$(self).find( ".mura-async-object" ).each( function(){
-					processAsyncObject(this);
-				});
-
-				$(self).find( ".htmlEditor" ).each( function() {
-					setHTMLEditor(this);
-				});
-
-				if($(self).find( ".ffp_mm" ).length){
-					loader().loadjs(config.context + '/requirements/cfformprotect/js/cffp.js');
-				}
-
-				if($(self).find( ".g-recaptcha" ).length){
-					loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
-				}
-
-				$(self).find('form').each(function(){
-	 				$(this).removeAttr('onsubmit');
-	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-	 			});
-
-	 			if(typeof resizeEditableObject == 'function' ){
-	 				$(self).closest('.editableObject').each(function(){ 
-	 					resizeEditableObject(this);
-	 				});	
-
-	 				$(self).find(".frontEndToolsModal").each(
-						function(){
-							jQuery(this).click(function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							}
-						);
-					});
-
-					$(self).find(".editableObject").each(function(){
-						resizeEditableObject(this);
-					});
-	 			}
-
-	 			initShadowBox(self);
-	 		}
+				processHandlers(self);
+			}
 		};
 
 		var validateFormAjax=function(frm) {
@@ -1167,11 +1191,7 @@ var initMura=function(config){
 
 	
 	$(function(){
-		$( ".mura-async-object" ).each( function(){
-			processAsyncObject(this);
-		});
-
-		initShadowBox(document);
+		processHandlers(document);
 
 		$(document).on('keydown',function(event){
 			loginCheck(event.which);
