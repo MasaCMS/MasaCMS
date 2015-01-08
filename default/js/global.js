@@ -475,14 +475,13 @@ var initMura=function(config){
 	}
 
 	var setHTMLEditor=function(el) {
-		getScripts(
-			[
-				config.context + '/requirements/ckeditor/ckeditor.js',
-				config.context + '/requirements/ckeditor/adapters/jquery.js'
-			],
-				function(){
-					initEditor();
-				}
+		loader().loadjs(
+			config.context + '/requirements/ckeditor/ckeditor.js',
+			config.context + '/requirements/ckeditor/adapters/jquery.js'
+			,
+			function(){
+				initEditor();
+			}
 		);
 
 		var initEditor=function(){
@@ -1072,8 +1071,8 @@ var initMura=function(config){
 		}
 	}
 
-	var processAsyncObject=function(frm){
-		var self=frm;
+	var processAsyncObject=function(el){
+		var self=el;
 
 		var handleResponse=function(resp){
  			
@@ -1178,6 +1177,32 @@ var initMura=function(config){
 		$(document).on('keydown',function(event){
 			loginCheck(event.which);
 		});
+
+		$.fn.appendMuraObject = function(data) {
+		    var el=$('<div class="mura-async-object"></div>');
+
+			for(var a in args){
+				$.data(el,a,args[a]);
+			}
+
+			$(this).append(el);
+			processAsyncObject(this);
+
+			return el;
+		};
+
+		$.fn.prependMuraObject = function(data) {
+		    var el=$('<div class="mura-async-object"></div>');
+
+			for(var a in args){
+				$.data(el,a,args[a]);
+			}
+
+			$(this).prepend(el);
+			processAsyncObject(this);
+
+			return el;
+		};
 
 		$(document).trigger('muraReady');
 	});
