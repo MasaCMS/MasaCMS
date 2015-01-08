@@ -68,7 +68,13 @@ var siteManager = {
 			document.contentForm.approved.value=0;
 		}
 		
-		if(typeof(saveFormBuilder) != "undefined") saveFormBuilder();
+		if (typeof(saveFormBuilder) != "undefined") {
+			var checkComplete = saveFormBuilder();
+			if(!checkComplete) {
+				alertDialog("All fields must have a 'name' before the form can be saved.");
+				return false;
+			}
+		}
 
 		if(typeof(document.contentForm.display) != 'undefined'){
 			if(document.contentForm.display.value == '2') {

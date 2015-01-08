@@ -60,7 +60,6 @@
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
 		<cfsilent>
-			<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
 			
@@ -218,6 +217,11 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
+		<script>
+			$(function(){
+				mura.loader().loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.min.js");
+			})
+		</script>
 		<div id="svComments" class="mura-comments">
 			<a name="comments"></a>
 			

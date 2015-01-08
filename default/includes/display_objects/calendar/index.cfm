@@ -54,8 +54,6 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfset variables.$.addToHTMLHeadQueue('calendar/queues/htmlhead.cfm') />
-<cfset request.cacheItem=false>
 <cfoutput>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
@@ -67,71 +65,78 @@
 </div>
 <script>
 jQuery(document).ready(function($) {
-
-	function renderCalendar() {
-		$('##mura-calendar').fullCalendar({
-			timezone: 'UTC'
-			, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
-			, buttonText: {
-				day: '#variables.$.rbKey('calendar.day')#'
-				, week: '#variables.$.rbKey('calendar.week')#'
-				, month: '#variables.$.rbKey('calendar.month')#'
-				, today: '#variables.$.rbKey('calendar.today')#'
-			}
-			, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
-			, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
-			, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
-			, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
-			, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
-			, weekends: true // show weekends?
-			, weekMode: 'fixed' // fixed, liquid, or variable
-			/*
-			, header: {
-				left: 'today prev,next'
-				, center: 'title'
-				, right: 'agendaDay,agendaWeek,month'
-			}*/
-			, defaultView: 'month'
-			, allDayDefault: false
-			, loading: function(isLoading) {
-					$('##mura-calendar-loading').toggle(isLoading);
-			}
-			//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
-			, eventSources: [
-				{
-					url: '#variables.$.globalConfig('context')#/requirements/fullcalendar/proxy.cfc'
-					, type: 'POST'
-					, data: {
-						method: 'getFullCalendarItems'
-						, calendarid: '#variables.$.content('contentid')#'
-						, siteid: '#variables.$.content('siteid')#'
-						, categoryid: '#variables.$.event('categoryid')#'
-						, tag: '#variables.$.event('tag')#'
+	mura.loader()
+		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
+		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
+		.loadjs(
+			["#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
+			"#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
+			],
+			"#$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
+			function(){
+				$('##mura-calendar').fullCalendar({
+					timezone: 'UTC'
+					, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
+					, buttonText: {
+						day: '#variables.$.rbKey('calendar.day')#'
+						, week: '#variables.$.rbKey('calendar.week')#'
+						, month: '#variables.$.rbKey('calendar.month')#'
+						, today: '#variables.$.rbKey('calendar.today')#'
 					}
-					, color: '##3a87ad' // sets calendar events background+border colors
-					, textColor: 'white'
-					, error: function() { 
-						$('##mura-calendar-error').show();
+					, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
+					, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
+					, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
+					, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
+					, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
+					, weekends: true // show weekends?
+					, weekMode: 'fixed' // fixed, liquid, or variable
+					/*
+					, header: {
+						left: 'today prev,next'
+						, center: 'title'
+						, right: 'agendaDay,agendaWeek,month'
+					}*/
+					, defaultView: 'month'
+					, allDayDefault: false
+					, loading: function(isLoading) {
+							$('##mura-calendar-loading').toggle(isLoading);
 					}
-				}
+					//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
+					, eventSources: [
+						{
+							url: '#variables.$.globalConfig('context')#/requirements/fullcalendar/proxy.cfc'
+							, type: 'POST'
+							, data: {
+								method: 'getFullCalendarItems'
+								, calendarid: '#variables.$.content('contentid')#'
+								, siteid: '#variables.$.content('siteid')#'
+								, categoryid: '#variables.$.event('categoryid')#'
+								, tag: '#variables.$.event('tag')#'
+							}
+							, color: '##3a87ad' // sets calendar events background+border colors
+							, textColor: 'white'
+							, error: function() { 
+								$('##mura-calendar-error').show();
+							}
+						}
 
-				// optionally include U.S. Holidays
-				// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
-				// , {
-				// 	googleCalendarApiKey: '<YOUR API KEY>'
-				// 	, url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
-				// 	, color: 'yellow'
-				// 	, textColor: 'black'
-				// }
-			]
-			// example of how to open events in a separate window
-			// , eventClick: function(event) {
-			// 	window.open(event.url, 'fcevent', 'width=700,height=600');
-			// 	return false;
-			// }
-		});
-	}
-
-	renderCalendar();
+						// optionally include U.S. Holidays
+						// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
+						// , {
+						// 	googleCalendarApiKey: '<YOUR API KEY>'
+						// 	, url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
+						// 	, color: 'yellow'
+						// 	, textColor: 'black'
+						// }
+					]
+					// example of how to open events in a separate window
+					// , eventClick: function(event) {
+					// 	window.open(event.url, 'fcevent', 'width=700,height=600');
+					// 	return false;
+					// }
+				});
+			}
+		);
 });
-</script></cfoutput>
+</script>
+</cfoutput>

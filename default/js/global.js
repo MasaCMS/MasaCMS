@@ -1,48 +1,48 @@
 /* This file is part of Mura CMS. 
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+  Mura CMS is free software: you can redistribute it and/or modify 
+  it under the terms of the GNU General Public License as published by 
+  the Free Software Foundation, Version 2 of the License. 
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+  Mura CMS is distributed in the hope that it will be useful, 
+  but WITHOUT ANY WARRANTY; without even the implied warranty of 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+  GNU General Public License for more details. 
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+  You should have received a copy of the GNU General Public License 
+  along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
-	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
-	• Must not alter any default objects in the Mura CMS database and
-	• May not alter the default display of the Mura CMS logo within Mura CMS and
-	• Must not alter any files in the following directories.
-	
-	 /admin/
-	 /tasks/
-	 /config/
-	 /requirements/mura/
-	 /Application.cfc
-	 /index.cfm
-	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+  Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+  Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+  
+  However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+  or libraries that are released under the GNU Lesser General Public License version 2.1.
+  
+  In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+  independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+  Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+  
+  Your custom code 
+  
+  • Must not alter any default objects in the Mura CMS database and
+  • May not alter the default display of the Mura CMS logo within Mura CMS and
+  • Must not alter any files in the following directories.
+  
+   /admin/
+   /tasks/
+   /config/
+   /requirements/mura/
+   /Application.cfc
+   /index.cfm
+   /MuraProxy.cfc
+  
+  You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+  under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+  requires distribution of source code.
+  
+  For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+  modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+  version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 if(window.Prototype) {
     delete Object.prototype.toJSON;
     delete Array.prototype.toJSON;
@@ -77,6 +77,236 @@ cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('
 (+(a.charCodeAt(0))).toString(16)).slice(-4);});}
 if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j;}
 throw new SyntaxError('JSON.parse');}};}();}
+
+//https://github.com/malko/l.js
+;(function(window, undefined){
+/*
+* script for js/css parallel loading with dependancies management
+* @author Jonathan Gotti < jgotti at jgotti dot net >
+* @licence dual licence mit / gpl
+* @since 2012-04-12
+* @todo add prefetching using text/cache for js files
+* @changelog
+*            - 2014-06-26 - bugfix in css loaded check when hashbang is used
+*            - 2014-05-25 - fallback support rewrite + null id bug correction + minification work
+*            - 2014-05-21 - add cdn fallback support with hashbang url
+*            - 2014-05-22 - add support for relative paths for stylesheets in checkLoaded
+*            - 2014-05-21 - add support for relative paths for scripts in checkLoaded
+*            - 2013-01-25 - add parrallel loading inside single load call
+*            - 2012-06-29 - some minifier optimisations
+*            - 2012-04-20 - now sharp part of url will be used as tag id
+*                         - add options for checking already loaded scripts at load time
+*            - 2012-04-19 - add addAliases method
+* @note coding style is implied by the target usage of this script not my habbits
+*/
+  /** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
+  var gEval = function(js){ ( window.execScript || function(js){ window[ "eval" ].call(window,js);} )(js); }
+    , isA =  function(a,b){ return a instanceof (b || Array);}
+    //-- some minifier optimisation
+    , D = document
+    , getElementsByTagName = 'getElementsByTagName'
+    , length = 'length'
+    , readyState = 'readyState'
+    , onreadystatechange = 'onreadystatechange'
+    //-- get the current script tag for further evaluation of it's eventual content
+    , scripts = D[getElementsByTagName]("script")
+    , scriptTag = scripts[scripts[length]-1]
+    , script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
+  ;
+  //avoid multiple inclusion to override current loader but allow tag content evaluation
+  
+  //if( true || ! window.ljs ){
+    var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
+      //-- keep trace of header as we will make multiple access to it
+      ,header  = D[getElementsByTagName]("head")[0] || D.documentElement
+      , urlParse = function(url){
+        var parts={}; // u => url, i => id, f = fallback
+        parts.u = url.replace(/#(=)?([^#]*)?/g,function(m,a,b){ parts[a?'f':'i'] = b; return '';});
+        return parts;
+      }
+      ,appendElmt = function(type,attrs,cb){
+        var e = D.createElement(type), i;
+        if( cb ){ //-- this is not intended to be used for link
+          if(e[readyState]){
+            e[onreadystatechange] = function(){
+              if (e[readyState] === "loaded" || e[readyState] === "complete"){
+                e[onreadystatechange] = null;
+                cb();
+              }
+            };
+          }else{
+            e.onload = cb;
+          }
+        }
+        for( i in attrs ){ attrs[i] && (e[i]=attrs[i]); }
+        header.appendChild(e);
+        // return e; // unused at this time so drop it
+      }
+      ,load = function(url,cb){
+        if( this.aliases && this.aliases[url] ){
+          var args = this.aliases[url].slice(0);
+          isA(args) || (args=[args]);
+          cb && args.push(cb);
+          return this.load.apply(this,args);
+        }
+        if( isA(url) ){ // parallelized request
+          for( var l=url[length]; l--;){
+            this.load(url[l]);
+          }
+          cb && url.push(cb); // relaunch the dependancie queue
+          return this.load.apply(this,url);
+        }
+        if( url.match(/\.css\b/) ){
+          return this.loadcss(url,cb);
+        }
+        return this.loadjs(url,cb);
+      }
+      ,loaded = {}  // will handle already loaded urls
+      ,loader  = {
+        aliases:{}
+        ,loadjs: function(url,attrs,cb){
+          if(typeof url == 'object'){
+            if(Array.isArray(url)){
+              return loader.load.apply(this, arguments);
+            } else if(typeof attrs === 'function'){
+              cb=attrs;
+              attrs={};
+              url=attrs.href
+            } else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+              return loader.load.apply(this, arguments);
+            } else {
+              attrs=url;
+              url=attrs.href;
+              cb=undefined;
+            }
+          } else if (typeof attrs=='function' ) {
+            cb = attrs;
+            attrs = {};
+          } else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+            return loader.load.apply(this, arguments);
+          }
+          if(typeof attrs==='undefined'){
+            attrs={};
+          }
+
+          var parts = urlParse(url);  
+          var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
+          
+          for(var i=0;i<partToAttrs.length;i++){
+            var part=partToAttrs[i];
+            if(!(part[1] in attrs) && (part[0] in parts)){
+              attrs[part[1]]=parts[part[0]];
+            }
+          }
+        
+          if(typeof attrs.type === 'undefined'){
+            attrs.type='text/javascript';
+          }
+
+          var finalAttrs={};
+
+          for(var a in attrs){
+            if(a != 'fallback'){
+              finalAttrs[a]=attrs[a];
+            }
+          }
+          
+          finalAttrs.onerror=function(error){
+            if( attrs.fallback ){
+              var c = error.currentTarget;
+              c.parentNode.removeChild(c);
+              finalAttrs.src=attrs.fallback;
+              appendElmt('script',attrs,cb);
+            }
+          };
+          
+
+          if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
+            cb && cb();
+            return this;
+          } else if( loaded[finalAttrs.src]!== undefined ){ // already asked for loading we append callback if any else return
+            if( cb ){
+              loaded[finalAttrs.src] = (function(ocb,cb){ return function(){ ocb && ocb(); cb && cb(); }; })(loaded[finalAttrs.src],cb);
+            }
+            return this;
+          }
+          // first time we ask this script
+          loaded[finalAttrs.src] = (function(cb){ return function(){loaded[finalAttrs.src]=true; cb && cb();};})(cb);
+          cb = function(){ loaded[url](); };
+          appendElmt('script',finalAttrs,cb);
+          return this;
+        }
+        ,loadcss: function(url,attrs,cb){
+
+          if(typeof url == 'object'){
+            if(Array.isArray(url)){
+              return loader.load.apply(this, arguments);
+            } else if(typeof attrs === 'function'){
+              cb=attrs;
+              attrs=url;
+              url=attrs.href
+            } else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+              return loader.load.apply(this, arguments);
+            } else {
+              attrs=url;
+              url=attrs.href;
+              cb=undefined;
+            }
+          } else if (typeof attrs=='function' ) {
+            cb = attrs;
+            attrs = {};
+          } else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+            return loader.load.apply(this, arguments);
+          }
+          
+          var parts = urlParse(url);
+          parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
+
+          if(typeof attrs !=='undefined'){
+            for(var a in attrs){
+              parts[a]=attrs[a];
+            }
+          }
+
+          loaded[parts.href] || appendElmt('link',parts);
+          loaded[parts.href] = true;
+          cb && cb();
+          return this;
+        }
+        ,load: function(){
+          var argv=arguments,argc = argv[length];
+          if( argc === 1 && isA(argv[0],Function) ){
+            argv[0]();
+            return this;
+          }
+          load.call(this,argv[0], argc <= 1 ? undefined : function(){ loader.load.apply(loader,[].slice.call(argv,1));} );
+          return this;
+        }
+        ,addAliases:function(aliases){
+          for(var i in aliases ){
+            this.aliases[i]= isA(aliases[i]) ? aliases[i].slice(0) : aliases[i];
+          }
+          return this;
+        }
+      }
+    ;
+
+    if( checkLoaded ){
+      var i,l,links,url;
+      for(i=0,l=scripts[length];i<l;i++){
+        (url = scripts[i].getAttribute('src')) && (loaded[url.replace(/#.*$/,'')] = true);
+      }
+      links = D[getElementsByTagName]('link');
+      for(i=0,l=links[length];i<l;i++){
+        (links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
+      }
+    }
+    //export ljs
+    window.ljs = loader;
+    // eval inside tag code if any
+  //}
+  script && gEval(script);
+})(window);
 
 (function($){
     $.fn.serializeObject = function(){
@@ -199,985 +429,757 @@ if (!Object.keys) {
 } 
 
 var initMura=function(config){
-	var hashtable={};
 
-	var createCookie=function(name,value,days) {
-		if (days) {
-			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
-			var expires = "; expires="+date.toGMTString();
-		}
-		else var expires = "";
-		document.cookie = name+"="+value+expires+"; path=/";
-	}
+  !window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="' + config.assetpath + '/jquery/jquery.js"%3E%3C/script%3E'))
 
-	var readCookie=function(name) {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) == 0) return unescape(c.substring(nameEQ.length,c.length));
-		}
-		return "";
-	}
+  var createCookie=function(name,value,days) {
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime()+(days*24*60*60*1000));
+      var expires = "; expires="+date.toGMTString();
+    }
+    else var expires = "";
+    document.cookie = name+"="+value+expires+"; path=/";
+  }
 
-	var eraseCookie=function(name) {
-		createCookie(name,"",-1);
-	}
+  var readCookie=function(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return unescape(c.substring(nameEQ.length,c.length));
+    }
+    return "";
+  }
 
-	var addLoadEvent=function(func) {
-	   var oldonload = window.onload;
-	   if (typeof window.onload != 'function') {
-	    window.onload = func;
-	   } else {
-	    window.onload = function() {
-	     oldonload();
-	     func();
-	    }
-	   }
-	}
- 
-	var hash=function(string) {
-	  var RotateLeft=function(lValue, iShiftBits) {
-	    return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
-	  }
+  var eraseCookie=function(name) {
+    createCookie(name,"",-1);
+  }
 
-	  var AddUnsigned=function(lX,lY) {
-	    var lX4,lY4,lX8,lY8,lResult;
-	    lX8 = (lX & 0x80000000);
-	    lY8 = (lY & 0x80000000);
-	    lX4 = (lX & 0x40000000);
-	    lY4 = (lY & 0x40000000);
-	    lResult = (lX & 0x3FFFFFFF)+(lY & 0x3FFFFFFF);
-	    if (lX4 & lY4) {
-	      return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-	    }
-	    if (lX4 | lY4) {
-	      if (lResult & 0x40000000) {
-	        return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
-	      } else {
-	        return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
-	      }
-	    } else {
-	      return (lResult ^ lX8 ^ lY8);
-	    }
-	   }
+  var addLoadEvent=function(func) {
+     var oldonload = window.onload;
+     if (typeof window.onload != 'function') {
+      window.onload = func;
+     } else {
+      window.onload = function() {
+       oldonload();
+       func();
+      }
+     }
+  }
 
-	   var F=function(x,y,z) { return (x & y) | ((~x) & z); }
-	   var G=function(x,y,z) { return (x & z) | (y & (~z)); }
-	   var H=function(x,y,z) { return (x ^ y ^ z); }
-	   var I=function(x,y,z) { return (y ^ (x | (~z))); }
-	 
-	   var FF=function(a,b,c,d,x,s,ac) {
-	    a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
-	    return AddUnsigned(RotateLeft(a, s), b);
-	  };
+  var noSpam=function(user,domain) {
+    locationstring = "mailto:" + user + "@" + domain;
+    window.location = locationstring;
+  }
 
-	  var GG=function(a,b,c,d,x,s,ac) {
-	    a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
-	    return AddUnsigned(RotateLeft(a, s), b);
-	  };
+  var setHTMLEditor=function(el) {
+    getScripts(
+      [
+        config.context + '/requirements/ckeditor/ckeditor.js',
+        config.context + '/requirements/ckeditor/adapters/jquery.js'
+      ],
+        function(){
+          initEditor();
+        }
+    );
 
-	  var HH=function(a,b,c,d,x,s,ac) {
-	    a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
-	    return AddUnsigned(RotateLeft(a, s), b);
-	  };
+    var initEditor=function(){
+      var instance=CKEDITOR.instances[$(el).attr('id')];
+      var conf={height:200,width:'70%'};
+      
+      if($(el).data('editorconfig')){
+        $.extend(conf,$(el).data('editorconfig'));
+      }
+        
+      if (instance) {
+        CKEDITOR.remove(instance);
+      } 
 
-	  var II=function(a,b,c,d,x,s,ac) {
-	    a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
-	    return AddUnsigned(RotateLeft(a, s), b);
-	  };
+      $('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete); 
 
-	  var ConvertToWordArray=function(string) {
-	    var lWordCount;
-	    var lMessageLength = string.length;
-	    var lNumberOfWords_temp1=lMessageLength + 8;
-	    var lNumberOfWords_temp2=(lNumberOfWords_temp1-(lNumberOfWords_temp1 % 64))/64;
-	    var lNumberOfWords = (lNumberOfWords_temp2+1)*16;
-	    var lWordArray=Array(lNumberOfWords-1);
-	    var lBytePosition = 0;
-	    var lByteCount = 0;
-	    while ( lByteCount < lMessageLength ) {
-	      lWordCount = (lByteCount-(lByteCount % 4))/4;
-	      lBytePosition = (lByteCount % 4)*8;
-	      lWordArray[lWordCount] = (lWordArray[lWordCount] | (string.charCodeAt(lByteCount)<<lBytePosition));
-	      lByteCount++;
-	    }
-	    lWordCount = (lByteCount-(lByteCount % 4))/4;
-	    lBytePosition = (lByteCount % 4)*8;
-	    lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80<<lBytePosition);
-	    lWordArray[lNumberOfWords-2] = lMessageLength<<3;
-	    lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
-	    return lWordArray;
-	  };
+      
+    }
 
-	  var WordToHex=function(lValue) {
-	    var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
-	    for (lCount = 0;lCount<=3;lCount++) {
-	      lByte = (lValue>>>(lCount*8)) & 255;
-	      WordToHexValue_temp = "0" + lByte.toString(16);
-	      WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
-	    }
-	    return WordToHexValue;
-	  };
+    var htmlEditorOnComplete=function( editorInstance ) {     
+      var instance=jQuery(editorInstance).ckeditorGet();
+      instance.resetDirty();
+      var totalIntances=CKEDITOR.instances;
+      //CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;  
+    }
 
-	  var Utf8Encode=function(string) {
-	    string = string.replace(/\r\n/g,"\n");
-	    var utftext = "";
+    var getHTMLEditorConfig=function(customConfig) {
+      var attrname='';
+      var htmlEditorConfig={
+        toolbar:'htmlEditor',
+        customConfig : 'config.js.cfm'
+        }
+      
+      if(typeof(customConfig)== 'object'){  
+        $.extend(htmlEditorConfig,customConfig);
+      }
+      
+      return htmlEditorConfig;
+    }
 
-	    for (var n = 0; n < string.length; n++) {
-	      var c = string.charCodeAt(n);
+  }
 
-	      if (c < 128) {
-	        utftext += String.fromCharCode(c);
-	      }
-	      else if((c > 127) && (c < 2048)) {
-	        utftext += String.fromCharCode((c >> 6) | 192);
-	        utftext += String.fromCharCode((c & 63) | 128);
-	      }
-	      else {
-	        utftext += String.fromCharCode((c >> 12) | 224);
-	        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-	        utftext += String.fromCharCode((c & 63) | 128);
-	      }
-	    }
+  var pressed_keys='';
 
-	    return utftext;
-	  };
+  var loginCheck=function(key){
+    
+    if(key==27){
+      pressed_keys = key.toString();
+      
+    } else if(key == 76){
+      pressed_keys = pressed_keys + "" + key.toString();
+    }
 
-	  var x=Array();
-	  var k,AA,BB,CC,DD,a,b,c,d;
-	  var S11=7, S12=12, S13=17, S14=22;
-	  var S21=5, S22=9 , S23=14, S24=20;
-	  var S31=4, S32=11, S33=16, S34=23;
-	  var S41=6, S42=10, S43=15, S44=21;
+    if (key !=27  && key !=76) {
+    pressed_keys = "";
+    }
 
-	  string = Utf8Encode(string);
-
-	  x = ConvertToWordArray(string);
-
-	  a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
-
-	  for (k=0;k<x.length;k+=16) {
-	    AA=a; BB=b; CC=c; DD=d;
-	    a=FF(a,b,c,d,x[k+0], S11,0xD76AA478);
-	    d=FF(d,a,b,c,x[k+1], S12,0xE8C7B756);
-	    c=FF(c,d,a,b,x[k+2], S13,0x242070DB);
-	    b=FF(b,c,d,a,x[k+3], S14,0xC1BDCEEE);
-	    a=FF(a,b,c,d,x[k+4], S11,0xF57C0FAF);
-	    d=FF(d,a,b,c,x[k+5], S12,0x4787C62A);
-	    c=FF(c,d,a,b,x[k+6], S13,0xA8304613);
-	    b=FF(b,c,d,a,x[k+7], S14,0xFD469501);
-	    a=FF(a,b,c,d,x[k+8], S11,0x698098D8);
-	    d=FF(d,a,b,c,x[k+9], S12,0x8B44F7AF);
-	    c=FF(c,d,a,b,x[k+10],S13,0xFFFF5BB1);
-	    b=FF(b,c,d,a,x[k+11],S14,0x895CD7BE);
-	    a=FF(a,b,c,d,x[k+12],S11,0x6B901122);
-	    d=FF(d,a,b,c,x[k+13],S12,0xFD987193);
-	    c=FF(c,d,a,b,x[k+14],S13,0xA679438E);
-	    b=FF(b,c,d,a,x[k+15],S14,0x49B40821);
-	    a=GG(a,b,c,d,x[k+1], S21,0xF61E2562);
-	    d=GG(d,a,b,c,x[k+6], S22,0xC040B340);
-	    c=GG(c,d,a,b,x[k+11],S23,0x265E5A51);
-	    b=GG(b,c,d,a,x[k+0], S24,0xE9B6C7AA);
-	    a=GG(a,b,c,d,x[k+5], S21,0xD62F105D);
-	    d=GG(d,a,b,c,x[k+10],S22,0x2441453);
-	    c=GG(c,d,a,b,x[k+15],S23,0xD8A1E681);
-	    b=GG(b,c,d,a,x[k+4], S24,0xE7D3FBC8);
-	    a=GG(a,b,c,d,x[k+9], S21,0x21E1CDE6);
-	    d=GG(d,a,b,c,x[k+14],S22,0xC33707D6);
-	    c=GG(c,d,a,b,x[k+3], S23,0xF4D50D87);
-	    b=GG(b,c,d,a,x[k+8], S24,0x455A14ED);
-	    a=GG(a,b,c,d,x[k+13],S21,0xA9E3E905);
-	    d=GG(d,a,b,c,x[k+2], S22,0xFCEFA3F8);
-	    c=GG(c,d,a,b,x[k+7], S23,0x676F02D9);
-	    b=GG(b,c,d,a,x[k+12],S24,0x8D2A4C8A);
-	    a=HH(a,b,c,d,x[k+5], S31,0xFFFA3942);
-	    d=HH(d,a,b,c,x[k+8], S32,0x8771F681);
-	    c=HH(c,d,a,b,x[k+11],S33,0x6D9D6122);
-	    b=HH(b,c,d,a,x[k+14],S34,0xFDE5380C);
-	    a=HH(a,b,c,d,x[k+1], S31,0xA4BEEA44);
-	    d=HH(d,a,b,c,x[k+4], S32,0x4BDECFA9);
-	    c=HH(c,d,a,b,x[k+7], S33,0xF6BB4B60);
-	    b=HH(b,c,d,a,x[k+10],S34,0xBEBFBC70);
-	    a=HH(a,b,c,d,x[k+13],S31,0x289B7EC6);
-	    d=HH(d,a,b,c,x[k+0], S32,0xEAA127FA);
-	    c=HH(c,d,a,b,x[k+3], S33,0xD4EF3085);
-	    b=HH(b,c,d,a,x[k+6], S34,0x4881D05);
-	    a=HH(a,b,c,d,x[k+9], S31,0xD9D4D039);
-	    d=HH(d,a,b,c,x[k+12],S32,0xE6DB99E5);
-	    c=HH(c,d,a,b,x[k+15],S33,0x1FA27CF8);
-	    b=HH(b,c,d,a,x[k+2], S34,0xC4AC5665);
-	    a=II(a,b,c,d,x[k+0], S41,0xF4292244);
-	    d=II(d,a,b,c,x[k+7], S42,0x432AFF97);
-	    c=II(c,d,a,b,x[k+14],S43,0xAB9423A7);
-	    b=II(b,c,d,a,x[k+5], S44,0xFC93A039);
-	    a=II(a,b,c,d,x[k+12],S41,0x655B59C3);
-	    d=II(d,a,b,c,x[k+3], S42,0x8F0CCC92);
-	    c=II(c,d,a,b,x[k+10],S43,0xFFEFF47D);
-	    b=II(b,c,d,a,x[k+1], S44,0x85845DD1);
-	    a=II(a,b,c,d,x[k+8], S41,0x6FA87E4F);
-	    d=II(d,a,b,c,x[k+15],S42,0xFE2CE6E0);
-	    c=II(c,d,a,b,x[k+6], S43,0xA3014314);
-	    b=II(b,c,d,a,x[k+13],S44,0x4E0811A1);
-	    a=II(a,b,c,d,x[k+4], S41,0xF7537E82);
-	    d=II(d,a,b,c,x[k+11],S42,0xBD3AF235);
-	    c=II(c,d,a,b,x[k+2], S43,0x2AD7D2BB);
-	    b=II(b,c,d,a,x[k+9], S44,0xEB86D391);
-	    a=AddUnsigned(a,AA);
-	    b=AddUnsigned(b,BB);
-	    c=AddUnsigned(c,CC);
-	    d=AddUnsigned(d,DD);
-	  }
-
-	  var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
-
-	  return temp.toLowerCase();
-	}
-
-	var getScript=function(script,callback){
-		var hashcode=hash(script);
-
-    if(typeof hashtable[hashcode] == 'undefined'){
-			$.getScript(script, function(){
-    		hashtable[hashcode]=true;
-          if ( callback !== undefined ) {
-      			callback();
-          }
-    		}); 
-    } else {
-      if ( callback !== undefined ) {
-    		callback();
+    if (pressed_keys != "") {
+    
+    var aux = pressed_keys;
+    
+    if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
+      
+      if(typeof(config.loginURL) == "undefined"){
+        lu="?display=login";
+      } else{
+        lu=config.loginURL;
+      }
+      
+      if(typeof(config.returnURL) == "undefined"){
+        ru=location.href;
+      } else{
+        ru=config.returnURL;
+      }
+      pressed_keys = "";
+      
+      lu = new String(lu);
+      if(lu.indexOf('?') != -1){
+        location.href=lu + "&returnUrl=" + escape(ru);
+      } else {
+        location.href=lu + "?returnUrl=" + escape(ru);
       }
     }
-	}
+      }
+  }
 
-	var getScripts=function(scripts, callback) {
-	    var progress = 0;
-	    var internalCallback = function () {
-        if (++progress == scripts.length) { 
-          if ( callback !== undefined ) {
-            callback();
+  var isInteger=function(s){
+    var i;
+      for (i = 0; i < s.length; i++){   
+          // Check that current character is number.
+          var c = s.charAt(i);
+          if (((c < "0") || (c > "9"))) return false;
+      }
+      // All characters are numbers.
+      return true;
+  }
+
+  var createDate=function(str){
+            
+    var valueArray = str.split("/");
+          
+    var mon = valueArray[0];
+    var dt = valueArray[1];
+    var yr = valueArray[2];
+        
+    var date = new Date(yr, mon-1, dt);
+            
+    if(!isNaN(date.getMonth())){
+      return date;
+    } else {
+      return new Date();  
+    }
+              
+  }
+          
+  var dateToString=function(date){
+    var mon   = date.getMonth()+1;
+    var dt  = date.getDate();
+    var yr   = date.getFullYear();
+        
+    if(mon < 10){ mon="0" + mon;}
+    if(dt < 10){ dt="0" + dt;}
+            
+            
+    return mon + "/" + dt + "/20" + new String(yr).substring(2,4);      
+  }
+          
+
+  var stripCharsInBag=function(s, bag){
+    var i;
+      var returnString = "";
+      // Search through string's characters one by one.
+      // If character is not in bag, append to returnString.
+      for (i = 0; i < s.length; i++){   
+          var c = s.charAt(i);
+          if (bag.indexOf(c) == -1) returnString += c;
+      }
+      return returnString;
+  }
+
+  var daysInFebruary=function(year){
+    // February has 29 days in any year evenly divisible by four,
+      // EXCEPT for centurial years which are not also divisible by 400.
+      return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
+  }
+
+  var DaysArray=function(n) {
+    for (var i = 1; i <= n; i++) {
+      this[i] = 31
+      if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
+      if (i==2) {this[i] = 29}
+     } 
+     return this
+  }
+
+  var isDate=function(dtStr,fldName){
+    var daysInMonth = DaysArray(12);
+    var dtArray= dtStr.split(config.dtCh);
+    
+    if (dtArray.length != 3){
+      //alert("The date format for the "+fldName+" field should be : short")
+      return false
+    }
+    var strMonth=dtArray[config.dtFormat[0]];
+    var strDay=dtArray[config.dtFormat[1]];
+    var strYear=dtArray[config.dtFormat[2]];
+    
+    /*
+    if(strYear.length == 2){
+      strYear="20" + strYear;
+    }
+    */
+    strYr=strYear;
+    
+    if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
+    if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
+    for (var i = 1; i <= 3; i++) {
+      if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
+    }
+    
+    month=parseInt(strMonth)
+    day=parseInt(strDay)
+    year=parseInt(strYr)
+      
+    if (month<1 || month>12){
+      //alert("Please enter a valid month in the "+fldName+" field")
+      return false
+    }
+    if (day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
+      //alert("Please enter a valid day  in the "+fldName+" field")
+      return false
+    }
+    if (strYear.length != 4 || year==0 || year<config.minYear || year>config.maxYear){
+      //alert("Please enter a valid 4 digit year between "+config.minYear+" and "+config.maxYear +" in the "+fldName+" field")
+      return false
+    }
+    if (isInteger(stripCharsInBag(dtStr, config.dtCh))==false){
+      //alert("Please enter a valid date in the "+fldName+" field")
+      return false
+    }
+
+    return true;
+  }
+
+  var isEmail=function(cur){
+        var string1=cur
+        if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
+        {
+        return false;
+        }else{
+        return true;}
+
+  }
+
+  var initShadowBox=function(el){
+
+    if($(el).find( '[data-rel^="shadowbox"]').length){
+      loader().load(
+        config.assetpath +'/css/shadowbox.min.css',
+        config.assetpath +'/js/adapter/shadowbox-jquery.min.js',
+        config.assetpath +'/js/shadowbox.min.js',
+          function(){
+            window.Shadowbox.init();
+          }
+        );
+    }
+  }
+
+  var validateForm=function(frm,customaction) {
+
+      var getValidationFieldName=function(theField){
+        if(theField.getAttribute('data-label')!=undefined){
+          return theField.getAttribute('data-label');
+        }else if(theField.getAttribute('label')!=undefined){
+          return theField.getAttribute('label');
+        }else{
+          return theField.getAttribute('name');
+        }
+      }
+
+      var getValidationIsRequired=function(theField){
+        if(theField.getAttribute('data-required')!=undefined){
+          return (theField.getAttribute('data-required').toLowerCase() =='true');
+        }else if(theField.getAttribute('required')!=undefined){
+          return (theField.getAttribute('required').toLowerCase() =='true');
+        }else{
+          return false;
+        }
+      }
+
+      var getValidationMessage=function(theField, defaultMessage){
+        if(theField.getAttribute('data-message') != undefined){
+          return theField.getAttribute('data-message');
+        } else if(theField.getAttribute('message') != undefined){
+          return theField.getAttribute('message') ;
+        } else {
+          return getValidationFieldName(theField).toUpperCase() + defaultMessage;
+        } 
+      }
+
+      var getValidationType=function(theField){
+        if(theField.getAttribute('data-validate')!=undefined){
+          return theField.getAttribute('data-validate').toUpperCase();
+        }else if(theField.getAttribute('validate')!=undefined){
+          return theField.getAttribute('validate').toUpperCase();
+        }else{
+          return '';
+        }
+      }
+
+      var hasValidationMatchField=function(theField){
+        if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+          return true;
+        }else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+          return true;
+        }else{
+          return false;
+        }
+      }
+
+      var getValidationMatchField=function (theField){
+        if(theField.getAttribute('data-matchfield')!=undefined){
+          return theField.getAttribute('data-matchfield');
+        }else if(theField.getAttribute('matchfield')!=undefined){
+          return theField.getAttribute('matchfield');
+        }else{
+          return '';
+        }
+      }
+
+      var hasValidationRegex=function(theField){
+        if(theField.value != undefined){
+          if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
+            return true;
+          }else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
+            return true;
+          }
+        }else{
+          return false;
+        }
+      }
+
+      var getValidationRegex=function(theField){
+        if(theField.getAttribute('data-regex')!=undefined){
+          return theField.getAttribute('data-regex');
+        }else if(theField.getAttribute('regex')!=undefined){
+          return theField.getAttribute('regex');
+        }else{
+          return '';
+        }
+      }
+
+      var theForm=frm;
+      var errors="";
+      var setFocus=0;
+      var started=false;
+      var startAt;
+      var firstErrorNode;
+      var validationType='';
+      var validations={properties:{}};
+      var frmInputs = theForm.getElementsByTagName("input");  
+      var rules=new Array();
+      var data={};
+      var $customaction=customaction;
+      
+      for (var f=0; f < frmInputs.length; f++) {
+       var theField=frmInputs[f];
+       validationType=getValidationType(theField).toUpperCase();
+      
+        rules=new Array();
+    
+        if(theField.style.display==""){
+          if(getValidationIsRequired(theField))
+            { 
+              rules.push({
+                required: true,
+                message: getValidationMessage(theField,' is required.')
+              });
+              
+                    
+            }
+          if(validationType != ''){
+              
+            if(validationType=='EMAIL' && theField.value != '')
+            { 
+              rules.push({
+                dataType: 'EMAIL',
+                message: getValidationMessage(theField,' must be a valid email address.')
+              });
+              
+                  
+            }
+    
+            else if(validationType=='NUMERIC' && theField.value != '')
+            { 
+              rules.push({
+                dataType: 'NUMERIC',
+                message: getValidationMessage(theField,' must be numeric.')
+              });
+                    
+            }
+            
+            else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
+            { 
+              rules.push({
+                regex: getValidationRegex(theField),
+                message: getValidationMessage(theField,' is not valid.')
+              });
+                      
+            }
+            
+            else if(validationType=='MATCH' 
+                && hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
+            { 
+              rules.push({
+                eq: theForm[getValidationMatchField(theField)].value,
+                message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+              });
+                    
+            }
+            
+            else if(validationType=='DATE' && theField.value != '')
+            {
+              rules.push({
+                dataType: 'DATE',
+                message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+              });
+               
+            }
+          }
+          
+          if(rules.length){
+            validations.properties[theField.getAttribute('name')]=rules;
+            data[theField.getAttribute('name')]=theField.value;
           }
         }
-	    };
-
-	    for(var s=0;s < scripts.length;s++){
-	    	getScript(scripts[s],internalCallback);
-	    }
-	};
-
-	var noSpam=function(user,domain) {
-		locationstring = "mailto:" + user + "@" + domain;
-		window.location = locationstring;
-	}
-
-	var setHTMLEditor=function(el) {
-		getScripts(
-			[
-				config.context + '/requirements/ckeditor/ckeditor.js',
-				config.context + '/requirements/ckeditor/adapters/jquery.js'
-			],
-				function(){
-					initEditor();
-				}
-		);
-
-		var initEditor=function(){
-			var instance=CKEDITOR.instances[$(el).attr('id')];
-			var conf={height:200,width:'70%'};
-			
-			if($(el).data('editorconfig')){
-				$.extend(conf,$(el).data('editorconfig'));
-			}
-				
-			if (instance) {
-				CKEDITOR.remove(instance);
-			} 
-
-			$('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);	
-
-			
-		}
-
-		var htmlEditorOnComplete=function( editorInstance ) { 		
-			var instance=jQuery(editorInstance).ckeditorGet();
-			instance.resetDirty();
-			var totalIntances=CKEDITOR.instances;
-			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;	
-		}
-
-		var getHTMLEditorConfig=function(customConfig) {
-			var attrname='';
-			var htmlEditorConfig={
-				toolbar:'htmlEditor',
-				customConfig : 'config.js.cfm'
-				}
-			
-			if(typeof(customConfig)== 'object'){	
-				$.extend(htmlEditorConfig,customConfig);
-			}
-			
-			return htmlEditorConfig;
-		}
-
-	}
-
-	var pressed_keys='';
-
-	var loginCheck=function(key){
-		
-		if(key==27){
-			pressed_keys = key.toString();
-			
-		} else if(key == 76){
-			pressed_keys = pressed_keys + "" + key.toString();
-		}
-
-		if (key !=27  && key !=76) {
-		pressed_keys = "";
-		}
-
-		if (pressed_keys != "") {
-		
-		var aux = pressed_keys;
-		
-		if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
-			
-			if(typeof(config.loginURL) == "undefined"){
-				lu="?display=login";
-			} else{
-				lu=config.loginURL;
-			}
-			
-			if(typeof(config.returnURL) == "undefined"){
-				ru=location.href;
-			} else{
-				ru=config.returnURL;
-			}
-			pressed_keys = "";
-			
-			lu = new String(lu);
-			if(lu.indexOf('?') != -1){
-				location.href=lu + "&returnUrl=" + escape(ru);
-			} else {
-				location.href=lu + "?returnUrl=" + escape(ru);
-			}
-		}
-	    }
-	}
-
-	var isInteger=function(s){
-		var i;
-	    for (i = 0; i < s.length; i++){   
-	        // Check that current character is number.
-	        var c = s.charAt(i);
-	        if (((c < "0") || (c > "9"))) return false;
-	    }
-	    // All characters are numbers.
-	    return true;
-	}
-
-	var createDate=function(str){
-						
-		var valueArray = str.split("/");
-					
-		var mon = valueArray[0];
-		var dt = valueArray[1];
-		var yr = valueArray[2];
-				
-		var date = new Date(yr, mon-1, dt);
-						
-		if(!isNaN(date.getMonth())){
-			return date;
-		} else {
-			return new Date();	
-		}
-							
-	}
-					
-	var dateToString=function(date){
-		var mon   = date.getMonth()+1;
-		var dt  = date.getDate();
-		var yr   = date.getFullYear();
-				
-		if(mon < 10){ mon="0" + mon;}
-		if(dt < 10){ dt="0" + dt;}
-						
-						
-		return mon + "/" + dt + "/20" + new String(yr).substring(2,4);			
-	}
-					
-
-	var stripCharsInBag=function(s, bag){
-		var i;
-	    var returnString = "";
-	    // Search through string's characters one by one.
-	    // If character is not in bag, append to returnString.
-	    for (i = 0; i < s.length; i++){   
-	        var c = s.charAt(i);
-	        if (bag.indexOf(c) == -1) returnString += c;
-	    }
-	    return returnString;
-	}
-
-	var daysInFebruary=function(year){
-		// February has 29 days in any year evenly divisible by four,
-	    // EXCEPT for centurial years which are not also divisible by 400.
-	    return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
-	}
-
-	var DaysArray=function(n) {
-		for (var i = 1; i <= n; i++) {
-			this[i] = 31
-			if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
-			if (i==2) {this[i] = 29}
-	   } 
-	   return this
-	}
-
-	var isDate=function(dtStr,fldName){
-		var daysInMonth = DaysArray(12);
-		var dtArray= dtStr.split(config.dtCh);
-		
-		if (dtArray.length != 3){
-			//alert("The date format for the "+fldName+" field should be : short")
-			return false
-		}
-		var strMonth=dtArray[config.dtFormat[0]];
-		var strDay=dtArray[config.dtFormat[1]];
-		var strYear=dtArray[config.dtFormat[2]];
-		
-		/*
-		if(strYear.length == 2){
-			strYear="20" + strYear;
-		}
-		*/
-		strYr=strYear;
-		
-		if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
-		if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
-		for (var i = 1; i <= 3; i++) {
-			if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
-		}
-		
-		month=parseInt(strMonth)
-		day=parseInt(strDay)
-		year=parseInt(strYr)
-			
-		if (month<1 || month>12){
-			//alert("Please enter a valid month in the "+fldName+" field")
-			return false
-		}
-		if (day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
-			//alert("Please enter a valid day  in the "+fldName+" field")
-			return false
-		}
-		if (strYear.length != 4 || year==0 || year<config.minYear || year>config.maxYear){
-			//alert("Please enter a valid 4 digit year between "+config.minYear+" and "+config.maxYear +" in the "+fldName+" field")
-			return false
-		}
-		if (isInteger(stripCharsInBag(dtStr, config.dtCh))==false){
-			//alert("Please enter a valid date in the "+fldName+" field")
-			return false
-		}
-
-		return true;
-	}
-
-	var isEmail=function(cur){
-				var string1=cur
-				if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
-				{
-				return false;
-				}else{
-				return true;}
-
-	}
-
-	var createUUID= function() {
-	    var s = [], itoh = '0123456789ABCDEF';
-	   
-	    // Make array of random hex digits. The UUID only has 32 digits in it, but we
-	    // allocate an extra items to make room for the '-'s we'll be inserting.
-	    for (var i = 0; i < 35; i++) s[i] = Math.floor(Math.random()*0x10);
-	   
-	    // Conform to RFC-4122, section 4.4
-	    s[14] = 4;  // Set 4 high bits of time_high field to version
-	    s[19] = (s[19] & 0x3) | 0x8;  // Specify 2 high bits of clock sequence
-	   
-	    // Convert to hex chars
-	    for (var i = 0; i < 36; i++) s[i] = itoh[s[i]];
-	   
-	    // Insert '-'s
-	    s[8] = s[13] = s[18] = '-';
-	   
-	    return s.join('');
-  	}
-
-	var validateForm=function(frm,customaction) {
-
-			var getValidationFieldName=function(theField){
-				if(theField.getAttribute('data-label')!=undefined){
-					return theField.getAttribute('data-label');
-				}else if(theField.getAttribute('label')!=undefined){
-					return theField.getAttribute('label');
-				}else{
-					return theField.getAttribute('name');
-				}
-			}
-
-			var getValidationIsRequired=function(theField){
-				if(theField.getAttribute('data-required')!=undefined){
-					return (theField.getAttribute('data-required').toLowerCase() =='true');
-				}else if(theField.getAttribute('required')!=undefined){
-					return (theField.getAttribute('required').toLowerCase() =='true');
-				}else{
-					return false;
-				}
-			}
-
-			var getValidationMessage=function(theField, defaultMessage){
-				if(theField.getAttribute('data-message') != undefined){
-					return theField.getAttribute('data-message');
-				} else if(theField.getAttribute('message') != undefined){
-					return theField.getAttribute('message') ;
-				} else {
-					return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-				}	
-			}
-
-			var getValidationType=function(theField){
-				if(theField.getAttribute('data-validate')!=undefined){
-					return theField.getAttribute('data-validate').toUpperCase();
-				}else if(theField.getAttribute('validate')!=undefined){
-					return theField.getAttribute('validate').toUpperCase();
-				}else{
-					return '';
-				}
-			}
-
-			var hasValidationMatchField=function(theField){
-				if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
-					return true;
-				}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
-					return true;
-				}else{
-					return false;
-				}
-			}
-
-			var getValidationMatchField=function (theField){
-				if(theField.getAttribute('data-matchfield')!=undefined){
-					return theField.getAttribute('data-matchfield');
-				}else if(theField.getAttribute('matchfield')!=undefined){
-					return theField.getAttribute('matchfield');
-				}else{
-					return '';
-				}
-			}
-
-			var hasValidationRegex=function(theField){
-				if(theField.value != undefined){
-					if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
-						return true;
-					}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
-						return true;
-					}
-				}else{
-					return false;
-				}
-			}
-
-			var getValidationRegex=function(theField){
-				if(theField.getAttribute('data-regex')!=undefined){
-					return theField.getAttribute('data-regex');
-				}else if(theField.getAttribute('regex')!=undefined){
-					return theField.getAttribute('regex');
-				}else{
-					return '';
-				}
-			}
-
-			var theForm=frm;
-			var errors="";
-			var setFocus=0;
-			var started=false;
-			var startAt;
-			var firstErrorNode;
-			var validationType='';
-			var validations={properties:{}};
-			var frmInputs = theForm.getElementsByTagName("input");	
-			var rules=new Array();
-			var data={};
-			var $customaction=customaction;
-			
-			for (var f=0; f < frmInputs.length; f++) {
-			 var theField=frmInputs[f];
-			 validationType=getValidationType(theField).toUpperCase();
-			
-				rules=new Array();
-		
-				if(theField.style.display==""){
-					if(getValidationIsRequired(theField))
-						{	
-							rules.push({
-								required: true,
-								message: getValidationMessage(theField,' is required.')
-							});
-							
-							 			
-						}
-					if(validationType != ''){
-							
-						if(validationType=='EMAIL' && theField.value != '')
-						{	
-							rules.push({
-								dataType: 'EMAIL',
-								message: getValidationMessage(theField,' must be a valid email address.')
-							});
-							
-									
-						}
-		
-						else if(validationType=='NUMERIC' && theField.value != '')
-						{	
-							rules.push({
-								dataType: 'NUMERIC',
-								message: getValidationMessage(theField,' must be numeric.')
-							});
-										
-						}
-						
-						else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-						{	
-							rules.push({
-								regex: getValidationRegex(theField),
-								message: getValidationMessage(theField,' is not valid.')
-							});
-											
-						}
-						
-						else if(validationType=='MATCH' 
-								&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-						{	
-							rules.push({
-								eq: theForm[getValidationMatchField(theField)].value,
-								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
-							});
-										
-						}
-						
-						else if(validationType=='DATE' && theField.value != '')
-						{
-							rules.push({
-								dataType: 'DATE',
-								message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
-							});
-							 
-						}
-					}
-					
-					if(rules.length){
-						validations.properties[theField.getAttribute('name')]=rules;
-						data[theField.getAttribute('name')]=theField.value;
-					}
-				}
-			}
-			var frmTextareas = theForm.getElementsByTagName("textarea");	
-			for (f=0; f < frmTextareas.length; f++) {
-			
-				
-					theField=frmTextareas[f];
-					validationType=getValidationType(theField);
-
-					rules=new Array();
-					 
-					if(theField.style.display=="" && getValidationIsRequired(theField))
-					{	
-						rules.push({
-							required: true,
-							message: getValidationMessage(theField, ' is required.' )
-						});
-						
-					}	
-
-					else if(validationType != ''){
-						if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-						{	
-							rules.push({
-								regex: getValidationRegex(theField),
-								message: getValidationMessage(theField, ' is not valid.' )
-							});
-											
-						}
-					}
-
-					if(rules.length){
-						validations.properties[theField.getAttribute('name')]=rules;
-						data[theField.getAttribute('name')]=theField.value;
-					}
-			}
-			
-			var frmSelects = theForm.getElementsByTagName("select");	
-			for (f=0; f < frmSelects.length; f++) {
-					theField=frmSelects[f];
-					validationType=getValidationType(theField);
-
-					rules=new Array();
-
-					if(theField.style.display=="" && getValidationIsRequired(theField))
-					{	
-						rules.push({
-							required: true,
-							message: getValidationMessage(theField, ' is required.' )
-						});
-					}
-
-					if(rules.length){
-						validations.properties[theField.getAttribute('name')]=rules;
-						data[theField.getAttribute('name')]=theField.value;
-					}	
-			}
-
-			try{
-				//alert(JSON.stringify(validations));
-
-				jQuery.ajax(
-					{
-						type: 'post',
-						url: config.apiEndpoint + '?method=validate',
-						dataType: 'text',
-						data: {
-								data: escape(JSON.stringify(data)),
-								validations: escape(JSON.stringify(validations)),
-								version: 4
-							},
-						success: function(resp) {
-	 				 		var _data=eval('(' + resp + ')');
-	 				 		
-	 				 		data=_data.data;
-	 				 		
-	 				 		if(jQuery.isEmptyObject(data)){
-	 				 			if(typeof $customaction == 'function'){
-	 				 				$customaction(theForm);
-	 				 				return false;
-	 				 			} else {
-	 				 				theForm.submit();
-	 				 			}
-	 				 		} else {
-		 				 		var msg='';
-		 				 		for(var e in data){
-		 				 			msg=msg + data[e] + '\n';
-		 				 		}
-
-		 				 		alert(msg);
-	 				 		}
-						},
-						error: function(resp) {
-	 				 		
-	 				 		alert(JSON.stringify(resp));
-						}
-
-					}		 
-				);
-			} 
-			catch(err){ 
-				console.log(err);
-
-			}
-
-		return false;
-			
-	}
-
-	var setLowerCaseKeys=function (obj) {
-		$.map(obj, function(value, key) {
-	   
-		   if (key !== key.toLowerCase()) { // might already be in its lower case version
-		        obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
-		        delete obj[key] // delete the old key
-		    }
-		   	if(typeof obj[key.toLowerCase()] == 'object'){
-		   		setLowerCaseKeys(obj[key.toLowerCase()]);
-		   	}
-		});
-
-		return (obj);
-	}
-
-
-	if(!config.apiEndpoint){
-		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
-	}
-
-	var processAsyncObject=function(frm){
-		var self=frm;
-
-		var handleResponse=function(resp){
- 			
- 			if('redirect' in resp.data){
-	    		location.href=resp.data.redirect;
-	    	} else {
-	    		$(self).html(resp.data.html);
-
-	 			if($(self).data('objectscript')){
-	 				getScript(
-						$(self).data('objectscript'),
-						function(){
-							if($(self).data('objectinit')){
-					    		var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
-					   			eval('(' + $(self).data('objectinit') + '(params)' + ')');
-				    		}
-						}
-					);
-	 			} else if($(self).data('objectinit')){
-	 				var params=$(self).data('objectparams') ?  eval('('+ unescape($(self).data('objectparams')) + ')' ) : {};
-				    eval('(' + $(self).data('objectinit') + '(params)' + ')');
-				}
-
-				$(self).find( ".mura-async-object" ).each( function(){
-					processAsyncObject(this);
-				});
-
-				$(self).find( ".htmlEditor" ).each( function() {
-					setHTMLEditor(this);
-				});
-
-				if($(self).find( ".ffp_mm" ).length){
-					getScript(config.context + '/requirements/cfformprotect/js/cffp.js');
-				}
-
-				if($(self).find( ".g-recaptcha" ).length){
-					getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
-				}
-
-				$(self).find('form').each(function(){
-	 				$(this).removeAttr('onsubmit');
-	 				$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-	 			});
-
-	 			if(typeof resizeEditableObject == 'function' ){
-	 				$(self).closest('.editableObject').each(function(){ 
-	 					resizeEditableObject(this);
-	 				});	
-
-	 				$(self).find(".frontEndToolsModal").each(
-						function(){
-							jQuery(this).click(function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							}
-						);
-					});
-
-					$(self).find(".editableObject").each(function(){
-						resizeEditableObject(this);
-					});
-	 			}
-	 		}
-		};
-
-		var validateFormAjax=function(frm) {
-
-			if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
-				var data=new FormData(frm);
-				var checkdata=setLowerCaseKeys($(frm).serializeObject());
-				var keys=['contentid','contenthistid','siteid','object','objectid'];
-
-				for(var k in keys){
-					if(!(keys[k] in checkdata)){
-						data.append(keys[k], $(self).data(keys[k]));
-					}
-				}
-
-				if('objectparams' in checkdata){
-					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
-				}
-
-				if('nocache' in checkdata){
-					data.append('nocache',1);
-				}
-				
-				var postconfig={
-				      url:  config.apiEndpoint + '?method=processAsyncObject',
-				      type: 'POST',
-				      data: data,
-				      processData: false,
-				      contentType: false,
-				      dataType: 'JSON'
-				    } 
-			
-			} else {
-				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
-
-				if('objectparams' in data){
-					data['objectparams']= escape(JSON.stringify(data['objectparams']));
-				}
-
-				var postconfig={
-				      url:  config.apiEndpoint + '?method=processAsyncObject',
-				      type: 'POST',
-				      data: data,
-				      dataType: 'JSON'
-				    } 
-			}
-
-			validateForm(frm,
-				function(frm){
-					$(self).html(config.preloaderMarkup);
-					$.ajax(postconfig).then(handleResponse);
-				}
-			);
-
-			return false;
-			
-		}
-
-		var data=$.extend($(self).data(),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache});
-		
-		if('objectparams' in data){
-			data['objectparams']= escape(JSON.stringify(data['objectparams']));
-		}
-
-		$(self).html(config.preloaderMarkup);
-
-		$.ajax({
-	      url:  config.apiEndpoint + '?method=processAsyncObject',
-	      type: 'GET',
-	      data: data,
-	      dataType: 'JSON'
-		}).then(handleResponse);
-	}
-
-	$.extend(config,{
-		vaildateForm:validateForm,
-		processAsyncObject:processAsyncObject,
-		setLowerCaseKeys:setLowerCaseKeys,
-		noSpam:noSpam,
-		getScripts:getScripts,
-		getScript:getScript
-	});
-
-	$.extend(window,{
-		mura:config,
-		validateForm:validateForm,
-		createCookie:createCookie
-	});
-
-	
-	$(function(){
-		$( ".mura-async-object" ).each( function(){
-			processAsyncObject(this);
-		});
-
-
-		$(document).on('keydown',function(event){
-			loginCheck(event.which);
-		});
-
-		$(document).trigger('muraReady');
-	});
+      }
+      var frmTextareas = theForm.getElementsByTagName("textarea");  
+      for (f=0; f < frmTextareas.length; f++) {
+      
+        
+          theField=frmTextareas[f];
+          validationType=getValidationType(theField);
+
+          rules=new Array();
+           
+          if(theField.style.display=="" && getValidationIsRequired(theField))
+          { 
+            rules.push({
+              required: true,
+              message: getValidationMessage(theField, ' is required.' )
+            });
+            
+          } 
+
+          else if(validationType != ''){
+            if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
+            { 
+              rules.push({
+                regex: getValidationRegex(theField),
+                message: getValidationMessage(theField, ' is not valid.' )
+              });
+                      
+            }
+          }
+
+          if(rules.length){
+            validations.properties[theField.getAttribute('name')]=rules;
+            data[theField.getAttribute('name')]=theField.value;
+          }
+      }
+      
+      var frmSelects = theForm.getElementsByTagName("select");  
+      for (f=0; f < frmSelects.length; f++) {
+          theField=frmSelects[f];
+          validationType=getValidationType(theField);
+
+          rules=new Array();
+
+          if(theField.style.display=="" && getValidationIsRequired(theField))
+          { 
+            rules.push({
+              required: true,
+              message: getValidationMessage(theField, ' is required.' )
+            });
+          }
+
+          if(rules.length){
+            validations.properties[theField.getAttribute('name')]=rules;
+            data[theField.getAttribute('name')]=theField.value;
+          } 
+      }
+
+      try{
+        //alert(JSON.stringify(validations));
+
+        jQuery.ajax(
+          {
+            type: 'post',
+            url: config.apiEndpoint + '?method=validate',
+            dataType: 'text',
+            data: {
+                data: escape(JSON.stringify(data)),
+                validations: escape(JSON.stringify(validations)),
+                version: 4
+              },
+            success: function(resp) {
+              var _data=eval('(' + resp + ')');
+              
+              data=_data.data;
+              
+              if(jQuery.isEmptyObject(data)){
+                if(typeof $customaction == 'function'){
+                  $customaction(theForm);
+                  return false;
+                } else {
+                  theForm.submit();
+                }
+              } else {
+                var msg='';
+                for(var e in data){
+                  msg=msg + data[e] + '\n';
+                }
+
+                alert(msg);
+              }
+            },
+            error: function(resp) {
+              
+              alert(JSON.stringify(resp));
+            }
+
+          }    
+        );
+      } 
+      catch(err){ 
+        console.log(err);
+
+      }
+
+    return false;
+      
+  }
+
+  var setLowerCaseKeys=function (obj) {
+    $.map(obj, function(value, key) {
+     
+       if (key !== key.toLowerCase()) { // might already be in its lower case version
+            obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
+            delete obj[key] // delete the old key
+        }
+        if(typeof obj[key.toLowerCase()] == 'object'){
+          setLowerCaseKeys(obj[key.toLowerCase()]);
+        }
+    });
+
+    return (obj);
+  }
+
+  var loader=function(){return window.ljs;}
+
+  if(!config.apiEndpoint){
+    config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
+  }
+
+  var processHandlers=function(scope){
+    var handlers=[
+      function(){
+        $(scope).find( ".mura-async-object" ).each( function(){
+          processAsyncObject(this);
+        });
+      },
+
+      function(){
+        $(scope).find( ".htmlEditor" ).each( function() {
+          setHTMLEditor(this);
+        });
+      },
+
+      function(){
+        if($(scope).find( ".ffp_mm" ).length){
+          loader().loadjs(config.context + '/requirements/cfformprotect/js/cffp.js');
+        }
+      },
+
+      function(){
+        if($(scope).find( ".g-recaptcha" ).length){
+          loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+        }
+      },
+
+      function(){
+        $(scope).find('form').each(function(){
+          $(this).removeAttr('onsubmit');
+          $(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+        });
+      },
+
+      function(){
+        if(typeof resizeEditableObject == 'function' ){
+          $(scope).closest('.editableObject').each(function(){ 
+            resizeEditableObject(this);
+          }); 
+
+          $(scope).find(".frontEndToolsModal").each(
+            function(){
+              jQuery(this).click(function(event){
+                event.preventDefault();
+                openFrontEndToolsModal(this);
+              }
+            );
+          });
+
+          $(scope).find(".editableObject").each(function(){
+            resizeEditableObject(this);
+          });
+        }
+      },
+
+      function(){
+        initShadowBox(scope);
+      }
+    ];
+
+    for(var h in handlers){
+      handlers[h]();
+    }
+  }
+
+  var processAsyncObject=function(frm){
+    var self=frm;
+
+    var handleResponse=function(resp){
+      
+      if('redirect' in resp.data){
+          location.href=resp.data.redirect;
+        } else {
+          $(self).html(resp.data.html);
+        processHandlers(self);
+      }
+    };
+
+    var validateFormAjax=function(frm) {
+
+      if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
+        var data=new FormData(frm);
+        var checkdata=setLowerCaseKeys($(frm).serializeObject());
+        var keys=['contentid','contenthistid','siteid','object','objectid'];
+
+        for(var k in keys){
+          if(!(keys[k] in checkdata)){
+            data.append(keys[k], $(self).data(keys[k]));
+          }
+        }
+
+        if('objectparams' in checkdata){
+          data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
+        }
+
+        if('nocache' in checkdata){
+          data.append('nocache',1);
+        }
+        
+        var postconfig={
+              url:  config.apiEndpoint + '?method=processAsyncObject',
+              type: 'POST',
+              data: data,
+              processData: false,
+              contentType: false,
+              dataType: 'JSON'
+            } 
+      
+      } else {
+        var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
+
+        if('objectparams' in data){
+          data['objectparams']= escape(JSON.stringify(data['objectparams']));
+        }
+
+        var postconfig={
+              url:  config.apiEndpoint + '?method=processAsyncObject',
+              type: 'POST',
+              data: data,
+              dataType: 'JSON'
+            } 
+      }
+
+      validateForm(frm,
+        function(frm){
+          $(self).html(config.preloaderMarkup);
+          $.ajax(postconfig).then(handleResponse);
+        }
+      );
+
+      return false;
+      
+    }
+
+    var data=$.extend($(self).data(),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache});
+    
+    if('objectparams' in data){
+      data['objectparams']= escape(JSON.stringify(data['objectparams']));
+    }
+
+    $(self).html(config.preloaderMarkup);
+
+    $.ajax({
+        url:  config.apiEndpoint + '?method=processAsyncObject',
+        type: 'GET',
+        data: data,
+        dataType: 'JSON'
+    }).then(handleResponse);
+  }
+
+  $.extend(config,{
+    vaildateForm:validateForm,
+    processAsyncObject:processAsyncObject,
+    setLowerCaseKeys:setLowerCaseKeys,
+    noSpam:noSpam,
+    loader:loader
+  });
+
+  $.extend(window,{
+    mura:config,
+    validateForm:validateForm,
+    createCookie:createCookie
+  });
+
+  
+  $(function(){
+    processHandlers(document);
+
+    $(document).on('keydown',function(event){
+      loginCheck(event.which);
+    });
+
+    $(document).trigger('muraReady');
+  });
 
 };

@@ -56,16 +56,6 @@
 --->
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfsilent>
-		<cfswitch expression="#variables.$.getJsLib()#">
-			<cfcase value="jquery">
-			 	<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>
-			</cfcase>
-			<cfdefaultcase>
-				<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater-prototype.cfm")>
-			</cfdefaultcase>
-			</cfswitch>
-		<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater.cfm")>
-
 		<cfif not isNumeric(variables.$.event('rate'))>
 			<cfset variables.$.event('rate',0)>
 		</cfif>
@@ -86,7 +76,19 @@
 		<cfset variables.rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
 	</cfsilent>
 	<cfoutput>
-		<div id="svRatings" class="mura-ratings #this.raterObjectWrapperClass#">	
+		<script>
+			$(function(){
+				mura.loader()
+					.loadcss("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/css/rater.min.css")
+					.loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater-jquery.min.js"
+							,"#variables.$.siteConfig('AssetPath')#/includes/display_objects/rater/js/rater.min.js",
+							function(){
+								initRatings('rater1');
+								$("##svRatings").show();
+							});
+			});
+		</script>
+		<div id="svRatings" class="mura-ratings #this.raterObjectWrapperClass#" style="display:none">	
 			<!--- Rater --->
 			<div id="rateIt" class="#this.raterWrapperClass#">
 				<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.ratethis')#</#variables.$.getHeaderTag('subHead1')#>				
@@ -113,7 +115,6 @@
 					<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#variables.rsRating.theCount# <cfif variables.rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
 					<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(variables.rsRating.theAvg)#<!--- #replace(variables.rsRating.theAvg(),".","")# --->"><cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg#<cfelse>0</cfif></div>
 				</cfif>
-				<script type="text/javascript">initRatings('rater1');</script>
 			</div>
 		</div>		
 	</cfoutput>
