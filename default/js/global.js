@@ -438,21 +438,29 @@ var initMura=function(config){
 
 	var getScript=function(script,callback){
 		var hashcode=hash(script);
-    	
-    	if(typeof hashtable[hashcode] == 'undefined'){
+
+    if(typeof hashtable[hashcode] == 'undefined'){
 			$.getScript(script, function(){
-    			hashtable[hashcode]=true;
-    			callback();
+    		hashtable[hashcode]=true;
+          if ( callback !== undefined ) {
+      			callback();
+          }
     		}); 
-    	} else {
+    } else {
+      if ( callback !== undefined ) {
     		callback();
-    	}
+      }
+    }
 	}
 
 	var getScripts=function(scripts, callback) {
 	    var progress = 0;
 	    var internalCallback = function () {
-	        if (++progress == scripts.length) { callback(); }
+        if (++progress == scripts.length) { 
+          if ( callback !== undefined ) {
+            callback();
+          }
+        }
 	    };
 
 	    for(var s=0;s < scripts.length;s++){
