@@ -69,9 +69,8 @@ jQuery(document).ready(function($) {
 		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
 		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
 		.loadjs(
-			["#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
+			"#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
 			"#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
-			],
 			"#$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
 			function(){
 				$('##mura-calendar').fullCalendar({
