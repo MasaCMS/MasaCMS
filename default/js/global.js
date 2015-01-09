@@ -115,7 +115,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
 	
-	//if( true || ! window.ljs ){
+	if( ! window.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -304,7 +304,7 @@ throw new SyntaxError('JSON.parse');}};}();}
 		//export ljs
 		window.ljs = loader;
 		// eval inside tag code if any
-	//}
+	}
 	script && gEval(script);
 })(window);
 

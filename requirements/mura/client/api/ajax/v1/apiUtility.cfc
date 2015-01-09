@@ -1322,10 +1322,18 @@ component extends="mura.cfobject" {
 		
 		var $=request.servletEvent.getValue("MuraScope");
 		
-		if(len($.event('contenthistid'))){
+		if(len($.event('filename'))){
+			$.event('currentFilename',$.event('filename'));
+			getBean('contentServer').parseCustomURLVars($.event());
+			$.event('contentBean',$.getBean('content').loadBy(filename=$.event('currentFilenameAdjusted')));
+		} else if(len($.event('contenthistid'))){
 			$.event('contentBean',$.getBean('content').loadBy(contenthistid=$.event('contenthistid')));
+			$.event('currentFilename',$.content('filename'));
+			$.event('currentFilenameAdjusted',$.content('filename'));
 		} else {
 			$.event('contentBean',$.getBean('content').loadBy(contentid=$.event('contentid')));
+			$.event('currentFilename',$.content('filename'));
+			$.event('currentFilenameAdjusted',$.content('filename'));
 		}
 		
 		$.event('crumbdata',$.content().getCrumbArray());
@@ -1367,23 +1375,16 @@ component extends="mura.cfobject" {
 
 			break;
 
-			case 'calendar':
+			case 'body':
 				return {
-					html=$.dspObject_Include(theFile='calendar/index.cfm')
+					html=$.dspBody(argumentCollection=$.event().getAllValues())
 				};
 
 			break;
 
-			case 'folder':
+			case 'displayregion':
 				return {
-					html=$.dspObject_Include(theFile='dsp_folder.cfm')
-				};
-
-			break;
-
-			case 'gallery':
-				return {
-					html=$.dspObject_Include(theFile='gallery/index.cfm')
+					html=$.dspObjects(argumentCollection=$.event().getAllValues())
 				};
 
 			break;
