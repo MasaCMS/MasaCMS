@@ -211,7 +211,7 @@
 														<!--- Update Core --->
 															<cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
 																<li>
-																	<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('./?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
+																	<a href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;">
 																		<i class="icon-bolt"></i> 
 																		#rc.$.rbKey('layout.updatemuracore')#
 																	</a>
@@ -419,7 +419,7 @@
 
 													<!--- Add Group --->
 														<li<cfif request.action eq "core:cusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
-															<a href="./?muraAction=cUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
 																#rc.$.rbKey('user.addgroup')#
 															</a>
@@ -427,7 +427,7 @@
 
 													<!--- Add User --->
 														<li<cfif request.action eq "core:cusers.edituser" and not len(rc.userID)> class="active"</cfif>>
-															<a href="./?muraAction=cUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 																<i class="icon-plus-sign"></i> 
 														 		#rc.$.rbKey('user.adduser')#
 														 	</a>
@@ -480,7 +480,7 @@
 												<!--- Class Extension Manager --->
 												<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
 												<li class="dropdown-submenu">
-													<a href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
 														<i class="icon-wrench"></i> 
 														#rc.$.rbKey('layout.classextensionmanager')#
 													</a>
@@ -503,7 +503,7 @@
 														</li>
 														<!--- Import Class Extension --->
 														<li>
-															<a href="./?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+															<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
 																<i class="icon-signin"></i> 
 																#rc.$.rbKey('layout.importclassextensions')#
 															</a>
@@ -568,7 +568,7 @@
 												<cfif listFind(session.mura.memberships,'S2')>
 													<cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
 														<li>
-															<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
+															<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
 																<i class="icon-bolt"></i> 
 																#rc.$.rbKey('layout.updatesite')#
 															</a>
