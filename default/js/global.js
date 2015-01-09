@@ -1034,13 +1034,6 @@ var initMura=function(config){
 			},
 
 			function(){
-				$(scope).find('form').each(function(){
-					$(this).removeAttr('onsubmit');
-					$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-				});
-			},
-
-			function(){
 				if(typeof resizeEditableObject == 'function' ){
 					$(scope).closest('.editableObject').each(function(){ 
 						resizeEditableObject(this);
@@ -1075,12 +1068,17 @@ var initMura=function(config){
 		var self=el;
 
 		var handleResponse=function(resp){
-			
 			if('redirect' in resp.data){
-					location.href=resp.data.redirect;
-				} else {
-					$(self).html(resp.data.html);
+				location.href=resp.data.redirect;
+			} else {
+				$(self).html(resp.data.html);
+				
 				processHandlers(self);
+
+				$(self).find('form').each(function(){
+					$(this).removeAttr('onsubmit');
+					$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+				});
 			}
 		};
 
