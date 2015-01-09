@@ -1367,23 +1367,16 @@ component extends="mura.cfobject" {
 
 			break;
 
-			case 'calendar':
+			case 'body':
 				return {
-					html=$.dspObject_Include(theFile='calendar/index.cfm')
+					html=$.dspBody(argumentCollection=$.event().getAllValues())
 				};
 
 			break;
 
-			case 'folder':
+			case 'displayregion':
 				return {
-					html=$.dspObject_Include(theFile='dsp_folder.cfm')
-				};
-
-			break;
-
-			case 'gallery':
-				return {
-					html=$.dspObject_Include(theFile='gallery/index.cfm')
+					html=$.dspObjects(argumentCollection=$.event().getAllValues())
 				};
 
 			break;
