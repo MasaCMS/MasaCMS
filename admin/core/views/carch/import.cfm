@@ -139,7 +139,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<div class="form-actions">
-			<!--- <input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="Import" /> --->
 			<input id="frmSubmit" type="button" class="btn" value="Import" />
 		</div>
 

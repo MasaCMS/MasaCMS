@@ -45,6 +45,33 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+	<script>
+		jQuery(document).ready(function($) {
+
+			$('##frmSubmit').click(function(e) {
+				var newFile = $('input[name="newFile"]').val();
+				if ( newFile === '' || newFile.split('.').pop() !== 'xml' ) {
+					var msg = '#rc.$.rbKey('sitemanager.content.importnofilemessage')#';
+					$('##alertDialogMessage').html(msg);
+
+					$('##alertDialog').dialog({
+						resizable: false,
+						modal: true,
+						buttons: {
+							'#rc.$.rbKey('sitemanager.extension.ok')#': function() {
+								$(this).dialog('close');
+							}
+						}
+					});
+
+				} else {
+					submitForm(document.forms.form1,'import')
+				}
+			});
+
+		});
+	</script>
+
 
 	<h1>#rc.$.rbKey('sitemanager.extension.importclassextensions')#</h1>
 
@@ -68,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<div class="form-actions">
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="#rc.$.rbKey('sitemanager.extension.import')#" />
+			<input id="frmSubmit" type="button" class="btn" value="#rc.$.rbKey('sitemanager.extension.import')#" />
 		</div>
 
 		<input type="hidden" name="action" value="import">
