@@ -1361,4 +1361,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif',getValue('fileEXT'))>
 </cffunction>
 
+	<cffunction name="getStatusID" output="false">
+		<cfset var statusid = '' />
+		<cfif variables.instance.active gt 0 and variables.instance.approved gt 0>
+			<!--- 2: Published --->
+			<cfset statusid = 2>
+		<cfelseif len(variables.instance.approvalstatus) and requiresApproval()>
+			<!--- 1: Pending Approval --->
+			<cfset statusid = 1 />
+		<cfelseif variables.instance.approved lt 1>
+			<!--- 0: Draft --->
+			<cfset statusid = 0 />
+		<cfelse>
+			<!--- 3: Archived --->
+			<cfset statusid = 3 />
+		</cfif>
+		<cfreturn statusid />
+	</cffunction>
+
+	<cffunction name="getStatus" output="false">
+		<cfset var status = '' />
+		<cfif IsDefined('session.rb')>
+			<cfswitch expression="#getStatusID()#">
+				<cfcase value="0">
+					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft") />
+				</cfcase>
+				<cfcase value="1">
+					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#variables.instance.approvalstatus#") />
+				</cfcase>
+				<cfcase value="2">
+					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published") />
+				</cfcase>
+				<cfdefaultcase>
+					<cfset status = application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived") />
+				</cfdefaultcase>
+			</cfswitch>
+		</cfif>
+		<cfreturn status />
+	</cffunction>
+
 </cfcomponent>

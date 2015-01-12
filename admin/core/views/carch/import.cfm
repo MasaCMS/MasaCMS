@@ -48,22 +48,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset hasChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('hasChangesets') />
 	<cfset enforceChangesets = $.getBean('settingsManager').getSite($.event('siteID')).getValue('enforceChangesets') />
 </cfsilent>
-
-<script language="JavaScript">
-jQuery(document).ready( function(){
-
-	jQuery("#savetochangesetname").hide();
-	jQuery("#import_status").change( function() {
-		if( jQuery("#import_status").val() == "Changeset" ) {
-			jQuery("#savetochangesetname").show();
-		}
-		else {
-			jQuery("#savetochangesetname").hide();
-		}
-	});
-});
-</script>
 <cfoutput>
+	<script>
+		jQuery(document).ready(function($) {
+
+			$("##savetochangesetname").hide();
+			$("##import_status").change(function() {
+				if( $("##import_status").val() == "Changeset" ) {
+					$("##savetochangesetname").show();
+				} else {
+					$("##savetochangesetname").hide();
+				}
+			});
+
+			$('##frmSubmit').click(function(e) {
+				var newFile = $('input[name="newFile"]').val();
+				if ( newFile === '' || newFile.split('.').pop() !== 'zip' ) {
+					var msg = '#rc.$.rbKey('sitemanager.content.importnofilemessage')#';
+					$('##alertDialogMessage').html(msg);
+
+					$('##alertDialog').dialog({
+						resizable: false,
+						modal: true,
+						buttons: {
+							'#rc.$.rbKey('sitemanager.extension.ok')#': function() {
+								$(this).dialog('close');
+							}
+						}
+					});
+
+				} else {
+					submitForm(document.forms.form1,'import')
+				}
+			});
+
+		});
+	</script>
+
 	<h1>
 		#rc.$.rbKey('sitemanager.content.importcontent')#
 	</h1>
@@ -75,7 +96,7 @@ jQuery(document).ready( function(){
 		</a>
 	</div>
 
-	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data">
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);" enctype="multipart/form-data">
 		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">
@@ -118,7 +139,7 @@ jQuery(document).ready( function(){
 		</div>
 
 		<div class="form-actions">
-			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'import');" value="Import" />
+			<input id="frmSubmit" type="button" class="btn" value="Import" />
 		</div>
 
 		<input type="hidden" name="action" value="import">
