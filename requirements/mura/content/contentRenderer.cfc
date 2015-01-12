@@ -2995,7 +2995,8 @@ Display Objects
 	
 	<cfreturn trim(str) />
 </cffunction>
- 
+
+<!--- DEPRECATED --->
 <cffunction name="sendToFriendLink" output="false" returnType="String">
 <cfreturn "javascript:sendtofriend=window.open('#variables.event.getSite().getAssetPath()#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#variables.event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>

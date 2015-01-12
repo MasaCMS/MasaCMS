@@ -1022,7 +1022,7 @@ var initMura=function(config){
 			},
 
 			function(){
-				if($(scope).find( ".ffp_mm" ).length){
+				if($(scope).find( ".cffp_mm" ).length){
 					loader().loadjs(config.context + '/requirements/cfformprotect/js/cffp.js');
 				}
 			},
@@ -1059,7 +1059,7 @@ var initMura=function(config){
 			}
 		];
 
-		for(var h in handlers){
+		for(var h=0;h<handlers.length;h++){
 			handlers[h]();
 		}
 	}
@@ -1114,6 +1114,10 @@ var initMura=function(config){
 			
 			} else {
 				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
+
+				if(!('g-recaptcha-response' in data) && $("#g-recaptcha-response").length){
+					data['g-recaptcha-response']=$("#g-recaptcha-response").val();
+				}
 
 				if('objectparams' in data){
 					data['objectparams']= escape(JSON.stringify(data['objectparams']));

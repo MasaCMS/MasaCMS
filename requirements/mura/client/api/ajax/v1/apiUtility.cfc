@@ -452,29 +452,6 @@ component extends="mura.cfobject" {
 		return {};
 	}
 	
-	function requestForm(){
-		
-		if(!isValidRequest()){
-			throw(type="badRequest");
-		}
-
-		var $=getBean('$').init(form);
-
-		$.event(
-			'formDataBean',
-			$.getBean('dataCollectionBean')
-				.set($.event().getAllValues())
-				.save($)
-				.sendNotification($)
-		);
-	
-		var formBean=$.event('formDataBean').getFormBean();
-
-		$.announceEvent('onAfterFormSubmitSave');
-		$.announceEvent('onAfterForm#formBean.getSubType()#SubmitSave');
-
-		return this;
-	}
 
 	function isValidRequest(){
 		return (isDefined('session.siteid') && isDefined('session.mura.requestcount') && session.mura.requestcount > 1);
@@ -1237,10 +1214,12 @@ component extends="mura.cfobject" {
 	}
 
 	function applyRemoteFormat(str){
+		/*
 		arguments.str=replaceNoCase(str,"/index.cfm/","index.html##/",'all');
 		arguments.str=replaceNoCase(str,'href="/','href="##/','all');
 		arguments.str=replaceNoCase(str,"href='/","href=''##/",'all');
 		arguments.str=replaceNoCase(str,"validateForm(this)","validateForm(this,remoteSubmit)",'all');
+		*/
 		return arguments.str;
 	}
 
@@ -1340,7 +1319,7 @@ component extends="mura.cfobject" {
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
-		setLocale($.siteConfig().getJavaLocale());
+		$.event().getHandler('standardSetLocale').handle($.event());
 		//$.event().getHandler('standardMobile').handle($.event());
 
 		if($.event('object')=='comments'){

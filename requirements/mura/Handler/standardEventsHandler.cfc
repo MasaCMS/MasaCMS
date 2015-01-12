@@ -401,7 +401,7 @@
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
 	</cfif>
 
-	<cfif request.returnFormat neq 'json' and arguments.event.getValue("contentBean").getIsNew()>
+	<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest and arguments.event.getValue("contentBean").getIsNew()>
 		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
 
 		<cfloop condition="listLen(local.filename,'/')">		
@@ -432,7 +432,10 @@
 		<cfif len(arguments.event.getValue('previewID'))>
 			<cfset arguments.event.getContentBean().setBody("The requested version of this content could not be found.")>
 		</cfif>
-		<cfheader statuscode="404" statustext="Content Not Found" /> 
+		<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest >
+			<cfheader statuscode="404" statustext="Content Not Found" /> 
+		</cfif>
+		
 		<cfset arguments.$.noIndex()>
 	</cfif>
 	
@@ -704,38 +707,43 @@
 <cfscript>
 	function standardJSONTranslator($){
 		
-		var result=$.content().getAllValues();
-		var renderer=$.getContentRenderer();
-		var apiUtility=$.siteConfig().getApi('ajax','v1');
-		
-		renderer.injectMethod('showInlineEditor',false);
-		renderer.injectMethod('showAdminToolBar',false);
-		renderer.injectMethod('showMemberToolBar',false);
-		renderer.injectMethod('showEditableObjects',false);
-
-		request.cffpJS=true;
+		try{
+			var result=$.content().getAllValues();
+			var renderer=$.getContentRenderer();
+			var apiUtility=$.siteConfig().getApi('ajax','v1');
 			
-		result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=false));
-	
-		result.displayRegions={};
+			renderer.injectMethod('showInlineEditor',false);
+			renderer.injectMethod('showAdminToolBar',false);
+			renderer.injectMethod('showMemberToolBar',false);
+			renderer.injectMethod('showEditableObjects',false);
 
-		for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
-			result.displayRegions['#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#']=$.dspObjects(columnid=r);
+			request.cffpJS=true;
+				
+			result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true));
+		
+			result.displayRegions={};
+
+			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
+				result.displayRegions['#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#']=$.dspObjects(columnid=r);
+			}
+
+			for(r in result.displayRegions){
+				result.displayRegions[r]=apiUtility.applyRemoteFormat(result.displayRegions[r]);
+			}
+
+			result.HTMLHeadQueue=$.renderHTMLQueue('head');
+			result.HTMLFootQueue=$.renderHTMLQueue('foot');
+
+			result.id=result.contentid;
+			result.links=apiUtility.getLinks($.content());
+			result.images=apiUtility.setImageUrls($.content(),$);
+
+			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data:result}));
+
+		} catch (any e){
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error:e.stacktrace}));
 		}
-
-		for(r in result.displayRegions){
-			result.displayRegions[r]=apiUtility.applyRemoteFormat(result.displayRegions[r]);
-		}
-
-		result.HTMLHeadQueue=$.renderHTMLQueue('head');
-		result.HTMLFootQueue=$.renderHTMLQueue('foot');
-
-		result.id=result.contentid;
-		result.links=apiUtility.getLinks($.content());
-		result.images=apiUtility.setImageUrls($.content(),$);
-
-		getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
-		$.event('__MuraResponse__',apiUtility.getSerializer().serialize(result));
 
 	}
 </cfscript>
