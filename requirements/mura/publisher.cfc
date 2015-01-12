@@ -336,6 +336,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstContent=""/>
 		<cfset var rsContent=""/>
 
+		<cfset var rstContentObjects=""/>
+		<cfset var rsContentObjects=""/>
+		<cfset var rsObjects=""/>
+		<cfset var rsContentObjectsUpdate=""/>
+
 		<cfset var rstClassExtendData=""/>
 		<cfset var rsExtendData=""/>
 
@@ -382,11 +387,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfset rstcontent = arguments.Bundle.getValue("rstcontent")>
+		<cfset rstcontentobjects = arguments.Bundle.getValue("rstcontentobjects")>
 		<cfset rsthierarchy = arguments.Bundle.getValue("rsthierarchy")>
 		<cfset rstfiles = arguments.Bundle.getValue("rstfiles")>
 		<cfset rstClassExtendData = arguments.Bundle.getValue("rstClassExtendData")>
 		<cfset rsthasmetadata = arguments.Bundle.getValue("rsthasmetadata")>
 		<cfset rstContentTags = arguments.Bundle.getValue("rstContentTags")>
+
+		<cfquery name="rsObjects">
+			select object from tsystemobjects
+			where
+			siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+		</cfquery>
 
 		<cfloop query="rsthierarchy">
 			<cfset contentBean = getBean('content').loadBy(remoteID=rsthierarchy.contentID,siteid=arguments.siteid) />
@@ -412,6 +424,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset contentData[rsExtendData.name] = rsExtendData.attributeValue />
 				</cfloop>
 			</cfif>
+
+			<cfquery name="rsContentObjects" dbtype="query">
+				select * from rstContentObjects
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+				and
+				object in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#ValueList(rsObjects.object)#" list="true"/>)
+				and 
+				object not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="plugin,component,form" list="true"/>)
+			</cfquery>
 
 			<cfquery name="rsContentTags" dbtype="query">
 				select tag from rstContentTags
@@ -464,9 +486,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset contentBean.setFileID(newFileID) />
 				</cfif>
 			</cfif>
-			
+
 			<cfset contentBean.save() />
-		</cfloop>	
+
+			<cfloop query="rsContentObjects">
+				<cfquery datasource="#arguments.toDSN#" name="rsContentObjectsUpdate">
+					insert into tcontentobjects(ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID,params)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.ColumnID),de(rsContentObjects.ColumnID),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentHistID()#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentID()#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Name neq '',de('no'),de('yes'))#" value="#rsContentObjects.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Object neq '',de('no'),de('yes'))#" value="#rsContentObjects.Object#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#rsContentObjects.ObjectID#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.OrderNo),de(rsContentObjects.OrderNo),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.SiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#rsContentObjects.params#">
+					)
+				</cfquery>
+			</cfloop>
+		</cfloop>
 
 		<cfset arguments.Bundle.unpackPartialAssets( arguments.siteid ) />
 		
