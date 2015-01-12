@@ -1113,7 +1113,7 @@ var initMura=function(config){
 						} 
 			
 			} else {
-				var data=$.extend(setLowerCaseKeys($( frm ).serializeObject()),setLowerCaseKeys($(self).data()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
+				var data=$.extend(true,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()));
 
 				if(!('g-recaptcha-response' in data) && $("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=$("#g-recaptcha-response").val();
@@ -1142,7 +1142,7 @@ var initMura=function(config){
 			
 		}
 
-		var data=$.extend($(self).data(),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache});
+		var data=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache},$(self).data());
 		
 		if('objectparams' in data){
 			data['objectparams']= escape(JSON.stringify(data['objectparams']));

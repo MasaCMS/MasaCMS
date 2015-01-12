@@ -2110,7 +2110,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="dspBody"  output="false" returntype="string">
-	<cfargument name="body" type="string" default="">
+	<cfargument name="body" type="string" default="#$.content('body')#">
 	<cfargument name="pagetitle" type="string" default="">
 	<cfargument name="crumblist" type="boolean" default="1">
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">

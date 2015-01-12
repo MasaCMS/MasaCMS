@@ -55,6 +55,11 @@
 	Mura CMS.
 --->
 <cfoutput>
+<cfif request.muraFrontEndRequest>
+	<div class="mura-async-object" 
+		data-object="calendar">
+	</div>
+<cfelse>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
 		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
@@ -63,15 +68,16 @@
 	<div id="mura-calendar" class="mura-calendar-object"></div>
 	<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 </div>
+
 <script>
-jQuery(document).ready(function($) {
+$(function(){
 	mura.loader()
-		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
-		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
+		.loadcss("//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
+		.loadcss("http://#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
 		.loadjs(
-			"#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
-			"#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
-			"#$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
+			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
+			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
+			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
 			function(){
 				$('##mura-calendar').fullCalendar({
 					timezone: 'UTC'
@@ -103,7 +109,7 @@ jQuery(document).ready(function($) {
 					//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 					, eventSources: [
 						{
-							url: '#variables.$.globalConfig('context')#/requirements/fullcalendar/proxy.cfc'
+							url: '//#$.siteConfig('domain')##variables.$.globalConfig('context')#/requirements/fullcalendar/proxy.cfc'
 							, type: 'POST'
 							, data: {
 								method: 'getFullCalendarItems'
@@ -138,4 +144,5 @@ jQuery(document).ready(function($) {
 		);
 });
 </script>
+</cfif>
 </cfoutput>

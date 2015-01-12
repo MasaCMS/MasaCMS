@@ -1354,9 +1354,9 @@ component extends="mura.cfobject" {
 
 			break;
 
-			case 'body':
+			case 'calendar':
 				return {
-					html=$.dspBody(argumentCollection=$.event().getAllValues())
+					html=$.dspObject_Include(thefile="calendar/index.cfm")
 				};
 
 			break;
@@ -1467,7 +1467,7 @@ component extends="mura.cfobject" {
 				siteid=arguments.siteid
 			};
 
-		if(len($.event('objectparams'))){
+		if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
 			args.params=urlDecode($.event('objectparams'));
 		}
 

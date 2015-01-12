@@ -219,7 +219,7 @@
 		<!--- COMMENTS --->
 		<script>
 			$(function(){
-				mura.loader().loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.min.js");
+				mura.loader().loadjs("//#$.siteConfig('domain')##variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.min.js");
 			})
 		</script>
 		<div id="svComments" class="mura-comments">
