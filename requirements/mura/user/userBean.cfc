@@ -519,6 +519,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save" output="false" access="public">
 	<cfset var i="">
 	<cfset var address="">
+	<cfset var newAddressArr = variables.newAddresses>
 	<cfset setAllValues(variables.userManager.save(this).getAllValues())>
 	
 	<cfif !structCount(getErrors()) and arrayLen(newAddressArr)>
