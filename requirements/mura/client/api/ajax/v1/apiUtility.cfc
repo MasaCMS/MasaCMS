@@ -57,21 +57,23 @@ component extends="mura.cfobject" {
 	      .asDate('end')
 	      .asString('title');
 
-	    registerPublicEntity('site',{
+	    registerEntity('site',{
+	    	public=true,
 			fields="domain,siteid",
 			allowfieldselect=false
 		});
 
-		registerPublicEntity('content',{
+		registerEntity('content',{
+			public=true,
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
 		});
 
-		registerPublicEntity('user');
-		registerPublicEntity('address');
-		registerPublicEntity('changeset');
-		registerPublicEntity('feed');
-		registerPublicEntity('category');
-		registerPublicEntity('comment');
+		registerEntity('user',{public=true});
+		registerEntity('address',{public=true});
+		registerEntity('changeset',{public=true});
+		registerEntity('feed',{public=true});
+		registerEntity('category',{public=true});
+		registerEntity('comment',{public=true});
 
 		return this;
 	}
@@ -97,12 +99,7 @@ component extends="mura.cfobject" {
 		}
 	}
 
-	function setEntityConfig(enitytName,config={}){
-		registerPublicEntity(argumentCollection=arguments);
-		return this;
-	}
-
-	function registerPublicMethod(methodName, method){
+	function registerMethod(methodName, method){
 		if(!listFindNoCase(variables.config.publicMethods,arguments.methodName)){
 			variables.config.publicMethods=listAppend(variables.config.publicMethods,arguments.methodName);
 		}
@@ -114,7 +111,13 @@ component extends="mura.cfobject" {
 		return this;
 	}
 
-	function registerPublicEntity(entityName, config={}){
+
+	function registerEntity(entityName, config={public=false}){
+
+		if(!isDefined('arguments.config.public')){
+			arguments.config.public=false;
+		}
+
 		variables.config.entities['#arguments.entityName#']=arguments.config;
 
 		var properties=getBean(arguments.entityName).getProperties();
@@ -480,15 +483,11 @@ component extends="mura.cfobject" {
 
 		var config=variables.config.entities[entityName];
 
-		if(listFind('content,contentnav,feed',entityName)){
+		if(config.public){
 			return true;
 		} else if (structKeyExists(config,'moduleid')) {
-			//return true;
-			//writeOutput(serializeJSON(session.mura));
-			//abort;
 			return getBean('permUtility').getModulePerm(config.moduleid,variables.siteid);
 		} else {
-			//return true;
 			return getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid);
 		}
 
@@ -1214,12 +1213,12 @@ component extends="mura.cfobject" {
 	}
 
 	function applyRemoteFormat(str){
-		/*
-		arguments.str=replaceNoCase(str,"/index.cfm/","index.html##/",'all');
+		
+		arguments.str=replaceNoCase(str,"/index.cfm/","##/",'all');
 		arguments.str=replaceNoCase(str,'href="/','href="##/','all');
 		arguments.str=replaceNoCase(str,"href='/","href=''##/",'all');
 		arguments.str=replaceNoCase(str,"validateForm(this)","validateForm(this,remoteSubmit)",'all');
-		*/
+		
 		return arguments.str;
 	}
 

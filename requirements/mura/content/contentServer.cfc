@@ -499,6 +499,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 
 	<cfif left(path,len(ajaxendpoint)) eq ajaxendpoint>
+		<cfset request.muraAPIRequest=true>
 		<cfif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('url.siteid')>

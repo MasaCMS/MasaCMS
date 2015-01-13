@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<img src="../../admin/assets/ico/apple-touch-icon-144-precomposed.png" />
 		</cfif>
 		<h1>500 Error</h1>
-		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+		<cfif isDefined('arguments.exception.Cause.Message')>
 			<cfif #arguments.exception.Cause.Message# CONTAINS "Database">
 				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
 				<h3><cfoutput>Datasource: #arguments.exception.Cause.DataSource#</cfoutput><br /></h3>
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset knownErrorCheck = "1">
 			</cfif>
 		</cfif>
-		<cfif StructKeyExists(arguments.exception.Cause,"Action")>
+		<cfif isDefined('arguments.exception.Cause.Action')>
 			<cfif #arguments.exception.Cause.Action# CONTAINS "unzip">
 				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
 				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset knownErrorCheck = "1">
 			</cfif>
 		</cfif>
-		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+		<cfif isDefined('arguments.exception.Cause.Message')>
 			<cfif #arguments.exception.Cause.Message# CONTAINS "already being used">
 				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
 				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset knownErrorCheck = "1">
 			</cfif>
 		</cfif>
-		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+		<cfif isDefined('arguments.exception.Cause.Message')>
 			<cfif #arguments.exception.Cause.Message# CONTAINS "Could not find the included template">
 				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
 				<h3><cfoutput>#arguments.exception.Cause.Detail#</cfoutput><br /></h3>

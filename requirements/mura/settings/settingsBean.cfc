@@ -681,7 +681,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 s
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getContext()#/#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getAssetPath()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
