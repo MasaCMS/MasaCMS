@@ -97,6 +97,104 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcatch></cfcatch>
 	</cftry>
 		
-	<cfdump var="#arguments.exception#" top="100">
-	<cfabort>
+	<style type="text/css">
+		.errorBox {
+			margin: 10px auto 10px auto;
+			width: 90%;
+		}
+
+		.errorBox h1 {
+			font-size: 100px;
+			margin: 5px 0px 5px 0px;
+		}
+
+	</style>
+	<cfset knownErrorCheck = "0">
+	<div class="errorBox">
+		<cfif fileExists("../../admin/assets/ico/apple-touch-icon-144-precomposed.png")>
+			<img src="../../admin/assets/ico/apple-touch-icon-144-precomposed.png" />
+		</cfif>
+		<h1>500 Error</h1>
+		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+			<cfif #arguments.exception.Cause.Message# CONTAINS "Database">
+				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
+				<h3><cfoutput>Datasource: #arguments.exception.Cause.DataSource#</cfoutput><br /></h3>
+				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
+					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
+						<cfoutput>
+						<hr />
+						Column: #errorContexts.COLUMN#<br />
+						ID: #errorContexts.ID#<br />
+						Line: #errorContexts.LINE#<br />
+						Raw Trace: #errorContexts.RAW_TRACE#<br />
+						Template: #errorContexts.TEMPLATE#<br />
+						Type: #errorContexts.TYPE#<br />
+						<br />
+						</cfoutput>
+					</cfloop>
+				<cfset knownErrorCheck = "1">
+			</cfif>
+		</cfif>
+		<cfif StructKeyExists(arguments.exception.Cause,"Action")>
+			<cfif #arguments.exception.Cause.Action# CONTAINS "unzip">
+				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
+				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
+					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
+						<cfoutput>
+						<hr />
+						Column: #errorContexts.COLUMN#<br />
+						ID: #errorContexts.ID#<br />
+						Line: #errorContexts.LINE#<br />
+						Raw Trace: #errorContexts.RAW_TRACE#<br />
+						Template: #errorContexts.TEMPLATE#<br />
+						Type: #errorContexts.TYPE#<br />
+						<br />
+						</cfoutput>
+					</cfloop>
+				<cfset knownErrorCheck = "1">
+			</cfif>
+		</cfif>
+		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+			<cfif #arguments.exception.Cause.Message# CONTAINS "already being used">
+				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
+				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
+					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
+						<cfoutput>
+						<hr />
+						Column: #errorContexts.COLUMN#<br />
+						ID: #errorContexts.ID#<br />
+						Line: #errorContexts.LINE#<br />
+						Raw Trace: #errorContexts.RAW_TRACE#<br />
+						Template: #errorContexts.TEMPLATE#<br />
+						Type: #errorContexts.TYPE#<br />
+						<br />
+						</cfoutput>
+					</cfloop>
+				<cfset knownErrorCheck = "1">
+			</cfif>
+		</cfif>
+		<cfif StructKeyExists(arguments.exception.Cause,"Message")>
+			<cfif #arguments.exception.Cause.Message# CONTAINS "Could not find the included template">
+				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
+				<h3><cfoutput>#arguments.exception.Cause.Detail#</cfoutput><br /></h3>
+				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
+					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
+						<cfoutput>
+						<hr />
+						Column: #errorContexts.COLUMN#<br />
+						ID: #errorContexts.ID#<br />
+						Line: #errorContexts.LINE#<br />
+						Raw Trace: #errorContexts.RAW_TRACE#<br />
+						Template: #errorContexts.TEMPLATE#<br />
+						Type: #errorContexts.TYPE#<br />
+						<br />
+						</cfoutput>
+					</cfloop>
+				<cfset knownErrorCheck = "1">
+			</cfif>
+		</cfif>
+		<cfif #knownErrorCheck# EQ "0">
+			<cfdump var="#arguments.exception#" top="100">
+		</cfif>
+		<cfabort>
 </cfif>	
