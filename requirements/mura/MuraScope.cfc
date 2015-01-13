@@ -563,7 +563,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type" default="">
 
 	<cfif len(event('siteid'))>
-		<cfif len(arguments.type) and arguments.type neq 'error'>
+		<cfif len(arguments.type) and !ListFindNoCase('error,warning,success,info', arguments.type)>
 			<cfset arguments.type=''>
 		</cfif>
 		<cfparam name="session.mura.alerts" default="#structNew()#">
