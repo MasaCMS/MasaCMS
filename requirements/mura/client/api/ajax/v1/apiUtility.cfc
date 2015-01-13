@@ -1341,7 +1341,7 @@ component extends="mura.cfobject" {
 						if(len($.event('returnurl'))){
 							return {redirect=$.event('returnurl')};
 						} else {
-							return {redirect="./"};
+							return {redirect="./##"};
 						}
 					} else {
 						$.event('status','failed');
@@ -1357,6 +1357,13 @@ component extends="mura.cfobject" {
 			case 'calendar':
 				return {
 					html=$.dspObject_Include(thefile="calendar/index.cfm")
+				};
+
+			break;
+
+			case 'search':
+				return {
+					html=$.dspObject_Include(thefile="dsp_search_results.cfm")
 				};
 
 			break;
