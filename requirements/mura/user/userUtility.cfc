@@ -761,4 +761,40 @@ Thanks for using #contactName#</cfoutput>
 	</cfif>
 </cffunction>
 
+<cffunction name="splitFullName" output="false">
+	<cfargument name="fullname">
+
+	<cfset var response={
+			first="",
+			last="",
+			middle="",
+			suffix="",
+			designation=""
+		}>
+
+	<cfset var name = listFirst(fullName)>
+	<cfset response.designation = listLast(arguments.fullName)>
+	
+	<cfif listLen(arguments.fullName) eq 1>
+	  <cfset response.suffix = "">
+	  <cfset response.designation = "">
+	<cfelseif listlen(arguments.fullName) eq 2>
+	  <cfset response.suffix = "">
+	  <cfset response.designation = listlast(arguments.fullname)>
+	<cfelse>
+	  <cfset response.suffix = listGetAt(arguments.fullName, 2)>
+	</cfif>
+	
+	<cfset response.first = listGetAt(name,1, " ")>
+	<cfset response.last = listLast(name, " ")>
+
+	<cfif listLen(name," ") eq 2>
+	  <cfset response.middle = "">
+	<cfelse>
+	  <cfset response.middle = listGetAt(name, 2, " ")>
+	</cfif>
+
+	<cfreturn response>
+</cffunction>
+
 </cfcomponent>
