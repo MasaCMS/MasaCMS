@@ -62,7 +62,7 @@
 		return this;
 	}
 
-	function registerPublicMethod(methodName, method){
+	function registerMethod(methodName, method){
 		if(!listFindNoCase(variables.config.publicMethods,arguments.methodName)){
 			variables.config.publicMethods=listAppend(variables.config.publicMethods,arguments.methodName);
 		}
@@ -93,9 +93,10 @@
 			session.siteid=variables.siteid;	
 
 			arrayDeleteAt(pathInfo,1);
+			arrayDeleteAt(pathInfo,1);
+			arrayDeleteAt(pathInfo,1);
 
-			//writeDump(var=pathInfo,abort=1);
-
+			
 			if(cgi.user_agent contains "Mozilla"){
 				responseObject.setcontenttype('text/xml');
 			} else {
@@ -110,7 +111,7 @@
 			if (!isDefined('params.method') && arrayLen(pathInfo) > 1 && isDefined('#pathInfo[2]#')){
 				params.method=pathInfo[2];
 			}
-
+			
 			if (isDefined('params.method') && isDefined('#params.method#')){
 
 				if(!listFindNoCase(variables.config.publicMethods, params.method) ){
