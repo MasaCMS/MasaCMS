@@ -72,12 +72,12 @@
 <script>
 $(function(){
 	mura.loader()
-		.loadcss("//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
-		.loadcss("http://#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
+		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.css",{media:'all'})
+		.loadcss("#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.print.css",{media:'print'})		
 		.loadjs(
-			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
-			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
-			"//#$.siteConfig('domain')##$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
+			"#$.globalConfig('context')#/requirements/fullcalendar/lib/moment.min.js",
+			"#$.globalConfig('context')#/requirements/fullcalendar/fullcalendar.min.js",
+			"#$.globalConfig('context')#/requirements/fullcalendar/gcal.js",
 			function(){
 				$('##mura-calendar').fullCalendar({
 					timezone: 'UTC'

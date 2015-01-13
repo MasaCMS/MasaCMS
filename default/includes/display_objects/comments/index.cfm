@@ -236,7 +236,7 @@
 			<script>
 				$(function(){
 					mura.loader().loadjs(
-						"//#$.siteConfig('domain')##variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
+						"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
 						function(){
 							initMuraComments();
 						}
