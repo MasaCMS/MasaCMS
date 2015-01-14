@@ -348,7 +348,7 @@ initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 			</cfif>
 		</p>
 		<cfcatch>
-			<h2>An Error has occured.</h2>
+			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">
 			<br/>
 			<br/>

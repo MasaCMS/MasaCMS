@@ -440,7 +440,7 @@ to your own modified versions of Mura CMS.
     </cfcase>
     <!--- unknown --->
     <cfcase value="unknown">
-      <cfset message = "<strong>Error:</strong> An unknown error has occured." />
+      <cfset message = "<strong>Error:</strong> An unknown error has occurred." />
     </cfcase>
   </cfswitch>
   

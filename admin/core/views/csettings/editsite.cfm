@@ -1335,7 +1335,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</p>
 		<cfcatch>
-			<h2>An Error has occured.</h2>
+			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">
 			<cfdump var="#cfcatch.TagContext#">
 		</cfcatch>
