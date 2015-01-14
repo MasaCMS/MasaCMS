@@ -56,6 +56,7 @@ initMura({
 	jslib:"#variables.$.getJsLib()#",
 	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
+	requirementspath:"#variables.$.globalConfig('requirementspath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",

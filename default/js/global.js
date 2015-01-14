@@ -476,8 +476,8 @@ var initMura=function(config){
 
 	var setHTMLEditor=function(el) {
 		loader().loadjs(
-			config.context + '/requirements/ckeditor/ckeditor.js',
-			config.context + '/requirements/ckeditor/adapters/jquery.js'
+			config.requirementspath + '/ckeditor/ckeditor.js',
+			config.requirementspath + '/ckeditor/adapters/jquery.js'
 			,
 			function(){
 				initEditor();
@@ -1006,6 +1006,11 @@ var initMura=function(config){
 	if(!config.apiEndpoint){
 		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
 	}
+
+	if(!config.requirementspath){
+		config.requirementspath=config.context + '/requirements';
+	}
+
 
 	var processHandlers=function(scope){
 		var handlers=[

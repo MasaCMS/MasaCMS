@@ -1693,4 +1693,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments>
 </cffunction>
 
+<cffunction name="setRequirementsPath">
+	<cfargument name="requirementspath">
+
+	<cfif len(arguments.requirementspath)>
+		<cfset variables.instance.requirementspath=arguments.requirementspath>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getRequirementsPath">
+	<cfif len(variables.instance.requirementspath)>
+		<cfreturn variables.instance.requirementspath>
+	<cfelse>
+		<cfreturn getValue('context') & "/requirements">
+	</cfif>
+	
+</cffunction>
+
 </cfcomponent>
