@@ -1348,28 +1348,28 @@ component extends="mura.cfobject" {
 				}
 
 				return {
-					html=$.dspObject_Include(theFile='dsp_login.cfm')
+					html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
 				};
 
 			break;
 
 			case 'calendar':
 				return {
-					html=$.dspObject_Include(thefile="calendar/index.cfm")
+					html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
 				};
 
 			break;
 
 			case 'search':
 				return {
-					html=$.dspObject_Include(thefile="dsp_search_results.cfm")
+					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_search_results.cfm"))
 				};
 
 			break;
 
 			case 'displayregion':
 				return {
-					html=$.dspObjects(argumentCollection=$.event().getAllValues())
+					html=applyRemoteFormat($.dspObjects(argumentCollection=$.event().getAllValues()))
 				};
 
 			break;
@@ -1453,7 +1453,7 @@ component extends="mura.cfobject" {
 
 				
 				return {
-						html=$.dspObject_Include(theFile='dsp_edit_profile.cfm')
+						html=applyRemoteFormat($.dspObject_Include(theFile='dsp_edit_profile.cfm'))
 					};
 			break;
 
@@ -1477,7 +1477,7 @@ component extends="mura.cfobject" {
 			args.params=urlDecode($.event('objectparams'));
 		}
 
-		var result={html=$.dspObject(argumentCollection=args)};
+		var result={html=applyRemoteFormat($.dspObject(argumentCollection=args))};
 		
 		if(isdefined('request.muraAjaxRedirectURL')){
 			return {redirect=request.muraAjaxRedirectURL};
