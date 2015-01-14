@@ -359,10 +359,10 @@ to your own modified versions of Mura CMS.
 						<div class="controls">
 								<label class="radio inline">
 								<input type="radio" name="hascustomcontext" value="0"<cfif rc.siteBean.getHasCustomContext() neq 1> CHECKED</CFIF>>
-								Off</label>
+								No</label>
 								<label class="radio inline">
 								<input type="radio" name="hascustomcontext" value="1"<cfif rc.siteBean.getHasCustomContext() eq 1> CHECKED</CFIF>>
-								On</label>
+								Yes</label>
 						</div>
 					</div>
 					<div class="span3">
@@ -376,10 +376,10 @@ to your own modified versions of Mura CMS.
 						<div class="controls">
 								<label class="radio inline">
 								<input type="radio" name="hascustomport" value="0"<cfif rc.siteBean.getHasCustomPort() neq 1> CHECKED</CFIF>>
-								Off</label>
+								No</label>
 								<label class="radio inline">
 								<input type="radio" name="hascustomport" value="1"<cfif rc.siteBean.getHasCustomPort() eq 1> CHECKED</CFIF>>
-								On</label>
+								Yes</label>
 						</div>
 					</div>
 					<div class="span3">

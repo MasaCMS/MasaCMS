@@ -46,7 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset request.layout="false">
 <cfinclude template="act_defaults.cfm">
-<cfoutput><cfset rsList=application.dashboardManager.getTopContent(rc.siteID,3,false,"All",rc.startDate,rc.stopDate,true) />
+<cfoutput>
+<cfset rsList=application.dashboardManager.getTopContent(rc.siteID,3,false,"All",rc.startDate,rc.stopDate,true) />
+<cfset items=rc.$.getBean('contentIterator')>
+<cfset items.setQuery(rslist)>
 <cfset count=rsList.recordcount>
 <table class="mura-table-grid" id="topPages">
 	<thead>
@@ -55,19 +58,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</tr>
 	</thead>
 <tbody>
-<cfloop query="rslist">
+
+<cfloop condition="items.hasNext()">
+<cfset item=items.next()>
 <tr>
-	<td><cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
-		</cfcase>
-		<cfcase value="Link">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
-		</cfcase>
-		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,30-len(rsList.hits)))#</a>
-		</cfcase>
-		</cfswitch> <span>(#rsList.hits# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
+	<td>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');">#esapiEncode('html',left(item.getmenutitle,30-len(item.gethits())))#</a>
+		<span>(#item.gethits()# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
 </cfloop>
 <cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
