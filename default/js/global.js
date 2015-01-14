@@ -432,6 +432,14 @@ var initMura=function(config){
 
 	!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="' + config.assetpath + '/jquery/jquery.js"%3E%3C/script%3E'))
 
+	if(!config.context){
+		config.context='';
+	}
+
+	if(!config.assetpath){
+		config.assetpath=config.context;
+	}
+
 	if(!config.apiEndpoint){
 		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
 	}
