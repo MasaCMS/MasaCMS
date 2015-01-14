@@ -1214,7 +1214,7 @@ component extends="mura.cfobject" {
 
 	function applyRemoteFormat(str){
 		
-		arguments.str=replaceNoCase(str,"/index.cfm","",'all');
+		//arguments.str=replaceNoCase(str,"/index.cfm","",'all');
 		//arguments.str=replaceNoCase(str,'href="/','href="##/','all');
 		//arguments.str=replaceNoCase(str,"href='/","href=''##/",'all');
 	
