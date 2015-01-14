@@ -353,6 +353,43 @@ to your own modified versions of Mura CMS.
 					</div>
 				</div>
 
+				<div class="control-group">
+					<div class="span3">
+						<label class="control-label">Has Custom Site Context</label>
+						<div class="controls">
+								<label class="radio inline">
+								<input type="radio" name="hascustomcontext" value="0"<cfif rc.siteBean.getHasCustomContext() neq 1> CHECKED</CFIF>>
+								Off</label>
+								<label class="radio inline">
+								<input type="radio" name="hascustomcontext" value="1"<cfif rc.siteBean.getHasCustomContext() eq 1> CHECKED</CFIF>>
+								On</label>
+						</div>
+					</div>
+					<div class="span3">
+						<label class="control-label">Custom Context</label>
+						<div class="controls">
+							<input name="customcontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcustomcontext())#" class="span12" maxlength="100">
+						</div>
+					</div>
+					<div class="span3">
+						<label class="control-label">Has Custom Server Port</label>
+						<div class="controls">
+								<label class="radio inline">
+								<input type="radio" name="hascustomport" value="0"<cfif rc.siteBean.getHasCustomPort() neq 1> CHECKED</CFIF>>
+								Off</label>
+								<label class="radio inline">
+								<input type="radio" name="hascustomport" value="1"<cfif rc.siteBean.getHasCustomPort() eq 1> CHECKED</CFIF>>
+								On</label>
+						</div>
+					</div>
+					<div class="span3">
+						<label class="control-label">Custom Port</label>
+						<div class="controls">
+							<input name="customPort" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getcustomport())#"maxlength="4">
+						</div>
+					</div>
+				</div>
+
 				<cfif application.configBean.getLockableNodes()>
 				<div class="control-group">      
 						<label class="control-label">Allow Content Locking</label>
