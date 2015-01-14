@@ -1044,12 +1044,7 @@ s
 
 <cffunction name="getWebPath" output="false">
 	<cfargument name="secure" default=false>
-	<cfif arguments.secure>
-		<cfset protocal="https://">
-	<cfelse>
-		<cfset protocal="http://">
-	</cfif>
-	<cfreturn protocal & getValue('domain') & getServerPort() & getContext()>
+	<cfreturn getProtocol() & getValue('domain') & getServerPort() & getContext()>
 </cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
