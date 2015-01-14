@@ -320,39 +320,25 @@ to your own modified versions of Mura CMS.
 						</div>
 				</div>
 
-				<!--- Google reCAPTCHA API Keys --->
-				<div class="control-group">
-					<!--- reCAPTCHA Site Key --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
-								<input name="reCAPTCHASiteKey" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
-							</div>
+				<!--- Lockable nodes --->
+				<cfif application.configBean.getLockableNodes()>
+					<div class="control-group">      
+							<label class="control-label">Allow Content Locking</label>
+							<div class="controls">
+									<p class="help-block">Grants content editors the right to exlusively lock a content node and all of it's versions when editing.</p>
+									<label class="radio inline">
+									<input type="radio" name="hasLockableNodes" value="1" <cfif rc.siteBean.gethasLockableNodes()  eq 1> CHECKED</CFIF>>
+									Yes</label>
+									<label class="radio inline">
+									<input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> CHECKED</CFIF>>
+									No</label>
+								
+								</div>      
 					</div>
-					<!--- reCAPTCHA Secret --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.secret')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
-								<input name="reCAPTCHASecret" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
-							</div>
-					</div>
-					<!--- reCAPTCHA Language --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.languageoptions')#">#$.rbKey('siteconfig.recaptcha.language')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
-							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
-							<cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
-							<select name="reCAPTCHALanguage" class="span12">
-								<option value=""<cfif Not Len(rc.siteBean.getReCAPTACHALanguage())>
-									selected</cfif>>- #$.rbKey('siteconfig.recaptcha.selectlanguage')# -</option>
-								<cfloop array="#rc.sortedLangs#" index="lang">
-									<option value="#rc.langs[lang]#"<cfif rc.siteBean.getReCAPTCHALanguage() eq rc.langs[lang]> selected</cfif>>#lang#</option>
-								</cfloop>
-							</select>
-						</div>
-					</div>
-				</div>
+				</cfif> 
+				<!--- /Lockable nodes --->
 
+				<!--- Custom Context + Port --->
 				<div class="control-group">
 					<div class="span3">
 						<label class="control-label">Has Custom Site Context</label>
@@ -389,22 +375,57 @@ to your own modified versions of Mura CMS.
 						</div>
 					</div>
 				</div>
+				<!--- /Custom Context + Port --->
 
-				<cfif application.configBean.getLockableNodes()>
-				<div class="control-group">      
-						<label class="control-label">Allow Content Locking</label>
+				<!--- Google reCAPTCHA API Keys --->
+				<div class="control-group">
+					<!--- reCAPTCHA Site Key --->
+					<div class="span4">
+						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="icon-question-sign"></i></a></label>
 						<div class="controls">
-								<p class="help-block">Grants content editors the right to exlusively lock a content node and all of it's versions when editing.</p>
-								<label class="radio inline">
-								<input type="radio" name="hasLockableNodes" value="1" <cfif rc.siteBean.gethasLockableNodes()  eq 1> CHECKED</CFIF>>
-								Yes</label>
-								<label class="radio inline">
-								<input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> CHECKED</CFIF>>
-								No</label>
-							
-							</div>      
+								<input name="reCAPTCHASiteKey" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
+							</div>
+					</div>
+					<!--- reCAPTCHA Secret --->
+					<div class="span4">
+						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.secret')# <i class="icon-question-sign"></i></a></label>
+						<div class="controls">
+								<input name="reCAPTCHASecret" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
+							</div>
+					</div>
+					<!--- reCAPTCHA Language --->
+					<div class="span4">
+						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.languageoptions')#">#$.rbKey('siteconfig.recaptcha.language')# <i class="icon-question-sign"></i></a></label>
+						<div class="controls">
+							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
+							<cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
+							<select name="reCAPTCHALanguage" class="span12">
+								<option value=""<cfif Not Len(rc.siteBean.getReCAPTACHALanguage())>
+									selected</cfif>>- #$.rbKey('siteconfig.recaptcha.selectlanguage')# -</option>
+								<cfloop array="#rc.sortedLangs#" index="lang">
+									<option value="#rc.langs[lang]#"<cfif rc.siteBean.getReCAPTCHALanguage() eq rc.langs[lang]> selected</cfif>>#lang#</option>
+								</cfloop>
+							</select>
+						</div>
+					</div>
 				</div>
-				</cfif> 
+
+				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
+					<div class="control-group">
+						<div class="alert alert-warning">
+							#rc.$.rbKey('siteconfig.recaptcha.message')#
+						</div>
+						<div class="form-actions span12">
+							<div class="controls">
+								<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
+									<i class="icon-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
+								</a>
+							</div>
+						</div>
+					</div>
+				</cfif>
+				<!--- /Google reCAPTCHA API Keys --->
+
 			</div>
 		</div>
 				
