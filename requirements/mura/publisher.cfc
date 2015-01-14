@@ -326,7 +326,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="errors" type="any" required="true" default="#structNew()#">
 		<cfargument name="isDisplay" type="numeric" required="false" default="0">
 		<cfargument name="changesetBean" type="any" required="false">
-		<cfargument name="keyMode" type="string" default="copy" required="true">
+		<cfargument name="keyFactory" required="true">
 
 		<cfset var bundleAssetPath="">
 		<cfset var extendManager	= getBean("extendManager") />
@@ -335,7 +335,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset var rstContent=""/>
 		<cfset var rsContent=""/>
-
 		<cfset var rstContentObjects=""/>
 		<cfset var rsContentObjects=""/>
 		<cfset var rsObjects=""/>
@@ -373,7 +372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfloop list="#bundleablebeans#" index="bb">
 					<cfif getServiceFactory().containsBean(bb)>
-						<cfset getBean(bb).fromBundle(bundle=this,siteid=arguments.toSiteID)>
+						<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.toSiteID)>
 					</cfif>
 				</cfloop>
 			</cfif>
@@ -490,6 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset contentBean.save() />
 
 			<cfloop query="rsContentObjects">
+				<cftry>
 				<cfquery datasource="#arguments.toDSN#" name="rsContentObjectsUpdate">
 					insert into tcontentobjects(ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID,params)
 					values
@@ -505,6 +505,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#rsContentObjects.params#">
 					)
 				</cfquery>
+				<cfcatch></cfcatch>
+				</cftry>
 			</cfloop>
 		</cfloop>
 

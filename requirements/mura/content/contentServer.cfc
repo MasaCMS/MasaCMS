@@ -751,22 +751,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filename">
 	<cfargument name="siteidinurls" default="#application.configBean.getSiteIDInURLS()#">
 	<cfargument name="indexfileinurls" default="#application.configBean.getIndexFileInURLS()#">
+	<cfargument name="hashURLS" default="#application.configBean.getHashURLS()#">
 
 	<cfif len(arguments.filename)>
 		<cfif left(arguments.filename,1) neq "/">
 			<cfset arguments.filename= "/" & arguments.filename>
 		</cfif>
-		<cfif right(arguments.filename,1) neq "/">
+		<cfif not arguments.hashURLS and right(arguments.filename,1) neq "/">
 			<cfset arguments.filename=  arguments.filename & "/">
 		</cfif>
+	</cfif>
+
+	<cfif arguments.hashURLs>
+		<cfset var filenamePrefix='/##'>
+	<cfelse>
+		<cfset var filenamePrefix=''>
 	</cfif>
 
 	<cfif not arguments.siteidinurls>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls and not request.muraExportHTML>
-				<cfreturn "/index.cfm" &  arguments.filename />
+				<cfreturn "/index.cfm" & filenamePrefix & arguments.filename />
 			<cfelse>
-				<cfreturn arguments.filename />
+				<cfreturn filenamePrefix & arguments.filename />
 			</cfif>	
 		<cfelse>
 			<cfreturn "/" />
@@ -774,9 +781,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfif arguments.filename neq ''>
 			<cfif arguments.indexfileinurls>
-				<cfreturn "/" & arguments.siteID & "/index.cfm" & arguments.filename />
+				<cfreturn "/" & arguments.siteID & "/index.cfm" & filenamePrefix & arguments.filename />
 			<cfelse>
-				<cfreturn "/" & arguments.siteID & arguments.filename />
+				<cfreturn "/" & arguments.siteID & filenamePrefix & arguments.filename />
 			</cfif>
 		<cfelse>
 			<cfreturn "/" & arguments.siteID & "/" />

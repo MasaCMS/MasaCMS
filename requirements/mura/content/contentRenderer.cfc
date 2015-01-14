@@ -62,8 +62,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
-<cfset this.siteIDInURLS=0>
-<cfset this.indexFileInURLS=1>
+
+<!--- Set these to a boolean value to override settings.ini.cfm value--->
+<cfset this.siteIDInURLS="">
+<cfset this.indexFileInURLS="">
+<cfset this.hashURLS="">
 
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
@@ -411,9 +414,18 @@ Display Objects
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
+	
+	<cfif not isBoolean(this.siteIDInURLS)>
+		<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+	</cfif>
+	
+	<cfif not isBoolean(this.indexFileInURLS)>
+		<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
+	</cfif>
 
-	<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
-	<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
+	<cfif not isBoolean(this.hashURLS)>
+		<cfset this.hashURLS=application.configBean.getHashURLS()>
+	</cfif>
 
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
@@ -1539,6 +1551,7 @@ Display Objects
 	<cfargument name="filename">
 	<cfargument name="siteidinurls" default="#this.siteIDInURLS#">
 	<cfargument name="indexfileinurls" default="#this.indexFileInURLS#">
+	<cfargument name="hashURLS" default="#this.hashURLS#">
 	<cfreturn application.contentServer.getURLStem(argumentCollection=arguments)>
 </cffunction>
 
@@ -1550,9 +1563,9 @@ Display Objects
 	<cfargument name="target" required="true" default="">
 	<cfargument name="targetParams" required="true" default="" hint="deprecated, does not do anything.  May come be re-introduced for modal params">
 	<cfargument name="querystring" required="true" default="">
-	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
-	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-	<cfargument name="indexFile" type="string" required="true" default="">
+	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#" hint="deprecated">
+	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#" hint="deprecated">
+	<cfargument name="indexFile" type="string" required="true" default="" hint="deprecated">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	<cfargument name="bean" hint="The contentBean that link is being generated for">
@@ -1560,15 +1573,20 @@ Display Objects
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+	
+	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
+		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+	</cfif>
 
-	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+	<cfif arguments.complete or arguments.secure>
 		<cfif arguments.secure>
-			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset var begin='https://#site.getDomain()##site.getServerPort()##site.getContext()#'>
 		<cfelse>
-			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset var begin='#site.getScheme()#://#site.getDomain()##site.getServerPort()##site.getContext()#'>
 		</cfif>
 	<cfelse>
-		<cfset var begin="">
+		<cfset var begin=site.getContext()>
 	</cfif>
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
@@ -1586,11 +1604,11 @@ Display Objects
 				request.muraExportHTML and listFindNoCase("Link,File",arguments.type)
 			)
 		>
-		<cfset arguments.bean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
+		<cfset arguments.bean=getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 		<cfset argument.filename=arguments.bean.getFilename()>
 	</cfif>
 	
-	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
+	<cfif application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
 		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 	</cfif>
@@ -1598,15 +1616,15 @@ Display Objects
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />	
 			<cfelseif arguments.type eq "Link">
 				<cfset href=arguments.bean.getBody()>
 			<cfelse>
-				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#arguments.bean.getFileID()#/#arguments.bean.getBody()#">
+				<cfset href="#getBean('configBean').getContext()#/#arguments.siteID#/cache/file/#arguments.bean.getFileID()#/#arguments.bean.getBody()#">
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 		</cfdefaultcase>
 	</cfswitch>
 
@@ -1619,9 +1637,9 @@ Display Objects
 	<cfargument name="siteid" required="true">
 	<cfargument name="contentid" required="true" default="">
 	<cfargument name="target" required="true" default="">
-	<cfargument name="targetParams" required="true" default="">
-	<cfargument name="context" type="string" default="#application.configBean.getContext()#">
-	<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
+	<cfargument name="targetParams" required="true" default="" hint="deprecated">
+	<cfargument name="context" type="string" default="#application.configBean.getContext()#" hint="deprecated">
+	<cfargument name="stub" type="string" default="#application.configBean.getStub()#" hint="deprecated">
 	<cfargument name="indexFile" type="string" default="">
 	<cfargument name="showMeta" type="string" default="0">
 	<cfargument name="fileExt" type="string" default="" required="true">
@@ -1630,34 +1648,25 @@ Display Objects
 	<cfset var href=""/>
 	<cfset var tp=""/>
 
-	<cfif arguments.complete or arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
-		<cfif arguments.secure>
-			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
-		<cfelse>
-			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
-		</cfif>
-	<cfelse>
-		<cfset var begin="">
-	</cfif>
-	
-	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
-		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+
+	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
+		<cfreturn site.getContentRenderer().createHREFforRSS(argumentCollection=arguments)>
 	</cfif>
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				<cfset arguments.queryString="showMeta=#arguments.showMeta#">
 			</cfcase>
 			<cfcase value="File">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+				<cfset arguments.queryString="showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#">
 			</cfcase>
 			<cfdefaultcase>
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
+				<cfset arguments.queryString="">
 			</cfdefaultcase>
 	</cfswitch>
 		
-	<cfreturn href />
+	<cfreturn createHREF(argumentCollection=arguments) />
 </cffunction>
 
 <cffunction name="createHREFForImage" output="false" returntype="any">

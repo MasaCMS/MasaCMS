@@ -127,6 +127,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="reCAPTCHALanguage" type="string" default="en" />
 <cfproperty name="JSONApi" type="numeric" default="0" />
 <cfproperty name="useSSL" type="numeric" default="0" />
+<cfproperty name="hascustomcontext" type="numeric" default="0" />
+<cfproperty name="hasCustomPort" type="numeric" default="0" />
+<cfproperty name="customcontext" type="string" default="" />
+<cfproperty name="CustomPort" type="numeric" default="0" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -230,6 +234,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.reCAPTCHALanguage="en"/>
 	<cfset variables.instance.JSONApi=0/>
 	<cfset variables.instance.useSSL=0/>
+	<cfset variables.instance.hascustomcontext=0/>
+	<cfset variables.instance.hasCustomPort=0/>
+	<cfset variables.instance.customcontext=""/>
+	<cfset variables.instance.CustomPort=80/>
 
 	<cfreturn this />
 </cffunction>
@@ -989,6 +997,60 @@ s
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setHasCustomContext" access="public" output="false">
+	<cfargument name="hasCustomContext" type="String" />
+	<cfif isNumeric(arguments.hasCustomContext)>
+	<cfset variables.instance.hasCustomContext = arguments.hasCustomContext />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setHasCustomPort" access="public" output="false">
+	<cfargument name="hasCustomPort" type="String" />
+	<cfif isNumeric(arguments.hasCustomPort)>
+	<cfset variables.instance.hasCustomPort = arguments.hasCustomPort />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setCustomPort" access="public" output="false">
+	<cfargument name="CustomPort" type="String" />
+	<cfif isNumeric(arguments.CustomPort)>
+	<cfset variables.instance.CustomPort = arguments.CustomPort />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getContext" output="false">
+	<cfif getValue('hasCustomContext')>
+		<cfreturn getValue('customContext')>
+	<cfelse>
+		<cfreturn application.configBean.getContext()>
+	</cfif> 
+</cffunction>
+
+<cffunction name="getServerPort" output="false">
+	<cfif getValue('hasCustomPort')>
+		<cfset var port=getValue('CustomPort')>
+		<cfif port neq 80>
+			<cfreturn ":" & port>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+	<cfelse>
+		<cfreturn application.configBean.getServerPort()>
+	</cfif> 
+</cffunction>
+
+<cffunction name="getWebPath" output="false">
+	<cfargument name="secure" default=false>
+	<cfif arguments.secure>
+		<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
+	<cfelse>
+		<cfreturn getProtocol() & '://' & getValue('domain') & getServerPort() & getContext()>
+	</cfif>
+</cffunction>
+
 <cffunction name="getAccessControlOriginList" output="false">
 	<cfset var thelist="#getScheme()#://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
@@ -1017,5 +1079,7 @@ s
 
 	<cfreturn thelist>
 </cffunction>
+
+
 
 </cfcomponent>

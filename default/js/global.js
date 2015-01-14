@@ -714,16 +714,18 @@ var initMura=function(config){
 
 	var initShadowBox=function(el){
 
-		if($(el).find( '[data-rel^="shadowbox"]').length){
+		if($(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
 				config.assetpath +'/css/shadowbox.min.css',
 				config.assetpath +'/js/adapter/shadowbox-jquery.min.js',
 				config.assetpath +'/js/shadowbox.min.js',
 					function(){
+						found=true;
 						window.Shadowbox.init();
 					}
 				);
-		}
+		} 
+			
 	}
 
 	var validateForm=function(frm,customaction) {
