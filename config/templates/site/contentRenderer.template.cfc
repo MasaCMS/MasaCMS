@@ -90,8 +90,12 @@
 		//this.showMemberToolBar=false;
 		//this.showEditableObjects=false;
 		//this.showInlineEditor=true;
-		//this.siteIDInURLS=0;
-		//this.indexFileInURLS=1;
+
+		//Set these to a boolean value to override settings.ini.cfm value
+		//this.siteIDInURLS="";
+		//this.indexFileInURLS="";
+		//this.hashURLS="";
+
 		//this.renderHTMLHead=true;
 		//this.renderHTMLQueues=true;
 		//this.listFormat="dl"; //deprecated

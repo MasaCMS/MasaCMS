@@ -117,6 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sharableRemoteSessions=true />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
+<cfset variables.instance.hashURLs=false />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.purgeDrafts=true />
 <cfset variables.instance.createRequiredDirectories=true />
