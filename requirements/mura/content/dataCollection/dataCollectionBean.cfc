@@ -57,7 +57,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 		if(!isDefined('arguments.data')){
 	    	if(isSimpleValue(arguments.property)){
-	    		return getValue(argumentCollection=arguments);
+	    		return setValue(argumentCollection=arguments);
 	    	}
 
 	    	arguments.data=arguments.property;

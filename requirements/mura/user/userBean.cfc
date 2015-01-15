@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     
     <cfif not isDefined('arguments.user')>
 	    <cfif isSimpleValue(arguments.property)>
-	      <cfreturn getValue(argumentCollection=arguments)>
+	      <cfreturn setValue(argumentCollection=arguments)>
 	    </cfif>
 
 	    <cfset arguments.user=arguments.property>

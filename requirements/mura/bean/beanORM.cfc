@@ -125,7 +125,7 @@ component extends="mura.bean.bean" versioned=false {
 		
 		if(!isDefined('arguments.data') ){
 			if(isSimpleValue(arguments.property)){
-			return setValue(argumentCollection=arguments);
+				return setValue(argumentCollection=arguments);
 			}
 
 			//process complex object

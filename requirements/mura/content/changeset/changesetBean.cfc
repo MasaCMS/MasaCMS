@@ -71,7 +71,7 @@
 	    
 	    <cfif not isDefined('arguments.data')>
 		    <cfif isSimpleValue(arguments.property)>
-		      <cfreturn getValue(argumentCollection=arguments)>
+		      <cfreturn setValue(argumentCollection=arguments)>
 		    </cfif>
 
 		    <cfset arguments.data=arguments.property>
