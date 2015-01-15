@@ -96,7 +96,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfheader statuscode="500" statustext="An Error Occurred" />	
 		<cfcatch></cfcatch>
 	</cftry>
-		
 	<style type="text/css">
 		.errorBox {
 			margin: 10px auto 10px auto;
@@ -109,92 +108,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 	</style>
-	<cfset knownErrorCheck = "0">
 	<div class="errorBox">
-		<cfif fileExists("../../admin/assets/ico/apple-touch-icon-144-precomposed.png")>
-			<img src="../../admin/assets/ico/apple-touch-icon-144-precomposed.png" />
+		<h1>500 Error</h1>	
+		<cfif isDefined("arguments.exception.Cause")>
+			<cfset errorData=arguments.exception.Cause>
+		<cfelse>
+			<cfset errorData=arguments.exception>
 		</cfif>
-		<h1>500 Error</h1>
-		<cfif isDefined('arguments.exception.Cause.Message')>
-			<cfif #arguments.exception.Cause.Message# CONTAINS "Database">
-				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
-				<h3><cfoutput>Datasource: #arguments.exception.Cause.DataSource#</cfoutput><br /></h3>
-				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
-					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
-						<cfoutput>
-						<hr />
-						Column: #errorContexts.COLUMN#<br />
-						ID: #errorContexts.ID#<br />
-						Line: #errorContexts.LINE#<br />
-						Raw Trace: #errorContexts.RAW_TRACE#<br />
-						Template: #errorContexts.TEMPLATE#<br />
-						Type: #errorContexts.TYPE#<br />
-						<br />
-						</cfoutput>
-					</cfloop>
-				<cfset knownErrorCheck = "1">
-			</cfif>
+		<cfif isdefined('errorData.Message')>
+			<h2><cfoutput>#errorData.Message#</cfoutput><br /></h2>
 		</cfif>
-		<cfif isDefined('arguments.exception.Cause.Action')>
-			<cfif #arguments.exception.Cause.Action# CONTAINS "unzip">
-				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
-				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
-					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
-						<cfoutput>
-						<hr />
-						Column: #errorContexts.COLUMN#<br />
-						ID: #errorContexts.ID#<br />
-						Line: #errorContexts.LINE#<br />
-						Raw Trace: #errorContexts.RAW_TRACE#<br />
-						Template: #errorContexts.TEMPLATE#<br />
-						Type: #errorContexts.TYPE#<br />
-						<br />
-						</cfoutput>
-					</cfloop>
-				<cfset knownErrorCheck = "1">
-			</cfif>
+		<cfif isdefined('errorData.DataSource')>
+			<h3><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h3>
 		</cfif>
-		<cfif isDefined('arguments.exception.Cause.Message')>
-			<cfif #arguments.exception.Cause.Message# CONTAINS "already being used">
-				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
-				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
-					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
-						<cfoutput>
-						<hr />
-						Column: #errorContexts.COLUMN#<br />
-						ID: #errorContexts.ID#<br />
-						Line: #errorContexts.LINE#<br />
-						Raw Trace: #errorContexts.RAW_TRACE#<br />
-						Template: #errorContexts.TEMPLATE#<br />
-						Type: #errorContexts.TYPE#<br />
-						<br />
-						</cfoutput>
-					</cfloop>
-				<cfset knownErrorCheck = "1">
-			</cfif>
+		<cfif isdefined('errorData.Detail')>
+			<h3><cfoutput>#errorData.Detail#</cfoutput><br /></h3>
 		</cfif>
-		<cfif isDefined('arguments.exception.Cause.Message')>
-			<cfif #arguments.exception.Cause.Message# CONTAINS "Could not find the included template">
-				<h2><cfoutput>#arguments.exception.Cause.Message#</cfoutput><br /></h2>
-				<h3><cfoutput>#arguments.exception.Cause.Detail#</cfoutput><br /></h3>
-				<pre><cfoutput>#arguments.exception.Cause.StackTrace#</cfoutput></pre><br />
-					<cfloop array="#arguments.exception.Cause.TagContext#" index="errorContexts">
-						<cfoutput>
-						<hr />
-						Column: #errorContexts.COLUMN#<br />
-						ID: #errorContexts.ID#<br />
-						Line: #errorContexts.LINE#<br />
-						Raw Trace: #errorContexts.RAW_TRACE#<br />
-						Template: #errorContexts.TEMPLATE#<br />
-						Type: #errorContexts.TYPE#<br />
-						<br />
-						</cfoutput>
-					</cfloop>
-				<cfset knownErrorCheck = "1">
-			</cfif>
+		<cfif isdefined('errorData.StackTrace')>
+			<pre><cfoutput>#errorData.StackTrace#</cfoutput></pre><br />
 		</cfif>
-		<cfif #knownErrorCheck# EQ "0">
-			<cfdump var="#arguments.exception#" top="100">
+		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
+			<cfloop array="#errorData.TagContext#" index="errorContexts">
+				<cfoutput>
+				<hr />
+				<cfif isDefined('errorContexts.COLUMN')>
+					Column: #errorContexts.COLUMN#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.ID')>
+					ID: #errorContexts.ID#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.Line')>
+					Line: #errorContexts.Line#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.RAW_TRACE')>
+					Raw Trace: #errorContexts.RAW_TRACE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TEMPLATE')>
+					Template: #errorContexts.TEMPLATE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TYPE')>
+					Type: #errorContexts.TYPE#<br />
+				</cfif>
+				<br />
+				</cfoutput>
+			</cfloop>
 		</cfif>
-		<cfabort>
+	</div>
+	<cfabort>
 </cfif>	
