@@ -414,24 +414,13 @@ Display Objects
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
-	
-	<cfif not isBoolean(this.siteIDInURLS)>
-		<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
-	</cfif>
-	
-	<cfif not isBoolean(this.indexFileInURLS)>
-		<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
-	</cfif>
-
-	<cfif not isBoolean(this.hashURLS)>
-		<cfset this.hashURLS=application.configBean.getHashURLS()>
-	</cfif>
 
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
 	<cfelse>
 		<cfset variables.event=createObject("component","mura.servletEvent")>
 	</cfif>
+
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=variables.$>
 	
@@ -439,6 +428,23 @@ Display Objects
 		<cfset this.showEditableObjects=false>
 		<cfset this.showAdminToolBar=false>
 		<cfset this.showMemberToolBar=false>
+	</cfif>
+
+	<cfif variables.$.siteConfig('HasCustomContext')>
+		<cfset this.siteIDInURLS=false>
+		<cfset this.indexFileInURLS=false>
+	<cfelse>
+		<cfif not isBoolean(this.siteIDInURLS)>
+			<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+		</cfif>
+		
+		<cfif not isBoolean(this.indexFileInURLS)>
+			<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
+		</cfif>
+	</cfif> 
+
+	<cfif not isBoolean(this.hashURLS)>
+		<cfset this.hashURLS=application.configBean.getHashURLS()>
 	</cfif>
 
 	<!---  Backward support --->

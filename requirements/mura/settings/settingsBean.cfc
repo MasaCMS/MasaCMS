@@ -1047,7 +1047,7 @@ s
 	<cfif arguments.secure>
 		<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
 	<cfelse>
-		<cfreturn getProtocol() & '://' & getValue('domain') & getServerPort() & getContext()>
+		<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getContext()>
 	</cfif>
 </cffunction>
 
@@ -1062,17 +1062,17 @@ s
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()#")>
+		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
 		<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()#")>
+			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
 		</cfif>
 	</cfif>
 	
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset thelist = listAppend(thelist,"#getScheme()#://#i#")>
+			<cfset thelist = listAppend(thelist,"#getScheme()#://#i##getServerPort()#")>
 			<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-				<cfset thelist = listAppend(thelist,"https://#i#")>
+				<cfset thelist = listAppend(thelist,"https://#i##getServerPort()#")>
 			</cfif>	
 		</cfloop>
 	</cfif>

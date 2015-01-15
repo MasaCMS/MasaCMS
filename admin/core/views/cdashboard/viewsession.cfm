@@ -85,7 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<ul>
 	<li class="preview">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath()##$.getURLStem(rc.siteid,rc.rsList.filename)#');"><i class="icon-globe"></i></a>
-		</cfcase>
 	</li>
 </ul></td>
 </tr></cfloop>
