@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><span>
 		<div class="mura-tb-form">
 			<div class="mura-tb-header hiddenfield">
-				<h2><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---><span id="mura-tb-form-label"></span></h2>
+				<h2><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.nested')#:---><span id="mura-tb-form-label"></span></h2>
 				<ul class="mura-tb-nav-utility">
 					<li><div id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
