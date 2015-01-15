@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfloop>
 							</select>
 						</li>
-						#$.renderEvent('onFormElementBasicTabRender')#
+						<!---#$.renderEvent('onFormElementBasicTabRender')#--->
 					</ul>
 			</div>		
 		</div>
