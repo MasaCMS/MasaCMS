@@ -224,6 +224,7 @@
 			rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 			"default"={tag="dd"}
 		};
+
 		this.contentListWrapperDivClass="";
 		this.contentListItemImageLinkClass="";
 		
