@@ -430,18 +430,20 @@ Display Objects
 		<cfset this.showMemberToolBar=false>
 	</cfif>
 
-	<cfif variables.$.siteConfig('HasCustomContext')>
-		<cfset this.siteIDInURLS=false>
-		<cfset this.indexFileInURLS=false>
-	<cfelse>
-		<cfif not isBoolean(this.siteIDInURLS)>
-			<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+	<cfif len(variables.$.event('siteid'))>
+		<cfif variables.$.siteConfig('HasCustomContext')>
+			<cfset this.siteIDInURLS=false>
+			<cfset this.indexFileInURLS=false>
+		<cfelse>
+			<cfif not isBoolean(this.siteIDInURLS)>
+				<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+			</cfif>
+			
+			<cfif not isBoolean(this.indexFileInURLS)>
+				<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
+			</cfif>
 		</cfif>
-		
-		<cfif not isBoolean(this.indexFileInURLS)>
-			<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
-		</cfif>
-	</cfif> 
+	</cfif>
 
 	<cfif not isBoolean(this.hashURLS)>
 		<cfset this.hashURLS=application.configBean.getHashURLS()>
