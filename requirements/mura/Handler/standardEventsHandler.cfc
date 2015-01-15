@@ -739,10 +739,10 @@
 			result.images=apiUtility.setImageUrls($.content(),$);
 
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data:result}));
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data=result}));
 
 		} catch (any e){
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error:e.stacktrace}));
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=e.stacktrace}));
 		}
 
 	}
