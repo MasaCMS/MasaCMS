@@ -72,7 +72,7 @@
 			arguments.$.static(
 				outputDirectory = 'compiled'
 				, checkForUpdates = !arguments.$.siteConfig('cache')
-				, lessGlobals = ExpandPath($.siteConfig('themeAssetPath') & '/css/less-globals/globals.less')
+				, lessGlobals = ExpandPath($.siteConfig('themeIncludePath') & '/css/less-globals/globals.less')
 			);
 		</cfscript>
 	</cffunction>
