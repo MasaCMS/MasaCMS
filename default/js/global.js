@@ -448,6 +448,19 @@ var initMura=function(config){
 		config.requirementspath=config.context + '/requirements';
 	}
 
+	if(typeof config.adminpreview == 'undefined'){
+		config.adminpreview=false;
+	}
+
+	if(typeof config.mobileformat == 'undefined'){
+		config.mobileformat=false;
+	}
+
+	if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
+		window.document.domain=config.windowdocumentdomain;
+	}
+	
+
 	var createCookie=function(name,value,days) {
 		if (days) {
 			var date = new Date();
@@ -1070,6 +1083,18 @@ var initMura=function(config){
 
 			function(){
 				initShadowBox(scope);
+			},
+
+			function(){
+				if(config.adminpreview=='yes' || config.adminpreview=='true'){
+					$("a").attr('href', function(i, h) {
+						if(h.indexOf('muraadminpreview')==-1){
+							return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + config.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + config.mobileformat);
+						} else {
+							return f;
+						}
+					});
+				}
 			}
 		];
 
@@ -1219,6 +1244,7 @@ var initMura=function(config){
 
 			return el;
 		};
+
 
 		$(document).trigger('muraReady');
 	});
