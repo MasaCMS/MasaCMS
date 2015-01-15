@@ -324,7 +324,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="parentID" type="string" default="">
 		<cfargument name="Bundle" type="any" required="false">
 		<cfargument name="errors" type="any" required="true" default="#structNew()#">
-		<cfargument name="isDisplay" type="numeric" required="false" default="0">
+		<cfargument name="isApproved" type="numeric" required="false" default="0">
 		<cfargument name="changesetBean" type="any" required="false">
 		<cfargument name="keyFactory" required="true">
 
@@ -332,6 +332,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var extendManager	= getBean("extendManager") />
 
 		<cfset var keys = {}>
+
+		<cfset var rsCheckPath=""/>
 
 		<cfset var rstContent=""/>
 		<cfset var rsContent=""/>
@@ -400,7 +402,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 
 		<cfloop query="rsthierarchy">
-			<cfset contentBean = getBean('content').loadBy(remoteID=rsthierarchy.contentID,siteid=arguments.siteid) />
+			<cfquery name="rsCheckPath">
+				select contentid from tcontent
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				and remoteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsthierarchy.contentID#"/>
+				and active = 1
+				and path LIKE <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%"/>  
+			</cfquery>
+			
+			<cfif rsCheckPath.recordCount>
+				<cfset contentBean = getBean('content').loadBy(contentid=rsCheckPath.contentID,siteid=arguments.siteid) />
+			<cfelse>
+				<cfset contentBean = getBean('content').loadBy(siteid=arguments.siteid) />
+			</cfif>
 
 			<cfquery name="rsContent" dbtype="query">
 				select * from rstcontent
@@ -448,6 +462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif contentBean.getIsNew()>
 				<cfset contentBean.setContentID( createUUID() ) />
+				<cfset contentBean.setDisplay( 1 ) />
 
 				<cfset contentData.remoteID = contentData.contentID />
 				<cfif StructKeyExists(keys,contentData.parentid)>
@@ -455,6 +470,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset contentData.parentID = arguments.parentid />
 				</cfif>
+			<!--- existing content --->
+			<cfelseif StructKeyExists(contentData,"parentid")>
+				<cfset structDelete(contentData,"parentid") />
 			</cfif>
 
 			<cfset keys[rsContent.contentID] = contentBean.getContentID() />
@@ -473,7 +491,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset contentBean.set( contentData ) />
 			
 			<cfset contentBean.setChangesetID( changesetID ) />
-			<cfset contentBean.setDisplay( arguments.isDisplay ) />
+			<cfset contentBean.setApproved( arguments.isApproved ) />
 
 			<cfif len(contentdata.fileid)>
 				<cfquery name="rsfile" dbtype="query">

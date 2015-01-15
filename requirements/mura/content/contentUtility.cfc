@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="serverBundlePath">
 		<cfargument name="siteID">
 		<cfargument name="parentID">
-		<cfargument name="importstatus" required="false" default="Display">
+		<cfargument name="importstatus" required="false" default="Active">
 		<cfargument name="changesetname" required="false" default="partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#">
 		<cfargument name="errors" default="">
 
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="bundleFile">
 		<cfargument name="siteID" default="">
 		<cfargument name="parentID" default="">
-		<cfargument name="importstatus" required="false" default="Display">
+		<cfargument name="importstatus" required="false" default="Draft">
 		<cfargument name="changesetname" required="false" default="">
 		<cfargument name="errors" default="#structNew()#">
 		<cfargument name="keyMode" default="copy">
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var publisher 		= getBean("publisher") />
 		<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
 		<cfset var changeSetBean 	= "" />
-		<cfset var isDisplay	 	= 0 />
+		<cfset var isApproved	 	= 0 />
 
 		<cfif arguments.importstatus eq "Changeset">
 			<cfset changeSetBean = getBean('changeset') />
@@ -145,8 +145,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset changeSetBean.setValue('published',0) />
 			<cfset changeSetBean.setValue('siteID',arguments.siteid) />
 			<cfset changeSetBean.save() />
-		<cfelseif arguments.importstatus eq "Display">
-			<cfset isDisplay = 1 />
+			<cfset isApproved = 1 />
+		<cfelseif arguments.importstatus eq "Approved">
+			<cfset isApproved = 1 />
 		</cfif>
 
 		<cfsetting requestTimeout = "7200">
@@ -158,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset sArgs.siteID			= arguments.siteID />
 		<cfset sArgs.parentID		= arguments.parentID />
 		<cfset sArgs.keyFactory		= keyFactory />
-		<cfset sArgs.isDisplay		= isDisplay />
+		<cfset sArgs.isApproved		= isApproved />
 		<cfset sArgs.Bundle			= Bundle />
 		<cfset sArgs.changeSetBean	= changeSetBean />
 		<cfset sArgs.errors			= arguments.errors />

@@ -114,8 +114,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</label>
 					<div class="controls">
 						<select name="import_status" id="import_status">
-							<option value="Display">#rc.$.rbKey('sitemanager.content.displayyes')#</option>				
-							<option value="Hide">#rc.$.rbKey('sitemanager.content.displayno')#</option>
+							<option value="Approved">#rc.$.rbKey('sitemanager.content.published')#</option>				
+							<option value="Draft">#rc.$.rbKey('sitemanager.content.draft')#</option>
 							<cfif hasChangesets or enforceChangesets>
 							<option value="Changeset">#rc.$.rbKey('sitemanager.content.savetochangeset')#</option>
 							</cfif>
