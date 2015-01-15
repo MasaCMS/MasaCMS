@@ -1722,6 +1722,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setValue("rsthierarchy",rsthierarchy)>
 			<cfset sArgs.rstfiles = rstfiles />
 			<cfset BundlePartialFiles( argumentCollection=sArgs ) />
+
+			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+			<cfif len(arguments.siteid) and not len(arguments.moduleID)>
+				<cfset setValue("bundleablebeans",application.objectMappings.bundleablebeans)>
+				
+				<cfif len(application.objectMappings.bundleablebeans)>
+					<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
+						<cfset var bean=getBean(beanName=local.b,siteid=arguments.siteid)>
+						<cfset var meta=getMetaData(bean)>
+						<cfif isDefined('bean.versioned') and bean.versioned>
+							<cfset bean.toBundle(bundle=this,siteid=arguments.siteid,contenthistid=valuelist(rsthierarchy.contenthistid))>
+						</cfif>
+					</cfloop>
+				</cfif>
+			</cfif>
+			<!--- END BUNDLEABLE CUSTOM OBJECTS --->
 		</cfif>
 		
 		<cfset variables.zipTool.AddFiles(zipFilePath="#variables.workDir##variables.dirName#.zip",directory=#variables.backupDir#)>
