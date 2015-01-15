@@ -733,10 +733,7 @@ function setHTMLEditors() {
 
 			var instance = CKEDITOR.instances[allPageTags[i].id];
 			if(typeof(instance) != 'undefined' && instance != null) {
-				try{
-					instance.destroy(true); 
-				} catch(e){}
-				
+				CKEDITOR.remove(instance);
 			}
 
 			if($(document.getElementById(allPageTags[i].id)).val() == '') {
