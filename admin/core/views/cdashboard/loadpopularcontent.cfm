@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset item=items.next()>
 <tr>
 	<td>
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');">#esapiEncode('html',left(item.getmenutitle,30-len(item.gethits())))#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');">#esapiEncode('html',left(item.getmenutitle(),30-len(item.gethits())))#</a>
 		<span>(#item.gethits()# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
 </cfloop>
