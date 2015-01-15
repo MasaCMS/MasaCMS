@@ -44,8 +44,10 @@ CFIDE/
 META-INF/
 WEB-INF/
 
-# ignore 'plugins'
+# ignored directories
+/demo/
 /plugins/
+/temp/
 
 # ignored 'config' directory files
 /config/cfapplication.cfm
@@ -62,5 +64,5 @@ WEB-INF/
 /default/includes/eventHandler.cfc
 
 # create sites &/or directories beginning with 'demo' or 'temp' without tracking them
-demo*/
-temp*/
+demo-*/
+temp-*/
