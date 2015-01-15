@@ -16,6 +16,7 @@ assetpath=
 autodiscoverplugins=false
 autopreviewimages=true
 autoresetpasswords=true
+autoupdatemode=default
 bcryptlogrounds=10
 bcryptpasswords=true
 bcryptreseedfrequency=60
