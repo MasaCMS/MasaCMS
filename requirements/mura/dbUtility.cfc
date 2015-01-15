@@ -693,6 +693,9 @@
 				<cfcase value="tinyint">
 					<cfreturn "tinyint">
 				</cfcase>
+				<cfcase value="boolean">
++					<cfreturn "bit">
++				</cfcase>
 				<cfcase value="date,datetime,timestamp">
 					<cfreturn "datetime">
 				</cfcase>
