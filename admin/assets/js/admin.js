@@ -723,58 +723,46 @@ function eraseCookie(name) {
 	createCookie(name, "", -1);
 }
 
+var HTMLEditorLoadCount = 0;
+
 function setHTMLEditors() {
 	var allPageTags = document.getElementsByTagName("textarea");
 	var editors = new Array();
 	for(i = 0; i < allPageTags.length; i++) {
 		if(allPageTags[i].className == "htmlEditor") {
-			if(htmlEditorType == 'fckeditor') {
-				var oFCKeditor = new FCKeditor(allPageTags[i].id);
-				oFCKeditor.ToolbarSet = "Summary";
-				oFCKeditor.Config.EditorAreaCSS = themepath + '/css/editor.css';
-				oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
-				oFCKeditor.BasePath = context + '/wysiwyg/';
-				oFCKeditor.Height = "200";
-				oFCKeditor.ReplaceTextarea();
-				editors.push(oFCKeditor);
-			} else {
 
-				var instance = CKEDITOR.instances[allPageTags[i].id];
-				if(typeof(instance) != 'undefined' && instance != null) {
-					instance.destroy(true);
-				}
-
-				if($(document.getElementById(allPageTags[i].id)).val() == '') {
-					$(document.getElementById(allPageTags[i].id)).val("<p></p>")
-				}
-
-				$(document.getElementById(allPageTags[i].id)).ckeditor({
-					toolbar: 'Default',
-					customConfig: 'config.js.cfm'
-				}, htmlEditorOnComplete);
-
+			var instance = CKEDITOR.instances[allPageTags[i].id];
+			if(typeof(instance) != 'undefined' && instance != null) {
+				try{
+					instance.destroy(true); 
+				} catch(e){}
+				
 			}
+
+			if($(document.getElementById(allPageTags[i].id)).val() == '') {
+				$(document.getElementById(allPageTags[i].id)).val("<p></p>")
+			}
+
+			$(document.getElementById(allPageTags[i].id)).ckeditor({
+				toolbar: 'Default',
+				customConfig: 'config.js.cfm'
+			}, htmlEditorOnComplete);
+	
 		}
 	}
 }
 
-var HTMLEditorLoadCount = 0;
-
 function htmlEditorOnComplete(editorInstance) {
 
-	if(htmlEditorType == 'fckeditor') {
-		editorInstance.ResetIsDirty();
-		var totalIntances = FCKeditorAPI.Instances;
-	} else {
-		var instance = $(editorInstance).ckeditorGet();
-		instance.resetDirty();
-		var totalIntances = CKEDITOR.instances;
-		CKFinder.setupCKEditor(
-		instance, {
-			basePath: context + '/requirements/ckfinder/',
-			rememberLastFolder: false
-		});
-	}
+	var instance = $(editorInstance).ckeditorGet();
+	instance.resetDirty();
+	var totalIntances = CKEDITOR.instances;
+	CKFinder.setupCKEditor(
+	instance, {
+		basePath: context + '/requirements/ckfinder/',
+		rememberLastFolder: false
+	});
+
 
 	HTMLEditorLoadCount++;
 
