@@ -30,7 +30,7 @@
   <link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 
   <link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.min.css" />
-  <link rel="stylesheet" href="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile-1.4.5.min.css" />
+  <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/jquery-mobile/jquery.mobile-1.4.5.min.css" />
   <cf_CacheOMatic key="globalheadercss">
     #$.static()
       .include('/css/mobile/')
@@ -48,7 +48,7 @@
       });
   </script>
 
-  <script src="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile-1.4.5.min.js"></script>
+  <script src="#$.siteConfig('themeAssetPath')#/assets/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
   <cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 
 </head>
