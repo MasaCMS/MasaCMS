@@ -43,6 +43,7 @@ fmshowapplicationroot=1
 fmshowsitefiles=1
 forceadminssl=true
 hashurls=false
+haslockablenodes=false
 imageinterpolation=highestQuality
 indexfileinurls=1
 javaenabled=true
