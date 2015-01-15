@@ -166,27 +166,6 @@ component extends="mura.cfobject" {
 
 			session.siteid=variables.siteid;
 
-			if(yesNoFormat(application.configBean.getAccessControlHeaders()) 
-			){
-				var headers = getHttpRequestData().headers;
-			  	var origin = '';
-			  	var PC = getpagecontext().getresponse();
-			 
-			  	// Find the Origin of the request
-			  	if( structKeyExists( headers, 'Origin' ) ) {
-			   		origin = headers['Origin'];
-			  	}
-			 
-			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-			  	if(listFindNoCase(application.settingsManager.getSite(session.siteid).getAccessControlOriginList(), origin )) {
-			   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-			   		
-			   		if(yesNoFormat(application.configBean.getAccessControlCredentials())){
-			   			PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
-			   		}
-			  	}
-		  	}	
-
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
