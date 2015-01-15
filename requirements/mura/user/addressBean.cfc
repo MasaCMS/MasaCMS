@@ -128,11 +128,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="propertyValue">
     
     <cfif not isDefined('arguments.args')>
-	    <cfif isSimpleValue(arguments.args)>
-	      <cfreturn getValue(argumentCollection=arguments)>
-	    </cfif>
-
 	    <cfset arguments.args=arguments.property>
+	 <cfelseif isSimpleValue(arguments.args)>
+	      <cfreturn getValue(argumentCollection=arguments)>
     </cfif>
 
 	<cfset var prop=""/>

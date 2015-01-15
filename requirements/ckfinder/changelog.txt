@@ -31,7 +31,7 @@ Updated copyrights, fixed URLs inside source code, other minor fixes.
 - Fixed: Dialog windows could not be opened after opening CKFinder twice in a popup.
 - Fixed: Various "access denied" errors appeared from time to time in IE when CKFinder was running in a popup.
 - Fixed: CKFinderAPI.disableFolderContextMenuOption() did not work for "createSubFolder"/"renameFolder" items.
-- Fixed: In some cases, and empty (undefined) error message was shown to the user when an error occured.
+- Fixed: In some cases, and empty (undefined) error message was shown to the user when an error occurred.
 - Updated colorbox library used by the gallery plugin to the latest version, compatible with latest versions of jQuery.
 
 ### Version 2.3.1.1

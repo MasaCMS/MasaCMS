@@ -540,7 +540,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
 			</cfquery>
 			<cfcatch>
-				<cfthrow message="An error occured trying to create a filename for #variables.item.getFilename()#">
+				<cfthrow message="An error occurred trying to create a filename for #variables.item.getFilename()#">
 			</cfcatch>
 		</cftry>
 	</cfloop>

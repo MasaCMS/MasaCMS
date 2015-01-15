@@ -2572,7 +2572,7 @@ select * from rs order by name
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
 
-<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
+<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occurred.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
 	<cfset var errors=structNew()>
