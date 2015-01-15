@@ -1400,4 +1400,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn status />
 	</cffunction>
 
+	<cffunction name="getIsHome" output="false" returntype="boolean">
+		<cfreturn Right(variables.instance.parentid, 3) eq 'end' />
+	</cffunction>
+
 </cfcomponent>
