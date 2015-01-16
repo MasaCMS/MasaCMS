@@ -1695,24 +1695,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments>
 </cffunction>
 
-<cffunction name="setRequirementsPath">
-	<cfargument name="requirementspath">
-
-	<cfif len(arguments.requirementspath)>
-		<cfset variables.instance.requirementspath=arguments.requirementspath>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getRequirementsPath">
-	<cfif len(variables.instance.requirementspath)>
-		<cfreturn variables.instance.requirementspath>
-	<cfelse>
-		<cfreturn getValue('context') & "/requirements">
-	</cfif>
-	
-</cffunction>
-
 <cffunction name="getAdminPath" output="false">
 	<cfif len( getValue('admindomain') )>
 		<cfif  getValue('adminssl') >
@@ -1723,7 +1705,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn getValue('context') & "/admin">
 	</cfif>
-	
+</cffunction>
+
+<cffunction name="getPluginsPath" output="false">
+	<cfif len( getValue('admindomain') )>
+		<cfif  getValue('adminssl') >
+			<cfreturn 'https://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+		<cfelse>
+			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getValue('context') & "/plugins">
+		</cfif>
+	<cfelse>
+		<cfreturn getValue('context') & "/plugins">
+	</cfif>
+</cffunction>
+
+<cffunction name="getRequirementsPath" output="false">
+	<cfif len( getValue('admindomain') )>
+		<cfif  getValue('adminssl') >
+			<cfreturn 'https://' & getValue('admindomain') & getServerPort() & getValue('context') & "/requirements">
+		<cfelse>
+			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getValue('context') & "/requirements">
+		</cfif>
+	<cfelse>
+		<cfreturn getValue('context') & "/requirements">
+	</cfif>
 </cffunction>
 
 </cfcomponent>
