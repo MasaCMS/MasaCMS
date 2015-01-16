@@ -422,13 +422,13 @@
 														</a>
 													</li>
 													<li<cfif request.action eq "core:cpublicusers.edituser" and not len(rc.userID)> class="active"</cfif>>
-														<a href="./?muraAction=cPublicUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+														<a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.edituser&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 															<i class="icon-plus-sign"></i> 
 															#application.rbFactory.getKeyValue(session.rb,'user.addmember')#
 														</a>
 													</li>
 													<li<cfif request.action eq "core:cpublicusers.editgroup" and not len(rc.userID)> class="active"</cfif>>
-														<a href="./?muraAction=cPublicUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
+														<a href="#application.configBean.getContext()#/admin/?muraAction=cPublicUsers.editgroup&amp;siteid=#esapiEncode('url',session.siteid)#&amp;userid=">
 															<i class="icon-plus-sign"></i> 
 															#application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#
 														</a>
@@ -481,7 +481,7 @@
 												<!--- Class Extension Manager --->
 												<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=session.siteid,activeOnly=false) />
 												<li class="dropdown-submenu">
-													<a href="./?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',session.siteid)#">
 														<i class="icon-wrench"></i> 
 														Class Extension Manager
 													</a>
@@ -522,7 +522,7 @@
 
 												<!--- Create Site Bundle --->
 												<li>
-													<a href="?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.selectBundleOptions&amp;siteID=#esapiEncode('url',rc.siteBean.getSiteID())#">
 														<i class="icon-gift"></i> 
 														Create Site Bundle
 													</a>
@@ -540,7 +540,7 @@
 
 												<!--- Trash Bin --->
 												<li>
-													<a href="./?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
+													<a href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
 														<i class="icon-trash"></i> 
 														Trash Bin
 													</a>

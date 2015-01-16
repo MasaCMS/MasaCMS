@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif ID neq ''>
 		
 		<cfloop condition="ID neq ''">
-				<cfset path =  listAppend(path,"'#ID#'")>
+				<cfset path =  listAppend(path,"#ID#")>
 				<cfquery name="rsCat" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select parentid from tcontentcategories where categoryid='#ID#' and siteid='#arguments.categoryBean.getSiteID()#'
 				</cfquery>
