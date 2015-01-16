@@ -2166,6 +2166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.liveOnly>
+	  AND tcontent.Approved = 1
 	  AND (
 			  (
 			  	tcontent.Display = 2
