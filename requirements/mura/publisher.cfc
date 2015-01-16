@@ -374,7 +374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfloop list="#bundleablebeans#" index="bb">
 					<cfif getServiceFactory().containsBean(bb)>
-						<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.toSiteID)>
+						<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.siteid)>
 					</cfif>
 				</cfloop>
 			</cfif>
