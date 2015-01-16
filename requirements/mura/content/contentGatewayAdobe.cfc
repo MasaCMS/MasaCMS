@@ -2166,8 +2166,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.liveOnly>
-	  AND (
-			  (
+		AND tcontent.approved=1
+	 	AND (
+			(
 			  	tcontent.Display = 2
 			  	AND (
 				  		(
@@ -2188,8 +2189,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 					   )
 				)
-		   )
-		   OR 
+		  	)
+		   	OR 
 		   	(
 		   		tcontent.Display = 1
 		   	)
