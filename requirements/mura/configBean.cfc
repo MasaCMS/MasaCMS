@@ -1713,4 +1713,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
+<cffunction name="getAdminPath" output="false">
+	<cfif len( getValue('admindomain') )>
+		<cfif  getValue('adminssl') >
+			<cfreturn 'https://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+		<cfelse>
+			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getValue('context') & "/admin">
+		</cfif>
+	<cfelse>
+		<cfreturn getValue('context') & "/admin">
+	</cfif>
+	
+</cffunction>
+
 </cfcomponent>

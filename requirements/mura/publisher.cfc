@@ -366,20 +366,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
 		</cfif>
 
-		<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
-		<cfif structKeyExists(arguments, "bundle")>
-			<cfset var bundleablebeans=arguments.Bundle.getValue("bundleablebeans",'')>	
-			<cfif len(bundleablebeans)>
-				<cfset var bb="">
-
-				<cfloop list="#bundleablebeans#" index="bb">
-					<cfif getServiceFactory().containsBean(bb)>
-						<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.siteid)>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-
 		<cfif fileExists("#Bundle.getBundle()#extensions.txt")>
 			<cffile action="read" file="#Bundle.getBundle()#extensions.txt" variable="importExtensions" >
 			<cfif len( importExtensions ) gt 30>
@@ -461,7 +447,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset contentData.remoteID = contentData.contentID />
 
 			<cfif contentBean.getIsNew()>
-				<cfset contentBean.setContentID( createUUID() ) />
+				<cfset contentBean.setContentID( arguments.keyFactory.get(contentBean.getContentID()) ) />
 				<cfset contentBean.setDisplay( 1 ) />
 
 				<cfset contentData.remoteID = contentData.contentID />
@@ -472,6 +458,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			<!--- existing content --->
 			<cfelseif StructKeyExists(contentData,"parentid")>
+				<cfset contentBean.setContentID( arguments.keyFactory.get(contentBean.getContentID()), contentBean.getContentID() ) />
 				<cfset structDelete(contentData,"parentid") />
 			</cfif>
 
@@ -526,6 +513,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcatch></cfcatch>
 				</cftry>
 			</cfloop>
+
+			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+			<cfif structKeyExists(arguments, "bundle")>
+				<cfset var bundleablebeans=arguments.Bundle.getValue("bundleablebeans",'')>	
+				<cfif len(bundleablebeans)>
+					<cfset var bb="">
+
+					<cfloop list="#bundleablebeans#" index="bb">
+						<cfif getServiceFactory().containsBean(bb)>
+							<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.siteid)>
+						</cfif>
+					</cfloop>
+				</cfif>
+			</cfif>
 		</cfloop>
 
 		<cfset arguments.Bundle.unpackPartialAssets( arguments.siteid ) />

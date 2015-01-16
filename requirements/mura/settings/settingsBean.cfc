@@ -1080,6 +1080,8 @@ s
 	<cfreturn thelist>
 </cffunction>
 
-
+<cffunction name="getVersion" output="false">
+	<cfreturn getBean('autoUpdater').getCurrentVersion(getValue('siteid'))>
+</cffunction>
 
 </cfcomponent>
