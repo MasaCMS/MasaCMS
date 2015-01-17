@@ -72,12 +72,12 @@
 <script>
 $(function(){
 	mura.loader()
-		.loadcss("#$.globalConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
-		.loadcss("#$.globalConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})		
+		.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
+		.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})		
 		.loadjs(
-			"#$.globalConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
-			"#$.globalConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
-			"#$.globalConfig('requirementspath')#/fullcalendar/gcal.js",
+			"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
+			"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
+			"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 			function(){
 				$('##mura-calendar').fullCalendar({
 					timezone: 'UTC'
@@ -109,7 +109,7 @@ $(function(){
 					//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 					, eventSources: [
 						{
-							url: '#variables.$.globalConfig('requirementspath')#/fullcalendar/proxy.cfc'
+							url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
 							, type: 'POST'
 							, data: {
 								method: 'getFullCalendarItems'

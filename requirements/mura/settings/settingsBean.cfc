@@ -1051,6 +1051,12 @@ s
 	</cfif>
 </cffunction>
 
+<cffunction name="getRequirementsPath" output="false">
+	<cfargument name="secure" default=false>
+	<cfreturn getWebPath(argumentCollection=arguments) & "/requirements">
+</cffunction>
+
+
 <cffunction name="getAccessControlOriginList" output="false">
 	<cfset var thelist="#getScheme()#://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
