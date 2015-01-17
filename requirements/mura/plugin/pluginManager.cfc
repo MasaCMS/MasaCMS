@@ -1838,10 +1838,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfcatch>
 			<cfif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 				<cfset request.muraDynamicContentError=true>
-                <cfsavecontent variable="local.theDisplay1">
-				<cfdump var="#cfcatch#">
-				</cfsavecontent>
-				<cfset str=str & local.theDisplay1>
+                <cfset str=str & getBean('utility').formatError(cfcatch)>
 			<cfelse>
 				<cfrethrow />
 			</cfif>
@@ -2109,28 +2106,19 @@ select * from tplugins order by #arguments.orderby#
 						<cfset str=str & testStr>
 					<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 						<cfset request.muraDynamicContentError=true>
-						<cfsavecontent variable="local.theDisplay1">
-						<cfdump var="#cfcatch#">
-						</cfsavecontent>
-						<cfset str=str & local.theDisplay1>
+						<cfset str=str & getBean('utility').formatError(cfcatch)>
 					<cfelse>	
 						<cfrethrow>
 					</cfif>
 				<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 					<cfset request.muraDynamicContentError=true>
-					<cfsavecontent variable="local.theDisplay1">
-					<cfdump var="#cfcatch#">
-					</cfsavecontent>
-					<cfset str=str & local.theDisplay1>
+					<cfset str=str & getBean('utility').formatError(cfcatch)>
 				<cfelse>
 					<cfrethrow>
 				</cfif>
 			<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 				<cfset request.muraDynamicContentError=true>
-                <cfsavecontent variable="local.theDisplay1">
-				<cfdump var="#cfcatch#">
-				</cfsavecontent>
-				<cfset str=str & local.theDisplay1>
+				<cfset str=str & getBean('utility').formatError(cfcatch)>
 			<cfelse>
 				<cfrethrow />
 			</cfif>
@@ -2285,8 +2273,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
 			<cfelseif variables.configBean.getDebuggingEnabled()>
 				<cfset request.muraDynamicContentError=true>
-				<cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
-				<cfreturn theDisplay1>
+				<cfreturn getBean('utility').formatError(cfcatch)>
 			 <cfelse>
 			 	<cfrethrow>
 			</cfif>		

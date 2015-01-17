@@ -2957,7 +2957,7 @@ Display Objects
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
 					<cfset request.muraDynamicContentError=true>
-					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
+					<cfset errorStr=getBean('utility').formatError(cfcatch)>
 					<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
 				<cfelse>
 					<cfrethrow>

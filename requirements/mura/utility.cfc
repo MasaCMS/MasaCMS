@@ -828,4 +828,74 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			};
 		}
 	</cfscript>
+
+<cffunction name="formatError" output="false">
+<cfargument name="exception">
+<cfsavecontent variable="local.str">
+<cfoutput>
+	<style type="text/css">
+		.mura-core-errorBox {
+			margin: 10px auto 10px auto;
+			width: 90%;
+		}
+
+		.mura-core-errorBox h1 {
+			font-size: 100px;
+			margin: 5px 0px 5px 0px;
+		}
+
+	</style>
+	<div class="mura-core-errorBox">
+		<h2>500 Error</h2>	
+		<cfif isDefined("arguments.exception.Cause")>
+			<cfset var errorData=arguments.exception.Cause>
+		<cfelse>
+			<cfset var errorData=arguments.exception>
+		</cfif>
+		<cfif isdefined('errorData.Message')>
+			<h3><cfoutput>#errorData.Message#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.DataSource')>
+			<h4><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h4>
+		</cfif>
+		<cfif isdefined('errorData.Detail')>
+			<h4><cfoutput>#errorData.Detail#</cfoutput><br /></h4>
+		</cfif>
+		<cfif isdefined('errorData.StackTrace')>
+			<pre><cfoutput>#errorData.StackTrace#</cfoutput></pre><br />
+		</cfif>
+		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
+			<cfset var errorContexts=''>
+			<cfloop array="#errorData.TagContext#" index="errorContexts">
+				<cfoutput>
+				<hr />
+				<cfif isDefined('errorContexts.COLUMN')>
+					Column: #errorContexts.COLUMN#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.ID')>
+					ID: #errorContexts.ID#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.Line')>
+					Line: #errorContexts.Line#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.RAW_TRACE')>
+					Raw Trace: #errorContexts.RAW_TRACE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TEMPLATE')>
+					Template: #errorContexts.TEMPLATE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TYPE')>
+					Type: #errorContexts.TYPE#<br />
+				</cfif>
+				<br />
+				</cfoutput>
+			</cfloop>
+		</cfif>
+	</div>
+</cfoutput>	
+</cfsavecontent>
+
+<cfreturn local.str>
+</cffunction>
+
 </cfcomponent>
