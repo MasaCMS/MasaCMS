@@ -89,6 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.assetDir=""/>
 <cfset variables.instance.assetPath="/tasks/sites"/>
 <cfset variables.instance.requirementspath=""/>
+<cfset variables.instance.pluginspath=""/>
 <cfset variables.instance.pluginDir=""/>
 <cfset variables.instance.productionDatasource=""/>
 <cfset variables.instance.productionAssetPath=""/>
