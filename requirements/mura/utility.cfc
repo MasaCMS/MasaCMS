@@ -852,18 +852,29 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfelse>
 			<cfset var errorData=arguments.exception>
 		</cfif>
-		<cfif isdefined('errorData.Message')>
+		<cfif isdefined('errorData.Message') and len(errorData.Message)>
 			<h3><cfoutput>#errorData.Message#</cfoutput><br /></h3>
 		</cfif>
-		<cfif isdefined('errorData.DataSource')>
+		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
 			<h4><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h4>
 		</cfif>
-		<cfif isdefined('errorData.Detail')>
+		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
+			<h4><cfoutput>Code: #errorData.errorCode#</cfoutput><br /></h4>
+		</cfif>
+		<cfif isdefined('errorData.type') and len(errorData.errorCode)>
+			<h4><cfoutput>Type: #errorData.errorCode#</cfoutput><br /></h4>
+		</cfif>
+		<cfif isdefined('errorData.Detail') and len(errorData.Detail)>
 			<h4><cfoutput>#errorData.Detail#</cfoutput><br /></h4>
 		</cfif>
+		<cfif isdefined('errorData.extendedInfo') and len(errorData.extendedInfo)>
+			<h4><cfoutput>#errorData.extendedInfo#</cfoutput><br /></h4>
+		</cfif>
+		<!---
 		<cfif isdefined('errorData.StackTrace')>
 			<pre><cfoutput>#errorData.StackTrace#</cfoutput></pre><br />
 		</cfif>
+		--->
 		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
 			<cfset var errorContexts=''>
 			<cfloop array="#errorData.TagContext#" index="errorContexts">

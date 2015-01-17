@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;startrow=1">
 
 
-			<cfset variables.approvalrequestlink = variables.adminBase & "/admin/?muraAction=cArch.statusmodal&compactDisplay=true&contenthistid=#$.content('contenthistid')#&siteid=#$.content('siteid')#&mode=frontend">
+			<cfset variables.approvalrequestlink = variables.adminBase & "/?muraAction=cArch.statusmodal&compactDisplay=true&contenthistid=#$.content('contenthistid')#&siteid=#$.content('siteid')#&mode=frontend">
 		
 		</cfsilent>
 		<cfoutput>

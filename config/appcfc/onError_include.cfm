@@ -115,14 +115,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset errorData=arguments.exception>
 		</cfif>
-		<cfif isdefined('errorData.Message')>
+		<cfif isdefined('errorData.Message') and len(errorData.Message)>
 			<h2><cfoutput>#errorData.Message#</cfoutput><br /></h2>
 		</cfif>
-		<cfif isdefined('errorData.DataSource')>
+		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
 			<h3><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h3>
 		</cfif>
-		<cfif isdefined('errorData.Detail')>
+		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
+			<h3><cfoutput>Code: #errorData.errorCode#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.type') and len(errorData.errorCode)>
+			<h3><cfoutput>Type: #errorData.errorCode#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.Detail') and len(errorData.Detail)>
 			<h3><cfoutput>#errorData.Detail#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.extendedInfo') and len(errorData.extendedInfo)>
+			<h3><cfoutput>#errorData.extendedInfo#</cfoutput><br /></h3>
 		</cfif>
 		<cfif isdefined('errorData.StackTrace')>
 			<pre><cfoutput>#errorData.StackTrace#</cfoutput></pre><br />
