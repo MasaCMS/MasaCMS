@@ -393,6 +393,10 @@
 		<cfset var addObjects=userBean.getAddObjects()>
 		<cfset var removeObjects=userBean.getRemoveObjects()>
 
+		<cfif userBean.getS2()>
+			<cfset userBean.setIsPublic(0)>
+		</cfif>	
+
 		<cfset userBean.validate()>
 
 		<!--- <cfif userBean.getType() eq 2 and  userBean.getAddressID() neq ''> --->
@@ -411,7 +415,7 @@
 			<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Update",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>		
 		<cfelse>
-			<cfset pluginEvent.setValue("userBean",userBean)/>	
+			<cfset pluginEvent.setValue("userBean",userBean)/>
 			<cfset variables.pluginManager.announceEvent("onBeforeUserUpdate",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Update",pluginEvent)>
@@ -514,6 +518,11 @@
 		
 		<cfset userBean.set(arguments.data) />
 		<cfset var addObjects=userBean.getAddObjects()>
+
+		<cfif userBean.getS2()>
+			<cfset userBean.setIsPublic(0)>
+		</cfif>	
+		
 		<cfset userBean.validate()>
 		
 		<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
