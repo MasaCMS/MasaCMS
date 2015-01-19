@@ -122,8 +122,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.mappings["/savaWRM"] = variables.baseDir>
 <cfset this.mappings["/config"] = variables.baseDir & "/config">
 
+<cfset variables.context=evalSetting(getINIProperty("context",""))>
+
 <cftry>
-	<cfinclude template="#getINIProperty("context","")#/config/mappings.cfm">
+	<cfinclude template="#variables.context#/config/mappings.cfm">
 	<cfset hasMainMappings=true>
 	<cfcatch>
 		<cfset hasMainMappings=false>
@@ -131,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cftry>
 
 <cftry>
-	<cfinclude template="#getINIProperty("context","")#/plugins/mappings.cfm">
+	<cfinclude template="#variables.context#/plugins/mappings.cfm">
 	<cfset hasPluginMappings=true>
 	<cfcatch>
 		<cfset hasPluginMappings=false>
@@ -179,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  )>
 
 <cfif request.tracksession>
-	<cfset checklist=getINIProperty("donottrackagents","")>
+	<cfset checklist=evalSetting(getINIProperty("donottrackagents",""))>
 	<cfif len(checklist)>
 		<cfloop list="#checklist#" index="i">
 			<cfif FindNoCase( i, request.userAgent )>
@@ -192,54 +194,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- How long do session vars persist? --->
 <cfif request.trackSession>
-	<cfset this.sessionTimeout = ( getINIProperty("sessionTimeout","180") / 24) / 60>
+	<cfset this.sessionTimeout = (evalSetting(getINIProperty("sessionTimeout","180")) / 24) / 60>
 <cfelse>
 	<cfset this.sessionTimeout = createTimeSpan(0,0,0,2)>
 </cfif>
 
-<cfset this.timeout =  getINIProperty("requesttimeout","1000")>
+<cfset this.timeout =  evalSetting(getINIProperty("requesttimeout","1000"))>
 
 <!--- define a list of custom tag paths. --->
-<cfset this.customtagpaths =  getINIProperty("customtagpaths","") />
+<cfset this.customtagpaths =  evalSetting(getINIProperty("customtagpaths","")) />
 <cfset this.customtagpaths = listAppend(this.customtagpaths,variables.baseDir  &  "/requirements/mura/customtags/")>
-<cfset this.clientManagement = getINIProperty("clientManagement","false") />
+<cfset this.clientManagement = evalSetting(getINIProperty("clientManagement","false")) />
 
-<cfset variables.clientStorageCheck=getINIProperty("clientStorage","")>
+<cfset variables.clientStorageCheck=evalSetting(getINIProperty("clientStorage",""))>
 
 <cfif len(variables.clientStorageCheck)>
 	<cfset this.clientStorage = variables.clientStorageCheck />
 </cfif>
 
-<cfset this.ormenabled =  getINIProperty("ormenabled","true") />
+<cfset this.ormenabled =  evalSetting(getINIProperty("ormenabled","true")) />
 <cfset this.ormSettings={}>
 <cfset this.ormSettings.cfclocation=[]>
 
 <cftry>
-	<cfinclude template="#getINIProperty("context","")#/config/cfapplication.cfm">
+	<cfinclude template="#variables.context#/config/cfapplication.cfm">
 	<cfset request.hasCFApplicationCFM=true>
 	<cfcatch>
 		<cfset request.hasCFApplicationCFM=false>
 	</cfcatch>
 </cftry>
 
-<cfif len(getINIProperty("datasource",""))>
+<cfif len(evalSetting(getINIProperty("datasource","")))>
 
 	<!--- You can't depend on 9 supporting datasource as struct --->
 	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
 		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
 		<cfset this.datasource = structNew()>
-		<cfset this.datasource.name = getINIProperty("datasource","") />
-		<cfset this.datasource.username = getINIProperty("dbusername","")>
-		<cfset this.datasource.password = getINIProperty("dbpassword","")>
+		<cfset this.datasource.name = evalSetting(getINIProperty("datasource","")) />
+		<cfset this.datasource.username = evalSetting(getINIProperty("dbusername",""))>
+		<cfset this.datasource.password = evalSetting(getINIProperty("dbpassword",""))>
 	<cfelse>
-		<cfset this.datasource = getINIProperty("datasource","") >			
+		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >			
 	</cfif>
 <cfelse>
 	<cfset this.ormenabled=false>
 </cfif>
 
 <cfif this.ormenabled>
-	<cfswitch expression="#getINIProperty('dbtype','')#">
+	<cfswitch expression="#evalSetting(getINIProperty('dbtype',''))#">
 		<cfcase value="mssql">
 			<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
 		</cfcase>
@@ -256,25 +258,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset this.ormSettings.dialect = "nuodb" />
 		</cfcase>
 	</cfswitch>
-	<cfset this.ormSettings.dbcreate = getINIProperty("ormdbcreate","update") />
+	<cfset this.ormSettings.dbcreate = evalSetting(getINIProperty("ormdbcreate","update")) />
 	<cfif len(getINIProperty("ormcfclocation",""))>
-		<cfset arrayAppend(this.ormSettings.cfclocation,getINIProperty("ormcfclocation")) />
+		<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation"))) />
 	</cfif>
 	<cfif len(getINIProperty("ormdatasource",""))>
-			<cfset this.ormSettings.datasource = getINIProperty("ormdatasource","") />
+			<cfset this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource","")) />
 	</cfif>
-	<cfset this.ormSettings.flushAtRequestEnd = getINIProperty("ormflushAtRequestEnd","false") />
-	<cfset this.ormsettings.eventhandling = getINIProperty("ormeventhandling","true") />
-	<cfset this.ormSettings.automanageSession = getINIProperty("ormautomanageSession","false") />
-	<cfset this.ormSettings.savemapping= getINIProperty("ormsavemapping","false") />
-	<cfset this.ormSettings.skipCFCwitherror= getINIProperty("ormskipCFCwitherror","false") />
-	<cfset this.ormSettings.useDBforMapping= getINIProperty("ormuseDBforMapping","true") />
-	<cfset this.ormSettings.autogenmap= getINIProperty("ormautogenmap","true") />
-	<cfset this.ormSettings.logsql= getINIProperty("ormlogsql","false") />
+	<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false")) />
+	<cfset this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true")) />
+	<cfset this.ormSettings.automanageSession = evalSetting(getINIProperty("ormautomanageSession","false")) />
+	<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
+	<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
+	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","true")) />
+	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
+	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
 </cfif>
 
 <cftry>
-	<cfinclude template="#getINIProperty("context","")#/plugins/cfapplication.cfm">
+	<cfinclude template="#variables.context#/plugins/cfapplication.cfm">
 	<cfset hasPluginCFApplication=true>
 	<cfcatch>
 		<cfset hasPluginCFApplication=false>
@@ -288,27 +290,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 	// if true, CF converts form fields as an array instead of a list (not recommended)
-	this.sameformfieldsasarray=getINIProperty('sameformfieldsasarray',false);
+	this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
 
 	// Custom Java library paths with dynamic loading
 	try {
-		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#getINIProperty('context','')#/requirements/lib'));
+		variables.loadPaths = ListToArray(evalSetting(getINIProperty('javaSettingsLoadPaths','#variables.context#/requirements/lib')));
 	} catch(any e) {
-		variables.loadPaths = ['#getINIProperty('context','')#/requirements/lib'];
+		variables.loadPaths = ['#variables.context#/requirements/lib'];
 	}
 
 	this.javaSettings = {
 		loadPaths=variables.loadPaths
-		, loadColdFusionClassPath = getINIProperty('javaSettingsLoadColdFusionClassPath',true)
-		, reloadOnChange=getINIProperty('javaSettingsReloadOnChange',false)
-		, watchInterval=getINIProperty('javaSettingsWatchInterval',60)
-		, watchExtensions=getINIProperty('javaSettingsWatchExtensions','jar,class')
+		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
+		, reloadOnChange=evalSetting(getINIProperty('javaSettingsReloadOnChange',false))
+		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
+		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
 	};
 
 	// Amazon S3 Credentials
 	try {
-		this.s3.accessKeyId=getINIProperty('s3accessKeyId','');
-		this.s3.awsSecretKey=getINIProperty('s3awsSecretKey','');
+		this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));
+		this.s3.awsSecretKey=evalSetting(getINIProperty('s3awsSecretKey',''));
 	} catch(any e) {
 		// not supported
 	}
@@ -360,20 +362,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn sections />
 </cffunction>
 
+<cffunction name="evalSetting" output="false">
+	<cfargument name="value">
+	<cfif left(arguments.value,2) eq "${"
+		and right(arguments.value,1) eq "}">
+		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-3)>
+		<cfreturn evaluate(arguments.value)>
+	<cfelseif left(arguments.value,2) eq "{{"
+		and right(arguments.value,2) eq "}}">
+		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-4)>
+		<cfreturn evaluate(arguments.value)>
+	<cfelse>
+		<cfreturn arguments.value>
+	</cfif>	
+</cffunction>
+
 <cffunction name="setINIProperty" output="false">
 	<cfargument name="entry" type="string" required="true" hint="Entry name." />
 	<cfargument name="value" type="any" required="false" default="" hint="Property value" />
 	<cfargument name="section" type="string" required="true" hint="Section name." default="#variables.ini.settings.mode#"/>
-
-	<cfif left(arguments.value,2) eq "${"
-		and right(arguments.value,1) eq "}">
-		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-3)>
-		<cfset arguments.value = evaluate(arguments.value)>
-	<cfelseif left(arguments.value,2) eq "{{"
-		and right(arguments.value,2) eq "}}">
-		<cfset arguments.value=mid(arguments.value,3,len(arguments.value)-4)>
-		<cfset arguments.value = evaluate(arguments.value)>
-	</cfif>	
 
 	<cfset setINISection( arguments.section ) />
 
