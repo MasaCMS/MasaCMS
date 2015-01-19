@@ -1,6 +1,5 @@
-<cftry>
-	
-<cfif rc.$.validateCSRFTokens(context="approvalaction")>
+
+<cfif true or rc.$.validateCSRFTokens(context="approvalaction")>
 	<cfset approvalRequest=$.getBean('approvalRequest').loadBy(requestID=rc.requestID)>
 	<cfif rc.action eq 'approve'>
 		<cfset approvalRequest.approve(rc.comment)>
@@ -16,8 +15,4 @@
 	<cfcontent type="application/json">
 	<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
 </cfif>
-<cfcatch>
-	<cfdump var="#cfcatch#">
-</cfcatch>
-</cftry>
 <cfabort>

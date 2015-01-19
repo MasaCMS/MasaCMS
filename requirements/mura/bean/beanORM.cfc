@@ -121,8 +121,17 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 	
-	function set(data){
-	
+	function set(property,propertyValue){
+		
+		if(!isDefined('arguments.data') ){
+			if(isSimpleValue(arguments.property)){
+				return setValue(argumentCollection=arguments);
+			}
+
+			//process complex object
+			arguments.data=property;
+		}
+		
 		preLoad();
 
 		super.set(argumentCollection=arguments);

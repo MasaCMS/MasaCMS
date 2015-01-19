@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="../cpublicusers/js.cfm">
+<cfinclude template="../cusers/inc/js.cfm">
 <cfhtmlhead text="#session.dateKey#">
 <cfparam name="rc.activeTab" default="0" />
 <cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=2,siteID=rc.userBean.getSiteID(),activeOnly=true) />
@@ -168,7 +168,7 @@ select * from rsSubTypes where subType <> 'Default'
         </div>
         <cfif len(rc.userBean.getPhotoFileID())>
 	        <div class="controls">
-	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
+	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
 	        	
 	        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')# 
 	        </div>

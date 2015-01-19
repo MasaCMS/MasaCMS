@@ -86,6 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fromEmail="" />
 	<cfset var filteredSendto=filterEmails(arguments.sendto) />
 	<cfset var mailServerFailto="" />
+	<cfset var site="">
 
 	<cfif len(arguments.siteid) and not len(arguments.from)>
 		<cfset arguments.from=getFromEmail(arguments.siteid)>
@@ -131,8 +132,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
 					
 					<cfset redirectID=createUUID() />
-					<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#fields["#form_element#"]#&method=attachment' />
-		
+					<cfset site=variables.settingsManager.getSite(arguments.siteid)>
+					<cfset reviewLink='#site.getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#fields["#form_element#"]#&method=attachment' />
+					
 					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					insert into tredirects (redirectID,URL,created) values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
@@ -141,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 					</cfquery>
 					
-					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
+					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
 					
 				<cfelse>
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>

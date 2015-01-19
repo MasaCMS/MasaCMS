@@ -182,78 +182,83 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfscript>
 		$=application.serviceFactory.getBean("MuraScope");
 	
-		feed=$.getBean("feed");
-		feed.setMaxItems(100);
-		feed.setNextN(100);
-		feed.setLiveOnly(0);
-		feed.setShowNavOnly(0);
-		feed.setSortBy("lastupdate");
-		feed.setSortDirection("desc");
-
-		feed.addParam(field="active", criteria=1, condition="eq");
-
-		if (len($.event("searchTypeSelector"))) {
-			feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
-			feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
-		}
-		
-		if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
-			feed.addParam(relationship="and (");
+		function getRelatedFeed($,siteid){
+			feed=$.getBean("feed");
+			feed.setMaxItems(100);
+			feed.setNextN(100);
+			feed.setLiveOnly(0);
+			feed.setShowNavOnly(0);
+			feed.setSortBy("lastupdate");
+			feed.setSortDirection("desc");
+			feed.setContentPoolID(arguments.siteid);
 			
+			feed.addParam(field="active", criteria=1, condition="eq");
+			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
-			started=false;
-
-			feed.addParam(relationship="(");
-
-			if (len($.event("rcStartDate"))) {
-				feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+			if (len($.event("searchTypeSelector"))) {
+				feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
+				feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
 			}
 			
-			if (len($.event("rcEndDate"))) {
-				feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
-			}
+			if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
+				feed.addParam(relationship="and (");
+				
 
-			feed.addParam(relationship=")");
+				started=false;
 
-			feed.addParam(relationship="or (");
+				feed.addParam(relationship="(");
 
-			if (len($.event("rcStartDate"))) {
-				feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+				if (len($.event("rcStartDate"))) {
+					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+				}
+				
+				if (len($.event("rcEndDate"))) {
+					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+				}
+
+				feed.addParam(relationship=")");
+
+				feed.addParam(relationship="or (");
+
+				if (len($.event("rcStartDate"))) {
+					feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+				}
+				
+				if (len($.event("rcEndDate"))) {
+					feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+				}
+
+				feed.addParam(relationship=")");
+
+				feed.addParam(relationship="or (");
+
+				if (len($.event("rcStartDate"))) {
+					feed.addParam(field="tcontent.featureStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+				}
+				
+				if (len($.event("rcEndDate"))) {
+					feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+				}
+
+				feed.addParam(relationship=")");
+
+
+		
+				feed.addParam(relationship=")");
 			}
 			
-			if (len($.event("rcEndDate"))) {
-				feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
-			}
-
-			feed.addParam(relationship=")");
-
-			feed.addParam(relationship="or (");
-
-			if (len($.event("rcStartDate"))) {
-				feed.addParam(field="tcontent.featureStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+			if (len($.event("rcCategoryID"))) {
+				feed.setCategoryID($.event("rcCategoryID"));	
 			}
 			
-			if (len($.event("rcEndDate"))) {
-				feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+			if (len($.event("keywords"))) {	
+				subList=$.getBean("contentManager").getPrivateSearch(arguments.siteid,$.event("keywords"));
+				feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 			}
-
-			feed.addParam(relationship=")");
-
-
-	
-			feed.addParam(relationship=")");
+			return feed;
 		}
-		
-		if (len($.event("rcCategoryID"))) {
-			feed.setCategoryID($.event("rcCategoryID"));	
-		}
-		
-		if (len($.event("keywords"))) {	
-			subList=$.getBean("contentManager").getPrivateSearch($.event("siteID"),$.event("keywords"));
-			feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
-		}
-		
-		rc.rslist=feed.getQuery();
+
+		rc.rslist=getRelatedFeed($,$.event('siteid')).getQuery();
 	</cfscript>
 
 	<div class="control-group mura-related-internal">
@@ -280,14 +285,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 		</cfif>
 
+		
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
-			<cfif len($.event("keywords"))>
-				<cfset feed.clearParams()>
-				<cfset subList = $.getBean("contentManager").getPrivateSearch(siteId, $.event("keywords"))>
-				<cfset feed.setSiteId( siteId )>
-				<cfset feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID))>
-				<cfset rc.rslist=feed.getQuery()>
+			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>		
+				<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
 
 				<cfif rc.rslist.recordcount>
 					<div id="draggableContainmentInternal" class="list-table search-results">

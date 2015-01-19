@@ -101,6 +101,7 @@
 		<cfset var htmlbodytext=""/>
 		<cfset var scheme=""/>
 		<cfset var template=""/>
+		<cfset var site=""/>
 
 		<cfquery name="rsEmailList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> and status = 0 and deliverydate is not null and isDeleted = 0
@@ -159,14 +160,15 @@
 					
 				<cfset preBodyHTML = variables.contentRenderer.setDynamicContent(rsemail.bodyhtml)>
 				<cfset preBodyText = variables.contentRenderer.setDynamicContent(rsemail.bodytext)>
-				<cfset scheme = application.settingsManager.getSite(rsemail.siteid).getScheme()>
-				<cfset template = Len(rsEmail.template) ? '#variables.settingsManager.getSite(rsEmail.siteid).getThemeAssetPath()#/templates/emails/#rsEmail.template#' : '#variables.settingsManager.getSite(rsEmail.siteid).getAssetPath()#/includes/email/inc_email.cfm'>
+				<cfset site=application.settingsManager.getSite(rsemail.siteid)>
+				<cfset scheme = site.getScheme()>
+				<cfset template = Len(rsEmail.template) ? '#site.getThemeAssetPath()#/templates/emails/#rsEmail.template#' : '#site.getAssetPath()#/includes/email/inc_email.cfm'>
 
 				<cfloop query="rsAddresses">
 					<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 and prevEmail neq rsAddresses.email>
-						<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
-						<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
-						<cfset forward="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
+						<cfset unsubscribe="#scheme#://#rsemail.domain##site.getServerPort()##vsite.getContext()##site.getcontentRenderer().getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
+						<cfset trackOpen='<img src="#site.getResourcePath(complete=1)#/index.cfm/_api/email/trackopen/?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
+						<cfset forward="#scheme#://#rsemail.domain##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
 						
 						<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#rsAddresses.email#&nocache=1">
 						<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>
@@ -328,15 +330,16 @@
 
 		<cfset preBodyHTML = variables.contentRenderer.setDynamicContent(rsemail.bodyhtml)>
 		<cfset preBodyText = variables.contentRenderer.setDynamicContent(rsemail.bodyText)>
-		<cfset scheme = application.settingsManager.getSite(rsemail.siteid).getScheme()>
+		<cfset site=application.settingsManager.getSite(rsemail.siteid)>
+		<cfset scheme = site.getScheme()>
 		<cfset template = Len(rsEmail.template) ? '#variables.settingsManager.getSite(rsEmail.siteid).getThemeAssetPath()#/templates/emails/#rsEmail.template#' : '#variables.settingsManager.getSite(rsEmail.siteid).getAssetPath()#/includes/email/inc_email.cfm'>
 		
 		<cfloop list="#arguments.data.to#" index="t">
 					
 			<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(t)) neq 0>
-				<cfset unsubscribe="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&email=#t#&nocache=1">
-				<cfset forward="#scheme#://#rsemail.domain##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#t#&origin=#arguments.data.origin#&nocache=1">
-				<cfset trackOpen='<img src="#scheme#://#variables.settingsManager.getSite(rsEmail.siteid).getDomain("production")##variables.configBean.getServerPort()##variables.configBean.getContext()#/tasks/email/trackOpen.cfm?email=#t#&emailid=#rsemail.emailid#" style="display:none;">'/>
+				<cfset unsubscribe="#scheme#://#rsemail.domain##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&email=#t#&nocache=1">
+				<cfset forward="#scheme#://#rsemail.domain##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#t#&origin=#arguments.data.origin#&nocache=1">
+				<cfset trackOpen='<img src="#site.getResourcePath(complete=1)#/index.cfm/_api/email/trackopen/?email=#t#&emailid=#rsemail.emailid#" style="display:none;">'/>
 
 				<cfset returnParams = "?doaction=return&emailid=#rsemail.emailid#&email=#t#&nocache=1">
 				<cfset bodyHTML = appendReturnParams(preBodyHTML, returnParams, rsEmail.domain)>		

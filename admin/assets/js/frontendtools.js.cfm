@@ -232,14 +232,24 @@
 		}
 	}
 
-	function resizeEditableObjects(){
-		$(".editableObjectContents").each(	
-			function(el){
-				var display="inline";	
-				var width=0;
-				var float;
-						
-				$(this).children().each(
+	function resizeEditableObject(target){
+		
+		var display="inline";	
+		var width=0;
+		var float;
+
+		jQuery(target).find(".editableObjectContents").each(
+			function(){
+				jQuery(this).find(".frontEndToolsModal").each(
+					function(){
+						jQuery(this).click(function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
+				});
+					
+				jQuery(this).children().each(
 					function(el){			
 						if ($(this).css("display") == "block") {
 							display = "block";
@@ -249,19 +259,28 @@
 					}	
 				);
 					
-				$(this).css("display",display).parent().css("display",display);
+				jQuery(this).css("display",display).parent().css("display",display);
 					
 				if(width){
-					$(this).width(width).parent().width(width);
-					$(this).css("float",float).parent().css("float",float);
+					jQuery(this).width(width).parent().width(width);
+					jQuery(this).css("float",float).parent().css("float",float);
 				}
-					
-			}
-		);
+
+		});
+
+		if($('HTML').hasClass('mura-edit-mode')){
+			$(target).removeClass('editableObjectHide');
+		} else {
+			$(target).addClass('editableObjectHide');
+		}
+		
 	}
 
 	jQuery(document).ready(		
 		function(){
+
+			checkToolbarDisplay();
+
 			jQuery(".frontEndToolsModal").each(
 				function(){
 					jQuery(this).click(function(event){
@@ -271,8 +290,10 @@
 				);
 			});
 
-			resizeEditableObjects();
-			checkToolbarDisplay();
+			jQuery(".editableObject").each(function(){
+				resizeEditableObject(this);
+			});
+			
 			initAdminProxy();
 			
 			if(frontEndModalIE8){
@@ -282,7 +303,9 @@
 	);
 
 	$(window).resize(function() {
-  		resizeEditableObjects();
+  		jQuery(".editableObjectContents").each(function(){
+				resizeEditableObject(this);
+		});
 	});
 </cfoutput>
 </cfif>
@@ -466,6 +489,93 @@
 			return tmp.textContent||tmp.innerText;
 		},
 		validate: function(callback){
+
+				if(!mura.apiEndpoint){
+					mura.apiEndpoint=mura.context + '/index.cfm/_api/ajax/v1/';
+				}
+
+				var getValidationFieldName=function(theField){
+					if(theField.getAttribute('data-label')!=undefined){
+						return theField.getAttribute('data-label');
+					}else if(theField.getAttribute('label')!=undefined){
+						return theField.getAttribute('label');
+					}else{
+						return theField.getAttribute('name');
+					}
+				}
+
+				var getValidationIsRequired=function(theField){
+					if(theField.getAttribute('data-required')!=undefined){
+						return (theField.getAttribute('data-required').toLowerCase() =='true');
+					}else if(theField.getAttribute('required')!=undefined){
+						return (theField.getAttribute('required').toLowerCase() =='true');
+					}else{
+						return false;
+					}
+				}
+
+				var getValidationMessage=function(theField, defaultMessage){
+					if(theField.getAttribute('data-message') != undefined){
+						return theField.getAttribute('data-message');
+					} else if(theField.getAttribute('message') != undefined){
+						return theField.getAttribute('message') ;
+					} else {
+						return getValidationFieldName(theField).toUpperCase() + defaultMessage;
+					}	
+				}
+
+				var getValidationType=function(theField){
+					if(theField.getAttribute('data-validate')!=undefined){
+						return theField.getAttribute('data-validate').toUpperCase();
+					}else if(theField.getAttribute('validate')!=undefined){
+						return theField.getAttribute('validate').toUpperCase();
+					}else{
+						return '';
+					}
+				}
+
+				var hasValidationMatchField=function(theField){
+					if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+						return true;
+					}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+						return true;
+					}else{
+						return false;
+					}
+				}
+
+				var getValidationMatchField=function (theField){
+					if(theField.getAttribute('data-matchfield')!=undefined){
+						return theField.getAttribute('data-matchfield');
+					}else if(theField.getAttribute('matchfield')!=undefined){
+						return theField.getAttribute('matchfield');
+					}else{
+						return '';
+					}
+				}
+
+				var hasValidationRegex=function(theField){
+					if(theField.value != undefined){
+						if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
+							return true;
+						}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
+							return true;
+						}
+					}else{
+						return false;
+					}
+				}
+
+				var getValidationRegex=function(theField){
+					if(theField.getAttribute('data-regex')!=undefined){
+						return theField.getAttribute('data-regex');
+					}else if(theField.getAttribute('regex')!=undefined){
+						return theField.getAttribute('regex');
+					}else{
+						return '';
+					}
+				}
+
 				var data={};
 				var $callback=callback;
 
@@ -558,13 +668,16 @@
 					$.ajax(
 						{
 							type: 'post',
-							url: '#application.configBean.getContext()#/tasks/validate/',
+							url: mura.apiEndpoint + 'validate/',
 							data: {
 									data: JSON.stringify($.extend(muraInlineEditor.data,data)),
 									validations: JSON.stringify(validations)
 								},
 							success: function(resp) {
-		 				 		data=eval('(' + resp + ')');
+								if(typeof resp != 'object'){
+									resp=data=eval('(' + resp + ')');
+								}
+		 				 		data=resp.data;
 
 		 				 		if($.isEmptyObject(data)){
 		 				 			$callback();
@@ -601,7 +714,7 @@
 			var totalInstances = CKEDITOR.instances;
 			CKFinder.setupCKEditor(
 			instance, {
-				basePath: '#application.configBean.getContext()#/tasks/widgets/ckfinder/',
+				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
 				rememberLastFolder: false
 			});
 		},
@@ -620,8 +733,8 @@
 			bean: 'content',
 			loadby: 'contenthistid',
 			approvalstatus: '#esapiEncode('javascript',node.getApprovalStatus())#',
-			mura_token: '#csrfTokens.token#',
-			mura_token_expires: '#csrfTokens.expires#'
+			csrf_token: '#csrfTokens.token#',
+			csrf_token_expires: '#csrfTokens.expires#'
 			},
 		attributes: {},
 		preprocessed: {

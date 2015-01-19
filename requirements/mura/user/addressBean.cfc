@@ -124,7 +124,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-	<cfargument name="args" type="any" required="true">
+	<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.args')>
+	    <cfif isSimpleValue(arguments.property)>
+	      <cfreturn setValue(argumentCollection=arguments)>
+	    </cfif>
+
+	    <cfset arguments.args=arguments.property>
+    </cfif>
 
 	<cfset var prop=""/>
 		

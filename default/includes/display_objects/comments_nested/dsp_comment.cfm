@@ -68,7 +68,7 @@
 				#htmleditformat(request.rsSubCommentsLevel.name[arguments.currentrow])#
 			</cfif>
 			<cfif request.isEditor and request.rsSubCommentsLevel.email[arguments.currentrow] neq ''>
-				<a class="#this.emailLinkClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
+				<a class="#this.emailLinkClass#" href="javascript:mura.noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
 			</cfif>
 			<cfif request.isEditor>
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>

@@ -66,8 +66,17 @@
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
+		<cfargument name="property" required="true">
+	    <cfargument name="propertyValue">
+	    
+	    <cfif not isDefined('arguments.data')>
+		    <cfif isSimpleValue(arguments.property)>
+		      <cfreturn setValue(argumentCollection=arguments)>
+		    </cfif>
 
+		    <cfset arguments.data=arguments.property>
+	    </cfif>
+	    
 		<cfset var prop="" />
 		<cfset var publishhour="">
 		

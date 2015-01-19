@@ -54,62 +54,92 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+<cfset local = {} />
 <cfset variables.fbManager = $.getBean('formBuilderManager') />
 
-<cfset variables.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
-<cfset variables.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
-<cfset variables.frmForm		= variables.frm.form />
-<cfset variables.frmData		= variables.frm.datasets />
-<cfparam name="variables.frm.form.formattributes" default="#structNew()#">
-<cfparam name="variables.frm.form.formattributes.class" default="">
-<cfset variables.attributes		= variables.frm.form.formattributes />
-<cfset variables.frmFields	= variables.frmForm.fields />
-<cfset variables.dataset		= "" />
-<cfset variables.isMultipart	= false />
+<cfparam name="arguments.isNested" default="false">
+
+<cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
+<cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
+
+<cfset local.prefix		= "" />
+
+<cfif arguments.isNested>
+	<cfset local.nestedForm		= $.getBean('content').loadBy( contentID=arguments.formid,siteid=session.siteid ) />
+	<cfset arguments.formJSON	= local.nestedForm.getBody() /> 
+	<cfset local.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
+	<cfset local.prefix			= arguments.prefix />
+<cfelse>
+	<cfset local.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
+</cfif>
+
+<cfif len(local.prefix)>
+	<cfset local.prefix = local.prefix & "_">
+</cfif>
+
+<cfset local.frmForm		= local.frm.form />
+<cfset local.frmData		= local.frm.datasets />
+<cfif not structKeyExists(local.frm.form,"formattributes")>
+	<cfset local.frm.form.formattributes = structNew() />
+</cfif>
+<cfif not structKeyExists(local.frm.form.formattributes,"class")>
+	<cfset local.frm.form.formattributes.class = "" />
+</cfif>
+<cfset local.attributes		= local.frm.form.formattributes />
+<cfset local.frmFields		= local.frmForm.fields />
+<cfset local.dataset		= "" />
+<cfset local.isMultipart	= false />
+
 
 <!--- start with fieldsets closed --->
 <cfset request.fieldsetopen = false />
 
-<cfset variables.aFieldOrder = variables.frmForm.fieldorder />
+<cfset local.aFieldOrder = local.frmForm.fieldorder />
+<cfset local.frmFieldContents = "" />
+
 <cfsavecontent variable="frmFieldContents">
 <cfoutput>
-<cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="variables.iiX">
-	<cfif StructKeyExists(variables.frmFields,variables.aFieldOrder[variables.iiX])>
-		<cfset variables.field = variables.frmFields[variables.aFieldOrder[variables.iiX]] />
+<cfloop from="1" to="#ArrayLen(local.aFieldOrder)#" index="iix">
+	<cfif StructKeyExists(local.frmFields,local.aFieldOrder[iix])>
+		<cfset local.field = local.frmFields[local.aFieldOrder[iix]] />
 		<!---<cfif iiX eq 1 and field.fieldtype.fieldtype neq "section">
 			<ol>
 		</cfif>--->
-		<cfif variables.field.fieldtype.isdata eq 1 and len(variables.field.datasetid)>
-			<cfset variables.dataset = variables.fbManager.processDataset( variables.$,variables.frmData[variables.field.datasetid] ) />
+		<cfif local.field.fieldtype.isdata eq 1 and len(local.field.datasetid)>
+			<cfset local.dataset = variables.fbManager.processDataset( variables.$,local.frmData[local.field.datasetid] ) />
 		</cfif>
-		<cfif variables.field.fieldtype.fieldtype eq "file">
-			<cfset variables.isMultipart = true />
+		<cfif local.field.fieldtype.fieldtype eq "file">
+			<cfset local.isMultipart = true />
 		</cfif>
-		<cfif variables.field.fieldtype.fieldtype eq "hidden">
-		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
-			field=variables.field,
-			dataset=variables.dataset
+		<cfif local.field.fieldtype.fieldtype eq "hidden">
+		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
+			field=local.field,
+			dataset=local.dataset,
+			prefix=local.prefix
 			)#			
-		<cfelseif variables.field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif isDefined('variables.field.wrappercssclass') and len(variables.field.wrappercssclass)> #variables.field.wrappercssclass#</cfif>">
-			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
-				field=variables.field,
-				dataset=variables.dataset
+		<cfelseif local.field.fieldtype.fieldtype neq "section">
+			<div class="mura-form-#local.field.fieldtype.fieldtype#<cfif local.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#<cfif structKeyExists(local.field,'wrappercssclass')> #local.field.wrappercssclass#</cfif>">
+			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
+				field=local.field,
+				dataset=local.dataset,
+				prefix=local.prefix
 				)#			
 			</div>
-		<cfelseif variables.field.fieldtype.fieldtype eq "section">
+		<cfelseif local.field.fieldtype.fieldtype eq "section">
 			<!---<cfif iiX neq 1>
 				</ol>
 			</cfif>--->
-			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
-				field=variables.field,
-				dataset=variables.dataset
+			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
+				field=local.field,
+				dataset=local.dataset,
+				prefix=local.prefix
 				)#
 			<!---<ol>--->
 		<cfelse>
-		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
-			field=variables.field,
-			dataset=variables.dataset
+		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#local.field.fieldtype.fieldtype#.cfm',
+			field=local.field,
+			dataset=local.dataset,
+			prefix=local.prefix
 			)#
 		</cfif>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
@@ -117,16 +147,21 @@
 		<!---<cfthrow data-message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
 </cfloop>
+
 <cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
 <!---</ol>--->
 </cfoutput>
 </cfsavecontent>
+<cfset local.frmFieldContents = frmFieldContents />
 <cfoutput>
-<form id="#variables.frmID#" class="<cfif len(variables.attributes.class)>#variables.attributes.class# </cfif>mura-form-builder" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
-	#variables.frmFieldContents#
-	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
+<cfif not arguments.isNested>
+<form id="#local.frmID#" class="<cfif structKeyExists(local.attributes,"class") and len(local.attributes.class)>#local.attributes.class# </cfif>mura-form-builder" method="post"<cfif local.isMultipart>enctype="multipart/form-data"</cfif>>
+</cfif>
+	#local.frmFieldContents#
+<cfif not arguments.isNested>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
-	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
+	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 </form>
+</cfif>
 </cfoutput>
 

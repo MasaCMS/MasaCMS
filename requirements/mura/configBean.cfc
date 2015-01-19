@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="6.1"/> 
+<cfset variables.instance.version="6.2"/> 
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
@@ -88,6 +88,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.fileDir=""/>
 <cfset variables.instance.assetDir=""/>
 <cfset variables.instance.assetPath="/tasks/sites"/>
+<cfset variables.instance.requirementspath=""/>
+<cfset variables.instance.pluginspath=""/>
 <cfset variables.instance.pluginDir=""/>
 <cfset variables.instance.productionDatasource=""/>
 <cfset variables.instance.productionAssetPath=""/>
@@ -116,6 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sharableRemoteSessions=true />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
+<cfset variables.instance.hashURLs=false />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.purgeDrafts=true />
 <cfset variables.instance.createRequiredDirectories=true />
@@ -127,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.sessionTimeout=180 />
-<cfset variables.instance.tempDir=getTempDirectory() />
+<cfset variables.instance.tempDir="" />
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
 <cfset variables.instance.uselegacysessions=true />
@@ -167,7 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.lockableNodes=false/>
 <cfset variables.instance.allowLocalFiles=false/>
 <cfset variables.instance.dataCollection=true/>
-<cfset variables.instance.adManager=true/>
+<cfset variables.instance.adManager=false/>
 <cfset variables.instance.emailBroadcaster=true/>
 <cfset variables.instance.allowSimpleHTMLForms=true/>
 <cfset variables.instance.securecookies=false/>
@@ -200,19 +203,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returntype="any" output="true" access="public">
-	<cfargument name="config" type="struct"> 	
+	<cfargument name="property" required="true">
+	<cfargument name="propertyValue">  	
+	
+	<cfif not isDefined('arguments.config')>
+		<cfif isSimpleValue(arguments.property)>
+			<cfreturn setValue(argumentCollection=arguments)>
+		</cfif>
+
+		<cfset arguments.config=arguments.property>
+	</cfif>
+	
 	<cfset var prop="">
 	<cfset var tempFunc="">
-	
-	<cfset setWebRoot(arguments.config.webroot)/>
-	<cfset setContext(arguments.config.context)/>
-	<cfset setAssetPath(arguments.config.assetPath)/>
-	<cfset setFileDelim()/>
-	<!--- setFileDir must be after setWebRoot and setFileDelim and setAssetPath--->
-	<cfset setFileDir(arguments.config.fileDir)/>
-	<cfset setDefaultLocale(arguments.config.locale)>
-	<cfset setServerPort(arguments.config.port)>
-	
+
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
 			<cfif isDefined("this.set#prop#")>
@@ -223,6 +227,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	</cfloop>
+
+	<cfset setWebRoot(arguments.config.webroot)/>
+	<cfset setContext(arguments.config.context)/>
+	<cfset setAssetPath(arguments.config.assetPath)/>
+	<cfset setFileDir(arguments.config.fileDir)/>
+	<cfset setDefaultLocale(arguments.config.locale)>
+	<cfset setServerPort(arguments.config.port)>
+	
+	<cfif not len(variables.instance.tempDir)>
+		<cfset variables.instance.tempDir=getTempDirectory()>
+	</cfif>
 	
 	<cfif structKeyExists(arguments.config,"assetDir")>
 		<cfset setAssetDir(arguments.config.assetDir)/>
@@ -509,10 +524,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileDelim" access="public" output="false">
-	
-	 <cfset var fileObj = createObject("java", "java.io.File")/>
-     <cfset variables.instance.fileDelim = fileObj.separator />
-      <cfreturn this>
+	<cfargument name="fileDelim" default="" />
+	<cfif Len(arguments.fileDelim)>
+		<cfset variables.instance.fileDelim = arguments.fileDelim />
+	<cfelseif FindNoCase("Windows", server.os.name)>
+		 <cfset variables.instance.fileDelim = "\" />
+	<cfelse>
+		<cfset variables.instance.fileDelim = "/" />
+	</cfif>
+    <cfreturn this>
 </cffunction>
 
 <cffunction name="getDbType" returntype="any" access="public" output="false">
@@ -1580,6 +1600,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="get" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="defaultValue">
+	<cfreturn getValue(argumentCollection=arguments)>
+</cffunction>
+
 <cffunction name="cleanFilePath" output="false">
 <cfargument name="filePath">
 	<cfset var last="">
@@ -1668,6 +1694,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 false)>
 	</cfif>
 	<cfreturn arguments>
+</cffunction>
+
+<cffunction name="getScheme" returntype="string" output="false">
+	<cfreturn YesNoFormat(getValue('adminSSL')) ? 'https' : 'http' />
+</cffunction>
+
+<cffunction name="getAdminPath" output="false">
+	<cfif len( getValue('admindomain') )>
+		<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+	<cfelse>
+		<cfreturn getValue('context') & "/admin">
+	</cfif>
+</cffunction>
+
+<cffunction name="getPluginsPath" output="false">
+	<cfif len(variables.instance.pluginsPath)>
+		<cfreturn variables.instance.pluginsPath>
+	<cfelse>
+		<cfif len( getValue('admindomain') )>
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+		<cfelse>
+			<cfreturn getValue('context') & "/plugins">
+		</cfif>
+	</cfif>
+</cffunction>
+
+<cffunction name="getRequirementsPath" output="false">
+	<cfif len(variables.instance.requirementsPath)>
+		<cfreturn variables.instance.requirementsPath>
+	<cfelse>
+		<cfif len( getValue('admindomain') )>
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/requirements">
+		<cfelse>
+			<cfreturn getValue('context') & "/requirements">
+		</cfif>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

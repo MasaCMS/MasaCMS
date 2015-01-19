@@ -48,6 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text="#session.dateKey#">
 <cfset rsList=application.dashboardManager.getTopContent(rc.siteID,rc.limit,rc.membersOnly,rc.visitorStatus,rc.startDate,rc.stopDate) />
 <cfset rsTotal=application.dashboardManager.getTotalHits(rc.siteID,rc.membersOnly,rc.visitorStatus,rc.startDate,rc.stopDate) />
+<cfset items=rc.$.getBean('contentIterator')>
+<cfset items.setQuery(rslist)>
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topviewedcontent")#</h1>
 
@@ -99,29 +101,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
 <th>&nbsp;</th>
 </tr>
-<cfif rslist.recordcount>
-<cfloop query="rslist">
+<cfif items.hasNext()>
+<cfloop condition="items.hasNext()">
 <cfsilent>
-<cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
+<cfset item.next()>
 </cfsilent>
 <tr>
-<td class="var-width">#$.dspZoom(crumbdata)#</td>
+<td class="var-width">#$.dspZoom(item.getCrumbArray())#</td>
 <td>#rsList.hits#</td>
 <td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
 <td class="actions">
-<ul>
-		<cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
-		</cfcase>
-		<cfcase value="Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
-		</cfcase>
-		<cfcase value="File">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
-		</cfcase>
-		</cfswitch>	
-		</ul></td>
+<ul>		
+	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a>
+	</li>
+	
+</ul></td>
 </tr>
 </cfloop>
 <cfelse>

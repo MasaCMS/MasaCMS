@@ -62,6 +62,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.form.class')#</label>
 					<input class="text tb-class" type="text" name="class" value="" data-label="true">
 				</li>
+				<li>
+					<label for="name-restricted">#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestricted')#</label>
+					<input id="tb-name-restricted" class="text tb-class" type="checkbox" name="name-unrestricted" value="1" data-label="true"> *
+				</li>
+				<li>
+					<div>
+					#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestrictedtip')#
+					</div>
+				</li>
+
+							
+
 			</ul>
 		</div>
 	</span>

@@ -83,7 +83,7 @@
 					<dt>#HTMLEditFormat(variables.f)#</dt>
 					<dd>
 						<cfif findNoCase('attachment',variables.f) and isValid("UUID",fvalue)>
-							<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
+							<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
 						<cfelse>
 							#variables.$.setParagraphs(htmleditformat(variables.fvalue))#
 						</cfif>

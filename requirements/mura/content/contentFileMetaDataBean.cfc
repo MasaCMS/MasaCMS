@@ -87,7 +87,7 @@ component extends="mura.bean.beanORMVersioned"
 		if ( not getValue('isNew') ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/tasks/render/file/index.cfm?method=#arguments.method#&amp;fileID=#getValue('fileid')#';
+			return '#application.configBean.getContext()#/index.cfm/_api/render/file/?method=#arguments.method#&amp;fileID=#getValue('fileid')#';
 		}
 	}
 

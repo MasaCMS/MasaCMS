@@ -96,7 +96,72 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfheader statuscode="500" statustext="An Error Occurred" />	
 		<cfcatch></cfcatch>
 	</cftry>
-		
-	<cfdump var="#arguments.exception#" top="100">
+	<style type="text/css">
+		.errorBox {
+			margin: 10px auto 10px auto;
+			width: 90%;
+		}
+
+		.errorBox h1 {
+			font-size: 100px;
+			margin: 5px 0px 5px 0px;
+		}
+
+	</style>
+	<div class="errorBox">
+		<h1>500 Error</h1>	
+		<cfif isDefined("arguments.exception.Cause")>
+			<cfset errorData=arguments.exception.Cause>
+		<cfelse>
+			<cfset errorData=arguments.exception>
+		</cfif>
+		<cfif isdefined('errorData.Message') and len(errorData.Message)>
+			<h2><cfoutput>#errorData.Message#</cfoutput><br /></h2>
+		</cfif>
+		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
+			<h3><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
+			<h3><cfoutput>Code: #errorData.errorCode#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.type') and len(errorData.errorCode)>
+			<h3><cfoutput>Type: #errorData.errorCode#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.Detail') and len(errorData.Detail)>
+			<h3><cfoutput>#errorData.Detail#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.extendedInfo') and len(errorData.extendedInfo)>
+			<h3><cfoutput>#errorData.extendedInfo#</cfoutput><br /></h3>
+		</cfif>
+		<cfif isdefined('errorData.StackTrace')>
+			<pre><cfoutput>#errorData.StackTrace#</cfoutput></pre><br />
+		</cfif>
+		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
+			<cfloop array="#errorData.TagContext#" index="errorContexts">
+				<cfoutput>
+				<hr />
+				<cfif isDefined('errorContexts.COLUMN')>
+					Column: #errorContexts.COLUMN#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.ID')>
+					ID: #errorContexts.ID#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.Line')>
+					Line: #errorContexts.Line#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.RAW_TRACE')>
+					Raw Trace: #errorContexts.RAW_TRACE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TEMPLATE')>
+					Template: #errorContexts.TEMPLATE#<br />
+				</cfif>
+				<cfif isDefined('errorContexts.TYPE')>
+					Type: #errorContexts.TYPE#<br />
+				</cfif>
+				<br />
+				</cfoutput>
+			</cfloop>
+		</cfif>
+	</div>
 	<cfabort>
 </cfif>	

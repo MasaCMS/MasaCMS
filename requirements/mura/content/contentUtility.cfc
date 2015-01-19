@@ -78,6 +78,113 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+	<cffunction name="deployPartialBundle" returntype="any" access="public" output="false">
+		<cfargument name="bundleFile">
+		<cfargument name="serverBundlePath">
+		<cfargument name="siteID">
+		<cfargument name="parentID">
+		<cfargument name="importstatus" required="false" default="Active">
+		<cfargument name="changesetname" required="false" default="partial_import_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"hh_mm_ss")#">
+		<cfargument name="errors" default="">
+
+		<cfset var fileManager=getBean("fileManager")>
+		<cfset var tempfile="">
+		<cfset var deletetempfile=true>
+		
+		<cfif isDefined("arguments.serverBundlePath") and len(arguments.serverBundlePath) and fileExists(arguments.serverBundlePath)>
+			<cfset arguments.bundleFile=arguments.serverBundlePath>
+		</cfif>
+		
+		<cfif structKeyExists(arguments,"bundleFile") and len(arguments.bundleFile)>
+			<cfif fileManager.isPostedFile(arguments.bundleFile)>
+				<cfset tempFile = fileManager.upload( "newFile" ) />
+				<!---<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">--->
+			<cfelse>
+				<cfset tempFile=fileManager.emulateUpload(arguments.bundleFile)>
+				<cfset deletetempfile=false>
+			</cfif>
+			<cfparam name="arguments.bundleImportKeyMode" default="copy">
+
+			<cfset restorePartialBundle(
+				"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
+				arguments.siteID,
+				arguments.parentID,
+				arguments.importstatus,
+				arguments.changesetname,
+				arguments.errors
+				)>
+				
+			<cfif deletetempfile>
+				<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
+			</cfif>
+		</cfif>
+	</cffunction>
+	
+	<cffunction name="restorePartialBundle" output="false">
+		<cfargument name="bundleFile">
+		<cfargument name="siteID" default="">
+		<cfargument name="parentID" default="">
+		<cfargument name="importstatus" required="false" default="Draft">
+		<cfargument name="changesetname" required="false" default="">
+		<cfargument name="errors" default="#structNew()#">
+		<cfargument name="keyMode" default="copy">
+	
+	    <cfset var sArgs			= structNew()>
+		<cfset var config 			= application.configBean />
+		<cfset var Bundle			= getBean("bundle") />
+		<cfset var publisher 		= getBean("publisher") />
+		<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+		<cfset var changeSetBean 	= "" />
+		<cfset var isApproved	 	= 0 />
+
+		<cfif arguments.importstatus eq "Changeset">
+			<cfset changeSetBean = getBean('changeset') />
+			<cfset changeSetBean.setValue( 'changesetID',createUUID() ) />
+			<cfset changeSetBean.setValue( 'name',arguments.changesetname ) />
+			<cfset changeSetBean.setValue( 'isNew',1 ) />
+			<cfset changeSetBean.setValue('published',0) />
+			<cfset changeSetBean.setValue('siteID',arguments.siteid) />
+			<cfset changeSetBean.save() />
+			<cfset isApproved = 1 />
+		<cfelseif arguments.importstatus eq "Approved">
+			<cfset isApproved = 1 />
+		</cfif>
+
+		<cfsetting requestTimeout = "7200">
+		
+		<cfset Bundle.restorePartial( arguments.BundleFile)>
+		
+		<cfset sArgs.fromDSN		= config.getDatasource() />
+		<cfset sArgs.toDSN			= config.getDatasource() />
+		<cfset sArgs.siteID			= arguments.siteID />
+		<cfset sArgs.parentID		= arguments.parentID />
+		<cfset sArgs.keyFactory		= keyFactory />
+		<cfset sArgs.isApproved		= isApproved />
+		<cfset sArgs.Bundle			= Bundle />
+		<cfset sArgs.changeSetBean	= changeSetBean />
+		<cfset sArgs.errors			= arguments.errors />
+		
+		<cfset arguments.errors = publisher.getToWorkPartial( argumentCollection=sArgs )>
+
+		<cftry>
+			<cfset application.appInitialized=false>
+		<cfcatch>
+			<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
+			<cfif findNoCase("duplicate",errors.message)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+			</cfif>
+			<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>SQL: " & cfcatch.sql>
+			</cfif>
+			<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
+				<cfset arguments.errors.message=arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
+			</cfif>
+		</cfcatch>
+		</cftry>
+		<cfreturn arguments.errors>
+	</cffunction>
+
+
 <cffunction name="getNotify" returntype="query" access="public" output="false">
 <cfargument name="crumbData" type="array" />
 	<cfset var rs = "">
@@ -356,24 +463,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rslist=""/>
 		<cfset var newbody=""/>
 		<cfset var newSummary=""/>
-		<cfset var renderer=variables.settingsManager.getSite(arguments.siteID).getContentRenderer()>
+		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
+		<cfset var renderer=site.getContentRenderer()>
 
 		<cfif arguments.filename neq ''>
-		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
+		<cfset newfile="#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
 		<cfelse>
-		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,"")#">
+		<cfset newfile="#site.getContext()##renderer.getURLStem(arguments.siteID,"")#">
 		</cfif>
 
 		<cfif arguments.oldfilename neq "/">
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
 			select contenthistid, body from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-			 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 			 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 		
 			<cfif rslist.recordcount>
 				<cfloop query="rslist">
-					<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfset newbody=rereplace(rslist.body,"#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
 					<cfquery>
 					update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
 					</cfquery>
@@ -382,13 +490,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
 			 select contenthistid, summary from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-			 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 			 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfif rslist.recordcount>
 					<cfloop query="rslist">
-					<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfset newSummary=rereplace(rslist.summary,"#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
 					<cfquery>
 					update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
 					</cfquery>
@@ -418,6 +526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
 	<cfset var versionLink="">
 	<cfset var historyLink="">
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)>
 	
 	<cfif listFind("Folder,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
@@ -446,12 +555,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif (structKeyExists(data,"CompactDisplay") and data.compactDisplay eq "true")
 		or (structKeyExists(data,"closeCompactDisplay") and data.closeCompactDisplay eq "true")>
 		<cfif variables.configBean.getSiteIDInURLS()>
-			<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+			<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
 		<cfelse>
-			<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+			<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
 		</cfif>
 	<cfelse>
-		<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
+		<cfset versionLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
 	
 	<cfquery>
@@ -462,7 +571,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)
 	</cfquery>
 	</cfif>
-	<cfset historyLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
+	<cfset historyLink='#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/?muraAction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
 	
 	<cfquery>
 		insert into tredirects (redirectID,URL,created) values(
@@ -492,16 +601,16 @@ LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#
 
 VIEW VERSION HISTORY:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
 <cfif sendVersionLink>
 VIEW EDITED VERSION:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
 	
 <cfset variables.mailer.sendText(mailText,
 		rsList.email,
 		"#rsemail.fname# #rsemail.lname#",
-		"Site Content Review for #UCase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		"Site Content Review for #UCase(site.getDomain())#",
 		contentBean.getSiteID(),
 		rsemail.email) />
 
@@ -526,15 +635,15 @@ LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#							
 
 HISTORY LINK:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
 <cfif sendVersionLink>
 VERSION LINK:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
 <cfset variables.mailer.sendText(mailText,
 		rsList.email,
-		variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getMailServerUsernameEmail(),
-		"Site Content Review for #Ucase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		site.getMailServerUsernameEmail(),
+		"Site Content Review for #Ucase(site.getDomain())#",
 		request.siteid) />
 
 </cfif>

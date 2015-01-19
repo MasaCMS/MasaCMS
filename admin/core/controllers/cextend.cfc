@@ -65,6 +65,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.hasAvailableSubTypes" default="0" />
 </cffunction>
 
+<cffunction name="exportsubtype" output="false">
+	<cfargument name="rc">
+	
+	<cfparam name="arguments.rc.action" default="list" />
+	
+	  <cfif arguments.rc.action eq 'export'>
+		<cfset variables.fw.redirect(action="cExtend.export",append="siteid",path="./")>
+	  </cfif>
+
+	<cfset arguments.rc.subtypes = application.classExtensionManager.getSubTypes(arguments.rc.siteID,false) />
+
+</cffunction>
+
+<cffunction name="importsubtypes" output="false">
+	<cfargument name="rc">
+	
+	<cfset var file = "" />
+	<cfset var fileContent = "" />
+	<cfset var fileManager=getBean("fileManager")>
+	
+	<cfparam name="arguments.rc.action" default="" />
+
+	<cfif arguments.rc.action eq 'import' and arguments.rc.$.validateCSRFTokens(context=arguments.rc.moduleid)>
+		<cfif structKeyExists(arguments.rc,"newfile") and len(arguments.rc.newfile)>
+			<cfset file = fileManager.upload( "newFile" ) />
+
+			<cffile action="read" variable="fileContent" file="#file.serverdirectory#/#file.serverfile#" >
+			
+			<cfset application.classExtensionManager.loadConfigXML( xmlParse(filecontent) ,arguments.rc.siteid) />
+			<cfset variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="./")>
+		</cfif>
+	</cfif>
+
+</cffunction>
+
+<cffunction name="export" output="false">
+	<cfargument name="rc">
+	
+	<cfset extendArray = ArrayNew(1)>	
+	<cfset arguments.rc.exportXML = "" />
+	
+	<cfif structKeyExists(arguments.rc,"exportClassExtensionID") and len(arguments.rc.exportClassExtensionID)>
+		<cfset extendArray = listToArray( arguments.rc.exportClassExtensionID ) />
+		<cfset arguments.rc.exportXML = application.classExtensionManager.getSubTypesAsXML( extendArray,false ) />		
+	</cfif>
+
+</cffunction>
 <cffunction name="updateSubType" output="false">
 	<cfargument name="rc">
 	

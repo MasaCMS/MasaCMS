@@ -78,7 +78,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 	<input type="hidden" name="changesetID" value="#esapiEncode('html_attr',rc.changesetID)#">
 </form>
-<cfset rc.rslist=rc.siteAssignments.getQuery()>
 <!---
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#</h3>
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
@@ -93,20 +92,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
       <th class="actions">&nbsp;</th>
     </tr>
-    <cfif rc.rslist.recordcount>
-     <cfloop query="rc.rslist">
+    <cfif rc.siteAssignments.hasNext()>
+     <cfloop condition="rc.siteAssignments.hasNext()">
 		<cfsilent>
-			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
+      <cfset item=rc.siteAssignments.next()>
+			<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), rc.siteid,false,item.getPath())/>
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		</cfsilent>
         <tr>  
           <td class="title var-width">#$.dspZoom(crumbdata)#</td>
            <td> 
-            <cfif len(rc.rslist.approvalStatus)>
-              #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
-            <cfelseif rc.rslist.approved and rc.rslist.active>
+            <cfif len(item.getapprovalStatus())>
+              #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#item.getapprovalStatus()#')#
+            <cfelseif item.getapproved() and item.getactive()>
                #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#
-            <cfelseif rc.rslist.approved>
+            <cfelseif item.getapproved()>
                  #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')#
             <cfelse>
               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
@@ -115,15 +115,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		  <td class="actions">
 		<ul>
 		<cfif verdict neq 'none'>
-      <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#esapiEncode('javascript',rc.rsList.type)#&parentid=#rc.rsList.parentID#&topid=#esapiEncode('url',rc.rslist.contentID)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets"> <i class="icon-pencil"></i></a></li> 	
-			 <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#esapiEncode('javascript',rc.rslist.contenthistid)#','#esapiEncode('javascript',rc.rsList.targetParams)#');"><i class="icon-globe"></i></a></li>
-		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="icon-book"></i></a></li>
+      <li class="edit"><a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#esapiEncode('javascript',item.gettype())#&parentid=#item.getparentID()#&topid=#esapiEncode('url',item.getcontentID())#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets"> <i class="icon-pencil"></i></a></li> 	
+			 <li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="icon-globe"></i></a></li>
+		   <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#item.getmoduleID()#&startrow=#esapiEncode('url',rc.startrow)#"><i class="icon-book"></i></a></li>
     <cfelse>
       <li class="edit disabled"><i class="icon-edit"></i></li>
-      <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?previewID=#esapiEncode('javascript',rc.rslist.contentHistID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
+      <li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1,queryString="previewid=#item.getContentHistID()#")#');"><i class="icon-globe"></i></a></li>
 		  <li class="version-history disabled"><i class="icon-book"></i></li>
     </cfif>
-		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+		<li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#item.getcontentHistID()#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',item.getchangesetID())#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),item.getmenutitle()))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 		</ul>
 		</td>
 		</tr>

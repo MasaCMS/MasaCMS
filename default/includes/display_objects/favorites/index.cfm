@@ -1,18 +1,15 @@
 <cfsilent>
 <cfset variables.$.loadShadowBoxJS() />
 <cfset variables.rbFactory=variables.$.siteConfig('RBFactory')/>
-<cfswitch expression="#variables.$.getJsLib()#">
-	<cfcase value="jquery">
-		<cfset variables.$.addToHTMLHeadQueue("favorites/htmlhead/favorites-jquery.cfm")>
-	</cfcase>
-	<cfdefaultcase>
-		<cfset variables.$.addToHTMLHeadQueue("favorites/htmlhead/favorites-prototype.cfm")>
-	</cfdefaultcase>
-</cfswitch>
-
 <cfset variables.currentPageFavoriteID = "">
 </cfsilent>
 <cfoutput>
+<script>
+	$(function(){
+		mura.loader().loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/favorites/js/favorites-jquery.min.js");
+		currentPageFavoriteID = '#variables.currentPageFavoriteID#';
+	});
+</script>
 <div id="svFavoritesList" class="mura-favorites-list">
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.favorites')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
@@ -68,9 +65,6 @@
 		<span id="favoriteStatus"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
 	</cfif>
 --->	
-	<script type="text/javascript">
-		currentPageFavoriteID = '#variables.currentPageFavoriteID#';
-	</script>
 <cfelse>
 	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.pleaselogin'),'#variables.$.siteConfig('LoginURL')#&returnURL=#getCurrentURL()#')#</p>
 </cfif>

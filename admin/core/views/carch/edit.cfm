@@ -343,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  				var shifted=false;
  				var lockedbysomeonelse=false;
 
- 				chechForSave=function(e) {	  
+ 				checkForSave=function(e) {	  
 				  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
 				    	e.preventDefault();
 					   	if(!lockedbysomeonelse){
@@ -376,21 +376,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 				}
 
-				try{
-					window.top.document.addEventListener("keydown", chechForSave , false);
-				} catch (e){};
+				//try{
+					window.top.document.addEventListener("keydown", checkForSave , false);
+				//} catch (e){};
 		</script>
 		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
-			<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;"> 
+			<button type="button" class="btn<cfif not currentChangeset.getIsNew()> btn-danger</cfif>" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;"> 
 				<cfif requiresApproval>
 					<i class="icon-list"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
 				<cfelse>
 					<i class="icon-list"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
 				</cfif>
-				</button>	
+			</button>	
+
+			<!---
+			<cfif not currentChangeset.getIsNew()>
+				<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.removePreviousChangeset.value='true';document.contentForm.changesetID.value='#rc.contentBean.getChangesetID()#';if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
+				<cfif requiresApproval>
+					<i class="icon-list"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangesetandsendforapproval"))#
+				<cfelse>
+					<i class="icon-list"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangeset"))#
+				</cfif>
+				</button>		
+			</cfif>
+			--->
 		</cfif>
 		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 			<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}">
@@ -691,7 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
 		<script type="text/javascript">
 		siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
-		siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+		siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
 		</script>
 	</cfif>
 

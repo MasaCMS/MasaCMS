@@ -432,15 +432,12 @@ if(len($.siteConfig('customTagGroups'))){
 					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
-							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
+							<cfcase value="File">
+							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 							</cfcase>
-							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
-							<cfif item.getType() eq "File">
-							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/index.cfm?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
-							</cfif>
-							</cfcase>
+							<cfdefaultcase>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a></li>
+							</cfdefaultcase>
 						</cfswitch>
 						 
 						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="icon-book"></i></a></li>
@@ -460,14 +457,7 @@ if(len($.siteConfig('customTagGroups'))){
 					
 					<cfelse>
 					    <li class="edit disabled"><i class="icon-pencil"></i></li>
-						<cfswitch expression="#item.gettype()#">
-							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),item.getfilename())#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
-							</cfcase>
-							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(item.getSiteID(),"")#index.cfm?LinkServID=#item.getcontentid()#','#esapiEncode('url',item.gettargetParams())#');"><i class="icon-globe"></i></a></li>
-							</cfcase>
-						</cfswitch>
+						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a></li>
 						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
 						<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
