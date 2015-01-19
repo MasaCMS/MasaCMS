@@ -2869,7 +2869,7 @@ Display Objects
 		</cfif>
 	</cfif>
 	
-	<cfreturn host & variables.$.sitConfig('context') & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
+	<cfreturn host & variables.$.siteConfig('context') & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 	
 </cffunction>
 

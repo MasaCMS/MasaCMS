@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<dl class="moreResults">
-		<dt><a href="#application.configBean.getServerPort()##variables.$.globalConfig('context')##application.contentRenderer.getURLStem(variables.$.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
+		<dt><a href="#variables.siteConfig('context')##getURLStem(variables.$.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
 	</dl>
 </div>
 <cfelse>

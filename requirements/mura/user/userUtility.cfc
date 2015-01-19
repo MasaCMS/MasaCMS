@@ -458,11 +458,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var editProfileURL="">
 <cfset var returnURL="">	
 <cfset var protocol="http://">	
-<cfset var urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+<cfset var urlBase="">
 <cfset var site="">
 
 <cfif arguments.siteid neq ''>
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
+	<cfset urlBase="#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()#">
 	
 	<cfif not len(sendLoginScript)>
 		<cfset sendLoginScript =site.getSendLoginScript()/>
@@ -483,6 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">	
 <cfelse>
+	<cfset urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>

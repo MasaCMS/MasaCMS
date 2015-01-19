@@ -463,24 +463,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rslist=""/>
 		<cfset var newbody=""/>
 		<cfset var newSummary=""/>
-		<cfset var renderer=variables.settingsManager.getSite(arguments.siteID).getContentRenderer()>
+		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
+		<cfset var renderer=site.getContentRenderer()>
 
 		<cfif arguments.filename neq ''>
-		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
+		<cfset newfile="#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
 		<cfelse>
-		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,"")#">
+		<cfset newfile="#site.getContext()##renderer.getURLStem(arguments.siteID,"")#">
 		</cfif>
 
 		<cfif arguments.oldfilename neq "/">
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
 			select contenthistid, body from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-			 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 			 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 		
 			<cfif rslist.recordcount>
 				<cfloop query="rslist">
-					<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfset newbody=rereplace(rslist.body,"#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
 					<cfquery>
 					update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
 					</cfquery>
@@ -489,13 +490,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
 			 select contenthistid, summary from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-			 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 			 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfif rslist.recordcount>
 					<cfloop query="rslist">
-					<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfset newSummary=rereplace(rslist.summary,"#site.getContext()##renderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
 					<cfquery>
 					update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
 					</cfquery>
@@ -525,6 +526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
 	<cfset var versionLink="">
 	<cfset var historyLink="">
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)>
 	
 	<cfif listFind("Folder,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
@@ -599,16 +601,16 @@ LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#
 
 VIEW VERSION HISTORY:
-#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
 <cfif sendVersionLink>
 VIEW EDITED VERSION:
-#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
 	
 <cfset variables.mailer.sendText(mailText,
 		rsList.email,
 		"#rsemail.fname# #rsemail.lname#",
-		"Site Content Review for #UCase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		"Site Content Review for #UCase(site.getDomain())#",
 		contentBean.getSiteID(),
 		rsemail.email) />
 
@@ -633,15 +635,15 @@ LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#							
 
 HISTORY LINK:
-#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
 <cfif sendVersionLink>
 VERSION LINK:
-#application.settingsManager.getSite(arguments.data.siteID).getScheme()#://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+#site.getScheme()#://#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
 <cfset variables.mailer.sendText(mailText,
 		rsList.email,
-		variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getMailServerUsernameEmail(),
-		"Site Content Review for #Ucase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		site.getMailServerUsernameEmail(),
+		"Site Content Review for #Ucase(site.getDomain())#",
 		request.siteid) />
 
 </cfif>

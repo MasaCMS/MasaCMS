@@ -1062,6 +1062,7 @@ s
 </cffunction>
 
 <cffunction name="getResourcePath" output="false">
+	<cfargument name="complete" default=0>
 	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
 		<cfset var configBean=getBean('configBean')>
 		<cfif getValue('resourceSSL')>
@@ -1069,6 +1070,8 @@ s
 		<cfelse>
 			<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
 		</cfif>
+	<cfelseif arguments.complete>
+		<cfreturn getWebPath()>
 	<cfelse>
 		<cfreturn getContext()>
 	</cfif>	

@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset variables.rs=variables.$.getBean('contentGateway').getKidsCategorySummary(variables.$.event('siteID'),arguments.objectid,variables.$.event('relatedID'),today,variables.rsSection.type)>
 
-	<cfset variables.viewAllURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#">
+	<cfset variables.viewAllURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#">
 	<cfif len(variables.$.event('relatedID'))>
 		<cfset variables.viewAllURL=variables.viewAllURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 	</cfif>
@@ -82,12 +82,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<ul class="#this.ulTopClass#"><cfloop query="variables.rs">
 		<cfsilent>
 		<cfif len(variables.rs.filename)>
-			<cfset variables.categoryURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),variables.rsSection.filename & '/category/' & variables.rs.filename)#">
+			<cfset variables.categoryURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),variables.rsSection.filename & '/category/' & variables.rs.filename)#">
 			<cfif len(variables.$.event('relatedID'))>
 				<cfset variables.categoryURL=variables.categoryURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 			</cfif>
 		<cfelse>
-			<cfset categoryURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
+			<cfset categoryURL="#variables.$.siteConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
 			<cfif len(variables.$.event('relatedID'))>
 				<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 			</cfif>

@@ -363,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"))>
-	<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
+	<cfset getBean('contentRenderer').redirect("#site.getContext()##site.getContentRenderer().getURLStem(site.getSiteID(),"")#")>
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
@@ -372,7 +372,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
-		<cfset getBean('contentRenderer').redirect("#application.settingsManager.getSite(rsSites.siteID).getScheme()#://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
+		<cfset site=application.settingsManager.getSite(rsSites.siteID)>
+		<cfset getBean('contentRenderer').redirect("#site.getWebPath()##site.getContentRenderer().getURLStem(site.getSiteID(),'')#")>
 	</cfif>
 	
 </cffunction>

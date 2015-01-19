@@ -72,23 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
 </tbody>
 </table>
-<!---
-<cfset rsList=application.dashboardManager.getTopReferers(rc.siteID,3,rc.startDate,rc.stopDate) />
-<cfset count=rsList.recordcount>
-<table id="topReferrers">
-<tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")# <a href="./?muraAction=cDashboard.topReferers&siteid=#esapiEncode('url',rc.siteid)#&startDate=#esapiEncode('url',rc.startDate)#&stopDate=#esapiEncode('url',rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
-</tr>
-<cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
-	<td><cfif rsList.referer neq 'Unknown'><a title="View" href="##" onclick="return preview('#rsList.referer#','');">#left(rsList.referer,30-len(rslist.referals))#&hellip;</a><cfelse>#rsList.referer#</cfif> <span>(#rslist.referals# #application.rbFactory.getKeyValue(session.rb,"dashboard.referrals")#)</span></td>
-</tr>
-</cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
-<cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
-</table>
---->
+
 <cfset rsList=application.dashboardManager.getTopKeywords(rc.siteID,3,false,"All",rc.startDate,rc.stopDate) />
 <cfset count=rsList.recordcount>
 <table class="mura-table-grid" id="topSearches">
@@ -108,32 +92,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
 </tbody>
 </table>
-<!---
-<cfset rsList=application.dashboardManager.getTopRated(rc.siteID,rc.threshold,3,rc.startDate,rc.stopDate) />
-<cfset count=rsList.recordcount>
-<table id="topRated">
-<tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")# <a href="./?muraAction=cDashboard.topRated&siteid=#esapiEncode('url',rc.siteid)#&startDate=#esapiEncode('url',rc.startDate)#&stopDate=#esapiEncode('url',rc.stopDate)#">(View Report)</a></th>
-</tr>
-<cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
-	<td><cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
-		</cfcase>
-		<cfcase value="Link">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
-		</cfcase>
-		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#index.cfm?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#esapiEncode('html',left(rslist.menutitle,28))#</a>
-		</cfcase>
-		</cfswitch> <img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
-</tr>
-</cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
-<cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
-</table>
---->
+
 </cfoutput>
 
