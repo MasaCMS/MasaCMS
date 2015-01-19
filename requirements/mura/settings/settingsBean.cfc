@@ -1054,11 +1054,17 @@ s
 
 <cffunction name="getWebPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
-	<cfif arguments.secure>
-		<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
+	<cfargument name="complete" default=0>
+	<cfif arguments.secure or arguments.complete>
+		<cfif arguments.secure>
+			<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
+		<cfelse>
+			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getContext()>
+		</cfif>
 	<cfelse>
-		<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getContext()>
+		<cfreturn getContext()>
 	</cfif>
+	
 </cffunction>
 
 <cffunction name="getResourcePath" output="false">
@@ -1071,7 +1077,7 @@ s
 			<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
 		</cfif>
 	<cfelseif arguments.complete>
-		<cfreturn getWebPath()>
+		<cfreturn getWebPath(argumentCollection=arguments)>
 	<cfelse>
 		<cfreturn getContext()>
 	</cfif>	
@@ -1079,11 +1085,13 @@ s
 
 <cffunction name="getRequirementsPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/requirements">
 </cffunction>
 
 <cffunction name="getPluginsPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/plugins">
 </cffunction>
 
