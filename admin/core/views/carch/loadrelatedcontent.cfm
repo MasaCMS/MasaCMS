@@ -193,6 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.setContentPoolID(arguments.siteid);
 			
 			feed.addParam(field="active", criteria=1, condition="eq");
+			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
 			if (len($.event("searchTypeSelector"))) {
 				feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	

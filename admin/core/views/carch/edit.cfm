@@ -703,7 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
 		<script type="text/javascript">
 		siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
-		siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+		siteManager.loadExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
 		</script>
 	</cfif>
 

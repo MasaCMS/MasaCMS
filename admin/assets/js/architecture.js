@@ -666,9 +666,9 @@ buttons: {
 		});
 	},
 	
-	loadRelatedContent: function(siteid, isNew, values, advSearch) {
+	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch) {
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&siteid=' + siteid + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -725,12 +725,12 @@ buttons: {
 					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
 				}
 				$('#mura-rc-quickedit').hide();				
-				siteManager.loadRelatedContent(siteid, 0, $(valueSelector).serialize(), advSearching);
+				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching);
 			});
 		});
 	},
 
-	loadRelatedContentSets:function(contenthistid,type,subtype,siteid){
+	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid){
 		var url = './';
 		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
 		
@@ -743,7 +743,7 @@ buttons: {
 			}
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
-			siteManager.setupRCSortable();
+			siteManager.setupRCSortable(contentid);
 		});
 
 	},
@@ -809,7 +809,7 @@ buttons: {
 		});
 	},
 
-	setupRCSortable: function() {
+	setupRCSortable: function(contentid) {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
@@ -828,7 +828,7 @@ buttons: {
 			cancel: "li.empty"
 		}).disableSelection();
 	
-		siteManager.loadRelatedContent(siteid, 1, '', false);
+		siteManager.loadRelatedContent(contentid,siteid, 1, '', false);
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();
@@ -953,7 +953,7 @@ buttons: {
 		}
 	},
 
-	loadExtendedAttributes: function(contentHistID, type, subType, _siteID, _context, _themeAssetPath) {
+	loadExtendedAttributes: function(contentid,contentHistID, type, subType, _siteID, _context, _themeAssetPath) {
 		var url = './';
 		var pars = 'muraAction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&tablist=' + siteManager.tablist + '&cacheid=' + Math.random();
 
@@ -970,7 +970,7 @@ buttons: {
 			}
 		});
 
-		siteManager.loadRelatedContentSets(contentHistID,type,subType,_siteID);
+		siteManager.loadRelatedContentSets(contentid,contentHistID,type,subType,_siteID);
 
 		$.ajax({
 			url:url + "?" + pars, 
@@ -1107,9 +1107,9 @@ buttons: {
 
 	},
 
-	resetExtendedAttributes: function(contentHistID, str, _siteID, _context, _themeAssetPath) {
+	resetExtendedAttributes: function(contentid,contentHistID, str, _siteID, _context, _themeAssetPath) {
 		var dataArray = str.split("^");
-		this.loadExtendedAttributes(contentHistID, dataArray[0], dataArray[1], _siteID, _context, _themeAssetPath);
+		this.loadExtendedAttributes(contentid,contentHistID, dataArray[0], dataArray[1], _siteID, _context, _themeAssetPath);
 		//alert(dataArray[1]);
 		document.contentForm.type.value = dataArray[0];
 		document.contentForm.subtype.value = dataArray[1];
