@@ -171,10 +171,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 					<cfswitch expression="#rc.type#">
 					<cfcase value="Page,Folder,Calendar,Gallery,Link">
-						<li><a href="##" onclick="return openPreviewDialog('#rc.contentBean.getURL(secure=rc.$.getBean('utility').isHTTPs(),complete=1,queryString="previewid=rc.contentBean.getContentHistID()")#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+						<li><a href="##" onclick="return openPreviewDialog('#rc.contentBean.getURL(secure=rc.$.getBean('utility').isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getContentHistID()#")#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 					</cfcase>
 					<cfcase value="File">	
-						<li><a href="##" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain(mode='preview')##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i></a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+						<li><a href="##" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i></a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 					</cfcase>
 					</cfswitch>
 				</cfif>

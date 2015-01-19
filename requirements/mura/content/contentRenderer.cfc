@@ -1582,7 +1582,10 @@ Display Objects
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
-	
+	<cfset var q=''>
+	<cfset var qsa="">
+	<cfset var qq="">
+
 	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
 		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
 	</cfif>
@@ -1597,10 +1600,24 @@ Display Objects
 		<cfset var begin=site.getContext()>
 	</cfif>
 
-	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
-		<cfset arguments.querystring="?" & arguments.querystring>
+	<cfif len(arguments.querystring)>
+		<cfif not this.hashURLS and not left(arguments.querystring,1) eq "?">
+			<cfset arguments.querystring="?" & arguments.querystring>
+		<cfelseif this.hashURLS>
+			<cfset qsa="_">
+			<cfset arguments.queryString=listFirst(arguments.querystring,"?")>
+			<cfloop list="#arguments.queryString#" index="q" delimiters="&">
+				<cfset qq=listToArray(q,"=")>
+				<cfif arrayLen(qq) eq 2>
+					<cfset qsa=qsa & "/#urlEncodedFormat(qq[1])#/#qq[2]#">
+				<cfelse>
+					<cfset qsa=qsa & "/#urlEncodedFormat(qq[1])#/true">
+				</cfif>
+			</cfloop>
+			<cfset arguments.queryString=qsa>
+		</cfif>
 	</cfif>
-
+	
 	<cfif not isDefined('arguments.bean') 
 		and (
 				(
@@ -1621,9 +1638,18 @@ Display Objects
 		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 	</cfif>
 	
+	<cfif this.hashURLS and len(arguments.queryString) and right(arguments.filename,1) neq "/">
+		<cfset arguments.queryString="/" & arguments.queryString>
+	</cfif>
+
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
+				<cfif this.hashURLS>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+				<cfelse>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				</cfif>	
 				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />	
 			<cfelseif arguments.type eq "Link">
 				<cfset href=arguments.bean.getBody()>
@@ -1632,7 +1658,11 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			<cfif this.hashURLS>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+			<cfelse>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			</cfif>	
 		</cfdefaultcase>
 	</cfswitch>
 

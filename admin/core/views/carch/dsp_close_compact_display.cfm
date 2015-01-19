@@ -65,7 +65,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif rc.action eq "add" and rc.contentBean.getType() neq "File" and rc.contentBean.getType() neq "Link">
 	<cfset href =currentBean.getURL()>
 	<cfif rc.preview eq 1>
-		<cfset href = '#href#?previewID=#rc.contentBean.getContentHistID()#'/>
+		<cfset href =currentBean.getURL(queryString='previewID=#rc.contentBean.getContentHistID()#')>
+	<cfelse>
+		<cfset href =currentBean.getURL()>
 	</cfif>
 <cfelseif rc.action eq "add" and (rc.contentBean.getType() eq "File" or rc.contentBean.getType() eq "Link")>	
 	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
