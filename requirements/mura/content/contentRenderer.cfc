@@ -2893,9 +2893,9 @@ Display Objects
 	
 	<cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
-			<cfset host='https://#arguments.domain##variables.$.sitConfig('ServerPort')#'>
+			<cfset host='https://#arguments.domain##variables.$.siteConfig('ServerPort')#'>
 		<cfelse>
-			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##variables.$.sitConfig('ServerPort')#'>
+			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##variables.$.siteConfig('ServerPort')#'>
 		</cfif>
 	</cfif>
 	

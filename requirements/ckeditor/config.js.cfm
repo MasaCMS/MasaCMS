@@ -63,7 +63,7 @@ CKEDITOR.editorConfig = function( config )
 	</cfoutput>
 
 	config.startupFocus = false;
-	config.skin = 'bootstrapck'; // 'moono'
+	config.skin = 'moono'
 	config.allowedContent = {
 		$1: {
 		// specify elements as an object

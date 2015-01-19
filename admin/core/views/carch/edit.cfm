@@ -343,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  				var shifted=false;
  				var lockedbysomeonelse=false;
 
- 				chechForSave=function(e) {	  
+ 				checkForSave=function(e) {	  
 				  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
 				    	e.preventDefault();
 					   	if(!lockedbysomeonelse){
@@ -376,9 +376,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 				}
 
-				try{
-					window.top.document.addEventListener("keydown", chechForSave , false);
-				} catch (e){};
+				//try{
+					window.top.document.addEventListener("keydown", checkForSave , false);
+				//} catch (e){};
 		</script>
 		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>

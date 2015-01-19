@@ -85,7 +85,7 @@
 			select filename,menutitle,type from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1
 	</cfquery>
 
-	<cfset navPath="#$.siteConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">
+	<cfset navPath="#$.siteConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#/">
 	<cfset navMonth=request.month >
 	<cfset navYear=request.year >
 	<cfset navDay=request.day >
