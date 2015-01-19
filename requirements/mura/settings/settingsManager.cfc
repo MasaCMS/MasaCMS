@@ -239,8 +239,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.update(bean) />
-		
-		<cfset validateDisplayPool(bean) />
 
 		<cfset validateDisplayPool(bean) />
 

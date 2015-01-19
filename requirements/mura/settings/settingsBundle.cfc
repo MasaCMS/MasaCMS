@@ -208,6 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="moduleID" type="string" default="" required="true">
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
+		<cfargument name="changesetID" default="">
 		
 		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var zipDir	= "" />
@@ -754,7 +755,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfquery name="rstcontent">
-				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+				select tcontent.* from tcontent
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 				and type <>'Module'
 				<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
@@ -845,194 +847,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 	
 			<cfset setValue("rstcontenttags",rstcontenttags)>
-	
-			<cfquery name="rstsystemobjects">
-				select * from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-	
-			<cfset setValue("rstsystemobjects",rstsystemobjects)>
-	
-			<cfif arguments.includeUsers>
-			<!--- BEGIN INCLUDE USERS only supported by full bundles--->
-			<cfquery name="rstpermissions">
-				select * from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-	
-			<cfset setValue("rstpermissions",rstpermissions)>
-	
-			<cfquery name="rstusers">
-				select * from tusers where 
-				(
-					(
-						siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-						and isPublic=0
-					)
 					
-					or
-					
-					(
-						siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-						and isPublic=1
-					)
-				)
-				<!---
-				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-				</cfif>
-				--->
-				
-			</cfquery>
-	
-			<cfset setValue("rstusers",rstusers)>
-			
-			<cfif rstusers.recordcount>
-				<cfquery name="rstusersmemb">
-					select * from tusersmemb where
-					userID in (
-								select userID from tusers where 
-								(
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-										and isPublic=0
-									)
-									
-									or
-									
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-										and isPublic=1
-									)
-								)
-								<!---
-								<cfif isDate(arguments.sinceDate)>
-									and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-								</cfif>
-								--->
-							
-							)
-				</cfquery>
-		
-				<cfset setValue("rstusersmemb",rstusersmemb)>
-				
-				<cfquery name="rstuseraddresses">
-					select * from tuseraddresses where
-					userID in (
-								select userID from tusers where 
-								(
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-										and isPublic=0
-									)
-									
-									or
-									
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-										and isPublic=1
-									)
-								)
-								<!---
-								<cfif isDate(arguments.sinceDate)>
-									and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-								</cfif>
-								--->
-							)
-				</cfquery>
-				
-				<cfset setValue("rstuseraddresses",rstuseraddresses)>
-				
-				<cfquery name="rstusersinterests">
-					select * from tusersinterests where
-					userID in (
-								select userID from tusers where 
-								(
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-										and isPublic=0
-									)
-									
-									or
-									
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-										and isPublic=1
-									)
-								)
-								
-								<!---
-								<cfif isDate(arguments.sinceDate)>
-									and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-								</cfif>
-								--->
-							
-							)
-				</cfquery>
-				
-				<cfset setValue("rstusersinterests",rstusersinterests)>
-				
-				<cfquery name="rstuserstags">
-					select * from tuserstags where
-					userID in (
-								select userID from tusers where 
-								(
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-										and isPublic=0
-									)
-									
-									or
-									
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-										and isPublic=1
-									)
-								)
-								
-								<!---
-								<cfif isDate(arguments.sinceDate)>
-									and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-								</cfif>
-								--->
-							
-							)
-				</cfquery>
-				
-				<cfset setValue("rstuserstags",rstuserstags)>
-				
-				<cfquery name="rstusersfavorites">
-					select * from tusersfavorites where
-					userID in (
-								select userID from tusers where 
-								(
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
-										and isPublic=0
-									)
-									
-									or
-									
-									(
-										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
-										and isPublic=1
-									)
-								)
-								
-								<!---
-								<cfif isDate(arguments.sinceDate)>
-									and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
-								</cfif>
-								--->
-							
-							)
-					and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				</cfquery>
-				
-				<cfset setValue("rstusersfavorites",rstusersfavorites)>
-				<!--- END INCLUDE USERS --->
-			</cfif>
-			
-			</cfif>
-			
 			<!--- BEGIN ADVERTISING --->
 			<!--- removed until further evaluation 
 			<cfquery name="rsSettings">
@@ -1140,33 +955,225 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 				<cfset setValue("rstsystemobjects",rstsystemobjects)>
 	
-			<cfset setValue("rstcontentfeeds",rstcontentfeeds)>
-	
-			<!--- tcontentfeeditems --->
-			<cfquery name="rstcontentfeeditems">
-				select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-				<cfif isDate(arguments.sinceDate)>
-					<cfif rstcontentfeeds.recordcount>
-						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
-					<cfelse>
-						0=1
+				<cfif arguments.includeUsers>
+					<!--- BEGIN INCLUDE USERS only supported by full bundles--->
+					<cfquery name="rstpermissions">
+						select * from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					</cfquery>
+			
+					<cfset setValue("rstpermissions",rstpermissions)>
+			
+					<cfquery name="rstusers">
+						select * from tusers where 
+						(
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+								and isPublic=0
+							)
+							
+							or
+							
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+								and isPublic=1
+							)
+						)
+						<!---
+						<cfif isDate(arguments.sinceDate)>
+							and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+						</cfif>
+						--->
+						
+					</cfquery>
+			
+					<cfset setValue("rstusers",rstusers)>
+					
+					<cfif rstusers.recordcount>
+						<cfquery name="rstusersmemb">
+							select * from tusersmemb where
+							userID in (
+										select userID from tusers where 
+										(
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+												and isPublic=0
+											)
+											
+											or
+											
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+												and isPublic=1
+											)
+										)
+										<!---
+										<cfif isDate(arguments.sinceDate)>
+											and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+										</cfif>
+										--->
+									
+									)
+						</cfquery>
+				
+						<cfset setValue("rstusersmemb",rstusersmemb)>
+						
+						<cfquery name="rstuseraddresses">
+							select * from tuseraddresses where
+							userID in (
+										select userID from tusers where 
+										(
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+												and isPublic=0
+											)
+											
+											or
+											
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+												and isPublic=1
+											)
+										)
+										<!---
+										<cfif isDate(arguments.sinceDate)>
+											and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+										</cfif>
+										--->
+									)
+						</cfquery>
+						
+						<cfset setValue("rstuseraddresses",rstuseraddresses)>
+						
+						<cfquery name="rstusersinterests">
+							select * from tusersinterests where
+							userID in (
+										select userID from tusers where 
+										(
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+												and isPublic=0
+											)
+											
+											or
+											
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+												and isPublic=1
+											)
+										)
+										
+										<!---
+										<cfif isDate(arguments.sinceDate)>
+											and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+										</cfif>
+										--->
+									
+									)
+						</cfquery>
+						
+						<cfset setValue("rstusersinterests",rstusersinterests)>
+						
+						<cfquery name="rstuserstags">
+							select * from tuserstags where
+							userID in (
+										select userID from tusers where 
+										(
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+												and isPublic=0
+											)
+											
+											or
+											
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+												and isPublic=1
+											)
+										)
+										
+										<!---
+										<cfif isDate(arguments.sinceDate)>
+											and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+										</cfif>
+										--->
+									
+									)
+						</cfquery>
+						
+						<cfset setValue("rstuserstags",rstuserstags)>
+						
+						<cfquery name="rstusersfavorites">
+							select * from tusersfavorites where
+							userID in (
+										select userID from tusers where 
+										(
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+												and isPublic=0
+											)
+											
+											or
+											
+											(
+												siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+												and isPublic=1
+											)
+										)
+										
+										<!---
+										<cfif isDate(arguments.sinceDate)>
+											and lastUpdate>=#createODBCDateFormat(arguments.sinceDate)#
+										</cfif>
+										--->
+									
+									)
+							and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						</cfquery>
+						
+						<cfset setValue("rstusersfavorites",rstusersfavorites)>
+						<!--- END INCLUDE USERS --->
 					</cfif>
 				</cfif>
-				<cfif not arguments.includeTrash>
-				and feedID in (select feedID from tcontentfeeds)
-				</cfif>
-			</cfquery>
 	
-			<cfset setValue("rstcontentfeeditems",rstcontentfeeditems)>
-	
-			<!--- tcontentfeedadvancedparams --->
-			<cfquery name="rstcontentfeedadvancedparams">
-				select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-				<cfif isDate(arguments.sinceDate)>
-					<cfif rstcontentfeeds.recordcount>
-						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
-					<cfelse>
-						and 0=1
+				<!--- tcontentfeeds --->
+				<cfquery name="rstcontentfeeds">
+					select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif isDate(arguments.sinceDate)>
+					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstcontentfeeds",rstcontentfeeds)>
+		
+				<!--- tcontentfeeditems --->
+				<cfquery name="rstcontentfeeditems">
+					select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+					<cfif isDate(arguments.sinceDate)>
+						<cfif rstcontentfeeds.recordcount>
+							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+						<cfelse>
+							0=1
+						</cfif>
+					</cfif>
+					<cfif not arguments.includeTrash>
+					and feedID in (select feedID from tcontentfeeds)
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstcontentfeeditems",rstcontentfeeditems)>
+		
+				<!--- tcontentfeedadvancedparams --->
+				<cfquery name="rstcontentfeedadvancedparams">
+					select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+					<cfif isDate(arguments.sinceDate)>
+						<cfif rstcontentfeeds.recordcount>
+							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+						<cfelse>
+							and 0=1
+						</cfif>
+					</cfif>
+					<cfif not arguments.includeTrash>
+					and feedID in (select feedID from tcontentfeeds)
 					</cfif>
 				</cfquery>
 				<cfset setValue("rstcontentfeedadvancedparams",rstcontentfeedadvancedparams)>
@@ -1267,18 +1274,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tclassextendattributes.type='File'
 						and tclassextend.type in ('Custom','1','2','User','Group','Address','Site')
 					)
-					
-					<cfif arguments.includeUsers>
-					<!--- Get files attached to tusers --->
-					or fileID in
-					(
-						select photoFileID from tusers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-					)
-					</cfif>
-					
-					<cfif arguments.includeFormData>
-					or moduleID='00000000000000000000000000000000004'
-					</cfif>
+						<cfif arguments.includeUsers>
+						<!--- Get files attached to tusers --->
+						or fileID in
+						(
+							select photoFileID from tusers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						)
+						</cfif>
+						<cfif arguments.includeFormData>
+						or moduleID='00000000000000000000000000000000004'
+						</cfif>
+					</cfif>					
 				)
 				
 				</cfif>
@@ -1316,11 +1322,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					)
 					</cfif>
-				</cfif>
-				<cfif not arguments.includeTrash>
-				and contentID in (select distinct contentID from tcontent)
-				</cfif>
-			</cfquery>
+				</cfquery>
+		
+				<cfset setValue("rstcontentstats",rstcontentstats)>
 	
 				<cfquery name="rstcontentcomments">
 					select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1463,25 +1467,69 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfquery>
 		
-				<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
-			</cfif>
+				<cfset setValue("rstmailinglist",rstmailinglist)>
 				
-			<!--- tcontentcategories --->
-			<cfquery name="rstcontentcategories">
-				select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-				</cfif>
-			</cfquery>
-	
-			<cfset setValue("rstcontentcategories",rstcontentcategories)>	
+				<cfif arguments.includeMailingListMembers>
+					<!--- tmailinglistmembers only support for full archives--->
+					<cfquery name="rstmailinglistmembers">
+						select * from tmailinglistmembers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					</cfquery>
 			
-			<!--- tchangesets --->
-			<cfquery name="rstchangesets">
-				select * from tchangesets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-				and published=0
+					<cfset setValue("rstmailinglistmembers",rstmailinglistmembers)>
 				</cfif>
+	
+				<cfif arguments.includeUsers>
+					<cfquery name="rstclassextenddatauseractivity">
+						select * from tclassextenddatauseractivity
+						where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						and attributeID in (select attributeID from tclassextendattributes)
+					</cfquery>
+			
+					<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
+				</cfif>
+					
+				<!--- tcontentcategories --->
+				<cfquery name="rstcontentcategories">
+					select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif isDate(arguments.sinceDate)>
+						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstcontentcategories",rstcontentcategories)>	
+
+				<!--- tchangesets --->
+				<cfquery name="rstchangesets">
+					select * from tchangesets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<cfif not arguments.includeVersionHistory>
+					and published=0
+					</cfif>
+					<cfif isDate(arguments.sinceDate)>
+						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+					<cfif len(arguments.changesetID)>
+						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+					</cfif>
+				</cfquery>
+		
+				<cfset setValue("rstchangesets",rstchangesets)>	
+				
+				<cfif (arguments.includeTrash or isDate(arguments.sinceDate)) and not len(arguments.changesetID)>
+				<!--- ttrash --->
+				<cfquery name="rsttrash">
+					select * from ttrash where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					<!--- We don't want user data in trash --->
+					<cfif not arguments.includeUsers>
+					and objectClass not in ('userBean','addressBean')
+					</cfif>
+					<cfif isDate(arguments.sinceDate)>
+						and deletedDate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					</cfif>
+				</cfquery>
+				
+				<cfset setValue("rsttrash",rsttrash)>	
+				
+				<!--- deleted files --->
 				<cfif isDate(arguments.sinceDate)>
 				<cfquery name="rsttrashfiles">
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('siteManager').getSite(arguments.siteID).getFilePoolID()#"/>
@@ -1532,189 +1580,122 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and 0=1
 				</cfif>
 			</cfquery>
-	
-			<cfset setValue("rstchangesets",rstchangesets)>	
 			
-			<cfif arguments.includeTrash or isDate(arguments.sinceDate)>
-			<!--- ttrash --->
-			<cfquery name="rsttrash">
-				select * from ttrash where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<!--- We don't want user data in trash --->
-				<cfif not arguments.includeUsers>
-				and objectClass not in ('userBean','addressBean')
+			<cfset setValue("rstpluginmodules",rstpluginmodules)>
+			
+			<!--- Plugins --->
+			<cfquery name="rstplugins">
+				select * from tplugins
+				where
+				1=1 
+				<cfif len(arguments.siteID)>
+				 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
 				</cfif>
-				<cfif isDate(arguments.sinceDate)>
-					and deletedDate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				<cfif len(arguments.moduleID)>
+					and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
+				<cfelse>
+					and 0=1
 				</cfif>
 			</cfquery>
 			
-			<cfset setValue("rsttrash",rsttrash)>	
+			<cfset setValue("rstplugins",rstplugins)>
 			
-			<!--- deleted files --->
-			<cfif isDate(arguments.sinceDate)>
-			<cfquery name="rsttrashfiles">
-				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('siteManager').getSite(arguments.siteID).getFilePoolID()#"/>
-				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
-				and deleted=1
-			</cfquery>
-	
-			<cfset setValue("rsttrashfiles",rsttrashfiles)>
-			</cfif>
-			
-			</cfif>
-			
-			<cfquery name="rssite">
-				select domain,siteid,theme,
-				largeImageWidth,largeImageHeight,
-				smallImageWidth,smallImageHeight,
-				mediumImageWidth,mediumImageHeight,
-				columnCount,columnNames,primaryColumn,baseID,customtaggroups
-			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-			</cfquery>
-			
-			<cfset setValue("rssite",rssite)>
-
-			<cfquery name="rstimagesizes">
-				select *
-			    from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-			</cfquery>	
-
-			<cfset setValue("rstimagesizes",rstimagesizes)>
-
-			<cfset setValue("assetPath",application.configBean.getAssetPath())>
-			<cfset setValue("context",application.configBean.getContext())>
-			
-		</cfif>
-		<!--- BEGIN PLUGINS --->
-		
-		<!--- Modules--->
-		<cfquery name="rstpluginmodules">
-			select moduleID from tcontent where 
-			1=1
-			<cfif len(arguments.siteID)>
-				and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin'
-			</cfif>
-			<cfif len(arguments.moduleID)>
-				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
-			<cfelse>
-				and 0=1
-			</cfif>
-		</cfquery>
-		
-		<cfset setValue("rstpluginmodules",rstpluginmodules)>
-		
-		<!--- Plugins --->
-		<cfquery name="rstplugins">
-			select * from tplugins
-			where
-			1=1 
-			<cfif len(arguments.siteID)>
-			 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
-			</cfif>
-			<cfif len(arguments.moduleID)>
-				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
-			<cfelse>
-				and 0=1
-			</cfif>
-		</cfquery>
-		
-		<cfset setValue("rstplugins",rstplugins)>
-		
-		<cfloop query="rstplugins">
-			<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>	
-				<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
-				<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
-						
-				<!--- only call the methods if they have been defined --->
-				<cfif structKeyExists(pluginCFC,"init")>
-					<cfset pluginCFC.init(pluginConfig)>
-					<cfif structKeyExists(pluginCFC,"toBundle")>
-						<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
+			<cfloop query="rstplugins">
+				<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>	
+					<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
+					<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
+							
+					<!--- only call the methods if they have been defined --->
+					<cfif structKeyExists(pluginCFC,"init")>
+						<cfset pluginCFC.init(pluginConfig)>
+						<cfif structKeyExists(pluginCFC,"toBundle")>
+							<cfset pluginCFC.toBundle(pluginConfig=pluginConfig,Bundle=this, siteID=arguments.siteID,includeVersionHistory=arguments.includeVersionHistory)>
+						</cfif>
 					</cfif>
 				</cfif>
-			</cfif>
-		</cfloop>	
-		
-		<!--- Scripts --->
-		<cfquery name="rstpluginscripts">
-			select * from tpluginscripts where
-			1=1
-			<cfif len(arguments.siteID)>
-			 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
-			</cfif>
-			<cfif len(arguments.moduleID)>
-				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
-			<cfelse>
-				and 0=1
-			</cfif>
-		</cfquery>
-		
-		<cfset setValue("rstpluginscripts",rstpluginscripts)>
-		
-		<!--- Display Objects --->
-		<cfquery name="rstplugindisplayobjects">
-			select * from tplugindisplayobjects where
-			1=1
-			<cfif len(arguments.siteID)>
-			 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
-			</cfif>
-			<cfif len(arguments.moduleID)>
-				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
-			<cfelse>
-				and 0=1
-			</cfif>
-		</cfquery>
-		
-		<cfset setValue("rstplugindisplayobjects",rstplugindisplayobjects)>
-		
-		<!--- Settings --->
-		<cfquery name="rstpluginsettings">
-			select * from tpluginsettings where
-			1=1
-			<cfif len(arguments.siteID)>
-			 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
-			</cfif>
-			<cfif len(arguments.moduleID)>
-				and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
-			<cfelse>
-				and 0=1
-			</cfif>
-		</cfquery>
-		
-		<cfset setValue("rstpluginsettings",rstpluginsettings)>
-		<!--- END PLUGINS --->
-		
-		
-		<!--- BEGIN FORM DATA --->
-		<cfif arguments.includeFormData and not isDate(arguments.sinceDate)>
-				<cfquery name="rstformresponsepackets">
-					select * from tformresponsepackets
-					where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				</cfquery>
-		
-				<cfset setValue("rstformresponsepackets",rstformresponsepackets)>
-				
-				<cfquery name="rstformresponsequestions">
-					select * from tformresponsequestions
-					where formid in (
-									select distinct formID from tformresponsepackets 
-									where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-									)
-				</cfquery>
-				
-				<cfset setValue("rstformresponsequestions",rstformresponsequestions)>
-		</cfif>
-		
-		<!--- END FORM DATA --->
-
-		<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
-		<cfif len(arguments.siteid) and not len(arguments.moduleID)>
-			<cfset setValue("bundleablebeans",application.objectMappings.bundleablebeans)>
+			</cfloop>	
 			
-			<cfif len(application.objectMappings.bundleablebeans)>
-				<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
-					<cfset getBean(beanName=local.b,siteid=arguments.siteid).toBundle(bundle=this,siteid=arguments.siteid,includeVersionHistory=arguments.includeVersionHistory)>
-				</cfloop>
+			<!--- Scripts --->
+			<cfquery name="rstpluginscripts">
+				select * from tpluginscripts where
+				1=1
+				<cfif len(arguments.siteID)>
+				 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				</cfif>
+				<cfif len(arguments.moduleID)>
+					and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
+				<cfelse>
+					and 0=1
+				</cfif>
+			</cfquery>
+			
+			<cfset setValue("rstpluginscripts",rstpluginscripts)>
+			
+			<!--- Display Objects --->
+			<cfquery name="rstplugindisplayobjects">
+				select * from tplugindisplayobjects where
+				1=1
+				<cfif len(arguments.siteID)>
+				 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				</cfif>
+				<cfif len(arguments.moduleID)>
+					and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
+				<cfelse>
+					and 0=1
+				</cfif>
+			</cfquery>
+			
+			<cfset setValue("rstplugindisplayobjects",rstplugindisplayobjects)>
+			
+			<!--- Settings --->
+			<cfquery name="rstpluginsettings">
+				select * from tpluginsettings where
+				1=1
+				<cfif len(arguments.siteID)>
+				 	and moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				</cfif>
+				<cfif len(arguments.moduleID)>
+					and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
+				<cfelse>
+					and 0=1
+				</cfif>
+			</cfquery>
+			
+			<cfset setValue("rstpluginsettings",rstpluginsettings)>
+			<!--- END PLUGINS --->
+			
+			
+			<!--- BEGIN FORM DATA --->
+			<cfif arguments.includeFormData and not isDate(arguments.sinceDate)>
+					<cfquery name="rstformresponsepackets">
+						select * from tformresponsepackets
+						where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					</cfquery>
+			
+					<cfset setValue("rstformresponsepackets",rstformresponsepackets)>
+					
+					<cfquery name="rstformresponsequestions">
+						select * from tformresponsequestions
+						where formid in (
+										select distinct formID from tformresponsepackets 
+										where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+										)
+					</cfquery>
+					
+					<cfset setValue("rstformresponsequestions",rstformresponsequestions)>
+			</cfif>
+			
+			<!--- END FORM DATA --->
+	
+			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+			<cfif len(arguments.siteid) and not len(arguments.moduleID)>
+				<cfset setValue("bundleablebeans",application.objectMappings.bundleablebeans)>
+				
+				<cfif len(application.objectMappings.bundleablebeans)>
+					<cfloop list="#application.objectMappings.bundleablebeans#" index="local.b">
+						<cfset getBean(beanName=local.b,siteid=arguments.siteid).toBundle(bundle=this,siteid=arguments.siteid,includeVersionHistory=arguments.includeVersionHistory)>
+					</cfloop>
+				</cfif>
 			</cfif>
 			<!--- END BUNDLEABLE CUSTOM OBJECTS --->
 	
