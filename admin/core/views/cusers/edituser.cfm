@@ -504,6 +504,13 @@
 											}
 										});
 
+										$('input[name="s2"]').click(function(e){
+											if($('input[name="s2"]:checked').val()==1){
+												$('input[name="isPublic"][value="0"]').attr('checked',true);
+												$('input[name="isPublic"]').trigger('clicked');
+											} 
+										});
+
 									});
 								</script>
 							<cfelse>
