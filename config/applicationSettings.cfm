@@ -154,28 +154,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  Find( "blog", request.userAgent ) OR
  Find( "reader", request.userAgent ) OR
  Find( "syndication", request.userAgent ) OR
- FindNoCase( "coldfusion", request.userAgent ) OR
+ Find( "coldfusion", request.userAgent ) OR
  Find( "slurp", request.userAgent ) OR
  Find( "google", request.userAgent ) OR
  Find( "zyborg", request.userAgent ) OR
  Find( "emonitor", request.userAgent ) OR
  Find( "jeeves", request.userAgent ) OR 
  Find( "ping", request.userAgent ) OR 
- FindNoCase( "java", request.userAgent ) OR 
- FindNoCase( "cfschedule", request.userAgent ) OR
- FindNoCase( "reeder", request.userAgent ) OR
- FindNoCase( "python", request.userAgent ) OR
- FindNoCase( "synapse", request.userAgent ) OR
- FindNoCase( "facebookexternalhit", request.userAgent ) OR
- FindNoCase( "TencentTraveler", request.userAgent ) OR
- FindNoCase( "bluedragon", request.userAgent ) OR
- FindNoCase( "binarycanary", request.userAgent ) OR
- FindNoCase( "siteexplorer", request.userAgent ) OR
+ Find( "java", request.userAgent ) OR 
+ Find( "cfschedule", request.userAgent ) OR
+ Find( "reeder", request.userAgent ) OR
+ Find( "python", request.userAgent ) OR
+ Find( "synapse", request.userAgent ) OR
+ Find( "facebookexternalhit", request.userAgent ) OR
+ Find( "tencenttraveler", request.userAgent ) OR
+ Find( "bluedragon", request.userAgent ) OR
+ Find( "binarycanary", request.userAgent ) OR
+ Find( "siteexplorer", request.userAgent ) OR
  Find( "spider", request.userAgent ) OR
- FindNoCase( "80legs", request.userAgent ) OR
- FindNoCase( "googlebot", request.userAgent ) OR
- FindNoCase( "Microsoft Office Protocol", request.userAgent ) OR
- FindNoCase( "Railo", request.userAgent )
+ Find( "80legs", request.userAgent ) OR
+ Find( "googlebot", request.userAgent ) OR
+ Find( "microsoft office protocol", request.userAgent ) OR
+ Find( "railo", request.userAgent )
  )>
 
 <cfif request.tracksession>
