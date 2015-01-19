@@ -340,38 +340,56 @@ to your own modified versions of Mura CMS.
 
 				<!--- Custom Context + Port --->
 				<div class="control-group">
-					<div class="span3">
-						<label class="control-label">Has Custom Site Context</label>
+					<div class="span4">
+						<label class="control-label">Is this a Remote Site?</label>
 						<div class="controls">
 								<label class="radio inline">
-								<input type="radio" name="hascustomcontext" value="0"<cfif rc.siteBean.getHasCustomContext() neq 1> CHECKED</CFIF>>
+								<input type="radio" name="IsRemote" value="0"<cfif rc.siteBean.getIsRemote() neq 1> CHECKED</CFIF>>
 								No</label>
 								<label class="radio inline">
-								<input type="radio" name="hascustomcontext" value="1"<cfif rc.siteBean.getHasCustomContext() eq 1> CHECKED</CFIF>>
+								<input type="radio" name="IsRemote" value="1"<cfif rc.siteBean.getIsRemote() eq 1> CHECKED</CFIF>>
 								Yes</label>
 						</div>
 					</div>
-					<div class="span3">
-						<label class="control-label">Custom Context</label>
+					<div class="span4">
+						<label class="control-label">Remote Context</label>
 						<div class="controls">
-							<input name="customcontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcustomcontext())#" class="span12" maxlength="100">
+							<input name="remotecontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemoteContext())#" class="span12" maxlength="100">
 						</div>
 					</div>
-					<div class="span3">
-						<label class="control-label">Has Custom Server Port</label>
+					<div class="span4">
+						<label class="control-label">Remote Port</label>
 						<div class="controls">
-								<label class="radio inline">
-								<input type="radio" name="hascustomport" value="0"<cfif rc.siteBean.getHasCustomPort() neq 1> CHECKED</CFIF>>
-								No</label>
-								<label class="radio inline">
-								<input type="radio" name="hascustomport" value="1"<cfif rc.siteBean.getHasCustomPort() eq 1> CHECKED</CFIF>>
-								Yes</label>
+							<input name="remoteport" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getRemotePort())#"maxlength="4">
 						</div>
 					</div>
-					<div class="span3">
-						<label class="control-label">Custom Port</label>
+				</div>
+
+				<div class="control-group">          
+					<div class="span6">
+						<div>
+							<label class="control-label">
+								<a href="##" rel="tooltip" title="#rc.$.rbKey('siteconfig.sitesettings.resourcedomain.tooltip')#">
+									#rc.$.rbKey('siteconfig.sitesettings.resourcedomain')#
+									<i class="icon-question-sign"></i>
+								</a>
+							</label>
+							<div class="controls">
+								<input name="resourcedomain" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getresourcedomain('production'))#" size="50" maxlength="255">
+							</div>
+						</div>
+					</div>
+					<div class="span6">
+						<label class="control-label">#rc.$.rbKey('siteconfig.sitesettings.resourcessl')# </label>
 						<div class="controls">
-							<input name="customPort" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getcustomport())#"maxlength="4">
+							<label class="radio inline">
+								<input type="radio" name="resourceSSL" value="0"<cfif rc.siteBean.getResourceSSL() neq 1> CHECKED</CFIF>>
+								#rc.$.rbKey('sitemanager.no')#
+							</label>
+							<label class="radio inline">
+								<input type="radio" name="resourceSSL" value="1"<cfif rc.siteBean.getResourceSSL() eq 1> CHECKED</CFIF>>
+								#rc.$.rbKey('sitemanager.yes')#
+							</label>
 						</div>
 					</div>
 				</div>
@@ -758,7 +776,7 @@ to your own modified versions of Mura CMS.
 			</div>
 				</div>
 			
-				<div class="control-group">
+			<div class="control-group">
 				<div class="span3">
 				<label class="control-label">Use TLS</label>
 				<div class="controls">
@@ -769,7 +787,7 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="mailServerTLS" value="false" <cfif rc.siteBean.getmailServerTLS() eq "false"> CHECKED</CFIF>>
 						No </label>
 					</div>
-			</div>
+				</div>
 				<div class="span3">
 				<label class="control-label">Use SSL</label>
 				<div class="controls">
@@ -1032,7 +1050,7 @@ to your own modified versions of Mura CMS.
 						Yes </label>
 					</div>
 			</div>
-			
+			<!--- This is removed in favor of a useSSL 
 			<div class="span6">
 				<label class="control-label">Require HTTPS Encryption for Extranet</label>
 				<div class="controls">
@@ -1044,6 +1062,7 @@ to your own modified versions of Mura CMS.
 						Yes </label>
 					</div>
 			</div>
+			--->
 	</div>
 				
 				<div class="control-group">

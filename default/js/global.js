@@ -733,7 +733,6 @@ var initMura=function(config){
 				config.assetpath +'/js/adapter/shadowbox-jquery.min.js',
 				config.assetpath +'/js/shadowbox.min.js',
 					function(){
-						found=true;
 						window.Shadowbox.init();
 					}
 				);

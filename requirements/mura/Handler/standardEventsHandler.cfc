@@ -319,13 +319,13 @@
 </cffunction>
 
 <cffunction name="standardForceSSLHandler" output="false" returnType="any">
-	<cfargument name="event" required="true">
+	<cfargument name="$" required="true">
 	
 	<cfif request.returnFormat eq 'HTML'>
 		<cfif application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation addtoken="no" url="http://#variables.$.siteConfig('domain')##application.configBean.getServerPort()##variables.$.getCurrentURL(complete=false,filterVars=false)#">
 		<cfelse>
-			<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation addtoken="no" url="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('ServerPort')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>
 </cffunction>
@@ -667,9 +667,8 @@
 			and (
 				arguments.event.getValue("contentBean").getFilename() neq "404" 
 				and 
-			
 				(
-					(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not isHTTPS
+					arguments.event.getValue('forceSSL') and not isHTTPS
 				)
 				or	(
 					not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	

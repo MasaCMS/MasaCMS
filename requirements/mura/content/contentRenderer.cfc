@@ -431,7 +431,7 @@ Display Objects
 	</cfif>
 
 	<cfif len(variables.$.event('siteid'))>
-		<cfif variables.$.siteConfig('HasCustomContext')>
+		<cfif variables.$.siteConfig('isRemote')>
 			<cfset this.siteIDInURLS=false>
 			<cfset this.indexFileInURLS=false>
 		<cfelse>
@@ -2854,35 +2854,22 @@ Display Objects
 	</cfloop>
 	
 	<cfif len(arguments.injectVars)>
-			<cfif len(qrystr)>
-				<cfset qrystr=qrystr & "&#arguments.injectVars#">
-			<cfelse>
-				<cfset qrystr="?#arguments.injectVars#">
-			</cfif>
+		<cfif len(qrystr)>
+			<cfset qrystr=qrystr & "&#arguments.injectVars#">
+		<cfelse>
+			<cfset qrystr="?#arguments.injectVars#">
+		</cfif>
 	</cfif>
 	
 	<cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
-			<cfset host='https://#arguments.domain##application.configBean.getServerPort()#'>
+			<cfset host='https://#arguments.domain##variables.$.sitConfig('ServerPort')#'>
 		<cfelse>
-			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##application.configBean.getServerPort()#'>
+			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##variables.$.sitConfig('ServerPort')#'>
 		</cfif>
 	</cfif>
 	
-	<!--- Using request.servletEvent for backward compatibility --->
-	<cfif request.servletEvent.valueExists("contentBean") and not listFind("Link,File",request.servletEvent.getValue('contentBean').getType())>		
-		<cfreturn host & application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
-	<cfelse>
-		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
-		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "index.cfm?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
-		<cfelseif not findNocase("linkServID",qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr & "&linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
-		<cfelse>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
-		</cfif>
-	</cfif>
-	
+	<cfreturn host & variables.$.sitConfig('context') & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 	
 </cffunction>
 

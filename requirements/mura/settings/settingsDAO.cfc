@@ -55,7 +55,7 @@ sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminde
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
 googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort,
 mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups,
-hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,hascustomcontext,hascustomport,customcontext,customport</cfoutput></cfsavecontent>
+hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,JSONApi,useSSL,isRemote,remotecontext,remoteport,resourceSSL,resourceDomain</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -363,10 +363,11 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		 reCAPTCHALanguage=<cfif Len(Trim(arguments.bean.getReCAPTCHALanguage()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHALanguage())#" /><cfelse>null</cfif>,
 		 JSONApi=#arguments.bean.getJSONApi()#,
 		 useSSL=#arguments.bean.getUseSSL()#,
-		 hasCustomContext=#arguments.bean.getHasCustomContext()#,
-		 hasCustomPort=#arguments.bean.getHasCustomPort()#,
-		 customContext=<cfif Len(Trim(arguments.bean.getCustomContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getCustomContext())#" /><cfelse>null</cfif>,
-		 CustomPort=#arguments.bean.getCustomPort()#
+		 IsRemote=#arguments.bean.getIsRemote()#,
+		 resourceSSL=#arguments.bean.getResourceSSL()#,
+		 resourceDomain=<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>,
+		 RemoteContext=<cfif Len(Trim(arguments.bean.getRemoteContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getRemoteContext())#" /><cfelse>null</cfif>,
+		 RemotePort=#arguments.bean.getRemotePort()#
 
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">
    </cfquery>
@@ -474,13 +475,13 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 		<cfif Len(Trim(arguments.bean.getReCAPTCHALanguage()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getReCAPTCHALanguage())#" /><cfelse>null</cfif>,
 		#arguments.bean.getJSONApi()#,
 		#arguments.bean.getUseSSL()#,
-		#arguments.bean.getHasCustomContext()#,
-		#arguments.bean.getHasCustomPort()#,
-		<cfif Len(Trim(arguments.bean.getCustomContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getCustomContext())#" /><cfelse>null</cfif>,
-		 #arguments.bean.getCustomPort()#
+		#arguments.bean.getIsRemote()#,
+		<cfif Len(Trim(arguments.bean.getRemoteContext()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getRemoteContext())#" /><cfelse>null</cfif>,
+		 #arguments.bean.getRemotePort()#,
+		 #arguments.bean.getResourceSSL()#,
+		<cfif Len(Trim(arguments.bean.getResourceDomain()))><cfqueryparam cfsqltype="cf_sql_varchar" value="#Trim(arguments.bean.getResourceDomain())#" /><cfelse>null</cfif>
 		)
    </cfquery>
-  
  
    <cfquery>
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL)
