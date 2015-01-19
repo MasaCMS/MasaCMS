@@ -322,7 +322,7 @@
 							<ul>
 								<!--- Site List --->
 									<li id="select-site" class="dropdown">
-										<a id="select-site-btn" href="#rc.$.siteConfig('webPath')#<cfif application.configBean.getSiteIDInURLS()>/#session.siteid#/</cfif>" target="_blank">
+										<a id="select-site-btn" href="#rc.$.siteConfig().getWebPath(complete=1)#<cfif application.configBean.getSiteIDInURLS()>/#session.siteid#/</cfif>" target="_blank">
 											Current Site
 										</a>
 

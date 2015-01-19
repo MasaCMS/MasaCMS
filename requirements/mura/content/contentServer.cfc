@@ -373,7 +373,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfset site=application.settingsManager.getSite(rsSites.siteID)>
-		<cfset getBean('contentRenderer').redirect("#site.getWebPath()##site.getContentRenderer().getURLStem(site.getSiteID(),'')#")>
+		<cfset getBean('contentRenderer').redirect("#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(site.getSiteID(),'')#")>
 	</cfif>
 	
 </cffunction>

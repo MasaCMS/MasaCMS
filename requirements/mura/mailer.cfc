@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 					</cfquery>
 					
-					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#site.getWebPath()##site.getContentRenderer().getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
+					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "#site.getWebPath(complete=1)##site.getContentRenderer().getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
 					
 				<cfelse>
 					<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>
