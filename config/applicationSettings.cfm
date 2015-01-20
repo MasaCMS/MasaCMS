@@ -108,6 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
 <cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
 <cfset initINI(variables.iniPath)>
+
 <cfset commitTracePoint(variables.tracePoint)>
 
 <!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
@@ -199,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.sessionTimeout = createTimeSpan(0,0,0,2)>
 </cfif>
 
-<cfset this.timeout =  evalSetting(getINIProperty("requesttimeout","1000"))>
+<cfset this.timeout =  getINIProperty("requesttimeout","1000")>
 
 <!--- define a list of custom tag paths. --->
 <cfset this.customtagpaths =  evalSetting(getINIProperty("customtagpaths","")) />
@@ -224,17 +225,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcatch>
 </cftry>
 
-<cfif len(evalSetting(getINIProperty("datasource","")))>
+<cfloop collection="#variables.ini.settings#" item="setting">
+	<cfset variables.ini.settings[setting]=evalSetting(variables.ini.settings[setting])>
+</cfloop>
+
+<cfloop collection="#variables.ini[variables.ini.settings.mode]#" item="setting">
+	<cfset variables.ini[variables.ini.settings.mode][setting]=evalSetting(variables.ini[variables.ini.settings.mode][setting])>
+</cfloop>
+
+<cfif len(getINIProperty("datasource",""))>
 
 	<!--- You can't depend on 9 supporting datasource as struct --->
 	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
 		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
 		<cfset this.datasource = structNew()>
-		<cfset this.datasource.name = evalSetting(getINIProperty("datasource","")) />
-		<cfset this.datasource.username = evalSetting(getINIProperty("dbusername",""))>
-		<cfset this.datasource.password = evalSetting(getINIProperty("dbpassword",""))>
+		<cfset this.datasource.name = getINIProperty("datasource","") />
+		<cfset this.datasource.username = getINIProperty("dbusername","")>
+		<cfset this.datasource.password = getINIProperty("dbpassword","")>
 	<cfelse>
-		<cfset this.datasource = evalSetting(getINIProperty("datasource","")) >			
+		<cfset this.datasource = getINIProperty("datasource","") >			
 	</cfif>
 <cfelse>
 	<cfset this.ormenabled=false>
@@ -258,21 +267,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset this.ormSettings.dialect = "nuodb" />
 		</cfcase>
 	</cfswitch>
-	<cfset this.ormSettings.dbcreate = evalSetting(getINIProperty("ormdbcreate","update")) />
+	<cfset this.ormSettings.dbcreate = getINIProperty("ormdbcreate","update") />
 	<cfif len(getINIProperty("ormcfclocation",""))>
-		<cfset arrayAppend(this.ormSettings.cfclocation,evalSetting(getINIProperty("ormcfclocation"))) />
+		<cfset arrayAppend(this.ormSettings.cfclocation,getINIProperty("ormcfclocation")) />
 	</cfif>
 	<cfif len(getINIProperty("ormdatasource",""))>
-			<cfset this.ormSettings.datasource = evalSetting(getINIProperty("ormdatasource","")) />
+			<cfset this.ormSettings.datasource = getINIProperty("ormdatasource","") />
 	</cfif>
-	<cfset this.ormSettings.flushAtRequestEnd = evalSetting(getINIProperty("ormflushAtRequestEnd","false")) />
-	<cfset this.ormsettings.eventhandling = evalSetting(getINIProperty("ormeventhandling","true")) />
-	<cfset this.ormSettings.automanageSession = evalSetting(getINIProperty("ormautomanageSession","false")) />
-	<cfset this.ormSettings.savemapping= evalSetting(getINIProperty("ormsavemapping","false")) />
-	<cfset this.ormSettings.skipCFCwitherror= evalSetting(getINIProperty("ormskipCFCwitherror","false")) />
-	<cfset this.ormSettings.useDBforMapping= evalSetting(getINIProperty("ormuseDBforMapping","true")) />
-	<cfset this.ormSettings.autogenmap= evalSetting(getINIProperty("ormautogenmap","true")) />
-	<cfset this.ormSettings.logsql= evalSetting(getINIProperty("ormlogsql","false")) />
+	<cfset this.ormSettings.flushAtRequestEnd = getINIProperty("ormflushAtRequestEnd","false") />
+	<cfset this.ormsettings.eventhandling = getINIProperty("ormeventhandling","true") />
+	<cfset this.ormSettings.automanageSession = getINIProperty("ormautomanageSession","false") />
+	<cfset this.ormSettings.savemapping= getINIProperty("ormsavemapping","false") />
+	<cfset this.ormSettings.skipCFCwitherror= getINIProperty("ormskipCFCwitherror","false") />
+	<cfset this.ormSettings.useDBforMapping= getINIProperty("ormuseDBforMapping","true") />
+	<cfset this.ormSettings.autogenmap= getINIProperty("ormautogenmap","true") />
+	<cfset this.ormSettings.logsql= getINIProperty("ormlogsql","false") />
 </cfif>
 
 <cftry>
@@ -290,27 +299,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 	// if true, CF converts form fields as an array instead of a list (not recommended)
-	this.sameformfieldsasarray=evalSetting(getINIProperty('sameformfieldsasarray',false));
+	this.sameformfieldsasarray=getINIProperty('sameformfieldsasarray',false);
 
 	// Custom Java library paths with dynamic loading
 	try {
-		variables.loadPaths = ListToArray(evalSetting(getINIProperty('javaSettingsLoadPaths','#variables.context#/requirements/lib')));
+		variables.loadPaths = ListToArray(getINIProperty('javaSettingsLoadPaths','#variables.context#/requirements/lib'));
 	} catch(any e) {
 		variables.loadPaths = ['#variables.context#/requirements/lib'];
 	}
 
 	this.javaSettings = {
 		loadPaths=variables.loadPaths
-		, loadColdFusionClassPath = evalSetting(getINIProperty('javaSettingsLoadColdFusionClassPath',true))
-		, reloadOnChange=evalSetting(getINIProperty('javaSettingsReloadOnChange',false))
-		, watchInterval=evalSetting(getINIProperty('javaSettingsWatchInterval',60))
-		, watchExtensions=evalSetting(getINIProperty('javaSettingsWatchExtensions','jar,class'))
+		, loadColdFusionClassPath = getINIProperty('javaSettingsLoadColdFusionClassPath',true)
+		, reloadOnChange=getINIProperty('javaSettingsReloadOnChange',false)
+		, watchInterval=getINIProperty('javaSettingsWatchInterval',60)
+		, watchExtensions=getINIProperty('javaSettingsWatchExtensions','jar,class')
 	};
 
 	// Amazon S3 Credentials
 	try {
-		this.s3.accessKeyId=evalSetting(getINIProperty('s3accessKeyId',''));
-		this.s3.awsSecretKey=evalSetting(getINIProperty('s3awsSecretKey',''));
+		this.s3.accessKeyId=getINIProperty('s3accessKeyId','');
+		this.s3.awsSecretKey=getINIProperty('s3awsSecretKey','');
 	} catch(any e) {
 		// not supported
 	}
