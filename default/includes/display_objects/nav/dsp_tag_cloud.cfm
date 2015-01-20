@@ -54,6 +54,8 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+
+<!---
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
 		<div class="mura-async-object" 
@@ -61,6 +63,7 @@
 		</div>
 	</cfoutput>
 <cfelse>
+--->
 	<cfsilent>
 		<cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent,'00000000000000000000000000000000000',arguments.taggroup) />
 		<cfset variables.tagValueArray = ListToArray(ValueList(variables.tags.tagCount))>
@@ -116,4 +119,4 @@
 			</cfif>
 		</div>
 	</cfoutput>
-</cfif>
+<!---</cfif>--->

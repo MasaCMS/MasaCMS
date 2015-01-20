@@ -54,6 +54,8 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+
+<!---
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
 		<div class="mura-async-object" 
@@ -66,6 +68,7 @@
 		</div>
 	</cfoutput>
 <cfelse>
+--->
 	<cfsilent>
 	<!--- set this to the number of months back you would like to display --->
 	<cfparam name="request.sortBy" default=""/>
@@ -102,4 +105,4 @@
 	</nav>
 	</cfoutput>
 	</cf_CacheOMatic>
-</cfif>
+<!---</cfif>--->
