@@ -722,6 +722,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
 
@@ -733,6 +734,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
 
@@ -740,6 +742,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
 
@@ -747,6 +750,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
 			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
 		
