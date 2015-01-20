@@ -773,6 +773,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
+<cfargument name="secure" default="false">
 
 	<cfset var imgSuffix="">
 	<cfset var returnURL="">
@@ -792,7 +793,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 	
-	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfif arguments.complete or  arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+		<cfif arguments.secure>
+			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfelse>
+			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin="">
+	</cfif>
 	
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>
@@ -853,7 +862,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset imgSuffix=arguments.size>
 		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/index.cfm?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
+		<cfset returnURL=application.configBean.getContext() & "/index.cfm/_api/render/#imgSuffix#/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
 	</cfif>
 	
 	<cfreturn begin & returnURL>

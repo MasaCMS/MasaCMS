@@ -47,13 +47,6 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	}
 
 	function save(processFile=true){
-
-		//writeDump(var=getValue('fileField'));
-		//writeDump(var=getValue(getValue('fileField')));
-		//abort;
-
-		//(var=getProperties(),abort=true);
-
 		if(arguments.processFile && len(getValue('fileField')) && len(getValue(getValue('fileField')))){
 			setValue('fileID',createUUID());
 		

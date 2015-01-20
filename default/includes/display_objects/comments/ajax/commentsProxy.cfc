@@ -198,7 +198,7 @@
 								<cfif isEditor>
 								<div class="mura-comment-admin-button-wrapper #renderer.commentAdminButtonWrapperClass#">
 									<cfif isEditor and len(local.commenterEmail)>
-										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+										<a class="mura-comment-user-email #renderer.commentUserEmailClass#" href="javascript:mura.noSpam('#listFirst(htmlEditFormat(local.commenterEmail),'@')#','#listlast(HTMLEditFormat(local.commenterEmail),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 									</cfif>
 									<cfif isEditor>
 										<cfif yesnoformat(application.configBean.getValue("editablecomments"))>

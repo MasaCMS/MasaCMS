@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.globalListeners=structNew()>
 <cfset variables.pluginConfigs=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
-<cfset variables.zipTool=createObject("component","mura.Zip")>
 <cfset variables.eventHandlersLoaded = false>
+<cfset variables.zipTool="">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean" required="true">
@@ -70,6 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility=arguments.utility>
 	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
 	<cfset variables.fileWriter=arguments.fileWriter>
+
+	<cfif variables.configBean.getJavaEnabled()>
+		<cfset variables.zipTool=createObject("component","mura.Zip")>
+	</cfif>
 
 	<cfif isdefined("url.safemode") and isDefined("session.mura.memberships") and listFindNoCase(session.mura.memberships,"S2")>
 		<cfset loadPlugins(safeMode=true)>
@@ -637,7 +641,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfif not isDefined("currentConfig.plugin.createmapping.xmlText")
 					or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
 					<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-						<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/#m#"] = pluginDir & "/#rsRequirements.name#">')>
+						<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfset this.mappings["/#m#"] = pluginDir & "#rsRequirements.name#">')>
 						<cfset done[mHash]=true>
 					</cfif>
 				</cfif>
@@ -661,7 +665,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfset currentPath=currentDir & "/" & p>
 							<cfif len(p) and directoryExists(currentPath)>
 								<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-								<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "/#rsRequirements.name#/#p#"></cfif>')>
+								<cfset variables.fileWriter.appendFile(file="#pluginMappingsTempFilePathName#", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = pluginDir & "#rsRequirements.name#/#p#"></cfif>')>
 							</cfif>
 						</cfif>
 					</cfloop>
@@ -677,7 +681,7 @@ select * from tplugins order by #arguments.orderby#
 						</cfif>
 						<cfset currentPath=currentDir & "/" & p>
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "/#rsRequirements.name#/#p#" )>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, pluginDir & "#rsRequirements.name#/#p#" )>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -693,7 +697,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset currentPath=currentDir & "/" & p>
 						<cfdump var="#currentpath#">
 						<cfif len(p) and directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "/#rsRequirements.name#/#p#")>')>
+							<cfset variables.fileWriter.appendFile(file="#pluginCfapplicationTempFilePathName#", output='<cfset arrayAppend(this.ormsettings.cfclocation, pluginDir & "#rsRequirements.name#/#p#")>')>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -1834,10 +1838,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfcatch>
 			<cfif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 				<cfset request.muraDynamicContentError=true>
-                <cfsavecontent variable="local.theDisplay1">
-				<cfdump var="#cfcatch#">
-				</cfsavecontent>
-				<cfset str=str & local.theDisplay1>
+                <cfset str=str & getBean('utility').formatError(cfcatch)>
 			<cfelse>
 				<cfrethrow />
 			</cfif>
@@ -2105,28 +2106,19 @@ select * from tplugins order by #arguments.orderby#
 						<cfset str=str & testStr>
 					<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 						<cfset request.muraDynamicContentError=true>
-						<cfsavecontent variable="local.theDisplay1">
-						<cfdump var="#cfcatch#">
-						</cfsavecontent>
-						<cfset str=str & local.theDisplay1>
+						<cfset str=str & getBean('utility').formatError(cfcatch)>
 					<cfelse>	
 						<cfrethrow>
 					</cfif>
 				<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 					<cfset request.muraDynamicContentError=true>
-					<cfsavecontent variable="local.theDisplay1">
-					<cfdump var="#cfcatch#">
-					</cfsavecontent>
-					<cfset str=str & local.theDisplay1>
+					<cfset str=str & getBean('utility').formatError(cfcatch)>
 				<cfelse>
 					<cfrethrow>
 				</cfif>
 			<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
 				<cfset request.muraDynamicContentError=true>
-                <cfsavecontent variable="local.theDisplay1">
-				<cfdump var="#cfcatch#">
-				</cfsavecontent>
-				<cfset str=str & local.theDisplay1>
+				<cfset str=str & getBean('utility').formatError(cfcatch)>
 			<cfelse>
 				<cfrethrow />
 			</cfif>
@@ -2281,8 +2273,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
 			<cfelseif variables.configBean.getDebuggingEnabled()>
 				<cfset request.muraDynamicContentError=true>
-				<cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
-				<cfreturn theDisplay1>
+				<cfreturn getBean('utility').formatError(cfcatch)>
 			 <cfelse>
 			 	<cfrethrow>
 			</cfif>		
@@ -2568,7 +2559,7 @@ select * from rs order by name
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
 
-<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
+<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occurred.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
 	<cfset var errors=structNew()>

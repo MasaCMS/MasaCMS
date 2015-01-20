@@ -155,7 +155,7 @@ function checkAll (form) {
     
     <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
 	    <div class="control-group">
-	    <p class="alert"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
+	    <p class="alert"><strong>Note:</strong> The Email Broadcaster is not included in Mura Bundles.</p>
 	    </div>
     </div>
     <!--- </cfif>  --->

@@ -118,7 +118,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
+		<cfargument name="property" required="true">
+		<cfargument name="propertyValue">  	
+		
+		<cfif not isDefined('arguments.data')>
+			<cfif isSimpleValue(arguments.property)>
+				<cfreturn setValue(argumentCollection=arguments)>
+			</cfif>
+
+			<cfset arguments.data=arguments.property>
+		</cfif>
 
 		<cfset var prop=""/>
 		<cfset var tempFunc="">
@@ -820,5 +829,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfreturn variables.contentRenderer>
 </cffunction>
+
+<cffunction name="getAllValues" ouput="false">
+ 	
+ 	<cfset var extensionData = {} />
+	<cfset var set = "" />
+	<cfset var sets = getExtendSets() />
+	<cfset var setStruct = {} />
+	<cfset var i = 0 />
+
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+	<cfset extensionData.sets = [] />
+	
+	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
+		<cfset setStruct = sets[i].getAllValues() />
+		<cfset ArrayAppend(extensionData.sets, setStruct ) />
+	</cfloop>
+
+	<cfreturn extensionData />	
+
+</cffunction>
+
+<cffunction name="getAsXML" ouput="false" returntype="xml">
+	<cfargument name="documentXML" default="#xmlNew(true)#" />
+	<cfargument name="includeIDs" type="boolean" default="false" >
+	
+	<cfset var extensionData = {} />
+	<cfset var set = "" />
+	<cfset var sets = getExtendSets() />
+	<cfset var setStruct = {} />
+	<cfset var item = "" />
+	<cfset var i = 0 />
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "extension" ) />
+
+	<cfset var xmlAttributeSet = "" />
+	
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"sets") />
+	<cfset structDelete(extensionData,"errors") />
+		
+	<cfif not(arguments.includeIDs)>
+		<cfset structDelete(extensionData,"SubTypeID") />
+	</cfif>
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
+	 
+	<cfloop collection="#extensionData#" item="item">
+		<cfif isSimpleValue(extensionData[item])>
+			<cfset xmlRoot.XmlAttributes[lcase(item)] = extensionData[item] />
+		</cfif>
+	</cfloop>
+	
+	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
+		<cfset xmlAttributeSet = sets[i].getAsXML(documentXML) />
+		<cfset ArrayAppend(
+			xmlRoot.XmlChildren,
+			xmlAttributeSet
+			) />
+			
+	</cfloop>
+
+	<cfreturn xmlRoot />	
+</cffunction>
+
 
 </cfcomponent>

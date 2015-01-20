@@ -60,7 +60,6 @@
 <cfif not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
 		<cfsilent>
-			<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 			<cfparam name="request.subscribe" default="0">
 			<cfparam name="request.remember" default="0">
 			
@@ -133,29 +132,16 @@
 
 			<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
 
-				<cfset variables.passedProtect = true>
+
 				<cfscript>
 					variables.myRequest = structNew();
 					StructAppend(variables.myRequest, url, "no");
 					StructAppend(variables.myRequest, form, "no");
+					// form protection
+					variables.passedProtect = variables.$.getBean('utility').isHuman(variables.$.event());
 				</cfscript>
 
-				<!---<cfif structKeyExists(variables.myRequest, "useProtect")>--->
-					<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
-					<cfif $.siteConfig().getContactEmail() neq "">
-						<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
-						<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
-						<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
-						<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
-						<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
-						<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
-					</cfif>
-				<!---</cfif>--->
-				
-				<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
-								
-
-				<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and variables.passedProtect>
+				<cfif variables.passedProtect>
 
 					<cfset variables.submittedData=variables.$.getBean('utility').filterArgs(request,application.badwords)/>
 					<cfset variables.submittedData.contentID=variables.theContentID />
@@ -164,8 +150,6 @@
 					</cfif>
 			
 					<cfset variables.submittedData.isApproved=application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() />
-					
-					
 					
 					<cfif request.commenteditmode eq "add">
 						<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />
@@ -206,18 +190,12 @@
 				<cfelse>
 					<cfsavecontent variable="errorJSTxt">
 						<script type="text/javascript">
-							addLoadEvent(function(){
+							$(document).ready(function(){
 								window.location.hash="errors";
 							});
 						</script>
 					</cfsavecontent>
-
-					<cfif variables.passedProtect>
-						<cfset variables.errors["SecurityCode"]=variables.$.rbKey('captcha.error')>
-					<cfelse>
-						<cfset variables.errors["Spam"] = variables.$.rbKey("captcha.spam")>
-					</cfif>
-
+					<cfset variables.errors["Spam"] = variables.$.rbKey("captcha.spam")>
 				</cfif>
 			</cfif>
 
@@ -239,6 +217,11 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
+		<script>
+			$(function(){
+				mura.loader().loadjs("#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments-jquery.min.js");
+			})
+		</script>
 		<div id="svComments" class="mura-comments">
 			<a name="comments"></a>
 			
@@ -264,7 +247,7 @@
 				<span id="postcomment-comment" style="display: none"><a class="btn btn-default" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
 
 				<!--- THE FORM --->
-				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="postcomment" class="#this.commentFormClass#" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 					<a name="postcomment"></a>
 					<fieldset>
 
@@ -328,18 +311,18 @@
 
 					</fieldset>
 
-					<!--- Form Protect --->
-					<div>
-						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+					<div class="#this.commentRequiredWrapperClass#">
+						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
 					</div>
 
-					<div class="col-lg-offset-3 col-lg-9">
-						<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>	
+					<!--- Form Protect --->
+					<div class="#this.commentFieldWrapperClass#">
+						#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 					</div>
 					
 					<!--- SUBMIT BUTTON --->
-					<div class="form-group">
-						<div class="col-lg-offset-3 col-lg-9">
+					<div class="#this.commentFieldWrapperClass#">
+						<div class="#this.commentSubmitButtonWrapperClass#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#">
 							<input type="hidden" name="commentid" value="#createuuid()#">
 							<input type="hidden" name="parentid" value="">

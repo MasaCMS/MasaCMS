@@ -47,6 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout=false>
 <cfparam name="rc.keywords" default="">
 <cfparam name="rc.isNew" default="1">
+<cfparam name="rc.contentpoolid" default="#rc.siteid#">
+
 <cfset counter=0 />
 <cfoutput>
 	<div id="contentSearch" class="form-inline">
@@ -55,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="input-group input-append">
 				<input class="form-control" id="parentSearch" name="parentSearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'collections.search')#">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);"><i class="icon-search"></i></button>
+					<button type="button" class="btn btn-default" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0,$('##contentPoolID').val());"><i class="icon-search"></i></button>
 				</span>
 			</div>
 		</div>
@@ -63,37 +65,78 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 
 <cfif not rc.isNew>
-	<cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
-	<table class="mura-table-grid">
-		<thead>
-			<tr> 
-				<th class="var-width">
-					<cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput>
-				</th>
-				<th class="actions">&nbsp;</th>
-			</tr>
-		</thead>
-		<tbody>
-			<cfif rc.rslist.recordcount>
-				<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
-					<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-					<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
-						<cfset counter=counter+1/>
-						<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-							<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
-							<td class="actions">
-								<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',$.dspZoomText(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
-							</td>
+	<cfif listFindNoCase(rc.contentPoolID,rc.siteid) or not len(rc.contentPoolID)>
+		<cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
+		<table class="mura-table-grid">
+			<thead>
+				<tr> 
+					<th class="var-width">
+						<cfoutput>#$.getBean('settingsManager').getSite(rc.siteid).getSite()#: #application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput>
+					</th>
+					<th class="actions">&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<cfif rc.rslist.recordcount>
+					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
+						<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+						<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
+							<cfset counter=counter+1/>
+							<tr <cfif not(counter mod 2)>class="alt"</cfif>>
+								<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
+								<td class="actions">
+									<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',$.dspZoomNoLinks(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+								</td>
+							</tr>
+						</cfif>
+					</cfoutput>
+				<cfelse>
+					<cfoutput>
+						<tr class="alt"> 
+							<td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#</td>
 						</tr>
-					</cfif>
-				</cfoutput>
-			<cfelse>
-				<cfoutput>
-					<tr class="alt"> 
-						<td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#</td>
-					</tr>
-				</cfoutput>
+					</cfoutput>
+				</cfif>
+			</tbody>
+		</table>
+	</cfif>
+	<cfif listLen(rc.contentPoolID) gt 1>
+		<cfloop list="#rc.contentPoolID#" index="p">
+			<cfif p neq rc.siteid>
+				<cfset rc.rsList=application.contentManager.getPrivateSearch(p,rc.keywords)/>
+				<table class="mura-table-grid">
+					<thead>
+						<tr> 
+							<th class="var-width">
+								<cfoutput>#$.getBean('settingsManager').getSite(p).getSite()#: #application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput>
+							</th>
+							<th class="actions">&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<cfif rc.rslist.recordcount>
+							<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
+								<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, p)/>
+								<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
+									<cfset counter=counter+1/>
+									<tr <cfif not(counter mod 2)>class="alt"</cfif>>
+										<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
+										<td class="actions">
+											<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',$.dspZoomNoLinks(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+										</td>
+									</tr>
+								</cfif>
+							</cfoutput>
+						<cfelse>
+							<cfoutput>
+								<tr class="alt"> 
+									<td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#</td>
+								</tr>
+							</cfoutput>
+						</cfif>
+					</tbody>
+				</table>
 			</cfif>
-		</tbody>
-	</table>
+		</cfloop>
+	</cfif>
 </cfif>

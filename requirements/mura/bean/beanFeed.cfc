@@ -277,7 +277,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="table" type="string" required="true" default="">
 	<cfargument name="clause" type="string" required="true" default="">
 	
-	<cfset arrayAppend(variables.instance.joins, arguments)>
+	<cfif not hasJoin(arguments.table)>
+		<cfset arrayAppend(variables.instance.joins, arguments)>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -293,15 +295,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="hasJoin">
 	<cfargument name="table">
 	<cfset var join = "">
-	<cfset var returnVar = false>
 	
 	<cfloop array="#getJoins()#" index="join">
 		<cfif arguments.table eq join.table>
-			<cfset returnVar = true>
+			<cfreturn true>
 		</cfif>
 	</cfloop>
 	
-	<cfreturn returnVar>
+	<cfreturn false>
 </cffunction>
 
 <cffunction name="getDbType" output="false">
@@ -393,7 +394,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		from #variables.instance.table#
 		
 		<cfloop list="#jointables#" index="jointable">
-			inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
+			<cfset started=false>
+			<cfif arrayLen(variables.instance.jointables)>
+				<cfloop from="1" to="#arrayLen(variables.instance.jointables)#" index="local.i">
+					<cfif variables.instance.jointables[local.i].table eq jointable>
+						<cfset started=true>
+						#variables.instance.jointables[local.i].jointype# join #jointable# #tableModifier# on (#variables.instance.jointables[local.i].clause#)
+						<cfbreak>
+					</cfif>
+				</cfloop>
+			</cfif>
+			<cfif not started>
+				inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
+			</cfif>
 		</cfloop>
 
 		where

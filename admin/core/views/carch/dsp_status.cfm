@@ -40,8 +40,8 @@
 									muraAction:"carch.unlockNode",
 									contentid:"#rc.contentBean.getContentID()#",
 									siteid:"#rc.contentBean.getSiteID()#",
-									mura_token:'#csrf.token#',
-									mura_token_expires: '#csrf.expires#'
+									csrf_token:'#csrf.token#',
+									csrf_token_expires: '#csrf.expires#'
 								})
 							}
 						);							
@@ -113,8 +113,8 @@ function applyApprovalAction(requestid,action,comment,siteid){
 					requestid: requestid,
 					comment: comment,
 					action:action,
-					mura_token:'#csrf.token#',
-					mura_token_expires: '#csrf.expires#'
+					csrf_token:'#csrf.token#',
+					csrf_token_expires: '#csrf.expires#'
 				};
 
 		actionModal(

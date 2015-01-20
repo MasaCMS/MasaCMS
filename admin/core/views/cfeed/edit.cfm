@@ -212,9 +212,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
 			</div>
 
+
+			<cfif listLen($.siteConfig('contentPoolID')) gt 1>
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.contentpool')#
+				</label>
+				<div class="controls">
+					<select id="contentPoolID" name="contentPoolID" multiple>
+	                <option value="#$.event('siteid')#" <cfif listFind(rc.feedBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
+	                <cfloop list="#$.siteConfig('contentPoolID')#" index="p">
+	                  	<cfif p neq rc.feedBean.getSiteID()>
+	                    	<option value="#esapiEncode('html_attr',p)#" <cfif listFind(rc.feedBean.getContentPoolID(), p)>selected</cfif>>#HTMLEditFormat($.getBean('settingsManager').getSite(p).getSite())#</option>
+	                	</cfif>
+              		</cfloop>
+              		</select>
+				</div>
+			</div>
+			<cfelse>
+				<input type="hidden" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
+			</cfif>
+
 			<!--- Sections --->
 			<div class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="controls">
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
@@ -225,16 +246,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</tr>
 						</thead>
 						<tbody id="ContentFilters">
+							<cfset started=false>
 							<cfif rc.rslist.recordcount>
 								<cfloop query="rc.rslist">
-									<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-									<tr id="c#rc.rslist.contentID#">
-										<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
-										<td>#rc.rslist.type#</td>
-										<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
-									</tr>
+									<cfscript>
+										item=$.getBean('content').loadBy(contentid=rc.rslist.contentid,siteid=rc.rslist.siteid);
+										
+									</cfscript>
+									<cfif item.exists()>
+										<cfset started=true>
+										<tr id="c#rc.rslist.contentID#">
+											<td class="var-width">#$.dspZoomNoLinks(item.getCrumbArray())#</td>
+											<td>#rc.rslist.type#</td>
+											<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
+										</tr>	
+									</cfif>
 								</cfloop>
-							<cfelse>
+							</cfif>
+							<cfif not started>
 								<tr>
 									<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
 								</tr>
@@ -591,7 +620,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
 		</label>
 		<div class="controls">
-	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#" target="_blank">http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#</a>
+	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#</a>
 	     </div>
 		</div>
 	</cfif>

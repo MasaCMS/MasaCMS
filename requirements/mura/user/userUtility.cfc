@@ -117,7 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 variables.configBean.getEncryptPasswords()
 			 and 
 			 	(
-			 		variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password) 	
+			 		(
+			 			variables.configBean.getJavaEnabled() 
+			 			and variables.configBean.getBCryptPasswords()
+			 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
+			 		)
 					OR
 					hash(arguments.password) eq rsUser.password	
 				)
@@ -128,8 +132,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				where 0=1
 			</cfquery>
 		</cfif>
-		
-		<cfif rsUser.recordcount 
+		<cfif variables.configBean.getJavaEnabled()
+			and variables.configBean.getBCryptPasswords()
+			and rsUser.recordcount 
 			and variables.configBean.getEncryptPasswords() 
 			and hash(arguments.password) eq rsuser.password>
 			<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
@@ -453,11 +458,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var editProfileURL="">
 <cfset var returnURL="">	
 <cfset var protocol="http://">	
-<cfset var urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+<cfset var urlBase="">
 <cfset var site="">
 
 <cfif arguments.siteid neq ''>
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
+	<cfset urlBase="#listFirst(cgi.http_host,":")##site.getServerPort()##site.getContext()#">
 	
 	<cfif not len(sendLoginScript)>
 		<cfset sendLoginScript =site.getSendLoginScript()/>
@@ -466,7 +472,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset contactEmail=site.getContact()/>
 	<cfset contactName=site.getSite()/>
 
-	<cfif site.getExtranetSSL()>
+	<cfif site.getExtranetSSL() or site.getUseSSL()>
 		<cfset protocol="https://">
 	</cfif>
 	
@@ -478,6 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">	
 <cfelse>
+	<cfset urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>
@@ -754,6 +761,42 @@ Thanks for using #contactName#</cfoutput>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>
 	</cfif>
+</cffunction>
+
+<cffunction name="splitFullName" output="false">
+	<cfargument name="fullname">
+
+	<cfset var response={
+			first="",
+			last="",
+			middle="",
+			suffix="",
+			designation=""
+		}>
+
+	<cfset var name = listFirst(fullName)>
+	<cfset response.designation = listLast(arguments.fullName)>
+	
+	<cfif listLen(arguments.fullName) eq 1>
+	  <cfset response.suffix = "">
+	  <cfset response.designation = "">
+	<cfelseif listlen(arguments.fullName) eq 2>
+	  <cfset response.suffix = "">
+	  <cfset response.designation = listlast(arguments.fullname)>
+	<cfelse>
+	  <cfset response.suffix = listGetAt(arguments.fullName, 2)>
+	</cfif>
+	
+	<cfset response.first = listGetAt(name,1, " ")>
+	<cfset response.last = listLast(name, " ")>
+
+	<cfif listLen(name," ") eq 2>
+	  <cfset response.middle = "">
+	<cfelse>
+	  <cfset response.middle = listGetAt(name, 2, " ")>
+	</cfif>
+
+	<cfreturn response>
 </cffunction>
 
 </cfcomponent>

@@ -224,6 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		<div id="tabPlugins" class="tab-pane fade">
 		<h2>Install Plugin</h2>
+		<cfif application.configBean.getJavaEnabled()>
 		<div class="mura-file-selector">
 			<div class="btn-group" data-toggle="buttons-radio">
 			  <button type="button" class="btn active" data-toggle="button" name="installType" value="Upload" id="apptypefile"><i class="icon-upload-alt"></i> Via Upload</button>
@@ -271,6 +272,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			})
 		</script>
 		
+
+	   <cfelse>
+	      
+	          <div class="alert">
+	            Java is currently disabled. So the ability to install plugins is not currently available.
+	          </div>
+	    
+      </cfif>
 		<h2>Current Plugins</h2>
 			<table class="mura-table-grid">
 				<tr>
@@ -339,7 +348,7 @@ initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 			</cfif>
 		</p>
 		<cfcatch>
-			<h2>An Error has occured.</h2>
+			<h2>An Error has occurred.</h2>
 			<cfdump var="#cfcatch.message#">
 			<br/>
 			<br/>

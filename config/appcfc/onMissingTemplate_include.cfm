@@ -74,7 +74,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfset application.contentServer.renderFilename(local.filename)>
+	<cfif listFirst(local.filename,'/') eq "_api">
+		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
+		<cfabort>
+	<cfelse>
+		<cfset application.contentServer.renderFilename(local.filename)>
+	</cfif>
 	
 	<cfreturn true>
 </cfif>

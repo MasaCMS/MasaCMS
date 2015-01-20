@@ -322,6 +322,7 @@ function toggleDisplay2(id, display) {
 	document.getElementById(id).style.display = (display == true) ? '' : 'none';
 }
 
+/* These aren't used anymore that I can see
 
 function intuserselect(groupid, route, s2, siteid) {
 	newWindow = window.open("view/vPrivateUsers/index.cfm?groupid=" + groupid + "&route=" + route + "&s2=" + s2 + "&siteid=" + siteid, "newWin", "toolbar=no,location=no,scrollbars=yes,resize=yes,width=322,height=302,left=200,top=200")
@@ -333,6 +334,7 @@ function extuserselect(groupid, route, s2, siteid) {
 	newWindow = window.open("view/vPublicUsers/index.cfm?groupid=" + groupid + "&route=" + route + "&s2=" + s2 + "&siteid=" + siteid, "newWin", "toolbar=no,location=no,scrollbars=yes,resize=yes,width=400,height=400,left=200,top=200")
 	newWindow.focus();
 }
+*/
 
 
 function validate(theForm) {
@@ -721,58 +723,43 @@ function eraseCookie(name) {
 	createCookie(name, "", -1);
 }
 
+var HTMLEditorLoadCount = 0;
+
 function setHTMLEditors() {
 	var allPageTags = document.getElementsByTagName("textarea");
 	var editors = new Array();
 	for(i = 0; i < allPageTags.length; i++) {
 		if(allPageTags[i].className == "htmlEditor") {
-			if(htmlEditorType == 'fckeditor') {
-				var oFCKeditor = new FCKeditor(allPageTags[i].id);
-				oFCKeditor.ToolbarSet = "Summary";
-				oFCKeditor.Config.EditorAreaCSS = themepath + '/css/editor.css';
-				oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
-				oFCKeditor.BasePath = context + '/wysiwyg/';
-				oFCKeditor.Height = "200";
-				oFCKeditor.ReplaceTextarea();
-				editors.push(oFCKeditor);
-			} else {
 
-				var instance = CKEDITOR.instances[allPageTags[i].id];
-				if(typeof(instance) != 'undefined' && instance != null) {
-					instance.destroy(true);
-				}
-
-				if($(document.getElementById(allPageTags[i].id)).val() == '') {
-					$(document.getElementById(allPageTags[i].id)).val("<p></p>")
-				}
-
-				$(document.getElementById(allPageTags[i].id)).ckeditor({
-					toolbar: 'Default',
-					customConfig: 'config.js.cfm'
-				}, htmlEditorOnComplete);
-
+			var instance = CKEDITOR.instances[allPageTags[i].id];
+			if(typeof(instance) != 'undefined' && instance != null) {
+				CKEDITOR.remove(instance);
 			}
+
+			if($(document.getElementById(allPageTags[i].id)).val() == '') {
+				$(document.getElementById(allPageTags[i].id)).val("<p></p>")
+			}
+
+			$(document.getElementById(allPageTags[i].id)).ckeditor({
+				toolbar: 'Default',
+				customConfig: 'config.js.cfm'
+			}, htmlEditorOnComplete);
+	
 		}
 	}
 }
 
-var HTMLEditorLoadCount = 0;
-
 function htmlEditorOnComplete(editorInstance) {
 
-	if(htmlEditorType == 'fckeditor') {
-		editorInstance.ResetIsDirty();
-		var totalIntances = FCKeditorAPI.Instances;
-	} else {
-		var instance = $(editorInstance).ckeditorGet();
-		instance.resetDirty();
-		var totalIntances = CKEDITOR.instances;
-		CKFinder.setupCKEditor(
-		instance, {
-			basePath: context + '/tasks/widgets/ckfinder/',
-			rememberLastFolder: false
-		});
-	}
+	var instance = $(editorInstance).ckeditorGet();
+	instance.resetDirty();
+	var totalIntances = CKEDITOR.instances;
+	CKFinder.setupCKEditor(
+	instance, {
+		basePath: context + '/requirements/ckfinder/',
+		rememberLastFolder: false
+	});
+
 
 	HTMLEditorLoadCount++;
 
@@ -830,9 +817,11 @@ function setColorPickers(target) {
 }
 
 function setToolTips(target) {
-	$(target).tooltip({
-		selector: "a[rel=tooltip]"
-	});
+	if(typeof $(target).tooltip =='function'){
+		$(target).tooltip({
+			selector: "a[rel=tooltip]"
+		});
+	}
 
 	$(target + ' a[rel=tooltip]').click(function(e) {
 		e.preventDefault();
@@ -1212,7 +1201,7 @@ function CountDown() {
 
 function fileManagerPopUp() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/tasks/widgets/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.resourceType = '[Advanced] Mura Root';
 	finder.popup();
 	return false;
@@ -1220,7 +1209,7 @@ function fileManagerPopUp() {
 
 function fileManagerCreate() {
 	var finder = new CKFinder();
-	finder.basePath = context + '/tasks/widgets/ckfinder/';
+	finder.basePath = context + '/requirements/ckfinder/';
 	finder.create();
 	return false;
 }
@@ -1445,69 +1434,73 @@ function removePunctuation(item){
 
 
 // search site drop down menu
-$.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
-	_suggest: function( items ) {
-		// todo: make the ul id an options config (string or object?)
-		var ul = this.element.closest("ul");
-		ul.children("li").remove();
-		
-		this._renderMenu( ul, items );
-		this.isNewMenu = true;
-		this.menu.refresh();
-
-		ul.show();
-		this._resizeMenu();
-
-		if ( this.options.autoFocus ) {
-			this.menu.next();
-		}
-	},
-
-	_renderItem: function( ul, item ) {
-		return $( "<li>" )
-			.append(
-				$( "<a>" ).attr(
-					"href", "?muraAction=cDashboard.main&siteID=" + item.id
-				).append(
-					$( "<i>" ).addClass( "icon-globe" )
-				).append( item.label )
-			).appendTo( ul );
-	},
-
-	options: {
-		create: function( event ) {
+if(typeof $.ui != 'undefined'){
+	$.widget( "custom.muraSiteSelector", $.ui.autocomplete, {
+		_suggest: function( items ) {
+			// todo: make the ul id an options config (string or object?)
+			var ul = this.element.closest("ul");
+			ul.children("li").remove();
 			
-			// we clear the results list if search string get is using backspace for example
-			$( event.target ).keyup(function( event, ui ) {
-				var input = $( this );
-				if ( input.val().length < $( this ).data("customMuraSiteSelector").option("minLength") ) {
-					var ul = input.closest("ul");
-					ul.children("li").remove();
-				}
-			});
-			
-		}
-	}
-});
+			this._renderMenu( ul, items );
+			this.isNewMenu = true;
+			this.menu.refresh();
 
-$(function() {
-	$( 'input[name="site-search"]' ).muraSiteSelector({
-		source: function( request, response ) {
-			$.ajax({
-				url: "./index.cfm?muraAction=cnav.searchsitedata",
-				dataType: "json",
-				method: "POST",
-				data: {
-					searchString: request.term
-				},
-				success: function( data ) {
-					return response( data );
-				}
-			});
+			ul.show();
+			this._resizeMenu();
+
+			if ( this.options.autoFocus ) {
+				this.menu.next();
+			}
 		},
-		minLength: 2
+
+		_renderItem: function( ul, item ) {
+			return $( "<li>" )
+				.append(
+					$( "<a>" ).attr(
+						"href", "?muraAction=cDashboard.main&siteID=" + item.id
+					).append(
+						$( "<i>" ).addClass( "icon-globe" )
+					).append( item.label )
+				).appendTo( ul );
+		},
+
+		options: {
+			create: function( event ) {
+				
+				// we clear the results list if search string get is using backspace for example
+				$( event.target ).keyup(function( event, ui ) {
+					var input = $( this );
+					if ( input.val().length < $( this ).data("customMuraSiteSelector").option("minLength") ) {
+						var ul = input.closest("ul");
+						ul.children("li").remove();
+					}
+				});
+				
+			}
+		}
 	});
-});
+
+	$(function() {
+		$( 'input[name="site-search"]' ).muraSiteSelector({
+			source: function( request, response ) {
+				$.ajax({
+					url: "./index.cfm?muraAction=cnav.searchsitedata",
+					dataType: "json",
+					method: "POST",
+					data: {
+						searchString: request.term
+					},
+					success: function( data ) {
+						return response( data );
+					}
+				});
+			},
+			minLength: 2
+		});
+	});
+}
+
+
 
 function setLowerCaseKeys(obj) {
   var keys = Object.keys(obj);
@@ -1530,7 +1523,7 @@ function setFinders(selector){
 	$(selector).unbind('click').on('click',function(){
 		var target=$(this).attr('data-target');
 		var finder = new CKFinder();
-		finder.basePath = context + '/tasks/widgets/ckfinder/';
+		finder.basePath = context + '/requirements/ckfinder/';
 		var completepath=$(this).attr('data-completepath');
 
 		if(completepath.toLowerCase() == 'true'){
@@ -1559,10 +1552,16 @@ function setFinders(selector){
 $(function(){
 	
 	setFinders(".mura-ckfinder");
-	setDatePickers(".datepicker",dtLocale);
-	setTabs(".tabs",activetab);
+	if(typeof dtLocale != 'undefined'){
+		setDatePickers(".datepicker",dtLocale);
+	}
+	if(typeof activetab != 'undefined'){
+		setTabs(".tabs",activetab);
+	}
 	setHTMLEditors();
-	setAccordions(".accordion",activepanel);
+	if(typeof activepanel != 'undefined'){
+		setAccordions(".accordion",activepanel);
+	}
 	setCheckboxTrees();
 	setColorPickers(".colorpicker");
 	setToolTips(".container");

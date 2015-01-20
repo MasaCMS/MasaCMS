@@ -321,7 +321,7 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
-			var delim=application.configBean.getFileDelim();
+			var delim = FindNoCase("Windows", this.os) ? '\' : '/';
 			var lastChr="";
 			var lenPath=0;
 			var inStream="";
@@ -717,7 +717,7 @@
 			type = 'File'
 			or
 			(	type='Dir'
-				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#arguments.excludeDirs#">) 
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#PathFormat(arguments.excludeDirs)#">) 
 			)
 			</cfquery>
 		</cfif>

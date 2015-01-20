@@ -25,7 +25,7 @@
 </div>
 <script type="text/javascript">
 var finder = new CKFinder();
-finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
+finder.basePath = '#application.configBean.getContext()#/requirements/ckfinder/';
 finder.language = '#lcase(session.rb)#';
 finder.height="600";
 <cfif session.resourceType eq "assets">

@@ -107,7 +107,7 @@
 							</cfsilent>
 							<td>
 								<cfif findNoCase('attachment',variables.f) and isValid("UUID",variables.fvalue)>
-									<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
+									<a  href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/render/file//index.cfm?fileID=#variables.fvalue#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a>
 								<cfelse>
 									<a href="./?dataResponseView=detail&amp;responseid=#variables.rsdata.responseid#">
 										#HTMLEditFormat(variables.fvalue)#

@@ -62,8 +62,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
  	<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="reminder" type="any" required="true">
+		<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.reminder')>
+      <cfif isSimpleValue(arguments.property)>
+        <cfreturn getValue(argumentCollection=arguments)>
+      </cfif>
 
+      <cfset arguments.reminder=arguments.property>
+    </cfif>
+    
 		<cfset var prop = "" />
     <cfset var tempFunc="">
 		
