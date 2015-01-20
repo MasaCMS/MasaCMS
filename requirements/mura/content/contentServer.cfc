@@ -501,22 +501,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif left(path,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfset request.muraAPIRequest=true>
-		<cfif isDefined('form.siteid')>
+		<cfif listLen(path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('ajax','v1').processRequest(arguments.path)>	
+		<cfelseif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('url.siteid')>
 			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
-		<cfelseif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('ajax','v1').processRequest(arguments.path)>	
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest(arguments.path)>	
 		</cfif>
 	<cfelseif isDefined('url.feedid') and left(path,len(feedendpoint)) eq feedendpoint>
-		<cfif isDefined('form.siteid')>
+		<cfif listLen(path,'/') gte 4>
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>	
+		<cfelseif isDefined('form.siteid')>
 			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('feed','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('url.siteid')>
 			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('feed','v1').processRequest(arguments.path)>	
-		<cfelseif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>	
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('feed','v1').processRequest(arguments.path)>	
 		</cfif>
