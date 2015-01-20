@@ -20,16 +20,18 @@
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 		
+		/*
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ) {
 			var protocol="https://";
 		} else {
 			var protocol="http://";
 		}
-
+		*/
+		
 		if(configBean.getIndexfileinurls()){
-			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/ajax/v1/";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/feed/v1/#variables.siteid#";	
 		} else {
-			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/_api/ajax/v1/";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/_api/feed/v1/#variables.siteid#";	
 		}
 
 		variables.config={
@@ -38,6 +40,10 @@
 
 	
 		return this;
+	}
+
+	function getEndPoint(){
+		return variables.endpoint;
 	}
 
 	function getConfig(){
@@ -92,18 +98,21 @@
 
 			session.siteid=variables.siteid;	
 
-			arrayDeleteAt(pathInfo,1);
-			arrayDeleteAt(pathInfo,1);
-			arrayDeleteAt(pathInfo,1);
-
-			
+			if(pathInfo[1]=='tasks'){
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+			} else {
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+			}
+		
 			if(cgi.user_agent contains "Mozilla"){
 				responseObject.setcontenttype('text/xml');
 			} else {
 				responseObject.setcontenttype('application/rss+xml');
 			}
-			
-			
+					
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
 			}

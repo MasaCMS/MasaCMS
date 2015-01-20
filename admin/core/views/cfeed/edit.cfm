@@ -156,6 +156,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 </cfif>
+
+<cfset endpoint=rc.$.siteConfig().getApi('feed','v1').getEndpoint()>
 </cfsilent>
 
 <cfoutput><h1><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h1>
@@ -230,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 			<cfelse>
-				<input type="hidden" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
+				<input type="hidden" id="contentPoolID" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
 			</cfif>
 
 			<!--- Sections --->
@@ -620,7 +622,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
 		</label>
 		<div class="controls">
-	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">#application.settingsManager.getSite(rc.siteid).getScheme()#://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/index.cfm/_api/feed/v1/#rc.feedBean.getSiteID()#/?feedID=#rc.feedBean.getFeedID()#</a>
+	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#endpoint#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">#endpoint#/?feedID=#rc.feedBean.getFeedID()#</a>
 	     </div>
 		</div>
 	</cfif>
@@ -631,15 +633,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </div>
 	</div> 
 	
-	<div class="control-group">
+<div class="control-group">
 	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
+		 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
 		<div class="controls">
-			<label class="radio inline"><input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# </label>
-			<label class="radio inline"><input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# </label>
-		</div>
+			<label class="radio inline">
+			<input name="allowHTML" type="radio" value="1" <cfif rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			</label>
+			<label class="radio inline">
+			<input name="allowHTML" type="radio" value="0" <cfif not rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+			</label> 
+	  </div>
 	</div>
-	
+
 	<div class="span6">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</label>
 		<div class="controls">
@@ -653,32 +659,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 	
-	<div class="control-group">
-      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
+<div class="control-group">
+	<div class="span6">
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
 		<div class="controls">
-			<label class="radio inline">
-			<input name="allowHTML" type="radio" value="1" <cfif rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-			</label>
-			<label class="radio inline">
-			<input name="allowHTML" type="radio" value="0" <cfif not rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-			</label> 
-	  </div>
-	</div>
-	
-	<div class="control-group">
-		<div class="span6">
-	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
-			<div class="controls">
-				<select name="version" class="dropdown">
-				<cfloop list="RSS 2.0,RSS 0.920" index="v">
-				<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
-				</cfloop>
-				</select>
-			</div>
+			<select name="version" class="dropdown">
+			<cfloop list="RSS 2.0,RSS 0.920" index="v">
+			<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
+			</cfloop>
+			</select>
 		</div>
-	
-		<div class="span6">
-      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
+	</div>
+
+	<div class="span6">
+	  	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
 		<div class="controls">
 			<input name="lang" type="text" value="#esapiEncode('html_attr',rc.feedBean.getlang())#" maxlength="50">
 		</div>
