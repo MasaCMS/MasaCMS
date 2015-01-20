@@ -26,18 +26,20 @@ component extends="mura.cfobject" {
 		var context=configBean.getContext();
 		var site=getBean('settingsManager').getSite(variables.siteid);
 		
+		/*
 		if( getBean('utility').isHTTPS() || YesNoFormat(site.getUseSSL()) ){
 			var protocol="https://";
 		} else {
 			var protocol="http://";
 		}
+		*/
 
 		if(configBean.getIndexfileinurls()){
-			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/ajax/v1/";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/ajax/v1/#variables.siteid#";	
 		} else {
-			variables.endpoint="#protocol##site.getDomain()##configBean.getServerPort()##configBean.getContext()#/_api/ajax/v1/";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/_api/ajax/v1/#variables.siteid#";	
 		}
-
+		
 		variables.config={
 			linkMethods=[],
 			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject",
