@@ -55,6 +55,7 @@
 	Mura CMS.
 --->
 <!--- <cftry> --->
+<!---
 <cfif request.muraFrontEndRequest>
 	<cfoutput>
 		<div class="mura-async-object" 
@@ -64,6 +65,7 @@
 		</div>
 	</cfoutput>
 <cfelse>
+--->
 	<cfsilent>
 		<cfif isValid("UUID", arguments.objectID)>
 			<cfset variables.feedBean = variables.$.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
@@ -262,4 +264,4 @@
 	<!---   <cfcatch>
 	  </cfcatch>
 	</cftry> --->
- </cfif>
+<!---</cfif>--->
