@@ -98,18 +98,21 @@
 
 			session.siteid=variables.siteid;	
 
-			arrayDeleteAt(pathInfo,1);
-			arrayDeleteAt(pathInfo,1);
-			arrayDeleteAt(pathInfo,1);
-
-			
+			if(pathInfo[1]=='tasks'){
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+			} else {
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+				arrayDeleteAt(pathInfo,1);
+			}
+		
 			if(cgi.user_agent contains "Mozilla"){
 				responseObject.setcontenttype('text/xml');
 			} else {
 				responseObject.setcontenttype('application/rss+xml');
 			}
-			
-			
+					
 			if(arrayLen(pathInfo)){
 				params.siteid=pathInfo[1];
 			}

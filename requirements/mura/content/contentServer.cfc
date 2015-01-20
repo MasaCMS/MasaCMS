@@ -499,6 +499,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var emailendpoint="/_api/email/trackopen">
 	<cfset var sitemonitorendpoint="/_api/sitemonitor">
 
+	<cfset var legacyfeedendpoint="/tasks/feed">
+	<cfset var legacyfileendpoint="/tasks/render/">
+	<cfset var legacywidgetendpoint="/tasks/widgets/">
+
 	<cfif left(path,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfset request.muraAPIRequest=true>
 		<cfif listLen(path,'/') gte 4>
@@ -510,7 +514,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest(arguments.path)>	
 		</cfif>
-	<cfelseif isDefined('url.feedid') and left(path,len(feedendpoint)) eq feedendpoint>
+	<cfelseif isDefined('url.feedid') and (left(path,len(feedendpoint)) eq feedendpoint or left(path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
 		<cfif listLen(path,'/') gte 4>
 			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('feed','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('form.siteid')>
@@ -526,7 +530,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
 		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
 		<cfreturn>
-	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and  left(path,len(fileendpoint)) eq fileendpoint>
+	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and (left(path,len(fileendpoint)) eq fileendpoint or left(path,len(legacyfileendpoint)) eq legacyfileendpoint)>
 		<cfswitch expression="#listGetAt(path,3,'/')#">
 			<cfcase value="file">
 				<cfparam name="url.method" default="inline">
@@ -619,13 +623,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.lastMonitored=theTime/>
 
 		<cfreturn "">
-
+	<cfelseif left(path,len(legacywidgetendpoint)) eq legacywidgetendpoint>
+		<cflocation statuscode="301" addtoken="false" url="#replaceNoCase(cgi.path_info,'/tasks/widgets/','/requirements/')#">
 	</cfif>
 </cffunction>
 
 <cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
-	<cfif listFirst(cgi.path_info,'/') eq "_api">
+	<cfif listFindNoCase('_api,tasks',listFirst(cgi.path_info,'/'))>
 		<cfreturn handleAPIRequest(cgi.path_info)>
 	<cfelse>
 		
