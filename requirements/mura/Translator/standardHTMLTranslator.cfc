@@ -119,16 +119,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- Cleaning up old paths --->
 	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/")>
+		<cfset page=replaceNoCase(page,"/tasks/widgets/","/requirements/")>
 		<cfcatch>
-			<cfset page=replace(page,"/tasks/","/index.cfm/tasks/")>
+			<cfset page=replace(page,"/tasks/widgets/","/requirements/")>
 		</cfcatch>
 	</cftry>
 
 	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/widgets/","/requirements/")>
+		<cfset page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/")>
 		<cfcatch>
-			<cfset page=replace(page,"/tasks/widgets/","/requirements/")>
+			<cfset page=replace(page,"/tasks/","/index.cfm/tasks/")>
 		</cfcatch>
 	</cftry>
 
