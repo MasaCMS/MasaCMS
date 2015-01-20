@@ -275,7 +275,7 @@
 			<cfset loginURL &= "?returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
 		</cfif>
 
-		<cfif request.muraApiRequest>
+		<cfif request.returnFormat eq 'JSON'>
 			<cfset request.muraJSONRedirectURL=loginURL>
 		<cfelse>
 			<cflocation addtoken="no" url="#loginURL#">
@@ -319,7 +319,7 @@
 		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
 	</cfif>
 
-	<cfif request.muraApiRequest>
+	<cfif request.returnFormat eq 'JSON'>
 		<cfset request.muraJSONRedirectURL=arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)>
 	<cfelse>
 		<cflocation addtoken="no" url="#arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)#">
