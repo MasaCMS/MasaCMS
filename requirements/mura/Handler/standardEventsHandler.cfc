@@ -67,8 +67,12 @@
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfset var $=arguments.event.getValue('muraScope')>
-	<cflocation addtoken="no" url="#$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))#" statuscode="301">
 
+	<cfif request.returnFormat eq 'JSON'>
+		<cfset request.muraJSONRedirectURL=$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))>
+	<cfelse>
+		<cflocation addtoken="no" url="#$.getCurrentURL(complete=true,domain=$.siteConfig('domain'))#" statuscode="301">
+	</cfif>
 </cffunction>
 
 <cffunction name="standardTranslationHandler" output="false" returnType="any">
@@ -270,15 +274,21 @@
 		<cfelse>
 			<cfset loginURL &= "?returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
 		</cfif>
-		<cflocation addtoken="no" url="#loginURL#">
+
+		<cfif request.muraApiRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
+			<cflocation addtoken="no" url="#loginURL#">
+		</cfif>
 	</cfif>
 
 </cffunction>
 
 <cffunction name="standardPostLogoutHandler" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	
-	<cfif not request.returnFormat eq 'HTML'>
+	<cfargument name="event" required="true">	
+	<cfif not request.returnFormat eq 'JSON'>
+		<cfset request.muraJSONRedirectURL=arguments.event.getValue('contentRenderer').getCurrentURL()>
+	<cfelse>
 		<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
 	</cfif>
 </cffunction>
@@ -309,6 +319,12 @@
 		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
 	</cfif>
 
+	<cfif request.muraApiRequest>
+		<cfset request.muraJSONRedirectURL=arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)>
+	<cfelse>
+		<cflocation addtoken="no" url="#arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)#">
+	</cfif>
+
 	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL(complete=true)#" addtoken="false" statuscode="301">
 </cffunction>
 
@@ -321,11 +337,17 @@
 <cffunction name="standardForceSSLHandler" output="false" returnType="any">
 	<cfargument name="$" required="true">
 	
-	<cfif request.returnFormat eq 'HTML'>
+	<cfif request.returnFormat eq 'JSON'>
 		<cfif application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="http://#variables.$.siteConfig('domain')##application.configBean.getServerPort()##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cfset request.muraJSONRedirectURL="http://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
 		<cfelse>
-			<cflocation addtoken="no" url="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('ServerPort')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cfset request.muraJSONRedirectURL="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+		</cfif>
+	<cfelse>
+		<cfif application.utility.isHTTPS()>
+			<cflocation addtoken="no" url="http://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+		<cfelse>
+			<cflocation addtoken="no" url="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>
 </cffunction>
@@ -401,7 +423,7 @@
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
 	</cfif>
 
-	<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest and arguments.event.getValue("contentBean").getIsNew()>
+	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
 
 		<cfloop condition="listLen(local.filename,'/')">		
@@ -410,11 +432,21 @@
 				<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
 				<cfif not archiveBean.getIsNew()>
 					<cfif local.filename eq event.getValue('currentFilenameAdjusted')>
-						<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+						<cfif request.returnFormat eq 'JSON'>
+							<cfset request.muraJSONRedirectURL=archiveBean.getURL()>
+							<cfreturn true>
+						<cfelse>
+							<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+						</cfif>
 					<cfelse>
 						<cfset archiveBean=getBean('content').loadBy(filename=replace(arguments.event.getValue('currentFilenameAdjusted'),local.filename,archiveBean.getFilename()),siteid=event.getValue('siteid'))>
 						<cfif not archiveBean.getIsNew()>
-							<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+							<cfif request.returnFormat eq 'JSON'>
+								<cfset request.muraJSONRedirectURL=archiveBean.getURL()>
+								<cfreturn true>
+							<cfelse>
+								<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+							</cfif>
 						</cfif>
 					</cfif>		
 				<cfelse>
@@ -426,7 +458,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfif arguments.event.getValue("contentBean").getIsNew()>
+	<cfif not isdefined('request.muraJSONRedirectURL') and arguments.event.getValue("contentBean").getIsNew()>
 		<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
 			
 		<cfif len(arguments.event.getValue('previewID'))>
@@ -689,18 +721,32 @@
 
 <!--- TRANSLATORS --->
 <cffunction name="standardFileTranslator" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID(),arguments.event.getValue('method'),arguments.event.getValue('size')) />
+	<cfargument name="$" required="true">
+
+	<cfif request.returnFormat eq 'JSON'>
+		<cfset var apiUtility=$.siteConfig().getApi('ajax','v1')>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
+	<cfelse>
+		<cfset $.getContentRenderer().renderFile($.content('fileid'),$.event('method'),$.event('size')) />
+	</cfif>
+
 </cffunction>
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	<cfset var theLink=arguments.event.getValue('contentRenderer').setDynamicContent(arguments.event.getValue('contentBean').getBody())>
-	
+	<cfargument name="$" required="true">
+	<cfset var theLink=$.getContentRenderer().setDynamicContent($.content('body'))>
+
 	<cfif left(theLink,1) eq "?">
 		<cfset theLink="/" & theLink>
 	</cfif>
-	<cflocation addtoken="no" statuscode="301" url="#theLink#">
+
+	<cfif request.returnFormat eq 'JSON'>
+		<cfset var apiUtility=$.siteConfig().getApi('ajax','v1')>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}}))>
+	<cfelse>
+		<cflocation url="#theLink#" addtoken="false" statuscode="301">
+	</cfif>
+	
 </cffunction>
 
 <cfscript>
