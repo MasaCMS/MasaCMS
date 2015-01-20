@@ -119,9 +119,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- Cleaning up old paths --->
 	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/feed/","/index.cfm/_api/feed/v1/#$.event('siteid')#")>
+		<cfset page=replaceNoCase(page,"/tasks/","/index.cfm/tasks/")>
 		<cfcatch>
-			<cfset page=replace(page,"/tasks/feed/","/index.cfm/_api/feed/v1/#$.event('siteid')#")>
+			<cfset page=replace(page,"/tasks/","/index.cfm/tasks/")>
 		</cfcatch>
 	</cftry>
 
@@ -129,13 +129,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset page=replaceNoCase(page,"/tasks/widgets/","/requirements/")>
 		<cfcatch>
 			<cfset page=replace(page,"/tasks/widgets/","/requirements/")>
-		</cfcatch>
-	</cftry>
-
-	<cftry>
-		<cfset page=replaceNoCase(page,"/tasks/render/","/index.cfm/_api/render/")>
-		<cfcatch>
-			<cfset page=replace(page,"/tasks/render/","/index.cfm/_api/render/")>
 		</cfcatch>
 	</cftry>
 
