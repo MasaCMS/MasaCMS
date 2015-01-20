@@ -174,6 +174,7 @@ component extends="mura.cfobject" {
 
 			//writeDump(var=pathInfo,abort=1);
 			responseObject.setcontenttype('application/json; charset=utf-8');
+			request.returnFormat='JSON';
 
 			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
 				params.method=pathInfo[1];
@@ -785,8 +786,6 @@ component extends="mura.cfobject" {
 				if(arguments.id=='null'){
 					arguments.id='';
 				}
-
-				request.returnFormat='JSON';
 
 				getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);
 				
@@ -1480,8 +1479,8 @@ component extends="mura.cfobject" {
 
 		var result={html=applyRemoteFormat($.dspObject(argumentCollection=args))};
 		
-		if(isdefined('request.muraAjaxRedirectURL')){
-			return {redirect=request.muraAjaxRedirectURL};
+		if(isdefined('request.muraJSONRedirectURL')){
+			return {redirect=request.muraJSONRedirectURL};
 		} else {
 			return result;
 		}
