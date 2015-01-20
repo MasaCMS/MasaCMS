@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 			<cfelse>
-				<input type="hidden" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
+				<input type="hidden" id="contentPoolID" name="contentPoolID" value="#esapiEncode('html_attr',rc.feedBean.getContentPoolID())#"/>
 			</cfif>
 
 			<!--- Sections --->
