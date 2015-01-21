@@ -1027,6 +1027,15 @@ s
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setUseSSL" access="public" output="false">
+	<cfargument name="useSSL"  />
+	<cfif isNumeric(arguments.useSSL)>
+		<cfset variables.instance.useSSL = arguments.useSSL />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+
 <cffunction name="getContext" output="false">
 	<cfif getValue('isRemote')>
 		<cfreturn getValue('RemoteContext')>
