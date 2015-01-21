@@ -286,7 +286,7 @@
 
 <cffunction name="standardPostLogoutHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">	
-	<cfif not request.returnFormat eq 'JSON'>
+	<cfif request.returnFormat eq 'JSON'>
 		<cfset request.muraJSONRedirectURL=arguments.event.getValue('contentRenderer').getCurrentURL()>
 	<cfelse>
 		<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
