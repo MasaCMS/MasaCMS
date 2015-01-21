@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraOutputCacheOffset" default="">
 <cfparam name="request.muraMostRecentPluginModuleID" default="">
 <cfparam name="request.muraAPIRequest" default="false">
+<cfparam name="request.returnFormat" default="html">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 <!--- Application name, should be unique --->
