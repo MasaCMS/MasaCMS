@@ -1006,7 +1006,7 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" required="true" default="false">
 	<cfset var rs="">
 	
-	<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
 		<cfset var tableModifier="">
@@ -1014,7 +1014,7 @@ and tclassextendattributes.type='File'
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute
-		from tclassextendattributes from #tableModifier#
+		from tclassextendattributes #tableModifier#  
 		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
