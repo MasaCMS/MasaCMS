@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 			FROM 
-				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent
+				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent #tableModifier#
 		
 				<cfloop list="#jointables#" index="jointable">
 					<cfset started=false>
@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					Left Join tcontent tparent #tableModifier# on (tcontent.parentid=tparent.contentid
 						and tcontent.siteid=tparent.siteid
 						and tparent.active=1) 
-					Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid 
+					Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid 
 						and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
 				</cfif>
 
@@ -365,7 +365,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<cfelse>
 													tcontent.contenthistid in (
 														select distinct contenthistid 
-														from tcontentcategoryassign
+														from tcontentcategoryassign #tableModifier#
 														where
 															#param.getFieldStatement()# 
 
@@ -388,7 +388,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														<cfif isNumeric(param.getField())>
 															where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 														<cfelse>
-															inner join tclassextendattributes 
+															inner join tclassextendattributes #tableModifier#
 																on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 															where tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
 																and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
@@ -432,7 +432,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif categoryLen>
 									<cfif arguments.feedBean.getUseCategoryIntersect()>
 										AND tcontent.contentHistID in (
-											select a.contentHistID from tcontentcategoryassign a
+											select a.contentHistID from tcontentcategoryassign a #tableModifier#
 											<cfif categoryLen gt 1>
 												<cfloop from="2" to="#categoryLen#" index="c">
 													<cfset palias = listGetAt(alpha,c-1)>
@@ -484,7 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfif arguments.feedBean.getUseCategoryIntersect()>
 												tcontent.contentHistID in (
 													select a.contentHistID 
-													from tcontentcategoryassign a
+													from tcontentcategoryassign a #tableModifier#
 														<cfif categoryLen gt 1>
 															<cfloop from="2" to="#categoryLen#" index="c">
 																<cfset palias = listGetAt(alpha,c-1)>
@@ -684,7 +684,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfelse>
 									tcontent.contenthistid IN (
 										SELECT DISTINCT contenthistid 
-										FROM tcontentcategoryassign
+										FROM tcontentcategoryassign #tableModifier#
 										WHERE 
 											#param.getFieldStatement()# 
 											
@@ -710,7 +710,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										WHERE 
 											tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 									<cfelse>
-										INNER JOIN tclassextendattributes 
+										INNER JOIN tclassextendattributes #tableModifier#
 											ON (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 										WHERE 
 											tclassextendattributes.siteid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.feedBean.getContentPoolID()#">)
@@ -765,7 +765,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif categoryLen>
 					<cfif arguments.feedBean.getUseCategoryIntersect()>
 						AND tcontent.contentHistID in (
-							select a.contentHistID from tcontentcategoryassign a
+							select a.contentHistID from tcontentcategoryassign a #tableModifier#
 							<cfif categoryLen gt 1>
 								<cfloop from="2" to="#categoryLen#" index="c">
 									<cfset palias = listGetAt(alpha,c-1)>
