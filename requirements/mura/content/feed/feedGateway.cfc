@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 			FROM 
-				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent
+				<cfif len(altTable)>#arguments.feedBean.getAltTable()#</cfif> tcontent #tableModifier#
 		
 				<cfloop list="#jointables#" index="jointable">
 					<cfset started=false>

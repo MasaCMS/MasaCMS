@@ -400,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
 				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
 				</cfif>
-				FROM <cfif len(altTable)>#alttable#</cfif> tcontent
+				FROM <cfif len(altTable)>#alttable#</cfif> tcontent #tableModifier#
 
 				<cfif not len(altTable)>
 					Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
