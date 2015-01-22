@@ -157,7 +157,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.dbUsername="">
 		<cfset arguments.dbPassword="">
 	</cfif>
-	
+
+	<cfif variables.configBean.getDBType() eq 'MSQL'>
+		<cfset var tableModifier="with (nolock)">
+	<cfelse>
+		<cfset var tableModifier="">
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type, 
 	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname, 
@@ -182,9 +188,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tclassextend.availableSubTypes
 	</cfif>
 	,tclassextend.iconclass
-	from tclassextend
-	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
-	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+	from tclassextend #tableModifier#
+	inner join tclassextendsets #tableModifier# on (tclassextend.subtypeid=tclassextendsets.subtypeid)
+	inner join tclassextendattributes #tableModifier# on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
 	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno 
 	</cfquery>
 
@@ -379,9 +385,16 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfif not isdefined("arguments.data.moduleID")>
 	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
+
+<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfset var tableModifier="with (nolock)">
+<cfelse>
+	<cfset var tableModifier="">
+</cfif>
+
 <!--- process non-file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name,validation,message from tclassextendattributes where 
+select attributeID,name,validation,message from tclassextendattributes #tableModifier# where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -472,13 +485,12 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <!--- process file attributes --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-select attributeID,name from tclassextendattributes where 
+select attributeID,name from tclassextendattributes #tableModifier# where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
 		and type = 'File'
 </cfquery>
-
 
 <cfloop query="rs">
 	<cfset key="ext#rs.attributeID#"/>
@@ -576,13 +588,20 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfif isdefined("arguments.data.remoteID")>
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
+
+<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfset var tableModifier="with (nolock)">
+<cfelse>
+	<cfset var tableModifier="">
+</cfif>
+
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
-#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
-inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
-inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
-inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable# #tableModifier#
+inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
 <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -620,7 +639,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 </cfquery>
 
 <cfloop query="rs">
-		<cfquery>
+	<cfquery>
 		insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
@@ -648,16 +667,16 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#remoteID#">
 		)
-		</cfquery>
+	</cfquery>
 </cfloop>
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
-#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable#
-inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
-inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
-inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable# #tableModifier#
+inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
  <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -701,33 +720,33 @@ and tclassextendattributes.type<>'File'
 	and not structKeyExists(arguments.data,rs.name)>
 		
 		<cfquery>
-						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
-						values (
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
-						<cfif len(rs.attributeValue)>
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
-						<cfelse>
-						null
-						</cfif>,
-						<cfif len(rs.datetimevalue)>
-							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
-						<cfelse>
-							null
-						</cfif>,
-						<cfif len(rs.numericvalue)>
-							<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
-						<cfelse>
-							null
-						</cfif>,
-						<cfif len(rs.stringvalue)>
-							<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
-						<cfelse>
-							null
-						</cfif>,
-						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#remoteID#">
-						)
+			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
+				<cfif len(rs.attributeValue)>
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+				<cfelse>
+				null
+				</cfif>,
+				<cfif len(rs.datetimevalue)>
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
+				<cfelse>
+					null
+				</cfif>,
+				<cfif len(rs.numericvalue)>
+					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+				<cfelse>
+					null
+				</cfif>,
+				<cfif len(rs.stringvalue)>
+					<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+				<cfelse>
+					null
+				</cfif>,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#remoteID#">
+				)
 			</cfquery>
 		
 	</cfif>
@@ -736,10 +755,10 @@ and tclassextendattributes.type<>'File'
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
-#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
-inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
-inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
-inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable# #tableModifier#
+inner join tclassextendattributes #tableModifier# on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
  <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -913,11 +932,18 @@ and tclassextendattributes.type='File'
 <cfargument name="baseID" required="true" default=""/>
 <cfargument name="key" required="true" default=""/>
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
-<cfset var rs =""/>
-<cfset var tempDate="">
+	<cfset var rs =""/>
+	<cfset var tempDate="">
+
+	<cfif variables.configBean.getDBType() eq 'MSQL'>
+		<cfset var tableModifier="with (nolock)">
+	<cfelse>
+		<cfset var tableModifier="">
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
-	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes
-	left join #arguments.dataTable# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
+	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes #tableModifier#
+	left join #arguments.dataTable# #tableModifier# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
 	where 
 	#arguments.dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 	and (
@@ -945,11 +971,17 @@ and tclassextendattributes.type='File'
 <cffunction name="deleteExtendedData" output="false" returntype="void">
 <cfargument name="baseid">
 <cfargument name="dataTable" required="true" default="tclassextenddata">
-<cfset var rsFiles="">
-<cfset var fileManager=getBean("fileManager") />
+	<cfset var rsFiles="">
+	<cfset var fileManager=getBean("fileManager") />
+	
+	<cfif variables.configBean.getDBType() eq 'MSQL'>
+		<cfset var tableModifier="with (nolock)">
+	<cfelse>
+		<cfset var tableModifier="">
+	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsFiles')#">
-		select attributeValue from #arguments.dataTable#
+		select attributeValue from #arguments.dataTable# #tableModifier#
 		inner join tclassextendattributes on (#arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 		where 
 		tclassextendattributes.type='File'
@@ -974,11 +1006,17 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" required="true" default="false">
 	<cfset var rs="">
 	
+	<cfif variables.configBean.getDBType() eq 'MSQL'>
+		<cfset var tableModifier="with (nolock)">
+	<cfelse>
+		<cfset var tableModifier="">
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name AS attribute
-		from tclassextendattributes 
-		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
-		inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
+		from tclassextendattributes from #tableModifier#
+		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
+		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 		and (
 			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">

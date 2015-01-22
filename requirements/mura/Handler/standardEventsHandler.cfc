@@ -467,8 +467,12 @@
 		<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest >
 			<cfheader statuscode="404" statustext="Content Not Found" /> 
 		</cfif>
+	
+		<cfset var renderer=arguments.$.getContentRenderer()>
+		<cfif isDefined('renderer.noIndex')>
+			<cfset renderer.noIndex()>
+		</cfif>
 		
-		<cfset arguments.$.noIndex()>
 	</cfif>
 	
 </cffunction>
