@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.dbPassword="">
 	</cfif>
 
-	<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
 		<cfset var tableModifier="">
@@ -386,7 +386,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
 
-<cfif variables.configBean.getDBType() eq 'MSQL'>
+<cfif variables.configBean.getDBType() eq 'MSSQL'>
 	<cfset var tableModifier="with (nolock)">
 <cfelse>
 	<cfset var tableModifier="">
@@ -589,7 +589,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
 
-<cfif variables.configBean.getDBType() eq 'MSQL'>
+<cfif variables.configBean.getDBType() eq 'MSSQL'>
 	<cfset var tableModifier="with (nolock)">
 <cfelse>
 	<cfset var tableModifier="">
@@ -935,7 +935,7 @@ and tclassextendattributes.type='File'
 	<cfset var rs =""/>
 	<cfset var tempDate="">
 
-	<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
 		<cfset var tableModifier="">
@@ -974,7 +974,7 @@ and tclassextendattributes.type='File'
 	<cfset var rsFiles="">
 	<cfset var fileManager=getBean("fileManager") />
 	
-	<cfif variables.configBean.getDBType() eq 'MSQL'>
+	<cfif variables.configBean.getDBType() eq 'MSSQL'>
 		<cfset var tableModifier="with (nolock)">
 	<cfelse>
 		<cfset var tableModifier="">
