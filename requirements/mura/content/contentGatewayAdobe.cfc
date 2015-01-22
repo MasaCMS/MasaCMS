@@ -593,7 +593,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<cfif relatedListLen >
 					  	and tcontent.contentID in (
-							select relatedID from tcontentrelated 
+							select relatedID from tcontentrelated #tableModifier#
 							where contentID in 
 							(<cfloop from=1 to="#relatedListLen#" index="f">
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/>
@@ -621,7 +621,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif categoryListLen>
 						<cfif arguments.useCategoryIntersect>
 						AND tcontent.contentHistID in (
-							select a.contentHistID from tcontentcategoryassign a
+							select a.contentHistID from tcontentcategoryassign a #tableModifier#
 							<cfif categoryListLen gt 1>
 								<cfloop from="2" to="#categoryListLen#" index="c">
 									<cfset palias = listGetAt(alpha,c-1)>
@@ -1291,7 +1291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		LEFT JOIN tcontentstats #tableModifier# on (tcontent.contentID=tcontentstats.contentID 
 								and tcontent.siteID=tcontentstats.siteID
 								)
-		Left Join tcontentfilemetadata on (tcontent.fileid=tcontentfilemetadata.fileid
+		Left Join tcontentfilemetadata #tableModifier# on (tcontent.fileid=tcontentfilemetadata.fileid
 													and tcontent.contenthistid=tcontentfilemetadata.contenthistid)
 
 		<cfif isExtendedSort>
