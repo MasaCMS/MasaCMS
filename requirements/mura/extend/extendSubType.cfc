@@ -263,8 +263,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsActive" access="public" output="false">
 	<cfargument name="IsActive"/>
-	<cfif isNumeric(arguments.isActive)>
-		<cfset variables.instance.IsActive = arguments.IsActive />
+	<cfif isBoolean(arguments.IsActive)>
+		<cfif arguments.IsActive>
+			<cfset variables.instance.IsActive = 1 />
+		<cfelse>
+			<cfset variables.instance.IsActive = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -275,8 +279,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasSummary" access="public" output="false">
 	<cfargument name="hasSummary"/>
-	<cfif isNumeric(arguments.hasSummary)>
-		<cfset variables.instance.hasSummary = arguments.hasSummary />
+	<cfif isBoolean(arguments.hasSummary)>
+		<cfif arguments.hasSummary>
+			<cfset variables.instance.hasSummary = 1 />
+		<cfelse>
+			<cfset variables.instance.hasSummary = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -287,8 +295,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasBody" access="public" output="false">
 	<cfargument name="hasBody"/>
-	<cfif isNumeric(arguments.hasBody)>
-		<cfset variables.instance.hasBody = arguments.hasBody />
+	<cfif isBoolean(arguments.hasBody)>
+		<cfif arguments.hasBody>
+			<cfset variables.instance.hasBody = 1 />
+		<cfelse>
+			<cfset variables.instance.hasBody = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -299,8 +311,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasAssocFile" access="public" output="false">
 	<cfargument name="HasAssocFile"/>
-	<cfif isNumeric(arguments.HasAssocFile)>
-		<cfset variables.instance.HasAssocFile = arguments.HasAssocFile />
+	<cfif isBoolean(arguments.HasAssocFile)>
+		<cfif arguments.hasAssocFile>
+			<cfset variables.instance.HasAssocFile = 1 />
+		<cfelse>
+			<cfset variables.instance.HasAssocFile = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>

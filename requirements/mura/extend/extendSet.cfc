@@ -197,8 +197,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsActive" access="public" output="false">
 	<cfargument name="IsActive"/>
-	<cfif isNumeric(arguments.isActive)>
-		<cfset variables.instance.IsActive = arguments.IsActive />
+	<cfif isBoolean(arguments.IsActive)>
+		<cfif arguments.IsActive>
+			<cfset variables.instance.IsActive = 1 />
+		<cfelse>
+			<cfset variables.instance.IsActive = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
