@@ -339,15 +339,15 @@
 	
 	<cfif request.returnFormat eq 'JSON'>
 		<cfif application.utility.isHTTPS()>
-			<cfset request.muraJSONRedirectURL="http://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cfset request.muraJSONRedirectURL="http://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		<cfelse>
-			<cfset request.muraJSONRedirectURL="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cfset request.muraJSONRedirectURL="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	<cfelse>
 		<cfif application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="http://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation addtoken="no" url="http://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		<cfelse>
-			<cflocation addtoken="no" url="https://#variables.$.siteConfig('domain')##variables.$.siteConfig('serverPort')##variables.$.siteConfig('context')##variables.$.getCurrentURL(complete=false,filterVars=false)#">
+			<cflocation addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>
 </cffunction>
@@ -467,8 +467,12 @@
 		<cfif request.returnFormat neq 'json' and request.muraFrontEndRequest >
 			<cfheader statuscode="404" statustext="Content Not Found" /> 
 		</cfif>
+	
+		<cfset var renderer=arguments.$.getContentRenderer()>
+		<cfif isDefined('renderer.noIndex')>
+			<cfset renderer.noIndex()>
+		</cfif>
 		
-		<cfset arguments.$.noIndex()>
 	</cfif>
 	
 </cffunction>
