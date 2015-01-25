@@ -215,7 +215,33 @@ component extends="mura.cfobject" {
 			}
 
 			if(arrayLen(pathInfo) > 1){
-				params.entityName=pathInfo[2];
+				if(isDefined(pathInfo[2])){
+					params.method=pathInfo[2];
+
+					if(!listFindNoCase(variables.config.publicMethods, params.method) ){
+						throw(type="invalidMethodCall");
+					}
+
+					if(!(listFindNoCase('validate,processAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
+						throw(type='authorization');
+					}
+
+					if(arrayLen(pathInfo) > 2){
+						parseParamsFromPath(pathInfo,params,3);
+					}
+					
+					result=evaluate('#params.method#(argumentCollection=params)');
+					
+					if(!isJson(result)){
+						result=getSerializer().serialize({'data'=result});
+					}
+
+					getpagecontext().getresponse().setStatus(200);
+					return result;
+					
+				} else {
+					params.entityName=pathInfo[2];
+				}
 			}
 
 			if(isDefined('params.entityName') && listFIndNoCase('contentnavs,contentnav',params.entityName)){
