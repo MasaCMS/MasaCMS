@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <!--- Double check that the application has started properly.
-If it has not set application.appInitialized=false. --->
+If it has not, set application.appInitialized=false. --->
 <cftry>
 	<cfif not (
 			structKeyExists(application.settingsManager,'validate') 
@@ -98,7 +98,7 @@ If it has not set application.appInitialized=false. --->
 	)
 	>
 		<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">
-			<!--- Since the request may of had to wait double thak that code sitll needs to run --->
+			<!--- Since the request may have had to wait twice, this code still needs to run --->
 			<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 				<cfinclude template="onApplicationStart_include.cfm">
 				<cfif isdefined("setupApplication")>

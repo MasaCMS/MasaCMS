@@ -1,8 +1,8 @@
 component {
-    variables._fw1_version = "3.0_snapshot";
-    variables._di1_version = "1.0_snapshot";
+    variables._fw1_version = "3.0_rc";
+    variables._di1_version = "1.0_rc";
 /*
-    Copyright (c) 2010-2014, Sean Corfield
+    Copyright (c) 2010-2015, Sean Corfield
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -30,8 +30,7 @@ component {
         variables.autoExclude = [
             '/WEB-INF', '/Application.cfc', // never manage these!
             'framework.cfc', 'ioc.cfc',     // legacy FW/1 / DI/1
-            // recent FW/1 + DI/1 + AOP/1 exclusions:
-            '/framework/aop.cfc', '/framework/beanProxy.cfc',
+            // recent FW/1 + DI/1 exclusions:
             '/framework/ioc.cfc', '/framework/WireBoxAdapter.cfc',
             '/framework/one.cfc'
         ];
@@ -332,7 +331,8 @@ component {
         if ( left( cfcPath, 1 ) == '/' ) cfcPath = right( cfcPath, len( cfcPath ) - 1 );
         var dotted = '';
         do {
-            var mapped = '/' & cfcPath;
+            var mapped = cfcPath;
+            if ( len( mapped ) && left( mapped, 1 ) != '.' ) mapped = '/' & mapped;
             var mappedPath = replace( expandpath( mapped ), chr(92), '/', 'all' );
             if ( mappedPath == basePath ) {
                 dotted = replace( cfcPath, '/', '.', 'all' );
