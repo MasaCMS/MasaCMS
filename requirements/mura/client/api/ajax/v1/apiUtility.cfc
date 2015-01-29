@@ -407,11 +407,11 @@ component extends="mura.cfobject" {
 					result=delete(argumentCollection=params);
 			}
 
-			//try{
+			try{
 				if(responseObject.getStatus() != 404){
 					responseObject.setStatus(200);
 				}
-			//} catch (Any e){}
+			} catch (Any e){}
 
 			return getSerializer().serialize({'data'=result});
 		} 
