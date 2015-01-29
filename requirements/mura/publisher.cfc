@@ -892,7 +892,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfquery>
 			
-			<cfset getToWorkAdvertising(argumentCollection=arguments)>
+			<!---<cfset getToWorkAdvertising(argumentCollection=arguments)>--->
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategoryassign">
@@ -2370,6 +2370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</cffunction>
 	
+	<!---
 	<cffunction name="getToWorkAdvertising" returntype="void" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
@@ -2794,7 +2795,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- END ADVERTISING--->
 		
 	</cffunction>
-
+	--->
+	
 	<cffunction name="getToWorkClassExtensions" returntype="void">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
