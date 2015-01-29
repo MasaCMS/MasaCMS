@@ -110,15 +110,16 @@
 														<li class="divider"></li>
 														<li>
 															<a href="##">
-																<strong>#rc.$.rbKey('version.cfmlengine')#</strong>
+																<strong>#rc.$.rbKey('version.appserver')#</strong>
 																#listFirst(server.coldfusion.productname,' ')#
-																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >(#server.coldfusion.productversion#)</cfif>
+																<cfif structKeyExists(server,'railo') and structKeyExists(server.railo,'version') >(#server.railo.version#)
+																<cfelseif structKeyExists(server,'luccee') and structKeyExists(server.railo,'version') >(#server.railo.version#)<cfelseif structKeyExists(server,'coldfusion') and structKeyExists(server.coldfusion,'productversion') >(#server.coldfusion.productversion#)</cfif>
 															</a>
 														</li>
 														<cfif rc.$.globalConfig('javaEnabled')>
 															<li>
 																<a href="##">
-																	<strong>#rc.$.rbKey('version.dbengine')#</strong>
+																	<strong>#rc.$.rbKey('version.dbserver')#</strong>
 																	#rc.$.getBean('dbUtility').version().database_productname# (#rc.$.getBean('dbUtility').version().database_version#)
 																</a>
 															</li>
