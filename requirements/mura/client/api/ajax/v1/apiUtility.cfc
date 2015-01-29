@@ -67,7 +67,7 @@ component extends="mura.cfobject" {
 
 		registerEntity('content',{
 			public=true,
-			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
+			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
 
 		registerEntity('user',{public=true});
@@ -154,7 +154,7 @@ component extends="mura.cfobject" {
 
 		try {
 			var responseObject=getpagecontext().getresponse();
-			var params={};
+			var params={processContent=false};
 			var result="";
 
 			structAppend(params,url);
@@ -172,7 +172,7 @@ component extends="mura.cfobject" {
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 
-			//writeDump(var=pathInfo,abort=1);
+			
 			responseObject.setcontenttype('application/json; charset=utf-8');
 			request.returnFormat='JSON';
 
@@ -296,6 +296,7 @@ component extends="mura.cfobject" {
 
 						if(pathInfo[3]=='_path'){
 							params.id='';
+							params.processContent=true;
 							filenamestart=4;
 						} 
 
@@ -377,7 +378,7 @@ component extends="mura.cfobject" {
 								
 							}
 						} else {
-							if(listLen(params.id)){
+							if(listLen(params.id) > 1){
 								params.ids=params.id;
 								result=findMany(argumentCollection=params);
 							} else {
@@ -406,11 +407,11 @@ component extends="mura.cfobject" {
 					result=delete(argumentCollection=params);
 			}
 
-			try{
+			//try{
 				if(responseObject.getStatus() != 404){
 					responseObject.setStatus(200);
 				}
-			} catch (Any e){}
+			//} catch (Any e){}
 
 			return getSerializer().serialize({'data'=result});
 		} 
@@ -771,7 +772,6 @@ component extends="mura.cfobject" {
 			fields=variables.config.entities[entityConfigName].fields;
 		}
 
-
 		fields=listToArray(fields);
 
 		if(arrayLen(fields)){
@@ -779,9 +779,9 @@ component extends="mura.cfobject" {
 
 			for(var f in fields){
 				var prop=arguments.entity.getValue(f);
-				if(len(prop)){
+				//if(len(prop)){
 					temp['#f#']=prop;
-				}
+				//}
 			}
 
 			vals=temp;
@@ -798,16 +798,15 @@ component extends="mura.cfobject" {
 
 		return vals;
 	}
-	function findOne(entityName,id,siteid,process=false){
+	function findOne(entityName,id,siteid,processContent=false){
 
 		var $=getBean('$').init(arguments.siteid);
 
 		if(arguments.entityName=='content'){
 			var pk="contentid";
-
 			if(len($.event('contenthistid'))){
 				var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));	
-			} else if(isValid('uuid',arguments.id) || arguments.id=='00000000000000000000000000000000001' || arguments.id=='new'){	
+			} else if(!arguments.processContent){	
 				var entity=$.getBean('content').loadBy(contentid=arguments.id);	
 			} else {
 				if(arguments.id=='null'){

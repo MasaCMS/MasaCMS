@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject">
+<cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
@@ -403,7 +403,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset parseCustomURLVars(request.servletEvent)>
 	</cfif>
 	<cfset fileOutput=doRequest(request.servletEvent)>	
-	<cfoutput>#fileOutput#</cfoutput>
+	<cfcontent reset="true"><cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
 
 </cffunction>
