@@ -753,9 +753,9 @@
 	
 </cffunction>
 
-<cfscript>
-	function standardJSONTranslator($){
-		
+<cffunction name="standardJSONTranslator" output="false">
+	<cfargument name="$">
+	<cfscript>
 		try{
 			var result=$.content().getAllValues();
 			var renderer=$.getContentRenderer();
@@ -786,15 +786,18 @@
 			result.id=result.contentid;
 			result.links=apiUtility.getLinks($.content());
 			result.images=apiUtility.setImageUrls($.content(),$);
-
-			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
+			//if(!request.muraApiRequest){
+				getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
+			//}
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data=result}));
 
 		} catch (any e){
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=e.stacktrace}));
 		}
 
-	}
-</cfscript>
+	</cfscript>
+
+	<cfcontent reset="true">
+</cffunction>
 
 </cfcomponent>
