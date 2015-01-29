@@ -646,6 +646,7 @@ component extends="mura.cfobject" {
 	}
 
 	function logout(){
+		application.loginManager.logout();
 		return {'status'='success'};
 	}
 
