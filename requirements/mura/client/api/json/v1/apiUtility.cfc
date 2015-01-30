@@ -492,8 +492,14 @@ component extends="mura.cfobject" {
 	function AllowAccess(bean,$){
 
 		if(isObject(arguments.bean)){
+			if(!isDefined('arguments.bean.getEntityName')){
+				throw(type='invalidParameters');
+			}
 			var entityName=arguments.bean.getEntityName();
 		} else {
+			if(!getBeanFactory().containsBean(arguments.bean)){
+				throw(type='invalidParameters');
+			}
 			var entityName=arguments.bean;
 		}
 
@@ -523,6 +529,10 @@ component extends="mura.cfobject" {
 	}
 
 	function AllowAction(bean,$){
+
+		if(!isDefined('arguments.bean.getEntityName')){
+			throw(type='invalidParameters');
+		}
 
 		switch(arguments.bean.getEntityName()){
 			case 'content':
