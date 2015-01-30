@@ -491,7 +491,7 @@
 		validate: function(callback){
 
 				if(!mura.apiEndpoint){
-					mura.apiEndpoint=mura.context + '/index.cfm/_api/ajax/v1/';
+					mura.apiEndpoint=mura.context + '/index.cfm/_api/json/v1/';
 				}
 
 				var getValidationFieldName=function(theField){

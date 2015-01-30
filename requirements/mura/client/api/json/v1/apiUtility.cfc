@@ -1,12 +1,12 @@
 component extends="mura.cfobject" {
 	/*
-	FindONe: GET /_api/ajax/v1/:siteid/:entityName/:id => /_api/ajax/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
-	FindRelatedEntity: GET /_api/ajax/v1/:siteid/:entityName/:id/:relatedEntity/$ => /_api/ajax/v1/?method=findQuery&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
-	FinNew: GET /_api/ajax/v1/:siteid/:entityName/new => /_api/ajax/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=
-	FindQuery: GET /_api/ajax/v1/:siteid/:entityName/$ => /_api/ajax/v1/?method=findQuery&entityName=:entityname&siteid=:siteid
-	FindMany: GET /_api/ajax/v1/:siteid/:entityName/:ids/$ => /_api/ajax/v1/?method=findMany&entityName=:entityname&siteid=:siteid&ids=:ids
-	Save: POST /_api/ajax/v1/:siteid/:entityName/ => /_api/ajax/v1/?method=save&entityName=:entityname&siteid=:siteid
-	Delete: DELETE /_api/ajax/v1/:siteid/:entityName/:id => /_api/ajax/v1/?method=delete&entityName=:entityname&siteid=:siteid
+	FindONe: GET /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
+	FindRelatedEntity: GET /_api/json/v1/:siteid/:entityName/:id/:relatedEntity/$ => /_api/json/v1/?method=findQuery&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
+	FinNew: GET /_api/json/v1/:siteid/:entityName/new => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=
+	FindQuery: GET /_api/json/v1/:siteid/:entityName/$ => /_api/json/v1/?method=findQuery&entityName=:entityname&siteid=:siteid
+	FindMany: GET /_api/json/v1/:siteid/:entityName/:ids/$ => /_api/json/v1/?method=findMany&entityName=:entityname&siteid=:siteid&ids=:ids
+	Save: POST /_api/json/v1/:siteid/:entityName/ => /_api/json/v1/?method=save&entityName=:entityname&siteid=:siteid
+	Delete: DELETE /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=delete&entityName=:entityname&siteid=:siteid
 
 	200 - OK - Everything went fine.
 	400s - all caused by user interaction
@@ -35,9 +35,9 @@ component extends="mura.cfobject" {
 		*/
 
 		if(configBean.getIndexfileinurls()){
-			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/ajax/v1/#variables.siteid#";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/json/v1/#variables.siteid#";	
 		} else {
-			variables.endpoint="#site.getResourcePath(complete=1)#/_api/ajax/v1/#variables.siteid#";	
+			variables.endpoint="#site.getResourcePath(complete=1)#/_api/json/v1/#variables.siteid#";	
 		}
 		
 		variables.config={
