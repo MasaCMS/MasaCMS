@@ -133,7 +133,7 @@
 					<cfif request.muraFrontEndRequest>
 						<cflocation addtoken="false" url="#request.redirect_url#">
 					<cfelse>
-						<cfset request.muraAjaxRedirectURL=request.redirect_url>
+						<cfset request.muraJSONRedirectURL=request.redirect_url>
 					</cfif>
 					
 				</cfif>

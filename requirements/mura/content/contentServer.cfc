@@ -493,6 +493,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleAPIRequest" output="false">
 	<cfargument name="path" default="#cgi.path_info#">
+	<cfset var jsonendpoint="/_api/json/v1">
 	<cfset var ajaxendpoint="/_api/ajax/v1">
 	<cfset var feedendpoint="/_api/feed/v1">
 	<cfset var fileendpoint="/_api/render/">
@@ -503,16 +504,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var legacyfileendpoint="/tasks/render/">
 	<cfset var legacywidgetendpoint="/tasks/widgets/">
 
-	<cfif left(path,len(ajaxendpoint)) eq ajaxendpoint>
+	<cfif left(path,len(jsonendpoint)) eq jsonendpoint or left(path,len(ajaxendpoint)) eq ajaxendpoint>
 		<cfset request.muraAPIRequest=true>
 		<cfif listLen(path,'/') gte 4>
-			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('ajax','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(listGetAt(path,4,'/')).getApi('json','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('form.siteid')>
-			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(form.siteid).getApi('json','v1').processRequest(arguments.path)>	
 		<cfelseif isDefined('url.siteid')>
-			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('ajax','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite(url.siteid).getApi('json','v1').processRequest(arguments.path)>	
 		<cfelse>
-			<cfreturn getBean('settingsManager').getSite('default').getApi('ajax','v1').processRequest(arguments.path)>	
+			<cfreturn getBean('settingsManager').getSite('default').getApi('json','v1').processRequest(arguments.path)>	
 		</cfif>
 	<cfelseif isDefined('url.feedid') and (left(path,len(feedendpoint)) eq feedendpoint or left(path,len(legacyfeedendpoint)) eq legacyfeedendpoint)>
 		<cfif listLen(path,'/') gte 4>
@@ -721,7 +722,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.getValidator("standardWrongDomain").validate(arguments.event)> 
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
-			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
@@ -733,7 +734,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.getHandler("standardDoActions").handle(arguments.event)>
 
 		<cfif isdefined('request.muraJSONRedirectURL')>
-			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
@@ -741,7 +742,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.getHandler("standardSetPermissions").handle(arguments.event)>
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
-			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
@@ -749,7 +750,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.event.getValidator("standardRequireLogin").validate(arguments.event)>
 		
 		<cfif isdefined('request.muraJSONRedirectURL')>
-			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('ajax','v1')>
+			<cfset var apiUtility=application.settingsManager.getSite(request.siteid).getApi('json','v1')>
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>

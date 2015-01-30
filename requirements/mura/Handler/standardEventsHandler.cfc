@@ -728,7 +728,7 @@
 	<cfargument name="$" required="true">
 
 	<cfif request.returnFormat eq 'JSON'>
-		<cfset var apiUtility=$.siteConfig().getApi('ajax','v1')>
+		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
 		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
 	<cfelse>
 		<cfset $.getContentRenderer().renderFile($.content('fileid'),$.event('method'),$.event('size')) />
@@ -745,7 +745,7 @@
 	</cfif>
 
 	<cfif request.returnFormat eq 'JSON'>
-		<cfset var apiUtility=$.siteConfig().getApi('ajax','v1')>
+		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
 		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}}))>
 	<cfelse>
 		<cflocation url="#theLink#" addtoken="false" statuscode="301">
@@ -759,7 +759,7 @@
 		try{
 			var result=$.content().getAllValues();
 			var renderer=$.getContentRenderer();
-			var apiUtility=$.siteConfig().getApi('ajax','v1');
+			var apiUtility=$.siteConfig().getApi('json','v1');
 			
 			renderer.injectMethod('showInlineEditor',false);
 			renderer.injectMethod('showAdminToolBar',false);

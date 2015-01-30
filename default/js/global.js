@@ -441,7 +441,7 @@ var initMura=function(config){
 	}
 
 	if(!config.apiEndpoint){
-		config.apiEndpoint=config.context + '/index.cfm/_api/ajax/v1/';
+		config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
 	}
 
 	if(!config.requirementspath){
