@@ -154,7 +154,7 @@ component extends="mura.cfobject" {
 
 		try {
 			var responseObject=getpagecontext().getresponse();
-			var params={processContent=false};
+			var params={};
 			var result="";
 
 			structAppend(params,url);
@@ -296,7 +296,6 @@ component extends="mura.cfobject" {
 
 						if(pathInfo[3]=='_path'){
 							params.id='';
-							params.processContent=true;
 							filenamestart=4;
 						} 
 
@@ -798,15 +797,15 @@ component extends="mura.cfobject" {
 
 		return vals;
 	}
-	function findOne(entityName,id,siteid,processContent=false){
+	function findOne(entityName,id,siteid){
 
 		var $=getBean('$').init(arguments.siteid);
-
+		
 		if(arguments.entityName=='content'){
 			var pk="contentid";
 			if(len($.event('contenthistid'))){
 				var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));	
-			} else if(!arguments.processContent){	
+			} else if(isValid('uuid',arguments.id) || arguments.id=='00000000000000000000000000000000001' || arguments.id=='new'){	
 				var entity=$.getBean('content').loadBy(contentid=arguments.id);	
 			} else {
 				if(arguments.id=='null'){
