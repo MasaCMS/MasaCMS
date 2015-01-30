@@ -5,7 +5,7 @@
 		
 		<cfset tableList="tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">
 
-		<cfif getAdManader()>
+		<cfif variables.instance.adManager>
 			<cfset tableList=tableList & ",tadcampaigns,tadcreatives,tadplacements,tadzones">
 		</cfif>	
 		
