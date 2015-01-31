@@ -668,7 +668,7 @@ to your own modified versions of Mura CMS.
 								</div>
 						</div>
 						 <div class="span3">
-							<label class="control-label">Javascript API (ALPHA)</label>
+							<label class="control-label">JSON API (ALPHA)</label>
 							<div class="controls"> 
 									<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> CHECKED</CFIF>>Off</label>
 									<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> CHECKED</CFIF>>On</label>
