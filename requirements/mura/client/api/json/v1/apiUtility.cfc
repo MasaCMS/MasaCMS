@@ -1232,7 +1232,7 @@ component extends="mura.cfobject" {
 		}
 
 		if(entity.getEntityName()=='content'){
-			links['renderered']="#baseurl#/_path/#entity.getFilename()#index.json";
+			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
 			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&id=#entity.getValue('contentid')#";
 		} else if(entity.getEntityName()=='category'){
