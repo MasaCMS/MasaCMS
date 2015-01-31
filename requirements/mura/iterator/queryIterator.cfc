@@ -160,7 +160,7 @@
 		<cfreturn pageCount />
 	</cffunction>
 	
-	<cffunction name="recordCount" access="public" output="false" returntype="numeric" hint="For Railo compatibility use getRecordCount()">
+	<cffunction name="recordCount" access="public" output="false" returntype="numeric" hint="For Lucee compatibility use getRecordCount()">
 		<cfreturn getRecordCount()>
 	</cffunction>
 	

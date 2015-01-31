@@ -255,8 +255,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="Railo">
 		<cfset setCompiler("Railo")/>	
 	</cfcase>
-	<cfcase value="Open BlueDragon">
-		<cfset setCompiler("Open BlueDragon")/>	
+	<cfcase value="Lucee">
+		<cfset setCompiler("Lucee")/>	
 	</cfcase>
 	<cfdefaultcase>
 		<cfset setCompiler("Adobe")/>	

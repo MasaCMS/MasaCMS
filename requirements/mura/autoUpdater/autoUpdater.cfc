@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset returnStruct.currentVersion=updateVersion/>
 	<cfset returnStruct.files=updatedArray>
 
-	<cfif listFindNoCase('Railo,Lucee',server.ColdFusion.ProductName)>
+	<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
 		<cfscript>pagePoolClear();</cfscript>
 	</cfif>
 

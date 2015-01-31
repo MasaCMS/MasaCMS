@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent output="false">
 
 <cfscript>
-	if(structKeyExists(server,'railo')){
+	if(server.ColdFusion.ProductName != 'Coldfusion Server'){
 		backportdir='';
 		include "/mura/backport/backport.cfm";
 	} else {

@@ -85,7 +85,7 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 			structDelete(form, "fieldnameOrder");
 			structDelete(aguments.data, "fieldnameOrder");
 
-		} else if (application.configBean.getCompiler() eq "Railo"){
+		} else if (application.configBean.getCompiler() neq "Adobe"){
 			arguments.data.fieldnames='';
 			local.aRawForm = form.getRaw();
     

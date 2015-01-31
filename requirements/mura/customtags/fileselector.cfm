@@ -21,7 +21,7 @@
 </cfif>
 
 <cfscript>
-	if(structKeyExists(server,'railo')|| structKeyExists(server,'lucee')){
+	if(server.coldfusion.productname != 'Coldfusion Server'){
 		backportdir='';
 		include "/mura/backport/backport.cfm";
 	} else {
