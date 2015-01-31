@@ -16,7 +16,7 @@
 	
 	
 	<cffunction name="fDSCreate" access="package" returntype="String"  hint="creates datasource connection, returns empty string or error">
-		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
+		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Lucee">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
 		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" required="false"  type="numeric" hint="will use default port for each database if not provided">

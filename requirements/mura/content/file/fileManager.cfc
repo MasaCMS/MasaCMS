@@ -194,10 +194,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFileData.image)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif not listFindNoCase('Railo,Lucee',variables.configBean.getCompiler())>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				</cfif>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
@@ -260,10 +260,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageSmall)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif not listFindNoCase('Railo,Lucee',variables.configBean.getCompiler())>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
 				</cfif>
 			</cfcase>
 			<cfcase value="filedir">
@@ -302,10 +302,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageMedium)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif not listFindNoCase('Railo,Lucee',variables.configBean.getCompiler())>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
 				</cfif>
 			</cfcase>
 			<cfcase value="filedir">
@@ -328,8 +328,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="file" default="" required="yes" type="any">
 
 <cfswitch expression="#variables.configBean.getCompiler()#">
-	<cfcase value="railo">
-		<cfset createObject("component","mura.content.file.renderRailo").init(arguments.mimeType,arguments.file) />
+	<cfcase value="railo,lucee">
+		<cfset createObject("component","mura.content.file.renderLucee").init(arguments.mimeType,arguments.file) />
 	</cfcase>
 	<cfdefaultcase>
 		<cfset createObject("component","mura.content.file.renderAdobe").init(arguments.mimeType,arguments.file) />
@@ -397,10 +397,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(local.theFile, "fileContent") and isArray(local.theFile.fileContent)>
 		<cfheader name="Content-Length" value="#arrayLen(local.theFile.fileContent)#" />
 		<cfif structKeyExists(local.rsFile, "contentType") and structKeyExists(local.rsFile, "contentSubType")>
-			<cfif variables.configBean.getCompiler() neq "Railo">
+			<cfif not listFindNoCase('Railo,Lucee',variables.configBean.getCompiler())>
 				<cfset createObject("component","mura.content.file.renderAdobe").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
 			<cfelse>
-				<cfset createObject("component","mura.content.file.renderRailo").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
+				<cfset createObject("component","mura.content.file.renderLucee").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
 			</cfif>
 		</cfif>
 	</cfif>	

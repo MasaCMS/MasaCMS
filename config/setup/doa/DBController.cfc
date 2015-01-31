@@ -54,7 +54,7 @@
 	               if (this.CFServerType IS "ColdFusion") {
 	               		sErr=sErr & ":H2 Database is supported only in manual mode. Please create a database and datasource following standard procedures.";
 	               } else {
-	               		//Railo
+	               		//Lucee
 						if (NOT IsDefined("Arguments.UserName")) sErr=sErr & ":Database User Name is required.";	
 		               	if (NOT IsDefined("Arguments.Password")) sErr=sErr & ":Database User Password is required.";	               
 	               }	
@@ -87,9 +87,9 @@
 			//based on gateway run delete operation
 			try{
 				switch(this.CFServerType) {
-		        	case "Railo":
+		        	case "Lucee":
 						// (bsoylu 6/6/2010) remove datasouce from Railo
-						sErr=fRailoDeleteDS(argumentCollection=Arguments);				   
+						sErr=fLuceeDeleteDS(argumentCollection=Arguments);				   
 		               	break;
 		            case "ColdFusion":
 		               // (bsoylu 6/6/2010) remove datasource from Adobe CF
@@ -132,8 +132,8 @@
 			this.dbType = this.settingsIni.get( "production", "dbtype" );	
 			//determine app server
 			this.CFServerType = "ColdFusion";
-			if (server.ColdFusion.ProductName CONTAINS "Railo"){
-				this.CFServerType = "Railo";
+			if (server.ColdFusion.ProductName CONTAINS "Railo" or server.ColdFusion.ProductName CONTAINS "Lucee"){
+				this.CFServerType = "Lucee";
 			}					
 		</cfscript>		
 	</cffunction>
@@ -171,17 +171,17 @@
 		</cfscript>
 	</cffunction>		
 	
-	<cffunction name="fRailoDeleteDS" access="package" returntype="string" hint="deletes a Datasource in Railo. returns error or empty string">
+	<cffunction name="fLuceeDeleteDS" access="package" returntype="string" hint="deletes a Datasource in Railo. returns error or empty string">
 		<cfargument name="GWPassword" type="string" required="yes" hint="input Railo password string">
 		<cfargument name="DataSourceName" type="string" required="Yes" hint="the datasource name to be used">
 		
 		<cfset var sErr="">
-		<cfset var sRailoAdminCall="">
+		<cfset var sLuceeAdminCall="">
 		
 		<cftry>
 			<!--- for Railo we will use the cfadmin tag (bsoylu 12/4/2010) --->
 			<!--- we need to encapsulate this into an evaluate so that abode coldfusion  does no throw error (bsoylu 12/19/2010) --->
-			<cfsavecontent variable="sRailoAdminCall">
+			<cfsavecontent variable="sLuceeAdminCall">
 			<cfoutput>
 			#Chr(60)#cfadmin
 	    		action="removeDatasource"
@@ -192,10 +192,10 @@
 		    </cfoutput>	
 		    </cfsavecontent>
 		    
-		    <cfset void=Evaluate(sRailoAdminCall)>
+		    <cfset void=Evaluate(sLuceeAdminCall)>
 		    
 		    <cfcatch type="any">
-				<cfset sErr="could not remove Railo datasource: #cfcatch.detail#">
+				<cfset sErr="could not remove Lucee datasource: #cfcatch.detail#">
 			</cfcatch>
 		</cftry>
 		<cfreturn sErr>			

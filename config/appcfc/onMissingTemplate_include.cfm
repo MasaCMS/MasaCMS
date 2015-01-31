@@ -79,7 +79,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>#application.contentServer.handleAPIRequest('/' & local.filename)#</cfoutput>
 		<cfabort>
 	<cfelse>
-		<cfdump var="#local.filename#" abort="true">
 		<cfset application.contentServer.renderFilename(local.filename)>
 	</cfif>
 	

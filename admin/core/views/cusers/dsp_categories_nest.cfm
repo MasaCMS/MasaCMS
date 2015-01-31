@@ -47,7 +47,7 @@
 --->
 <cfsilent>
 	<cfscript>
-		if(structKeyExists(server,'railo')){
+		if(server.coldfusion.productname != 'ColdFusion Server'){
 			backportdir='';
 			include "/mura/backport/backport.cfm";
 		} else {
