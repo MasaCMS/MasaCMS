@@ -1252,7 +1252,7 @@ component extends="mura.cfobject" {
 		
 		var $=getBean('$').init(arguments.siteid);
 
-		if(!allowAccess(arguments.entityName,$)){
+		if(!allowAccess('content',$)){
 			throw(type="authorization");
 		}
 
@@ -1280,7 +1280,7 @@ component extends="mura.cfobject" {
 			args.relatedContentSetID=$.event('relatedContentSetID');
 		}
 
-		var iterator=entity.getRelatedIterator(argumentCollection=args);
+		var iterator=entity.getRelatedContentIterator(argumentCollection=args);
 
 		//writeDump(var=iterator.getQUery(),abort=1);
 		var returnArray=[];
