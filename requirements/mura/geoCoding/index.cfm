@@ -5,7 +5,7 @@
 
 <cfparam name="form.address" default="">
 <!--- This is my Google API key. You can get it here: http://code.google.com/apis/maps/signup.html
-	This is the one I signed up for Railo --->
+	This is the one I signed up for Lucee --->
 <cfset key = "ABQIAAAAz4xmsSrdMgouNCysOe_oOBSp0ls6l3zzZJBJLLvUdL5iIGn5bxRrvpnv5r2FjPee49Jkd1k5G2nfaw">
 
 <cfif len(trim(form.address))>

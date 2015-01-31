@@ -2245,7 +2245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
 
-	<!--- RAILO --->
+	<!--- Lucee --->
 	<cfif isDefined('form.files') and isArray(form.files)>
 		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
@@ -2328,7 +2328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>]}</cfoutput>
 			<cfabort>
 		<cfcatch>
-			<cflog log="application" text="Railo: #cfcatch.message#">
+			<cflog log="application" text="Lucee: #cfcatch.message#">
 			<cfabort>
 		</cfcatch>
 		</cftry>
