@@ -48,7 +48,7 @@
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif not isdefined('request.backported')>
 	<cfscript>
-		if(structKeyExists(server,'railo')){
+		if(server.coldfusion.productname != 'ColdFusion Server'){
 			backportdir='';
 			include "/mura/backport/backport.cfm";
 		} else {

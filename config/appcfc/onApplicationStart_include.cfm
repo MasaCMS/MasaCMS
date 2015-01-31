@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(server.coldfusion.productName eq 'Coldfusion Server'){
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayAdobe");
 		} else {
-			variables.serviceFactory.addAlias("contentGateway","contentGatewayRailo");
+			variables.serviceFactory.addAlias("contentGateway","contentGatewayLucee");
 		}
 
 		if(getINIProperty("javaEnabled",true)){
@@ -396,7 +396,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
 	</cfif>
 			
-	<cfif application.configBean.getCompiler() eq "Railo">
+	<cfif listFindNoCase('Railo,Lucee',application.configBean.getCompiler())>
 		<cfset variables.siteMonitorTask="siteMonitor"/>
 	<cfelse>
 		<cfset variables.siteMonitorTask="#application.configBean.getWebRoot()#/index.cfm/_api/sitemonitor/"/>

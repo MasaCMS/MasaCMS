@@ -258,7 +258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn "zh_TW">
 			</cfcase>
 			
-			<!--- Railo --->
+			<!--- Railo and Lucee--->
 			<cfcase value="arabic">
 					<cfreturn "ar">
 			</cfcase>

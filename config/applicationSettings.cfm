@@ -179,7 +179,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  Find( "80legs", request.userAgent ) OR
  Find( "googlebot", request.userAgent ) OR
  Find( "microsoft office protocol", request.userAgent ) OR
- Find( "railo", request.userAgent )
+ Find( "railo", request.userAgent ) OR
+ Find( "lucee", request.userAgent )
  )>
 
 <cfif request.tracksession>

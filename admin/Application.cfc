@@ -49,7 +49,7 @@ component extends="framework" output="false" {
 	include "../config/applicationSettings.cfm";
 
 	
-	if(structKeyExists(server,'railo')){
+	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
 		include "../requirements/mura/backport/backport.cfm";
 	} else {

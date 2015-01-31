@@ -21,7 +21,7 @@
 </cfif>
 
 <cfscript>
-	if(structKeyExists(server,'railo')){
+	if(structKeyExists(server,'railo')|| structKeyExists(server,'lucee')){
 		backportdir='';
 		include "/mura/backport/backport.cfm";
 	} else {
