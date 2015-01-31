@@ -15,7 +15,6 @@ component extends="mura.cfobject" {
 	403 - Forbidden - The user has exceeded their post limit (not bloody likely).
 	404 - Not Found - The requested resource was not found.
 	405 - Method Not Allowed - The user attempted to use a verb (ex. GET, POST) on a resource that had no support for the given verb.
-	406 - Not Acceptable - The user requested a return format (ex. JSON, XML) that is not currently supported.
 	*/
 
 	function init(siteid){
@@ -42,7 +41,7 @@ component extends="mura.cfobject" {
 		
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject",
+			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
 			entities={
 				'contentnav'={
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
@@ -497,7 +496,7 @@ component extends="mura.cfobject" {
 			}
 			var entityName=arguments.bean.getEntityName();
 		} else {
-			if(!getBeanFactory().containsBean(arguments.bean)){
+			if(!getServiceFactory().containsBean(arguments.bean)){
 				throw(type='invalidParameters');
 			}
 			var entityName=arguments.bean;
@@ -1233,8 +1232,9 @@ component extends="mura.cfobject" {
 		}
 
 		if(entity.getEntityName()=='content'){
-			links['processed']="#baseurl#?method=findOne&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('filename')#";
+			links['renderered']="#baseurl#/_path/#entity.getFilename()#index.json";
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
+			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&id=#entity.getValue('contentid')#";
 		} else if(entity.getEntityName()=='category'){
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('categoryid')#";	
 		}
@@ -1246,6 +1246,74 @@ component extends="mura.cfobject" {
 		}
 
 		return links;
+	}
+
+	function findRelatedContent(id,siteid){
+		
+		var $=getBean('$').init(arguments.siteid);
+
+		if(!allowAccess(arguments.entityName,$)){
+			throw(type="authorization");
+		}
+
+		var entity=$.getBean('content').loadBy(contentid=arguments.id);
+
+		var args={};
+
+		if(len($.event('sortby'))){
+			args.sortBy=$.event('sortby');
+		}
+
+		if(len($.event('sortdirection'))){
+			args.sortdirection=$.event('sortdirection');
+		}
+
+		if(len($.event('name'))){
+			args.name=$.event('name');
+		}
+
+		if(len($.event('reverse'))){
+			args.reverse=$.event('reverse');
+		}
+
+		if(len($.event('relatedContentSetID'))){
+			args.relatedContentSetID=$.event('relatedContentSetID');
+		}
+
+		var iterator=entity.getRelatedIterator(argumentCollection=args);
+
+		//writeDump(var=iterator.getQUery(),abort=1);
+		var returnArray=[];
+		var itemStruct={};
+		var item='';
+		var subIterator='';
+		var subItem='';
+		var subItemArray=[];
+		var p='';
+
+		while(iterator.hasNext()){
+			item=iterator.next();
+			itemStruct=getFilteredValues(item,$,false);
+			if(len(pk)){
+				itemStruct.id=itemStruct[pk];
+			}
+
+			if(listFindNoCase('content,contentnav',arguments.entityName)){
+				itemStruct.images=setImageURLS(item,$);
+				itemStruct.url=item.getURL();
+			}
+
+			itemStruct.links=getLinks(item);
+
+			/*
+			var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			*/
+
+			arrayAppend(returnArray, itemStruct );
+		}
+
+		return formatArray(returnArray);
 	}
 
 	function applyRemoteFormat(str){
