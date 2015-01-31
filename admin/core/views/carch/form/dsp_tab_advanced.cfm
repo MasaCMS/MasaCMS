@@ -100,8 +100,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </div>
 				
 			</cfif>
-
+			--->
 			<cfif rc.type eq 'Form' >
+				<!---
 				<div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 				 	<div class="controls">
@@ -110,6 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			     		</label>
 			    	</div>
 			    </div>
+			    --->
 			    <div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 				 	<div class="controls">
@@ -119,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			        </div>
 			    </div>
 			</cfif>
-			--->
+			
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
 				<div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
