@@ -802,6 +802,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'isNew');
 			structDelete(vals,'instanceid');
 			structDelete(vals,'primaryKey');
+			structDelete(vals,'extenddatatable');
 		}
 
 		return vals;
@@ -950,11 +951,7 @@ component extends="mura.cfobject" {
 		}
 
 		feed.addParam(column=pk,criteria=arguments.ids,condition='in');
-		
-		if(len($.event('orderby'))){
-			feed.setOrderBy($.event('orderby'));
-		}
-
+	
 		var iterator=feed.getIterator();
 
 		//writeDump(var=iterator.getQUery(),abort=1);
@@ -1033,10 +1030,6 @@ component extends="mura.cfobject" {
 			}	
 		}
 
-		if(len($.event('orderby'))){
-			feed.setOrderBy($.event('orderby'));
-		}
-
 		var iterator=feed.getIterator();
 
 		//writeDump(var=iterator.getQUery(),abort=1);
@@ -1096,6 +1089,10 @@ component extends="mura.cfobject" {
 
 		if(len($.event('limit'))){
 			feed.setMaxItems($.event('limit'));
+		}
+
+		if(isNumeric($.event('isPublic'))){
+			feed.setIsPublic($.event('isPublic'));
 		}
 	}
 
