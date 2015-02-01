@@ -44,8 +44,8 @@ component extends="mura.cfobject" {
 			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
 			entities={
 				'contentnav'={
-			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
-		}
+					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
+				}
 			}
 		};
 
@@ -69,12 +69,14 @@ component extends="mura.cfobject" {
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
 
-		registerEntity('user',{public=true});
-		registerEntity('address',{public=true});
-		registerEntity('changeset',{public=true});
-		registerEntity('feed',{public=true});
-		registerEntity('category',{public=true});
-		registerEntity('comment',{public=true});
+		registerEntity('content',{public=true});
+		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('address',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('changeset',{public=true,moduleid='00000000000000000000000000000000014'});
+		registerEntity('feed',{public=true,moduleid='00000000000000000000000000000000011'});
+		registerEntity('category',{public=true,moduleid='00000000000000000000000000000000010'});
+		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
 
 		return this;
 	}
@@ -575,33 +577,16 @@ component extends="mura.cfobject" {
 
 			break;
 			case 'user':
+			case 'group':
 			case 'address':
-				if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
-					if(arguments.bean.getValue('userid')!=$.currentUser('userid')){
-						return false;
+				if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
+					if(!(arguments.$.currentUser().isAdminUser() || arguments.$.currentUser().isSuperUser())){
+						if(arguments.bean.getValue('userid')!=$.currentUser('userid')){
+							return false;
+						}
 					}
 				}
-			break;
-			case 'category':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000010',variables.siteid)){
-					return false;
-				}
-			break;
-			case 'feed':
-				if(!(getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid) && getBean('permUtility').getModulePerm('00000000000000000000000000000000011',variables.siteid))){
-					return false;
-				}
-			break;
-			case 'changeset':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000014',variables.siteid)){
-					return false;
-				}
-			break;
-			case 'comment':
-				if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000015',variables.siteid)){
-					return false;
-				}
-			break;
+				break;
 			default:
 				if (isDefined('variables.config.entities.#arguments.bean.getEntityName()#.moduleid')) {
 					if(!getBean('permUtility').getModulePerm(variables.config.entities['#arguments.bean.getEntityName()#'].moduleid,variables.siteid)){
@@ -802,6 +787,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'isNew');
 			structDelete(vals,'instanceid');
 			structDelete(vals,'primaryKey');
+			structDelete(vals,'extenddatatable');
 		}
 
 		return vals;
@@ -950,11 +936,7 @@ component extends="mura.cfobject" {
 		}
 
 		feed.addParam(column=pk,criteria=arguments.ids,condition='in');
-		
-		if(len($.event('orderby'))){
-			feed.setOrderBy($.event('orderby'));
-		}
-
+	
 		var iterator=feed.getIterator();
 
 		//writeDump(var=iterator.getQUery(),abort=1);
@@ -1033,10 +1015,6 @@ component extends="mura.cfobject" {
 			}	
 		}
 
-		if(len($.event('orderby'))){
-			feed.setOrderBy($.event('orderby'));
-		}
-
 		var iterator=feed.getIterator();
 
 		//writeDump(var=iterator.getQUery(),abort=1);
@@ -1096,6 +1074,14 @@ component extends="mura.cfobject" {
 
 		if(len($.event('limit'))){
 			feed.setMaxItems($.event('limit'));
+		}
+
+		if(isNumeric($.event('isPublic'))){
+			feed.setIsPublic($.event('isPublic'));
+		}
+
+		if($.event('entityName')=='content' && len($.event('type'))){
+			feed.setType($.event('type'));
 		}
 	}
 
