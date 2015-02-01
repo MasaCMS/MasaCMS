@@ -69,11 +69,14 @@ component extends="mura.cfobject" {
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
 
-		registerEntity('user',{public=true});
-		registerEntity('address',{public=true});
-		registerEntity('changeset',{public=true});
-		registerEntity('feed',{public=true});
-		registerEntity('category',{public=true});
+		registerEntity('content',{public=true});
+		registerEntity('contentnav',{public=true});
+		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
+		registerEntity('address',{public=true,moduleid='00000000000000000000000000000000008'});
+		registerEntity('changeset',{public=true,moduleid='00000000000000000000000000000000014'});
+		registerEntity('feed',{public=true,moduleid='00000000000000000000000000000000011'});
+		registerEntity('category',{public=true,moduleid='00000000000000000000000000000000010'});
 		registerEntity('comment',{public=true});
 
 		return this;
