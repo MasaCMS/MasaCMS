@@ -195,6 +195,9 @@ component extends="mura.cfobject" output="false" {
 	}
 
  	function parseDateArg(String arg){
+
+ 		arguments.arg=replace(arguments.arg,'T',' ');
+ 		
 		if(lsisDate(arguments.arg)){
 			try{
 				return lsparseDateTime(arguments.arg);
