@@ -1,4 +1,5 @@
 <!--- make sure tadcreatives.target exists --->
+<!---
 <cfif variables.instance.adManager>
 	<cfquery name="rsCheck">
 	select * from tadcreatives testTarget where 0=1
@@ -38,6 +39,8 @@
 	</cfquery>
 	</cfif>
 </cfif>
+--->
+
 <!--- make sure tcontentcomment.subscribe exists --->
 
 <cfquery name="rsCheck">

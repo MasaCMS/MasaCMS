@@ -1,3 +1,4 @@
+<!---
 <cfif variables.instance.adManager>
 	<cfquery name="rsCheck">
 	select * from tadcreatives  where 0=1
@@ -48,4 +49,4 @@
 	</cfswitch>
 	</cfif>
 </cfif>
-
+--->
