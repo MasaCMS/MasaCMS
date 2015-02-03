@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var categoryLen =listLen(arguments.feedBean.getCategoryID()) />
 	<cfset var rsParams=arguments.feedBean.getAdvancedParams() />
 	<cfset var started =false />
-	<cfset var isNull=false>
+	<cfset var isNullVal=false>
 	<cfset var param =createObject("component","mura.queryParam")/>
 	<cfset var doKids =false />
 	<cfset var doTags =false />
@@ -644,7 +644,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						) />
 
 						<cfif param.getIsValid()>
-							<cfset isNull = param.getCriteria() eq 'null' ? true : false />
+							<cfset isNullVal = param.getCriteria() eq 'null' ? true : false />
 
 							<cfif not started>
 								<cfset openGrouping=true />
