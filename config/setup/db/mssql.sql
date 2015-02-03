@@ -647,43 +647,6 @@ ALTER TABLE [dbo].[tcontentstats] WITH NOCHECK ADD
 	)  ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[tadcampaigns] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tadcampaigns] PRIMARY KEY  CLUSTERED 
-	(
-		[campaignID]
-	)  ON [PRIMARY] 
-GO
-
-ALTER TABLE [dbo].[tadcreatives] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tadcreatives] PRIMARY KEY  CLUSTERED 
-	(
-		[creativeID]
-	)  ON [PRIMARY] 
-GO
-
-ALTER TABLE [dbo].[tadplacementdetails] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tadplacementdetails] PRIMARY KEY  CLUSTERED 
-	(
-		[detailID]
-	)  ON [PRIMARY] 
-GO
-
-
-ALTER TABLE [dbo].[tadplacements] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tadplacements] PRIMARY KEY  CLUSTERED 
-	(
-		[placementID]
-	)  ON [PRIMARY] 
-GO
-
-ALTER TABLE [dbo].[tadstats] WITH NOCHECK ADD 
-	CONSTRAINT [PK_tadstats] PRIMARY KEY  CLUSTERED 
-	(
-		[statID]
-	)  ON [PRIMARY] 
-GO
-
-
 ALTER TABLE [dbo].[tcontentassignments] WITH NOCHECK ADD 
 	CONSTRAINT [PK_tcontentassignments] PRIMARY KEY  CLUSTERED 
 	(
