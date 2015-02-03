@@ -838,7 +838,7 @@ Display Objects
 		<cfset var icon="">
 		<cfset var isFileIcon=false>
 		<cfset var charCount = 0>
-		<cfset limited = false>
+		<cfset var limited = false>
 		<cfif arguments.charLimit>
 			<!--- change crumbLen --->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="i">
@@ -906,7 +906,7 @@ Display Objects
 		<cfset var icon = "">
 		<cfset var isFileIcon = false>
 		<cfset var charCount = 0>
-		<cfset limited = false>
+		<cfset var limited = false>
 		<cfif arguments.charLimit>
 			<!--- change crumbLen --->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="i">

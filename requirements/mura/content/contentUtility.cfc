@@ -429,6 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="oldfilename" type="string" />
 
 	<cfset var newfilename="">
+	<cfset var rs="">
 
 	<cfquery name="rs">
 		select contentid,contenthistid,siteid,filename from tcontent  
@@ -966,7 +967,7 @@ Sincerely,
 		<cfset contentBean.setPath(listAppend(arguments.path,contentBean.getContentID()))>
 	</cfif>
 	
-	<cfset prevBean=contentBean>
+	<cfset var prevBean=contentBean>
 
 	<cfset contentBean.setCreated(now())>
 	<cfset contentBean.save()>

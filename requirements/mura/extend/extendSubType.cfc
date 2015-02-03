@@ -360,6 +360,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDefaultIconClass" returntype="String" access="public" output="false">
+	<cfset var returnVar="">
+	
 	<cfswitch expression="#getType()#">
 		<cfcase value="page">
 			<cfset returnVar = "icon-file">
