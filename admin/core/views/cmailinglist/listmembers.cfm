@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions">
 <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
 </div>
-<input type=hidden name="mlid" value="#rc.mlid#">
+<input type=hidden name="mlid" value="#esapiEncode('html_attr',rc.mlid)#">
 <input type=hidden name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 <input type=hidden name="isVerified" value="1">
 </form>

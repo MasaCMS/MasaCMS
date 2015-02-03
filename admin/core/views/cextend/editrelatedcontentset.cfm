@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');" value="Delete" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
-	<input type=hidden name="relatedContentSetID" value="#rcsBean.getRelatedContentSetID()#">
+	<input type=hidden name="relatedContentSetID" value="#esapiEncode('html_attr',rcsBean.getRelatedContentSetID())#">
 </cfif>
 </div>
 
