@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
 			entities={
 				'contentnav'={
-					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl"
+					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 				}
 			}
 		};
@@ -784,7 +784,6 @@ component extends="mura.cfobject" {
 			structDelete(vals,'removeObjects');
 			structDelete(vals,'frommuracache');
 			structDelete(vals,'errors');
-			structDelete(vals,'isNew');
 			structDelete(vals,'instanceid');
 			structDelete(vals,'primaryKey');
 			structDelete(vals,'extenddatatable');
