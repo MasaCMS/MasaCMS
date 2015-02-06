@@ -559,6 +559,7 @@ component extends="mura.cfobject" {
 				}
 
 				local.currentBean=getBean("content").loadBy(contentID=arguments.bean.getContentID(), siteID= arguments.bean.getSiteID()); 
+				local.perm='none';
 				
 				if(!local.currentBean.getIsNew()){
 					local.crumbData=arguments.bean.getCrumbArray(); 
@@ -567,7 +568,7 @@ component extends="mura.cfobject" {
 				 
 				if(local.currentBean.getIsNew() && len(local.currentBean.getParentID())){
 					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
-					local.perm=etBean('permUtility').getNodePerm(local.crumbData);  
+					local.perm=getBean('permUtility').getNodePerm(local.crumbData);  
 				}
 				 
 				if(!listFindNoCase('author,editor',local.perm)){
