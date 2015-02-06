@@ -1,8 +1,8 @@
 component extends="mura.cfobject" {
 	/*
-	FindONe: GET /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
+	FindOne: GET /_api/json/v1/:siteid/:entityName/:id => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=:id
 	FindRelatedEntity: GET /_api/json/v1/:siteid/:entityName/:id/:relatedEntity/$ => /_api/json/v1/?method=findQuery&entityName=:relatedEntity&siteid=:siteid&:entityNameFK=:id
-	FinNew: GET /_api/json/v1/:siteid/:entityName/new => /_api/json/v1/?method=findOne&entityName=:entityname&siteid=:siteid&id=
+	FinNew: GET /_api/json/v1/:siteid/:entityName/new => /_api/json/v1/?method=findNew&entityName=:entityname&siteid=:siteid
 	FindQuery: GET /_api/json/v1/:siteid/:entityName/$ => /_api/json/v1/?method=findQuery&entityName=:entityname&siteid=:siteid
 	FindMany: GET /_api/json/v1/:siteid/:entityName/:ids/$ => /_api/json/v1/?method=findMany&entityName=:entityname&siteid=:siteid&ids=:ids
 	Save: POST /_api/json/v1/:siteid/:entityName/ => /_api/json/v1/?method=save&entityName=:entityname&siteid=:siteid
@@ -41,7 +41,7 @@ component extends="mura.cfobject" {
 		
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
+			publicMethods="findOne,findMany,findAll,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
@@ -296,6 +296,7 @@ component extends="mura.cfobject" {
 						var filenamestart=3;
 
 						if(pathInfo[3]=='_path'){
+							params.render=true;
 							params.id='';
 							filenamestart=4;
 						} 
@@ -371,6 +372,8 @@ component extends="mura.cfobject" {
 									if(listLen(params.id)){
 										params.ids=params.id;
 										result=findMany(argumentCollection=params);
+									} else if(params.id=='new') {
+										result=findNew(argumentCollection=params);
 									} else {
 										result=findOne(argumentCollection=params);
 									}	
@@ -562,7 +565,7 @@ component extends="mura.cfobject" {
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);
 				}
 				 
-				if(local.currentBean.getIsNew() && len(arguments.rc.parentID)){
+				if(local.currentBean.getIsNew() && len(local.currentBean.parentID)){
 					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
 					local.perm=etBean('permUtility').getNodePerm(local.crumbData);  
 				}
@@ -791,25 +794,28 @@ component extends="mura.cfobject" {
 
 		return vals;
 	}
-	function findOne(entityName,id,siteid){
+
+	function findOne(entityName,id,siteid,render=false){
 
 		var $=getBean('$').init(arguments.siteid);
 		
 		if(arguments.entityName=='content'){
-			var pk="contentid";
-			if(len($.event('contenthistid'))){
-				var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));	
-			} else if(isValid('uuid',arguments.id) || arguments.id=='00000000000000000000000000000000001' || arguments.id=='new'){	
-				var entity=$.getBean('content').loadBy(contentid=arguments.id);	
-			} else {
+			if(arguments.render){
 				if(arguments.id=='null'){
 					arguments.id='';
 				}
 
-				getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);
-				
+				getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);		
+		
+
+			} else {
+				if(len($.event('contenthistid'))){
+					var entity=$.getBean('content').loadBy(contenthistid=$.event('contenthistid'));	
+				} else {	
+					var entity=$.getBean('content').loadBy(contentid=arguments.id);	
+				}
 			}
-			
+
 		} else {
 			var entity=$.getBean(arguments.entityName);
 
@@ -841,6 +847,37 @@ component extends="mura.cfobject" {
 		var tokens=$.generateCSRFTokens(context=returnStruct.id);
 		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		*/
+
+		return returnStruct;
+	}
+
+	function findNew(entityName,siteid){
+
+		var $=getBean('$').init(arguments.siteid);	
+		var entity=$.getBean(arguments.entityName);
+
+		if($.event('entityName')=='feed'){
+			var pk="feedid";
+		} else {
+			var pk=entity.getPrimaryKey();
+		}
+		
+		var loadparams={'#pk#'=''};
+		entity.loadBy(argumentCollection=loadparams);
+	
+		if(!allowAccess(entity,$)){
+			throw(type="authorization");
+		}
+
+		var returnStruct=getFilteredValues(entity,$);
+
+		if(listFindNoCase('content,contentnav',arguments.entityName)){
+			returnstruct.images=setImageURLS(entity,$);
+			returnstruct.url=entity.getURL();
+		}
+
+		returnStruct.links=getLinks(entity);		
+		returnStruct.id=returnStruct[pk];
 
 		return returnStruct;
 	}
