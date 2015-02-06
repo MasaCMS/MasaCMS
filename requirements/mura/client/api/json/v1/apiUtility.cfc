@@ -797,10 +797,10 @@ component extends="mura.cfobject" {
 	}
 
 	function findOne(entityName,id,siteid,render=false){
-
 		var $=getBean('$').init(arguments.siteid);
 		
 		if(arguments.entityName=='content'){
+			var pk = 'contentid';
 			if(arguments.render){
 				if(arguments.id=='null'){
 					arguments.id='';
@@ -1257,7 +1257,7 @@ component extends="mura.cfobject" {
 		if(entity.getEntityName()=='content'){
 			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
-			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&id=#entity.getValue('contentid')#";
+			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";
 		} else if(entity.getEntityName()=='category'){
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('categoryid')#";	
 		}
@@ -1313,6 +1313,7 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
+		var pk=entity.getPrimaryKey();
 
 		while(iterator.hasNext()){
 			item=iterator.next();
