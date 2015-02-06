@@ -565,7 +565,7 @@ component extends="mura.cfobject" {
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);
 				}
 				 
-				if(local.currentBean.getIsNew() && len(local.currentBean.parentID)){
+				if(local.currentBean.getIsNew() && len(local.currentBean.getParentID())){
 					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
 					local.perm=etBean('permUtility').getNodePerm(local.crumbData);  
 				}
