@@ -1018,8 +1018,10 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		if($.event('entityName')=='content' && len($.event('feedid'))){
+		if($.event('entityName')=='content' && len($.event('feedid'))){		
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+		} else if($.event('entityName')=='content' && len($.event('feedname'))){
+			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
 		} else {
 			var entity=$.getBean(arguments.entityName);
 			var feed=entity.getFeed();
@@ -1404,7 +1406,6 @@ component extends="mura.cfobject" {
 				.getErrors()
 			);
 		}
-		
 		
 		return errors;	
 

@@ -926,7 +926,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						order by
 						
 						<cfif len(arguments.feedBean.getOrderBy())>
-							#arguments.feedBean.getOrderBy()#
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getOrderBy()#"> 
 						<cfelse>	
 							<cfswitch expression="#arguments.feedBean.getSortBy()#">
 								<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
