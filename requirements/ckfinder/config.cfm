@@ -67,8 +67,8 @@ config.thumbnailDelay = 100;
  * if uploaded image is larger, it gets scaled down
  * Set to 0 to disable this feature
  */
-config.images.maxWidth = 1600;
-config.images.maxHeight = 1200;
+config.images.maxWidth = 3000;
+config.images.maxHeight = 3000;
 config.images.quality = 80;
 
 /*
