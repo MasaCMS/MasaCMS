@@ -154,7 +154,7 @@ component extends="mura.cfobject" {
 	function processRequest(path=cgi.path_info){
 
 		try {
-			var responseObject=getpagecontext().getresponse();
+			var responseObject=getpagecontext().getResponse();
 			var params={};
 			var result="";
 
@@ -446,7 +446,7 @@ component extends="mura.cfobject" {
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
-			responseObject.getresponse().setStatus(500);
+			responseObject.setStatus(500);
 			return getSerializer().serialize({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
 		}
 
