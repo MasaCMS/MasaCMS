@@ -12,9 +12,9 @@
 
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 	<!--- Mura CMS Base Styles--->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.1.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.min.css">
 	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.1.skin.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.skin.css">
 	
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
@@ -52,6 +52,7 @@
 
 	<!--- MURA FEEDS --->
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
-	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#"></cfloop>
+	<cfset apiEndpoint=$.siteConfig().getApi('feed','v1').getEndpoint() />
+	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('#apiEndpoint#/?feedID=#rs.feedID#')#"></cfloop>
 </head>
 </cfoutput>

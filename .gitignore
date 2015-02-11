@@ -1,52 +1,68 @@
-/demo*/
-/META-INF
-/WEB-INF
+# Mura CMS root/.gitignore
+# ---------------------------------------------
+
+# ignored file extensions & system directories
+*~
+*_notes/
+*.codekit
+*.esproj
+*.json
+*.less.css
+*.log
+*.sublime-project
+*.sublime-workspace
+
+# ignored '.' files and directories
+._*
+.cache
+.DS_Store
+.htaccess
+.project
+.rdsTempFiles
+.sass-cache
+.settings
+.tmproj
+.svn
+
+# ignored files, regardless of location
+crossdomain.xml
+robots.txt
+settings.xml
+Thumbs.db
+web.config
+web.xml
+
+# ignored directories, regardless of location
+compiled/
+logs/
+mxunit/
+tests/
+unitTests/
+
+# ignored CF & Tomcat directories
+CFIDE/
+META-INF/
+WEB-INF/
+
+# ignored directories
+/demo/
+/plugins/
+/temp/
+
+# ignored 'config' directory files
+/config/cfapplication.cfm
+/config/mappings.cfm
 /config/settings.ini.cfm
 /config/version.cfm
-/config/mappings.cfm
-/config/cfapplication.cfm
-/plugins
-/robots.txt
-/default/assets
-/default/cache
+
+# ignored 'default' site files & directories
+/default/assets/
+/default/cache/
 /default/includes/Application.cfc
 /default/includes/contentRenderer.cfc
 /default/includes/email/
 /default/includes/eventHandler.cfc
-/dev
-/web.config
-/.htaccess
-/CFIDE
-/bluedragon
-/unitTests
-/www
-/settings.xml
-/logs
-/crossdomain.xml
-compiled/
-*.less.css
-/temp
-/mxunit
-/tests
-*~
-.DS_Store
-._*
-Thumbs.db
-.cache
-.project
-.rdsTempFiles
-.settings
-.tmproj
-*.esproj
-*.sublime-project
-*.sublime-workspace
-*_notes/
-*.json
-.gitignore
-admin/assets/js/admin.min.js
-admin/assets/less/css/admin.css
-admin/config.codekit
-config.codekit
-mmp-demo
-MuraBundle_mmp-demo_2014_08_17_23_05.zip
-.svn
+
+# create sites &/or directories beginning with 'demo' or 'temp' without tracking them
+demo-*/
+temp-*/

@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<dt><a href="#variables.theLink#">#variables.rsFeatures.MenuTitle#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" data-rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#" alt="#htmlEditFormat(rsFeatures.title)#"/><!---</a>--->
+						<!---<a href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" data-rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#" alt="#htmlEditFormat(rsFeatures.title)#"/><!---</a>--->
 					</dd>
 				</cfif>
 				<cfif variables.hasSummary and len(variables.rsFeatures.summary)>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dl>
 		</cfloop>	
 		<dl class="moreResults">
-		<dt>&raquo; <a href="#application.configBean.getContext()##getURLStem(request.siteid,rssection.filename)#">#variables.rbFactory.getKey('list.viewall')#</a></dt></dl>
+		<dt>&raquo; <a href="#variables.#.siteConfig('context')##getURLStem(request.siteid,rssection.filename)#">#variables.rbFactory.getKey('list.viewall')#</a></dt></dl>
 </div>
 <cfelse>
 	<!-- Empty Portal Features '#rsSection.menutitle#' -->

@@ -44,47 +44,112 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
-<h1>Class Extension Manager</h1>
-
 <cfoutput>
+	<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
+	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cExtend.editSubType&subTypeID=&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
-</div>
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=&amp;siteid=#esapiEncode('url',rc.siteid)#">
+			<i class="icon-plus-sign"></i> 
+			#rc.$.rbKey('sitemanager.extension.addclassextension')#
+		</a>
 
-</cfoutput>
-<table class="mura-table-grid">
-<tr>
-	<!---<th>Icon</th>--->
-	<th class="title">Class Extension</th>	
-	<th class="var-width">Description</th>
-	<th>Active</th>
-	<th class="actions">&nbsp;</th>
-</tr>
-<cfif rslist.recordcount>
-<cfoutput query="rslist">
-	<tr>
-		<!---<td class="selected-icon"><i class="#$.renderIcon(iconArgs)#"></i></td>--->
-		<td class="title"><a title="Edit" href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#"></i> #application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
-		<td class="var-width">#rslist.description#</td>
-		<td>#yesNoFormat(rslist.isactive)#</td>
-		<td class="actions">
-			<ul>
-				<li class="edit">
-					<a title="Edit" href="./?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
-				</li>
-				<li class="view-sets">
-					<a href="./?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#esapiEncode('url',rc.siteid)#" title="View Sets"><i class="icon-list"></i></a>
+		<!--- Actions --->
+		<div class="btn-group">
+			<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+				<i class="icon-cogs"></i> 
+				#rc.$.rbKey('sitemanager.extension.actions')#
+				<span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu">
+				<cfif rslist.recordcount>
+					<li>
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.exportSubType&amp;siteid=#esapiEncode('url',rc.siteid)#">
+							<i class="icon-signout"></i> 
+							#rc.$.rbKey('sitemanager.extension.export')#
+						</a>
+					</li>
+				</cfif>
+				<li>
+					<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.importSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
+						<i class="icon-signin"></i> 
+						#rc.$.rbKey('sitemanager.extension.import')#
+					</a>
 				</li>
 			</ul>
-		</td>
-	</tr>
+		</div>
+		<!--- /Actions --->
+	</div>
 </cfoutput>
-<cfelse>
-<tr>
-		<td class="noResults" colspan="3">There are currently no available sub types.</td>
-	</tr>
-</cfif>
+
+<table class="mura-table-grid">
+	<cfoutput>
+		<thead>
+			<tr>
+				<th>
+					#rc.$.rbKey('sitemanager.extension.icon')#
+				</th>
+				<th class="title">
+					#rc.$.rbKey('sitemanager.extension.classextension')#
+				</th>	
+				<th class="var-width">
+					#rc.$.rbKey('sitemanager.extension.description')#
+				</th>
+				<th>
+					#rc.$.rbKey('sitemanager.extension.active')#
+				</th>
+				<th class="actions">
+					&nbsp;
+				</th>
+			</tr>
+		</thead>
+	</cfoutput>
+
+	<tbody>
+		<cfif rslist.recordcount>
+			<cfoutput query="rslist">
+				<tr>
+					<td class="selected-icon">
+						<a href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+							<i class="#application.classExtensionManager.getIconClass(rslist.type,rslist.subtype,rslist.siteid)#" style="font-size:14px;"></i>
+						</a>
+					</td>
+					<td class="title">
+						<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+							#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#
+						</a>
+					</td>
+					<td class="var-width">
+						#esapiEncode('html', rslist.description)#
+					</td>
+					<td>
+						#YesNoFormat(rslist.isactive)#
+					</td>
+					<td class="actions">
+						<ul>
+							<li class="edit">
+								<a title="#rc.$.rbKey('sitemanager.extension.edit')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.editSubType&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+									<i class="icon-pencil"></i>
+								</a>
+							</li>
+							<li class="view-sets">
+								<a title="#rc.$.rbKey('sitemanager.extension.viewsets')#" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSets&amp;subTypeID=#rslist.subTypeID#&amp;siteid=#esapiEncode('url',rc.siteid)#">
+									<i class="icon-list"></i>
+								</a>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</cfoutput>
+		<cfelse>
+			<tr>
+				<td class="noResults" colspan="5">
+					<cfoutput>
+						#rc.$.rbKey('sitemanager.extension.nosubtypes')#
+					</cfoutput>
+				</td>
+			</tr>
+		</cfif>
+	</tbody>
 </table>

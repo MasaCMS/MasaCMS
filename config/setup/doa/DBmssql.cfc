@@ -47,8 +47,8 @@
 			var sErr = "";
 			if (super.getCFServerType() IS "ColdFusion") {
 				sErr = fDSCreateAdobe(argumentCollection=Arguments);
-			} else if (super.getCFServerType() IS "Railo") {
-				sErr = fDSCreateRailo(argumentCollection=Arguments);
+			} else {
+				sErr = fDSCreateLucee(argumentCollection=Arguments);
 			} else {
 				sErr = "unknown Application server. Cannot create datasource.";
 			}			
@@ -131,8 +131,8 @@
 	</cffunction>	
 	
 	
-	<!--- call DS in ColdFusion for Railo, we seperate these calls into different files to avoid errors thrown by adobe coldfusion (bsoylu 6/6/2010)  --->
-	<cffunction name="fDSCreateRailo" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
+	<!--- call DS in ColdFusion for Lucee, we seperate these calls into different files to avoid errors thrown by adobe coldfusion (bsoylu 6/6/2010)  --->
+	<cffunction name="fDSCreateLucee" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
 		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
@@ -143,7 +143,7 @@
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
-		<cfset var sErr = CreateObject("component","DBmssql_railo").fDSCreateRailoPackage(argumentCollection=arguments)>
+		<cfset var sErr = CreateObject("component","DBmssql_lucee").fDSCreateLuceePackage(argumentCollection=arguments)>
 		
 		<cfreturn sErr>
 		

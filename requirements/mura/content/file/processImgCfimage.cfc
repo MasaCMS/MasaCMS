@@ -360,7 +360,7 @@
 			<cfelse>
 				<cfset fileStruct.fileObjSource = fileStruct.fileObj>
 			</cfif>
-		
+	
 			<!--- Small --->	
 				<cfset fileStruct.fileObjSmall = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getSmallImageHeight(),width=site.getSmallImageWidth())#" />
 				
@@ -383,7 +383,7 @@
 				<cfset variables.fileWriter.copyFile(source=fileStruct.fileObjLarge,destination=fileStruct.fileObj) />
 				<cftry><cffile action="delete" file="#fileStruct.fileObjLarge#"><cfcatch></cfcatch></cftry>
 				<cfset StructDelete(fileStruct,"fileObjLarge")>
-			
+
 			<cfif variables.configBean.getFileStore() neq "fileDir">		
 				<!--- clean up source--->
 				<cffile action="delete" file="#fileStruct.fileObjSource#">
@@ -397,8 +397,6 @@
 			<cfset fileStruct.fileObj=fromPath2Binary(fileStruct.fileObj,false) />
 			<cftry><cffile action="delete" file="#fileStruct.fileObj#"><cfcatch></cfcatch></cftry>
 		</cfif>
-			
-		<!---<cftry><cffile action="delete" file="#theFile#"><cfcatch></cfcatch></cftry>--->
 		
 		<!--- END IMAGE MANIPULATION --->
 	

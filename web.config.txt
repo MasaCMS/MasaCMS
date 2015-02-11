@@ -31,6 +31,7 @@
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+						<add input="{QUERY_STRING}" pattern="(hash)" negate="true" />
 					</conditions>
 					<action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
 				</rule> 
@@ -50,6 +51,7 @@
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+						<add input="{QUERY_STRING}" pattern="(hash)" negate="true" />
 					</conditions>
 					<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" appendQueryString="true" />
 				</rule>

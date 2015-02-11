@@ -78,7 +78,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
+		<cfargument name="property" required="true">
+		<cfargument name="propertyValue">  	
+		
+		<cfif not isDefined('arguments.data')>
+			<cfif isSimpleValue(arguments.property)>
+				<cfreturn setValue(argumentCollection=arguments)>
+			</cfif>
+
+			<cfset arguments.data=arguments.property>
+		</cfif>
 
 		<cfset var prop=""/>
 		<cfset var tempFunc="">
@@ -188,8 +197,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsActive" access="public" output="false">
 	<cfargument name="IsActive"/>
-	<cfif isNumeric(arguments.isActive)>
-		<cfset variables.instance.IsActive = arguments.IsActive />
+	<cfif isBoolean(arguments.IsActive)>
+		<cfif arguments.IsActive>
+			<cfset variables.instance.IsActive = 1 />
+		<cfelse>
+			<cfset variables.instance.IsActive = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -408,5 +421,66 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 </cffunction>
+
+<cffunction name="getAllValues" ouput="false">
+ 	
+ 	<cfset var extensionData = {} />
+	<cfset var atts = getAttributes() />
+	<cfset var attStruct = {} />
+	<cfset var i = 0 />
+
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+	<cfset extensionData.attributes = [] />
+
+	<cfloop from="1" to="#ArrayLen(atts)#" index="i">
+		<cfset attStruct = atts[i].getAllValues() />
+		<cfset ArrayAppend(extensionData.attributes,attStruct ) />
+	</cfloop>
+
+	<cfreturn extensionData />
+</cffunction>
+
+<cffunction name="getAsXML" ouput="false" returntype="xml">
+	<cfargument name="documentXML">
+	<cfargument name="includeIDs" type="boolean" default="false" >
+	
+	<cfset var extensionData = {} />
+	<cfset var atts = getAttributes() />
+	<cfset var item = "" />
+	<cfset var i = 0 />
+
+	<cfset var xmlAttributeSet = XmlElemNew( documentXML, "", "attributeset" ) />
+	<cfset var xmlAttributes = "" />
+
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+
+	<cfif not(arguments.includeIDs)>
+		<cfset structDelete(extensionData,"extendsetID") />
+		<cfset structDelete(extensionData,"subTypeID") />
+	</cfif>
+
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
+	<cfloop collection="#extensionData#" item="item">
+		<cfif isSimpleValue(extensionData[item])>
+			<cfset xmlAttributeSet.XmlAttributes[lcase(item)] = extensionData[item] />
+		</cfif>
+	</cfloop>
+
+	<cfloop from="1" to="#ArrayLen(atts)#" index="i">
+		<cfset var xmlAttributes = atts[i].getAsXML(documentXML) />
+		<cfset ArrayAppend(
+			xmlAttributeSet.XmlChildren,
+			xmlAttributes
+			) />
+	</cfloop>
+
+	<cfreturn xmlAttributeSet />	
+</cffunction>
+
+
 
 </cfcomponent>

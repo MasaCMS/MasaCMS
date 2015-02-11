@@ -440,7 +440,7 @@ to your own modified versions of Mura CMS.
     </cfcase>
     <!--- unknown --->
     <cfcase value="unknown">
-      <cfset message = "<strong>Error:</strong> An unknown error has occured." />
+      <cfset message = "<strong>Error:</strong> An unknown error has occurred." />
     </cfcase>
   </cfswitch>
   
@@ -685,15 +685,13 @@ to your own modified versions of Mura CMS.
       <cfscript>
         //determine server type
         //determine db and then show automatic vs manal options
-        //either "ColdFusion Server" OR "Railo"
-        //attempted to use : application.configBean.getCompiler() eq "Railo" without success
+        //either "ColdFusion Server" OR "Lucee"
+        //attempted to use : application.configBean.getCompiler() eq "Lucee" without success
         theCFServer = "unknown";
-        if (server.ColdFusion.ProductName CONTAINS "Railo"){
-          theCFServer = "Railo";
-        } else if (server.ColdFusion.ProductName CONTAINS "BlueDragon") {
-          theCFServer = "BlueDragon"; 
-        } else if (server.ColdFusion.ProductName CONTAINS "ColdFusion") {
+        if (server.ColdFusion.ProductName CONTAINS "ColdFusion") {
           theCFServer = "ColdFusion";
+        } else {
+          theCFServer = "Lucee"; 
         };
       </cfscript>
       <fieldset class="alert">
@@ -725,7 +723,7 @@ to your own modified versions of Mura CMS.
         <!--- changes below (bsoylu 6/7/2010)  ---> 
         <span id="ac_dsn_span" >
           <div class="control-group">
-            <label class="control-label"><a href="" rel="tooltip" title="The Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Railo administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.">Datasource (DSN) <i class="icon-question-sign"></i></a></label>
+            <label class="control-label"><a href="" rel="tooltip" title="The Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Lucee administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.">Datasource (DSN) <i class="icon-question-sign"></i></a></label>
             <div class="controls">
               <input type="text" name="production_datasource" value="#FORM.production_datasource#">
             </div>

@@ -3,7 +3,13 @@
 	
 	<cfif MSSQLversion neq 8>
 		
-		<cfset tableList="tadcampaigns,tadcreatives,tadplacements,tadzones,tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">		
+		<cfset tableList="tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">
+
+		<!---
+		<cfif variables.instance.adManager>
+			<cfset tableList=tableList & ",tadcampaigns,tadcreatives,tadplacements,tadzones">
+		</cfif>	
+		--->
 		
 		<cfquery name="rsCheck">
 		SELECT OBJECT_NAME(c.OBJECT_ID) TableName, c.name ColumnName

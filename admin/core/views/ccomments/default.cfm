@@ -80,7 +80,7 @@
 
 	
 <div id="commentsManagerWrapper">
-	<h1>#rc.$.rbKey('comments.commentsmanager')#</h1>
+	<h1>#rbKey('comments.commentsmanager')#</h1>
 
 	<!--- MESSAGING --->
 	<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
@@ -88,9 +88,9 @@
 		<div id="feedback" class="alert alert-#local.class#">
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 			<cfif rc.processed>
-				#rc.$.rbKey('comments.message.confirmation')#
+				#rbKey('comments.message.confirmation')#
 			<cfelse>
-				#rc.$.rbKey('comments.message.error')#
+				#rbKey('comments.message.error')#
 			</cfif>
 		</div>
 	</cfif>

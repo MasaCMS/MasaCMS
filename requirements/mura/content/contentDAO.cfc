@@ -726,6 +726,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	where tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
 	and tcontent.contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 	<!---and lastupdate < #createodbcdatetime(rsdate.lastupdate)#--->
+	and tcontent.active=0
 	and (
 		 		(tcontent.approved=0 and tcontent.changesetID is null)
 				 or 
@@ -792,6 +793,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
 	where tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	and tcontent.contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
+	and tcontent.active=0
 	and tcontent.approved=0 and tcontent.changesetID is null
 	and (tapprovalrequests.status !='Pending' or tapprovalrequests.status is null)
 	</cfquery>

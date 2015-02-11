@@ -48,7 +48,7 @@
 <cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif not isdefined('request.backported')>
 	<cfscript>
-		if(structKeyExists(server,'railo')){
+		if(server.coldfusion.productname != 'ColdFusion Server'){
 			backportdir='';
 			include "/mura/backport/backport.cfm";
 		} else {
@@ -211,13 +211,13 @@
 	<![endif]-->
 		
 	<!-- CK Editor/Finder -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckfinder/ckfinder.js"></script>
 	
 	<!-- Color Picker -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/tasks/widgets/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="#application.configBean.getContext()#/requirements/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+	<link href="#application.configBean.getContext()#/requirements/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>

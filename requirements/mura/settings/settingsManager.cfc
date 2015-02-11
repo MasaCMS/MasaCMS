@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.update(bean) />
-		
+
 		<cfset validateDisplayPool(bean) />
 
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
@@ -360,7 +360,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="missingOnly" default="false">
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
-	<cfobjectcache action="clear"/>
+
+	<cftry>
+		<cfobjectcache action="clear"/>
+		<cfcatch></cfcatch>
+	</cftry>
+
+	
 	<cfset rs=getList() />
 
 	<cfloop query="rs">
@@ -609,6 +615,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rs" dbType="query">
 		select entry from rs where entry in ('sitefiles.zip','pluginfiles.zip','filefiles.zip','pluginfiles.zip')
+	</cfquery>
+	<cfreturn rs.recordcount>
+</cffunction>	
+
+<cffunction name="isPartialBundle" output="false">
+	<cfargument name="BundleFile">
+	<cfset var rs=createObject("component","mura.Zip").List(zipFilePath="#arguments.BundleFile#")>
+
+	<cfquery name="rs" dbType="query">
+		select entry from rs where entry in ('assetfiles.zip')
 	</cfquery>
 	<cfreturn rs.recordcount>
 </cffunction>	

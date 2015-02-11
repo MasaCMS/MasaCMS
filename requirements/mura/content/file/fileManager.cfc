@@ -194,10 +194,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFileData.image)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				</cfif>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
@@ -260,10 +260,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageSmall)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageSmall)>
 				</cfif>
 			</cfcase>
 			<cfcase value="filedir">
@@ -302,10 +302,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageMedium)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
+				<cfif variables.configBean.getCompiler() eq 'Adobe'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
+					<cfset createObject("component","mura.content.file.renderLucee").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.imageMedium)>
 				</cfif>
 			</cfcase>
 			<cfcase value="filedir">
@@ -328,11 +328,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="file" default="" required="yes" type="any">
 
 <cfswitch expression="#variables.configBean.getCompiler()#">
-	<cfcase value="railo">
-		<cfset createObject("component","mura.content.file.renderRailo").init(arguments.mimeType,arguments.file) />
+	<cfcase value="adobe">
+		<cfset createObject("component","mura.content.file.renderAdobe").init(arguments.mimeType,arguments.file) />
 	</cfcase>
 	<cfdefaultcase>
-		<cfset createObject("component","mura.content.file.renderAdobe").init(arguments.mimeType,arguments.file) />
+		<cfset createObject("component","mura.content.file.renderLucee").init(arguments.mimeType,arguments.file) />
 	</cfdefaultcase>
 </cfswitch>
 </cffunction>
@@ -397,10 +397,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(local.theFile, "fileContent") and isArray(local.theFile.fileContent)>
 		<cfheader name="Content-Length" value="#arrayLen(local.theFile.fileContent)#" />
 		<cfif structKeyExists(local.rsFile, "contentType") and structKeyExists(local.rsFile, "contentSubType")>
-			<cfif variables.configBean.getCompiler() neq "Railo">
+			<cfif variables.configBean.getCompiler() eq 'adobe'>
 				<cfset createObject("component","mura.content.file.renderAdobe").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
 			<cfelse>
-				<cfset createObject("component","mura.content.file.renderRailo").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
+				<cfset createObject("component","mura.content.file.renderLucee").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
 			</cfif>
 		</cfif>
 	</cfif>	
@@ -773,6 +773,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
+<cfargument name="secure" default="false">
 
 	<cfset var imgSuffix="">
 	<cfset var returnURL="">
@@ -792,7 +793,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 	
-	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfif arguments.complete or  arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+		<cfif arguments.secure>
+			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfelse>
+			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin="">
+	</cfif>
 	
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>
@@ -853,7 +862,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset imgSuffix=arguments.size>
 		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/index.cfm?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
+		<cfset returnURL=application.configBean.getContext() & "/index.cfm/_api/render/#imgSuffix#/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
 	</cfif>
 	
 	<cfreturn begin & returnURL>

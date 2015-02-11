@@ -136,6 +136,14 @@
 	</cfif>
 </cfsilent>
 <cfoutput>
+<cfif not $.event('muraMobileTemplate')>
+<script>
+	$(function(){
+		mura.loader().loadjs("#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.min.js");
+	});	
+</script>
+</cfif>
+
 <cfif variables.iterator.getRecordCount()>
 	<div id="svGallery" class="mura-gallery #this.galleryWrapperClass#"> 
 		<ul class="#this.galleryULClass#">

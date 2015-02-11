@@ -212,12 +212,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				actionModal(
 					function(){
-						$.post('index.cfm',
-							pars,
-							function(data) {
-								//$('html').html(data);
-								//alert(data.previewurl)
-								top.location.replace(data.previewurl);
+						$.post('#$.siteConfig().getResourcePath(complete=1)#/index.cfm/_api/json/v1/generatecsrftokens/?context=approvalaction&siteid=' + pars.siteid).then(
+							function(data){
+								pars['csrf_token']=data['csrf_token'];
+								pars['csrf_token_expires']=data['csrf_token_expires'];
+
+								$.post('./index.cfm',
+									pars,
+									function(data) {
+										//$('html').html(data);
+										//alert(data.previewurl)
+										top.location.replace(data.previewurl);
+									}
+								);
 							}
 						);
 					}

@@ -44,21 +44,21 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->	
-<cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
+
 	<cfparam name="Cookie.fetDisplay" default="">
 	<cfoutput>
-	<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+	<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 	<script>
 		if(!window.CKEDITOR){
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"%3E%3C/script%3E'));
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
+			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js"%3E%3C/script%3E'));
+			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
 		}
 		if(!window.CKFinder){
-			document.write(unescape('%3Cscript src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"%3E%3C/script%3E'));
+			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js"%3E%3C/script%3E'));
 		}
 	</script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#esapiEncode('url',variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>
+	<script type="text/javascript" src="#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode('url',variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>
 
 	<!---[if LT IE9]>
 	   <style type="text/css">
@@ -74,26 +74,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 	<cfif getShowToolbar()>
 		<cfsilent>
-			<cfif len(application.configBean.getAdminDomain())>
-				<cfif application.configBean.getAdminSSL()>
-					<cfset variables.adminBase="https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
-				<cfelse>
-					<cfset variables.adminBase="http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
-				</cfif>
-			<cfelse>
-				<cfset variables.adminBase=""/>
-			</cfif>
-			
+			<cfset variables.adminBase=variables.$.globalConfig("adminPath")/>
 			<cfset variables.$.event('muraAdminBaseURL',variables.adminBase)>
 			<cfset variables.targetHook=generateEditableHook()>
 			
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset variables.stats=$.content().getStats()>
-				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=carch.lockcheck&destAction=carch.edit">
+				<cfset variables.editLink = variables.adminBase & "/?muraAction=carch.lockcheck&destAction=carch.edit">
 				<cfset variables.dolockcheck=not(stats.getLockID() eq $.currentUser().getUserID())>
 				<cfset variables.isLocked=variables.stats.getLockType() eq 'node'>
 			<cfelse>
-				<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.edit">
+				<cfset variables.editLink = variables.adminBase & "/?muraAction=cArch.edit">
 				<cfset variables.dolockcheck=false>
 				<cfset variables.isLocked=false>
 			</cfif>
@@ -111,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 			<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
 			
-			<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.loadnewcontentmenu">
+			<cfset variables.newLink = variables.adminBase & "/?muraAction=cArch.loadnewcontentmenu">
 			<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
 			<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
 			<cfset variables.newLink = variables.newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -119,19 +110,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.newLink = variables.newLink & "&amp;ptype=" & request.contentBean.getType()>
 			<cfset variables.newLink = variables.newLink & "&amp;compactDisplay=true">
 
-			<!---
-			'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
-
-			<cfset variables.newMultiLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.multiFileUpload">
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;contentid=">
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;parentid=" & request.contentBean.getContentID()>
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;topid=00000000000000000000000000000000001">
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;ptype=" & request.contentBean.getType()>
-			<cfset variables.newMultiLink = variables.newMultiLink & "&amp;compactDisplay=true">
-			--->
-			<cfset variables.historyLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.hist">
+		
+			<cfset variables.historyLink = variables.adminBase & "/?muraAction=cArch.hist">
 			<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
 			<cfset variables.historyLink = variables.historyLink & "&amp;topid=00000000000000000000000000000000001">
@@ -141,15 +121,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.historyLink = variables.historyLink & "&amp;startrow=1">
 			<cfset variables.historyLink = variables.historyLink & "&amp;compactDisplay=true">
 			
-			<cfset variables.adminLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.list">
+			<cfset variables.adminLink = variables.adminBase & "/?muraAction=cArch.list">
 			<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;ptype=" & request.contentBean.getType()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 			<cfset variables.adminLink = variables.adminLink & "&amp;activeTab=0">
+
 			
-			<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.update#variables.$.renderCSRFTokens(context=request.contentBean.getContentID() & 'deleteall',format='url')#">
+			<cfset variables.deleteLink = variables.adminBase & "/?muraAction=cArch.update#variables.$.renderCSRFTokens(context=request.contentBean.getContentID() & 'deleteall',format='url')#">
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;contentid=" & request.contentBean.getContentID()>
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;topid=00000000000000000000000000000000001">
@@ -162,12 +143,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.deleteLink = variables.deleteLink & "&amp;startrow=1">
 
 
-			<cfset variables.approvalrequestlink = variables.adminBase & "#application.configBean.getContext()#/admin/?muraAction=cArch.statusmodal&compactDisplay=true&contenthistid=#$.content('contenthistid')#&siteid=#$.content('siteid')#&mode=frontend">
+			<cfset variables.approvalrequestlink = variables.adminBase & "/?muraAction=cArch.statusmodal&compactDisplay=true&contenthistid=#$.content('contenthistid')#&siteid=#$.content('siteid')#&mode=frontend">
 		
 		</cfsilent>
 		<cfoutput>
 		<div class="mura mura-toolbar">
-			<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+			<img src="#variables.$.globalConfig("adminPath")#/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">	
 				<cfif $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
 					<ul id="tools-status"<cfif variables.isLocked> class="status-locked"</cfif>>
@@ -283,24 +264,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</li>
 							
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')# ---></a></li>
-							<li id="adminPreview"<!--- class="dropdown"--->><a href="#$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i><!--- <b class="caret"></b> ---></a>
-								<!---<ul class="dropdown-menu">
-									<li>
-										<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.desktop')#</a>
-									</li>
-									<li>
-										<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.tablet')#</a>
-									</li>
-									<li><a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.tabletlandscape')#</a></li>
-									<li><a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.phone')#</a></li>					
-									<li><a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview.phonelandscape')#</a></li>
-								</ul>--->
-								</li>
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i><!--- <b class="caret"></b> ---></a>
+							</li>
 								
-								
-
-
-
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')# ---></a></li>
 							</cfif>
@@ -385,11 +351,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif>
 							</ul>
 						</cfif>
+
+
 					</cfif>
 				</cfif>
 				
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
+
 					<ul id="adminSiteManager"><li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></ul>
 				</cfif>
 				
@@ -399,17 +368,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminWelcome"><i class="icon-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
-
-		
-				
 	</div>
 	</div>
 </cfoutput>
 </cfif>
 
-	<cfif getJSLib() eq "jquery">
-		<cfoutput><div class="mura" id="frontEndToolsModalTarget"></div></cfoutput>
-	</cfif>
-	
-</cfif>
+<cfoutput><div class="mura" id="frontEndToolsModalTarget"></div></cfoutput>
+
+
 

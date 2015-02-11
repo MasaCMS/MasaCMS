@@ -76,8 +76,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thefield = "" />
 	<cfset var f = "" />
 	<cfset var theXml = "" />
+	<cfset var ignoreList = 'DOACTION,SUBMIT,MLID,SITEID,FORMID,POLLLIST,REDIRECT_URL,REDIRECT_LABEL,X,Y,UKEY,HKEY,formfield1234567891,formfield1234567892,formfield1234567893,formfield1234567894,useProtect,linkservid,useReCAPTCHA,g-recaptcha-response,grecaptcharesponse' />
 	
 	<cfparam name="info.fieldnames" default=""/>
+
+	<cfif IsDefined('arguments.data.ignoreFields') and IsSimpleValue(arguments.data.ignoreFields) and Len(arguments.data.ignoreFields)>
+		<cfset ignoreList = ListAppend(ignoreList, arguments.data.ignoreFields) />
+	</cfif>
 	
 	<cfif isdefined('arguments.data.responseid')>
 		<cfset responseid=arguments.data.responseid>
@@ -91,8 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif> 
 	
 	<cfloop list="#fieldlist#" index="f">
-	<cfif f neq 'DOACTION' and f neq 'SUBMIT' and f neq 'MLID' and f neq 'SITEID' and f neq 'FORMID' and f neq 'POLLLIST' and f neq 'REDIRECT_URL' and f neq 'REDIRECT_LABEL' and f neq 'X' and f neq 'Y' and f neq 'UKEY' and f neq 'HKEY'
-		and f neq 'formfield1234567891' and f neq 'formfield1234567892' and f neq 'formfield1234567893' and f neq 'formfield1234567894' and f neq 'useProtect' and f neq "linkservid">
+	<cfif Not ListFindNoCase(ignoreList, f)>
 	
 		<cfif action eq 'create' and right(f,8) eq '_default'>
 			<cfset rf=left(f,len(f)-8)>
@@ -272,6 +276,7 @@ order by tformresponsepackets.entered asc
 <cfargument name="preBody" type="string">
 <cfargument name="responseChart" type="numeric" required="yes" default="0">
 <cfargument name="linkServID" type="string" required="yes" default="">
+<cfargument name="$">
 
 <cfset var frm=""/>
 <cfset var finder=""/>
@@ -300,8 +305,10 @@ order by tformresponsepackets.entered asc
 	<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
 </cfif>
 
+
 <cfsavecontent variable="frm"><cfoutput>
 #body#
+<cfif request.muraFrontEndRequest>
 <script type="text/javascript">
 	$(function(){
 		frm=$('###frmID#');
@@ -309,7 +316,7 @@ order by tformresponsepackets.entered asc
 		frm.attr('method','post');
 
 		if(frm.attr('onsubmit') == undefined){
-			frm.on('submit',function(){return validateForm(this);})
+			frm.on('submit',function(){return mura.validateForm(this);})
 		}
 		<cfif arguments.responseChart>
 			var polllist=new Array();
@@ -320,7 +327,7 @@ order by tformresponsepackets.entered asc
 		</cfif>
 		frm.attr('action',frm.attr('action') + '###frmID#');
 	});
-</script></cfoutput>
+</script></cfif></cfoutput>
 </cfsavecontent>
 
 <cfreturn trim(frm) />

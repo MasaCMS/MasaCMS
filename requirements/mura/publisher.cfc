@@ -318,6 +318,221 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn arguments.errors>
 	</cffunction>
+
+	<cffunction name="getToWorkPartial" returntype="any" output="false">
+		<cfargument name="siteID" type="string" default="" required="true">
+		<cfargument name="parentID" type="string" default="">
+		<cfargument name="Bundle" type="any" required="false">
+		<cfargument name="errors" type="any" required="true" default="#structNew()#">
+		<cfargument name="isApproved" type="numeric" required="false" default="0">
+		<cfargument name="changesetBean" type="any" required="false">
+		<cfargument name="keyFactory" required="true">
+
+		<cfset var bundleAssetPath="">
+		<cfset var extendManager	= getBean("extendManager") />
+
+		<cfset var keys = {}>
+
+		<cfset var rsCheckPath=""/>
+
+		<cfset var rstContent=""/>
+		<cfset var rsContent=""/>
+		<cfset var rstContentObjects=""/>
+		<cfset var rsContentObjects=""/>
+		<cfset var rsObjects=""/>
+		<cfset var rsContentObjectsUpdate=""/>
+
+		<cfset var rstClassExtendData=""/>
+		<cfset var rsExtendData=""/>
+
+		<cfset var rstContentTags=""/>
+		<cfset var rsContentTags=""/>
+
+		<cfset var rsfile="">
+		<cfset var newFileID="">
+
+		<cfset var contentBean=""/>
+		<cfset var contentData={}/>
+		<cfset var utility = getBean("utility") />
+		<cfset var changesetID = "" />
+
+		<cfif isObject( arguments.changesetBean )>
+			<cfset changesetID = arguments.changesetBean.getChangesetID() />
+		</cfif>
+
+		<cfsetting requestTimeout = "7200">
+
+		<cfif structKeyExists(arguments,"Bundle")>
+			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
+		</cfif>
+
+		<cfif fileExists("#Bundle.getBundle()#extensions.txt")>
+			<cffile action="read" file="#Bundle.getBundle()#extensions.txt" variable="importExtensions" >
+			<cfif len( importExtensions ) gt 30>
+				<cfset extendManager.loadConfigXML(xmlParse(importExtensions),arguments.siteid) />
+			</cfif>
+		</cfif>
+		
+		<cfset rstcontent = arguments.Bundle.getValue("rstcontent")>
+		<cfset rstcontentobjects = arguments.Bundle.getValue("rstcontentobjects")>
+		<cfset rsthierarchy = arguments.Bundle.getValue("rsthierarchy")>
+		<cfset rstfiles = arguments.Bundle.getValue("rstfiles")>
+		<cfset rstClassExtendData = arguments.Bundle.getValue("rstClassExtendData")>
+		<cfset rsthasmetadata = arguments.Bundle.getValue("rsthasmetadata")>
+		<cfset rstContentTags = arguments.Bundle.getValue("rstContentTags")>
+
+		<cfquery name="rsObjects">
+			select object from tsystemobjects
+			where
+			siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+		</cfquery>
+
+		<cfloop query="rsthierarchy">
+			<cfquery name="rsCheckPath">
+				select contentid from tcontent
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				and remoteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsthierarchy.contentID#"/>
+				and active = 1
+				and path LIKE <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.parentid#%"/>  
+			</cfquery>
+			
+			<cfif rsCheckPath.recordCount>
+				<cfset contentBean = getBean('content').loadBy(contentid=rsCheckPath.contentID,siteid=arguments.siteid) />
+			<cfelse>
+				<cfset contentBean = getBean('content').loadBy(siteid=arguments.siteid) />
+			</cfif>
+
+			<cfquery name="rsContent" dbtype="query">
+				select * from rstcontent
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsthierarchy.contentid#"/>
+			</cfquery>
+	
+			<cfset contentData = utility.queryRowToStruct(rsContent) />
+			<!--- asset paths --->
+			<cfset contentData.body = replaceNoCase( contentData.body,"^^siteid^^",arguments.siteid,"all" ) />
+
+			<cfquery name="rsExtendData" dbtype="query">
+				select * from rstClassExtendData
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+			</cfquery>
+
+			<cfif rsExtendData.recordCount>
+				<cfloop query="rsExtendData">
+					<cfset contentData[rsExtendData.name] = rsExtendData.attributeValue />
+				</cfloop>
+			</cfif>
+
+			<cfquery name="rsContentObjects" dbtype="query">
+				select * from rstContentObjects
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+				and
+				object in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#ValueList(rsObjects.object)#" list="true"/>)
+				and 
+				object not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="plugin,component,form" list="true"/>)
+			</cfquery>
+
+			<cfquery name="rsContentTags" dbtype="query">
+				select tag from rstContentTags
+				where
+				contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContent.contentid#"/>
+			</cfquery>
+			
+			<cfif rsContentTags.recordCount>
+				<cfset contentData.tags = valuelist(rsContentTags.tag) />
+			</cfif>
+
+			<cfset contentData.remoteID = contentData.contentID />
+
+			<cfif contentBean.getIsNew()>
+				<cfset contentBean.setContentID( arguments.keyFactory.get(contentBean.getContentID()) ) />
+				<cfset contentBean.setDisplay( 1 ) />
+
+				<cfset contentData.remoteID = contentData.contentID />
+				<cfif StructKeyExists(keys,contentData.parentid)>
+					<cfset contentData.parentID = keys[contentData.parentid] />
+				<cfelse>
+					<cfset contentData.parentID = arguments.parentid />
+				</cfif>
+			<!--- existing content --->
+			<cfelseif StructKeyExists(contentData,"parentid")>
+				<cfset contentBean.setContentID( arguments.keyFactory.get(contentBean.getContentID()), contentBean.getContentID() ) />
+				<cfset structDelete(contentData,"parentid") />
+			</cfif>
+
+			<cfset keys[rsContent.contentID] = contentBean.getContentID() />
+
+			<cfset structDelete(contentData,"siteID") />
+			<cfset structDelete(contentData,"lastUpdate") />
+			<cfset structDelete(contentData,"lastUpdateBy") />
+			<cfset structDelete(contentData,"lastUpdateByID") />
+			<cfset structDelete(contentData,"contentID") />
+			<cfset structDelete(contentData,"contentHistID") />
+			<cfset structDelete(contentData,"path") />
+			<cfset structDelete(contentData,"filename") />
+						
+			<!--- asset paths --->
+			
+			<cfset contentBean.set( contentData ) />
+			
+			<cfset contentBean.setChangesetID( changesetID ) />
+			<cfset contentBean.setApproved( arguments.isApproved ) />
+
+			<cfif len(contentdata.fileid)>
+				<cfquery name="rsfile" dbtype="query">
+					Select * from rstfiles
+					where fileid = <cfqueryparam value="#contentdata.fileid#" cfsqltype="cf_sql_varchar">
+				</cfquery>
+				<cfif rsFile.recordcount>
+					<cfset newFileID = arguments.bundle.unpackPartialFile( arguments.siteid,contentdata.fileid,contentBean.getContentID(),rsfile,arguments.toDSN, arguments.errors ) />
+					<cfset contentBean.setFileID(newFileID) />
+				</cfif>
+			</cfif>
+
+			<cfset contentBean.save() />
+
+			<cfloop query="rsContentObjects">
+				<cftry>
+				<cfquery datasource="#arguments.toDSN#" name="rsContentObjectsUpdate">
+					insert into tcontentobjects(ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID,params)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.ColumnID),de(rsContentObjects.ColumnID),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentHistID()#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentBean.getContentID()#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Name neq '',de('no'),de('yes'))#" value="#rsContentObjects.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.Object neq '',de('no'),de('yes'))#" value="#rsContentObjects.Object#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#rsContentObjects.ObjectID#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsContentObjects.OrderNo),de(rsContentObjects.OrderNo),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.SiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsContentObjects.params neq '',de('no'),de('yes'))#" value="#rsContentObjects.params#">
+					)
+				</cfquery>
+				<cfcatch></cfcatch>
+				</cftry>
+			</cfloop>
+
+			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
+			<cfif structKeyExists(arguments, "bundle")>
+				<cfset var bundleablebeans=arguments.Bundle.getValue("bundleablebeans",'')>	
+				<cfif len(bundleablebeans)>
+					<cfset var bb="">
+
+					<cfloop list="#bundleablebeans#" index="bb">
+						<cfif getServiceFactory().containsBean(bb)>
+							<cfset getBean(bb).fromBundle(bundle=this,keyFactory=arguments.keyFactory,siteid=arguments.siteid)>
+						</cfif>
+					</cfloop>
+				</cfif>
+			</cfif>
+		</cfloop>
+
+		<cfset arguments.Bundle.unpackPartialAssets( arguments.siteid ) />
+		
+		<cfreturn arguments.errors>
+	</cffunction>
 	
 	<cffunction name="getToWorkSite" returntype="void" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
@@ -677,7 +892,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfquery>
 			
-			<cfset getToWorkAdvertising(argumentCollection=arguments)>
+			<!---<cfset getToWorkAdvertising(argumentCollection=arguments)>--->
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategoryassign">
@@ -1005,6 +1220,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.cssclass")>
 					,cssclass
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.contentpoolid")>
+					,contentpoolid
+					</cfif>
 					)
 					values
 					(
@@ -1064,7 +1282,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.cssclass")>
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.cssclass neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.cssclass#">			
-					</cfif>					
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.contentpoolid")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.contentpoolid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.contentpoolid#">			
+					</cfif>						
 					)
 				</cfquery>
 			</cfloop>
@@ -2148,6 +2370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</cffunction>
 	
+	<!---
 	<cffunction name="getToWorkAdvertising" returntype="void" output="false">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
@@ -2572,7 +2795,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- END ADVERTISING--->
 		
 	</cffunction>
-
+	--->
+	
 	<cffunction name="getToWorkClassExtensions" returntype="void">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">

@@ -49,7 +49,7 @@ component extends="framework" output="false" {
 	include "../config/applicationSettings.cfm";
 
 	
-	if(structKeyExists(server,'railo')){
+	if(server.coldfusion.productname != 'ColdFusion Server'){
 		backportdir='';
 		include "../requirements/mura/backport/backport.cfm";
 	} else {
@@ -505,6 +505,10 @@ component extends="framework" output="false" {
 			application.pluginManager.announceEvent("onAdminRequestEnd",request.event);
 			include "../config/appcfc/onRequestEnd_include.cfm";
 		}
+	}
+
+	function rbKey(key){
+		return application.rbFactory.getKeyValue(session.rb,arguments.key);
 	}
 
 }

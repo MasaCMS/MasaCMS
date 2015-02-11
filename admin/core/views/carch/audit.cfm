@@ -81,8 +81,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid">
 <thead>
 <tr>
+<cfif application.configBean.getJavaEnabled()>
 <th colspan="2"><a class="btn" id="viewDiff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.compare')#</a></th> 
- <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
+</cfif>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
 <th class="notes">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
 <cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 
@@ -123,12 +125,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent> 
 <tr>
+<cfif application.configBean.getJavaEnabled()>
 <td>
 	<input type="radio" name="compare1" value="#rc.item.getContentHistID()#"<cfif not started> checked</cfif>/>
 </td>
 <td>
 	<input type="radio" name="compare2" value="#rc.item.getContentHistID()#"<cfif not started> checked</cfif>/>
 </td>
+</cfif>
 <td class="title var-width">
 	<cfif not isLockedBySomeoneElse or poweruser>
 	<a title="Edit" href="./?muraAction=cArch.edit&contenthistid=#rc.item.getContenthistID()#&contentid=#rc.item.getContentID()#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&return=hist&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" class="draftprompt"  data-targetversion="true" data-siteid="#rc.item.getSiteID()#" data-contentid="#rc.item.getContentID()#" data-contenthistid="#rc.item.getContentHistID()#">
@@ -216,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</li>
 <cfswitch expression="#rc.item.gettype()#">
 <cfcase value="Page,Folder,Calendar,Gallery,Link,File">
-	<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rc.contentBean.getFilename())#?previewid=#rc.item.getcontenthistid()#'>
+	<cfset previewURL='#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.item.getcontenthistid()#")#'>
 	<cfif rc.compactDisplay eq 'true'>
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="icon-globe"></i></a></li>
 	<cfelse>

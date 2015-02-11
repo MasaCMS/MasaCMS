@@ -118,7 +118,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
+		<cfargument name="property" required="true">
+		<cfargument name="propertyValue">  	
+		
+		<cfif not isDefined('arguments.data')>
+			<cfif isSimpleValue(arguments.property)>
+				<cfreturn setValue(argumentCollection=arguments)>
+			</cfif>
+
+			<cfset arguments.data=arguments.property>
+		</cfif>
 
 		<cfset var prop=""/>
 		<cfset var tempFunc="">
@@ -254,8 +263,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsActive" access="public" output="false">
 	<cfargument name="IsActive"/>
-	<cfif isNumeric(arguments.isActive)>
-		<cfset variables.instance.IsActive = arguments.IsActive />
+	<cfif isBoolean(arguments.IsActive)>
+		<cfif arguments.IsActive>
+			<cfset variables.instance.IsActive = 1 />
+		<cfelse>
+			<cfset variables.instance.IsActive = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -266,8 +279,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasSummary" access="public" output="false">
 	<cfargument name="hasSummary"/>
-	<cfif isNumeric(arguments.hasSummary)>
-		<cfset variables.instance.hasSummary = arguments.hasSummary />
+	<cfif isBoolean(arguments.hasSummary)>
+		<cfif arguments.hasSummary>
+			<cfset variables.instance.hasSummary = 1 />
+		<cfelse>
+			<cfset variables.instance.hasSummary = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -278,8 +295,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasBody" access="public" output="false">
 	<cfargument name="hasBody"/>
-	<cfif isNumeric(arguments.hasBody)>
-		<cfset variables.instance.hasBody = arguments.hasBody />
+	<cfif isBoolean(arguments.hasBody)>
+		<cfif arguments.hasBody>
+			<cfset variables.instance.hasBody = 1 />
+		<cfelse>
+			<cfset variables.instance.hasBody = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -290,8 +311,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setHasAssocFile" access="public" output="false">
 	<cfargument name="HasAssocFile"/>
-	<cfif isNumeric(arguments.HasAssocFile)>
-		<cfset variables.instance.HasAssocFile = arguments.HasAssocFile />
+	<cfif isBoolean(arguments.HasAssocFile)>
+		<cfif arguments.hasAssocFile>
+			<cfset variables.instance.HasAssocFile = 1 />
+		<cfelse>
+			<cfset variables.instance.HasAssocFile = 0 />
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -335,6 +360,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDefaultIconClass" returntype="String" access="public" output="false">
+	<cfset var returnVar="">
+	
 	<cfswitch expression="#getType()#">
 		<cfcase value="page">
 			<cfset returnVar = "icon-file">
@@ -818,5 +845,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfreturn variables.contentRenderer>
 </cffunction>
+
+<cffunction name="getAllValues" ouput="false">
+ 	
+ 	<cfset var extensionData = {} />
+	<cfset var set = "" />
+	<cfset var sets = getExtendSets() />
+	<cfset var setStruct = {} />
+	<cfset var i = 0 />
+
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"errors") />
+	<cfset extensionData.sets = [] />
+	
+	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
+		<cfset setStruct = sets[i].getAllValues() />
+		<cfset ArrayAppend(extensionData.sets, setStruct ) />
+	</cfloop>
+
+	<cfreturn extensionData />	
+
+</cffunction>
+
+<cffunction name="getAsXML" ouput="false" returntype="xml">
+	<cfargument name="documentXML" default="#xmlNew(true)#" />
+	<cfargument name="includeIDs" type="boolean" default="false" >
+	
+	<cfset var extensionData = {} />
+	<cfset var set = "" />
+	<cfset var sets = getExtendSets() />
+	<cfset var setStruct = {} />
+	<cfset var item = "" />
+	<cfset var i = 0 />
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "extension" ) />
+
+	<cfset var xmlAttributeSet = "" />
+	
+	<cfset extensionData = duplicate(variables.instance) />
+	<cfset structDelete(extensionData,"sets") />
+	<cfset structDelete(extensionData,"errors") />
+		
+	<cfif not(arguments.includeIDs)>
+		<cfset structDelete(extensionData,"SubTypeID") />
+	</cfif>
+	<cfset structDelete(extensionData,"isNew") />
+	<cfset structDelete(extensionData,"isActive") />
+	<cfset structDelete(extensionData,"siteid") />
+	 
+	<cfloop collection="#extensionData#" item="item">
+		<cfif isSimpleValue(extensionData[item])>
+			<cfset xmlRoot.XmlAttributes[lcase(item)] = extensionData[item] />
+		</cfif>
+	</cfloop>
+	
+	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
+		<cfset xmlAttributeSet = sets[i].getAsXML(documentXML) />
+		<cfset ArrayAppend(
+			xmlRoot.XmlChildren,
+			xmlAttributeSet
+			) />
+			
+	</cfloop>
+
+	<cfreturn xmlRoot />	
+</cffunction>
+
 
 </cfcomponent>

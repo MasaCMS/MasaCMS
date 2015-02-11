@@ -45,15 +45,15 @@ if ( 'CKEDITOR' in window) {
 			{ name: 'Language: LTR', element: 'span', attributes: { 'dir' : 'ltr' } },
 		*/
 
-
-
 		/* Object Styles */
 
-		{ name: 'Align Image Left', element: 'img', attributes: { 'class': 'pull-left' } },
-		{ name: 'Align Image Right', element: 'img', attributes: { 'class': 'pull-right' } },
 		{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-		{ name: 'Square Bulleted List', element: 'ul', styles : { 'list-style-type': 'square' } }
+		{ name: 'Square Bulleted List', element: 'ul', styles : { 'list-style-type': 'square' } },
 
+
+		/* Widget Styles : http://ckeditor.com/tmp/4.4.0/widget-styles.html */
+		{ name: 'Align Image Left', type: 'widget', widget: 'image', attributes: { 'class': 'image-left' } },
+		{ name: 'Align Image Right', type: 'widget', widget: 'image', attributes: { 'class': 'image-right' } }
 
 
 		/* Block Styles */

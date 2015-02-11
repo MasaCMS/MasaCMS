@@ -2245,7 +2245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
 
-	<!--- RAILO --->
+	<!--- Lucee --->
 	<cfif isDefined('form.files') and isArray(form.files)>
 		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
@@ -2328,7 +2328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>]}</cfoutput>
 			<cfabort>
 		<cfcatch>
-			<cflog log="application" text="Railo: #cfcatch.message#">
+			<cflog log="application" text="Lucee: #cfcatch.message#">
 			<cfabort>
 		</cfcatch>
 		</cftry>
@@ -2476,8 +2476,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="querystring" required="true" default="">
 		<cfargument name="complete" type="boolean" required="true" default="false">
 		<cfargument name="showMeta" type="string" required="true" default="0">
+		<cfargument name="secure" default="false">
 
-		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta, arguments.bean)>
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta, arguments.bean, arguments.secure)>
 	</cffunction>
 
 	<cffunction name="getImageURL" output="false">
@@ -2488,8 +2489,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="height" default=""/>
 		<cfargument name="width" default=""/>
 		<cfargument name="default" default=""/>
+		<cfargument name="secure" default="false">
 		<cfscript>
-			var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width);
+			var image = variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width, arguments.secure);
 			return Len(image) ? image : arguments.default;
 		</cfscript>
 	</cffunction>

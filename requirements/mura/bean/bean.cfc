@@ -195,6 +195,9 @@ component extends="mura.cfobject" output="false" {
 	}
 
  	function parseDateArg(String arg){
+
+ 		arguments.arg=replace(arguments.arg,'T',' ');
+ 		
 		if(lsisDate(arguments.arg)){
 			try{
 				return lsparseDateTime(arguments.arg);
@@ -213,7 +216,18 @@ component extends="mura.cfobject" output="false" {
 		}
 	}
 
-	function set(data){	
+	function set(property,propertyValue){	
+		
+		if(!isDefined('arguments.data') ){
+			if(isSimpleValue(arguments.property)){
+				return setValue(argumentCollection=arguments);
+			}
+
+			//process complex object
+			arguments.data=property;
+		}
+
+		
 		var prop='';
 		if(isQuery(arguments.data) and arguments.data.recordcount){
 			for(var i=1;i<=listLen(arguments.data.columnlist);i++){
@@ -232,7 +246,7 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
-	function setValue(String property,Any propertyValue=''){
+	function setValue(property,propertyValue=''){
 
 		if(isSimpleValue(arguments.propertyValue)){
 			arguments.propertyValue=trim(arguments.propertyValue);
@@ -246,6 +260,10 @@ component extends="mura.cfobject" output="false" {
 		}
 	
 		return this;
+	}
+
+	function get(String property,defaultValue){
+		return getValue(argumentCollection=arguments);
 	}
 
 	function getValue(String property,defaultValue){

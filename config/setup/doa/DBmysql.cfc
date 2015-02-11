@@ -34,7 +34,7 @@
 	
 	
 	<cffunction name="fDSCreate" access="package" returntype="String"  hint="creates datasource connection, returns empty string or error">
-		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
+		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Lucee">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
 		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" default="3306" displayname="" required="false"  type="numeric" hint="will use default port for each database if not provided">
@@ -48,8 +48,8 @@
 			var sErr = "";
 			if (super.getCFServerType() IS "ColdFusion") {
 				sErr = fDSCreateAdobe(argumentCollection=Arguments);
-			} else if (super.getCFServerType() IS "Railo") {
-				sErr = fDSCreateRailo(argumentCollection=Arguments);
+			} else if (super.getCFServerType() IS "Railo" || super.getCFServerType() IS "Lucee") {
+				sErr = fDSCreateLucee(argumentCollection=Arguments);
 			} else {
 				sErr = "unknown Application server. Cannot create datasource.";
 			}			
@@ -132,8 +132,8 @@
 	
 	
 	<!--- call DS in ColdFusion for Railo, we seperate these calls into different files (components) to avoid errors thrown by adobe coldfusion (bsoylu 6/6/2010)  --->
-	<cffunction name="fDSCreateRailo" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
-		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
+	<cffunction name="fDSCreateLucee" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
+		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Lucee">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
 		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" required="false"  type="numeric" hint="will use default port for each database if not provided">
@@ -143,7 +143,7 @@
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
-		<cfset var sErr = CreateObject("component","DBmysql_railo").fDSCreateRailoPackage(argumentCollection=arguments)>
+		<cfset var sErr = CreateObject("component","DBmysql_lucee").fDSCreateLuceePackage(argumentCollection=arguments)>
 		
 		<cfreturn sErr>	
 	</cffunction>	

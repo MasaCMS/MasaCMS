@@ -93,7 +93,7 @@ eInfo.e0111 = StructNew();
 	eInfo.e0111.Type = eTypePrefix & "CF_ColoredCode";
 	eInfo.e0111.ErrorCode = "e0111";
 	eInfo.e0111.Message = "DP_ParseBBML: There was an unknown error attempting to utilize CF_ColoredCode";
-	eInfo.e0111.Detail = "An error occured while calling the supporting routine, CF_ColoredCode.";
+	eInfo.e0111.Detail = "An error occurred while calling the supporting routine, CF_ColoredCode.";
 </cfscript>
 
 	<!--- Set Input --->

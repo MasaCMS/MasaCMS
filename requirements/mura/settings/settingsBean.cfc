@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="EmailBroadcaster" type="numeric" default="0" required="true" />
 <cfproperty name="EmailBroadcasterLimit" type="numeric" default="0" required="true" />
 <cfproperty name="extranet" type="numeric" default="1" required="true" />
-<cfproperty name="extranetSSL" type="numeric" default="0" required="true" />
+<cfproperty name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated"/>
 <cfproperty name="cache" type="numeric" default="0" required="true" />
 <cfproperty name="cacheCapacity" type="numeric" default="0" required="true" />
 <cfproperty name="cacheFreeMemoryThreshold" type="numeric" default="60" required="true" />
@@ -122,6 +122,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="customTagGroups" type="string" default="" />
 <cfproperty name="hasComments" type="numeric" default="1" required="true" />
 <cfproperty name="hasLockableNodes" type="numeric" default="0" required="true" />
+<cfproperty name="reCAPTCHASiteKey" type="string" default="" />
+<cfproperty name="reCAPTCHASecret" type="string" default="" />
+<cfproperty name="reCAPTCHALanguage" type="string" default="en" />
+<cfproperty name="JSONApi" type="numeric" default="0" />
+<cfproperty name="useSSL" type="numeric" default="0" />
+<cfproperty name="isRemote" type="numeric" default="0" />
+<cfproperty name="RemoteContext" type="string" default="" />
+<cfproperty name="RemotePort" type="numeric" default="0" />
+<cfproperty name="resourceSSL" type="numeric" default="0" />
+<cfproperty name="resourceDomain" type="string" default="" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -220,6 +230,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.hasSharedFilePool=""/>
 	<cfset variables.instance.hasComments=1/>
 	<cfset variables.instance.hasLockableNodes=0/>
+	<cfset variables.instance.reCAPTCHASiteKey=""/>
+	<cfset variables.instance.reCAPTCHASecret=""/>
+	<cfset variables.instance.reCAPTCHALanguage="en"/>
+	<cfset variables.instance.JSONApi=0/>
+	<cfset variables.instance.useSSL=0/>
+	<cfset variables.instance.isRemote=0/>
+	<cfset variables.instance.RemoteContext=""/>
+	<cfset variables.instance.RemotePort=80/>
+	<cfset variables.instance.resourceSSL=0/>
+	<cfset variables.instance.resourceDomain=""/>
 
 	<cfreturn this />
 </cffunction>
@@ -244,7 +264,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-	<cfargument name="data" type="any" required="true">
+	<cfargument name="property" required="true">
+    <cfargument name="propertyValue">
+    
+    <cfif not isDefined('arguments.config')>
+	    <cfif isSimpleValue(arguments.property)>
+	      <cfreturn setValue(argumentCollection=arguments)>
+	    </cfif>
+
+	    <cfset arguments.data=arguments.property>
+    </cfif>
+
 	<cfset var prop="">
 	<cfif isQuery(arguments.data) and arguments.data.recordcount>
 		<cfloop list="#arguments.data.columnlist#" index="prop">
@@ -334,6 +364,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.enforcePrimaryDomain = arguments.enforcePrimaryDomain />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getUseSSL" output="false">
+	<cfreturn variables.instance.useSSL or variables.instance.extranetSSL>
 </cffunction>
 
 <cffunction name="setEnforceChangesets" access="public" output="false">
@@ -661,7 +695,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 s
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getContext()#/#variables.instance.displayPoolID#" />
+	<cfreturn getResourcePath() & "/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
@@ -676,9 +710,9 @@ s
 	<cfargument name="theme" default="#request.altTheme#">
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn "#getAssetPath()#/includes/themes/#arguments.theme#" />
+		<cfreturn getAssetPath() & "/includes/themes/#arguments.theme#" />
 	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#getAssetPath()#/includes/themes/#variables.instance.theme#" />
+		<cfreturn  getAssetPath() & "/includes/themes/#variables.instance.theme#" />
 	<cfelse>
 		<cfreturn getAssetPath() />
 	</cfif>
@@ -851,6 +885,16 @@ s
 </cfif>
 </cffunction>
 
+<cffunction name="getApi" output="false">
+<cfargument name="type" default="json">
+<cfargument name="version" default="v1">
+	<cfif not isDefined('variables.instance.api#arguments.type##arguments.version#')>
+		<cfset variables.instance['api#arguments.type##arguments.version#']=evaluate('new mura.client.api.#arguments.type#.#arguments.version#.apiUtility(siteid=getValue("siteid"))')>
+	</cfif>
+
+	<cfreturn variables.instance['api#arguments.type##arguments.version#']>
+</cffunction>
+
 <cffunction name="getThemeRenderer" output="false" hint="deprecated: use getContentRenderer()">
 <cfargument name="$" default="">
 	<cfreturn getContentRenderer(arguments.$)>
@@ -902,9 +946,12 @@ s
 	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getScheme">
-	<!--- Temporary : will eventually be a Site Setting, but for now, pull from extranetSSL --->
-	<cfreturn getValue('extranetSSL') ? 'https' : 'http' />
+<cffunction name="getScheme" returntype="string" output="false">
+	<cfreturn YesNoFormat(getValue('useSSL')) ? 'https' : 'http' />
+</cffunction>
+
+<cffunction name="getProtocol" returntype="string" output="false">
+	<cfreturn UCase(getScheme()) />
 </cffunction>
 
 <cffunction name="getRazunaSettings" output="false">
@@ -912,6 +959,15 @@ s
 		<cfset variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
 	</cfif>
 	<cfreturn variables.razunaSettings>
+</cffunction>
+
+<cffunction name="getContentPoolID" output="false">
+
+	<cfif not listFindNoCase(variables.instance.contentPoolID,getValue('siteid'))>
+		<!---<cfset variables.instance.contentPoolID=listAppend(arguments.contentPoolID,getValue('siteid'))>--->
+	</cfif>
+
+	<cfreturn variables.instance.contentPoolID>
 </cffunction>
 
 <cffunction name="getHasSharedFilePool" output="false">
@@ -939,35 +995,146 @@ s
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setJSONApi" access="public" output="false">
+	<cfargument name="JSONApi" type="String" />
+	<cfif isNumeric(arguments.JSONApi)>
+	<cfset variables.instance.JSONApi = arguments.JSONApi />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setIsRemote" access="public" output="false">
+	<cfargument name="isRemote" type="String" />
+	<cfif isNumeric(arguments.isRemote)>
+	<cfset variables.instance.isRemote = arguments.isRemote />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setResourceSSL" access="public" output="false">
+	<cfargument name="resourceSSL" type="String" />
+	<cfif isNumeric(arguments.resourceSSL)>
+	<cfset variables.instance.resourceSSL = arguments.resourceSSL />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setRemotePort" access="public" output="false">
+	<cfargument name="RemotePort" type="String" />
+	<cfif isNumeric(arguments.RemotePort)>
+	<cfset variables.instance.RemotePort = arguments.RemotePort />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setUseSSL" access="public" output="false">
+	<cfargument name="useSSL"  />
+	<cfif isNumeric(arguments.useSSL)>
+		<cfset variables.instance.useSSL = arguments.useSSL />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+
+<cffunction name="getContext" output="false">
+	<cfif getValue('isRemote')>
+		<cfreturn getValue('RemoteContext')>
+	<cfelse>
+		<cfreturn application.configBean.getContext()>
+	</cfif> 
+</cffunction>
+
+<cffunction name="getServerPort" output="false">
+	<cfif getValue('isRemote')>
+		<cfset var port=getValue('RemotePort')>
+		<cfif isNumeric(port) and port neq 80>
+			<cfreturn ":" & port>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+	<cfelse>
+		<cfreturn application.configBean.getServerPort()>
+	</cfif> 
+</cffunction>
+
+<cffunction name="getAdminPath" output="false">
+	<cfreturn getBean('configBean').getAdminPath()>
+</cffunction>
+
+<cffunction name="getWebPath" output="false">
+	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
+	<cfif arguments.secure or arguments.complete>
+		<cfif arguments.secure>
+			<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
+		<cfelse>
+			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getContext()>
+		</cfif>
+	<cfelse>
+		<cfreturn getContext()>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="getResourcePath" output="false">
+	<cfargument name="complete" default=0>
+	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
+		<cfset var configBean=getBean('configBean')>
+		<cfif getValue('resourceSSL')>
+			<cfreturn "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+		<cfelse>
+			<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+		</cfif>
+	<cfelseif arguments.complete>
+		<cfreturn getWebPath(argumentCollection=arguments)>
+	<cfelse>
+		<cfreturn getContext()>
+	</cfif>	
+</cffunction>
+
+<cffunction name="getRequirementsPath" output="false">
+	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
+	<cfreturn getResourcePath(argumentCollection=arguments) & "/requirements">
+</cffunction>
+
+<cffunction name="getPluginsPath" output="false">
+	<cfargument name="secure" default="#getValue('useSSL')#">
+	<cfargument name="complete" default=0>
+	<cfreturn getResourcePath(argumentCollection=arguments) & "/plugins">
+</cffunction>
 
 <cffunction name="getAccessControlOriginList" output="false">
-	<cfset var thelist="http://#getValue('domain')#">
+	<cfset var thelist="#getScheme()#://#getValue('domain')#">
 	<cfset var adminSSL=application.configBean.getAdminSSL()>
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 
-	<cfif adminSSL>
+	<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
 		<cfset thelist = listAppend(thelist,"https://#getValue('domain')#")>
 	</cfif>
 
 	<cfif len(application.configBean.getAdminDomain())>
-		<cfset thelist = listAppend(thelist,"http://#application.configBean.getAdminDomain()#")>
-		<cfif adminSSL>
-			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()#")>
+		<cfset thelist = listAppend(thelist,"#getScheme()#://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
+		<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
+			<cfset thelist = listAppend(thelist,"https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#")>
 		</cfif>
 	</cfif>
 	
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset thelist = listAppend(thelist,"http://#i#")>
-			<cfif adminSSL>
-				<cfset thelist = listAppend(thelist,"https://#i#")>
+			<cfset thelist = listAppend(thelist,"#getScheme()#://#i##getServerPort()#")>
+			<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
+				<cfset thelist = listAppend(thelist,"https://#i##getServerPort()#")>
 			</cfif>	
 		</cfloop>
 	</cfif>
 
 	<cfreturn thelist>
+</cffunction>
 
+<cffunction name="getVersion" output="false">
+	<cfreturn getBean('autoUpdater').getCurrentVersion(getValue('siteid'))>
 </cffunction>
 
 </cfcomponent>

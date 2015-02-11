@@ -62,8 +62,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
-<cfset this.siteIDInURLS=0>
-<cfset this.indexFileInURLS=1>
+
+<!--- Set these to a boolean value to override settings.ini.cfm value--->
+<cfset this.siteIDInURLS="">
+<cfset this.indexFileInURLS="">
+<cfset this.hashURLS="">
 
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
@@ -88,6 +91,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead4="h6">
 <!--- This is duplicated for when the page title gets set to h1 ---> 
 <cfset this.subHead5="h6">
+<!--- This is the preloader markup for async objects--->
+<cfset this.preloaderMarkup=''>
 <!--- These settings are for navigational display objects --->
 <cfset this.navWrapperClass="sidebar-nav well">
 <cfset this.navLIClass="">
@@ -410,14 +415,12 @@ Display Objects
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
 
-	<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
-	<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
-
 	<cfif isObject(arguments.event)>
 		<cfset variables.event=arguments.event>
 	<cfelse>
 		<cfset variables.event=createObject("component","mura.servletEvent")>
 	</cfif>
+
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=variables.$>
 	
@@ -425,6 +428,25 @@ Display Objects
 		<cfset this.showEditableObjects=false>
 		<cfset this.showAdminToolBar=false>
 		<cfset this.showMemberToolBar=false>
+	</cfif>
+
+	<cfif len(variables.$.event('siteid'))>
+		<cfif variables.$.siteConfig('isRemote')>
+			<cfset this.siteIDInURLS=false>
+			<cfset this.indexFileInURLS=false>
+		<cfelse>
+			<cfif not isBoolean(this.siteIDInURLS)>
+				<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
+			</cfif>
+			
+			<cfif not isBoolean(this.indexFileInURLS)>
+				<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfif not isBoolean(this.hashURLS)>
+		<cfset this.hashURLS=application.configBean.getHashURLS()>
 	</cfif>
 
 	<!---  Backward support --->
@@ -816,7 +838,7 @@ Display Objects
 		<cfset var icon="">
 		<cfset var isFileIcon=false>
 		<cfset var charCount = 0>
-		<cfset limited = false>
+		<cfset var limited = false>
 		<cfif arguments.charLimit>
 			<!--- change crumbLen --->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="i">
@@ -884,7 +906,7 @@ Display Objects
 		<cfset var icon = "">
 		<cfset var isFileIcon = false>
 		<cfset var charCount = 0>
-		<cfset limited = false>
+		<cfset var limited = false>
 		<cfif arguments.charLimit>
 			<!--- change crumbLen --->
 			<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="i">
@@ -1103,8 +1125,8 @@ Display Objects
 <cfset var I = 0 />
 <cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
 	<cfsavecontent variable="theNav">
-		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
-			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),variables.event.getValue('showMeta'),0)#</li></cfif></cfloop>
+		<cfoutput><ul itemscope itemtype="http://data-vocabulary.org/Breadcrumb"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
+			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(type=this.crumbdata[I].type,filename=this.crumbdata[I].filename,title=this.crumbdata[I].menutitle,target='_self',targetparams='',contentid=this.crumbdata[I].contentid,siteid=this.crumbdata[I].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexFile=application.configBean.getIndexFile(),showMeta=variables.event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(type=this.crumbdata[1].type,filename=this.crumbdata[1].filename,title=this.crumbdata[1].menutitle,target='_self',targetparams='',contentid=this.crumbdata[1].contentid,siteid=this.crumbdata[1].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexfile=application.configBean.getIndexFile(),showMeta=variables.event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li></cfif></cfloop>
 		</ul></cfoutput>
 	</cfsavecontent>
 </cfif>
@@ -1113,32 +1135,29 @@ Display Objects
 </cffunction>
 
 <cffunction name="renderIcon" returntype="string" output="false">
-<cfargument name="data">
+	<cfargument name="data">
 
-<cfset var iconclass=application.configBean.getClassExtensionManager().getCustomIconClass(argumentCollection=arguments.data)>
+	<cfset var iconclass=application.configBean.getClassExtensionManager().getIconClass(argumentCollection=arguments.data)>
 
-<cfif len(iconclass)>
-	<cfreturn iconclass>
-</cfif>
-
-<cfif arguments.data.type eq 'File'>
-	<cfif structKeyExists(arguments.data,"fileExt")>
-		<cfreturn lcase(arguments.data.fileExt)>
-	<cfelse>
-		<cfreturn "page">
+	<cfif len(iconclass)>
+		<cfreturn iconclass>
 	</cfif>
-	
-<cfelse>
-	<cfreturn lcase(arguments.data.type)>
-</cfif>
 
+	<cfif arguments.data.type eq 'File'>
+		<cfif structKeyExists(arguments.data,"fileExt")>
+			<cfreturn lcase(arguments.data.fileExt)>
+		<cfelse>
+			<cfreturn "page">
+		</cfif>
+	<cfelse>
+		<cfreturn lcase(arguments.data.type)>
+	</cfif>
 </cffunction>
 
 <!--- For backward compatibility --->
 <cffunction name="dspPortalNav" output="false" returntype="string">
 	<cfreturn dspFolderNav(argumentCollection=arguments)>
 </cffunction>
-<!--- --->
 
 <cffunction name="dspFolderNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
@@ -1540,6 +1559,7 @@ Display Objects
 	<cfargument name="filename">
 	<cfargument name="siteidinurls" default="#this.siteIDInURLS#">
 	<cfargument name="indexfileinurls" default="#this.indexFileInURLS#">
+	<cfargument name="hashURLS" default="#this.hashURLS#">
 	<cfreturn application.contentServer.getURLStem(argumentCollection=arguments)>
 </cffunction>
 
@@ -1551,21 +1571,53 @@ Display Objects
 	<cfargument name="target" required="true" default="">
 	<cfargument name="targetParams" required="true" default="" hint="deprecated, does not do anything.  May come be re-introduced for modal params">
 	<cfargument name="querystring" required="true" default="">
-	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
-	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-	<cfargument name="indexFile" type="string" required="true" default="">
+	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#" hint="deprecated">
+	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#" hint="deprecated">
+	<cfargument name="indexFile" type="string" required="true" default="" hint="deprecated">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	<cfargument name="bean" hint="The contentBean that link is being generated for">
+	<cfargument name="secure" default="false">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+	<cfset var q=''>
+	<cfset var qsa="">
+	<cfset var qq="">
 
-	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
-		<cfset arguments.querystring="?" & arguments.querystring>
+	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
+		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
 	</cfif>
 
+	<cfif arguments.complete or arguments.secure>
+		<cfif arguments.secure>
+			<cfset var begin='https://#site.getDomain()##site.getServerPort()##site.getContext()#'>
+		<cfelse>
+			<cfset var begin='#site.getScheme()#://#site.getDomain()##site.getServerPort()##site.getContext()#'>
+		</cfif>
+	<cfelse>
+		<cfset var begin=site.getContext()>
+	</cfif>
+
+	<cfif len(arguments.querystring)>
+		<cfif not this.hashURLS and not left(arguments.querystring,1) eq "?">
+			<cfset arguments.querystring="?" & arguments.querystring>
+		<cfelseif this.hashURLS>
+			<cfset qsa="_">
+			<cfset arguments.queryString=listFirst(arguments.querystring,"?")>
+			<cfloop list="#arguments.queryString#" index="q" delimiters="&">
+				<cfset qq=listToArray(q,"=")>
+				<cfif arrayLen(qq) eq 2>
+					<cfset qsa=qsa & "/#urlEncodedFormat(qq[1])#/#qq[2]#">
+				<cfelse>
+					<cfset qsa=qsa & "/#urlEncodedFormat(qq[1])#/true">
+				</cfif>
+			</cfloop>
+			<cfset arguments.queryString=qsa>
+		</cfif>
+	</cfif>
+	
 	<cfif not isDefined('arguments.bean') 
 		and (
 				(
@@ -1577,27 +1629,40 @@ Display Objects
 				request.muraExportHTML and listFindNoCase("Link,File",arguments.type)
 			)
 		>
-		<cfset arguments.bean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
+		<cfset arguments.bean=getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 		<cfset argument.filename=arguments.bean.getFilename()>
 	</cfif>
 	
-	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
+	<cfif application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
 		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
 		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 	</cfif>
 	
+	<cfif this.hashURLS and len(arguments.queryString) and right(arguments.filename,1) neq "/">
+		<cfset arguments.queryString="/" & arguments.queryString>
+	</cfif>
+
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				<cfif this.hashURLS>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+				<cfelse>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				</cfif>	
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />	
 			<cfelseif arguments.type eq "Link">
 				<cfset href=arguments.bean.getBody()>
 			<cfelse>
-				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#arguments.bean.getFileID()#/#arguments.bean.getBody()#">
+				<cfset href="#getBean('configBean').getContext()#/#arguments.siteID#/cache/file/#arguments.bean.getFileID()#/#arguments.bean.getBody()#">
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			<cfif this.hashURLS>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+			<cfelse>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			</cfif>	
 		</cfdefaultcase>
 	</cfswitch>
 
@@ -1610,35 +1675,36 @@ Display Objects
 	<cfargument name="siteid" required="true">
 	<cfargument name="contentid" required="true" default="">
 	<cfargument name="target" required="true" default="">
-	<cfargument name="targetParams" required="true" default="">
-	<cfargument name="context" type="string" default="#application.configBean.getContext()#">
-	<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
+	<cfargument name="targetParams" required="true" default="" hint="deprecated">
+	<cfargument name="context" type="string" default="#application.configBean.getContext()#" hint="deprecated">
+	<cfargument name="stub" type="string" default="#application.configBean.getStub()#" hint="deprecated">
 	<cfargument name="indexFile" type="string" default="">
 	<cfargument name="showMeta" type="string" default="0">
 	<cfargument name="fileExt" type="string" default="" required="true">
+	<cfargument name="secure" default="false">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
-	
-	<cfif isBoolean(application.configBean.getAllowUnicodeInFilenames()) and application.configBean.getAllowUnicodeInFilenames()>
-		<cfset arguments.filename=urlEncodedFormat(arguments.filename)>
-		<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
+
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+
+	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
+		<cfreturn site.getContentRenderer().createHREFforRSS(argumentCollection=arguments)>
 	</cfif>
 
 	<cfswitch expression="#arguments.type#">
 			<cfcase value="Link">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				<cfset arguments.queryString="showMeta=#arguments.showMeta#">
 			</cfcase>
 			<cfcase value="File">
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#index.cfm?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
+				<cfset arguments.queryString="showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#">
 			</cfcase>
 			<cfdefaultcase>
-				<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />
+				<cfset arguments.queryString="">
 			</cfdefaultcase>
 	</cfswitch>
 		
-	<cfreturn href />
+	<cfreturn createHREF(argumentCollection=arguments) />
 </cffunction>
 
 <cffunction name="createHREFForImage" output="false" returntype="any">
@@ -1650,6 +1716,7 @@ Display Objects
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
+<cfargument name="secure" default="false">
 
 	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 	
@@ -1678,6 +1745,8 @@ Display Objects
 	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="isParent" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
+	<cfargument name="secure" default="false">
+	<cfargument name="isBreadCrumb" default="false">
 			
 	<cfset var link ="">
 	<cfset var href ="">
@@ -1704,8 +1773,13 @@ Display Objects
 		<cfset theClass=listAppend(theClass,arguments.aHasKidsClass," ") />
 	</cfif>
 		
-	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfset href=createHREF(type=arguments.type,filename=arguments.filename,siteid=arguments.siteid,contentid=arguments.contentid,target=arguments.target,targetparams=iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),querystring=arguments.queryString,context=arguments.context,stub=arguments.stub,indexfile=arguments.indexFile,complete=arguments.complete,showmeta=arguments.showMeta,secure=arguments.secure)>
+	<cfif arguments.isBreadCrumb>
+		<cfset link='<a itemprop="url" href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#><span itemprop="title">#HTMLEditFormat(arguments.title)#</span></a>' />
+	<cfelse>
+		<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	</cfif>
+	
 	<cfreturn link>
 </cffunction>
 
@@ -1728,7 +1802,7 @@ Display Objects
 
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
-		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#variables.event.getValue('nocache')#">
+		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
 			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
@@ -1820,9 +1894,9 @@ Display Objects
 	<cfset var tempObject="">
 	<cfset var args={}>
 	<cfset request.muraValidObject=true>
+	<cfset request.muraAsyncEditableObject=false>
 
 	<cfif session.mura.isLoggedIn and this.showEditableObjects and arguments.allowEditable>
-
 
 		<cfif variables.$.siteConfig('hasLockableNodes')>
 			<cfset var configuratorAction="carch.lockcheck&destAction=">
@@ -1929,7 +2003,7 @@ Display Objects
 			<cfif application.configBean.getAdminSSL()>
 				<cfset editableControl.editLink="https://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
 			<cfelse>
-				<cfset editableControl.editLink="http://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+				<cfset editableControl.editLink="#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
 			</cfif>
 		</cfif>
 			
@@ -1947,37 +2021,35 @@ Display Objects
 		</cfif>
 
 		<cfset this.hasEditableObjects=true>
-	
-		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class)>
 	</cfif>
 
 	<cfswitch expression="#arguments.object#">
-		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="folder_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_folder.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm",cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
-		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="contact"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")></cfcase>
-		<cfcase value="calendar_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")></cfcase>
+		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sub.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_peer.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_standard.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_portal.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="folder_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_folder.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_multilevel.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sequential.cfm",cachekey=cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
+		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_top.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="contact"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
+		<cfcase value="calendar_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm")></cfcase>
 		<cfcase value="plugin">
 			<cfset theObject=theObject & application.pluginManager.displayObject(object=arguments.objectid,event=variables.event,params=arguments.params)>
 		</cfcase>
-		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")></cfcase>
-		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")></cfcase>
+		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm")></cfcase>
+		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm")></cfcase>
 		<cfcase value="site_map"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable)></cfcase>							
 		<cfcase value="category_summary"><cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & variables.event.getValue('categoryID'),params=arguments.params)></cfcase>
-		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId & variables.event.getValue("responseID") & variables.event.getValue("startrow"))></cfcase>
+		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_archive.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="datacollection/index.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dataresponses/index.cfm",cachekey=cacheKeyObjectId & variables.event.getValue("responseID") & variables.event.getValue("startrow"))></cfcase>
 		<cfcase value="component"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable)></cfcase>
-		<cfcase value="ad"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")></cfcase>
-		<cfcase value="comments"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")></cfcase>
-		<cfcase value="event_reminder_form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")></cfcase>
-		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")></cfcase>
+		<cfcase value="ad"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm")></cfcase>
+		<cfcase value="comments"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm")></cfcase>
+		<cfcase value="event_reminder_form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm")></cfcase>
+		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_adZone.cfm")></cfcase>
 		<cfcase value="feed">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
 		</cfcase>	
@@ -1989,10 +2061,10 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="feed_table"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)></cfcase>
-		<cfcase value="payPalCart"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")></cfcase>
-		<cfcase value="rater"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")></cfcase>
-		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
-		<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
+		<cfcase value="payPalCart"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="paypalcart/index.cfm")></cfcase>
+		<cfcase value="rater"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="rater/index.cfm")></cfcase>
+		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="favorites/index.cfm")></cfcase>
+		<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
 			<cfif isJSON(arguments.params)>
 				<cfset arguments.params=deserializeJSON(arguments.params)>
@@ -2005,16 +2077,16 @@ Display Objects
 		<cfcase value="related_section_content">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
-		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")></cfcase>
+		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
 			<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#variables.event.getValue('nocache')#"><cfoutput>#dspTagCloud(argumentCollection=args)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 			<cfset theObject=theObject & tempObject> 
 		</cfcase>
-		<cfcase value="goToFirstChild"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")></cfcase>
+		<cfcase value="goToFirstChild"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="act_goToFirstChild.cfm")></cfcase>
 		<!--- BEGIN DEPRICATED --->
-		<cfcase value="submit_event"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_submit_event.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="promo"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_promo.cfm")></cfcase>
-		<cfcase value="public_content_form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_public_content_form.cfm")></cfcase>
+		<cfcase value="submit_event"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_submit_event.cfm",cachekey=cacheKeyContentId)></cfcase>
+		<cfcase value="promo"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_promo.cfm")></cfcase>
+		<cfcase value="public_content_form"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_public_content_form.cfm")></cfcase>
 		<cfcase value="category_summary_rss"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & variables.event.getValue('categoryID'),useRss=true)></cfcase>
 		<cfcase value="feed_no_summary">
 			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable)>
@@ -2027,28 +2099,27 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfcase value="related_section_content_no_summary">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,hasSummary=false)>
 		</cfcase>	
 		<cfcase value="features">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId)>
 		</cfcase>
 		<cfcase value="features_no_summary">
-			<cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)>
+			<cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)>
 		</cfcase>		
-		<cfcase value="category_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="category_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)></cfcase>
-		<cfcase value="category_Folder_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_Folder_features.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_Folder_features.cfm",cacheKeyObjectId,false)></cfcase>
+		<cfcase value="category_features"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="category_features_no_summary"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)></cfcase>
+		<cfcase value="category_Folder_features"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId)></cfcase>
+		<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false)></cfcase>
 		<!--- END DEPRICATED --->
 	</cfswitch>
 
-	<cfif request.muraValidObject and showEditable>
-		<cfset theObject=theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+	<cfif request.muraValidObject and showEditable and ((request.muraFrontEndRequest and not request.muraAsyncEditableObject) or (not request.muraFrontEndRequest and request.muraAsyncEditableObject))>
+		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
 	<cfelseif not request.muraValidObject>
 		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
 		<cfset request.muraValidObject=true>
 	</cfif>
-
 
 	<cfreturn trim(theObject) />
 </cffunction>
@@ -2086,7 +2157,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="dspBody"  output="false" returntype="string">
-	<cfargument name="body" type="string" default="">
+	<cfargument name="body" type="string" default="#$.content('body')#">
 	<cfargument name="pagetitle" type="string" default="">
 	<cfargument name="crumblist" type="boolean" default="1">
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
@@ -2114,6 +2185,7 @@ Display Objects
 			<cfif variables.event.getValue('display') neq ''>
 				<cfswitch expression="#variables.event.getValue('display')#">
 					<cfcase value="editprofile">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset variables.event.setValue('forceSSL',getSite().getExtranetSSL())/>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
@@ -2124,6 +2196,7 @@ Display Objects
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2133,6 +2206,7 @@ Display Objects
 						</cfif>
 					</cfcase> 
 					<cfcase value="login">
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2142,6 +2216,7 @@ Display Objects
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
+						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset eventOutput=application.pluginManager.renderEvent("onDisplayRender",variables.event)>
 						<cfif len(eventOutput)>
@@ -2275,6 +2350,7 @@ Display Objects
 				</cfif>		
 			</cfif> 
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
+			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
@@ -2282,6 +2358,7 @@ Display Objects
 			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
 			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
+			<cfset variables.$.noIndex()>
 			<cfset variables.event.setValue('noCache',1)>
 			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
 			<cfif len(eventOutput)>
@@ -2290,7 +2367,9 @@ Display Objects
 			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 			</cfif>
 		<cfelse>
+			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
+			<cfheader statuscode="404" statustext="Content Not Found" /> 
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
@@ -2358,6 +2437,12 @@ Display Objects
 		<cfreturn "sys" & rereplace(id,"[^a-zA-Z0-9]","","ALL")>	
 </cffunction>
 
+<cffunction name="createCSSHook"  output="false" returntype="string">
+		<cfargument name="title" type="string" required="true" default="">
+		<cfset var hook=lCase(arguments.title)>
+		<cfreturn rereplace(hook, '[[:space:]]+', '-', 'all')>	
+</cffunction>
+
 <cffunction name="getTemplate"  output="false" returntype="string">
 		<cfset var I = 0 />
 		
@@ -2410,10 +2495,10 @@ Display Objects
 	<cfargument name="siteID" type="string">
 	<cfset var returnstring=arguments.str/>
 	
-	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="#variables.$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 	<cfreturn returnstring />
 </cffunction>
 
@@ -2799,35 +2884,22 @@ Display Objects
 	</cfloop>
 	
 	<cfif len(arguments.injectVars)>
-			<cfif len(qrystr)>
-				<cfset qrystr=qrystr & "&#arguments.injectVars#">
-			<cfelse>
-				<cfset qrystr="?#arguments.injectVars#">
-			</cfif>
+		<cfif len(qrystr)>
+			<cfset qrystr=qrystr & "&#arguments.injectVars#">
+		<cfelse>
+			<cfset qrystr="?#arguments.injectVars#">
+		</cfif>
 	</cfif>
 	
 	<cfif arguments.complete>
 		<cfif application.utility.isHTTPS()>
-			<cfset host='https://#arguments.domain##application.configBean.getServerPort()#'>
+			<cfset host='https://#arguments.domain##variables.$.siteConfig('ServerPort')#'>
 		<cfelse>
-			<cfset host='http://#arguments.domain##application.configBean.getServerPort()#'>
+			<cfset host='#variables.$.siteConfig('scheme')#://#arguments.domain##variables.$.siteConfig('ServerPort')#'>
 		</cfif>
 	</cfif>
 	
-	<!--- Using request.servletEvent for backward compatibility --->
-	<cfif request.servletEvent.valueExists("contentBean") and not listFind("Link,File",request.servletEvent.getValue('contentBean').getType())>		
-		<cfreturn host & application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
-	<cfelse>
-		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
-		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & "index.cfm?linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
-		<cfelseif not findNocase("linkServID",qrystr)>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr & "&linkServID=" & request.servletEvent.getValue("contentBean").getContentID() >
-		<cfelse>
-			<cfreturn host &  application.configBean.getContext() & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
-		</cfif>
-	</cfif>
-	
+	<cfreturn host & variables.$.siteConfig('context') & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 	
 </cffunction>
 
@@ -2902,7 +2974,7 @@ Display Objects
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
 					<cfset request.muraDynamicContentError=true>
-					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
+					<cfset errorStr=getBean('utility').formatError(cfcatch)>
 					<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
 				<cfelse>
 					<cfrethrow>
@@ -2957,7 +3029,8 @@ Display Objects
 	
 	<cfreturn trim(str) />
 </cffunction>
- 
+
+<!--- DEPRECATED --->
 <cffunction name="sendToFriendLink" output="false" returnType="String">
 <cfreturn "javascript:sendtofriend=window.open('#variables.event.getSite().getAssetPath()#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#variables.event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>
@@ -2965,24 +3038,28 @@ Display Objects
 <cffunction name="addToHTMLHeadQueue" output="false">
 	<cfargument name="text">
 	<cfargument name="action" default="append">
-	<cfif not listFind(variables.event.getValue('HTMLHeadQueue'),arguments.text)>
+	<cfset var q=variables.event.getValue(property='HTMLHeadQueue',defaultValue=[])>
+	<cfif not arrayFind(q,arguments.text)>
 		<cfif arguments.action eq "append">
-			<cfset variables.event.setValue('HTMLHeadQueue',listappend(variables.event.getValue('HTMLHeadQueue'),arguments.text)) />
+			<cfset arrayAppend(q,arguments.text)>
 		<cfelse>
-			<cfset variables.event.setValue('HTMLHeadQueue',listprepend(variables.event.getValue('HTMLHeadQueue'),arguments.text)) />
+			<cfset arrayPrepend(q,arguments.text)>
 		</cfif>
+		<cfset variables.event.setValue('HTMLHeadQueue',q) />
 	</cfif>
 </cffunction>
 
 <cffunction name="addToHTMLFootQueue" output="false">
 	<cfargument name="text">
 	<cfargument name="action" default="append">	
-	<cfif not listFind(variables.event.getValue('HTMLFootQueue'),arguments.text)>
+	<cfset var q=variables.event.getValue(property='HTMLFootQueue',defaultValue=[])>
+	<cfif not arrayFind(q,arguments.text)>
 		<cfif arguments.action eq "append">
-			<cfset variables.event.setValue('HTMLFootQueue',listappend(variables.event.getValue('HTMLFootQueue'),arguments.text)) />
+			<cfset arrayAppend(q,arguments.text)>
 		<cfelse>
-			<cfset variables.event.setValue('HTMLFootQueue',listprepend(variables.event.getValue('HTMLFootQueue'),arguments.text)) />
+			<cfset arrayPrepend(q,arguments.text)>
 		</cfif>
+		<cfset variables.event.setValue('HTMLFootQueue',q) />
 	</cfif>
 </cffunction>
 
@@ -3027,15 +3104,7 @@ Display Objects
 
 			<!--- ensure that the js lb is always there --->
 			<cfif not this.jsLibLoaded>
-				<cfswitch expression="#getJsLib()#">
-					<cfcase value="prototype">
-						<cfset addToHTMLHeadQueue("prototype.cfm","prepend")>
-						<cfset addToHTMLHeadQueue("scriptaculous.cfm","prepend")>
-					</cfcase>
-					<cfdefaultcase>
-						<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
-					</cfdefaultcase>
-				</cfswitch>
+				<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
 			</cfif>
 					
 			<!--- Add modal edit --->
@@ -3045,155 +3114,155 @@ Display Objects
 					<cfset loadShadowboxJS() />
 				</cfif>--->
 				<cfif this.showEditableObjects and this.enableFrontEndTools>
-					<cfsavecontent variable="headerStr">
-					<cfoutput>
-					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
-					</cfoutput>
-					</cfsavecontent>
+					<cfsavecontent variable="headerStr"><cfoutput><link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" /></cfoutput></cfsavecontent>
 				</cfif>
 			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
-				<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
-					<cfsavecontent variable="headerStr">
-						<cfif getShowModal()>
-							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm")>
-							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm">
-							<cfset commitTracePoint(tracePoint)>
-						</cfif>	
-						<!---
-						<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
-							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
-							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm">
-							<cfset commitTracePoint(tracePoint)>
-						</cfif>
-						--->
-					</cfsavecontent>
+			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
+				<cfif getShowModal()>
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm")>
+					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm"></cfsavecontent>
+					<cfset commitTracePoint(tracePoint)>
+				</cfif>	
+				<!---
+				<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
+					<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm">
+					<cfset commitTracePoint(tracePoint)>
 				</cfif>
+				--->
+			</cfif>
 		</cfif>
 		<!--- Loop through the HTML Head Que--->
-		<cfset HTMLQueue=variables.event.getValue('HTML#arguments.queueType#Queue') />
+		<cfset HTMLQueue=variables.event.getValue(property='HTML#arguments.queueType#Queue',defaultValue=[]) />
 		
-		<cfloop list="#HTMLQueue#" index="i">
-		<cfset headerFound=false/>
-		<cfsavecontent variable="itemStr">
-			<!--- look in default htmlHead directory --->
-			<cfif not refind('[\\/]',i)>
-				
-				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-					<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-					<cfset commitTracePoint(tracePoint)>
-					<cfset headerFound=true />
-				</cfif>
-				
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-			
-			<cfelse>
-			
-				<!--- If not found, look in look in your theme --->
-				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-					<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset commitTracePoint(tracePoint)>
-					<cfset headerFound=true />
-				</cfif>
-
-				<!--- if not found, try the path that was passed --->
-				<cfif not headerFound and fileExists(expandPath(i))>
-					<cfinclude template="#i#" />
-					<cfset headerFound = true />
-				</cfif>
+		<cfif arrayLen(HTMLQueue)>
+			<cfloop from="1" to="#arrayLen(HTMLQueue)#" index="item">
+				<cfset headerFound=false/>
+				<cfset i=HTMLQueue[item]>
+					
+				<cfif refind('[<>]',i)>
+						<cfset itemStr=i>
+				<cfelse>
+					<cfset itemStr=""/>
+					<!--- look in default htmlHead directory --->
+					<cfif not refind('[\\/]',i)>
 						
-				<!--- If not found, look in display_objects directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
+						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+							<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset headerFound=true />
+						</cfif>
+						
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+					
+					<cfelse>
+						<!--- If not found, look in look in your theme --->
+						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
+						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+							<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+							<cfset commitTracePoint(tracePoint)>
+							<cfset headerFound=true />
+						</cfif>
+
+						<!--- if not found, try the path that was passed --->
+						<cfif not headerFound and fileExists(expandPath(i))>
+							<cfinclude template="#i#" />
+							<cfset headerFound = true />
+						</cfif>
+								
+						<!--- If not found, look in display_objects directory --->
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+						
+						<!--- If not found, look in top of theme directory
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+						 --->
+						 
+						<!--- If not found, look in includes directory --->
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/includes/">
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+							</cfif>
+						</cfif>
+						
+						<!--- If not found, look in local plugins directory --->
+						<cfif not headerFound>
+							<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
+							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
+								<cfset pluginID=listLast(listFirst(i,"/"),"_")>
+								<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+								<cfset pluginConfig=variables.event.getValue('pluginConfig')>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+								<cfset variables.event.setValue('pluginPath',pluginPath)>		
+								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+								<cfset variables.event.removeValue("pluginPath")>
+								<cfset variables.event.removeValue("pluginConfig")>
+							</cfif>
+						</cfif>
+						
+						<!--- If not found, look in global plugins directory --->
+						<cfif not headerFound>
+							<cfset pluginBasePath="/plugins/">
+							<cfif fileExists(expandPath("#pluginbasePath##i#"))>
+								<cfset pluginID=listLast(listFirst(i,"/"),"_")>
+								<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+								<cfset pluginConfig=variables.event.getValue('pluginConfig')>
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+								<cfset variables.event.setValue('pluginPath',pluginPath)>
+								<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
+								<cfsavecontent variable="itemStr"><cfinclude  template="#pluginBasePath##i#"></cfsavecontent>
+								<cfset commitTracePoint(tracePoint)>
+								<cfset headerFound=true />
+								<cfset variables.event.removeValue("pluginPath")>
+								<cfset variables.event.removeValue("pluginConfig")>
+							</cfif>
+						</cfif>
+					</cfif>
+					<cfif not headerFound>
+						<cfoutput><!-- missing header include- #i# --></cfoutput>
 					</cfif>
 				</cfif>
-				
-				<!--- If not found, look in top of theme directory
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-				 --->
-				 
-				<!--- If not found, look in includes directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-					</cfif>
-				</cfif>
-				
-				<!--- If not found, look in local plugins directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
-						<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-						<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-						<cfset variables.event.setValue('pluginPath',pluginPath)>		
-						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-						<cfset variables.event.removeValue("pluginPath")>
-						<cfset variables.event.removeValue("pluginConfig")>
-					</cfif>
-				</cfif>
-				
-				<!--- If not found, look in global plugins directory --->
-				<cfif not headerFound>
-					<cfset pluginBasePath="/plugins/">
-					<cfif fileExists(expandPath("#pluginbasePath##i#"))>
-						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
-						<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-						<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-						<cfset variables.event.setValue('pluginPath',pluginPath)>
-						<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
-						<cfinclude  template="#pluginBasePath##i#">
-						<cfset commitTracePoint(tracePoint)>
-						<cfset headerFound=true />
-						<cfset variables.event.removeValue("pluginPath")>
-						<cfset variables.event.removeValue("pluginConfig")>
-					</cfif>
-				</cfif>
-			</cfif>
-			<cfif not headerFound>
-			<cfoutput><!-- missing header include- #i# --></cfoutput>
-			</cfif>
-		</cfsavecontent>
-		<cfset headerStr=headerStr & " " & trim(itemStr)>
-		</cfloop>
+				<cfset headerStr=headerStr & chr(13) & chr(10) & trim(itemStr)>
+			</cfloop>
+		</cfif>
 	</cfif>	
 	<cfreturn headerStr>
 </cffunction>
@@ -3398,7 +3467,7 @@ Display Objects
 		if ( not rsFileData.recordcount ) {
 			return '';
 		} else {
-			return '#application.configBean.getContext()#/tasks/render/file/index.cfm?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+			return '#application.configBean.getContext()#/index.cfm/_api/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
 		}
 	</cfscript>
 </cffunction>
@@ -3411,6 +3480,7 @@ Display Objects
 	<cfargument name="height" required="false" default="AUTO" />
 	<cfargument name="width" required="false" default="AUTO" />
 	<cfargument name="siteID" required="false" default="#variables.$.event('siteID')#" />
+	<cfargument name="secure" default="false">
 	<cfscript>
 		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
 		if ( IsSimpleValue(imageURL) ) {
@@ -3540,6 +3610,38 @@ Display Objects
 	public any function getCalendarUtility() {
 		return variables.$.getBean('contentCalendarUtilityBean').setMuraScope(variables.$);
 	}
+
+	public any function noIndex(){
+		addToHTMLHeadQueue('<meta name="robots" content="noindex, follow" />');
+	}
+
+	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image') {
+		var str = '';
+
+		if ( Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret')) ) {
+
+			// scrub args
+			arguments.reCAPTCHATheme = ListFindNoCase('light,dark', arguments.reCAPTCHATheme)
+				? LCase(arguments.reCAPTCHATheme)
+				: 'light';
+
+			arguments.reCAPTCHAType = ListFindNoCase('audio,image', arguments.reCAPTCHAType)
+				? LCase(arguments.reCAPTCHAType)
+				: 'image';
+
+			savecontent variable='str' {
+				WriteOutput('<div class="g-recaptcha" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
+			};
+
+			// load Google ReCAPTCHA script
+			//addToHTMLHeadQueue('<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=#$.siteConfig('reCAPTCHALanguage')#"></script>');
+		} else {
+			str = '<div class="alert alert-warning"><h4><i class="fa fa-warning"></i> #$.rbKey('recaptcha.warning')#</h4><p>#$.rbKey('recaptcha.nokeys')#</p></div>';
+		}
+
+		return str;
+	}
+
 </cfscript>
 
 </cfcomponent>
