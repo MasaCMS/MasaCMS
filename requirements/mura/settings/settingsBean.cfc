@@ -367,7 +367,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getUseSSL" output="false">
-	<cfreturn variables.instance.useSSL or variables.instance.extranetSSL>
+	<cfif variables.instance.useSSL or variables.instance.extranetSSL>
+		<cfreturn 1>
+	<cfelse>
+		<cfreturn 0>
+	</cfif>
 </cffunction>
 
 <cffunction name="setEnforceChangesets" access="public" output="false">
