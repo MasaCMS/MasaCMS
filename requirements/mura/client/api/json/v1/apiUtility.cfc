@@ -173,8 +173,6 @@ component extends="mura.cfobject" {
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 
-			
-			responseObject.setContentType('application/json; charset=utf-8');
 			request.returnFormat='JSON';
 
 			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
@@ -202,6 +200,7 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
+					responseObject.setContentType('application/json; charset=utf-8');
 					responseObject.setStatus(200);
 					return result;
 				}
@@ -237,6 +236,7 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
+					responseObject.setContentType('application/json; charset=utf-8');
 					responseObject.setStatus(200);
 					return result;
 					
@@ -355,7 +355,8 @@ component extends="mura.cfobject" {
 							}
 
 							if(listFindNoCase('content,category',params.entityName) && params.relatedEntity=='crumbs'){
-								return findCrumbArray(argumentCollection=params);
+								responseObject.setContentType('application/json; charset=utf-8');
+								return getSerializer().serialize({'data'=findCrumbArray(argumentCollection=params)});
 							} else {
 								if(!isDefined('params.relationship.cfc')){
 									throw(type='invalidParameters');
@@ -416,36 +417,43 @@ component extends="mura.cfobject" {
 				}
 			} catch (Any e){}
 
+			responseObject.setContentType('application/json; charset=utf-8');
 			return getSerializer().serialize({'data'=result});
 		} 
 
 		catch (authorization e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
 			return getSerializer().serialize({'error'={'message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidParameters e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
 			return getSerializer().serialize({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
 		}
