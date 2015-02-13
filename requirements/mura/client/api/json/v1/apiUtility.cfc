@@ -174,7 +174,7 @@ component extends="mura.cfobject" {
 			arrayDeleteAt(pathInfo,1);
 
 			
-			responseObject.setcontenttype('application/json; charset=utf-8');
+			responseObject.setContentType('application/json; charset=utf-8');
 			request.returnFormat='JSON';
 
 			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
@@ -202,7 +202,7 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
-					getpagecontext().getresponse().setStatus(200);
+					responseObject.setStatus(200);
 					return result;
 				}
 			}
@@ -237,7 +237,7 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
-					getpagecontext().getresponse().setStatus(200);
+					responseObject.setStatus(200);
 					return result;
 					
 				} else {
