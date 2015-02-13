@@ -65,7 +65,7 @@
 	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
 		<div class="checkbox">
-		<label for="#variables.record.datarecordid#"><input id="#variables.record.datarecordid#" name="#arguments.prefix##variables.field.name#" type="checkbox"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
+		<label for="#variables.record.datarecordid#"><input id="#variables.record.datarecordid#" name="#arguments.prefix##arguments.field.name#" type="checkbox"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
 		</div>
 	</cfloop>
 	</cfif>
