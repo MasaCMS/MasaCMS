@@ -473,7 +473,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.table#.#variables.instance.sortBy#">  #variables.instance.sortDirection#
+			order by #variables.instance.table#.#variables.instance.sortBy#  #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST
