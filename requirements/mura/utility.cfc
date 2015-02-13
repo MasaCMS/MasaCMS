@@ -858,6 +858,9 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
 			<h4><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h4>
 		</cfif>
+		<cfif isdefined('errorData.sql') and len(errorData.sql)>
+			<h4><cfoutput>SQL: #errorData.sql#</cfoutput><br /></h4>
+		</cfif>
 		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
 			<h4><cfoutput>Code: #errorData.errorCode#</cfoutput><br /></h4>
 		</cfif>

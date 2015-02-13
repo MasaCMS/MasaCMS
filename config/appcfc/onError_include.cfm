@@ -121,6 +121,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
 			<h3><cfoutput>Datasource: #errorData.DataSource#</cfoutput><br /></h3>
 		</cfif>
+		<cfif isdefined('errorData.sql') and len(errorData.sql)>
+			<h4><cfoutput>SQL: #errorData.sql#</cfoutput><br /></h4>
+		</cfif>
 		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
 			<h3><cfoutput>Code: #errorData.errorCode#</cfoutput><br /></h3>
 		</cfif>
