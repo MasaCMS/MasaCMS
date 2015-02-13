@@ -10,4 +10,11 @@
 		.addColumn(column='resourceDomain', datatype='varchar', length=100)
 		.addColumn(column='remoteport', datatype='int', default=80)
 		.addColumn(column='remotecontext', datatype='varchar', length=100);
+
+dbUtility.setTable('tcontentrelated')
+		.alterColumn(column='relatedContentSetID',dataType='varchar',length='35',default='00000000000000000000000000000000000');
 </cfscript>
+
+<cfquery>
+	update tcontentrelated set relatedContentSetID='00000000000000000000000000000000000' where relatedContentSetID is null
+</cfquery>
