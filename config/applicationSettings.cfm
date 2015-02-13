@@ -143,6 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cftry>
 
 <cfset this.mappings["/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
+<cfset this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
