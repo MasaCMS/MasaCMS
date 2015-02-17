@@ -27,7 +27,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9/].+)$ /index.cfm/$1 [NC,QSA,PT]
 
 # OPTION 2 :: WITH SiteID
-# In /config/settings.ini.cfm, set both indexFileInURLs to 0   
+# In /config/settings.ini.cfm, set indexFileInURLs to 0   
 # and reload the Mura application
 #RewriteRule ^([a-zA-Z0-9.\-_]{1,})/([a-zA-Z0-9/].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
 
