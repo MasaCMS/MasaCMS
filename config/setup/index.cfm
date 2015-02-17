@@ -688,11 +688,9 @@ to your own modified versions of Mura CMS.
         //either "ColdFusion Server" OR "Railo"
         //attempted to use : application.configBean.getCompiler() eq "Railo" without success
         theCFServer = "unknown";
-        if (server.ColdFusion.ProductName CONTAINS "Railo"){
+        if (server.coldfusion.productName != 'Coldfusion Server'){
           theCFServer = "Railo";
-        } else if (server.ColdFusion.ProductName CONTAINS "BlueDragon") {
-          theCFServer = "BlueDragon"; 
-        } else if (server.ColdFusion.ProductName CONTAINS "ColdFusion") {
+        } else {
           theCFServer = "ColdFusion";
         };
       </cfscript>

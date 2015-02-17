@@ -485,7 +485,7 @@ Blog: www.codfusion.com--->
 <cffunction name="setSessionCookies">
 	<cfif application.configBean.getSecureCookies()>
 		<cfif isdefined('session.CFID')>
-			<cfif server.coldfusion.productname eq "Railo">
+			<cfif server.ColdFusion.ProductName neq 'Coldfusion Server'>
 				<cfset setCookie('cfid', session.CFID, "never", "", "/", true, true, true)>
 				<cfset setCookie('cftoken', session.CFTOKEN, "never", "", "/", true, true, true)>
 			<cfelse>

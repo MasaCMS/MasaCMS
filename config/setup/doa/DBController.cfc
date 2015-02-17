@@ -132,7 +132,7 @@
 			this.dbType = this.settingsIni.get( "production", "dbtype" );	
 			//determine app server
 			this.CFServerType = "ColdFusion";
-			if (server.ColdFusion.ProductName CONTAINS "Railo"){
+			if (server.coldfusion.productName != 'Coldfusion Server'){
 				this.CFServerType = "Railo";
 			}					
 		</cfscript>		
