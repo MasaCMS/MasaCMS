@@ -227,13 +227,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset tmp=lsParseDateTime(tmp)>
 					<cfcatch><!--- already parsed ---></cfcatch>
 				</cftry>
-				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
+				<cfset variables.criteria=createODBCDateTime(tmp) />
 			<cfelseif isDate(tmp)>
 				<cftry>
 					<cfset tmp=parseDateTime(tmp)>
 					<cfcatch><!--- already parsed ---></cfcatch>
 				</cftry>
-				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
+				<cfset variables.criteria=createODBCDateTime(tmp) />
 			<cfelse>
 				<cfset variables.criteria="" />
 				<cfset setIsValid(false) />
