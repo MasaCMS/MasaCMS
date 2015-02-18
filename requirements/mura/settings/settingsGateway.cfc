@@ -46,8 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.queryTimespans={}>
-
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -59,9 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" default="orderno">
 	<cfargument name="sortDirection" default="asc">
 	<cfset var rsSites = "" />
-	
-	<cfparam name="variables.queryTimespans.#arguments.sortBy##arguments.sortDirection#" default="#createtimespan(0,0,0,0)#">
-	<cfset var ts=variables.queryTimespans['#arguments.sortBy##arguments.sortDirection#']>
+	<cfset var ts = StructKeyExists(request, 'muraAppreloaded') ? CreateTimeSpan(0,0,0,0) : CreateTimeSpan(1,0,0,0) />
 
 	<cfquery name="rsSites" cachedwithin="#ts#">
 	select * from tsettings order by 
@@ -76,8 +72,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	asc
 	</cfif>
 	</cfquery>
-
-	<cfset variables.queryTimespans['#arguments.sortBy##arguments.sortDirection#']=createtimespan(1,0,0,0)>
 	
 	<cfreturn rsSites />
 	
