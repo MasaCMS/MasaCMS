@@ -436,6 +436,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not fileExists(variables.basedir & "/web.config")>	
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/web.config.template.cfm", destination="#variables.basedir#/web.config")>
 		</cfif>
+
+		<cfif not fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm")>	
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm")>
+		</cfif>
 	</cfif>
 		
 	<cfif not structKeyExists(application,"plugins")>
