@@ -438,7 +438,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif not fileExists(variables.basedir & "/requirements/cfformprotect/cffp.ini.cfm")>	
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm")>
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/cffp.ini.template.cfm", destination="#variables.basedir#/requirements/cfformprotect/cffp.ini.cfm")>
 		</cfif>
 	</cfif>
 		
