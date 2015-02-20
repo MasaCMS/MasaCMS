@@ -16,7 +16,7 @@
 	getBean('changesetTagAssignment').checkSchema();
 
 	dbUtility.setTable("tfiles");
-	if(getDbType() == 'MySQL'){
+	if(getDbType() == 'MySQL'  && dbUtility.version().database_productname=='MySQL'){
 		if(!dbUtility.columnExists('caption')){
 			new Query().execute(sql="ALTER TABLE tfiles
 				ADD COLUMN caption text DEFAULT null,

@@ -111,15 +111,18 @@
 		</cfquery>
 
 		<!--- ADVERTISING --->
-		<cfquery>
-			delete from tadplacements
-			where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>
+		<cftry>
+			<cfquery>
+				delete from tadplacements
+				where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+			</cfquery>
 
-		<cfquery>
-			delete from tadplacements
-			where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>
+			<cfquery>
+				delete from tadplacements
+				where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+			</cfquery>
+			<cfcatch></cfcatch>
+		</cftry>
 			
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
