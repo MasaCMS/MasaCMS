@@ -2,7 +2,7 @@
 			there, if you don't have it in the web root --->
 
 <!--- Custom For Mura --->
-<cfset cffpPath = "#application.configBean.getContext()#/requirements/cfformprotect">
+<cfset cffpPath = "#application.configBean.getContext()#/tasks/widgets/cfformprotect">
 <!--- End Custom --->
 
 <!--- load the file that grabs all values from the ini file --->

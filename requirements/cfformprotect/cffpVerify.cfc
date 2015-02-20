@@ -39,7 +39,7 @@ NOTES       : Dave Shuck - created
 
 	<cffunction name="init" access="public" output="false" returntype="cffpVerify">
 		<cfargument name="ConfigPath" required="false" default="#ExpandPath("/cfformprotect")#" type="string" />
-    	<cfargument name="ConfigFilename" required="false" default="#application.configBean.getCFFPConfigFilename()#" type="string" />
+    <cfargument name="ConfigFilename" required="false" default="#application.configBean.getCFFPConfigFilename()#" type="string" />
 		<cfscript>
 		setConfig(arguments.ConfigPath, arguments.ConfigFilename);
 		this.ConfigPath = arguments.ConfigPath;
@@ -54,9 +54,15 @@ NOTES       : Dave Shuck - created
 
 	<cffunction name="setConfig" access="public" output="false" returntype="void">
 		<cfargument name="ConfigPath" required="true" />
-   		<cfargument name="ConfigFilename" required="true" />
+    <cfargument name="ConfigFilename" required="true" />
 		<cfscript>
-		variables.Config=new mura.IniFile(arguments.ConfigPath & "/" & arguments.ConfigFilename).get(section='CFFormProtect');
+		var IniEntries = GetProfileSections(arguments.ConfigPath & "/" & arguments.ConfigFilename).CFFormProtect;
+		var i = "";
+		variables.Config = StructNew();
+
+		for (i=1;i LTE ListLen(IniEntries);i=i+1)	{
+			variables.Config[ListGetAt(IniEntries,i)] = GetProfileString(arguments.ConfigPath & "/" & arguments.ConfigFilename,"CFFormProtect",ListGetAt(IniEntries,i));
+		}
 		//set logfile
 		if (NOT Len(variables.Config.logFile))	{ variables.Config.logFile = "CFFormProtect"; }
 		</cfscript>
