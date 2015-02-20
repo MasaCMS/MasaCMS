@@ -370,7 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rs=getList() />
 
 	<cfloop query="rs">
-		<cfif isDefined('arguments.missingOnly') and arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
+		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
 			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
 		<cfelse>
 			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />	
