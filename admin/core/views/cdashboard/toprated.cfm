@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="count">#rsList.theCount#</td>
 <td class="actions">
 		<ul>
-		<cfswitch expression="#rslist.type#">
+		
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rsList.filename)#');"><i class="icon-globe"></i></a></li>
 		</ul></td>
 </tr>
