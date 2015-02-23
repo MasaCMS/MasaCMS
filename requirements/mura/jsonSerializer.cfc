@@ -268,7 +268,7 @@ component
 				// If the given key is unknown, just pass through the most recent hint as 
 				// it may be defining the type for an entire sturcture.
 				} else {
-					if(isNUll(input[ key ])){
+					if(isNull(input[ key ])){
 						writeOutput( "null" );
 					} else {
 						serializeInput( input[ key ], hint );
