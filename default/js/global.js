@@ -1201,13 +1201,16 @@ var initMura=function(config){
 		processAsyncObject:processAsyncObject,
 		setLowerCaseKeys:setLowerCaseKeys,
 		noSpam:noSpam,
+		addLoadEvent:addLoadEvent,
 		loader:loader
 	});
 
 	$.extend(window,{
 		mura:config,
 		validateForm:validateForm,
-		createCookie:createCookie
+		createCookie:createCookie,
+		addLoadEvent:addLoadEvent,
+		noSpam:noSpam
 	});
 
 	
