@@ -99,6 +99,9 @@
 		this.ulNestedCustomString = "";
 		this.liNestedClass = "";
 
+		//With asyncObjects set to true some display objects are loaded via ajax
+		this.asyncObjects = true;
+
 		// pagination vars
 		this.ulPaginationClass = "pagination";
 		this.ulPaginationWrapperClass = "";

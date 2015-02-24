@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfoutput>
-<cfif request.muraFrontEndRequest>
+<cfif request.muraFrontEndRequest and this.asyncObjects>
 	<div class="mura-async-object" 
 		data-object="calendar">
 	</div>

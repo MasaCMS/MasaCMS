@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
+<cfset this.asyncObjects=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">

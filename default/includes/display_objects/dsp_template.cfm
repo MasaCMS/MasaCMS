@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!---
 <cfset request.muraAsyncEditableObject=true>
-<cfif request.muraFrontEndRequest>
+<cfif request.muraFrontEndRequest and this.asyncObjects>
 	<cfoutput>
 		<div class="mura-async-object" 
 			data-object="#esapiEncode('html_attr',arguments.object)#" 
