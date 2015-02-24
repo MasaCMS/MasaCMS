@@ -46,35 +46,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cffunction name="init" access="public" returntype="any" output="false">
-<cfargument name="configBean" type="any" required="yes"/>
+	<cffunction name="init" access="public" returntype="any" output="false">
+		<cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfreturn this />
+	</cffunction>
+
+	<cffunction name="getList" access="public" output="false" returntype="query">
+		<cfargument name="sortBy" default="orderno">
+		<cfargument name="sortDirection" default="asc">
+		<cfargument name="cached" default="true" />
+		<cfset var rsSites = "" />
+
+		<cfif StructKeyExists(request, 'muraAppreloaded') or not StructKeyExists(variables, 'rsSites') or not arguments.cached>	
+			<cfquery name="rsSites">
+				SELECT * FROM tsettings ORDER BY 
+				<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
+					#arguments.sortBy#
+				<cfelse>
+					orderno
+				</cfif>
+				<cfif listFindNoCase("asc,desc",arguments.sortDirection)>
+					#arguments.sortDirection#
+				<cfelse>
+					asc
+				</cfif>
+			</cfquery>
+			<cfset variables.rsSites = rsSites />
+		</cfif>
 		
-<cfreturn this />
-</cffunction>
-
-<cffunction name="getList" access="public" output="false" returntype="query">
-	<cfargument name="sortBy" default="orderno">
-	<cfargument name="sortDirection" default="asc">
-	<cfset var rsSites = "" />
-	<cfset var ts = StructKeyExists(request, 'muraAppreloaded') ? CreateTimeSpan(0,0,0,0) : CreateTimeSpan(1,0,0,0) />
-
-	<cfquery name="rsSites" cachedwithin="#ts#">
-	select * from tsettings order by 
-	<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
-	#arguments.sortBy#
-	<cfelse>
-	orderno
-	</cfif>
-	<cfif listFindNoCase("asc,desc",arguments.sortDirection)>
-	#arguments.sortDirection#
-	<cfelse>
-	asc
-	</cfif>
-	</cfquery>
-	
-	<cfreturn rsSites />
-	
-</cffunction>
+		<cfreturn variables.rsSites />
+	</cffunction>
 
 </cfcomponent>
