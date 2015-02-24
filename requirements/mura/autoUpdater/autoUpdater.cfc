@@ -162,7 +162,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfquery name="rs" dbType="query">
 				select * from rs where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default%'
-				and entry != 'trunk#variables.fileDelim#www#variables.fileDelim#index.cfm'
 				</cfquery>
 				
 				<cfloop query="rs">
