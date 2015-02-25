@@ -3182,7 +3182,7 @@ Display Objects
 
 						<!--- if not found, try the path that was passed --->
 						<cfif not headerFound and fileExists(expandPath(i))>
-							<cfinclude template="#i#" />
+							<cfsavecontent variable="itemStr"><cfinclude template="#i#" /></cfsavecontent>
 							<cfset headerFound = true />
 						</cfif>
 								
