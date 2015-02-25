@@ -33,11 +33,13 @@ component extends="mura.cfobject" {
 		}
 		*/
 
-		if(configBean.getIndexfileinurls()){
+		//if(configBean.getIndexfileinurls()){
 			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/json/v1/#variables.siteid#";	
+		/*
 		} else {
 			variables.endpoint="#site.getResourcePath(complete=1)#/_api/json/v1/#variables.siteid#";	
 		}
+		*/
 		
 		variables.config={
 			linkMethods=[],
@@ -157,6 +159,8 @@ component extends="mura.cfobject" {
 			var responseObject=getpagecontext().getResponse();
 			var params={};
 			var result="";
+
+			getBean('utility').suppressDebugging();
 
 			structAppend(params,url);
 			structAppend(params,form);

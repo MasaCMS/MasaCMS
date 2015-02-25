@@ -25,6 +25,7 @@
 .svn
 
 # ignored files, regardless of location
+cffp.ini.cfm
 crossdomain.xml
 robots.txt
 settings.xml

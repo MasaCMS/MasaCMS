@@ -68,7 +68,7 @@
 	</cfsilent>
 
 	<cfoutput>
-    <cfif request.muraFrontEndRequest>
+    <cfif request.muraFrontEndRequest and this.asyncObjects and isJson(bean.getBody())>
         <div class="mura-async-object" 
           data-object="form" 
           data-objectid="#esapiEncode('html_attr',arguments.objectid)#" 

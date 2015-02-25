@@ -104,12 +104,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif items.hasNext()>
 <cfloop condition="items.hasNext()">
 <cfsilent>
-<cfset item.next()>
+<cfset item=items.next()>
 </cfsilent>
 <tr>
 <td class="var-width">#$.dspZoom(item.getCrumbArray())#</td>
-<td>#rsList.hits#</td>
-<td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
+<td>#item.gethits()#</td>
+<td>#decimalFormat((item.gethits()/rstotal.hits)*100)#%</td>
 <td class="actions">
 <ul>		
 	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a>

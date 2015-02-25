@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
+<cfset this.asyncObjects=true>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -3181,7 +3182,7 @@ Display Objects
 
 						<!--- if not found, try the path that was passed --->
 						<cfif not headerFound and fileExists(expandPath(i))>
-							<cfinclude template="#i#" />
+							<cfsavecontent variable="itemStr"><cfinclude template="#i#" /></cfsavecontent>
 							<cfset headerFound = true />
 						</cfif>
 								

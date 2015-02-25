@@ -454,9 +454,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset started = true />
 
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>					
-				#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
-				
-				<cfset openGrouping=false />
+				<cfif len(param.getField())>
+					#param.getFieldStatement()# 
+					<cfif param.getCriteria() eq 'null'>
+						IS NULL
+					<cfelse>
+						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					</cfif>
+					<cfset openGrouping=false />
+				</cfif>
 			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
