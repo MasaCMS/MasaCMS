@@ -158,6 +158,8 @@ component extends="mura.cfobject" {
 			var params={};
 			var result="";
 
+			getBean('utility').suppressDebugging();
+
 			structAppend(params,url);
 			structAppend(params,form);
 			structAppend(form,params);
