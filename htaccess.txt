@@ -24,12 +24,12 @@ RewriteCond %{REQUEST_FILENAME} !-d
 # OPTION 1 :: WITHOUT SiteID
 # In /config/settings.ini.cfm, set both siteidinurls and indexfileinurls to 0   
 # and reload the Mura application
-RewriteRule ^([a-zA-Z0-9/].+)$ /index.cfm/$1 [NC,QSA,PT]
+RewriteRule ^([a-zA-Z0-9/_].+)$ /index.cfm/$1 [NC,QSA,PT]
 
 # OPTION 2 :: WITH SiteID
 # In /config/settings.ini.cfm, set indexfileinurls to 0   
 # and reload the Mura application
-#RewriteRule ^([a-zA-Z0-9.\-_]{1,})/([a-zA-Z0-9/].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
+#RewriteRule ^([a-zA-Z0-9.\-_]{1,})/([a-zA-Z0-9/_].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
 
 # OPTION 3 :: Advanced Configuration
 # To use the SiteID in the URL for SPECIFIC SITES ONLY, but not for all sites:
