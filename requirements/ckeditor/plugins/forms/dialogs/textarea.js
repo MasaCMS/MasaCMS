@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 CKEDITOR.dialog.add( 'textarea', function( editor ) {
 	return {
@@ -109,10 +109,74 @@ CKEDITOR.dialog.add( 'textarea', function( editor ) {
 				commit: function( element ) {
 					element.$.value = element.$.defaultValue = this.getValue();
 				}
-			}
+			},
+		            {
+		                id: 'data-required',
+		                type: 'select',
+		                label: 'Required',
+		                'default': 'false',
+		                items: [
+		                    ['False', 'false'],
+		                    ['True', 'true']
+		                ],
+		                setup: function (b) {
+		                    var c = b.hasAttribute('data-required') && b.getAttribute('data-required');
+		                    this.setValue(c || '');
+		                },
+		                commit: function (b) {
+		                    if (this.getValue()) b.setAttribute('data-required', this.getValue());
+		                    else b.removeAttribute('data-required');
+		                }
+		            },
+		            {
+		                id: 'data-validate',
+		                type: 'select',
+		                label: 'Validation',
+		                'default': '',
+		                items: [
+		                    ['None', ''],
+		                    ['Regex', 'regex']
+		                ],
+		                setup: function (b) {
+		                    var c = b.hasAttribute('data-validate') && b.getAttribute('data-validate');
+		                    this.setValue(c || '');
+		                },
+		                commit: function (b) {
+		                    if (this.getValue()) b.setAttribute('data-validate', this.getValue());
+		                    else b.removeAttribute('data-validate');
+		                }
+		            },
+		            {
+		                id: 'data-message',
+		                type: 'text',
+		                label: 'Validation Failure Message',
+		                'default': '',
+		                setup: function (b) {
+		                    var c = b.hasAttribute('data-message') && b.getAttribute('data-message');
+		                    this.setValue(c || '');
+		                },
+		                commit: function (b) {
+		                    if (this.getValue()) b.setAttribute('data-message', this.getValue());
+		                    else b.removeAttribute('data-message');
+		                }
+		            },
+		            {
+		                id: 'data-regex',
+		                type: 'text',
+		                label: 'Regex Expression (Use when validate is set to Regex)',
+		                'default': '',
+		                setup: function (b) {
+		                    var c = b.hasAttribute('data-regex') && b.getAttribute('data-regex');
+		                    this.setValue(c || '');
+		                },
+		                commit: function (b) {
+		                    if (this.getValue()) b.setAttribute('data-regex', this.getValue());
+		                    else b.removeAttribute('data-regex');
+		                }
+		            }
 
 			]
 		}
 		]
 	};
-} );
+});
