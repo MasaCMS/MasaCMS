@@ -84,10 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 			    </div>
 			</cfif>
-			<!--- Use site useSSL sitewide setting instead 
-			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
-			
-
+			<!--- Use site useSSL sitewide setting instead --->
+			<cfif rc.type neq 'Component' and rc.type neq 'Form' and not rc.$.siteConfig('useSSL')>
 				<div class="control-group">
 			      <div class="controls">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
@@ -97,10 +95,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      	 <i class="icon-question-sign"></i></a>
 			  		</label>
 			      </div>
-			    </div>
-				
+			    </div>			
 			</cfif>
-			--->
+
 			<cfif rc.type eq 'Form' >
 				<cfif not rc.$.siteConfig('useSSL')>
 					<div class="control-group">
