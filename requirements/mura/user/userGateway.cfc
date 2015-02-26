@@ -501,7 +501,7 @@
 					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.ispublic#" />
 				</cfif>
 				<cfif IsBoolean(arguments.isunassigned) and arguments.isunassigned>
-					AND userid NOT IN (<cfqueryparam list="true" value="#ValueList(rsUsersMemb.UserID)#" />)
+					AND userid NOT IN (select userid FROM tusersmemb)
 				</cfif>
 				<cfif IsBoolean(arguments.showsuperusers) and arguments.showsuperusers>
 					AND s2 <> 1
