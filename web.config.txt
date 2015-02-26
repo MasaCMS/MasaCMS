@@ -35,11 +35,10 @@
 						- reload Mura CMS
 				-->
 				<rule name="Mura CMS Rule 1: siteid and index.cfm" enabled="true">
-					<match url="^([a-zA-Z0-9/_].+)$" ignoreCase="true" />
+					<match url="^(.*)" ignoreCase="true" />
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
-						<add input="{QUERY_STRING}" pattern="(hash)" negate="true" />
 					</conditions>
 					<action type="Rewrite" url="/index.cfm/{R:1}" appendQueryString="true" />
 				</rule> 
@@ -55,7 +54,7 @@
 						- reload Mura CMS
 				-->
 				<rule name="Mura CMS Rule 2: index.cfm" enabled="false">
-					<match url="^([a-zA-Z0-9_]{1,})/([a-zA-Z0-9/_].+)$" ignoreCase="true" />
+					<match url="^([a-zA-Z0-9_\-]{1,})/(.*)" ignoreCase="true" />
 					<conditions>
 						<add input="{REQUEST_FILENAME}" matchType="IsFile" ignoreCase="false" negate="true" />
 						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" ignoreCase="false" negate="true" />
