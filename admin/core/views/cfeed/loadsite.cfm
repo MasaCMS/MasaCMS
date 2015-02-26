@@ -84,9 +84,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 							<cfset counter=counter+1/>
 							<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-								<td class="var-width">#zoomText#</td>
+								<td class="var-width" id="#esapiEncode('html_attr','mura-opt-#rc.rslist.contentid#')#">#zoomText#</td>
 								<td class="actions">
-									<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',zoomText)#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+									<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript','mura-opt-#rc.rslist.contentid#')#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 								</td>
 							</tr>
 						</cfif>
@@ -122,9 +122,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 									<cfset counter=counter+1/>
 									<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-										<td class="var-width">#zoomText#</td>
+										<td class="var-width" id="#esapiEncode('html_attr','mura-opt-#p#-#rc.rslist.contentid#')#">#zoomText#</td>
 										<td class="actions">
-											<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',zoomText)#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+											<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript','mura-opt-#p#-#rc.rslist.contentid#')#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 										</td>
 									</tr>
 								</cfif>

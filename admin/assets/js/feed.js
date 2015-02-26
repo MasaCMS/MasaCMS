@@ -55,7 +55,7 @@ var feedManager = {
 		});
 	},
 
-	addContentFilter: function(contentID, contentType, title) {
+	addContentFilter: function(contentID, contentType, sourceID) {
 
 		var tbody = document.getElementById('contentFilters').getElementsByTagName("TBODY")[0];
 		var row = document.createElement("TR");
@@ -63,7 +63,7 @@ var feedManager = {
 		
 		var name = document.createElement("TD");
 		name.className = "var-width";
-		$(name).html(title);
+		$(name).html($('#' + decodeURI(sourceID)).html());
 
 		var type = document.createElement("TD");
 		$(type).html(decodeURI(contentType));
