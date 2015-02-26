@@ -81,7 +81,7 @@
 					<action type="Rewrite" url="/siteID/sitemap.xml" />
 				</rule>
 				
-				<rule name="Muura CMS SEO: Robots" stopProcessing="true" enabled="false">
+				<rule name="Mura CMS SEO: Robots" stopProcessing="true" enabled="false">
 					<match url="^robots.txt$" />
 					<conditions logicalGrouping="MatchAll">
 						<add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
