@@ -80,12 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif rc.rslist.recordcount>
 					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 						<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+						<cfset zoomText=$.dspZoomNoLinks(crumbdata,"&raquo;")>
 						<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 							<cfset counter=counter+1/>
 							<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-								<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
+								<td class="var-width">#zoomText#</td>
 								<td class="actions">
-									<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',$.dspZoomNoLinks(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+									<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',zoomText)#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 								</td>
 							</tr>
 						</cfif>
@@ -117,12 +118,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.rslist.recordcount>
 							<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 								<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, p)/>
+								<cfset zoomText=$.dspZoomNoLinks(crumbdata,"&raquo;")>
 								<cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 									<cfset counter=counter+1/>
 									<tr <cfif not(counter mod 2)>class="alt"</cfif>>
-										<td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
+										<td class="var-width">#zoomText#</td>
 										<td class="actions">
-											<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',$.dspZoomNoLinks(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+											<ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#esapiEncode('javascript',zoomText)#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 										</td>
 									</tr>
 								</cfif>

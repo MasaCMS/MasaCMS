@@ -63,7 +63,7 @@ var feedManager = {
 		
 		var name = document.createElement("TD");
 		name.className = "var-width";
-		$(name).html(decodeURI(title));
+		$(name).html(title);
 
 		var type = document.createElement("TD");
 		$(type).html(decodeURI(contentType));
