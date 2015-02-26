@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(application.configBean.getContext())>
 		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext(),"")/>
 	</cfif>
-	<cfif listFirst(parsed_path_info,"/") eq arguments.siteID>
+	<cfif isDefined('arguments.siteid') && listFirst(parsed_path_info,"/") eq arguments.siteID>
 		<cfset parsed_path_info=listRest(parsed_path_info,"/")>
 	</cfif>
 	<cfif listFirst(parsed_path_info,"/") eq "index.cfm">
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset cgi_path = "/" & cgi_path />
 	</cfif>
 	
-	<cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
+	<cfif isDefined('arguments.siteid') && left(cgi_path,1) eq "/" and cgi_path neq "/">
 		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 	</cfif>
 	<cfreturn cgi_path>
@@ -631,8 +631,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="handleRootRequest" output="false">
 	<cfset var pageContent="">
-	<cfif listFindNoCase('_api,tasks',listFirst(cgi.path_info,'/'))>
-		<cfreturn handleAPIRequest(cgi.path_info)>
+	<cfset var path=setCGIPath()>
+
+	<cfif listFindNoCase('_api,tasks',listFirst(path,'/'))>
+		<cfreturn handleAPIRequest(path)>
 	<cfelse>
 		
 		<cfif application.configBean.getSiteIDInURLS()>
