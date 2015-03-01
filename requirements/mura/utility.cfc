@@ -917,9 +917,11 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		var t = '';
 		var tags = ListToArray(arguments.tagsToStrip);
 		var str = arguments.text;
+
 		for ( t in tags ) {
 			str = ReReplaceNoCase(str, '<' & t & '.*?>.*?</' & t & '>', '', 'all');
 		}
+
 		return str;
 	}
 
