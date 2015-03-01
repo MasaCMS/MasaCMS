@@ -2439,7 +2439,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="createCSSHook"  output="false" returntype="string">
-	<cfargument name="text" type="string" required="true" default="">
+	<cfargument name="text" type="string" required="true">
 	<cfreturn application.utility.createCSSHook(arguments.text)>
 </cffunction>
 
