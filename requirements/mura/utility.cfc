@@ -912,4 +912,31 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cfreturn local.str>
 </cffunction>
 
+<cfscript>
+	public string function stripTags(required string text, string tagsToStrip='script,style,embed,object') {
+		var t = '';
+		var tags = ListToArray(arguments.tagsToStrip);
+		var str = arguments.text;
+		for ( t in tags ) {
+			str = ReReplaceNoCase(str, '<' & t & '.*?>.*?</' & t & '>', '', 'all');
+		}
+		return str;
+	}
+
+	public string function createCSSHook(text) {
+		var str = LCase(stripTags(arguments.text));
+		str = Trim(ReReplace(str, '<[^>]*>', ' ', 'all'));
+		str = ReReplace(str, '\s{2,}', ' ', 'all');
+		str = ReReplace(str, '&[^;]+?;', '', 'all');
+		str = ReReplace(str, '[^a-zA-Z0-9_\-\s]', '', 'all');
+		str = ReReplace(str, '_|\s+', '-', 'all');
+
+		while( IsNumeric(Left(str, 1)) || Left(str, 1) == '-' ) {
+			str = RemoveChars(str, 1, 1);
+		}
+
+		return str;
+	}
+</cfscript>
+
 </cfcomponent>

@@ -2439,9 +2439,8 @@ Display Objects
 </cffunction>
 
 <cffunction name="createCSSHook"  output="false" returntype="string">
-		<cfargument name="title" type="string" required="true" default="">
-		<cfset var hook=lCase(arguments.title)>
-		<cfreturn rereplace(hook, '[[:space:]]+', '-', 'all')>	
+	<cfargument name="text" type="string" required="true" default="">
+	<cfreturn application.utility.createCSSHook(arguments.text)>
 </cffunction>
 
 <cffunction name="getTemplate"  output="false" returntype="string">
