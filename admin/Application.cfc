@@ -318,7 +318,9 @@ component extends="framework" output="false" {
 
 		if(len(request.context.rb)){
 			session.rb=request.context.rb;
-			cookie.rb={value="#session.rb#",expires="never",httponly=true,secure=application.configBean.getSecureCookies()};
+			if(ListFirst(server.coldfusion.productVersion) >= 10){
+				cookie.rb={value="#session.rb#",expires="never",httponly=true,secure=application.configBean.getSecureCookies()};
+			}
 		}
 		
 		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
