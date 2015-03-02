@@ -318,7 +318,7 @@ component extends="framework" output="false" {
 
 		if(len(request.context.rb)){
 			session.rb=request.context.rb;
-			//cookie name="rb" value="#session.rb#" expires="never";
+			cookie.rb={value="#session.rb#",expires="never",httponly=true,secure=application.configBean.getSecureCookies()};
 		}
 		
 		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){
