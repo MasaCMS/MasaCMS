@@ -8,6 +8,8 @@
 <!--- load the file that grabs all values from the ini file --->
 <cfinclude template="#cffpPath#/cffpConfig.cfm">
 
+<div style="display:none" class="cffm_applied"/>
+
 <!--- Bas van der Graaf (bvdgraaf@e-dynamics.nl): Make sure JS is only included once when securing multiple forms with cfformprotect. --->
 <cfif not structkeyExists(request,"cffpJS")>
 	<cfhtmlhead text="<script type='text/javascript' src='#cffpPath#/js/cffp.js'></script>">
@@ -28,7 +30,6 @@
 				bot won't trigger this --->
 	<input id="fp<cfoutput>#createuuid()#</cfoutput>" type="hidden" name="formfield1234567892" class="cffp_kp" value="" />
 </cfif>
-
 <cfif cffpConfig.timedFormSubmission>
 	<!--- in cffpVerify.cfm I will verify that the amount of time it took to
 				fill out this form is 'normal' (the time limits are set in the ini file)--->

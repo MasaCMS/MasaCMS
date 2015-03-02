@@ -1048,7 +1048,7 @@ var initMura=function(config){
 			},
 
 			function(){
-				if($(scope).find( ".cffp_mm" ).length){
+				if($(scope).find( ".cffp_applied" ).length || $(scope).find( ".cffp_mm" ).length || $(scope).find( ".cffp_kp" ).length){
 					loader().loadjs(config.requirementspath + '/cfformprotect/js/cffp.js');
 				}
 			},
