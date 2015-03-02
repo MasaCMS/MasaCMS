@@ -84,6 +84,29 @@
 	</cfscript>
 </cffunction>
 
+<cffunction name="LoadResourceBundleLegacy" returntype="any" hint="reads and parses java resource bundle per locale">
+	<cfargument name="rbFile">
+
+	<cfscript>
+		var thisKEY="";
+		var thisMSG="";
+		var fis=createObject("java", "java.io.FileInputStream").init(arguments.rbFile);
+		var rB=createObject("java", "java.util.PropertyResourceBundle").init(fis);
+		var keys=variables.rB.getKeys();
+
+		while (keys.hasMoreElements()) {
+			thisKEY=keys.nextElement();
+			thisMSG=rB.handleGetObject(thisKey);
+			variables.resourceBundle["#thisKEY#"]=thisMSG;
+			}
+		fis.close();
+	</cfscript>
+	
+	<cfset variables.isloaded=true />
+	<cfreturn variables.resourceBundle>
+
+</cffunction> 
+
 <cffunction name="LoadResourceBundle" returntype="any" hint="reads and parses java resource bundle per locale">
 	<cfscript>
 		var isOk=false; // success flag
@@ -108,9 +131,14 @@
 		
 		if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
 			isOK=true;
-
+			//writeDump(var=thisRBFile,abort=1);
 			if(find("\u00",fileRead(thisRBFile))){
-				convertToUTF(thisRBFile);
+				try{
+					convertToUTF(thisRBFile);
+				} catch(Any e){
+					LoadResourceBundleLegacy(thisRBFile);
+					return;
+				}
 			}
 
 			var fis=createObject("java", "java.io.FileInputStream").init(thisRBFile);
