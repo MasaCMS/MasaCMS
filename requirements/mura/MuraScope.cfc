@@ -405,7 +405,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rbKey" output="false" returntype="any">
 	<cfargument name="key">
-	<cfif request.muraAdminRequest>
+	<cfif isDefined('request.muraAdminRequest') and request.muraAdminRequest>
 		<cfreturn application.rbFactory.getKeyValue(session.rb,arguments.key)>
 	<cfelse>
 		<cfreturn siteConfig("RBFactory").getKey(arguments.key)>
