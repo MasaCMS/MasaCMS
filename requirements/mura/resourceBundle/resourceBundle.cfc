@@ -15,14 +15,9 @@
 <cfset variables.resourceDirectory=getDirectoryFromPath(getCurrentTemplatePath()) & "/resources/"  />
 <cfset variables.isLoaded=false/>
 <cfset variables.rsFile=""/>
-<cfset variables.rB=createObject("java", "java.util.PropertyResourceBundle") />
-<cfset variables.fis=createObject("java", "java.io.FileInputStream") />
 <cfset variables.msgFormat=createObject("java", "java.text.MessageFormat") />	
 <cfset variables.javaLocale=createObject("java","java.util.Locale") />
-<cfset variables.br=createObject("java", "java.io.BufferedReader") />
-<cfset variables.fisr=createObject("java", "java.io.InputStreamReader") />
 <cfset variables.utils=createObject("component","utils") />
-
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="locale"  type="string" required="true">
@@ -40,8 +35,6 @@
 	</cfif>
 
 	<cfset variables.rbFile = variables.resourceDirectory & variables.locale &".properties" />
-	
-
 	<cfset lang=listFirst(variables.Locale,"_")>
 
 	<cfif listLen(arguments.locale,"_") GT 1>
@@ -50,58 +43,63 @@
 	</cfif>
 
 	<cfset variables.javaLocale.init(lang,country,variant)>
-
-
-	<!--- Temporary band aid to for property files that have pre-escapde charactars--->
-	<cfif listFindNoCase("fr,de,hu,en,es,nl",lang)>
-		<cfset loadResourceBundle() />
-	<cfelse>
-		<cfset loadResourceBundleUTF() />
-		
-	</cfif>
+	<cfset loadResourceBundle() />
 	
 	<cfreturn this />
 </cffunction>
 
 
 <cffunction name="getUtils" returntype="any" output="false">
-
 	<cfreturn variables.utils />
-
 </cffunction>
 
-<cffunction name="LoadResourceBundle" returntype="any" hint="reads and parses java resource bundle per locale">
-<cfscript>
-	var isOk=false; // success flag
-	var keys=""; // var to hold rb keys
-	var thisKEY="";
-	var thisMSG="";
-	var thisLang=lcase(listFirst(variables.Locale,"_"));
-	var thisDir=GetDirectoryFromPath(variables.rbFile);
-	var thisFile=getFileFromPath(variables.rbFile);
-	var thisRBfile=thisDir & lcase(listFirst(thisFile,".") & "_" & variables.Locale & "." & listLast(thisFile,"."));
-	
-	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-		thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
-	
-	if (NOT fileExists(thisRBfile)) //try just the language
-		thisRBfile=thisDir & listFirst(thisFile,".") & "_"& thisLang & "." & listLast(thisFile,".");
-	
-	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-		thisRBFile=variables.rbFile;
-	
-	if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
-		isOK=true;
-		variables.fis.init(thisRBFile);
-		variables.rB.init(fis);
-		keys=variables.rB.getKeys();
+<cffunction name="convertToUTF" returntype="any" hint="reads and parses java resource bundle per locale">
+	<cfargument name="rbfile">
+	<cfscript>
+		var keys=""; // var to hold rb keys
+		var thisKEY="";
+		var thisMSG="";
+		var bundle={};
+		var fis=createObject("java", "java.io.FileInputStream").init(arguments.rbfile);
+		var rB=createObject("java", "java.util.PropertyResourceBundle").init(fis);
+		var keys= rB.getKeys();
+		var keySorter=[];
+		var rbString='';
+
 		while (keys.hasMoreElements()) {
 			thisKEY=keys.nextElement();
-			thisMSG=variables.rB.handleGetObject(thisKey);
+			thisMSG=rB.handleGetObject(thisKey);
+			bundle["#thisKEY#"]=thisMSG;
+			arrayAppend(keySorter,thisKEY);
+			}
+			fis.close();
+	
+		arraySort(keySorter,'text','asc');
+
+		for(var r in keySorter){
+			rbString=rbString & "#r#=#bundle['#r#']#" &  Chr(13) & Chr(10);
+		}
+
+		fileWrite(arguments.rbfile,rbString,'UTF-8');
+	</cfscript>
+</cffunction>
+
+<cffunction name="LoadResourceBundleLegacy" returntype="any" hint="reads and parses java resource bundle per locale">
+	<cfargument name="rbFile">
+
+	<cfscript>
+		var thisKEY="";
+		var thisMSG="";
+		var fis=createObject("java", "java.io.FileInputStream").init(arguments.rbFile);
+		var rB=createObject("java", "java.util.PropertyResourceBundle").init(fis);
+		var keys=variables.rB.getKeys();
+
+		while (keys.hasMoreElements()) {
+			thisKEY=keys.nextElement();
+			thisMSG=rB.handleGetObject(thisKey);
 			variables.resourceBundle["#thisKEY#"]=thisMSG;
 			}
-		variables.fis.close();
-		}
+		fis.close();
 	</cfscript>
 	
 	<cfset variables.isloaded=true />
@@ -109,47 +107,57 @@
 
 </cffunction> 
 
-<cffunction name="LoadResourceBundleUTF" returntype="any" hint="reads and parses java resource bundle per locale">
-<cfscript>
-	var isOk=false; // success flag
-	var keys=""; // var to hold rb keys
-	var thisKey="";
-	var thisMSG="";
-	var thisLang=listFirst(variables.Locale,"_");
-	var thisDir=GetDirectoryFromPath(variables.rbFile);
-	var thisFile=getFileFromPath(variables.rbFile);
-	var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
-	var local=structNew();
-	var linecheck=false;
-	
-	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-		thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
-	
-	if (NOT fileExists(thisRBfile)) //try just the language
-		thisRBfile=thisDir & listFirst(thisFile,".") & "_"& thisLang & "." & listLast(thisFile,".");
-	
-	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
-		thisRBFile=variables.rbFile;
-	
-	if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
-		isOK=true;
-		variables.fis.init(thisRBFile);
-		variables.fisr.init(fis,"UTF-8");
-		variables.br.init(fisr);
+<cffunction name="LoadResourceBundle" returntype="any" hint="reads and parses java resource bundle per locale">
+	<cfscript>
+		var isOk=false; // success flag
+		var keys=""; // var to hold rb keys
+		var thisKey="";
+		var thisMSG="";
+		var thisLang=listFirst(variables.Locale,"_");
+		var thisDir=GetDirectoryFromPath(variables.rbFile);
+		var thisFile=getFileFromPath(variables.rbFile);
+		var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
+		var local=structNew();
+		var linecheck=false;
 		
-		do
-			{
-			   local.line = variables.br.readLine();
-			   linecheck = isDefined("local.line");
-			   if(lineCheck)
-			   {
-			     if(left(local.line,1) neq "##" and listLen(local.line,"=") gt 1){
-			     	variables.resourceBundle["#reReplaceNoCase(listFirst(local.line,'='), '[^-a-zA-Z0-9.]', '', 'all')#"]=listRest(local.line,'=');
-			     	}
-			   }
-			} while(lineCheck);
+		if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
+			thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
 		
-		variables.br.close();
+		if (NOT fileExists(thisRBfile)) //try just the language
+			thisRBfile=thisDir & listFirst(thisFile,".") & "_"& thisLang & "." & listLast(thisFile,".");
+		
+		if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
+			thisRBFile=variables.rbFile;
+		
+		if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
+			isOK=true;
+			//writeDump(var=thisRBFile,abort=1);
+			if(find("\u00",fileRead(thisRBFile))){
+				try{
+					convertToUTF(thisRBFile);
+				} catch(Any e){
+					LoadResourceBundleLegacy(thisRBFile);
+					return;
+				}
+			}
+
+			var fis=createObject("java", "java.io.FileInputStream").init(thisRBFile);
+			var fisr=createObject("java", "java.io.InputStreamReader").init(fis,"UTF-8");
+			var br=createObject("java", "java.io.BufferedReader").init(fisr);
+			
+			do
+				{
+				   local.line = br.readLine();
+				   linecheck = isDefined("local.line");
+				   if(lineCheck)
+				   {
+				     if(left(local.line,1) neq "##" and listLen(local.line,"=") gt 1){
+				     	variables.resourceBundle["#reReplaceNoCase(listFirst(local.line,'='), '[^-a-zA-Z0-9.]', '', 'all')#"]=listRest(local.line,'=');
+				     	}
+				   }
+				} while(lineCheck);
+			
+			br.close();
 		}
 	</cfscript>
 	
@@ -159,17 +167,11 @@
 </cffunction> 
 
 <cffunction name="getResourceBundle" returntype="any" access="public" output="false">
-
 	<cfif not variables.isLoaded>	
-
-		<cfset variables.resourceBundle=loadResourceBundle() />	
-		
+		<cfset variables.resourceBundle=loadResourceBundle() />			
 	</cfif>	
 
-	
-	<cfreturn variables.resourceBundle />
-	
-
+	<cfreturn variables.resourceBundle />	
 </cffunction>
 
 <cffunction name="messageFormat" access="public" output="no" returnType="string" hint="performs messageFormat on compound rb string">
