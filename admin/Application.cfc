@@ -308,6 +308,8 @@ component extends="framework" output="false" {
 		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
 
+		request.muraAdminRequest=true;
+
 		if(ListFirst(server.coldfusion.productVersion) >= 10){
 			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
 		} else {
