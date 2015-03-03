@@ -166,7 +166,7 @@
 
 				<cfloop query="rsAddresses">
 					<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(rsAddresses.email)) neq 0 and prevEmail neq rsAddresses.email>
-						<cfset unsubscribe="#scheme#://#rsemail.domain##site.getServerPort()##vsite.getContext()##site.getcontentRenderer().getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
+						<cfset unsubscribe="#scheme#://#rsemail.domain##site.getServerPort()##site.getContext()##site.getcontentRenderer().getURLStem(rsemail.siteid,rsreturnform.filename)#?doaction=unsubscribe&emailid=#rsemail.emailid#&mlid=#rsaddresses.mlid#&email=#rsaddresses.email#&nocache=1">
 						<cfset trackOpen='<img src="#site.getResourcePath(complete=1)#/index.cfm/_api/email/trackopen/?email=#rsaddresses.email#&emailid=#rsemail.emailid#" style="display:none;">'/>
 						<cfset forward="#scheme#://#rsemail.domain##site.getServerPort()##site.getContext()##site.getContentRenderer().getURLStem(rsemail.siteid,rsforwardform.filename)#?doaction=forward&emailid=#rsemail.emailid#&from=#rsaddresses.email#&origin=#rsaddresses.email#&nocache=1">
 						
