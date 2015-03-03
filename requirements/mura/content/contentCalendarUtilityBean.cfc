@@ -9,8 +9,8 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asDate('start')
-      .asDate('end')
+      .asString('start')
+      .asString('end')
       .asString('title');
 
     var qoq = new Query();
@@ -140,7 +140,7 @@ component extends='mura.cfobject' {
 
   public string function isoDateTimeFormat(date timestamp='#Now()#') {
     var dt = DateConvert('local2utc', arguments.timestamp);
-    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss.000') & 'Z';
+    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
   }
 
   public any function getDefaultDate() {
