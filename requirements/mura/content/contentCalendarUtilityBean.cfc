@@ -125,8 +125,8 @@ component extends='mura.cfobject' {
       // add URL to rs
       local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
-      local.rs['displaystart'][i] = isoDateTimeFormat(local.rs['displaystart'][i]);
-      local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
+      local.rs['displaystart'][i] = DateFormat(local.rs['displaystart'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
+      local.rs['displaystop'][i] = DateFormat(local.rs['displaystop'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);
@@ -140,7 +140,7 @@ component extends='mura.cfobject' {
 
   public string function isoDateTimeFormat(date timestamp='#Now()#') {
     var dt = DateConvert('local2utc', arguments.timestamp);
-    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
+    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss.000') & 'Z';
   }
 
   public any function getDefaultDate() {
