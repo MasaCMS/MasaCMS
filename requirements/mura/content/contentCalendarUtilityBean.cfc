@@ -125,8 +125,8 @@ component extends='mura.cfobject' {
       // add URL to rs
       local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
-      local.rs['displaystart'][i] = DateFormat(local.rs['displaystart'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
-      local.rs['displaystop'][i] = DateFormat(local.rs['displaystop'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
+      local.rs['displaystart'][i] = DateFormat(local.rs['displaystart'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(local.rs['displaystart'][i], 'HH:mm:ss');
+      local.rs['displaystop'][i] = DateFormat(local.rs['displaystop'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(local.rs['displaystop'][i], 'HH:mm:ss');
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);
