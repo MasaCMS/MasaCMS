@@ -281,9 +281,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCategoryCrumbData')#">
 		select categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,sortDirection,restrictGroups,path,remoteID,remoteSourceURL,remotePubDate, 
 		<cfif variables.configBean.getDBType() eq "MSSQL">
-		len(Cast(path as varchar(1000))) depth
+		len(Cast(tcontentcategories.path as varchar(1000))) depth
 		<cfelse>
-		length(path) depth
+		length(tcontentcategories.path) depth
 		</cfif> 
 		from tcontentcategories where 
 		categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)

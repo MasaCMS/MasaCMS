@@ -251,7 +251,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function getQueryService(){
-		return new Query(argumentCollection=getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments));
+		if (structKeyExists(arguments, "readOnly")) {
+			return new Query(argumentCollection=getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments));
+		} else {
+			return new Query(argumentCollection=arguments);
+		}
 	}
 
 </cfscript>

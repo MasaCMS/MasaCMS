@@ -1712,9 +1712,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery name="rsthierarchy">
 				select contentid,contenthistid,filename,type,subtype,orderno,path,
 				<cfif variables.configBean.getDBType() eq "MSSQL">
-				len(Cast(path as varchar(1000))) depth, orderno
+				len(Cast(path as varchar(1000))) depth
 				<cfelse>
-				length(path) depth, orderno
+				length(path) depth
 				</cfif> 
 				from tcontent
 				where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
