@@ -9,8 +9,8 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asString('start')
-      .asString('end')
+      .asDate('start')
+      .asDate('end')
       .asString('title');
 
     var qoq = new Query();
@@ -125,8 +125,10 @@ component extends='mura.cfobject' {
       // add URL to rs
       local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
-      local.rs['displaystart'][i] = DateFormat(local.rs['displaystart'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(local.rs['displaystart'][i], 'HH:mm:ss');
-      local.rs['displaystop'][i] = DateFormat(local.rs['displaystop'][i], 'yyyy-mm-dd') & 'T' & TimeFormat(local.rs['displaystop'][i], 'HH:mm:ss');
+      local.tempstart = DateConvert('local2utc', local.rs['displaystart'][i]);
+      local.tempend = DateConvert('local2utc', local.rs['displaystop'][i]);
+      local.rs['displaystart'][i] = isoDateTimeFormat(local.rs['displaystart'][i]);
+      local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);
