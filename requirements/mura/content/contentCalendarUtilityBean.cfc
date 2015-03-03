@@ -142,7 +142,7 @@ component extends='mura.cfobject' {
 
   public string function isoDateTimeFormat(date timestamp='#Now()#') {
     var dt = DateConvert('local2utc', arguments.timestamp);
-    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss.000') & 'Z';
+    return DateFormat(dt, 'yyyy-mm-dd') & 'T' & TimeFormat(dt, 'HH:mm:ss');
   }
 
   public any function getDefaultDate() {
