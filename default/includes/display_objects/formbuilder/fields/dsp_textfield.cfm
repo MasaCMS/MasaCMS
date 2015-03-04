@@ -55,7 +55,8 @@
 	Mura CMS.
 --->
 <cfsilent>
-<cfset variables.strField = "" />	
+<cfset variables.strField = "" />
+<cfparam name="arguments.prefix" default="">	
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
 	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#

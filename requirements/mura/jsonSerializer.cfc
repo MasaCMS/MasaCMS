@@ -220,6 +220,7 @@ component
 
 				// Write the date in ISO 8601 time string format. We're going to assume that the 
 				// date is already in the dezired timezone. 
+				input=DateConvert('local2utc',input);
 				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss.l" ) & "Z""" );
 
 			} else {
