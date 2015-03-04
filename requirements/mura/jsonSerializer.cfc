@@ -58,6 +58,13 @@ component
 
 	}
 
+	// I define the given key as a date. Returns serializer.
+	public any function asUTCDate( required string key ) {
+
+		return( defineKey( dateKeyList, key, "utcdate" ) );
+
+	}
+
 
 	// I define the given key as a float / decimal. Returns serializer.
 	public any function asFloat( required string key ) {
@@ -207,9 +214,14 @@ component
 
 			} else if ( ( hint == "date" ) && ( isDate( input ) || isNumericDate( input ) ) ) {
 
+				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & """" );
+
+			} else if ( ( hint == "utcdate" ) && ( isDate( input ) || isNumericDate( input ) ) ) {
+
 				// Write the date in ISO 8601 time string format. We're going to assume that the 
 				// date is already in the dezired timezone. 
-				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & """" );
+				input=DateConvert('local2utc',input);
+				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss.l" ) & "Z""" );
 
 			} else {
 

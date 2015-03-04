@@ -125,10 +125,12 @@ component extends='mura.cfobject' {
       // add URL to rs
       local.rs['url'][i] = variables.$.createHref(filename=local.rs['filename'][i]);
       // convert dates to UTC, then use browser's local tz settings to output the dates/times
+      /*
       local.tempstart = DateConvert('local2utc', local.rs['displaystart'][i]);
       local.tempend = DateConvert('local2utc', local.rs['displaystop'][i]);
       local.rs['displaystart'][i] = isoDateTimeFormat(local.rs['displaystart'][i]);
       local.rs['displaystop'][i] = isoDateTimeFormat(local.rs['displaystop'][i]);
+      */
     }
 
     local.rs = filterCalendarItems(data=local.rs, maxItems=0);

@@ -55,6 +55,7 @@
 	Mura CMS.
 --->
 <cfsilent>
+<cfparam name="arguments.prefix" default="">
 <cfset variables.strField = "" />	
 <cfsavecontent variable="variables.strField">
 	<cfoutput>

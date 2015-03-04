@@ -68,8 +68,8 @@ var siteManager = {
 			document.contentForm.approved.value=0;
 		}
 		
-		if (typeof(saveFormBuilder) != "undefined") {
-			var checkComplete = saveFormBuilder();
+		if (typeof(isFormBuilder) != "undefined") {
+			var checkComplete = siteManager.saveFormBuilder();
 			if(!checkComplete) {
 				alertDialog("All fields must have a 'name' before the form can be saved.");
 				return false;
@@ -234,6 +234,18 @@ var siteManager = {
 		} else if(document.layers) {
 			this.obj = document.layers[name];
 			this.style = document.layers[name];
+		}
+	},
+
+	saveFormBuilder: function() {
+		var iscomplete = $("#mura-templatebuilder").templatebuilder('iscomplete');
+
+		if(iscomplete) {
+			jQuery("#mura-templatebuilder").templatebuilder('save');
+			return true;
+		}
+		else {
+			return false;			
 		}
 	},
 
