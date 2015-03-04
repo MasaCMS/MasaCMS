@@ -46,6 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <script>
+	isFormBuilder = true;
+	
 	jQuery(document).ready(function() {
 		jQuery("##mura-templatebuilder").templatebuilder();
 	});

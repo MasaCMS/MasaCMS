@@ -68,7 +68,7 @@ var siteManager = {
 			document.contentForm.approved.value=0;
 		}
 		
-		if (typeof(saveFormBuilder) != "undefined") {
+		if (isFormBuilder != "undefined") {
 			var checkComplete = siteManager.saveFormBuilder();
 			if(!checkComplete) {
 				alertDialog("All fields must have a 'name' before the form can be saved.");
