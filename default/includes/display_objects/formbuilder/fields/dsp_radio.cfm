@@ -56,6 +56,7 @@
 --->
 <cfsilent>
 <cfset variables.strField = "" />
+<cfparam name="arguments.prefix" default="">
 </cfsilent>
 <cfsavecontent variable="variables.strField">
 	<cfoutput>

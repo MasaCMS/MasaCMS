@@ -58,6 +58,7 @@
 <cfset variables.fbManager = $.getBean('formBuilderManager') />
 
 <cfparam name="arguments.isNested" default="false">
+<cfparam name="arguments.prefix" default="">
 
 <cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
 <cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />

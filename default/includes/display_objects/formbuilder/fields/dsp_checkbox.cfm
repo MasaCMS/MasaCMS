@@ -55,6 +55,7 @@
 	Mura CMS.
 --->
 <cfsilent>
+<cfparam name="arguments.prefix" default="">
 <cfset variables.mmRBFstrField = "" />
 <!---<cfinclude template="dsp_data_common.cfm" />--->
 </cfsilent>

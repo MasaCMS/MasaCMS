@@ -54,8 +54,9 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfset variables.strField = "" />
 <cfsilent>
+<cfset variables.strField = "" />
+<cfparam name="arguments.prefix" default="">
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
 	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
