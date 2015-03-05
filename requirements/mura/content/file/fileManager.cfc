@@ -798,7 +798,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		OR isDefined('variables.$') 
 		AND len(variables.$.event('siteID')) 
 		AND variables.$.event('siteID') neq arguments.siteID
-		AND isValid('URL', application.configBean.getAssetPath())>
+		AND !isValid('URL', application.configBean.getAssetPath())>
 		<cfif arguments.secure>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
