@@ -1102,6 +1102,34 @@ var initMura=function(config){
 		}
 	}
 
+	var registeredHandlers={
+	};
+
+	var getRegisteredHandlers=function(eventType){
+		if(typeof registeredHandlers[eventType] == 'undefined'){
+			registeredHandlers[eventType]=[];
+		}
+		return registeredHandlers[eventType];
+	}
+
+	var addEventHandler=function(eventType,handler){
+		if(typeof eventType == 'object'){
+			for(var h in eventType){
+				getRegisteredHandlers(h).push(eventType[h]);
+			}
+		} else {
+			getRegisteredHandlers(eventType).push(handler);
+		}	
+	}
+
+	var announceEvent=function(eventType,context){
+		var handlers=getRegisteredHandlers(eventType);
+
+		for(var h in handlers){
+			handlers[h].apply(context);
+		}
+	}
+
 	var processAsyncObject=function(el){
 		var self=el;
 
@@ -1117,6 +1145,9 @@ var initMura=function(config){
 					$(this).removeAttr('onsubmit');
 					$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 				});
+
+				announceEvent('asyncObjectRendered',self);
+				$(self).trigger('asyncObjectRendered');
 			}
 		};
 
@@ -1202,7 +1233,9 @@ var initMura=function(config){
 		setLowerCaseKeys:setLowerCaseKeys,
 		noSpam:noSpam,
 		addLoadEvent:addLoadEvent,
-		loader:loader
+		loader:loader,
+		announceEvent:announceEvent,
+		addEventHandler:addEventHandler
 	});
 
 	$.extend(window,{
@@ -1221,6 +1254,24 @@ var initMura=function(config){
 			loginCheck(event.which);
 		});
 
+		/*
+		addEventHandler(
+			{
+				asyncObjectRendered:function(event){
+					alert($(this).html());
+				}
+			}
+		);
+		*/
+
+		/*
+		addEventHandler('asyncObjectRendered',
+			function(event){
+				alert($(this).html());
+			}
+		);
+		*/
+		
 		$.fn.appendMuraObject = function(data) {
 		    var el=$('<div class="mura-async-object"></div>');
 
