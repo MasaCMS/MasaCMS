@@ -59,7 +59,7 @@
 <cfparam name="arguments.prefix" default="">
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	<legend>#arguments.field.name#</legend>
+	<legend>#esapiEncode('html', arguments.field.label)#</legend>
 	#variables.fbManager.renderNestedForm( variables.$,session.siteid,arguments.field.formid,arguments.field.name )#
 	</cfoutput>
 </cfsavecontent>
