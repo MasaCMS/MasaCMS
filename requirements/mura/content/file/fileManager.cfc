@@ -793,7 +793,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.siteid=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 	
-	<cfif arguments.complete or  arguments.secure or isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID >
+	<cfif arguments.complete 
+		OR arguments.secure
+		OR isDefined('variables.$') 
+		AND len(variables.$.event('siteID')) 
+		AND variables.$.event('siteID') neq arguments.siteID
+		AND isValid('URL', application.configBean.getAssetPath())>
 		<cfif arguments.secure>
 			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		<cfelse>
