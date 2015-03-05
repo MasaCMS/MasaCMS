@@ -91,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayPoolID" type="string" default=""/>
 <cfproperty name="contentPoolID" type="string" default=""/>
 <cfproperty name="categoryPoolID" type="string" default=""/>
+<cfproperty name="filePoolID" type="string" default=""/>
 <cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
@@ -189,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.DisplayPoolID=""/>
 	<cfset variables.instance.ContentPoolID=""/>
 	<cfset variables.instance.CategoryPoolID=""/>
+	<cfset variables.instance.FilePoolID=""/>
 	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
