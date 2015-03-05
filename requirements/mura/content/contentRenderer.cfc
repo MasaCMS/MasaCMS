@@ -1588,7 +1588,11 @@ Display Objects
 	<cfset var qq="">
 
 	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
-		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+		<cfif not len(arguments.siteid)>
+			<cfset arguments.siteid=variables.$.event('siteID')>
+		<cfelse>
+			<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+		</cfif>
 	</cfif>
 
 	<cfif arguments.complete or arguments.secure>
