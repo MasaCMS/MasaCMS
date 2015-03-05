@@ -1583,13 +1583,12 @@ Display Objects
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
-	<cfset var urlStem=site.getContentRenderer().getURLStem(arguments.siteid, '#arguments.filename#') & arguments.queryString>
 	<cfset var q=''>
 	<cfset var qsa="">
 	<cfset var qq="">
-	
-	<cfif this.hashUrls>
-		<cfset urlStem=site.getContentRenderer().getURLStem(arguments.siteid, '#arguments.filename##arguments.queryString#')>
+
+	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
+		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
 	</cfif>
 
 	<cfif arguments.complete or arguments.secure>
@@ -1647,7 +1646,12 @@ Display Objects
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##urlStem#") />	
+				<cfif this.hashURLS>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+				<cfelse>
+					<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+				</cfif>	
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />	
 			<cfelseif arguments.type eq "Link">
 				<cfset href=arguments.bean.getBody()>
 			<cfelse>
@@ -1655,7 +1659,11 @@ Display Objects
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset href=HTMLEditFormat("#begin##urlStem#") />
+			<cfif this.hashURLS>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
+			<cfelse>
+				<cfset href=HTMLEditFormat("#begin##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+			</cfif>	
 		</cfdefaultcase>
 	</cfswitch>
 
