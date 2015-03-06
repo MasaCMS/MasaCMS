@@ -286,7 +286,8 @@ initMuraComments=function(config){
 					jQuery("#mura-comment-post-comment-" + id + " [name=commenteditmode]").val("edit");
 					jQuery("#mura-comment-post-comment-comment").show();
 					$editor.slideDown();
-				}
+				},
+				'text'
 			);
 		});
 		
