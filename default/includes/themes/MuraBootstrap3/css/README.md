@@ -5,14 +5,14 @@ Below is a description of each directory found under **css/**. You should edit t
 * editor/editor.css
   This file is used by CKEditor for styles within the body area.
 
-* ie/ie.less
+* **ie/ie.less**:
   This file is used by **templates/inc/html_head.cfm**. Minify as *ie.min.css*
 
-* mobile/mobile.less
+* **mobile/mobile.less**:
   This file is used by **templates/mobile.cfm**. Minify as *mobile.min.css*
 
-* theme/theme.less
+* **theme/theme.less**:
   This file is used by **templates/inc/html_head.cfm**. It includes all of the files located under **theme/responsive** as well as the file located under **variables/variables.less**. Minify as *theme.min.css*.
 
-* variables/variables.less
+* **variables/variables.less**:
   This file is used by **theme/theme.less**. There is no need to minify this file as it merely contains variables used by the theme.less file.
