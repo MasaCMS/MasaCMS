@@ -4,9 +4,15 @@
 		<div class="col-lg-10">
 			<ul class="list-inline pull-left breadcrumb">
 				<li>&copy; #HTMLEditFormat($.siteConfig('site'))# #year(now())#</li>
-				<li><a href="#$.createHref(filename='site-map')#">Site Map</a></li>
-				<li><a href="#$.createHref(filename='font-awesome')#">Font Awesome</a></li>
-				<li><a href="#$.createHref(filename='bootstrap')#">Bootstrap</a></li>
+
+				<!---
+					These links are dependent upon specific Pages to exist within Mura,
+					and are used with the MuraBootstrap3 Bundle
+					<li><a href="#$.createHref(filename='site-map')#">Site Map</a></li>
+					<li><a href="#$.createHref(filename='font-awesome')#">Font Awesome</a></li>
+					<li><a href="#$.createHref(filename='bootstrap')#">Bootstrap</a></li> 
+				--->
+
 				<li><a href="##myModal" data-toggle="modal">Sample Modal Window</a></li>
 			</ul>
 		</div>
