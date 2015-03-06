@@ -610,7 +610,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setServerPort" access="public" output="false">
 	<cfargument name="ServerPort" type="string" />
-	<cfif arguments.serverPort neq "80" and len(trim(arguments.serverPort))>
+	<cfif not ListFind('80,443', arguments.serverPort) and len(trim(arguments.serverPort))>
 		<cfset variables.instance.ServerPort = ":#arguments.ServerPort#" />
 	<cfelse>
 		<cfset variables.instance.ServerPort = "" />

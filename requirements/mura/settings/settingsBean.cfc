@@ -1053,7 +1053,7 @@ s
 <cffunction name="getServerPort" output="false">
 	<cfif getValue('isRemote')>
 		<cfset var port=getValue('RemotePort')>
-		<cfif isNumeric(port) and port neq 80>
+		<cfif isNumeric(port) and !ListFind('80,443', port)>
 			<cfreturn ":" & port>
 		<cfelse>
 			<cfreturn "">
