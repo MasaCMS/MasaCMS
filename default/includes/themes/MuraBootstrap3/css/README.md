@@ -2,7 +2,7 @@
 
 Below is a description of each directory found under **css/**. You should edit the *.less* files, and use a preprocessor such as CodeKit or Prepros to preprocess and minify your files as specified below.
 
-* editor/editor.css
+* **editor/editor.css**:
   This file is used by CKEditor for styles within the body area.
 
 * **ie/ie.less**:
