@@ -167,6 +167,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				// First make sure that the proerty exists
 				//if(arguments.object.hasProperty( propertyIdentifier )) {
+					var requiredAttrs={};
+
+					// Loop over each of the constraints for this given property looking for required attributes
+					for(var c=1; c<=arrayLen(contextValidations[ propertyIdentifier ]); c++) {
+						if(contextValidations[ propertyIdentifier ][c].constraintType == 'required'){	
+							requiredAttrs[propertyIdentifier]=true;
+						}
+					}
 					
 					// Loop over each of the constraints for this given property
 					for(var c=1; c<=arrayLen(contextValidations[ propertyIdentifier ]); c++) {
@@ -175,6 +183,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						var conditionMeet = true;
 						if(structKeyExists(contextValidations[ propertyIdentifier ][c], "conditions")) {
 							conditionMeet = getConditionsMeetFlag( object=arguments.object, conditions=contextValidations[ propertyIdentifier ][ c ].conditions );
+						}
+						
+						//Only validate if the property has a value when not required
+						if(contextValidations[ propertyIdentifier ][c].constraintType != 'required'
+							&& isSimpleValue(arguments.object.getValue(propertyIdentifier))
+							&& !len(arguments.object.getValue(propertyIdentifier)) 
+							&& !structKeyExists(requiredAttrs,propertyIdentifier)){
+							conditionMeet=false;
 						}
 						
 						// Now if a condition was meet we can actually test the individual validation rule
