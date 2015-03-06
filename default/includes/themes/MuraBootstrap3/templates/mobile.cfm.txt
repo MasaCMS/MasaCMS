@@ -42,11 +42,8 @@
 		<!--- Font Awesome --->
 		<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 
-		<cf_CacheOMatic key="globalheadercss">
-			#$.static()
-				.include('/css/mobile/')
-				.renderIncludes('css')#
-		</cf_CacheOMatic>
+		<!--- Theme-Specific Mobile CSS --->
+		<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.min.css">
 		
 		<script src="#$.siteConfig('assetPath')#/jquery/jquery.js"></script>
 		<script type="text/javascript">

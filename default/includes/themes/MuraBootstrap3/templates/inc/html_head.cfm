@@ -5,12 +5,12 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="#HTMLEditFormat($.content('metaDesc'))#">
-	<meta name="keywords" content="#HTMLEditFormat($.content('metaKeywords'))#">
-	<cfif len($.content('credits'))><meta name="author" content="#HTMLEditFormat($.content('credits'))#"></cfif>
+	<meta name="description" content="#esapiEncode('html', $.content('metaDesc'))#">
+	<meta name="keywords" content="#esapiEncode('html', $.content('metaKeywords'))#">
+	<cfif len($.content('credits'))><meta name="author" content="#esapiEncode('html', $.content('credits'))#"></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#">
 
-	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
+	<title>#esapiEncode('html', $.content('HTMLTitle'))# - #esapiEncode('html', $.siteConfig('site'))#</title>
 	<!--- Mura CMS Base Styles--->
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.2.min.css">
 	<!--- Optional: Mura CMS Skin Styles. Duplicate to your theme to customize, changing 'assetPath' to 'themeAssetPath' below. Don't forget to move, remove or replace sprite.png. --->
@@ -18,19 +18,18 @@
 	
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
-	
+
 	<!--- Font Awesome --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 
-	<!--- CfStatic THEME CSS --->
-	<cf_CacheOMatic key="globalheadercss">
-		#$.static(addCacheBusters=false)
-			.include('/css/theme/')
-			.renderIncludes('css')#
-	</cf_CacheOMatic>
-	
+	<!--- 
+				THEME CSS
+				This has been compiled using a pre-processor such as CodeKit or Prepros
+	--->
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/theme/theme.min.css">
+
 	<!--[if IE]>
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/compiled/ie.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/ie/ie.min.css">
 	<![endif]-->
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -53,6 +52,6 @@
 	<!--- MURA FEEDS --->
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	<cfset apiEndpoint=$.siteConfig().getApi('feed','v1').getEndpoint() />
-	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('#apiEndpoint#/?feedID=#rs.feedID#')#"></cfloop>
+	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#esapiEncode('html', $.siteConfig('site'))# - #esapiEncode('html', rs.name)#" href="#XMLFormat('#apiEndpoint#/?feedID=#rs.feedID#')#"></cfloop>
 </head>
 </cfoutput>

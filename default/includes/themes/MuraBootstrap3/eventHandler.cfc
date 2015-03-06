@@ -64,20 +64,6 @@
 			* Reload the application when additions/changes are made to THIS file!
 	--->
 
-	<cffunction name="onSiteRequestStart" access="public" output="false" returntype="any">
-		<cfargument name="$" hint="mura scope" />
-		<cfscript>
-			// http://dominicwatson.github.io/cfstatic/full-guide.html (See Configuration section)
-			// if in production, set checkForUpdates=false
-			arguments.$.static(
-				outputDirectory = 'compiled'
-				, checkForUpdates = !arguments.$.siteConfig('cache')
-				, lessGlobals = ExpandPath($.siteConfig('themeIncludePath') & '/css/less-globals/globals.less')
-			);
-		</cfscript>
-	</cffunction>
-
-
 	<cffunction name="onRenderStart" access="public" output="false" returntype="any">
 		<cfargument name="$" hint="mura scope" />
 		<cfscript>
