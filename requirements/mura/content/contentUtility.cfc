@@ -527,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
 	<cfset var versionLink="">
 	<cfset var historyLink="">
-	<cfset var site=variables.settingsManager.getSite(arguments.siteid)>
+	<cfset var site=variables.settingsManager.getSite(arguments.contentBean.getSiteID())>
 	
 	<cfif listFind("Folder,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>

@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span6">
 <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sendto')#</label>
 	<div class="controls">
-		<select id="notifyEditor" name="notify" multiple="multiple" class="span12" <cfif rc.perm eq 'editor'> onChange="javascript: this.selectedIndex==0?document.form1.approved.checked=true:document.form1.approved.checked=false;"</cfif>>
+		<select id="notifyEditor" name="notify" multiple="multiple" class="span12" <cfif rc.perm eq 'editor'> onChange="javascript: this.selectedIndex==0?document.contentForm.approved.checked=true:document.contentForm.approved.checked=false;"</cfif>>
 		<option value="" selected>None</option>
 		<cfloop query="rc.rsnotify">
 		<option value="#rc.rsnotify.userID#">#rc.rsnotify.lname#, #rc.rsnotify.fname# (#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions.#rc.rsnotify.type#')#)</option>
