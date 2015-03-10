@@ -46,7 +46,7 @@ if(!window.CFFormProtect){
 	}
 
 	// capture mouse movement
-	function timedMousePos() {
+	var timedMousePos =  function() {
 		//when the user moves the mouse, start working
 		document.onmousemove = getMousePos;
 		if (xPos >= 0 && yPos >= 0) {
@@ -92,7 +92,7 @@ if(!window.CFFormProtect){
 	//capture when a user uses types on their keyboard
 	document.onkeypress = logKeys;
 
-	function logKeys() {
+	var logKeys = function() {
 		//user hit a key, increment the counter
 		keysPressed++;
 		// Bas van der Graaf (bvdgraaf@e-dynamics.nl) 
