@@ -201,7 +201,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	// How long do session vars persist?
 	if ( request.tracksession ) {
 		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
-		this.sessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : CreateTimeSpan(0,0,1,0);
+		iniSessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
+		this.sessionTimeout = (evalSetting(getINIProperty("sessionTimeout","180")) / 24) / 60;
 	} else {
 		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
 	}
