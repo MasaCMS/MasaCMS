@@ -405,8 +405,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rbKey" output="false" returntype="any">
 	<cfargument name="key">
-	<cfif isDefined('request.muraAdminRequest') and request.muraAdminRequest>
-		<cfreturn application.rbFactory.getKeyValue(session.rb,arguments.key)>
+	<cfargument name="locale" type="string" required="false" default="">
+
+	<cfif (isDefined('request.muraAdminRequest') and request.muraAdminRequest) or len(arguments.locale)>
+		<cfif not len(arguments.locale)>
+			<cfset arguments.locale=session.rb>
+		</cfif>
+		<cfreturn application.rbFactory.getKeyValue(arguments.locale,arguments.key)>
 	<cfelse>
 		<cfreturn siteConfig("RBFactory").getKey(arguments.key)>
 	</cfif>
