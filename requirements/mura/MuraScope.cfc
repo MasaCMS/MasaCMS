@@ -407,7 +407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="key">
 	<cfargument name="locale" type="string" required="false" default="">
 
-	<cfif (isDefined('request.muraAdminRequest') and request.muraAdminRequest) or len(arguments.locale)>
+	<cfif (isDefined('request.muraAdminRequest') and request.muraAdminRequest) or isDefined('arguments.locale') and len(arguments.locale)>
 		<cfif not len(arguments.locale)>
 			<cfset arguments.locale=session.rb>
 		</cfif>
