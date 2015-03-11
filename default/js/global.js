@@ -1049,13 +1049,15 @@ var initMura=function(config){
 
 			function(){
 				if($(scope).find( ".cffp_applied" ).length || $(scope).find( ".cffp_mm" ).length || $(scope).find( ".cffp_kp" ).length){
-					loader().loadjs(config.requirementspath + '/cfformprotect/js/cffp.js');
+					//loader().loadjs(config.requirementspath + '/cfformprotect/js/cffp.js');
+					$.getScript(config.requirementspath + '/cfformprotect/js/cffp.js');
 				}
 			},
 
 			function(){
 				if($(scope).find( ".g-recaptcha" ).length){
-					loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+					//loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+					$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
 				}
 			},
 
