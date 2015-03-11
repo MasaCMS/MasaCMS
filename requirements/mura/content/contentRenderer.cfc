@@ -431,21 +431,6 @@ Display Objects
 		<cfset this.showMemberToolBar=false>
 	</cfif>
 
-	<cfif len(variables.$.event('siteid'))>
-		<cfif variables.$.siteConfig('isRemote')>
-			<cfset this.siteIDInURLS=false>
-			<cfset this.indexFileInURLS=false>
-		<cfelse>
-			<cfif not isBoolean(this.siteIDInURLS)>
-				<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
-			</cfif>
-			
-			<cfif not isBoolean(this.indexFileInURLS)>
-				<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
-			</cfif>
-		</cfif>
-	</cfif>
-
 	<cfif not isBoolean(this.hashURLS)>
 		<cfset this.hashURLS=application.configBean.getHashURLS()>
 	</cfif>
@@ -472,7 +457,20 @@ Display Objects
 	<cfif not isDefined('this.enableMuraTag')>
 		<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 	</cfif>
+
 	<cfscript>
+		this.siteIDInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig('isRemote')
+			? false
+			: Len(variables.$.event('siteid')) && IsBoolean(this.siteIDInURLs)
+				? this.siteIDInURLs
+				: application.configBean.getSiteIDInURLs();
+
+		this.indexFileInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig('isRemote')
+			? false
+			: Len(variables.$.event('siteid')) && IsBoolean(this.indexFileInURLs)
+				? this.indexFileInURLs
+				: application.configBean.getIndexFileInURLs();
+
 		this.enableFrontEndTools = IsDefined('this.enableFrontEndTools')
 			? this.enableFrontEndTools
 			: IsBoolean(getConfigBean().getEnableFrontEndTools())

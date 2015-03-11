@@ -327,7 +327,7 @@
 <cffunction name="publishBySchedule" access="public" returntype="any" output="false">
 	<cfset var rsPendingChangeSets="">
 	
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPendingChangeSets',cachedwithin=CreateTimeSpan(0, 0, 5, 0))#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPendingChangeSets')#">
 	select changesetID
 	from tchangesets
 	where tchangesets.published=0
