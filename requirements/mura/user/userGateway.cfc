@@ -485,7 +485,7 @@
 		<cfset var dbtype=variables.configBean.getDbType() />
 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsers')#">
-			SELECT *
+			SELECT UserID, GroupName, Fname, Lname, UserName, Email, Type, subType, Admin, S2, LastUpdate, LastUpdateBy, isPublic, SiteID
 			FROM tusers
 			WHERE 0=0
 				AND tusers.type = 2
