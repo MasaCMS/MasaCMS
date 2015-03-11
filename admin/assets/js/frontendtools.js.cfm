@@ -227,7 +227,7 @@
 		$('HTML').toggleClass('mura-edit-mode');
 		$(".editableObject").toggleClass('editableObjectHide');
 			
-		if(muraInlineEditor.inited){
+		if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
 			$(".mura-editable").toggleClass('inactive');
 		}
 	}
