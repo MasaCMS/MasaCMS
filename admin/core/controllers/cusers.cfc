@@ -173,8 +173,9 @@ component persistent='false' accessors='true' output='false' extends='controller
 			setUsersIterator(rc);
 
 		// unassigned users
-			arguments.rc.rsUnassignedUsers = getUserManager().getUnassignedUsers(
-				siteid=arguments.rc.siteid
+			arguments.rc.rsUnassignedUsers = getUserManager().getUsers(
+				rs=arguments.rc.rs
+				, siteid=arguments.rc.siteid
 				, ispublic=arguments.rc.ispublic
 				, isunassigned=1
 			);
