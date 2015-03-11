@@ -1060,13 +1060,12 @@ var initMura=function(config){
 					$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
 				}
 
-				if($(scope).find( ".empty-g-recaptcha" ).length){
+				if($(scope).find( ".g-recaptcha-container" ).length){
 					loader().loadjs(
 						'https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage,
 						function(){
 							$(scope).find( ".g-recaptcha-container" ).each(function(){
 								var self=this;
-
 								var checkForReCaptcha=function()
 									{
 									   if (typeof grecaptcha == 'object' )

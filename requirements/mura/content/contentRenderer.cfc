@@ -3623,7 +3623,7 @@ Display Objects
 		return dspReCAPTCHA(argumentCollection=arguments);
 	}
 
-	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image',reClass='g-recaptcha') {
+	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image',reCAPTCHAClass='g-recaptcha') {
 		var str = '';
 
 		if ( Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret')) ) {
@@ -3638,7 +3638,7 @@ Display Objects
 				: 'image';
 
 			savecontent variable='str' {
-				WriteOutput('<div id="m#createUUID()#" class="#arguments.reClass#" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
+				WriteOutput('<div id="m#createUUID()#" class="#arguments.reCAPTCHAClass#" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
 			};
 
 			// load Google ReCAPTCHA script
