@@ -65,8 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.asyncObjects=true>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
-<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLs()>
-<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLs()>
+<cfset this.siteIDInURLS="">
+<cfset this.indexFileInURLS="">
 <cfset this.hashURLS="">
 
 <cfif isDefined('url.muraadminpreview')>
