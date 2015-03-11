@@ -1059,6 +1059,37 @@ var initMura=function(config){
 					//loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
 					$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
 				}
+
+				if($(scope).find( ".empty-g-recaptcha" ).length){
+					loader().loadjs(
+						'https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage,
+						function(){
+							$(scope).find( ".g-recaptcha-container" ).each(function(){
+								var self=this;
+
+								var checkForReCaptcha=function()
+									{
+									   if (typeof grecaptcha == 'object' )
+									   {
+									     grecaptcha.render($(self).attr('id'), {
+									          'sitekey' : $(self).data('sitekey'),
+									          'theme' : $(self).data('theme'),
+									          'type' : $(self).data('type')
+									        });
+									   }
+									   else
+									   {
+									      window.setTimeout(function(){checkForReCaptcha();},10);
+									   }
+									}
+
+								checkForReCaptcha();
+								
+							});
+						}
+						);
+					//$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+				}
 			},
 
 			function(){
