@@ -501,7 +501,7 @@
 					AND tusers.ispublic = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.ispublic#" />
 				</cfif>
 				<cfif IsBoolean(arguments.isunassigned) and arguments.isunassigned>
-					AND userid NOT IN (select userid FROM tusersmemb)
+					AND userid NOT IN (SELECT DISTINCT userid FROM tusersmemb)
 				</cfif>
 				<cfif IsBoolean(arguments.showsuperusers) and arguments.showsuperusers>
 					AND s2 <> 1
@@ -516,31 +516,10 @@
 	<cffunction name="getUsersMemb" returntype="query" access="public" output="false">
 		<cfset var rsUsersMemb = '' />
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUsersMemb')#">
-			SELECT *
+			SELECT UserID, GroupID
 			FROM tusersmemb
 		</cfquery>
 		<cfreturn rsUsersMemb />
-	</cffunction>
-
-	<cffunction name="getUnassignedUsers" returntype="query" access="public" output="false">
-		<cfargument name="siteid" default="" />
-		<cfargument name="isPublic" default="" />
-		<cfargument name="showsuperusers" default="0" />
-
-		<cfset var rsUsers = getUsers(argumentCollection=arguments) />
-		<cfset var rsUnassignedUsers = '' />
-		<cfset var rsUsersMemb = getUsersMemb() />
-
-		<cfquery name="rsUnassignedUsers" dbtype="query">
-			SELECT *
-			FROM rsUsers
-			WHERE userid NOT IN (<cfqueryparam list="true" value="#ValueList(rsUsersMemb.UserID)#" />)
-				<cfif arguments.showSuperUsers NEQ 1>
-					AND s2 <> 1
-				</cfif>
-		</cfquery>
-
-		<cfreturn rsUnassignedUsers />
 	</cffunction>
 
 </cfcomponent>
