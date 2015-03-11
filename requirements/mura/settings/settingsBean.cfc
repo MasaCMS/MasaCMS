@@ -1129,9 +1129,12 @@ s
 	
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset thelist = listAppend(thelist,"#getScheme()#://#i##getServerPort()#")>
-			<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-				<cfset thelist = listAppend(thelist,"https://#i##getServerPort()#")>
+			<cfset theurl = "#i##getServerPort()#" />
+			<cfif not ListFindNoCase(thelist, '#getScheme()#://#theurl#')>
+				<cfset thelist = listAppend(thelist,"#getScheme()#://#theurl#")>
+			</cfif>
+			<cfif adminSSL and not YesNoFormat(getValue('useSSL')) and not ListFindNoCase(thelist, 'https://#theurl#')>
+				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>	
 		</cfloop>
 	</cfif>
