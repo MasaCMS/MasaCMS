@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                 subtype='Default'
 	                  )
 				<cfif rsExtended.recordcount>
-				and attributeID not in (#valuelist(rsExtended.attributeid)#)
+				and attributeID not in (#ListQualify(ValueList(rsExtended.attributeid), "'")#)
 				</cfif>
 			
 			</cfquery>
