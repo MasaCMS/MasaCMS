@@ -880,7 +880,7 @@ s
 
 <cffunction name="getContentRenderer" output="false">
 <cfargument name="$" default="">
-<cfif not isObject(arguments.$)>
+<cfif not isObject(arguments.$) or arguments.$.event('siteid') neq getValue('siteid')>
 	<cfif not isObject(variables.instance.contentRenderer)>
 		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
 		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
