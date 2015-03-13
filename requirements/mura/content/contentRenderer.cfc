@@ -459,13 +459,13 @@ Display Objects
 	</cfif>
 
 	<cfscript>
-		this.siteIDInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig('isRemote')
+		this.siteIDInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig().getValue(property='isRemote',defaultValue=false)
 			? false
 			: Len(variables.$.event('siteid')) && IsBoolean(this.siteIDInURLs)
 				? this.siteIDInURLs
 				: application.configBean.getSiteIDInURLs();
 
-		this.indexFileInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig('isRemote')
+		this.indexFileInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig().getValue(property='isRemote',defaultValue=false)
 			? false
 			: Len(variables.$.event('siteid')) && IsBoolean(this.indexFileInURLs)
 				? this.indexFileInURLs
