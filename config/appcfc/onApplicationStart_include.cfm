@@ -176,8 +176,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility|extendObject)$" 
 				});
 
-		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
+		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("configBean",application.configBean);
 		variables.serviceFactory.addBean("data","");
 		variables.serviceFactory.addBean("settings",{});
