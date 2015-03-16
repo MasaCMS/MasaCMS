@@ -55,17 +55,17 @@
 	Mura CMS.
 --->
 <cfsilent>
+<cfparam name="arguments.prefix" default="">
 <cfset variables.mmRBFstrField = "" />
-<!---<cfinclude template="dsp_data_common.cfm" />--->
 </cfsilent>
 <cfsavecontent variable="variables.strField">
-	<cfoutput>#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</p>
+	<cfoutput>#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#</p>
 	<div>
 	<cfif StructKeyExists(arguments.dataset,"datarecordorder") and isArray( arguments.dataset.datarecordorder) and ArrayLen( arguments.dataset.datarecordorder ) gt 0>
 	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
 		<div class="checkbox">
-		<label for="#variables.record.datarecordid#"><input id="#variables.record.datarecordid#" name="#arguments.prefix##variables.field.name#" type="checkbox"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
+		<label for="#variables.record.datarecordid#"><input id="#variables.record.datarecordid#" name="#arguments.prefix##arguments.field.name#" type="checkbox"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
 		</div>
 	</cfloop>
 	</cfif>

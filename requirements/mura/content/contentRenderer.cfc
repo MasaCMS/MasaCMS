@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
+<cfset this.asyncObjects=true>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -430,21 +431,6 @@ Display Objects
 		<cfset this.showMemberToolBar=false>
 	</cfif>
 
-	<cfif len(variables.$.event('siteid'))>
-		<cfif variables.$.siteConfig('isRemote')>
-			<cfset this.siteIDInURLS=false>
-			<cfset this.indexFileInURLS=false>
-		<cfelse>
-			<cfif not isBoolean(this.siteIDInURLS)>
-				<cfset this.siteIDInURLS=application.configBean.getSiteIDInURLS()>
-			</cfif>
-			
-			<cfif not isBoolean(this.indexFileInURLS)>
-				<cfset this.indexFileInURLS=application.configBean.getIndexFileInURLS()>
-			</cfif>
-		</cfif>
-	</cfif>
-
 	<cfif not isBoolean(this.hashURLS)>
 		<cfset this.hashURLS=application.configBean.getHashURLS()>
 	</cfif>
@@ -471,7 +457,20 @@ Display Objects
 	<cfif not isDefined('this.enableMuraTag')>
 		<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 	</cfif>
+
 	<cfscript>
+		this.siteIDInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig().getValue(property='isRemote',defaultValue=false)
+			? false
+			: Len(variables.$.event('siteid')) && IsBoolean(this.siteIDInURLs)
+				? this.siteIDInURLs
+				: application.configBean.getSiteIDInURLs();
+
+		this.indexFileInURLs = Len(variables.$.event('siteid')) && variables.$.siteConfig().getValue(property='isRemote',defaultValue=false)
+			? false
+			: Len(variables.$.event('siteid')) && IsBoolean(this.indexFileInURLs)
+				? this.indexFileInURLs
+				: application.configBean.getIndexFileInURLs();
+
 		this.enableFrontEndTools = IsDefined('this.enableFrontEndTools')
 			? this.enableFrontEndTools
 			: IsBoolean(getConfigBean().getEnableFrontEndTools())
@@ -1587,7 +1586,11 @@ Display Objects
 	<cfset var qq="">
 
 	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
-		<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+		<cfif not len(arguments.siteid)>
+			<cfset arguments.siteid=variables.$.event('siteID')>
+		<cfelse>
+			<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+		</cfif>
 	</cfif>
 
 	<cfif arguments.complete or arguments.secure>
@@ -2079,7 +2082,7 @@ Display Objects
 		</cfcase>
 		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
-			<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#variables.event.getValue('nocache')#"><cfoutput>#dspTagCloud(argumentCollection=args)#</cfoutput></cf_CacheOMatic></cfsavecontent>
+			<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#variables.event.getValue('nocache')#"><cfoutput>#dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 			<cfset theObject=theObject & tempObject> 
 		</cfcase>
 		<cfcase value="goToFirstChild"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="act_goToFirstChild.cfm")></cfcase>
@@ -2438,9 +2441,8 @@ Display Objects
 </cffunction>
 
 <cffunction name="createCSSHook"  output="false" returntype="string">
-		<cfargument name="title" type="string" required="true" default="">
-		<cfset var hook=lCase(arguments.title)>
-		<cfreturn rereplace(hook, '[[:space:]]+', '-', 'all')>	
+	<cfargument name="text" type="string" required="true">
+	<cfreturn application.utility.createCSSHook(arguments.text)>
 </cffunction>
 
 <cffunction name="getTemplate"  output="false" returntype="string">
@@ -3181,7 +3183,7 @@ Display Objects
 
 						<!--- if not found, try the path that was passed --->
 						<cfif not headerFound and fileExists(expandPath(i))>
-							<cfinclude template="#i#" />
+							<cfsavecontent variable="itemStr"><cfinclude template="#i#" /></cfsavecontent>
 							<cfset headerFound = true />
 						</cfif>
 								
@@ -3615,7 +3617,11 @@ Display Objects
 		addToHTMLHeadQueue('<meta name="robots" content="noindex, follow" />');
 	}
 
-	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image') {
+	public string function dspReCAPTCHAContainer(string reCAPTCHATheme='light', string reCAPTCHAType='image',string reCAPTCHAClass='g-recaptcha-container') {
+		return dspReCAPTCHA(argumentCollection=arguments);
+	}
+
+	public string function dspReCAPTCHA(string reCAPTCHATheme='light', string reCAPTCHAType='image',reCAPTCHAClass='g-recaptcha') {
 		var str = '';
 
 		if ( Len($.siteConfig('reCAPTCHASiteKey')) && Len($.siteConfig('reCAPTCHASecret')) ) {
@@ -3630,7 +3636,7 @@ Display Objects
 				: 'image';
 
 			savecontent variable='str' {
-				WriteOutput('<div class="g-recaptcha" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
+				WriteOutput('<div id="m#createUUID()#" class="#arguments.reCAPTCHAClass#" data-sitekey="#$.siteConfig('reCAPTCHASiteKey')#" data-theme="#arguments.reCAPTCHATheme#" data-type="#arguments.reCAPTCHAType#"></div><noscript><div class="alert alert-info"><p>#$.rbKey('recaptcha.noscript')#</p><style>button[type="submit"],input[type="submit"]{display:none !important;}</style></noscript>');
 			};
 
 			// load Google ReCAPTCHA script

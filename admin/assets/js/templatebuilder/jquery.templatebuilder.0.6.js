@@ -1117,11 +1117,10 @@
 		function isComplete() {
 			var formFields = _formData.fields;
 			var pass = true;
-			console.log('on');
 			console.log(formFields);
 			
 			for(var i in formFields) {
-				if(formFields[i].name.length < 1) {
+				if(formFields[i].name.length < 1 && formFields[i].fieldtype.fieldtype != 'textblock' && formFields[i].fieldtype.fieldtype != 'section') {
 					jQuery("#" + i).addClass("tb-fieldIsEmpty");
 					pass = false;
 				}
@@ -1129,6 +1128,7 @@
 					jQuery("#" + i).removeClass("tb-fieldIsEmpty");
 				}
 			}
+		
 			return pass;
 		}
 		

@@ -739,7 +739,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>	
 			<cfif len(arguments.parentid)>	
 				<cfquery name="rsparentids">
-					select distinct contentid from tcontent
+					select distinct contentid, 
+					<cfif variables.configBean.getDBType() eq "MSSQL">
+					len(Cast(path as varchar(1000))) depth, orderno
+					<cfelse>
+					length(path) depth, orderno
+					</cfif>
+					from tcontent
 					where
 					siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
 					and
@@ -750,7 +756,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					and
 					active = 1
-					order by LENGTH(path),orderno
+					order by depth, orderno
 				</cfquery>
 			</cfif>
 
@@ -1704,7 +1710,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset BundleFiles( argumentCollection=sArgs ) />
 		<cfelse>
 			<cfquery name="rsthierarchy">
-				select contentid,contenthistid,filename,type,subtype,orderno,path,0 AS depth from tcontent
+				select contentid,contenthistid,filename,type,subtype,orderno,path,
+				<cfif variables.configBean.getDBType() eq "MSSQL">
+				len(Cast(path as varchar(1000))) depth
+				<cfelse>
+				length(path) depth
+				</cfif> 
+				from tcontent
 				where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				and active = 1
 				<cfif len(arguments.changesetID)>
@@ -1712,7 +1724,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif len(arguments.parentid)>
 					and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
 				</cfif>
-				order by LENGTH(path),orderno
+				order by depth,orderno
 			</cfquery>
 					
 			<cfloop query="rsthierarchy">

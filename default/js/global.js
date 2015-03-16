@@ -1048,14 +1048,46 @@ var initMura=function(config){
 			},
 
 			function(){
-				if($(scope).find( ".cffp_mm" ).length){
-					loader().loadjs(config.requirementspath + '/cfformprotect/js/cffp.js');
+				if($(scope).find( ".cffp_applied" ).length || $(scope).find( ".cffp_mm" ).length || $(scope).find( ".cffp_kp" ).length){
+					//loader().loadjs(config.requirementspath + '/cfformprotect/js/cffp.js');
+					$.getScript(config.requirementspath + '/cfformprotect/js/cffp.js');
 				}
 			},
 
 			function(){
 				if($(scope).find( ".g-recaptcha" ).length){
-					loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+					//loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+					$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+				}
+
+				if($(scope).find( ".g-recaptcha-container" ).length){
+					loader().loadjs(
+						'https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage,
+						function(){
+							$(scope).find( ".g-recaptcha-container" ).each(function(){
+								var self=this;
+								var checkForReCaptcha=function()
+									{
+									   if (typeof grecaptcha == 'object' )
+									   {
+									     grecaptcha.render($(self).attr('id'), {
+									          'sitekey' : $(self).data('sitekey'),
+									          'theme' : $(self).data('theme'),
+									          'type' : $(self).data('type')
+									        });
+									   }
+									   else
+									   {
+									      window.setTimeout(function(){checkForReCaptcha();},10);
+									   }
+									}
+
+								checkForReCaptcha();
+								
+							});
+						}
+						);
+					//$.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
 				}
 			},
 
@@ -1102,6 +1134,34 @@ var initMura=function(config){
 		}
 	}
 
+	var registeredHandlers={
+	};
+
+	var getRegisteredHandlers=function(eventType){
+		if(typeof registeredHandlers[eventType] == 'undefined'){
+			registeredHandlers[eventType]=[];
+		}
+		return registeredHandlers[eventType];
+	}
+
+	var addEventHandler=function(eventType,handler){
+		if(typeof eventType == 'object'){
+			for(var h in eventType){
+				getRegisteredHandlers(h).push(eventType[h]);
+			}
+		} else {
+			getRegisteredHandlers(eventType).push(handler);
+		}	
+	}
+
+	var announceEvent=function(eventType,context){
+		var handlers=getRegisteredHandlers(eventType);
+
+		for(var h in handlers){
+			handlers[h].apply(context);
+		}
+	}
+
 	var processAsyncObject=function(el){
 		var self=el;
 
@@ -1117,12 +1177,15 @@ var initMura=function(config){
 					$(this).removeAttr('onsubmit');
 					$(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
 				});
+
+				announceEvent('asyncObjectRendered',self);
+				$(self).trigger('asyncObjectRendered');
 			}
 		};
 
 		var validateFormAjax=function(frm) {
 
-			if(FormData && $(frm).attr('enctype')=='multipart/form-data'){
+			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
 				var keys=['contentid','contenthistid','siteid','object','objectid'];
@@ -1201,13 +1264,18 @@ var initMura=function(config){
 		processAsyncObject:processAsyncObject,
 		setLowerCaseKeys:setLowerCaseKeys,
 		noSpam:noSpam,
-		loader:loader
+		addLoadEvent:addLoadEvent,
+		loader:loader,
+		announceEvent:announceEvent,
+		addEventHandler:addEventHandler
 	});
 
 	$.extend(window,{
 		mura:config,
 		validateForm:validateForm,
-		createCookie:createCookie
+		createCookie:createCookie,
+		addLoadEvent:addLoadEvent,
+		noSpam:noSpam
 	});
 
 	
@@ -1218,6 +1286,24 @@ var initMura=function(config){
 			loginCheck(event.which);
 		});
 
+		/*
+		addEventHandler(
+			{
+				asyncObjectRendered:function(event){
+					alert($(this).html());
+				}
+			}
+		);
+		*/
+
+		/*
+		addEventHandler('asyncObjectRendered',
+			function(event){
+				alert($(this).html());
+			}
+		);
+		*/
+		
 		$.fn.appendMuraObject = function(data) {
 		    var el=$('<div class="mura-async-object"></div>');
 

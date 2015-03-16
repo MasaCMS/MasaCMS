@@ -56,7 +56,7 @@
 --->
 
 <!---
-<cfif request.muraFrontEndRequest>
+<cfif request.muraFrontEndRequest and this.asyncObjects>
 	<cfoutput>
 		<div class="mura-async-object" 
 			data-object="tag_cloud">
@@ -65,6 +65,13 @@
 <cfelse>
 --->
 	<cfsilent>
+		<cfscript>
+			// custom tag groups may arrive via arguments.params
+			if ( StructKeyExists(arguments, 'params') && IsJSON(arguments.params) ) {
+				StructAppend(arguments, DeSerializeJSON(arguments.params));
+			}
+		</cfscript>
+
 		<cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent,'00000000000000000000000000000000000',arguments.taggroup) />
 		<cfset variables.tagValueArray = ListToArray(ValueList(variables.tags.tagCount))>
 		<cfset variables.max = ArrayMax(variables.tagValueArray)>

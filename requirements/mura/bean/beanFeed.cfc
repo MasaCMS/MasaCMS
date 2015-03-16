@@ -454,9 +454,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset started = true />
 
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>					
-				#param.getFieldStatement()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
-				
-				<cfset openGrouping=false />
+				<cfif len(param.getField())>
+					#param.getFieldStatement()# 
+					<cfif param.getCriteria() eq 'null'>
+						IS NULL
+					<cfelse>
+						#param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					</cfif>
+					<cfset openGrouping=false />
+				</cfif>
 			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
@@ -464,7 +470,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
-			order by <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.orderby#"> 
+			order by #REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all")#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
 					NULLS FIRST
@@ -473,7 +479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.table#.#variables.instance.sortBy#">  #variables.instance.sortDirection#
+			order by #variables.instance.table#.#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._,\- ]","","all")#  #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST

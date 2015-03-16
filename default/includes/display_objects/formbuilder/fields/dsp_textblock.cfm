@@ -56,10 +56,8 @@
 --->
 <cfset variables.strField = "" />
 <cfsilent>
-<cfsavecontent variable="variables.strField">
-	<cfoutput>
-	#arguments.field.value#
-	</cfoutput>
-</cfsavecontent>
+	<cfsavecontent variable="variables.strField">
+		<cfoutput>#arguments.field.value#</cfoutput>
+	</cfsavecontent>
 </cfsilent>
 <cfoutput>#variables.strField#</cfoutput>

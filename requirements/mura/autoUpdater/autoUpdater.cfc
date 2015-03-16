@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var fileItem="">
 <cfset var currentDir=GetDirectoryFromPath(getCurrentTemplatePath())>
 <cfset var diff="">
-<cfset var returnStruct=structNew()>
+<cfset var returnStruct={currentVersion=currentVersion,files=[]}>
 <cfset var updatedArray=arrayNew(1)>
 <cfset var destination="">
 <cfset var autoUpdateSleep=variables.configBean.getValue("autoUpdateSleep")>
@@ -162,7 +162,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfquery name="rs" dbType="query">
 				select * from rs where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default%'
-				and entry != 'trunk#variables.fileDelim#www#variables.fileDelim#index.cfm'
 				</cfquery>
 				
 				<cfloop query="rs">
@@ -188,29 +187,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
-				<cfset application.appInitialized=false>
-				<cfset application.appAutoUpdated=true>
-				<cfset application.coreversion=updateVersion>
 
-				<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
-					<cfset autoUpdateSleep=autoUpdateSleep*1000>
-					<cfthread action="sleep" duration="#autoUpdateSleep#"></cfthread>
+				<cfif arrayLen(updatedArray)>
+					<cfset application.appInitialized=false>
+					<cfset application.appAutoUpdated=true>
+					<cfset application.coreversion=updateVersion>
+
+					<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
+						<cfset autoUpdateSleep=autoUpdateSleep*1000>
+						<cfthread action="sleep" duration="#autoUpdateSleep#"></cfthread>
+					</cfif>
 				</cfif>
-
+	
 			</cfif>
 			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 		</cfif>
 		
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+		<cfif arrayLen(updatedArray)>	
+			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+		</cfif>
 		</cflock>
 	</cfif>
-	
-	<cfset returnStruct.currentVersion=updateVersion/>
-	<cfset returnStruct.files=updatedArray>
 
-	<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
-		<cfscript>pagePoolClear();</cfscript>
+	<cfif arrayLen(updatedArray)>	
+		<cfset returnStruct.currentVersion=updateVersion/>
+		<cfset returnStruct.files=updatedArray>
+
+		<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
+			<cfscript>pagePoolClear();</cfscript>
+		</cfif>
 	</cfif>
 
 	<cfreturn returnStruct>

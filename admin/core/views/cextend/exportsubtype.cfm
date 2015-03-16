@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop query="rc.subtypes">
 						<label class="checkbox">
 							<input name="exportClassExtensionID" type="checkbox" class="checkbox" value="#subtypeid#">
-							#esapiEncode('html', type)# / #esapiEncode('html', subtype)#
+							#esapiEncode('html', application.classExtensionManager.getTypeAsString(type))# / #esapiEncode('html', subtype)#
 						</label>
 					</cfloop>
 				</div>

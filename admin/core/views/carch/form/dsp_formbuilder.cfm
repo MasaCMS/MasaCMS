@@ -46,19 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <script>
-
-	function saveFormBuilder() {
-		var iscomplete = jQuery("##mura-templatebuilder").templatebuilder('iscomplete');
-
-		if(iscomplete) {
-			jQuery("##mura-templatebuilder").templatebuilder('save');
-			return true;
-		}
-		else {
-			return false;			
-		}
-	}
-
+	isFormBuilder = true;
+	
 	jQuery(document).ready(function() {
 		jQuery("##mura-templatebuilder").templatebuilder();
 	});

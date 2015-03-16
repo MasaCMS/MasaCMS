@@ -84,10 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 			    </div>
 			</cfif>
-			<!--- Use site useSSL sitewide setting instead 
-			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
-			
-
+			<!--- Use site useSSL sitewide setting instead --->
+			<cfif rc.type neq 'Component' and rc.type neq 'Form' and not rc.$.siteConfig('useSSL')>
 				<div class="control-group">
 			      <div class="controls">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
@@ -97,21 +95,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      	 <i class="icon-question-sign"></i></a>
 			  		</label>
 			      </div>
-			    </div>
-				
+			    </div>			
 			</cfif>
-			--->
+
 			<cfif rc.type eq 'Form' >
-				<!---
-				<div class="control-group">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
-				 	<div class="controls">
-			     		<label for="forceSSL" class="checkbox">
-			     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
-			     		</label>
-			    	</div>
-			    </div>
-			    --->
+				<cfif not rc.$.siteConfig('useSSL')>
+					<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+					 	<div class="controls">
+				     		<label for="forceSSL" class="checkbox">
+				     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
+				     		</label>
+				    	</div>
+				    </div>
+			   	</cfif>
 			    <div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 				 	<div class="controls">

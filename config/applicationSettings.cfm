@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.muraOutputCacheOffset" default="">
 <cfparam name="request.muraMostRecentPluginModuleID" default="">
 <cfparam name="request.muraAPIRequest" default="false">
+<cfparam name="request.muraAdminRequest" default="false">
 <cfparam name="request.returnFormat" default="html">
 
 <cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
@@ -143,6 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cftry>
 
 <cfset this.mappings["/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
+<cfset this.mappings["/murawrm/tasks/widgets/cfformprotect"] = variables.baseDir & "/requirements/cfformprotect">
 
 <cfset request.userAgent = LCase( CGI.http_user_agent ) />
 
@@ -195,12 +197,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 
-<!--- How long do session vars persist? --->
-<cfif request.trackSession>
-	<cfset this.sessionTimeout = (evalSetting(getINIProperty("sessionTimeout","180")) / 24) / 60>
-<cfelse>
-	<cfset this.sessionTimeout = createTimeSpan(0,0,0,2)>
-</cfif>
+<cfscript>
+	// How long do session vars persist?
+	if ( request.tracksession ) {
+		iniSessionTimeout = evalSetting(getINIProperty('sessionTimeout',180));
+		iniSessionTimeout = iniSessionTimeout >= 1 ? iniSessionTimeout : 180;
+		this.sessionTimeout = (evalSetting(getINIProperty("sessionTimeout","180")) / 24) / 60;
+	} else {
+		this.sessionTimeout = CreateTimeSpan(0,0,0,2);
+	}
+</cfscript>
 
 <cfset this.timeout =  getINIProperty("requesttimeout","1000")>
 

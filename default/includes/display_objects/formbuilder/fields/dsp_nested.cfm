@@ -54,11 +54,12 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfset variables.strField = "" />
 <cfsilent>
+<cfset variables.strField = "" />
+<cfparam name="arguments.prefix" default="">
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	<legend>#arguments.field.name#</legend>
+	<legend>#esapiEncode('html', arguments.field.label)#</legend>
 	#variables.fbManager.renderNestedForm( variables.$,session.siteid,arguments.field.formid,arguments.field.name )#
 	</cfoutput>
 </cfsavecontent>

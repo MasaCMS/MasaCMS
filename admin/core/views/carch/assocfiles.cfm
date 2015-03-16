@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset counter=counter+1/> 
 							        <li>
 							        <cfif hasImage>
-							        <img src="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#rsimages.fileid#"><br>
+							        <img src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileID=#rsimages.fileid#"><br>
 							        <cfelse>
 							        <i class="icon-file-text-alt icon-5x"></i><br>#rsimages.assocfilename#<br>
 							        </cfif>

@@ -782,7 +782,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif len(arguments.currentPath)>
 				<cfquery>
 					update tcontent
-					set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">)
+					set path=replace(ltrim(rtrim(cast(path AS char(2000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">)
 					where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
 					and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 				</cfquery>

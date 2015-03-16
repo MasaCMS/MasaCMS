@@ -111,15 +111,18 @@
 		</cfquery>
 
 		<!--- ADVERTISING --->
-		<cfquery>
-			delete from tadplacements
-			where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>
+		<cftry>
+			<cfquery>
+				delete from tadplacements
+				where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+			</cfquery>
 
-		<cfquery>
-			delete from tadplacements
-			where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
-		</cfquery>
+			<cfquery>
+				delete from tadplacements
+				where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
+			</cfquery>
+			<cfcatch></cfcatch>
+		</cftry>
 			
 		<!--- EMPTY TRASH TABLE--->
 		<cfquery>
@@ -131,20 +134,23 @@
 
 	</cfloop>
 
-	<cfquery>
-		delete from tadplacementdetails
-		where placementID not in (select placementID from tadplacements)
-	</cfquery>
+	<cftry>
+		<cfquery>
+			delete from tadplacementdetails
+			where placementID not in (select placementID from tadplacements)
+		</cfquery>
 
-	<cfquery>
-		delete from tadplacementcategoryassign
-		where placementID not in (select placementID from tadplacements)
-	</cfquery>
+		<cfquery>
+			delete from tadplacementcategoryassign
+			where placementID not in (select placementID from tadplacements)
+		</cfquery>
 
-	<cfquery>
-		delete from tadstats
-		where placementID not in (select placementID from tadplacements)
-	</cfquery>
+		<cfquery>
+			delete from tadstats
+			where placementID not in (select placementID from tadplacements)
+		</cfquery>
+		<cfcatch></cfcatch>
+	</cftry>
 	</cftransaction>
 	
 	<cfset request.muratransaction=request.muratransaction-1>

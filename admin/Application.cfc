@@ -308,6 +308,8 @@ component extends="framework" output="false" {
 		param name="session.showdashboard" default=application.configBean.getDashboard();
 		param name="session.alerts" default=structNew();
 
+		request.muraAdminRequest=true;
+
 		if(ListFirst(server.coldfusion.productVersion) >= 10){
 			param name="cookie.rb" default={value='',expires='never',httponly=true,secure=application.configBean.getSecureCookies()};
 		} else {
@@ -318,7 +320,9 @@ component extends="framework" output="false" {
 
 		if(len(request.context.rb)){
 			session.rb=request.context.rb;
-			//cookie name="rb" value="#session.rb#" expires="never";
+			if(ListFirst(server.coldfusion.productVersion) >= 10){
+				cookie.rb={value="#session.rb#",expires="never",httponly=true,secure=application.configBean.getSecureCookies()};
+			}
 		}
 		
 		if(not application.configBean.getSessionHistory()  or application.configBean.getSessionHistory() gte 30){

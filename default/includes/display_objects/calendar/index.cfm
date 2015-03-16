@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfoutput>
-<cfif request.muraFrontEndRequest>
+<cfif request.muraFrontEndRequest and this.asyncObjects>
 	<div class="mura-async-object" 
 		data-object="calendar">
 	</div>
@@ -80,7 +80,7 @@ $(function(){
 			"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 			function(){
 				$('##mura-calendar').fullCalendar({
-					timezone: 'UTC'
+					timezone: 'false'
 					, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 					, buttonText: {
 						day: '#variables.$.rbKey('calendar.day')#'

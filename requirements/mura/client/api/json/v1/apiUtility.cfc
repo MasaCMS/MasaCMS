@@ -33,11 +33,13 @@ component extends="mura.cfobject" {
 		}
 		*/
 
-		if(configBean.getIndexfileinurls()){
+		//if(configBean.getIndexfileinurls()){
 			variables.endpoint="#site.getResourcePath(complete=1)#/index.cfm/_api/json/v1/#variables.siteid#";	
+		/*
 		} else {
 			variables.endpoint="#site.getResourcePath(complete=1)#/_api/json/v1/#variables.siteid#";	
 		}
+		*/
 		
 		variables.config={
 			linkMethods=[],
@@ -158,6 +160,8 @@ component extends="mura.cfobject" {
 			var params={};
 			var result="";
 
+			getBean('utility').suppressDebugging();
+
 			structAppend(params,url);
 			structAppend(params,form);
 			structAppend(form,params);
@@ -173,8 +177,6 @@ component extends="mura.cfobject" {
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 
-			
-			responseObject.setcontenttype('application/json; charset=utf-8');
 			request.returnFormat='JSON';
 
 			if (!isDefined('params.method') && arrayLen(pathInfo) && isDefined('#pathInfo[1]#')){
@@ -202,7 +204,8 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
-					getpagecontext().getresponse().setStatus(200);
+					responseObject.setContentType('application/json; charset=utf-8');
+					responseObject.setStatus(200);
 					return result;
 				}
 			}
@@ -237,7 +240,8 @@ component extends="mura.cfobject" {
 						result=getSerializer().serialize({'data'=result});
 					}
 
-					getpagecontext().getresponse().setStatus(200);
+					responseObject.setContentType('application/json; charset=utf-8');
+					responseObject.setStatus(200);
 					return result;
 					
 				} else {
@@ -355,7 +359,8 @@ component extends="mura.cfobject" {
 							}
 
 							if(listFindNoCase('content,category',params.entityName) && params.relatedEntity=='crumbs'){
-								return findCrumbArray(argumentCollection=params);
+								responseObject.setContentType('application/json; charset=utf-8');
+								return getSerializer().serialize({'data'=findCrumbArray(argumentCollection=params)});
 							} else {
 								if(!isDefined('params.relationship.cfc')){
 									throw(type='invalidParameters');
@@ -416,36 +421,43 @@ component extends="mura.cfobject" {
 				}
 			} catch (Any e){}
 
+			responseObject.setContentType('application/json; charset=utf-8');
 			return getSerializer().serialize({'data'=result});
 		} 
 
 		catch (authorization e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
 			return getSerializer().serialize({'error'={'message'='Insufficient Account Permissions'}});
 		}
 
 		catch (invalidParameters e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'='Insufficient parameters'}});
 		}
 
 		catch (invalidMethodCall e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Invalid method call"}});
 		}
 
 		catch (badRequest e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Bad Request"}});
 		}
 
 		catch (invalidTokens e){
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
 			return getSerializer().serialize({'error'={'message'="Invalid CSRF tokens"}});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
+			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
 			return getSerializer().serialize({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
 		}

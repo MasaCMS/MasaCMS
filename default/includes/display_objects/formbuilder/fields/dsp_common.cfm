@@ -73,9 +73,20 @@
 <cfif structkeyexists(arguments.field,'cols') and len(arguments.field.cols)>
 	<cfset variables.strField = variables.strField & ' cols="#arguments.field.cols#"' />
 </cfif>
-<cfif structkeyexists(arguments.field,'cssid') and len(arguments.field.cssid)>
-	<cfset variables.strField = variables.strField & ' id="#arguments.field.cssid#"' />
-</cfif>
+
+<cfscript>
+	// title (tooltip)
+	if ( StructKeyExists(arguments.field, 'tooltip') && Len(arguments.field.tooltip) ) {
+		variables.strField &= ' title="#esapiEncode('html_attr', arguments.field.tooltip)#"';
+	}
+
+	// css id
+	variables.fieldid = StructKeyExists(arguments.field, 'cssid') && Len(arguments.field.cssid)
+		? arguments.field.cssid
+		: arguments.prefix & arguments.field.name;
+	variables.strField &= ' id="#esapiEncode('html_attr', variables.fieldid)#"';
+</cfscript>
+
 <cfif structkeyexists(arguments.field,'cssclass') and len(arguments.field.cssclass)>
 	<cfset variables.strField = variables.strField & ' class="#arguments.field.cssclass# #this.formBuilderFormFieldsClass#"' />
 <cfelse>

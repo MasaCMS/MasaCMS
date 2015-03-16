@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn keyValue />
 		</cfif>	
 	</cfif>
-	
+
 	<cfif arguments.locale neq "en_US">
 		<cfset keyValue = getResourceBundle("en_US").getKeyValue(arguments.key,true) />
 	 

@@ -233,7 +233,7 @@
 	<cfset arguments.event.getValidator("standardWrongFilename").validate(arguments.event)>
 
 	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
-	
+
 	<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getUseSSL()>
 		<cfset arguments.event.setValue('forcessl', true) />
 	<cfelseif arguments.event.getValue('contentBean').getForceSSL()>
@@ -338,15 +338,11 @@
 	<cfargument name="$" required="true">
 	
 	<cfif request.returnFormat eq 'JSON'>
-		<cfif application.utility.isHTTPS()>
-			<cfset request.muraJSONRedirectURL="http://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
-		<cfelse>
+		<cfif not application.utility.isHTTPS()>
 			<cfset request.muraJSONRedirectURL="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	<cfelse>
-		<cfif application.utility.isHTTPS()>
-			<cflocation addtoken="no" url="http://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
-		<cfelse>
+		<cfif not application.utility.isHTTPS()>
 			<cflocation addtoken="no" url="https://#arguments.$.siteConfig('domain')##arguments.$.siteConfig('serverPort')##arguments.$.siteConfig('context')##arguments.$.getCurrentURL(complete=false,filterVars=false)#">
 		</cfif>
 	</cfif>

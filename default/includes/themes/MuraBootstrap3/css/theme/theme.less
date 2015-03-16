@@ -1,5 +1,35 @@
 // Bootstrap 3 Defaults
 
+// Global
+@import url("../variables/variables.less");
+@import url('../../assets/bootstrap/less/utilities.less');
+@import url('../../assets/bootstrap/less/mixins.less');
+
+// Copied from Font-Awesome.less so we don't have to compile it with everything else used to add 
+// icons without resorting to placing the <i> tag (or other elements) into the markup, for example:
+// a.element-with-icon {
+//		.fa;
+//		&:before {
+//			.icon-before;
+//			content: "\f112";
+//		}
+// 	}
+
+.fa {
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-before {	// For icons added immediately before the element targeted
+	  margin-right: .25em;
+	  color: @brand-primary;
+}
+
 //
 // Buttons
 // --------------------------------------------------

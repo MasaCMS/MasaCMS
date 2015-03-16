@@ -91,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayPoolID" type="string" default=""/>
 <cfproperty name="contentPoolID" type="string" default=""/>
 <cfproperty name="categoryPoolID" type="string" default=""/>
+<cfproperty name="filePoolID" type="string" default=""/>
 <cfproperty name="feedManager" type="numeric" default="1" required="true" />
 <cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
@@ -189,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.DisplayPoolID=""/>
 	<cfset variables.instance.ContentPoolID=""/>
 	<cfset variables.instance.CategoryPoolID=""/>
+	<cfset variables.instance.FilePoolID=""/>
 	<cfset variables.instance.feedManager=1/>
 	<cfset variables.instance.largeImageHeight='AUTO'/>
 	<cfset variables.instance.largeImageWidth='600'/>
@@ -367,7 +369,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getUseSSL" output="false">
-	<cfreturn variables.instance.useSSL or variables.instance.extranetSSL>
+	<cfif variables.instance.useSSL or variables.instance.extranetSSL>
+		<cfreturn 1>
+	<cfelse>
+		<cfreturn 0>
+	</cfif>
 </cffunction>
 
 <cffunction name="setEnforceChangesets" access="public" output="false">
@@ -874,7 +880,7 @@ s
 
 <cffunction name="getContentRenderer" output="false">
 <cfargument name="$" default="">
-<cfif not isObject(arguments.$)>
+<cfif not isObject(arguments.$) or arguments.$.event('siteid') neq getValue('siteid')>
 	<cfif not isObject(variables.instance.contentRenderer)>
 		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
 		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
@@ -1047,7 +1053,7 @@ s
 <cffunction name="getServerPort" output="false">
 	<cfif getValue('isRemote')>
 		<cfset var port=getValue('RemotePort')>
-		<cfif isNumeric(port) and port neq 80>
+		<cfif isNumeric(port) and !ListFind('80,443', port)>
 			<cfreturn ":" & port>
 		<cfelse>
 			<cfreturn "">
@@ -1123,9 +1129,12 @@ s
 	
 	<cfif len(getValue('domainAlias'))>
 		<cfloop list="#getValue('domainAlias')#" delimiters="#lineBreak#" index="i">
-			<cfset thelist = listAppend(thelist,"#getScheme()#://#i##getServerPort()#")>
-			<cfif adminSSL and not YesNoFormat(getValue('useSSL'))>
-				<cfset thelist = listAppend(thelist,"https://#i##getServerPort()#")>
+			<cfset theurl = "#i##getServerPort()#" />
+			<cfif not ListFindNoCase(thelist, '#getScheme()#://#theurl#')>
+				<cfset thelist = listAppend(thelist,"#getScheme()#://#theurl#")>
+			</cfif>
+			<cfif adminSSL and not YesNoFormat(getValue('useSSL')) and not ListFindNoCase(thelist, 'https://#theurl#')>
+				<cfset thelist = listAppend(thelist,"https://#theurl#")>
 			</cfif>	
 		</cfloop>
 	</cfif>

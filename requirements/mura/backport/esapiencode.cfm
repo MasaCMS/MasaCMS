@@ -4,7 +4,7 @@
 	<cfscript>
 
 			if(!isDefined('request.esapiencoder')){
-				if(application.configBean.getJavaEnabled()){
+				if(application.configBean.getValue(property='JavaEnabled',defaultValue=true)){
 					try{
 						request.esapiencoder=CreateObject("java", "org.owasp.esapi.ESAPI").encoder();
 					} catch (any e){
