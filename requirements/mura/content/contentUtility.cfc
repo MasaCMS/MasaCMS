@@ -822,6 +822,11 @@ Sincerely,
 	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	
+	<!--- Can't copy node under itself --->
+	<cfif listFindNoCase(contentBean.getPath(),arguments.parentID)>
+		<cfreturn contentBean>
+	</cfif>
+	
 	<!--- This makes sure that all extended data is loaded --->
 	<cfset contentBean.getAllValues()>
 	
