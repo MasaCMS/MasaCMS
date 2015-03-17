@@ -818,7 +818,7 @@ Sincerely,
 	<cfset var contentBean = "">
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset var pluginEvent = getBean('$').init(arguments).event() />
 	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	
@@ -906,7 +906,7 @@ Sincerely,
 		where baseid='#contentHistID#' 
 	</cfquery>
 	--->
-	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[])>
+	<cfset getBean('contentDAO').persistVersionedObjects(variables.contentDAO.readActive(arguments.contentID, arguments.siteID),contentBean,[],[],pluginEvent.getValue('MuraScope'))>
 
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
