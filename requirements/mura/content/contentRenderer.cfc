@@ -1887,10 +1887,11 @@ Display Objects
 <cfargument name="hasConfigurator" required="true" default="false">
 <cfargument name="assignmentPerm" required="true" default="none">
 <cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
+<cfargument name="cacheKey" type="string" required="false" default="">
 
 	<cfset var theObject = "" />
-	<cfset var cacheKeyContentId = arguments.object & variables.event.getValue('contentBean').getcontentID() />
-	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
+	<cfset var cacheKeyContentId = arguments.object & variables.event.getValue('contentBean').getcontentID() & cacheKey />
+	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & cacheKey/>
 	<cfset var showEditable=false/>
 	<cfset var editableControl=structNew()>
 	<cfset var historyID="">
