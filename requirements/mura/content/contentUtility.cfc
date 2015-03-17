@@ -928,7 +928,7 @@ Sincerely,
 	<cfset var contentBean = "">
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
-	<cfset var pluginEvent = getBean('$').init(arguments).getEvent() />
+	<cfset var pluginEvent = getBean('$').init(arguments).event() />
 	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	
