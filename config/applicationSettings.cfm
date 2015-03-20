@@ -110,6 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
 <cfset variables.iniPath=getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm">
 <cfset initINI(variables.iniPath)>
+<cfset variables.ini.settings.mode=evalSetting(variables.ini.settings.mode)>
 
 <cfset commitTracePoint(variables.tracePoint)>
 

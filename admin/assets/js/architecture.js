@@ -948,11 +948,13 @@ buttons: {
 		d.css('background', 'url(assets/images/ajax-loader.gif) no-repeat 1px 5px;');
 		this.reloadURL = $('#newZoomLink').attr("href");
 
-		$.get(url + "?" + pars, function(data) {
-			siteManager.loadSiteManagerInTab(
-
-			function() {
-				siteManager.loadSiteManager(siteManager.copySiteID, parentID, '00000000000000000000000000000000000', '', '', '', 1);
+		actionModal(function(){
+			$.get(url + "?" + pars, function(data) {
+				$('#action-modal').remove();
+				siteManager.loadSiteManagerInTab(
+				function() {
+					siteManager.loadSiteManager(siteManager.copySiteID, parentID, '00000000000000000000000000000000000', '', '', '', 1);
+				});
 			});
 		});
 	},

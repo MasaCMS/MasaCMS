@@ -1285,7 +1285,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif isdefined("rstcontentfeeds.contentpoolid")>
 					,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.contentpoolid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.contentpoolid#">			
+					<!---<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.contentpoolid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.contentpoolid#">--->
+					null			
 					</cfif>						
 					)
 				</cfquery>
