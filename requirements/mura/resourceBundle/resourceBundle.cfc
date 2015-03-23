@@ -152,7 +152,7 @@
 				   if(lineCheck)
 				   {
 				     if(left(local.line,1) neq "##" and listLen(local.line,"=") gt 1){
-				     	variables.resourceBundle["#reReplaceNoCase(listFirst(local.line,'='), '[^-a-zA-Z0-9.]', '', 'all')#"]=listRest(local.line,'=');
+				     	variables.resourceBundle["#reReplaceNoCase(listFirst(local.line,'='), '[^a-zA-Z0-9_\-\.]', '', 'all')#"]=listRest(local.line,'=');
 				     	}
 				   }
 				} while(lineCheck);
