@@ -229,12 +229,12 @@
 		
 		<cfif not arguments.countOnly and isExtendedSort>
 		left Join (select 
-				#variables.classExtensionManager.getCastString(data.getSortBy(),data.getSiteID())# extendedSort
+				#variables.classExtensionManager.getCastString(params.getSortBy(),params.getSiteID())# extendedSort
 				 ,tclassextenddatauseractivity.baseID 
 				from tclassextenddatauseractivity inner join tclassextendattributes
 				on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
-				where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSiteID()#">
-				and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSortBy()#">
+				where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSiteID()#">
+				and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSortBy()#">
 		) qExtendedSort
 		
 		on (tusers.userID=qExtendedSort.baseID)
