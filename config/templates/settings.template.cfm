@@ -39,6 +39,7 @@ defaultfilemode=777
 donottrackagents=
 editablecomments=0
 enablemuratag=true
+errortemplate=/muraWRM/config/error.html
 filedir=
 filestore=filedir
 fmshowapplicationroot=1
