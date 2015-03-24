@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset isCurrentArchive=variables.archiveFilter and variables.$.event("month") eq variables.rsArchive.month and variables.$.event("year") eq variables.rsArchive.year>
 			<cfsilent>
 				<cfscript>
-					thisClass = currentRow == 1 ? 'first' : currentRow == variables.rsArchive.recordcount ? 'last' : '';
+					thisClass = variables.rsArchive.currentRow == 1 ? 'first' : variables.rsArchive.currentRow == variables.rsArchive.recordcount ? 'last' : '';
 					thisClass &= isCurrentArchive ? ' ' & this.liCurrentClass : '';
 				</cfscript>
 			</cfsilent>
