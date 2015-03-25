@@ -424,6 +424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif rsExtendData.recordCount>
 				<cfloop query="rsExtendData">
+					<cfset rsExtendData.attributeValue = replaceNoCase( rsExtendData.attributeValue,"^^siteid^^",arguments.siteid,"all" ) /> 
 					<cfset contentData[rsExtendData.name] = rsExtendData.attributeValue />
 				</cfloop>
 			</cfif>
