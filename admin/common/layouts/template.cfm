@@ -100,6 +100,10 @@
 						<cfdefaultcase>
 							<cfif rc.originalfuseaction eq "imagedetails">
 								<cfset moduleTitle="Image Details">
+              <cfelseif rc.muraAction eq 'core:carch.export'>
+                <cfset moduleTitle="Export Content">
+              <cfelseif rc.muraAction eq 'core:carch.import'>
+                <cfset moduleTitle="Import Content">
 							<cfelse>
 								<cfset moduleTitle="Drafts">
 							</cfif>	

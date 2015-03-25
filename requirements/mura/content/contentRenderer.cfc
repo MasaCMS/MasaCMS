@@ -2792,52 +2792,6 @@ Display Objects
 	<cfreturn urlArray>
 </cffunction>
 
-<cffunction name="setCamelback" access="public" output="false" returntype="string">
-	<cfargument name="theString" type="string">
-
-	<cfset var str=arguments.thestring/>
-	
-	<cfset str=setProperCase(str)>
-	<cfset str=REReplace(str, "[^0-9a-zA-Z]", "", "ALL")>
-
-	<cfreturn str />
-</cffunction>
-
-<cffunction name="setProperCase" access="public" output="false" returntype="string">
-<cfargument name="theString" type="string">
-
-<cfset var str=arguments.thestring/>
-<cfset var newString=""/>
-<cfset var frontpointer=0/>
-<cfset var strlen = len(str) />
-<cfset var counter=0 />
-
-	<cfif strLen gt 0>
-		<cfscript>
-		 for (counter=1;counter LTE strlen;counter=counter + 1)
-		 {
-		 		frontpointer = counter + 1;
-				
-				if (Mid(str, counter, 1) is " ")
-				{
-				  	newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1)); 
-				    counter = counter + 1;
-				}
-			    else 
-				{
-					if (counter is 1)
-					   newstring = newstring & ucase(Mid(str, counter, 1));
-					else
-					   newstring = newstring & lcase(Mid(str, counter, 1));
-				}
-		      
-		 }//for statement
-		</cfscript>
-	</cfif>	
-
-	<cfreturn newstring />
-</cffunction>
-
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
@@ -2904,18 +2858,6 @@ Display Objects
 	
 	<cfreturn host & variables.$.siteConfig('context') & getURLStem(request.servletEvent.getValue('siteID'),request.servletEvent.getValue('currentFilename')) & qrystr >
 	
-</cffunction>
-
-<cffunction name="renderFileSize" output="false" access="public" return="String">
-	<cfargument name="size" type="any">
-
-	<cftry>
-		<cfreturn round(arguments.size/1024) & "k" />
-		<cfcatch>
-			<cfreturn "0k">
-		</cfcatch>
-	</cftry>
-
 </cffunction>
 
 <cffunction name="dspUserTools" access="public" output="false" returntype="string">
@@ -3649,6 +3591,23 @@ Display Objects
 		return str;
 	}
 
+	public string function setCamelback(required string theString) {
+		return $.getBean('utility').setCamelback(arguments.theString);
+	}
+
+	public string function setProperCase(required string theString) {
+		return $.getBean('utility').setProperCase(arguments.theString);
+	}
+
+	public string function renderFilesize(size) {
+		return $.getBean('utility').renderFilesize(arguments.size);
+	}
+
+	public string function getCSSDepth(contentBean=$.content()) {
+		return ListLen(arguments.contentBean.getDepth()) >= 0
+			? 'depth-' & arguments.contentBean.getDepth()
+			: 'depth-404';
+	}
 </cfscript>
 
 </cfcomponent>
