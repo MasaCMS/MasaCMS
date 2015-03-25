@@ -426,6 +426,8 @@
 			
 			<!--- Reset extended data internal ids --->
 			<cfset arguments.data=userBean.getAllValues()>
+			<cfset arguments.updateGroups = pluginEvent.getValue('updateGroups') />
+			<cfset arguments.updateInterests = pluginEvent.getValue('updateInterests') />
 		
 			<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>	
 				<cfset variables.userUtility.sendActivationNotification(userBean) />
