@@ -481,7 +481,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.instance.status = getStatus();
 		variables.instance.ishome = getIsHome();
 		variables.instance.depth = getDepth();
-		variables.instance.cssdepth = getCSSDepth();
 	</cfscript>
 	
 	<cfreturn this />
@@ -1415,12 +1414,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		public numeric function getDepth() {
 			return ListLen(variables.instance.path) - 1;
-		}
-
-		public string function getCSSDepth() {
-			return ListLen(variables.instance.path) >= 0
-				? 'depth-' & getDepth()
-				: 'depth-404';
 		}
 	</cfscript>
 

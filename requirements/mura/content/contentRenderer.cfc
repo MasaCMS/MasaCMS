@@ -3602,6 +3602,12 @@ Display Objects
 	public string function renderFilesize(size) {
 		return $.getBean('utility').renderFilesize(arguments.size);
 	}
+
+	public string function getCSSDepth(contentBean=$.content()) {
+		return ListLen(arguments.contentBean.getDepth()) >= 0
+			? 'depth-' & arguments.contentBean.getDepth()
+			: 'depth-404';
+	}
 </cfscript>
 
 </cfcomponent>
