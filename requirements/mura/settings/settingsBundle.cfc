@@ -781,9 +781,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 
 			<cfset setValue("rstcontent",rstcontent)>
-			<cfif len(arguments.changesetID) or len(arguments.parentid)>
+<!--- 			<cfif len(arguments.changesetID) or len(arguments.parentid)>
 				<cfset fixAssetPath(arguments.siteid) />
-			</cfif>
+			</cfif> --->
 													
 			<cfquery name="rstcontentobjects">
 				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1572,6 +1572,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 
+		<!--- fix image paths --->
+		<cfif len(arguments.changesetID) or len(arguments.parentid)>
+			<cfset fixAssetPath(arguments.siteid) />
+		</cfif>
+
 		<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
 			<!--- BEGIN PLUGINS --->
 			<!--- Modules--->
@@ -1832,10 +1837,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" default="" required="true">
 
 		<cfset var content = "" />
+		<cfset var extenddata = "" />
 		
 		<cffile action="read" variable="content" file="#variables.backupDir#wddx_rstcontent.xml">
 		<cfset content = rereplaceNoCase( content,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
 		<cffile action="write" output="#content#" file="#variables.backupDir#wddx_rstcontent.xml"  charset="utf-8">
+		
+		<cffile action="read" variable="extenddata" file="#variables.backupDir#wddx_rstclassextenddata.xml">
+		<cfset extenddata = rereplaceNoCase( extenddata,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
+		<cffile action="write" output="#extenddata#" file="#variables.backupDir#wddx_rstclassextenddata.xml"  charset="utf-8">
 	</cffunction>
 	
 	<cffunction name="setValue" returntype="void">
