@@ -475,6 +475,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 	</cfif>
+
+	<cfscript>
+		variables.instance.statusid = getStatusID();
+		variables.instance.status = getStatus();
+		variables.instance.ishome = getIsHome();
+		variables.instance.depth = getDepth();
+	</cfscript>
 	
 	<cfreturn this />
 </cffunction>
@@ -1400,8 +1407,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn status />
 	</cffunction>
 
-	<cffunction name="getIsHome" output="false" returntype="boolean">
-		<cfreturn Right(variables.instance.parentid, 3) eq 'end' />
-	</cffunction>
+	<cfscript>
+		public boolean function getIsHome() {
+			return Right(variables.instance.parentid, 3) == 'end';
+		}
+
+		public numeric function getDepth() {
+			return ListLen(variables.instance.path) - 1;
+		}
+	</cfscript>
 
 </cfcomponent>

@@ -59,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tracePoint=0>
 	<cfset var inheritedObjectsPerm="">
 	<cfset var inheritedObjectsContentID="">
+	<cfset var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm' />
 	
 	<cfif not isNumeric(arguments.event.getValue('startRow'))>
 		<cfset arguments.event.setValue('startRow',1)>
@@ -87,20 +88,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfsavecontent variable="page">
 		<cfif fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") )>
-		<cfset tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
-		<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
-		<cfset commitTracePoint(tracePoint)>
+			<cfset tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
+			<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
+			<cfset commitTracePoint(tracePoint)>
 		<cfelse>
-		<cfset tracePoint=initTracePoint("#arguments.event.getSite().getTemplateIncludePath()#/default.cfm")>
-		<cftry>
-			<cfinclude template="#arguments.event.getSite().getTemplateIncludePath()#/default.cfm">
-		<cfcatch type="any">
-			<cfoutput>
-				#$.rbKey('sitemanager.missingDefaultTemplate')#
-			</cfoutput>
-		</cfcatch>
-		</cftry>
-		<cfset commitTracePoint(tracePoint)>
+			<cfset tracePoint=initTracePoint("#defaultTemplatePath#")>
+			<cftry>
+				<cfinclude template="#defaultTemplatePath#">
+				<cfcatch type="any">
+					<cfoutput>#$.getBean('resourceBundle').messageFormat($.rbKey('sitemanager.missingDefaultTemplate'), ['<strong>/#ListRest(defaultTemplatePath, '/')#</strong>'])#</cfoutput>
+				</cfcatch>
+			</cftry>
+			<cfset commitTracePoint(tracePoint)>
 		</cfif>
 	</cfsavecontent>
 	

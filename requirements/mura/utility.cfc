@@ -942,6 +942,50 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 
 		return str;
 	}
+
+	public string function setCamelback(required string theString) {
+		var str = arguments.theString;
+		str = setProperCase(str);
+		str = REReplace(str, '[^a-zA-Z0-9]', '', 'ALL');
+		return str;
+	}
+
+	public string function setProperCase(required string theString) {
+		var str = arguments.theString;
+		var newString = '';
+		var frontpointer = 0;
+		var strlen = Len(str);
+		var counter = 0;
+
+		if ( strLen > 0 ) {
+			for (counter=1;counter LTE strlen;counter=counter + 1) {
+		 		frontpointer = counter + 1;
+				if (Mid(str, counter, 1) is " ") {
+					newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1)); 
+					counter = counter + 1;
+				} else {
+					if (counter is 1) {
+						newstring = newstring & ucase(Mid(str, counter, 1));
+					} else {
+						newstring = newstring & lcase(Mid(str, counter, 1));
+					}
+				}
+		 	}
+		}
+
+		return newString;
+	}
+
+	public string function renderFileSize(required size) {
+		var str = '';
+		var theSize = Val(arguments.size);
+
+		if ( theSize > 1000000 ) {
+			return NumberFormat(theSize*.000001, 9.99) & 'Mb';
+		} else {
+			return NumberFormat(theSize*.001, 9) & 'kb';
+		}
+	}
 </cfscript>
 
 </cfcomponent>

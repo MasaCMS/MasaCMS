@@ -356,6 +356,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var utility = getBean("utility") />
 		<cfset var changesetID = "" />
 
+		<cfset var assetPathFields="" />
+		<cfset var i="" />
+
 		<cfif isObject( arguments.changesetBean )>
 			<cfset changesetID = arguments.changesetBean.getChangesetID() />
 		</cfif>
@@ -411,6 +414,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset contentData = utility.queryRowToStruct(rsContent) />
 			<!--- asset paths --->
 			<cfset contentData.body = replaceNoCase( contentData.body,"^^siteid^^",arguments.siteid,"all" ) />
+			<cfset contentData.summary = replaceNoCase( contentData.summary,"^^siteid^^",arguments.siteid,"all" ) />
 
 			<cfquery name="rsExtendData" dbtype="query">
 				select * from rstClassExtendData
@@ -420,6 +424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif rsExtendData.recordCount>
 				<cfloop query="rsExtendData">
+					<cfset rsExtendData.attributeValue = replaceNoCase( rsExtendData.attributeValue,"^^siteid^^",arguments.siteid,"all" ) /> 
 					<cfset contentData[rsExtendData.name] = rsExtendData.attributeValue />
 				</cfloop>
 			</cfif>
