@@ -377,7 +377,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfloop query="rstcontent">
 				<cfset fileArray = parseFilePaths( arguments.siteID,rstcontent.body )>
-				
+				<cfset ArrayAppend(fileArray, parseFilePaths(arguments.siteID, rstcontent.summary), true) />
+
 				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
 					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
 				</cfif>
@@ -1833,7 +1834,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var content = "" />
 		
 		<cffile action="read" variable="content" file="#variables.backupDir#wddx_rstcontent.xml">
-		<cfset content = rereplaceNoCase( content,'src=\"\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cfset content = rereplaceNoCase( content,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
 		<cffile action="write" output="#content#" file="#variables.backupDir#wddx_rstcontent.xml"  charset="utf-8">
 	</cffunction>
 	
