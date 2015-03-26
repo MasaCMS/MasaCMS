@@ -248,7 +248,7 @@
 		<cfif isNumeric(params.getIsPublic())>
 			and tusers.isPublic =#params.getIsPublic()# 
 		</cfif>
-		<cfif listLen(userPoolID)>
+		<cfif listLen(userPoolID) gt 1>
 			and tusers.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#userPoolID#"> )
 		<cfelse>
 			and tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
@@ -302,7 +302,7 @@
 							<cfelse>
 								inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
 								where 
-								<cfif listLen(userPoolID)>
+								<cfif listLen(userPoolID) gt 1>
 									tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
 								<cfelse>
 									tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
