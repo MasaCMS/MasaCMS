@@ -85,12 +85,12 @@
 					},
 					{
 						id : 'manual',
-						label : 'Custom Function or Variable',
+						label : 'Custom',
 						elements :
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">Custom tag content</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to specify a custom function or variable for the Mura tag. For example, the CFML function <strong>Now()</strong> would output a current datetimestamp. Also use it to call custom methods from your contentRenderer.cfc such as <strong>$.yourMethod()</strong>.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">Custom Function or Variable</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to specify a custom function or variable for the Mura tag. For example, the CFML function <strong>Now()</strong> would output a current datetimestamp. Also use it to call custom methods from your contentRenderer.cfc such as <strong>$.yourMethod()</strong>.</p>'
 							},
 							{
 								id: 'manualTagContent',
