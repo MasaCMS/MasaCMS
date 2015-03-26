@@ -193,10 +193,11 @@
 
 // Reset container width
 // Required here as we reset the width earlier on and the grid mixins don't override early enough
+// http://stackoverflow.com/questions/26628309/less-v2-does-not-compile-twitters-bootstrap-2-x
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  #grid > .core > .span(@gridColumns);
+  width: (@gridColumnWidth * @gridColumns) + (@gridGutterWidth * (@gridColumns - 1));
 }
 
 // Fixed to top
