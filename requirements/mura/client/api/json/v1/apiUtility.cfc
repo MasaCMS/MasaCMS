@@ -96,12 +96,12 @@ component extends="mura.cfobject" {
 		return this;
 	}
 
-	function getEntityConfig(){
-		if(structKeyExists(variables.config.entities,arguments.entityName)){
-			return variables.config;
-		} else {
-			return {};
-		}
+	function getEntityConfig(entityName){
+		if(!structKeyExists(variables.config.entities,arguments.entityName)){
+			variables.config.entities[arguments.entityName]={public=false};
+		} 
+		
+		return variables.config.entities[arguments.entityName];
 	}
 
 	function registerMethod(methodName, method){
