@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				   <td><input type="radio" disabled></td>
 				   <td><input type="radio" disabled></td>
 				   <td><input type="radio" disabled></td>
-				   <td><input type="radio" disabled></td>
+			
 					<td nowrap class="var-width">Admin</td>
 	            </tr>
           </cfif>
