@@ -377,7 +377,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfloop query="rstcontent">
 				<cfset fileArray = parseFilePaths( arguments.siteID,rstcontent.body )>
-				<cfset ArrayAppend(fileArray, parseFilePaths(arguments.siteID, rstcontent.summary), true) />
+				<cfset ArrayAppend(fileArray, parseFilePaths(arguments.siteID, rstcontent.summary)) />
 
 				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
 					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
@@ -386,8 +386,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
 					<cfif not directoryExists( "#variables.backupDir#/#fileArray[i]['path']#" )>
 						<cfset directoryCreate( "#variables.backupDir#/#fileArray[i]['path']#" )/>
+					</cfif>
+					<cfif not fileExists("#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#")>
+						<cfset fileCopy("#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#","#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#") />
 					</cfif>					
-					<cfset fileCopy("#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#","#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#") />
 				</cfloop>
 				
 			</cfloop>
