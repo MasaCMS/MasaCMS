@@ -60,7 +60,7 @@
 
 		<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	</head>
-	<body id="#$.getTopID()#" class="depth#arrayLen($.event('crumbdata'))#">
+	<body id="#$.getTopID()#" class="depth-#$.content('depth')# #$.createCSSHook($.content('menuTitle'))#">
 
 		<!--- page --->
 		<div data-role="page" data-theme="a">

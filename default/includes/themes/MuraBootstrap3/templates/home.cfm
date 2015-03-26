@@ -1,6 +1,6 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm" />
-	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
+	<body id="#$.getTopID()#" class="#$.createCSSHook($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
 		<cfinclude template="inc/navbar.cfm" />
 		<!---
 			The Carousel/Slideshow
