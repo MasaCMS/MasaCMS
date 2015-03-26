@@ -170,9 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsPublic" output="false">
 	<cfargument name="isPublic">
-	<cfif isNumeric(arguments.isPublic)>
-		<cfset variables.instance.isPublic=arguments.isPublic>
-	</cfif>
+	<cfset variables.instance.isPublic=arguments.isPublic>
 	<cfreturn this>
 </cffunction>
 
@@ -180,6 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type">
 	<cfif isNumeric(arguments.type)>
 		<cfset variables.instance.type=arguments.type>
+	<cfelseif arguments.type eq 'user'>
+		<cfset variables.instance.type=2>
+	<cfelseif arguments.type eq 'group'>
+		<cfset variables.instance.type=1>
 	</cfif>
 	<cfreturn this>
 </cffunction>

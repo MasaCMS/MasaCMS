@@ -688,8 +688,8 @@
 										</label>
 										<select name="siteid">
 											<cfloop query="rc.rsSiteList">
-												<option value="#esapiEncode('html_attr', siteid)#" <cfif (rc.userBean.exists() and rc.userBean.getSiteID() eq siteid) or session.siteid eq siteid >selected="selected"</cfif>>
-													#esapiEncode('html', site)#
+												<option value="#esapiEncode('html_attr', rc.rsSiteList.siteid)#" <cfif (rc.userBean.exists() and rc.userBean.getSiteID() eq rc.rsSiteList.siteid) or session.siteid eq rc.rsSiteList.siteid >selected="selected"</cfif>>
+													#esapiEncode('html', rc.rsSiteList.site)#
 												</option>
 											</cfloop>
 										</select>

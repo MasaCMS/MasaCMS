@@ -386,6 +386,7 @@ component extends="mura.cfobject" {
 								
 							}
 						} else {
+
 							if(listLen(params.id) > 1){
 								params.ids=params.id;
 								result=findMany(argumentCollection=params);
@@ -395,6 +396,7 @@ component extends="mura.cfobject" {
 						}
 
 					} else {
+
 						if(structCount(url)){
 							result=findQuery(argumentCollection=params);
 						} else {
@@ -803,6 +805,16 @@ component extends="mura.cfobject" {
 			structDelete(vals,'instanceid');
 			structDelete(vals,'primaryKey');
 			structDelete(vals,'extenddatatable');
+			if(listFindNoCase("user,group",entityConfigName)){
+				structDelete(vals,'extendautocomplete');
+				structDelete(vals,'sourceiterator');
+				structDelete(vals,'ukey');
+				structDelete(vals,'hkey');
+				structDelete(vals,'passedprotect');
+				structDelete(vals,'extendsetid');
+				structDelete(vals,'extenddata');
+				structDelete(vals,'addresses');
+			}
 		}
 
 		return vals;
@@ -896,7 +908,7 @@ component extends="mura.cfobject" {
 	}
 
 	function findAll(siteid,entityName){
-		
+	
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean(arguments.entityName);
 
@@ -1053,22 +1065,33 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
+		if(entity.getEntityName()=='user'){
+			if(isNumeric($.event('isPublic'))){
+				feed.setIsPublic($.event('isPublic'));
+			} else {
+				feed.setIsPublic('all');
+			}
+		}
+
 		for(var p in url){
+			if(!(entity.getEntityName()=='user' && p=='isPublic')){
+				if(entity.getEnityName()=='user' && p=='groupid'){
+					feed.setGroupID(url[p]);
+				} else if(entity.valueExists(p)){
+					var condition="=";
 
-			if(entity.valueExists(p)){
-				var condition="=";
-
-				if(find('*',url[p])){
-					condition="like";
+					if(find('*',url[p])){
+						condition="like";
+					}
+					
+					feed.addParam(column=p,criteria=replace(url[p],'*','%','all'),condition=condition);
 				}
-
-				feed.addParam(column=p,criteria=replace(url[p],'*','%','all'),condition=condition);
 			}	
 		}
 
 		var iterator=feed.getIterator();
 
-		//writeDump(var=iterator.getQUery(),abort=1);
+		//writeDump(var=iterator.getQuery(),abort=1);
 		var returnArray=[];
 		var itemStruct={};
 		var item='';
@@ -1125,10 +1148,6 @@ component extends="mura.cfobject" {
 
 		if(len($.event('limit'))){
 			feed.setMaxItems($.event('limit'));
-		}
-
-		if(isNumeric($.event('isPublic'))){
-			feed.setIsPublic($.event('isPublic'));
 		}
 
 		if($.event('entityName')=='content' && len($.event('type'))){
@@ -1246,6 +1265,8 @@ component extends="mura.cfobject" {
 		var p='';
 		var baseURL=getEndPoint();
 
+		links['self']="#baseurl#?method=findOne&entityName=#entity.getEntityName()#&siteid=#entity.getSiteID()#&id=#entity.getvalue(entity.getPrimaryKey())#";	
+
 		if(arrayLen(entity.getHasManyPropArray())){
 			try{
 			for(p in entity.getHasManyPropArray()){			
@@ -1265,8 +1286,15 @@ component extends="mura.cfobject" {
 		}
 
 		if(listFindNoCase('feed,contentFeed',entity.getEntityName())){
-			links['feed']="#baseurl#method=findQuery&siteid=#entity.getSiteID()#&entityName=content&deedid=#entity.getFeedID()#";	
+			links['feed']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=content&feedid=#entity.getFeedID()#";	
 		}
+
+		/*
+		if(listFindNoCase('user',entity.getEntityName())){
+			links['members']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=user&groupid=#entity.getUserID()#";
+			//links['memberships']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=user&groupid=#entity.getUserID()#";
+		}
+		*/
 
 		if(entity.getEntityName()=='content'){
 			links['renderered']="#baseurl#/_path/#entity.getFilename()#";

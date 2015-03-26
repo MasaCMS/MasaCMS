@@ -180,6 +180,10 @@
 		
 		<cfif params.getIsPublic() eq 0 >
 			<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()>
+		<cfelseif params.getIsPublic() eq 1 >
+			<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()>
+		<cfelseif variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID() neq variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()>
+			<cfset userPoolID=listAppend(variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID(),variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID())>
 		<cfelse>
 			<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()>
 		</cfif>
@@ -240,8 +244,16 @@
 		on (tusers.userID=qExtendedSort.baseID)
 		</cfif>
 		
-		where tusers.type=#params.getType()# and tusers.isPublic =#params.getIsPublic()# and 
-		tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+		where tusers.type=#params.getType()# 
+		<cfif isNumeric(params.getIsPublic())>
+			and tusers.isPublic =#params.getIsPublic()# 
+		</cfif>
+		<cfif listLen(userPoolID)>
+			and tusers.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#userPoolID#"> )
+		<cfelse>
+			and tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+		</cfif>
+		
 
 		<cfif rsParams.recordcount>
 			<cfset started=false>
@@ -289,7 +301,13 @@
 								where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 							<cfelse>
 								inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID)
-								where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getsiteid()#">
+								where 
+								<cfif listLen(userPoolID)>
+									tclassextendattributes.siteid in ( <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#"> )
+								<cfelse>
+									tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
+								</cfif>
+								
 								and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 							</cfif>
 							and 
