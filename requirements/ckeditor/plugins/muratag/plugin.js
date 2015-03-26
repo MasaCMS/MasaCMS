@@ -32,7 +32,7 @@
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any CFML file. Path is relative to your <strong>[site_id]/includes/</strong> directory.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any .CFM file. Path is relative to your <strong>/{SiteID}/includes/</strong> directory.</p>'
 							},
 							{
 								id: 'includePath',
@@ -48,7 +48,7 @@
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any CFML file. Path is relative to your <strong>[site_id]/includes/themes/[theme]</strong> directory.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspThemeInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any .CFM file. Path is relative to your <strong>/{SiteID/includes/themes/{ThemeName}/</strong> directory.</p>'
 							},
 							{
 								id: 'themeIncludePath',
@@ -64,7 +64,7 @@
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspObject</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Include a content object in your page by specifying the content type (e.g. feed, component) and ID (find it on the Advanced tab). By also specifying the site ID, you can include content from a site other than the current one.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspObject</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Include a content object in your page by specifying the content type (e.g. feed, component) and Title or ID (ID can be found on the Advanced tab). By also specifying the SiteID, you can include content from another site.</p>'
 							},
 							{
 								id: 'objectType',
@@ -79,18 +79,18 @@
 							{
 								id: 'objectSite',
 								type: 'text',
-								label: 'Site ID (optional - only required if not the current site)'
+								label: 'SiteID (optional - only required if not the current site)'
 							}							
 						]
 					},
 					{
 						id : 'manual',
-						label : 'Custom content',
+						label : 'Custom Function or Variable',
 						elements :
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">Custom tag content</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to specify any custom content for the Mura tag - for example, CFML functions: <strong>now()</strong> would output the current date/time. Also use it to call custom render methods from your contentRenderer.cfc.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">Custom tag content</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to specify a custom function or variable for the Mura tag. For example, the CFML function <strong>Now()</strong> would output a current datetimestamp. Also use it to call custom methods from your contentRenderer.cfc such as <strong>$.yourMethod()</strong>.</p>'
 							},
 							{
 								id: 'manualTagContent',
@@ -165,7 +165,7 @@
 					// Insert Mura Tag into editor
 					if ( ranges.length == 1 && ranges[0].collapsed )
 					{
-						var textNode = new CKEDITOR.dom.text( '[mura]'+tagContent+'[/mura]', editor.document );
+						var textNode = new CKEDITOR.dom.text( '[m]'+tagContent+'[/m]', editor.document );
 						ranges[0].deleteContents();
 						ranges[0].insertNode( textNode );
 						selection.selectRanges( ranges );
