@@ -1563,8 +1563,8 @@ and tclassextendattributes.type='File'
 	<cfset var extensionXML = "" />
 	<cfset var item = "" />
 
-	<cfset var xmlRoot = XmlElemNew( documentXML, "", "MURA" ) />
-	<cfset var xmlNode = XmlElemNew( documentXML, "", "EXTENSIONS" ) />
+	<cfset var xmlRoot = XmlElemNew( documentXML, "", "mura" ) />
+	<cfset var xmlNode = XmlElemNew( documentXML, "", "extensions" ) />
 
 	<cfset documentXML.XmlRoot = xmlRoot />
 
@@ -1585,26 +1585,30 @@ and tclassextendattributes.type='File'
 	<cfset var documentXML = xmlNew(false) />
 	<cfset var extensionXML = "" />
 	<cfset var i = 0 />
+	<cfset var ii = 0 />
 	<cfset var subType = "" />
 	<cfset var xmlRoot = XmlElemNew( documentXML, "", "mura" ) />
 	<cfset var xmlNode = XmlElemNew( documentXML, "", "extensions" ) />
 
+	<!--- this contains the container: --->
 	<cfset documentXML.XmlRoot = xmlRoot />
 
 	<cfloop from="1" to="#ArrayLen(arguments.subTypes)#" index="i">
 		<cfset subType = arguments.subTypes[i] />
+
 		<!--- if is an id, get the bean --->
 		<cfif isSimpleValue( subType ) and len(subType) eq 35>
 			<cfset subType = getSubTypeByID( subType ) /> 
 		</cfif>
+
 		<cfif not subType.getIsNew()>
 			<cfset extensionXML = subType.getAsXML(documentXML,arguments.includeIDs) />
-		
 			<cfset ArrayAppend(
 				xmlNode.XmlChildren,
 				extensionXML
 				) />
 		</cfif>
+
 	</cfloop>
 	<cfset ArrayAppend(
 		xmlRoot.XmlChildren,

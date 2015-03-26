@@ -3540,16 +3540,16 @@ Display Objects
 </cffunction>
 
 <cfscript>
-	public any function dspComponent(string componentid) {
-		return variables.$.dspObject(object='component',objectid=arguments.componentid);
+	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
+		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);
 	}
 
-	public any function dspForm(string formid) {
-		return variables.$.dspObject(object='form',objectid=arguments.formid);
+	public any function dspForm(string formid, boolean allowEditable=this.showEditableObjects) {
+		return variables.$.dspObject(object='form',objectid=arguments.formid,allowEditable=arguments.allowEditable);
 	}
 
-	public any function dspFeed(string feedid,params={}) {
-		return variables.$.dspObject(object='feed',objectid=arguments.feedid,params=arguments.params);
+	public any function dspFeed(string feedid,params={}, boolean allowEditable=this.showEditableObjects) {
+		return variables.$.dspObject(object='feed',objectid=arguments.feedid,params=arguments.params,allowEditable=arguments.allowEditable);
 	}
 
 	public any function getCalendarUtility() {

@@ -872,6 +872,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="includeIDs" type="boolean" default="false" >
 	
 	<cfset var extensionData = {} />
+	<cfset var extendSetBean = "" />
 	<cfset var set = "" />
 	<cfset var sets = getExtendSets() />
 	<cfset var setStruct = {} />
@@ -899,7 +900,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	
 	<cfloop from="1" to="#ArrayLen(sets)#" index="i">
-		<cfset xmlAttributeSet = sets[i].getAsXML(documentXML) />
+		<cfset extendSetBean = loadSet(sets[i].getExtendSetID()) />
+		<cfset xmlAttributeSet = extendSetBean.getAsXML(documentXML) />
 		<cfset ArrayAppend(
 			xmlRoot.XmlChildren,
 			xmlAttributeSet
