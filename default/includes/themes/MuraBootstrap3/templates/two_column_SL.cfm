@@ -1,6 +1,6 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm" />
-	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#">
+	<body id="#$.getTopID()#" class="depth-#$.content('depth')# #$.createCSSHook($.content('menuTitle'))#">
 		<cfinclude template="inc/navbar.cfm" />
 		<div class="container">
 			<div class="row">
