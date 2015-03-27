@@ -337,6 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstfiles=getValue("rstfiles")>
 		<cfset var rscheck="">
 		<cfset var fileArray = "" />
+		<cfset var summaryFileArray = "" />
 		<cfset var extensions = {} />
 		<cfset var extension = "" />
 		<cfset var extensionsArray = [] />
@@ -378,7 +379,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rstcontent">
 				<cfset fileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
 				<cfset summaryFileArray = parseFilePaths(arguments.siteID, rstcontent.summary) />
-
 				<cfloop from="1" to="#ArrayLen(summaryFileArray)#" index="i">
 					<cfset ArrayAppend(fileArray, summaryFileArray[i]) />	
 				</cfloop>
