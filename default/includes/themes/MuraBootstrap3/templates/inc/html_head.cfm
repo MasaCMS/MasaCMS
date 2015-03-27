@@ -52,6 +52,6 @@
 	<!--- MURA FEEDS --->
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	<cfset apiEndpoint=$.siteConfig().getApi('feed','v1').getEndpoint() />
-	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#esapiEncode('html', $.siteConfig('site'))# - #esapiEncode('html', rs.name)#" href="#XMLFormat('#apiEndpoint#/?feedID=#rs.feedID#')#"></cfloop>
+	<cfloop query="rs"><link rel="alternate" type="application/rss+xml" title="#esapiEncode('html_attr', $.siteConfig('site'))# - #esapiEncode('html_attr', rs.name)#" href="#XMLFormat('#apiEndpoint#/?feedID=#rs.feedID#')#"></cfloop>
 </head>
 </cfoutput>
