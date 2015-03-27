@@ -46,5 +46,5 @@
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
-<cfheader name="Content-Disposition" charset="utf-8" value="attachment;filename=config.xml.cfm">
+<cfheader name="Content-Disposition" charset="utf-8" value="attachment;filename=#DateFormat(Now(), 'yyyymmdd')##TimeFormat(Now(), 'HHMMSS')#-config.xml.cfm">
 <cfcontent type="application/xml"><cfoutput>#rc.exportXML#</cfoutput>
