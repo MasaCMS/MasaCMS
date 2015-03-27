@@ -916,7 +916,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 </cffunction>
 
 <cfscript>
-	public string function stripTags(required string text, string tagsToStrip='script,style,embed,object') {
+	public string function stripTags(required string text='', string tagsToStrip='script,style,embed,object') {
 		var t = '';
 		var tags = ListToArray(arguments.tagsToStrip);
 		var str = arguments.text;
@@ -928,7 +928,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		return str;
 	}
 
-	public string function createCSSHook(text) {
+	public string function createCSSHook(text='') {
 		var str = LCase(stripTags(arguments.text));
 		str = Trim(ReReplace(str, '<[^>]*>', ' ', 'all'));
 		str = ReReplace(str, '\s{2,}', ' ', 'all');
@@ -943,14 +943,14 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		return str;
 	}
 
-	public string function setCamelback(required string theString) {
+	public string function setCamelback(required string theString='') {
 		var str = arguments.theString;
 		str = setProperCase(str);
 		str = REReplace(str, '[^a-zA-Z0-9]', '', 'ALL');
 		return str;
 	}
 
-	public string function setProperCase(required string theString) {
+	public string function setProperCase(required string theString='') {
 		var str = arguments.theString;
 		var newString = '';
 		var frontpointer = 0;
@@ -976,7 +976,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		return newString;
 	}
 
-	public string function renderFileSize(required size) {
+	public string function renderFileSize(required size=0) {
 		var str = '';
 		var theSize = Val(arguments.size);
 
