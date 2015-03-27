@@ -102,16 +102,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="export" output="false">
 	<cfargument name="rc">
+	<cfparam name="arguments.rc.exportClassExtensionID" default="">
 	
-	<cfset extendArray = ArrayNew(1)>	
+	<cfset extendArray = [] />	
 	<cfset arguments.rc.exportXML = "" />
 	
-	<cfif structKeyExists(arguments.rc,"exportClassExtensionID") and len(arguments.rc.exportClassExtensionID)>
-		<cfset extendArray = listToArray( arguments.rc.exportClassExtensionID ) />
-		<cfset arguments.rc.exportXML = application.classExtensionManager.getSubTypesAsXML( extendArray,false ) />		
+	<cfif Len(arguments.rc.exportClassExtensionID)>
+		<cfset extendArray = ListToArray( arguments.rc.exportClassExtensionID ) />
+		<cfset arguments.rc.exportXML = application.classExtensionManager.getSubTypesAsXML(extendArray, false) />
 	</cfif>
-
 </cffunction>
+
+<cffunction name="download" output="false">
+	<cfargument name="rc">
+	<cfparam name="arguments.rc.exportClassExtensionID" default="">
+	
+	<cfset extendArray = [] />	
+	<cfset arguments.rc.exportXML = "" />
+	
+	<cfif Len(arguments.rc.exportClassExtensionID)>
+		<cfset extendArray = ListToArray( arguments.rc.exportClassExtensionID ) />
+		<cfset arguments.rc.exportXML = application.classExtensionManager.getSubTypesAsXML(extendArray, false) />
+	</cfif>
+</cffunction>
+
+
 <cffunction name="updateSubType" output="false">
 	<cfargument name="rc">
 	
