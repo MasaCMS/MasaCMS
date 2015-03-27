@@ -5,9 +5,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="#esapiEncode('html', $.content('metaDesc'))#">
-	<meta name="keywords" content="#esapiEncode('html', $.content('metaKeywords'))#">
-	<cfif len($.content('credits'))><meta name="author" content="#esapiEncode('html', $.content('credits'))#"></cfif>
+	<meta name="description" content="#esapiEncode('html_attr', $.content('metaDesc'))#">
+	<meta name="keywords" content="#esapiEncode('html_attr', $.content('metaKeywords'))#">
+	<cfif len($.content('credits'))><meta name="author" content="#esapiEncode('html_attr', $.content('credits'))#"></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#">
 
 	<title>#esapiEncode('html', $.content('HTMLTitle'))# - #esapiEncode('html', $.siteConfig('site'))#</title>
