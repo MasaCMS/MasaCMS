@@ -484,7 +484,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig)>
 			</cfif>
 
-			<cfif isXml(variables.themeConfig)>
+			<cfif IsValid('xml', variables.themeConfig)>
 				<cfset variables.themeConfig=xmlParse(variables.themeConfig)>
 				<cfset application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid)>
 			</cfif>
