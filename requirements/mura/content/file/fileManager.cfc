@@ -641,11 +641,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsCheck.recordcount>
 		<cfloop query="rscheck">
-			<cfset check=listGetAt(rsCheck.name,2,"_")>
-			<cfif len(check) gt 1>
-				<cfset check=mid(check,2,1)>
-				<cfif isNumeric(check)>
-					<cffile action="delete" file="#filepath##rsCheck.name#">
+			<cfif listLen(rsCheck.name,"_") gt 1>	
+				<cfset check=listGetAt(rsCheck.name,2,"_")>
+				<cfif len(check) gt 1>
+					<cfset check=mid(check,2,1)>
+					<cfif isNumeric(check)>
+						<cffile action="delete" file="#filepath##rsCheck.name#">
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfloop>
