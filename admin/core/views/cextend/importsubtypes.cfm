@@ -80,9 +80,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var newFile = $('input[name="newFile"]').val();
 				var validExtensions = ['xml','XML','cfm','CFM'];
 				var ext = newFile.split('.').pop();
-				var isValidFile = validExtensions.indexOf(ext);
+				var extIdx = validExtensions.indexOf(ext);
 
-				if ( newFile === '' || isValidFile > -1 ) {
+				if ( newFile === '' || extIdx > -1 ) {
 					var msg = '#rc.$.rbKey('sitemanager.content.importnofilemessage')#';
 					$('##alertDialogMessage').html(msg);
 
