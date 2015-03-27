@@ -56,7 +56,7 @@
 --->
 <cfif variables.$.siteConfig('dataCollection')>
 	<cfsilent>
-    <cfset request.muraAsyncEditableObject=true>
+    <!---<cfset request.muraAsyncEditableObject=true>--->
 
 		<cfif isValid("UUID",arguments.objectID)>
 			<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
