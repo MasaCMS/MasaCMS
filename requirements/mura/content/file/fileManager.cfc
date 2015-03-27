@@ -636,7 +636,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
 	
 	<cfquery name="rsCheck" dbType="query">
-	select * from rsDIR where name like '%_H%'
+	select * from rsDIR where name like '%\_H%' ESCAPE '\'
 	</cfquery>
 
 	<cfif rsCheck.recordcount>
