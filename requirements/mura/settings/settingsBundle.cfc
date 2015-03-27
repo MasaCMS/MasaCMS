@@ -376,8 +376,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#cachefiles.zip",directory="#variables.backupDir#/cache",recurse="true",sinceDate=arguments.sinceDate)>
 
 			<cfloop query="rstcontent">
-				<cfset fileArray = parseFilePaths( arguments.siteID,rstcontent.body )>
-				<cfset ArrayAppend(fileArray, parseFilePaths(arguments.siteID, rstcontent.summary)) />
+				<cfset fileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
+				<cfset summaryFileArray = parseFilePaths(arguments.siteID, rstcontent.summary) />
+
+				<cfloop from="1" to="#ArrayLen(summaryFileArray)#" index="i">
+					<cfset ArrayAppend(fileArray, summaryFileArray[i]) />	
+				</cfloop>
 
 				<cfif not structKeyExists(extensions,"#rstcontent.type#.#rstcontent.subtype#")>
 					<cfset extensions["#rstcontent.type#.#rstcontent.subtype#"] = true />
