@@ -1273,6 +1273,7 @@ var initMura=function(config){
 	$.extend(window,{
 		mura:config,
 		validateForm:validateForm,
+		setHTMLEditor:setHTMLEditor,
 		createCookie:createCookie,
 		addLoadEvent:addLoadEvent,
 		noSpam:noSpam
