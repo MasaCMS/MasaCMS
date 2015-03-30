@@ -430,8 +430,12 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 					)
 				);
 		
-			} else {
-				renderedForm=arguments.$.setDynamicContent(bean.getBody());
+			} else {	
+				renderedForm=bean.getBody();
+				if(!find("dsp_form_protect.cfm",renderedForm) ){
+					renderedForm=replaceNoCase(renderedForm,"</form>","[mura]$.dspObject_Include(thefile='dsp_form_protect.cfm')[/mura]</form>");
+				}
+				renderedForm=arguments.$.setDynamicContent(renderedForm);
 			}
 
 			renderedForm=variables.dataCollectionManager.renderForm(

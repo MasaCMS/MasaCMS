@@ -291,7 +291,7 @@
 					<!--- form protection --->
 					<div class="#this.editProfileFormGroupWrapperClass#">
 						<div class="#this.editProfileSubmitButtonWrapperClass#">
-							#$.dspObject_include(thefile='dsp_form_protect.cfm')#
+							#variables.$.dspObject_include(thefile='dsp_form_protect.cfm')#
 						</div>
 					</div>
 
@@ -314,7 +314,6 @@
 							<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#">
 							<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#">
 							<input type="hidden" name="display" value="editprofile">
-							<!--- <cfinclude template="dsp_form_protect.cfm"/> --->
 						</div>
 					</div>
 				</form>
