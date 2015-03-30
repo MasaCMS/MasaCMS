@@ -291,7 +291,7 @@
 					<!--- form protection --->
 					<div class="#this.editProfileFormGroupWrapperClass#">
 						<div class="#this.editProfileSubmitButtonWrapperClass#">
-							<cfinclude template="dsp_form_protect.cfm"/>
+							#$.dspObject_include(thefile='dsp_form_protect.cfm')#
 						</div>
 					</div>
 
