@@ -933,7 +933,7 @@ Sincerely,
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	
 	<!--- Can't copy node under itself --->
-	<cfif listFindNoCase(contentBean.getPath(),arguments.parentID)>
+	<cfif arguments.contentid eq arguments.parentID>
 		<cfreturn contentBean>
 	</cfif>
 
