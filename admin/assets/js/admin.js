@@ -756,8 +756,7 @@ function htmlEditorOnComplete(editorInstance) {
 	var totalIntances = CKEDITOR.instances;
 	CKFinder.setupCKEditor(
 	instance, {
-		basePath: context + '/requirements/ckfinder/',
-		rememberLastFolder: false
+		basePath: context + '/requirements/ckfinder/'
 	});
 
 
