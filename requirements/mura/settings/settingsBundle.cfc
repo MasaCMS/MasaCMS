@@ -337,16 +337,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstfiles=getValue("rstfiles")>
 		<cfset var rstclassextenddata = getValue('rstclassextenddata') />
 		<cfset var rscheck="">
-		<cfset var fileArray = "" />
-		<cfset var summaryFileArray = "" />
-		<cfset var extendedAttributeFileArray = "" />
+		<cfset var fileArray = [] />
+		<cfset var summaryFileArray = [] />
+		<cfset var extendedAttributeFileArray = [] />
 		<cfset var extensions = {} />
 		<cfset var extension = "" />
 		<cfset var extensionsArray = [] />
-		<cfset var item = "" />
-		
+		<cfset var item = "" />		
 		<cfset var started=false>
-		
 		<cfset var i="" />
 		
 		<cfif not directoryExists("#variables.backupDir#/cache")>
@@ -380,7 +378,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- Get CKFinder assets from Body + Summary regions --->
 			<cfloop query="rstcontent">
-				<cfset fileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
+				<!--- CKFinder 'Body/Content' Images --->
+				<cfset bodyFileArray = parseFilePaths(arguments.siteID, rstcontent.body)>
+				<cfloop from="1" to="#ArrayLen(bodyFileArray)#" index="i">
+					<cfset ArrayAppend(fileArray, bodyFileArray[i]) />	
+				</cfloop>
+				<!--- CKFinder 'Summary' Images ---->
 				<cfset summaryFileArray = parseFilePaths(arguments.siteID, rstcontent.summary) />
 				<cfloop from="1" to="#ArrayLen(summaryFileArray)#" index="i">
 					<cfset ArrayAppend(fileArray, summaryFileArray[i]) />	
