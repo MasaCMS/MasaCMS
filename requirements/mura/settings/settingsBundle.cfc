@@ -1387,16 +1387,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
-				
+
 				<cfquery name="rstclassextend">
 					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 					<cfif not arguments.includeUsers>
 					and type not in ('1','2','User','Group')
 					</cfif>
 				</cfquery>
-		
-				<cfset setValue("rstclassextend",rstclassextend)>
-		
+				<cfset setValue("rstclassextend",rstclassextend)>	
+
 				<cfquery name="rstclassextendsets">
 					select * from tclassextendsets 
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1405,10 +1404,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						and 0=1
 					</cfif>
-				</cfquery>
-			
-				<cfset setValue("rstclassextendsets",rstclassextendsets)>
-	
+				</cfquery>			
+				<cfset setValue("rstclassextendsets",rstclassextendsets)>	
+
 				<cfquery name="rstclassextendrcsets">
 					select * from tclassextendrcsets 
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1418,7 +1416,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and 0=1
 					</cfif>
 				</cfquery>
-			
 				<cfset setValue("tclassextendrcsets",rstclassextendrcsets)>
 			
 				<cfquery name="rstclassextendattributes">
@@ -1429,63 +1426,87 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and 0=1
 					</cfif>
 				</cfquery>
-			
 				<cfset setValue("rstclassextendattributes",rstclassextendattributes)>
-		
+
 				<cfquery name="rstclassextenddata">
-					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
-					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
+					select 
+						tclassextenddata.baseID
+						, tclassextenddata.attributeID
+						, tclassextenddata.attributeValue
+						, tclassextenddata.siteID
+						, tclassextenddata.stringvalue
+						, tclassextenddata.numericvalue
+						, tclassextenddata.datetimevalue
+						, tclassextenddata.remoteID 
+					from tclassextenddata 
 					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					<cfif not arguments.includeVersionHistory>
-						and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-						and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-					</cfif>
-					<cfif isDate(arguments.sinceDate)>
-						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-					</cfif>
-					and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
-						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+						<cfif not arguments.includeVersionHistory>
+							and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
+							<cfif Len(arguments.changesetid)>
+								and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							</cfif>
+						</cfif>
+						<cfif isDate(arguments.sinceDate)>
+							and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+						</cfif>
+						and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 	
 					union all
 	
-					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
-					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
+					select 
+						tclassextenddata.baseID
+						, tclassextenddata.attributeID
+						, tclassextenddata.attributeValue
+						, tclassextenddata.siteID
+						, tclassextenddata.stringvalue
+						, tclassextenddata.numericvalue
+						, tclassextenddata.datetimevalue
+						, tclassextenddata.remoteID 
+					from tclassextenddata 
 					inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 					inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
 					inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
 					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					and tclassextend.type in ('Site','Custom')
-	
+						and tclassextend.type in ('Site','Custom')
 				</cfquery>
-			
 				<cfset setValue("rstclassextenddata",rstclassextenddata)>
+
 			<cfelse>
 				<cfquery name="rstclassextenddata">
-					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
-					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID,
-					tcontent.contentid,tclassextendattributes.name
+					select 
+						tclassextenddata.baseID
+						, tclassextenddata.attributeID
+						, tclassextenddata.attributeValue
+						, tclassextenddata.siteID
+						, tclassextenddata.stringvalue
+						, tclassextenddata.numericvalue
+						, tclassextenddata.datetimevalue
+						, tclassextenddata.remoteID
+						, tcontent.contentid
+						, tclassextendattributes.name
 					from tclassextenddata 
 					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 					join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
 					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					<cfif isDate(arguments.sinceDate)>
-						and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
-					</cfif>
-					and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
-						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-					<cfif len(arguments.changesetid)>
-						and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
-						and tcontent.active = 1
-					<cfelseif len(arguments.parentid)>
-						and tcontent.contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
-						and tcontent.active = 1
-					</cfif>
+						<cfif isDate(arguments.sinceDate)>
+							and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+						</cfif>
+						and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+						<cfif len(arguments.changesetid)>
+							and tcontent.changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
+							and tcontent.active = 1
+						<cfelseif len(arguments.parentid)>
+							and tcontent.contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+							and tcontent.active = 1
+						</cfif>
 				</cfquery>
 
 				<cfset setValue("rstclassextenddata",rstclassextenddata)>
 			</cfif>
-				
+
 			<cfif not len(arguments.changesetID) and not len(arguments.parentid)>
 				<!--- tmailinglist --->
 				<cfquery name="rstmailinglist">
