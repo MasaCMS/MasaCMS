@@ -346,6 +346,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var item = "" />		
 		<cfset var started=false>
 		<cfset var i="" />
+		<cfset var backupPath = '' />
+		<cfset var filePath = '' />
 		
 		<cfif not directoryExists("#variables.backupDir#/cache")>
 			<cfset directoryCreate("#variables.backupDir#/cache")>
@@ -404,11 +406,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- Copy CKFinder Assets to Backup --->
 			<cfif ArrayLen(fileArray)>
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
-					<cfif not directoryExists( "#variables.backupDir#/#fileArray[i]['path']#" )>
-						<cfset directoryCreate( "#variables.backupDir#/#fileArray[i]['path']#" )/>
+					<cfscript>
+						backupPath = Replace('#variables.backupDir#/#fileArray[i]['path']#', '%20', ' ', 'all');
+						filePath = Replace('#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#', '%20', ' ', 'all');
+					</cfscript>
+
+					<cfif not directoryExists(backupPath)>
+						<cfset directoryCreate(backupPath)/>
 					</cfif>
-					<cfif not fileExists("#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#")>
-						<cfset fileCopy("#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#","#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#") />
+					<cfif not fileExists(filePath)>
+						<cfset fileCopy(Replace("#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#", '%20', ' ', 'all'), filePath) />
 					</cfif>					
 				</cfloop>
 			</cfif>
@@ -1781,6 +1788,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset setValue("rsthierarchy",rsthierarchy)>
 			<cfset sArgs.rstfiles = rstfiles />
+
 			<cfset BundlePartialFiles( argumentCollection=sArgs ) />
 
 			<!--- BEGIN BUNDLEABLE CUSTOM OBJECTS --->
