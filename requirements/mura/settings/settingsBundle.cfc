@@ -407,15 +407,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif ArrayLen(fileArray)>
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
 					<cfscript>
-						backupPath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#');
-						filePath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#');
+						backupPath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#', 'utf-8');
+						filePath = URLDecode('#variables.backupDir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8');
 					</cfscript>
 
 					<cfif not directoryExists(backupPath)>
 						<cfset directoryCreate(backupPath)/>
 					</cfif>
 					<cfif not fileExists(filePath)>
-						<cfset fileCopy(URLDecode("#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#"), filePath) />
+						<cfset fileCopy(URLDecode('#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
 					</cfif>					
 				</cfloop>
 			</cfif>
