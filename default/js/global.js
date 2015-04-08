@@ -504,14 +504,6 @@ var initMura=function(config){
 	}
 
 	var setHTMLEditor=function(el) {
-		loader().loadjs(
-			config.requirementspath + '/ckeditor/ckeditor.js',
-			config.requirementspath + '/ckeditor/adapters/jquery.js'
-			,
-			function(){
-				initEditor();
-			}
-		);
 
 		var initEditor=function(){
 			var instance=CKEDITOR.instances[$(el).attr('id')];
@@ -522,6 +514,7 @@ var initMura=function(config){
 			}
 				
 			if (instance) {
+				instance.destroy();
 				CKEDITOR.remove(instance);
 			} 
 
@@ -550,6 +543,15 @@ var initMura=function(config){
 			
 			return htmlEditorConfig;
 		}
+
+		loader().loadjs(
+			config.requirementspath + '/ckeditor/ckeditor.js',
+			config.requirementspath + '/ckeditor/adapters/jquery.js'
+			,
+			function(){
+				initEditor();
+			}
+		);
 
 	}
 

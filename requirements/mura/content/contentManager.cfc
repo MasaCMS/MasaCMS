@@ -1991,7 +1991,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getRelatedContent" returntype="query" access="public" output="false">
 		<cfargument name="siteID"  type="string" />
 		<cfargument name="contentHistID"  type="string" />
-		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
+		<cfargument name="liveOnly" type="boolean" required="yes" default="true" />
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
 		<cfargument name="sortBy" type="string" default="orderno" >
 		<cfargument name="sortDirection" type="string" default="asc" >
@@ -2007,7 +2007,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getRelatedContentIterator" returntype="any" access="public" output="false">
 		<cfargument name="siteID"  type="string" />
 		<cfargument name="contentHistID"  type="string" />
-		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
+		<cfargument name="liveOnly" type="boolean" required="yes" default="true" />
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
 		<cfargument name="sortBy" type="string" default="orderno" >
 		<cfargument name="sortDirection" type="string" default="asc" >

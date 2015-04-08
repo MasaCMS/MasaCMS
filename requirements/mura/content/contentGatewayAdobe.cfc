@@ -2079,7 +2079,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getRelatedContent" access="public" output="false" returntype="query">
 	<cfargument name="siteID" type="String">
 	<cfargument name="contentHistID" type="String">
-	<cfargument name="liveOnly" type="boolean" required="yes" default="false">
+	<cfargument name="liveOnly" type="boolean" required="yes" default="true">
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	<cfargument name="sortBy" type="string" default="orderno" >
 	<cfargument name="sortDirection" type="string" default="asc" >

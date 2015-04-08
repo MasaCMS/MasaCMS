@@ -916,7 +916,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 </cffunction>
 
 <cfscript>
-	public string function stripTags(required string text='', string tagsToStrip='script,style,embed,object') {
+	public string function stripTags(text='', tagsToStrip='script,style,embed,object') {
 		var t = '';
 		var tags = ListToArray(arguments.tagsToStrip);
 		var str = arguments.text;
@@ -943,40 +943,44 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		return str;
 	}
 
-	public string function setCamelback(required string theString='') {
+	public string function setCamelback(theString='') {
 		var str = arguments.theString;
 		str = setProperCase(str);
 		str = REReplace(str, '[^a-zA-Z0-9]', '', 'ALL');
 		return str;
 	}
 
-	public string function setProperCase(required string theString='') {
-		var str = arguments.theString;
-		var newString = '';
-		var frontpointer = 0;
-		var strlen = Len(str);
-		var counter = 0;
+	public string function setProperCase(theString='') {
+		if(isdefined('arguments.theString') && len(arguments.theString)){
+			var str = arguments.theString;
+			var newString = '';
+			var frontpointer = 0;
+			var strlen = Len(str);
+			var counter = 0;
 
-		if ( strLen > 0 ) {
-			for (counter=1;counter LTE strlen;counter=counter + 1) {
-		 		frontpointer = counter + 1;
-				if (Mid(str, counter, 1) is " ") {
-					newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1)); 
-					counter = counter + 1;
-				} else {
-					if (counter is 1) {
-						newstring = newstring & ucase(Mid(str, counter, 1));
+			if ( strLen > 0 ) {
+				for (counter=1;counter LTE strlen;counter=counter + 1) {
+			 		frontpointer = counter + 1;
+					if (Mid(str, counter, 1) is " ") {
+						newstring = newstring & ' ' & ucase(Mid(str, frontpointer, 1)); 
+						counter = counter + 1;
 					} else {
-						newstring = newstring & lcase(Mid(str, counter, 1));
+						if (counter is 1) {
+							newstring = newstring & ucase(Mid(str, counter, 1));
+						} else {
+							newstring = newstring & lcase(Mid(str, counter, 1));
+						}
 					}
-				}
-		 	}
-		}
+			 	}
+			}
 
-		return newString;
+			return newString;
+		} else {
+			return '';
+		}
 	}
 
-	public string function renderFileSize(required size=0) {
+	public string function renderFileSize(size=0) {
 		var str = '';
 		var theSize = Val(arguments.size);
 
