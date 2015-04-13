@@ -212,41 +212,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif listFindNoCase(extendedList,rc.type)>
 		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
-		<!---
-		<cfif rc.compactDisplay neq "true" and listFindNoCase("#pageLevelList#",rc.type)>
-		--->
-			<cfquery name="rsSubTypes" dbtype="query">
-			select * from rsSubTypes
-			where 
-				<cfif not len(subtypefilter)>
-					type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
-					or type='Base'
-				<cfelse>
-					1=1 AND
-					<cfloop list="#subtypefilter#" index="i">
-						<cfif i neq listFirst(subtypefilter)>
-							OR
-						</cfif>
-						(
-								type=<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#listFirst(i,'/')#"/>
-								and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#listLast(i,'/')#"/>
-						)
-					</cfloop>
-				</cfif>
-			</cfquery>
-		<!---
-		<cfelse>
-			<cfquery name="rsSubTypes" dbtype="query">
-			select * from rsSubTypes
-			where 
-				type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rc.type#"/>
-				<!---<cfif listFindNocase("Link,File",rc.type)>--->
-					or type='Base'
-				<!---</cfif>--->
-			</cfquery>
-		</cfif>
-		--->
-		<cfif listFindNoCase("Component,File,Link,Form",rc.type)>
+		
+		<cfquery name="rsSubTypes" dbtype="query">
+		select * from rsSubTypes
+		where 
+			<cfif not len(subtypefilter)>
+				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
+				or type='Base'
+			<cfelse>
+				1=1 AND
+				<cfloop list="#subtypefilter#" index="i">
+					<cfif i neq listFirst(subtypefilter)>
+						OR
+					</cfif>
+					(
+							type=<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#listFirst(i,'/')#"/>
+							and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#listLast(i,'/')#"/>
+					)
+				</cfloop>
+			</cfif>
+		</cfquery>
+		
+		<cfif listFindNoCase("Component,File,Link,Form,Variation",rc.type)>
 			<cfset baseTypeList=rc.type>
 		<cfelse>
 			<cfset baseTypeList=pageLevelList>
@@ -255,18 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- If the node is new check to see if the parent type has a matching sub type. --->
 		<cfif rc.contentBean.getIsNew() and structKeyExists(rc,"subType") and len(rc.subtype)>
 			<cfset rc.contentBean.setSubType(rc.subtype)>
-		<!---
-		<cfelseif rc.contentBean.getIsNew()>
-			<cfquery name="rsParentSubType" dbtype="query">
-			select * from rsSubTypes
-			where 
-			type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rc.type#"/>
-			and subtype = <cfqueryparam cfsqltype="cf_sql_varchar" value="#$.getBean('content').loadBy(contentID=rc.parentID, siteID=rc.siteID).getSubType()#"/>
-			</cfquery>
-			<cfif rsParentSubType.recordcount>
-				<cfset rc.contentBean.setSubType(rsParentSubType.subType)>
-			</cfif>
-		--->
+		
 		</cfif>
 		
 		<cfif rsSubTypes.recordCount>
@@ -276,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 	
-	<cfif ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rc.type)>
+	<cfif ListFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 		<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onContentEdit',siteid=rc.siteid))>
 		<cfif arrayLen(pluginEventMappings)>
 			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
@@ -425,6 +401,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
 	<cfelseif rc.type eq "Form">
 		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
+	<cfelseif rc.type eq "Variation">
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editvariation")#</h1>
 	<cfelse>
 		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
 	</cfif>
@@ -432,7 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.compactDisplay neq "true">
 		<ul class="metadata-horizontal">
 			<cfif not rc.contentBean.getIsNew()>
-				<cfif listFindNoCase('Page,Folder,Calendar,Gallery,Link,File',rc.type)>
+				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
 					<cfif rsRating.recordcount>
 					<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
@@ -514,7 +492,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- This is plugin message targeting --->	
 	<span id="msg">
-	<cfif not listFindNoCase("Component,Form",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
+	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
@@ -624,7 +602,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	
 	<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Folder,Calendar,Gallery,Link,File,Component,Form">
+		<cfcase value="#rc.$.getBean('contentManager').ExtendableList#">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">

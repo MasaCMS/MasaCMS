@@ -2128,11 +2128,13 @@ Display Objects
 	<cfreturn trim(theObject) />
 </cffunction>
 
-<cffunction name="dspObjects" access="public" output="false" returntype="string">
+<cffunction name="dspObjects" output="false">
 <cfargument name="columnID" required="yes" type="numeric" default="1">
 <cfargument name="ContentHistID" required="yes" type="string" default="#variables.event.getValue('contentBean').getcontenthistid()#">
+<cfargument name="returnFormat" default="string">
 <cfset var rsObjects="">	
-<cfset var theRegion= ""/>
+<cfset var theRegion= (arguments.returnFormat=='array')?[]:''/>
+
 <cfset request.muraRegionID=arguments.columnID>
 <cfif (variables.event.getValue('isOnDisplay') 
 		and ((not variables.event.getValue('r').restrict) 
@@ -2144,20 +2146,29 @@ Display Objects
 		and variables.event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=variables.contentGateway.getObjectInheritance(arguments.columnID,variables.event.getValue('inheritedObjects'),variables.event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, variables.event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.event.getValue("inheritedObjectsPerm")) />
+				<cfif arguments.returnFormat eq 'array'>
+					<cfset arrayAppend(theRegion,dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, variables.event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.event.getValue("inheritedObjectsPerm")) )/>
+				<cfelse>
+					<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, variables.event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.event.getValue("inheritedObjectsPerm")) />
+				</cfif>
 				<cfset request.muraRegionID=arguments.columnID>
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=variables.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,variables.event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm) />
+		<cfif arguments.returnFormat eq 'array'>
+			<cfset arrayAppend(theRegion,dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm)) />
+		<cfelse>
+			<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm) />
+		</cfif>
+		
 		<cfset request.muraRegionID=arguments.columnID>
 	</cfloop>
 </cfif>
 <cfset request.muraRegionID=0>
 
-<cfreturn trim(theRegion) />
+<cfreturn theRegion />
 </cffunction>
 
 <cffunction name="dspBody"  output="false" returntype="string">

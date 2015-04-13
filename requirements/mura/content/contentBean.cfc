@@ -620,6 +620,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif variables.instance.Type eq "Component">
 			<cfset variables.instance.moduleID="00000000000000000000000000000000003">
 			<cfset variables.instance.ParentID="00000000000000000000000000000000003">
+		<cfelseif variables.instance.Type eq "Variation">
+			<cfset variables.instance.moduleID="00000000000000000000000000000000099">
+			<cfset variables.instance.ParentID="00000000000000000000000000000000099">
 		</cfif>
 	</cfif>
 	

@@ -47,6 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset this.TreeLevelList="Page,Folder,Calendar,Link,File,Gallery">
 	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component,Form">
+	<cfset this.HTMLBodyList="Form,Gallery,Calendar,Component,Page,Folder">
+	<cfset this.ValidContentTypeList="Page,Folder,Calendar,Link,File,Gallery,Component,Form,Variation">
 	<cfset this.versionObjects="">
 
 	<cffunction name="init" access="public" returntype="any" output="false">
@@ -133,10 +135,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
 				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
 			</cfcase>
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004">
+			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 				<cfset feed=getBean('feed')>
 				<cfif data.moduleID eq "00000000000000000000000000000000003">
 					<cfset feed.setType('Component')>
+				<cfelseif data.moduleID eq "00000000000000000000000000000000099">
+					<cfset feed.setType('Variation')>
 				<cfelse>
 					<cfset feed.setType('Form')>
 				</cfif>
@@ -855,7 +859,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfthrow type="custom" message="The attribute 'PARENTID' is required when saving content.">
 		</cfif>
 
-		<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,Folder,Gallery,Calendar,File,Link",arguments.data.type))>
+		<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase(this.ValidContentTypeList,arguments.data.type))>
 			<cfthrow type="custom" message="A valid 'TYPE' is required when saving content.">
 		</cfif>
 

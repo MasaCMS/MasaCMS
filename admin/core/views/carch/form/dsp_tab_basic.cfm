@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 	</cfif>
 
-	<cfif listFindNoCase('Form,Gallery,Calendar,Component,Page,Folder',rc.type)>    	
+	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>    	
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 		<div id="bodyContainer" class="body-container controls" style="display:none;">
 			<div class="control-group">

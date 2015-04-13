@@ -769,11 +769,19 @@
 			result.displayRegions={};
 
 			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
-				result.displayRegions['#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#']=$.dspObjects(columnid=r);
-			}
+				var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
+				var regionArray=$.dspObjects(columnid=r,returnFormat='array');
 
-			for(r in result.displayRegions){
-				result.displayRegions[r]=apiUtility.applyRemoteFormat(result.displayRegions[r]);
+				for(var d=1;d<=arrayLen(regionArray);d++){
+				
+					if(isJSON(regionArray[d])){
+						regionArray[d]=regionArray[d];
+					} else {
+						regionArray[d]={html=apiUtility.applyRemoteFormat(regionArray[d])};
+					}
+				}
+
+				result.displayRegions[regionName]={items=regionArray};
 			}
 
 			result.HTMLHeadQueue=$.renderHTMLQueue('head');
