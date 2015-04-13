@@ -601,14 +601,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 	</cfswitch>
 	
-	<cfswitch expression="#rc.type#">
-		<cfcase value="#rc.$.getBean('contentManager').ExtendableList#">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
+	<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
-			</cfif>
-		</cfcase>
-	</cfswitch>
+		</cfif>
+	</cfif>
 		
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
