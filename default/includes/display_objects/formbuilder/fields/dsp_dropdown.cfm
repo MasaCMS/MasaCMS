@@ -60,14 +60,13 @@
 <cfparam name="arguments.dataset.defaultid" default="" />
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#</label>
-	<select name="#arguments.prefix##arguments.field.name#"#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#
+	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#
+	<select name="#arguments.prefix##arguments.field.name#" #variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#>
 	</cfoutput>
 </cfsavecontent>
-</cfsilent>
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#variables.strField# >
+	#variables.strField#
 	<cfif StructKeyExists(arguments.dataset,"datarecordorder") and isArray( arguments.dataset.datarecordorder) and ArrayLen( arguments.dataset.datarecordorder ) gt 0>
 	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
@@ -77,6 +76,4 @@
 	</select>
 	</cfoutput>
 </cfsavecontent>
-<cfoutput>
-#variables.strField#
-</cfoutput>
+</cfsilent><cfoutput>#variables.strField#</cfoutput>

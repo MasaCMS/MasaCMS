@@ -66,7 +66,4 @@
 </cfsavecontent>
 <!--- note that fieldsets are open --->
 <cfset request.fieldsetopen = true />
-</cfsilent>
-<cfoutput>
-#variables.strField#
-</cfoutput>
+</cfsilent><cfoutput>#variables.strField#</cfoutput>
