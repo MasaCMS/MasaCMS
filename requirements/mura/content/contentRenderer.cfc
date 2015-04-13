@@ -2133,7 +2133,7 @@ Display Objects
 <cfargument name="ContentHistID" required="yes" type="string" default="#variables.event.getValue('contentBean').getcontenthistid()#">
 <cfargument name="returnFormat" default="string">
 <cfset var rsObjects="">	
-<cfset var theRegion= (arguments.returnFormat=='array')?[]:''/>
+<cfset var theRegion=(arguments.returnFormat eq 'array')?[]:''/>
 
 <cfset request.muraRegionID=arguments.columnID>
 <cfif (variables.event.getValue('isOnDisplay') 
