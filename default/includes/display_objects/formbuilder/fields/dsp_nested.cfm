@@ -63,5 +63,4 @@
 	#variables.fbManager.renderNestedForm( variables.$,session.siteid,arguments.field.formid,arguments.field.name )#
 	</cfoutput>
 </cfsavecontent>
-</cfsilent>
-<cfoutput>#variables.strField#</cfoutput>
+</cfsilent><cfoutput>#variables.strField#</cfoutput>
