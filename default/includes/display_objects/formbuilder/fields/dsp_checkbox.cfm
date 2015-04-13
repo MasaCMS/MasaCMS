@@ -57,7 +57,6 @@
 <cfsilent>
 <cfparam name="arguments.prefix" default="">
 <cfset variables.mmRBFstrField = "" />
-</cfsilent>
 <cfsavecontent variable="variables.strField">
 	<cfoutput>#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#</p>
 	<div>
@@ -72,6 +71,4 @@
 	</div>
 	</cfoutput>
 </cfsavecontent>
-<cfoutput>
-#variables.strField#
-</cfoutput>
+</cfsilent><cfoutput>#variables.strField#</cfoutput>

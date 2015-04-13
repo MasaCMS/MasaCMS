@@ -105,5 +105,4 @@
 <cfif len(arguments.field.remoteid)>
 	<cfset variables.strField = variables.strField & ' data-remoteid="#arguments.field.remoteid#"' />
 </cfif>
-</cfsilent>
-<cfoutput>#variables.strField#</cfoutput>
+</cfsilent><cfoutput>#variables.strField#</cfoutput>

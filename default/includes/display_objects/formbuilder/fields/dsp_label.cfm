@@ -80,7 +80,4 @@
 			</cfif></label>
 		</cfoutput>
 	</cfsavecontent>
-</cfsilent>
-<cfoutput>#variables.label#</cfoutput>
-
-
+</cfsilent><cfoutput>#variables.label#</cfoutput>
