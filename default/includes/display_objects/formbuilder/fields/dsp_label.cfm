@@ -77,10 +77,10 @@
 					<label for="#esapiEncode('html_attr', variables.forattribute)#">
 						#arguments.field.label#<cfif arguments.field.isrequired> <ins>#$.rbKey('form.required')#</ins></cfif>
 				</cfif>
-			</cfif>
+			</cfif></label>
 		</cfoutput>
 	</cfsavecontent>
 </cfsilent>
-<cfoutput>#variables.label#</label></cfoutput>
+<cfoutput>#variables.label#</cfoutput>
 
 

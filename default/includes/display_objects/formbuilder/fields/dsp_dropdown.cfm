@@ -60,7 +60,7 @@
 <cfparam name="arguments.dataset.defaultid" default="" />
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#</label>
+	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#
 	<select name="#arguments.prefix##arguments.field.name#"#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset,prefix=arguments.prefix)#
 	</cfoutput>
 </cfsavecontent>
