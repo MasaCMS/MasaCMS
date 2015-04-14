@@ -251,7 +251,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset isExtended=false/>
 		</cfif>
 	</cfif>
-	
+
 	<cfif ListFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 		<cfset pluginEventMappings=duplicate($.getBean('pluginManager').getEventMappings(eventName='onContentEdit',siteid=rc.siteid))>
 		<cfif arrayLen(pluginEventMappings)>
@@ -619,7 +619,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arrayLen(pluginEventMappings)>
 		<cfoutput>
 		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$)>
+			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
 			<cfif len(trim(renderedEvent))>
 				<cfset tabLabel = Len($.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
 				<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>

@@ -555,19 +555,20 @@
 														#rc.$.rbKey('layout.deploysitebundle')#
 													</a>
 												</li>
-												<!--- /Trash Bin --->
-
-												<!--- Trash Bin --->
-												<li>
-													<a href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
-														<i class="icon-trash"></i> 
-														#rc.$.rbKey('layout.trashbin')#
-													</a>
-												</li>
-												<!--- /Trash Bin --->
+												<!--- /Deploy Site Bundle --->
 
 												<!--- Update Site --->
 												<cfif listFind(session.mura.memberships,'S2')>
+													<!--- Trash Bin --->
+													<li>
+														<a href="#application.configBean.getContext()#/admin/?muraAction=cTrash.list&amp;siteID=#esapiEncode('url',session.siteid)#">
+															<i class="icon-trash"></i> 
+															#rc.$.rbKey('layout.trashbin')#
+														</a>
+													</li>
+													<!--- /Trash Bin --->
+
+
 													<cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
 														<li>
 															<a href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
