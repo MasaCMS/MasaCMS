@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </div>
 			</cfif>
 			<!--- Use site useSSL sitewide setting instead --->
-			<cfif rc.type neq 'Component' and rc.type neq 'Form' and not rc.$.siteConfig('useSSL')>
+			<cfif not listFindNoCase('Component,Form,Variation',rc.type) and not rc.$.siteConfig('useSSL')>
 				<div class="control-group">
 			      <div class="controls">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>

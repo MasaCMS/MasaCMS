@@ -50,7 +50,7 @@
 <cfset poweruser=$.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
 <cfinclude template="js.cfm">
 <cfswitch expression="#rc.moduleID#">
-	<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004">
+	<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 		<cfset rc.perm=application.permUtility.getPerm(rc.moduleid,rc.siteid)>
 
 		<cfparam name="rc.sortBy" default="menutitle">
@@ -116,7 +116,7 @@
 							</tr>
 						</thead>
 					</cfoutput>
-
+					
 					<tbody>
 						<cfif rc.rstop.recordcount>
 							<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">

@@ -190,7 +190,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					tcontent.#arguments.sourceIterator.getRecordIdField()# in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 				</cfquery>
 
 				<cfset arguments.sourceIterator.setPageQuery("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
@@ -216,7 +216,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 				</cfquery>
 			</cfif>
 		</cfif>

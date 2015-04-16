@@ -569,6 +569,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="hidden" name="ommitRelatedContentTab" value="true">
 			</cfif>
 		</cfcase>
+		<cfcase value="Variation">
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+				<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+					<cfinclude template="form/dsp_tab_categories.cfm">
+				</cfif>
+			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+				<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>		
+		</cfcase>
 		<cfcase value="Component">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 				<cfif application.categoryManager.getCategoryCount(rc.siteID)>

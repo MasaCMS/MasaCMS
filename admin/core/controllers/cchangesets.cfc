@@ -138,6 +138,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset arguments.rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000000')>
 <cfset arguments.rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000003')>
 <cfset arguments.rc.formAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000004')>
+<cfif application.configBean.getValue(property='variations',defaultValue=false)>
+	<cfset arguments.rc.variationAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000099')>
+</cfif>
 <cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID)>
 </cffunction>
 

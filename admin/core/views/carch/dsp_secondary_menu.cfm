@@ -56,12 +56,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.originalcircuit=listFirst(listLast(request.action,":"),".")>
 <div id="nav-module-specific" class="btn-group">
 	<cfswitch expression="#rc.moduleid#">
-		<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004">
+		<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,,00000000000000000000000000000000099">
 			<cfswitch expression="#rc.originalfuseaction#">
 				<cfcase value="list">
 					<cfif rc.perm neq 'none'>		
 						<cfif rc.moduleid eq "00000000000000000000000000000000003">
 							<a class="btn" href="./?muraAction=cArch.edit&type=Component&contentid=&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a>
+						<cfelseif rc.moduleid eq "00000000000000000000000000000000099">
+							<a class="btn" href="./?muraAction=cArch.edit&type=Variation&contentid=&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addvariation')#</a>
 						<cfelse>
 							<a class="btn" href="./?muraAction=cArch.edit&type=Form&contentid=&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#esapiEncode('url',rc.moduleid)#&formType=builder"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwithbuilder')#</a>
 							<cfif application.configBean.getValue('allowSimpleHTMLForms')>
@@ -94,6 +96,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&topid=#esapiEncode('url',rc.moduleid)#&parentid=#esapiEncode('url',rc.moduleid)#&moduleid=#esapiEncode('url',rc.moduleid)#"><i class="icon-circle-arrow-left"></i> 
 					<cfif rc.moduleid eq "00000000000000000000000000000000003">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocomponents')#
+					<cfelseif rc.moduleid eq "00000000000000000000000000000000099">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtovariations')#
 					<cfelse>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtoforms')#
 					</cfif>

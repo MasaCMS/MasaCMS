@@ -91,7 +91,7 @@
 		<cfif rc.parentBean.getType() neq 'Calendar'>
 			<cfinclude template="dsp_displaycontent.cfm">
 		</cfif>
-		<cfif rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form'>
+		<cfif rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation'>
 			<div class="control-group">
 	      		<label class="control-label">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
@@ -159,7 +159,7 @@
 		</div> <!--- /end control-group --->
 	</cfif>
 
-	<cfif rc.type neq 'Component' and rc.type neq 'Form' and  rc.contentid neq '00000000000000000000000000000000001'>
+	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
 		<div class="control-group">
 		    <label class="control-label">
 		     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#

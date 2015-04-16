@@ -236,4 +236,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfif>
 </table>
 
+<cfif application.configBean.getValue(property='variations',defaultValue=false)>
+  <cfset rc.rslist=rc.variationAssignments.getQuery()>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.variations')#</h3>
+ <table class="mura-table-grid">
+    <tr> 
+      <th class="var-width"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
+      <th> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
+      <th class="actions">&nbsp;</th>
+    </tr>
+    <cfif rc.rslist.recordcount>
+     <cfloop query="rc.rslist">
+    <cfsilent>
+      <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
+      <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+      <cfset editlink="./?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#esapiEncode('url',rc.startrow)#&return=changesets">
+    </cfsilent>
+        <tr>  
+          <td class="title var-width"><a href="#editlink#">#esapiEncode('html',rc.rsList.title)#</a></td>
+           <td>
+            <cfif len(rc.rslist.approvalStatus)>
+              #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#rc.rslist.approvalStatus#')#
+            <cfelseif rc.rslist.approved and rc.rslist.active>
+               #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#
+            <cfelseif rc.rslist.approved>
+                 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')#
+            <cfelse>
+              #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.queued')#
+            </cfif>
+           </td>
+
+           <td class="actions">
+            <ul>
+            <cfif verdict neq 'none'>
+              <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
+              <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="icon-book"></i></a></li>   
+            <cfelse>
+                <li class="edit disabled"><i class="icon-pencil"></i></li>
+               <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
+            </cfif>
+            <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+            </ul>
+          </td>
+        </tr>
+      </cfloop>
+      <cfelse>
+      <tr> 
+        <td colspan="3" class="results"><em>Your search returned no results.</em></td>
+      </tr>
+    </cfif>
+</table>
+</cfif>
+
   </cfoutput>

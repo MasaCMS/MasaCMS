@@ -994,6 +994,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<!--- --->
 
+			<cfif newBean.getType() eq 'Variation'>
+				<cfset newBean.setIsNav(1)>
+			</cfif>
+
 			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
 
@@ -1234,13 +1238,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif newBean.getapproved() or newBean.getIsNew()>
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->
-					<cfif listFindNoCase("Component,Form",newBean.getType())>
+					<cfif listFindNoCase("Component,Form,Variation",newBean.getType())>
 						<!---
 						<cfset getBean('contentUtility').setUniqueTitle(newBean) />
 						--->
 						<cfset newBean.setMenuTitle(newBean.getTitle())>
 						<cfset newBean.setHTMLTitle(newBean.getTitle())>
 						<cfset newBean.setURLTitle(newBean.getTitle())>
+						<cfset newBean.setIsNav(1)>
 					</cfif>
 				<!--- END CONTENT TYPE: COMPONENT, FORM --->
 				</cfif>

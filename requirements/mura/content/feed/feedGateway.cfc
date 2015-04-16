@@ -301,7 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									AND TKids.searchExclude = 0
 								</cfif>
 
-								<cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>
+								<cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component,Variation',arguments.feedBean.getType())>
 									AND TKids.isNav = 1
 								</cfif>
 
@@ -311,6 +311,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									AND tcontent.moduleid = '00000000000000000000000000000000003'
 								<cfelseif arguments.feedBean.getType() eq "Form">
 									AND tcontent.moduleid = '00000000000000000000000000000000004'
+								<cfelseif arguments.feedBean.getType() eq "Variation">
+									AND tcontent.moduleid = '00000000000000000000000000000000099'
 								<cfelse>
 									AND tcontent.moduleid = '00000000000000000000000000000000000'
 								</cfif>
@@ -619,6 +621,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND tcontent.moduleid = '00000000000000000000000000000000003'
 				<cfelseif arguments.feedBean.getType() eq "Form">
 					AND tcontent.moduleid = '00000000000000000000000000000000004'
+				<cfelseif arguments.feedBean.getType() eq "Variation">
+					AND tcontent.moduleid = '00000000000000000000000000000000099'
 				<cfelse>
 					AND tcontent.moduleid = '00000000000000000000000000000000000'
 				</cfif>
