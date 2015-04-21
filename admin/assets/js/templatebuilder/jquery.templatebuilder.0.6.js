@@ -123,7 +123,7 @@
 			
 			console.log(_formData.formattributes);
 			
-			if ( _formData.formattributes['name-unrestricted'] == 1) {
+			if ( _formData.formattributes && _formData.formattributes['name-unrestricted'] == 1) {
 				_nameEnabled = true;
 			}
 		}

@@ -3053,7 +3053,7 @@ Display Objects
 	
 	<cfif getRenderHTMLQueues()>
 		
-		<cfif arguments.queueType eq "HEAD">
+		<cfif arguments.queueType eq "HEAD" and variables.$.content('type') neq 'Variation'>
 			
 			<!--- Add global.js --->
 			<cfset addToHTMLHEADQueue('global.cfm',"prepend")>

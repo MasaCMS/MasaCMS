@@ -312,7 +312,7 @@
 							</cfif>
 							and 
 							<cfif param.getCondition() neq "like">
-								<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),data.getsiteid())>
+								<cfset castfield=variables.configBean.getClassExtensionManager().getCastString(param.getField(),params.getsiteid())>
 							</cfif> 
 							<cfif param.getCondition() eq "like" and variables.configBean.getDbCaseSensitive()>
 								upper(#castfield#)

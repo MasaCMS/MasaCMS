@@ -1260,9 +1260,8 @@ var initMura=function(config){
 				dataType: 'JSON'
 		}).then(handleResponse);
 	}
-
+	
 	$.extend(config,{
-		vaildateForm:validateForm,
 		processAsyncObject:processAsyncObject,
 		setLowerCaseKeys:setLowerCaseKeys,
 		noSpam:noSpam,
@@ -1271,6 +1270,9 @@ var initMura=function(config){
 		announceEvent:announceEvent,
 		addEventHandler:addEventHandler
 	});
+
+	//for some reason this can't be added via extend
+	config.validateForm=validateForm;
 
 	$.extend(window,{
 		mura:config,
@@ -1336,5 +1338,7 @@ var initMura=function(config){
 
 		$(document).trigger('muraReady');
 	});
+
+	return config;
 
 };

@@ -298,9 +298,15 @@ component extends="mura.cfobject" {
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
 						var filenamestart=3;
-
+						
 						if(pathInfo[3]=='_path'){
 							params.render=true;
+							params.variation=false;
+							params.id='';
+							filenamestart=4;
+						} else if(pathInfo[3]=='_variation'){
+							params.render=true;
+							params.variation=true;
 							params.id='';
 							filenamestart=4;
 						} 
@@ -820,18 +826,27 @@ component extends="mura.cfobject" {
 		return vals;
 	}
 
-	function findOne(entityName,id,siteid,render=false){
+	function findOne(entityName,id,siteid,render=false,variation=false){
 		var $=getBean('$').init(arguments.siteid);
 		
 		if(arguments.entityName=='content'){
 			var pk = 'contentid';
-			if(arguments.render){
-				if(arguments.id=='null'){
-					arguments.id='';
-				}
 
-				getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);		
-		
+			if(arguments.render){	
+				if(arguments.variation){
+					request.contentBean=$.getBean('content').loadBy(remoteid=id);
+					request.contentBean.setType('Variation');
+					request.contentBean.setIsNew(0);
+					request.contentBean.setSiteID(arguments.siteid);
+					url.linkservid=request.contentBean.getContentID();
+					getBean('contentServer').renderFilename(filename='',siteid=arguments.siteid,validateDomain=false);
+				} else {
+					if(arguments.id=='null'){
+						arguments.id='';
+					}
+
+					getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);		
+				}
 
 			} else {
 				if(len($.event('contenthistid'))){
@@ -1297,8 +1312,12 @@ component extends="mura.cfobject" {
 		*/
 
 		if(entity.getEntityName()=='content'){
-			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
-			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
+			if(entity.getType()=='Variation'){
+				links['renderered']="#baseurl#/_path/#entity.getFilename()#";
+				links['self']=links['renderered'];
+			} else {
+				links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
+			}
 			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";
 		} else if(entity.getEntityName()=='category'){
 			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('categoryid')#";	

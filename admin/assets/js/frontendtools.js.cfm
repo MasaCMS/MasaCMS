@@ -15,8 +15,7 @@
 <cfif not structKeyExists(session,"rb")>
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
-<cfparam name="Cookie.fetDisplay" default="">
-<cfoutput>
+<cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default=""><cfoutput>(function(){
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
@@ -24,7 +23,7 @@
 	var adminLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/";
 	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 
-	function onAdminMessage(messageEvent){
+	var onAdminMessage=function(messageEvent){
 
 		if (messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
 			|| messageEvent.origin == 'https://' + adminDomain + "#$.globalConfig('serverPort')#") {
@@ -52,18 +51,18 @@
 		}			
 	}
 
-	function initAdminProxy(){
+	initAdminProxy=function(){
 			adminProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsModaliframe');
 			adminProxy.addEventListener(onAdminMessage);
 	}
-	
+
 	var frontEndModalWidthStandard=990;
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
-	
-	function autoScroll(y){
+
+	var autoScroll=function(y){
 		var st = $(window).scrollTop();
 	    var o = $('##frontEndToolsModalBody').offset().top;
 	    var t = $(window).scrollTop() + 80;
@@ -79,13 +78,13 @@
 	    }
 	}
 
-	function scrollTop(y, top){
+	var scrollTop=function(y, top){
 		$('html, body').stop().animate({
 	        'scrollTop': top
 	    }, 50);
 	}
 
-	function openFrontEndToolsModal(a){
+	var openFrontEndToolsModal=function(a){
 		var src=a.href;
 		var isModal=jQuery(a).attr("data-configurator");
 		var width=jQuery(a).attr("data-modal-width");
@@ -163,13 +162,10 @@
 			frontEndModalHeight=0;
 			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
 			resizeFrontEndToolsModal(0);
-			}
-
-		
-		
+		}
 	}
-	
-	function resizeFrontEndToolsModal(frameHeight){
+
+	var resizeFrontEndToolsModal=function(frameHeight){
 		if (document.getElementById("frontEndToolsModaliframe")) {
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
@@ -208,21 +204,21 @@
 		}
 		
 	}
-	
-	function closeFrontEndToolsModal(){
+
+	var closeFrontEndToolsModal=function(){
 		jQuery('##frontEndToolsModalContainer').remove();
 	}	
-	
-	function checkToolbarDisplay () {
-		<cfif Cookie.fetDisplay eq "none">
-			$('HTML').removeClass('mura-edit-mode');
-			$(".editableObject").addClass('editableObjectHide');
-		<cfelse>
-			$('HTML').addClass('mura-edit-mode');
-		</cfif>
+
+	var checkToolbarDisplay=function() {
+	<cfif Cookie.fetDisplay eq "none">
+		$('HTML').removeClass('mura-edit-mode');
+		$(".editableObject").addClass('editableObjectHide');
+	<cfelse>
+		$('HTML').addClass('mura-edit-mode');
+	</cfif>
 	}
-	
-	function toggleAdminToolbar(){
+
+	var toggleAdminToolbar=function(){
 		$("##frontEndTools").animate({opacity: "toggle"});
 		$('HTML').toggleClass('mura-edit-mode');
 		$(".editableObject").toggleClass('editableObjectHide');
@@ -232,7 +228,7 @@
 		}
 	}
 
-	function resizeEditableObject(target){
+	var resizeEditableObject=function(target){
 		
 		var display="inline";	
 		var width=0;
@@ -303,15 +299,15 @@
 	);
 
 	$(window).resize(function() {
-  		jQuery(".editableObjectContents").each(function(){
+			jQuery(".editableObjectContents").each(function(){
 				resizeEditableObject(this);
 		});
 	});
-</cfoutput>
-</cfif>
-<cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showInlineEditor') and url.showInlineEditor>
-<cfset node=application.serviceFactory.getBean('contentManager').read(contentHistID=url.contentHistID,siteid=url.siteid)>
-<cfif not node.getIsNew()>
+	</cfoutput>
+	</cfif>
+	<cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showInlineEditor') and url.showInlineEditor>
+	<cfset node=application.serviceFactory.getBean('contentManager').read(contentHistID=url.contentHistID,siteid=url.siteid)>
+	<cfif not node.getIsNew()>
 	<cfoutput>
 	var muraInlineEditor={
 		inited: false,
@@ -490,222 +486,222 @@
 		},
 		validate: function(callback){
 
-				if(!mura.apiEndpoint){
-					mura.apiEndpoint=mura.context + '/index.cfm/_api/json/v1/';
-				}
+			if(!mura.apiEndpoint){
+				mura.apiEndpoint=mura.context + '/index.cfm/_api/json/v1/';
+			}
 
-				var getValidationFieldName=function(theField){
-					if(theField.getAttribute('data-label')!=undefined){
-						return theField.getAttribute('data-label');
-					}else if(theField.getAttribute('label')!=undefined){
-						return theField.getAttribute('label');
-					}else{
-						return theField.getAttribute('name');
-					}
+			var getValidationFieldName=function(theField){
+				if(theField.getAttribute('data-label')!=undefined){
+					return theField.getAttribute('data-label');
+				}else if(theField.getAttribute('label')!=undefined){
+					return theField.getAttribute('label');
+				}else{
+					return theField.getAttribute('name');
 				}
+			}
 
-				var getValidationIsRequired=function(theField){
-					if(theField.getAttribute('data-required')!=undefined){
-						return (theField.getAttribute('data-required').toLowerCase() =='true');
-					}else if(theField.getAttribute('required')!=undefined){
-						return (theField.getAttribute('required').toLowerCase() =='true');
-					}else{
-						return false;
-					}
+			var getValidationIsRequired=function(theField){
+				if(theField.getAttribute('data-required')!=undefined){
+					return (theField.getAttribute('data-required').toLowerCase() =='true');
+				}else if(theField.getAttribute('required')!=undefined){
+					return (theField.getAttribute('required').toLowerCase() =='true');
+				}else{
+					return false;
 				}
+			}
 
-				var getValidationMessage=function(theField, defaultMessage){
-					if(theField.getAttribute('data-message') != undefined){
-						return theField.getAttribute('data-message');
-					} else if(theField.getAttribute('message') != undefined){
-						return theField.getAttribute('message') ;
-					} else {
-						return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-					}	
+			var getValidationMessage=function(theField, defaultMessage){
+				if(theField.getAttribute('data-message') != undefined){
+					return theField.getAttribute('data-message');
+				} else if(theField.getAttribute('message') != undefined){
+					return theField.getAttribute('message') ;
+				} else {
+					return getValidationFieldName(theField).toUpperCase() + defaultMessage;
+				}	
+			}
+
+			var getValidationType=function(theField){
+				if(theField.getAttribute('data-validate')!=undefined){
+					return theField.getAttribute('data-validate').toUpperCase();
+				}else if(theField.getAttribute('validate')!=undefined){
+					return theField.getAttribute('validate').toUpperCase();
+				}else{
+					return '';
 				}
+			}
 
-				var getValidationType=function(theField){
-					if(theField.getAttribute('data-validate')!=undefined){
-						return theField.getAttribute('data-validate').toUpperCase();
-					}else if(theField.getAttribute('validate')!=undefined){
-						return theField.getAttribute('validate').toUpperCase();
-					}else{
-						return '';
-					}
+			var hasValidationMatchField=function(theField){
+				if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+					return true;
+				}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+					return true;
+				}else{
+					return false;
 				}
+			}
 
-				var hasValidationMatchField=function(theField){
-					if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+			var getValidationMatchField=function (theField){
+				if(theField.getAttribute('data-matchfield')!=undefined){
+					return theField.getAttribute('data-matchfield');
+				}else if(theField.getAttribute('matchfield')!=undefined){
+					return theField.getAttribute('matchfield');
+				}else{
+					return '';
+				}
+			}
+
+			var hasValidationRegex=function(theField){
+				if(theField.value != undefined){
+					if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
 						return true;
-					}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+					}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
 						return true;
-					}else{
-						return false;
 					}
+				}else{
+					return false;
 				}
+			}
 
-				var getValidationMatchField=function (theField){
-					if(theField.getAttribute('data-matchfield')!=undefined){
-						return theField.getAttribute('data-matchfield');
-					}else if(theField.getAttribute('matchfield')!=undefined){
-						return theField.getAttribute('matchfield');
-					}else{
-						return '';
+			var getValidationRegex=function(theField){
+				if(theField.getAttribute('data-regex')!=undefined){
+					return theField.getAttribute('data-regex');
+				}else if(theField.getAttribute('regex')!=undefined){
+					return theField.getAttribute('regex');
+				}else{
+					return '';
+				}
+			}
+
+			var data={};
+			var $callback=callback;
+
+			for (var prop in muraInlineEditor.attributes) {
+				data[prop]=muraInlineEditor.getAttributeValue(prop);
+			}
+
+			var errors="";
+			var setFocus=0;
+			var started=false;
+			var startAt;
+			var firstErrorNode;
+			var validationType='';
+			var validations={properties:{}};
+			var rules=new Array();
+
+			for (var prop in muraInlineEditor.attributes) {
+				theField=muraInlineEditor.attributes[prop];
+			    validationType=getValidationType(theField).toUpperCase();;
+			    theValue=muraInlineEditor.getAttributeValue(prop);
+
+				rules=new Array();
+				
+				if(getValidationIsRequired(theField))
+					{	
+						rules.push({
+							required: true,
+							message: getValidationMessage(theField,' is required.')
+						});
+						
+						 			
 					}
-				}
-
-				var hasValidationRegex=function(theField){
-					if(theField.value != undefined){
-						if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
-							return true;
-						}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
-							return true;
-						}
-					}else{
-						return false;
-					}
-				}
-
-				var getValidationRegex=function(theField){
-					if(theField.getAttribute('data-regex')!=undefined){
-						return theField.getAttribute('data-regex');
-					}else if(theField.getAttribute('regex')!=undefined){
-						return theField.getAttribute('regex');
-					}else{
-						return '';
-					}
-				}
-
-				var data={};
-				var $callback=callback;
-
-				for (var prop in muraInlineEditor.attributes) {
-					data[prop]=muraInlineEditor.getAttributeValue(prop);
-				}
-
-				var errors="";
-                var setFocus=0;
-                var started=false;
-                var startAt;
-                var firstErrorNode;
-                var validationType='';
-                var validations={properties:{}};
-                var rules=new Array();
-
-                for (var prop in muraInlineEditor.attributes) {
-                	theField=muraInlineEditor.attributes[prop];
-                    validationType=getValidationType(theField).toUpperCase();;
-                    theValue=muraInlineEditor.getAttributeValue(prop);
-		
-					rules=new Array();
-					
-					if(getValidationIsRequired(theField))
-						{	
+				if(validationType != ''){
+						
+					if(validationType=='EMAIL' && theValue != '')
+					{	
 							rules.push({
-								required: true,
-								message: getValidationMessage(theField,' is required.')
+								dataType: 'EMAIL',
+								message: getValidationMessage(theField,' must be a valid email address.')
 							});
 							
-							 			
-						}
-					if(validationType != ''){
-							
-						if(validationType=='EMAIL' && theValue != '')
-						{	
-								rules.push({
-									dataType: 'EMAIL',
-									message: getValidationMessage(theField,' must be a valid email address.')
-								});
-								
+									
+					}
+
+					else if(validationType=='NUMERIC')
+					{	
+							rules.push({
+								dataType: 'NUMERIC',
+								message: getValidationMessage(theField,' must be numeric.')
+							});
 										
-						}
-		
-						else if(validationType=='NUMERIC')
-						{	
-								rules.push({
-									dataType: 'NUMERIC',
-									message: getValidationMessage(theField,' must be numeric.')
-								});
+					}
+					
+					else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
+					{	
+							rules.push({
+								regex: hasValidationRegex(theField),
+								message: getValidationMessage(theField,' is not valid.')
+							});
 											
-						}
-						
-						else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
-						{	
-								rules.push({
-									regex: hasValidationRegex(theField),
-									message: getValidationMessage(theField,' is not valid.')
-								});
-												
-						}
-						
-						else if(validationType=='MATCH' 
-								&& hasValidationMatchField(theField) && theValue != theForm[getValidationMatchField(theField)].value)
-						{	
-							rules.push({
-								eq: theForm[getValidationMatchField(theField)].value,
-								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
-							});
-										
-						}
-						
-						else if(validationType=='DATE' && theValue != '')
-						{
-							rules.push({
-								dataType: 'DATE',
-								message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
-							});
-							 
-						}
 					}
 					
-					if(rules.length){
-						validations.properties[prop]=rules;
+					else if(validationType=='MATCH' 
+							&& hasValidationMatchField(theField) && theValue != theForm[getValidationMatchField(theField)].value)
+					{	
+						rules.push({
+							eq: theForm[getValidationMatchField(theField)].value,
+							message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+						});
+									
+					}
+					
+					else if(validationType=='DATE' && theValue != '')
+					{
+						rules.push({
+							dataType: 'DATE',
+							message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+						});
+						 
 					}
 				}
-
-				try{
-					//alert(JSON.stringify(validations))
-					$.ajax(
-						{
-							type: 'post',
-							url: mura.apiEndpoint + 'validate/',
-							data: {
-									data: JSON.stringify($.extend(muraInlineEditor.data,data)),
-									validations: JSON.stringify(validations)
-								},
-							success: function(resp) {
-								if(typeof resp != 'object'){
-									resp=data=eval('(' + resp + ')');
-								}
-		 				 		data=resp.data;
-
-		 				 		if($.isEmptyObject(data)){
-		 				 			$callback();
-		 				 		} else {
-			 				 		var msg='';
-			 				 		for(var e in data){
-			 				 			msg=msg + data[e] + '\n';
-			 				 		}
-
-			 				 		alert(msg);
-
-			 				 		return false;
-		 				 		}
-							},
-							error: function(resp) {
-		 				 		
-		 				 		alert(JSON.stringify(resp));
-							}
-
-						}		 
-					);
-				} 
-				catch(err){ 
-					console.log(err);
-
+				
+				if(rules.length){
+					validations.properties[prop]=rules;
 				}
+			}
 
-				return false;
+			try{
+				//alert(JSON.stringify(validations))
+				$.ajax(
+					{
+						type: 'post',
+						url: mura.apiEndpoint + 'validate/',
+						data: {
+								data: JSON.stringify($.extend(muraInlineEditor.data,data)),
+								validations: JSON.stringify(validations)
+							},
+						success: function(resp) {
+							if(typeof resp != 'object'){
+								resp=data=eval('(' + resp + ')');
+							}
+						 		data=resp.data;
+
+						 		if($.isEmptyObject(data)){
+						 			$callback();
+						 		} else {
+							 		var msg='';
+							 		for(var e in data){
+							 			msg=msg + data[e] + '\n';
+							 		}
+
+							 		alert(msg);
+
+							 		return false;
+						 		}
+						},
+						error: function(resp) {
+						 		
+						 		alert(JSON.stringify(resp));
+						}
+
+					}		 
+				);
+			} 
+			catch(err){ 
+				console.log(err);
+
+			}
+
+			return false;
 
 		},
 		htmlEditorOnComplete: function(editorInstance) {
@@ -715,7 +711,7 @@
 			CKFinder.setupCKEditor(
 			instance, {
 				basePath: '#application.configBean.getContext()#/requirements/ckfinder/',
-				rememberLastFolder: false
+				rememberLastFolder: true
 			});
 		},
 		<cfset csrfTokens=$.generateCSRFTokens(context=node.getContentHistID() & 'add')>
@@ -752,5 +748,7 @@
 		}
 	};
 
-</cfif>
-</cfif>
+	window.muraInlineEditor=muraInlineEditor;
+	</cfif>
+	</cfif>
+})();

@@ -46,32 +46,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->	
 
 	<cfparam name="Cookie.fetDisplay" default="">
-	<cfoutput>
-	<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-	<script>
-		if(!window.CKEDITOR){
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js"%3E%3C/script%3E'));
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
-		}
-		if(!window.CKFinder){
-			document.write(unescape('%3Cscript src="#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js"%3E%3C/script%3E'));
-		}
-	</script>
-	<script type="text/javascript" src="#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode('url',variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#"></script>
+	<cfif variables.$.content('type') neq 'Variation'>
+		<cfoutput>
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+		
+		<script>
+			var hasMuraLoader=(typeof(mura) != 'undefined' && typeof(mura.loader) != 'undefined');	
+			if(!window.CKEDITOR){
+				if(hasMuraLoader){
+					mura.loader().loadjs(
+						'#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js',
+						'#variables.$.globalConfig("requirementsPath")#/ckeditor/adapters/jquery.js');	
+		
+				} else {
+					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckeditor/ckeditor.js');
+					$.getScript('#variables.$.globalConfig("requirementsPath"
+						)#/ckeditor/adapters/jquery.js');	
+				}	
+			}
 
-	<!---[if LT IE9]>
-	   <style type="text/css">
+			if(!window.CKFinder){
+				if(hasMuraLoader){
+					mura.loader().loadjs(
+						'#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');
+				} else {
+					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');		
+				}
+			}
 
-	   ##frontEndToolsModalContainer {
-	         background: transparent;
-	          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
-	          zoom: 1;
-	       }
+			if(hasMuraLoader){
+				mura.loader().loadjs(
+						'#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
+			} else {
+				$.getScript('#variables.$.globalConfig("adminPath")#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#');
+			}
+		</script>
 
-	    </style>
-	<![endif]--->
-	</cfoutput>
+
+		<!---[if LT IE9]>
+		   <style type="text/css">
+
+		   ##frontEndToolsModalContainer {
+		         background: transparent;
+		          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
+		          zoom: 1;
+		       }
+
+		    </style>
+		<![endif]--->
+		</cfoutput>
+	</cfif>
+
 	<cfif getShowToolbar()>
 		<cfsilent>
 			<cfset variables.adminBase=variables.$.globalConfig("adminPath")/>
@@ -190,14 +216,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</li>
 						
-						<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
+						<cfif listFindNoCase('editor,author',request.r.perm)>
+							<cfset edittype=($.content('type') eq 'Variation')?'var':'inline'>
 							<li id="adminSave" class="dropdown" style="display:none">
 								<a href="" class="dropdown-toggle" onclick="return false;">
 									<i class="icon-ok-sign"></i> Save</a>
 								<ul class="dropdown-menu">
 									<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')>
 										<li>
-											<a class="mura-inline-save" data-approved="1" data-changesetid="">
+											<a class="mura-#edittype#-save" data-approved="1" data-changesetid="">
 											<i class="icon-ok"></i> 
 											<cfif $.content().requiresApproval()>
 												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
@@ -209,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 									<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
 										<li>
-											<a class="mura-inline-save" data-approved="0" data-changesetid="">
+											<a class="mura-#edittype#-save" data-approved="0" data-changesetid="">
 												<i class="icon-edit"></i>  
 												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
 											</a>
@@ -226,18 +253,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<cfloop condition="changesets.hasNext()">
 													<cfset changeset=changesets.next()>
 													<li>
-														<a class="mura-inline-save" data-approved="0" data-changesetid="#changeset.getChangesetID()#">#esapiEncode('html',changeset.getName())#</a>
+														<a class="mura-#edittype#-save" data-approved="0" data-changesetid="#changeset.getChangesetID()#">#esapiEncode('html',changeset.getName())#</a>
 													</li>
 												</cfloop>
 												<cfelse>
 													<li>
-														<a class="mura-inline-cancel">#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.noneavailable"))#</a>
+														<a class="mura-#edittype#-cancel">#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.noneavailable"))#</a>
 													</li>
 												</cfif>
 											</ul>
 										</li>
 									</cfif>
-									<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
+									<cfif $.content('type') eq 'Variation'>
+									<li><a class="mura-#edittype#-undo"><i class="icon-undo"></i> Undo</a></li>
+									</cfif>
+									<li><a class="mura-#edittype#-cancel"><i class="icon-ban-circle"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
 								</ul>
 							</li>
 						</cfif>
@@ -247,6 +277,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not request.contentBean.getIsNew()>
 					<cfif ListFindNoCase('editor,author',request.r.perm)>
 						<ul id="tools-version">
+							<cfif $.content('type') eq 'Variation'>
+							<li id="adminEditPage" class="dropdown"><a id="mura-var-edit"><i class="icon-pencil"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
+							<cfelse>
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
@@ -258,17 +292,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</li>
 									</cfif>
 								</ul>				
+							</li>			
+							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i></a>
+							</li>	
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i></a>
 							</li>
-									
-							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')# ---></a>
-								</li>
-							
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')# ---></a></li>
-							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i><!--- <b class="caret"></b> ---></a>
-							</li>
-								
+							</cfif>
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
-								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i><!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')# ---></a></li>
+								<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i></a></li>
 							</cfif>
 						</ul>
 					</cfif>
@@ -330,14 +362,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<li>
 											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
 												<i class="icon-check"></i>
-												 <!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#esapiEncode('html_attr',previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
 											</a>
 										</li>
 									<cfelse>
 										<li>
 											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
 												<i class="icon-code-fork"></i>
-												<!---#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"changesets.previewnodemembership"),'<strong>"#esapiEncode('html_attr',previewData.previewmap[$.content("contentID")].changesetName)#"</strong>')#--->
+						
 											</a>
 										</li>
 									</cfif>
@@ -345,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li>
 										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
 											<i class="icon-ban-circle"></i>
-											<!---#application.rbFactory.getKeyValue(session.rb,"changesets.previewnodenotinchangeset")#--->
+											
 										</a>
 									</li>
 								</cfif>

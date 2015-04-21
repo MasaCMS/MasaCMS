@@ -994,10 +994,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<!--- --->
 
-			<cfif newBean.getType() eq 'Variation'>
-				<cfset newBean.setIsNav(1)>
-			</cfif>
-
 			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
 

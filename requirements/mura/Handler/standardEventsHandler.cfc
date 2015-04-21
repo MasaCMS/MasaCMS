@@ -754,35 +754,59 @@
 	<cfscript>
 		try{
 			var result=$.content().getAllValues();
-			var renderer=$.getContentRenderer();
 			var apiUtility=$.siteConfig().getApi('json','v1');
+			var renderer=$.getContentRenderer();
+
+			if(result.type != 'Variation'){
+
+				request.cffpJS=true;
+
+				renderer.injectMethod('showInlineEditor',false);
+				renderer.injectMethod('showAdminToolBar',false);
+				renderer.injectMethod('showMemberToolBar',false);
+				renderer.injectMethod('showEditableObjects',false);
+
+				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true));
 			
-			renderer.injectMethod('showInlineEditor',false);
-			renderer.injectMethod('showAdminToolBar',false);
-			renderer.injectMethod('showMemberToolBar',false);
-			renderer.injectMethod('showEditableObjects',false);
+				result.displayRegions={};
 
-			request.cffpJS=true;
-				
-			result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true));
-		
-			result.displayRegions={};
+				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
+					var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
+					var regionArray=$.dspObjects(columnid=r,returnFormat='array');
 
-			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
-				var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
-				var regionArray=$.dspObjects(columnid=r,returnFormat='array');
-
-				for(var d=1;d<=arrayLen(regionArray);d++){
-				
-					if(isJSON(regionArray[d])){
-						regionArray[d]=regionArray[d];
-					} else {
-						regionArray[d]={html=apiUtility.applyRemoteFormat(regionArray[d])};
+					for(var d=1;d<=arrayLen(regionArray);d++){
+					
+						if(isJSON(regionArray[d])){
+							regionArray[d]=regionArray[d];
+						} else {
+							regionArray[d]={html=apiUtility.applyRemoteFormat(regionArray[d])};
+						}
 					}
+
+					result.displayRegions[regionName]={items=regionArray};
 				}
 
-				result.displayRegions[regionName]={items=regionArray};
 			}
+
+			result.config={
+				loginURL=$.siteConfig('LoginURL'),
+				siteid=$.event('siteID'),
+				contentid=$.content('contentid'),
+				contenthistid=$.content('contenthistid'),
+				siteID=$.event('siteID'),
+				context=$.globalConfig('context'),
+				nocache:val($.event('nocache')),
+				assetpath=$.siteConfig('assetPath'),
+				requirementspath=$.globalConfig('requirementspath'),
+				adminpath=$.globalConfig('adminpath'),
+				themepath=$.siteConfig('themeAssetPath'),
+				rb=lcase(listFirst($.siteConfig('JavaLocale'),"_")),
+				reCAPTCHALanguage=$.siteConfig('reCAPTCHALanguage'),
+				preloaderMarkup=esapiEncode('javascript',renderer.preloaderMarkup),
+				mobileformat=esapiEncode('javascript',$.event('muraMobileRequest')),
+				adminpreview=lcase(structKeyExists(url,'muraadminpreview')),
+				windowdocumentdomain=$.globalConfig('WindowDocumentDomain')
+			};
 
 			result.HTMLHeadQueue=$.renderHTMLQueue('head');
 			result.HTMLFootQueue=$.renderHTMLQueue('foot');
@@ -790,9 +814,9 @@
 			result.id=result.contentid;
 			result.links=apiUtility.getLinks($.content());
 			result.images=apiUtility.setImageUrls($.content(),$);
-			//if(!request.muraApiRequest){
-				getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
-			//}
+		
+			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
+			
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data=result}));
 
 		} catch (any e){
