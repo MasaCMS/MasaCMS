@@ -180,6 +180,9 @@
 														<i class="icon-pencil"></i>
 													</a>
 												</li>
+												<cfif rc.rstop.type eq 'Variation'>
+													<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#');"><i class="icon-globe"></i></a></li>
+												</cfif>
 												<li class="version-history">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
 														<i class="icon-book"></i>
