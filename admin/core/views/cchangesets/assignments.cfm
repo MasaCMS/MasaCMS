@@ -270,9 +270,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <ul>
             <cfif verdict neq 'none'>
               <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
-              <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="icon-book"></i></a></li>   
+              <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#esapiEncode('url',rc.rsList.type)#&parentid=#rc.rsList.parentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#esapiEncode('url',rc.startrow)#"><i class="icon-book"></i></a></li> 
+               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="icon-globe"></i></a></li>  
             <cfelse>
                 <li class="edit disabled"><i class="icon-pencil"></i></li>
+                <cfif rc.rstop.type eq 'Variation'>
+                <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rslist.remoteurl#?previewid=#rc.rslist.contenthistid#');"><i class="icon-globe"></i></a></li>
+              </cfif>
                <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
             </cfif>
             <li class="delete"><a  title="Delete" href="./?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#esapiEncode('url',rc.siteid)#&changesetID=#esapiEncode('url',rc.rslist.changesetID)#&keywords=#esapiEncode('html',rc.keywords)##csrftokens#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>

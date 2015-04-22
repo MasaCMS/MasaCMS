@@ -542,7 +542,7 @@
 	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.subtype, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate,
 	tcontent.lastupdateby, tcontent.lastupdatebyid, 
 	tcontent.display, tcontent.displaystart, tcontent.displaystop, tcontent.moduleid, tcontent.isnav, tcontent.notes,tcontent.isfeature,tcontent.inheritObjects,tcontent.filename,tcontent.targetParams,tcontent.releaseDate,
-	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle, tapprovalrequests.status approvalStatus, tapprovalrequests.status approvalStatus,tapprovalrequests.requestID
+	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle, tapprovalrequests.status approvalStatus, tapprovalrequests.status approvalStatus,tapprovalrequests.requestID,tcontent.remoteid,tcontent.remoteurl
 	from tcontent 
 	left join tfiles on tcontent.fileID=tfiles.fileID
 	left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
