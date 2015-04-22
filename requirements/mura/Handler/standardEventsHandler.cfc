@@ -795,7 +795,7 @@
 				contenthistid=$.content('contenthistid'),
 				siteID=$.event('siteID'),
 				context=$.globalConfig('context'),
-				nocache:val($.event('nocache')),
+				nocache=val($.event('nocache')),
 				assetpath=$.siteConfig().getResourcePath(complete=1) & $.siteConfig().getAssetPath(),
 				requirementspath=$.siteConfig().getRequirementsPath(complete=1),
 				adminpath=$.globalConfig('adminpath'),
