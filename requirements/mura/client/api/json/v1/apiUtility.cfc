@@ -71,7 +71,6 @@ component extends="mura.cfobject" {
 			fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
 		});
 
-		registerEntity('content',{public=true});
 		registerEntity('user',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('group',{public=false,moduleid='00000000000000000000000000000000008'});
 		registerEntity('address',{public=false,moduleid='00000000000000000000000000000000008'});
@@ -161,6 +160,21 @@ component extends="mura.cfobject" {
 			var result="";
 
 			getBean('utility').suppressDebugging();
+
+			var headers = getHttpRequestData().headers;
+			
+			
+			if( structKeyExists( headers, 'Origin' )){
+				
+			  	var origin =  headers['Origin'];;
+			  	var PC = getpagecontext().getresponse();
+			 
+			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
+			  	if(listFindNoCase(application.settingsManager.getSite(variables.siteid).getAccessControlOriginList(), origin )) {
+			   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
+			   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+			  	}
+		  	}
 
 			structAppend(params,url);
 			structAppend(params,form);
@@ -309,9 +323,9 @@ component extends="mura.cfobject" {
 							params.variation=true;
 							params.id='';
 							filenamestart=4;
-						} 
+						} 				
 
-						if(arrayLen(pathInfo) > filenamestart){
+						if(arrayLen(pathInfo) >= filenamestart){
 							for(var i=filenamestart;i<=arrayLen(pathInfo);i++){
 								params.id=listAppend(params.id,pathInfo[i],'/');
 							}
@@ -491,7 +505,7 @@ component extends="mura.cfobject" {
 
 	function getRelationship(from,to){
 		if(isDefined("application.objectMappings.#arguments.from#")){
-			//writeDump(var= application.objectMappings['#arguments.from#'].hasMany,abort=1);
+			
 			for(var p in application.objectMappings['#arguments.from#'].hasOne){
 				if(p.name==arguments.to || p.cfc==arguments.to){
 					return p;
@@ -558,11 +572,15 @@ component extends="mura.cfobject" {
 			throw(type='invalidParameters');
 		}
 
+		if(arguments.bean.getEntityName() == 'content' && listFindNoCase('Form,Component,Variation',arguments.$.event('type'))){
+			arguments.bean.setType($.event('type'));
+		}
+
 		switch(arguments.bean.getEntityName()){
 			case 'content':
 				switch(arguments.bean.getType()){
 					case 'Form':	
-						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',variables.siteid)){
 							return false;
 						}
 					break;
@@ -571,8 +589,13 @@ component extends="mura.cfobject" {
 							return false;
 						}
 					break;
+					case 'Variation':
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000099',variables.siteid)){
+							return false;
+						}
+					break;
 					default:	
-						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000004',variables.siteid)){
+						if(!getBean('permUtility').getModulePerm('00000000000000000000000000000000000',variables.siteid)){
 							return false;
 						}
 					break;
@@ -585,9 +608,9 @@ component extends="mura.cfobject" {
 					local.crumbData=arguments.bean.getCrumbArray(); 
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);
 				}
-				 
-				if(local.currentBean.getIsNew() && len(local.currentBean.getParentID())){
-					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());
+			
+				if(local.currentBean.getIsNew() && len(arguments.bean.getParentID())){
+					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());	
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);  
 				}
 				 
@@ -726,6 +749,9 @@ component extends="mura.cfobject" {
 
 		if(arguments.entityName=='content' && len($.event('contenthistid'))){
 			var loadByparams={contenthistid=$.event('contenthistid')};
+			if($.event('type')=='Variation'){
+				$.event('body',urlDecode($.event('body')));
+			}
 		} else {
 			var loadByparams={'#pk#'=arguments.id};
 		}
@@ -833,7 +859,7 @@ component extends="mura.cfobject" {
 			var pk = 'contentid';
 
 			if(arguments.render){	
-				if(arguments.variation){
+				if(arguments.variation){	
 					request.contentBean=$.getBean('content').loadBy(remoteid=id);
 					request.contentBean.setType('Variation');
 					request.contentBean.setIsNew(0);
@@ -844,7 +870,6 @@ component extends="mura.cfobject" {
 					if(arguments.id=='null'){
 						arguments.id='';
 					}
-
 					getBean('contentServer').renderFilename(filename=arguments.id,siteid=arguments.siteid,validateDomain=false);		
 				}
 
@@ -1015,7 +1040,6 @@ component extends="mura.cfobject" {
 	
 		var iterator=feed.getIterator();
 
-		//writeDump(var=iterator.getQUery(),abort=1);
 		var returnArray=[];
 		var itemStruct={};
 		var item='';
@@ -1106,7 +1130,6 @@ component extends="mura.cfobject" {
 
 		var iterator=feed.getIterator();
 
-		//writeDump(var=iterator.getQuery(),abort=1);
 		var returnArray=[];
 		var itemStruct={};
 		var item='';
@@ -1366,7 +1389,6 @@ component extends="mura.cfobject" {
 
 		var iterator=entity.getRelatedContentIterator(argumentCollection=args);
 
-		//writeDump(var=iterator.getQUery(),abort=1);
 		var returnArray=[];
 		var itemStruct={};
 		var item='';

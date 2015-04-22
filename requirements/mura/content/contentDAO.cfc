@@ -278,7 +278,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -348,7 +348,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -418,7 +418,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -495,7 +495,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfif len(arguments.type)>
 				and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 			<cfelse>
-				and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form')
+				and type in ('Page','Folder','File','Calendar','Link','Gallery','Component','Form','Variation')
 			</cfif>	
 		</cfquery>
 

@@ -576,16 +576,20 @@ var initMura=function(config){
 		
 		if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
 			
-			if(typeof(config.loginURL) == "undefined"){
-				lu="?display=login";
-			} else{
+			if(typeof(config.loginURL) != "undefined"){
 				lu=config.loginURL;
+			} else if(typeof(config.loginurl) != "undefined"){
+				lu=config.loginurl;
+			} else{
+				lu="?display=login";
 			}
 			
-			if(typeof(config.returnURL) == "undefined"){
-				ru=location.href;
-			} else{
+			if(typeof(config.returnURL) != "undefined"){
 				ru=config.returnURL;
+			} else if(typeof(config.returnurl) != "undefined"){
+				ru=config.returnURL;
+			} else{
+				ru=location.href;
 			}
 			pressed_keys = "";
 			

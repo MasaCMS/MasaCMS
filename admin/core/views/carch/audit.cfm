@@ -219,8 +219,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</li>
 <cfswitch expression="#rc.item.gettype()#">
-<cfcase value="Page,Folder,Calendar,Gallery,Link,File">
-	<cfset previewURL='#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.item.getcontenthistid()#")#'>
+<cfcase value="Page,Folder,Calendar,Gallery,Link,File,Variation">
+	<cfif rc.item.getType() eq 'Variation'>
+		<cfset previewURL='#rc.contentBean.getRemoteURL()#?previewid=#rc.item.getcontenthistid()#'>
+	<cfelse>
+		<cfset previewURL='#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.item.getcontenthistid()#")#'>
+	</cfif>
 	<cfif rc.compactDisplay eq 'true'>
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent('#esapiEncode('javascript',previewURL)#')});return false;"><i class="icon-globe"></i></a></li>
 	<cfelse>

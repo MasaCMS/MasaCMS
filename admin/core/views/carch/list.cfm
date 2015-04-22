@@ -83,7 +83,7 @@
 			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
-				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.variationmanager')#</h1>
+				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.variationsmanager')#</h1>
 			<cfelse>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1> 
 			</cfif>
