@@ -59,8 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset currentBean=rc.contentBean>
 	</cfif>
 </cfif>	
-<cfif currentBean.getType() eq 'Variation'>
-	<cfset href = currentBean.getRemoteURL()>
+<cfif rc.contentBean.getType() eq 'Variation'>
+	<cfset href = rc.contentBean.getRemoteURL()>
 <cfelseif len(rc.homeID) gt 0>
 	<cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 	<cfset href = homeBean.getURL()>
