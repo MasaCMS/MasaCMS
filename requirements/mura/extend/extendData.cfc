@@ -378,7 +378,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset extData.data['#arguments.rs.name#']=arguments.rs.attributeValue>
 				</cfif>
 			<cfelse>
-				<cfset extData.data['#arguments.rs.name#']=getContentRenderer().setDynamicContent(arguments.rs.defaultValue)>
+				<cftry>
+					<cfset extData.data['#arguments.rs.name#']=getContentRenderer().setDynamicContent(arguments.rs.defaultValue)>
+					<cfcatch><cfset extData.data['#arguments.rs.name#']=''></cfcatch>
+				</cftry>
 			</cfif>
 		</cfloop>
 	</cfif>
