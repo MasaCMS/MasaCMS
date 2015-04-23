@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var ext = newFile.split('.').pop();
 				var extIdx = validExtensions.indexOf(ext);
 
-				if ( newFile === '' || extIdx > -1 ) {
+				if ( newFile === '' || extIdx == -1 ) {
 					var msg = '#rc.$.rbKey('sitemanager.content.importnofilemessage')#';
 					$('##alertDialogMessage').html(msg);
 
