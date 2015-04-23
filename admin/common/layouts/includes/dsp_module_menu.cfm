@@ -54,7 +54,7 @@
   </cfif>
 
   <cfoutput>
-    <li id="modules" class="dropdown<cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleID) or not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>">
+    <li id="modules" class="dropdown<cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) or not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>">
       <a class="dropdown-toggle" data-toggle="dropdown" href="##">
         <i class="icon-th-large"></i> 
         <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> 
