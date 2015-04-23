@@ -676,7 +676,7 @@
 						<cfset link = link & returnParams>
 						<cfset startPos = startPos + len(returnParams)>
 					</cfif>
-					<cfset text = mid(text,1,res.pos[2]-1) & link & mid(text,res.pos[2]+res.len[2], len(text)-(res.pos[2]+res.len[2]+1))>
+					<cfset text = mid(text,1,res.pos[2]-1) & link & mid(text,res.pos[2]+res.len[2], len(text)-(res.pos[2]+res.len[2]-1))>
 				</cfif>
 			</cfif>
 		</cfloop>
