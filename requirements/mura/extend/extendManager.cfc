@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(returnVar)>
 		<cfswitch expression="#arguments.type#">
-			<cfcase value="page">
+			<cfcase value="page,variation">
 				<cfset returnVar = "icon-file">
 			</cfcase>
 			<cfcase value="folder">
