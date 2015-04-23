@@ -14,8 +14,8 @@
 dbUtility.setTable('tcontentrelated')
 		.alterColumn(column='relatedContentSetID',dataType='varchar',length='35',default='00000000000000000000000000000000000');
 
-dbUtility.setTable('tcontentcomments')
-		.alterColumn(column='remoteID',dataType='varchar',length='255',default='');
+//dbUtility.setTable('tcontentcomments')
+		//.alterColumn(column='remoteID',dataType='varchar',length='255',default='');
 </cfscript>
 
 <cfquery>

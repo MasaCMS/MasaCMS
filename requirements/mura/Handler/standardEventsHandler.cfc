@@ -753,8 +753,8 @@
 	<cfargument name="$">
 	<cfscript>
 		try{
-			var result=$.content().getAllValues();
 			var apiUtility=$.siteConfig().getApi('json','v1');
+			var result=apiUtility.getFilteredValues($.content(),$);
 			var renderer=$.getContentRenderer();
 
 			if(result.type != 'Variation'){

@@ -837,6 +837,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'instanceid');
 			structDelete(vals,'primaryKey');
 			structDelete(vals,'extenddatatable');
+			structDelete(vals,'extenddata');
 			if(listFindNoCase("user,group",entityConfigName)){
 				structDelete(vals,'extendautocomplete');
 				structDelete(vals,'sourceiterator');
