@@ -747,7 +747,7 @@
 		</cfscript>
 		}
 	};
-
+	window.toggleAdminToolbar=toggleAdminToolbar;
 	window.muraInlineEditor=muraInlineEditor;
 	</cfif>
 	</cfif>
