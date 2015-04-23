@@ -333,6 +333,7 @@ Display Objects
 <cfset this.searchFormSubmitClass="btn btn-default">
 
 <!--- Dsp_search_results.cfm --->
+<cfset this.searchShowNumbers=1>
 <cfset this.searchResultWrapperClass="container">
 <cfset this.searchResultInnerClass="row">
 <cfset this.searchResultsRowClass="row">
