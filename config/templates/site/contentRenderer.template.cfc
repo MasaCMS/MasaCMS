@@ -304,6 +304,7 @@
 		this.searchFormSubmitClass="";
 		
 		//dsp_search_results.cfm
+		this.searchShowNumbers=1;
 		this.searchResultWrapperClass="";
 		this.searchResultInnerClass="";
 		this.searchResultsRowClass="";
