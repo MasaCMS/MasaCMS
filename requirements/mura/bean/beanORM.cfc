@@ -252,14 +252,14 @@ component extends="mura.bean.bean" versioned=false {
 		return structKeyExists(application.objectMappings[variables.entityName],'datasource');
 	}
 
-	function getsCustomDatasource(){
+	function getCustomDatasource(){
 		return application.objectMappings[variables.entityName].datasource;
 	}
 
 	function getQueryAttrs(){
 		if( hasCustomDatasource() ){
 			structAppend(arguments,
-				{datasource=getsCustomDatasource(),
+				{datasource=getCustomDatasource(),
 				username='',
 				password=''},
 				false);
@@ -298,6 +298,7 @@ component extends="mura.bean.bean" versioned=false {
 
 			if(columns[arguments.prop.column].datatype eq 'datetime'){
 				paramArgs.cfsqltype='cf_sql_timestamp';
+				paramArgs.value=parseDateArg(paramArgs.value);
 			}
 
 			if(listFindNoCase('text,longtext',columns[arguments.prop.column].datatype)){
