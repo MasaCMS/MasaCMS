@@ -1524,11 +1524,14 @@ component extends="mura.cfobject" {
 			$.event('currentFilenameAdjusted',$.content('filename'));
 		}
 		
+		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray());
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
 		$.event().getHandler('standardSetLocale').handle($.event());
+		$.announceEvent('asyncRenderStart');
+
 		//$.event().getHandler('standardMobile').handle($.event());
 
 		if($.event('object')=='comments'){

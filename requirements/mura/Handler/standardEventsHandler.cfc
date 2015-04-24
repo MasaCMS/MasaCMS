@@ -754,8 +754,17 @@
 	<cfscript>
 		try{
 			var apiUtility=$.siteConfig().getApi('json','v1');
-			var result=apiUtility.getFilteredValues($.content(),$);
+			var result=$.content().getAllValues();
 			var renderer=$.getContentRenderer();
+
+			structDelete(result,'addObjects');
+			structDelete(result,'removeObjects');
+			structDelete(result,'frommuracache');
+			structDelete(result,'errors');
+			structDelete(result,'instanceid');
+			structDelete(result,'primaryKey');
+			structDelete(result,'extenddatatable');
+			structDelete(result,'extenddata');
 
 			if(result.type != 'Variation'){
 
