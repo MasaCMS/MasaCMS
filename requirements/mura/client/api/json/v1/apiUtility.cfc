@@ -861,11 +861,18 @@ component extends="mura.cfobject" {
 
 			if(arguments.render){	
 				if(arguments.variation){	
-					request.contentBean=$.getBean('content').loadBy(remoteid=id);
-					request.contentBean.setType('Variation');
-					request.contentBean.setIsNew(0);
-					request.contentBean.setSiteID(arguments.siteid);
-					url.linkservid=request.contentBean.getContentID();
+					var content=$.getBean('content').loadBy(remoteid=id);
+					
+					url.linkservid=content.getContentID();
+
+					if(!content.exists()){
+						content.setType('Variation');
+						content.setIsNew(0);
+						content.setRemoteID(0);
+						content.setSiteID(arguments.siteid);
+						request.contentBean=content;
+					}
+					
 					getBean('contentServer').renderFilename(filename='',siteid=arguments.siteid,validateDomain=false);
 				} else {
 					if(arguments.id=='null'){
