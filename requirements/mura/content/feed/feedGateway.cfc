@@ -313,6 +313,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									AND tcontent.moduleid = '00000000000000000000000000000000004'
 								<cfelseif arguments.feedBean.getType() eq "Variation">
 									AND tcontent.moduleid = '00000000000000000000000000000000099'
+								<cfelseif arguments.feedBean.getType() eq "*">
+									AND tcontent.moduleid in ('00000000000000000000000000000000003','00000000000000000000000000000000004','00000000000000000000000000000000099','00000000000000000000000000000000000')
 								<cfelse>
 									AND tcontent.moduleid = '00000000000000000000000000000000000'
 								</cfif>
@@ -623,6 +625,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND tcontent.moduleid = '00000000000000000000000000000000004'
 				<cfelseif arguments.feedBean.getType() eq "Variation">
 					AND tcontent.moduleid = '00000000000000000000000000000000099'
+				<cfelseif arguments.feedBean.getType() eq "*">
+					AND tcontent.moduleid in ('00000000000000000000000000000000003','00000000000000000000000000000000004','00000000000000000000000000000000099','00000000000000000000000000000000000')
 				<cfelse>
 					AND tcontent.moduleid = '00000000000000000000000000000000000'
 				</cfif>

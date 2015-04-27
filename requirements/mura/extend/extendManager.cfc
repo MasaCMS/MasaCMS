@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(returnVar)>
 		<cfswitch expression="#arguments.type#">
-			<cfcase value="page,variation">
+			<cfcase value="page">
 				<cfset returnVar = "icon-file">
 			</cfcase>
 			<cfcase value="folder">
@@ -97,6 +97,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			<cfcase value="gallery">
 				<cfset returnVar = "icon-th">
+			</cfcase>
+			<cfcase value="form">
+				<cfset returnVar = "icon-list-alt">
+			</cfcase>
+			<cfcase value="component">
+				<cfset returnVar = "icon-align-justify">
+			</cfcase>
+			<cfcase value="variation">
+				<cfset returnVar = "icon-cloud">
 			</cfcase>
 			<cfcase value="1">
 				<cfset returnVar = "icon-group">

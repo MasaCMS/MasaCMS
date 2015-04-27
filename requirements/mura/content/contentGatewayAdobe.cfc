@@ -1313,6 +1313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and   (tcontent.Type ='Page'
 				or tcontent.Type = 'Component' 
 				or tcontent.Type = 'Link'
+				or tcontent.Type = 'Variation'
 				or tcontent.Type = 'File' 
 				or tcontent.Type = 'Folder'
 				or tcontent.Type = 'Calendar'

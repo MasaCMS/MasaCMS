@@ -86,6 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	 
 	feed=$.getBean("feed");
+	//feed.setType('*');
 	feed.setMaxItems(500);
 	feed.setNextN(10);
 	feed.setLiveOnly(0);
