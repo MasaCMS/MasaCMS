@@ -871,7 +871,13 @@ Display Objects
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
 				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
+			</cfif>>
+			<cfif len(arguments.crumbdata[I].menutitle)>
+				#HTMLEditformat(arguments.crumbdata[I].menutitle)#
+			<cfelse>
+				#HTMLEditformat(arguments.crumbdata[I].title)#
+			</cfif>
+			</a> &raquo;</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -885,7 +891,13 @@ Display Objects
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
 			href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li>
+		</cfif>>
+		<cfif len(arguments.crumbdata[1].menutitle)>
+			#HTMLEditformat(arguments.crumbdata[1].menutitle)#
+		<cfelse>
+			#HTMLEditformat(arguments.crumbdata[1].title)#
+		</cfif>
+		</a></strong></li>
 		</ul></cfoutput></cfsavecontent>
 		
 		<cfreturn content />
@@ -936,7 +948,7 @@ Display Objects
 				<cfset icon=renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif> <cfif len(arguments.crumbdata[i].menutitle)>#HTMLEditformat(arguments.crumbdata[i].menutitle)#<cfelse> #HTMLEditformat(arguments.crumbdata[i].title)#</cfif> &raquo;</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -945,7 +957,7 @@ Display Objects
 			<cfset icon=renderIcon(arguments.crumbdata[1])>
 			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
 		</cfsilent>
-		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
+		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong><cfif len(arguments.crumbdata[1].menutitle)><cfelse> #HTMLEditformat(arguments.crumbdata[1].title)#</cfif></strong></li>
 		</ul></cfoutput></cfsavecontent>
 		
 		<cfreturn content />

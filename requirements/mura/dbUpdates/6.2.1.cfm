@@ -87,7 +87,7 @@ select moduleID from tcontent where type='Module' and moduleID='0000000000000000
 			,'default'
 			,1
 			,NULL
-			,'Variations Manager'
+			,'Variations'
 			,NULL
 			,NULL
 			,NULL
@@ -131,3 +131,8 @@ select moduleID from tcontent where type='Module' and moduleID='0000000000000000
 		</cfquery>
 	</cfloop>
 </cfif>
+
+
+<cfquery>
+	update tcontent set menutitle=title where type='Module' and menutitle is null
+</cfquery>

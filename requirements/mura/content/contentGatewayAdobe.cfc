@@ -160,7 +160,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
 			<cfset crumb.title=rsCrumbData.title />
-			<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfif len(rsCrumbData.menutitle)>
+				<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfelse>
+				<cfset crumb.menutitle=rsCrumbData.title />
+			</cfif>
 			<cfset crumb.urltitle=rsCrumbData.urltitle />
 			<cfset crumb.target=rsCrumbData.target />
 			<cfset crumb.contentid=rsCrumbData.contentid />
@@ -1269,7 +1273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsNest')#">
-		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
+		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.moduleid, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, 
 		<cfif arguments.aggregation>
@@ -1318,14 +1322,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Folder'
 				or tcontent.Type = 'Calendar'
 				or tcontent.Type = 'Form'
-				or tcontent.Type = 'Gallery') 
+				or tcontent.Type = 'Gallery'
+				or tcontent.Type = 'Module') 
 		
 		<cfif arguments.searchString neq "">
 			and (UPPER(tcontent.menuTitle) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.searchString#%"/>))
 		</cfif>	
 	
 		<cfif arguments.aggregation>
-			group by tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
+			group by tcontent.ContentHistID, tcontent.ContentID, tcontent.moduleid, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 			tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 			tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 			tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
@@ -1440,7 +1445,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsTop = "">
 		
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsTop')#">
-		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
+		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.moduleid, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate,
