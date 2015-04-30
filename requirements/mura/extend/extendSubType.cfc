@@ -832,9 +832,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getContentRenderer" output="false">
 	<cfif not isObject(variables.contentRenderer)>
-		<cfif structKeyExists(request,"servletEvent")>
+		<cfif structKeyExists(request,"servletEvent") and request.servletEvent.getValue('siteid') eq getSiteID()>
 			<cfset variables.contentRenderer=request.servletEvent.getContentRenderer()>
-		<cfelseif structKeyExists(request,"event")>
+		<cfelseif structKeyExists(request,"event") and request.event.getValue('siteid') eq getSiteID()>
 			<cfset variables.contentRenderer=request.event.getContentRenderer()>
 		<cfelseif len(getSiteID())>
 			<cfset variables.contentRenderer=getBean("$").init(getSiteID()).getContentRenderer()>

@@ -217,7 +217,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	</cfif>
 	<cfif not isObject(getValue("contentRenderer"))>
-		<cfset setValue('contentRenderer',getBean('settingsManager').getSite(getValue('siteID')).getContentRenderer(getValue('MuraScope')))>
+		<cfif structKeyExists(request,"servletEvent") and request.servletEvent.getValue('siteid') eq getValue('siteid')>
+			<cfset var contentRenderer=request.servletEvent.getContentRenderer()>
+		<cfelseif structKeyExists(request,"event") and request.event.getValue('siteid') eq getValue('siteid')>
+			<cfset var contentRenderer=request.event.getContentRenderer()>
+		<cfelseif len(getValue('siteid'))>
+			<cfset var contentRenderer=getValue('MuraScope').getContentRenderer()>
+		<cfelse>
+			<cfset var contentRenderer=getBean("contentRenderer")>
+		</cfif>
+		<cfset setValue('contentRenderer',contentRenderer)>
 	</cfif>
 	<cfset setValue('localHandler',application.settingsManager.getSite(getValue('siteID')).getLocalHandler())>
 	
