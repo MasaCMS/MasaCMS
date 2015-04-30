@@ -2191,6 +2191,7 @@ Display Objects
 	<cfargument name="renderKids" default="true">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
+	<cfset var themeAssetPath = variables.event.getSite().getThemeAssetPath() />
 	<cfset var str = "" />
 	<cfset var fileDelim="/" />
 	<cfset var eventOutput="" />
