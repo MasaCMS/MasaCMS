@@ -880,15 +880,20 @@ s
 
 <cffunction name="getContentRenderer" output="false">
 <cfargument name="$" default="">
-<cfif not isObject(arguments.$) or arguments.$.event('siteid') neq getValue('siteid')>
-	<cfif not isObject(variables.instance.contentRenderer)>
-		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
-		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
+	<cfif not isObject(arguments.$)>
+		<cfif not isObject(variables.instance.contentRenderer)>
+			<cfset arguments.$=getBean("$").init(getValue('siteid'))>
+			<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
+		</cfif>
+		<cfreturn variables.instance.contentRenderer>
+	<cfelseif arguments.$.event('siteid') eq getValue('siteid')>
+		<cfif not isObject(variables.instance.contentRenderer)>
+			<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
+		</cfif>
+		<cfreturn variables.instance.contentRenderer>
+	<cfelse>
+		<cfreturn arguments.$.getContentRenderer()>
 	</cfif>
-	<cfreturn variables.instance.contentRenderer>
-<cfelse>
-	<cfreturn arguments.$.getContentRenderer()>
-</cfif>
 </cffunction>
 
 <cffunction name="getApi" output="false">

@@ -1581,7 +1581,6 @@ Display Objects
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 	<cfset var q=''>
 	<cfset var qsa="">
 	<cfset var qq="">
@@ -1589,10 +1588,13 @@ Display Objects
 	<cfif isDefined('variables.$') and len(variables.$.event('siteID')) and variables.$.event('siteID') neq arguments.siteID>
 		<cfif not len(arguments.siteid)>
 			<cfset arguments.siteid=variables.$.event('siteID')>
-		<cfelse>
-			<cfreturn site.getContentRenderer().createHREF(argumentCollection=arguments)>
+		</cfif>
+		<cfif arguments.siteid neq variables.$.event('siteID')>
+			<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().createHREF(argumentCollection=arguments)>
 		</cfif>
 	</cfif>
+
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
 
 	<cfif arguments.complete or arguments.secure>
 		<cfif arguments.secure>
