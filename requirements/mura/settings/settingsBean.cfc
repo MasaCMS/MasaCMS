@@ -882,7 +882,7 @@ s
 <cfargument name="$" default="">
 	<cfif not isObject(variables.instance.contentRenderer)>
 		<cfset arguments.$=getBean("$").init(getValue('siteid'))>
-		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer()>
+		<cfset variables.instance.contentRenderer=arguments.$.getContentRenderer(force=true)>
 	</cfif>
 	<cfreturn variables.instance.contentRenderer>
 </cffunction>

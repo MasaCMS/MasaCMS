@@ -127,9 +127,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getContentRenderer" output="false" returntype="any">
-	<cfif not isObject(event("contentRenderer"))>
+	<cfargument name="force" default="false">
+	<cfif arguments.force or not isObject(event("contentRenderer"))>
 		<cfif len(event('siteid'))>
-			<cfif structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
+			<cfif not arguments.force and structKeyExists(request,"contentRenderer") and request.contentRenderer.getValue('siteid') eq event('siteid')>
 				<cfset event("contentRenderer",request.contentRenderer)>
 			<cfelse>
 				<!-- temp fix, may become permanent--->
