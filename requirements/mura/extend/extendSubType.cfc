@@ -832,7 +832,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getContentRenderer" output="false">
 	<cfif not isObject(variables.contentRenderer)>
-		<cfset variables.contentRenderer=getBean('settingsManager').getSite(getSiteID()).getContentRenderer()>
+		<cfif structKeyExists(request,"servletEvent")>
+			<cfset variables.contentRenderer=request.servletEvent.getContentRenderer()>
+		<cfelseif structKeyExists(request,"event")>
+			<cfset variables.contentRenderer=request.event.getContentRenderer()>
+		<cfelseif len(getSiteID())>
+			<cfset variables.contentRenderer=getBean("$").init(getSiteID()).getContentRenderer()>
+		<cfelse>
+			<cfset variables.contentRenderer=getBean("contentRenderer")>
+		</cfif>
 	</cfif>
 
 	<cfreturn variables.contentRenderer>
