@@ -2120,7 +2120,12 @@ Display Objects
 	</cfswitch>
 
 	<cfif request.muraValidObject and showEditable and ((request.muraFrontEndRequest and not request.muraAsyncEditableObject) or (not request.muraFrontEndRequest and request.muraAsyncEditableObject))>
-		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+		<cfif isSimpleValue(theObject)>
+			<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class) & theObject & renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+		<cfelseif isStruct(theObject)>
+			<cfset theObject.header=variables.$.renderEditableObjectHeader(editableControl.class)>
+			<cfset theObject.footer=renderEditableObjectFooter(variables.$.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))>
+		</cfif>	
 	<cfelseif not request.muraValidObject>
 		<cfset theObject="<!-- Invalid Display Object (Type: #arguments.object#, ID: #arguments.objectid#) -->">
 		<cfset request.muraValidObject=true>

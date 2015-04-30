@@ -751,4 +751,5 @@
 	</cfif>
 	</cfif>
 	window.toggleAdminToolbar=toggleAdminToolbar;
+	window.closeFrontEndToolsModal=closeFrontEndToolsModal;
 })();
