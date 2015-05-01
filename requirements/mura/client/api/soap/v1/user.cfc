@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var user="">
 	
 	<cfif len(event.getValue("userID"))>
-		<cfset user=application.userManager.read(event.getValue("userID"),event.getValue("siteid"))>
+		<cfset user=application.userManager.read(userid=event.getValue("userID"),siteid=event.getValue("siteid"))>
 	<cfelseif len(event.getValue("groupname"))>
 		<cfset user=application.userManager.readByGroupName(event.getValue("groupname"),event.getValue("siteid"))>
 	<cfelseif len(event.getValue("username"))>
