@@ -728,7 +728,7 @@ s
 	<cfargument name="theme" default="#request.altTheme#">
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn "#getIncludePath()#/includes/themes/#theme#" />
+		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#" />
 	<cfelseif len(variables.instance.theme)>
 		<cfreturn "#getIncludePath()#/includes/themes/#variables.instance.theme#" />
 	<cfelse>
