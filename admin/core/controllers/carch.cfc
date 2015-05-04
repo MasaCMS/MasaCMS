@@ -86,7 +86,7 @@
 			<cfparam name="session.topID" default="00000000000000000000000000000000001">
 			<cfset arguments.rc.topid=session.topID>
 		<cfelseif (left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001")
-			and not listFindNoCase("Form,Component,Variation", arguments.rc.type)>
+			and not listFindNoCase("Form,Component,Variation", arguments.rc.type) and rc.moduleid neq "00000000000000000000000000000000099">
 			<cfset session.topID=arguments.rc.topid>
 		</cfif>
 	</cfif>

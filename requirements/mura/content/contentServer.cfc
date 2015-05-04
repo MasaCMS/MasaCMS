@@ -527,9 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelseif isDefined('url.emailid') and left(path,len(emailendpoint)) eq emailendpoint>
 		<cfset application.emailManager.track(url.emailid,url.email,'emailOpen')>
-		<cfset var theImg="">
-		<cffile action="readbinary" variable="theImg" file="#GetDirectoryFromPath('/mura/email/')#empty.gif">
-		<cfcontent type="image/gif" variable="#theImg#" reset="yes">
+		<cfcontent type="image/gif" variable="#toBinary('R0lGODlhAQABAPAAAAAAAAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')#" reset="yes">
 		<cfreturn>
 	<cfelseif isDefined('url.fileid') and listLen(path,'/') gte 2 and (left(path,len(fileendpoint)) eq fileendpoint or left(path,len(legacyfileendpoint)) eq legacyfileendpoint)>
 		<cfswitch expression="#listGetAt(path,3,'/')#">
