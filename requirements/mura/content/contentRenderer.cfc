@@ -2133,7 +2133,11 @@ Display Objects
 		<cfset request.muraValidObject=true>
 	</cfif>
 
-	<cfreturn trim(theObject) />
+	<cfif isSimpleValue(theObject)>
+		<cfreturn trim(theObject) />
+	<cfelse>
+		<cfreturn theObject />
+	</cfif>
 </cffunction>
 
 <cffunction name="dspObjects" output="false">
@@ -2142,6 +2146,7 @@ Display Objects
 <cfargument name="returnFormat" default="string">
 <cfset var rsObjects="">	
 <cfset var theRegion=(arguments.returnFormat eq 'array')?[]:''/>
+<cfset var theObject="">
 
 <cfset request.muraRegionID=arguments.columnID>
 <cfif (variables.event.getValue('isOnDisplay') 
@@ -2168,7 +2173,12 @@ Display Objects
 		<cfif arguments.returnFormat eq 'array'>
 			<cfset arrayAppend(theRegion,dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm)) />
 		<cfelse>
-			<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm) />
+			<cfset theObject=dspObject(rsObjects.object,rsObjects.objectid,variables.event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),variables.$.event('r').perm)>
+			<cfif isSimpleValue(theObject)>
+				<cfset theRegion = theRegion & theObject />
+			<cfelse>
+				<cfset theRegion = theRegion & "<!-- Display object return invalid format -->" />
+			</cfif>
 		</cfif>
 		
 		<cfset request.muraRegionID=arguments.columnID>

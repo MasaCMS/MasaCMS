@@ -785,10 +785,10 @@
 
 					for(var d=1;d<=arrayLen(regionArray);d++){
 					
-						if(isJSON(regionArray[d])){
-							regionArray[d]=regionArray[d];
-						} else {
+						if(isSimpleValue(regionArray[d])){
 							regionArray[d]={html=apiUtility.applyRemoteFormat(regionArray[d])};
+						} else {
+							regionArray[d]=regionArray[d];
 						}
 					}
 
@@ -827,6 +827,11 @@
 		
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
 			
+			$.event('response',result);
+
+			$.announceEvent('on#result.type#apiresponse');
+			$.announceEvent('on#result.type##result.subtype#apiresponse');
+
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data=result}));
 
 		} catch (any e){

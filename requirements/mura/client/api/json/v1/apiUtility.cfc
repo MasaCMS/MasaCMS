@@ -1343,8 +1343,9 @@ component extends="mura.cfobject" {
 		*/
 
 		if(entity.getEntityName()=='content'){
+			links['self']="#baseurl#/_path/#entity.getFilename()#";
+			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
 			if(entity.getType()=='Variation'){
-				links['renderered']="#baseurl#/_path/#entity.getFilename()#";
 				links['self']=links['renderered'];
 			} else {
 				links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";	
@@ -1697,7 +1698,11 @@ component extends="mura.cfobject" {
 			args.params=urlDecode($.event('objectparams'));
 		}
 
-		var result={html=applyRemoteFormat($.dspObject(argumentCollection=args))};
+		var result=$.dspObject(argumentCollection=args);
+
+		if(isSimpleValue(result)){
+			result={html=result};
+		}
 		
 		if(isdefined('request.muraJSONRedirectURL')){
 			return {redirect=request.muraJSONRedirectURL};

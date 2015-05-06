@@ -1172,10 +1172,9 @@ var initMura=function(config){
 		var self=el;
 
 		var handleResponse=function(resp){
-			if('redirect' in resp.data){
-				location.href=resp.data.redirect;
-			} else {
-				$(self).html(resp.data.html);
+
+			var wireUpObject=function(html){
+				$(self).html(html);
 				
 				processHandlers(self);
 
@@ -1186,6 +1185,28 @@ var initMura=function(config){
 
 				announceEvent('asyncObjectRendered',self);
 				$(self).trigger('asyncObjectRendered');
+
+			};
+
+			if('html' in resp.data){
+				wireUpObject(resp.data.html);
+			} else if('redirect' in resp.data){
+				location.href=resp.data.redirect;
+			} else if('render' in resp.data){
+				$.ajax({ 
+			        type:"POST",
+			        xhrFields:{ withCredentials: true },
+			        crossDomain:true,
+			        url:resp.data.render,
+			        data:resp.data,
+			        success:function(data){
+			        	if(typeof data=='string'){
+			        		wireUpObject(data);
+			        	} else if (typeof data=='object' && 'html' in data) {
+			        		wireUpObject(data.html);
+			        	}
+			        }
+		   		});
 			}
 		};
 
