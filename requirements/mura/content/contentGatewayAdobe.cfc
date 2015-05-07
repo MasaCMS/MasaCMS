@@ -155,6 +155,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
+			<cfif not rsCrumbData.recordcount>
+				<cfbreak>
+			</cfif>
+			
 			<cfset crumb=structNew() />
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
