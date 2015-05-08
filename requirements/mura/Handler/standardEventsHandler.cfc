@@ -742,7 +742,7 @@
 
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
-		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}}))>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=thelink}}))>
 	<cfelse>
 		<cflocation url="#theLink#" addtoken="false" statuscode="301">
 	</cfif>
