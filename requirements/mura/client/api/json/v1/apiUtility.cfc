@@ -1200,10 +1200,6 @@ component extends="mura.cfobject" {
 			feed.setType($.event('type'));
 		}
 
-		if(listFind('content,user,group',$.event('entityName')) && len($.event('tag'))){
-			feed.setType($.event('tag'));
-		}
-
 	}
 
 	function findCrumbArray(entityName,id,siteid){

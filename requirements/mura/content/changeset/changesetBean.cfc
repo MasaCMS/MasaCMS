@@ -228,7 +228,12 @@
 </cffunction>
 
 <cffunction name="getFeed" access="public" returntype="any" output="false">
-	<cfreturn getBean("beanFeed").setSiteID(getValue('siteid')).setEntityName('changeset').setTable('tchangesets').setOrderBy('name asc')>
+	<cfreturn getBean("changesetFeed")
+		.setSiteID(getValue('siteid'))
+		.setEntityName('changeset')
+		.setTable('tchangesets')
+		.setOrderBy('name asc')
+		.setFieldAliases({'tag'={field='tchangesettagassign.tag',datatype='varchar'}})>
 </cffunction>
 
 

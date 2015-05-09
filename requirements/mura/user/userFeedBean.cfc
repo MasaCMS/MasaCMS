@@ -71,7 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.sortDirection="asc" />
 	<cfset variables.instance.table="tusers">
 	<cfset variables.instance.entityName="user">
-	
+	<cfset variables.instance.fieldAliases={'tag'={field='tuserstags.tag',datatype='varchar'}}/>
+
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
 </cffunction>

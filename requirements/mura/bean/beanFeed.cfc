@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
 	<cfset variables.instance.orderby=""/>
-	<cfset variables.instance.aliases={}/>
+	<cfset variables.instance.fieldAliases={}/>
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.joins=arrayNew(1)  />
