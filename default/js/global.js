@@ -1215,8 +1215,6 @@ var initMura=function(config){
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
-				//var keys=['contentid','contenthistid','siteid','object','objectid'];
-				
 				var keys=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()));
 				
 				for(var k in keys){
