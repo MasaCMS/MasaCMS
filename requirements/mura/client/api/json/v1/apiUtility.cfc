@@ -1199,6 +1199,11 @@ component extends="mura.cfobject" {
 		if($.event('entityName')=='content' && len($.event('type'))){
 			feed.setType($.event('type'));
 		}
+
+		if(listFind('content,user,group',$.event('entityName') && len($.event('tag'))){
+			feed.setType($.event('tag'));
+		}
+
 	}
 
 	function findCrumbArray(entityName,id,siteid){
