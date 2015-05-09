@@ -98,7 +98,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="useCategoryIntersect" type="numeric" default="0" />
 <cfproperty name="altTable" type="string" default=""/>
 <cfproperty name="contentpoolid" type="string" default=""/>
-<cfproperty name="tag" type="string" default=""/>
 
 <cfset variables.primaryKey = 'feedid'>
 <cfset variables.entityName = 'feed'>
@@ -162,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.useCategoryIntersect=0 />
 	<cfset variables.instance.altTable="" />
 	<cfset variables.instance.contentpoolid="" />
-	<cfset variables.instance.tag="" />
+	<cfset variables.instance.fieldAliases={'tag'={field='tcontenttags.tag',datatype='varchar'},'taggroup'={field='tcontenttags.taggroup',datatype='varchar'}}
 	
 	<cfreturn this />
 </cffunction>
@@ -466,7 +465,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfreturn variables.feedManager.getFeed(
 		feedBean=this
-		, tag=getValue('tag')
+		, tag=''
 		, aggregation=arguments.aggregation
 		, applyPermFilter=arguments.applyPermFilter
 		, countOnly=arguments.countOnly
