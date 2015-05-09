@@ -1215,11 +1215,13 @@ var initMura=function(config){
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys($(frm).serializeObject());
-				var keys=['contentid','contenthistid','siteid','object','objectid'];
-
+				//var keys=['contentid','contenthistid','siteid','object','objectid'];
+				
+				var keys=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()));
+				
 				for(var k in keys){
-					if(!(keys[k] in checkdata)){
-						data.append(keys[k], $(self).data(keys[k]));
+					if(!(k in checkdata)){
+						data.append(k,keys[k]);
 					}
 				}
 
