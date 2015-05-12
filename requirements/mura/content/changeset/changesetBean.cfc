@@ -228,7 +228,7 @@
 </cffunction>
 
 <cffunction name="getFeed" access="public" returntype="any" output="false">
-	<cfreturn getBean("changesetFeed")
+	<cfreturn getBean("beanFeed")
 		.setSiteID(getValue('siteid'))
 		.setEntityName('changeset')
 		.setTable('tchangesets')
