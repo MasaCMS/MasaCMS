@@ -31,6 +31,7 @@ component extends="mura.cfobject" {
 		} else {
 			var protocol="http://";
 		}
+		
 		*/
 
 		//if(configBean.getIndexfileinurls()){
@@ -1304,7 +1305,15 @@ component extends="mura.cfobject" {
 	}
 
 	function getEndPoint(){
+		if(request.muraApiRequest){
+			if(!isDefined('request.apiEndpoint')){
+				request.apiEndpoint="#getBean('utility').getRequestProtocol()#://#cgi.server_name#/index.cfm/_api/json/v1/#variables.siteid#";	
+			}
+			return request.apiEndpoint;
+		} 
+
 		return variables.endpoint;
+		
 	}
 
 	function getLinks(entity){
