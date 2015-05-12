@@ -170,7 +170,7 @@ component extends="mura.cfobject" {
 			  	var PC = getpagecontext().getresponse();
 			 
 			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
-			  	if(listFindNoCase(application.settingsManager.getSite(variables.siteid).getAccessControlOriginList(), origin )) {
+			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginList(), origin )) {
 			   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
 			   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 			  	}

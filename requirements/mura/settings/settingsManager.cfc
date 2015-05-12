@@ -676,4 +676,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.broadcastInit=false>
 </cffunction>
 
+<cffunction name="getAccessControlOriginList">
+	<cfscript>
+		if(!isDefined("variables.AccessControlOriginList")){
+			lock name="originlist#application.instanceid#" type="exclusive" timeout="10"{
+				if(!isDefined("variables.AccessControlOriginList")){
+					var sites=getSites();
+					var originArray=[];
+					var origin='';
+
+					variables.AccessControlOriginList='';
+					for(var site in sites){
+						if(sites[site].getJSONApi()){
+							originArray=listToArray(sites[site].getAccessControlOriginList());
+							if(arrayLen(originArray)){
+								for(origin in originArray){
+									if(!listFind(variables.AccessControlOriginList,origin)){
+										listAppend(variables.AccessControlOriginList,origin);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return variables.AccessControlOriginList;
+
+	</cfscript>
+</cffunction>
+
 </cfcomponent>
