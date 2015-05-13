@@ -577,7 +577,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		    <cfif IsDefined("tmpPartsArray")>
 		        <cfloop array="#tmpPartsArray#" index="local.tmpPart">
-		            <cfif local.tmpPart.isFile() AND local.tmpPart.getName() EQ arguments.fieldName> <!---   --->
+		            <cfif local.tmpPart.isFile() AND local.tmpPart.getName() EQ arguments.fieldName>
 		                <cfreturn local.tmpPart.getFileName() />
 		            </cfif>
 		        </cfloop>
