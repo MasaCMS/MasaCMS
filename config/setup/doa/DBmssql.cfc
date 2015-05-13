@@ -47,7 +47,7 @@
 			var sErr = "";
 			if (super.getCFServerType() IS "ColdFusion") {
 				sErr = fDSCreateAdobe(argumentCollection=Arguments);
-			} else {
+			} else if (super.getCFServerType() IS "Railo" || super.getCFServerType() IS "Lucee") {
 				sErr = fDSCreateLucee(argumentCollection=Arguments);
 			} else {
 				sErr = "unknown Application server. Cannot create datasource.";
