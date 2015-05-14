@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif NOT cacheFactory.has( key )>			
 				<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />	
-				<cfif arrayLen(crumbdata) lt 50>
+				<cfif arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 					<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 				</cfif>
 			<cfelse>
@@ -90,14 +90,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<cfif not isArray(crumbdata)>
 						<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
-						<cfif arrayLen(crumbdata) lt 50>
+						<cfif arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 							<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 						</cfif>
 					</cfif>
 
 					<cfcatch>
 						<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path) />
-						<cfif arrayLen(crumbdata) lt 50>
+						<cfif arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 							<cfset crumbdata=cacheFactory.get( key, crumbdata ) />
 						</cfif>
 					</cfcatch>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif not isDefined('crumbdata') or isSimpleValue(crumbdata) >
 			<cfset crumbdata=buildCrumblist(contentid=arguments.contentID,siteid=arguments.siteID,path=arguments.path)/>
-			<cfif site.getCache() and arrayLen(crumbdata) lt 50>
+			<cfif site.getCache() and arrayLen(crumbdata) and arrayLen(crumbdata) lt 50>
 				<cfset cacheFactory.get( key, crumbdata ) />
 			</cfif>
 		</cfif>
@@ -155,6 +155,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
+			<cfif not rsCrumbData.recordcount>
+				<cfbreak>
+			</cfif>
+
 			<cfset crumb=structNew() />
 			<cfset crumb.type=rsCrumbData.type />
 			<cfset crumb.subtype=rsCrumbData.subtype />
@@ -193,10 +197,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
 			<cfset ID=rsCrumbData.parentid>
-
-			<cfif not rsCrumbData.recordcount>
-				<cfbreak>
-			</cfif>
 			
 			<cfif I gt 50><cfthrow  type="custom" message="Crumdata Loop Error"></cfif>
 			</cfloop>
