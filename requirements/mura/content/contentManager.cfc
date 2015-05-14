@@ -978,7 +978,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 
-			<cfif variables.fileManager.requestHasRestrictedFiles()>
+			<cfif variables.fileManager.requestHasRestrictedFiles(scope=newBean.getAllValues())>
 				<cfset errors=newBean.getErrors()>
 				<cfset errors.requestHasRestrictedFiles=variables.settingsManager.getSite(newBean.getSiteID()).getRBFactory().getKey('sitemanager.requestHasRestrictedFiles')>
 			</cfif>

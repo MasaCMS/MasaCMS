@@ -552,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 				}
 				
-				if(isValid('url',arguments.scope['#i#']) 
+				if(isSimpleValue(arguments.scope['#i#']) && isValid('url',arguments.scope['#i#']) 
 					&& listLen(arguments.scope['#i#'],'.')
 					){
 					
