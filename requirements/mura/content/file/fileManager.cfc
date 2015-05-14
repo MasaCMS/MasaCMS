@@ -542,7 +542,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 		for (var i in arguments.scope){
-			if(structKeyExists(arguments.scope,'#i#')){
+			if(structKeyExists(arguments.scope,'#i#') && isSimpleValue(arguments.scope['#i#']) ){
 				if(isPostedFile(i)){
 
 					temptext=listLast(getPostedClientFileName(i),'.');
@@ -552,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 				}
 				
-				if(isSimpleValue(arguments.scope['#i#']) && isValid('url',arguments.scope['#i#']) 
+				if(isValid('url',arguments.scope['#i#']) 
 					&& listLen(arguments.scope['#i#'],'.')
 					){
 					
