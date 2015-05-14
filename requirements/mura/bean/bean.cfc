@@ -93,10 +93,13 @@ component extends="mura.cfobject" output="false" {
 						if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'cfc')){
 							var bean=getBean(synthedFunctions[arguments.MissingMethodName].args.cfc);
 							//writeDump(var=bean.getProperties());
-							if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
-								synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
-							} else if (!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
-								synthedFunctions[arguments.MissingMethodName].args.loadkey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
+							
+							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
+								if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
+									synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
+								} else{
+									synthedFunctions[arguments.MissingMethodName].args.loadkey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
+								}
 							}
 
 							structAppend(arguments.MissingMethodArguments,synthArgs(synthedFunctions[arguments.MissingMethodName].args),true);
@@ -575,7 +578,7 @@ component extends="mura.cfobject" output="false" {
 						       	 		if(listFindNoCase('content,user,feed,category,address,site,comment',prop.cfc)){
 						       	 			param name="application.objectMappings.#prop.cfc#" default={};
 						       	 			param name="application.objectMappings.#prop.cfc#.synthedFunctions" default={};
-
+						       	 			
 						       	 			if(prop.fieldtype eq 'many-to-many'){
 
 						       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,loadkey=prop.loadkey,siteid=true,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
