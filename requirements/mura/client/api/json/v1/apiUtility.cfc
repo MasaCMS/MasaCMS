@@ -830,7 +830,7 @@ component extends="mura.cfobject" {
 
 			vals=temp;
 		} else {
-			vals=arguments.entity.getAllValues(expand=arguments.expand);
+			vals=duplicate(arguments.entity.getAllValues(expand=arguments.expand));
 			structDelete(vals,'addObjects');
 			structDelete(vals,'removeObjects');
 			structDelete(vals,'frommuracache');
@@ -839,6 +839,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'primaryKey');
 			structDelete(vals,'extenddatatable');
 			structDelete(vals,'extenddata');
+			structDelete(vals,'extendAutoComplete');
 			if(listFindNoCase("user,group",entityConfigName)){
 				structDelete(vals,'extendautocomplete');
 				structDelete(vals,'sourceiterator');
