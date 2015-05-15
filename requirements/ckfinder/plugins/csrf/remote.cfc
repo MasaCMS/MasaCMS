@@ -3,8 +3,7 @@ component extends="mura.cfobject"{
 	remote function getCSRFTokens() returnFormat="json" {	
 
 		try{
-			var pc = getpagecontext().getresponse();
-  			pc.getresponse().setcontenttype('application/json');
+  			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
   		} catch(any e){}
 
 		return getBean('$').generateCSRFTokens(context='');
