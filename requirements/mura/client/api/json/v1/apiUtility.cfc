@@ -79,6 +79,7 @@ component extends="mura.cfobject" {
 		registerEntity('feed',{public=true,moduleid='00000000000000000000000000000000011'});
 		registerEntity('category',{public=true,moduleid='00000000000000000000000000000000010'});
 		registerEntity('comment',{public=true,moduleid='00000000000000000000000000000000015'});
+		registerEntity('stats',{public=true,moduleid='00000000000000000000000000000000000'});
 
 		return this;
 	}
@@ -889,6 +890,12 @@ component extends="mura.cfobject" {
 					var entity=$.getBean('content').loadBy(contentid=arguments.id);	
 				}
 			}
+		} else if(arguments.entityName=='stats'){
+			entity=getBean("stats");
+			entity.setSiteID(arguments.siteid);
+			entity.setContentID(arguments.id);
+			entity.load();
+			pk='contentid';
 
 		} else {
 			var entity=$.getBean(arguments.entityName);

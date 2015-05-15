@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.bean" entityName="stats" table="tcontentstats" output="false">
 
-<cfproperty name="contenid" type="string" default="" required="true" />
+<cfproperty name="contentid" type="string" default="" required="true" />
 <cfproperty name="siteid" type="string" default="" required="true" />
 <cfproperty name="views" type="numeric" default="0" required="true" />
 <cfproperty name="rating" type="numeric" default="0" required="true" />
