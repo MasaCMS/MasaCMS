@@ -84,7 +84,7 @@ component extends="mura.bean.beanORMVersioned"
 	}
 
 	function getURLForFile(method='inline'){
-		if ( not getValue('isNew') ) {
+		if ( getValue('isNew') ) {
 			return '';
 		} else {
 			return '#application.configBean.getContext()#/index.cfm/_api/render/file/?method=#arguments.method#&amp;fileID=#getValue('fileid')#';
