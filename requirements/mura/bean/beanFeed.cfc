@@ -350,12 +350,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getQueryAttrs" output="false">
+	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 	<cfif hasCustomDatasource()>
 		<cfset structAppend(arguments,
 			{datasource=getCustomDatasource(),
 			username='',
 			password='',
-			cachedWithin=variables.instance.cachedWithin},
+			cachedWithin=arguments.cachedWithin},
 			false)>
 		<cfreturn arguments>
 	<cfelse>
@@ -366,7 +367,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getQueryService" output="false">
 	<cfreturn new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments))>
 </cffunction>
-
 
 <cffunction name="getQuery" returntype="query" output="false">
 	<cfargument name="countOnly" default="false">
