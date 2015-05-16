@@ -169,7 +169,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 	
-	<cfreturn variables.feedDAO.read(arguments.feedID,arguments.feedBean) />
+	<cfset var key= "feed" & arguments.siteid & arguments.feedid />
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
+	<cfset var bean=arguments.feedBean>
+
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.feedDAO.read(arguments.feedID,bean) />
+			<cfif not isArray(bean) and not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
+			<cfreturn bean/>
+		<cfelse>
+			<cftry>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("feed")/>
+				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
+				<cfcatch>
+					<cfset bean=variables.feedDAO.read(arguments.feedID,bean) />
+					<cfif not isArray(bean) and not bean.getIsNew()>
+						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfreturn bean/>
+				</cfcatch>
+			</cftry>
+		</cfif>
+	<cfelse>
+		<cfset commitTracePoint(initTracePoint(detail="Loading feedBean"))>
+		<cfreturn variables.feedDAO.read(arguments.feedID,bean) />
+	</cfif>
 	
 </cffunction>
 
@@ -177,8 +213,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="name" type="String" />
 	<cfargument name="siteid" type="String" />
 	<cfargument name="feedBean" required="true" default=""/>		
-	
-	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
+	<cfset var key= "feed" & arguments.siteid & arguments.name />
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
+	<cfset var bean=arguments.feedBean>
+
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
+			<cfif not isArray(bean) and not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
+			<cfreturn bean/>
+		<cfelse>
+			<cftry>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("feed")/>
+				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
+				<cfcatch>
+					<cfset bean=variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
+					<cfif not isArray(bean) and not bean.getIsNew()>
+						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfreturn bean/>
+				</cfcatch>
+			</cftry>
+		</cfif>
+	<cfelse>
+		<cfset commitTracePoint(initTracePoint(detail="Loading feedBean"))>
+		<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
+	</cfif>
 
 </cffunction>
 
@@ -186,8 +257,72 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteid" type="String" />
 	<cfargument name="feedBean" required="true" default=""/>		
+	<cfset var key= "feed" & arguments.siteid & arguments.remoteid />
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
+	<cfset var bean=arguments.feedBean>
+
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
+			<cfif not isArray(bean) and not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
+			<cfreturn bean/>
+		<cfelse>
+			<cftry>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("feed")/>
+				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
+				<cfcatch>
+					<cfset bean=variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
+					<cfif not isArray(bean) and not bean.getIsNew()>
+						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfreturn bean/>
+				</cfcatch>
+			</cftry>
+		</cfif>
+	<cfelse>
+		<cfset commitTracePoint(initTracePoint(detail="Loading feedBean"))>
+		<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
+	</cfif>
+
+</cffunction>
+
+<cffunction name="purgeFeedCache" output="false">
+	<cfargument name="feedID">
+	<cfargument name="feedBean">
+	<cfargument name="broadcast" default="true">
 	
-	<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
+	<cfif not isDefined("arguments.feedBean")>
+		<cfset arguments.feedBean=read(feedID=arguments.feedID)>
+	</cfif>
+
+	<cfif arguments.feedBean.exists()>
+		<cfset var siteid=arguments.feedBean.getSiteid()>
+		<cfset var cache=getBean('settingsManager').getSite(siteid).getCacheFactory(name="data")>
+		
+		<cfset cache.purge("feed" & siteid & arguments.feedBean.getFeedID())>
+
+		<cfif len(arguments.feedBean.getRemoteID())>
+			<cfset cache.purge("feed" & siteid & arguments.feedBean.getRemoteID())>
+		</cfif>
+		<cfif len(arguments.feedBean.getName())>
+			<cfset cache.purge("feed" & siteid & arguments.feedBean.getName())>
+		</cfif>
+	</cfif>
+
+	<cfif arguments.broadcast>
+		<cfset getBean('clusterManager').purgeFeedCache(userID=arguments.feedBean.getFeedID())>
+	</cfif>
 
 </cffunction>
 
@@ -230,6 +365,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
+		<cfset purgeFeedCache(feedBean=feedBean)>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onFeedUpdate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
@@ -284,7 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.trashManager.throwIn(feedBean,'feed')>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 		<cfset variables.feedDAO.delete(arguments.feedID) />
-		
+		<cfset purgeFeedCache(feedBean=feedBean)>
 		<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>
 	</cfif>	

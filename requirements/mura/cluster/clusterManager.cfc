@@ -78,6 +78,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="purgeFeedCache" returntype="void" access="public" output="false">
+	<cfargument name="feedID" required="true" default="">
+	
+	<cfif variables.broadcastCachePurges>
+		<cfset broadcastCommand("getBean('feedManager').purgeFeedCache(feedID='#arguments.feedID#',broadcast=false)")>
+	</cfif>
+</cffunction>
+
 <cffunction name="purgeCategoryCache" returntype="void" access="public" output="false">
 	<cfargument name="categoryID" required="true" default="">
 	
