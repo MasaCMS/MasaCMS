@@ -609,6 +609,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getQuery(countOnly=true).count>
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn getBean("feed").setAllValues(structCopy(getAllValues()))>
+</cffunction>
+
 <cfscript>
  function getFeed(){		
 		var feed=getBean('beanFeed').setEntityName('feed').setTable('tcontentfeeds');

@@ -924,4 +924,8 @@ component extends="mura.cfobject" output="false" {
 		return !variables.instance.isNew;
 	}
 
+	function clone(){
+		getBean("content").setAllValues(structCopy(getAllValues()))
+	}
+
 }

@@ -228,5 +228,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAvailableCount" output="false">
 	<cfreturn getQuery(countOnly=true).count>
 </cffunction>
+
+<cffunction name="clone" output="false">
+	<cfreturn getBean("userFeed").setAllValues(structCopy(getAllValues()))>
+</cffunction>
  
 </cfcomponent>
