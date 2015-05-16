@@ -82,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.sortTable=""/>
 	<cfset variables.instance.orderby=""/>
 	<cfset variables.instance.fieldAliases={}/>
+	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.joins=arrayNew(1)  />
@@ -353,7 +354,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset structAppend(arguments,
 			{datasource=getCustomDatasource(),
 			username='',
-			password=''},
+			password='',
+			cachedWithin=variables.instance.cachedWithin},
 			false)>
 		<cfreturn arguments>
 	<cfelse>

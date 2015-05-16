@@ -162,6 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.altTable="" />
 	<cfset variables.instance.contentpoolid="" />
 	<cfset variables.instance.fieldAliases={'tag'={field='tcontenttags.tag',datatype='varchar'},'taggroup'={field='tcontenttags.taggroup',datatype='varchar'}}/>
+	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
 	
 	<cfreturn this />
 </cffunction>
