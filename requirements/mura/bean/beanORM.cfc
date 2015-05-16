@@ -635,8 +635,8 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
-	function loadBy(returnFormat="self"){
-		var qs=getQueryService(readOnly=true);
+	function loadBy(returnFormat="self",cachedWithin=createTimeSpan(0,0,0,0)){
+		var qs=getQueryService(readOnly=true,cachedWithin=arguments.cachedWithin);
 		var sql="";
 		var props=getProperties();
 		var prop="";

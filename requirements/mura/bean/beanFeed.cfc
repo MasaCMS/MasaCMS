@@ -370,6 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery" returntype="query" output="false">
 	<cfargument name="countOnly" default="false">
+	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
 
 	<cfset var rs="">
 	<cfset var isListParam=false>
@@ -393,7 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+	<cfquery attributeCollection="#getQueryAttrs(name='rs',cachedWithin=arguments.cachedWithin)#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
 		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
 		
@@ -512,7 +513,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getIterator" returntype="any" output="false">
-	<cfset var rs=getQuery()>
+	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
+	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=''>
 
 	<cfif getServiceFactory().containsBean("#variables.instance.entityName#Iterator")>

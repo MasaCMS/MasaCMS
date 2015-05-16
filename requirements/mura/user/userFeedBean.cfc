@@ -149,6 +149,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">
+	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
+	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
 	<cfif not len(variables.instance.siteID)>
 		<cfthrow message="The 'SITEID' value must be set in order to search users.">
 	</cfif>
@@ -156,7 +158,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getIterator" returntype="any" output="false">
-	<cfset var rs=getQuery()>
+	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
+	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>

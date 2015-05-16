@@ -463,6 +463,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="menuType" default="default">
 	<cfargument name="from" required="true" default="">
 	<cfargument name="to" required="true" default="">
+	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
+
+	<cfset variables.instance.cachedWithin=arguments.cachedWithin>
 
 	<cfreturn variables.feedManager.getFeed(
 		feedBean=this
@@ -481,7 +484,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="from" required="true" default="">
 	<cfargument name="to" required="true" default="">
-	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to) />
+	<cfargument name="cachedWithin" required="true" default="#variables.instance.cachedWithin#">
+	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,from=arguments.from,to=arguments.to,cachedwithin=arguments.cachedWithin) />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	<cfreturn it>
