@@ -254,6 +254,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if (structKeyExists(arguments, "readOnly")) {
 			return new Query(argumentCollection=getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments));
 		} else {
+			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
+				structDelete(arguments,'cachedWithin');
+			}
 			return new Query(argumentCollection=arguments);
 		}
 	}

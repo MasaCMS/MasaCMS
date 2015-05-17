@@ -176,6 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.securecookies=false/>
 <cfset variables.instance.javaEnabled=true/>
 <cfset variables.instance.bCryptPasswords=true/>
+<cfset variables.instance.allowQueryCaching=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1692,6 +1693,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 username=getReadOnlyDbUsername(),
 				 password=getReadOnlyDbPassword()},
 				 false)>
+	</cfif>
+
+	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>
+		<cfset structDelete(arguments,'cachedWithin')>
 	</cfif>
 	<cfreturn arguments>
 </cffunction>

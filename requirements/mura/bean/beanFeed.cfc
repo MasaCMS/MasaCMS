@@ -358,6 +358,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			password='',
 			cachedWithin=arguments.cachedWithin},
 			false)>
+
+		<cfif getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)>
+			<cfset structDelete(arguments,'cachedWithin')>
+		</cfif>
+		
 		<cfreturn arguments>
 	<cfelse>
 		<cfreturn variables.configBean.getReadOnlyQRYAttrs(argumentCollection=arguments)>
