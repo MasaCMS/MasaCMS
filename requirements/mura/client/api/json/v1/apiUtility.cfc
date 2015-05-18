@@ -980,7 +980,12 @@ component extends="mura.cfobject" {
 
 		setFeedProps(feed,$);
 
-		var iterator=feed.getIterator();
+		if(isBoolean($.event('countOnly')) && $.event('countOnly')){
+			return {count=feed.getAvailableCount()};
+		} else {
+			var iterator=feed.getIterator();
+			setIteratorProps(iterator,$);
+		}
 
 		if(arguments.entityName=='content'){
 			var pk="contentid";
@@ -997,8 +1002,6 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
-
-		setIteratorProps(iterator,$);
 
 		while(iterator.hasNext()){
 			item=iterator.next();
@@ -1044,8 +1047,6 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		setFeedProps(feed,$);
-
 		if($.event('entityName')=='content'){
 			var pk="contentid";
 		} else if($.event('entityName')=='feed'){
@@ -1056,7 +1057,14 @@ component extends="mura.cfobject" {
 
 		feed.addParam(column=pk,criteria=arguments.ids,condition='in');
 	
-		var iterator=feed.getIterator();
+		setFeedProps(feed,$);
+
+		if(isBoolean($.event('countOnly')) && $.event('countOnly')){
+			return {count=feed.getAvailableCount()};
+		} else {
+			var iterator=feed.getIterator();
+			setIteratorProps(iterator,$);
+		}
 
 		var returnArray=[];
 		var itemStruct={};
@@ -1065,8 +1073,6 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
-
-		setIteratorProps(iterator,$);
 
 		while(iterator.hasNext()){
 			item=iterator.next();
@@ -1114,8 +1120,6 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		setFeedProps(feed,$);
-
 		if($.event('entityName')=='content'){
 			var pk="contentid";
 		} else if($.event('entityName')=='feed'){
@@ -1148,7 +1152,14 @@ component extends="mura.cfobject" {
 			}	
 		}
 
-		var iterator=feed.getIterator();
+		setFeedProps(feed,$);
+
+		if(isBoolean($.event('countOnly')) && $.event('countOnly')){
+			return {count=feed.getAvailableCount()};
+		} else {
+			var iterator=feed.getIterator();
+			setIteratorProps(iterator,$);
+		}
 
 		var returnArray=[];
 		var itemStruct={};
@@ -1157,8 +1168,6 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
-
-		setIteratorProps(iterator,$);
 
 		while(iterator.hasNext()){
 			item=iterator.next();
