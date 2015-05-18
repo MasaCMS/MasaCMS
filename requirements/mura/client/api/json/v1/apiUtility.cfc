@@ -1348,7 +1348,6 @@ component extends="mura.cfobject" {
 			feed.setMaxItems($.event('offset'));
 		}
 
-		
 	}
 
 	function findCrumbArray(entityName,id,siteid){
