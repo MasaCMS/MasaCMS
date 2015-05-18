@@ -998,6 +998,8 @@ component extends="mura.cfobject" {
 		var subItemArray=[];
 		var p='';
 
+		setIteratorProps(iterator,$);
+
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
@@ -1063,6 +1065,8 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
+
+		setIteratorProps(iterator,$);
 
 		while(iterator.hasNext()){
 			item=iterator.next();
@@ -1154,6 +1158,8 @@ component extends="mura.cfobject" {
 		var subItemArray=[];
 		var p='';
 
+		setIteratorProps(iterator,$);
+		
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
@@ -1192,15 +1198,15 @@ component extends="mura.cfobject" {
 			feed.setSortDirection($.event('sortdirection'));
 		}
 
-		if(len($.event('maxitems'))){
+		if(isNumeric($.event('maxitems'))){
 			feed.setMaxItems($.event('maxitems'));
 		}
 
-		if(len($.event('size'))){
+		if(isNumeric($.event('size'))){
 			feed.setMaxItems($.event('size'));
 		}
 
-		if(len($.event('limit'))){
+		if(isNumeric($.event('limit'))){
 			feed.setMaxItems($.event('limit'));
 		}
 
@@ -1208,6 +1214,24 @@ component extends="mura.cfobject" {
 			feed.setType($.event('type'));
 		}
 
+	}
+
+	function setIteratorProps(iterator,$){
+		if(isNumeric($.event('pageNum'))){
+			iterator.setPage($.event('pageNum'));
+		}
+
+		if(isNumeric($.event('startRow'))){
+			iterator.setStartRow($.event('startRow'));
+		}
+
+		if(isNumeric($.event('nextN'))){
+			iterator.setNextN($.event('nextN'));
+		}
+
+		if(isNumeric($.event('pageSize'))){
+			iterator.setNextN($.event('pageSize'));
+		}
 	}
 
 	function findCrumbArray(entityName,id,siteid){
@@ -1423,6 +1447,8 @@ component extends="mura.cfobject" {
 		var subItemArray=[];
 		var p='';
 		var pk=entity.getPrimaryKey();
+
+		setIteratorProps(iterator,$);
 
 		while(iterator.hasNext()){
 			item=iterator.next();
