@@ -1159,7 +1159,7 @@ component extends="mura.cfobject" {
 		var p='';
 
 		setIteratorProps(iterator,$);
-		
+
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
@@ -1212,6 +1212,10 @@ component extends="mura.cfobject" {
 
 		if($.event('entityName')=='content' && len($.event('type'))){
 			feed.setType($.event('type'));
+		}
+
+		if(isNumeric($.event('cachedWithin'))){
+			feed.setCachedWithin(createTimeSpan(0,0,0,$.event('cachedWithin')));
 		}
 
 	}
