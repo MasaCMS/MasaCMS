@@ -154,6 +154,50 @@ component extends="mura.cfobject" {
 		return {'items'=arguments._array};
 	}
 
+	function formatIteratorResult(iterator,returnArray){
+		
+		var result={'totalItems'=arguments.iterator.getRecordCount(),
+			'totalPages'=arguments.iterator.pageCount(),
+			'pageIndex'=arguments.iterator.getPageIndex(),
+			'items'=arguments.returnArray,
+			'startindex'=arguments.iterator.getFirstRecordOnPageIndex(),
+			'endindex'=arguments.iterator.getLastRecordOnPageIndex(),
+			'itemperpage'=arguments.iterator.getNextN()
+		};
+		
+		
+		var baseURL=getEndPoint() & "/?";
+		var params={};
+		structAppend(params,url,true);
+		structAppend(params,form,true);
+
+		for(var u in params){
+			if(u!='pageIndex'){
+				baseURL= baseurl & "&#lcase(u)#=#params[u]#";
+			}
+		}
+
+		var nextIndex = (result.pageIndex < result.totalPages) ? result.pageIndex+1 : 1;
+		var prevIndex =(result.pageIndex > 1) ? result.pageIndex-1 : result.totalPages;
+
+		result.links={'self'=baseurl & "&pageIndex=" & result.pageIndex};
+
+		if(result.pageIndex > 1){
+			result.links['first']='first'=baseurl & "&pageIndex=" & 1;
+			result.links['previous']=baseurl & "&pageIndex=" & prevIndex;
+		}
+
+		if(result.totalPages > 1){
+			result.links['last']=baseurl & "&pageIndex=" & result.totalPages;
+		}
+
+		if(result.pageIndex < result.totalPages ){
+			result.links['next']=baseurl & "&pageIndex=" & nextIndex;
+		}
+				
+		return result;
+	}
+
 	function processRequest(path=cgi.path_info){
 
 		try {
@@ -1025,7 +1069,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct);
 		}
 
-		return {'items'=returnArray};
+		return formatIteratorResult(iterator,returnArray);
 	}
 
 	function findMany(entityName,ids,siteid){
@@ -1096,7 +1140,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatArray(returnArray);
+		return formatIteratorResult(iterator,returnArray);
 	}
 
 	function findQuery(entityName,siteid){
@@ -1191,13 +1235,68 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatArray(returnArray);
+		return formatIteratorResult(iterator,returnArray);
 	}
 
 	function setFeedProps(feed,$){
+		var sort='';
+		
 		if(len($.event('orderby'))){
-			feed.setOrderBy($.event('orderby'));
+			sort=$.event('orderby');
 		}
+
+		if(len($.event('sort'))){
+			sort=$.event('sort');
+		}
+
+		if(len(sort)){
+			
+			var prefix='';
+			var prop='';
+			var useOrderby=true;
+
+			sort=listToArray(sort);
+			var orderby=[];
+			for(var s in sort){
+				if(len(s) > 1){
+					var prefix=left(s,1);
+					var prop=right(s,len(s)-1);
+
+					if(listFindNoCase(prop,'comments,random,rating')){
+						feed.setSortBy(prop);
+						if(prefix=='-'){
+							feed.setSortDirection('desc');
+						}
+						break;
+						useOrderby=false;
+					}
+
+					if(prefix=='+'){
+						arrayAppend(orderby,prop & " asc");
+					} else if(prefix=="-"){
+						arrayAppend(orderby,prop & " desc");
+					} else {
+						arrayAppend(orderby,s);
+					}
+				} else {
+
+					if(listFindNoCase(prop,'comments,random,rating')){
+						feed.setSortBy(s);
+						useOrderby=false;
+						break;
+					}
+
+					arrayAppend(orderby,s);
+				}
+
+  			}
+
+  			if(useOrderby){
+  				orderby=arrayToList(orderby);
+  				feed.setOrderBy(orderby);
+  			}
+  
+  		}
 
 		if(len($.event('sortby'))){
 			feed.setSortBy($.event('sortby'));
@@ -1230,20 +1329,20 @@ component extends="mura.cfobject" {
 	}
 
 	function setIteratorProps(iterator,$){
-		if(isNumeric($.event('pageNum'))){
-			iterator.setPage($.event('pageNum'));
+		if(isNumeric($.event('pageIndex'))){
+			iterator.setPage($.event('pageIndex'));
 		}
 
-		if(isNumeric($.event('startRow'))){
-			iterator.setStartRow($.event('startRow'));
+		if(isNumeric($.event('startIndex'))){
+			iterator.setStartRow($.event('startIndex'));
 		}
 
-		if(isNumeric($.event('nextN'))){
-			iterator.setNextN($.event('nextN'));
+		if(isNumeric($.event('offset'))){
+			feed.setMaxItems($.event('offset'));
 		}
 
-		if(isNumeric($.event('pageSize'))){
-			iterator.setNextN($.event('pageSize'));
+		if(isNumeric($.event('itemsPerPage'))){
+			iterator.setNextN($.event('itemsPerPage'));
 		}
 	}
 
@@ -1295,7 +1394,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatArray(returnArray);
+		return formatIteratorResult(iterator,returnArray);
 	}
 
 	function delete(entityName,id,siteid){
@@ -1485,7 +1584,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatArray(returnArray);
+		return formatIteratorResult(iterator,returnArray);
 	}
 
 	function applyRemoteFormat(str){

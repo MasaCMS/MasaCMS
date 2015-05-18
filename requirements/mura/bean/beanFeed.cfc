@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="siteID" type="string" default="" />
 	<cfproperty name="sortBy" type="string" default="" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+	<cfproperty name="orderby" type="string" default=""/>
 	<cfproperty name="additionalColumns" type="string" default="" />
 	<cfproperty name="sortTable" type="string" default="" />
 	
@@ -74,13 +75,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.keyField="">
 	<cfset variables.instance.sortBy="" />
 	<cfset variables.instance.sortDirection="asc" />
+	<cfset variables.instance.orderby="" />
 	<cfset variables.instance.tableFieldLookUp=structNew()/>
 	<cfset variables.instance.tableFieldlist=""/>
 	<cfset variables.instance.nextN=0>
 	<cfset variables.instance.maxItems=0>
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
-	<cfset variables.instance.orderby=""/>
 	<cfset variables.instance.fieldAliases={}/>
 	<cfset variables.instance.cachedWithin=createTimeSpan(0,0,0,0)/>
 	
@@ -96,6 +97,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setEntityName" output="false">
 	<cfargument name="entityName">
 	<cfset variables.instance.entityName=arguments.entityName>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getOrderBy" output="false">
+	<cfreturn variables.instance.orderby>
+</cffunction>
+
+<cffunction name="setOrderBy" output="false">
+	<cfargument name="orderby">
+	<cfset variables.instance.orderby=arguments.orderby>
 	<cfreturn this>
 </cffunction>
 
