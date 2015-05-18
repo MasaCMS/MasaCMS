@@ -1216,6 +1216,7 @@ component extends="mura.cfobject" {
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
+			
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
@@ -1234,6 +1235,8 @@ component extends="mura.cfobject" {
 
 			arrayAppend(returnArray, itemStruct );
 		}
+
+		//writeDump(var=$.event('pageIndex'),abort=1);
 
 		return formatIteratorResult(iterator,returnArray);
 	}
@@ -1329,6 +1332,10 @@ component extends="mura.cfobject" {
 	}
 
 	function setIteratorProps(iterator,$){
+		if(isNumeric($.event('itemsPerPage'))){
+			iterator.setNextN($.event('itemsPerPage'));
+		}
+
 		if(isNumeric($.event('pageIndex'))){
 			iterator.setPage($.event('pageIndex'));
 		}
@@ -1341,9 +1348,7 @@ component extends="mura.cfobject" {
 			feed.setMaxItems($.event('offset'));
 		}
 
-		if(isNumeric($.event('itemsPerPage'))){
-			iterator.setNextN($.event('itemsPerPage'));
-		}
+		
 	}
 
 	function findCrumbArray(entityName,id,siteid){
