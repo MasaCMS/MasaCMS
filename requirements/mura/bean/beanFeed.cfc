@@ -351,26 +351,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQueryAttrs" output="false">
 	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
-	<cfif hasCustomDatasource()>
-		<cfset structAppend(arguments,
-			{datasource=getCustomDatasource(),
-			username='',
-			password='',
-			cachedWithin=arguments.cachedWithin},
-			false)>
-
-		<cfif getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)>
-			<cfset structDelete(arguments,'cachedWithin')>
-		</cfif>
-		
-		<cfreturn arguments>
-	<cfelse>
-		<cfreturn variables.configBean.getReadOnlyQRYAttrs(argumentCollection=arguments)>
-	</cfif>
+	<cfset arguments.readOnly=true>
+	<cfreturn super.getQueryAttrs(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getQueryService" output="false">
-	<cfreturn new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments))>
+	<cfargument name="cachedWithin" default="#variables.instance.cachedWithin#">
+	<cfset arguments.readOnly=true>
+	<cfreturn super.getQueryService(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">

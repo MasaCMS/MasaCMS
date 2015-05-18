@@ -234,7 +234,6 @@ component extends="mura.cfobject" output="false" {
 			arguments.data=property;
 		}
 
-		
 		var prop='';
 		if(isQuery(arguments.data) and arguments.data.recordcount){
 			for(var i=1;i<=listLen(arguments.data.columnlist);i++){

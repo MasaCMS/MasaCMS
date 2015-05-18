@@ -256,23 +256,12 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].datasource;
 	}
 
-	function getQueryAttrs(){
-		if( hasCustomDatasource() ){
-			structAppend(arguments,
-				{datasource=getCustomDatasource(),
-				username='',
-				password=''},
-				false);
-			return arguments;
-		} else if (structKeyExists(arguments, "readOnly")) {
-			return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
-		} else {
-			return structNew();
-		}
+	function getQueryAttrs(readOnly=getReadOnly()){
+		return super.getQueryAttrs(argumentCollection=arguments);
 	}
 
-	function getQueryService(){
-		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
+	function getQueryService(readOnly=getReadOnly()){
+		return super.getQueryService(argumentCollection=arguments);
 	}
 
 	private function addQueryParam(qs,prop,value){

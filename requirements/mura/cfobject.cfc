@@ -56,8 +56,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 </cfscript>
 
-<cfset variables.translator=""/>
-
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfreturn this />
 </cffunction>	
@@ -250,17 +248,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		throw("You have attempted to call the method #arguments.methodName# which does not exist in #getClassFullName()#");
 	}
 
-	function getQueryService(){
-		if (structKeyExists(arguments, "readOnly")) {
-			return new Query(argumentCollection=getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments));
-		} else {
+	function hasCustomDatasource(){
+		return len(getValue('customDatasource'));
+	}
+
+	function getQueryAttrs(readOnly=false){
+		if( hasCustomDatasource() ){
+			structAppend(arguments,
+				{datasource=getValue('customDatasource'),
+				username='',
+				password=''},
+				false);
+
 			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
 				structDelete(arguments,'cachedWithin');
 			}
-			return new Query(argumentCollection=arguments);
+			
+			return arguments;
+		} else if (isDefined('arguments.readOnly') && arguments.readOnly) {
+			return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+		} else {
+			return structNew();
 		}
 	}
 
+	function getQueryService(readOnly=false){
+		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
+	}
 </cfscript>
 
 </cfcomponent>
