@@ -59,6 +59,13 @@ component extends="mura.cfobject" {
 	      .asString('url')
 	      .asDate('start')
 	      .asDate('end')
+	      .asInteger('startindex')
+	      .asInteger('endindex')
+	      .asInteger('itemsperpage')
+	      .asInteger('endindex')
+	      .asInteger('totalpages')
+	      .asInteger('totalitems')
+	      .asInteger('pageindex')
 	      .asString('title');
 
 	    registerEntity('site',{
@@ -162,7 +169,7 @@ component extends="mura.cfobject" {
 			'items'=arguments.returnArray,
 			'startindex'=arguments.iterator.getFirstRecordOnPageIndex(),
 			'endindex'=arguments.iterator.getLastRecordOnPageIndex(),
-			'itemperpage'=arguments.iterator.getNextN()
+			'itemsperpage'=arguments.iterator.getNextN()
 		};
 		
 		
