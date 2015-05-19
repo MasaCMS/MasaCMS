@@ -162,8 +162,10 @@ component extends="mura.cfobject" {
 	}
 
 	function formatIteratorResult(iterator,returnArray){
-		
-		var result={'totalItems'=arguments.iterator.getRecordCount(),
+		var result={};
+
+		if(arguments.iterator.getRecordCount()){
+			result={'totalItems'=arguments.iterator.getRecordCount(),
 			'totalPages'=arguments.iterator.pageCount(),
 			'pageIndex'=arguments.iterator.getPageIndex(),
 			'items'=arguments.returnArray,
@@ -171,6 +173,16 @@ component extends="mura.cfobject" {
 			'endindex'=arguments.iterator.getLastRecordOnPageIndex(),
 			'itemsperpage'=arguments.iterator.getNextN()
 		};
+		} else {
+			result={'totalItems'=0,
+			'totalPages'=0,
+			'pageIndex'=0,
+			'items'=[],
+			'startindex'=0,
+			'endindex'=0,
+			'itemsperpage'=arguments.iterator.getNextN()
+		};
+		}
 		
 		
 		var baseURL=getEndPoint() & "/?";
