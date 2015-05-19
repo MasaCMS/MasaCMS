@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
 		where 
-			<cfif not len(subtypefilter)>
+			<cfif not len(subtypefilter) or not listFind(nodeLevelList,rc.type)>
 				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
 				or type='Base'
 			<cfelse>
