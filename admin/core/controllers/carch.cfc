@@ -376,15 +376,15 @@
 					<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
 				</cfif>
 				
-				<cfif structIsEmpty(rc.contentBean.getErrors())>
+				<cfif structIsEmpty(arguments.rc.contentBean.getErrors())>
 					<cfset structDelete(session.mura,"editBean")>
 					<cfif arguments.rc.preview eq 0 and not arguments.rc.murakeepediting>
 						<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./")>
 					<cfelse>
-						<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
-						<cfset arguments.rc.type=rc.contentBean.getType()>
-						<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
-						<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
+						<cfset arguments.rc.parentid=arguments.rc.contentBean.getParentID()>
+						<cfset arguments.rc.type=arguments.rc.contentBean.getType()>
+						<cfset arguments.rc.contentid=arguments.rc.contentBean.getContentID()>
+						<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
 						<cfset arguments.rc.preview=arguments.rc.preview>
 						<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./")>
 					</cfif>
