@@ -935,6 +935,8 @@ component extends="mura.cfobject" {
 			}
 		}
 
+		vals['entityname']=entityConfigName;
+
 		return vals;
 	}
 
