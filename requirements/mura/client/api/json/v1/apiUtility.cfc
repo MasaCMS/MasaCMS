@@ -209,7 +209,7 @@ component extends="mura.cfobject" {
 
 		try {
 			var responseObject=getpagecontext().getResponse();
-			var params={};
+			var params={method='undefined'};
 			var result="";
 
 			getBean('utility').suppressDebugging();
@@ -268,7 +268,7 @@ component extends="mura.cfobject" {
 					result=evaluate('#params.method#(argumentCollection=params)');
 					
 					if(!isJson(result)){
-						result=getSerializer().serialize({'data'=result});
+						result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					}
 
 					responseObject.setContentType('application/json; charset=utf-8');
@@ -304,7 +304,7 @@ component extends="mura.cfobject" {
 					result=evaluate('#params.method#(argumentCollection=params)');
 					
 					if(!isJson(result)){
-						result=getSerializer().serialize({'data'=result});
+						result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 					}
 
 					responseObject.setContentType('application/json; charset=utf-8');
@@ -433,7 +433,7 @@ component extends="mura.cfobject" {
 
 							if(listFindNoCase('content,category',params.entityName) && params.relatedEntity=='crumbs'){
 								responseObject.setContentType('application/json; charset=utf-8');
-								return getSerializer().serialize({'data'=findCrumbArray(argumentCollection=params)});
+								result=findCrumbArray(argumentCollection=params);
 							} else {
 								if(!isDefined('params.relationship.cfc')){
 									throw(type='invalidParameters');
@@ -445,14 +445,18 @@ component extends="mura.cfobject" {
 								structAppend(url,params);
 
 								if(params.relationship.fieldtype=='one-to-many'){
+									params.method='findQuery';
 									result=findQuery(argumentCollection=params);
 								} else {
 									if(listLen(params.id)){
 										params.ids=params.id;
+										params.method='findMany';
 										result=findMany(argumentCollection=params);
 									} else if(params.id=='new') {
+										params.method='findNew';
 										result=findNew(argumentCollection=params);
 									} else {
+										params.method='findOne';
 										result=findOne(argumentCollection=params);
 									}	
 								}
@@ -462,8 +466,10 @@ component extends="mura.cfobject" {
 
 							if(listLen(params.id) > 1){
 								params.ids=params.id;
+								params.method='findMany';
 								result=findMany(argumentCollection=params);
 							} else {
+								params.method='findOne';
 								result=findOne(argumentCollection=params);
 							}
 						}
@@ -471,8 +477,10 @@ component extends="mura.cfobject" {
 					} else {
 
 						if(structCount(url)){
+							params.method='findQuery';
 							result=findQuery(argumentCollection=params);
 						} else {
+							params.method='findAll';
 							result=findAll(argumentCollection=params);
 						}
 					}
@@ -481,12 +489,13 @@ component extends="mura.cfobject" {
 
 				case "PUT":
 				case "POST":
-
+					params.method='save';
 					result=save(argumentCollection=params);
 
 				break;
 
 				case "DELETE":
+					params.method='delete';
 					result=delete(argumentCollection=params);
 			}
 
@@ -497,46 +506,57 @@ component extends="mura.cfobject" {
 			} catch (Any e){}
 
 			responseObject.setContentType('application/json; charset=utf-8');
-			return getSerializer().serialize({'data'=result});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'data'=result});
 		} 
 
 		catch (authorization e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
-			return getSerializer().serialize({'error'={'message'='Insufficient Account Permissions'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'='Insufficient Account Permissions'}]});
 		}
 
 		catch (invalidParameters e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'error'={'message'='Insufficient parameters'}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'='Insufficient parameters'}]});
 		}
 
 		catch (invalidMethodCall e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'error'={'message'="Invalid method call"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'="Invalid method call"}]});
 		}
 
 		catch (badRequest e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'error'={'message'="Bad Request"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'="Bad Request"}]});
 		}
 
 		catch (invalidTokens e){
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(400);
-			return getSerializer().serialize({'error'={'message'="Invalid CSRF tokens"}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'="Invalid CSRF tokens"}]});
 		}
 
 		catch (Any e){
 			writeLog(type="Error", file="exception", text="#e.stacktrace#");
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(500);
-			return getSerializer().serialize({'error'={'message'="Unhandeld Exception",'stacktrace'=e}});
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'errors'=[{'message'="Unhandeld Exception",'stacktrace'=e}]});
 		}
 
+	}
+
+	function getApiVersion(){
+		return 'v1';
+	}
+
+	function getParamsWithOutMethod(params){
+		var temp={};
+		structAppend(temp,arguments.params);
+		structDelete(temp,'method');
+		return temp;
 	}
 
 	function parseParamsFromPath(pathInfo,params,start){
