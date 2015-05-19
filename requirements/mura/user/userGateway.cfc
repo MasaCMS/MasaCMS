@@ -200,7 +200,7 @@
 		</cfloop>
 
 		<!--- Generate a sorted (if specified) list of baseIDs with additional fields --->
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAdvancedUserSearch',cachedWithin=arguments.params.getCachedWithin())#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsAdvancedUserSearch',cachedWithin=params.getCachedWithin())#">
 		<cfif not arguments.countOnly and dbType eq "oracle" and params.getMaxItems()>select * from (</cfif>
 		select <cfif not arguments.countOnly and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
