@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var returnUrl ="" />
 <cfset var site=""/>
 <cfset var returnDomain="">
+<cfset var returnProtocol="">
 <cfset var indexFile="./">
 <cfset var loginURL="" />
 
@@ -108,19 +109,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset session.rememberMe=arguments.data.rememberMe />
 
-<!--- Make sure that the domain of the returnURL is the same as the current domain--->
-<cfif len(arguments.data.returnURL) and listFindNoCase("http,https",listFirst(arguments.data.returnURL,":"))>
-	<cfset returnDomain = reReplace( arguments.data.returnURL, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
-	
-	<cfif len(returnDomain)>
-		<cfif len(cgi.http_host)>	
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,listFirst(cgi.http_host,":"))>
-		<cfelse>
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,cgi.server_name)>
-		</cfif>
-	</cfif>
-</cfif>
-
 <cfif not isdefined('arguments.data.username')>
 
 	<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
@@ -136,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isloggedin>
 		
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-		
+	
 			<cfset session.siteArray=arrayNew(1) />
 				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
 				<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
@@ -151,11 +139,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cflocation url="#indexFile#" addtoken="false">
 				</cfif>	
 			<cfelse>
-				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+				<cfset returnUrl = getBean('utility').sanitizeHREF(replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL'))>
 				<cflocation url="#returnUrl#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
-			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+			<cfset returnUrl = getBean('utility').sanitizeHREF(replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL'))>
 			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>
@@ -276,13 +264,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cflocation url="./" addtoken="false">
 				</cfif>
 			<cfelseif arguments.data.returnUrl neq ''>
-				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+				<cfset returnUrl = getBean('utility').sanitizeHREF(replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL'))>
 				<cflocation url="#returnUrl#" addtoken="false">
 			<cfelse>
 				<cflocation url="./?muraAction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
-			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+			<cfset returnUrl = getBean('utility').sanitizeHREF(replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL'))>
 			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>

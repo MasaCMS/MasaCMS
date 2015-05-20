@@ -915,6 +915,25 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 <cfreturn local.str>
 </cffunction>
 
+<cffunction name="sanitizeHref" output="false">
+	<cfargument name="href">
+
+	<cfif len(arguments.href) and listFindNoCase("http,https",listFirst(arguments.href,":"))>
+		<cfset var returnProtocol = listFirst(arguments.href,':') />
+		<cfset var returnDomain = reReplace(arguments.href, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
+		
+		<cfif not listfindNoCase(getBean('settingsManager').getAccessControlOriginList(),returnProtocol & "://" & returnDomain) and len(returnDomain)>
+			<cfif len(cgi.http_host)>	
+				<cfset arguments.href=replace(arguments.href,returnDomain,listFirst(cgi.http_host,":"))>
+			<cfelse>
+				<cfset arguments.href=replace(arguments.href,returnDomain,cgi.server_name)>
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfreturn arguments.href>
+</cffunction>
+
 <cfscript>
 	public string function stripTags(text='', tagsToStrip='script,style,embed,object') {
 		var t = '';

@@ -681,11 +681,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(!isDefined("variables.AccessControlOriginList")){
 			lock name="originlist#application.instanceid#" type="exclusive" timeout="10"{
 				if(!isDefined("variables.AccessControlOriginList")){
+					variables.AccessControlOriginList='';
+
+					var admindomain=variables.configBean.getAdminDomain();
+					
+					if(len(admindomain)){
+						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"http://#admindomain#");
+						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"https://#admindomain#");
+					}
+
 					var sites=getSites();
 					var originArray=[];
 					var origin='';
-
-					variables.AccessControlOriginList='';
+					
 					for(var site in sites){
 						if(sites[site].getJSONApi()){
 							originArray=listToArray(sites[site].getAccessControlOriginList());

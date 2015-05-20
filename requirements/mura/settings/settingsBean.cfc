@@ -699,9 +699,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getLocaleUtils" returntype="any" access="public" output="false">
 	<cfreturn getRBFactory().getUtils() />
 </cffunction>
-s
+
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn getResourcePath() & "/#variables.instance.displayPoolID#" />
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+	<cfreturn getResourcePath(argumentCollection=arguments) & "/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
@@ -714,13 +716,15 @@ s
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
 	<cfargument name="theme" default="#request.altTheme#">
-	
+	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
+
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
-		<cfreturn getAssetPath() & "/includes/themes/#arguments.theme#" />
+		<cfreturn getAssetPath(argumentCollection=arguments) & "/includes/themes/#arguments.theme#" />
 	<cfelseif len(variables.instance.theme)>
-		<cfreturn  getAssetPath() & "/includes/themes/#variables.instance.theme#" />
+		<cfreturn  getAssetPath(argumentCollection=arguments) & "/includes/themes/#variables.instance.theme#" />
 	<cfelse>
-		<cfreturn getAssetPath() />
+		<cfreturn getAssetPath(argumentCollection=arguments) />
 	</cfif>
 </cffunction>
 
@@ -1065,11 +1069,12 @@ s
 <cffunction name="getWebPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
 	<cfif arguments.secure or arguments.complete>
 		<cfif arguments.secure>
-			<cfreturn 'https://' & getValue('domain') & getServerPort() & getContext()>
+			<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
 		<cfelse>
-			<cfreturn getScheme() & '://' & getValue('domain') & getServerPort() & getContext()>
+			<cfreturn getScheme() & '://' & arguments.domain & getServerPort() & getContext()>
 		</cfif>
 	<cfelse>
 		<cfreturn getContext()>
@@ -1079,6 +1084,7 @@ s
 
 <cffunction name="getResourcePath" output="false">
 	<cfargument name="complete" default=0>
+	<cfargument name="domain" default="#getValue('domain')#">
 	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
 		<cfset var configBean=getBean('configBean')>
 		<cfif getValue('resourceSSL')>
