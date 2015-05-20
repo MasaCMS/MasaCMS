@@ -154,10 +154,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> 
 			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
-			
-			<cfif not rsCrumbData.recordcount>
-				<cfbreak>
-			</cfif>
 
 			<cfset crumb=structNew() />
 			<cfset crumb.type=rsCrumbData.type />
@@ -197,6 +193,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
 			<cfset ID=rsCrumbData.parentid>
+
+			<cfif not rsCrumbData.recordcount>
+				<cfbreak>
+			</cfif>
 			
 			<cfif I gt 50><cfthrow  type="custom" message="Crumdata Loop Error"></cfif>
 			</cfloop>
