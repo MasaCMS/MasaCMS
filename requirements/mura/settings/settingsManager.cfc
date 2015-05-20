@@ -692,7 +692,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							if(arrayLen(originArray)){
 								for(origin in originArray){
 									if(!listFind(variables.AccessControlOriginList,origin)){
-										listAppend(variables.AccessControlOriginList,origin);
+										variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
 									}
 								}
 							}
