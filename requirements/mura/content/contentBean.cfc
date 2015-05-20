@@ -1217,7 +1217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.compactDisplay=true>
 	</cfif>
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfif structKeyExists(arguments,"tab")>
 		<cfset returnStr=returnStr & "##" & arguments.tab>
