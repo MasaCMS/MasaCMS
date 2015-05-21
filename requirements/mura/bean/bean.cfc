@@ -184,6 +184,11 @@ component extends="mura.cfobject" output="false" {
 				returnFormat=arguments.args.returnFormat
 			};
 
+
+		/*
+		This should only happen with loading many-to-one relationships when local
+		fkcolumn (many) value is empty.
+		*/
 		if(!len(returnArgs[translatedLoadKey])){
 			setValue(translatedLoadKey,createUUID());
 			returnArgs[translatedLoadKey]=getValue(translatedLoadKey);
