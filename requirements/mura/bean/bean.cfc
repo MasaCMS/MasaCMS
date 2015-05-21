@@ -255,7 +255,7 @@ component extends="mura.cfobject" output="false" {
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && Len(prop) ) {
+				if ( IsSimpleValue(prop) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
 					setValue(prop,arguments.data['#prop#']);
 				}
 			}		
