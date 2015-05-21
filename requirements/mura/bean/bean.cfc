@@ -178,10 +178,17 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	private function synthArgs(args){
+		var translatedLoadKey=translatePropKey(args.loadkey);
 		var returnArgs={
-				"#translatePropKey(args.loadkey)#"=getValue(translatePropKey(arguments.args.fkcolumn)),
+				"#translatedLoadKey#"=getValue(translatePropKey(arguments.args.fkcolumn)),
 				returnFormat=arguments.args.returnFormat
 			};
+
+		if(!len(returnArgs[translatedLoadKey])){
+			setValue(translatedLoadKey,createUUID());
+			returnArgs[translatedLoadKey]=getValue(translatedLoadKey);
+		}
+
 		if(structKeyExists(arguments.args,'siteid')){
 			returnArgs.siteid=getValue('siteid');
 		}
