@@ -1070,6 +1070,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
+
+	<cfif not isDefined('arguments.domain')>
+		<cfset arguments.domain=getValue('domain')>
+	</cfif>
+	
 	<cfif arguments.secure or arguments.complete>
 		<cfif arguments.secure>
 			<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
@@ -1085,6 +1090,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getResourcePath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
+
+	<cfif not isDefined('arguments.domain')>
+		<cfset arguments.domain=getValue('domain')>
+	</cfif>
+
 	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
 		<cfset var configBean=getBean('configBean')>
 		<cfif getValue('resourceSSL')>

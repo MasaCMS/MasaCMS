@@ -1760,7 +1760,7 @@ component extends="mura.cfobject" {
 
 					if(getBean('loginManager').remoteLogin($.event().getAllValues(),'')){
 						if(len($.event('returnurl'))){
-							return {redirect=$.event('returnurl')};
+							return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 						} else {
 							return {redirect="./##"};
 						}
@@ -1829,7 +1829,7 @@ component extends="mura.cfobject" {
 									$.getBean('userUtility').loginByUserID(userid=$.event('userBean').getUserID(),siteid=$.event('userBean').getSiteID());
 
 									if(len($.event('returnurl'))){
-										return {redirect=$.event('returnurl')};
+										return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 									} else {
 										return {redirect="./"};
 									}
@@ -1863,7 +1863,7 @@ component extends="mura.cfobject" {
 								$.getBean('userUtility').loginByUserID(userid=$.event('userid'),siteid=$.event('siteid'));
 
 								if(len($.event('returnurl'))){
-									return {redirect=$.event('returnurl')};
+									return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 								} else {
 									return {redirect="./"};
 								}
