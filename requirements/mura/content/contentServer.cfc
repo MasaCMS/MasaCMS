@@ -382,6 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filename" default="">
 	<cfargument name="validateDomain" default="true">
 	<cfargument name="parseURL" default="true">
+	<cfargument name="siteid" default="#bindToDomain()#">
 	<cfset var fileoutput="">
 
 	<cfset url.path=arguments.filename>
@@ -394,7 +395,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		<cfset arguments.filename=listDeleteAt(arguments.filename,listLen(arguments.filename,"/"),"/")>
  	</cfif>
  
-	<cfset request.siteid = bindToDomain()>
+	<cfset request.siteid =arguments.siteid>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>

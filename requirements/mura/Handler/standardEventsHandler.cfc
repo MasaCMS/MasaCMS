@@ -725,7 +725,7 @@
 
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
-		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
 	<cfelse>
 		<cfset $.getContentRenderer().renderFile($.content('fileid'),$.event('method'),$.event('size')) />
 	</cfif>
@@ -742,7 +742,7 @@
 
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
-		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({data={redirect=thelink}}))>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=thelink}}))>
 	<cfelse>
 		<cflocation url="#theLink#" addtoken="false" statuscode="301">
 	</cfif>
@@ -833,7 +833,7 @@
 			structDelete(result,'extenddata');
 			structDelete(result,'extendAutoComplete');
 
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({data=result}));
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
 
 		} catch (any e){
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=e.stacktrace}));

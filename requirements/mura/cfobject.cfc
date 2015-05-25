@@ -263,10 +263,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
 				structDelete(arguments,'cachedWithin');
 			}
+
+			structDelete(arguments,'readOnly');
 			
 			return arguments;
-		} else if (isDefined('arguments.readOnly') && arguments.readOnly) {
-			return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+		} else if (isDefined('arguments.readOnly')) {
+			if(arguments.readOnly){
+				return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+			} else {
+				structDelete(arguments,'readOnly');
+				return arguments;
+			}
 		} else {
 			return structNew();
 		}

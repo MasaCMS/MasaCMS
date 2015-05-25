@@ -55,6 +55,6 @@ AddDefaultCharset utf-8
 # Force UTF-8 for a number of file formats
 AddCharset utf-8 .css .js .xml .json .rss .atom
 
-<FilesMatch ".(eot|ttf|otf|woff)">
+<FilesMatch ".(eot|ttf|otf|woff|js)">
 	Header set Access-Control-Allow-Origin "*"
 </FilesMatch>

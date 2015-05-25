@@ -101,9 +101,7 @@ CKEDITOR.editorConfig = function( config )
 	];
 
 	config.toolbar_QuickEdit = [
-		<cfif $.currentUser().isInGroup('admin') or $.currentUser().isSuperUser()>
-			{name: 'group1', items:['Sourcedialog']},
-		</cfif>
+		{name: 'group1', items:['Sourcedialog']},
 		{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
 		{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 		{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
