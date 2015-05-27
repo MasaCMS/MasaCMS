@@ -202,45 +202,46 @@ CKEDITOR.editorConfig = function( config )
 	config.oembed_WrapperClass = 'embeddedContent';
 
 <cfoutput>
+	<cfset secure=$.getBean('utility').isHTTPS()>
 
 	<!--- contentsCss --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/css/editor/editor.css.cfm';
+		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/css/editor/editor.css';	
+		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css';	
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/css/editor.css.cfm';
+		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css.cfm';
 	<cfelse>		
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/css/editor.css';
+		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css';
 	</cfif>
 	
 	<!--- templates --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
 		config.templates='default';
-		config.templates_files= ['#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/templates/default.js.cfm'];
+		config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js.cfm'];
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
 		config.templates='default';
-		config.templates_files= ['#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
+		config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
 	</cfif>
 	
 	<!--- styleSet --->
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
-		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
+		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/styles.js';
+		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
 	</cfif>
 	
 	<!--- customConfig --->
 	<cfif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
-		config.customConfig='#$.siteConfig().getAssetPath(complete=1)#/js/editor/config.js.cfm';
+		config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
-		config.customConfig='#$.siteConfig().getAssetPath(complete=1,domain=cgi.server_name)#/js/editor/config.js';
+		config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 	</cfif>
 
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
 		config.customConfig='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
-		config.customConfig='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/config.js';
+		config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 	</cfif>
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
