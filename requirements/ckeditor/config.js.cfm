@@ -239,7 +239,7 @@ CKEDITOR.editorConfig = function( config )
 	</cfif>
 
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
-		config.customConfig='#$.siteConfig().getThemeAssetPath(complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
+		config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
 		config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
 	</cfif>
