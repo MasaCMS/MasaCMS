@@ -164,10 +164,8 @@ CKEDITOR.editorConfig = function( config )
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
 	</cfif>
-
-	<cfif $.currentUser().isInGroup('admin') or $.currentUser().isSuperUser()>
-		config.extraPlugins += ',sourcedialog';
-	</cfif>
+	
+	config.extraPlugins += ',sourcedialog';
 
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
