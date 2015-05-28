@@ -222,7 +222,7 @@ component extends="mura.cfobject" {
 
 		try {
 			var responseObject=getpagecontext().getResponse();
-			var params={method='undefined'};
+			var params={};
 			var result="";
 
 			getBean('utility').suppressDebugging();
@@ -292,6 +292,10 @@ component extends="mura.cfobject" {
 
 			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
 				throw(type='authorization');
+			}
+
+			if(!isDefined('params.method')){
+				params.method="undefined";
 			}
 
 			if(arrayLen(pathInfo)){
