@@ -1499,8 +1499,9 @@ component extends="mura.cfobject" {
 
 	function getEndPoint(){
 		if(request.muraApiRequest){
+			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
-				request.apiEndpoint="#getBean('utility').getRequestProtocol()#://#cgi.server_name#/index.cfm/_api/json/v1/#variables.siteid#";	
+				request.apiEndpoint="#getBean('utility').getRequestProtocol()#://#cgi.server_name##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
 			}
 			return request.apiEndpoint;
 		} 
