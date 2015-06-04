@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li><a href="##" onclick="return openPreviewDialog('#rc.contentBean.getURL(secure=rc.$.getBean('utility').isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getContentHistID()#")#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 					</cfcase>
 					<cfcase value="File">	
-						<li><a href="##" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+						<li><a href="##" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getResourcePath(complete=1)#/index.cfm/_api/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 					</cfcase>
 					</cfswitch>
 				</cfif>
