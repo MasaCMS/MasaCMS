@@ -16,14 +16,6 @@
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default=""><cfoutput>(function(){
-	if(typeof jQuery == 'object'){
-		var select=jQuery;
-		var utility=jQuery;
-	} else {
-		var select=mura;
-		var utility=mura;
-	}
-
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
@@ -37,11 +29,11 @@
 			|| messageEvent.origin == 'https://' + adminDomain + "#$.globalConfig('serverPort')#") {
 			
 			var parameters=messageEvent.data;
-			
+		
 			if (parameters["cmd"] == "setWidth") {			
 				if(parameters["width"]=='configurator'){
 					frontEndModalWidth=frontEndModalWidthConfigurator;
-				} else if(!isNaN(parameters["width"])){
+				} else if(jQuery.isNumeric(parameters["width"])){
 					frontEndModalWidth=parameters["width"];
 				} else {
 					frontEndModalWidth=frontEndModalWidthStandard;
@@ -71,10 +63,10 @@
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
 
 	var autoScroll=function(y){
-		var st = select(window).scrollTop();
-	    var o = select('##frontEndToolsModalBody').offset().top;
-	    var t = select(window).scrollTop() + 80;
-	    var b = select(window).height() - 50 + select(window).scrollTop();
+		var st = $(window).scrollTop();
+	    var o = $('##frontEndToolsModalBody').offset().top;
+	    var t = $(window).scrollTop() + 80;
+	    var b = $(window).height() - 50 + $(window).scrollTop();
 	    var adjY = y + o;
 
 		if (adjY > b) {
@@ -87,21 +79,21 @@
 	}
 
 	var scrollTop=function(y, top){
-		select('html, body').each(function(el){
-			el.scrolltop=top;
-		});
+		$('html, body').stop().animate({
+	        'scrollTop': top
+	    }, 50);
 	}
 
 	var openFrontEndToolsModal=function(a){
 		var src=a.href;
-		var isModal=select(a).attr("data-configurator");
-		var width=select(a).attr("data-modal-width");
-		var ispreview=select(a).attr("data-modal-preview");
+		var isModal=jQuery(a).attr("data-configurator");
+		var width=jQuery(a).attr("data-modal-width");
+		var ispreview=jQuery(a).attr("data-modal-preview");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
 		
-		if(!isNaN(width)){
+		if(jQuery.isNumeric(width)){
 			frontEndModalWidth = width;
 		}
 
@@ -143,32 +135,32 @@
 		}
 
 
-		select("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' + $tools +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
 		'</div>' +
 		'</div>');
 		
 		if(ispreview){
-			select('##mura-preview-device-selector a').on('click', function () {
-				var data=select(this).data();
+			$('##mura-preview-device-selector a').bind('click', function () {
+				var data=$(this).data();
 
 				frontEndModalWidth=data.width;
 			   	frontEndModalHeight=data.height;
 
-			   	select('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
-			    select('##mura-preview-device-selector a').removeClass('active');
-			    select(this).addClass('active');
+			   	$('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
+			    $('##mura-preview-device-selector a').removeClass('active');
+			    $(this).addClass('active');
 
 			    resizeFrontEndToolsModal(data.height);
 			    return false;
 			});
 
-			select("##frontEndToolsModalBody").css("top",(select(document).scrollTop()+80) + "px")
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+80) + "px")
 			resizeFrontEndToolsModal(frontEndModalHeight);
 		} else{
 			frontEndModalHeight=0;
-			select("##frontEndToolsModalBody").css("top",(select(document).scrollTop()+50) + "px")
+			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
 			resizeFrontEndToolsModal(0);
 		}
 	}
@@ -179,15 +171,15 @@
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			
 			//if (frameDoc.body != null) {
-				var windowHeight = Math.max(frameHeight, select(window).height());
+				var windowHeight = Math.max(frameHeight, jQuery(window).height());
 		
 				if (frontEndModalWidth==frontEndModalWidthStandard 
-					&& frameHeight < select(window).height()
+					&& frameHeight < jQuery(window).height()
 					) {
-					frameHeight= Math.max(select(window).height() * .80,frameHeight);
+					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 
-				select('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
+				jQuery('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 				
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
@@ -197,12 +189,12 @@
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
 					if(frontEndModalIE8){
-						frameContainer.style.height=Math.max(frameHeight,select(document).height()) + "px";
+						frameContainer.style.height=Math.max(frameHeight,jQuery(document).height()) + "px";
 					} else {
-						frameContainer.style.height=select(document).height() + "px";
+						frameContainer.style.height=jQuery(document).height() + "px";
 					}
 					setTimeout(function(){
-						select("##frontEndToolsModalClose").fadeIn("fast")
+						jQuery("##frontEndToolsModalClose").fadeIn("fast")
 					},1000);			
 				}
 				
@@ -214,30 +206,25 @@
 	}
 
 	var closeFrontEndToolsModal=function(){
-		select('##frontEndToolsModalContainer').remove();
+		jQuery('##frontEndToolsModalContainer').remove();
 	}	
 
 	var checkToolbarDisplay=function() {
 	<cfif Cookie.fetDisplay eq "none">
-		//select('HTML').removeClass('mura-edit-mode');
-		select(".editableObject").addClass('editableObjectHide');
+		$('HTML').removeClass('mura-edit-mode');
+		$(".editableObject").addClass('editableObjectHide');
 	<cfelse>
-		//select('HTML').addClass('mura-edit-mode');
+		$('HTML').addClass('mura-edit-mode');
 	</cfif>
 	}
 
 	var toggleAdminToolbar=function(){
-		var tools=select("##frontEndTools");
-		if(typeof tools.animate == 'function'){
-			select("##frontEndTools").animate({opacity: "toggle"});
-		} else {
-			tools.toggle();
-		}
-		select('HTML').toggleClass('mura-edit-mode');
-		select(".editableObject").toggleClass('editableObjectHide');
+		$("##frontEndTools").animate({opacity: "toggle"});
+		$('HTML').toggleClass('mura-edit-mode');
+		$(".editableObject").toggleClass('editableObjectHide');
 			
 		if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-			select(".mura-editable").toggleClass('inactive');
+			$(".mura-editable").toggleClass('inactive');
 		}
 	}
 
@@ -247,77 +234,75 @@
 		var width=0;
 		var float;
 
-		select(target).find(".editableObjectContents").each(
+		jQuery(target).find(".editableObjectContents").each(
 			function(){
-				select(this).find(".frontEndToolsModal").each(
+				jQuery(this).find(".frontEndToolsModal").each(
 					function(){
-						select(this).click(function(event){
+						jQuery(this).click(function(event){
 							event.preventDefault();
 							openFrontEndToolsModal(this);
 						}
 					);
 				});
 					
-				select(this).children().each(
+				jQuery(this).children().each(
 					function(el){			
-						if (select(this).css("display") == "block") {
+						if ($(this).css("display") == "block") {
 							display = "block";
-							float=select(this).css("float");
-							width=select(this).outerWidth();
+							float=$(this).css("float");
+							width=$(this).outerWidth();
 						}											
 					}	
 				);
 					
-				select(this).css("display",display).parent().css("display",display);
+				jQuery(this).css("display",display).parent().css("display",display);
 					
 				if(width){
-					select(this).width(width).parent().width(width);
-					select(this).css("float",float).parent().css("float",float);
+					jQuery(this).width(width).parent().width(width);
+					jQuery(this).css("float",float).parent().css("float",float);
 				}
 
 		});
 
-		if(select('HTML').hasClass('mura-edit-mode')){
-			select(target).removeClass('editableObjectHide');
+		if($('HTML').hasClass('mura-edit-mode')){
+			$(target).removeClass('editableObjectHide');
 		} else {
-			select(target).addClass('editableObjectHide');
+			$(target).addClass('editableObjectHide');
 		}
 		
 	}
 
-	select(document).ready(		
+	jQuery(document).ready(		
 		function(){
 
 			checkToolbarDisplay();
 
-			select(".frontEndToolsModal").each(
-				function(el){
-					
-					select(this).on('click',function(event){
+			jQuery(".frontEndToolsModal").each(
+				function(){
+					jQuery(this).click(function(event){
 						event.preventDefault();
 						openFrontEndToolsModal(this);
 					}
 				);
 			});
 
-			select(".editableObject").each(function(){
+			jQuery(".editableObject").each(function(){
 				resizeEditableObject(this);
 			});
 			
 			initAdminProxy();
 			
 			if(frontEndModalIE8){
-				select("##adminQuickEdit").remove();
+				$("##adminQuickEdit").remove();
 			}
 		}
 	);
-	/*
-	select(window).resize(function() {
-			select(".editableObjectContents").each(function(){
+
+	$(window).resize(function() {
+			jQuery(".editableObjectContents").each(function(){
 				resizeEditableObject(this);
 		});
 	});
-	*/
 	</cfoutput>
 	</cfif>
 	<cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showInlineEditor') and url.showInlineEditor>
@@ -341,23 +326,23 @@
 
 			CKEDITOR.disableAutoInline=true;
 			muraInlineEditor.inited=true;
-			select('##adminSave').show();
-			select('##adminStatus').hide();		
-			select('.mura-editable').removeClass('inactive');
+			$('##adminSave').show();
+			$('##adminStatus').hide();		
+			$('.mura-editable').removeClass('inactive');
 
-			select('.mura-editable-attribute').each(
+			$('.mura-editable-attribute').each(
 			function(){
-				var attribute=select(this);
+				var attribute=$(this);
 				var attributename=attribute.attr('data-attribute').toLowerCase();
 
 				attribute.attr('contenteditable','true');
 				attribute.attr('title','');
 
-				select(this).unbind('dblclick');
+				$(this).unbind('dblclick');
 
-				select(this).click(
+				$(this).click(
 					function(){
-						var attribute=select(this);
+						var attribute=$(this);
 						var attributename=attribute.attr('data-attribute').toLowerCase();
 				
 						if(!(attributename in muraInlineEditor.attributes)){
@@ -366,7 +351,7 @@
 							}
 
 							attribute.getAttribute=function(p){
-							var value=select(this).attr(p);
+							var value=$(this).attr(p);
 								if(value==''){
 									return undefined;
 								} else {
@@ -395,8 +380,8 @@
 						});
 
 						editor.on('change', function(){
-							if(select('##adminSave').css('display') == 'none'){
-								select('##adminSave').fadeIn();	
+							if($('##adminSave').css('display') == 'none'){
+								$('##adminSave').fadeIn();	
 							}
 						});
 					}
@@ -404,12 +389,12 @@
 				}
 			});
 
-			select('.mura-inline-save').click(function(){
-				var changesetid=select(this).attr('data-changesetid');
+			$('.mura-inline-save').click(function(){
+				var changesetid=$(this).attr('data-changesetid');
 
 				if(changesetid == ''){
-					//alert(1 + " " + select(this).attr('data-approved'))
-					muraInlineEditor.data.approved=select(this).attr('data-approved');
+					//alert(1 + " " + $(this).attr('data-approved'))
+					muraInlineEditor.data.approved=$(this).attr('data-approved');
 					muraInlineEditor.data.changesetid='';
 				} else {
 					if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
@@ -425,13 +410,13 @@
 				muraInlineEditor.save();
 			});
 
-			select('.mura-inline-cancel').click(function(){
+			$('.mura-inline-cancel').click(function(){
 				location.reload();
 			});
 
 			//clean instances
 			for (var instance in CKEDITOR.instances) {
-				if(!select('##' + instance).length){
+				if(!$('##' + instance).length){
 					CKEDITOR.instances[instance].destroy(true);
 				}
 			}
@@ -443,7 +428,7 @@
 			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
 				return CKEDITOR.instances[attributeid].getData();
 			} else{
-				return muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].html().trim());
+				return $.trim(muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].html()));
 			}
 		},
 		save:function(){
@@ -452,7 +437,7 @@
 					function(){
 						var count=0;
 						for (var prop in muraInlineEditor.attributes) {
-							var attribute=select(muraInlineEditor.attributes[prop]).attr('data-attribute');
+							var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
@@ -467,7 +452,7 @@
 
 							}
 
-							utility.ajax({ 
+							$.ajax({ 
 					        type: "POST",
 					        <cfif yesNoFormat($.globalConfig('accesscontrolcredentials'))>
 					        xhrFields: { withCredentials: true },
@@ -676,12 +661,12 @@
 
 			try{
 				//alert(JSON.stringify(validations))
-				utility.ajax(
+				$.ajax(
 					{
 						type: 'post',
 						url: mura.apiEndpoint + 'validate/',
 						data: {
-								data: JSON.stringify(utility.extend(muraInlineEditor.data,data)),
+								data: JSON.stringify($.extend(muraInlineEditor.data,data)),
 								validations: JSON.stringify(validations)
 							},
 						success: function(resp) {
@@ -690,7 +675,7 @@
 							}
 						 		data=resp.data;
 
-						 		if(utility.isEmptyObject(data)){
+						 		if($.isEmptyObject(data)){
 						 			$callback();
 						 		} else {
 							 		var msg='';
@@ -720,7 +705,7 @@
 
 		},
 		htmlEditorOnComplete: function(editorInstance) {
-			var instance = select(editorInstance).ckeditorGet();
+			var instance = $(editorInstance).ckeditorGet();
 			instance.resetDirty();
 			var totalInstances = CKEDITOR.instances;
 			CKFinder.setupCKEditor(
