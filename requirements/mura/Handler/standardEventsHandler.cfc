@@ -241,7 +241,7 @@
 	</cfif>
 
 	<cfif not arguments.event.valueExists('crumbdata')>
-		<cfset arguments.event.setValue('crumbdata',application.contentGateway.getCrumbList(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getContentBean().getSiteID(),true,arguments.event.getValue('contentBean').getPath())) />
+		<cfset arguments.event.setValue('crumbdata',arguments.event.getValue('contentBean').getCrumbArray(setInheritance=true)) />
 	</cfif>
 
 	<cfset renderer.injectMethod('crumbdata',arguments.event.getValue("crumbdata"))>
