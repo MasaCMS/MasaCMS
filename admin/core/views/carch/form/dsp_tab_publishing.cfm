@@ -91,15 +91,16 @@
 		<cfif rc.parentBean.getType() neq 'Calendar'>
 			<cfinclude template="dsp_displaycontent.cfm">
 		</cfif>
-		<cfif rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation'>
+		<cfif (rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation') >
 			<div class="control-group">
 	      		<label class="control-label">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 	      			<span id="mover1" class="text"> 
-	      				<cfif rc.contentBean.getIsNew()>
+	      				<cfif arrayLen(rc.crumbData)>
+	      					<cfif rc.contentBean.getIsNew()>
 	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+	      					</cfif>
 	      				</cfif>
-
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 						</button>
