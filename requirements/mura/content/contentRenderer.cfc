@@ -3049,7 +3049,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
-<cfreturn getShowToolbar() />
+<cfreturn getShowToolbar() and (not isDefined('cookie.fetdisplay') or cookie.fetdisplay eq '')/>
 </cffunction>
 
 <cffunction name="getShowInlineEditor" output="false">

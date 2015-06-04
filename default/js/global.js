@@ -503,6 +503,13 @@ var initMura=function(config){
 		window.location = locationstring;
 	}
 
+	var $escape=function(value){
+		return escape(value).replace( 
+       	 	new RegExp( "\\+", "g" ), 
+        	"%2B" 
+        );
+	}
+
 	var setHTMLEditor=function(el) {
 
 		var initEditor=function(){
@@ -595,9 +602,9 @@ var initMura=function(config){
 			
 			lu = new String(lu);
 			if(lu.indexOf('?') != -1){
-				location.href=lu + "&returnUrl=" + escape(ru);
+				location.href=lu + "&returnUrl=" + $escape(ru);
 			} else {
-				location.href=lu + "?returnUrl=" + escape(ru);
+				location.href=lu + "?returnUrl=" + $escape(ru);
 			}
 		}
 			}
@@ -980,8 +987,8 @@ var initMura=function(config){
 						url: config.apiEndpoint + '?method=validate',
 						dataType: 'text',
 						data: {
-								data: escape(JSON.stringify(data)),
-								validations: escape(JSON.stringify(validations)),
+								data: $escape(JSON.stringify(data)),
+								validations: $escape(JSON.stringify(validations)),
 								version: 4
 							},
 						success: function(resp) {
@@ -1224,7 +1231,7 @@ var initMura=function(config){
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams2', escape(JSON.stringify($(self).data('objectparams'))));
+					data.append('objectparams2', $escape(JSON.stringify($(self).data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
@@ -1248,7 +1255,7 @@ var initMura=function(config){
 				}
 
 				if('objectparams' in data){
-					data['objectparams']= escape(JSON.stringify(data['objectparams']));
+					data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 				}
 
 				var postconfig={
@@ -1273,7 +1280,7 @@ var initMura=function(config){
 		var data=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache},$(self).data());
 		
 		if('objectparams' in data){
-			data['objectparams']= escape(JSON.stringify(data['objectparams']));
+			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
 
 		$(self).html(config.preloaderMarkup);
