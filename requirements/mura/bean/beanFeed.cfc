@@ -241,8 +241,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif structKeyExists(variables.instance.fieldAliases,arguments.field)>
-			<cfset arguments.field=variables.instance.fieldAliases[arguments.field].field>
 			<cfset arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype>
+			<cfset arguments.field=variables.instance.fieldAliases[arguments.field].field>
 		</cfif>
 		
 		<cfif not len(arguments.dataType)>

@@ -2297,14 +2297,27 @@ Display Objects
 					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
 				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+				
+				<!--- [dynamic theme path]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
 				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
 					 <cfinclude template="#themeIncludePath#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
+				
+				<!---[dynamic theme path]/display_objects//extensions/dsp_[type]_[subtype].cfm --->
+				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
+					 <cfinclude template="#themeIncludePath#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+
+				<!--- [siteid]/includes/themes/[theme]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
+				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
+				
+				<!--- [siteid]/includes/themes/[theme]/display_objects/extensions/dsp_[type]_[subtype].cfm --->
+				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+				
+				<!--- [siteid]/includes/display_objects/extensions/dsp_[type]_[subtype].cfm --->
 				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+				
 				<cfelse>
 					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
 					<cfcase value="File">
