@@ -1654,8 +1654,6 @@ component extends="mura.cfobject" {
 				variables.images=arguments.$.siteConfig().getCustomImageSizeIterator();
 			}
 			
-			var cm=$.getBean('contentManager');
-
 			var returnStruct={
 				small=entity.getImageURL(size='small'),
 				medium=entity.getImageURL(size='medium'),
@@ -1668,6 +1666,7 @@ component extends="mura.cfobject" {
 				image=variables.images.next();
 				returnStruct['#image.getName()#']=entity.getImageURL(size=image.getName());
 			}
+			variables.images.reset();
 		} else {
 			var returnStruct={};
 		}
