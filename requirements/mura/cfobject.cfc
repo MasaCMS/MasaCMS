@@ -282,6 +282,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function getQueryService(readOnly=false){
 		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
 	}
+
+	function getHTTPSevice(){
+		var configBean=getBean('configBean');
+		var hs=new http();
+		if(len(configBean.getProxyServer())){
+			hs.setProxyServer(configBean.getProxyServer());
+			hs.setProxyPort(configBean.getProxyPort());
+			hs.setProxyUser(configBean.getProxyUser());
+			hs.setProxyPassword(configBean.getProxyPassword());
+		}
+
+		return hs;
+	}
+
+	function getHTTPAttrs(){
+		var configBean=getBean('configBean');
+		if(len(configBean.getProxyServer())){
+			structAppend(arguments,{
+				proxyserver=configBean.getProxyServer(),
+				proxyport=configBean.getProxyPort(),
+				proxyuser=configBean.getProxyUser(),
+				proxypassword=configBean.getProxyPassword()
+			});
+		}
+
+		return arguments;
+	}
 </cfscript>
 
 </cfcomponent>
