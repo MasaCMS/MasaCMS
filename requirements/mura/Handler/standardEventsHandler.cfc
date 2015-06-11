@@ -766,7 +766,7 @@
 				renderer.injectMethod('showMemberToolBar',false);
 				renderer.injectMethod('showEditableObjects',false);
 
-				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true));
+				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
 			
 				result.displayRegions={};
 
