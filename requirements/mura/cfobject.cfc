@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
 	}
 
-	function getHTTPSevice(){
+	function getHTTPService(){
 		var configBean=getBean('configBean');
 		var hs=new http();
 		if(len(configBean.getProxyServer())){
