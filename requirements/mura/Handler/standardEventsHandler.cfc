@@ -230,14 +230,16 @@
 		<cfset arguments.event.setValue('contentBean',contentArray[1])>
 	</cfif>
 	
-	<cfset arguments.event.getValidator("standardWrongFilename").validate(arguments.event)>
-
-	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
-
-	<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getUseSSL()>
-		<cfset arguments.event.setValue('forcessl', true) />
-	<cfelseif arguments.event.getValue('contentBean').getForceSSL()>
-		<cfset arguments.event.setValue('forceSSL',arguments.event.getValue('contentBean').getForceSSL())/>
+	<cfif arguments.event.getValue('contentBean').getType() neq 'Variation'>
+		<cfset arguments.event.getValidator("standardWrongFilename").validate(arguments.event)>
+		<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
+	
+	
+		<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getUseSSL()>
+			<cfset arguments.event.setValue('forcessl', true) />
+		<cfelseif arguments.event.getValue('contentBean').getForceSSL()>
+			<cfset arguments.event.setValue('forceSSL',arguments.event.getValue('contentBean').getForceSSL())/>
+		</cfif>
 	</cfif>
 
 	<cfif not arguments.event.valueExists('crumbdata')>
@@ -753,6 +755,11 @@
 	<cfargument name="$">
 	<cfscript>
 		try{
+
+			if($.content('type')=='Variation'){
+				$.content('isnew',0);
+			}
+
 			var apiUtility=$.siteConfig().getApi('json','v1');
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
@@ -785,7 +792,6 @@
 
 					result.displayRegions[regionName]={items=regionArray};
 				}
-
 			}
 
 			result.config={

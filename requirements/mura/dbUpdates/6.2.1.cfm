@@ -1,13 +1,10 @@
 <cfquery name="rsCheck">
-select moduleID from tcontent where type='Module' and moduleID='00000000000000000000000000000000099'
+select siteID from tsettings where siteid not in(
+	select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000015'
+)
 </cfquery>
 
-
-<cfif not rsCheck.recordcount>
-	<cfquery name="rsCheck">
-	select siteID from tsettings
-	</cfquery>
-	
+<cfif rsCheck.recordcount>
 	<cfloop query="rsCheck">
 		<cfquery>
 		INSERT INTO tcontent 

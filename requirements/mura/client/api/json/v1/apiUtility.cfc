@@ -872,10 +872,15 @@ component extends="mura.cfobject" {
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
 	
-		/*
-		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-		*/
+		if(listFindNoCase('content,contentnav',arguments.entityName)){
+			returnstruct.images=setImageURLS(entity,$);
+			returnstruct.url=entity.getURL();
+			//var tokens=$.generateCSRFTokens(context=returnStruct.contenthistid);
+		} else {
+			//var tokens=$.generateCSRFTokens(context=returnStruct.id);
+		}
+
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		
 		return returnStruct;
 	}
@@ -959,7 +964,7 @@ component extends="mura.cfobject" {
 
 					if(!content.exists()){
 						content.setType('Variation');
-						content.setIsNew(0);
+						//content.setIsNew(0);
 						content.setRemoteID(0);
 						content.setSiteID(arguments.siteid);
 						request.contentBean=content;
@@ -1005,20 +1010,19 @@ component extends="mura.cfobject" {
 		}
 
 		var returnStruct=getFilteredValues(entity,$);
+		returnStruct.links=getLinks(entity);		
+		returnStruct.id=returnStruct[pk];
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
 			returnstruct.images=setImageURLS(entity,$);
 			returnstruct.url=entity.getURL();
+			//var tokens=$.generateCSRFTokens(context=returnStruct.contenthistid);
+		} else {
+			//var tokens=$.generateCSRFTokens(context=returnStruct.id);
 		}
 
-		returnStruct.links=getLinks(entity);		
-		returnStruct.id=returnStruct[pk];
-
-		/*
-		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-		*/
-
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+	
 		return returnStruct;
 	}
 
@@ -1041,15 +1045,19 @@ component extends="mura.cfobject" {
 		}
 
 		var returnStruct=getFilteredValues(entity,$);
+		returnStruct.links=getLinks(entity);		
+		returnStruct.id=returnStruct[pk];
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
 			returnstruct.images=setImageURLS(entity,$);
 			returnstruct.url=entity.getURL();
+			//var tokens=$.generateCSRFTokens(context=returnStruct.contenthistid);
+		} else {
+			//var tokens=$.generateCSRFTokens(context=returnStruct.id);
 		}
 
-		returnStruct.links=getLinks(entity);		
-		returnStruct.id=returnStruct[pk];
-
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+	
 		return returnStruct;
 	}
 
@@ -1099,19 +1107,18 @@ component extends="mura.cfobject" {
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
+			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
 				itemStruct.images=setImageURLS(item,$);
 				itemStruct.url=item.getURL();
+				//var tokens=$.generateCSRFTokens(context=itemStruct.contenthistid);
+			} else {
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
 			}
 
-			itemStruct.links=getLinks(item);
-
-			/*
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-			*/
-
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+		
 			arrayAppend(returnArray, itemStruct);
 		}
 
@@ -1170,18 +1177,17 @@ component extends="mura.cfobject" {
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
+			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
 				itemStruct.images=setImageURLS(item,$);
 				itemStruct.url=item.getURL();
+				//var tokens=$.generateCSRFTokens(context=itemStruct.contenthistid);
+			} else {
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
 			}
 
-			itemStruct.links=getLinks(item);
-
-			/*
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-			*/
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1262,22 +1268,20 @@ component extends="mura.cfobject" {
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
-			
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
+			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
 				itemStruct.images=setImageURLS(item,$);
 				itemStruct.url=item.getURL();
+				//var tokens=$.generateCSRFTokens(context=itemStruct.contenthistid);
+			} else {
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
 			}
 
-			itemStruct.links=getLinks(item);
-
-			/*
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-			*/
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1424,22 +1428,21 @@ component extends="mura.cfobject" {
 		while(iterator.hasNext()){
 			item=iterator.next();
 			itemStruct=getFilteredValues(item,$,false);
-			
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
+			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
 				itemStruct.images=setImageURLS(item,$);
 				itemStruct.url=item.getURL();
+				//var tokens=$.generateCSRFTokens(context=itemStruct.contenthistid);
+			} else {
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
 			}
 
-			itemStruct.links=getLinks(item);
-			
-			/*
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-			*/
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+
 			
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1619,18 +1622,17 @@ component extends="mura.cfobject" {
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
+			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
 				itemStruct.images=setImageURLS(item,$);
 				itemStruct.url=item.getURL();
+				//var tokens=$.generateCSRFTokens(context=itemStruct.contenthistid);
+			} else {
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
 			}
 
-			itemStruct.links=getLinks(item);
-
-			/*
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-			*/
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1918,7 +1920,7 @@ component extends="mura.cfobject" {
 	}
 
 	function generateCSRFTokens(siteid,context){
-		var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
+		//var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
 
 		return {csrf_token=tokens.token,csrf_token_expires=tokens.expires};
 	}

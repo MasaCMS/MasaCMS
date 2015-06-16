@@ -559,7 +559,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
    
       <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000006',
@@ -570,6 +570,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Advertisement Manager',
+	  'Advertisement Manager',
 	  1,
 	  1,
 	  1,
@@ -579,7 +580,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
    
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000000',
@@ -590,6 +591,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Content Manager',
+	  'Content Manager',
 	  1,
 	  1,
 	  1,
@@ -599,7 +601,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
 
 	<cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000008',
@@ -609,6 +611,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Module',
 	  'Default',
 	  1,
+	  'Public User Manager',
 	  'Public User Manager',
 	  1,
 	  1,
@@ -620,7 +623,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	
 	   
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL,searchExclude )
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,forceSSL,searchExclude )
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000005',
@@ -631,6 +634,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Email Broadcaster',
+	  'Email Broadcaster',
 	  1,
 	  1,
 	  1,
@@ -640,7 +644,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
    
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000009',
@@ -651,6 +655,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Mailing List Manager',
+	  'Mailing List Manager',
 	  1,
 	  1,
 	  1,
@@ -660,7 +665,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
 
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000010',
@@ -671,6 +676,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Category Manager',
+	  'Category Manager',
 	  1,
 	  1,
 	  1,
@@ -680,7 +686,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
    
       <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav,forceSSL,searchExclude )
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,forceSSL,searchExclude )
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000011',
@@ -690,6 +696,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Module',
 	  'Default',
 	  1,
+	  'Content Collections Manager',
 	  'Content Collections Manager',
 	  1,
 	  1,
@@ -701,7 +708,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    
    
    <cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000012',
@@ -712,6 +719,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Filemanager Manager',
+	  'Filemanager Manager',
 	  1,
 	  1,
 	  1,
@@ -721,7 +729,7 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
    </cfquery>
 
 	<cfquery>
-      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
 	  values(
 	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
 	  '00000000000000000000000000000000014',
@@ -732,6 +740,49 @@ hasComments,hasLockableNodes,reCAPTCHASiteKey,reCAPTCHASecret,reCAPTCHALanguage,
 	  'Default',
 	  1,
 	  'Change Sets Manager',
+	  'Change Sets Manager',
+	  1,
+	  1,
+	  1,
+	  0,
+	  0
+	)
+   </cfquery>
+
+    <cfquery>
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
+	  values(
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
+	  '00000000000000000000000000000000015',
+	  '00000000000000000000000000000000END',
+	  '00000000000000000000000000000000015',
+	  '#createuuid()#',
+	  'Module',
+	  'Default',
+	  1,
+	  'Comments Manager',
+	  'Comments Manager',
+	  1,
+	  1,
+	  1,
+	  0,
+	  0
+	)
+   </cfquery>
+
+   <cfquery>
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav ,forceSSL,searchExclude)
+	  values(
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsiteid()#">,
+	  '00000000000000000000000000000000099',
+	  '00000000000000000000000000000000END',
+	  '00000000000000000000000000000000099',
+	  '#createuuid()#',
+	  'Module',
+	  'Default',
+	  1,
+	  'Variations Manager',
+	  'Variations Manager',
 	  1,
 	  1,
 	  1,

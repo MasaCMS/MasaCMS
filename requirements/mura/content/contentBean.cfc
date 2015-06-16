@@ -1163,12 +1163,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfif getValue('isNew') and not len(variables.instance.parentid)>
+	<cfif getValue('isNew') and getValue('contentid') neq '00000000000000000000000000000000001'>
 		<cfreturn variables.contentManager.getCrumbList(contentID=variables.instance.parentid, siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, sort=arguments.sort)>
 	<cfelse>
 		<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
 	</cfif>
-	
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
