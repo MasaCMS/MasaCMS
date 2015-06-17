@@ -16,7 +16,7 @@
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default=""><cfoutput>(function(){	
-	var utility=mura;
+	var utility=jQuery;
 
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
