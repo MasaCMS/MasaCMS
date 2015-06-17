@@ -704,7 +704,7 @@ component extends="mura.cfobject" {
 					local.crumbData=arguments.bean.getCrumbArray(); 
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);
 				}
-			
+
 				if(local.currentBean.getIsNew() && len(arguments.bean.getParentID())){
 					local.crumbData=getBean('contentGateway').getCrumblist(arguments.bean.getParentID(), arguments.bean.getSiteID());	
 					local.perm=getBean('permUtility').getNodePerm(local.crumbData);  
@@ -1461,27 +1461,35 @@ component extends="mura.cfobject" {
 		var $=getBean('$').init(arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName);
-
-		if(!allowAction(entity,$)){
-			throw(type="authorization");
-		}
 		
 		if($.event('entityName')=='content'){
 			if(len($.event('contenthistid'))){
 				var loadparams={contenthistid=$.event('contenthistid')};
 				entity.loadBy(argumentCollection=loadparams);
 
-				if($.validateCSRFTokens(context=arguments.id)){
-					entity.deleteVersion();
+				if(entity.exists()){
+					if(!allowAction(entity,$)){
+						throw(type="authorization");
+					}
+
+					if($.validateCSRFTokens(context=arguments.id)){
+						entity.deleteVersion();
+					}
 				}
 			} else {
 				var loadparams={contentid=$.event('id')};
 				entity.loadBy(argumentCollection=loadparams);
 
-				if($.validateCSRFTokens(context=arguments.id)){
-					entity.delete();
-				} else {
-					throw(type="invalidTokens");
+				if(entity.exists()){
+					if(!allowAction(entity,$)){
+						throw(type="authorization");
+					}
+
+					if($.validateCSRFTokens(context=arguments.id)){
+						entity.delete();
+					} else {
+						throw(type="invalidTokens");
+					}
 				}
 			}
 			var pk="contentid";
@@ -1496,10 +1504,16 @@ component extends="mura.cfobject" {
 			var loadparams={'#pk#'=$.event('id')};
 			entity.loadBy(argumentCollection=loadparams);
 
-			if($.validateCSRFTokens(context=arguments.id)){
-				entity.delete();
-			} else {
-				throw(type="invalidTokens");
+			if(entity.exists()){
+				if(!allowAction(entity,$)){
+					throw(type="authorization");
+				}
+
+				if($.validateCSRFTokens(context=arguments.id)){
+					entity.delete();
+				} else {
+					throw(type="invalidTokens");
+				}
 			}
 		}
 		
