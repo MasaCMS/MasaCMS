@@ -1650,7 +1650,7 @@ component extends="mura.cfobject" {
 		//arguments.str=replaceNoCase(str,'href="/','href="##/','all');
 		//arguments.str=replaceNoCase(str,"href='/","href=''##/",'all');
 	
-		return arguments.str;
+		return trim(arguments.str);
 	}
 
 	function setImageURLs(entity,$){
