@@ -1,5 +1,5 @@
 //https://github.com/malko/l.js
-;(function(window, undefined){
+;(function(window){
 /*
 * script for js/css parallel loading with dependancies management
 * @author Jonathan Gotti < jgotti at jgotti dot net >

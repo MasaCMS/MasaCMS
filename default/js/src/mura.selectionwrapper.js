@@ -12,7 +12,18 @@ function MuraSelectionWrapper(selection,origSelector){
 		this.childNodes=null;
 		this.node=null;
 	}
+
+	this.length=this.selection.length;
 }
+
+MuraSelectionWrapper.prototype.getSelector=function(selector){
+	return mura.geSelector(this.selection[0]);
+}
+
+MuraSelectionWrapper.prototype.get=function(index){
+	return this.selection[index];
+}
+
 
 MuraSelectionWrapper.prototype.ajax=function(data){
 	return mura.ajax(data);
@@ -27,6 +38,10 @@ MuraSelectionWrapper.prototype.each=function(fn){
 		fn.call(el,el);
 	});
 	return this;
+}
+
+MuraSelectionWrapper.prototype.isNumeric=function(val){
+	return isNumeric(this.selection[0]);
 }
 
 MuraSelectionWrapper.prototype.on=function(eventName,fn){
@@ -59,9 +74,12 @@ MuraSelectionWrapper.prototype.on=function(eventName,fn){
 	return this;
 }
 
-MuraSelectionWrapper.prototype.length=function(){
-	return this.selection.length;
+MuraSelectionWrapper.prototype.hover=function(handlerIn,handlerOut){
+	this.on('mouseover',handlerIn);
+	this.on('mouseout',handlerOut);
+	return this;
 }
+
 
 MuraSelectionWrapper.prototype.click=function(fn){
 	this.on('click',fn);
@@ -406,11 +424,11 @@ MuraSelectionWrapper.prototype.height=function(height) {
 	}
 
 	var el=this.selection[0]; 
-	var type=el.constructor.name.toLowerCase();
+	//var type=el.constructor.name.toLowerCase();
 
-	if(type=='window'){
+	if(el === window){
 		return window.innerHeight
-	} else if(type=='htmldocument'){
+	} else if(el === document){
 		var body = document.body;
     	var html = document.documentElement;
 		return  Math.max( body.scrollHeight, body.offsetHeight, 
@@ -437,11 +455,11 @@ MuraSelectionWrapper.prototype.width=function(width) {
 	}
 
 	var el=this.selection[0]; 
-	var type=el.constructor.name.toLowerCase();
+	//var type=el.constructor.name.toLowerCase();
 
-	if(type=='window'){
+	if(el === window){
 		return window.innerWidth
-	} else if(type=='htmldocument'){
+	} else if(el === document){
 		var body = document.body;
     	var html = document.documentElement;
 		return  Math.max( body.scrollWidth, body.offsetWidth, 

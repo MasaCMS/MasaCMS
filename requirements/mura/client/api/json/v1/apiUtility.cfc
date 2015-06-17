@@ -290,12 +290,12 @@ component extends="mura.cfobject" {
 				}
 			}
 
-			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
-				throw(type='authorization');
-			}
-
 			if(!isDefined('params.method')){
 				params.method="undefined";
+			}
+
+			if(!getBean('settingsManager').getSite(variables.siteid).getJSONApi()){
+				throw(type='disabled');
 			}
 
 			if(arrayLen(pathInfo)){
@@ -530,6 +530,12 @@ component extends="mura.cfobject" {
 			responseObject.setContentType('application/json; charset=utf-8');
 			responseObject.setStatus(401);
 			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=401,'message'='Insufficient Account Permissions'}});
+		}
+
+		catch (disabled e){
+			responseObject.setContentType('application/json; charset=utf-8');
+			responseObject.setStatus(400);
+			return getSerializer().serialize({'apiversion'=getApiVersion(),'method'=params.method,'params'=getParamsWithOutMethod(params),'error'={code=400,'message'='The JSON API is currently disabled'}});
 		}
 
 		catch (invalidParameters e){
