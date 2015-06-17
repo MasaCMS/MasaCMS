@@ -1926,7 +1926,7 @@ component extends="mura.cfobject" {
 	}
 
 	function generateCSRFTokens(siteid,context){
-		//var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
+		var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
 
 		return {csrf_token=tokens.token,csrf_token_expires=tokens.expires};
 	}
