@@ -483,7 +483,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
 			where 
 			<cfif arguments.filename neq ''>
-			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
+			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#lcase(arguments.filename)#" />
 			#renderActiveClause("tcontent",arguments.siteID)#
 			and tcontent.type in('Page','Folder','Calendar','Gallery','File','Link') 
 			<cfelse>

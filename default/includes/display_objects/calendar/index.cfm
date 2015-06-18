@@ -115,8 +115,8 @@ $(function(){
 								method: 'getFullCalendarItems'
 								, calendarid: '#variables.$.content('contentid')#'
 								, siteid: '#variables.$.content('siteid')#'
-								, categoryid: '#variables.$.event('categoryid')#'
-								, tag: '#variables.$.event('tag')#'
+								, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
+								, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
 							}
 							, color: '##3a87ad' // sets calendar events background+border colors
 							, textColor: 'white'

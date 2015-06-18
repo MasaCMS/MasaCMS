@@ -275,8 +275,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" required="true" type="any" />
 		<cfargument name="excludeformid" required="false" type="string" default="" />
 
-		<cfdump var="#arguments#">
-
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contentid,title from tcontent
 			where type='Form'
