@@ -683,7 +683,7 @@
 
 	var initShadowBox=function(el){
 
-		if(el.querySelectorAll('[data-rel^="shadowbox"],[rel^="shadowbox"]') !== null){
+		if(el.querySelectorAll('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
 				window.mura.assetpath +'/css/shadowbox.min.css',
 				window.mura.assetpath +'/js/adapter/shadowbox-jquery.min.js',
@@ -1257,6 +1257,8 @@
 			window.document.domain=config.windowdocumentdomain;
 		}
 		
+		extend(window.mura,config);
+
 		ready(function(){
 			processMarkup(document);
 			
@@ -1277,8 +1279,6 @@
 			select(document).trigger('muraReady');
 			
 		});
-
-	    extend(window.mura,config);
 
 	    return window.mura
 	}	

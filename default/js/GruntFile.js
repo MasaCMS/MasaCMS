@@ -12,8 +12,7 @@ module.exports = function(grunt) {
           'src/json3.js',
           'src/loader.js',
           'src/mura.selectionwrapper.js',
-          'src/mura.js',
-          'src/mura.getselector.js'
+          'src/mura.js'
           ],
           dest: 'global.js',
         },

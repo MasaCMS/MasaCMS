@@ -1,6 +1,6 @@
 <cfquery name="rsCheck">
 select siteID from tsettings where siteid not in(
-	select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000015'
+	select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000099'
 )
 </cfquery>
 

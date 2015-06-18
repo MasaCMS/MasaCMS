@@ -883,8 +883,8 @@ component extends="mura.cfobject" {
 			returnstruct.url=entity.getURL();
 		}
 
-		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		
 		return returnStruct;
 	}
@@ -968,7 +968,7 @@ component extends="mura.cfobject" {
 
 					if(!content.exists()){
 						content.setType('Variation');
-						//content.setIsNew(0);
+						content.setIsNew(1);
 						content.setRemoteID(0);
 						content.setSiteID(arguments.siteid);
 						request.contentBean=content;
@@ -1022,8 +1022,8 @@ component extends="mura.cfobject" {
 			returnstruct.url=entity.getURL();
 		}
 
-		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 	
 		return returnStruct;
 	}
@@ -1055,8 +1055,8 @@ component extends="mura.cfobject" {
 			returnstruct.url=entity.getURL();
 		}
 
-		var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
+		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 	
 		return returnStruct;
 	}
@@ -1114,8 +1114,8 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 		
 			arrayAppend(returnArray, itemStruct);
 		}
@@ -1182,8 +1182,8 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1274,8 +1274,8 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}
@@ -1432,8 +1432,8 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			
 			arrayAppend(returnArray, itemStruct );
@@ -1635,8 +1635,8 @@ component extends="mura.cfobject" {
 				itemStruct.url=item.getURL();
 			}
 
-			var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
 		}

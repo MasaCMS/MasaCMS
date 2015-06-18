@@ -1,6 +1,8 @@
 ;
 function MuraSelectionWrapper(selection,origSelector){
 	this.selection=selection;
+	this.origSelector=selection;
+
 	var selection=selection;
 
 	if(this.selection.length){
@@ -16,14 +18,9 @@ function MuraSelectionWrapper(selection,origSelector){
 	this.length=this.selection.length;
 }
 
-MuraSelectionWrapper.prototype.getSelector=function(selector){
-	return mura.geSelector(this.selection[0]);
-}
-
 MuraSelectionWrapper.prototype.get=function(index){
 	return this.selection[index];
 }
-
 
 MuraSelectionWrapper.prototype.ajax=function(data){
 	return mura.ajax(data);
@@ -124,21 +121,100 @@ MuraSelectionWrapper.prototype.parent=function(){
 	return mura(this.selection[0].parentNode);
 }
 
-MuraSelectionWrapper.prototype.children=function(){
+MuraSelectionWrapper.prototype.children=function(selector){
 	if(!this.selection.length){
 		return;
 	}
-	return mura(this.selection[0].childNodes);
+
+	if(typeof selector == 'undefined'){
+		return mura(this.selection[0].childNodes);
+	} else {
+		var removeId=false;
+
+		if(!this.selection[0].getAttribute('id')){
+	        this.selection[0].setAttribute('id','m' + Math.random().toString(36).substr(2, 10));
+	        removeId=true;
+        }
+
+      	var result=document.querySelectorAll('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
+		
+		if(removeId){
+			this.selection[0].removeAttribute('id');
+		}
+
+		return mura(result);
+	}
+	
 }
 
-MuraSelectionWrapper.prototype.siblings=function(){
+MuraSelectionWrapper.prototype.getSelector=function(omitSysEls) {
+    var pathes = [];
+
+    //this.selection.each(function(index, element) {
+        var path, $node = mura(this.selection);
+
+        while ($node.length) {
+           var realNode = $node.get(0), name = realNode.localName;
+           if (!name) { break; }
+
+           if(omitSysEls 
+           		&& (
+           			$node.hasClass('mura-editable')
+					|| $node.hasClass('editableObjectContents')
+					|| $node.hasClass('editableObject')
+           		)
+
+           	){
+           		break;
+           }
+           
+           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
+           		name='#' + $node.attr('id');
+           		path = name + (path ? ' > ' + path : '');
+            	break;
+           } else {
+
+                name = name.toLowerCase();
+                var parent = $node.parent();
+                var sameTagSiblings = parent.children(name);
+
+                if (sameTagSiblings.length > 1)
+                {
+                    allSiblings = parent.children();
+                    var index = allSiblings.index(realNode) +1;
+                    if (index > 0) {
+                        name += ':nth-child(' + index + ')';
+                    }
+                }
+
+                path = name + (path ? ' > ' + path : '');
+            	$node = parent;
+       		 }
+
+           
+        }
+
+        pathes.push(path);
+    //});
+
+    return pathes.join(',');
+}
+
+MuraSelectionWrapper.prototype.siblings=function(selector){
 	if(!this.selection.length){
 		return;
 	}
 	var el=this.selection[0];
-	return mura(Array.prototype.filter.call(el.parentNode.children, function(child){
+	
+	var siblings=mura(Array.prototype.filter.call(el.parentNode.children, function(child){
 	  return child !== el;
 	}));
+
+	if(typeof selector != 'undefined'){
+		siblings=siblings.find(selector);		
+	} 
+
+	return siblings;
 }
 
 MuraSelectionWrapper.prototype.filter=function(fn){
@@ -147,7 +223,11 @@ MuraSelectionWrapper.prototype.filter=function(fn){
 
 MuraSelectionWrapper.prototype.find=function(selector){
 	if(this.selection.length){
-		return mura(this.selection[0].querySelectorAll(selector));
+		if(typeof this.selection[0].querySelectorAll != 'undefined'){
+			return mura(this.selection[0].querySelectorAll(selector));
+		} else {
+			return mura([]);
+		}
 	} else {
 		return mura([]);
 	}
@@ -155,6 +235,10 @@ MuraSelectionWrapper.prototype.find=function(selector){
 
 MuraSelectionWrapper.prototype.item=function(idx){
 	return this.selection[idx];
+}
+
+MuraSelectionWrapper.prototype.index=function(el){
+	return this.selection.indexOf(el);
 }
 
 MuraSelectionWrapper.prototype.closest=function(selector) {
@@ -495,6 +579,18 @@ MuraSelectionWrapper.prototype.offset=function(attributeName,value){
 	  top: box.top  + ( window.pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
 	  left: box.left + ( window.pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
 	};
+}
+
+MuraSelectionWrapper.prototype.removeAttr=function(attributeName){
+	if(!this.selection.length){
+		return;
+	}
+	
+	this.each(function(el){
+		el.removeAttribute(attributeName);
+	});
+	return this;
+	
 }
 
 MuraSelectionWrapper.prototype.attr=function(attributeName,value){
