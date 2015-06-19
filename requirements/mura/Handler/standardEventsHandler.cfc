@@ -764,6 +764,8 @@
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
 
+			$.event('response',result);
+
 			if(result.type != 'Variation'){
 
 				request.cffpJS=true;
@@ -823,8 +825,6 @@
 			result.images=apiUtility.setImageUrls($.content(),$);
 		
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
-			
-			$.event('response',result);
 
 			$.announceEvent('on#result.type#apiresponse');
 			$.announceEvent('on#result.type##result.subtype#apiresponse');
