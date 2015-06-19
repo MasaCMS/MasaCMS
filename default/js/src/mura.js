@@ -718,7 +718,7 @@
 
 	var initShadowBox=function(el){
 
-		if(el.querySelectorAll('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+		if(select(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
 				window.mura.assetpath +'/css/shadowbox.min.css',
 				window.mura.assetpath +'/js/adapter/shadowbox-jquery.min.js',
@@ -1022,21 +1022,23 @@
 	var loader=function(){return window.ljs;}
 
 	var processMarkup=function(scope){
+		scope=select(scope);
+
 		var processors=[
 			function(){
-				each(scope.querySelectorAll(".mura-async-object"), function(el){
-					processAsyncObject(el);
+				scope.find(".mura-async-object").each(function(){
+					processAsyncObject(this);
 				});
 			},
 
 			function(){
-				each(scope.querySelectorAll(".htmlEditor"), function(el){
-					setHTMLEditor(el);
+				scope.find(".htmlEditor").each(function(){
+					setHTMLEditor(this);
 				});
 			},
 
 			function(){
-				if(scope.querySelectorAll(".cffp_applied").length || scope.querySelectorAll( ".cffp_mm" ).length || scope.querySelectorAll( ".cffp_kp" ).length){
+				if(scope.find(".cffp_applied  .cffp_mm .cffp_kp").length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", window.mura.requirementspath + '/cfformprotect/js/cffp.js')
@@ -1046,7 +1048,7 @@
 			},
 
 			function(){
-				if(scope.querySelectorAll(".g-recaptcha" ).length){
+				if(scope.find(".g-recaptcha" ).length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?hl=" + window.mura.reCAPTCHALanguage)
@@ -1055,11 +1057,11 @@
 
 				}
 
-				if(scope.querySelectorAll(".g-recaptcha-container" ).length){
+				if(scope.find(".g-recaptcha-container" ).length){
 					loader().loadjs(
 						'https://www.google.com/recaptcha/api.js?hl=' + window.mura.reCAPTCHALanguage,
 						function(){
-							each(scope.querySelectorAll(".g-recaptcha-container" ),function(el){
+							each(scope.find(".g-recaptcha-container" ),function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
@@ -1089,11 +1091,11 @@
 			function(){
 				if(typeof resizeEditableObject == 'function' ){
 					
-					select(scope).closest('.editableObject').each(function(){ 
+					scope.closest('.editableObject').each(function(){ 
 						resizeEditableObject(this);
 					}); 
 					
-					select(scope).find(".frontEndToolsModal").each(
+					scope.find(".frontEndToolsModal").each(
 						function(){
 							on(this,'click',function(event){
 								event.preventDefault();
@@ -1102,7 +1104,7 @@
 						}
 					);
 
-					select(scope).find(".editableObject").each(function(){
+					scope.find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
 	
@@ -1110,7 +1112,7 @@
 			},
 
 			function(){
-				initShadowBox(scope);
+				initShadowBox(scope.node);
 			},
 
 			function(){
