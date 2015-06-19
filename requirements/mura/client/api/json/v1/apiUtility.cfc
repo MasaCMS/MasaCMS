@@ -853,11 +853,25 @@ component extends="mura.cfobject" {
 		}
 
 		if($.validateCSRFTokens(context=arguments.id)){
-			entity.loadBy(argumentCollection=loadByparams)
-				.set(
-					$.event().getAllValues()
-				)
-				.save();
+			if($.event('type')=='Variation'){
+				entity.loadBy(argumentCollection=loadByparams).set(
+						$.event().getAllValues()
+					);
+
+				if(entity.getIsNew() && len(entity.getChangesetID())){
+					//create default that is not in changeset
+					entity.setBody("[]").setChangesetID('').setApproved(1).save();
+					entity.setBody($.event('body')).setChangesetID($.event('changesetid')).save();
+				} else {
+					entity.save();
+				}
+			} else {
+				entity.loadBy(argumentCollection=loadByparams)
+					.set(
+						$.event().getAllValues()
+					)
+					.save();
+			}
 		} else {
 			throw(type="invalidTokens");
 		}

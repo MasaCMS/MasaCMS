@@ -826,6 +826,7 @@
 		
 			getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8');
 
+			$.announceEvent('onapiresponse');
 			$.announceEvent('on#result.type#apiresponse');
 			$.announceEvent('on#result.type##result.subtype#apiresponse');
 
