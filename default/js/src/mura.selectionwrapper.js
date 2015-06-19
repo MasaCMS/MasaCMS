@@ -152,18 +152,23 @@ MuraSelectionWrapper.prototype.children=function(selector){
 MuraSelectionWrapper.prototype.find=function(selector){
 	if(this.selection.length){
 		var removeId=false;
-
-		if(!this.selection[0].getAttribute('id')){
-	        this.selection[0].setAttribute('id','m' + Math.random().toString(36).substr(2, 10));
-	        removeId=true;
-        }
-
-      	var result=window.mura.Sizzle('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
 		
-		if(removeId){
-			this.selection[0].removeAttribute('id');
+		if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
+			if(!this.selection[0].getAttribute('id')){
+		        this.selection[0].setAttribute('id','m' + Math.random().toString(36).substr(2, 10));
+		        removeId=true;
+	        }
+	    
+	      	var result=window.mura.Sizzle('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
+			
+			if(removeId){
+				this.selection[0].removeAttribute('id');
+			}
+		} else if(this.selection[0].nodeType=='9'){
+			var result=window.mura.Sizzle(selector);
+		} else {
+			var result=[];
 		}
-
 		return mura(result);
 	} else {
 		return mura([]);
