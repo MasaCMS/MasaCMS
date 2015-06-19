@@ -12,15 +12,17 @@ module.exports = function(grunt) {
           'src/json3.js',
           'src/loader.js',
           'src/mura.selectionwrapper.js',
-          'src/mura.js'
+          'src/mura.js',
+          'src/sizzle.js'
           ],
-          dest: 'global.js',
+          dest: 'dist/mura.js',
         },
     },
     uglify: {
       my_target: {
         files: {
-          'global.min.js': ['global.js']
+          'global.min.js': ['global.js'],
+          'dist/mura.min.js': ['dist/mura.js']
         }
       }
     }

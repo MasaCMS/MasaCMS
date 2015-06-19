@@ -15,7 +15,7 @@
 <cfif not structKeyExists(session,"rb")>
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
-<cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default=""><cfoutput>(function(){	
+<cfcontent reset="true"><cfparam name="Cookie.fetDisplay" default=""><cfoutput>(function(window){	
 	var utility=(jQuery)?jQuery:mura;
 
 	var adminProxy;
@@ -746,4 +746,4 @@
 	</cfif>
 	window.toggleAdminToolbar=toggleAdminToolbar;
 	window.closeFrontEndToolsModal=closeFrontEndToolsModal;
-})();
+})(window);
