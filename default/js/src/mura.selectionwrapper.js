@@ -410,7 +410,7 @@ MuraSelectionWrapper.prototype.evalScripts=function(){
 	}
 
 	this.each(function(el){
-		window.mura.evalElementScripts(el);
+		window.mura.evalScripts(el);
 	});
 
 	return this;
@@ -422,7 +422,7 @@ MuraSelectionWrapper.prototype.html=function(htmlString){
 	if(typeof htmlString != 'undefined'){
 		this.each(function(el){
 			el.innerHTML=htmlString;
-			window.mura.evalElementScripts(el);
+			window.mura.evalScripts(el);
 		});
 		return this;
 	} else {

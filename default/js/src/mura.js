@@ -1,17 +1,22 @@
 ;(function(window){
 	
-	var evalElementScripts=function(el) {
-	    var scripts = [];
+	var evalScripts=function(el) {
+	    if(typeof el=='string'){
+	    	el=parseHTML(el);
+	    }
 
-	    ret = el.childNodes;
+	    var scripts = [];
+	    var ret = el.childNodes;
+			    
 	    for ( var i = 0; ret[i]; i++ ) {
 	      if ( scripts && nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
 	            scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+	        } else if(ret[i].nodeType==1){
+	        	evalScripts(ret[i]);
 	        }
 	    }
 
-	    for(script in scripts)
-	    {
+	    for(script in scripts){
 	      evalScript(scripts[script]);
 	    }
 	}
@@ -1346,8 +1351,7 @@
 			parseHTML:parseHTML,
 			getDataAttributes:getDataAttributes,
 			isEmptyObject:isEmptyObject,
-			evalElementScripts:evalElementScripts,
-			evalScript:evalScript
+			evalScripts:evalScripts
 			}
 		),
 		validateForm:validateForm,
