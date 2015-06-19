@@ -3064,13 +3064,7 @@ MuraSelectionWrapper.prototype.is=function(selector){
 	if(!this.selection.length){
 		return false;
 	}
-
-	var el=this.selection[0];
-	var matches = function(el, selector) {
-	  return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
-	};
-
-	return matches(el, selector);
+	return window.mura.Sizzle.matchesSelector(this.selection[0], selector);
 }
 
 MuraSelectionWrapper.prototype.offsetParent=function(){
@@ -3264,23 +3258,6 @@ MuraSelectionWrapper.prototype.fadeOut=function(){
 	return this;
 }
 
-
-MuraSelectionWrapper.prototype.fadeIn=function(display){
-  this.each(function(el){
-	  el.style.opacity = 0;
-	  el.style.display = display || "block";
-
-	  (function fade() {
-	    var val = parseFloat(el.style.opacity);
-	    if (!((val += .1) > 1)) {
-	      el.style.opacity = val;
-	      requestAnimationFrame(fade);
-	    }
-	  })();
-  });
-
-  return this;
-}
 
 MuraSelectionWrapper.prototype.fadeIn=function(display){
   this.each(function(el){
