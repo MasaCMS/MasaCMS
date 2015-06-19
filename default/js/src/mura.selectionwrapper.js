@@ -481,13 +481,7 @@ MuraSelectionWrapper.prototype.is=function(selector){
 	if(!this.selection.length){
 		return false;
 	}
-
-	var el=this.selection[0];
-	var matches = function(el, selector) {
-	  return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
-	};
-
-	return matches(el, selector);
+	return window.mura.Sizzle.matchesSelector(this.selection[0], selector);
 }
 
 MuraSelectionWrapper.prototype.offsetParent=function(){
