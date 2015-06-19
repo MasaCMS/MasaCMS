@@ -861,7 +861,7 @@ component extends="mura.cfobject" {
 				if(entity.getIsNew() && len(entity.getChangesetID())){
 					//create default that is not in changeset
 					entity.setBody("[]").setChangesetID('').setApproved(1).save();
-					entity.setBody($.event('body')).setChangesetID($.event('changesetid')).save();
+					entity.setBody($.event('body')).setChangesetID($.event('changesetid')).setApproved(0).save();
 				} else {
 					entity.save();
 				}
