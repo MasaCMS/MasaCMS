@@ -1,5 +1,40 @@
 ;(function(window){
 	
+	var evalElementScripts=function(el) {
+	    var scripts = [];
+
+	    ret = el.childNodes;
+	    for ( var i = 0; ret[i]; i++ ) {
+	      if ( scripts && nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
+	            scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
+	        }
+	    }
+
+	    for(script in scripts)
+	    {
+	      evalScript(scripts[script]);
+	    }
+	}
+
+	var nodeName=function( el, name ) {
+	    return el.nodeName && el.nodeName.toUpperCase() === name.toUpperCase();
+	}
+
+  	var evalScript=function(el) {
+	    var data = ( el.text || el.textContent || el.innerHTML || "" );
+
+	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
+	    script = document.createElement("script");
+	    script.type = "text/javascript";
+	    script.appendChild( document.createTextNode( data ) );
+	    head.insertBefore( script, head.firstChild );
+	    head.removeChild( script );
+
+	    if ( el.parentNode ) {
+	        el.parentNode.removeChild( el );
+	    }
+	}
+
 	var changeElementType=function(el, to) {
 		var newEl = document.createElement(to);
 
@@ -218,7 +253,7 @@
 		if(typeof selector == 'object' && Array.isArray(selector)){
 			var selection=selector;
 		} else if(typeof selector== 'string'){
-			var selection=nodeListToArray(document.querySelectorAll(selector));
+			var selection=nodeListToArray(window.mura.Sizzle(selector));
 		} else {
 			//var classname=selector.constructor.name;
 			//if(classname=='NodeList' || classname=='HTMLCollection'){
@@ -1112,8 +1147,8 @@
 		var handleResponse=function(resp){
 			
 			var wireUpObject=function(html){
-				self.innerHTML=html;
-				
+				select(self).html(html);
+
 				processMarkup(self);
 				
 				each(self.getElementsByTagName('FORM'),function(el,i){
@@ -1308,7 +1343,9 @@
 			each:each,
 			parseHTML:parseHTML,
 			getDataAttributes:getDataAttributes,
-			isEmptyObject:isEmptyObject
+			isEmptyObject:isEmptyObject,
+			evalElementScripts:evalElementScripts,
+			evalScript:evalScript
 			}
 		),
 		validateForm:validateForm,
