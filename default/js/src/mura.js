@@ -1443,4 +1443,5 @@
 	//for some reason this can't be added via extend
 	window.validateForm=validateForm;
 
+
 })(window);
