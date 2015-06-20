@@ -3382,7 +3382,7 @@ if (!Date.prototype.toISOString) {
 
 ;(function(window){
 	
-	var evalScripts=function(el) {
+	function evalScripts(el) {
 	    if(typeof el=='string'){
 	    	el=parseHTML(el);
 	    }
@@ -3403,11 +3403,11 @@ if (!Date.prototype.toISOString) {
 	    }
 	}
 
-	var nodeName=function( el, name ) {
+	function nodeName( el, name ) {
 	    return el.nodeName && el.nodeName.toUpperCase() === name.toUpperCase();
 	}
 
-  	var evalScript=function(el) {
+  	function evalScript(el) {
 	    var data = ( el.text || el.textContent || el.innerHTML || "" );
 
 	    var head = document.getElementsByTagName("head")[0] || document.documentElement,
@@ -3422,7 +3422,7 @@ if (!Date.prototype.toISOString) {
 	    }
 	}
 
-	var changeElementType=function(el, to) {
+	function changeElementType(el, to) {
 		var newEl = document.createElement(to);
 
 		// Try to copy attributes across
@@ -3440,7 +3440,7 @@ if (!Date.prototype.toISOString) {
 		return newEl;
 	}
 
-	var ready=function(fn) {
+	function ready(fn) {
 	  if(document.readyState != 'loading'){
 	    fn.call(document);
 	  } else {
@@ -3450,7 +3450,7 @@ if (!Date.prototype.toISOString) {
 	  }
 	}
 
-	var get=function(url,data){
+	function get(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'get',
@@ -3468,7 +3468,7 @@ if (!Date.prototype.toISOString) {
 		
 	}
 
-	var post=function(url,data){
+	function post(url,data){
 		return new Promise(function(resolve, reject) {
 			return ajax({
 					type:'post',
@@ -3486,7 +3486,7 @@ if (!Date.prototype.toISOString) {
 		
 	}
 
-	var ajax=function(params){
+	function ajax(params){
 		
 		//params=params || {};
 
@@ -3612,11 +3612,11 @@ if (!Date.prototype.toISOString) {
 
 	}
 
-	var each=function(selector,fn){
+	function each(selector,fn){
 		select(selector).each(fn);
 	}
 
-	var on=function(el,eventName,fn){
+	function on(el,eventName,fn){
 		if(eventName=='ready'){
 			ready(fn);
 		} else {
@@ -3632,11 +3632,11 @@ if (!Date.prototype.toISOString) {
 		}
 	}
 
-	var off=function(el,eventName){
+	function off(el,eventName){
 		el.removeEventListener(eventName);
 	}
 
-	var parseSelection=function(selector){
+	function parseSelection(selector){
 		if(typeof selector == 'object' && Array.isArray(selector)){
 			var selection=selector;
 		} else if(typeof selector== 'string'){
@@ -3659,21 +3659,21 @@ if (!Date.prototype.toISOString) {
 		return selection;
 	}
 
-	var isEmptyObject=function(obj){
+	function isEmptyObject(obj){
 		return (typeof obj != 'object' || Object.keys(obj).length == 0);
 	}
 
-	var filter=function(selector,fn){
+	function filter(selector,fn){
 		return select(parseSelection(selector)).filter(fn);
 	}
 
-	var nodeListToArray=function(nodeList){
+	function nodeListToArray(nodeList){
 		var arr = [];
 		for(var i = nodeList.length; i--; arr.unshift(nodeList[i]));
 		return arr;
 	}
 
-	var select=function(selector){
+	function select(selector){
 		return new MuraSelectionWrapper(parseSelection(selector),selector);
 	}
 
@@ -3684,7 +3684,7 @@ if (!Date.prototype.toISOString) {
 	 * @param {HTMLNode} node The node to fire the event handler on.
 	 * @param {String} eventName The name of the event without the "on" (e.g., "focus")
 	 */
-	var trigger=function(el, eventName) {
+	function trigger(el, eventName) {
 	    // Make sure we use the ownerDocument from the provided node to avoid cross-window problems
 	    var doc;
 	    if (el.ownerDocument) {
@@ -3741,13 +3741,13 @@ if (!Date.prototype.toISOString) {
 	    }
 	};
 
-	var parseHTML = function(str) {
+	function parseHTML(str) {
 	  var tmp = document.implementation.createHTMLDocument();
 	  tmp.body.innerHTML = str;
 	  return tmp.body.children;
 	};
 
-	var getDataAttributes=function(el){
+	function getDataAttributes(el){
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		    if (/^data-/.test(attr.name)) {
@@ -3758,7 +3758,7 @@ if (!Date.prototype.toISOString) {
 		return data;
 	}
 
-	var getAttributes=function(el){
+	function getAttributes(el){
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		       data[attr.name] = attr.value;
@@ -3767,7 +3767,7 @@ if (!Date.prototype.toISOString) {
 		return data;
 	}
 
-	var formToObject=function(form) {
+	function formToObject(form) {
 	    var field, s = {};
 	    if (typeof form == 'object' && form.nodeName == "FORM") {
 	        var len = form.elements.length;
@@ -3789,7 +3789,7 @@ if (!Date.prototype.toISOString) {
 	}
 
 	//http://youmightnotneedjquery.com/
-	var extend=function(out) {
+	function extend(out) {
 	  out = out || {};
 
 	  for (var i = 1; i < arguments.length; i++) {
@@ -3805,7 +3805,7 @@ if (!Date.prototype.toISOString) {
 	  return out;
 	};
 
-	var deepExtend = function(out) {
+	function deepExtend(out) {
 	  out = out || {};
 
 	  for (var i = 1; i < arguments.length; i++) {
@@ -3827,7 +3827,7 @@ if (!Date.prototype.toISOString) {
 	  return out;
 	}
 
-	var createCookie=function(name,value,days) {
+	function createCookie(name,value,days) {
 		if (days) {
 			var date = new Date();
 			date.setTime(date.getTime()+(days*24*60*60*1000));
@@ -3837,7 +3837,7 @@ if (!Date.prototype.toISOString) {
 		document.cookie = name+"="+value+expires+"; path=/";
 	}
 
-	var readCookie=function(name) {
+	function readCookie(name) {
 		var nameEQ = name + "=";
 		var ca = document.cookie.split(';');
 		for(var i=0;i < ca.length;i++) {
@@ -3848,18 +3848,19 @@ if (!Date.prototype.toISOString) {
 		return "";
 	}
 
-	var eraseCookie=function(name) {
+	function eraseCookie(name) {
 		createCookie(name,"",-1);
 	}
 
-	var $escape=function(value){
+	function $escape(value){
 		return escape(value).replace( 
        	 	new RegExp( "\\+", "g" ), 
         	"%2B" 
         );
 	}
 
-	var addLoadEvent=function(func) {
+	//deprecated
+	function addLoadEvent(func) {
 		 var oldonload = window.onload;
 		 if (typeof window.onload != 'function') {
 			window.onload = func;
@@ -3871,14 +3872,14 @@ if (!Date.prototype.toISOString) {
 		 }
 	}
 
-	var noSpam=function(user,domain) {
+	function noSpam(user,domain) {
 		locationstring = "mailto:" + user + "@" + domain;
 		window.location = locationstring;
 	}
 
-	var setHTMLEditor=function(el) {
+	function setHTMLEditor(el) {
 
-		var initEditor=function(){
+		function initEditor(){
 			var instance=window.CKEDITOR.instances[el.getAttribute('id')];
 			var conf={height:200,width:'70%'};
 			
@@ -3894,7 +3895,7 @@ if (!Date.prototype.toISOString) {
 			window.CKEDITOR.replace( el.getAttribute('id'),getHTMLEditorConfig(conf),htmlEditorOnComplete);			
 		}
 
-		var htmlEditorOnComplete=function( editorInstance ) {     
+		function htmlEditorOnComplete( editorInstance ) {     
 			//var instance=jQuery(editorInstance).ckeditorGet();
 			//instance.resetDirty();
 			editorInstance.resetDirty();
@@ -3902,7 +3903,7 @@ if (!Date.prototype.toISOString) {
 			//CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;  
 		}
 
-		var getHTMLEditorConfig=function(customConfig) {
+		function getHTMLEditorConfig(customConfig) {
 			var attrname='';
 			var htmlEditorConfig={
 				toolbar:'htmlEditor',
@@ -3976,7 +3977,7 @@ if (!Date.prototype.toISOString) {
 		}
 	}
 
-	var isInteger=function(s){
+	function isInteger(s){
 		var i;
 			for (i = 0; i < s.length; i++){   
 					// Check that current character is number.
@@ -3987,7 +3988,7 @@ if (!Date.prototype.toISOString) {
 			return true;
 	}
 
-	var createDate=function(str){
+	function createDate(str){
 						
 		var valueArray = str.split("/");
 					
@@ -4005,7 +4006,7 @@ if (!Date.prototype.toISOString) {
 							
 	}
 					
-	var dateToString=function(date){
+	function dateToString(date){
 		var mon   = date.getMonth()+1;
 		var dt  = date.getDate();
 		var yr   = date.getFullYear();
@@ -4018,7 +4019,7 @@ if (!Date.prototype.toISOString) {
 	}
 					
 
-	var stripCharsInBag=function(s, bag){
+	function stripCharsInBag(s, bag){
 		var i;
 			var returnString = "";
 			// Search through string's characters one by one.
@@ -4030,13 +4031,13 @@ if (!Date.prototype.toISOString) {
 			return returnString;
 	}
 
-	var daysInFebruary=function(year){
+	function daysInFebruary(year){
 		// February has 29 days in any year evenly divisible by four,
 			// EXCEPT for centurial years which are not also divisible by 400.
 			return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
 	}
 
-	var DaysArray=function(n) {
+	function DaysArray(n) {
 		for (var i = 1; i <= n; i++) {
 			this[i] = 31
 			if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
@@ -4045,7 +4046,7 @@ if (!Date.prototype.toISOString) {
 		 return this
 	}
 
-	var isDate=function(dtStr,fldName){
+	function isDate(dtStr,fldName){
 		var daysInMonth = DaysArray(12);
 		var dtArray= dtStr.split(window.mura.dtCh);
 		
@@ -4094,7 +4095,7 @@ if (!Date.prototype.toISOString) {
 		return true;
 	}
 
-	var isEmail=function(cur){
+	function isEmail(cur){
 		var string1=cur
 		if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1){
 			return false;
@@ -4103,7 +4104,7 @@ if (!Date.prototype.toISOString) {
 		}
 	}
 
-	var initShadowBox=function(el){
+	function initShadowBox(el){
 
 		if(select(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
@@ -4118,9 +4119,9 @@ if (!Date.prototype.toISOString) {
 			
 	}
 
-	var validateForm=function(frm,customaction) {
+	function validateForm(frm,customaction) {
 
-		var getValidationFieldName=function(theField){
+		function getValidationFieldName(theField){
 			if(theField.getAttribute('data-label')!=undefined){
 				return theField.getAttribute('data-label');
 			}else if(theField.getAttribute('label')!=undefined){
@@ -4130,7 +4131,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var getValidationIsRequired=function(theField){
+		function getValidationIsRequired(theField){
 			if(theField.getAttribute('data-required')!=undefined){
 				return (theField.getAttribute('data-required').toLowerCase() =='true');
 			}else if(theField.getAttribute('required')!=undefined){
@@ -4140,7 +4141,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var getValidationMessage=function(theField, defaultMessage){
+		function getValidationMessage(theField, defaultMessage){
 			if(theField.getAttribute('data-message') != undefined){
 				return theField.getAttribute('data-message');
 			} else if(theField.getAttribute('message') != undefined){
@@ -4150,7 +4151,7 @@ if (!Date.prototype.toISOString) {
 			} 
 		}
 
-		var getValidationType=function(theField){
+		function getValidationType(theField){
 			if(theField.getAttribute('data-validate')!=undefined){
 				return theField.getAttribute('data-validate').toUpperCase();
 			}else if(theField.getAttribute('validate')!=undefined){
@@ -4160,7 +4161,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var hasValidationMatchField=function(theField){
+		function hasValidationMatchField(theField){
 			if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
 				return true;
 			}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
@@ -4170,7 +4171,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var getValidationMatchField=function (theField){
+		function getValidationMatchField(theField){
 			if(theField.getAttribute('data-matchfield')!=undefined){
 				return theField.getAttribute('data-matchfield');
 			}else if(theField.getAttribute('matchfield')!=undefined){
@@ -4180,7 +4181,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var hasValidationRegex=function(theField){
+		function hasValidationRegex(theField){
 			if(theField.value != undefined){
 				if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
 					return true;
@@ -4192,7 +4193,7 @@ if (!Date.prototype.toISOString) {
 			}
 		}
 
-		var getValidationRegex=function(theField){
+		function getValidationRegex(theField){
 			if(theField.getAttribute('data-regex')!=undefined){
 				return theField.getAttribute('data-regex');
 			}else if(theField.getAttribute('regex')!=undefined){
@@ -4392,7 +4393,7 @@ if (!Date.prototype.toISOString) {
 			
 	}
 
-	var setLowerCaseKeys=function (obj) {
+	function setLowerCaseKeys(obj) {
 		for(var key in obj){ 
 			 if (key !== key.toLowerCase()) { // might already be in its lower case version
 						obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
@@ -4406,9 +4407,9 @@ if (!Date.prototype.toISOString) {
 		return (obj);
 	}
 
-	var loader=function(){return window.ljs;}
+	function loader(){return window.ljs;}
 
-	var processMarkup=function(scope){
+	function processMarkup(scope){
 		scope=select(scope);
 
 		var processors=[
@@ -4520,7 +4521,7 @@ if (!Date.prototype.toISOString) {
 		}
 	}
 
-	var addEventHandler=function(eventName,fn){
+	function addEventHandler(eventName,fn){
 		if(typeof eventName == 'object'){
 			for(var h in eventName){
 				on(document,h,eventName[h]);
@@ -4530,12 +4531,12 @@ if (!Date.prototype.toISOString) {
 		}	
 	}
 
-	var processAsyncObject=function(el){
+	function processAsyncObject(el){
 		var self=el;
 
-		var handleResponse=function(resp){
+		function handleResponse(resp){
 			
-			var wireUpObject=function(html){
+			function wireUpObject(html){
 				select(self).html(html);
 
 				processMarkup(self);
@@ -4572,7 +4573,7 @@ if (!Date.prototype.toISOString) {
 			}
 		};
 
-		var validateFormAjax=function(frm) {
+		function validateFormAjax(frm) {
 			
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
 
@@ -4652,7 +4653,7 @@ if (!Date.prototype.toISOString) {
 
 	}
 	
-	var init=function(config){
+	function init(config){
 		if(!config.context){
 			config.context='';
 		}
