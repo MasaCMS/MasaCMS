@@ -4733,9 +4733,12 @@ if (!Date.prototype.toISOString) {
 			parseHTML:parseHTML,
 			getDataAttributes:getDataAttributes,
 			isEmptyObject:isEmptyObject,
-			evalScripts:evalScripts
+			evalScripts:evalScripts,
+			validateForm:validateForm,
+			init:init
 			}
 		),
+		//these are here for legacy support
 		validateForm:validateForm,
 		setHTMLEditor:setHTMLEditor,
 		createCookie:createCookie,
