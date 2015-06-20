@@ -11,7 +11,7 @@ module.exports = function(grunt) {
           'src/loader.js',
           'src/mura.selectionwrapper.js',
           'src/mura.js',
-          'src/sizzle.js'
+          //'src/sizzle.js'
           ],
           dest: 'dist/mura.js',
         },
