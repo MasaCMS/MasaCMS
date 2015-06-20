@@ -182,7 +182,7 @@
 				var children=window.mura(this.selection[0].childNodes);
 				
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.Sizzle.matchesSelector(this,selector);};
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
@@ -204,13 +204,13 @@
 				        removeId=true;
 			        }
 			    
-			      	var result=window.mura.Sizzle('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
+			      	var result=window.mura.querySelectorAll('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
 					
 					if(removeId){
 						this.selection[0].removeAttribute('id');
 					}
 				} else if(this.selection[0].nodeType=='9'){
-					var result=window.mura.Sizzle(selector);
+					var result=window.mura.querySelectorAll(selector);
 				} else {
 					var result=[];
 				}
@@ -284,7 +284,7 @@
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.Sizzle.matchesSelector(this,selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
 				} else {
 					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
 				}
@@ -313,7 +313,7 @@
 		    // traverse parents
 		    while (el!==null) {
 		        parent = el.parentElement;
-		        if (parent!==null && window.mura.Sizzle.matchesSelector(parent,selector)) {
+		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
 		            return parent;
 		        }
 		        el = parent;
@@ -526,7 +526,7 @@
 			if(!this.selection.length){
 				return false;
 			}
-			return window.mura.Sizzle.matchesSelector(this.selection[0], selector);
+			return window.mura.matchesSelector(this.selection[0], selector);
 		},
 
 		offsetParent:function(){
@@ -750,5 +750,5 @@
 	}
 
 	window.MuraSelectionWrapper=MuraSelectionWrapper;
-	
+
 })(window);

@@ -46,6 +46,32 @@
 
 ;(function(window){
 	
+	function matchSelector(el,selector){
+		if(typeof window.Sizzle != 'undefined'){
+			return window.Sizzle.matchSelector(el,selector);
+		} else {
+			var matchesFn;
+		    // find vendor prefix
+		    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+		        if (typeof document.body[fn] == 'function') {
+		            matchesFn = fn;
+		            return true;
+		        }
+		        return false;
+		    });
+
+		    return el[matchesFn](selector);
+		}
+		
+	}
+
+	function querySelectorAll(selector){
+		if(typeof window.Sizzle != 'undefined'){
+			return window.Sizzle(selector);
+		} else {
+			return document.querySelectorAll(selector);
+		}
+	}
 	function evalScripts(el) {
 	    if(typeof el=='string'){
 	    	el=parseHTML(el);
@@ -1400,6 +1426,8 @@
 			isEmptyObject:isEmptyObject,
 			evalScripts:evalScripts,
 			validateForm:validateForm,
+			matchSelector:matchSelector,
+			querySelectorAll:querySelectorAll,
 			init:init
 			}
 		),

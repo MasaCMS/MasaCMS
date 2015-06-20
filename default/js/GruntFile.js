@@ -7,13 +7,13 @@ module.exports = function(grunt) {
         },
         dist: {
           src: [
-          'src/es5.polyfill.js',
-          'src/es6.promise.polyfill.js',
-          'src/json3.js',
+          //'src/es5.polyfill.js',
+          //'src/es6.promise.polyfill.js',
+          //'src/json3.js',
           'src/loader.js',
           'src/mura.selectionwrapper.js',
           'src/mura.js',
-          'src/sizzle.js'
+          //'src/sizzle.js'
           ],
           dest: 'dist/mura.js',
         },

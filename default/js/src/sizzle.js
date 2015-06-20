@@ -2131,7 +2131,7 @@ if ( !assert(function( div ) {
 
 // EXPOSE
 
-window.mura.Sizzle = Sizzle;
+window.Sizzle = Sizzle;
 
 // EXPOSE
 
