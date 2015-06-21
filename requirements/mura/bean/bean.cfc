@@ -310,8 +310,16 @@ component extends="mura.cfobject" output="false" {
 		return variables.instance;
 	}
 
+	function getAll(){
+		return getAllValues(argumentCollection=arguments);
+	}
+
 	function valueExists(valueKey){
 		return structKeyExists(variables.instance,arguments.valueKey);
+	}
+
+	function has(valueKey){
+		return valueExists(argumentCollection=arguments);
 	}
 
 	function validate(){

@@ -46,32 +46,20 @@
 
 ;(function(window){
 	
-	function matchSelector(el,selector){
-		if(typeof window.Sizzle != 'undefined'){
-			return window.Sizzle.matchSelector(el,selector);
-		} else {
-			var matchesFn;
-		    // find vendor prefix
-		    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-		        if (typeof document.body[fn] == 'function') {
-		            matchesFn = fn;
-		            return true;
-		        }
-		        return false;
-		    });
+	function matchSelector(el,selector){	
+		var matchesFn;
+	    // find vendor prefix
+	    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+	        if (typeof document.body[fn] == 'function') {
+	            matchesFn = fn;
+	            return true;
+	        }
+	        return false;
+	    });
 
-		    return el[matchesFn](selector);
-		}
-		
+	    return el[matchesFn](selector);		
 	}
 
-	function querySelectorAll(selector){
-		if(typeof window.Sizzle != 'undefined'){
-			return window.Sizzle(selector);
-		} else {
-			return document.querySelectorAll(selector);
-		}
-	}
 	function evalScripts(el) {
 	    if(typeof el=='string'){
 	    	el=parseHTML(el);
@@ -330,7 +318,7 @@
 		if(typeof selector == 'object' && Array.isArray(selector)){
 			var selection=selector;
 		} else if(typeof selector== 'string'){
-			var selection=nodeListToArray(window.mura.Sizzle(selector));
+			var selection=nodeListToArray(document.querySelectorAll(selector));
 		} else {
 			//var classname=selector.constructor.name;
 			//if(classname=='NodeList' || classname=='HTMLCollection'){
@@ -364,7 +352,7 @@
 	}
 
 	function select(selector){
-		return new MuraSelectionWrapper(parseSelection(selector),selector);
+		return new mura.MuraSelection(parseSelection(selector),selector);
 	}
 
 
@@ -1097,7 +1085,7 @@
 		return (obj);
 	}
 
-	function loader(){return window.ljs;}
+	function loader(){return window.mura.ljs;}
 
 	function processMarkup(scope){
 		scope=select(scope);
@@ -1427,7 +1415,7 @@
 			evalScripts:evalScripts,
 			validateForm:validateForm,
 			matchSelector:matchSelector,
-			querySelectorAll:querySelectorAll,
+			escape:$escape,
 			init:init
 			}
 		),

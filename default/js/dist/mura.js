@@ -965,235 +965,7 @@
 
     lib$es6$promise$polyfill$$default();
 }).call(this);
-;//https://github.com/malko/l.js
-;(function(window){
-/*
-* script for js/css parallel loading with dependancies management
-* @author Jonathan Gotti < jgotti at jgotti dot net >
-* @licence dual licence mit / gpl
-* @since 2012-04-12
-* @todo add prefetching using text/cache for js files
-* @changelog
-*            - 2014-06-26 - bugfix in css loaded check when hashbang is used
-*            - 2014-05-25 - fallback support rewrite + null id bug correction + minification work
-*            - 2014-05-21 - add cdn fallback support with hashbang url
-*            - 2014-05-22 - add support for relative paths for stylesheets in checkLoaded
-*            - 2014-05-21 - add support for relative paths for scripts in checkLoaded
-*            - 2013-01-25 - add parrallel loading inside single load call
-*            - 2012-06-29 - some minifier optimisations
-*            - 2012-04-20 - now sharp part of url will be used as tag id
-*                         - add options for checking already loaded scripts at load time
-*            - 2012-04-19 - add addAliases method
-* @note coding style is implied by the target usage of this script not my habbits
-*/
-	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
-	var gEval = function(js){ ( window.execScript || function(js){ window[ "eval" ].call(window,js);} )(js); }
-		, isA =  function(a,b){ return a instanceof (b || Array);}
-		//-- some minifier optimisation
-		, D = document
-		, getElementsByTagName = 'getElementsByTagName'
-		, length = 'length'
-		, readyState = 'readyState'
-		, onreadystatechange = 'onreadystatechange'
-		//-- get the current script tag for further evaluation of it's eventual content
-		, scripts = D[getElementsByTagName]("script")
-		, scriptTag = scripts[scripts[length]-1]
-		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
-	;
-	//avoid multiple inclusion to override current loader but allow tag content evaluation
-	
-	if( ! window.ljs ){
-		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
-			//-- keep trace of header as we will make multiple access to it
-			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
-			, urlParse = function(url){
-				var parts={}; // u => url, i => id, f = fallback
-				parts.u = url.replace(/#(=)?([^#]*)?/g,function(m,a,b){ parts[a?'f':'i'] = b; return '';});
-				return parts;
-			}
-			,appendElmt = function(type,attrs,cb){
-				var e = D.createElement(type), i;
-				if( cb ){ //-- this is not intended to be used for link
-					if(e[readyState]){
-						e[onreadystatechange] = function(){
-							if (e[readyState] === "loaded" || e[readyState] === "complete"){
-								e[onreadystatechange] = null;
-								cb();
-							}
-						};
-					}else{
-						e.onload = cb;
-					}
-				}
-				for( i in attrs ){ attrs[i] && (e[i]=attrs[i]); }
-				header.appendChild(e);
-				// return e; // unused at this time so drop it
-			}
-			,load = function(url,cb){
-				if( this.aliases && this.aliases[url] ){
-					var args = this.aliases[url].slice(0);
-					isA(args) || (args=[args]);
-					cb && args.push(cb);
-					return this.load.apply(this,args);
-				}
-				if( isA(url) ){ // parallelized request
-					for( var l=url[length]; l--;){
-						this.load(url[l]);
-					}
-					cb && url.push(cb); // relaunch the dependancie queue
-					return this.load.apply(this,url);
-				}
-				if( url.match(/\.css\b/) ){
-					return this.loadcss(url,cb);
-				}
-				return this.loadjs(url,cb);
-			}
-			,loaded = {}  // will handle already loaded urls
-			,loader  = {
-				aliases:{}
-				,loadjs: function(url,attrs,cb){
-					if(typeof url == 'object'){
-						if(Array.isArray(url)){
-							return loader.load.apply(this, arguments);
-						} else if(typeof attrs === 'function'){
-							cb=attrs;
-							attrs={};
-							url=attrs.href
-						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
-							return loader.load.apply(this, arguments);
-						} else {
-							attrs=url;
-							url=attrs.href;
-							cb=undefined;
-						}
-					} else if (typeof attrs=='function' ) {
-						cb = attrs;
-						attrs = {};
-					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
-						return loader.load.apply(this, arguments);
-					}
-					if(typeof attrs==='undefined'){
-						attrs={};
-					}
-
-					var parts = urlParse(url);  
-					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
-					
-					for(var i=0;i<partToAttrs.length;i++){
-						var part=partToAttrs[i];
-						if(!(part[1] in attrs) && (part[0] in parts)){
-							attrs[part[1]]=parts[part[0]];
-						}
-					}
-				
-					if(typeof attrs.type === 'undefined'){
-						attrs.type='text/javascript';
-					}
-
-					var finalAttrs={};
-
-					for(var a in attrs){
-						if(a != 'fallback'){
-							finalAttrs[a]=attrs[a];
-						}
-					}
-					
-					finalAttrs.onerror=function(error){
-						if( attrs.fallback ){
-							var c = error.currentTarget;
-							c.parentNode.removeChild(c);
-							finalAttrs.src=attrs.fallback;
-							appendElmt('script',attrs,cb);
-						}
-					};
-					
-
-					if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
-						cb && cb();
-						return this;
-					} else if( loaded[finalAttrs.src]!== undefined ){ // already asked for loading we append callback if any else return
-						if( cb ){
-							loaded[finalAttrs.src] = (function(ocb,cb){ return function(){ ocb && ocb(); cb && cb(); }; })(loaded[finalAttrs.src],cb);
-						}
-						return this;
-					}
-					// first time we ask this script
-					loaded[finalAttrs.src] = (function(cb){ return function(){loaded[finalAttrs.src]=true; cb && cb();};})(cb);
-					cb = function(){ loaded[url](); };
-					appendElmt('script',finalAttrs,cb);
-					return this;
-				}
-				,loadcss: function(url,attrs,cb){
-
-					if(typeof url == 'object'){
-						if(Array.isArray(url)){
-							return loader.load.apply(this, arguments);
-						} else if(typeof attrs === 'function'){
-							cb=attrs;
-							attrs=url;
-							url=attrs.href
-						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
-							return loader.load.apply(this, arguments);
-						} else {
-							attrs=url;
-							url=attrs.href;
-							cb=undefined;
-						}
-					} else if (typeof attrs=='function' ) {
-						cb = attrs;
-						attrs = {};
-					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
-						return loader.load.apply(this, arguments);
-					}
-					
-					var parts = urlParse(url);
-					parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
-
-					if(typeof attrs !=='undefined'){
-						for(var a in attrs){
-							parts[a]=attrs[a];
-						}
-					}
-
-					loaded[parts.href] || appendElmt('link',parts);
-					loaded[parts.href] = true;
-					cb && cb();
-					return this;
-				}
-				,load: function(){
-					var argv=arguments,argc = argv[length];
-					if( argc === 1 && isA(argv[0],Function) ){
-						argv[0]();
-						return this;
-					}
-					load.call(this,argv[0], argc <= 1 ? undefined : function(){ loader.load.apply(loader,[].slice.call(argv,1));} );
-					return this;
-				}
-				,addAliases:function(aliases){
-					for(var i in aliases ){
-						this.aliases[i]= isA(aliases[i]) ? aliases[i].slice(0) : aliases[i];
-					}
-					return this;
-				}
-			}
-		;
-
-		if( checkLoaded ){
-			var i,l,links,url;
-			for(i=0,l=scripts[length];i<l;i++){
-				(url = scripts[i].getAttribute('src')) && (loaded[url.replace(/#.*$/,'')] = true);
-			}
-			links = D[getElementsByTagName]('link');
-			for(i=0,l=links[length];i<l;i++){
-				(links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
-			}
-		}
-		//export ljs
-		window.ljs = loader;
-		// eval inside tag code if any
-	}
-	script && gEval(script);
-})(window);;/* This file is part of Mura CMS. 
+;/* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
 	it under the terms of the GNU General Public License as published by 
@@ -1240,786 +1012,21 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraSelectionWrapper(selection,origSelector){
-		this.selection=selection;
-		this.origSelector=selection;
+	
+	function matchSelector(el,selector){	
+		var matchesFn;
+	    // find vendor prefix
+	    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+	        if (typeof document.body[fn] == 'function') {
+	            matchesFn = fn;
+	            return true;
+	        }
+	        return false;
+	    });
 
-		if(this.selection.length){
-			this.parentNode=this.selection[0].parentNode;
-			this.childNodes=this.selection[0].childNodes;
-			this.node=selection[0];
-		} else {
-			this.parentNode=null;
-			this.childNodes=null;
-			this.node=null;
-		}
-
-		this.length=this.selection.length;
+	    return el[matchesFn](selector);		
 	}
 
-	MuraSelectionWrapper.prototype={
-		get:function(index){
-			return this.selection[index];
-		},
-
-		ajax:function(data){
-			return window.mura.ajax(data);
-		},
-
-		select:function(selector){
-			return window.mura(selector);
-		},
-
-		each:function(fn){
-			this.selection.forEach( function(el,idx){
-				fn.call(el,el,idx);
-			});
-			return this;
-		},
-
-		filter:function(fn){
-			return window.mura(this.selection.filter( function(el,idx){
-				return fn.call(el,el,idx);
-			}));
-		},
-
-		map:function(fn){
-			return window.mura(this.selection.map( function(el,idx){
-				return fn.call(el,el,idx);
-			}));
-		},
-
-		isNumeric:function(val){
-			return isNumeric(this.selection[0]);
-		},
-
-		on:function(eventName,fn){
-			if(eventName=='ready'){
-				if(document.readyState != 'loading'){
-					fn.call(document);
-				} else { 
-					document.addEventListener(
-						'DOMContentLoaded',
-						function(event){
-								fn.call(el,event);
-						},
-						true
-					);	
-				}
-			} else {
-				this.each(function(el){
-					if(typeof el.addEventListener == 'function'){
-						el.addEventListener(
-							eventName, 
-							function(event){
-								fn.call(el,event);
-							},
-							true
-						);
-					}
-				});
-			}
-
-			return this;
-		},
-
-		hover:function(handlerIn,handlerOut){
-			this.on('mouseover',handlerIn);
-			this.on('mouseout',handlerOut);
-			return this;
-		},
-
-
-		click:function(fn){
-			this.on('click',fn);
-			return this;
-		},
-
-		ready:function(fn){
-			this.on('ready',fn);
-			return this;
-		},
-
-		off:function(eventName){
-			this.each(function(el){
-				el.removeEventListener(eventName);
-			});
-		},
-
-		unbind:function(eventName){
-			this.off(eventName);
-		},
-
-		bind:function(eventName){
-			this.on(eventName);
-		},
-
-		trigger:function(eventName){
-			this.each(function(el){
-				window.mura.trigger(el,eventName);
-			});
-			return this;
-		},
-
-		parent:function(){
-			if(!this.selection.length){
-				return;
-			}
-			return window.mura(this.selection[0].parentNode);
-		},
-
-		children:function(selector){
-			if(!this.selection.length){
-				return;
-			}
-
-			if(this.selection[0].hasChildNodes()){
-				var children=window.mura(this.selection[0].childNodes);
-				
-				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
-				} else {
-					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
-				}
-
-				return children.filter(filterFn);		
-			} else {
-				return window.mura([]);
-			}	
-			
-		},
-
-		find:function(selector){
-			if(this.selection.length){
-				var removeId=false;
-				
-				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
-					if(!this.selection[0].getAttribute('id')){
-				        this.selection[0].setAttribute('id','m' + Math.random().toString(36).substr(2, 10));
-				        removeId=true;
-			        }
-			    
-			      	var result=window.mura.querySelectorAll('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
-					
-					if(removeId){
-						this.selection[0].removeAttribute('id');
-					}
-				} else if(this.selection[0].nodeType=='9'){
-					var result=window.mura.querySelectorAll(selector);
-				} else {
-					var result=[];
-				}
-				return window.mura(result);
-			} else {
-				return window.mura([]);
-			}
-		},
-
-		getSelector:function(omitSysEls) {
-		    var pathes = [];
-
-		    //this.selection.each(function(index, element) {
-		        var path, $node = window.mura(this.selection[0]);
-
-		        while ($node.length) {
-		           var realNode = $node.get(0), name = realNode.localName;
-		           if (!name) { break; }
-
-		           if(omitSysEls 
-		           		&& (
-		           			$node.hasClass('mura-editable')
-							|| $node.hasClass('editableObjectContents')
-							|| $node.hasClass('editableObject')
-		           		)
-
-		           	){
-		           		break;
-		           }
-		           
-		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
-		           		name='#' + $node.attr('id');
-		           		path = name + (path ? ' > ' + path : '');
-		            	break;
-		           } else {
-
-		                name = name.toLowerCase();
-		                var parent = $node.parent();
-		                var sameTagSiblings = parent.children(name);
-
-		                if (sameTagSiblings.length > 1)
-		                {
-		                    allSiblings = parent.children();
-		                    var index = allSiblings.index(realNode) +1;
-
-		                    if (index > 0) {
-		                        name += ':nth-child(' + index + ')';
-		                    }
-		                }
-
-		                path = name + (path ? ' > ' + path : '');
-		            	$node = parent;
-		       		 }
-
-		           
-		        }
-
-		        pathes.push(path);
-		    //});
-
-		    return pathes.join(',');
-		},
-
-		siblings:function(selector){
-			if(!this.selection.length){
-				return;
-			}
-			var el=this.selection[0];
-			
-			if(el.hasChildNodes()){
-				var silbings=window.mura(this.selection[0].childNodes);
-
-				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
-				} else {
-					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
-				}
-
-				return silbings.filter(filterFn);
-			} else {
-				return window.mura([]);
-			}	
-		},
-
-		item:function(idx){
-			return this.selection[idx];
-		},
-
-		index:function(el){
-			return this.selection.indexOf(el);
-		},
-
-		closest:function(selector) {
-			if(!this.selection.length){
-				return null;
-			}
-
-		    var el = this.selection[0];
-		 
-		    // traverse parents
-		    while (el!==null) {
-		        parent = el.parentElement;
-		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
-		            return parent;
-		        }
-		        el = parent;
-		    }
-
-		    return null;
-		},
-
-		append:function(el) {
-			this.selection[0].parentNode.appendChild(el);
-			return this;
-		},
-
-		appendMuraObject:function(data) {
-		    var el=createElement('div');
-		    el.setAttribute('class','mura-async-object');
-
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
-
-			this.append(el);
-
-			window.mura.processAsyncObject(this.node);
-
-			return el;
-		},
-
-		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
-			return this;
-		},
-
-		prependMuraObject:function(data) {
-		    var el=createElement('div');
-		    el.setAttribute('class','mura-async-object');
-
-			for(var a in data){
-				el.setAttribute('data-' + a,data[a]);
-			}
-
-			this.prepend(el);
-			
-			window.mura.processAsyncObject(el);
-
-			return el;
-		},
-
-		hide:function(){
-			this.each(function(el){
-				el.style.display = 'none';
-			});
-			return this;
-		},
-
-		show:function(){
-			this.each(function(el){
-				el.style.display = '';
-			});
-			return this;
-		},
-
-		remove:function(){
-			this.each(function(el){
-				el.parentNode.removeChild(el);
-			});
-			return this;
-		},
-
-		addClass:function(className){
-			this.each(function(el){
-				if (el.classList){
-				  el.classList.add(className);
-				} else {
-				  el.className += ' ' + className;
-				}
-			});
-			return this;
-		},
-
-		hasClass:function(className){
-			return this.is("." + className);
-		},
-
-		removeClass:function(className){
-			this.each(function(el){
-				if (el.classList){
-				  el.classList.remove(className);
-				} else {
-				  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-				}
-			});
-			return this;
-		},
-
-		toggleClass:function(className){
-			this.each(function(el){
-				if (el.classList) {
-				  el.classList.toggle(className);
-				} else {
-				  var classes = el.className.split(' ');
-				  var existingIndex = classes.indexOf(className);
-
-				  if (existingIndex >= 0)
-				    classes.splice(existingIndex, 1);
-				  else
-				    classes.push(className);
-
-				  el.className = classes.join(' ');
-				}
-			});
-			return this;
-		},
-
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
-			});
-			return this;
-		},
-
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
-			});
-			return this;
-		},
-
-		empty:function(){
-			this.each(function(el){
-				el.innerHTML = '';
-			});
-			return this;
-		},
-
-		evalScripts:function(){
-			if(!this.selection.length){
-				return this;
-			}
-
-			this.each(function(el){
-				window.mura.evalScripts(el);
-			});
-
-			return this;
-			
-		},
-
-		html:function(htmlString){
-
-			if(typeof htmlString != 'undefined'){
-				this.each(function(el){
-					el.innerHTML=htmlString;
-					window.mura.evalScripts(el);
-				});
-				return this;
-			} else {
-				if(!this.selection.length){
-					return '';
-				}
-				return this.selection[0].innerHTML;
-			}
-		},
-
-		css:function(ruleName,value){	
-			if(!this.selection.length){
-				return;
-			}
-
-			if(typeof rulename == 'undefined' && typeof value == 'undefined'){
-				try{
-					return window.getComputedStyle(this.selection[0]);
-				} catch(e){
-					return {};
-				}
-			} else if (typeof attributeName == 'object'){
-				this.each(function(el){
-					try{
-						for(var p in attributeName){
-							el.style[p]=attributeName[p];
-						}
-					} catch(e){}
-				});
-			} else if(typeof value != 'undefined'){
-				this.each(function(el){
-					try{
-						el.style[ruleName]=value;
-					} catch(e){}
-				});
-				return this;
-			} else{
-				try{
-					return window.getComputedStyle(this.selection[0])[ruleName];
-				} catch(e){}
-			}
-		},
-
-		text:function(textString){
-			if(typeof textString == 'undefined'){
-				this.each(function(el){
-					el.textContent=textString;
-				});
-				return this;
-			} else {
-				return this.selection[0].textContent;
-			}
-		},
-
-		is:function(selector){
-			if(!this.selection.length){
-				return false;
-			}
-			return window.mura.matchesSelector(this.selection[0], selector);
-		},
-
-		offsetParent:function(){
-			if(!this.selection.length){
-				return;
-			}
-			var el=this.selection[0];
-			return el.offsetParent || el;
-		},
-
-		outerHeight:function(withMargin){
-			if(!this.selection.length){
-				return;
-			}
-			if(typeof withMargin == 'undefined'){
-				function outerHeight(el) {
-				  var height = el.offsetHeight;
-				  var style = window.getComputedStyle(el);
-
-				  height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-				  return height;
-				}
-
-				return outerHeight(this.selection[0]);
-			} else {
-				return this.selection[0].offsetHeight;
-			}
-		},
-
-		height:function(height) {
-		 	if(!this.selection.length){
-				return;
-			}
-			
-			if(typeof width != 'undefined'){
-				if(!isNaN(height)){
-					height += 'px';
-				}
-				this.css('height',height);
-				return this;
-			}
-
-			var el=this.selection[0]; 
-			//var type=el.constructor.name.toLowerCase();
-
-			if(el === window){
-				return window.innerHeight
-			} else if(el === document){
-				var body = document.body;
-		    	var html = document.documentElement;
-				return  Math.max( body.scrollHeight, body.offsetHeight, 
-		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
-			}
-
-			var styles = window.getComputedStyle(el);
-			var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
-
-			return Math.ceil(el.offsetHeight + margin);
-		},
-
-		width:function(width) {
-		  	if(!this.selection.length){
-				return;
-			}
-
-			if(typeof width != 'undefined'){
-				if(!isNaN(width)){
-					width += 'px';
-				}
-				this.css('width',width);
-				return this;
-			}
-
-			var el=this.selection[0]; 
-			//var type=el.constructor.name.toLowerCase();
-
-			if(el === window){
-				return window.innerWidth
-			} else if(el === document){
-				var body = document.body;
-		    	var html = document.documentElement;
-				return  Math.max( body.scrollWidth, body.offsetWidth, 
-		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
-			}
-
-		  	return window.getComputedStyle(el).width;
-		},
-
-		offset:function(){
-			if(!this.selection.length){
-				return;
-			}
-			var el=this.selection[0];
-			var rect = el.getBoundingClientRect()
-
-			return {
-			  top: rect.top + document.body.scrollTop,
-			  left: rect.left + document.body.scrollLeft
-			};
-		},
-
-		scrollTop:function() {
-		  	return document.body.scrollTop; 
-		},
-
-		offset:function(attributeName,value){
-			if(!this.selection.length){
-				return;
-			}
-			var box = this.selection[0].getBoundingClientRect();
-			return {
-			  top: box.top  + ( window.pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
-			  left: box.left + ( window.pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
-			};
-		},
-
-		removeAttr:function(attributeName){
-			if(!this.selection.length){
-				return;
-			}
-			
-			this.each(function(el){
-				el.removeAttribute(attributeName);
-			});
-			return this;
-			
-		},
-
-		attr:function(attributeName,value){
-			if(!this.selection.length){
-				return;
-			}
-
-			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getAttributes(this.selection[0]);
-			} else if (typeof attributeName == 'object'){
-				this.each(function(el){
-					for(var p in attributeName){
-						el.setAttribute(p,attributeName[p]);
-					}
-				});
-				return this;
-			} else if(typeof value != 'undefined'){
-				this.each(function(el){
-					el.setAttribute(attributeName,value);
-				});
-				return this;
-			
-			} else {
-				return this.selection[0].getAttribute(attributeName);
-			}
-		},
-
-		data:function(attributeName,value){
-			if(!this.selection.length){
-				return;
-			}
-			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getDataAttributes(this.selection[0]);
-			} else if (typeof attributeName == 'object'){
-				this.each(function(el){
-					for(var p in attributeName){
-						el.setAttribute("data-" + p,attributeName[p]);
-					}
-				});
-				return this;
-
-			} else if(typeof value != 'undefined'){
-				this.each(function(el){
-					el.setAttribute("data-" + attributeName,value);
-				});
-				return this;
-			} else {
-				return this.selection[0].getAttribute("data-" + attributeName);
-			}
-		},
-
-		fadeOut:function(){
-		  	this.each(function(el){
-			  el.style.opacity = 1;
-
-			  (function fade() {
-			    if ((el.style.opacity -= .1) < 0) {
-			      el.style.display = "none";
-			    } else {
-			      requestAnimationFrame(fade);
-			    }
-			  })();
-			});
-
-			return this;
-		},
-
-		fadeIn:function(display){
-		  this.each(function(el){
-			  el.style.opacity = 0;
-			  el.style.display = display || "block";
-
-			  (function fade() {
-			    var val = parseFloat(el.style.opacity);
-			    if (!((val += .1) > 1)) {
-			      el.style.opacity = val;
-			      requestAnimationFrame(fade);
-			    }
-			  })();
-		  });
-
-		  return this;
-		},
-
-		toggle:function(){
-		 	this.each(function(el){
-				 if(typeof el.style.display == 'undefined' || el.style.display==''){
-				 	el.style.display='none';
-				 } else {
-				 	el.style.display='';
-				 }
-		  	});
-		  	return this;
-		}
-	}
-
-	window.MuraSelectionWrapper=MuraSelectionWrapper;
-
-})(window);;/* This file is part of Mura CMS. 
-
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
-
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
-
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
-
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
-	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
-	• Must not alter any default objects in the Mura CMS database and
-	• May not alter the default display of the Mura CMS logo within Mura CMS and
-	• Must not alter any files in the following directories.
-	
-	 /admin/
-	 /tasks/
-	 /config/
-	 /requirements/mura/
-	 /Application.cfc
-	 /index.cfm
-	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-;(function(window){
-	
-	function matchSelector(el,selector){
-		if(typeof window.Sizzle != 'undefined'){
-			return window.Sizzle.matchSelector(el,selector);
-		} else {
-			var matchesFn;
-		    // find vendor prefix
-		    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-		        if (typeof document.body[fn] == 'function') {
-		            matchesFn = fn;
-		            return true;
-		        }
-		        return false;
-		    });
-
-		    return el[matchesFn](selector);
-		}
-		
-	}
-
-	function querySelectorAll(selector){
-		if(typeof window.Sizzle != 'undefined'){
-			return window.Sizzle(selector);
-		} else {
-			return document.querySelectorAll(selector);
-		}
-	}
 	function evalScripts(el) {
 	    if(typeof el=='string'){
 	    	el=parseHTML(el);
@@ -2278,7 +1285,7 @@
 		if(typeof selector == 'object' && Array.isArray(selector)){
 			var selection=selector;
 		} else if(typeof selector== 'string'){
-			var selection=nodeListToArray(window.mura.Sizzle(selector));
+			var selection=nodeListToArray(document.querySelectorAll(selector));
 		} else {
 			//var classname=selector.constructor.name;
 			//if(classname=='NodeList' || classname=='HTMLCollection'){
@@ -2312,7 +1319,7 @@
 	}
 
 	function select(selector){
-		return new MuraSelectionWrapper(parseSelection(selector),selector);
+		return new mura.MuraSelection(parseSelection(selector),selector);
 	}
 
 
@@ -3045,7 +2052,7 @@
 		return (obj);
 	}
 
-	function loader(){return window.ljs;}
+	function loader(){return window.mura.ljs;}
 
 	function processMarkup(scope){
 		scope=select(scope);
@@ -3375,7 +2382,7 @@
 			evalScripts:evalScripts,
 			validateForm:validateForm,
 			matchSelector:matchSelector,
-			querySelectorAll:querySelectorAll,
+			escape:$escape,
 			init:init
 			}
 		),
@@ -3392,4 +2399,1314 @@
 	window.validateForm=validateForm;
 
 
+})(window);;//https://github.com/malko/l.js
+;(function(window){
+/*
+* script for js/css parallel loading with dependancies management
+* @author Jonathan Gotti < jgotti at jgotti dot net >
+* @licence dual licence mit / gpl
+* @since 2012-04-12
+* @todo add prefetching using text/cache for js files
+* @changelog
+*            - 2014-06-26 - bugfix in css loaded check when hashbang is used
+*            - 2014-05-25 - fallback support rewrite + null id bug correction + minification work
+*            - 2014-05-21 - add cdn fallback support with hashbang url
+*            - 2014-05-22 - add support for relative paths for stylesheets in checkLoaded
+*            - 2014-05-21 - add support for relative paths for scripts in checkLoaded
+*            - 2013-01-25 - add parrallel loading inside single load call
+*            - 2012-06-29 - some minifier optimisations
+*            - 2012-04-20 - now sharp part of url will be used as tag id
+*                         - add options for checking already loaded scripts at load time
+*            - 2012-04-19 - add addAliases method
+* @note coding style is implied by the target usage of this script not my habbits
+*/
+	/** gEval credits goes to my javascript idol John Resig, this is a simplified jQuery.globalEval */
+	var gEval = function(js){ ( window.execScript || function(js){ window[ "eval" ].call(window,js);} )(js); }
+		, isA =  function(a,b){ return a instanceof (b || Array);}
+		//-- some minifier optimisation
+		, D = document
+		, getElementsByTagName = 'getElementsByTagName'
+		, length = 'length'
+		, readyState = 'readyState'
+		, onreadystatechange = 'onreadystatechange'
+		//-- get the current script tag for further evaluation of it's eventual content
+		, scripts = D[getElementsByTagName]("script")
+		, scriptTag = scripts[scripts[length]-1]
+		, script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
+	;
+	//avoid multiple inclusion to override current loader but allow tag content evaluation
+	
+	if( ! window.ljs ){
+		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
+			//-- keep trace of header as we will make multiple access to it
+			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
+			, urlParse = function(url){
+				var parts={}; // u => url, i => id, f = fallback
+				parts.u = url.replace(/#(=)?([^#]*)?/g,function(m,a,b){ parts[a?'f':'i'] = b; return '';});
+				return parts;
+			}
+			,appendElmt = function(type,attrs,cb){
+				var e = D.createElement(type), i;
+				if( cb ){ //-- this is not intended to be used for link
+					if(e[readyState]){
+						e[onreadystatechange] = function(){
+							if (e[readyState] === "loaded" || e[readyState] === "complete"){
+								e[onreadystatechange] = null;
+								cb();
+							}
+						};
+					}else{
+						e.onload = cb;
+					}
+				}
+				for( i in attrs ){ attrs[i] && (e[i]=attrs[i]); }
+				header.appendChild(e);
+				// return e; // unused at this time so drop it
+			}
+			,load = function(url,cb){
+				if( this.aliases && this.aliases[url] ){
+					var args = this.aliases[url].slice(0);
+					isA(args) || (args=[args]);
+					cb && args.push(cb);
+					return this.load.apply(this,args);
+				}
+				if( isA(url) ){ // parallelized request
+					for( var l=url[length]; l--;){
+						this.load(url[l]);
+					}
+					cb && url.push(cb); // relaunch the dependancie queue
+					return this.load.apply(this,url);
+				}
+				if( url.match(/\.css\b/) ){
+					return this.loadcss(url,cb);
+				}
+				return this.loadjs(url,cb);
+			}
+			,loaded = {}  // will handle already loaded urls
+			,loader  = {
+				aliases:{}
+				,loadjs: function(url,attrs,cb){
+					if(typeof url == 'object'){
+						if(Array.isArray(url)){
+							return loader.load.apply(this, arguments);
+						} else if(typeof attrs === 'function'){
+							cb=attrs;
+							attrs={};
+							url=attrs.href
+						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+							return loader.load.apply(this, arguments);
+						} else {
+							attrs=url;
+							url=attrs.href;
+							cb=undefined;
+						}
+					} else if (typeof attrs=='function' ) {
+						cb = attrs;
+						attrs = {};
+					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+						return loader.load.apply(this, arguments);
+					}
+					if(typeof attrs==='undefined'){
+						attrs={};
+					}
+
+					var parts = urlParse(url);  
+					var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
+					
+					for(var i=0;i<partToAttrs.length;i++){
+						var part=partToAttrs[i];
+						if(!(part[1] in attrs) && (part[0] in parts)){
+							attrs[part[1]]=parts[part[0]];
+						}
+					}
+				
+					if(typeof attrs.type === 'undefined'){
+						attrs.type='text/javascript';
+					}
+
+					var finalAttrs={};
+
+					for(var a in attrs){
+						if(a != 'fallback'){
+							finalAttrs[a]=attrs[a];
+						}
+					}
+					
+					finalAttrs.onerror=function(error){
+						if( attrs.fallback ){
+							var c = error.currentTarget;
+							c.parentNode.removeChild(c);
+							finalAttrs.src=attrs.fallback;
+							appendElmt('script',attrs,cb);
+						}
+					};
+					
+
+					if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
+						cb && cb();
+						return this;
+					} else if( loaded[finalAttrs.src]!== undefined ){ // already asked for loading we append callback if any else return
+						if( cb ){
+							loaded[finalAttrs.src] = (function(ocb,cb){ return function(){ ocb && ocb(); cb && cb(); }; })(loaded[finalAttrs.src],cb);
+						}
+						return this;
+					}
+					// first time we ask this script
+					loaded[finalAttrs.src] = (function(cb){ return function(){loaded[finalAttrs.src]=true; cb && cb();};})(cb);
+					cb = function(){ loaded[url](); };
+					appendElmt('script',finalAttrs,cb);
+					return this;
+				}
+				,loadcss: function(url,attrs,cb){
+
+					if(typeof url == 'object'){
+						if(Array.isArray(url)){
+							return loader.load.apply(this, arguments);
+						} else if(typeof attrs === 'function'){
+							cb=attrs;
+							attrs=url;
+							url=attrs.href
+						} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+							return loader.load.apply(this, arguments);
+						} else {
+							attrs=url;
+							url=attrs.href;
+							cb=undefined;
+						}
+					} else if (typeof attrs=='function' ) {
+						cb = attrs;
+						attrs = {};
+					} else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
+						return loader.load.apply(this, arguments);
+					}
+					
+					var parts = urlParse(url);
+					parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
+
+					if(typeof attrs !=='undefined'){
+						for(var a in attrs){
+							parts[a]=attrs[a];
+						}
+					}
+
+					loaded[parts.href] || appendElmt('link',parts);
+					loaded[parts.href] = true;
+					cb && cb();
+					return this;
+				}
+				,load: function(){
+					var argv=arguments,argc = argv[length];
+					if( argc === 1 && isA(argv[0],Function) ){
+						argv[0]();
+						return this;
+					}
+					load.call(this,argv[0], argc <= 1 ? undefined : function(){ loader.load.apply(loader,[].slice.call(argv,1));} );
+					return this;
+				}
+				,addAliases:function(aliases){
+					for(var i in aliases ){
+						this.aliases[i]= isA(aliases[i]) ? aliases[i].slice(0) : aliases[i];
+					}
+					return this;
+				}
+			}
+		;
+
+		if( checkLoaded ){
+			var i,l,links,url;
+			for(i=0,l=scripts[length];i<l;i++){
+				(url = scripts[i].getAttribute('src')) && (loaded[url.replace(/#.*$/,'')] = true);
+			}
+			links = D[getElementsByTagName]('link');
+			for(i=0,l=links[length];i<l;i++){
+				(links[i].rel==='stylesheet' || links[i].type==='text/css') && (loaded[links[i].getAttribute('href').replace(/#.*$/,'')]=true);
+			}
+		}
+		//export ljs
+		window.mura.ljs = loader;
+		// eval inside tag code if any
+	}
+	script && gEval(script);
+})(window);;/* This file is part of Mura CMS. 
+
+	Mura CMS is free software: you can redistribute it and/or modify 
+	it under the terms of the GNU General Public License as published by 
+	the Free Software Foundation, Version 2 of the License. 
+
+	Mura CMS is distributed in the hope that it will be useful, 
+	but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+	GNU General Public License for more details. 
+
+	You should have received a copy of the GNU General Public License 
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+
+;(function(window){
+	function MuraSelection(selection,origSelector){
+		this.selection=selection;
+		this.origSelector=selection;
+
+		if(this.selection.length){
+			this.parentNode=this.selection[0].parentNode;
+			this.childNodes=this.selection[0].childNodes;
+			this.node=selection[0];
+		} else {
+			this.parentNode=null;
+			this.childNodes=null;
+			this.node=null;
+		}
+
+		this.length=this.selection.length;
+	}
+
+	MuraSelection.prototype={
+		get:function(index){
+			return this.selection[index];
+		},
+
+		ajax:function(data){
+			return window.mura.ajax(data);
+		},
+
+		select:function(selector){
+			return window.mura(selector);
+		},
+
+		each:function(fn){
+			this.selection.forEach( function(el,idx){
+				fn.call(el,el,idx);
+			});
+			return this;
+		},
+
+		filter:function(fn){
+			return window.mura(this.selection.filter( function(el,idx){
+				return fn.call(el,el,idx);
+			}));
+		},
+
+		map:function(fn){
+			return window.mura(this.selection.map( function(el,idx){
+				return fn.call(el,el,idx);
+			}));
+		},
+
+		isNumeric:function(val){
+			return isNumeric(this.selection[0]);
+		},
+
+		on:function(eventName,fn){
+			if(eventName=='ready'){
+				if(document.readyState != 'loading'){
+					fn.call(document);
+				} else { 
+					document.addEventListener(
+						'DOMContentLoaded',
+						function(event){
+								fn.call(el,event);
+						},
+						true
+					);	
+				}
+			} else {
+				this.each(function(el){
+					if(typeof el.addEventListener == 'function'){
+						el.addEventListener(
+							eventName, 
+							function(event){
+								fn.call(el,event);
+							},
+							true
+						);
+					}
+				});
+			}
+
+			return this;
+		},
+
+		hover:function(handlerIn,handlerOut){
+			this.on('mouseover',handlerIn);
+			this.on('mouseout',handlerOut);
+			return this;
+		},
+
+
+		click:function(fn){
+			this.on('click',fn);
+			return this;
+		},
+
+		ready:function(fn){
+			this.on('ready',fn);
+			return this;
+		},
+
+		off:function(eventName){
+			this.each(function(el){
+				el.removeEventListener(eventName);
+			});
+		},
+
+		unbind:function(eventName){
+			this.off(eventName);
+		},
+
+		bind:function(eventName){
+			this.on(eventName);
+		},
+
+		trigger:function(eventName){
+			this.each(function(el){
+				window.mura.trigger(el,eventName);
+			});
+			return this;
+		},
+
+		parent:function(){
+			if(!this.selection.length){
+				return;
+			}
+			return window.mura(this.selection[0].parentNode);
+		},
+
+		children:function(selector){
+			if(!this.selection.length){
+				return;
+			}
+
+			if(this.selection[0].hasChildNodes()){
+				var children=window.mura(this.selection[0].childNodes);
+				
+				if(typeof selector == 'string'){
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
+				} else {
+					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
+				}
+
+				return children.filter(filterFn);		
+			} else {
+				return window.mura([]);
+			}	
+			
+		},
+
+		find:function(selector){
+			if(this.selection.length){
+				var removeId=false;
+				
+				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
+					var result=this.selection[0].querySelectorAll(selector);
+				} else if(this.selection[0].nodeType=='9'){
+					var result=window.document.querySelectorAll(selector);
+				} else {
+					var result=[];
+				}
+				return window.mura(result);
+			} else {
+				return window.mura([]);
+			}
+		},
+
+		getSelector:function(omitSysEls) {
+		    var pathes = [];
+
+		    //this.selection.each(function(index, element) {
+		        var path, $node = window.mura(this.selection[0]);
+
+		        while ($node.length) {
+		           var realNode = $node.get(0), name = realNode.localName;
+		           if (!name) { break; }
+
+		           if(omitSysEls 
+		           		&& (
+		           			$node.hasClass('mura-editable')
+							|| $node.hasClass('editableObjectContents')
+							|| $node.hasClass('editableObject')
+		           		)
+
+		           	){
+		           		break;
+		           }
+		           
+		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
+		           		name='#' + $node.attr('id');
+		           		path = name + (path ? ' > ' + path : '');
+		            	break;
+		           } else {
+
+		                name = name.toLowerCase();
+		                var parent = $node.parent();
+		                var sameTagSiblings = parent.children(name);
+
+		                if (sameTagSiblings.length > 1)
+		                {
+		                    allSiblings = parent.children();
+		                    var index = allSiblings.index(realNode) +1;
+
+		                    if (index > 0) {
+		                        name += ':nth-child(' + index + ')';
+		                    }
+		                }
+
+		                path = name + (path ? ' > ' + path : '');
+		            	$node = parent;
+		       		 }
+
+		           
+		        }
+
+		        pathes.push(path);
+		    //});
+
+		    return pathes.join(',');
+		},
+
+		siblings:function(selector){
+			if(!this.selection.length){
+				return;
+			}
+			var el=this.selection[0];
+			
+			if(el.hasChildNodes()){
+				var silbings=window.mura(this.selection[0].childNodes);
+
+				if(typeof selector == 'string'){
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
+				} else {
+					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
+				}
+
+				return silbings.filter(filterFn);
+			} else {
+				return window.mura([]);
+			}	
+		},
+
+		item:function(idx){
+			return this.selection[idx];
+		},
+
+		index:function(el){
+			return this.selection.indexOf(el);
+		},
+
+		closest:function(selector) {
+			if(!this.selection.length){
+				return null;
+			}
+
+		    var el = this.selection[0];
+		 
+		    // traverse parents
+		    while (el!==null) {
+		        parent = el.parentElement;
+		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
+		            return parent;
+		        }
+		        el = parent;
+		    }
+
+		    return null;
+		},
+
+		append:function(el) {
+			this.selection[0].parentNode.appendChild(el);
+			return this;
+		},
+
+		appendMuraObject:function(data) {
+		    var el=createElement('div');
+		    el.setAttribute('class','mura-async-object');
+
+			for(var a in data){
+				el.setAttribute('data-' + a,data[a]);
+			}
+
+			this.append(el);
+
+			window.mura.processAsyncObject(this.node);
+
+			return el;
+		},
+
+		prepend:function(el) {
+			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			return this;
+		},
+
+		prependMuraObject:function(data) {
+		    var el=createElement('div');
+		    el.setAttribute('class','mura-async-object');
+
+			for(var a in data){
+				el.setAttribute('data-' + a,data[a]);
+			}
+
+			this.prepend(el);
+			
+			window.mura.processAsyncObject(el);
+
+			return el;
+		},
+
+		hide:function(){
+			this.each(function(el){
+				el.style.display = 'none';
+			});
+			return this;
+		},
+
+		show:function(){
+			this.each(function(el){
+				el.style.display = '';
+			});
+			return this;
+		},
+
+		remove:function(){
+			this.each(function(el){
+				el.parentNode.removeChild(el);
+			});
+			return this;
+		},
+
+		addClass:function(className){
+			this.each(function(el){
+				if (el.classList){
+				  el.classList.add(className);
+				} else {
+				  el.className += ' ' + className;
+				}
+			});
+			return this;
+		},
+
+		hasClass:function(className){
+			return this.is("." + className);
+		},
+
+		removeClass:function(className){
+			this.each(function(el){
+				if (el.classList){
+				  el.classList.remove(className);
+				} else {
+				  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+				}
+			});
+			return this;
+		},
+
+		toggleClass:function(className){
+			this.each(function(el){
+				if (el.classList) {
+				  el.classList.toggle(className);
+				} else {
+				  var classes = el.className.split(' ');
+				  var existingIndex = classes.indexOf(className);
+
+				  if (existingIndex >= 0)
+				    classes.splice(existingIndex, 1);
+				  else
+				    classes.push(className);
+
+				  el.className = classes.join(' ');
+				}
+			});
+			return this;
+		},
+
+		after:function(htmlString){
+			this.each(function(el){
+				el.insertAdjacentHTML('afterend', htmlString);
+			});
+			return this;
+		},
+
+		before:function(htmlString){
+			this.each(function(el){
+				el.insertAdjacentHTML('beforebegin', htmlString);
+			});
+			return this;
+		},
+
+		empty:function(){
+			this.each(function(el){
+				el.innerHTML = '';
+			});
+			return this;
+		},
+
+		evalScripts:function(){
+			if(!this.selection.length){
+				return this;
+			}
+
+			this.each(function(el){
+				window.mura.evalScripts(el);
+			});
+
+			return this;
+			
+		},
+
+		html:function(htmlString){
+
+			if(typeof htmlString != 'undefined'){
+				this.each(function(el){
+					el.innerHTML=htmlString;
+					window.mura.evalScripts(el);
+				});
+				return this;
+			} else {
+				if(!this.selection.length){
+					return '';
+				}
+				return this.selection[0].innerHTML;
+			}
+		},
+
+		css:function(ruleName,value){	
+			if(!this.selection.length){
+				return;
+			}
+
+			if(typeof rulename == 'undefined' && typeof value == 'undefined'){
+				try{
+					return window.getComputedStyle(this.selection[0]);
+				} catch(e){
+					return {};
+				}
+			} else if (typeof attributeName == 'object'){
+				this.each(function(el){
+					try{
+						for(var p in attributeName){
+							el.style[p]=attributeName[p];
+						}
+					} catch(e){}
+				});
+			} else if(typeof value != 'undefined'){
+				this.each(function(el){
+					try{
+						el.style[ruleName]=value;
+					} catch(e){}
+				});
+				return this;
+			} else{
+				try{
+					return window.getComputedStyle(this.selection[0])[ruleName];
+				} catch(e){}
+			}
+		},
+
+		text:function(textString){
+			if(typeof textString == 'undefined'){
+				this.each(function(el){
+					el.textContent=textString;
+				});
+				return this;
+			} else {
+				return this.selection[0].textContent;
+			}
+		},
+
+		is:function(selector){
+			if(!this.selection.length){
+				return false;
+			}
+			return window.mura.matchesSelector(this.selection[0], selector);
+		},
+
+		offsetParent:function(){
+			if(!this.selection.length){
+				return;
+			}
+			var el=this.selection[0];
+			return el.offsetParent || el;
+		},
+
+		outerHeight:function(withMargin){
+			if(!this.selection.length){
+				return;
+			}
+			if(typeof withMargin == 'undefined'){
+				function outerHeight(el) {
+				  var height = el.offsetHeight;
+				  var style = window.getComputedStyle(el);
+
+				  height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+				  return height;
+				}
+
+				return outerHeight(this.selection[0]);
+			} else {
+				return this.selection[0].offsetHeight;
+			}
+		},
+
+		height:function(height) {
+		 	if(!this.selection.length){
+				return;
+			}
+			
+			if(typeof width != 'undefined'){
+				if(!isNaN(height)){
+					height += 'px';
+				}
+				this.css('height',height);
+				return this;
+			}
+
+			var el=this.selection[0]; 
+			//var type=el.constructor.name.toLowerCase();
+
+			if(el === window){
+				return window.innerHeight
+			} else if(el === document){
+				var body = document.body;
+		    	var html = document.documentElement;
+				return  Math.max( body.scrollHeight, body.offsetHeight, 
+		                       html.clientHeight, html.scrollHeight, html.offsetHeight )
+			}
+
+			var styles = window.getComputedStyle(el);
+			var margin = parseFloat(styles['marginTop']) + parseFloat(styles['marginBottom']);
+
+			return Math.ceil(el.offsetHeight + margin);
+		},
+
+		width:function(width) {
+		  	if(!this.selection.length){
+				return;
+			}
+
+			if(typeof width != 'undefined'){
+				if(!isNaN(width)){
+					width += 'px';
+				}
+				this.css('width',width);
+				return this;
+			}
+
+			var el=this.selection[0]; 
+			//var type=el.constructor.name.toLowerCase();
+
+			if(el === window){
+				return window.innerWidth
+			} else if(el === document){
+				var body = document.body;
+		    	var html = document.documentElement;
+				return  Math.max( body.scrollWidth, body.offsetWidth, 
+		                       html.clientWidth, html.scrolWidth, html.offsetWidth )
+			}
+
+		  	return window.getComputedStyle(el).width;
+		},
+
+		offset:function(){
+			if(!this.selection.length){
+				return;
+			}
+			var el=this.selection[0];
+			var rect = el.getBoundingClientRect()
+
+			return {
+			  top: rect.top + document.body.scrollTop,
+			  left: rect.left + document.body.scrollLeft
+			};
+		},
+
+		scrollTop:function() {
+		  	return document.body.scrollTop; 
+		},
+
+		offset:function(attributeName,value){
+			if(!this.selection.length){
+				return;
+			}
+			var box = this.selection[0].getBoundingClientRect();
+			return {
+			  top: box.top  + ( window.pageYOffset || document.scrollTop )  - ( document.clientTop  || 0 ),
+			  left: box.left + ( window.pageXOffset || document.scrollLeft ) - ( document.clientLeft || 0 )
+			};
+		},
+
+		removeAttr:function(attributeName){
+			if(!this.selection.length){
+				return;
+			}
+			
+			this.each(function(el){
+				el.removeAttribute(attributeName);
+			});
+			return this;
+			
+		},
+
+		attr:function(attributeName,value){
+			if(!this.selection.length){
+				return;
+			}
+
+			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
+				return window.mura.getAttributes(this.selection[0]);
+			} else if (typeof attributeName == 'object'){
+				this.each(function(el){
+					for(var p in attributeName){
+						el.setAttribute(p,attributeName[p]);
+					}
+				});
+				return this;
+			} else if(typeof value != 'undefined'){
+				this.each(function(el){
+					el.setAttribute(attributeName,value);
+				});
+				return this;
+			
+			} else {
+				return this.selection[0].getAttribute(attributeName);
+			}
+		},
+
+		data:function(attributeName,value){
+			if(!this.selection.length){
+				return;
+			}
+			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
+				return window.mura.getDataAttributes(this.selection[0]);
+			} else if (typeof attributeName == 'object'){
+				this.each(function(el){
+					for(var p in attributeName){
+						el.setAttribute("data-" + p,attributeName[p]);
+					}
+				});
+				return this;
+
+			} else if(typeof value != 'undefined'){
+				this.each(function(el){
+					el.setAttribute("data-" + attributeName,value);
+				});
+				return this;
+			} else {
+				return this.selection[0].getAttribute("data-" + attributeName);
+			}
+		},
+
+		fadeOut:function(){
+		  	this.each(function(el){
+			  el.style.opacity = 1;
+
+			  (function fade() {
+			    if ((el.style.opacity -= .1) < 0) {
+			      el.style.display = "none";
+			    } else {
+			      requestAnimationFrame(fade);
+			    }
+			  })();
+			});
+
+			return this;
+		},
+
+		fadeIn:function(display){
+		  this.each(function(el){
+			  el.style.opacity = 0;
+			  el.style.display = display || "block";
+
+			  (function fade() {
+			    var val = parseFloat(el.style.opacity);
+			    if (!((val += .1) > 1)) {
+			      el.style.opacity = val;
+			      requestAnimationFrame(fade);
+			    }
+			  })();
+		  });
+
+		  return this;
+		},
+
+		toggle:function(){
+		 	this.each(function(el){
+				 if(typeof el.style.display == 'undefined' || el.style.display==''){
+				 	el.style.display='none';
+				 } else {
+				 	el.style.display='';
+				 }
+		  	});
+		  	return this;
+		}
+	}
+
+	window.mura.MuraSelection=MuraSelection;
+
+})(window);;/* This file is part of Mura CMS. 
+
+	Mura CMS is free software: you can redistribute it and/or modify 
+	it under the terms of the GNU General Public License as published by 
+	the Free Software Foundation, Version 2 of the License. 
+
+	Mura CMS is distributed in the hope that it will be useful, 
+	but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+	GNU General Public License for more details. 
+
+	You should have received a copy of the GNU General Public License 
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+
+;(function(window){
+	function MuraBean(properties){
+		this.properties=(properties)?properties:{};
+
+		if(this.properties.entityname == 'undefined'){
+			this.properties.entityname='content';
+		}
+		if(this.properties.siteid == 'undefined'){
+			this.properties.siteid=window.mura.siteid;
+		}
+	}
+
+	MuraBean.prototype={
+
+		get:function(propertyName,defaultValue){
+
+			if(typeof this.properties.links != 'undefined'
+				&& this.properties.links[propertyName] != 'undefined'){
+				return new MuraFeed().load(this.properties.links[propertyName]);
+			} else if(typeof this.properties[propertyName] != 'undefined'){
+				return this.properties[propertyName];
+			} else if (typeof defaultValue != 'undefined') {
+				this.properties[propertyName]=defaultValue;
+				return this.properties[propertyName];
+			} else {
+				return '';
+			}
+		},
+
+		set:function(propertyName,propertyValue){
+
+			if(typeof propertyName == 'object'){
+				window.mura.deepExtend(this.properties,propertyName);
+			} else {
+				this.properties[propertyName]=propertyValue;
+			}
+			
+			return this;
+			
+		},
+
+		has:function(propertyName){
+			return typeof this.properties[propertyName] != 'undefined';
+		},
+
+		getAll:function(){
+			return this.properties;
+		},
+
+		loadBy:function(propertyName,propertyValue){
+
+			if(typeof propertyValue == 'undefined'){
+				propertyValue=this.get(propertyName);
+			}
+
+			var self=this;
+
+			return new Promise(
+				function(resolve,reject){
+					new window.mura.MuraFeed().load({
+						entityname:get('entityname'),
+						siteid:get('siteid'),
+						name:propertyName,value:propertyValue
+						},
+						seld
+					).then(function(feed){
+						if(feed.get('items').length){
+							self.set(feed.get('items')[0].getAll());
+						}
+						if(typeof resolve == 'function'){
+							fn(resolve);
+						}
+					});
+				}
+			);	
+		},
+
+		validate:function(){
+			
+			var self=this;
+
+			return new Promise(function(resolve,reject) {
+				window.mura.ajax({
+					type: 'post',
+					async: false,
+					url: window.mura.apiEndpoint + '?method=validate',
+					data: {
+							data: window.mura.escape(JSON.stringify(self.getAll())),
+							validations: '{}',
+							version: 4
+						},
+					success:function(resp){
+						if(resp.data != 'undefined'){
+								self.set(resp.data)
+						} else {
+							self.set('errors',resp.error);
+						}
+						if(typeof resolve == 'function'){
+							resolve(self);
+						}
+					}
+				});
+			});
+			
+
+		},
+
+		save:function(){
+			var self=this;
+
+			return new Promise(function(resolve,reject) {
+				self.validate(function(){
+					if(window.mura.isEmptyObject(self.get('errors'))){
+						window.mura.ajax({
+								async:false,
+								type:'get',
+								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+								data:{
+									siteid:self.get('siteid'),
+									context:self.get('id')
+								},
+								success:function(resp){
+									window.mura.ajax({
+											async:false,
+											type:'post',
+											url:window.mura.apiEndpoint + '?method=save',
+											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.token,'csrf_token_expires':resp.data.expires}),
+											success:function(resp){
+												if(resp.data != 'undefined'){
+													self.set(resp.data)
+													if(typeof resolve == 'function'){
+														resolve(self);
+													}
+												} else {
+													self.set('errors',resp.error);
+													if(typeof reject == 'function'){
+														reject(self);
+													}	
+												}
+											}
+									});
+								}
+						});
+					}
+				});
+			});
+
+		},
+
+		delete:function(){
+			
+			var self=this;
+
+			return new Promise(function(resolve,reject) {
+				window.mura.ajax({
+						async:false,
+						type:'get',
+						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+						data:{
+							siteid:self.get('siteid'),
+							context:self.get('id')
+						},
+						success:function(resp){
+							window.mura.ajax({
+									type:'get',
+									url:window.mura.apiEndpoint + '?method=delete',
+									data:{
+										siteid:self.get('siteid'),
+										id:self.get('id'),
+										entityname:self.get('entityname'),
+										'csrf_token':resp.data.token,
+										'csrf_token_expires':resp.data.expires
+									},
+									success:function(){
+										if(typeof resolve == 'function'){
+											resolve(self);
+										}
+									}
+							});
+						}
+				});
+			});
+		
+		}
+
+	}
+
+	window.mura.MuraBean=MuraBean;
+})(window);
+;/* This file is part of Mura CMS. 
+
+	Mura CMS is free software: you can redistribute it and/or modify 
+	it under the terms of the GNU General Public License as published by 
+	the Free Software Foundation, Version 2 of the License. 
+
+	Mura CMS is distributed in the hope that it will be useful, 
+	but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+	GNU General Public License for more details. 
+
+	You should have received a copy of the GNU General Public License 
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+
+;(function(window){
+	function MuraFeed(params){
+		if(typeof params != 'undefined'){
+			return this.load(params);
+		}
+	}
+
+	MuraFeed.prototype={
+		load:function(params){
+
+			var self=this;
+
+			if(typeof params=='string'){
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+							async:false,
+							type:'get',
+							url:params,
+							success:function(resp){
+								self.set('items',resp.data.items.map(function(obj){
+									return new MuraBean().set(obj);
+								}));
+
+								self.set('links',resp.data.links);
+
+								if(typeof resolve == 'function'){
+									resolve(self);
+								}
+							}
+					});
+				});
+
+			} else {
+
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+							async:false,
+							type:'get',
+							url:window.mura.apiEndpoint + '?method=findQuery',
+							data:params,
+							success:function(){
+								self.set('items',resp.data.items.map(function(obj){
+									return new MuraBean().set(obj);
+								}));
+
+								self.set('links',resp.data.links);
+								if(typeof resolve == 'function'){
+									resolve(self);
+								}
+							}
+					});
+				});
+
+			}
+		}
+	}
+	window.mura.MuraFeed=MuraFeed;
 })(window);

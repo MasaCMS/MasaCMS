@@ -222,7 +222,7 @@
 			}
 		}
 		//export ljs
-		window.ljs = loader;
+		window.mura.ljs = loader;
 		// eval inside tag code if any
 	}
 	script && gEval(script);

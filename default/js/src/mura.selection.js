@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraSelectionWrapper(selection,origSelector){
+	function MuraSelection(selection,origSelector){
 		this.selection=selection;
 		this.origSelector=selection;
 
@@ -62,7 +62,7 @@
 		this.length=this.selection.length;
 	}
 
-	MuraSelectionWrapper.prototype={
+	MuraSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -199,18 +199,9 @@
 				var removeId=false;
 				
 				if(this.selection[0].nodeType=='1' || this.selection[0].nodeType=='11'){
-					if(!this.selection[0].getAttribute('id')){
-				        this.selection[0].setAttribute('id','m' + Math.random().toString(36).substr(2, 10));
-				        removeId=true;
-			        }
-			    
-			      	var result=window.mura.querySelectorAll('#' + this.selection[0].getAttribute('id') + ' > ' + selector);
-					
-					if(removeId){
-						this.selection[0].removeAttribute('id');
-					}
+					var result=this.selection[0].querySelectorAll(selector);
 				} else if(this.selection[0].nodeType=='9'){
-					var result=window.mura.querySelectorAll(selector);
+					var result=window.document.querySelectorAll(selector);
 				} else {
 					var result=[];
 				}
@@ -749,6 +740,6 @@
 		}
 	}
 
-	window.MuraSelectionWrapper=MuraSelectionWrapper;
+	window.mura.MuraSelection=MuraSelection;
 
 })(window);

@@ -1695,10 +1695,16 @@ component extends="mura.cfobject" {
 
 	}
 
-	function validate(data={},validations={}) {
+	function validate(data='{}',validations='{}') {
 
 		data=deserializeJSON(urlDecode(arguments.data));
 		validations=deserializeJSON(urlDecode(arguments.validations));
+		
+		if(structIsEmpty(validations) && isDefined('data.entityname') && isDefined('data.siteid')){
+			var bean=getBean(data.entityname);
+			validations=bean.loadBy('#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]).getValidations();
+
+		}
 		
 		errors={};
 
