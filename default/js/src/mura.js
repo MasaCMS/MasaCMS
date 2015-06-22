@@ -1549,7 +1549,7 @@
 				.then(function(item){
 					alert(item.get('title'));
 				});
-				
+			*/		
 			mura.findQuery({
 					entityname:'content',
 					title:'Home'
@@ -1557,7 +1557,7 @@
 				.then(function(collection){
 					alert(collection.item(0).get('title'));
 				});
-			*/	
+			
 
 			select(document).trigger('muraReady');
 			

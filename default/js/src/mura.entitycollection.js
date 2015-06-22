@@ -51,7 +51,11 @@
 		return this;
 	}
 
-	MuraEntityCollection.prototype={
+	MuraEntityCollection.prototype = Object.create(window.mura.MuraEntity.prototype);
+	MuraEntityCollection.prototype.constructor = MuraEntityCollection;
+
+
+	window.mura.extend(MuraEntityCollection.prototype,{
 		item:function(idx){
 			return this.properties.items[idx];
 		},
@@ -60,6 +64,7 @@
 			return this.properties.items.indexOf(item);
 		},
 
+		/*
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
@@ -116,7 +121,8 @@
 		getAll:function(){
 			return this.properties;
 		},
-
+		*/
+		
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -143,6 +149,6 @@
 				return fn.call(item,item,idx);
 			}));
 		}
-	}
+	});
 	window.mura.MuraEntityCollection=MuraEntityCollection;
 })(window);
