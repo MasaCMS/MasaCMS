@@ -3860,7 +3860,6 @@
 			mura.extend(this.properties,props);
 		}
 
-
 		return this;
 	}
 
