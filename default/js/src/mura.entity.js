@@ -45,21 +45,19 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraEntity(props){
-		this.properties={};
-
-		if(props){
-			mura.extend(this.properties,props);
-		}
-
-		this.properties.entityname = this.properties.entityname || 'content';
-		this.properties.siteid = this.properties.siteid || window.mura.siteid;
+	function MuraEntity(properties){
+		this.init.apply(this,arguments)
 
 		return this;
 	}
 
 	MuraEntity.prototype={
-
+		init:function(properties){
+			this.properties=properties || {};
+			this.properties.entityname = this.properties.entityname || 'content';
+			this.properties.siteid = this.properties.siteid || window.mura.siteid;
+		},
+		
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
