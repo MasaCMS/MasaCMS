@@ -46,17 +46,7 @@
 
 ;(function(window){
 	
-
-	function MuraEntityCollection(properties){
-		this.properties=properties|| {};
-
-		return this;
-	}
-
-	MuraEntityCollection.prototype = Object.create(window.mura.MuraEntity.prototype);
-	MuraEntityCollection.prototype.constructor = MuraEntityCollection;
-
-	window.mura.extend(MuraEntityCollection.prototype,{
+	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
 		item:function(idx){
 			return this.properties.items[idx];
 		},
@@ -91,5 +81,4 @@
 			}));
 		}
 	});
-	window.mura.MuraEntityCollection=MuraEntityCollection;
 })(window);
