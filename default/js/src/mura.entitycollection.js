@@ -47,6 +47,10 @@
 ;(function(window){
 	
 	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
+		init:function(properties){
+			this.properties=properties || {};
+		},
+		
 		item:function(idx){
 			return this.properties.items[idx];
 		},
