@@ -132,7 +132,7 @@
 
 	function findQuery(params){
 		
-		params=properties || {};
+		params=params || {};
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || mura.siteid;
 		params.method=params.method || 'findQuery';
@@ -144,8 +144,8 @@
 					url:window.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=window.mura.MuraEntityCollection(resp.data)
-						
+							var collection=new window.mura.MuraEntityCollection(resp.data)
+							//console.log(collection.get('items'))
 							collection.set('items',collection.get('items').map(function(obj){
 								return new window.mura.MuraEntity(obj);
 							}));
@@ -1549,15 +1549,15 @@
 				.then(function(item){
 					alert(item.get('title'));
 				});
-
+				
 			mura.findQuery({
 					entityname:'content',
-					title='home'
+					title:'Home'
 				})
 				.then(function(collection){
-					alert(colletion.item(0).get('title'));
+					alert(collection.item(0).get('title'));
 				});
-			*/
+			*/	
 
 			select(document).trigger('muraReady');
 			

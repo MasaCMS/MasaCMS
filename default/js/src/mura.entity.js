@@ -63,7 +63,8 @@
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
-				&& this.properties.links[propertyName] != 'undefined'){
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+
 				return new Promise(function(resolve,reject) {
 					window.mura.ajax({
 							type:'get',
@@ -99,7 +100,7 @@
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				window.mura.deepExtend(this.properties,propertyName);
+				window.mura.extend(this.properties,propertyName);
 			} else {
 				this.properties[propertyName]=propertyValue;
 			}

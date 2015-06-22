@@ -1099,7 +1099,7 @@
 
 	function findQuery(params){
 		
-		params=properties || {};
+		params=params || {};
 		params.entityname=params.entityname || 'content';
 		params.siteid=params.siteid || mura.siteid;
 		params.method=params.method || 'findQuery';
@@ -1111,8 +1111,8 @@
 					url:window.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=window.mura.MuraEntityCollection(resp.data)
-						
+							var collection=new window.mura.MuraEntityCollection(resp.data)
+							//console.log(collection.get('items'))
 							collection.set('items',collection.get('items').map(function(obj){
 								return new window.mura.MuraEntity(obj);
 							}));
@@ -2516,15 +2516,15 @@
 				.then(function(item){
 					alert(item.get('title'));
 				});
-
+			*/	
 			mura.findQuery({
 					entityname:'content',
-					title='home'
+					title:'Home'
 				})
 				.then(function(collection){
-					alert(colletion.item(0).get('title'));
+					alert(collection.item(0).get('title'));
 				});
-			*/
+					
 
 			select(document).trigger('muraReady');
 			
@@ -3622,7 +3622,8 @@
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
-				&& this.properties.links[propertyName] != 'undefined'){
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+
 				return new Promise(function(resolve,reject) {
 					window.mura.ajax({
 							type:'get',
@@ -3658,7 +3659,7 @@
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				window.mura.deepExtend(this.properties,propertyName);
+				window.mura.extend(this.properties,propertyName);
 			} else {
 				this.properties[propertyName]=propertyValue;
 			}
@@ -3856,12 +3857,8 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraEntityCollection(params){
-		this.properties={};
-
-		if(props){
-			mura.extend(this.properties,props);
-		}
+	function MuraEntityCollection(properties){
+		this.properties=properties|| {};
 
 		return this;
 	}
@@ -3871,16 +3868,37 @@
 			return this.properties.items[idx];
 		},
 
-		index:function(el){
-			return this.properties.items.indexOf(el);
+		index:function(item){
+			return this.properties.items.indexOf(item);
 		},
 
 		get:function(propertyName,defaultValue){
-			
+
 			if(typeof this.properties.links != 'undefined'
 				&& typeof this.properties.links[propertyName] != 'undefined'){
-				alert(propertyName)
-				return new MuraEntityCollection().load(this.properties.links[propertyName]);
+			
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+							type:'get',
+							url:this.properties.links[propertyName],
+							success:function(resp){
+								
+								if('items' in resp.data){
+									var returnObj = new window.mura.MuraEntityCollection(resp.data);
+
+									returnObj.set('items',returnObj.get('items').map(function(obj){
+										return new window.mura.MuraEntity(obj);
+									}));
+								} else {
+									var returnObj = new window.mura.MuraEntity(resp.data);
+								}
+								
+								if(typeof resolve == 'function'){
+									resolve(returnObj);
+								}
+							}
+					});
+				});
 			} else if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
@@ -3918,21 +3936,24 @@
 			return this;
 		},
 
+		sort:function(fn){
+			this.properties.items.sort(function(a,b){
+				return fn.call(item,a,b);
+			});
+		},
+
 		filter:function(fn){
-			return window.mura.MuraEntityCollection(this.properties.items.filter( function(item,idx){
+			var collection=new window.mura.MuraEntityCollection(this.properties);
+			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			return window.MuraEntityCollection(this.properties.items.map( function(item,idx){
+			var collection=new window.mura.MuraEntityCollection(this.properties);
+			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
-		},
-		sort:function(fn){
-			this.properties.items.sort(function(a,b){
-				return fn.call(item,a,b);
-			});
 		}
 	}
 	window.mura.MuraEntityCollection=MuraEntityCollection;
