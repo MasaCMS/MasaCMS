@@ -1482,7 +1482,7 @@
 			});
 
 			/*
-			window.mura.addEventHandler(
+			mura.addEventHandler(
 				{
 					asyncObjectRendered:function(event){
 						alert(this.innerHTML);
@@ -1490,55 +1490,47 @@
 				}
 			);
 			
-			window.mura
-				.login('userame','password')
+			mura.login('userame','password')
 				.then(function(data){
 					alert(data.success);
 				});
 
-			window.mura
-				.logout())
+			mura.logout())
 				.then(function(data){
 					alert('you have logged out!');
 				});
 
-			window.mura
-				.renderFilename('')
+			mura.renderFilename('')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.renderFilename('')
+			mura.renderFilename('')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.loadBy('contentid','00000000000000000000000000000000001')
+			mura.loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.loadBy('contentid','00000000000000000000000000000000001')
+			mura.loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					item.get('kids').then(function(kids){
 						alert(kids.get('items').length);
 					});
 				});
 
-			window.mura
-				.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+			mura.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.then(function(item){
 					item.get('parent').then(function(parent){
 						alert(parent.get('title'));
 					});
 				});
 
-			window.mura
-				.getBean('content').
-				.set('parentid')
+			mura.getEntity('content').
+				.set('parentid''1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.set('approved',1)
 				.set('title','test 5')
 				.save()
@@ -1546,8 +1538,19 @@
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.findQuery({
+			mura.getEntity('content').
+				.set(
+					{
+						parentid:'1C2AD93E-E39C-C758-A005942E1399F4D6',
+						approved:1,
+						title:'test 5'
+					}
+				.save()
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			mura.findQuery({
 					entityname:'content',
 					title='home'
 				})

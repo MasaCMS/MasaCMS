@@ -92,23 +92,36 @@
 			
 		},
 
+		has:function(propertyName){
+			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
+		},
+
+		getAll:function(){
+			return this.properties;
+		},
+
 		each:function(fn){
-			this.items.forEach( function(item,idx){
+			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
 			});
 			return this;
 		},
 
 		filter:function(fn){
-			return window.mura.MuraEntityCollection(this.items.filter( function(item,idx){
+			return window.mura.MuraEntityCollection(this.properties.items.filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			return window.MuraEntityCollection(this.itmes.map( function(item,idx){
+			return window.MuraEntityCollection(this.properties.items.map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
+		},
+		sort:function(fn){
+			this.properties.items.sort(function(a,b){
+				return fn.call(item,a,b);
+			});
 		}
 	}
 	window.mura.MuraEntityCollection=MuraEntityCollection;

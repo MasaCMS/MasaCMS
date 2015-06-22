@@ -2449,7 +2449,7 @@
 			});
 
 			/*
-			window.mura.addEventHandler(
+			mura.addEventHandler(
 				{
 					asyncObjectRendered:function(event){
 						alert(this.innerHTML);
@@ -2457,55 +2457,47 @@
 				}
 			);
 			
-			window.mura
-				.login('userame','password')
+			mura.login('userame','password')
 				.then(function(data){
 					alert(data.success);
 				});
 
-			window.mura
-				.logout())
+			mura.logout())
 				.then(function(data){
 					alert('you have logged out!');
 				});
 
-			window.mura
-				.renderFilename('')
+			mura.renderFilename('')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.renderFilename('')
+			mura.renderFilename('')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.loadBy('contentid','00000000000000000000000000000000001')
+			mura.loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.loadBy('contentid','00000000000000000000000000000000001')
+			mura.loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					item.get('kids').then(function(kids){
 						alert(kids.get('items').length);
 					});
 				});
 
-			window.mura
-				.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+			mura.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.then(function(item){
 					item.get('parent').then(function(parent){
 						alert(parent.get('title'));
 					});
 				});
 
-			window.mura
-				.getBean('content').
-				.set('parentid')
+			mura.getEntity('content').
+				.set('parentid''1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.set('approved',1)
 				.set('title','test 5')
 				.save()
@@ -2513,8 +2505,19 @@
 					alert(item.get('title'));
 				});
 
-			window.mura
-				.findQuery({
+			mura.getEntity('content').
+				.set(
+					{
+						parentid:'1C2AD93E-E39C-C758-A005942E1399F4D6',
+						approved:1,
+						title:'test 5'
+					}
+				.save()
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			mura.findQuery({
 					entityname:'content',
 					title='home'
 				})
@@ -3665,7 +3668,7 @@
 		},
 
 		has:function(propertyName){
-			return typeof this.properties[propertyName] != 'undefined';
+			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
 		},
 
 		getAll:function(){
@@ -3900,23 +3903,36 @@
 			
 		},
 
+		has:function(propertyName){
+			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
+		},
+
+		getAll:function(){
+			return this.properties;
+		},
+
 		each:function(fn){
-			this.items.forEach( function(item,idx){
+			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
 			});
 			return this;
 		},
 
 		filter:function(fn){
-			return window.mura.MuraEntityCollection(this.items.filter( function(item,idx){
+			return window.mura.MuraEntityCollection(this.properties.items.filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			return window.MuraEntityCollection(this.itmes.map( function(item,idx){
+			return window.MuraEntityCollection(this.properties.items.map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
+		},
+		sort:function(fn){
+			this.properties.items.sort(function(a,b){
+				return fn.call(item,a,b);
+			});
 		}
 	}
 	window.mura.MuraEntityCollection=MuraEntityCollection;

@@ -109,7 +109,7 @@
 		},
 
 		has:function(propertyName){
-			return typeof this.properties[propertyName] != 'undefined';
+			return typeof this.properties[propertyName] != 'undefined' || (typeof this.properties.links != 'undefined' && typeof this.properties.links[propertyName] != 'undefined');
 		},
 
 		getAll:function(){
