@@ -1566,6 +1566,19 @@
 	    return window.mura
 	}	
 
+	function Mixin (extend,prototype){
+		function placeholder(){
+			this.init.apply(this,arguments);
+		}
+
+		temp.prototype = Object.create(extend.prototype);
+		temp.prototype.constructor = placeholder;
+
+		window.mura.extend(temp.prototype,prototype);
+
+		return temp;
+	}
+
 	extend(window,{
 		mura:extend(
 			function(selector){
@@ -1602,6 +1615,7 @@
 			findQuery:findQuery,
 			login:login,
 			logout:logout,
+			Mixin:Mixin,
 			init:init
 			}
 		),
