@@ -45,7 +45,119 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
+
+	function login(username,password,siteid){
+		siteid=siteid || window.mura.siteid;
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'post',
+					url:window.mura.apiEndpoint,
+					data:{
+						siteid:siteid,
+						username:username,
+						password:password,
+						method:'login'
+					},
+					success:function(resp){
+						resolve(resp.data);
+					}
+			});
+		});
+
+	}
+
+
+	function logout(siteid){
+		siteid=siteid || window.mura.siteid;
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'post',
+					url:window.mura.apiEndpoint,
+					data:{
+						siteid:siteid,
+						method:'logout'
+					},
+					success:function(resp){
+						resolve(resp.data);
+					}
+			});
+		});
+
+	}
+
+	function renderFilename(filename,params){
+
+		var query = [];
+		params = params || {};
+		params.filename= params.filename || '';
+		params.siteid= params.siteid || window.mura.siteid;
 	
+	    for (var key in params) {
+	    	if(key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method'){
+	        	query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+	    	}
+	    }
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'get',
+					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
+					success:function(resp){
+						if(typeof resolve == 'function'){
+							var item=new window.mura.MuraEntity();
+							item.set(resp.data);
+							resolve(item);
+						}
+					}
+			});
+		});
+	
+	}
+	function getEntity(entityname,siteid){
+		if(typeof entityname == 'string'){
+			var properties={entityname:entityname};
+			properties.siteid = siteid || window.mura.siteid;
+		} else {
+			properties=entityname;
+			properties.entityname=properties.entityname || 'content';
+			properties.siteid=properties.siteid || window.mura.siteid;
+		}	
+		return new window.mura.MuraEntity(properties);
+	}
+
+	function findQuery(params){
+		
+		params=properties || {};
+		params.entityname=params.entityname || 'content';
+		params.siteid=params.siteid || mura.siteid;
+		params.method=params.method || 'findQuery';
+
+		return new Promise(function(resolve,reject) {
+
+			window.mura.ajax({
+					type:'get',
+					url:window.mura.apiEndpoint,
+					data:params,
+					success:function(resp){
+							var collection=window.mura.MuraEntityCollection(resp.data)
+						
+							collection.set('items',collection.get('items').map(function(obj){
+								return new window.mura.MuraEntity(obj);
+							}));
+
+							if(typeof resolve == 'function'){
+								resolve(collection);
+							}
+						}
+			});
+		});
+	}
+
 	function matchSelector(el,selector){	
 		var matchesFn;
 	    // find vendor prefix
@@ -352,7 +464,7 @@
 	}
 
 	function select(selector){
-		return new mura.MuraSelection(parseSelection(selector),selector);
+		return new window.mura.MuraDOMSelection(parseSelection(selector),selector);
 	}
 
 
@@ -1370,15 +1482,80 @@
 			});
 
 			/*
-			addEventHandler(
+			window.mura.addEventHandler(
 				{
 					asyncObjectRendered:function(event){
 						alert(this.innerHTML);
 					}
 				}
 			);
+			
+			window.mura
+				.login('userame','password')
+				.then(function(data){
+					alert(data.success);
+				});
+
+			window.mura
+				.logout())
+				.then(function(data){
+					alert('you have logged out!');
+				});
+
+			window.mura
+				.renderFilename('')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.renderFilename('')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.loadBy('contentid','00000000000000000000000000000000001')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.loadBy('contentid','00000000000000000000000000000000001')
+				.then(function(item){
+					item.get('kids').then(function(kids){
+						alert(kids.get('items').length);
+					});
+				});
+
+			window.mura
+				.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+				.then(function(item){
+					item.get('parent').then(function(parent){
+						alert(parent.get('title'));
+					});
+				});
+
+			window.mura
+				.getBean('content').
+				.set('parentid')
+				.set('approved',1)
+				.set('title','test 5')
+				.save()
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.findQuery({
+					entityname:'content',
+					title='home'
+				})
+				.then(function(collection){
+					alert(colletion.item(0).get('title'));
+				});
 			*/
-					
+
 			select(document).trigger('muraReady');
 			
 		});
@@ -1416,6 +1593,12 @@
 			validateForm:validateForm,
 			matchSelector:matchSelector,
 			escape:$escape,
+			getBean:getEntity,
+			getEntity:getEntity,
+			renderFilename:renderFilename,
+			findQuery:findQuery,
+			login:login,
+			logout:logout,
 			init:init
 			}
 		),

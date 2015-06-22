@@ -45,24 +45,47 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraBean(properties){
-		this.properties=(properties)?properties:{};
+	function MuraEntity(props){
+		this.properties={};
 
-		if(this.properties.entityname == 'undefined'){
-			this.properties.entityname='content';
+		if(props){
+			mura.extend(this.properties,props);
 		}
-		if(this.properties.siteid == 'undefined'){
-			this.properties.siteid=window.mura.siteid;
-		}
+
+		this.properties.entityname = this.properties.entityname || 'content';
+		this.properties.siteid = this.properties.siteid || window.mura.siteid;
+
+		return this;
 	}
 
-	MuraBean.prototype={
+	MuraEntity.prototype={
 
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
 				&& this.properties.links[propertyName] != 'undefined'){
-				return new MuraFeed().load(this.properties.links[propertyName]);
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+							type:'get',
+							url:this.properties.links[propertyName],
+							success:function(resp){
+								
+								if('items' in resp.data){
+									var returnObj = new window.mura.MuraEntityCollection(resp.data);
+
+									returnObj.set('items',returnObj.get('items').map(function(obj){
+										return new window.mura.MuraEntity(obj);
+									}));
+								} else {
+									var returnObj = new window.mura.MuraEntity(resp.data);
+								}
+								
+								if(typeof resolve == 'function'){
+									resolve(returnObj);
+								}
+							}
+					});
+				});
 			} else if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
@@ -95,30 +118,28 @@
 
 		loadBy:function(propertyName,propertyValue){
 
-			if(typeof propertyValue == 'undefined'){
-				propertyValue=this.get(propertyName);
-			}
-
+			propertyValue=propertyValue || this.get(propertyName);
+			
 			var self=this;
 
-			return new Promise(
-				function(resolve,reject){
-					new window.mura.MuraFeed().load({
-						entityname:get('entityname'),
-						siteid:get('siteid'),
-						name:propertyName,value:propertyValue
-						},
-						seld
-					).then(function(feed){
-						if(feed.get('items').length){
-							self.set(feed.get('items')[0].getAll());
-						}
-						if(typeof resolve == 'function'){
-							fn(resolve);
-						}
-					});
-				}
-			);	
+			return new Promise(function(resolve,reject){
+				var params={
+					entityname:self.get('entityname'),
+					method:'findQuery',
+					siteid:self.get('siteid')};
+
+					params[propertyName]=propertyValue;
+
+					window.mura.findQuery(params).then(function(collection){
+					
+					if(collection.get('items').length){
+						self.set(collection.get('items')[0].getAll());
+					}
+					if(typeof resolve == 'function'){
+						resolve(self);
+					}
+				});	
+			});
 		},
 
 		validate:function(){
@@ -128,7 +149,6 @@
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type: 'post',
-					async: false,
 					url: window.mura.apiEndpoint + '?method=validate',
 					data: {
 							data: window.mura.escape(JSON.stringify(self.getAll())),
@@ -158,7 +178,6 @@
 				self.validate(function(){
 					if(window.mura.isEmptyObject(self.get('errors'))){
 						window.mura.ajax({
-								async:false,
 								type:'get',
 								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
 								data:{
@@ -167,10 +186,9 @@
 								},
 								success:function(resp){
 									window.mura.ajax({
-											async:false,
 											type:'post',
 											url:window.mura.apiEndpoint + '?method=save',
-											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.token,'csrf_token_expires':resp.data.expires}),
+											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
 											success:function(resp){
 												if(resp.data != 'undefined'){
 													self.set(resp.data)
@@ -199,7 +217,6 @@
 
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
-						async:false,
 						type:'get',
 						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
@@ -214,8 +231,8 @@
 										siteid:self.get('siteid'),
 										id:self.get('id'),
 										entityname:self.get('entityname'),
-										'csrf_token':resp.data.token,
-										'csrf_token_expires':resp.data.expires
+										'csrf_token':resp.data.csrf_token,
+										'csrf_token_expires':resp.data.csrf_token_expires
 									},
 									success:function(){
 										if(typeof resolve == 'function'){
@@ -231,5 +248,5 @@
 
 	}
 
-	window.mura.MuraBean=MuraBean;
+	window.mura.MuraEntity=MuraEntity;
 })(window);

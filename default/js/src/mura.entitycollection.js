@@ -45,60 +45,72 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraFeed(params){
-		if(typeof params != 'undefined'){
-			return this.load(params);
+	function MuraEntityCollection(params){
+		this.properties={};
+
+		if(props){
+			mura.extend(this.properties,props);
 		}
+
+
+		return this;
 	}
 
-	MuraFeed.prototype={
-		load:function(params){
+	MuraEntityCollection.prototype={
+		item:function(idx){
+			return this.properties.items[idx];
+		},
 
-			var self=this;
+		index:function(el){
+			return this.properties.items.indexOf(el);
+		},
 
-			if(typeof params=='string'){
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							async:false,
-							type:'get',
-							url:params,
-							success:function(resp){
-								self.set('items',resp.data.items.map(function(obj){
-									return new MuraBean().set(obj);
-								}));
-
-								self.set('links',resp.data.links);
-
-								if(typeof resolve == 'function'){
-									resolve(self);
-								}
-							}
-					});
-				});
-
+		get:function(propertyName,defaultValue){
+			
+			if(typeof this.properties.links != 'undefined'
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+				alert(propertyName)
+				return new MuraEntityCollection().load(this.properties.links[propertyName]);
+			} else if(typeof this.properties[propertyName] != 'undefined'){
+				return this.properties[propertyName];
+			} else if (typeof defaultValue != 'undefined') {
+				this.properties[propertyName]=defaultValue;
+				return this.properties[propertyName];
 			} else {
-
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							async:false,
-							type:'get',
-							url:window.mura.apiEndpoint + '?method=findQuery',
-							data:params,
-							success:function(){
-								self.set('items',resp.data.items.map(function(obj){
-									return new MuraBean().set(obj);
-								}));
-
-								self.set('links',resp.data.links);
-								if(typeof resolve == 'function'){
-									resolve(self);
-								}
-							}
-					});
-				});
-
+				return '';
 			}
+		},
+
+		set:function(propertyName,propertyValue){
+
+			if(typeof propertyName == 'object'){
+				window.mura.extend(this.properties,propertyName);
+			} else {
+				this.properties[propertyName]=propertyValue;
+			}
+			
+			return this;
+			
+		},
+
+		each:function(fn){
+			this.items.forEach( function(item,idx){
+				fn.call(item,item,idx);
+			});
+			return this;
+		},
+
+		filter:function(fn){
+			return window.mura.MuraEntityCollection(this.items.filter( function(item,idx){
+				return fn.call(item,item,idx);
+			}));
+		},
+
+		map:function(fn){
+			return window.MuraEntityCollection(this.itmes.map( function(item,idx){
+				return fn.call(item,item,idx);
+			}));
 		}
 	}
-	window.mura.MuraFeed=MuraFeed;
+	window.mura.MuraEntityCollection=MuraEntityCollection;
 })(window);

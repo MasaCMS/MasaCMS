@@ -10,9 +10,9 @@ module.exports = function(grunt) {
           'external/es6.promise.polyfill.js',
           'src/mura.js',
           'src/mura.loader.js',
-          'src/mura.selection.js',
-          'src/mura.bean.js',
-          'src/mura.feed.js'
+          'src/mura.domselection.js',
+          'src/mura.entity.js',
+          'src/mura.entitycollection.js'
           ],
           dest: 'dist/mura.js',
         },

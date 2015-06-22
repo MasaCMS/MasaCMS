@@ -1012,7 +1012,119 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
+
+	function login(username,password,siteid){
+		siteid=siteid || window.mura.siteid;
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'post',
+					url:window.mura.apiEndpoint,
+					data:{
+						siteid:siteid,
+						username:username,
+						password:password,
+						method:'login'
+					},
+					success:function(resp){
+						resolve(resp.data);
+					}
+			});
+		});
+
+	}
+
+
+	function logout(siteid){
+		siteid=siteid || window.mura.siteid;
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'post',
+					url:window.mura.apiEndpoint,
+					data:{
+						siteid:siteid,
+						method:'logout'
+					},
+					success:function(resp){
+						resolve(resp.data);
+					}
+			});
+		});
+
+	}
+
+	function renderFilename(filename,params){
+
+		var query = [];
+		params = params || {};
+		params.filename= params.filename || '';
+		params.siteid= params.siteid || window.mura.siteid;
 	
+	    for (var key in params) {
+	    	if(key != 'entityname' && key != 'filename' && key != 'siteid' && key != 'method'){
+	        	query.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+	    	}
+	    }
+
+		return new Promise(function(resolve,reject) {	
+			window.mura.ajax({
+					async:true,
+					type:'get',
+					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
+					success:function(resp){
+						if(typeof resolve == 'function'){
+							var item=new window.mura.MuraEntity();
+							item.set(resp.data);
+							resolve(item);
+						}
+					}
+			});
+		});
+	
+	}
+	function getEntity(entityname,siteid){
+		if(typeof entityname == 'string'){
+			var properties={entityname:entityname};
+			properties.siteid = siteid || window.mura.siteid;
+		} else {
+			properties=entityname;
+			properties.entityname=properties.entityname || 'content';
+			properties.siteid=properties.siteid || window.mura.siteid;
+		}	
+		return new window.mura.MuraEntity(properties);
+	}
+
+	function findQuery(params){
+		
+		params=properties || {};
+		params.entityname=params.entityname || 'content';
+		params.siteid=params.siteid || mura.siteid;
+		params.method=params.method || 'findQuery';
+
+		return new Promise(function(resolve,reject) {
+
+			window.mura.ajax({
+					type:'get',
+					url:window.mura.apiEndpoint,
+					data:params,
+					success:function(resp){
+							var collection=window.mura.MuraEntityCollection(resp.data)
+						
+							collection.set('items',collection.get('items').map(function(obj){
+								return new window.mura.MuraEntity(obj);
+							}));
+
+							if(typeof resolve == 'function'){
+								resolve(collection);
+							}
+						}
+			});
+		});
+	}
+
 	function matchSelector(el,selector){	
 		var matchesFn;
 	    // find vendor prefix
@@ -1319,7 +1431,7 @@
 	}
 
 	function select(selector){
-		return new mura.MuraSelection(parseSelection(selector),selector);
+		return new window.mura.MuraDOMSelection(parseSelection(selector),selector);
 	}
 
 
@@ -2337,15 +2449,80 @@
 			});
 
 			/*
-			addEventHandler(
+			window.mura.addEventHandler(
 				{
 					asyncObjectRendered:function(event){
 						alert(this.innerHTML);
 					}
 				}
 			);
+			
+			window.mura
+				.login('userame','password')
+				.then(function(data){
+					alert(data.success);
+				});
+
+			window.mura
+				.logout())
+				.then(function(data){
+					alert('you have logged out!');
+				});
+
+			window.mura
+				.renderFilename('')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.renderFilename('')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.loadBy('contentid','00000000000000000000000000000000001')
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.loadBy('contentid','00000000000000000000000000000000001')
+				.then(function(item){
+					item.get('kids').then(function(kids){
+						alert(kids.get('items').length);
+					});
+				});
+
+			window.mura
+				.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+				.then(function(item){
+					item.get('parent').then(function(parent){
+						alert(parent.get('title'));
+					});
+				});
+
+			window.mura
+				.getBean('content').
+				.set('parentid')
+				.set('approved',1)
+				.set('title','test 5')
+				.save()
+				.then(function(item){
+					alert(item.get('title'));
+				});
+
+			window.mura
+				.findQuery({
+					entityname:'content',
+					title='home'
+				})
+				.then(function(collection){
+					alert(colletion.item(0).get('title'));
+				});
 			*/
-					
+
 			select(document).trigger('muraReady');
 			
 		});
@@ -2383,6 +2560,12 @@
 			validateForm:validateForm,
 			matchSelector:matchSelector,
 			escape:$escape,
+			getBean:getEntity,
+			getEntity:getEntity,
+			renderFilename:renderFilename,
+			findQuery:findQuery,
+			login:login,
+			logout:logout,
 			init:init
 			}
 		),
@@ -2674,7 +2857,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraSelection(selection,origSelector){
+	function MuraDOMSelection(selection,origSelector){
 		this.selection=selection;
 		this.origSelector=selection;
 
@@ -2691,7 +2874,7 @@
 		this.length=this.selection.length;
 	}
 
-	MuraSelection.prototype={
+	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -3369,7 +3552,7 @@
 		}
 	}
 
-	window.mura.MuraSelection=MuraSelection;
+	window.mura.MuraDOMSelection=MuraDOMSelection;
 
 })(window);;/* This file is part of Mura CMS. 
 
@@ -3418,24 +3601,47 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraBean(properties){
-		this.properties=(properties)?properties:{};
+	function MuraEntity(props){
+		this.properties={};
 
-		if(this.properties.entityname == 'undefined'){
-			this.properties.entityname='content';
+		if(props){
+			mura.extend(this.properties,props);
 		}
-		if(this.properties.siteid == 'undefined'){
-			this.properties.siteid=window.mura.siteid;
-		}
+
+		this.properties.entityname = this.properties.entityname || 'content';
+		this.properties.siteid = this.properties.siteid || window.mura.siteid;
+
+		return this;
 	}
 
-	MuraBean.prototype={
+	MuraEntity.prototype={
 
 		get:function(propertyName,defaultValue){
 
 			if(typeof this.properties.links != 'undefined'
 				&& this.properties.links[propertyName] != 'undefined'){
-				return new MuraFeed().load(this.properties.links[propertyName]);
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+							type:'get',
+							url:this.properties.links[propertyName],
+							success:function(resp){
+								
+								if('items' in resp.data){
+									var returnObj = new window.mura.MuraEntityCollection(resp.data);
+
+									returnObj.set('items',returnObj.get('items').map(function(obj){
+										return new window.mura.MuraEntity(obj);
+									}));
+								} else {
+									var returnObj = new window.mura.MuraEntity(resp.data);
+								}
+								
+								if(typeof resolve == 'function'){
+									resolve(returnObj);
+								}
+							}
+					});
+				});
 			} else if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
@@ -3468,30 +3674,28 @@
 
 		loadBy:function(propertyName,propertyValue){
 
-			if(typeof propertyValue == 'undefined'){
-				propertyValue=this.get(propertyName);
-			}
-
+			propertyValue=propertyValue || this.get(propertyName);
+			
 			var self=this;
 
-			return new Promise(
-				function(resolve,reject){
-					new window.mura.MuraFeed().load({
-						entityname:get('entityname'),
-						siteid:get('siteid'),
-						name:propertyName,value:propertyValue
-						},
-						seld
-					).then(function(feed){
-						if(feed.get('items').length){
-							self.set(feed.get('items')[0].getAll());
-						}
-						if(typeof resolve == 'function'){
-							fn(resolve);
-						}
-					});
-				}
-			);	
+			return new Promise(function(resolve,reject){
+				var params={
+					entityname:self.get('entityname'),
+					method:'findQuery',
+					siteid:self.get('siteid')};
+
+					params[propertyName]=propertyValue;
+
+					window.mura.findQuery(params).then(function(collection){
+					
+					if(collection.get('items').length){
+						self.set(collection.get('items')[0].getAll());
+					}
+					if(typeof resolve == 'function'){
+						resolve(self);
+					}
+				});	
+			});
 		},
 
 		validate:function(){
@@ -3501,7 +3705,6 @@
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type: 'post',
-					async: false,
 					url: window.mura.apiEndpoint + '?method=validate',
 					data: {
 							data: window.mura.escape(JSON.stringify(self.getAll())),
@@ -3531,7 +3734,6 @@
 				self.validate(function(){
 					if(window.mura.isEmptyObject(self.get('errors'))){
 						window.mura.ajax({
-								async:false,
 								type:'get',
 								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
 								data:{
@@ -3540,10 +3742,9 @@
 								},
 								success:function(resp){
 									window.mura.ajax({
-											async:false,
 											type:'post',
 											url:window.mura.apiEndpoint + '?method=save',
-											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.token,'csrf_token_expires':resp.data.expires}),
+											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
 											success:function(resp){
 												if(resp.data != 'undefined'){
 													self.set(resp.data)
@@ -3572,7 +3773,6 @@
 
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
-						async:false,
 						type:'get',
 						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
 						data:{
@@ -3587,8 +3787,8 @@
 										siteid:self.get('siteid'),
 										id:self.get('id'),
 										entityname:self.get('entityname'),
-										'csrf_token':resp.data.token,
-										'csrf_token_expires':resp.data.expires
+										'csrf_token':resp.data.csrf_token,
+										'csrf_token_expires':resp.data.csrf_token_expires
 									},
 									success:function(){
 										if(typeof resolve == 'function'){
@@ -3604,7 +3804,7 @@
 
 	}
 
-	window.mura.MuraBean=MuraBean;
+	window.mura.MuraEntity=MuraEntity;
 })(window);
 ;/* This file is part of Mura CMS. 
 
@@ -3653,60 +3853,72 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraFeed(params){
-		if(typeof params != 'undefined'){
-			return this.load(params);
+	function MuraEntityCollection(params){
+		this.properties={};
+
+		if(props){
+			mura.extend(this.properties,props);
 		}
+
+
+		return this;
 	}
 
-	MuraFeed.prototype={
-		load:function(params){
+	MuraEntityCollection.prototype={
+		item:function(idx){
+			return this.properties.items[idx];
+		},
 
-			var self=this;
+		index:function(el){
+			return this.properties.items.indexOf(el);
+		},
 
-			if(typeof params=='string'){
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							async:false,
-							type:'get',
-							url:params,
-							success:function(resp){
-								self.set('items',resp.data.items.map(function(obj){
-									return new MuraBean().set(obj);
-								}));
-
-								self.set('links',resp.data.links);
-
-								if(typeof resolve == 'function'){
-									resolve(self);
-								}
-							}
-					});
-				});
-
+		get:function(propertyName,defaultValue){
+			
+			if(typeof this.properties.links != 'undefined'
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+				alert(propertyName)
+				return new MuraEntityCollection().load(this.properties.links[propertyName]);
+			} else if(typeof this.properties[propertyName] != 'undefined'){
+				return this.properties[propertyName];
+			} else if (typeof defaultValue != 'undefined') {
+				this.properties[propertyName]=defaultValue;
+				return this.properties[propertyName];
 			} else {
-
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							async:false,
-							type:'get',
-							url:window.mura.apiEndpoint + '?method=findQuery',
-							data:params,
-							success:function(){
-								self.set('items',resp.data.items.map(function(obj){
-									return new MuraBean().set(obj);
-								}));
-
-								self.set('links',resp.data.links);
-								if(typeof resolve == 'function'){
-									resolve(self);
-								}
-							}
-					});
-				});
-
+				return '';
 			}
+		},
+
+		set:function(propertyName,propertyValue){
+
+			if(typeof propertyName == 'object'){
+				window.mura.extend(this.properties,propertyName);
+			} else {
+				this.properties[propertyName]=propertyValue;
+			}
+			
+			return this;
+			
+		},
+
+		each:function(fn){
+			this.items.forEach( function(item,idx){
+				fn.call(item,item,idx);
+			});
+			return this;
+		},
+
+		filter:function(fn){
+			return window.mura.MuraEntityCollection(this.items.filter( function(item,idx){
+				return fn.call(item,item,idx);
+			}));
+		},
+
+		map:function(fn){
+			return window.MuraEntityCollection(this.itmes.map( function(item,idx){
+				return fn.call(item,item,idx);
+			}));
 		}
 	}
-	window.mura.MuraFeed=MuraFeed;
+	window.mura.MuraEntityCollection=MuraEntityCollection;
 })(window);

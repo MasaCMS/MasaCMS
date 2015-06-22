@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraSelection(selection,origSelector){
+	function MuraDOMSelection(selection,origSelector){
 		this.selection=selection;
 		this.origSelector=selection;
 
@@ -62,7 +62,7 @@
 		this.length=this.selection.length;
 	}
 
-	MuraSelection.prototype={
+	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -740,6 +740,6 @@
 		}
 	}
 
-	window.mura.MuraSelection=MuraSelection;
+	window.mura.MuraDOMSelection=MuraDOMSelection;
 
 })(window);
