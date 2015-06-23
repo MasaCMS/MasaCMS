@@ -437,6 +437,9 @@
 		</cfloop>
 	</cfif>
 	
+	<cfset local.data.contentIDList=''>
+	<cfset local.data.contentHistIDList=''>
+	
 	<cfif not structIsEmpty(local.data.previewMap)>
 		<cfloop collection="#local.data.previewMap#" item="local.key">
 			 <cfset local.data.contentIDList=listAppend(local.data.contentIDList,"'#local.data.previewMap[local.key].contentID#'")>
