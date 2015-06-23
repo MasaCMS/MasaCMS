@@ -1709,7 +1709,9 @@ component extends="mura.cfobject" {
 		
 		if(structIsEmpty(validations) && isDefined('data.entityname') && isDefined('data.siteid')){
 			var bean=getBean(data.entityname);
-			validations=bean.loadBy('#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]).getValidations();
+			var args={'#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]
+			};
+			validations=bean.loadBy(argumentCollection=args).getValidations();
 
 		}
 		
@@ -1936,8 +1938,8 @@ component extends="mura.cfobject" {
 			args.params=urlDecode($.event('objectparams'));
 		}
 
-		if(structKeyExists(variables.config['#$.event('object')#']))
-			var obj=variables.config['#$.event('object')#'];
+		if(structKeyExists(variables.config.displayObjects,'#$.event('object')#')){
+			var obj=variables.config.displayObjects['#$.event('object')#'];
 			var result=dspObject_Render(siteid=this.siteid,object=$.event('object'),objectid=$.event('object'),filename=obj.filename);
 		} else {
 			var result=$.dspObject(argumentCollection=args);
