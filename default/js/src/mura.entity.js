@@ -53,43 +53,49 @@
 
 	MuraEntity.prototype={
 		init:function(properties){
-			this.properties=properties || {};
-			this.properties.entityname = this.properties.entityname || 'content';
-			this.properties.siteid = this.properties.siteid || window.mura.siteid;
+			properties || {};
+			properties.entityname = properties.entityname || 'content';
+			properties.siteid = properties.siteid || window.mura.siteid;
+			this.set(properties);
 		},
-		
+
 		get:function(propertyName,defaultValue){
 
-			if(typeof this.properties.links != 'undefined'
-				&& typeof this.properties.links[propertyName] != 'undefined'){
-
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							type:'get',
-							url:this.properties.links[propertyName],
-							success:function(resp){
-								
-								if('items' in resp.data){
-									var returnObj = new window.mura.MuraEntityCollection(resp.data);
-
-									returnObj.set('items',returnObj.get('items').map(function(obj){
-										return new window.mura.MuraEntity(obj);
-									}));
-								} else {
-									var returnObj = new window.mura.MuraEntity(resp.data);
-								}
-								
-								if(typeof resolve == 'function'){
-									resolve(returnObj);
-								}
-							}
-					});
-				});
-			} else if(typeof this.properties[propertyName] != 'undefined'){
+			if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
 				this.properties[propertyName]=defaultValue;
 				return this.properties[propertyName];
+			} else if(typeof this.properties.links != 'undefined'
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+
+				self=this;
+
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+						type:'get',
+						url:this.properties.links[propertyName],
+						success:function(resp){
+							
+							if('items' in resp.data){
+								var returnObj = new window.mura.MuraEntityCollection(resp.data);
+
+								returnObj.set('items',returnObj.get('items').map(function(obj){
+									return new window.mura.MuraEntity(obj);
+								}));
+							} else {
+								var returnObj = new window.mura.MuraEntity(resp.data);
+							}
+							
+							self.set(propertyName,returnObj);
+
+							if(typeof resolve == 'function'){
+								resolve(returnObj);
+							}
+						}
+					});
+				});
+			
 			} else {
 				return '';
 			}
@@ -98,7 +104,7 @@
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				window.mura.extend(this.properties,propertyName);
+				this.properties=window.mura.deepExtend(this.properties,propertyName);
 			} else {
 				this.properties[propertyName]=propertyValue;
 			}
@@ -115,8 +121,13 @@
 			return this.properties;
 		},
 
+		load:function(){
+			return this.loadBy('id',this.get('id'));
+		},
+
 		loadBy:function(propertyName,propertyValue){
 
+			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
 			
 			var self=this;
@@ -165,8 +176,7 @@
 						}
 					}
 				});
-			});
-			
+			});		
 
 		},
 
@@ -177,32 +187,32 @@
 				self.validate(function(){
 					if(window.mura.isEmptyObject(self.get('errors'))){
 						window.mura.ajax({
-								type:'get',
-								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-								data:{
-									siteid:self.get('siteid'),
-									context:self.get('id')
-								},
-								success:function(resp){
-									window.mura.ajax({
-											type:'post',
-											url:window.mura.apiEndpoint + '?method=save',
-											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
-											success:function(resp){
-												if(resp.data != 'undefined'){
-													self.set(resp.data)
-													if(typeof resolve == 'function'){
-														resolve(self);
-													}
-												} else {
-													self.set('errors',resp.error);
-													if(typeof reject == 'function'){
-														reject(self);
-													}	
+							type:'get',
+							url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+							data:{
+								siteid:self.get('siteid'),
+								context:self.get('id')
+							},
+							success:function(resp){
+								window.mura.ajax({
+										type:'post',
+										url:window.mura.apiEndpoint + '?method=save',
+										data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+										success:function(resp){
+											if(resp.data != 'undefined'){
+												self.set(resp.data)
+												if(typeof resolve == 'function'){
+													resolve(self);
 												}
+											} else {
+												self.set('errors',resp.error);
+												if(typeof reject == 'function'){
+													reject(self);
+												}	
 											}
-									});
-								}
+										}
+								});
+							}
 						});
 					}
 				});
@@ -216,30 +226,30 @@
 
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
-						type:'get',
-						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-						data:{
-							siteid:self.get('siteid'),
-							context:self.get('id')
-						},
-						success:function(resp){
-							window.mura.ajax({
-									type:'get',
-									url:window.mura.apiEndpoint + '?method=delete',
-									data:{
-										siteid:self.get('siteid'),
-										id:self.get('id'),
-										entityname:self.get('entityname'),
-										'csrf_token':resp.data.csrf_token,
-										'csrf_token_expires':resp.data.csrf_token_expires
-									},
-									success:function(){
-										if(typeof resolve == 'function'){
-											resolve(self);
-										}
-									}
-							});
-						}
+					type:'get',
+					url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+					data:{
+						siteid:self.get('siteid'),
+						context:self.get('id')
+					},
+					success:function(resp){
+						window.mura.ajax({
+							type:'get',
+							url:window.mura.apiEndpoint + '?method=delete',
+							data:{
+								siteid:self.get('siteid'),
+								id:self.get('id'),
+								entityname:self.get('entityname'),
+								'csrf_token':resp.data.csrf_token,
+								'csrf_token_expires':resp.data.csrf_token_expires
+							},
+							success:function(){
+								if(typeof resolve == 'function'){
+									resolve(self);
+								}
+							}
+						});
+					}
 				});
 			});
 		

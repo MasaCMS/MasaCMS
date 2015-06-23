@@ -742,9 +742,9 @@ var initMura=function(config){
 
     if($(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
       loader().load(
-        config.assetpath +'/css/shadowbox.min.css',
-        config.assetpath +'/js/adapter/shadowbox-jquery.min.js',
-        config.assetpath +'/js/shadowbox.min.js',
+        config.assetpath +'/js/external/shadowbox/shadowbox.min.css',
+        config.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
+        config.assetpath +'/js/external/shadowbox/shadowbox.min.js',
           function(){
             window.Shadowbox.init();
           }

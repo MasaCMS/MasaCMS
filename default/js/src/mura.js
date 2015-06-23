@@ -580,41 +580,44 @@
 
 	//http://youmightnotneedjquery.com/
 	function extend(out) {
-	  out = out || {};
+	  	out = out || {};
 
-	  for (var i = 1; i < arguments.length; i++) {
-	    if (!arguments[i])
-	      continue;
+	  	for (var i = 1; i < arguments.length; i++) {
+		    if (!arguments[i])
+		      continue;
 
-	    for (var key in arguments[i]) {
-	      if (arguments[i].hasOwnProperty(key))
-	        out[key] = arguments[i][key];
-	    }
-	  }
+		    for (var key in arguments[i]) {
+		      if (arguments[i].hasOwnProperty(key))
+		        out[key] = arguments[i][key];
+		    }
+	  	}
 
-	  return out;
+	  	return out;
 	};
 
 	function deepExtend(out) {
-	  out = out || {};
+		out = out || {};
 
-	  for (var i = 1; i < arguments.length; i++) {
-	    var obj = arguments[i];
+		for (var i = 1; i < arguments.length; i++) {
+		    var obj = arguments[i];
 
-	    if (!obj)
-	      continue;
+		    if (!obj)
+	      	continue;
 
-	    for (var key in obj) {
-	      if (obj.hasOwnProperty(key)) {
-	        if (typeof obj[key] === 'object')
-	          deepExtend(out[key], obj[key]);
-	        else
-	          out[key] = obj[key];
-	      }
-	    }
-	  }
+		    for (var key in obj) {
+		        if (obj.hasOwnProperty(key)) {
+		        	if(Array.isArray(obj[key])){
+		       			out[key]=obj[key].slice(0);
+			        } else if (typeof obj[key] === 'object') {
+			          	deepExtend(out[key], obj[key]);
+			        } else {
+			          	out[key] = obj[key];
+			        }
+		      	}
+		    }
+		}
 
-	  return out;
+	  	return out;
 	}
 
 	function createCookie(name,value,days) {
@@ -898,9 +901,9 @@
 
 		if(select(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
-				window.mura.assetpath +'/css/shadowbox.min.css',
-				window.mura.assetpath +'/js/adapter/shadowbox-jquery.min.js',
-				window.mura.assetpath +'/js/shadowbox.min.js',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.css',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
 					function(){
 						window.Shadowbox.init();
 					}
@@ -1443,6 +1446,19 @@
 
 	}
 	
+	function createMixin (extend,prototype){
+		var placeholder=function(){
+			this.init.apply(this,arguments);
+		}
+
+		placeholder.prototype = Object.create(extend.prototype);
+		placeholder.prototype.constructor = placeholder;
+
+		window.mura.extend(placeholder.prototype,prototype);
+
+		return placeholder;
+	}
+
 	function init(config){
 		if(!config.context){
 			config.context='';
@@ -1490,6 +1506,8 @@
 				}
 			);
 			
+			mura('#my-id').addDisplayObject('objectname',{..});
+
 			mura.login('userame','password')
 				.then(function(data){
 					alert(data.success);
@@ -1505,24 +1523,19 @@
 					alert(item.get('title'));
 				});
 
-			mura.renderFilename('')
+			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			mura.loadBy('contentid','00000000000000000000000000000000001')
-				.then(function(item){
-					alert(item.get('title'));
-				});
-
-			mura.loadBy('contentid','00000000000000000000000000000000001')
+			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					item.get('kids').then(function(kids){
 						alert(kids.get('items').length);
 					});
 				});
 
-			mura.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+			mura.getEntity('content').loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.then(function(item){
 					item.get('parent').then(function(parent){
 						alert(parent.get('title'));
@@ -1549,7 +1562,7 @@
 				.then(function(item){
 					alert(item.get('title'));
 				});
-			*/		
+				
 			mura.findQuery({
 					entityname:'content',
 					title:'Home'
@@ -1557,7 +1570,7 @@
 				.then(function(collection){
 					alert(collection.item(0).get('title'));
 				});
-			
+			*/	
 
 			select(document).trigger('muraReady');
 			
@@ -1565,19 +1578,6 @@
 
 	    return window.mura
 	}	
-
-	function createMixin (extend,prototype){
-		function placeholder(){
-			this.init.apply(this,arguments);
-		}
-
-		temp.prototype = Object.create(extend.prototype);
-		temp.prototype.constructor = placeholder;
-
-		window.mura.extend(temp.prototype,prototype);
-
-		return temp;
-	}
 
 	extend(window,{
 		mura:extend(

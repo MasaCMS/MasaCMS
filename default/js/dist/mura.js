@@ -1547,41 +1547,44 @@
 
 	//http://youmightnotneedjquery.com/
 	function extend(out) {
-	  out = out || {};
+	  	out = out || {};
 
-	  for (var i = 1; i < arguments.length; i++) {
-	    if (!arguments[i])
-	      continue;
+	  	for (var i = 1; i < arguments.length; i++) {
+		    if (!arguments[i])
+		      continue;
 
-	    for (var key in arguments[i]) {
-	      if (arguments[i].hasOwnProperty(key))
-	        out[key] = arguments[i][key];
-	    }
-	  }
+		    for (var key in arguments[i]) {
+		      if (arguments[i].hasOwnProperty(key))
+		        out[key] = arguments[i][key];
+		    }
+	  	}
 
-	  return out;
+	  	return out;
 	};
 
 	function deepExtend(out) {
-	  out = out || {};
+		out = out || {};
 
-	  for (var i = 1; i < arguments.length; i++) {
-	    var obj = arguments[i];
+		for (var i = 1; i < arguments.length; i++) {
+		    var obj = arguments[i];
 
-	    if (!obj)
-	      continue;
+		    if (!obj)
+	      	continue;
 
-	    for (var key in obj) {
-	      if (obj.hasOwnProperty(key)) {
-	        if (typeof obj[key] === 'object')
-	          deepExtend(out[key], obj[key]);
-	        else
-	          out[key] = obj[key];
-	      }
-	    }
-	  }
+		    for (var key in obj) {
+		        if (obj.hasOwnProperty(key)) {
+		        	if(Array.isArray(obj[key])){
+		       			out[key]=obj[key].slice(0);
+			        } else if (typeof obj[key] === 'object') {
+			          	deepExtend(out[key], obj[key]);
+			        } else {
+			          	out[key] = obj[key];
+			        }
+		      	}
+		    }
+		}
 
-	  return out;
+	  	return out;
 	}
 
 	function createCookie(name,value,days) {
@@ -1865,9 +1868,9 @@
 
 		if(select(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
-				window.mura.assetpath +'/css/shadowbox.min.css',
-				window.mura.assetpath +'/js/adapter/shadowbox-jquery.min.js',
-				window.mura.assetpath +'/js/shadowbox.min.js',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.css',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
+				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
 					function(){
 						window.Shadowbox.init();
 					}
@@ -2410,6 +2413,19 @@
 
 	}
 	
+	function createMixin (extend,prototype){
+		var placeholder=function(){
+			this.init.apply(this,arguments);
+		}
+
+		placeholder.prototype = Object.create(extend.prototype);
+		placeholder.prototype.constructor = placeholder;
+
+		window.mura.extend(placeholder.prototype,prototype);
+
+		return placeholder;
+	}
+
 	function init(config){
 		if(!config.context){
 			config.context='';
@@ -2457,6 +2473,8 @@
 				}
 			);
 			
+			mura('#my-id').addDisplayObject('objectname',{..});
+
 			mura.login('userame','password')
 				.then(function(data){
 					alert(data.success);
@@ -2472,24 +2490,19 @@
 					alert(item.get('title'));
 				});
 
-			mura.renderFilename('')
+			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					alert(item.get('title'));
 				});
 
-			mura.loadBy('contentid','00000000000000000000000000000000001')
-				.then(function(item){
-					alert(item.get('title'));
-				});
-
-			mura.loadBy('contentid','00000000000000000000000000000000001')
+			mura.getEntity('content').loadBy('contentid','00000000000000000000000000000000001')
 				.then(function(item){
 					item.get('kids').then(function(kids){
 						alert(kids.get('items').length);
 					});
 				});
 
-			mura.loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
+			mura.getEntity('content').loadBy('contentid','1C2AD93E-E39C-C758-A005942E1399F4D6')
 				.then(function(item){
 					item.get('parent').then(function(parent){
 						alert(parent.get('title'));
@@ -2516,7 +2529,7 @@
 				.then(function(item){
 					alert(item.get('title'));
 				});
-			*/		
+				
 			mura.findQuery({
 					entityname:'content',
 					title:'Home'
@@ -2524,7 +2537,7 @@
 				.then(function(collection){
 					alert(collection.item(0).get('title'));
 				});
-			
+			*/	
 
 			select(document).trigger('muraReady');
 			
@@ -2532,19 +2545,6 @@
 
 	    return window.mura
 	}	
-
-	function Mixin (extend,prototype){
-		function placeholder(){
-			this.init.apply(this,arguments);
-		}
-
-		temp.prototype = Object.create(extend.prototype);
-		temp.prototype.constructor = placeholder;
-
-		window.mura.extend(temp.prototype,prototype);
-
-		return temp;
-	}
 
 	extend(window,{
 		mura:extend(
@@ -2582,7 +2582,7 @@
 			findQuery:findQuery,
 			login:login,
 			logout:logout,
-			Mixin:Mixin,
+			createMixin:createMixin,
 			init:init
 			}
 		),
@@ -3626,43 +3626,49 @@
 
 	MuraEntity.prototype={
 		init:function(properties){
-			this.properties=properties || {};
-			this.properties.entityname = this.properties.entityname || 'content';
-			this.properties.siteid = this.properties.siteid || window.mura.siteid;
+			properties || {};
+			properties.entityname = properties.entityname || 'content';
+			properties.siteid = properties.siteid || window.mura.siteid;
+			this.set(properties);
 		},
-		
+
 		get:function(propertyName,defaultValue){
 
-			if(typeof this.properties.links != 'undefined'
-				&& typeof this.properties.links[propertyName] != 'undefined'){
-
-				return new Promise(function(resolve,reject) {
-					window.mura.ajax({
-							type:'get',
-							url:this.properties.links[propertyName],
-							success:function(resp){
-								
-								if('items' in resp.data){
-									var returnObj = new window.mura.MuraEntityCollection(resp.data);
-
-									returnObj.set('items',returnObj.get('items').map(function(obj){
-										return new window.mura.MuraEntity(obj);
-									}));
-								} else {
-									var returnObj = new window.mura.MuraEntity(resp.data);
-								}
-								
-								if(typeof resolve == 'function'){
-									resolve(returnObj);
-								}
-							}
-					});
-				});
-			} else if(typeof this.properties[propertyName] != 'undefined'){
+			if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
 				this.properties[propertyName]=defaultValue;
 				return this.properties[propertyName];
+			} else if(typeof this.properties.links != 'undefined'
+				&& typeof this.properties.links[propertyName] != 'undefined'){
+
+				self=this;
+
+				return new Promise(function(resolve,reject) {
+					window.mura.ajax({
+						type:'get',
+						url:this.properties.links[propertyName],
+						success:function(resp){
+							
+							if('items' in resp.data){
+								var returnObj = new window.mura.MuraEntityCollection(resp.data);
+
+								returnObj.set('items',returnObj.get('items').map(function(obj){
+									return new window.mura.MuraEntity(obj);
+								}));
+							} else {
+								var returnObj = new window.mura.MuraEntity(resp.data);
+							}
+							
+							self.set(propertyName,returnObj);
+
+							if(typeof resolve == 'function'){
+								resolve(returnObj);
+							}
+						}
+					});
+				});
+			
 			} else {
 				return '';
 			}
@@ -3671,7 +3677,7 @@
 		set:function(propertyName,propertyValue){
 
 			if(typeof propertyName == 'object'){
-				window.mura.extend(this.properties,propertyName);
+				this.properties=window.mura.deepExtend(this.properties,propertyName);
 			} else {
 				this.properties[propertyName]=propertyValue;
 			}
@@ -3688,8 +3694,13 @@
 			return this.properties;
 		},
 
+		load:function(){
+			return this.loadBy('id',this.get('id'));
+		},
+
 		loadBy:function(propertyName,propertyValue){
 
+			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
 			
 			var self=this;
@@ -3738,8 +3749,7 @@
 						}
 					}
 				});
-			});
-			
+			});		
 
 		},
 
@@ -3750,32 +3760,32 @@
 				self.validate(function(){
 					if(window.mura.isEmptyObject(self.get('errors'))){
 						window.mura.ajax({
-								type:'get',
-								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-								data:{
-									siteid:self.get('siteid'),
-									context:self.get('id')
-								},
-								success:function(resp){
-									window.mura.ajax({
-											type:'post',
-											url:window.mura.apiEndpoint + '?method=save',
-											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
-											success:function(resp){
-												if(resp.data != 'undefined'){
-													self.set(resp.data)
-													if(typeof resolve == 'function'){
-														resolve(self);
-													}
-												} else {
-													self.set('errors',resp.error);
-													if(typeof reject == 'function'){
-														reject(self);
-													}	
+							type:'get',
+							url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+							data:{
+								siteid:self.get('siteid'),
+								context:self.get('id')
+							},
+							success:function(resp){
+								window.mura.ajax({
+										type:'post',
+										url:window.mura.apiEndpoint + '?method=save',
+										data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+										success:function(resp){
+											if(resp.data != 'undefined'){
+												self.set(resp.data)
+												if(typeof resolve == 'function'){
+													resolve(self);
 												}
+											} else {
+												self.set('errors',resp.error);
+												if(typeof reject == 'function'){
+													reject(self);
+												}	
 											}
-									});
-								}
+										}
+								});
+							}
 						});
 					}
 				});
@@ -3789,30 +3799,30 @@
 
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
-						type:'get',
-						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-						data:{
-							siteid:self.get('siteid'),
-							context:self.get('id')
-						},
-						success:function(resp){
-							window.mura.ajax({
-									type:'get',
-									url:window.mura.apiEndpoint + '?method=delete',
-									data:{
-										siteid:self.get('siteid'),
-										id:self.get('id'),
-										entityname:self.get('entityname'),
-										'csrf_token':resp.data.csrf_token,
-										'csrf_token_expires':resp.data.csrf_token_expires
-									},
-									success:function(){
-										if(typeof resolve == 'function'){
-											resolve(self);
-										}
-									}
-							});
-						}
+					type:'get',
+					url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+					data:{
+						siteid:self.get('siteid'),
+						context:self.get('id')
+					},
+					success:function(resp){
+						window.mura.ajax({
+							type:'get',
+							url:window.mura.apiEndpoint + '?method=delete',
+							data:{
+								siteid:self.get('siteid'),
+								id:self.get('id'),
+								entityname:self.get('entityname'),
+								'csrf_token':resp.data.csrf_token,
+								'csrf_token_expires':resp.data.csrf_token_expires
+							},
+							success:function(){
+								if(typeof resolve == 'function'){
+									resolve(self);
+								}
+							}
+						});
+					}
 				});
 			});
 		
@@ -3870,17 +3880,12 @@
 
 ;(function(window){
 	
+	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
+		init:function(properties){
+			properties=properties || {};
+			this.set(properties);
+		},
 
-	function MuraEntityCollection(properties){
-		this.properties=properties|| {};
-
-		return this;
-	}
-
-	MuraEntityCollection.prototype = Object.create(window.mura.MuraEntity.prototype);
-	MuraEntityCollection.prototype.constructor = MuraEntityCollection;
-
-	window.mura.extend(MuraEntityCollection.prototype,{
 		item:function(idx){
 			return this.properties.items[idx];
 		},
@@ -3896,9 +3901,7 @@
 		},
 
 		sort:function(fn){
-			this.properties.items.sort(function(a,b){
-				return fn.call(item,a,b);
-			});
+			this.properties.items.sort(fn);
 		},
 
 		filter:function(fn){
@@ -3915,5 +3918,4 @@
 			}));
 		}
 	});
-	window.mura.MuraEntityCollection=MuraEntityCollection;
 })(window);

@@ -48,9 +48,10 @@
 	
 	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
 		init:function(properties){
-			this.properties=properties || {};
+			properties=properties || {};
+			this.set(properties);
 		},
-		
+
 		item:function(idx){
 			return this.properties.items[idx];
 		},
@@ -66,9 +67,7 @@
 		},
 
 		sort:function(fn){
-			this.properties.items.sort(function(a,b){
-				return fn.call(item,a,b);
-			});
+			this.properties.items.sort(fn);
 		},
 
 		filter:function(fn){
