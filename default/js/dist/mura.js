@@ -1868,7 +1868,7 @@
 
 		if(select(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 			loader().load(
-				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.css',
+				window.mura.assetpath +'/css/shadowbox.min.css',
 				window.mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
 				window.mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
 					function(){
