@@ -215,11 +215,11 @@ component extends="mura.cfobject" output="false" {
 
  	function parseDateArg(String arg){
 
- 		//temp fix so that date's like 2015-06-23T14:22:35 can be parsed
- 		if(mid(arguments.arg,11,1)=='T'){
+ 		//fix so that date's like 2015-06-23T14:22:35 can be parsed
+ 		if(refind('(\d\d\d\d-\d\d-\d\d)',arguments.arg)){
  			arguments.arg=replace(arguments.arg,'T',' ');
  		}
- 		
+
 		if(lsisDate(arguments.arg)){
 			try{
 				return lsparseDateTime(arguments.arg);
