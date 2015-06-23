@@ -367,7 +367,7 @@ CREATE TABLE `tcontentobjects` (
   `Name` varchar(255) default NULL,
   `OrderNo` int(10) default NULL,
   `SiteID` varchar(25) default NULL,
-  `ColumnID` int(10) default NULL,
+  `ColumnID` int(10) NOT NULL default 0,
   PRIMARY KEY  (`ContentHistID`,`ObjectID`,`Object`,`ColumnID` ),
   KEY `IX_TContentObjects` (`SiteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
