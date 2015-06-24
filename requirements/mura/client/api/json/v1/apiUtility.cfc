@@ -44,7 +44,6 @@ component extends="mura.cfobject" {
 		
 		variables.config={
 			linkMethods=[],
-			displayObjects={},
 			publicMethods="findOne,findMany,findAll,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
 			entities={
 				'contentnav'={
@@ -1938,12 +1937,8 @@ component extends="mura.cfobject" {
 			args.params=urlDecode($.event('objectparams'));
 		}
 
-		if(structKeyExists(variables.config.displayObjects,'#$.event('object')#')){
-			var obj=variables.config.displayObjects['#$.event('object')#'];
-			var result=dspObject_Render(siteid=this.siteid,object=$.event('object'),objectid=$.event('object'),filename=obj.filename);
-		} else {
-			var result=$.dspObject(argumentCollection=args);
-		}
+		var result=$.dspObject(argumentCollection=args);
+		
 		if(isSimpleValue(result)){
 			result={html=result};
 		}

@@ -3082,7 +3082,7 @@ Display Objects
 	<cfset var pluginID=0 />
 	<cfset var pluginConfig="" />
 	<cfset var displayPoolID=application.settingsManager.getSite(variables.event.getValue('siteID')).getDisplayPoolID()>
-	<cfset var theme=application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme()>
+	<cfset var theme=len(request.altTheme) ? request.altTheme : application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme()>
 	<cfset var tracePoint=0>
 	
 	<cfif getRenderHTMLQueues()>
