@@ -615,6 +615,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 	<cfset var check="">
 
+	<!--- Allow function to be escaped for huge file directories --->
+	<cfif variables.configBean.getValue('skipCleanFileCache')>
+		<cfexit>
+	</cfif>
+
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
 	select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
