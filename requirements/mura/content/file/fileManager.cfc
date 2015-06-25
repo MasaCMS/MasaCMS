@@ -617,7 +617,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- Allow function to be escaped for huge file directories --->
 	<cfif variables.configBean.getValue('skipCleanFileCache')>
-		<cfexit>
+		<cfreturn>
 	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
