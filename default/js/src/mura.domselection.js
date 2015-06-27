@@ -159,9 +159,11 @@
 			this.on(eventName);
 		},
 
-		trigger:function(eventName){
+		trigger:function(eventName,eventDetail){
+			eventDetails=eventDetails || {};
+
 			this.each(function(el){
-				window.mura.trigger(el,eventName);
+				window.mura.trigger(el,eventName,eventDetail);
 			});
 			return this;
 		},
