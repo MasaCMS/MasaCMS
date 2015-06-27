@@ -2388,15 +2388,15 @@
 
 	}
 	
-	function createMixin (extend,prototype){
+	function extendClass (baseClass,subClass){
 		var placeholder=function(){
 			this.init.apply(this,arguments);
 		}
 
-		placeholder.prototype = Object.create(extend.prototype);
+		placeholder.prototype = Object.create(baseClass.prototype);
 		placeholder.prototype.constructor = placeholder;
 
-		window.mura.extend(placeholder.prototype,prototype);
+		window.mura.extend(placeholder.prototype,subClass);
 
 		return placeholder;
 	}
@@ -2557,7 +2557,7 @@
 			findQuery:findQuery,
 			login:login,
 			logout:logout,
-			createMixin:createMixin,
+			extendClass:extendClass,
 			init:init
 			}
 		),
@@ -3857,7 +3857,7 @@
 
 ;(function(window){
 	
-	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
+	window.mura.MuraEntityCollection=window.mura.extendClass(window.mura.MuraEntity,{
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);

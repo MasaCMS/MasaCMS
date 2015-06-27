@@ -46,7 +46,7 @@
 
 ;(function(window){
 	
-	window.mura.MuraEntityCollection=window.mura.createMixin(window.mura.MuraEntity,{
+	window.mura.MuraEntityCollection=window.mura.extendClass(window.mura.MuraEntity,{
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
