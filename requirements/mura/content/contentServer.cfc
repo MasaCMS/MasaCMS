@@ -660,10 +660,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadLocalEventHandler" output="false">
 	<cfargument name="event">
-	<cfset request.muraFrontEndRequest=true>
-	<cfparam name="request.returnFormat" default="HTML">
-	<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
 	<cfif not arguments.event.valueExists('localHandler')>
+		<cfset request.muraFrontEndRequest=true>
+		<cfparam name="request.returnFormat" default="HTML">
+		<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
 		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
 			<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
 		<cfelse>
