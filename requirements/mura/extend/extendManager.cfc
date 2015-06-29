@@ -424,71 +424,58 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfset theValue="">
 		</cfif>
 		
+		<cfif len(theValue)>
+			<cfif listFindNoCase("Date,DateTime",rs.validation)>
+				<cfif lsisDate(theValue)>
+					<cftry>
+					<cfset theValue = lsparseDateTime(theValue) />
+					<cfcatch>
+						<cfset theValue = parseDateTime(theValue) />
+					</cfcatch>
+					</cftry>
+				<cfelseif isDate(theValue)>	
+					<cfset theValue = parseDateTime(theValue) />
+				</cfif>
+			<cfelseif rs.validation eq "Numeric">
+				<cfif not isNumeric(theValue)>
+					<cfset theValue=''>
+				</cfif>
+			</cfif>
+		</cfif>
+
 		<cfquery>
 			delete from #arguments.dataTable# 
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
-			
-		<cfquery>
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
-			)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
-			
-			<cfif len(theValue)>
-				
+		
+		<cfif len(theValue)>
+			<cfquery>
+				insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
+				)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
 				<cfif listFindNoCase("Date,DateTime",rs.validation)>
-					<cfif lsisDate(theValue)>
-						<cftry>
-						<cfset theValue = lsparseDateTime(theValue) />
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-						null						
-						<cfcatch>
-							<cfset theValue = parseDateTime(theValue) />
-							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-							null
-						</cfcatch>
-						</cftry>
-					<cfelseif isDate(theValue)>	
-						<cfset theValue = parseDateTime(theValue) />
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-						null
-					<cfelse>
-						null,
-						null,
-						null
-					</cfif>
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
+					null						
 				<cfelseif rs.validation eq "Numeric">
-					<cfif isNumeric(theValue)>
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						null,
-						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
-					<cfelse>
-						null,
-						null,
-						null
-					</cfif>
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+					null,
+					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
 				<cfelse>
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					null,
 					null
 				</cfif>	
-			<cfelse>
-				null,
-				null,
-				null
-			</cfif>,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-			)
-		</cfquery>
-		
+				,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+				)
+			</cfquery>
+		</cfif>
 	</cfif>
 </cfloop>
 
