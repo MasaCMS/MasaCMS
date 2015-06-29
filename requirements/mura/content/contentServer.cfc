@@ -225,6 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset trimLen=len(application.configBean.getStub())+1 />
 		<cfset tempfilename=right(url.path,len(url.path)-trimLen) />
 		<cfset request.siteid=listFirst(tempfilename,"/") />
+		<cfset request.muraFrontEndRequest=true>
 		<cfset request.currentFilename="" />
 		
 		<cftry>
@@ -250,6 +251,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 		
+		<cfset loadLocalEventHandler(request.servletEvent)>
+
 		<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
 		
 		<cfset parseCustomURLVars(request.servletEvent)>
@@ -400,9 +403,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
 	<cfset request.servletEvent.setValue("currentfilenameadjusted",arguments.filename)>
+	<cfset loadLocalEventHandler(arguments.event)>
+
+	<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
+
 	<cfif arguments.parseURL>
 		<cfset parseCustomURLVars(request.servletEvent)>
 	</cfif>
+
 	<cfset fileOutput=doRequest(request.servletEvent)>	
 	<cfcontent reset="true"><cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
@@ -650,6 +658,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 </cffunction>
 
+<cffunction name="loadLocalEventHandler" output="false">
+	<cfargument name="event">
+	<cfset request.muraFrontEndRequest=true>
+	<cfparam name="request.returnFormat" default="HTML">
+	<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
+	<cfif not arguments.event.valueExists('localHandler')>
+		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
+			<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
+		<cfelse>
+			<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
+		</cfif>
+
+		<cfset arguments.event.setValue("localHandler",application.settingsManager.getSite(arguments.event.getValue('siteID')).getLocalHandler())>
+	</cfif>
+</cffunction>
+
 <cffunction name="doRequest" output="false" returntype="any">
 <cfargument name="event">
 	<cfset var response=""/>
@@ -657,18 +681,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var previewData=""/>
 	<cfset var changeset=""/>
 
-	<cfset request.muraFrontEndRequest=true>
-	<cfparam name="request.returnFormat" default="HTML">
-
-	<cfparam name="session.siteid" default="#arguments.event.getValue('siteID')#">
-
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
-		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
-	<cfelse>
-		<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
-	</cfif>
-
-	<cfset arguments.event.setValue("localHandler",application.settingsManager.getSite(arguments.event.getValue('siteID')).getLocalHandler())>
+	<cfset loadLocalEventHandler(arguments.event)>
 	
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
