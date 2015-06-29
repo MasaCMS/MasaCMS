@@ -115,7 +115,7 @@ component
 
 		}
 
-		return( serializedInput );
+		return( rereplace(serializedInput, "[[:cntrl:]]", "") );
 
 	}
 
@@ -196,7 +196,7 @@ component
 
 				} else {
 
-					writeOutput( serializeJson( rereplace(input, "[[:cntrl:]]", "") ) );
+					writeOutput( serializeJson( input ) );
 
 				}
 
@@ -225,7 +225,7 @@ component
 
 			} else {
 
-				writeOutput( serializeJson( rereplace(input, "[[:cntrl:]]", "") ) );
+				writeOutput( serializeJson( input ) );
 
 			}
 
