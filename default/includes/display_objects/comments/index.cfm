@@ -238,7 +238,7 @@
 					mura.loader().loadjs(
 						"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
 						function(){
-							initMuraComments();
+							initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
 						}
 					);
 				});
