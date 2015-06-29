@@ -965,6 +965,56 @@
 
     lib$es6$promise$polyfill$$default();
 }).call(this);
+
+
+
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+ 
+// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+ 
+// MIT license
+ 
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+ 
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+ 
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());
+
+//https://gist.github.com/jonathantneal/3062955
+this.Element && function(ElementPrototype) {
+  ElementPrototype.matchesSelector = ElementPrototype.matchesSelector || 
+  ElementPrototype.mozMatchesSelector ||
+  ElementPrototype.msMatchesSelector ||
+  ElementPrototype.oMatchesSelector ||
+  ElementPrototype.webkitMatchesSelector ||
+  function (selector) {
+    var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
+ 
+    while (nodes[++i] && nodes[i] != node);
+ 
+    return !!nodes[i];
+  }
+}(Element.prototype);
 ;/* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -1123,20 +1173,6 @@
 						}
 			});
 		});
-	}
-
-	function matchSelector(el,selector){	
-		var matchesFn;
-	    // find vendor prefix
-	    ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-	        if (typeof document.body[fn] == 'function') {
-	            matchesFn = fn;
-	            return true;
-	        }
-	        return false;
-	    });
-
-	    return el[matchesFn](selector);		
 	}
 
 	function evalScripts(el) {
@@ -2549,7 +2585,6 @@
 			isEmptyObject:isEmptyObject,
 			evalScripts:evalScripts,
 			validateForm:validateForm,
-			matchSelector:matchSelector,
 			escape:$escape,
 			getBean:getEntity,
 			getEntity:getEntity,
@@ -2851,7 +2886,7 @@
 ;(function(window){
 	function MuraDOMSelection(selection,origSelector){
 		this.selection=selection;
-		this.origSelector=selection;
+		this.origSelector=origSelector;
 
 		if(this.selection.length){
 			this.parentNode=this.selection[0].parentNode;
@@ -3323,7 +3358,7 @@
 			if(!this.selection.length){
 				return false;
 			}
-			return window.mura.matchesSelector(this.selection[0], selector);
+			return this.selection[0].matchesSelector(selector);
 		},
 
 		offsetParent:function(){

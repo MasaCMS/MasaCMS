@@ -47,7 +47,7 @@
 ;(function(window){
 	function MuraDOMSelection(selection,origSelector){
 		this.selection=selection;
-		this.origSelector=selection;
+		this.origSelector=origSelector;
 
 		if(this.selection.length){
 			this.parentNode=this.selection[0].parentNode;
@@ -519,7 +519,7 @@
 			if(!this.selection.length){
 				return false;
 			}
-			return window.mura.matchesSelector(this.selection[0], selector);
+			return this.selection[0].matchesSelector(selector);
 		},
 
 		offsetParent:function(){

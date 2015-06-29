@@ -196,7 +196,7 @@ component
 
 				} else {
 
-					writeOutput( serializeJson( input ) );
+					writeOutput( serializeJson( rereplace(input, "[[:cntrl:]]", "") ) );
 
 				}
 

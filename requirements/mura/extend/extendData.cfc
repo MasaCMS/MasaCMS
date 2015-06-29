@@ -233,6 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						where #getDataTable()#.baseID 
 						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
 					</cfif>
+					and #getDataTable()#.attributeValue is not null
 				</cfquery>
 
 				<cfset variables.instance.sourceIterator.setPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
