@@ -867,10 +867,18 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rsOld = "">
 	<cfset var r=0 />
 	<cfset var i=0 />
-	
+
+	<cfif isJSON(arguments.data)>
+		<cfset arguments.data=deserializeJSON(arguments.data)>
+	</cfif>
+
 	<cfloop from="1" to="#variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getcolumnCount()#" index="r">
 		<cfset objectOrder = 0>
-		<cfif isdefined("arguments.data.objectlist#r#")>
+		
+		<cfif isArray(arguments.data)>
+			
+
+		<cfelseif isdefined("arguments.data.objectlist#r#")>
 			<cfset objectList =arguments.data["objectlist#r#"] />
 			<cfloop list="#objectlist#" index="i" delimiters="^">
 				<cfset objectOrder=objectOrder+1>

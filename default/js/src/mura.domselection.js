@@ -160,7 +160,7 @@
 		},
 
 		trigger:function(eventName,eventDetail){
-			eventDetails=eventDetails || {};
+			eventDetails=eventDetail || {};
 
 			this.each(function(el){
 				window.mura.trigger(el,eventName,eventDetail);
