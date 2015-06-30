@@ -2976,7 +2976,8 @@ this.Element && function(ElementPrototype) {
 			login:login,
 			logout:logout,
 			extendClass:extendClass,
-			init:init
+			init:init,
+			formToObject:formToObject
 			}
 		),
 		//these are here for legacy support
