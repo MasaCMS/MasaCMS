@@ -3058,7 +3058,24 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-<cfreturn this.enableFrontEndTools and (request.muraChangesetPreviewToolbar and (this.showMemberToolBar or this.showAdminToolBar) or ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar()) and not request.muraExportHTML />
+	<cfreturn this.enableFrontEndTools 
+		and (
+			request.muraChangesetPreviewToolbar 
+			and (
+				this.showMemberToolBar or this.showAdminToolBar
+			) or (
+				(
+				 	StructKeyExists(session, 'mura') 
+				 	and (
+						listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') 
+						or listFind(session.mura.memberships,'S2')
+					)
+				) or (
+					listFindNoCase("editor,author",variables.event.getValue('r').perm) 
+					and this.showMemberToolBar
+				)
+			) and getShowAdminToolBar()
+		) and not request.muraExportHTML />
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
