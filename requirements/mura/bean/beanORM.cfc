@@ -640,6 +640,10 @@ component extends="mura.bean.bean" versioned=false {
 		var primaryFound=false;
 		var primarykeyargvalue='';
 
+		if(!isDefined('arguments.siteid') && hasProperty('siteid') && len(getValue('siteID'))){
+			arguments.siteid=getValue('siteID');
+		}
+
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
 			for(var arg in arguments){
