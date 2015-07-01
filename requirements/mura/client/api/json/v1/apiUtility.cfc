@@ -859,7 +859,7 @@ component extends="mura.cfobject" {
 		}
 
 		if($.validateCSRFTokens(context=arguments.id)){
-			if($.event('type')=='Variation'){
+			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
 					);

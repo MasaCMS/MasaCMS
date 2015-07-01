@@ -1924,7 +1924,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getCategorySummary" returntype="query" access="public" output="false">
 		<cfargument name="siteID" type="string" required="true" />
 		<cfset var rs = ''>
-		<cfset rs = variables.contentGateway.geCategorySummary(arguments.siteID)>
+		<cfset rs = variables.contentGateway.getCategorySummary(arguments.siteID)>
 		<cfreturn rs />
 	</cffunction>
 

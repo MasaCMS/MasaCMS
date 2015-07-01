@@ -867,91 +867,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rsOld = "">
 	<cfset var r=0 />
 	<cfset var i=0 />
-	<cfset var regionIdx=0 />
-	<cfset var regionFound=false>
-
-	<cfif isJSON(arguments.data)>
-		<cfset arguments.data=deserializeJSON(arguments.data)>
-	</cfif>
-
+	
 	<cfloop from="1" to="#variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getcolumnCount()#" index="r">
 		<cfset objectOrder = 0>
-		<cfset regionFound=false>
-
-		<!--- data was passed as array 
-			[
-				{
-					regionid:1
-					items:[
-						{
-							object:'component',
-							objectname:'Mura Component',
-							objectid:'sdfsfdsf',
-							objectparams:{}
-						}
-
-					]
-				}
-
-			]
-
-		--->
-		<cfif isDefined('arguments.data.displayregions')>
-			<!--- data has length--->
-			<cfif arrayLen(arguments.data.displayregions)>
-				<!--- does the data have the current region's data --->
-				<cfloop from="1" to="#arrayLen(arguments.data.displayregions)#" index="regionIdx">
-					<cfif arguments.data.displayregions[regionid].regionid=r>
-						<cfbreak>
-					</cfif>
-				</cfloop>
-
-				<!--- the region's data was found --->
-				<cfif regionIdx>
-					<cfset regionFound=true>
-					<cfif arrayLen(arguments.data.displayregions[regionIdx].items)>
-						<cfloop from="1" to="#arrayLen(arguments.data.displayregions[regionIdx].items)#" index="i">
-							<cfset var obj=arguments.data.displayregions[regionIdx].items[i]>
-							<cfset objectOrder=objectOrder+1>
-							<cfquery>
-							insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
-							values(
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#obj.object#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#obj.objectname#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#obj.objectid#" />,
-								<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
-								<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
-								<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#obj.objectparams#" />
-								)
-							</cfquery>
-						</cfloop>
-					</cfif>
-				<cfelseif arguments.oldContentHistID neq ''>
-					<cfset rsOld=readRegionObjects(arguments.oldContentHistID,arguments.contentBean.getsiteid(),r)/>
-					
-					<cfloop query="rsOld">
-						<cfset objectOrder=objectOrder+1>
-						<cfquery>
-						insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
-						values(
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsOld.object#" />,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsOld.name#" />,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsOld.objectID#" />,
-							<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.currentRow#" />,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
-							<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.columnid#" />,
-							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rsOld.params neq '',de('no'),de('yes'))#" value="#rsOld.params#" />
-							)
-						</cfquery>
-					</cfloop>
-				</cfif>
-			</cfif>
-		<cfelseif isdefined("arguments.data.objectlist#r#")>
+		<cfif isdefined("arguments.data.objectlist#r#")>
 			<cfset objectList =arguments.data["objectlist#r#"] />
 			<cfloop list="#objectlist#" index="i" delimiters="^">
 				<cfset objectOrder=objectOrder+1>
