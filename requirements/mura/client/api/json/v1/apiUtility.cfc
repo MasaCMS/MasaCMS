@@ -168,7 +168,7 @@ component extends="mura.cfobject" {
 		return {'items'=arguments._array};
 	}
 
-	function formatIteratorResult(iterator,returnArray){
+	function formatIteratorResult(iterator,returnArray,method){
 		var result={};
 
 		if(arguments.iterator.getRecordCount()){
@@ -196,6 +196,11 @@ component extends="mura.cfobject" {
 		var params={};
 		structAppend(params,url,true);
 		structAppend(params,form,true);
+		param name="params.method" default=arguments.method;
+
+		if(params.method=='undefined'){
+			params.method=arguments.method;
+		}
 
 		for(var u in params){
 			if(u!='pageIndex'){
@@ -344,7 +349,10 @@ component extends="mura.cfobject" {
 				params.entityConfigName="contentnav";
 			}
 
-			if(!isDefined("params.siteid") || !(isDefined("params.entityName") && len(params.entityName) && getServiceFactory().containsBean(params.entityName)) ){
+			if(isDefined("params.siteid") && !isDefined('params.entityName')){
+				params.entityName='entityname';
+				params.method='findall';
+			} else if(!isDefined("params.siteid") || !(isDefined("params.entityName") && len(params.entityName) && getServiceFactory().containsBean(params.entityName)) ){
 				if(isDefined('params.entityName') && right(params.entityName,1) == 's'){
 					params.entityName=left(params.entityName,len(params.entityName)-1);
 
@@ -427,6 +435,8 @@ component extends="mura.cfobject" {
 				var primaryKey='userid';
 			} else if(params.entityName=="feed"){
 				var primaryKey='feedid';
+			} else if(params.entityName=="entityname"){
+				var primaryKey='notvalid';
 			} else {
 				var primaryKey=application.objectMappings['#params.entityName#'].primaryKey;
 			}
@@ -629,7 +639,7 @@ component extends="mura.cfobject" {
 		return (isDefined('session.siteid') && isDefined('session.mura.requestcount') && session.mura.requestcount > 1);
 	}
 
-	function AllowAccess(bean,$){
+	function AllowAccess(bean,$,throwError=true){
 
 		if(isObject(arguments.bean)){
 			if(!isDefined('arguments.bean.getEntityName')){
@@ -638,7 +648,10 @@ component extends="mura.cfobject" {
 			var entityName=arguments.bean.getEntityName();
 		} else {
 			if(!getServiceFactory().containsBean(arguments.bean)){
-				throw(type='invalidParameters');
+				if(arguments.throwError){
+					throw(type='invalidParameters');
+				}
+				return false;
 			}
 			var entityName=arguments.bean;
 		}
@@ -859,7 +872,7 @@ component extends="mura.cfobject" {
 		}
 
 		if($.validateCSRFTokens(context=arguments.id)){
-			if($.event('type')=='Variation'){
+			if(arguments.entityName=='content' && $.event('type')=='Variation'){
 				entity.loadBy(argumentCollection=loadByparams).set(
 						$.event().getAllValues()
 					);
@@ -1082,8 +1095,19 @@ component extends="mura.cfobject" {
 	}
 
 	function findAll(siteid,entityName){
-	
 		var $=getBean('$').init(arguments.siteid);
+
+		if(entityName=='entityname'){
+			var returnArray=[];
+			for(var i in variables.config.entities){
+				if(allowAccess(i,$,false)){
+					arrayAppend(returnArray,{entityname=i,links={endpoint=getEndPoint() & "/" & i}});
+				}
+			}
+			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};
+		}
+
+		
 		var entity=$.getBean(arguments.entityName);
 
 		if(!allowAccess(entity,$)){
@@ -1140,7 +1164,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct);
 		}
 
-		return formatIteratorResult(iterator,returnArray);
+		return formatIteratorResult(iterator,returnArray,'findall');
 	}
 
 	function findMany(entityName,ids,siteid){
@@ -1208,7 +1232,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(iterator,returnArray);
+		return formatIteratorResult(iterator,returnArray,'findmany');
 	}
 
 	function findQuery(entityName,siteid){
@@ -1302,7 +1326,7 @@ component extends="mura.cfobject" {
 
 		//writeDump(var=$.event('pageIndex'),abort=1);
 
-		return formatIteratorResult(iterator,returnArray);
+		return formatIteratorResult(iterator,returnArray,'findquery');
 	}
 
 	function setFeedProps(feed,$){
@@ -1459,7 +1483,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(iterator,returnArray);
+		return formatIteratorResult(iterator,returnArray,'findCrumbArray');
 	}
 
 	function delete(entityName,id,siteid){
@@ -1661,7 +1685,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(iterator,returnArray);
+		return formatIteratorResult(iterator,returnArray,'findRelatedContent');
 	}
 
 	function applyRemoteFormat(str){
