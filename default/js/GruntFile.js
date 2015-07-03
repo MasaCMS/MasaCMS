@@ -12,7 +12,8 @@ module.exports = function(grunt) {
           'src/mura.loader.js',
           'src/mura.domselection.js',
           'src/mura.entity.js',
-          'src/mura.entitycollection.js'
+          'src/mura.entitycollection.js',
+          'src/mura.sortable.js'
           ],
           dest: 'dist/mura.js',
         },
