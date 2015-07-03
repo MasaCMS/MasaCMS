@@ -403,7 +403,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
 	<cfset request.servletEvent.setValue("currentfilenameadjusted",arguments.filename)>
-	<cfset loadLocalEventHandler(arguments.event)>
+	<cfset loadLocalEventHandler(request.servletEvent)>
 
 	<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
 
