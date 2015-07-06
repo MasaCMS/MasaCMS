@@ -114,7 +114,6 @@
 		<div class="#this.alertDangerClass#">#application.utility.displayErrors(formDataBean.getErrors())#</div>
 	</cfif>
 <cfelse>
-	  <p class="#this.alertDangerClass#">#$.rbKey('recaptcha.error')# <a href="javascript:history.back();">#$.rbKey('recaptcha.tryagain')#</a></p>
 		<div id="frm#replace(variables.rsform.contentID,'-','','ALL')#">
 		<cfset variables.customResponse=application.pluginManager.renderEvent("onFormSubmitResponseRender",event)>
 		<cfif len(customResponse)>
