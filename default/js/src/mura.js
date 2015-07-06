@@ -1357,7 +1357,7 @@
 			processMarkup(self);
 
 			select(self).find('a[href="javascript:history.back();"]').each(function(){
-				mura(this).on("click",function(e){
+				mura(this).off("click").on("click",function(e){
 					if(self.prevInnerHTML){
 						e.preventDefault();
 						wireUpObject(self.prevInnerHTML);

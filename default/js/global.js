@@ -1182,7 +1182,7 @@ var initMura=function(config){
       $(self).html(html);
       
       $(self).find('a[href="javascript:history.back();"]').each(function(){
-        $(this).on("click",function(e){
+        $(this).off('click').on("click",function(e){
           if(self.prevInnerHTML){
             e.preventDefault();
             wireUpObject(self.prevInnerHTML);
