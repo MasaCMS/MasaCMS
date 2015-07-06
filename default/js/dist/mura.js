@@ -2765,7 +2765,7 @@ this.Element && function(ElementPrototype) {
 
 						if(self.prevData){
 					 		for(var p in self.prevData){
-					 			select('input[name="' + p + '"]').val(self.prevData[p]);
+					 			select('[name="' + p + '"]').val(self.prevData[p]);
 					 		}
 					 	}
 						self.prevInnerHTML=false;
