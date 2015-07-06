@@ -178,6 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.bCryptPasswords=true/>
 <cfset variables.instance.allowQueryCaching=true/>
 <cfset variables.instance.skipCleanFileCache=false/>
+<cfset variables.instance.saveEmptyExtendedValues=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

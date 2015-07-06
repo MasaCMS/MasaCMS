@@ -383,6 +383,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempDate=""/>
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
+<cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -449,7 +450,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
 		
-		<cfif len(theValue)>
+		<cfif len(theValue) or saveEmptyExtendedValues>
 			<cfquery>
 				insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
 				)
@@ -458,7 +459,11 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
-				<cfif listFindNoCase("Date,DateTime",rs.validation)>
+				<cfif not len(theValue)>
+					null,
+					null,
+					null
+				<cfelseif listFindNoCase("Date,DateTime",rs.validation)>
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
 					null						
