@@ -1164,6 +1164,8 @@
 	function loader(){return window.mura.ljs;}
 
 	function processMarkup(scope){
+		var self=scope;
+
 		scope=select(scope);
 
 		var processors=[
@@ -1288,45 +1290,6 @@
 	function processAsyncObject(el){
 		var self=el;
 
-		function handleResponse(resp){
-			
-			function wireUpObject(html){
-				select(self).html(html);
-
-				processMarkup(self);
-				
-				each(self.getElementsByTagName('FORM'),function(el,i){
-					el.onsubmit=function(){return validateFormAjax(this);};
-				});
-
-				select(self).trigger('asyncObjectRendered');
-
-			};
-
-			if('html' in resp.data){
-				wireUpObject(resp.data.html);
-			} else if('redirect' in resp.data){
-				location.href=resp.data.redirect;
-			} else if('render' in resp.data){
-				ajax({ 
-			        type:"POST",
-			        xhrFields:{ withCredentials: true },
-			        crossDomain:true,
-			        url:resp.data.render,
-			        data:resp.data,
-			        success:function(data){
-			        	if(typeof data=='string'){
-			        		wireUpObject(data);
-			        	} else if (typeof data=='object' && 'html' in data) {
-			        		wireUpObject(data.html);
-			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
-			        		wireUpObject(data.data.html);
-			        	}
-			        }
-		   		});
-			}
-		};
-
 		function validateFormAjax(frm) {
 			
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
@@ -1377,6 +1340,8 @@
 
 			validateForm(frm,
 				function(frm){
+					self.prevInnerHTML=self.innerHTML;
+					self.prevData=data;
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax(postconfig);
 				}
@@ -1384,6 +1349,62 @@
 
 			return false;
 			
+		}
+
+		function wireUpObject(html){
+			select(self).html(html);
+
+			processMarkup(self);
+
+			select(self).find('a[href="javascript:history.back();"]').each(function(){
+				mura(this).on("click",function(e){
+					if(self.prevInnerHTML){
+						e.preventDefault();
+						wireUpObject(self.prevInnerHTML);
+
+						if(self.prevData){
+					 		for(var p in self.prevData){
+					 			select('input[name="' + p + '"]').val(self.prevData[p]);
+					 		}
+					 	}
+						self.prevInnerHTML=false;
+						self.prevData=false;
+					}
+				});
+			});
+			
+			each(self.getElementsByTagName('FORM'),function(el,i){
+				el.onsubmit=function(){return validateFormAjax(this);};
+			});
+
+			select(self).trigger('asyncObjectRendered');
+
+		}
+
+		function handleResponse(resp){
+
+			if('html' in resp.data){
+				wireUpObject(resp.data.html);
+			} else if('redirect' in resp.data){
+				location.href=resp.data.redirect;
+			} else if('render' in resp.data){
+				ajax({ 
+			        type:"POST",
+			        xhrFields:{ withCredentials: true },
+			        crossDomain:true,
+			        url:resp.data.render,
+			        data:resp.data,
+			        success:function(data){
+			        	if(typeof data=='string'){
+			        		wireUpObject(data);
+			        	} else if (typeof data=='object' && 'html' in data) {
+			        		wireUpObject(data.html);
+			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
+			        		wireUpObject(data.data.html);
+			        	}
+			        }
+		   		});
+			}
 		}
 
 		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:window.mura.nocache},setLowerCaseKeys(getDataAttributes(self)));
@@ -1404,6 +1425,7 @@
 			success:handleResponse}
 		);
 		*/
+		
 
 	}
 	

@@ -648,6 +648,35 @@
 			
 		},
 
+        val:function(value){
+			if(!this.selection.length){
+				return;
+			}
+
+			if(typeof value != 'undefined'){
+				this.each(function(el){
+					if(el.tagName=='radio'){
+						if(el.value==value){
+							el.checked=true;
+						} else {
+							el.checked=false;
+						}
+					} else {
+						el.value=value;
+					}
+					
+				});
+				return this;
+			
+			} else {
+				if(this.selection[0].hasOwnProperty('value')){
+					return this.selection[0].value;
+				} else {
+					return '';
+				}
+			}
+		},
+
 		attr:function(attributeName,value){
 			if(!this.selection.length){
 				return;
