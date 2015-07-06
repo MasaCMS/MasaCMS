@@ -2565,6 +2565,8 @@ this.Element && function(ElementPrototype) {
 	function loader(){return window.mura.ljs;}
 
 	function processMarkup(scope){
+		var self=scope;
+
 		scope=select(scope);
 
 		var processors=[
@@ -2689,45 +2691,6 @@ this.Element && function(ElementPrototype) {
 	function processAsyncObject(el){
 		var self=el;
 
-		function handleResponse(resp){
-			
-			function wireUpObject(html){
-				select(self).html(html);
-
-				processMarkup(self);
-				
-				each(self.getElementsByTagName('FORM'),function(el,i){
-					el.onsubmit=function(){return validateFormAjax(this);};
-				});
-
-				select(self).trigger('asyncObjectRendered');
-
-			};
-
-			if('html' in resp.data){
-				wireUpObject(resp.data.html);
-			} else if('redirect' in resp.data){
-				location.href=resp.data.redirect;
-			} else if('render' in resp.data){
-				ajax({ 
-			        type:"POST",
-			        xhrFields:{ withCredentials: true },
-			        crossDomain:true,
-			        url:resp.data.render,
-			        data:resp.data,
-			        success:function(data){
-			        	if(typeof data=='string'){
-			        		wireUpObject(data);
-			        	} else if (typeof data=='object' && 'html' in data) {
-			        		wireUpObject(data.html);
-			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
-			        		wireUpObject(data.data.html);
-			        	}
-			        }
-		   		});
-			}
-		};
-
 		function validateFormAjax(frm) {
 			
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
@@ -2778,6 +2741,8 @@ this.Element && function(ElementPrototype) {
 
 			validateForm(frm,
 				function(frm){
+					self.prevInnerHTML=self.innerHTML;
+					self.prevData=data;
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax(postconfig);
 				}
@@ -2785,6 +2750,62 @@ this.Element && function(ElementPrototype) {
 
 			return false;
 			
+		}
+
+		function wireUpObject(html){
+			select(self).html(html);
+
+			processMarkup(self);
+
+			select(self).find('a[href="javascript:history.back();"]').each(function(){
+				mura(this).on("click",function(e){
+					if(self.prevInnerHTML){
+						e.preventDefault();
+						wireUpObject(self.prevInnerHTML);
+
+						if(self.prevData){
+					 		for(var p in self.prevData){
+					 			select('input[name="' + p + '"]').val(self.prevData[p]);
+					 		}
+					 	}
+						self.prevInnerHTML=false;
+						self.prevData=false;
+					}
+				});
+			});
+			
+			each(self.getElementsByTagName('FORM'),function(el,i){
+				el.onsubmit=function(){return validateFormAjax(this);};
+			});
+
+			select(self).trigger('asyncObjectRendered');
+
+		}
+
+		function handleResponse(resp){
+
+			if('html' in resp.data){
+				wireUpObject(resp.data.html);
+			} else if('redirect' in resp.data){
+				location.href=resp.data.redirect;
+			} else if('render' in resp.data){
+				ajax({ 
+			        type:"POST",
+			        xhrFields:{ withCredentials: true },
+			        crossDomain:true,
+			        url:resp.data.render,
+			        data:resp.data,
+			        success:function(data){
+			        	if(typeof data=='string'){
+			        		wireUpObject(data);
+			        	} else if (typeof data=='object' && 'html' in data) {
+			        		wireUpObject(data.html);
+			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
+			        		wireUpObject(data.data.html);
+			        	}
+			        }
+		   		});
+			}
 		}
 
 		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:window.mura.nocache},setLowerCaseKeys(getDataAttributes(self)));
@@ -2805,6 +2826,7 @@ this.Element && function(ElementPrototype) {
 			success:handleResponse}
 		);
 		*/
+		
 
 	}
 	
@@ -3870,6 +3892,35 @@ this.Element && function(ElementPrototype) {
 			});
 			return this;
 			
+		},
+
+        val:function(value){
+			if(!this.selection.length){
+				return;
+			}
+
+			if(typeof value != 'undefined'){
+				this.each(function(el){
+					if(el.tagName=='radio'){
+						if(el.value==value){
+							el.checked=true;
+						} else {
+							el.checked=false;
+						}
+					} else {
+						el.value=value;
+					}
+					
+				});
+				return this;
+			
+			} else {
+				if(this.selection[0].hasOwnProperty('value')){
+					return this.selection[0].value;
+				} else {
+					return '';
+				}
+			}
 		},
 
 		attr:function(attributeName,value){
