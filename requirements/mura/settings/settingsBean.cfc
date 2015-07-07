@@ -242,6 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.RemotePort=80/>
 	<cfset variables.instance.resourceSSL=0/>
 	<cfset variables.instance.resourceDomain=""/>
+	<cfset variables.instance.displayObjectLookup={}/>
 
 	<cfreturn this />
 </cffunction>
@@ -1156,5 +1157,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getVersion" output="false">
 	<cfreturn getBean('autoUpdater').getCurrentVersion(getValue('siteid'))>
 </cffunction>
+
+<cffunction name="registerDisplayObject" output="false">
+	<cfargument name="object">
+	<cfargument name="name" default="">
+	<cfargument name="displaymethod" default="">
+	<cfargument name="displayObjectFile" default="">
+	<cfargument name="configuratorInit" default="">
+	<cfargument name="configuratorJS" default="">
+	<cfset arguments.objectid=arguments.object>
+	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="hasDisplayObject" output="false">
+	<cfargument name="object">
+	<cfreturn structKeyExists(variables.instance.displayObjectLookup,'#arguments.object#')>
+</cffunction>
+
+<cffunction name="getDisplayObject" output="false">
+	<cfargument name="object">
+	<cfreturn variables.instance.displayObjectLookup['#arguments.object#']>
+</cffunction>
+
 
 </cfcomponent>
