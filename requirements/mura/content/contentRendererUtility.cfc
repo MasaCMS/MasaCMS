@@ -1204,11 +1204,11 @@
 		<cfset var qsa="">
 		<cfset var qq="">
 
-		<cfif arguments.renderer.hasMuraScope() and len(arguments.renderer.getMuraScope().event('siteID')) and arguments.renderer..getMuraScope().event('siteID') neq arguments.siteID>
+		<cfif arguments.renderer.hasMuraScope() and len(arguments.renderer.getMuraScope().event('siteID')) and arguments.renderer.getMuraScope().event('siteID') neq arguments.siteID>
 			<cfif not len(arguments.siteid)>
 				<cfset arguments.siteid=arguments.renderer.getMuraScope().event('siteID')>
 			</cfif>
-			<cfif arguments.siteid neq arguments.renderer..getMuraScope().event('siteID')>
+			<cfif arguments.siteid neq arguments.renderer.getMuraScope().event('siteID')>
 				<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().createHREF(argumentCollection=arguments)>
 			</cfif>
 		</cfif>
