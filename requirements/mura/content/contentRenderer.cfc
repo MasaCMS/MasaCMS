@@ -2636,15 +2636,6 @@ Display Objects
  		return isDefined('variables.$');
  	}
 
- 	public function renderingProperty(property,propertyValue){
- 		if(isDefined('arguments.propertyValue')){
- 			this['#arguments.property#']=arguments.propertyValue;
- 			return this;
- 		} else {
- 			return this['#arguments.property#'];
- 		}
- 	}
-
 </cfscript>
 
 </cfcomponent>
