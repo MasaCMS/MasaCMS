@@ -44,58 +44,44 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<!---
-<cfset request.muraAsyncEditableObject=true>
-<cfif request.muraFrontEndRequest and this.asyncObjects>
-	<cfoutput>
-		<div class="mura-async-object" 
-			data-object="#esapiEncode('html_attr',arguments.object)#" 
-			data-objectid="#esapiEncode('html_attr',arguments.objectid)#" 
-			data-objectparams=#serializeJSON(objectParams)#>
-		</div>
-	</cfoutput>
-<cfelse>
---->
-	<cfsilent>
-		<cfif isValid("UUID",arguments.objectID)>
-			<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
-		<cfelse>
-			<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID,type='Component')>
-		</cfif>
-		
-		<cfset variables.rsTemplate=bean.getAllValues()>
-		<cfset variables.event.setValue("component",variables.rsTemplate)>
-		
-		<cfset variables.rsTemplate.isOnDisplay=variables.rsTemplate.display eq 1 or 
-				(
-					variables.rsTemplate.display eq 2 and variables.rsTemplate.DisplayStart lte now()
-					AND (variables.rsTemplate.DisplayStop gte now() or variables.rsTemplate.DisplayStop eq "")
-				)
-				and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>	
-	</cfsilent>
-
-	<cfif not bean.getIsNew()>
-		<cfif variables.rsTemplate.isOnDisplay>
-			<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
-			<cfif not len(variables.componentOutput)>
-				<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
-			</cfif>
-			<cfif len(variables.componentOutput)>
-				<cfoutput>#variables.componentOutput#</cfoutput>
-			<cfelse>
-				<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
-					<cfset variables.componentBody=variables.rsTemplate.body>
-					<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
-				<cfelse>
-					<cfoutput>#variables.$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
-				</cfif>
-			</cfif>
-		</cfif>
-		<cfif not variables.rsTemplate.doCache>
-			<cfset request.cacheItem=variables.rsTemplate.doCache/>
-		</cfif>
+<cfsilent>
+	<cfif isValid("UUID",arguments.objectID)>
+		<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 	<cfelse>
-		<cfset request.muraValidObject=false>
+		<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID,type='Component')>
 	</cfif>
-<!---</cfif>--->
+	
+	<cfset variables.rsTemplate=bean.getAllValues()>
+	<cfset variables.event.setValue("component",variables.rsTemplate)>
+	
+	<cfset variables.rsTemplate.isOnDisplay=variables.rsTemplate.display eq 1 or 
+			(
+				variables.rsTemplate.display eq 2 and variables.rsTemplate.DisplayStart lte now()
+				AND (variables.rsTemplate.DisplayStop gte now() or variables.rsTemplate.DisplayStop eq "")
+			)
+			and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>	
+</cfsilent>
+
+<cfif not bean.getIsNew()>
+	<cfif variables.rsTemplate.isOnDisplay>
+		<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
+		<cfif not len(variables.componentOutput)>
+			<cfset variables.componentOutput=$.dspObject_include(theFile='extensions/dsp_Component_' & REReplace(bean.getSubType(), "[^a-zA-Z0-9_]", "", "ALL") & ".cfm",throwError=false)>
+		</cfif>
+		<cfif len(variables.componentOutput)>
+			<cfoutput>#variables.componentOutput#</cfoutput>
+		<cfelse>
+			<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
+				<cfset variables.componentBody=variables.rsTemplate.body>
+				<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
+			<cfelse>
+				<cfoutput>#variables.$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
+			</cfif>
+		</cfif>
+	</cfif>
+	<cfif not variables.rsTemplate.doCache>
+		<cfset request.cacheItem=variables.rsTemplate.doCache/>
+	</cfif>
+<cfelse>
+	<cfset request.muraValidObject=false>
+</cfif>

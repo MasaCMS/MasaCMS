@@ -44,15 +44,4 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<!---
-<cfif request.muraFrontEndRequest and this.asyncObjects>
-	<cfoutput>
-		<div class="mura-async-object" 
-			data-object="#esapiEncode('html_attr',arguments.object)#">
-		</div>
-	</cfoutput>
-<cfelse>
---->
-	<cfoutput><nav id="navPeer"<cfif this.navWrapperClass neq ""> class="mura-nav-peer #this.navWrapperClass#"</cfif>>#dspPeerNav()#</nav></cfoutput>
-<!---</cfif>--->
+<cfoutput><nav id="navPeer"<cfif this.navWrapperClass neq ""> class="mura-nav-peer #this.navWrapperClass#"</cfif>>#dspPeerNav()#</nav></cfoutput>

@@ -7,6 +7,7 @@
 		<cfargument name="charLimit" type="numeric" default="0">
 		<cfargument name="minLevels" type="numeric" default="0">
 		<cfargument name="maxLevels" type="numeric" default="0">
+		<cfargument name="renderer">
 		<cfset var content = "">
 		<cfset var locked = "">
 		<cfset var lastlocked = "">
@@ -42,7 +43,7 @@
 		<cfloop from="#crumbLen#" to="2" index="i" step="-1">
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
-				<cfset icon=renderIcon(arguments.crumbdata[i])>
+				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
 			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
@@ -51,7 +52,7 @@
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
 				<cfset lastlocked="locked">
 			</cfif>
-			<cfset icon=renderIcon(arguments.crumbdata[1])>
+			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
 			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
@@ -239,8 +240,9 @@
 
 	<cffunction name="getCurrentURLArray" output="false">
 		<cfargument name="renderer">
-		<cfset var topURL=renderer.getMuraScope().createHREF(filename=renderer.crumbdata[arrayLen(renderer.crumbdata)-renderer.navOffSet].filename)>
-		<cfset var tempUrlArray=renderer.getMuraScope().getCrumbPropertyArray(property='url',direction="desc")>
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
+		<cfset var topURL=renderer.getMuraScope().createHREF(filename=crumbdata[arrayLen(crumbdata)-arguments.renderer.getNavOffSet()].filename)>
+		<cfset var tempUrlArray=arguments.renderer.getMuraScope().getCrumbPropertyArray(property='url',direction="desc")>
 		<cfset var i=1>
 		<cfset var urlArray=[]>
 		<cfset var started=false>
@@ -321,10 +323,12 @@
 	<cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
 		<cfargument name="isConfigurator" default="false">
+		<cfargument name="showEditableObjects" default="false">
+		<cfargument name="enableFrontEndTools" default="false">
 		<cfargument name="renderer">
 		<cfset var str = "">
 		
-		<cfif arguments.renderer.showEditableObjects and arguments.renderer.enableFrontEndTools>		
+		<cfif arguments.showEditableObjects and arguments.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
@@ -340,10 +344,12 @@
 	<cffunction name="renderEditableObjectHeader" access="public" output="no" returntype="string">
 		<cfargument name="class" required="yes" default="">
 		<cfargument name="customWrapperString" required="yes" default="">
+		<cfargument name="showEditableObjects" default="false">
+		<cfargument name="enableFrontEndTools" default="false">
 		<cfargument name="renderer">
 		<cfset var str = "">
 		
-		<cfif arguments.renderer.showEditableObjects and arguments.renderer.enableFrontEndTools>		
+		<cfif arguments.showEditableObjects and arguments.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<span class="editableObject #arguments.class#" #arguments.customWrapperString#><span class="editableObjectContents">
@@ -356,10 +362,12 @@
 
 	<cffunction name="renderEditableObjectfooter" access="public" output="no" returntype="string">
 		<cfargument name="control" required="yes" default="">
+		<cfargument name="showEditableObjects" default="false">
+		<cfargument name="enableFrontEndTools" default="false">
 		<cfargument name="renderer">
 		<cfset var str = "">
 		
-		<cfif arguments.renderer.showEditableObjects and arguments.renderer.enableFrontEndTools>		
+		<cfif arguments.showEditableObjects and arguments.enableFrontEndTools>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<cfoutput></span>#arguments.control#</cfoutput></span>
@@ -430,12 +438,13 @@
 
 	<cffunction name="getContentListProperty" output="false">
 		<cfargument name="property" default="">
+		<cfargument name="contentListPropertyMap">
 		<cfargument name="renderer">
 
-		<cfif structKeyExists(arguments.renderer.contentListPropertyMap,arguments.property)>
-			<cfreturn arguments.renderer.contentListPropertyMap[arguments.property]>
+		<cfif structKeyExists(arguments.contentListPropertyMap,arguments.property)>
+			<cfreturn arguments.contentListPropertyMap[arguments.property]>
 		<cfelse>
-			<cfreturn arguments.renderer.contentListPropertyMap.default>
+			<cfreturn arguments.contentListPropertyMap.default>
 		</cfif>
 
 	</cffunction>
@@ -511,12 +520,13 @@
 	</cffunction>
 
 	<cffunction name="getListFormat" output="false">
+		<cfargument name="contentListPropertyMap">
 		<cfargument name="renderer">
 
-		<cfif listFindNoCase("ul,ol",arguments.renderer.contentListPropertyMap.containerEl.tag)>
-			<cfreturn arguments.renderer.contentListPropertyMap.containerEl.tag>
+		<cfif listFindNoCase("ul,ol",arguments.contentListPropertyMap.containerEl.tag)>
+			<cfreturn arguments.contentListPropertyMap.containerEl.tag>
 		<cfelse>
-			<cfreturn arguments.renderer.contentListPropertyMap.itemEl.tag>
+			<cfreturn arguments.contentListPropertyMap.itemEl.tag>
 		</cfif>
 	</cffunction>
 
@@ -569,7 +579,7 @@
 		<cfset var offset=1>
 
 		<cfif arguments.useNavOffset>
-			<cfset offset=1+arguments.renderer.navOffset/>
+			<cfset offset=1+arguments.renderer.getNavOffSet()/>
 		</cfif>
 		
 		<cfif arrayLen(arguments.renderer.crumbdata) gt offset>
@@ -596,7 +606,7 @@
 		<cfset var offset=1>
 		
 		<cfif arguments.useNavOffset>
-			<cfset offset=offset+arguments.renderer.navOffset/>
+			<cfset offset=offset+arguments.renderer.getNavOffSet()/>
 		</cfif>
 
 		<cfreturn arguments.renderer.getCrumbVarByLevel(arguments.topVar,offset)>	
@@ -606,9 +616,9 @@
 		<cfargument name="theVar" required="true" default="" type="String">
 		<cfargument name="level" required="true" type="numeric" default="1">
 		<cfargument name="renderer">
-							
-		<cfif arrayLen(arguments.renderer.crumbData) gt arguments.level>
-			<cfreturn arguments.renderer.crumbData[arrayLen(arguments.renderer.crumbData)-arguments.level][arguments.theVar]>
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>					
+		<cfif arrayLen(crumbData) gt arguments.level>
+			<cfreturn crumbData[arrayLen(crumbData)-arguments.level][arguments.theVar]>
 		<cfelse>
 			<cfreturn "">
 		</cfif>		
@@ -712,9 +722,9 @@
 		<cfset var start=1/>
 
 		<cfset str = replace(str,chr(13)&chr(10),chr(10),"ALL")/>
-		//now make Macintosh style into Unix style
+		<!---now make Macintosh style into Unix style--->
 		<cfset str = replace(str,chr(13),chr(10),"ALL")/>
-		//now fix tabs
+		<!---now fix tabs--->
 		<cfset str = replace(str,chr(9),"&nbsp;&nbsp;&nbsp;","ALL")/>
 		
 		<cfset finder=refindnocase('https?:\/\/\S+',str,start,"true")>
@@ -739,7 +749,7 @@
 		<cfset str="<p>" & str & "</p>"/>
 		<cfset str = replace(str,chr(10),"</p><p>","ALL") />
 		
-		//now return the text formatted in HTML
+		<!---now return the text formatted in HTML--->
 		<cfreturn str />
 	</cffunction>
 
@@ -757,15 +767,16 @@
 
 	<cffunction name="getTemplate"  output="false" returntype="string">
 		<cfargument name="renderer">
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
 		<cfset var I = 0 />
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfif event.getValue('contentBean').getIsNew() neq 1>
 			<cfif len(event.getValue('contentBean').getTemplate())>
 				<cfreturn event.getValue('contentBean').getTemplate() />
-			<cfelseif arrayLen(arguments.renderer.crumbdata) gt 1> 
-				<cfloop from="2" to="#arrayLen(arguments.renderer.crumbdata)#" index="I">
-					<cfif  arguments.renderer.crumbdata[I].template neq ''>
-						<cfreturn arguments.renderer.crumbdata[I].template />
+			<cfelseif arrayLen(crumbdata) gt 1> 
+				<cfloop from="2" to="#arrayLen(crumbdata)#" index="I">
+					<cfif  crumbdata[I].template neq ''>
+						<cfreturn crumbdata[I].template />
 					</cfif>
 				</cfloop>
 			</cfif>
@@ -777,26 +788,24 @@
 	<cffunction name="getMetaDesc"  output="false" returntype="string">
 		<cfargument name="renderer">
 		<cfset var I = 0 />
-
-		<cfloop from="1" to="#arrayLen(arguments.renderer.crumbdata)#" index="I">
-		<cfif  arguments.renderer.crumbdata[I].metaDesc neq ''>
-		<cfreturn arguments.renderer.crumbdata[I].metaDesc />
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
+		<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+		<cfif  crumbdata[I].metaDesc neq ''>
+		<cfreturn crumbdata[I].metaDesc />
 		</cfif>
 		</cfloop>
-		
 		<cfreturn "" />
 	</cffunction>
 
 	<cffunction name="getMetaKeyWords"  output="false" returntype="string">
 		<cfargument name="renderer">
 		<cfset var I = 0 />
-
-		<cfloop from="1" to="#arrayLen(arguments.renderer.crumbdata)#" index="I">
-		<cfif  arguments.renderer.crumbdata[I].metaKeyWords neq ''>
-		<cfreturn arguments.renderer.crumbdata[I].metaKeyWords />
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
+		<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+		<cfif crumbdata[I].metaKeyWords neq ''>
+		<cfreturn crumbdata[I].metaKeyWords />
 		</cfif>
 		</cfloop>
-		
 		<cfreturn "" />
 	</cffunction>
 
@@ -809,7 +818,7 @@
 		<cfargument name="str" type="string">
 		<cfargument name="siteID" type="string">
 		<cfset var returnstring=arguments.str/>
-		
+		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset returnstring=replaceNoCase(returnstring,'src="/','src="#$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 		<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="#$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 		<cfset returnstring=replaceNoCase(returnstring,'href="/','href="#$.siteConfig('scheme')#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
@@ -820,8 +829,9 @@
 	<cffunction name="dspSection" access="public" output="false" returntype="string">
 		<cfargument name="level" default="1" required="true">		
 		<cfargument name="renderer">
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
 		<cftry>
-			<cfreturn arguments.renderer.crumbdata[arrayLen(arguments.renderer.crumbdata)-arguments.level].menutitle >
+			<cfreturn crumbdata[arrayLen(crumbdata)-arguments.level].menutitle >
 			<cfcatch>
 				<cfreturn "">
 			</cfcatch>
@@ -841,6 +851,7 @@
 		<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 		<cfargument name="cacheKey" type="string" required="false" default="">
 		<cfargument name="renderer">
+		<cfargument name="showEditableObjects">
 
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
@@ -856,7 +867,7 @@
 		<cfset request.muraValidObject=true>
 		<cfset request.muraAsyncEditableObject=false>
 
-		<cfif session.mura.isLoggedIn and arguments.renderer.showEditableObjects and arguments.allowEditable>
+		<cfif session.mura.isLoggedIn and arguments.showEditableObjects and arguments.allowEditable>
 
 			<cfif $.siteConfig('hasLockableNodes')>
 				<cfset var configuratorAction="carch.lockcheck&destAction=">
@@ -865,7 +876,6 @@
 			</cfif>
 
 			<cfif $.siteConfig().hasDisplayObject(arguments.object)>
-
 				<cfset showEditable=len($.siteConfig().getDisplayObject(arguments.object).configuratorInit) and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 				<cfif showEditable>
 					<cfset editableControl.class="editablePlugin">
@@ -883,7 +893,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
-						<cfset showEditable=arguments.renderer.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 						<cfif showEditable>
 							<cfset editableControl.class="editableFeed">
 							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
@@ -891,7 +901,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="category_summary,category_summary_rss">
-						<cfset showEditable=arguments.renderer.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 						<cfif showEditable>
 							<cfset editableControl.class="editableCategorySummary">
 							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
@@ -900,7 +910,7 @@
 					</cfcase>
 					<cfcase value="tag_cloud">
 						<cfif Len($.siteConfig('customTagGroups'))>	
-							<cfset showEditable=arguments.renderer.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+							<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 							<cfif showEditable>
 								<cfset editableControl.class="editableTagCloud">
 								<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
@@ -913,7 +923,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="site_map">	
-						<cfset showEditable=arguments.renderer.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 						<cfif showEditable>
 							<cfset editableControl.class="editableSiteMap">
 							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
@@ -925,7 +935,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="related_content,related_section_content">
-						<cfset showEditable=arguments.renderer.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
 						<cfif showEditable>
 							<cfset editableControl.class="editableRelatedContent">
 							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
@@ -987,7 +997,7 @@
 				<cfset editableControl.editLink = editableControl.editLink & "&amp;siteID=" & arguments.siteID>
 			</cfif>
 
-			<cfset arguments.renderer.hasEditableObjects=true>
+			<cfset arguments.renderer.setHasEditableObjects(true)>
 		</cfif>
 
 		<cfif $.siteConfig().hasDisplayObject(arguments.object)>
@@ -1197,6 +1207,7 @@
 		<cfargument name="bean" hint="The contentBean that link is being generated for">
 		<cfargument name="secure" default="false">
 		<cfargument name="renderer">
+		<cfargument name="hashURLS">
 		
 		<cfset var href=""/>
 		<cfset var tp=""/>
@@ -1226,9 +1237,9 @@
 		</cfif>
 
 		<cfif len(arguments.querystring)>
-			<cfif not arguments.renderer.hashURLS and not left(arguments.querystring,1) eq "?">
+			<cfif not arguments.hashURLS and not left(arguments.querystring,1) eq "?">
 				<cfset arguments.querystring="?" & arguments.querystring>
-			<cfelseif arguments.renderer.hashURLS>
+			<cfelseif arguments.hashURLS>
 				<cfset qsa="_">
 				<cfset arguments.queryString=listFirst(arguments.querystring,"?")>
 				<cfloop list="#arguments.queryString#" index="q" delimiters="&">
@@ -1263,14 +1274,14 @@
 			<cfset arguments.filename=replace(arguments.filename,'%2F',"/")>
 		</cfif>
 		
-		<cfif arguments.renderer.hashURLS and len(arguments.queryString) and right(arguments.filename,1) neq "/">
+		<cfif arguments.hashURLS and len(arguments.queryString) and right(arguments.filename,1) neq "/">
 			<cfset arguments.queryString="/" & arguments.queryString>
 		</cfif>
 
 		<cfswitch expression="#arguments.type#">
 			<cfcase value="Link,File">
 				<cfif not request.muraExportHTML>
-					<cfif arguments.renderer.hashURLS>
+					<cfif arguments.hashURLS>
 						<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
 					<cfelse>
 						<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
@@ -1283,7 +1294,7 @@
 				</cfif>
 			</cfcase>
 			<cfdefaultcase>
-				<cfif arguments.renderer.hashURLS>
+				<cfif arguments.hashURLS>
 					<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename##arguments.querystring#')#") />
 				<cfelse>
 					<cfset href=HTMLEditFormat("#begin##arguments.renderer.getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
@@ -1413,14 +1424,15 @@
 		<cfargument name="separator" type="string" default="">
 		<cfargument name="class" type="string" default="#this.navBreadcrumbULClass#">
 		<cfargument name="renderer">
+		<cfset var crumbdata=arguments.renderer.getValue('crumbdata')>
 		<cfset var thenav="" />
-		<cfset var theOffset=arrayLen(arguments.renderer.crumbdata)- arguments.renderer.navOffSet />
+		<cfset var theOffset=arrayLen(arguments.renderer.crumbdata)- arguments.renderer.getNavOffSet() />
 		<cfset var I = 0 />
 		<cfset var event=arguments.renderer.getEvent()>
-		<cfif arrayLen(arguments.renderer.crumbdata) gt (1 + arguments.renderer.navOffSet)>
+		<cfif arrayLen(crumbdata) gt (1 + arguments.renderer.getNavOffSet())>
 			<cfsavecontent variable="theNav">
 				<cfoutput><ul itemscope itemtype="http://data-vocabulary.org/Breadcrumb"<cfif len(arguments.id)> id="#arguments.id#"</cfif> class="mura-breadcrumb breadcrumb<cfif Len(arguments.class)> #arguments.class#</cfif>">
-					<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#arguments.renderer.addlink(type=arguments.renderer.crumbdata[I].type,filename=arguments.renderer.crumbdata[I].filename,title=arguments.renderer.crumbdata[I].menutitle,target='_self',targetparams='',contentid=arguments.renderer.crumbdata[I].contentid,siteid=arguments.renderer.crumbdata[I].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexFile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li><cfelse><li class="#iif(arraylen(arguments.renderer.crumbdata),de('last'),de('first'))#">#arguments.separator##arguments.renderer.addlink(type=arguments.renderer.crumbdata[1].type,filename=arguments.renderer.crumbdata[1].filename,title=arguments.renderer.crumbdata[1].menutitle,target='_self',targetparams='',contentid=arguments.renderer.crumbdata[1].contentid,siteid=arguments.renderer.crumbdata[1].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexfile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li></cfif></cfloop>
+					<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#arguments.renderer.addlink(type=crumbdata[I].type,filename=crumbdata[I].filename,title=crumbdata[I].menutitle,target='_self',targetparams='',contentid=crumbdata[I].contentid,siteid=crumbdata[I].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexFile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li><cfelse><li class="#iif(arraylen(crumbdata),de('last'),de('first'))#">#arguments.separator##arguments.renderer.addlink(type=crumbdata[1].type,filename=crumbdata[1].filename,title=crumbdata[1].menutitle,target='_self',targetparams='',contentid=crumbdata[1].contentid,siteid=crumbdata[1].siteid,queryString='',context=application.configBean.getContext(),stub=application.configBean.getStub(),indexfile=application.configBean.getIndexFile(),showMeta=event.getValue('showMeta'),showCurrent=0,isBreadCrumb=true)#</li></cfif></cfloop>
 				</ul></cfoutput>
 			</cfsavecontent>
 		</cfif>
@@ -1480,6 +1492,5 @@
 			<cfset event.setValue('HTMLFootQueue',q) />
 		</cfif>
 	</cffunction>
-
 
 </cfcomponent>

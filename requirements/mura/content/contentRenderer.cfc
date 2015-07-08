@@ -525,6 +525,11 @@ Display Objects
 	<cfset this.jsLib=arguments.jsLib />
 </cffunction>
 
+<cffunction name="setHasEditableObjects" returntype="void" output="false">
+<cfargument name="hasEditableObjects">
+	<cfset this.hasEditableObjects=arguments.hasEditableObjects />
+</cffunction>
+
 <cffunction name="getJsLib" returntype="string" output="false">
 	<cfreturn this.jsLib />
 </cffunction>
@@ -591,6 +596,11 @@ Display Objects
 	<cfif not variables.event.getValue('contentBean').getIsNew()>
 		<cfset this.navOffSet=arguments.navOffSet />
 	</cfif>
+</cffunction>
+
+<cffunction name="getNavOffSet" output="false">
+<cfargument name="navOffSet">
+		<cfreturn this.navOffSet/>
 </cffunction>
 
 <cffunction name="setNavDepthLimit" returntype="void" output="false">
@@ -1790,6 +1800,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="getTopId" output="false" returntype="string">
+	<cfargument name="useNavOffset" required="true" default="false"/>
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getTopId(argumentCollection=arguments)>
 </cffunction>
@@ -1844,6 +1855,7 @@ Display Objects
 	<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 	<cfargument name="cacheKey" type="string" required="false" default="">
 	<cfset arguments.renderer=this>
+	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
@@ -1863,6 +1875,7 @@ Display Objects
 <cffunction name="getContentListProperty" output="false">
 	<cfargument name="property" default="">
 	<cfset arguments.renderer=this>
+	<cfset arguments.contentListPropertyMap=this.contentListPropertyMap>
 	<cfreturn variables.contentRendererUtility.getContentListProperty(argumentCollection=arguments)>
 </cffunction>
 
@@ -1888,6 +1901,7 @@ Display Objects
 
 <cffunction name="getListFormat" output="false">
 	<cfset arguments.renderer=this>
+	<cfset arguments.contentListPropertyMap=this.contentListPropertyMap>
 	<cfreturn variables.contentRendererUtility.getListFormat(argumentCollection=arguments)>
 </cffunction>
 
@@ -1930,6 +1944,7 @@ Display Objects
 	<cfargument name="bean" hint="The contentBean that link is being generated for">
 	<cfargument name="secure" default="false">
 	<cfset arguments.renderer=this>
+	<cfset arguments.hashUrls=this.hashUrls>
 	<cfreturn variables.contentRendererUtility.createHREF(argumentCollection=arguments)>
 </cffunction>
 
@@ -2451,6 +2466,8 @@ Display Objects
 	<cfargument name="editLink" required="yes" default="">
 	<cfargument name="isConfigurator" default="false">
 	<cfset arguments.renderer=this>
+	<cfset arguments.showEditableObjects=this.showEditableObjects>
+	<cfset arguments.enableFrontEndTools=this.enableFrontEndTools>
 	<cfreturn variables.contentRendererUtility.generateEditableObjectControl(argumentCollection=arguments)>
 </cffunction>
 
@@ -2458,12 +2475,16 @@ Display Objects
 	<cfargument name="class" required="yes" default="">
 	<cfargument name="customWrapperString" required="yes" default="">
 	<cfset arguments.renderer=this>
+		<cfset arguments.showEditableObjects=this.showEditableObjects>
+	<cfset arguments.enableFrontEndTools=this.enableFrontEndTools>
 	<cfreturn variables.contentRendererUtility.renderEditableObjectHeader(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="renderEditableObjectfooter" access="public" output="no" returntype="string">
 	<cfargument name="control" required="yes" default="">
 	<cfset arguments.renderer=this>
+	<cfset arguments.showEditableObjects=this.showEditableObjects>
+	<cfset arguments.enableFrontEndTools=this.enableFrontEndTools>
 	<cfreturn variables.contentRendererUtility.renderEditableObjectfooter(argumentCollection=arguments)>
 </cffunction>
 
@@ -2614,6 +2635,16 @@ Display Objects
  	public function hasMuraScope(){
  		return isDefined('variables.$');
  	}
+
+ 	public function renderingProperty(property,propertyValue){
+ 		if(isDefined('arguments.propertyValue')){
+ 			this['#arguments.property#']=arguments.propertyValue;
+ 			return this;
+ 		} else {
+ 			return this['#arguments.property#'];
+ 		}
+ 	}
+
 </cfscript>
 
 </cfcomponent>
