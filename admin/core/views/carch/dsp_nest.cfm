@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsnest=application.contentManager.getNest(attributes.parentid,session.siteid,attributes.sortBy,attributes.sortDirection)>
 
 <cfset $=request.event.getValue('MuraScope')>
+<cfparam name="attributes.muraScope" default="#$#">
 
 <cfif attributes.nestlevel neq 1>
 	<cfset variables.startrow=1>
