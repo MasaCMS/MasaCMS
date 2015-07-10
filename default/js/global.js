@@ -1178,22 +1178,39 @@ var initMura=function(config){
   var processAsyncObject=function(el){
     var self=el;
 
-    var handleResponse=function(resp){
+    var wireUpObject=function(html){
+      $(self).html(html);
+      
+      $(self).find('a[href="javascript:history.back();"]').each(function(){
+        $(this).off('click').on("click",function(e){
+          if(self.prevInnerHTML){
+            e.preventDefault();
+            wireUpObject(self.prevInnerHTML);
 
-      var wireUpObject=function(html){
-        $(self).html(html);
-        
-        processHandlers(self);
-
-        $(self).find('form').each(function(){
-          $(this).removeAttr('onsubmit');
-          $(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+            if(self.prevData){
+              for(var p in self.prevData){
+                $('[name="' + p + '"]').val(self.prevData[p]);
+              }
+            }
+            self.prevInnerHTML=false;
+            self.prevData=false;
+          }
         });
+      });
 
-        announceEvent('asyncObjectRendered',self);
-        $(self).trigger('asyncObjectRendered');
+      processHandlers(self);
 
-      };
+      $(self).find('form').each(function(){
+        $(this).removeAttr('onsubmit');
+        $(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+      });
+
+      announceEvent('asyncObjectRendered',self);
+      $(self).trigger('asyncObjectRendered');
+
+    };
+
+    var handleResponse=function(resp){
 
       if('html' in resp.data){
         wireUpObject(resp.data.html);
@@ -1268,6 +1285,8 @@ var initMura=function(config){
 
       validateForm(frm,
         function(frm){
+          self.prevInnerHTML=self.innerHTML;
+          self.prevData=data;
           $(self).html(config.preloaderMarkup);
           $.ajax(postconfig).then(handleResponse);
         }

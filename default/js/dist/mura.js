@@ -2758,14 +2758,14 @@ this.Element && function(ElementPrototype) {
 			processMarkup(self);
 
 			select(self).find('a[href="javascript:history.back();"]').each(function(){
-				mura(this).on("click",function(e){
+				mura(this).off("click").on("click",function(e){
 					if(self.prevInnerHTML){
 						e.preventDefault();
 						wireUpObject(self.prevInnerHTML);
 
 						if(self.prevData){
 					 		for(var p in self.prevData){
-					 			select('input[name="' + p + '"]').val(self.prevData[p]);
+					 			select('[name="' + p + '"]').val(self.prevData[p]);
 					 		}
 					 	}
 						self.prevInnerHTML=false;
@@ -3395,14 +3395,17 @@ this.Element && function(ElementPrototype) {
 			this.each(function(el){
 				el.removeEventListener(eventName);
 			});
+			return this;
 		},
 
 		unbind:function(eventName){
 			this.off(eventName);
+			return this;
 		},
 
 		bind:function(eventName){
 			this.on(eventName);
+			return this;
 		},
 
 		trigger:function(eventName,eventDetail){

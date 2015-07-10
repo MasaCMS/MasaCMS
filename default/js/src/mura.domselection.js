@@ -149,14 +149,17 @@
 			this.each(function(el){
 				el.removeEventListener(eventName);
 			});
+			return this;
 		},
 
 		unbind:function(eventName){
 			this.off(eventName);
+			return this;
 		},
 
 		bind:function(eventName){
 			this.on(eventName);
+			return this;
 		},
 
 		trigger:function(eventName,eventDetail){
