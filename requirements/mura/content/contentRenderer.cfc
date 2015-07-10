@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
+<cfset this.layoutmanager=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
 <cfset this.siteIDInURLS="">
@@ -478,6 +479,12 @@ Display Objects
 			: IsBoolean(getConfigBean().getEnableFrontEndTools())
 				? getConfigBean().getEnableFrontEndTools()
 				: true;
+
+
+		if(this.layoutmanager){
+			this.asyncObjects=true;
+			this.showEditableObjects=false;
+		}
 	</cfscript>
 	
 <cfreturn this />
@@ -1228,8 +1235,8 @@ Display Objects
 
 <cffunction name="dspObject_Include" access="public" output="false" returntype="string">
 	<cfargument name="siteid" type="string" />
-	<cfargument name="object" type="string" />
-	<cfargument name="objectid" type="string" />
+	<cfargument name="object" type="string" default="" />
+	<cfargument name="objectid" type="string" default=""/>
 	<cfargument name="theFile" type="string" />
 	<cfargument name="hasSummary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
@@ -1253,7 +1260,8 @@ Display Objects
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
 	<cfset var objectParams="">
-	
+	<cfset var doLayoutManager=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
 	<cfelseif isStruct(arguments.params)>
@@ -1282,6 +1290,17 @@ Display Objects
 		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	</cfsavecontent>
+
+	<cfif doLayoutManager>
+		<cfset var objectclass="">
+		<cfset var openingDiv='<div class="mura-object mura-async-object" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#"'>
+		<cfloop collection="#objectparams#" item="local.i">
+			<cfset openingDiv=openingDiv & ' data-#local.i#="#esapiEncode('html_attr',objectparams[local.i])#"'>
+		</cfloop>
+		<cfset openingDiv=openingDiv & ">">
+		<cfset theContent="#openingDiv##trim(theContent)#</div>">	
+	</cfif>
+
 	<cfreturn trim(theContent) />
 
 </cffunction>
@@ -1856,6 +1875,7 @@ Display Objects
 	<cfargument name="cacheKey" type="string" required="false" default="">
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
+	<cfset arguments.layoutmanager=this.layoutmanager>
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
@@ -1864,6 +1884,7 @@ Display Objects
 	<cfargument name="ContentHistID" required="yes" type="string" default="#variables.event.getValue('contentBean').getcontenthistid()#">
 	<cfargument name="returnFormat" default="string">
 	<cfset arguments.renderer=this>
+	<cfset arguments.layoutmanager=this.layoutmanager>
 	<cfreturn variables.contentRendererUtility.dspObjects(argumentCollection=arguments)>
 </cffunction>
 
@@ -2287,9 +2308,7 @@ Display Objects
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>
-					<cfparam name="this.adminToolbarInclude" default="/admin/core/utilities/modal/dsp_modal_edit.cfm">
-					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##this.adminToolbarInclude#")>
-					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()##this.adminToolbarInclude#"></cfsavecontent>
+					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/toolbar.cfm"></cfsavecontent>
 					<cfset commitTracePoint(tracePoint)>
 				</cfif>	
 				<!---

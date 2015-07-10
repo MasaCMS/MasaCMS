@@ -27,16 +27,17 @@
       sortables,
       overClass,
       movingClass;
+ 
 
     function handleDragStart(e) {
-      e.dataTransfer.effectAllowed = 'move';
+      //e.dataTransfer.effectAllowed = 'move';
 
       dragEl = this;
 
       // this/e.target is the source node.
       this.classList.add(movingClass);
 
-      options.onDragStart && options.onDragStart(e);
+      options.onDragStart && options.onDragStart.call(this,e);
     }
 
     function handleDragOver(e) {
@@ -44,24 +45,24 @@
         e.preventDefault(); // Allows us to drop.
       }
 
-      e.dataTransfer.dropEffect = 'move';
+      //e.dataTransfer.dropEffect = 'move';
 
 
-      options.onDragOver && options.onDragOver(e);
+      options.onDragOver && options.onDragOver.call(this,e);
       return false;
     }
 
     function handleDragEnter() {
       this.classList.add(overClass);
 
-      options.onDragEnter && options.onDragEnter(e);
+      options.onDragEnter && options.onDragEnter.call(this,e);
     }
 
     function handleDragLeave() {
       // this/e.target is previous target element.
       this.classList.remove(overClass);
 
-      options.onDragLeave && options.onDragLeave(e);
+      options.onDragLeave && options.onDragLeave.call(this,e);
     }
 
     function handleDrop(e) {
@@ -95,8 +96,7 @@
         }
       }
 
-
-      options.onDrop && options.onDrop(e);
+      options.onDrop && options.onDrop.call(this,e);
 
       dragEl = null;
 
@@ -108,13 +108,13 @@
         el.classList.remove(overClass, movingClass);
       });
 
-      options.onDragEnd && options.onDragEnd(e);
+      options.onDragEnd && options.onDragEnd.call(this,e);
     }
 
     function destroy() {
       sortables.forEach(function (el) {
         el.removeAttribute('draggable', 'true');  // Enable columns to be draggable.
-        modifyListeners(col, false);
+        modifyListeners(el, false);
       });
       sortables = null;
       dragEl = null;

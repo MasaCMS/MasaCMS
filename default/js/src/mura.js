@@ -1412,7 +1412,7 @@
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
-
+		
 		self.innerHTML=window.mura.preloaderMarkup;
 
 		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});

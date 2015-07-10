@@ -59,15 +59,21 @@
 --->
 <cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
 	<cfif request.muraFrontEndRequest and this.asyncObjects>
-		<cfoutput>
-			<div class="mura-async-object" 
-				data-object="comments" 
-				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
-				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
-			</div>
-
-		</cfoutput>
+		<cfif this.layoutmanager>
+			<cfset objectparams.deletecommentid=$.event('deletecommentid')>
+			<cfset objectparams.spamcommentid=$.event('spamcommentid')>
+			<cfset objectparams.approvedcommentid=$.event('approvedcommentid')>
+		<cfelse>
+			<cfoutput>
+				<div class="mura-async-object" 
+					data-object="comments" 
+					data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
+					data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
+					data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
+				</div>
+			</cfoutput>
+		</cfif>
+		
 	<cfelse>
 		<cfoutput>
 			<cfsilent>

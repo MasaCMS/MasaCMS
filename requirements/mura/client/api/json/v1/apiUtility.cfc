@@ -1959,6 +1959,13 @@ component extends="mura.cfobject" {
 
 		if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
 			args.params=urlDecode($.event('objectparams'));
+		} else {
+			args.params={};
+			for(var u in url){
+				if(!listFindNoCase('contentid,contenthistid,object,objectid,siteid,nocache',u)){
+					args.params[u]=url[u];
+				}
+			}
 		}
 
 		var result=$.dspObject(argumentCollection=args);

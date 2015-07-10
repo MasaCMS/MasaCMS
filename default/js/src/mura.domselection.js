@@ -319,7 +319,7 @@
 		},
 
 		append:function(el) {
-			this.selection[0].parentNode.appendChild(el);
+			this.selection[0].appendChild(el);
 			return this;
 		},
 
@@ -522,7 +522,7 @@
 			if(!this.selection.length){
 				return false;
 			}
-			return this.selection[0].matchesSelector(selector);
+			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
 
 		offsetParent:function(){
