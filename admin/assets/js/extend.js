@@ -225,6 +225,9 @@ var extendManager = {
 			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
+			if ( $("input[name='isnew']").val() === '1' ) {
+				$('#hasConfiguratorYes').prop('checked', true);
+			}
 			$(".hasConfiguratorContainer").show();
 			$(".availableSubTypesContainer").show();
 			$(".hasAssocFileContainer").show();
