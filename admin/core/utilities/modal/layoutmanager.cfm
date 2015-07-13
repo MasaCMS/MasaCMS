@@ -175,6 +175,8 @@
 	    },
 	    dragEl;
 
+
+
 	    function wireUpObjects(){
 
 	    	mura(".mura-displayregion[data-inited='false']")

@@ -49,6 +49,8 @@
 				resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
+			} else if(parameters["cmd"] == "requestObjectParams"){
+				frontEndProxy.post({cmd:'setObjectParans',objectParams:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
 			}
 		}			
 	}

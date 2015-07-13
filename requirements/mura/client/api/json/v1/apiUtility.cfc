@@ -1962,7 +1962,7 @@ component extends="mura.cfobject" {
 		} else {
 			args.params={};
 			for(var u in url){
-				if(!listFindNoCase('contentid,contenthistid,object,objectid,siteid,nocache',u)){
+				if(!listFindNoCase('contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
 					args.params[u]=url[u];
 				}
 			}

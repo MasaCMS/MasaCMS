@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rememberMe" default="0">
 	<cfargument name="contentid" default="">
 	<cfargument name="linkServID" default="">
-	<cfargument name="isAdminLogin"default="false">
+	<cfargument name="isAdminLogin" default="false">
 	<cfargument name="compactDisplay" default="false">
 	<cfargument name="deviceid" default="">
 	<cfargument name="publicDevice" default="false">
