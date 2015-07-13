@@ -413,7 +413,7 @@
 		
 		<cfif arguments.complete>
 			<cfif application.utility.isHTTPS()>
-				<cfset host='https://#arguments.domain##$.siteConfig('ServerPort')#'>
+				<cfset host='https://#arguments.domain##arguments.renderer.getMuraScope().siteConfig('ServerPort')#'>
 			<cfelse>
 				<cfset host='#arguments.renderer.getMuraScope().siteConfig('scheme')#://#arguments.domain##arguments.renderer.getMuraScope().siteConfig('ServerPort')#'>
 			</cfif>
