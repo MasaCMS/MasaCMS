@@ -334,19 +334,19 @@ component extends="mura.bean.bean" versioned=false {
 			var sql='';
 			var qs=getQueryService();
 
-			for (prop in props){
-				if(props[prop].persistent){
-					addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
-				}
-			}
-
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
 			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
 				
-				preUpdate();
-			
 				pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
+
+				preUpdate();
+
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
 
 				if(!hasErrors()){
 
@@ -393,12 +393,17 @@ component extends="mura.bean.bean" versioned=false {
 				}
 				
 			} else{
+				
+				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
 
 				preCreate();
 				preInsert();
-				
 
-				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
 
 				if(!hasErrors()){
 

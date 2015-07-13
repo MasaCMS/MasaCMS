@@ -76,134 +76,150 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rsuser>
 </cffunction>
 
-<cffunction name="login" returntype="boolean">
-		<cfargument name="username" type="string" required="true" default="">
-		<cfargument name="password" type="string" required="true" default="">
-		<cfargument name="siteid" type="string" required="false" default="">
-		<cfargument name="lockdownCheck" type="string" required="false" default="false">
-		<cfargument name="lockdownExpries" type="string" required="false" default="">
-		<cfset var rolelist = "" />
-		<cfset var rsUser = "" />
-		<cfset var user = "" />
-		<cfset var group = "" />
-		<cfset var lastLogin = now() />
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
-		<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
-		
-		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
-		
-		<cfif len(arguments.siteID)>
-			<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
-		<cfelse>
-			<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
-		</cfif>
-		
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
-		SELECT * FROM tusers WHERE
-		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> 
-		AND Type = 2 
-		and inactive=0
+<cffunction name="lookupByCredentials"  output="false">
+	<cfargument name="username" type="string" required="true" default="">
+	<cfargument name="password" type="string" required="true" default="">
+	<cfargument name="siteid" type="string" required="false" default="">
+	<cfargument name="lockdownCheck" type="string" required="false" default="false">
+	<cfargument name="lockdownExpries" type="string" required="false" default="">
+	<cfset var rolelist = "" />
+	<cfset var rsUser = "" />
+	<cfset var user = "" />
+	<cfset var group = "" />
+	<cfset var lastLogin = now() />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
+	
+	<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
+	
+	<cfif len(arguments.siteID)>
+		<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
+	<cfelse>
+		<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
+	</cfif>
+	
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsUser')#">
+	SELECT * FROM tusers WHERE
+	username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> 
+	AND Type = 2 
+	and inactive=0
+	</cfquery>
+	
+	<cfif rsUser.recordcount and not (
+		(
+		 not variables.configBean.getEncryptPasswords()
+		 and rsUser.password eq arguments.password
+		)
+		OR
+
+		(
+		 
+		 variables.configBean.getEncryptPasswords()
+		 and 
+		 	(
+		 		(
+		 			variables.configBean.getJavaEnabled() 
+		 			and variables.configBean.getBCryptPasswords()
+		 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
+		 		)
+				OR
+				hash(arguments.password) eq rsUser.password	
+			)
+		)
+	)>			
+		<cfquery  name="rsUser" dbtype="query">
+			SELECT * FROM rsUser
+			where 0=1
 		</cfquery>
-		
-		<cfif rsUser.recordcount and not (
-			(
-			 not variables.configBean.getEncryptPasswords()
-			 and rsUser.password eq arguments.password
-			)
-			OR
-
-			(
-			 
-			 variables.configBean.getEncryptPasswords()
-			 and 
-			 	(
-			 		(
-			 			variables.configBean.getJavaEnabled() 
-			 			and variables.configBean.getBCryptPasswords()
-			 			and variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password)
-			 		)
-					OR
-					hash(arguments.password) eq rsUser.password	
-				)
-			)
-		)>			
-			<cfquery  name="rsUser" dbtype="query">
-				SELECT * FROM rsUser
-				where 0=1
-			</cfquery>
-		</cfif>
-		<cfif variables.configBean.getJavaEnabled()
-			and variables.configBean.getBCryptPasswords()
-			and rsUser.recordcount 
-			and variables.configBean.getEncryptPasswords() 
-			and hash(arguments.password) eq rsuser.password>
-			<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
-		</cfif>
-		
-		<!---
-		(not isDate(session.blockLoginUntil) 
-			or (isDate(session.blockLoginUntil) and session.blockLoginUntil lt now()))
-		--->
-		<cfif rsUser.RecordCount GREATER THAN 0
-			and not strikes.isBlocked()>
-			
-				<cfif rsUser.isPublic and (arguments.siteid eq '' or variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID() neq rsUser.siteid)>
-					
-					<cfset strikes.addStrike()>
-										
-					<cfreturn false  >
-				</cfif>				
-					
-				<cfset session.blockLoginUntil=""/>
-				
-				<cfif not arguments.lockdownCheck>
-					<cfset loginByQuery(rsUser)/>
-				<cfelse>
-					<cfswitch expression="#arguments.lockdownExpries#">
-						<cfcase value="1,7,30,10950">
-							<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
-						</cfcase>
-						<cfcase value="session">
-							<cfcookie name="passedLockdown" value="true" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
-						</cfcase>
-					</cfswitch>
-				</cfif>
-				
-				<cfset strikes.clear()>
-
-				<cfif arguments.password eq "admin" and arguments.username eq "admin">
-					<cfset session.hasdefaultpassword=true>
-				</cfif>
-				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
-				<cfelse>
-					<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
-				</cfif>
-					
-				<cfreturn true />
-		
-		<cfelse>
-			<cfif not strikes.isBlocked()>
-				<cfset strikes.addStrike()>
-				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.announceEvent('onSiteLoginFailure',pluginEvent)/>
-				<cfelse>
-					<cfset variables.pluginManager.announceEvent('onGlobalLoginFailure',pluginEvent)/>
-				</cfif>
-			<cfelse>
-			
-				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.announceEvent('onSiteLoginBlocked',pluginEvent)/>
-				<cfelse>
-					<cfset variables.pluginManager.announceEvent('onGlobalLoginBlocked',pluginEvent)/>
-				</cfif>
-				
-				<cfset session.blockLoginUntil=strikes.blockedUntil()/>
-		
-			</cfif>	
-		</cfif>
+	</cfif>
+	<cfif variables.configBean.getJavaEnabled()
+		and variables.configBean.getBCryptPasswords()
+		and rsUser.recordcount 
+		and variables.configBean.getEncryptPasswords() 
+		and hash(arguments.password) eq rsuser.password>
+		<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
+	</cfif>
+	
+	<cfreturn rsUser>
 						
-		<cfreturn false />
+</cffunction>
+
+<cffunction name="login" returntype="boolean">
+	<cfargument name="username" type="string" required="true" default="">
+	<cfargument name="password" type="string" required="true" default="">
+	<cfargument name="siteid" type="string" required="false" default="">
+	<cfargument name="lockdownCheck" type="string" required="false" default="false">
+	<cfargument name="lockdownExpries" type="string" required="false" default="">
+	<cfset var rolelist = "" />
+	<cfset var rsUser = "" />
+	<cfset var user = "" />
+	<cfset var group = "" />
+	<cfset var lastLogin = now() />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
+	
+	<cfset var rsUser=lookupByCredentials(argumentCollection=arguments)>
+
+	<cfif rsUser.RecordCount GREATER THAN 0
+		and not strikes.isBlocked()>
+		
+			<cfif rsUser.isPublic and (arguments.siteid eq '' or variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID() neq rsUser.siteid)>
+				
+				<cfset strikes.addStrike()>
+									
+				<cfreturn false  >
+			</cfif>				
+				
+			<cfset session.blockLoginUntil=""/>
+			
+			<cfif not arguments.lockdownCheck>
+				<cfset loginByQuery(rsUser)/>
+			<cfelse>
+				<cfswitch expression="#arguments.lockdownExpries#">
+					<cfcase value="1,7,30,10950">
+						<cfcookie name="passedLockdown" value="true" expires="#arguments.lockdownExpries#" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+					</cfcase>
+					<cfcase value="session">
+						<cfcookie name="passedLockdown" value="true" httpOnly="true" secure="#variables.configBean.getValue('secureCookies')#">
+					</cfcase>
+				</cfswitch>
+			</cfif>
+			
+			<cfset strikes.clear()>
+
+			<cfif arguments.password eq "admin" and arguments.username eq "admin">
+				<cfset session.hasdefaultpassword=true>
+			</cfif>
+			<cfif len(arguments.siteID)>
+				<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
+			<cfelse>
+				<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
+			</cfif>
+				
+			<cfreturn true />
+	
+	<cfelse>
+		<cfif not strikes.isBlocked()>
+			<cfset strikes.addStrike()>
+			<cfif len(arguments.siteID)>
+				<cfset variables.pluginManager.announceEvent('onSiteLoginFailure',pluginEvent)/>
+			<cfelse>
+				<cfset variables.pluginManager.announceEvent('onGlobalLoginFailure',pluginEvent)/>
+			</cfif>
+		<cfelse>
+		
+			<cfif len(arguments.siteID)>
+				<cfset variables.pluginManager.announceEvent('onSiteLoginBlocked',pluginEvent)/>
+			<cfelse>
+				<cfset variables.pluginManager.announceEvent('onGlobalLoginBlocked',pluginEvent)/>
+			</cfif>
+			
+			<cfset session.blockLoginUntil=strikes.blockedUntil()/>
+	
+		</cfif>	
+	</cfif>
+					
+	<cfreturn false />
 </cffunction>
 	
 <cffunction name="loginByUserID" returntype="boolean">
