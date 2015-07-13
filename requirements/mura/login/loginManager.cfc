@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset structDelete(session,'mfa')>
 	</cfif>
 
-	<cfif arguments.data.isAdminLogin>
+	<cfif arguments.isAdminLogin>
 		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
 	<cfelse>
 		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
