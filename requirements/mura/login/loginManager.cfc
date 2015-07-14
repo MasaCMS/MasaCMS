@@ -122,25 +122,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cfif arguments.returnUrl eq ''>				
 			<cfif len(arguments.linkServID)>
-				<cflocation url="#indexFile#?LinkServID=#arguments.linkServID#" addtoken="false">
+				<cfset arguments.returnURL="#indexFile#?LinkServID=#arguments.linkServID#">
 			<cfelse>
-				<cflocation url="#indexFile#" addtoken="false">
+				<cfset arguments.returnURL="#indexFile#">
 			</cfif>	
 		<cfelse>
-			<cfset arguments.returnUrl = getBean('utility').sanitizeHREF(replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL'))>
-			<cflocation url="#arguments.returnUrl#" addtoken="false">
+			<cfset arguments.returnURL = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
 		</cfif>
-	<cfelseif arguments.data.returnUrl neq ''>
-		<cfset arguments.returnUrl = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
-		<cflocation url="#arguments.returnUrl#" addtoken="false">
+	<cfelseif arguments.returnUrl neq ''>
+		<cfset arguments.returnURL = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
 	<cfelse>
-		<cfif len(arguments.data.linkServID)>
-			<cflocation url="#indexFile#?LinkServID=#arguments.linkServID#" addtoken="false">
+		<cfif len(arguments.linkServID)>
+			<cfset arguments.returnURL="#indexFile#?LinkServID=#arguments.linkServID#">
 		<cfelse>
-			<cflocation url="#indexFile#" addtoken="false">
+			<cfset arguments.returnURL="#indexFile#">
 		</cfif>
 	</cfif>
-	
+
+	<cfif request.muraAPIRequest>
+		<cfset request.muraJSONRedirectURL=arguments.returnURL>
+	<cfelse>
+		<cflocation url="#arguments.returnURL#" addtoken="false">
+	</cfif>
+
 </cffunction>
 
 <cffunction name="handleFailure" output="false">
@@ -165,7 +169,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset loginURL &= "?status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
 		</cfif>
-		<cflocation url="#loginURL#" addtoken="false">
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
+			<cflocation url="#loginURL#" addtoken="false">
+		</cfif>
 	</cfif>
 </cffunction>
 
@@ -183,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn cookie.originalURLToken>
 </cffunction>
 
-<cffunction name="login" access="public" output="false" returntype="void">
+<cffunction name="login" access="public" output="false">
 	<cfargument name="data" type="struct" />
 	<cfargument name="loginObject" type="any"  required="true" default=""/>
 
@@ -204,7 +212,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.data.publicDevice" default="false" />
 
 	<cfif not isdefined('arguments.data.username')>
-		<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#">
+			<cfreturn false>
+		<cfelse>
+			<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+		</cfif>
 	<cfelse>
 		
 		<cfif getBean('configBean').getValue(property='MFAEnabled',defaultValue=false)>
@@ -236,12 +249,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset userDevice.setLastLogin(now()).save()>
 						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
 						<cfset handleSuccess(argumentCollection=session.mfa)>
+						<cfreturn true>
 					</cfif>	
 				</cfif>
 
-				<cfset initChallenge(argumentCollection=arguments.data)>
+				<cfset handleChallenge(argumentCollection=arguments.data)>
+				<cfreturn false>
 			<cfelse>
 				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
 			</cfif>
 		<cfelse>
 
@@ -253,8 +269,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif isloggedin>
 				<cfset handleSuccess(argumentCollection=arguments.data)>
+				<cfreturn true>
 			<cfelse>
 				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
 			</cfif>
 
 		</cfif>
@@ -276,29 +294,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfreturn false>
 
-	<cfelse>
-		
-		<cfif not isObject(arguments.loginObject)>
-			<cfset isloggedin=variables.userUtility.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
-		<cfelse>
-			<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
-		</cfif>
-		
-		<cfif isloggedin>
-			
-			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-				<cfset session.siteArray=arrayNew(1) />
-					<cfloop collection="#variables.settingsManager.getSites()#" item="site">
-					<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
-							<cfset arrayAppend(session.siteArray,site) />
-					</cfif>
-				</cfloop>
-			</cfif>
-			
-			<cfreturn true>
-		<cfelse>
-			<cfreturn false>
-		</cfif>
+	<cfelse>	
+		<cfreturn login(data=arguments.data)>
 	</cfif>
 
 </cffunction>

@@ -1258,6 +1258,16 @@
 					scope.closest('.editableObject').each(function(){ 
 						resizeEditableObject(this);
 					}); 
+
+					scope.find(".editableObject").each(function(){
+						resizeEditableObject(this);
+					});
+	
+				}
+			},
+
+			function(){
+				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
 					scope.find(".frontEndToolsModal").each(
 						function(){
@@ -1268,10 +1278,6 @@
 						}
 					);
 
-					scope.find(".editableObject").each(function(){
-						resizeEditableObject(this);
-					});
-	
 				}
 			},
 

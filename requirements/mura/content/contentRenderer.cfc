@@ -483,7 +483,6 @@ Display Objects
 
 		if(this.layoutmanager){
 			this.asyncObjects=true;
-			this.showEditableObjects=false;
 		}
 	</cfscript>
 	
@@ -1216,6 +1215,8 @@ Display Objects
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="showEditable" required="true" default="false">
+	<cfargument name="editLink" required="true" default="">
+	<cfargument name="isConfigurator" required="true" default="false">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -1223,11 +1224,11 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -1245,8 +1246,10 @@ Display Objects
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
-	<cfargument name="contentHistID" required="true" default="0">
+	<cfargument name="contentHistID" required="true" default="">
 	<cfargument name="throwError" default="true">
+	<cfargument name="editLink" required="true" default="">
+	<cfargument name="isConfigurator" required="true" default="false">
 	
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
