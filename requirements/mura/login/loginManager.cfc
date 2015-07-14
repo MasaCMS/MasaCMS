@@ -300,7 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="loginByUserID" access="public" output="true" returntype="void">
+<cffunction name="loginByUserID" access="public" output="true">
 	<cfargument name="data" type="struct" />
 	<cfset var isloggedin =false />
 	<cfset var returnURL=""/>
@@ -325,8 +325,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif isloggedin>
 			<cfset handleSuccess(argumentCollection=arguments.data)>
+			<cfreturn true>
 		<cfelse>
 			<cfset handleFailure(argumentCollection=arguments.data)>
+			<cfreturn false>
 		</cfif>
 	</cfif>
 
