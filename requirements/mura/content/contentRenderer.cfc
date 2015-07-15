@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
+<cfset this.asyncRender=false>
 <cfset this.layoutmanager=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
@@ -480,10 +481,8 @@ Display Objects
 				? getConfigBean().getEnableFrontEndTools()
 				: true;
 
-
-		if(this.layoutmanager){
-			this.asyncObjects=true;
-		}
+		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
+		this.asyncRender=!this.asyncObjects;
 	</cfscript>
 	
 <cfreturn this />
@@ -1273,6 +1272,8 @@ Display Objects
 		<cfset objectParams=structNew()>
 	</cfif>
 
+	<cfparam name="objectParams.async" default="false">
+
 	<!--- For backward compatability with old dsp_feed.cfm files --->
 	<cfif arguments.thefile eq "dsp_feed.cfm">
 		<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
@@ -1296,7 +1297,14 @@ Display Objects
 
 	<cfif doLayoutManager>
 		<cfset var objectclass="">
-		<cfset var openingDiv='<div class="mura-object mura-async-object" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#"'>
+		<cfset var openingDiv='<div class="mura-object'>
+
+		<cfif objectParams.async>
+			<cfset openingDiv=openingDiv & " mura-async-object">
+		</cfif>
+
+		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#"'>
+		
 		<cfloop collection="#objectparams#" item="local.i">
 			<cfset openingDiv=openingDiv & ' data-#local.i#="#esapiEncode('html_attr',objectparams[local.i])#"'>
 		</cfloop>
@@ -2673,6 +2681,10 @@ Display Objects
 
  	public function hasMuraScope(){
  		return isDefined('variables.$');
+ 	}
+
+ 	public function getLayoutManager(){
+ 		return this.layoutmanager;
  	}
 
 </cfscript>

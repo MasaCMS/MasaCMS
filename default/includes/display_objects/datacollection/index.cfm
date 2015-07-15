@@ -68,9 +68,10 @@
 	</cfsilent>
 
 	<cfoutput>
-    <cfif request.muraFrontEndRequest and this.asyncObjects and (isJson(bean.getBody()) or this.layoutmanager)>
+    <cfif this.asyncObjects and (isJson(bean.getBody()) or this.layoutmanager)>
         <cfif this.layoutmanager>
           <cfset objectparams.responsechart=bean.getResponseChart()>
+          <cfset objectparams.async=true>
         <cfelse>
           <div class="mura-async-object" 
             data-object="form" 

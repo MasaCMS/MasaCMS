@@ -55,10 +55,14 @@
 	Mura CMS.
 --->
 <cfoutput>
-<cfif not this.layoutmanager and request.muraFrontEndRequest and this.asyncObjects>
-	<div class="mura-async-object" 
-		data-object="calendar">
-	</div>
+<cfif this.asyncObjects>
+	<cfif this.layoutmanager>
+		<div class="mura-async-object" 
+			data-object="calendar">
+		</div>
+	<cfelse>
+		 <cfset objectparams.async=true>
+	</cfif>
 <cfelse>
 <div class="mura-calendar-wrapper">
 	<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">

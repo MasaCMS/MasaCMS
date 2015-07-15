@@ -63,6 +63,7 @@
 			<cfset objectparams.deletecommentid=$.event('deletecommentid')>
 			<cfset objectparams.spamcommentid=$.event('spamcommentid')>
 			<cfset objectparams.approvedcommentid=$.event('approvedcommentid')>
+			<cfset objectparams.async=true>
 		<cfelse>
 			<cfoutput>
 				<div class="mura-async-object" 
