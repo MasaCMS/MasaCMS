@@ -1214,7 +1214,6 @@ Display Objects
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="showEditable" required="true" default="false">
-	<cfargument name="editLink" required="true" default="">
 	<cfargument name="isConfigurator" required="true" default="false">
 
 	<cfset var theContent=""/>
@@ -1223,11 +1222,11 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -1247,7 +1246,7 @@ Display Objects
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="contentHistID" required="true" default="">
 	<cfargument name="throwError" default="true">
-	<cfargument name="editLink" required="true" default="">
+	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
 	
 	<cfset var fileDelim = "/" />
@@ -1262,8 +1261,8 @@ Display Objects
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
 	<cfset var objectParams="">
-	<cfset var doLayoutManager=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
-
+	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+	
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
 	<cfelseif isStruct(arguments.params)>
@@ -1271,7 +1270,7 @@ Display Objects
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
-
+<cfdump var="#themeObjectPath#" abort="true">
 	<cfparam name="objectParams.async" default="false">
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
@@ -1295,25 +1294,20 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif doLayoutManager>
-		<cfset var objectclass="">
-		<cfset var openingDiv='<div class="mura-object'>
-
-		<cfif objectParams.async>
-			<cfset openingDiv=openingDiv & " mura-async-object">
-		</cfif>
-
-		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#"'>
-		
-		<cfloop collection="#objectparams#" item="local.i">
-			<cfset openingDiv=openingDiv & ' data-#local.i#="#esapiEncode('html_attr',objectparams[local.i])#"'>
-		</cfloop>
-		<cfset openingDiv=openingDiv & ">">
-		<cfset theContent="#openingDiv##trim(theContent)#</div>">	
+	<cfif arguments.showEditable>
+		<cfset theContent=variables.contentRendererUtility.renderObjectToolbar() & theContent>
 	</cfif>
 
-	<cfreturn trim(theContent) />
-
+	<cfif doLayoutManagerWrapper>	
+		<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+				objectid=arguments.objectid,
+				content=theContent,
+				objectParams=objectParams,
+				showEditable=arguments.showEditable,
+				isConfigurator=arguments.isConfigurator) />
+	<cfelse>
+		<cfreturn trim(theContent) />
+	</cfif>
 </cffunction>
 
 <cffunction name="dspBody"  output="false" returntype="string">
@@ -1338,7 +1332,7 @@ Display Objects
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
 	<cfset var safesubtype=REReplace(variables.event.getValue('contentBean').getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
-	
+	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn) 
@@ -1390,6 +1384,10 @@ Display Objects
 			<cfelse>
 
 				 <cfoutput>
+				 	<cfif this.layoutmanager>
+				 		<cfset doLayoutManagerWrapper=true>
+				 		<div class="mura-displayregion" data-loose="true" data-regionid="0" data-inited='false'>
+				 	</cfif>
 				 	<cfif structKeyExists(arguments,'titleAttribute')>
 				 		<#getHeaderTag('headline')# class="pageTitle">#renderEditableAttribute(attribute=arguments.titleAttribute,required=true)#</#getHeaderTag('headline')#>
 					<cfelseif arguments.pageTitle neq ''>
@@ -1501,6 +1499,7 @@ Display Objects
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
+
 					<cfif arguments.renderKids>
 						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 						<cfcase value="Folder">
@@ -1525,6 +1524,10 @@ Display Objects
 					</cfif>
 				</cfif>		
 			</cfif> 
+
+			<cfif doLayoutManagerWrapper>
+				<cfoutput></div></cfoutput>
+			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
 			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
@@ -2683,7 +2686,7 @@ Display Objects
  		return isDefined('variables.$');
  	}
 
- 	public function getLayoutManager(){
+ 	public function useLayoutManager(){
  		return this.layoutmanager;
  	}
 

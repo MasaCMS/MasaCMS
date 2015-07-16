@@ -1778,7 +1778,13 @@ component extends="mura.cfobject" {
 		request.siteid=arguments.siteid;
 		session.siteid=request.siteid;
 		request.servletEvent=new mura.servletEvent();
-		
+
+		if(isDefined('form.alttheme')){
+			request.alttheme=form.alttheme;
+		} else if (isDefined('url.alttheme')){
+			request.alttheme=url.alttheme;
+		}
+
 		var $=request.servletEvent.getValue("MuraScope");
 		
 		if(len($.event('filename'))){
@@ -1802,6 +1808,7 @@ component extends="mura.cfobject" {
 		$.event().getHandler('standardSetPermissions').handle($.event());
 		$.event().getHandler('standardSetLocale').handle($.event());
 		$.announceEvent('asyncRenderStart');
+
 
 		//$.event().getHandler('standardMobile').handle($.event());
 
@@ -1954,7 +1961,8 @@ component extends="mura.cfobject" {
 		var args={
 				object=$.event('object'),
 				objectid=$.event('objectid'),
-				siteid=arguments.siteid
+				siteid=arguments.siteid,
+				assignmentPerm=$.event('perm')
 			};
 
 		if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
@@ -1962,7 +1970,7 @@ component extends="mura.cfobject" {
 		} else {
 			args.params={};
 			for(var u in url){
-				if(!listFindNoCase('contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
+				if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
 					args.params[u]=url[u];
 				}
 			}

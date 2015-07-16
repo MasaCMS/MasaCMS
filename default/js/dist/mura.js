@@ -2668,14 +2668,14 @@ this.Element && function(ElementPrototype) {
 			},
 
 			function(){
+
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").each(
-						function(){
-							on(this,'click',function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							});
+					scope.find(".frontEndToolsModal").on(
+						'click',
+						function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
 						}
 					);
 
@@ -3586,8 +3586,8 @@ this.Element && function(ElementPrototype) {
 		    // traverse parents
 		    while (el!==null) {
 		        parent = el.parentElement;
-		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
-		            return parent;
+		        if (parent!==null && parent.matchesSelector(selector)) {
+		            return window.mura(parent);
 		        }
 		        el = parent;
 		    }
@@ -3675,7 +3675,7 @@ this.Element && function(ElementPrototype) {
 			this.each(function(el){
 				if (el.classList){
 				  el.classList.remove(className);
-				} else {
+				} else if (el.className) {
 				  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 				}
 			});
@@ -3922,7 +3922,10 @@ this.Element && function(ElementPrototype) {
 			}
 			
 			this.each(function(el){
-				el.removeAttribute(attributeName);
+				if(el.remoteAttribute){
+					el.removeAttribute(attributeName);
+				}
+				
 			});
 			return this;
 			
@@ -3966,19 +3969,28 @@ this.Element && function(ElementPrototype) {
 				return window.mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
-					for(var p in attributeName){
-						el.setAttribute(p,attributeName[p]);
+					if(el.setAttribute){
+						for(var p in attributeName){
+							el.setAttribute(p,attributeName[p]);
+						}
 					}
 				});
 				return this;
 			} else if(typeof value != 'undefined'){
 				this.each(function(el){
-					el.setAttribute(attributeName,value);
+					if(el.setAttribute){
+						el.setAttribute(attributeName,value);
+					}
 				});
 				return this;
 			
 			} else {
-				return this.selection[0].getAttribute(attributeName);
+				if(this.selection[0].getAttribute){
+					return this.selection[0].getAttribute(attributeName);
+				} else {
+					return undefined;
+				}
+				
 			}
 		},
 
@@ -4455,13 +4467,13 @@ this.Element && function(ElementPrototype) {
       return false;
     }
 
-    function handleDragEnter() {
+    function handleDragEnter(e) {
       this.classList.add(overClass);
 
       options.onDragEnter && options.onDragEnter.call(this,e);
     }
 
-    function handleDragLeave() {
+    function handleDragLeave(e) {
       // this/e.target is previous target element.
       this.classList.remove(overClass);
 

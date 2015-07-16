@@ -57,8 +57,11 @@
 <cfsilent>
 	<cfscript>
 		// custom tag groups may arrive via arguments.params
-		if ( StructKeyExists(arguments, 'params') && IsJSON(arguments.params) ) {
-			StructAppend(arguments, DeSerializeJSON(arguments.params));
+		if ( StructKeyExists(arguments, 'params') ) {
+			if(IsJSON(arguments.params)){
+				arguments.params=DeSerializeJSON(arguments.params);
+			}
+			StructAppend(arguments, arguments.params);
 		}
 	</cfscript>
 

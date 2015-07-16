@@ -1267,14 +1267,14 @@
 			},
 
 			function(){
+
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").each(
-						function(){
-							on(this,'click',function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							});
+					scope.find(".frontEndToolsModal").on(
+						'click',
+						function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
 						}
 					);
 

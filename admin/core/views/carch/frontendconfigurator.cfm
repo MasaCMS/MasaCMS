@@ -1,10 +1,7 @@
-﻿
-
-<cfset event=request.event>
+﻿<cfset event=request.event>
 <cfset $=rc.$>
 <cfinclude template="js.cfm">
-
-<cfif $.getContentRenderer().getLayoutManager()>
+<cfif $.getContentRenderer().useLayoutManager()>
 	<cfoutput>
 	<cfif rc.compactDisplay eq "true">
 	<script type="text/javascript">
@@ -68,126 +65,57 @@
 			frontEndProxy.post({cmd:'setWidth',width:'configurator'});
 		}
 		
-		<cfif $.siteConfig().hasDisplayObject(rsDisplayObject.object)>
-			var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rsDisplayObject.objectid)#');
+		<cfif $.siteConfig().hasDisplayObject(rc.object)>
+			var configurator=siteManager.getPluginConfigurator(#esapiEncode('javascript',rc.object)#);
 					window[configurator](
 						{
-							'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-							'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-							'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-							'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-							'context':'#application.configBean.getContext()#',
-							'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-							'siteid':'#esapiEncode('javascript',rc.contentBean.getSiteID())#',
-							'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-							'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-							'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'
+							
 						}
 					);
-					jQuery("##configuratorHeader").html('#esapiEncode('javascript',rsDisplayObject.name)#');
+					jQuery("##configuratorHeader").html('test');
 		<cfelse>
-			<cfswitch expression="#rsDisplayObject.object#">
+			<cfswitch expression="#rc.object#">
 				<cfcase value="feed,feed_no_summary,remoteFeed">	
+					/*
 					siteManager.initFeedConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'		
+									
 							});
+					*/
+				
 				</cfcase>
 				<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
 					siteManager.initSlideShowConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'
+								
 							});
 				</cfcase>
 				<cfcase value="category_summary,category_summary_rss">	
 					siteManager.initCategorySummaryConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'		
+									
 							});
 				</cfcase>
 				<cfcase value="tag_cloud">	
 					siteManager.initTagCloudConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'		
+										
 							});
 				</cfcase>
 				<cfcase value="site_map">	
 					siteManager.initSiteMapConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'		
+										
 							});
 				</cfcase>
 				<cfcase value="related_content,related_section_content">	
 					siteManager.initRelatedContentConfigurator({
-								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-								'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-								'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-								'context':'#application.configBean.getContext()#',
-								'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-								'siteid':'#esapiEncode('javascript',rsDisplayObject.siteid)#',
-								'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-								'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'		
+										
 							});
 				</cfcase>
 				<cfcase value="plugin">	
-					var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rsDisplayObject.objectid)#');
+					var configurator=siteManager.getPluginConfigurator(1);
 					window[configurator](
 						{
-							'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
-							'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
-							'name':'#esapiEncode('javascript',rsDisplayObject.name)#',
-							'regionid':'#esapiEncode('javascript',rsDisplayObject.columnid)#',
-							'context':'#application.configBean.getContext()#',
-							'params':'#esapiEncode('javascript',rsDisplayObject.params)#',
-							'siteid':'#esapiEncode('javascript',rc.contentBean.getSiteID())#',
-							'contenthistid':'#esapiEncode('javascript',rc.contentBean.getContentHistID())#',
-							'contentid':'#esapiEncode('javascript',rc.contentBean.getContentID())#',
-							'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'
+							
 						}
 					);
-					jQuery("##configuratorHeader").html('#esapiEncode('javascript',rsDisplayObject.name)#');
+					jQuery("##configuratorHeader").html('Configure Display Object');
 				</cfcase>
 			</cfswitch>
 		</cfif>
@@ -204,7 +132,7 @@
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
-				frontEndProxy.post({cmd:'setLocation',location:'#esapiEncode('javascript',rc.homeBean.getURL())#'});
+				frontEndProxy.post({cmd:'setLocation',location:'./'});
 
 			}
 		});

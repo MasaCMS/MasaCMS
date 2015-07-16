@@ -101,6 +101,13 @@
 	    -ms-user-select: none;
 	    user-select: none;
 	}
+
+
+							
+	.mura-var-target {
+		border-bottom: thick dotted #ff0000;
+		margin-bottom: -1px;
+	}	
 	
 </style>
 
@@ -175,54 +182,177 @@
 	    },
 	    dragEl;
 
+	    function initDraggableObject(item){
 
+				mura(item)
+				.on('dragstart',function(){
+					dragEl=this;
+					newMuraObject=false;
+					muraLooseDropTarget=null;
+				})
+				.on('dragend',function(){
+						dragEl=null;
+						newMuraObject=false;
+				})
+				.on('dragover',function(e){e.preventDefault()})
+				.on('dragenter',function(e){
+					if(dragEl || newMuraObject){
+						var prev=mura('.mura-var-target');
+						muraLooseDropTarget=this;
 
-	    function wireUpObjects(){
+						if(prev.length){
+							prev.removeClass('mura-var-target');
 
-	    	mura(".mura-displayregion[data-inited='false']")
+							if(!prev.attr('class')){
+								prev.removeAttr('class');
+							}
+						}
+
+						mura(this).addClass('mura-var-target');
+					}
+				})
+				.on('dragleave',function(e){
+					mura(this).removeClass('mura-var-target');
+					muraLooseDropTarget=null;
+					if(!mura(this).attr('class')){
+						mura(this).removeAttr('class');
+					}
+				}).on('drop',function(e){
+					// this/e.target is current target element.
+				    if (e.stopPropagation) {
+				    	e.stopPropagation(); // stops the browser from redirecting.
+				    }
+				    if(dragEl || newMuraObject){
+						if(dragEl && dragEl != this){
+					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+						}
+
+						checkForNew.call(this,e);
+
+					    mura(this).removeClass('mura-var-target');
+						muraLooseDropTarget=null;
+						newMuraObject=false;
+
+						if(!mura(this).attr('class')){
+							mura(this).removeAttr('class');
+						}
+					}
+					
+				}).attr('draggable',true);
+			}
+
+			function initLooseDropTarget(item){
+				mura(item)
+				.on('dragover',function(e){e.preventDefault()})
+				.on('dragenter',function(e){
+					if(dragEl || newMuraObject){
+						var prev=mura('.mura-var-target');
+						muraLooseDropTarget=this;
+
+						if(prev.length){
+							prev.removeClass('mura-var-target');
+
+							if(!prev.attr('class')){
+								prev.removeAttr('class');
+							}
+						}
+
+						mura(this).addClass('mura-var-target');
+					}
+				})
+				.on('dragleave',function(e){
+					mura(this).removeClass('mura-var-target');
+					muraLooseDropTarget=null;
+					if(!mura(this).attr('class')){
+						mura(this).removeAttr('class');
+					}
+				}).on('drop',function(e){
+					// this/e.target is current target element.
+				    if (e.stopPropagation) {
+				    	e.stopPropagation(); // stops the browser from redirecting.
+				    }
+
+				    if(dragEl || newMuraObject){
+
+					    if(dragEl && dragEl != this){
+					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+						}
+						checkForNew.call(this,e);
+
+						mura(this).removeClass('mura-var-target');
+						muraLooseDropTarget=null;
+						if(!mura(this).attr('class')){
+							mura(this).removeAttr('class');
+						}
+					}
+				});
+
+			}
+
+	    function initLayoutManager(){
+			
+			mura('.mura-displayregion[data-inited="false"]:not([data-loose="true"])')
 			.on('drop',function(e) {
-		      var dropParent, dropIndex, dragIndex;
-		      e.preventDefault();
-		      // this/e.target is current target element.
-		      if (e.stopPropagation) {
-		        e.stopPropagation(); // stops the browser from redirecting.
-		      }
+			    var dropParent, dropIndex, dragIndex;
+			    e.preventDefault();
+			      // this/e.target is current target element.
+			    if (e.stopPropagation) {
+			        e.stopPropagation(); // stops the browser from redirecting.
+			    }
 
-		      // Don't do anything if we're dropping on the same column we're dragging.
-		      if (dragEl && dragEl !== this) {
-			      dropParent = this.parentNode;
-			      dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
-		          dropIndex = slice(this.parentNode.children).indexOf(this);
+			    // Don't do anything if we're dropping on the same column we're dragging.
+			    if (dragEl && dragEl !== this) {   
+				    dropParent = this.parentNode;
+				    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
+			        dropIndex = slice(this.parentNode.children).indexOf(this);
 
-		          if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex) {
-		            dropParent.insertBefore(dragEl, this.nextSibling);
-		          } else {
-		            this.appendChild(dragEl);
-		          }
-		       
-		      }
+			        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
+			            dropParent.insertBefore(dragEl, this.nextSibling);
+			        } else {
+			        	this.appendChild(dragEl);
+			        }
+			       
+			    }
 
-		      checkForNew.call(this,e);
+		      	checkForNew.call(this,e);
 		     
-		      //wireUpObjects();
+		      	//wireUpObjects();
 
-		      dragEl = null;
+		      	dragEl = null;
+		      	muraLooseDropTarget=null;
+		      	mura('.mura-var-target').removeClass('mura-var-target');
 
-		      return true;
+		      	return true;
    			})
 			.on('dragover',function(e){
 				e.preventDefault();
 				//e.dataTransfer.dropEffect='move';
 			}).data('inited','true');
 
-			if(sortable){
-		       	sortable.destroy();
-		    }
 
-			sortable=mura.sortable({
-				els:'.mura-displayregion > .mura-object',
-				onDrop:checkForNew,
-				onDragStart:function(){dragEl=this;}
+			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
+			.each(function(){ initDraggableObject(this)});
+			
+			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4').each(function(){ initLooseDropTarget(this)});
+
+			mura(".mura-objectclass").each(function(){
+			var item=mura(this);
+			item.attr('draggable',true);
+			item.on('dragstart',function(e){
+					//e.dataTransfer.effectAllowed = 'move';
+					dragEl=null;
+					newMuraObject=true;
+					muraLooseDropTarget=null;
+					mura('#dragtype').html(item.data('object'));
+					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:item.data('objectname')}));
+				}).on('dragend',
+					function(){
+						mura('#dragtype').html('');
+						newMuraObject=false;
+						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
+					});
+
 			});
 
 	    }
@@ -244,51 +374,35 @@
 				}
 			}
 
-			//alert(2);
 			if(typeof object=='object' && object.object){
 				
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
+				displayObject.setAttribute('data-perm','author');
 				displayObject.setAttribute('class','mura-async-object mura-object');
 		        
-		        if(mura(this).hasClass('mura-object')){
+		        var target=mura(this);
+		        if(target.hasClass('mura-object')){
 		        	this.parentNode.insertBefore(displayObject, this);				
-		        } else if(mura(this).hasClass('mura-displayregion')){
+		        } else if(target.hasClass('mura-displayregion')){
 		        	this.appendChild(displayObject);	
 		        } else {
-		        	var region=mura(this).find('.mura-displayregion');
-		        	if(region.length){
-		        		region.append(displayObject);
-		        	}
+				    this.parentNode.insertBefore(displayObject,this.nextSibling);
 		        }
 
+		        initDraggableObject(displayObject);
+		        openFrontEndToolsModal(displayObject);
 		        mura.processAsyncObject(displayObject);
 
-				wireUpObjects();
+				//wireUpObjects();
+				
+
 				
 		    }
 
 		}
 
-		wireUpObjects();
-
-		mura(".mura-objectclass").each(function(){
-			var item=mura(this);
-			item.attr('draggable',true);
-			item.on('dragstart',function(e){
-					//e.dataTransfer.effectAllowed = 'move';
-					dragEl=null;
-					mura('#dragtype').html(item.data('object'));
-					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
-					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object')}));
-				}).on('dragend',
-					function(){
-						mura('#dragtype').html('');
-						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
-					});
-
-		});
-
+		initLayoutManager();
 		
 	});
 

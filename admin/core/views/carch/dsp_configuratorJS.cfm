@@ -13,7 +13,12 @@ var genericConfiguratorTitle='#esapiEncode('javascript',application.rbFactory.ge
 var genericConfiguratorMessage='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
 var contentid='#esapiEncode("javascript",rc.contentid)#';
 var parentid='#esapiEncode("javascript",rc.parentid)#';
+<cfif isDefined('rc.contentBean')>
 var contenthistid='#rc.contentBean.getContentHistID()#';
+<cfelse>
+var contenthistid='#esapiEncode("javascript",rc.contenthistid)#';
+</cfif>
+
 var allowopenfeeds=#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#;
 <cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
 <cfset nonPluginDisplayObjects=$.siteConfig().getDisplayObjectLookup()>

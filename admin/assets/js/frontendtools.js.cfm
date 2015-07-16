@@ -89,10 +89,24 @@
 	}
 
 	var openFrontEndToolsModal=function(a){
+		
 		var src=a.href;
-		var isModal=utility(a).attr("data-configurator");
-		var width=utility(a).attr("data-modal-width");
-		var ispreview=utility(a).attr("data-modal-preview");
+		var editableObj=mura(a);
+
+		if(!src){
+			if(mura(a).hasClass("mura-object")){
+				var editableObj=mura(a);
+			} else {
+				var editableObj=mura(a).closest(".mura-object");
+			}
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid');
+		}
+
+		var isModal=editableObj.attr("data-configurator");
+
+		//These are for the preview iframes
+		var width=editableObj.attr("data-modal-width");
+		var ispreview=editableObj.attr("data-modal-preview");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
@@ -748,4 +762,5 @@
 	</cfif>
 	window.toggleAdminToolbar=toggleAdminToolbar;
 	window.closeFrontEndToolsModal=closeFrontEndToolsModal;
+	window.openFrontEndToolsModal=openFrontEndToolsModal;
 })(window);

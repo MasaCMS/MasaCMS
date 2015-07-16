@@ -57,8 +57,11 @@
 <!---
 	NOTE: The comment form does not appear on Folders or Galleries
 --->
+
 <cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
+
 	<cfif request.muraFrontEndRequest and this.asyncObjects>
+
 		<cfif this.layoutmanager>
 			<cfset objectparams.deletecommentid=$.event('deletecommentid')>
 			<cfset objectparams.spamcommentid=$.event('spamcommentid')>
@@ -74,7 +77,6 @@
 				</div>
 			</cfoutput>
 		</cfif>
-		
 	<cfelse>
 		<cfoutput>
 			<cfsilent>
