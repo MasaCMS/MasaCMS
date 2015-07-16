@@ -1270,7 +1270,7 @@ Display Objects
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
-<cfdump var="#themeObjectPath#" abort="true">
+
 	<cfparam name="objectParams.async" default="false">
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
