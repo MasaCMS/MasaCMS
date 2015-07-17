@@ -919,25 +919,27 @@
 					<cfset editableControl.isConfigurator=true>
 				</cfif>
 			<cfelse>
-				<cfset showEditable=(arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>	
-
 				<cfswitch expression="#arguments.object#">
 					<cfcase value="plugin">
+						<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editablePlugin">
 						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfcase>
 					<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
-							<cfset editableControl.class="editableFeed">
-							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
+						<cfset editableControl.class="editableFeed">
+						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 					</cfcase>
 					<cfcase value="category_summary,category_summary_rss"><cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editableCategorySummary">
 						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfcase>
 					<cfcase value="tag_cloud">
-						<cfif Len($.siteConfig('customTagGroups'))>		
+						<cfif Len($.siteConfig('customTagGroups'))>	
+							<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>	
 							<cfset editableControl.class="editableTagCloud">
 							<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 							<cfset editableControl.isConfigurator=true>
@@ -947,7 +949,8 @@
 							<cfset args=deserializeJSON(arguments.params)>
 						</cfif>
 					</cfcase>
-					<cfcase value="site_map">	
+					<cfcase value="site_map">
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>	
 						<cfset editableControl.class="editableSiteMap">
 						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
@@ -957,12 +960,13 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="related_content,related_section_content">
+						<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editableRelatedContent">
 						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfcase>
 					<cfcase value="component,form">
-						<cfset showEditable=showEditable or (not arguments.renderer.useLayoutManager() and listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID)))>		
+						<cfset showEditable=listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID))>			
 						<cfif showEditable>
 							<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
 							<cfif arguments.object eq "component">
@@ -995,6 +999,10 @@
 					</cfcase>
 				</cfswitch>	
 			</cfif>
+		</cfif>
+
+		<cfif arguments.renderer.useLayoutManager() and listFindNoCase("editor,author",arguments.assignmentPerm)>
+			<cfset showEditable=true>
 		</cfif>
 					
 		<cfif showEditable>

@@ -1294,7 +1294,7 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif arguments.showEditable>
+	<cfif arguments.showEditable and this.layoutmanager>
 		<cfset theContent=variables.contentRendererUtility.renderObjectToolbar() & theContent>
 	</cfif>
 

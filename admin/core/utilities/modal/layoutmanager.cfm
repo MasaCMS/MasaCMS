@@ -225,6 +225,7 @@
 				    if(dragEl || newMuraObject){
 						if(dragEl && dragEl != this){
 					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+					    	dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 						}
 
 						checkForNew.call(this,e);
@@ -276,6 +277,7 @@
 
 					    if(dragEl && dragEl != this){
 					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+					    	dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 						}
 						checkForNew.call(this,e);
 
@@ -311,6 +313,8 @@
 			        } else {
 			        	this.appendChild(dragEl);
 			        }
+
+			        dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 			       
 			    }
 
@@ -390,6 +394,7 @@
 				    this.parentNode.insertBefore(displayObject,this.nextSibling);
 		        }
 
+		        displayObject.setAttribute('data-droptarget',target.getSelector());
 		        initDraggableObject(displayObject);
 		        openFrontEndToolsModal(displayObject);
 		        mura.processAsyncObject(displayObject);

@@ -187,7 +187,7 @@
 				var children=window.mura(this.selection[0].childNodes);
 				
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
@@ -216,7 +216,7 @@
 			}
 		},
 
-		getSelector:function(omitSysEls) {
+		getSelector:function() {
 		    var pathes = [];
 
 		    //this.selection.each(function(index, element) {
@@ -226,6 +226,7 @@
 		           var realNode = $node.get(0), name = realNode.localName;
 		           if (!name) { break; }
 
+		           /*
 		           if(omitSysEls 
 		           		&& (
 		           			$node.hasClass('mura-editable')
@@ -236,7 +237,7 @@
 		           	){
 		           		break;
 		           }
-		           
+		           */
 		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
 		           		name='#' + $node.attr('id');
 		           		path = name + (path ? ' > ' + path : '');
@@ -280,7 +281,7 @@
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};	
 				} else {
 					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
 				}
