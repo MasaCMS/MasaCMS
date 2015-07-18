@@ -92,7 +92,7 @@
 		var thisMSG="";
 		var fis=createObject("java", "java.io.FileInputStream").init(arguments.rbFile);
 		var rB=createObject("java", "java.util.PropertyResourceBundle").init(fis);
-		var keys=variables.rB.getKeys();
+		var keys=rB.getKeys();
 
 		while (keys.hasMoreElements()) {
 			thisKEY=keys.nextElement();
