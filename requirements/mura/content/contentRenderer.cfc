@@ -1294,10 +1294,6 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif arguments.showEditable and this.layoutmanager>
-		<cfset theContent=variables.contentRendererUtility.renderObjectToolbar() & theContent>
-	</cfif>
-
 	<cfif doLayoutManagerWrapper>	
 		<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1384,10 +1380,6 @@ Display Objects
 			<cfelse>
 
 				 <cfoutput>
-				 	<cfif this.layoutmanager>
-				 		<cfset doLayoutManagerWrapper=true>
-				 		<div class="mura-displayregion" data-loose="true" data-regionid="0" data-inited='false'>
-				 	</cfif>
 				 	<cfif structKeyExists(arguments,'titleAttribute')>
 				 		<#getHeaderTag('headline')# class="pageTitle">#renderEditableAttribute(attribute=arguments.titleAttribute,required=true)#</#getHeaderTag('headline')#>
 					<cfelseif arguments.pageTitle neq ''>
@@ -1524,10 +1516,6 @@ Display Objects
 					</cfif>
 				</cfif>		
 			</cfif> 
-
-			<cfif doLayoutManagerWrapper>
-				<cfoutput></div></cfoutput>
-			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
 			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
@@ -2687,7 +2675,7 @@ Display Objects
  	}
 
  	public function useLayoutManager(){
- 		return this.layoutmanager;
+ 		return (this.layoutmanager && isStruct(variables.$.event('r')) && listFindNoCase('author,editor',variables.$.event('r').perm) || !isStruct(variables.$.event('r')) && this.layoutmanager) ? true : false;
  	}
 
 </cfscript>

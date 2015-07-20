@@ -1,7 +1,7 @@
 ﻿<cfset event=request.event>
 <cfset $=rc.$>
 <cfinclude template="js.cfm">
-<cfif $.getContentRenderer().useLayoutManager()>
+<cfif rc.layoutmanager>
 	<cfoutput>
 	<cfif rc.compactDisplay eq "true">
 	<script type="text/javascript">

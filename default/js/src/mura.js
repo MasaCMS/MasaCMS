@@ -1183,12 +1183,15 @@
 
 	function loader(){return window.mura.ljs;}
 
+	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
+
 	function processMarkup(scope){
 		var self=scope;
 
 		scope=select(scope);
 
 		var processors=[
+
 			function(){
 				scope.find(".mura-async-object").each(function(){
 					processAsyncObject(this);
@@ -1382,11 +1385,25 @@
 		}
 
 		function wireUpObject(html){
-			select(self).html(html);
+			var obj=select(self);
+
+			if(mura.layoutmanager && mura.editing){
+				var region=mura(self).closest(".mura-displayregion");
+				if(region && region.length ){
+					if(region.data('perm')){
+						obj.html(layoutmanagertoolbar + html);
+					} else {
+						obj.html(html);
+					}
+				}
+
+			} else {
+				obj.html(html);
+			}
 
 			processMarkup(self);
 
-			select(self).find('a[href="javascript:history.back();"]').each(function(){
+			obj.find('a[href="javascript:history.back();"]').each(function(){
 				mura(this).off("click").on("click",function(e){
 					if(self.prevInnerHTML){
 						e.preventDefault();
@@ -1407,7 +1424,7 @@
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
 
-			select(self).trigger('asyncObjectRendered');
+			obj.trigger('asyncObjectRendered');
 
 		}
 
@@ -1489,8 +1506,20 @@
 			config.requirementspath=config.context + '/requirements';
 		}
 
+		if(!config.jslib){
+			config.jslib='jquery';
+		}
+
+		if(!config.perm){
+			config.perm='none';
+		}
+
 		if(typeof config.adminpreview == 'undefined'){
 			config.adminpreview=false;
+		}
+
+		if(typeof config.layoutmanager == 'undefined'){
+			config.layoutmanager=false;
 		}
 
 		if(typeof config.mobileformat == 'undefined'){
@@ -1501,6 +1530,8 @@
 			window.document.domain=config.windowdocumentdomain;
 		}
 		
+		mura.editing;
+
 		extend(window.mura,config);
 
 		ready(function(){
@@ -1630,7 +1661,9 @@
 			extendClass:extendClass,
 			init:init,
 			formToObject:formToObject,
-			createUUID:createUUID
+			createUUID:createUUID,
+			processMarkup:processMarkup,
+			layoutmanagertoolbar:layoutmanagertoolbar
 			}
 		),
 		//these are here for legacy support

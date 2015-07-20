@@ -104,17 +104,24 @@
 				dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 				dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 
-				if(arguments.type eq 'HTMLEditor' ){
+				var cssClass="";
+
+				if(arguments.type == 'HTMLEditor' ){
 					inline='';
 
 					if(not len(arguments.value)){
 						arguments.value="<p></p>";
 					}
+
+					cssClass='mura-displayregion ';
+					dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
 				}
+
+				cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
 				
 				return '<div class="mura-editable inactive#inline#">
 							<label class="mura-editable-label">#ucase(arguments.label)#</label>
-							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable inactive mura-editable-attribute#inline#" #dataString#>#arguments.value#</div>
+							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 						</div>';
 				
 			} else {
@@ -838,10 +845,6 @@
 		</cftry>
 	</cffunction>
 
-	<cffunction name="renderObjectToolbar" output="false">
-		<cfreturn '<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>'>
-	</cffunction>
-
 	<cffunction name="renderObjectInManager" output="false">
 		<cfargument name="object">
 		<cfargument name="objectid">
@@ -1079,9 +1082,6 @@
 					</cfif>
 					<cfset theObject=theObject & application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=event,params=arguments.params,isConfigurator=editableControl.isConfigurator)>		
 					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif showEditable>
-							<cfset theObject=renderObjectToolbar() & theObject>
-						</cfif>
 						<cfif request.muraFrontEndRequest>
 								theObject=renderObjectInManager(object=arguments.object,
 								objectid=arguments.objectid,
@@ -1142,9 +1142,6 @@
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 					<cfset theObject=theObject & tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif showEditable>
-							<cfset theObject=renderObjectToolbar() & theObject>
-						</cfif>
 						<cfif request.muraFrontEndRequest>
 								<cfset theObject=renderObjectInManager(object=arguments.object,
 									objectid=arguments.objectid,
@@ -1217,7 +1214,7 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var rsObjects="">	
-		<cfset var theRegion=(arguments.returnFormat eq 'array')?[]:''/>
+		<cfset var theRegion=(arguments.returnFormat eq 'array')?{header='',footer='',items=[]}:''/>
 		<cfset var theObject="">
 		
 		<cfif arguments.renderer.uselayoutmanager()>
@@ -1247,12 +1244,20 @@
 			</cfif>
 
 			<cfif arguments.layoutmanager>
-				<cfset theRegion=theRegion & '<div class="mura-displayregion" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false">'>
+				<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
+				
+				<cfset var header=(perm)?'<div class="mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label><div class="mura-displayregion inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">':''>
+
+				<cfif arguments.returnFormat eq 'array'>
+					<cfset theRegion.header=header>
+				<cfelse>
+					<cfset theRegion=theRegion & header>
+				</cfif>
 			</cfif>
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
 				<cfif arguments.returnFormat eq 'array'>
-					<cfset arrayAppend(theRegion,arguments.renderer.dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),$.event('r').perm)) />
+					<cfset arrayAppend(theRegion.items,arguments.renderer.dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),$.event('r').perm)) />
 				<cfelse>
 					<cfset theObject=arguments.renderer.dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),$.event('r').perm)>
 					<cfif isSimpleValue(theObject)>
@@ -1265,7 +1270,11 @@
 				<cfset request.muraRegionID=arguments.columnID>
 			</cfloop>
 			<cfif arguments.layoutmanager>
-				<cfset theRegion=theRegion & '</div>'>
+				<cfif arguments.returnFormat eq 'array'>
+					<cfset theRegion.footer=(perm)?'</div></div>':''>
+				<cfelse>
+					<cfset theRegion=theRegion & ((perm)?'</div></div>':'')>
+				</cfif>
 			</cfif>
 		</cfif>
 		<cfset request.muraRegionID=0>

@@ -95,11 +95,18 @@
 
 		if(!src){
 			if(mura(a).hasClass("mura-object")){
-				var editableObj=mura(a);
+				var editableObj=utility(a);
 			} else {
-				var editableObj=mura(a).closest(".mura-object");
+				var editableObj=utility(a).closest(".mura-object");
 			}
-			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid');
+
+			if(!editableObj.data('objectid')){
+				editableObj.data('objectid','');
+			}
+
+			var layoutmanager=false;
+
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager;
 		}
 
 		var isModal=editableObj.attr("data-configurator");
@@ -354,29 +361,58 @@
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();		
 			utility('.mura-editable').removeClass('inactive');
+			mura.editing=true;
+			if(mura.layoutmanager){
+				mura(".mura-object").each(function(){
+					var item=mura(this);
+					var region=item.closest(".mura-displayregion");
+					
+					if(region && region.length ){
+						if(region.data('perm')=='true'){	
+							item.html(mura.layoutmanagertoolbar + item.html());
+
+							item.find(".frontEndToolsModal").on(
+								'click',
+								function(event){
+									event.preventDefault();
+									openFrontEndToolsModal(this);
+								}
+							);
+						}
+					}
+					
+				});
+
+				window.mura.initLayoutManager();
+			}
 
 			utility('.mura-editable-attribute').each(
-			function(){
+				function(){
+				
+				<cfif $.getContentRenderer().useLayoutManager()>
+				var attribute=utility(this);
+				if(attribute.attr('data-attribute')){
+					muraInlineEditor.initEditableObjectData.call(this);
+
+					utility(this).on('dblclick',
+						function(){
+							muraInlineEditor.initEditableAttribute.call(this);
+						}
+					);	
+				}												
+								
+				<cfelse>
 				var attribute=utility(this);
 				var attributename=attribute.attr('data-attribute').toLowerCase();
 
 				attribute.attr('contenteditable','true');
 				attribute.attr('title','');
-
+				
 				utility(this).unbind('dblclick');
 
 				utility(this).click(
 					function(){
-						var attributename=this.getAttribute('data-attribute').toLowerCase();
-						
-						if(!(attributename in muraInlineEditor.attributes)){
-							if(attributename in muraInlineEditor.preprocessed){
-								this.innerHtml=muraInlineEditor.preprocessed[attributename];
-							}
-							
-
-							muraInlineEditor.attributes[attributename]=this;
-						}
+						muraInlineEditor.initEditableObjectData.call(this);
 					}
 				);													
 								
@@ -400,7 +436,9 @@
 						});
 					}
 								
-				}
+				}	
+				</cfif>
+				
 			});
 
 			utility('.mura-inline-save').click(function(){
@@ -437,10 +475,65 @@
 
 			return false;				 
 		},
+		initEditableObjectData:function(){
+			var attributename=this.getAttribute('data-attribute').toLowerCase();
+			
+			if(!(attributename in muraInlineEditor.attributes)){
+				if(attributename in muraInlineEditor.preprocessed){
+					this.innerHtml=muraInlineEditor.preprocessed[attributename];
+					if(mura.processMarkup){
+						mura.processMarkup(this);
+					}
+				}
+				
+
+				muraInlineEditor.attributes[attributename]=this;
+			}
+		},
+		initEditableAttribute:function(){
+			var attribute=utility(this);
+			var attributename=attribute.attr('data-attribute').toLowerCase();
+			
+			attribute.attr('contenteditable','true');
+			attribute.attr('title','');
+			attribute.unbind('dblclick');
+			attribute.find('.mura-object')
+				.html('')
+				.removeAttr('data-perm')
+				.removeAttr('data-instanceid')
+				.removeAttr('draggable');
+
+			if(!attribute.data('manualedit')){
+
+				if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+					typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+				){
+					var editor=CKEDITOR.inline( 
+					document.getElementById( attribute.attr('id') ),
+					{
+						toolbar: 'QuickEdit',
+						width: "75%",
+						customConfig: 'config.js.cfm'
+					});
+
+					editor.on('change', function(){
+						if(utility('##adminSave').css('display') == 'none'){
+							utility('##adminSave').fadeIn();	
+						}
+					});
+				}
+				
+				attribute.data('manualedit',true);		
+			}
+					
+
+		},
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
 			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
 				return CKEDITOR.instances[attributeid].getData();
+			} else if(muraInlineEditor.attributes[attribute].getAttribute('data-type').toLowerCase() == 'htmleditor') {
+				return muraInlineEditor.attributes[attribute].innerHTML;
 			} else{
 				return muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].innerHTML.trim());
 			}
@@ -450,8 +543,15 @@
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
+
 						for (var prop in muraInlineEditor.attributes) {
 							var attribute=muraInlineEditor.attributes[prop].getAttribute('data-attribute');
+							utility(attribute)
+								.find('.mura-object')
+								.html('')
+								.removeAttr('data-perm')
+								.removeAttr('data-instanceid')
+								.removeAttr('draggable');
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}

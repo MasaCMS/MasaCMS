@@ -2584,12 +2584,15 @@ this.Element && function(ElementPrototype) {
 
 	function loader(){return window.mura.ljs;}
 
+	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
+
 	function processMarkup(scope){
 		var self=scope;
 
 		scope=select(scope);
 
 		var processors=[
+
 			function(){
 				scope.find(".mura-async-object").each(function(){
 					processAsyncObject(this);
@@ -2783,11 +2786,25 @@ this.Element && function(ElementPrototype) {
 		}
 
 		function wireUpObject(html){
-			select(self).html(html);
+			var obj=select(self);
+
+			if(mura.layoutmanager && mura.editing){
+				var region=mura(self).closest(".mura-displayregion");
+				if(region && region.length ){
+					if(region.data('perm')){
+						obj.html(layoutmanagertoolbar + html);
+					} else {
+						obj.html(html);
+					}
+				}
+
+			} else {
+				obj.html(html);
+			}
 
 			processMarkup(self);
 
-			select(self).find('a[href="javascript:history.back();"]').each(function(){
+			obj.find('a[href="javascript:history.back();"]').each(function(){
 				mura(this).off("click").on("click",function(e){
 					if(self.prevInnerHTML){
 						e.preventDefault();
@@ -2808,7 +2825,7 @@ this.Element && function(ElementPrototype) {
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
 
-			select(self).trigger('asyncObjectRendered');
+			obj.trigger('asyncObjectRendered');
 
 		}
 
@@ -2890,8 +2907,20 @@ this.Element && function(ElementPrototype) {
 			config.requirementspath=config.context + '/requirements';
 		}
 
+		if(!config.jslib){
+			config.jslib='jquery';
+		}
+
+		if(!config.perm){
+			config.perm='none';
+		}
+
 		if(typeof config.adminpreview == 'undefined'){
 			config.adminpreview=false;
+		}
+
+		if(typeof config.layoutmanager == 'undefined'){
+			config.layoutmanager=false;
 		}
 
 		if(typeof config.mobileformat == 'undefined'){
@@ -2902,6 +2931,8 @@ this.Element && function(ElementPrototype) {
 			window.document.domain=config.windowdocumentdomain;
 		}
 		
+		mura.editing;
+
 		extend(window.mura,config);
 
 		ready(function(){
@@ -3031,7 +3062,9 @@ this.Element && function(ElementPrototype) {
 			extendClass:extendClass,
 			init:init,
 			formToObject:formToObject,
-			createUUID:createUUID
+			createUUID:createUUID,
+			processMarkup:processMarkup,
+			layoutmanagertoolbar:layoutmanagertoolbar
 			}
 		),
 		//these are here for legacy support

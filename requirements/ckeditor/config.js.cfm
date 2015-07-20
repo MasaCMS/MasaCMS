@@ -165,7 +165,7 @@ CKEDITOR.editorConfig = function( config )
 		config.extraPlugins += ',razuna';
 	</cfif>
 	
-	config.extraPlugins += ',sourcedialog';
+	config.extraPlugins += ',sourcedialog,fakeobjects,dialogui,showprotected';
 
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
@@ -173,7 +173,7 @@ CKEDITOR.editorConfig = function( config )
 	
 	//config.ProtectedTags = 'i';
 	config.protectedSource.push( /<i[^>]*><\/i>/g );
-	//config.protectedSource.push( /<div.*?class="(.*?)mura\-object(.*?)">(.*?)<\/div>/g ); 
+	config.protectedSource.push( /<div.*?class=".*?mura\-object.*?">.*?<\/div>/g ); 
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';

@@ -80,12 +80,12 @@
 
 
 	.mura-displayregion {
-		border-style: dotted;
-		min-height: 100px;
-		border-color: black;
+		min-height: 25px;
 	}
+
+
 	.mura-object:hover {
-		background: #f7f7f7;
+		/*background: #f7f7f7;*/
 		cursor: pointer;
 	}
 	
@@ -180,7 +180,7 @@
 		slice = function (arr, start, end) {
 	        return Array.prototype.slice.call(arr, start, end)
 	    },
-	    dragEl;
+	    dragE;
 
 	    function initDraggableObject(item){
 
@@ -225,7 +225,9 @@
 				    if(dragEl || newMuraObject){
 						if(dragEl && dragEl != this){
 					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
-					    	dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+							mura('#adminSave').show();
+							mura(this).closest('.mura-displayregion').data('dirty',true);
 						}
 
 						checkForNew.call(this,e);
@@ -277,7 +279,10 @@
 
 					    if(dragEl && dragEl != this){
 					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
-					    	dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+							mura('#adminSave').show();
+							mura(dragEl).addClass('mura-async-object');
+							mura(this).closest('.mura-displayregion').data('dirty',true);
 						}
 						checkForNew.call(this,e);
 
@@ -293,7 +298,7 @@
 
 	    function initLayoutManager(){
 			
-			mura('.mura-displayregion[data-inited="false"]:not([data-loose="true"])')
+			mura('.mura-displayregion[data-inited="false"]')
 			.on('drop',function(e) {
 			    var dropParent, dropIndex, dragIndex;
 			    e.preventDefault();
@@ -314,7 +319,10 @@
 			        	this.appendChild(dragEl);
 			        }
 
-			        dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+			        //dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+			        mura('#adminSave').show();	
+			        mura(dragEl).addClass('mura-async-object');
+			        mura(this).data('dirty',true);
 			       
 			    }
 
@@ -394,20 +402,19 @@
 				    this.parentNode.insertBefore(displayObject,this.nextSibling);
 		        }
 
-		        displayObject.setAttribute('data-droptarget',target.getSelector());
+		        //displayObject.setAttribute('data-droptarget',target.getSelector());
 		        initDraggableObject(displayObject);
 		        openFrontEndToolsModal(displayObject);
 		        mura.processAsyncObject(displayObject);
-
+		        mura(this).closest('.mura-displayregion').data('dirty',true);
+		        mura('#adminSave').show();	
 				//wireUpObjects();
-				
-
 				
 		    }
 
 		}
 
-		initLayoutManager();
+		window.mura.initLayoutManager=initLayoutManager;
 		
 	});
 
