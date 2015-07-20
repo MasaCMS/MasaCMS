@@ -83,8 +83,8 @@
 		min-height: 15px;
 	}
 
-	.mura-object:hover {
-		/*background: #f7f7f7;*/
+	.mura-object.active:hover {
+		background: #f7f7f7;
 		cursor: pointer;
 	}
 	
@@ -395,7 +395,7 @@
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
 				displayObject.setAttribute('data-perm','author');
-				displayObject.setAttribute('class','mura-async-object mura-object');
+				displayObject.setAttribute('class','mura-async-object mura-object active');
 		        
 		        var target=mura(this);
 		        if(target.hasClass('mura-object')){

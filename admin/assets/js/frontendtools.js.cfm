@@ -365,10 +365,12 @@
 			if(mura.layoutmanager){
 
 				mura(".mura-sidebar").addClass('active');
-				
+
 				mura(".mura-object").each(function(){
 					var item=mura(this);
 					var region=item.closest(".mura-displayregion");
+
+					item.addClass("active");
 					
 					if(region && region.length ){
 						if(region.data('perm')=='true'){	
