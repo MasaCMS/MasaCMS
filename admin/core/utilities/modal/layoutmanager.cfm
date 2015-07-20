@@ -29,7 +29,7 @@
 		transition: all .3s ease;
 	}
 	
-	.mura-sidebar:hover {
+	.mura-sidebar.active:hover {
 		transform: translateX(0);
 		opacity: 1;
 	}
@@ -80,9 +80,8 @@
 
 
 	.mura-displayregion {
-		min-height: 25px;
+		min-height: 15px;
 	}
-
 
 	.mura-object:hover {
 		/*background: #f7f7f7;*/
@@ -298,49 +297,54 @@
 
 	    function initLayoutManager(){
 			
-			mura('.mura-displayregion[data-inited="false"]')
-			.on('drop',function(e) {
-			    var dropParent, dropIndex, dragIndex;
-			    e.preventDefault();
-			      // this/e.target is current target element.
-			    if (e.stopPropagation) {
-			        e.stopPropagation(); // stops the browser from redirecting.
-			    }
+			mura('.mura-displayregion[data-inited="false"]').each(function(){
 
-			    // Don't do anything if we're dropping on the same column we're dragging.
-			    if (dragEl && dragEl !== this) {   
-				    dropParent = this.parentNode;
-				    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
-			        dropIndex = slice(this.parentNode.children).indexOf(this);
+				var region=mura(this);
 
-			        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
-			            dropParent.insertBefore(dragEl, this.nextSibling);
-			        } else {
-			        	this.appendChild(dragEl);
-			        }
+				if(region.data('loose')!='true' || (region.data('loose')=='true' && region.html() == '<p></p>')){
+					region.on('drop',function(e) {
+					    var dropParent, dropIndex, dragIndex;
+					    e.preventDefault();
+					      // this/e.target is current target element.
+					    if (e.stopPropagation) {
+					        e.stopPropagation(); // stops the browser from redirecting.
+					    }
 
-			        //dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-			        mura('#adminSave').show();	
-			        mura(dragEl).addClass('mura-async-object');
-			        mura(this).data('dirty',true);
-			       
-			    }
+					    // Don't do anything if we're dropping on the same column we're dragging.
+					    if (dragEl && dragEl !== this) {   
+						    dropParent = this.parentNode;
+						    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
+					        dropIndex = slice(this.parentNode.children).indexOf(this);
 
-		      	checkForNew.call(this,e);
-		     
-		      	//wireUpObjects();
+					        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
+					            dropParent.insertBefore(dragEl, this.nextSibling);
+					        } else {
+					        	this.appendChild(dragEl);
+					        }
 
-		      	dragEl = null;
-		      	muraLooseDropTarget=null;
-		      	mura('.mura-var-target').removeClass('mura-var-target');
+					        //dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+					        mura('#adminSave').show();	
+					        mura(dragEl).addClass('mura-async-object');
+					        mura(this).data('dirty',true);
+					       
+					    }
 
-		      	return true;
-   			})
-			.on('dragover',function(e){
-				e.preventDefault();
-				//e.dataTransfer.dropEffect='move';
-			}).data('inited','true');
+				      	checkForNew.call(this,e);
+				     
+				      	//wireUpObjects();
 
+				      	dragEl = null;
+				      	muraLooseDropTarget=null;
+				      	mura('.mura-var-target').removeClass('mura-var-target');
+
+				      	return true;
+		   			})
+					.on('dragover',function(e){
+						e.preventDefault();
+						//e.dataTransfer.dropEffect='move';
+					}).data('inited','true');
+				}
+			});
 
 			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
 			.each(function(){ initDraggableObject(this)});
@@ -406,7 +410,8 @@
 		        initDraggableObject(displayObject);
 		        openFrontEndToolsModal(displayObject);
 		        mura.processAsyncObject(displayObject);
-		        mura(this).closest('.mura-displayregion').data('dirty',true);
+
+		        mura(displayObject).closest('.mura-displayregion').data('dirty',true);
 		        mura('#adminSave').show();	
 				//wireUpObjects();
 				

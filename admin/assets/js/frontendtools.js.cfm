@@ -363,6 +363,9 @@
 			utility('.mura-editable').removeClass('inactive');
 			mura.editing=true;
 			if(mura.layoutmanager){
+
+				mura(".mura-sidebar").addClass('active');
+				
 				mura(".mura-object").each(function(){
 					var item=mura(this);
 					var region=item.closest(".mura-displayregion");
