@@ -34,7 +34,7 @@
 		opacity: 1;
 	}
 
-	.mura-sidebar.mura-sidebar--dragging {
+	.mura-sidebar.active.mura-sidebar--dragging {
 		transform: translateX(-300px);
 		opacity: 0;
 	}
@@ -104,7 +104,7 @@
 
 							
 	.mura-var-target {
-		border-bottom: thick dotted #ff0000;
+		border-bottom: dotted #ff0000;
 		margin-bottom: -1px;
 	}	
 	
@@ -193,9 +193,14 @@
 						dragEl=null;
 						newMuraObject=false;
 				})
-				.on('dragover',function(e){e.preventDefault()})
+				.on('dragover',function(e){
+					e.preventDefault();
+				})
 				.on('dragenter',function(e){
+
 					if(dragEl || newMuraObject){
+					
+
 						var prev=mura('.mura-var-target');
 						muraLooseDropTarget=this;
 
@@ -207,7 +212,10 @@
 							}
 						}
 
+						var item=mura(this).closest('.mura-object');
 						mura(this).addClass('mura-var-target');
+						
+						
 					}
 				})
 				.on('dragleave',function(e){
@@ -259,7 +267,14 @@
 							}
 						}
 
-						mura(this).addClass('mura-var-target');
+						var item=mura(this).closest(".mura-object");
+
+						if(item){
+							item.addClass('mura-var-target');
+						} else {
+							mura(this).addClass('mura-var-target');
+						}
+						
 					}
 				})
 				.on('dragleave',function(e){
@@ -349,7 +364,7 @@
 			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
 			.each(function(){ initDraggableObject(this)});
 			
-			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4').each(function(){ initLooseDropTarget(this)});
+			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
 			mura(".mura-objectclass").each(function(){
 			var item=mura(this);
@@ -412,6 +427,7 @@
 		        mura.processAsyncObject(displayObject);
 
 		        mura(displayObject).closest('.mura-displayregion').data('dirty',true);
+		        mura(displayObject).on('dragover',function(){})
 		        mura('#adminSave').show();	
 				//wireUpObjects();
 				
