@@ -373,6 +373,7 @@
 			utility('##adminStatus').hide();		
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
+
 			if(window.mura.layoutmanager){
 
 				utility(".mura-sidebar").addClass('active');
@@ -384,8 +385,9 @@
 					item.addClass("active");
 					
 					if(region && region.length ){
-						if(region.data('perm')=='true'){	
-							item.html(mura.layoutmanagertoolbar + item.html());
+						if(region.data('perm') || region.data('perm')=='true'){
+							
+							item.html(window.mura.layoutmanagertoolbar + item.html());
 
 							item.find(".frontEndToolsModal").on(
 								'click',

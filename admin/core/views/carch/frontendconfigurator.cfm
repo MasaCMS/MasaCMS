@@ -10,8 +10,8 @@
 	
 	<div class="clearfix">
 	    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
-	    <div style="float: left; width: 50%;"><h2>Preview</h2>
-	    	<div id="configuratorPreview"><div class="load-inline"></div></div>
+	    <div style="float: right; width: 50%;"><h2>Preview</h2>
+	    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
 	    </div>
 	</div>
 
@@ -24,6 +24,8 @@
 		siteManager.layoutmanager=true;
 
 		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
+		var configOptions={};
+
 		jQuery(document).ready(function(){
 
 			function initConifuratorProxy(){
@@ -98,7 +100,9 @@
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
-			
+
+						siteManager.loadObjectPreview(configOptions);
+					
 					}
 				}
 
@@ -121,8 +125,6 @@
 			}
 
 			$('##configurator .load-inline').spin(spinnerArgs2);
-			$('##configuratorPreview .load-inline').spin(spinnerArgs2);
-
 			
 			jQuery("##saveConfigDraft").bind("click",
 			function(){

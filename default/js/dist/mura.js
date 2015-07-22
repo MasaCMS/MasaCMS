@@ -2787,7 +2787,7 @@ this.Element && function(ElementPrototype) {
 
 		function wireUpObject(html){
 			var obj=select(self);
-
+			
 			if(mura.layoutmanager && mura.editing){
 				var region=mura(self).closest(".mura-displayregion");
 				if(region && region.length ){

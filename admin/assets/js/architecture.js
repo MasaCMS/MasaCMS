@@ -2244,7 +2244,11 @@ buttons: {
 
 							});
 
-							siteManager.updateAvailableObject();
+							if(siteManager.layoutmanager){
+								siteManager.updateObjectPreview();
+							} else {
+								siteManager.updateAvailableObject();
+							}
 						}
 					}).disableSelection();
 				}
@@ -2284,7 +2288,12 @@ buttons: {
 							}
 
 						});
-						siteManager.vupdateAvailableObject();
+
+						if(siteManager.layoutmanager){
+							siteManager.updateObjectPreview();
+						} else {
+							siteManager.updateAvailableObject();
+						}
 					}
 				}).disableSelection();
 			}
@@ -2316,7 +2325,13 @@ buttons: {
 							}
 
 						});
-						siteManager.updateAvailableObject();
+
+						if(siteManager.layoutmanager){
+							siteManager.updateObjectPreview();
+						} else {
+							siteManager.updateAvailableObject();
+						}
+						
 					}
 				}).disableSelection();
 			}
@@ -2453,7 +2468,32 @@ buttons: {
 
 	//CONFIG: URL,PARS,TITLE,INIT
 	configuratorMode: 'backEnd',
-
+	previewURL:'',
+	loadObjectPreview:function(configOptions){
+		var src="core/utilities/objectpreview/";
+		src+= '?siteid=';
+		src+= configOptions.siteid;
+		src+= '&contenthistid=';
+		src+= configOptions.contenthistid;
+		src+= '&object=';
+		src+= configOptions.object;
+		src+= '&compactDisplay=true';
+		src+= '&objectid=';
+		src+= configOptions.objectid;
+		src+= '&params=';
+		src+= escape(configOptions.params);
+		
+		if(src != siteManager.previewURL){
+			var iframe=$("#configuratorPreview");
+			siteManager.previewURL=src;
+			iframe.attr('src',siteManager.previewURL);
+		}
+	},
+	updateObjectPreview:function(){
+		siteManager.updateAvailableObject();
+		configOptions.params=JSON.stringify(siteManager.availableObject.params);
+		siteManager.loadObjectPreview(configOptions);
+	},
 	initConfigurator: function(data, config) {
 
 		this.resetAvailableObject();
@@ -2561,7 +2601,8 @@ buttons: {
 				}
 
 				if(siteManager.layoutmanager){
-					$('#configuratorPreview').html('testing')
+					//$('.objectParam').on('blur',siteManager.updateObjectPreview);
+					$('#configurator').change(siteManager.updateObjectPreview);
 				}
 
 				if(siteManager.configuratorMode == 'backEnd') {
