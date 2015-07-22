@@ -29,12 +29,12 @@
 		transition: all .3s ease;
 	}
 	
-	.mura-sidebar:hover {
+	.mura-sidebar.active:hover {
 		transform: translateX(0);
 		opacity: 1;
 	}
 
-	.mura-sidebar.mura-sidebar--dragging {
+	.mura-sidebar.active.mura-sidebar--dragging {
 		transform: translateX(-300px);
 		opacity: 0;
 	}
@@ -80,11 +80,10 @@
 
 
 	.mura-displayregion {
-		border-style: dotted;
-		min-height: 100px;
-		border-color: black;
+		min-height: 15px;
 	}
-	.mura-object:hover {
+
+	.mura-object.active:hover {
 		background: #f7f7f7;
 		cursor: pointer;
 	}
@@ -101,6 +100,13 @@
 	    -ms-user-select: none;
 	    user-select: none;
 	}
+
+
+							
+	.mura-var-target {
+		border-bottom: dotted #ff0000;
+		margin-bottom: -1px;
+	}	
 	
 </style>
 
@@ -173,56 +179,228 @@
 		slice = function (arr, start, end) {
 	        return Array.prototype.slice.call(arr, start, end)
 	    },
-	    dragEl;
+	    dragE;
 
+	    function initDraggableObject(item){
 
+				mura(item)
+				.on('dragstart',function(){
+					dragEl=this;
+					elDropHandled=false;
+					newMuraObject=false;
+					muraLooseDropTarget=null;
+				})
+				.on('dragend',function(){
+						if(dragEl && !elDropHandled){
+							mura(dragEl).remove();
+						}
 
-	    function wireUpObjects(){
+						dragEl=null;
+						elDropHandled=false;
+						newMuraObject=false;
+				})
+				.on('dragover',function(e){
+					e.preventDefault();
+				})
+				.on('dragenter',function(e){
 
-	    	mura(".mura-displayregion[data-inited='false']")
-			.on('drop',function(e) {
-		      var dropParent, dropIndex, dragIndex;
-		      e.preventDefault();
-		      // this/e.target is current target element.
-		      if (e.stopPropagation) {
-		        e.stopPropagation(); // stops the browser from redirecting.
-		      }
+					if(dragEl || newMuraObject){
+					
 
-		      // Don't do anything if we're dropping on the same column we're dragging.
-		      if (dragEl && dragEl !== this) {
-			      dropParent = this.parentNode;
-			      dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
-		          dropIndex = slice(this.parentNode.children).indexOf(this);
+						var prev=mura('.mura-var-target');
+						muraLooseDropTarget=this;
 
-		          if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex) {
-		            dropParent.insertBefore(dragEl, this.nextSibling);
-		          } else {
-		            this.appendChild(dragEl);
-		          }
-		       
-		      }
+						if(prev.length){
+							prev.removeClass('mura-var-target');
 
-		      checkForNew.call(this,e);
-		     
-		      //wireUpObjects();
+							if(!prev.attr('class')){
+								prev.removeAttr('class');
+							}
+						}
 
-		      dragEl = null;
+						var item=mura(this).closest('.mura-object');
+						mura(this).addClass('mura-var-target');		
+						
+					}
+				})
+				.on('dragleave',function(e){
+					mura(this).removeClass('mura-var-target');
+					muraLooseDropTarget=null;
+					if(!mura(this).attr('class')){
+						mura(this).removeAttr('class');
+					}
+				}).on('drop',function(e){
+					// this/e.target is current target element.
+				    if (e.stopPropagation) {
+				    	e.stopPropagation(); // stops the browser from redirecting.
+				    }
+				    if(dragEl || newMuraObject){
+						if(dragEl && dragEl != this){
+					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+							mura('#adminSave').show();
+							mura(this).closest('.mura-displayregion').data('dirty',true);
+							elDropHandled=true;
+						} else if (dragEl==this){
+							elDropHandled=true;
+						}
 
-		      return true;
-   			})
-			.on('dragover',function(e){
-				e.preventDefault();
-				//e.dataTransfer.dropEffect='move';
-			}).data('inited','true');
+						checkForNew.call(this,e);
 
-			if(sortable){
-		       	sortable.destroy();
-		    }
+					    mura(this).removeClass('mura-var-target');
+						muraLooseDropTarget=null;
+						newMuraObject=false;
 
-			sortable=mura.sortable({
-				els:'.mura-displayregion > .mura-object',
-				onDrop:checkForNew,
-				onDragStart:function(){dragEl=this;}
+						if(!mura(this).attr('class')){
+							mura(this).removeAttr('class');
+						}
+					}
+					
+				}).attr('draggable',true);
+			}
+
+			function initLooseDropTarget(item){
+				mura(item)
+				.on('dragover',function(e){e.preventDefault()})
+				.on('dragenter',function(e){
+					if(dragEl || newMuraObject){
+						var prev=mura('.mura-var-target');
+						muraLooseDropTarget=this;
+
+						if(prev.length){
+							prev.removeClass('mura-var-target');
+
+							if(!prev.attr('class')){
+								prev.removeAttr('class');
+							}
+						}
+
+						var item=mura(this).closest(".mura-object");
+
+						if(item){
+							item.addClass('mura-var-target');
+						} else {
+							mura(this).addClass('mura-var-target');
+						}
+						
+					}
+				})
+				.on('dragleave',function(e){
+					mura(this).removeClass('mura-var-target');
+					muraLooseDropTarget=null;
+					if(!mura(this).attr('class')){
+						mura(this).removeAttr('class');
+					}
+				}).on('drop',function(e){
+					// this/e.target is current target element.
+				    if (e.stopPropagation) {
+				    	e.stopPropagation(); // stops the browser from redirecting.
+				    }
+
+				    if(dragEl || newMuraObject){
+
+					    if(dragEl && dragEl != this){
+					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+							mura('#adminSave').show();
+							mura(dragEl).addClass('mura-async-object');
+							mura(this).closest('.mura-displayregion').data('dirty',true);
+							elDropHandled=true;
+						} else if (dragEl==this){
+							elDropHandled=true;
+						}
+
+						checkForNew.call(this,e);
+
+						mura(this).removeClass('mura-var-target');
+						muraLooseDropTarget=null;
+						if(!mura(this).attr('class')){
+							mura(this).removeAttr('class');
+						}
+					}
+				});
+
+			}
+
+	    function initLayoutManager(){
+			
+			mura('.mura-displayregion[data-inited="false"]').each(function(){
+
+				var region=mura(this);
+
+				if(region.data('loose')!='true' || (region.data('loose')=='true' && region.html() == '<p></p>')){
+					region.on('drop',function(e) {
+					    var dropParent, dropIndex, dragIndex;
+					    e.preventDefault();
+					      // this/e.target is current target element.
+					    if (e.stopPropagation) {
+					        e.stopPropagation(); // stops the browser from redirecting.
+					    }
+
+					    // Don't do anything if we're dropping on the same column we're dragging.
+					    if (dragEl && dragEl !== this) {   
+						    dropParent = this.parentNode;
+						    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
+					        dropIndex = slice(this.parentNode.children).indexOf(this);
+
+					        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
+					            dropParent.insertBefore(dragEl, this.nextSibling);
+					        } else {
+					        	this.appendChild(dragEl);
+					        }
+
+					        //dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+					        mura('#adminSave').show();	
+					        mura(dragEl).addClass('mura-async-object');
+					        mura(this).data('dirty',true);
+					        elDropHandled=true;
+					    } else if (dragEl==this){
+					    	elDropHandled=true;
+					    }
+
+				      	checkForNew.call(this,e);
+				     
+				      	//wireUpObjects();
+
+				      	muraLooseDropTarget=null;
+				      	mura('.mura-var-target').removeClass('mura-var-target');
+
+				      	return true;
+		   			})
+					.on('dragover',function(e){
+						e.preventDefault();
+						//e.dataTransfer.dropEffect='move';
+					}).data('inited','true');
+				}
+			});
+
+			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
+			.each(function(){ initDraggableObject(this)});
+			
+			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+
+			mura(".mura-objectclass").each(function(){
+			var item=mura(this);
+			item.attr('draggable',true);
+			item.on('dragstart',function(e){
+					//e.dataTransfer.effectAllowed = 'move';
+					dragEl=null;
+					elDropHandled=false;
+					newMuraObject=true;
+					muraLooseDropTarget=null;
+					mura('#dragtype').html(item.data('object'));
+					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML}));
+				})
+				.on('dragend',
+					function(){
+						mura('#dragtype').html('');
+						dragEl=null;
+						elDropHandled=false;
+						newMuraObject=false;
+						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
+					});
+
 			});
 
 	    }
@@ -244,51 +422,39 @@
 				}
 			}
 
-			//alert(2);
 			if(typeof object=='object' && object.object){
 				
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
-				displayObject.setAttribute('class','mura-async-object mura-object');
+				displayObject.setAttribute('data-objectname',object.objectname);
+				displayObject.setAttribute('data-perm','author');
+				displayObject.setAttribute('data-instanceid',mura.createUUID());
+				displayObject.setAttribute('class','mura-async-object mura-object active');
 		        
-		        if(mura(this).hasClass('mura-object')){
+		        var target=mura(this);
+		        if(target.hasClass('mura-object')){
 		        	this.parentNode.insertBefore(displayObject, this);				
-		        } else if(mura(this).hasClass('mura-displayregion')){
+		        } else if(target.hasClass('mura-displayregion')){
 		        	this.appendChild(displayObject);	
 		        } else {
-		        	var region=mura(this).find('.mura-displayregion');
-		        	if(region.length){
-		        		region.append(displayObject);
-		        	}
+				    this.parentNode.insertBefore(displayObject,this.nextSibling);
 		        }
 
+		        //displayObject.setAttribute('data-droptarget',target.getSelector());
+		        initDraggableObject(displayObject);
+		        openFrontEndToolsModal(displayObject);
 		        mura.processAsyncObject(displayObject);
 
-				wireUpObjects();
+		        mura(displayObject).closest('.mura-displayregion').data('dirty',true);
+		        mura(displayObject).on('dragover',function(){})
+		        mura('#adminSave').show();	
+				//wireUpObjects();
 				
 		    }
 
 		}
 
-		wireUpObjects();
-
-		mura(".mura-objectclass").each(function(){
-			var item=mura(this);
-			item.attr('draggable',true);
-			item.on('dragstart',function(e){
-					//e.dataTransfer.effectAllowed = 'move';
-					dragEl=null;
-					mura('#dragtype').html(item.data('object'));
-					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
-					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object')}));
-				}).on('dragend',
-					function(){
-						mura('#dragtype').html('');
-						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
-					});
-
-		});
-
+		window.mura.initLayoutManager=initLayoutManager;
 		
 	});
 

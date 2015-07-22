@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
 <cfset this.asyncObjects=true>
+<cfset this.asyncRender=false>
 <cfset this.layoutmanager=false>
 
 <!--- Set these to a boolean value to override settings.ini.cfm value--->
@@ -480,10 +481,8 @@ Display Objects
 				? getConfigBean().getEnableFrontEndTools()
 				: true;
 
-
-		if(this.layoutmanager){
-			this.asyncObjects=true;
-		}
+		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
+		this.asyncRender=!this.asyncObjects;
 	</cfscript>
 	
 <cfreturn this />
@@ -1215,8 +1214,8 @@ Display Objects
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="showEditable" required="true" default="false">
-	<cfargument name="editLink" required="true" default="">
 	<cfargument name="isConfigurator" required="true" default="false">
+	<cfargument name="objectname" required="true" default="">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -1224,11 +1223,11 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.editLink,arguments.isConfigurator) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -1248,8 +1247,9 @@ Display Objects
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="contentHistID" required="true" default="">
 	<cfargument name="throwError" default="true">
-	<cfargument name="editLink" required="true" default="">
+	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
+	<cfargument name="objectname" required="true" default="">
 	
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1263,8 +1263,8 @@ Display Objects
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
 	<cfset var objectParams="">
-	<cfset var doLayoutManager=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
-
+	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+	
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
 	<cfelseif isStruct(arguments.params)>
@@ -1272,6 +1272,8 @@ Display Objects
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
+
+	<cfparam name="objectParams.async" default="false">
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
 	<cfif arguments.thefile eq "dsp_feed.cfm">
@@ -1294,18 +1296,17 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif doLayoutManager>
-		<cfset var objectclass="">
-		<cfset var openingDiv='<div class="mura-object mura-async-object" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#"'>
-		<cfloop collection="#objectparams#" item="local.i">
-			<cfset openingDiv=openingDiv & ' data-#local.i#="#esapiEncode('html_attr',objectparams[local.i])#"'>
-		</cfloop>
-		<cfset openingDiv=openingDiv & ">">
-		<cfset theContent="#openingDiv##trim(theContent)#</div>">	
+	<cfif doLayoutManagerWrapper>	
+		<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+				objectid=arguments.objectid,
+				content=theContent,
+				objectParams=objectParams,
+				showEditable=arguments.showEditable,
+				isConfigurator=arguments.isConfigurator,
+				objectname=arguments.objectname) />
+	<cfelse>
+		<cfreturn trim(theContent) />
 	</cfif>
-
-	<cfreturn trim(theContent) />
-
 </cffunction>
 
 <cffunction name="dspBody"  output="false" returntype="string">
@@ -1330,7 +1331,7 @@ Display Objects
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
 	<cfset var safesubtype=REReplace(variables.event.getValue('contentBean').getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
-	
+	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn) 
@@ -1493,6 +1494,7 @@ Display Objects
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
+
 					<cfif arguments.renderKids>
 						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 						<cfcase value="Folder">
@@ -1876,6 +1878,7 @@ Display Objects
 	<cfargument name="assignmentPerm" required="true" default="none">
 	<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 	<cfargument name="cacheKey" type="string" required="false" default="">
+	<cfargument name="objectname" default="">
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>
@@ -2673,6 +2676,10 @@ Display Objects
 
  	public function hasMuraScope(){
  		return isDefined('variables.$');
+ 	}
+
+ 	public function useLayoutManager(){
+ 		return (this.layoutmanager && isStruct(variables.$.event('r')) && listFindNoCase('author,editor',variables.$.event('r').perm) || !isStruct(variables.$.event('r')) && this.layoutmanager) ? true : false;
  	}
 
 </cfscript>

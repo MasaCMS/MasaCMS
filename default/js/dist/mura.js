@@ -2584,12 +2584,15 @@ this.Element && function(ElementPrototype) {
 
 	function loader(){return window.mura.ljs;}
 
+	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
+
 	function processMarkup(scope){
 		var self=scope;
 
 		scope=select(scope);
 
 		var processors=[
+
 			function(){
 				scope.find(".mura-async-object").each(function(){
 					processAsyncObject(this);
@@ -2668,14 +2671,14 @@ this.Element && function(ElementPrototype) {
 			},
 
 			function(){
+
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").each(
-						function(){
-							on(this,'click',function(event){
-								event.preventDefault();
-								openFrontEndToolsModal(this);
-							});
+					scope.find(".frontEndToolsModal").on(
+						'click',
+						function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
 						}
 					);
 
@@ -2783,11 +2786,25 @@ this.Element && function(ElementPrototype) {
 		}
 
 		function wireUpObject(html){
-			select(self).html(html);
+			var obj=select(self);
+
+			if(mura.layoutmanager && mura.editing){
+				var region=mura(self).closest(".mura-displayregion");
+				if(region && region.length ){
+					if(region.data('perm')){
+						obj.html(layoutmanagertoolbar + html);
+					} else {
+						obj.html(html);
+					}
+				}
+
+			} else {
+				obj.html(html);
+			}
 
 			processMarkup(self);
 
-			select(self).find('a[href="javascript:history.back();"]').each(function(){
+			obj.find('a[href="javascript:history.back();"]').each(function(){
 				mura(this).off("click").on("click",function(e){
 					if(self.prevInnerHTML){
 						e.preventDefault();
@@ -2808,7 +2825,7 @@ this.Element && function(ElementPrototype) {
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
 
-			select(self).trigger('asyncObjectRendered');
+			obj.trigger('asyncObjectRendered');
 
 		}
 
@@ -2890,8 +2907,20 @@ this.Element && function(ElementPrototype) {
 			config.requirementspath=config.context + '/requirements';
 		}
 
+		if(!config.jslib){
+			config.jslib='jquery';
+		}
+
+		if(!config.perm){
+			config.perm='none';
+		}
+
 		if(typeof config.adminpreview == 'undefined'){
 			config.adminpreview=false;
+		}
+
+		if(typeof config.layoutmanager == 'undefined'){
+			config.layoutmanager=false;
 		}
 
 		if(typeof config.mobileformat == 'undefined'){
@@ -2902,6 +2931,8 @@ this.Element && function(ElementPrototype) {
 			window.document.domain=config.windowdocumentdomain;
 		}
 		
+		mura.editing;
+
 		extend(window.mura,config);
 
 		ready(function(){
@@ -3031,7 +3062,9 @@ this.Element && function(ElementPrototype) {
 			extendClass:extendClass,
 			init:init,
 			formToObject:formToObject,
-			createUUID:createUUID
+			createUUID:createUUID,
+			processMarkup:processMarkup,
+			layoutmanagertoolbar:layoutmanagertoolbar
 			}
 		),
 		//these are here for legacy support
@@ -3464,7 +3497,7 @@ this.Element && function(ElementPrototype) {
 				var children=window.mura(this.selection[0].childNodes);
 				
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
@@ -3493,7 +3526,7 @@ this.Element && function(ElementPrototype) {
 			}
 		},
 
-		getSelector:function(omitSysEls) {
+		getSelector:function() {
 		    var pathes = [];
 
 		    //this.selection.each(function(index, element) {
@@ -3503,6 +3536,7 @@ this.Element && function(ElementPrototype) {
 		           var realNode = $node.get(0), name = realNode.localName;
 		           if (!name) { break; }
 
+		           /*
 		           if(omitSysEls 
 		           		&& (
 		           			$node.hasClass('mura-editable')
@@ -3513,7 +3547,7 @@ this.Element && function(ElementPrototype) {
 		           	){
 		           		break;
 		           }
-		           
+		           */
 		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
 		           		name='#' + $node.attr('id');
 		           		path = name + (path ? ' > ' + path : '');
@@ -3557,7 +3591,7 @@ this.Element && function(ElementPrototype) {
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};	
 				} else {
 					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
 				}
@@ -3586,8 +3620,8 @@ this.Element && function(ElementPrototype) {
 		    // traverse parents
 		    while (el!==null) {
 		        parent = el.parentElement;
-		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
-		            return parent;
+		        if (parent!==null && parent.matchesSelector(selector)) {
+		            return window.mura(parent);
 		        }
 		        el = parent;
 		    }
@@ -3675,7 +3709,7 @@ this.Element && function(ElementPrototype) {
 			this.each(function(el){
 				if (el.classList){
 				  el.classList.remove(className);
-				} else {
+				} else if (el.className) {
 				  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 				}
 			});
@@ -3922,7 +3956,10 @@ this.Element && function(ElementPrototype) {
 			}
 			
 			this.each(function(el){
-				el.removeAttribute(attributeName);
+				if(el.remoteAttribute){
+					el.removeAttribute(attributeName);
+				}
+				
 			});
 			return this;
 			
@@ -3966,19 +4003,28 @@ this.Element && function(ElementPrototype) {
 				return window.mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
-					for(var p in attributeName){
-						el.setAttribute(p,attributeName[p]);
+					if(el.setAttribute){
+						for(var p in attributeName){
+							el.setAttribute(p,attributeName[p]);
+						}
 					}
 				});
 				return this;
 			} else if(typeof value != 'undefined'){
 				this.each(function(el){
-					el.setAttribute(attributeName,value);
+					if(el.setAttribute){
+						el.setAttribute(attributeName,value);
+					}
 				});
 				return this;
 			
 			} else {
-				return this.selection[0].getAttribute(attributeName);
+				if(this.selection[0].getAttribute){
+					return this.selection[0].getAttribute(attributeName);
+				} else {
+					return undefined;
+				}
+				
 			}
 		},
 
@@ -4455,13 +4501,13 @@ this.Element && function(ElementPrototype) {
       return false;
     }
 
-    function handleDragEnter() {
+    function handleDragEnter(e) {
       this.classList.add(overClass);
 
       options.onDragEnter && options.onDragEnter.call(this,e);
     }
 
-    function handleDragLeave() {
+    function handleDragLeave(e) {
       // this/e.target is previous target element.
       this.classList.remove(overClass);
 

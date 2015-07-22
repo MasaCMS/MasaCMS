@@ -453,6 +453,7 @@
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
 	<cfset local.data.lastApplied=now()>
 	<cfset local.currentUser.setValue("ChangesetPreviewData",local.data)>
+	<cfset request.muraChangesetPreview=len(local.data.changesetIDList)>
 <cfelseif not arguments.append>
 	<cfset removeSessionPreviewData()>
 </cfif>
@@ -462,6 +463,7 @@
 <cffunction name="removeSessionPreviewData" access="public" returntype="any" output="false">
 	<cfset getCurrentUser().setValue("ChangesetPreviewData","")>
 	<cfset request.muraChangesetPreviewToolbar=false>
+	<cfset request.muraChangesetPreview=false>
 </cffunction>
 
 <cffunction name="publish" access="public" returntype="any" output="false">

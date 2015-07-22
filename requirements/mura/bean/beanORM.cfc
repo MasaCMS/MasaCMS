@@ -234,7 +234,7 @@ component extends="mura.bean.bean" versioned=false {
 					if(structKeyExists(props[prop],"fieldtype")){
 						if(props[prop].fieldtype eq "id"){
 							getDbUtility().addPrimaryKey(argumentCollection=props[prop]);
-						} else if ( listFindNoCase('one-to-many,many-to-one,index',props[prop].fieldtype) ){
+						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index',props[prop].fieldtype) ){
 							getDbUtility().addIndex(argumentCollection=props[prop]);
 						}
 					}

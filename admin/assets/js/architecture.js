@@ -47,6 +47,7 @@
 var siteManager = {
 
 	formSubmitted: false,
+	layoutmanager:false,
 	fileLockConfirmed: false,
 	hasFileLock: false,
 	nodeLockConfirmed: false,
@@ -2557,6 +2558,10 @@ buttons: {
 						data = $.extend(data, resp);
 					}
 					config.init(data, config);
+				}
+
+				if(siteManager.layoutmanager){
+					$('#configuratorPreview').html('testing')
 				}
 
 				if(siteManager.configuratorMode == 'backEnd') {

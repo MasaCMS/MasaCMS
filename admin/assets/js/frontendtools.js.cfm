@@ -50,7 +50,18 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				frontEndProxy.post({cmd:'setObjectParans',objectParams:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+				adminProxy.post({cmd:'setObjectParams',params:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+			} else if (parameters["cmd"]=="setObjectParams"){
+				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
+
+				if(typeof parameters.params == 'object'){
+					for(var p in parameters.params){
+						item.data(p,parameters.params[p]);
+					}
+				}
+	
+				mura.processAsyncObject(item.node);
+				closeFrontEndToolsModal();
 			}
 		}			
 	}
@@ -89,10 +100,31 @@
 	}
 
 	var openFrontEndToolsModal=function(a){
+		
 		var src=a.href;
-		var isModal=utility(a).attr("data-configurator");
-		var width=utility(a).attr("data-modal-width");
-		var ispreview=utility(a).attr("data-modal-preview");
+		var editableObj=utility(a);
+
+		if(!src){
+			if(utility(a).hasClass("mura-object")){
+				var editableObj=utility(a);
+			} else {
+				var editableObj=utility(a).closest(".mura-object");
+			}
+
+			if(!editableObj.data('objectid')){
+				editableObj.data('objectid','');
+			}
+
+			var layoutmanager=false;
+
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname');
+		}
+
+		var isModal=editableObj.attr("data-configurator");
+
+		//These are for the preview iframes
+		var width=editableObj.attr("data-modal-width");
+		var ispreview=editableObj.attr("data-modal-preview");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
@@ -340,29 +372,63 @@
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();		
 			utility('.mura-editable').removeClass('inactive');
+			window.mura.editing=true;
+			if(window.mura.layoutmanager){
+
+				utility(".mura-sidebar").addClass('active');
+
+				utility(".mura-object").each(function(){
+					var item=utility(this);
+					var region=item.closest(".mura-displayregion");
+
+					item.addClass("active");
+					
+					if(region && region.length ){
+						if(region.data('perm')=='true'){	
+							item.html(mura.layoutmanagertoolbar + item.html());
+
+							item.find(".frontEndToolsModal").on(
+								'click',
+								function(event){
+									event.preventDefault();
+									openFrontEndToolsModal(this);
+								}
+							);
+						}
+					}
+					
+				});
+
+				window.mura.initLayoutManager();
+			}
 
 			utility('.mura-editable-attribute').each(
-			function(){
+				function(){
+				
+				<cfif $.getContentRenderer().useLayoutManager()>
+				var attribute=utility(this);
+				if(attribute.attr('data-attribute')){
+					muraInlineEditor.initEditableObjectData.call(this);
+
+					utility(this).on('dblclick',
+						function(){
+							muraInlineEditor.initEditableAttribute.call(this);
+						}
+					);	
+				}												
+								
+				<cfelse>
 				var attribute=utility(this);
 				var attributename=attribute.attr('data-attribute').toLowerCase();
 
 				attribute.attr('contenteditable','true');
 				attribute.attr('title','');
-
+				
 				utility(this).unbind('dblclick');
 
 				utility(this).click(
 					function(){
-						var attributename=this.getAttribute('data-attribute').toLowerCase();
-						
-						if(!(attributename in muraInlineEditor.attributes)){
-							if(attributename in muraInlineEditor.preprocessed){
-								this.innerHtml=muraInlineEditor.preprocessed[attributename];
-							}
-							
-
-							muraInlineEditor.attributes[attributename]=this;
-						}
+						muraInlineEditor.initEditableObjectData.call(this);
 					}
 				);													
 								
@@ -386,7 +452,9 @@
 						});
 					}
 								
-				}
+				}	
+				</cfif>
+				
 			});
 
 			utility('.mura-inline-save').click(function(){
@@ -423,10 +491,65 @@
 
 			return false;				 
 		},
+		initEditableObjectData:function(){
+			var attributename=this.getAttribute('data-attribute').toLowerCase();
+			
+			if(!(attributename in muraInlineEditor.attributes)){
+				if(attributename in muraInlineEditor.preprocessed){
+					this.innerHtml=muraInlineEditor.preprocessed[attributename];
+					if(mura.processMarkup){
+						mura.processMarkup(this);
+					}
+				}
+				
+
+				muraInlineEditor.attributes[attributename]=this;
+			}
+		},
+		initEditableAttribute:function(){
+			var attribute=utility(this);
+			var attributename=attribute.attr('data-attribute').toLowerCase();
+			
+			attribute.attr('contenteditable','true');
+			attribute.attr('title','');
+			attribute.unbind('dblclick');
+			attribute.find('.mura-object')
+				.html('')
+				.removeAttr('data-perm')
+				.removeAttr('data-instanceid')
+				.removeAttr('draggable');
+
+			if(!attribute.data('manualedit')){
+
+				if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+					typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+				){
+					var editor=CKEDITOR.inline( 
+					document.getElementById( attribute.attr('id') ),
+					{
+						toolbar: 'QuickEdit',
+						width: "75%",
+						customConfig: 'config.js.cfm'
+					});
+
+					editor.on('change', function(){
+						if(utility('##adminSave').css('display') == 'none'){
+							utility('##adminSave').fadeIn();	
+						}
+					});
+				}
+				
+				attribute.data('manualedit',true);		
+			}
+					
+
+		},
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
 			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
 				return CKEDITOR.instances[attributeid].getData();
+			} else if(muraInlineEditor.attributes[attribute].getAttribute('data-type').toLowerCase() == 'htmleditor') {
+				return muraInlineEditor.attributes[attribute].innerHTML;
 			} else{
 				return muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].innerHTML.trim());
 			}
@@ -436,11 +559,41 @@
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
+
 						for (var prop in muraInlineEditor.attributes) {
 							var attribute=muraInlineEditor.attributes[prop].getAttribute('data-attribute');
+							utility(attribute)
+								.find('.mura-object')
+								.html('')
+								.removeAttr('data-perm')
+								.removeAttr('data-instanceid')
+								.removeAttr('draggable');
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
+
+						mura('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
+							function(){
+								var objectlist=[];
+
+								mura(this).find('.mura-object').each(function(){
+									var item=mura(this);
+									var params=item.data();
+
+									delete params['instanceid'];
+									delete params['objectname'];
+									delete params['objectid'];
+									delete params['isconfigurator'];
+									delete params['perm'];
+
+									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
+								});
+
+								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
+							}
+						);
+
+						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){
@@ -748,4 +901,5 @@
 	</cfif>
 	window.toggleAdminToolbar=toggleAdminToolbar;
 	window.closeFrontEndToolsModal=closeFrontEndToolsModal;
+	window.openFrontEndToolsModal=openFrontEndToolsModal;
 })(window);

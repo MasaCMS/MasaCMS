@@ -187,7 +187,7 @@
 				var children=window.mura(this.selection[0].childNodes);
 				
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};
 				} else {
 					var filterFn=function(){ return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};
 				}
@@ -216,7 +216,7 @@
 			}
 		},
 
-		getSelector:function(omitSysEls) {
+		getSelector:function() {
 		    var pathes = [];
 
 		    //this.selection.each(function(index, element) {
@@ -226,6 +226,7 @@
 		           var realNode = $node.get(0), name = realNode.localName;
 		           if (!name) { break; }
 
+		           /*
 		           if(omitSysEls 
 		           		&& (
 		           			$node.hasClass('mura-editable')
@@ -236,7 +237,7 @@
 		           	){
 		           		break;
 		           }
-		           
+		           */
 		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
 		           		name='#' + $node.attr('id');
 		           		path = name + (path ? ' > ' + path : '');
@@ -280,7 +281,7 @@
 				var silbings=window.mura(this.selection[0].childNodes);
 
 				if(typeof selector == 'string'){
-					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && window.mura.matchesSelector(this,selector);};	
+					var filterFn=function(){return (this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9) && this.matchesSelector(selector);};	
 				} else {
 					var filterFn=function(){return this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9;};	
 				}
@@ -309,8 +310,8 @@
 		    // traverse parents
 		    while (el!==null) {
 		        parent = el.parentElement;
-		        if (parent!==null && window.mura.matchesSelector(parent,selector)) {
-		            return parent;
+		        if (parent!==null && parent.matchesSelector(selector)) {
+		            return window.mura(parent);
 		        }
 		        el = parent;
 		    }
@@ -398,7 +399,7 @@
 			this.each(function(el){
 				if (el.classList){
 				  el.classList.remove(className);
-				} else {
+				} else if (el.className) {
 				  el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 				}
 			});
@@ -645,7 +646,10 @@
 			}
 			
 			this.each(function(el){
-				el.removeAttribute(attributeName);
+				if(el.remoteAttribute){
+					el.removeAttribute(attributeName);
+				}
+				
 			});
 			return this;
 			
@@ -689,19 +693,28 @@
 				return window.mura.getAttributes(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
-					for(var p in attributeName){
-						el.setAttribute(p,attributeName[p]);
+					if(el.setAttribute){
+						for(var p in attributeName){
+							el.setAttribute(p,attributeName[p]);
+						}
 					}
 				});
 				return this;
 			} else if(typeof value != 'undefined'){
 				this.each(function(el){
-					el.setAttribute(attributeName,value);
+					if(el.setAttribute){
+						el.setAttribute(attributeName,value);
+					}
 				});
 				return this;
 			
 			} else {
-				return this.selection[0].getAttribute(attributeName);
+				if(this.selection[0].getAttribute){
+					return this.selection[0].getAttribute(attributeName);
+				} else {
+					return undefined;
+				}
+				
 			}
 		},
 

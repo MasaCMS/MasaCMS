@@ -52,13 +52,13 @@
       return false;
     }
 
-    function handleDragEnter() {
+    function handleDragEnter(e) {
       this.classList.add(overClass);
 
       options.onDragEnter && options.onDragEnter.call(this,e);
     }
 
-    function handleDragLeave() {
+    function handleDragLeave(e) {
       // this/e.target is previous target element.
       this.classList.remove(overClass);
 
