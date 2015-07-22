@@ -105,7 +105,7 @@
 		var editableObj=utility(a);
 
 		if(!src){
-			if(mura(a).hasClass("mura-object")){
+			if(utility(a).hasClass("mura-object")){
 				var editableObj=utility(a);
 			} else {
 				var editableObj=utility(a).closest(".mura-object");
