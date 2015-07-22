@@ -372,13 +372,13 @@
 			utility('##adminSave').show();
 			utility('##adminStatus').hide();		
 			utility('.mura-editable').removeClass('inactive');
-			mura.editing=true;
-			if(mura.layoutmanager){
+			window.mura.editing=true;
+			if(window.mura.layoutmanager){
 
-				mura(".mura-sidebar").addClass('active');
+				utility(".mura-sidebar").addClass('active');
 
-				mura(".mura-object").each(function(){
-					var item=mura(this);
+				utility(".mura-object").each(function(){
+					var item=utility(this);
 					var region=item.closest(".mura-displayregion");
 
 					item.addClass("active");
