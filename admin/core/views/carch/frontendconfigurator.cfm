@@ -1,144 +1,152 @@
-﻿<cfset event=request.event>
-<cfset $=rc.$>
+﻿<cfsilent>
+	<cfset event=request.event>
+	<cfset $=rc.$>
+</cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>
 	<cfoutput>
-	<cfif rc.compactDisplay eq "true">
-	<script type="text/javascript">
-	jQuery(document).ready(function(){
-
-		function initConifuratorProxy(){
-			frontEndProxy.post({cmd:'setWidth',width:'standard'});
-			frontEndProxy.post({cmd:'requestObjectParams',instanceid:'#esapiEncode("javascript",url.instanceid)#'});
-
-			frontEndProxy.addEventListener(
-				function(messageEvent){
-					var parameters=messageEvent.data;
-				
-					if (parameters["cmd"] == "setObjectParams") {
-					
-					}
-				}
-			);
-		}
-
-		if (top.location != self.location) {
-			if(jQuery("##ProxyIFrame").length){
-				jQuery("##ProxyIFrame").load(
-					function(){
-						initConifuratorProxy()
-					}
-				);	
-			} else {
-				initConifuratorProxy();
-			}
-		}
-	});
-	</script>
-	</cfif> 
-
 	<div id="configuratorContainer">
-		<h1 id="configuratorHeader">Loading...</h1>
-		
-		<div id="configurator">
-			<div class="load-inline"></div>
-		</div>	
-
-		<div class="form-actions">	
-			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
-		</div>
+	<h1 id="configuratorHeader">Loading...</h1>
+	
+	<div class="clearfix">
+	    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
+	    <div style="float: left; width: 50%;"><h2>Preview</h2>
+	    	<div id="configuratorPreview"><div class="load-inline"></div></div>
+	    </div>
 	</div>
+
+	<div class="form-actions">	
+		<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+	</div>
+</div>
 	<script>
-	siteManager.configuratorMode='frontEnd';
+		siteManager.configuratorMode='frontEnd';
+		siteManager.layoutmanager=true;
 
-	jQuery(document).ready(function(){
+		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
+		jQuery(document).ready(function(){
 
-		$('##configurator .load-inline').spin(spinnerArgs2);
+			function initConifuratorProxy(){
 
-		if(jQuery("##ProxyIFrame").length){
-			jQuery("##ProxyIFrame").load(
-				function(){
-					frontEndProxy.post({cmd:'setWidth',width:'configurator'});
+				function onFrontEndMessage(messageEvent){
+					
+					var parameters=messageEvent.data;
+					
+					if (parameters["cmd"] == "setObjectParams") {
+						
+						configOptions={
+							'object':'#esapiEncode('javascript',rc.object)#',
+							'objectid':'#esapiEncode('javascript',rc.objectid)#',
+							'name':'#esapiEncode('javascript',rc.objectname)#',
+							'regionid':'0',
+							'context':'#application.configBean.getContext()#',
+							'params':JSON.stringify(parameters.params),
+							'siteid':'#esapiEncode('javascript',rc.siteid)#',
+							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
+							'contentid':'#esapiEncode('javascript',rc.contentID)#',
+							'parentid':'#esapiEncode('javascript',rc.parentID)#'
+						}
+						
+						<cfif $.siteConfig().hasDisplayObject(rc.object)>
+							var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
+
+							if(configurator!=''){
+								window[configurator](
+									configOptions
+								);
+							} else {
+								$('##configurator').html('');
+							}
+
+							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+						<cfelse>
+							<cfswitch expression="#rc.object#">
+								<cfcase value="feed,feed_no_summary,remoteFeed">	
+									siteManager.initFeedConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
+									siteManager.initSlideShowConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="category_summary,category_summary_rss">	
+									siteManager.initCategorySummaryConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="tag_cloud">	
+									siteManager.initTagCloudConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="site_map">	
+									siteManager.initSiteMapConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="related_content,related_section_content">	
+									siteManager.initRelatedContentConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="plugin">	
+									var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
+									
+									if(configurator!=''){
+										window[configurator](
+											configOptions
+										);
+									} else {
+										$('##configurator').html('');
+									}
+
+									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+								</cfcase>
+								<cfdefaultcase>
+									//$('##configurator').html('no configurator');
+									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+								</cfdefaultcase>
+							</cfswitch>
+						</cfif>
+			
+					}
 				}
-			);	
-		} else {
-			frontEndProxy.post({cmd:'setWidth',width:'configurator'});
-		}
-		
-		<cfif $.siteConfig().hasDisplayObject(rc.object)>
-			var configurator=siteManager.getPluginConfigurator(#esapiEncode('javascript',rc.object)#);
-					window[configurator](
-						{
-							
-						}
-					);
-					jQuery("##configuratorHeader").html('test');
-		<cfelse>
-			<cfswitch expression="#rc.object#">
-				<cfcase value="feed,feed_no_summary,remoteFeed">	
-					/*
-					siteManager.initFeedConfigurator({
-									
-							});
-					*/
-				
-				</cfcase>
-				<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
-					siteManager.initSlideShowConfigurator({
-								
-							});
-				</cfcase>
-				<cfcase value="category_summary,category_summary_rss">	
-					siteManager.initCategorySummaryConfigurator({
-									
-							});
-				</cfcase>
-				<cfcase value="tag_cloud">	
-					siteManager.initTagCloudConfigurator({
-										
-							});
-				</cfcase>
-				<cfcase value="site_map">	
-					siteManager.initSiteMapConfigurator({
-										
-							});
-				</cfcase>
-				<cfcase value="related_content,related_section_content">	
-					siteManager.initRelatedContentConfigurator({
-										
-							});
-				</cfcase>
-				<cfcase value="plugin">	
-					var configurator=siteManager.getPluginConfigurator(1);
-					window[configurator](
-						{
-							
-						}
-					);
-					jQuery("##configuratorHeader").html('Configure Display Object');
-				</cfcase>
-			</cfswitch>
-		</cfif>
-		
-		
-		jQuery("##saveConfigDraft").bind("click",
-		function(){
-			
-			siteManager.updateAvailableObject();
-			
-			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-				jQuery("##configurator").html('<div class="load-inline"></div>');
-				$('##configurator .load-inline').spin(spinnerArgs2);
-				jQuery(".form-actions").hide();
-				jQuery("##configuratorNotices").hide();
-				
-				frontEndProxy.post({cmd:'setLocation',location:'./'});
 
-			}
-		});
-			
+				frontEndProxy.addEventListener(onFrontEndMessage);
+				frontEndProxy.post({cmd:'setWidth',width:1200});
+				frontEndProxy.post({cmd:'requestObjectParams',instanceid:'#esapiEncode("javascript",rc.instanceid)#'});
 		
-	});
+			}
+
+			if (top.location != self.location) {
+				if(jQuery("##ProxyIFrame").length){
+					jQuery("##ProxyIFrame").load(
+						function(){
+							initConifuratorProxy()
+						}
+					);	
+				} else {
+					initConifuratorProxy();
+				}
+			}
+
+			$('##configurator .load-inline').spin(spinnerArgs2);
+			$('##configuratorPreview .load-inline').spin(spinnerArgs2);
+
+			
+			jQuery("##saveConfigDraft").bind("click",
+			function(){
+				
+				siteManager.updateAvailableObject();
+				
+				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+					jQuery("##configurator").html('<div class="load-inline"></div>');
+					$('##configurator .load-inline').spin(spinnerArgs2);
+					jQuery(".form-actions").hide();
+					
+					
+					frontEndProxy.post(
+					{
+						cmd:'setObjectParams',
+						instanceid:instanceid,
+						params:siteManager.availableObject.params
+					});
+
+				}
+			});
+				
+			
+		});
 	</script>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	</cfoutput>

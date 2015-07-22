@@ -1215,6 +1215,7 @@ Display Objects
 	<cfargument name="orderno" required="true" default="0">
 	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
+	<cfargument name="objectname" required="true" default="">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -1222,11 +1223,11 @@ Display Objects
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -1248,6 +1249,7 @@ Display Objects
 	<cfargument name="throwError" default="true">
 	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
+	<cfargument name="objectname" required="true" default="">
 	
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1300,7 +1302,8 @@ Display Objects
 				content=theContent,
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
-				isConfigurator=arguments.isConfigurator) />
+				isConfigurator=arguments.isConfigurator,
+				objectname=arguments.objectname) />
 	<cfelse>
 		<cfreturn trim(theContent) />
 	</cfif>
@@ -1875,6 +1878,7 @@ Display Objects
 	<cfargument name="assignmentPerm" required="true" default="none">
 	<cfargument name="allowEditable" type="boolean" default="#this.showEditableObjects#">
 	<cfargument name="cacheKey" type="string" required="false" default="">
+	<cfargument name="objectname" default="">
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>

@@ -186,11 +186,17 @@
 				mura(item)
 				.on('dragstart',function(){
 					dragEl=this;
+					elDropHandled=false;
 					newMuraObject=false;
 					muraLooseDropTarget=null;
 				})
 				.on('dragend',function(){
+						if(dragEl && !elDropHandled){
+							mura(dragEl).remove();
+						}
+
 						dragEl=null;
+						elDropHandled=false;
 						newMuraObject=false;
 				})
 				.on('dragover',function(e){
@@ -213,8 +219,7 @@
 						}
 
 						var item=mura(this).closest('.mura-object');
-						mura(this).addClass('mura-var-target');
-						
+						mura(this).addClass('mura-var-target');		
 						
 					}
 				})
@@ -235,6 +240,9 @@
 					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 							mura('#adminSave').show();
 							mura(this).closest('.mura-displayregion').data('dirty',true);
+							elDropHandled=true;
+						} else if (dragEl==this){
+							elDropHandled=true;
 						}
 
 						checkForNew.call(this,e);
@@ -297,7 +305,11 @@
 							mura('#adminSave').show();
 							mura(dragEl).addClass('mura-async-object');
 							mura(this).closest('.mura-displayregion').data('dirty',true);
+							elDropHandled=true;
+						} else if (dragEl==this){
+							elDropHandled=true;
 						}
+
 						checkForNew.call(this,e);
 
 						mura(this).removeClass('mura-var-target');
@@ -341,14 +353,15 @@
 					        mura('#adminSave').show();	
 					        mura(dragEl).addClass('mura-async-object');
 					        mura(this).data('dirty',true);
-					       
+					        elDropHandled=true;
+					    } else if (dragEl==this){
+					    	elDropHandled=true;
 					    }
 
 				      	checkForNew.call(this,e);
 				     
 				      	//wireUpObjects();
 
-				      	dragEl = null;
 				      	muraLooseDropTarget=null;
 				      	mura('.mura-var-target').removeClass('mura-var-target');
 
@@ -372,14 +385,18 @@
 			item.on('dragstart',function(e){
 					//e.dataTransfer.effectAllowed = 'move';
 					dragEl=null;
+					elDropHandled=false;
 					newMuraObject=true;
 					muraLooseDropTarget=null;
 					mura('#dragtype').html(item.data('object'));
 					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
-					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:item.data('objectname')}));
-				}).on('dragend',
+					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML}));
+				})
+				.on('dragend',
 					function(){
 						mura('#dragtype').html('');
+						dragEl=null;
+						elDropHandled=false;
 						newMuraObject=false;
 						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
 					});
@@ -409,7 +426,9 @@
 				
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
+				displayObject.setAttribute('data-objectname',object.objectname);
 				displayObject.setAttribute('data-perm','author');
+				displayObject.setAttribute('data-instanceid',mura.createUUID());
 				displayObject.setAttribute('class','mura-async-object mura-object active');
 		        
 		        var target=mura(this);

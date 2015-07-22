@@ -50,7 +50,18 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				frontEndProxy.post({cmd:'setObjectParans',objectParams:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+				adminProxy.post({cmd:'setObjectParams',params:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+			} else if (parameters["cmd"]=="setObjectParams"){
+				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
+
+				if(typeof parameters.params == 'object'){
+					for(var p in parameters.params){
+						item.data(p,parameters.params[p]);
+					}
+				}
+	
+				mura.processAsyncObject(item.node);
+				closeFrontEndToolsModal();
 			}
 		}			
 	}
@@ -91,7 +102,7 @@
 	var openFrontEndToolsModal=function(a){
 		
 		var src=a.href;
-		var editableObj=mura(a);
+		var editableObj=utility(a);
 
 		if(!src){
 			if(mura(a).hasClass("mura-object")){
@@ -106,7 +117,7 @@
 
 			var layoutmanager=false;
 
-			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager;
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname');
 		}
 
 		var isModal=editableObj.attr("data-configurator");
@@ -560,6 +571,29 @@
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
+
+						mura('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
+							function(){
+								var objectlist=[];
+
+								mura(this).find('.mura-object').each(function(){
+									var item=mura(this);
+									var params=item.data();
+
+									delete params['instanceid'];
+									delete params['objectname'];
+									delete params['objectid'];
+									delete params['isconfigurator'];
+									delete params['perm'];
+
+									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
+								});
+
+								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
+							}
+						);
+
+						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){

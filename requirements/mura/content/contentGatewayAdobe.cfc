@@ -2440,7 +2440,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsObjects=""/>
 	
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsObjects')#">
-	select tcontentobjects.object,tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects 
+	select tcontentobjects.object,tcontentobjects.name,tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects 
 	inner join tcontent On(
 	tcontentobjects.contenthistid=tcontent.contenthistid
 	and tcontentobjects.siteid=tcontent.siteid) 
@@ -2463,7 +2463,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rsObjectInheritence=""/>
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsObjectInheritence')#">
-	select tcontentobjects.object, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
+	select tcontentobjects.object, tcontentobjects.name, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
 	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
 										and tcontentobjects.objectID=tplugindisplayobjects.objectID)  
 	where 

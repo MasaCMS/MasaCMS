@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 			<cfset displayList=feed.getDisplayList()>
 			<cfset availableList=feed.getAvailableDisplayList()>
-										
+				
 			<ul id="availableListSort" class="displayListSortOptions">
 				<cfloop list="#availableList#" index="i">
 					<li class="ui-state-default">#trim(i)#</li>
