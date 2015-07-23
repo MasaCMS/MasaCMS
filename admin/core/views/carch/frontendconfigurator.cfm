@@ -6,19 +6,19 @@
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<div id="configuratorContainer">
-	<h1 id="configuratorHeader">Loading...</h1>
-	
-	<div class="clearfix">
-	    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
-	    <div style="float: right; width: 50%;"><h2>Preview</h2>
-	    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
-	    </div>
-	</div>
+		<h1 id="configuratorHeader">Loading...</h1>
+		
+		<div class="clearfix">
+		    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
+		    <div style="float: right; width: 50%;"><h2>Preview</h2>
+		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
+		    </div>
+		</div>
 
-	<div class="form-actions">	
-		<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+		<div class="form-actions">	
+			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+		</div>
 	</div>
-</div>
 	<script>
 		siteManager.configuratorMode='frontEnd';
 		siteManager.layoutmanager=true;

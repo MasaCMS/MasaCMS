@@ -79,7 +79,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 --->
 
-	<div id="configurator" class="fieldset-wrap row-fluid">
 	<div class="fieldset">
 		<cfif rc.classid eq "related_content">
 			<div class="control-group">

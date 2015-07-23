@@ -66,12 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<select name="availableObjects" id="availableObjects" class="multiSelect" 
 		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 			
-			<option value="mailing_list_master~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform')#~none">
+			<option value="{'object':'mailing_list_master','name':'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform'))#','objectid':'none'}">
 				#application.rbFactory.getKeyValue(session.rb, 
 			                                    'sitemanager.content.fields.mastermailinglistsignupform')#
 			</option>
 			<cfloop query="rc.rsmailinglists">
-				<option value="mailing_list~Mailing List - #rc.rsmailinglists.name#~#rc.rsmailinglists.mlid#">
+				<option value="{'object':'mailing_list','name':'#esapiEncode('html_attr','Mailing List - #rc.rsmailinglists.name#')#','objectid':'#rc.rsmailinglists.mlid#'}">
 					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# 
 					- 
 					#rc.rsmailinglists.name#

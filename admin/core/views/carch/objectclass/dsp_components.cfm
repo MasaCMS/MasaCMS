@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')
 							& ' - ' 
 							& rc.rsUserDefinedTemplates.menutitle>
-						<option title="#esapiEncode('html_attr',title)#" value="Component~#esapiEncode('html',title)#~#rc.rsUserDefinedTemplates.contentid#">
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'Component','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsUserDefinedTemplates.contentid#'}">
 							#esapiEncode('html',title)#
 						</option>
 					</cfloop>

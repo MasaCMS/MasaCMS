@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& rc.rsForms.menutitle>
 
-					<option title="#esapiEncode('html_attr',title)#" value="form~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+					<option title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
 						#esapiEncode('html',title)#
 					</option>
 
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							& ' - ' 
 							& rc.rsForms.menutitle>
 							
-						<option title="#esapiEncode('html_attr',title)#" value="form_responses~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'form_responses','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsForms.contentid#'}">
 							#esapiEncode('html',title)#
 						</option>
 					</cfif>

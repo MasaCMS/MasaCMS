@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								& application.rbFactory.getKeyValue(session.rb, 
 							                                    'sitemanager.content.fields.relatedcontent')>
 
-							<option title="#esapiEncode('html_attr',title)#" value="{'object':'related_section_content','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rsSections.contentid#'}">
+							<option title="#esapiEncode('html_attr',title)#" value="{'object':'related_section_content','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsSections.contentid#'}">
 								#esapiEncode('html',title)#
 							</option>
 
