@@ -44,25 +44,41 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
 <cfoutput>
-<div class="control-group">
-	<div class="controls">
-	<select name="availableObjects" id="availableObjects" class="multiSelect" 
-	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-	        style="width:310px;">
-		<cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
-		<option value="mailing_list_master~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform')#~none">
-			#application.rbFactory.getKeyValue(session.rb, 
-		                                    'sitemanager.content.fields.mastermailinglistsignupform')#
-		</option>
-		<cfloop query="rc.rsmailinglists">
-			<option value="mailing_list~Mailing List - #rc.rsmailinglists.name#~#rc.rsmailinglists.mlid#">
-				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# 
-				- 
-				#rc.rsmailinglists.name#
+<cfif rc.layoutmanager>
+	#renderClassOption(
+			object='mailing_list_master',
+			objectid=createUUID(),
+			objectname=application.rbFactory.getKeyValue(session.rb, 
+			                                    'sitemanager.content.fields.mastermailinglistsignupform')
+		)#
+	<cfloop query="rc.rsmailinglists">
+		#renderClassOption(
+			object='mailing_list',
+			objectid=rc.rsmailinglists.mlid,
+			objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# - #rc.rsmailinglists.name#"
+		)#
+	</cfloop>
+<cfelse>
+	<div class="control-group">
+		<div class="controls">
+		<select name="availableObjects" id="availableObjects" class="multiSelect" 
+		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+			
+			<option value="mailing_list_master~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform')#~none">
+				#application.rbFactory.getKeyValue(session.rb, 
+			                                    'sitemanager.content.fields.mastermailinglistsignupform')#
 			</option>
-		</cfloop>
-	</select>
+			<cfloop query="rc.rsmailinglists">
+				<option value="mailing_list~Mailing List - #rc.rsmailinglists.name#~#rc.rsmailinglists.mlid#">
+					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# 
+					- 
+					#rc.rsmailinglists.name#
+				</option>
+			</cfloop>
+		</select>
+		</div>
 	</div>
-</div>
+</cfif>
 </cfoutput>

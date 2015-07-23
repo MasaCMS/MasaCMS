@@ -59,6 +59,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfquery>
 </cfsilent>
 <cfoutput>
+<cfif rc.layoutmanager>
+	<select name="subClassSelector" 
+	        onchange="siteManager.loadObjectClass('#rc.siteid#','gallery',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+	        class="dropdown">
+		<option value="">
+			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectgallery')#
+		</option>
+		<cfloop query="rc.rsSections">
+			<cfsilent>
+		<cfset pathString=$.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+	</cfsilent>
+			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#esapiEncode('html',rc.rsSections.pathString)#</option>
+		</cfloop>
+	</select>
+		
+	<cfif rc.subclassid neq ''>
+		<cfloop query="rc.rsSections">
+			<cfif rc.rsSections.contentID eq rc.subclassid>
+				<cfsilent>
+				<cfset pathString=$.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+				</cfsilent>
+
+				<cfset title=rc.rsSections.pathString
+						& ' - ' 
+						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
+
+				#renderClassOption(
+					object='category_summary',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+
+				<cfset title=rc.rsSections.pathString
+					& ' - ' 
+					& application.rbFactory.getKeyValue(session.rb, 
+				                                    'sitemanager.content.fields.relatedcontent')>
+
+				#renderClassOption(
+					object='related_section_content',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#>
+
+				<cfset title=rc.rsSections.pathString
+					& ' - ' 
+					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
+
+				#renderClassOption(
+					object='calendar_nav',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+			</cfif>
+		</cfloop>
+	</cfif>
+<cfelse>
 	<div class="control-group">
 		<div class="controls">
 			<select name="subClassSelector" 
@@ -78,8 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.subclassid neq ''>
 		<div class="controls">
 			<select name="availableObjects" id="availableObjects" class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-			        style="width:310px;">
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 				<cfloop query="rc.rsSections">
 					<cfif rc.rsSections.contentID eq rc.subclassid>
 						<cfsilent>
@@ -116,4 +171,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 	</div>
+</cfif>
 </cfoutput>

@@ -44,24 +44,37 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset rc.rslist = application.feedManager.getFeeds(rc.siteid, 'Remote')/>
 <cfoutput>
-<div class="control-group">
-	<div class="controls">
-	<select name="availableObjects" id="availableObjects" class="multiSelect" 
-	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-	        style="width:310px;">
-		<cfset rc.rslist = application.feedManager.getFeeds(rc.siteid, 'Remote')/>
-		<cfloop query="rc.rslist">
+<cfif rc.layoutmanager>
+	<cfloop query="rc.rslist">
+		<cfset title=rc.rslist.name
+			& ' - '  
+			& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
 
-			<cfset title=rc.rslist.name
-				& ' - '  
-				& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
+		#renderClassOption(
+			object='feed',
+			objectid=rc.rslist.feedid,
+			objectname=title
+		)#
+	</cfloop>
+<cfelse>
+	<div class="control-group">
+		<div class="controls">
+		<select name="availableObjects" id="availableObjects" class="multiSelect" 
+		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+			<cfloop query="rc.rslist">
 
-			<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rslist.feedID#'}">
-				#esapiEncode('html',title)#
-			</option>
-		</cfloop>
-	</select>
+				<cfset title=rc.rslist.name
+					& ' - '  
+					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
+
+				<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rslist.feedID#'}">
+					#esapiEncode('html',title)#
+				</option>
+			</cfloop>
+		</select>
+		</div>
 	</div>
-</div>
+</cfif>
 </cfoutput>

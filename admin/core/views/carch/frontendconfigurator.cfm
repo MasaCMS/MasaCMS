@@ -60,7 +60,7 @@
 								$('##configurator').html('');
 							}
 
-							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
 								<cfcase value="feed,feed_no_summary,remoteFeed">	
@@ -95,8 +95,8 @@
 									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 								</cfcase>
 								<cfdefaultcase>
-									//$('##configurator').html('no configurator');
-									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+									jQuery('##configurator').html('no configurator');
+									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>

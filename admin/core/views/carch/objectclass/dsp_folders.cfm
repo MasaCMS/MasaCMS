@@ -59,11 +59,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfquery>
 </cfsilent>
 <cfoutput>
-<div class="control-group">
-	<div class="controls">
+
+<cfif rc.layoutmanager>
 	<select name="subClassSelector" 
-	        onchange="siteManager.loadObjectClass('#rc.siteid#','Folder',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
-	        class="dropdown">
+	        onchange="mura.loadObjectClass('#rc.siteid#','Folder',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#');">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectFolder')#
 		</option>
@@ -71,51 +70,114 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#esapiEncode('html',rc.rsSections.pathString)#</option>
 		</cfloop>
 	</select>
-	</div>
-	
+
 	<cfif rc.subclassid neq ''>
+		<cfloop query="rc.rsSections">
+			<cfif rc.rsSections.contentID eq rc.subclassid>
+				<cfset title=rc.rsSections.pathString
+					& ' - '  
+					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
+
+				#renderClassOption(
+					object='category_summary',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+
+				<cfset title=rc.rsSections.pathString 
+					& ' - ' 
+					& application.rbFactory.getKeyValue(session.rb, 
+				                                    'sitemanager.content.fields.relatedcontent')>
+
+				#renderClassOption(
+					object='related_section_content',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+
+				<cfset title=rc.rsSections.pathString
+					& ' - ' 
+					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
+
+				#renderClassOption(
+					object='calendar_nav',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+
+				<cfset title=rc.rsSections.pathString
+					& ' - '  
+					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')>
+
+				#renderClassOption(
+					object='archive_nav',
+					objectid=rc.rsSections.contentid,
+					objectname=title
+				)#
+			</cfif>
+		</cfloop>
+	</cfif>
+
+<cfelse>
+	<div class="control-group">
 		<div class="controls">
-		<select name="availableObjects" id="availableObjects" class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-		        >
+		<select name="subClassSelector" 
+		        onchange="siteManager.loadObjectClass('#rc.siteid#','Folder',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+		        class="dropdown">
+			<option value="">
+				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectFolder')#
+			</option>
 			<cfloop query="rc.rsSections">
-				<cfif rc.rsSections.contentID eq rc.subclassid>
-					<cfset title=rc.rsSections.pathString
-						& ' - '  
-						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
-
-					<option title="#esapiEncode('html_attr',title)#" value="{'object':'category_summary','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rsSections.contentid#'}">
-						#esapiEncode('html',title)#
-					</option>
-
-					<cfset title=rc.rsSections.pathString 
-						& ' - ' 
-						& application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.relatedcontent')>
-
-					<option title="#esapiEncode('html_attr',title)#" value="{'object':'related_section_content','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rsSections.contentid#'}">
-						#esapiEncode('html',title)#
-					</option>
-
-					<cfset title=rc.rsSections.pathString
-						& ' - ' 
-						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
-
-					<option titlie="#esapiEncode('html_attr',title)#" value="calendar_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
-						#esapiEncode('html',title)#
-					</option>
-
-					<cfset title=rc.rsSections.pathString
-						& ' - '  
-						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')>
-
-					<option title="#esapiEncode('html_attr',title)#" value="archive_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
-						#esapiEncode('html',title)#
-					</option>
-				</cfif>
+				<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#esapiEncode('html',rc.rsSections.pathString)#</option>
 			</cfloop>
 		</select>
 		</div>
-	</cfif>
+		
+		<cfif rc.subclassid neq ''>
+			<div class="controls">
+			<select name="availableObjects" id="availableObjects" class="multiSelect" 
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
+			        >
+				<cfloop query="rc.rsSections">
+					<cfif rc.rsSections.contentID eq rc.subclassid>
+						<cfset title=rc.rsSections.pathString
+							& ' - '  
+							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
+
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'category_summary','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rsSections.contentid#'}">
+							#esapiEncode('html',title)#
+						</option>
+
+						<cfset title=rc.rsSections.pathString 
+							& ' - ' 
+							& application.rbFactory.getKeyValue(session.rb, 
+						                                    'sitemanager.content.fields.relatedcontent')>
+
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'related_section_content','name':'#esapiEncode('javascript',title)#','objectid':'#rc.rsSections.contentid#'}">
+							#esapiEncode('html',title)#
+						</option>
+
+						<cfset title=rc.rsSections.pathString
+							& ' - ' 
+							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
+
+						<option titlie="#esapiEncode('html_attr',title)#" value="calendar_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
+							#esapiEncode('html',title)#
+						</option>
+
+						<cfset title=rc.rsSections.pathString
+							& ' - '  
+							& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')>
+
+						<option title="#esapiEncode('html_attr',title)#" value="archive_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
+							#esapiEncode('html',title)#
+						</option>
+					</cfif>
+				</cfloop>
+			</select>
+			</div>
+		</cfif>
 </div>
+</cfif>
+
 </cfoutput>

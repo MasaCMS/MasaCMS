@@ -109,71 +109,70 @@
 	}	
 	
 </style>
-
+<cfoutput>
 <div class="mura-sidebar">
-<div class="mura-sidebar__objects-list">
-	
-	<div class="mura-sidebar__objects-list__object-group">
-		<div class="mura-sidebar__objects-list__object-group-heading">Add Content</div>
-		<div class="mura-sidebar__object-group-items">
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="standard_nav">Secondary Navigation</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="collection">Collection</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="content">Content</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="media">Media</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="text">Text</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="embed">Social Embed</div>
-			<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="helloworld">Hello World</div>
-			
+	<div class="mura-sidebar__objects-list">
+		<div class="mura-sidebar__objects-list__object-group">
+			<div class="mura-sidebar__objects-list__object-group-heading">
+				<select name="classSelector" onchange="mura.loadObjectClass('#esapiEncode("Javascript",$.content('siteid'))#',this.value,'','#$.content('contenthistid')#','#$.content('parentid')#','#$.content('contenthistid')#',0);">
+				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
+				<!---
+				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.primary')#</option>
+				--->
+                <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
+                <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
+                <cfif application.settingsManager.getSite($.event('siteid')).getDataCollection()>
+	                <option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
+	            </cfif>
+	            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
+	                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
+	            </cfif>
+                <cfif application.settingsManager.getSite($.event('siteid')).getAdManager()>
+                  <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
+                </cfif>
+                <!--- <option value="category">Categories</option> --->
+                <option value="folder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.Folders')#</option>
+                <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
+                <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
+                <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
+                <cfif application.settingsManager.getSite($.event('siteid')).getHasfeedManager()>
+                  <option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
+                  <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
+                  <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
+                </cfif>
+            	 <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
+              </select>
+
+			</div>
 		</div>
+
+		<div id="classListContainer" class="mura-sidebar__objects-list__object-group" style="display:none">
+			<div class="mura-sidebar__objects-list__object-group-heading">Select Object</div>
+			<div class="mura-sidebar__object-group-items" id="classList">
+			</div>
+		</div>
+
+		<!---
+		<div class="mura-sidebar__objects-list__object-group">
+			<div class="mura-sidebar__objects-list__object-group-heading">Add Content</div>
+			<div class="mura-sidebar__object-group-items">
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="standard_nav">Secondary Navigation</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="collection">Collection</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="content">Content</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="media">Media</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="text">Text</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="embed">Social Embed</div>
+				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="helloworld">Hello World</div>
+			</div>
+		</div>
+		--->
 	</div>
-	<div class="mura-sidebar__objects-list__object-group">
-		<div class="mura-sidebar__objects-list__object-group-heading">Dragging</div>
-		<div class="mura-sidebar__object-group-items">
-			<div class="mura-sidebar__objects-list__object-item" id="dragtype"></div>
-		</div>
-	</div>
-	<!---
-	<div class="mura-sidebar__objects-list__object-group mura-displayregion">
-		<div class="mura-sidebar__objects-list__object-group-heading">Example Display Region</div>
-		<div class="mura-sidebar__object-group-items mura-displayregion">
-	
-		</div>
-	</div>
-	--->
 </div>
-
-</div>
-
-<!---
-<div class="mura-displayregion">
-	
-	<span class="editableObject editableFeed" >
-		<span class="editableObjectContents">
-		<span class="mura-object mura-async-object" 
-			data-object="myobject"
-			data-objectparams={test:123,dfgdfg:dfgdg}>
-
-		</span>
-		</span>
-		<ul class="editableObjectControl">
-			<li class="edit"><a/></li>
-		</ul>
-	</span>
-
-	<span class="editableObject editableFeed" >
-		<span class="editableObjectContents">
-		<div class="mura-object mura-async-object">
-
-		</div>
-		</span>
-		<ul class="editableObjectControl">
-			<li class="edit"><a/></li>
-		</ul>
-	</span>
-</div>
---->
+</cfoutput>
 <script>
 	mura.ready(function(){
+
+		<cfoutput>mura.adminpath='#variables.$.globalConfig("adminPath")#';</cfoutput>
 
 		var sortable,
 		slice = function (arr, start, end) {
@@ -379,7 +378,12 @@
 			
 			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
-			mura(".mura-objectclass").each(function(){
+			
+
+	    }
+
+	    function initClassObjects(){
+	    	mura(".mura-objectclass").each(function(){
 			var item=mura(this);
 			item.attr('draggable',true);
 			item.on('dragstart',function(e){
@@ -390,7 +394,7 @@
 					muraLooseDropTarget=null;
 					mura('#dragtype').html(item.data('object'));
 					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
-					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML}));
+					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
 				})
 				.on('dragend',
 					function(){
@@ -402,7 +406,6 @@
 					});
 
 			});
-
 	    }
 
 		function checkForNew(e){
@@ -430,6 +433,12 @@
 				displayObject.setAttribute('data-perm','author');
 				displayObject.setAttribute('data-instanceid',mura.createUUID());
 				displayObject.setAttribute('class','mura-async-object mura-object active');
+
+				if(object.objectid){
+					displayObject.setAttribute('data-objectid',object.objectid);
+				} else {
+					displayObject.setAttribute('data-objectid',mura.createUUID());
+				}
 		        
 		        var target=mura(this);
 		        if(target.hasClass('mura-object')){
@@ -454,7 +463,20 @@
 
 		}
 
-		window.mura.initLayoutManager=initLayoutManager;
+		function loadObjectClass(siteid, classid, subclassid, contentid, parentid, contenthistid) {
+			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
+			var d = mura('#classList');
+			mura('#classListContainer').show();
+			d.html(mura.preloaderMarkup);
+			mura.get(mura.adminpath + "?" + pars).then(function(data) {
+				d.html(data);
+				initClassObjects();
+			});
+			return false;
+		}
+
+		mura.initLayoutManager=initLayoutManager;
+		mura.loadObjectClass=loadObjectClass;
 		
 	});
 

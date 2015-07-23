@@ -44,21 +44,32 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset rc.rsAdZones = application.advertiserManager.getadzonesBySiteID(rc.siteid, '')/>
 <cfoutput>
-<div class="control-group">
-	<div class="controls">
-		<select name="availableObjects" id="availableObjects" class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-		        style="width:310px;">
-			<cfset rc.rsAdZones = application.advertiserManager.getadzonesBySiteID(rc.siteid, '')/>
-			<cfloop query="rc.rsAdZones">
-				<option value="adZone~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adzone')# - #rc.rsAdZones.name#~#rc.rsAdZones.adZoneID#">
-					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
-					- 
-					#rc.rsAdZones.name#
-				</option>
-			</cfloop>
-		</select>
+<cfif rc.layoutmanager>
+		<cfloop query="rc.rsAdZones">
+			#renderClassOption(
+				object='adZone',
+				objectid=rc.rsAdZones.adZoneID,
+				objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
+						- 
+						#rc.rsAdZones.name#"
+			)#
+		</cfloop>
+<cfelse>
+	<div class="control-group">
+		<div class="controls">
+			<select name="availableObjects" id="availableObjects" class="multiSelect" 
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">		
+				<cfloop query="rc.rsAdZones">
+					<option value="adZone~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adzone')# - #rc.rsAdZones.name#~#rc.rsAdZones.adZoneID#">
+						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
+						- 
+						#rc.rsAdZones.name#
+					</option>
+				</cfloop>
+			</select>
+		</div>
 	</div>
-</div>
+</cfif>
 </cfoutput>
