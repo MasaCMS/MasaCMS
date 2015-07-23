@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.layoutmanager>
 	<select name="subClassSelector" 
-	        onchange="siteManager.loadObjectClass('#rc.siteid#','gallery',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+	        onchange="mura.loadObjectClass('#rc.siteid#','gallery',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectgallery')#

@@ -2510,6 +2510,8 @@ buttons: {
 		src+= configOptions.siteid;
 		src+= '&contenthistid=';
 		src+= configOptions.contenthistid;
+		src+= '&parentid=';
+		src+= configOptions.parentid;
 		src+= '&object=';
 		src+= configOptions.object;
 		src+= '&compactDisplay=true';
@@ -2533,7 +2535,7 @@ buttons: {
 
 		this.resetAvailableObject();
 		this.previewURL='';
-		
+
 		if(typeof(config.validate) != 'undefined') {
 			this.availableObjectValidate = config.validate;
 		}

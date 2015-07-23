@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.layoutmanager>
 	<select name="subClassSelector" 
-	        onchange="siteManager.loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#');">
+	        onchange="mura.loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#');">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#
 		</option>
@@ -164,9 +164,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								& ' - ' 
 								& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
 
-							<option title="#esapiEncode('html_attr',title)#" value="calendar_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
-								#esapiEncode('html',title)# 
+							<option title="#esapiEncode('html_attr',title)#" value="archive_nav~#esapiEncode('html',title)#~#rc.rsSections.contentid#">
+							#esapiEncode('html',title)#
 							</option>
+						</option>
 						</cfif>
 					</cfloop>
 				</select>
