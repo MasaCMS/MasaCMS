@@ -383,7 +383,7 @@
 	    }
 
 	    function initClassObjects(){
-	    	mura(".mura-objectclass").each(function(){
+	    	mura("#classList .mura-objectclass").each(function(){
 			var item=mura(this);
 			item.attr('draggable',true);
 			item.on('dragstart',function(e){
@@ -466,12 +466,18 @@
 		function loadObjectClass(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 			var d = mura('#classList');
+			
 			mura('#classListContainer').show();
+
 			d.html(mura.preloaderMarkup);
-			mura.get(mura.adminpath + "?" + pars).then(function(data) {
-				d.html(data);
-				initClassObjects();
+			mura.ajax({
+				url:mura.adminpath + "?" + pars,
+				success:function(data) {
+					d.html(data);
+					initClassObjects();
+				}
 			});
+
 			return false;
 		}
 
