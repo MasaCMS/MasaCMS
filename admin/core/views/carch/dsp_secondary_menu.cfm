@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfoutput>
 <cfif isdefined('rc.contentBean')>
 	<cfparam name="stats" default="#rc.contentBean.getStats()#">
@@ -270,23 +269,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			<cfcase value="imagedetails,multiFileUpload">
 				<cfif isdefined('rc.contentBean')>
-					<a class="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">
-						<i class="icon-circle-arrow-left"></i> 
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocontent')#
-					</a>
-					<cfif rc.compactDisplay neq 'true'  and (listFindNoCase(session.mura.memberships,'S2IsPrivate;#rc.siteid#') or listFindNoCase(session.mura.memberships,'S2'))>	
-						<a class="btn" href="./?&muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000">
-							<i class="icon-list-alt"></i>
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#
+					<cfif rc.compactdisplay neq 'true'>
+						<!--- Back to Content --->
+						<a class="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">
+							<i class="icon-circle-arrow-left"></i> 
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocontent')#
 						</a>
-					</cfif>
-					<cfif rc.compactDisplay eq 'true'>
-						<a class="btn" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:'#esapiEncode('javascript',rc.contentBean.getURL())#'}); return false;">
+						<!--- Back To Site Manager --->
+						<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate;#rc.siteid#') or listFindNoCase(session.mura.memberships,'S2')>
+							<a class="btn" href="./?&muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000">
+								<i class="icon-list-alt"></i>
+								#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#
+							</a>
+						</cfif>
+					<cfelse>
+						<!--- View Content --->
+						<cfscript>
+							viewContentURL = StructKeyExists(rc, 'homeid') && Len(rc.homeid)
+								? application.contentManager.getActiveContent(rc.homeid, rc.siteid).getURL()
+								: rc.contentBean.getURL();
+						</cfscript>
+						<a class="btn" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:'#esapiEncode('javascript', viewContentURL)#'}); return false;">
 							<i class="icon-globe"></i>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.viewcontent')#
 						</a>
 					</cfif>
 				<cfelse>
+					<!--- Back --->
 					<a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
 			</cfcase>
