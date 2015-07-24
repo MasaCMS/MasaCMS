@@ -64,6 +64,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="site_map">
 		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
 	</cfcase>
+	<cfcase value="form">
+		<cfinclude template="objectclass/dsp_form_configurator.cfm">
+	</cfcase>
+	<cfcase value="component">
+		<cfinclude template="objectclass/dsp_component_configurator.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>
 		<div id="availableObjectParams"

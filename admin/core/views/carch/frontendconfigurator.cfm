@@ -90,13 +90,13 @@
 											configOptions
 										);
 									} else {
-										$('##configurator').html('');
+										siteManager.initGenericConfigurator(configOptions);
 									}
 
 									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 								</cfcase>
 								<cfdefaultcase>
-									jQuery('##configurator').html('no configurator');
+									siteManager.initGenericConfigurator(configOptions);
 									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 								</cfdefaultcase>
 							</cfswitch>

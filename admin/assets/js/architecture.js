@@ -2350,7 +2350,10 @@ buttons: {
 
 	initGenericConfigurator: function(data) {
 		this.resetAvailableObject();
-		this.resetConfiguratorContainer();
+		
+		if(this.configuratorMode=='backEnd'){
+			this.resetConfiguratorContainer();
+		}
 
 		if(siteManager.layoutmanager){
 			this.initConfigurator(
@@ -2532,7 +2535,7 @@ buttons: {
 		siteManager.loadObjectPreview(configOptions);
 	},
 	initConfigurator: function(data, config) {
-
+	
 		this.resetAvailableObject();
 		this.previewURL='';
 
