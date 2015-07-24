@@ -62,6 +62,10 @@
 	
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
+			} else if (parameters["cmd"]=='reloadObjectAndClose') {
+				var item=mura('[data-objectid="' + parameters.objectid + '"]');
+				mura.processAsyncObject(item.node);
+				closeFrontEndToolsModal();
 			}
 		}			
 	}
@@ -591,7 +595,7 @@
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));
 									}
-									
+
 									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
 								});
 
