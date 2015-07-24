@@ -289,7 +289,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</li>
 									<cfif this.showInlineEditor>	
 									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#</a>
+										<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i>
+										<cfif useLayoutManager()>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-inline')#
+										<cfelse>
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
+										</cfif></a>
 									</li>
 									</cfif>
 								</ul>				
