@@ -14,6 +14,7 @@
 		<cfif not $.content().exists()>
 			<cfset $.event('contentBean',$.getBean('content').loadBy(contentid=url.parentid))>
 		</cfif>
+
 		<cfset secure=$.getBean('utility').isHTTPS()>
 		<cfscript>
 			if(server.coldfusion.productname != 'ColdFusion Server'){

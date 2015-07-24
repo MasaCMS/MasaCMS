@@ -1802,7 +1802,7 @@ component extends="mura.cfobject" {
 		}
 		
 		$.announceEvent('siteAsyncRequestStart');
-		$.event('crumbdata',$.content().getCrumbArray());
+		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
@@ -1861,6 +1861,13 @@ component extends="mura.cfobject" {
 			case 'displayregion':
 				return {
 					html=applyRemoteFormat($.dspObjects(argumentCollection=$.event().getAllValues()))
+				};
+
+			break;
+
+			case 'folder':
+				return {
+					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
 				};
 
 			break;

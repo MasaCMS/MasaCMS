@@ -1424,6 +1424,22 @@
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
 
+
+			if(obj.data('nextnid')){
+				obj.find('.mura-next-n a').each(function(){
+					mura(this).on('click',function(e){
+						e.preventDefault();
+						var a=this.getAttribute('href').split('?');
+	
+						if(a.length==2){
+							window.location.hash=a[1];
+						}
+					
+					});
+				})
+			}
+				
+
 			obj.trigger('asyncObjectRendered');
 
 		}
@@ -1475,7 +1491,29 @@
 		
 
 	}
+
+	var hashparams={};
 	
+	function handleHashChange(){
+
+		var hash=window.location.hash;
+
+		if(hash){
+			hash=hash.substring(1);
+		}
+		
+		if(hash){
+			hashparams=getQueryStringParams(hash);
+			if(hashparams.nextnid){
+				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					mura(this).data(hashparams);
+					processAsyncObject(this);
+				});
+			}	
+		}
+	}
+	
+
 	function extendClass (baseClass,subClass){
 		var placeholder=function(){
 			this.init.apply(this,arguments);
@@ -1488,6 +1526,37 @@
 
 		return placeholder;
 	}
+
+	function getQueryStringParams(queryString) {
+	    var params = {};
+	    var e,
+	        a = /\+/g,  // Regex for replacing addition symbol with a space
+	        r = /([^&;=]+)=?([^&;]*)/g,
+	        d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+	        
+	        if(queryString.substring(0,1)=='?'){
+	        	var q=queryString.substring(1);
+	        } else {
+	        	var q=queryString;
+	        }
+	        
+
+	    while (e = r.exec(q))
+	       params[d(e[1]).toLowerCase()] = d(e[2]);
+
+	    return params;
+	}
+
+	function getHREFParams(href) {
+	    var a=href.split('?');
+
+	    if(a.length==2){
+	    	return getQueryStringParams(a[1]);
+	    } else {
+	    	return {};
+	    }
+	}
+
 
 	function init(config){
 		if(!config.context){
@@ -1535,9 +1604,27 @@
 		extend(window.mura,config);
 
 		ready(function(){
+
+			var hash=window.location.hash;
+
+			if(hash){
+				hash=hash.substring(1);
+			}
+			
+			hashparams=getQueryStringParams(hash);
+
+			if(hashparams.nextnid){
+				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					mura(this).data(hashparams);
+				});
+			}
+
+			mura(window).on('hashchange',handleHashChange);
+
 			processMarkup(document);
 			
-			select(document).on("keydown", function(event){
+			mura(document)
+			.on("keydown", function(event){
 				loginCheck(event.which);
 			});
 
