@@ -1,6 +1,7 @@
 ﻿<cfsilent>
 	<cfset event=request.event>
 	<cfset $=rc.$>
+	<cfparam name="rc.layoutmanager" default="false">
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>

@@ -2558,7 +2558,7 @@ buttons: {
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: (siteManager.layoutmanager) ? 1200 : 400,
+				width: (siteManager.layoutmanager) ? 1200 : 600,
 				position: getDialogPosition(),
 				buttons: {
 					Save: function() {
