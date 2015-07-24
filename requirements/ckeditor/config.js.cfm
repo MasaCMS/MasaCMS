@@ -39,8 +39,8 @@ CKEDITOR.editorConfig = function( config )
 	lite.userId='#JSStringFormat($.currentUser().getUserID())#';
 	--->
 
-	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
-	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
+	CKEditorBasePath='#application.configBean.getContext()#/requirements';
+	CKFinderBasePath='#application.configBean.getContext()#/requirements';
 	</cfoutput>
 	
 	<cfoutput>
@@ -87,85 +87,83 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- Toolbars --->
 
-	config.toolbar_Default = [
-		{name: 'group1', items:['Source']},
-		{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-		{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
-		{name: 'group4', items:['BidiLtr','BidiRtl']},
-		{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
-		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
-		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
-	];
+		config.toolbar_Default = [
+			{name: 'group1', items:['Source']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+			{name: 'group4', items:['BidiLtr','BidiRtl']},
+			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+			{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
+			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
+		];
 
-	config.toolbar_QuickEdit = [
-		{name: 'group1', items:['Sourcedialog']},
-		{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-		{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
-		{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
-		{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
-		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
-		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
-	];
+		config.toolbar_QuickEdit = [
+			{name: 'group1', items:['Sourcedialog']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+			{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
+			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+			{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
+			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
+		];
 
-	config.toolbar_Summary = [
-		{name: 'group1', items: ['Source']},
-		{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-		{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
-		{name: 'group4', items: ['BidiLtr','BidiRtl']},
-		{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
-		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-		{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
-		{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
-		{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
-	];
+		config.toolbar_Summary = [
+			{name: 'group1', items: ['Source']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+			{name: 'group4', items: ['BidiLtr','BidiRtl']},
+			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+			{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+			{name: 'group8', items: ['Link','Unlink','Anchor']},'/',
+			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group10', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
+		];
 
-	config.toolbar_Form = [
-		{name: 'group1', items: ['Source']},
-		{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-		{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
-		{name: 'group4', items: ['BidiLtr','BidiRtl']},
-		{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
-		{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
-		{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
-		{name: 'group8', items: ['Link','Unlink','Anchor']},
-		{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
-		{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
-		{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
-	];
+		config.toolbar_Form = [
+			{name: 'group1', items: ['Source']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+			{name: 'group4', items: ['BidiLtr','BidiRtl']},
+			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
+			{name: 'group6', items: ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+			{name: 'group7', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+			{name: 'group8', items: ['Link','Unlink','Anchor']},
+			{name: 'group9', items: ['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group10', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']},
+			{name: 'group11', items: ['Styles','Format','-','Maximize','ShowBlocks','About']}
+		];
 
-	config.toolbar_Basic = [
-		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
-	];
-	
-	config.toolbar_FormBuilder = [
-		{name: 'group1', items: ['Source']},
-		{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
-	];
+		config.toolbar_Basic = [
+			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink']}
+		];
+		
+		config.toolbar_FormBuilder = [
+			{name: 'group1', items: ['Source']},
+			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','Format']}
+		];
 
-	config.toolbar_htmlEditor = [
-		{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
-	];
+		config.toolbar_htmlEditor = [
+			{name: 'group1', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+		];
 
-	config.toolbar_bbcode = [
-		{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
-	];
+		config.toolbar_bbcode = [
+			{name: 'group1', items: ['Source','Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']}
+		];
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';
 	</cfif>
-	
-	config.extraPlugins += ',sourcedialog,fakeobjects,dialogui,showprotected';
 
 	<cfif application.configBean.getEnableMuraTag()>
 		config.extraPlugins += ',muratag';
@@ -179,12 +177,6 @@ CKEDITOR.editorConfig = function( config )
 	//removePlugins : 'resize';
 	
 	config.entities_additional = "";
-	//config.protectedSource.push( /\[mura\][\s\S]*?\[\/mura\]/g );
-	
-	// Media Plugin - http://forge.clermont-universite.fr/projects/show/ckmedia
-	//config.menu_groups = 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,removeMedia';
-	
-	// Google Maps plugin - https://github.com/cakemail/GoogleMap-CKeditor-Plugin
 
 	// Code Mirror Plugin - http://ckeditor.com/addon/codemirror
 	config.codemirror = {
@@ -204,44 +196,51 @@ CKEDITOR.editorConfig = function( config )
 	<cfset secure=$.getBean('utility').isHTTPS()>
 
 	<!--- contentsCss --->
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css.cfm';
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css';	
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css.cfm';
-	<cfelse>		
-		config.contentsCss='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css';
-	</cfif>
+		config.contentsCss = [];
+
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css.cfm');
+		</cfif>
+
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor/editor.css');
+		</cfif>
+
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css.cfm');
+		</cfif>
+
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css') )>
+			config.contentsCss.push('#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/css/editor.css');
+		</cfif>
 	
 	<!--- templates --->
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
-		config.templates='default';
-		config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js.cfm'];
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
-		config.templates='default';
-		config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
-	</cfif>
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
+			config.templates='default';
+			config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js.cfm'];
+		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
+			config.templates='default';
+			config.templates_files= ['#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/templates/default.js'];
+		</cfif>
 	
 	<!--- styleSet --->
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
-		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-		config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
-	</cfif>
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
+			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js.cfm';
+		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
+			config.stylesSet='default:#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/styles.js';
+		</cfif>
 	
 	<!--- customConfig --->
-	<cfif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
-		config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
-	<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
-		config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
-	</cfif>
+		<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
+			config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
+		<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
+			config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
+		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
+			config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
+		<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
+			config.customConfig='#$.siteConfig().getAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
+		</cfif>
 
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
-		config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js.cfm';
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
-		config.customConfig='#$.siteConfig().getThemeAssetPath(secure=secure,complete=1,domain=cgi.server_name)#/js/editor/config.js';
-	</cfif>
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
 
