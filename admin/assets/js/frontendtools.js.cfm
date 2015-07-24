@@ -588,6 +588,10 @@
 									delete params['isconfigurator'];
 									delete params['perm'];
 
+									if(!item.data('objectname')){
+										item.data('objectname',item.data('object'));
+									}
+									
 									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
 								});
 

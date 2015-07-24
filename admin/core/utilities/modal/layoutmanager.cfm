@@ -1,11 +1,11 @@
 <style>
 	.mura-sidebar {
 		font-family: Helvetica, sans-serif;
-		
+		font-size: 12px;
 		position: absolute;
 		top: 100%;
 		height: calc(100vh - 32px);
-		background: #ccc;
+		background: #fff;
 		
 		width: 350px;
 		

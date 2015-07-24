@@ -177,10 +177,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<img src="#variables.$.globalConfig("adminPath")#/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 			<div id="frontEndTools" style="display: #Cookie.fetDisplay#">	
 				<cfif $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
-					
-					<cfif this.layoutmanager>
-						<cfinclude template="layoutmanager.cfm">
-					</cfif>
 
 					<ul id="tools-status"<cfif variables.isLocked> class="status-locked"</cfif>>
 						<li id="adminStatus">
