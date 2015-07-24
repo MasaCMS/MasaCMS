@@ -5,7 +5,7 @@
 		position: absolute;
 		top: 100%;
 		height: calc(100vh - 32px);
-		background: #fff;
+		background: #ccc;
 		
 		width: 350px;
 		
@@ -13,6 +13,10 @@
 		opacity: 0;
 		
 		transition: all .3s ease;
+	}
+
+	.mura-sidebar select {
+		width:250px;
 	}
 	
 	.mura-sidebar.active:hover {
@@ -50,7 +54,7 @@
 		
 		font-weight: bold;
 		
-		/*border-bottom: 3px solid rgba(0,0,0,.05);*/
+		border-bottom: 3px solid rgba(0,0,0,.05);
 	}
 	
 	.mura-sidebar__objects-list__object-item {
