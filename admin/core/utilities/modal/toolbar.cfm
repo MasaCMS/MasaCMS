@@ -409,7 +409,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminWelcome"><i class="icon-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
-	</div>
+
+
+				<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
+					<cfinclude template="layoutmanager.cfm">
+				</cfif>
+		</div>
 	</div>
 </cfoutput>
 </cfif>
