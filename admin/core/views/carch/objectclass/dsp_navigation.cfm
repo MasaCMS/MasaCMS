@@ -44,21 +44,33 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfsilent>
+	<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
+	<cfquery name="rc.rsObjects" dbtype="query">
+		select * from rc.rsObjects where object like '%nav%'
+	</cfquery>
+</cfsilent>
 <cfoutput>
-<div class="control-group">
-	<div class="controls">
-	<select name="availableObjects" id="availableObjects" class="multiSelect" 
-	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
-		<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
-		<cfquery name="rc.rsObjects" dbtype="query">
-			select * from rc.rsObjects where object like '%nav%'
-		</cfquery>
-		<cfloop query="rc.rsObjects">
-			<option title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript',rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
-				#esapiEncode('html',rc.rsObjects.name)#
-			</option>
-		</cfloop>
-	</select>
+<cfif rc.layoutmanager>
+	<cfloop query="rc.rsObjects">
+		#renderClassOption(
+			object=rc.rsObjects.object,
+			objectid=createUUID(),
+			objectname=rc.rsObjects.name
+		)#
+	</cfloop>
+<cfelse>
+	<div class="control-group">
+		<div class="controls">
+		<select name="availableObjects" id="availableObjects" class="multiSelect" 
+		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+			<cfloop query="rc.rsObjects">
+				<option title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript',rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
+					#esapiEncode('html',rc.rsObjects.name)#
+				</option>
+			</cfloop>
+		</select>
+		</div>
 	</div>
-</div>
+</cfif>
 </cfoutput>

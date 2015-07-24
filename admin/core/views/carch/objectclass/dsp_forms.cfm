@@ -44,13 +44,29 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
 <cfoutput>
+<cfif rc.layoutmanager>
+		<cfloop query="rc.rsForms">
+			<cfsilent>
+			<cfset title=iif(rc.rsForms.responseChart eq 1, 
+					      de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.poll')#'),
+					      de('#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datacollector')#')) 
+						& ' - ' 
+						& rc.rsForms.menutitle>
+			</cfsilent>
+			#renderClassOption(
+				object='form',
+				objectid=rc.rsForms.contentid,
+				objectname=title
+			)#
+		</cfloop>
+<cfelse>
 	<div class="control-group">
 		<div class="controls">
 			<select name="availableObjects" id="availableObjects" class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-			        style="width:310px;">
-				<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+				
 				<cfloop query="rc.rsForms">
 
 					<cfset title=iif(rc.rsForms.responseChart eq 1, 
@@ -59,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& rc.rsForms.menutitle>
 
-					<option title="#esapiEncode('html_attr',title)#" value="form~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+					<option title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
 						#esapiEncode('html',title)#
 					</option>
 
@@ -69,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							& ' - ' 
 							& rc.rsForms.menutitle>
 							
-						<option title="#esapiEncode('html_attr',title)#" value="form_responses~#esapiEncode('html',title)#~#rc.rsForms.contentid#">
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'form_responses','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsForms.contentid#'}">
 							#esapiEncode('html',title)#
 						</option>
 					</cfif>
@@ -77,4 +93,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 	</div>
+</cfif>
 </cfoutput>

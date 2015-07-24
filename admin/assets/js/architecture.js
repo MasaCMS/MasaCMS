@@ -2094,6 +2094,16 @@ buttons: {
 				}
 			}
 
+			if(siteManager.layoutmanager){
+
+				if(configure) {
+					this.initGenericConfigurator(tmpObject);
+					return false;
+				}
+
+				checkSelection = true;
+			}
+
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
 			tmpValue = tmpValue + "~" + tmpObject.objectid;
@@ -2155,7 +2165,6 @@ buttons: {
 		}
 
 		this.updateDisplayObjectList(regionid);
-
 		return true
 
 	},
@@ -2244,7 +2253,11 @@ buttons: {
 
 							});
 
-							siteManager.updateAvailableObject();
+							if(siteManager.layoutmanager){
+								siteManager.updateObjectPreview();
+							} else {
+								siteManager.updateAvailableObject();
+							}
 						}
 					}).disableSelection();
 				}
@@ -2284,7 +2297,12 @@ buttons: {
 							}
 
 						});
-						siteManager.vupdateAvailableObject();
+
+						if(siteManager.layoutmanager){
+							siteManager.updateObjectPreview();
+						} else {
+							siteManager.updateAvailableObject();
+						}
 					}
 				}).disableSelection();
 			}
@@ -2316,7 +2334,13 @@ buttons: {
 							}
 
 						});
-						siteManager.updateAvailableObject();
+
+						if(siteManager.layoutmanager){
+							siteManager.updateObjectPreview();
+						} else {
+							siteManager.updateAvailableObject();
+						}
+						
 					}
 				}).disableSelection();
 			}
@@ -2327,26 +2351,39 @@ buttons: {
 	initGenericConfigurator: function(data) {
 		this.resetAvailableObject();
 		this.resetConfiguratorContainer();
-		//location.href=url + "?" + pars;
-		$("#configuratorContainer").dialog({
-			resizable: true,
-			modal: true,
-			// width: 400,
-			title: genericConfiguratorTitle,
-			position: getDialogPosition(),
-			buttons: {
-				Cancel: function() {
-					$(this).dialog("close");
+
+		if(siteManager.layoutmanager){
+			this.initConfigurator(
+			data, {
+				url: './',
+				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
+				title: 'Configure ' + data.name,
+				init: function(data, config) {
+					
 				}
-			},
-			open: function() {
-				//$("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
-				$("#configurator").html('<div class="ui-dialog-content ui-widget-content">' + genericConfiguratorMessage + '</div>');
-			},
-			close: function() {
-				$(this).dialog("destroy");
-			}
-		});
+			});
+		} else {
+			$("#configuratorContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				title: 'Configure' + data.name,
+				position: getDialogPosition(),
+				buttons: {
+					Cancel: function() {
+						$(this).dialog("close");
+					}
+				},
+				open: function() {
+					//$("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
+					$("#configurator").html('<div class="ui-dialog-content ui-widget-content">' + genericConfiguratorMessage + '</div>');
+				},
+				close: function() {
+					$(this).dialog("destroy");
+				}
+			});
+
+		}
 
 		return true;
 	},
@@ -2379,9 +2416,7 @@ buttons: {
 	},
 
 	initDisplayObjectConfigurators: function() {
-		$(".displayRegions").dblclick(
-
-		function() {
+		$(".displayRegions").dblclick(function() {
 			var regionid = $(this).attr("data-regionid");
 			var data = siteManager.getDisplayObjectConfig(regionid);
 
@@ -2420,7 +2455,21 @@ buttons: {
 	resetConfiguratorContainer: function() {
 		//$(instance).dialog("destroy");
 		$("#configuratorContainer").remove();
-		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><div class="load-inline"></div></div></div>');
+		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"></div>');
+		
+		if(siteManager.layoutmanager){
+			var html='<div class="clearfix">'
+			    html+='<div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>';
+			    html+='<div style="float: right; width: 50%;"><h2>Preview</h2>';
+			    html+='<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>';
+			    html+='</div>';
+				html+='</div>';
+		} else {
+			var html='<div id="configurator"><div class="load-inline"></div></div>';
+		}
+
+		$('#configuratorContainer').html(html);
+
 		$("#configuratorContainer .load-inline").spin(spinnerArgs2);
 	},
 
@@ -2453,10 +2502,39 @@ buttons: {
 
 	//CONFIG: URL,PARS,TITLE,INIT
 	configuratorMode: 'backEnd',
+	previewURL:'',
+	loadObjectPreview:function(configOptions){
 
+		var src="core/utilities/objectpreview/";
+		src+= '?siteid=';
+		src+= configOptions.siteid;
+		src+= '&contenthistid=';
+		src+= configOptions.contenthistid;
+		src+= '&parentid=';
+		src+= configOptions.parentid;
+		src+= '&object=';
+		src+= configOptions.object;
+		src+= '&compactDisplay=true';
+		src+= '&objectid=';
+		src+= configOptions.objectid;
+		src+= '&params=';
+		src+= escape(configOptions.params);
+		
+		if(src != siteManager.previewURL){
+			var iframe=$("#configuratorPreview");
+			siteManager.previewURL=src;
+			iframe.attr('src',siteManager.previewURL);
+		}
+	},
+	updateObjectPreview:function(){
+		siteManager.updateAvailableObject();
+		configOptions.params=JSON.stringify(siteManager.availableObject.params);
+		siteManager.loadObjectPreview(configOptions);
+	},
 	initConfigurator: function(data, config) {
 
 		this.resetAvailableObject();
+		this.previewURL='';
 
 		if(typeof(config.validate) != 'undefined') {
 			this.availableObjectValidate = config.validate;
@@ -2469,12 +2547,18 @@ buttons: {
 		}
 
 		if(this.configuratorMode == 'backEnd') {
+
+			if(siteManager.layoutmanager){
+				configOptions=$.extend({},data);
+				configOptions.params=configOptions.params || {};
+			}
+
 			this.resetConfiguratorContainer();
 
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: 600,
+				width: (siteManager.layoutmanager) ? 1200 : 400,
 				position: getDialogPosition(),
 				buttons: {
 					Save: function() {
@@ -2561,7 +2645,10 @@ buttons: {
 				}
 
 				if(siteManager.layoutmanager){
-					$('#configuratorPreview').html('testing')
+					siteManager.updateObjectPreview();
+					$('#configurator').change(siteManager.updateObjectPreview);
+				} else {
+					siteManager.updateAvailableObject();
 				}
 
 				if(siteManager.configuratorMode == 'backEnd') {

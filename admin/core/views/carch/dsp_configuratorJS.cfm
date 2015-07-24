@@ -31,6 +31,9 @@ pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','init':
 	pluginConfigurators.push({'objectid':'#nonPluginDisplayObjects[i].objectid#','init':'#nonPluginDisplayObjects[i].configuratorInit#'});
 </cfif>
 </cfloop>
+<cfif isDefined('rc.contentBean') and rc.$.getContentRenderer().useLayoutManager()>
+	siteManager.layoutmanager=true;
+</cfif>
 </script>
 <cfloop query="rsPluginDisplayObjects">
 <cfif len(rsPluginDisplayObjects.configuratorJS)>

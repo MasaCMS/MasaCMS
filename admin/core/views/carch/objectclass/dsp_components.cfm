@@ -46,21 +46,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 	<cfset rc.rsUserDefinedTemplates = application.contentManager.getComponents("00000000000000000000000000000000000", rc.siteid)/>
-	<div class="control-group">
-		<div class="controls">
-			<select name="availableObjects" id="availableObjects" class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-			        style="width:310px;">
-				<cfloop query="rc.rsUserDefinedTemplates">
-
-					<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')
-						& ' - ' 
-						& rc.rsUserDefinedTemplates.menutitle>
-					<option title="#esapiEncode('html_attr',title)#" value="Component~#esapiEncode('html',title)#~#rc.rsUserDefinedTemplates.contentid#">
-						#esapiEncode('html',title)#
-					</option>
-				</cfloop>
-			</select>
+	<cfif rc.layoutmanager>
+		<cfloop query="rc.rsUserDefinedTemplates">
+			#renderClassOption(
+				object='component',
+				objectid=rc.rsUserDefinedTemplates.contentid,
+				objectname=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')
+							& ' - ' 
+							& rc.rsUserDefinedTemplates.menutitle
+			)#
+		</cfloop>
+	<cfelse>
+		<div class="control-group">
+			<div class="controls">
+				<select name="availableObjects" id="availableObjects" class="multiSelect" 
+				        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+					<cfloop query="rc.rsUserDefinedTemplates">
+						<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')
+							& ' - ' 
+							& rc.rsUserDefinedTemplates.menutitle>
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'Component','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsUserDefinedTemplates.contentid#'}">
+							#esapiEncode('html',title)#
+						</option>
+					</cfloop>
+				</select>
+			</div>
 		</div>
-	</div>
+	</cfif>
+	
 </cfoutput>

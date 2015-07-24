@@ -6,24 +6,26 @@
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<div id="configuratorContainer">
-	<h1 id="configuratorHeader">Loading...</h1>
-	
-	<div class="clearfix">
-	    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
-	    <div style="float: left; width: 50%;"><h2>Preview</h2>
-	    	<div id="configuratorPreview"><div class="load-inline"></div></div>
-	    </div>
-	</div>
+		<h1 id="configuratorHeader">Loading...</h1>
+		
+		<div class="clearfix">
+		    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
+		    <div style="float: right; width: 50%;"><h2>Preview</h2>
+		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
+		    </div>
+		</div>
 
-	<div class="form-actions">	
-		<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+		<div class="form-actions">	
+			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+		</div>
 	</div>
-</div>
 	<script>
 		siteManager.configuratorMode='frontEnd';
 		siteManager.layoutmanager=true;
 
 		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
+		var configOptions={};
+
 		jQuery(document).ready(function(){
 
 			function initConifuratorProxy(){
@@ -58,7 +60,7 @@
 								$('##configurator').html('');
 							}
 
-							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
 								<cfcase value="feed,feed_no_summary,remoteFeed">	
@@ -93,12 +95,14 @@
 									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 								</cfcase>
 								<cfdefaultcase>
-									//$('##configurator').html('no configurator');
-									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
+									jQuery('##configurator').html('no configurator');
+									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
-			
+
+						siteManager.loadObjectPreview(configOptions);
+					
 					}
 				}
 
@@ -121,8 +125,6 @@
 			}
 
 			$('##configurator .load-inline').spin(spinnerArgs2);
-			$('##configuratorPreview .load-inline').spin(spinnerArgs2);
-
 			
 			jQuery("##saveConfigDraft").bind("click",
 			function(){

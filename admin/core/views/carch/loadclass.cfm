@@ -44,11 +44,30 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset request.layout=false>
-<cfparam name="rc.contentid" default="">
-<cfparam name="rc.parentid" default="">
-<cfparam name="rc.contenthistid" default="">
-<cfparam name="rc.objectid" default=""/>
+<cfsilent>
+	<cfset request.layout=false>
+	<cfparam name="rc.layoutmanager" default="false">
+	<cfparam name="rc.contentid" default="">
+	<cfparam name="rc.parentid" default="">
+	<cfparam name="rc.contenthistid" default="">
+	<cfparam name="rc.objectid" default=""/>
+
+	<cfif rc.layoutmanager>
+		<cffunction name="renderClassOption" output="false">
+			<cfargument name="object">
+			<cfargument name="objectid" default="">
+			<cfargument name="objectname" default="">
+			<cfargument name="objectlabel">
+
+			<cfif not isDefined('arguments.objectlabel')>
+				<cfset arguments.objectlabel=arguments.objectname>
+			</cfif>
+
+			<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#">#esapiEncode('html',arguments.objectlabel)#</div>'>
+		</cffunction>
+	</cfif>
+</cfsilent>
+
 <cfswitch expression="#rc.classid#">
 	<cfcase value="component">
 		<cfinclude template="objectclass/dsp_components.cfm">
@@ -91,7 +110,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 </cfswitch>
 
-<cfif fileExists("#application.configBean.getWebRoot()#/#rc.siteid#/includes/display_objects/custom/admin/dsp_objectClass.cfm")>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClass.cfm">
+<cfif not rc.layoutmanager>
+	<cfif fileExists("#application.configBean.getWebRoot()#/#rc.siteid#/includes/display_objects/custom/admin/dsp_objectClass.cfm")>
+		<cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClass.cfm">
+	</cfif>
 </cfif>
 

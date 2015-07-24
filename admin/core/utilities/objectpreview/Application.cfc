@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,32 +44,27 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rc.rsAdZones = application.advertiserManager.getadzonesBySiteID(rc.siteid, '')/>
-<cfoutput>
-<cfif rc.layoutmanager>
-		<cfloop query="rc.rsAdZones">
-			#renderClassOption(
-				object='adZone',
-				objectid=rc.rsAdZones.adZoneID,
-				objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
-						- 
-						#rc.rsAdZones.name#"
-			)#
-		</cfloop>
-<cfelse>
-	<div class="control-group">
-		<div class="controls">
-			<select name="availableObjects" id="availableObjects" class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">		
-				<cfloop query="rc.rsAdZones">
-					<option value="{'object':'adZone','name','esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adzone')# - #rc.rsAdZones.name#')#',objectid:'#rc.rsAdZones.adZoneID#'}">
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
-						- 
-						#rc.rsAdZones.name#
-					</option>
-				</cfloop>
-			</select>
-		</div>
-	</div>
-</cfif>
-</cfoutput>
+<cfcomponent output="false">
+	<cfset depth=4>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	
+	<cffunction name="onRequestStart">
+		<cfset var local=structNew()>
+		<cfif listLast(cgi.SCRIPT_NAME,".") eq "cfm"  and  not listFind("index.cfm",listLast(cgi.SCRIPT_NAME,"/"))>
+		<cfoutput>Access Restricted.</cfoutput>
+		<cfabort>
+		</cfif>
+		<cfsetting showdebugoutput="no">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/scriptProtect_include.cfm">
+		<cfreturn true>
+	</cffunction>
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
+	
+</cfcomponent>

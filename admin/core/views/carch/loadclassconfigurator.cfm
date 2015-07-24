@@ -65,6 +65,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
 	</cfcase>
 	<cfdefaultcase>
-		<cfoutput>#rc.classid#</cfoutput>
+		<cfoutput>
+		<div id="availableObjectParams"
+		data-object="#esapiEncode('html_attr',rc.classid)#" 
+		data-name="#esapiEncode('html_attr',rc.name)#" 
+		data-objectid="#esapiEncode('html_attr',rc.objectid)#"></div>
+		</cfoutput>
 	</cfdefaultcase>
 </cfswitch>
