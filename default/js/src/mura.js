@@ -1509,6 +1509,11 @@
 					mura(this).data(hashparams);
 					processAsyncObject(this);
 				});
+			} else if(hashparams.objectid){
+				mura('.mura-async-object[data-objectid="' + hashparams.objectid +'"]').each(function(){
+					mura(this).data(hashparams);
+					processAsyncObject(this);
+				});
 			}	
 		}
 	}
@@ -1615,6 +1620,10 @@
 
 			if(hashparams.nextnid){
 				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
+					mura(this).data(hashparams);
+				});
+			} else if(hashparams.objectid){
+				mura('.mura-async-object[data-nextnid="' + hashparams.objectid +'"]').each(function(){
 					mura(this).data(hashparams);
 				});
 			}
