@@ -7,144 +7,146 @@
 
 	    function initDraggableObject(item){
 
-				mura(item)
-				.on('dragstart',function(){
-					dragEl=this;
-					elDropHandled=false;
+			mura(item)
+			.on('dragstart',function(e){
+				//FireFox insists that the dataTranfer has been set
+				e.dataTransfer.setData('Text','');
+				dragEl=this;
+				elDropHandled=false;
+				newMuraObject=false;
+				muraLooseDropTarget=null;
+			})
+			.on('dragend',function(){
+				if(dragEl && !elDropHandled){
+					mura(dragEl).remove();
+				}
+
+				dragEl=null;
+				elDropHandled=false;
+				newMuraObject=false;
+			})
+			.on('dragover',function(e){
+				e.preventDefault();
+			})
+			.on('dragenter',function(e){
+
+				if(dragEl || newMuraObject){
+				
+
+					var prev=mura('.mura-var-target');
+					muraLooseDropTarget=this;
+
+					if(prev.length){
+						prev.removeClass('mura-var-target');
+
+						if(!prev.attr('class')){
+							prev.removeAttr('class');
+						}
+					}
+
+					var item=mura(this).closest('.mura-object');
+					mura(this).addClass('mura-var-target');		
+					
+				}
+			})
+			.on('dragleave',function(e){
+				mura(this).removeClass('mura-var-target');
+				muraLooseDropTarget=null;
+				if(!mura(this).attr('class')){
+					mura(this).removeAttr('class');
+				}
+			}).on('drop',function(e){
+				// this/e.target is current target element.
+			    if (e.stopPropagation) {
+			    	e.stopPropagation(); // stops the browser from redirecting.
+			    }
+			    if(dragEl || newMuraObject){
+					if(dragEl && dragEl != this){
+				    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+						mura('#adminSave').show();
+						mura(this).closest('.mura-displayregion').data('dirty',true);
+						elDropHandled=true;
+					} else if (dragEl==this){
+						elDropHandled=true;
+					}
+
+					checkForNew.call(this,e);
+
+				    mura(this).removeClass('mura-var-target');
+					muraLooseDropTarget=null;
 					newMuraObject=false;
-					muraLooseDropTarget=null;
-				})
-				.on('dragend',function(){
-						if(dragEl && !elDropHandled){
-							mura(dragEl).remove();
-						}
 
-						dragEl=null;
-						elDropHandled=false;
-						newMuraObject=false;
-				})
-				.on('dragover',function(e){
-					e.preventDefault();
-				})
-				.on('dragenter',function(e){
-
-					if(dragEl || newMuraObject){
-					
-
-						var prev=mura('.mura-var-target');
-						muraLooseDropTarget=this;
-
-						if(prev.length){
-							prev.removeClass('mura-var-target');
-
-							if(!prev.attr('class')){
-								prev.removeAttr('class');
-							}
-						}
-
-						var item=mura(this).closest('.mura-object');
-						mura(this).addClass('mura-var-target');		
-						
+					if(!mura(this).attr('class')){
+						mura(this).removeAttr('class');
 					}
-				})
-				.on('dragleave',function(e){
+				}
+				
+			}).attr('draggable',true);
+		}
+
+		function initLooseDropTarget(item){
+			mura(item)
+			.on('dragover',function(e){e.preventDefault()})
+			.on('dragenter',function(e){
+				if(dragEl || newMuraObject){
+					var prev=mura('.mura-var-target');
+					muraLooseDropTarget=this;
+
+					if(prev.length){
+						prev.removeClass('mura-var-target');
+
+						if(!prev.attr('class')){
+							prev.removeAttr('class');
+						}
+					}
+
+					var item=mura(this).closest(".mura-object");
+
+					if(item){
+						item.addClass('mura-var-target');
+					} else {
+						mura(this).addClass('mura-var-target');
+					}
+					
+				}
+			})
+			.on('dragleave',function(e){
+				mura(this).removeClass('mura-var-target');
+				muraLooseDropTarget=null;
+				if(!mura(this).attr('class')){
+					mura(this).removeAttr('class');
+				}
+			}).on('drop',function(e){
+				// this/e.target is current target element.
+			    if (e.stopPropagation) {
+			    	e.stopPropagation(); // stops the browser from redirecting.
+			    }
+
+			    if(dragEl || newMuraObject){
+
+				    if(dragEl && dragEl != this){
+				    	this.parentNode.insertBefore(dragEl,this.nextSibling);
+				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+						mura('#adminSave').show();
+						mura(dragEl).addClass('mura-async-object');
+						mura(this).closest('.mura-displayregion').data('dirty',true);
+						elDropHandled=true;
+					} else if (dragEl==this){
+						elDropHandled=true;
+					}
+
+					checkForNew.call(this,e);
+
 					mura(this).removeClass('mura-var-target');
 					muraLooseDropTarget=null;
 					if(!mura(this).attr('class')){
 						mura(this).removeAttr('class');
 					}
-				}).on('drop',function(e){
-					// this/e.target is current target element.
-				    if (e.stopPropagation) {
-				    	e.stopPropagation(); // stops the browser from redirecting.
-				    }
-				    if(dragEl || newMuraObject){
-						if(dragEl && dragEl != this){
-					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
-					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-							mura('#adminSave').show();
-							mura(this).closest('.mura-displayregion').data('dirty',true);
-							elDropHandled=true;
-						} else if (dragEl==this){
-							elDropHandled=true;
-						}
+				}
+			});
 
-						checkForNew.call(this,e);
-
-					    mura(this).removeClass('mura-var-target');
-						muraLooseDropTarget=null;
-						newMuraObject=false;
-
-						if(!mura(this).attr('class')){
-							mura(this).removeAttr('class');
-						}
-					}
-					
-				}).attr('draggable',true);
-			}
-
-			function initLooseDropTarget(item){
-				mura(item)
-				.on('dragover',function(e){e.preventDefault()})
-				.on('dragenter',function(e){
-					if(dragEl || newMuraObject){
-						var prev=mura('.mura-var-target');
-						muraLooseDropTarget=this;
-
-						if(prev.length){
-							prev.removeClass('mura-var-target');
-
-							if(!prev.attr('class')){
-								prev.removeAttr('class');
-							}
-						}
-
-						var item=mura(this).closest(".mura-object");
-
-						if(item){
-							item.addClass('mura-var-target');
-						} else {
-							mura(this).addClass('mura-var-target');
-						}
-						
-					}
-				})
-				.on('dragleave',function(e){
-					mura(this).removeClass('mura-var-target');
-					muraLooseDropTarget=null;
-					if(!mura(this).attr('class')){
-						mura(this).removeAttr('class');
-					}
-				}).on('drop',function(e){
-					// this/e.target is current target element.
-				    if (e.stopPropagation) {
-				    	e.stopPropagation(); // stops the browser from redirecting.
-				    }
-
-				    if(dragEl || newMuraObject){
-
-					    if(dragEl && dragEl != this){
-					    	this.parentNode.insertBefore(dragEl,this.nextSibling);
-					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-							mura('#adminSave').show();
-							mura(dragEl).addClass('mura-async-object');
-							mura(this).closest('.mura-displayregion').data('dirty',true);
-							elDropHandled=true;
-						} else if (dragEl==this){
-							elDropHandled=true;
-						}
-
-						checkForNew.call(this,e);
-
-						mura(this).removeClass('mura-var-target');
-						muraLooseDropTarget=null;
-						if(!mura(this).attr('class')){
-							mura(this).removeAttr('class');
-						}
-					}
-				});
-
-			}
+		}
 
 	    function initLayoutManager(){
 			

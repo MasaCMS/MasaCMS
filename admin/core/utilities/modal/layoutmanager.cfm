@@ -81,8 +81,18 @@
 	.mura-var-target {
 		border-bottom: dotted #ff0000;
 		margin-bottom: -1px;
-	}	
-	
+	}
+
+	/*
+	body {
+	    -webkit-touch-callout: none;
+	    -webkit-user-select: none;
+	    -khtml-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	}
+	*/
 </style>
 <cfoutput>
 <div class="mura-sidebar">
