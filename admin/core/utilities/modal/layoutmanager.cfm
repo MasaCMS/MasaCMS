@@ -54,7 +54,7 @@
 		
 		font-weight: bold;
 		
-		border-bottom: 3px solid rgba(0,0,0,.05);
+		/*border-bottom: 3px solid rgba(0,0,0,.05);*/
 	}
 	
 	.mura-sidebar__objects-list__object-item {
