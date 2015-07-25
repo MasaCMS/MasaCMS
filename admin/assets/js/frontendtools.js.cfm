@@ -624,7 +624,7 @@
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
 							}
-							if(item.data('imagesize')){
+							if(item.data('imagesize1 ')){
 								muraInlineEditor.data['imagesize']=item.data('imagesize');
 							}
 							if(item.data('imagewidth')){

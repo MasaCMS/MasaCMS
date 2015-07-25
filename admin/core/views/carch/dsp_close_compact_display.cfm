@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
-	<cfif rc.$.getContentRenderer().useLayoutmanager()>
+	<cfif rc.$.getContentRenderer().useLayoutmanager() and listFind('Form,Component',rc.contentBean.getType())>
 		var cmd={cmd:'reloadObjectAndClose',objectid:'#rc.contentBean.getContentID()#'};
 	<cfelse>
 		var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
