@@ -2789,12 +2789,16 @@ this.Element && function(ElementPrototype) {
 			var obj=select(self);
 			
 			if(mura.layoutmanager && mura.editing){
-				var region=mura(self).closest(".mura-displayregion");
-				if(region && region.length ){
-					if(region.data('perm')){
-						obj.html(layoutmanagertoolbar + html);
-					} else {
-						obj.html(html);
+				if(obj.data('object')=='folder'){
+					obj.html(layoutmanagertoolbar + html);
+				} else {
+					var region=mura(self).closest(".mura-displayregion");
+					if(region && region.length ){
+						if(region.data('perm')){
+							obj.html(layoutmanagertoolbar + html);
+						} else {
+							obj.html(html);
+						}
 					}
 				}
 

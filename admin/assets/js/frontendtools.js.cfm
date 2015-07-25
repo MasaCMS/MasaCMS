@@ -116,7 +116,7 @@
 			}
 
 			if(!editableObj.data('objectid')){
-				editableObj.data('objectid','');
+				editableObj=utility(a).closest(".mura-async-object")
 			}
 
 			var layoutmanager=false;
@@ -405,6 +405,22 @@
 					
 				});
 
+				utility('.mura-async-object[data-object="folder"]').each(function(){
+					var item=utility(this);
+				
+					item.addClass("active");
+							
+					item.html(window.mura.layoutmanagertoolbar + item.html());
+
+					item.find(".frontEndToolsModal").on(
+						'click',
+						function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
+				});
+
 				window.mura.initLayoutManager();
 			}
 
@@ -602,6 +618,23 @@
 								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
 							}
 						);
+
+						mura('.mura-async-object[data-object="folder"]').each(function(){
+							var item=mura(this);
+							if(item.data('displaylist')){
+								muraInlineEditor.data['displaylist']=item.data('displaylist');
+							}
+							if(item.data('imagesize')){
+								muraInlineEditor.data['imagesize']=item.data('imagesize');
+							}
+							if(item.data('imagewidth')){
+								muraInlineEditor.data['imagewidth']=item.data('imagewidth');
+							}
+							if(item.data('imageheight')){
+								muraInlineEditor.data['imageheight']=item.data('imageheight');
+							}
+						});
+
 
 						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 

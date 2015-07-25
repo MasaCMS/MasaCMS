@@ -73,7 +73,7 @@
 		min-height: 15px;
 	}
 
-	.mura-object.active:hover {
+	.mura-object.active:hover, .mura-async-object.active[data-object="folder"]:hover {
 		background: #f7f7f7;
 		cursor: pointer;
 	}

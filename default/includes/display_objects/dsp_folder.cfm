@@ -75,6 +75,24 @@
 		<cfset variables.$.event('month',month(now()))>
 	</cfif>
 
+	<cfif not request.murafrontendrequest>
+		<cfif len(variables.$.event('displaylist'))>
+			<cfset variables.$.content('displaylist',variables.$.event('displaylist'))>
+		</cfif>
+
+		<cfif len(variables.$.event('imagesize'))>
+			<cfset variables.$.content('imageSize',variables.$.event('imagesize'))>
+		</cfif>
+
+		<cfif len(variables.$.event('imagewidth'))>
+			<cfset variables.$.content('imagewidth',variables.$.event('imagewidth'))>
+		</cfif>
+
+		<cfif len(variables.$.event('imageheight'))>
+			<cfset variables.$.content('imageheight',variables.$.event('imageheight'))>
+		</cfif>
+	</cfif>
+
 	<cfif not isNumeric(variables.$.event('year'))>
 		<cfset variables.$.event('year',year(now()))>
 	</cfif>

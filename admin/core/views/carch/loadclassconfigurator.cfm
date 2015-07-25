@@ -70,6 +70,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="component">
 		<cfinclude template="objectclass/dsp_component_configurator.cfm">
 	</cfcase>
+	<cfcase value="folder">
+		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>
 		<div id="availableObjectParams"

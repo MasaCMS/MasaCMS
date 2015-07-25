@@ -2267,6 +2267,61 @@ buttons: {
 		return true;
 	},
 
+	initFolderConfigurator: function(data) {
+
+		/*
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed'){
+				return false;
+			}
+		}
+		*/
+
+		this.initConfigurator(data, {
+			url: './',
+			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=folder&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&feedid=' + data.objectid + '&cacheid=' + Math.random(),
+			title: "Loading...",
+			init: function(data, config) {
+				//alert(JSON.stringify(data));
+				folderConfiguratorTitle="Configure Folder";
+				
+				if(siteManager.configuratorMode=='frontEnd'){
+					$("#configuratorHeader").html(folderConfiguratorTitle);
+				} else {
+					$("#configuratorContainer").dialog('option','title',folderConfiguratorTitle);
+				}		
+			
+
+				if($("#availableListSort").length) {
+					$("#availableListSort, #displayListSort").sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event) {
+							event.stopPropagation();
+							$("#displayList").val("");
+							$("#displayListSort > li").each(function() {
+								var current = $("#displayList").val();
+
+								if(current != '') {
+									$("#displayList").val(current + "," + $.trim($(this).html()));
+								} else {
+									$("#displayList").val($.trim($(this).html()));
+								}
+
+							});
+
+							if(siteManager.layoutmanager){
+								siteManager.updateObjectPreview();
+							} else {
+								siteManager.updateAvailableObject();
+							}
+						}
+					}).disableSelection();
+				}
+			}
+		});
+		//location.href=url + "?" + pars;
+		return true;
+	},
 	initSlideShowConfigurator: function(data) {
 
 		/*

@@ -15,7 +15,7 @@
 		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
 		    </div>
 		</div>
-
+		
 		<div class="form-actions">	
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
 		</div>
@@ -69,6 +69,9 @@
 								</cfcase>
 								<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
 									siteManager.initSlideShowConfigurator(configOptions);
+								</cfcase>
+								<cfcase value="folder">	
+									siteManager.initFolderConfigurator(configOptions);
 								</cfcase>
 								<cfcase value="category_summary,category_summary_rss">	
 									siteManager.initCategorySummaryConfigurator(configOptions);
