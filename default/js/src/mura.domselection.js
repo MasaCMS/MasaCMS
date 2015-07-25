@@ -738,7 +738,7 @@
 				});
 				return this;
 			} else {
-				return this.selection[0].getAttribute("data-" + attributeName);
+				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			}
 		},
 

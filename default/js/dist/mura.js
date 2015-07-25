@@ -1903,11 +1903,33 @@ this.Element && function(ElementPrototype) {
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		    if (/^data-/.test(attr.name)) {
-		        data[attr.name.substr(5)] = attr.value;
+		        data[attr.name.substr(5)] = parseString(attr.value);
 		    }
 		});
 
 		return data;
+	}
+
+	function parseString(val){
+		var lcaseVal=val.toLowerCase();
+		
+		if(lcaseVal=='false'){
+			return false;
+		} else if (lcaseVal=='true'){
+			return true;
+		} else {
+			var numVal=parseFloat(val);
+			if(numVal){
+				return numVal;
+			} else {
+				try {
+			        var jsonVal=JSON.parse(val);
+			        return jsonVal;
+			    } catch (e) {
+			        return val;
+			    }
+			}
+		}
 	}
 
 	function getAttributes(el){
@@ -3164,7 +3186,8 @@ this.Element && function(ElementPrototype) {
 			formToObject:formToObject,
 			createUUID:createUUID,
 			processMarkup:processMarkup,
-			layoutmanagertoolbar:layoutmanagertoolbar
+			layoutmanagertoolbar:layoutmanagertoolbar,
+			parseString:parseString
 			}
 		),
 		//these are here for legacy support
@@ -4148,7 +4171,7 @@ this.Element && function(ElementPrototype) {
 				});
 				return this;
 			} else {
-				return this.selection[0].getAttribute("data-" + attributeName);
+				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			}
 		},
 

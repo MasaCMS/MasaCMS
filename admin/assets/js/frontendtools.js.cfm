@@ -389,7 +389,7 @@
 					item.addClass("active");
 					
 					if(region && region.length ){
-						if(region.data('perm') || region.data('perm')=='true'){
+						if(region.data('perm')){
 							
 							item.html(window.mura.layoutmanagertoolbar + item.html());
 

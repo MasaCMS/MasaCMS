@@ -154,7 +154,7 @@
 
 				var region=mura(this);
 
-				if(region.data('loose')!='true' || (region.data('loose')=='true' && region.html() == '<p></p>')){
+				if(!region.data('loose') || (region.data('loose') && region.html() == '<p></p>')){
 					region.on('drop',function(e) {
 					    var dropParent, dropIndex, dragIndex;
 					    e.preventDefault();
