@@ -1919,17 +1919,20 @@ this.Element && function(ElementPrototype) {
 			} else if (lcaseVal=='true'){
 				return true;
 			} else {
-				//var numVal=parseInt(val);
-				//if(false || numVal){
-					//return numVal;
-				//} else {
-					try {
-				        var jsonVal=JSON.parse(val);
-				        return jsonVal;
-				    } catch (e) {
-				        return val;
-				    }
-				//}
+				if(val.length != 35){
+					var numVal=parseFloat(val);
+					if(numVal==0 || !isNaN(1/numVal)){
+						return numVal;
+					}
+				}
+				
+				try {
+			        var jsonVal=JSON.parse(val);
+			        return jsonVal;
+			    } catch (e) {
+			        return val;
+			    }
+				
 			}
 		} else {
 			return val;
