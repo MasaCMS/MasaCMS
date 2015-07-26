@@ -1911,25 +1911,30 @@ this.Element && function(ElementPrototype) {
 	}
 
 	function parseString(val){
-		var lcaseVal=val.toLowerCase();
-		
-		if(lcaseVal=='false'){
-			return false;
-		} else if (lcaseVal=='true'){
-			return true;
-		} else {
-			var numVal=parseFloat(val);
-			if(numVal){
-				return numVal;
+		if(typeof val == 'string'){
+			var lcaseVal=val.toLowerCase();
+			
+			if(lcaseVal=='false'){
+				return false;
+			} else if (lcaseVal=='true'){
+				return true;
 			} else {
-				try {
-			        var jsonVal=JSON.parse(val);
-			        return jsonVal;
-			    } catch (e) {
-			        return val;
-			    }
+				//var numVal=parseInt(val);
+				//if(false || numVal){
+					//return numVal;
+				//} else {
+					try {
+				        var jsonVal=JSON.parse(val);
+				        return jsonVal;
+				    } catch (e) {
+				        return val;
+				    }
+				//}
 			}
-		}
+		} else {
+			return val;
+		} 
+
 	}
 
 	function getAttributes(el){
@@ -2857,7 +2862,6 @@ this.Element && function(ElementPrototype) {
 					mura(this).on('click',function(e){
 						e.preventDefault();
 						var a=this.getAttribute('href').split('?');
-	
 						if(a.length==2){
 							window.location.hash=a[1];
 						}
