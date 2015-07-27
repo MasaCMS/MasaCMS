@@ -55,8 +55,8 @@
 	Mura CMS.
 --->
 <cfoutput>
-<cfif request.muraFrontEndRequest and this.asyncObjects>
-	<cfif this.layoutmanager>
+<cfif this.asyncObjects>
+	<cfif this.layoutmanager and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
 		<div class="mura-async-object" 

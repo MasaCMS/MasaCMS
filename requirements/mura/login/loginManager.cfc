@@ -139,12 +139,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
+	<cfset structDelete(session,'mfa')>
+
 	<cfif request.muraAPIRequest>
 		<cfset request.muraJSONRedirectURL=arguments.returnURL>
 	<cfelse>
 		<cflocation url="#arguments.returnURL#" addtoken="false">
 	</cfif>
 
+</cffunction>
+
+<cffunction name="handleChallenge" output="false">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin" default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
+
+	<cfset session.mfa.authcode=userUtility.getRandomPassword()>
 </cffunction>
 
 <cffunction name="handleFailure" output="false">
@@ -156,9 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="deviceid" default="">
 	<cfargument name="publicDevice" default="false">
 
-	<cfif isDefined('session.mfa')>
-		<cfset structDelete(session,'mfa')>
-	</cfif>
+	<cfset structDelete(session,'mfa')>
 
 	<cfif arguments.isAdminLogin>
 		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
@@ -203,6 +215,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var indexFile="./">
 	<cfset var loginURL="" />
 
+	<cfset structDelete(session,'mfa')>
+	
 	<cfparam name="arguments.data.returnUrl" default="" />
 	<cfparam name="arguments.data.rememberMe" default="0" />
 	<cfparam name="arguments.data.contentid" default="" />

@@ -55,20 +55,24 @@
 	Mura CMS.
 --->
 <cfif this.asyncObjects>
-	<cfoutput>
-	<div class="mura-async-object" 
-		data-object="folder" 
-		data-month="#esapiEncode('html_attr',variables.$.event('month'))#" 
-		data-day="#esapiEncode('html_attr',variables.$.event('day'))#" 
-		data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
-		data-filterby="#esapiEncode('html_attr',variables.$.event('filterBy'))#"
-		data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
-		data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
-		data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
-		data-categoryid="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
-		data-nextnid="#esapiEncode('html_attr',variables.$.content('contentid'))#"
-		data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"></div>
-	</cfoutput>
+	<cfif this.layoutmanager and len(arguments.object)>
+		 <cfset objectparams.async=true>
+	<cfelse>
+		<cfoutput>
+		<div class="mura-async-object" 
+			data-object="folder" 
+			data-month="#esapiEncode('html_attr',variables.$.event('month'))#" 
+			data-day="#esapiEncode('html_attr',variables.$.event('day'))#" 
+			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
+			data-filterby="#esapiEncode('html_attr',variables.$.event('filterBy'))#"
+			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
+			data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
+			data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
+			data-categoryid="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
+			data-nextnid="#esapiEncode('html_attr',variables.$.content('contentid'))#"
+			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"></div>
+		</cfoutput>
+	</cfif>
 <cfelse>
 	<cfsilent>
 	<cfif not isNumeric(variables.$.event('month'))>
