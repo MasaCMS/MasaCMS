@@ -742,13 +742,15 @@ var initMura=function(config){
 
     if($(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
       loader().load(
-        config.assetpath +'/css/shadowbox.min.css',
-        config.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
-        config.assetpath +'/js/external/shadowbox/shadowbox.min.js',
-          function(){
+        [
+          config.assetpath +'/css/shadowbox.min.css',
+          config.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
+          config.assetpath +'/js/external/shadowbox/shadowbox.min.js'
+        ],
+        function(){
             window.Shadowbox.init();
-          }
-        );
+        }
+      );
     } 
       
   }
@@ -1319,7 +1321,9 @@ var initMura=function(config){
     addLoadEvent:addLoadEvent,
     loader:loader,
     announceEvent:announceEvent,
-    addEventHandler:addEventHandler
+    addEventHandler:addEventHandler,
+    createCookie:createCookie,
+    readCookie:readCookie
   });
 
   //for some reason this can't be added via extend
@@ -1330,6 +1334,7 @@ var initMura=function(config){
     validateForm:validateForm,
     setHTMLEditor:setHTMLEditor,
     createCookie:createCookie,
+    readCookie:readCookie,
     addLoadEvent:addLoadEvent,
     noSpam:noSpam
   });
