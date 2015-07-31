@@ -3156,7 +3156,12 @@ this.Element && function(ElementPrototype) {
 	extend(window,{
 		mura:extend(
 			function(selector){
-				return select(selector);
+				if(typeof selector == 'function'){
+					this.ready(selector);
+					return this;
+				} else {
+					return select(selector);
+				}
 			},
 			{
 			processAsyncObject:processAsyncObject,
