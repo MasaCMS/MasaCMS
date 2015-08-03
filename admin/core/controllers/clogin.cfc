@@ -77,7 +77,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="login" output="false">
 	<cfargument name="rc">
 	<cfif rc.$.validateCSRFTokens()>
-		<cfset application.loginManager.login(arguments.rc)>	
+		<cfset var loginManager=rc.$.getBean('loginManager')>
+		<cfif len(rc.$.event('authcode'))>
+			<cfif loginManager.attemptChallenge(rc.$.event('authcode'))>
+				<cfset loginManager.completedChallenge()>
+			</cfif>
+		<cfelse>
+			<cfset loginManager.login(arguments.rc)>	
+		</cfif>
 	<cfelse>
 		<cfset variables.fw.redirect(action="clogin.main",path="./")>
 	</cfif>

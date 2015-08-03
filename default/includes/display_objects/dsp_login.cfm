@@ -88,8 +88,32 @@
 
 				<cfif not variables.$.event('isBlocked')>
 					<cfif variables.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-						
-
+						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
+							<fieldset>
+								<legend>#variables.$.rbKey('user.pleaseenterauthcode')#</legend>
+								<!--- Username --->
+								<div class="req #this.loginFormGroupWrapperClass#">
+									<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
+										#variables.$.rbKey('user.authode')#
+										<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+									</label>
+									<div class="#this.loginFormFieldWrapperClass#">
+										<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
+									</div>
+								</div>
+			
+								<div class="#this.loginFormGroupWrapperClass#">
+									<div class="#this.loginFormSubmitWrapperClass#">
+										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
+									</div>
+								</div>
+			
+								<input type="hidden" name="doaction" value="login">
+								<input type="hidden" name="statius" value="challenge">
+								<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
+								<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+							</fieldset>
+						</form>
 					<cfelse>
 						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 							<fieldset>

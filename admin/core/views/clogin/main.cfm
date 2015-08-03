@@ -70,7 +70,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isBlocked>
 	<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-		<p class="alert alert-error">Looks like you're using a new device!</p>
+		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) and not len(rc.$.event('authcode'))>
+			<p class="alert alert-error">Looks like you're using a new device!</p>
+		</cfif>
+
+		<cfif len(rc.$.event('authcode'))>
+			<p class="alert alert-error">The authorization code that you entered was not correct.</p>
+		</cfif>
+		
 		<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
 		<div class="control-group">
@@ -79,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</label>
 	      	<div class="controls">
 			<div class="input-prepend">
-			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authocode" name="authcode" type="text" class="span11" placeholder="Authorization Code" />
+			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authcode" name="authcode" type="text" class="span11" placeholder="Authorization Code" />
 			</div>
 			</div>
 			</div>

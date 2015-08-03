@@ -594,12 +594,12 @@
 							count++;
 						}
 
-						mura('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
+						utility('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
 							function(){
 								var objectlist=[];
 
-								mura(this).find('.mura-object').each(function(){
-									var item=mura(this);
+								utility(this).find('.mura-object').each(function(){
+									var item=utility(this);
 									var params=item.data();
 
 									delete params['instanceid'];
@@ -619,8 +619,8 @@
 							}
 						);
 
-						mura('.mura-async-object[data-object="folder"]').each(function(){
-							var item=mura(this);
+						utility('.mura-async-object[data-object="folder"]').each(function(){
+							var item=utility(this);
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
 							}
