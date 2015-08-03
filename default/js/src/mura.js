@@ -1322,7 +1322,7 @@
 				if(window.mura.adminpreview=='yes' || window.mura.adminpreview=='true'){
 					select("a").each(function() {
 						var h=this.getAttribute('href');
-						if(h.indexOf('muraadminpreview')==-1){
+						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
 							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
 							this.setAttribute('href',h);
 						}

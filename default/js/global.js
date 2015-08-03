@@ -1134,10 +1134,10 @@ var initMura=function(config){
       function(){
         if(config.adminpreview=='yes' || config.adminpreview=='true'){
           $("a").attr('href', function(i, h) {
-            if(h.indexOf('muraadminpreview')==-1){
+            if(typeof h=='string' && h.indexOf('muraadminpreview')==-1){
               return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + config.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + config.mobileformat);
             } else {
-              return f;
+              return h;
             }
           });
         }
