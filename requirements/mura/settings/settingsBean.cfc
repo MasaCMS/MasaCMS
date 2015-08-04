@@ -100,6 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="mediumImageHeight" type="string" default="180" required="true" />
 <cfproperty name="mediumImageWidth" type="numeric" default="180" required="true" />
 <cfproperty name="sendLoginScript" type="string" default=""/>
+<cfproperty name="sendAuthCodeScript" type="string" default=""/>
 <cfproperty name="mailingListConfirmScript" type="string" default=""/>
 <cfproperty name="reminderScript" type="string" default=""/>
 <cfproperty name="ExtranetPublicRegNotify" type="string" default=""/>
@@ -199,6 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.mediumImageHeight='180'/>
 	<cfset variables.instance.mediumImageWidth='180'/>
 	<cfset variables.instance.sendLoginScript=""/>
+	<cfset variables.instance.sendAuthCodeScript=""/>
 	<cfset variables.instance.mailingListConfirmScript=""/>
 	<cfset variables.instance.publicSubmissionApprovalScript=""/>
 	<cfset variables.instance.reminderScript=""/>

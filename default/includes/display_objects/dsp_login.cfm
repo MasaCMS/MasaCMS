@@ -88,13 +88,22 @@
 
 				<cfif not variables.$.event('isBlocked')>
 					<cfif variables.$.event('status') eq 'challenge' and isdefined('session.mfa')>
+
+						<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(variables.$.event('authcode'))>
+							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.newdevice')#</p>
+						</cfif>
+
+						<cfif len(variables.$.event('authcode'))>
+							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.authcodeerror')#</p>
+						</cfif>
+
 						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 							<fieldset>
 								<legend>#variables.$.rbKey('user.pleaseenterauthcode')#</legend>
 								<!--- Username --->
 								<div class="req #this.loginFormGroupWrapperClass#">
 									<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
-										#variables.$.rbKey('user.authode')#
+										#variables.$.rbKey('user.authcode')#
 										<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 									</label>
 									<div class="#this.loginFormFieldWrapperClass#">
@@ -104,12 +113,12 @@
 			
 								<div class="#this.loginFormGroupWrapperClass#">
 									<div class="#this.loginFormSubmitWrapperClass#">
-										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
+										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.submitauthcode'))#</button>
 									</div>
 								</div>
 			
 								<input type="hidden" name="doaction" value="login">
-								<input type="hidden" name="statius" value="challenge">
+								<input type="hidden" name="status" value="challenge">
 								<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
 								<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
 							</fieldset>

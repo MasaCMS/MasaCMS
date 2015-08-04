@@ -149,21 +149,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="handleChallenge" output="false">
-<cfargument name="rememberMe" default="0">
-<cfargument name="contentid" default="">
-<cfargument name="linkServID" default="">
-<cfargument name="isAdminLogin" default="false">
-<cfargument name="compactDisplay" default="false">
-<cfargument name="deviceid" default="">
-<cfargument name="publicDevice" default="false">
+<cffunction name="sendAuthCode" output="false">
+	<cfset sendAuthCodeByEmail()>
+</cffunction>
 
-
-<cfset session.mfa.authcode=userUtility.getRandomPassword()>
+<cffunction name="sendAuthCodeByEmail" output="false">
 <cfset var site=getBean('settingsManager').getSite(session.mfa.siteid)>
 <cfset var contactEmail=site.getContact()>
 <cfset var contactName=site.getSite()>
-<cfset var mailText="">
+<cfset var mailText=site.getSendAuthCodeScript()>
 <cfset var user=getBean('user').loadBy(userid=session.mfa.userid,siteid=session.mfa.siteid)>
 <cfset var firstName=user.getFname()>
 <cfset var lastName=user.getLname()>
@@ -172,25 +166,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var authcode=session.mfa.authcode>
 <cfset var mailer=getBean('mailer')>
 
-<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>
-	<cfset var emailtitle="Device Authorization Code">
+<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.deviceauthorizationcode')>
 <cfelse>
-	<cfset var emailtitle="Authorization Code">
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')>
 </cfif>
 
+<cfif not len(mailText)>
 <cfsavecontent variable="mailText">
-<cfoutput>#emailtitle#
+<cfoutput>#firstName#,
 
-#firstName#,
-
-Here is the authorization code you requested for: #email#. It expires in the next 3 hours.
+Here is the authorization code you requested for username: #username#. It expires in the next 3 hours.
 
 Authorization Code: #authcode#
 
-If you did not request a new device authorization, contact #contactEmail#.
+If you did not request a new authorization, contact #contactEmail#.
 </cfoutput>
 </cfsavecontent>
 
+<cfelse>
+	<cfset var finder=refind('##.+?##',mailText,1,"true")>
+	<cfloop condition="#finder.len[1]#">
+		<cftry>
+			<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(mailText, finder.pos[1], finder.len[1])))#')>
+			<cfcatch>
+				<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'')>
+			</cfcatch>
+		</cftry>
+		<cfset finder=refind('##.+?##',mailText,1,"true")>
+	</cfloop>
+</cfif>
 
 <cfset mailer.sendText(trim(mailText),
 	email,
@@ -199,22 +204,38 @@ If you did not request a new device authorization, contact #contactEmail#.
 	user.getSiteID()
 	) />
 
-<cfif arguments.isAdminLogin>
-	<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
-<cfelse>
-	<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
-	<cfif find('?', loginURL)>
-		<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
-	<cfelse>
-		<cfset loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
-	</cfif>
-	<cfif request.muraAPIRequest>
-		<cfset request.muraJSONRedirectURL=loginURL>
-	<cfelse>
-		<cflocation url="#loginURL#" addtoken="false">
-	</cfif>
-</cfif>
+</cffunction>
 
+<cffunction name="handleChallenge" output="false">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin" default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
+
+	<cfset session.mfa.authcode=userUtility.getRandomPassword()>
+
+	<cfif getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true)>
+		<cfset sendAuthCode()>
+	</cfif>
+
+	<cfif arguments.isAdminLogin>
+		<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
+	<cfelse>
+		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfif find('?', loginURL)>
+			<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		<cfelse>
+			<cfset loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		</cfif>
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
+			<cflocation url="#loginURL#" addtoken="false">
+		</cfif>
+	</cfif>
 
 </cffunction>
 
@@ -247,11 +268,11 @@ If you did not request a new device authorization, contact #contactEmail#.
 </cffunction>
 
 <cffunction name="attemptChallenge" output="false">
-	<cfargument name="authcode" default="">
-	<cfif len(arguments.authcode) and isDefined('session.mfa')>
+	<cfargument name="$">
+	<cfif len(arguments.$.event('authcode')) and isDefined('session.mfa')>
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(session.mfa.username,getBean('configBean'))>
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
-		<cfif arguments.authcode eq session.mfa.authcode>
+		<cfif arguments.$.event('authcode') eq session.mfa.authcode>
 			<cfset strikes.clear()>
 			<cfreturn true>
 		<cfelse>
@@ -263,8 +284,15 @@ If you did not request a new device authorization, contact #contactEmail#.
 
 <cffunction name="completedChallenge" output="false">
 	<cfif isDefined('session.mfa')>
-		<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) && len(session.mfa.deviceid)>
-			<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=arguments.data.deviceid).save()>
+		<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) && len(session.mfa.deviceid)>
+			<cfset var userDevice=getBean('userDevice')
+						.loadBy(
+							userid=session.mfa.userid,
+							deviceid=session.mfa.deviceid,
+							siteid=session.mfa.siteid
+						)
+						.setLastLogin(now())
+						.save()>
 		</cfif>
 		<cfset variables.userUtility.loginByUserID(argumentCollection=session.mfa)>
 		<cfset handleSuccess(argumentCollection=session.mfa)>
@@ -302,7 +330,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 		</cfif>
 	<cfelse>
 		
-		<cfif getBean('configBean').getValue(property='MFAEnabled',defaultValue=false)>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
 			<cfset var rsUser=variables.userUtility.lookupByCredentials(arguments.data.username,arguments.data.password,arguments.data.siteid)>
 
 			<cfif rsUser.recordcount>
@@ -322,9 +350,9 @@ If you did not request a new device authorization, contact #contactEmail#.
 					deviceid=cookie.originalurltoken}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
 
-					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
+					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=session.mfa.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
 					
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
@@ -404,7 +432,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 		<cflocation url="./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 	<cfelse>
-		<cfif getBean('configBean').getValue(property='MFAEnabled',defaultValue=false)>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
 			<cfset var $=getBean('$').init(arguments.data.siteid)>
 
 			<cfset var user=$.getBean('user').loadBy(userid=arguments.data.userid,siteid=arguments.data.siteid)>
@@ -425,7 +453,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 					deviceid=session.trackingID}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
 
 					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
 					

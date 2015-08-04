@@ -45,48 +45,59 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfset isBlocked=false />
+<cfset isBlocked=false/>
 <cfoutput>
-<cfif rc.compactDisplay eq 'true'>
-	<h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
-</cfif>
-<div id="login" class="span12">
-<cfif rc.compactDisplay neq 'true'>
-	<h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
-</cfif>
-<cfif rc.status eq 'denied'>
-	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
-<cfelseif rc.status eq 'failed'>
-	<cfif structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
-	<cfset isBlocked=true />
-	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
-	<cfelse>
-	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
+<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
+	<cfif rc.compactDisplay eq 'true'>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h1>
+	</cfif>
+	<div id="login" class="span12">
+	<cfif rc.compactDisplay neq 'true'>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')#</h1>
+	</cfif>
+<cfelse>
+	<cfif rc.compactDisplay eq 'true'>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
+	</cfif>
+	<div id="login" class="span12">
+	<cfif rc.compactDisplay neq 'true'>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
+	</cfif>
+	<cfif rc.status eq 'denied'>
+		<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
+	<cfelseif rc.status eq 'failed'>
+		<cfset isBlocked=structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now() />
+		<cfif isBLocked>
+			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
+		<cfelse>
+			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
+		</cfif>
 	</cfif>
 </cfif>
+
 
 <!--- Do not change the html comment below --->
 <!-- mura-primary-login-token -->
 
 <cfif not isBlocked>
 	<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) and not len(rc.$.event('authcode'))>
-			<p class="alert alert-error">Looks like you're using a new device!</p>
+		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(rc.$.event('authcode'))>
+			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</p>
 		</cfif>
 
 		<cfif len(rc.$.event('authcode'))>
-			<p class="alert alert-error">The authorization code that you entered was not correct.</p>
+			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</p>
 		</cfif>
 		
 		<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
 		<div class="control-group">
 	      	<label class="control-label">
-			Enter emailed Authorization Code
+			#application.rbFactory.getKeyValue(session.rb,'login.enteremailedauthcode')#
 			</label>
 	      	<div class="controls">
 			<div class="input-prepend">
-			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authcode" name="authcode" type="text" class="span11" placeholder="Authorization Code" />
+			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authcode" name="authcode" type="text" class="span11" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.authorizationcode'))#" />
 			</div>
 			</div>
 			</div>

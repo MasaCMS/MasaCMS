@@ -820,7 +820,7 @@ to your own modified versions of Mura CMS.
 					</div>
 			</div>
 
-
+			<!---
 			 <div class="control-group">
 				<label class="control-label">Content Rejection Script</label>
 				<div class="controls">
@@ -828,20 +828,30 @@ to your own modified versions of Mura CMS.
 						<textarea rows="6" class="span12" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
 					</div>
 			</div>
+			--->
 
-				<div class="control-group">
+			<div class="control-group">
+				<label class="control-label">User Login Authorization Code Challenge Script</label>
+				<div class="controls">
+					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##email## ##authcode## ##contactEmail## ##contactName##</p>
+					<textarea rows="6" class="span12" name="sendAuthCodeScript">#esapiEncode('html',rc.siteBean.getSendAuthCodeScript())#</textarea>
+				</div>
+			</div>
+
+			<div class="control-group">
 				<label class="control-label">User Login Info Request Script</label>
 				<div class="controls">
-						<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##</p>
-						<textarea rows="6" class="span12" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
-					</div>
+					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##</p>
+					<textarea rows="6" class="span12" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
+				</div>
 			</div>
-				<div class="control-group">
+
+			<div class="control-group">
 				<label class="control-label">Mailing List Confirmation Script</label>
 				<div class="controls">
-						<p class="help-block">Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##</p>
-						<textarea rows="6" class="span12" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
-					</div>
+					<p class="help-block">Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##</p>
+					<textarea rows="6" class="span12" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
+				</div>
 			</div>
 				<div class="control-group">
 				<label class="control-label">Account Activation Script</label>
