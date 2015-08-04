@@ -181,6 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.saveEmptyExtendedValues=true/>
 <cfset variables.instance.MFAPerDeviceEnabled=false/>
 <cfset variables.instance.MFAEnabled=false/>
+<cfset variables.instance.MFASendAuthCode=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />

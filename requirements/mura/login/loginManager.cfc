@@ -149,17 +149,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="handleChallenge" output="false">
-<cfargument name="rememberMe" default="0">
-<cfargument name="contentid" default="">
-<cfargument name="linkServID" default="">
-<cfargument name="isAdminLogin" default="false">
-<cfargument name="compactDisplay" default="false">
-<cfargument name="deviceid" default="">
-<cfargument name="publicDevice" default="false">
+<cffunction name="sendAuthCode" output="false">
+	<cfset sendAuthCodeByEmail()>
+</cffunction>
 
-
-<cfset session.mfa.authcode=userUtility.getRandomPassword()>
+<cffunction name="sendAuthCodeByEmail" output="false">
 <cfset var site=getBean('settingsManager').getSite(session.mfa.siteid)>
 <cfset var contactEmail=site.getContact()>
 <cfset var contactName=site.getSite()>
@@ -186,7 +180,7 @@ Here is the authorization code you requested for username: #username#. It expire
 
 Authorization Code: #authcode#
 
-If you did not request a new device authorization, contact #contactEmail#.
+If you did not request a new authorization, contact #contactEmail#.
 </cfoutput>
 </cfsavecontent>
 
@@ -210,22 +204,38 @@ If you did not request a new device authorization, contact #contactEmail#.
 	user.getSiteID()
 	) />
 
-<cfif arguments.isAdminLogin>
-	<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
-<cfelse>
-	<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
-	<cfif find('?', loginURL)>
-		<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
-	<cfelse>
-		<cfset loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
-	</cfif>
-	<cfif request.muraAPIRequest>
-		<cfset request.muraJSONRedirectURL=loginURL>
-	<cfelse>
-		<cflocation url="#loginURL#" addtoken="false">
-	</cfif>
-</cfif>
+</cffunction>
 
+<cffunction name="handleChallenge" output="false">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin" default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
+
+	<cfset session.mfa.authcode=userUtility.getRandomPassword()>
+
+	<cfif getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true)>
+		<cfset sendAuthCode()>
+	</cfif>
+
+	<cfif arguments.isAdminLogin>
+		<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
+	<cfelse>
+		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfif find('?', loginURL)>
+			<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		<cfelse>
+			<cfset loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		</cfif>
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
+			<cflocation url="#loginURL#" addtoken="false">
+		</cfif>
+	</cfif>
 
 </cffunction>
 
