@@ -81,6 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(rc.$.event('authcode'))>
 			<cfif loginManager.attemptChallenge(rc.$.event('authcode'))>
 				<cfset loginManager.completedChallenge()>
+			<cfelse>
+				
 			</cfif>
 		<cfelse>
 			<cfset loginManager.login(arguments.rc)>	

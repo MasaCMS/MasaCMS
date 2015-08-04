@@ -179,9 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfsavecontent variable="mailText">
-<cfoutput>#emailtitle#
-
-#firstName#,
+<cfoutput>#firstName#,
 
 Here is the authorization code you requested for: #email#. It expires in the next 3 hours.
 
@@ -264,7 +262,14 @@ If you did not request a new device authorization, contact #contactEmail#.
 <cffunction name="completedChallenge" output="false">
 	<cfif isDefined('session.mfa')>
 		<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) && len(session.mfa.deviceid)>
-			<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=arguments.data.deviceid).save()>
+			<cfset var userDevice=$.getBean('userDevice')
+						.loadBy(
+							userid=arguments.data.userid,
+							deviceid=arguments.data.deviceid,
+							siteid=session.mfa.siteid
+						)
+						.setLastLogin(now())
+						.save()>
 		</cfif>
 		<cfset variables.userUtility.loginByUserID(argumentCollection=session.mfa)>
 		<cfset handleSuccess(argumentCollection=session.mfa)>
@@ -324,7 +329,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
 				<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>	
 
-					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
+					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
 					
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>

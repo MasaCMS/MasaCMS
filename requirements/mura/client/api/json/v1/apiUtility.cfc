@@ -1825,19 +1825,33 @@ component extends="mura.cfobject" {
 
 		switch($.event('object')){
 			case 'login':
-				if(getHTTPRequestData().method == 'POST' && len($.event('username')) && len($.event('password'))){
+				if(getHTTPRequestData().method == 'POST'){
+					var loginManager=getBean('loginManager');
 
-					if(getBean('loginManager').remoteLogin($.event().getAllValues(),'')){
-						if(len($.event('returnurl'))){
-							return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
+					if(len($.event('authcode'))){
+						if(len($.event('authcode')) && loginManager.attemptChallenge($.event('authcode'))){
+							loginManager.completedChallenge();
+							return {redirect=request.muraJSONRedirectURL};
 						} else {
-							return {redirect="./##"};
+							$.event('status','challenge');
 						}
-					} else {
-						$.event('status','failed');
+					} else if(len($.event('username')) && len($.event('password'))){
+						if(loginManager.remoteLogin($.event().getAllValues(),'')){
+							if(len($.event('returnurl'))){
+								return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
+							} else {
+								return {redirect="./##"};
+							}
+						} else {
+							if(isDefined('session.mfa')){
+								$.event('status','challenge');
+							} else {
+								$.event('status','failed');
+							}
+						}
 					}
 				}
-
+				
 				return {
 					html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
 				};
