@@ -285,7 +285,7 @@ If you did not request a new authorization, contact #contactEmail#.
 <cffunction name="completedChallenge" output="false">
 	<cfargument name="$">
 	<cfif isDefined('session.mfa')>
-		<cfif isBoolean(arguments.$.event('rememberdevice')) and arguments.$.event('rememberdevice')>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false) and isBoolean(arguments.$.event('rememberdevice')) and arguments.$.event('rememberdevice')>
 			<cfset var userDevice=getBean('userDevice')
 						.loadBy(
 							userid=session.mfa.userid,
