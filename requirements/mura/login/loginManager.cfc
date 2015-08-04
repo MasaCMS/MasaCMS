@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var site=getBean('settingsManager').getSite(session.mfa.siteid)>
 <cfset var contactEmail=site.getContact()>
 <cfset var contactName=site.getSite()>
-<cfset var mailText="">
+<cfset var mailText=site.getSendAuthCodeScript()>
 <cfset var user=getBean('user').loadBy(userid=session.mfa.userid,siteid=session.mfa.siteid)>
 <cfset var firstName=user.getFname()>
 <cfset var lastName=user.getLname()>
@@ -173,15 +173,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var mailer=getBean('mailer')>
 
 <cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
-	<cfset var emailtitle="Device Authorization Code">
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.deviceauthorizationcode')>
 <cfelse>
-	<cfset var emailtitle="Authorization Code">
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')>
 </cfif>
 
+<cfif not len(mailText)>
 <cfsavecontent variable="mailText">
 <cfoutput>#firstName#,
 
-Here is the authorization code you requested for: #email#. It expires in the next 3 hours.
+Here is the authorization code you requested for username: #username#. It expires in the next 3 hours.
 
 Authorization Code: #authcode#
 
@@ -189,6 +190,18 @@ If you did not request a new device authorization, contact #contactEmail#.
 </cfoutput>
 </cfsavecontent>
 
+<cfelse>
+	<cfset var finder=refind('##.+?##',mailText,1,"true")>
+	<cfloop condition="#finder.len[1]#">
+		<cftry>
+			<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(mailText, finder.pos[1], finder.len[1])))#')>
+			<cfcatch>
+				<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'')>
+			</cfcatch>
+		</cftry>
+		<cfset finder=refind('##.+?##',mailText,1,"true")>
+	</cfloop>
+</cfif>
 
 <cfset mailer.sendText(trim(mailText),
 	email,
