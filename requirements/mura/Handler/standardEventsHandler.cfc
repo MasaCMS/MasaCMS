@@ -498,7 +498,14 @@
 			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
 				<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
 			<cfelse>
-				<cfset application.loginManager.login(arguments.event.getAllValues(),'') />
+				<cfif len(arguments.$.event('authcode'))>
+					<cfset var loginManager=arguments.$.getBean('loginManager')>
+					<cfif loginManager.attemptChallenge($)>
+						<cfset loginManager.completedChallenge($)>
+					</cfif>
+				<cfelse>
+					<cfset loginManager.login(arguments.$.event().getAllValues(),'')>	
+				</cfif>
 			</cfif>
 		</cfcase>
 		

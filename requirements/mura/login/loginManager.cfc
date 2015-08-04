@@ -245,8 +245,8 @@ If you did not request a new device authorization, contact #contactEmail#.
 </cffunction>
 
 <cffunction name="attemptChallenge" output="false">
-	<cfargument name="authcode" default="">
-	<cfif len(arguments.authcode) and isDefined('session.mfa')>
+	<cfargument name="$">
+	<cfif len(arguments.$.event('authcode')) and isDefined('session.mfa')>
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(session.mfa.username,getBean('configBean'))>
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 		<cfif arguments.authcode eq session.mfa.authcode>

@@ -1829,7 +1829,7 @@ component extends="mura.cfobject" {
 					var loginManager=getBean('loginManager');
 
 					if(len($.event('authcode'))){
-						if(len($.event('authcode')) && loginManager.attemptChallenge($.event('authcode'))){
+						if(loginManager.attemptChallenge($)){
 							loginManager.completedChallenge();
 							return {redirect=request.muraJSONRedirectURL};
 						} else {
@@ -1851,7 +1851,7 @@ component extends="mura.cfobject" {
 						}
 					}
 				}
-				
+
 				return {
 					html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
 				};
