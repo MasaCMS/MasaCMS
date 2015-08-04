@@ -89,6 +89,10 @@
 				<cfif not variables.$.event('isBlocked')>
 					<cfif variables.$.event('status') eq 'challenge' and isdefined('session.mfa')>
 
+						<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(variables.$.event('authcode'))>
+							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.newdevice')#</p>
+						</cfif>
+
 						<cfif len(variables.$.event('authcode'))>
 							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.authcodeerror')#</p>
 						</cfif>
@@ -106,14 +110,19 @@
 										<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
 									</div>
 								</div>
+								
 								<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
-								<div class="#this.loginFormGroupWrapperClass#">
-									<div class="#this.loginFormPrefsClass#">
-										<label class="#this.loginFormCheckboxClass#" for="cbRememberDevice" >
-											<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberdevice'))#
-										</label>
+									<input type="hidden" name="rememberdevice" value="1"/>
+									<!---
+									<div class="#this.loginFormGroupWrapperClass#">
+										<div class="#this.loginFormPrefsClass#">
+											<label class="#this.loginFormCheckboxClass#" for="cbRememberDevice" >
+												<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberdevice'))#
+											</label>
+										</div>
 									</div>
-								</div>
+								--->
+								
 								</cfif>
 			
 								<div class="#this.loginFormGroupWrapperClass#">
