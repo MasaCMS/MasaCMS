@@ -249,7 +249,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 	<cfif len(arguments.$.event('authcode')) and isDefined('session.mfa')>
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(session.mfa.username,getBean('configBean'))>
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
-		<cfif arguments.authcode eq session.mfa.authcode>
+		<cfif arguments.$.event('authcode') eq session.mfa.authcode>
 			<cfset strikes.clear()>
 			<cfreturn true>
 		<cfelse>

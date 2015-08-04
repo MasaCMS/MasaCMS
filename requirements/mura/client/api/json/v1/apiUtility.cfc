@@ -1830,7 +1830,7 @@ component extends="mura.cfobject" {
 
 					if(len($.event('authcode'))){
 						if(loginManager.attemptChallenge($)){
-							loginManager.completedChallenge();
+							loginManager.completedChallenge($);
 							return {redirect=request.muraJSONRedirectURL};
 						} else {
 							$.event('status','challenge');
