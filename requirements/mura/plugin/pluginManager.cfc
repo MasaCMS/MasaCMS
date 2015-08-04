@@ -2220,6 +2220,8 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif isJSON(arguments.params)>
 		<cfset event.setValue("objectparams",deserializeJSON(arguments.params))>
+	<cfelseif isStruct(arguments.params)>
+		<cfset event.setValue("objectparams",arguments.params)>
 	<cfelse>
 		<cfset event.setValue("objectparams",structNew())>
 	</cfif>

@@ -782,7 +782,7 @@ component extends="mura.cfobject" {
 		var result=httpService.send().getPrefix();
 
 		try{
-			var response=degetSerializer().serialize(result.filecontent);
+			var response=getSerializer().serialize(result.filecontent);
 		} catch(any e){
 			var response={status='invalid'};
 		}
