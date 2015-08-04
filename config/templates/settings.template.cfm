@@ -71,6 +71,7 @@ maxportalitems=1000
 maxsourceimagewidth=4000
 mfa=false
 mfaperdevice=false
+mfasendauthcode=true
 notifywithversionlink=true
 ormautomanagesession=false
 ormcfclocation=
