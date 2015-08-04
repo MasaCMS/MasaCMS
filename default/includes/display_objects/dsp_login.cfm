@@ -163,14 +163,16 @@
 									</div>
 								</div>
 			
-								<!--- Remember Me --->
-								<div class="#this.loginFormGroupWrapperClass#">
-									<div class="#this.loginFormPrefsClass#">
-										<label class="#this.loginFormCheckboxClass#" for="cbRememberMe" >
-											<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
-										</label>
+								<cfif not variables.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>
+									<!--- Remember Me --->
+									<div class="#this.loginFormGroupWrapperClass#">
+										<div class="#this.loginFormPrefsClass#">
+											<label class="#this.loginFormCheckboxClass#" for="cbRememberMe" >
+												<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
+											</label>
+										</div>
 									</div>
-								</div>
+								</cfif>
 			
 								<!--- Login Button --->
 								<div class="#this.loginFormGroupWrapperClass#">

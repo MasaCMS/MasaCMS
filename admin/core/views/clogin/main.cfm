@@ -143,10 +143,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  	</div>
 			<!---</div>--->
 
-			<div class="control-group">
-			      <!---<label class="control-label">Language</label>--->
-			      <div class="controls">
-			      	<select name="rb">
+			<cfif rc.$.getBean('configBean').getValue(property='MFA',defaultValue=false)>
+				<div class="input-prepend">
+			      	<select class="span11" name="rb">
 						<option value="en">English</option>
 						<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
 						<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
@@ -158,14 +157,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
 						<!---<option value="es">Spanish</option>--->
 					</select>
+			  	</div>
+			<cfelse>
+				<div class="control-group">
+				    <!---<label class="control-label">Language</label>--->
+				    <div class="controls">
+				      	<select name="rb">
+							<option value="en">English</option>
+							<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
+							<option value="nl"<cfif cookie.rb eq "nl"> selected</cfif>>Dutch</option>
+							<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
+							<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
+							<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
+							<!---<option value="no"<cfif cookie.rb eq "no"> selected</cfif>>Norwegian</option>--->
+							<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
+							<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
+							<!---<option value="es">Spanish</option>--->
+						</select>
 
-			<div id="remember-me">
-			      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" />
-			     	<label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
-			      	</label>
-			</div>
+						
+						<div id="remember-me">
+						      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" />
+						     	<label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
+						      	</label>
+						</div>
+					</div>
 				</div>
-			</div>
+			</cfif>
 
 			<div class="form-actions">
 				<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
