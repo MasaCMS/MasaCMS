@@ -81,10 +81,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isBlocked>
 	<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(rc.$.event('authcode'))>
-			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</p>
-		</cfif>
-
 		<cfif len(rc.$.event('authcode'))>
 			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.authcodeerror')#</p>
 		</cfif>
@@ -96,12 +92,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'login.enteremailedauthcode')#
 			</label>
 	      	<div class="controls">
-			<div class="input-prepend">
-			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authcode" name="authcode" type="text" class="span11" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.authorizationcode'))#" />
+				<div class="input-prepend">
+				  	<span class="add-on"><i class="icon-envelope"></i></span><input id="authcode" name="authcode" type="text" class="span11" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'login.authorizationcode'))#" />
+				</div>
+				<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
+				<div id="remember-device">
+			      	<input type="checkbox" id="rememberdevice" name="rememberdevice" value="1" />
+			     	<label for="rememberdevice">#application.rbFactory.getKeyValue(session.rb,'login.rememberdevice')#
+			      	</label>
+			      </cfif>
 			</div>
 			</div>
-			</div>
-			<div class="form-actions">
+		</div>
+		<div class="form-actions">
 			 	<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 			 </div>
 		<input name="returnUrl" type="hidden" value="#esapiEncode('html_attr',rc.returnURL)#">

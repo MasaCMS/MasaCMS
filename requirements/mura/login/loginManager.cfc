@@ -283,8 +283,9 @@ If you did not request a new authorization, contact #contactEmail#.
 </cffunction>
 
 <cffunction name="completedChallenge" output="false">
+	<cfargument name="$">
 	<cfif isDefined('session.mfa')>
-		<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) && len(session.mfa.deviceid)>
+		<cfif isBoolean(arguments.$.event('rememberdevice')) and arguments.$.event('rememberdevice')>
 			<cfset var userDevice=getBean('userDevice')
 						.loadBy(
 							userid=session.mfa.userid,
@@ -319,7 +320,6 @@ If you did not request a new authorization, contact #contactEmail#.
 	<cfparam name="arguments.data.linkServID" default="" />
 	<cfparam name="arguments.data.isAdminLogin" default="false" />
 	<cfparam name="arguments.data.compactDisplay" default="false" />
-	<cfparam name="arguments.data.publicDevice" default="false" />
 
 	<cfif not isdefined('arguments.data.username')>
 		<cfif request.muraAPIRequest>
