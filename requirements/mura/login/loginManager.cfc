@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var authcode=session.mfa.authcode>
 <cfset var mailer=getBean('mailer')>
 
-<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>
+<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
 	<cfset var emailtitle="Device Authorization Code">
 <cfelse>
 	<cfset var emailtitle="Authorization Code">
@@ -261,11 +261,11 @@ If you did not request a new device authorization, contact #contactEmail#.
 
 <cffunction name="completedChallenge" output="false">
 	<cfif isDefined('session.mfa')>
-		<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) && len(session.mfa.deviceid)>
-			<cfset var userDevice=$.getBean('userDevice')
+		<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) && len(session.mfa.deviceid)>
+			<cfset var userDevice=getBean('userDevice')
 						.loadBy(
-							userid=arguments.data.userid,
-							deviceid=arguments.data.deviceid,
+							userid=session.mfa.userid,
+							deviceid=session.mfa.deviceid,
 							siteid=session.mfa.siteid
 						)
 						.setLastLogin(now())
@@ -307,7 +307,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 		</cfif>
 	<cfelse>
 		
-		<cfif getBean('configBean').getValue(property='MFAEnabled',defaultValue=false)>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
 			<cfset var rsUser=variables.userUtility.lookupByCredentials(arguments.data.username,arguments.data.password,arguments.data.siteid)>
 
 			<cfif rsUser.recordcount>
@@ -327,9 +327,9 @@ If you did not request a new device authorization, contact #contactEmail#.
 					deviceid=cookie.originalurltoken}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
 
-					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
+					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=session.mfa.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
 					
 					<cfif userDevice.exists()>
 						<cfset userDevice.setLastLogin(now()).save()>
@@ -409,7 +409,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 		<cflocation url="./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 	<cfelse>
-		<cfif getBean('configBean').getValue(property='MFAEnabled',defaultValue=false)>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
 			<cfset var $=getBean('$').init(arguments.data.siteid)>
 
 			<cfset var user=$.getBean('user').loadBy(userid=arguments.data.userid,siteid=arguments.data.siteid)>
@@ -430,7 +430,7 @@ If you did not request a new device authorization, contact #contactEmail#.
 					deviceid=session.trackingID}>
 
 				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
-				<cfif getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false)>	
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
 
 					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
 					

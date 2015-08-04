@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isBlocked>
 	<cfif rc.$.event('status') eq 'challenge' and isdefined('session.mfa')>
-		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) and not len(rc.$.event('authcode'))>
+		<cfif rc.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(rc.$.event('authcode'))>
 			<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.newdevice')#</p>
 		</cfif>
 

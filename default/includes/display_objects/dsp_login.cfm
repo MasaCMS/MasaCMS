@@ -89,7 +89,7 @@
 				<cfif not variables.$.event('isBlocked')>
 					<cfif variables.$.event('status') eq 'challenge' and isdefined('session.mfa')>
 
-						<cfif variables.$.getBean('configBean').getValue(property='MFAPerDeviceEnabled',defaultValue=false) and not len(variables.$.event('authcode'))>
+						<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(variables.$.event('authcode'))>
 							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.newdevice')#</p>
 						</cfif>
 
