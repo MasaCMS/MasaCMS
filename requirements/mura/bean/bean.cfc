@@ -588,7 +588,8 @@ component extends="mura.cfobject" output="false" {
 					       	 		param name="prop.fkcolumn" default="primaryKey";
 
 					       	 		prop.column=prop.fkcolumn;
-					       	 		prop.loadkey=prop.fkcolumn;
+
+					       	 		param name="prop.loadkey" default=prop.fkcolumn;
 
 					       	 		if(prop.nested){
 					       	 			prop.loadkey='parentid';
