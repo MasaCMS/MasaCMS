@@ -88,55 +88,59 @@
 
 				<cfif not variables.$.event('isBlocked')>
 					<cfif variables.$.event('status') eq 'challenge' and isdefined('session.mfa')>
+						<cfset output=variables.$.renderEvent('onSiteMFAChallengeRender')>
+						<cfif len(output)>
+							#output#
+						<cfelse>
+							<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(variables.$.event('authcode'))>
+								<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.newdevice')#</p>
+							</cfif>
 
-						<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false) and not len(variables.$.event('authcode'))>
-							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.newdevice')#</p>
-						</cfif>
+							<cfif len(variables.$.event('authcode'))>
+								<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.authcodeerror')#</p>
+							</cfif>
 
-						<cfif len(variables.$.event('authcode'))>
-							<p id="loginMsg" class="#this.alertDangerClass#">#variables.$.rbKey('user.authcodeerror')#</p>
-						</cfif>
-
-						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
-							<fieldset>
-								<legend>#variables.$.rbKey('user.pleaseenterauthcode')#</legend>
-								<!--- Username --->
-								<div class="req #this.loginFormGroupWrapperClass#">
-									<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
-										#variables.$.rbKey('user.authcode')#
-										<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
-									</label>
-									<div class="#this.loginFormFieldWrapperClass#">
-										<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
-									</div>
-								</div>
-								
-								<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
-									<input type="hidden" name="rememberdevice" value="1"/>
-									<!---
-									<div class="#this.loginFormGroupWrapperClass#">
-										<div class="#this.loginFormPrefsClass#">
-											<label class="#this.loginFormCheckboxClass#" for="cbRememberDevice" >
-												<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberdevice'))#
-											</label>
+							<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
+								<fieldset>
+									<legend>#variables.$.rbKey('user.pleaseenterauthcode')#</legend>
+									<!--- Username --->
+									<div class="req #this.loginFormGroupWrapperClass#">
+										<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
+											#variables.$.rbKey('user.authcode')#
+											<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+										</label>
+										<div class="#this.loginFormFieldWrapperClass#">
+											<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.authcode')#" name="authcode" data-required="true" data-message="#htmlEditFormat(variables.$.rbKey('user.authcoderequired'))#" autofocus>
 										</div>
 									</div>
-								--->
-								
-								</cfif>
-			
-								<div class="#this.loginFormGroupWrapperClass#">
-									<div class="#this.loginFormSubmitWrapperClass#">
-										<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.submitauthcode'))#</button>
+									
+									<cfif variables.$.getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
+										<input type="hidden" name="rememberdevice" value="1"/>
+										<!---
+										<div class="#this.loginFormGroupWrapperClass#">
+											<div class="#this.loginFormPrefsClass#">
+												<label class="#this.loginFormCheckboxClass#" for="cbRememberDevice" >
+													<input type="checkbox" id="cbRememberDevice" name="rememberdevice" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberdevice'))#
+												</label>
+											</div>
+										</div>
+									--->
+									
+									</cfif>
+				
+									<div class="#this.loginFormGroupWrapperClass#">
+										<div class="#this.loginFormSubmitWrapperClass#">
+											<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.submitauthcode'))#</button>
+										</div>
 									</div>
-								</div>
-			
-								<input type="hidden" name="doaction" value="login">
-								<input type="hidden" name="status" value="challenge">
-								<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
-								<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
-							</fieldset>
-						</form>
+				
+									<input type="hidden" name="doaction" value="login">
+									<input type="hidden" name="status" value="challenge">
+									<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
+									<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+								</fieldset>
+							</form>
+						</cfif>
 					<cfelse>
 						<form role="form" id="login" class="mura-login-form #this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return mura.validateForm(this);" novalidate="novalidate">
 							<fieldset>
