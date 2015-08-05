@@ -280,7 +280,7 @@ component extends="mura.cfobject" {
 					throw(type="invalidMethodCall");
 				}
 
-				if(!(listFindNoCase('validate,processAsyncObject',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
+				if(!(listFindNoCase('validate,processAsyncObject,generateCSRFTokens',params.method) || getBean('settingsManager').getSite(variables.siteid).getJSONApi())){
 					throw(type='authorization');
 				}
 
