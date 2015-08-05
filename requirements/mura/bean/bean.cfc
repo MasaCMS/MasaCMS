@@ -94,7 +94,9 @@ component extends="mura.cfobject" output="false" {
 							var bean=getBean(synthedFunctions[arguments.MissingMethodName].args.cfc);
 							//writeDump(var=bean.getProperties());
 							
-							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
+							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')
+								|| !bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey)
+							){
 								if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
 									if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args, "inverse")){
 										synthedFunctions[arguments.MissingMethodName].args.loadKey=getPrimaryKey();
