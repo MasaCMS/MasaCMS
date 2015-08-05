@@ -71,10 +71,10 @@
 	
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 		<div id="nav-module-specific" class="btn-group">
-				<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 				<cfif rc.$.globalConfig('purgecomments') and rc.$.currentUser().isSuperUser()>
 				<a id="purge-comments" class="btn btn-default" data-alertmessage="#application.rbFactory.getKeyValue(session.rb,'comments.message.confirm.purge')#"><i class="fa fa-trash-o icon-trash"></i> #application.rbFactory.getKeyValue(session.rb,'comments.purgedeletedcomments')#</a>
 				</cfif>
+				<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 		</div>
 	</cfif>
 
