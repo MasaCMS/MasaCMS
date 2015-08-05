@@ -674,16 +674,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="doRequest" output="false" returntype="any">
-<cfargument name="event">
-	<cfset var response=""/>
-	<cfset var servlet = "" />
+<cffunction name="processChangesetStatus" output="false">
+	<cfargument name="event">
+
 	<cfset var previewData=""/>
 	<cfset var changeset=""/>
-
-	<cfset loadLocalEventHandler(arguments.event)>
-	
-	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
 	<cfif structKeyExists(url,"changesetID")>
 		<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
@@ -721,7 +716,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.muraOutputCacheOffset=hash(previewData.changesetid)>
 		</cfif>
 	</cfif>
+</cffunction>
 
+<cffunction name="doRequest" output="false" returntype="any">
+<cfargument name="event">
+	<cfset var response=""/>
+	<cfset var servlet = "" />
+
+	<cfset loadLocalEventHandler(arguments.event)>
+	
+	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
+
+	<cfset processChangesetStatus(event=arguments.event)>
+	
 	<cfif isdefined("servlet.onRequestStart")>
 		<cfset servlet.onRequestStart()>
 	</cfif>
