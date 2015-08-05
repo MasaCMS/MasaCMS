@@ -480,12 +480,17 @@ Display Objects
 			: IsBoolean(getConfigBean().getEnableFrontEndTools())
 				? getConfigBean().getEnableFrontEndTools()
 				: true;
-
-		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
-		this.asyncRender=!this.asyncObjects;
 	</cfscript>
 	
-<cfreturn this />
+	<cfreturn this />
+</cffunction>
+
+<cffunction name="postMergeInit" output="false">
+	<cfscript>
+		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
+		this.asyncRender=!this.asyncObjects;
+		return this;
+	</cfscript>	
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
