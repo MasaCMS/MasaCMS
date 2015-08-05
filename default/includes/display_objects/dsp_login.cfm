@@ -138,6 +138,7 @@
 									<input type="hidden" name="status" value="challenge">
 									<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
 									<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+									<input type="hidden" name="attemptChallenge" value="true">
 								</fieldset>
 							</form>
 						</cfif>

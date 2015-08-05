@@ -122,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="hidden" name="muraAction" value="cLogin.login">
 			<input type="hidden" name="status" value="challenge">
 			<input type="hidden" name="isAdminLogin" value="true">
+			<input type="hidden" name="attemptChallenge" value="true">
 			<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#">
 			#rc.$.renderCSRFTokens(format='form')#
 			</form>

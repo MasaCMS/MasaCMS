@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	<cfif rc.$.validateCSRFTokens()>
 		<cfset var loginManager=rc.$.getBean('loginManager')>
-		<cfif len(rc.$.event('authcode'))>
+		<cfif isBoolean(rc.$.event('attemptChallenge')) and rc.$.event('attemptChallenge')>
 			<cfif loginManager.attemptChallenge(rc.$)>
 				<cfset loginManager.completedChallenge(rc.$)>
 			</cfif>

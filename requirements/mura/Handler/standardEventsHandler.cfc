@@ -499,7 +499,7 @@
 				<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
 			<cfelse>
 				<cfset var loginManager=arguments.$.getBean('loginManager')>
-				<cfif len(arguments.$.event('authcode'))>
+				<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
 					<cfif loginManager.attemptChallenge(arguments.$)>
 						<cfset loginManager.completedChallenge(arguments.$)>
 					</cfif>

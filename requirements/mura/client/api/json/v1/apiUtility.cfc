@@ -1828,7 +1828,7 @@ component extends="mura.cfobject" {
 				if(getHTTPRequestData().method == 'POST'){
 					var loginManager=getBean('loginManager');
 
-					if(len($.event('authcode'))){
+					if(isBoolean($.event('attemptChallenge')) && $.event('attemptChallenge')){
 						if(loginManager.attemptChallenge($)){
 							loginManager.completedChallenge($);
 							return {redirect=request.muraJSONRedirectURL};
