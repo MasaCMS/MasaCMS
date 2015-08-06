@@ -456,12 +456,6 @@ var initMura=function(config){
     config.mobileformat=false;
   }
 
-  if(location.href.toLowerCase().indexOf('purgecache') > -1){
-    config.purgecache=1;
-  } else {
-    config.purgecache=0;
-  }
-
   if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
     window.document.domain=config.windowdocumentdomain;
   }
@@ -1136,8 +1130,8 @@ var initMura=function(config){
       },
 
       function(){
-        if(config.adminpreview=='yes' || config.adminpreview=='true'){
-          $("a").attr('href', function(i, h) {
+        if(typeof urlparams.muraadminpreview != 'undefined'){
+          $(scope).find("a").attr('href', function(i, h) {
             if(typeof h=='string' && h.indexOf('muraadminpreview')==-1){
               return h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + config.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + config.mobileformat);
             } else {
@@ -1245,7 +1239,7 @@ var initMura=function(config){
       if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
         var data=new FormData(frm);
         var checkdata=setLowerCaseKeys($(frm).serializeObject());
-        var keys=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()));
+        var keys=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()),urlparams);
         
         for(var k in keys){
           if(!(k in checkdata)){
@@ -1271,7 +1265,7 @@ var initMura=function(config){
             } 
       
       } else {
-        var data=$.extend(true,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()));
+        var data=$.extend(true,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()),urlparams);
 
         if(!('g-recaptcha-response' in data) && $("#g-recaptcha-response").length){
           data['g-recaptcha-response']=$("#g-recaptcha-response").val();
@@ -1302,7 +1296,7 @@ var initMura=function(config){
       
     }
 
-    var data=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache,purgecache:config.purgecache},$(self).data());
+    var data=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache},$(self).data(),urlparams);
     
     if('objectparams' in data){
       data['objectparams']= $escape(JSON.stringify(data['objectparams']));
@@ -1345,8 +1339,35 @@ var initMura=function(config){
     noSpam:noSpam
   });
 
-  
+  var urlparams={};
+
+  var getQueryStringParams=function(queryString) {
+      var params = {};
+      var e,
+          a = /\+/g,  // Regex for replacing addition symbol with a space
+          r = /([^&;=]+)=?([^&;]*)/g,
+          d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+          
+          if(queryString.substring(0,1)=='?'){
+            var q=queryString.substring(1);
+          } else {
+            var q=queryString;
+          }
+          
+
+      while (e = r.exec(q))
+         params[d(e[1]).toLowerCase()] = d(e[2]);
+
+      return params;
+  }
+
+  var getURLParams=function() {
+    return getQueryStringParams(window.location.search);
+  }
+
   $(function(){
+     
+    urlparams=setLowerCaseKeys(getURLParams());
     processHandlers(document);
 
     $(document).on('keydown',function(event){

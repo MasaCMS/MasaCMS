@@ -54,7 +54,6 @@ initMura({
 	siteID:"#variables.$.event('siteID')#",
 	context:"#variables.$.globalConfig('context')#",
 	jslib:"#variables.$.getJsLib()#",
-	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	siteConfig:"#variables.$.globalConfig('requirementspath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",

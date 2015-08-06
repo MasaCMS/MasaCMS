@@ -1319,8 +1319,8 @@
 			},
 
 			function(){
-				if(window.mura.adminpreview=='yes' || window.mura.adminpreview=='true'){
-					select("a").each(function() {
+				if(typeof urlparams.muraadminpreview != 'undefined'){
+					scope.find("a").each(function() {
 						var h=this.getAttribute('href');
 						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
 							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
@@ -1359,7 +1359,7 @@
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1},setLowerCaseKeys(getDataAttributes(self)));
+				var keys=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1},setLowerCaseKeys(getDataAttributes(self)),urlparams);
 				
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1383,7 +1383,7 @@
 						} 
 			
 			} else {
-				var data=deepExtend(setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1},setLowerCaseKeys(getDataAttributes(self)));
+				var data=deepExtend(setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1},setLowerCaseKeys(getDataAttributes(self)),urlparams);
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
@@ -1503,7 +1503,7 @@
 			}
 		}
 
-		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:window.mura.nocache,purgecache:mura.purgecache},setLowerCaseKeys(getDataAttributes(self)));
+		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid},setLowerCaseKeys(getDataAttributes(self)),urlparams);
 		
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
@@ -1526,7 +1526,8 @@
 	}
 
 	var hashparams={};
-	
+	var urlparams={};
+
 	function handleHashChange(){
 
 		var hash=window.location.hash;
@@ -1585,7 +1586,7 @@
 	    return params;
 	}
 
-	function getURLParams(href) {
+	function getHREFParams(href) {
 	    var a=href.split('?');
 
 	    if(a.length==2){
@@ -1593,6 +1594,10 @@
 	    } else {
 	    	return {};
 	    }
+	}
+
+	function getURLParams() {
+		return getQueryStringParams(window.location.search);
 	}
 
 	function init(config){
@@ -1620,10 +1625,6 @@
 			config.perm='none';
 		}
 
-		if(typeof config.adminpreview == 'undefined'){
-			config.adminpreview=false;
-		}
-
 		if(typeof config.layoutmanager == 'undefined'){
 			config.layoutmanager=false;
 		}
@@ -1634,12 +1635,6 @@
 
 		if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
 			window.document.domain=config.windowdocumentdomain;
-		}
-
-		if(location.href.toLowerCase().indexOf('purgecache') > -1){
-			config.purgecache=1;
-		} else {
-			config.purgecache=0;
 		}
 		
 		mura.editing;
@@ -1654,7 +1649,8 @@
 				hash=hash.substring(1);
 			}
 			
-			hashparams=getQueryStringParams(hash);
+			hashparams=setLowerCaseKeys(getQueryStringParams(hash));
+			urlparams=setLowerCaseKeys(getQueryStringParams(window.location.search));
 
 			if(hashparams.nextnid){
 				mura('.mura-async-object[data-nextnid="' + hashparams.nextnid +'"]').each(function(){
