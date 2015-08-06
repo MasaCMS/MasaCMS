@@ -1239,7 +1239,7 @@ var initMura=function(config){
       if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
         var data=new FormData(frm);
         var checkdata=setLowerCaseKeys($(frm).serializeObject());
-        var keys=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()),urlparams);
+        var keys=$.extend(true,setLowerCaseKeys($(self).data()),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
         
         for(var k in keys){
           if(!(k in checkdata)){
@@ -1265,7 +1265,7 @@ var initMura=function(config){
             } 
       
       } else {
-        var data=$.extend(true,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1},setLowerCaseKeys($(self).data()),urlparams);
+        var data=$.extend(true,setLowerCaseKeys($(self).data()),urlparams,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
 
         if(!('g-recaptcha-response' in data) && $("#g-recaptcha-response").length){
           data['g-recaptcha-response']=$("#g-recaptcha-response").val();
@@ -1296,12 +1296,11 @@ var initMura=function(config){
       
     }
 
-    var data=$.extend(true,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:config.nocache},$(self).data(),urlparams);
+    var data=$.extend(true,$(self).data(),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid});
     
     if('objectparams' in data){
       data['objectparams']= $escape(JSON.stringify(data['objectparams']));
     }
-
 
 
     $(self).html(config.preloaderMarkup);

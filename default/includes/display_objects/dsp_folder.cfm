@@ -68,7 +68,7 @@
 			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
 			data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
 			data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
-			data-categoryid="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
+			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
 			data-nextnid="#esapiEncode('html_attr',variables.$.content('contentid'))#"
 			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"></div>
 		</cfoutput>
