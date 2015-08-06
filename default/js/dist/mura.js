@@ -2904,7 +2904,7 @@ this.Element && function(ElementPrototype) {
 			}
 		}
 
-		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:window.mura.nocache},setLowerCaseKeys(getDataAttributes(self)));
+		var data=deepExtend({siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:window.mura.nocache,purgecache:mura.purgecache},setLowerCaseKeys(getDataAttributes(self)));
 		
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
@@ -2986,7 +2986,7 @@ this.Element && function(ElementPrototype) {
 	    return params;
 	}
 
-	function getHREFParams(href) {
+	function getURLParams(href) {
 	    var a=href.split('?');
 
 	    if(a.length==2){
@@ -2995,7 +2995,6 @@ this.Element && function(ElementPrototype) {
 	    	return {};
 	    }
 	}
-
 
 	function init(config){
 		if(!config.context){
@@ -3037,13 +3036,19 @@ this.Element && function(ElementPrototype) {
 		if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
 			window.document.domain=config.windowdocumentdomain;
 		}
+
+		if(location.href.toLowerCase().indexOf('purgecache') > -1){
+			config.purgecache=1;
+		} else {
+			config.purgecache=0;
+		}
 		
 		mura.editing;
 
 		extend(window.mura,config);
 
 		ready(function(){
-
+			
 			var hash=window.location.hash;
 
 			if(hash){
