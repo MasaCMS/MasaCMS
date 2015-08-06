@@ -1504,7 +1504,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfargument name="siteID">
 	<cfoutput>
 		<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-		<cfif isStruct(previewData) and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+		<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
 			and (
 					(#arguments.table#.active = 1			
 					and #arguments.table#.contentID not in (#previewData.contentIDList#)	

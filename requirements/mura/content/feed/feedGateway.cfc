@@ -1087,7 +1087,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 		<cfif arguments.activeOnly>
 			<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-			<cfif isStruct(previewData) and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
 			and (
 					(#arguments.table#.active = 1
 					<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
