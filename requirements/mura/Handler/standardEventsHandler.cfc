@@ -422,6 +422,7 @@
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
+		<cfset request.mura404=true>
 		<cfset var local.filename=arguments.event.getValue('currentFilenameAdjusted')>
 
 		<cfloop condition="listLen(local.filename,'/')">		
@@ -469,8 +470,7 @@
 		<cfset var renderer=arguments.$.getContentRenderer()>
 		<cfif isDefined('renderer.noIndex')>
 			<cfset renderer.noIndex()>
-		</cfif>
-		
+		</cfif>	
 	</cfif>
 	
 </cffunction>
