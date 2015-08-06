@@ -1802,7 +1802,6 @@ component extends="mura.cfobject" {
 		}
 		
 		$.announceEvent('siteAsyncRequestStart');
-		$.getBean('contentServer').processChangesetStatus(event=$.event());
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));

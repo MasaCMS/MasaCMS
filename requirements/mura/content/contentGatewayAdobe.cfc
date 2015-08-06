@@ -2620,27 +2620,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
-	<cfset var previewData="">
  	<cfoutput>
-		<cfif request.muraChangesetPreview>
-			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-			<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
-			and (
-					(#arguments.table#.active = 1
-					and #arguments.table#.Approved = 1
-					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-					)
-					
-					or 
-					
-					(
-					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-					)			
-				)
-			<cfelse>
-				and #arguments.table#.active = 1
+		<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		<cfif isStruct(previewData) and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+		and (
+				(#arguments.table#.active = 1
 				and #arguments.table#.Approved = 1
-			</cfif>	
+				and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+				)
+				
+				or 
+				
+				(
+				#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+				)			
+			)
 		<cfelse>
 			and #arguments.table#.active = 1
 			and #arguments.table#.Approved = 1

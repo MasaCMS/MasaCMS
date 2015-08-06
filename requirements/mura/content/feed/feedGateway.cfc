@@ -1084,32 +1084,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 <cfargument name="liveOnly" default="1">
 <cfargument name="activeOnly" default="1">
-	<cfset var previewData="">
 	<cfoutput>
 		<cfif arguments.activeOnly>
-			<cfif request.muraChangesetPreview>
-				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
-				and (
-						(#arguments.table#.active = 1
-						<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-						)
-						
-						or 
-						
-						(
-						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-						)	
-					)
-				<cfelse>	
-					and #arguments.table#.active = 1
+			<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+			<cfif isStruct(previewData) and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1
 					<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-				</cfif>
-			<cfelse>
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)	
+				)
+			<cfelse>	
 				and #arguments.table#.active = 1
 				<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-			</cfif>	
+			</cfif>
 		</cfif>
 	</cfoutput>
 </cffunction>

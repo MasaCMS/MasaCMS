@@ -1502,29 +1502,23 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
-	<cfset var previewData="">
 	<cfoutput>
-			<cfif request.muraChangesetPreview>
-				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
-					and (
-							(#arguments.table#.active = 1			
-							and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-							)
-							
-							or 
-							
-							(
-							#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-							)		
-						)	
-				<cfelse>
-					and #arguments.table#.active = 1	
-				</cfif>
-			<cfelse>
-				and #arguments.table#.active = 1
-				
-			</cfif>	
+		<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		<cfif isStruct(previewData) and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1			
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)		
+				)	
+		<cfelse>
+			and #arguments.table#.active = 1	
+		</cfif>	
 	</cfoutput>
 </cffunction>
 
