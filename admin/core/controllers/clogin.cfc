@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.$.validateCSRFTokens()>
 		<cfset var loginManager=rc.$.getBean('loginManager')>
 		<cfif isBoolean(rc.$.event('attemptChallenge')) and rc.$.event('attemptChallenge')>
-			<cfif loginManager.attemptChallenge(rc.$)>
+			<cfif loginManager.handleChallengeAttempt(rc.$)>
 				<cfset loginManager.completedChallenge(rc.$)>
 			</cfif>
 		<cfelse>

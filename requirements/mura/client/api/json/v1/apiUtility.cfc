@@ -1829,7 +1829,7 @@ component extends="mura.cfobject" {
 					var loginManager=getBean('loginManager');
 
 					if(isBoolean($.event('attemptChallenge')) && $.event('attemptChallenge')){
-						if(loginManager.attemptChallenge($)){
+						if(loginManager.handleChallengeAttempt($)){
 							loginManager.completedChallenge($);
 							return {redirect=request.muraJSONRedirectURL};
 						} else {

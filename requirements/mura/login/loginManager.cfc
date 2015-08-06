@@ -269,10 +269,15 @@ If you did not request a new authorization, contact #contactEmail#.
 
 <cffunction name="attemptChallenge" output="false">
 	<cfargument name="$">
-	<cfif len(arguments.$.event('authcode')) and isDefined('session.mfa')>
+	<cfreturn len(arguments.$.event('authcode')) and isDefined('session.mfa.authcode') and arguments.$.event('authcode') eq session.mfa.authcode>
+</cffunction>
+
+<cffunction name="handleChallengeAttempt" output="false">
+	<cfargument name="$">
+	<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(session.mfa.username,getBean('configBean'))>
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
-		<cfif arguments.$.event('authcode') eq session.mfa.authcode>
+		<cfif attemptChallenge($=arguments.$)>
 			<cfset strikes.clear()>
 			<cfreturn true>
 		<cfelse>

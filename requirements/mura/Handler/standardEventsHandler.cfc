@@ -500,7 +500,7 @@
 			<cfelse>
 				<cfset var loginManager=arguments.$.getBean('loginManager')>
 				<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
-					<cfif loginManager.attemptChallenge(arguments.$)>
+					<cfif loginManager.handleChallengeAttempt(arguments.$)>
 						<cfset loginManager.completedChallenge(arguments.$)>
 					</cfif>
 				<cfelse>
