@@ -57,24 +57,24 @@ var siteManager = {
 	copySiteID: "",
 	reloadURL: "",
 	tablist: "",
-	//customContentDialogs:[{type:'validation',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
-	customDialogs:[],
-	addSubmitDialog:function(type,message,condition){
-		siteManager.customDialogs.push({type:type,message:message,condition:condition})
+	submitActions:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
+	//submitActions:[],
+	addSubmitAction:function(type,message,condition){
+		siteManager.submitActions.push({type:type,message:message,condition:condition})
 	},
 	submitContentForm: function(){
 		var handled=0;
 		var cancelled=false;
-		var dialogs=siteManager.customDialogs;
+		var actions=siteManager.submitActions;
 
 		function submit(){
 
-			for(var i=0;i<dialogs.length;i++){
+			for(var i=0;i<actions.length;i++){
 				if(i == handled){
-					if(dialogs[i].type.toLowerCase()=='confirmation'){
-						if(typeof dialogs[i].condition == 'function'){
-							if(dialogs[i].condition()){
-								confirmDialog(dialogs[i].message,
+					if(actions[i].type.toLowerCase()=='confirmation'){
+						if(typeof actions[i].condition == 'function'){
+							if(actions[i].condition()){
+								confirmDialog(actions[i].message,
 									function(){handled++; submit()}
 								);
 
@@ -83,16 +83,16 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							confirmDialog(dialogs[i].message,
+							confirmDialog(actions[i].message,
 								function(){handled++; submit()}
 							);
 
 							return false
 						} 
-					} else if (dialogs[i].type.toLowerCase()=='alert'){
-						if(typeof dialogs[i].condition == 'function'){
-							if(dialogs[i].condition()){
-								alertDialog(dialogs[i].message,
+					} else if (actions[i].type.toLowerCase()=='alert'){
+						if(typeof actions[i].condition == 'function'){
+							if(actions[i].condition()){
+								alertDialog(actions[i].message,
 									function(){handled++; submit()}
 								);
 
@@ -101,16 +101,16 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							alertDialog(dialogs[i].message,
+							alertDialog(actions[i].message,
 								function(){handled++; submit()}
 							);
 
 							return false
 						}
-					} else if (dialogs[i].type.toLowerCase()=='validation'){
-						if(typeof dialogs[i].condition == 'function'){
-							if(dialogs[i].condition()){
-								alertDialog(dialogs[i].message,
+					} else if (actions[i].type.toLowerCase()=='validation'){
+						if(typeof actions[i].condition == 'function'){
+							if(actions[i].condition()){
+								alertDialog(actions[i].message,
 									function(){handled++}
 								);
 
@@ -125,7 +125,7 @@ var siteManager = {
 				}
 			}
 
-			if(handled==dialogs.length){
+			if(handled==actions.length){
 				siteManager.formSubmitted = true;
 				document.contentForm.submit();
 			}
