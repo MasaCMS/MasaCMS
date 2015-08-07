@@ -1704,15 +1704,15 @@ and tclassextendattributes.type='File'
 			documentXML=arguments.configXML[baseElement].extensions.extension[ext];
 			
 			if(isDefined("documentXML.xmlAttributes.type")){
-				subtypeArray=listToArrays(documentXML.xmlAttributes.type);
+				subtypeArray=listToArray(documentXML.xmlAttributes.type);
 			} else {
 				break;
 			}
 
-			for(var subtyptype in subtypeArray){
+			for(var subtypetype in subtypeArray){
 				
 				subType = application.classExtensionManager.getSubTypeBean();
-				
+
 				if(subtypetype eq 'User'){
 					subType.setType( 2 );
 				} else if(subtypetype eq 'Group'){
@@ -1720,7 +1720,7 @@ and tclassextendattributes.type='File'
 				} else {
 					subType.setType( subtypetype );
 				}
-								
+					
 				if(isDefined("documentXML.xmlAttributes.subtype")){
 					subType.setSubType( documentXML.xmlAttributes.subtype );
 				}
