@@ -913,8 +913,8 @@
 	      loader().load(
 	        [
 	          mura.assetpath +'/css/shadowbox.min.css',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js',
-	          mura.assetpath +'/js/external/shadowbox/shadowbox.min.js'
+	          mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
+	          mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js'
 	        ],
 	        function(){
 	            window.Shadowbox.init();

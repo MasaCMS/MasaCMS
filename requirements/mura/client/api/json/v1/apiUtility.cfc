@@ -262,7 +262,7 @@ component extends="mura.cfobject" {
 			var method="GET";
 			var httpRequestData=getHTTPRequestData();
 
-			session.siteid=variables.siteid;
+			param name="session.siteid" default=variables.siteid;
 
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
@@ -1774,9 +1774,8 @@ component extends="mura.cfobject" {
 			}
 			
 		}
-		
+
 		request.siteid=arguments.siteid;
-		session.siteid=request.siteid;
 		request.servletEvent=new mura.servletEvent();
 
 		if(isDefined('form.alttheme')){
@@ -1800,17 +1799,21 @@ component extends="mura.cfobject" {
 			$.event('currentFilename',$.content('filename'));
 			$.event('currentFilenameAdjusted',$.content('filename'));
 		}
-		
+		 
 		$.announceEvent('siteAsyncRequestStart');
+
+		if(!$.content().exists()){
+			return {html=''};
+		}
+		
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
+
 		$.event().getHandler('standardSetLocale').handle($.event());
+
 		$.announceEvent('asyncRenderStart');
-
-
-		//$.event().getHandler('standardMobile').handle($.event());
 
 		if($.event('object')=='comments'){
 			$.event().getHandler('standardSetCommentPermissions').handle($.event());
