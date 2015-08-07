@@ -1117,7 +1117,9 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message) {
+function alertDialog(message,okAction) {
+	_okAction = okAction;
+
 	$("#alertDialogMessage").html(message);
 	$("#alertDialog").dialog({
 		resizable: false,
@@ -1126,6 +1128,13 @@ function alertDialog(message) {
 		buttons: {
 			Ok: function() {
 				$(this).dialog('close');
+				if(_okAction){
+					if(typeof(_okAction) == 'function') {
+						_okAction();
+					} else if (typeof(_okAction) == 'string'){
+						actionModal(_okAction);
+					}
+				}
 			}
 		}
 	});
@@ -1134,8 +1143,8 @@ function alertDialog(message) {
 }
 
 function confirmDialog(message, yesAction, noAction) {
-	_yesAction = yesAction;
-	_noAction = noAction;
+	var _yesAction = yesAction;
+	var _noAction = noAction;
 
 	$("#alertDialogMessage").html(message);
 	$("#alertDialog").dialog({

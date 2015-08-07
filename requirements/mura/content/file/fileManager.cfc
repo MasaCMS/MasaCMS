@@ -547,21 +547,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 					
-					if(len(tempText) && len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+						return true;
+					}	
+				}
+
+				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
+					tempText=arguments.scope['#i#'];
+
+					//if it contains a protocol
+					if(reFindNoCase("(https://||http://)", tempText)){
+
+						//strip it out
+						tempText=reReplaceNoCase(tempText, "(http://||https://)", "");
+
+						//and then on continue if the url contains a list longer than one
+						if(listLen(tempText,'/') ==1) {
+							break;
+						}
+					}
+
+					tempText=listFirst(arguments.scope['#i#'],'?');
+					tempText=listLast(tempText,'/');
+					tempText=listLast(tempText,'.');
+
+					/*
+					if(i=='body'){
+						writeDump(var=tempText,abort=1);
+					}
+					*/
+					
+					if(len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
 						return true;
 					}	
 				}
 				
-				if(isValid('url',arguments.scope['#i#']) 
-					&& listLen(arguments.scope['#i#'],'.')
-					){
-					
-					tempText=listLast(arguments.scope['#i#'],'.');
-
-					if(len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
-						return true;
-					}	
-				}
 			}
 		}
 	

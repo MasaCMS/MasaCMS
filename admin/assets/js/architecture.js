@@ -57,11 +57,87 @@ var siteManager = {
 	copySiteID: "",
 	reloadURL: "",
 	tablist: "",
+	//customContentDialogs:[{type:'validation',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
+	customDialogs:[],
+	addSubmitDialog:function(type,message,condition){
+		siteManager.customDialogs.push({type:type,message:message,condition:condition})
+	},
+	submitContentForm: function(){
+		var handled=0;
+		var cancelled=false;
+		var dialogs=siteManager.customDialogs;
+
+		function submit(){
+
+			for(var i=0;i<dialogs.length;i++){
+				if(i == handled){
+					if(dialogs[i].type.toLowerCase()=='confirmation'){
+						if(typeof dialogs[i].condition == 'function'){
+							if(dialogs[i].condition()){
+								confirmDialog(dialogs[i].message,
+									function(){handled++; submit()}
+								);
+
+								return false
+							} else {
+								handled++;
+							}
+						} else {
+							confirmDialog(dialogs[i].message,
+								function(){handled++; submit()}
+							);
+
+							return false
+						} 
+					} else if (dialogs[i].type.toLowerCase()=='alert'){
+						if(typeof dialogs[i].condition == 'function'){
+							if(dialogs[i].condition()){
+								alertDialog(dialogs[i].message,
+									function(){handled++; submit()}
+								);
+
+								return false
+							} else {
+								handled++;
+							}
+						} else {
+							alertDialog(dialogs[i].message,
+								function(){handled++; submit()}
+							);
+
+							return false
+						}
+					} else if (dialogs[i].type.toLowerCase()=='validation'){
+						if(typeof dialogs[i].condition == 'function'){
+							if(dialogs[i].condition()){
+								alertDialog(dialogs[i].message,
+									function(){handled++}
+								);
+
+								return false
+							} else {
+								handled++;
+							}
+						} else {
+							handled++;
+						}
+					}
+				}
+			}
+
+			if(handled==dialogs.length){
+				siteManager.formSubmitted = true;
+				document.contentForm.submit();
+			}
+		}
+
+		submit();
+	},
 
 	ckContent: function(draftremovalnotice) {
 
 		var autosave=false;
-		
+
 		if(autosave){
 			$("#unlockfilewithnew").val("false");
 			$("#unlocknodewithpublish").val("false");
@@ -128,21 +204,18 @@ var siteManager = {
 			return false;
 		}
 
-
 		if(!autosave && typeof(this.hasFileLock) != 'undefined' && !this.fileLockConfirmed && this.hasFileLock && $("input[name='newfile']").val() != '') {
 			confirmDialog(this.unlockfileconfirm, function() {
 				//alert('true')
 				$("#unlockfilewithnew").val("true");
 				if(siteManager.ckContent(false)) {
-					siteManager.formSubmitted = true;
-					document.contentForm.submit();
+					siteManager.submitContentForm();
 				}
 			}, function() {
 				//alert('false')
 				$("#unlockfilewithnew").val("false");
 				if(siteManager.ckContent(false)) {
-					siteManager.formSubmitted = true;
-					document.contentForm.submit();
+					siteManager.submitContentForm();
 				}
 			});
 
@@ -156,15 +229,13 @@ var siteManager = {
 				//alert('true')
 				$("#unlocknodewithpublish").val("true");
 				if(siteManager.ckContent(false)) {
-					siteManager.formSubmitted = true;
-					document.contentForm.submit();
+					siteManager.submitContentForm();
 				}
 			}, function() {
 				//alert('false')
 				$("#unlocknodewithpublish").val("false");
 				if(siteManager.ckContent(false)) {
-					siteManager.formSubmitted = true;
-					document.contentForm.submit();
+					siteManager.submitContentForm();
 				}
 			});
 
@@ -180,8 +251,7 @@ var siteManager = {
 		 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
 
 				confirmDialog(publishitemfromchangeset, function() {
-					formSubmitted = true;
-					document.contentForm.submit();
+					siteManager.submitContentForm();
 				});
 
 				return false;
@@ -189,21 +259,19 @@ var siteManager = {
 
 				confirmDialog(cancelPendingApproval, 
 					function() {
-						formSubmitted = true;
 						document.contentForm.cancelpendingapproval.value='true';
-						document.contentForm.submit();
+						siteManager.submitContentForm();
 					},
 					 function() {
-						formSubmitted = true;
 						document.contentForm.cancelpendingapproval.value='false';
-						document.contentForm.submit();
+						siteManager.submitContentForm();
 					}
 				);
 
 				return false;
 			} else {
-				formSubmitted = true;
-				return true;
+				siteManager.submitContentForm();
+				return false;
 			}
 		} else {
 			if(autosave){
@@ -214,8 +282,8 @@ var siteManager = {
 				    data: data
 				});
 			} else {
-				formSubmitted = true;
-				return true;
+				siteManager.submitContentForm();
+				return false;
 			}
 		}
 
