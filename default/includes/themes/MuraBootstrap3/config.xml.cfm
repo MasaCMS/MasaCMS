@@ -11,7 +11,7 @@
 	</imagesizes>
 
 	<extensions>
-		
+		<!--
 		<extension type="Base" subType="Default">
 			<attributeset name="Mobile Options" container="Basic">
 				<attribute 
@@ -40,7 +40,7 @@
 					optionLabelList="" />
 			</attributeset>
 		</extension>
-		
+		-->
 	</extensions>
 
 </theme>
