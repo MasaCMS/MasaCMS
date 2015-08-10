@@ -1993,11 +1993,15 @@ component extends="mura.cfobject" {
 			args.params=urlDecode($.event('objectparams'));
 		} else {
 			args.params={};
-			for(var u in url){
-				if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
-					args.params[u]=url[u];
+			
+			if(isDefined('url') && isStruct(url)){
+				for(var u in url){
+					if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
+						args.params['#u#']=url['#u#'];
+					}
 				}
 			}
+			
 		}
 
 		var result=$.dspObject(argumentCollection=args);
