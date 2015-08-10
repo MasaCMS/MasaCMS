@@ -278,6 +278,16 @@ component extends="mura.cfobject" output="false" {
 		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
+		} else if (len(variables.entityName)) {
+
+			var props=getProperties();
+
+			if(structKeyExists(props,'#arguments.property#') && listFindNoCase('date,datetime,timestamp',props['#arguments.property#'].datatype)){
+				variables.instance["#arguments.property#"]=parseDateArg(arguments.propertyValue);
+			} else {
+				variables.instance["#arguments.property#"]=arguments.propertyValue;
+			}
+			
 		} else {
 			variables.instance["#arguments.property#"]=arguments.propertyValue;
 		}
