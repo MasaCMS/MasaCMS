@@ -182,6 +182,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </div>
 
+<div class="fieldset">
+<div class="control-group">
+<div class="span4">
+	<label class="control-label">For administrative Use Only?</label>
+	<div class="controls">
+		<select name="adminonly" class="span12">
+			<option value="0" <cfif not attributes.attributeBean.getAdminOnly()>selected</cfif>>False</option>
+			<option value="1" <cfif attributes.attributeBean.getAdminOnly()>selected</cfif>>True</option>
+		</select>
+	</div>
+</div>
+</div>
+</div>
+
 <div class="form-actions">
 <cfif attributes.action eq "add">
 	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');" value="Add" />

@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.type="TextBox"/>
 <cfset variables.instance.orderno=1/>
 <cfset variables.instance.isActive=1/>
+<cfset variables.instance.adminonly=0/>
 <cfset variables.instance.required="false"/>
 <cfset variables.instance.validation=""/>
 <cfset variables.instance.regex=""/>
@@ -212,6 +213,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getAdminOnly" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.adminonly />
+</cffunction>
+
+<cffunction name="setAdminOnly" access="public" output="false">
+	<cfargument name="adminonly" />
+	<cfif isNumeric(arguments.adminonly)>
+	<cfset variables.instance.adminonly = arguments.adminonly />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getIsActive" returntype="numeric" access="public" output="false">
 	<cfreturn variables.instance.IsActive />
 </cffunction>
@@ -357,6 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		type=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
 		isActive=#getIsActive()#,
 		orderno=#getOrderno()#,
+		adminonly=#getAdminOnly()#,
 		required=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRequired() neq '',de('no'),de('yes'))#" value="#getRequired()#">,
 		validation=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getvalidation() neq '',de('no'),de('yes'))#" value="#getvalidation()#">,
 		regex=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRegex() neq '',de('no'),de('yes'))#" value="#getRegex()#">,
@@ -373,7 +387,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cflock name="addingAttribute#application.instanceID#" timeout="100">
 			
 			<cfquery>
-			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,required,validation,regex,message,label,defaultValue,optionList,optionLabelList) 
+			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,adminOnly,required,validation,regex,message,label,defaultValue,optionList,optionLabelList) 
 			values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getExtendSetID() neq '',de('no'),de('yes'))#" value="#getExtendSetID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -382,6 +396,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
 			#getIsActive()#,
 			#getOrderno()#,
+			#getAdminOnly()#,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRequired() neq '',de('no'),de('yes'))#" value="#getRequired()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getvalidation() neq '',de('no'),de('yes'))#" value="#getvalidation()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getRegex() neq '',de('no'),de('yes'))#" value="#getRegex()#">,

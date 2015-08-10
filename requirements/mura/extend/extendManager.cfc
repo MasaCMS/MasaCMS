@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
 	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
 	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
-	tclassextend.hasSummary,tclassextend.hasBody,
+	tclassextend.hasSummary,tclassextend.hasBody,tclassextendattributes.adminonly,
 	<cfif variables.configBean.getDBType() eq "oracle">
 		to_char(tclassextend.description) as description
 	<cfelse>
@@ -1028,6 +1028,8 @@ and tclassextendattributes.type='File'
 		<cfif arguments.activeOnly>
 			and tclassextend.isActive=1
 		</cfif>
+
+		and tclassextendattributes.adminonly!=1
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
 	
@@ -1525,6 +1527,7 @@ and tclassextendattributes.type='File'
 					<cfset destAttribute.setType(sourceAttribute.getType())>
 					<cfset destAttribute.setOrderNo(sourceAttribute.getOrderNo())>
 					<cfset destAttribute.setIsActive(sourceAttribute.getIsActive())>
+					<cfset destAttribute.setAdminOnly(sourceAttribute.getAdminOnly())>
 					<cfset destAttribute.setRequired(sourceAttribute.getRequired())>
 					<cfset destAttribute.setValidation(sourceAttribute.getValidation())>
 					<cfset destAttribute.setRegex(sourceAttribute.getRegex())>
@@ -1805,7 +1808,7 @@ and tclassextendattributes.type='File'
 								attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
 							}
 							if(attribute.getIsNew()){
-								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
+								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex,adminonly";
 								
 								for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
 								      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
