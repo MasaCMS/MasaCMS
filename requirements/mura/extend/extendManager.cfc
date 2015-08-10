@@ -1704,7 +1704,7 @@ and tclassextendattributes.type='File'
 			documentXML=arguments.configXML[baseElement].extensions.extension[ext];
 			
 			if(isDefined("documentXML.xmlAttributes.type")){
-				subtypeArray=listToArray(documentXML.xmlAttributes.type);
+				subtypeArray=listToArray(documentXML.xmlAttributes.type,'^');
 			} else {
 				break;
 			}
