@@ -48,7 +48,7 @@ var commentManager = {
 
 	loadSearch: function(values){
 		var url = './';
-		var pars = 'muraAction=cComments.loadcomments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cComments.loadComments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#commentSearch');
 		d.html('<div class="load-inline"></div>');
