@@ -68,8 +68,13 @@ var siteManager = {
 		var actions=siteManager.submitActions;
 
 		function submit(){
+			var i;
 
-			for(var i=0;i<actions.length;i++){
+			for(i in CKEDITOR.instances){
+				CKEDITOR.instances[i].updateElement();
+			}
+
+			for(i=0;i<actions.length;i++){
 				if(i == handled){
 					if(actions[i].type.toLowerCase()=='confirmation'){
 						if(typeof actions[i].condition == 'function'){
@@ -127,6 +132,7 @@ var siteManager = {
 
 			if(handled==actions.length){
 				siteManager.formSubmitted = true;
+				//alert('test')
 				document.contentForm.submit();
 			}
 		}
