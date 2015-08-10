@@ -279,15 +279,12 @@ component extends="mura.cfobject" output="false" {
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
 		} else if (len(variables.entityName)) {
-
 			var props=getProperties();
-
-			if(structKeyExists(props,'#arguments.property#') && listFindNoCase('date,datetime,timestamp',props['#arguments.property#'].datatype)){
+			if(structKeyExists(props,'#arguments.property#') && props['#arguments.property#'].datatype=='datetime'){
 				variables.instance["#arguments.property#"]=parseDateArg(arguments.propertyValue);
 			} else {
 				variables.instance["#arguments.property#"]=arguments.propertyValue;
 			}
-			
 		} else {
 			variables.instance["#arguments.property#"]=arguments.propertyValue;
 		}
@@ -582,6 +579,10 @@ component extends="mura.cfobject" output="false" {
 					       	 			prop.type="string";
 					       	 			prop.dataType="varchar";
 					       	 		}
+					       	 	}
+
+					       	 	if(listFindNoCase('date,timetamp',prop.dataType)){
+					       	 		prop.dataType='datetime';
 					       	 	}
 
 					       	 	if(structKeyExists(prop,'cfc')){

@@ -68,7 +68,7 @@ component extends="mura.bean.bean" versioned=false {
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
 						variables.instance[prop.column]=createUUID();
-					} else if (listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					} else if (listFindNoCase('created,lastupdate',prop.column) && prop.datatype=='datetime' && !(structKeyExists(prop,"default") && prop.default != 'null')){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
@@ -94,7 +94,7 @@ component extends="mura.bean.bean" versioned=false {
 
 				} 
 				else {
-					if(listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					if(listFindNoCase('created,lastupdate',prop.column) && prop.datatype=='datetime' && !(structKeyExists(prop,"default") && prop.default != 'null')){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
