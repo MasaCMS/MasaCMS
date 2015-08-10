@@ -57,8 +57,8 @@ var siteManager = {
 	copySiteID: "",
 	reloadURL: "",
 	tablist: "",
-	submitActions:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
-	//submitActions:[],
+	//submitActions:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
+	submitActions:[],
 	addSubmitAction:function(type,message,condition){
 		siteManager.submitActions.push({type:type,message:message,condition:condition})
 	},
