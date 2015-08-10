@@ -87,6 +87,7 @@ ormusedbformapping=true
 ping=0
 plugindir=
 port=${cgi.SERVER_PORT}
+proxyauthtype=BASIC
 proxypassword=
 proxyport=${cgi.SERVER_PORT}
 proxyserver=

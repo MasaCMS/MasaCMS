@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bundleArgs.bundleImportModuleID = "">
 	<cfset bundleArgs.bundleImportFormDataMode = "none">
 				
-	<cfhttp method="post" url="#serverArgs.serverURL#">
+	<cfhttp attributeCollection='#getHTTPAttrs(method="post",url="#serverArgs.serverURL#")#'>
 		<cfhttpparam name="method" type="url" value="call">
 		<cfhttpparam name="serviceName" type="url" value="bundle">
 		<cfhttpparam name="methodName" type="url" value="deploy">

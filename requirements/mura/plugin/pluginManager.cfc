@@ -2755,19 +2755,13 @@ select * from rs order by name
 
 	<cfset var myResult="">
 		
-	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp url="#arguments.pluginUrl#" method="get" getasbinary="yes" result="myResult"
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-		</cfhttp>
-	<cfelse>
-		<cfhttp url="#arguments.pluginUrl#" method="get" getasbinary="yes" result="myResult">
-	</cfif>
+	<cfhttp attributeCollection='#getHTTPAttrs(
+		url="#arguments.pluginUrl#",
+		method="get",
+		getasbinary="yes",
+		result="myResult")#'>
+	
 	<cfset var pluginFileName = CreateUUID() & ".zip">
-
-	<!--- try to download this... it should be a binary file --->
-	<cfhttp url="#arguments.pluginUrl#" method="get" getasbinary="yes" result="myResult"/>
-
 	<cfset var pluginFileLocation = variables.configBean.getTempDir() & pluginFileName>
 	<cfset fileWrite(pluginFileLocation, myResult.filecontent)>
 	<cfreturn pluginFileLocation>

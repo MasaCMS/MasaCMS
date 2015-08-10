@@ -83,13 +83,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn theImport>
 	<cfelse>
 	
-	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp url="#theImport.feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" 
-		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"/>
-	<cfelse>
-		<cfhttp url="#theImport.feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" />
-	</cfif>
+	<cfhttp attributeCollection='#getHTTPAttrs(
+			url="#theImport.feedBean.getChannelLink()#",
+			method="GET",
+			resolveurl="Yes",
+			throwOnError="Yes")#'>
 	
 	<cfset xmlFeed=xmlParse(CFHTTP.FileContent)/>
 	<cfswitch expression="#theImport.feedBean.getVersion()#">

@@ -90,25 +90,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset versionDir=versionDir & "/config">
 		</cfif>
 		
-		<cfif len(variables.configBean.getProxyServer())>
-			<cfhttp url="http://webservices.getmura.com/mura/changeset" result="diff" getasbinary="yes" 
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-			<cfhttpparam type="url" name="format" value="zip">
-			<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
-			<cfhttpparam type="url" name="old" value="#currentVersion#">
-			<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
-			<cfhttpparam type="url" name="new" value="#updateVersion#">
-			</cfhttp>
-		<cfelse>
-			<cfhttp url="http://webservices.getmura.com/mura/changeset" result="diff" getasbinary="yes">
+	
+		<cfhttp attributeCollection='#getHTTPAttrs(
+				url="http://webservices.getmura.com/mura/changeset",
+				result="diff",
+				getasbinary="yes")#'>
 			<cfhttpparam type="url" name="format" value="zip">
 			<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
 			<cfhttpparam type="url" name="old" value="#currentVersion#">
 			<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
 			<cfhttpparam type="url" name="new" value="#updateVersion#">
 		</cfhttp>
-		</cfif>
+
 		<cfif not IsBinary(diff.filecontent)>
 			<cfthrow message="The current production version code is currently not available. Please try again later.">
 		</cfif>
@@ -274,13 +267,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" default="">
 	<cfset var diff="">
 
-	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#" result="diff" getasbinary="no" 
-		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-	<cfelse>
-		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#" result="diff" getasbinary="no">
-	</cfif>
+	<cfhttp attributeCollection='#getHTTPAttrs(url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#",result="diff",getasbinary="no")#'>
+	
 	<cftry>
 	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
 	<cfcatch>

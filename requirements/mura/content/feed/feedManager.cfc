@@ -497,16 +497,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var response=structNew() />
 	
 	<cftry>
-	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
-		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#" 
-		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"/>
-	<cfelse>
-		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
-		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#"/>
-	</cfif>
-	<cfcatch><cfreturn response /></cfcatch>
+		<cfhttp attributeCollection='#getHTTPAttrs(result="temp",
+						url="#arguments.feedURL#",
+						method="GET",
+						resolveurl="Yes",
+						throwOnError="Yes",
+						charset="UTF-8",
+						timeout="#arguments.timeout#")#'>
+		<cfcatch>
+			<cfreturn ''>
+		</cfcatch>
 	</cftry>
 
 	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />

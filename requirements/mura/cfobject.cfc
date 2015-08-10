@@ -289,8 +289,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(len(configBean.getProxyServer())){
 			hs.setProxyServer(configBean.getProxyServer());
 			hs.setProxyPort(configBean.getProxyPort());
+			
 			hs.setProxyUser(configBean.getProxyUser());
 			hs.setProxyPassword(configBean.getProxyPassword());
+
+			if(configBean.getProxyAuthType() == 'NTLM'){
+				hs.setAuthType('NTLM');
+			}
 		}
 
 		return hs;
@@ -305,6 +310,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				proxyuser=configBean.getProxyUser(),
 				proxypassword=configBean.getProxyPassword()
 			});
+
+			if(configBean.getProxyAuthType() == 'NTLM'){
+				arguments.authtype='NTLM';
+			}
 		}
 
 		return arguments;

@@ -377,13 +377,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 	</cfscript>
 	<cftry>
-		<cfif len(variables.configBean.getProxyServer())>
-			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#"
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
-		<cfelse>
-			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#"></cfhttp>
-		</cfif>
+		<cfhttp attributeCollection='#getHTTPAttrs(
+			getasbinary="yes",
+			result="local.theFile",
+			method="get",
+			url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#")#'>
 		<cfcatch>
 		</cfcatch>
 	</cftry>
@@ -453,17 +451,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
 	<cfelse>
 		<cfset local.isLocalFile=false>
-		<cfif len(variables.configBean.getProxyServer())>
-			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
-			</cfhttp>
-		<cfelse>
-			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes">
-				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
-			</cfhttp>
-		</cfif>
+		
+		<cfhttp attributeCollection='#getHTTPAttrs(
+				url="#local.filePath#",
+				result="local.remoteGet",
+				getasbinary="yes")#'>
+			<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
+		</cfhttp>
 
 		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>

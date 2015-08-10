@@ -115,6 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.proxyPassword="" />
 <cfset variables.instance.proxyServer="" />
 <cfset variables.instance.proxyPort="80" />
+<cfset variables.instance.proxyAuthType="BASIC" />
 <cfset variables.instance.sharableRemoteSessions=true />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />

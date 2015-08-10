@@ -846,7 +846,7 @@ jQuery(document).ready(function(){
 	<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 	      <div class="controls">
-	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#" maxlength="250">
+	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#">
 	      </div>
 	</div>
 </div>
