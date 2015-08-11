@@ -1232,7 +1232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.allowHTML),de(rstcontentfeeds.allowHTML),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.dateCreated),de('no'),de('yes'))#" value="#rstcontentfeeds.dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.description neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.description#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentfeeds.feedID)#">,
@@ -3145,6 +3145,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							defaultValue=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.defaultValue neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.defaultValue#">,
 							optionlist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionList#">,
 							optionlabellist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
+							
+							<cfif isDefined("rstclassextendattributes.adminonly")>
+							,adminonly=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.adminonly neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.adminonly#">,
+							</cfif>
+
 							where attributeID=<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextendattributes.attributeID)#">
 						</cfquery>
 								
@@ -3152,7 +3157,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tclassextendattributes (extendSetID, siteID, name, label, hint, 
-								type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList)
+								type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList
+								<cfif isDefined('rstclassextendattributes.adminonly')>
+								,adminonly
+								</cfif>
+								)
 							values
 							(
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendattributes.extendSetID)#">,
@@ -3170,6 +3179,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.defaultValue neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.defaultValue#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionList#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
+							<cfif isDefined('rstclassextendattributes.adminonly')>
+								,<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.adminonly neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.adminonly#">
+							</cfif>
 							)
 						</cfquery>
 						
