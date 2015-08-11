@@ -361,6 +361,10 @@ component extends="framework" output="false" {
 		if(not structKeyExists(session.alerts,'#session.siteid#')){
 			session.alerts['#session.siteid#']=structNew();
 		}
+
+		if(!len(request.context.siteid) && len(session.siteid)){
+			request.context.siteid=session.siteid;
+		}
 			
 		request.event=createObject("component", "mura.event").init(request.context);
 		request.context.$=request.event.getValue('MuraScope');
