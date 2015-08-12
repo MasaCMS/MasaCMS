@@ -149,7 +149,7 @@
 			</cfquery>
 			</cfcase>
 			--->
-			<cfcase value="mssql">
+			<cfcase value="mssql,postgresql">
 			<cfquery
 				name="rs">
 					select column_name,
@@ -158,7 +158,7 @@
 					column_default column_default_value,
 					is_nullable,
 					numeric_precision data_precision
-					from INFORMATION_SCHEMA.COLUMNS
+					from information_schema.columns
 					where TABLE_NAME='#arguments.table#'
 			</cfquery>
 			</cfcase>
@@ -906,12 +906,12 @@
 		<cfset columnArgs.table=arguments.table>
 
 		<cfswitch expression="#arguments.rs.type_name#">
-			<cfcase value="varchar,nvarchar,varchar2">
+			<cfcase value="varchar,nvarchar,varchar2,character varying">
 				<!--- Add MSSQL nvarchar(max)--->
 				<cfset columnArgs.datatype="varchar">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
-			<cfcase value="char,bpchar">
+			<cfcase value="char,bpchar,character">
 				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
@@ -928,7 +928,7 @@
 			<cfcase value="tinyint,smallint,int2">
 				<cfset columnArgs.datatype="tinyint">
 			</cfcase>
-			<cfcase value="date,datetime,timestamp">
+			<cfcase value="date,datetime,timestamp,timestamp without time zone,timestamp with time zone">
 				<cfset columnArgs.datatype="datetime">
 			</cfcase>
 			<cfcase value="ntext,longtext,clob,nclob">
@@ -937,10 +937,10 @@
 			<cfcase value="text">
 				<cfset columnArgs.datatype="text">
 			</cfcase>
-			<cfcase value="float,binary_float">
+			<cfcase value="float,binary_float,real">
 				<cfset columnArgs.datatype="float">
 			</cfcase>
-			<cfcase value="double,decimal,binary_double">
+			<cfcase value="double,decimal,binary_double,double precision">
 				<cfset columnArgs.datatype="double">
 			</cfcase>
 			<cfcase value="blob,longblob,bytea,varbinary">
@@ -1470,14 +1470,14 @@ function _parseInt(String){
 	<cfargument name="paramType">
 
 	<cfswitch expression="#arguments.paramType#">
-		<cfcase value="varchar,nvarchar,varchar2,char">
+		<cfcase value="varchar,nvarchar,varchar2,char,character,character varying">
 			<!--- Add MSSQL nvarchar(max)--->
 			<cfreturn "varchar">
 		</cfcase>
-		<cfcase value="int,number,tinyint">
+		<cfcase value="int,number,tinyint,smallint,integer,numeric">
 			<cfreturn "numeric">
 		</cfcase>
-		<cfcase value="datetime,timestamp">
+		<cfcase value="datetime,timestamp,timestamp without time zone,timestamp with time zone">
 			<cfreturn "timestamp">
 		</cfcase>
 		<cfcase value="date">
@@ -1486,10 +1486,10 @@ function _parseInt(String){
 		<cfcase value="ntext,longtext,clob,text">
 			<cfreturn "longvarchar">
 		</cfcase>
-		<cfcase value="float,binary_float">
+		<cfcase value="float,binary_float,real">
 			<cfreturn "float">
 		</cfcase>
-		<cfcase value="double,decimal,binary_double">
+		<cfcase value="double,decimal,binary_double,double precision">
 			<cfreturn "double">
 		</cfcase>
 		<cfdefaultcase>
