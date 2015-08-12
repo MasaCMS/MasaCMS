@@ -1801,17 +1801,14 @@ component extends="mura.cfobject" {
 		}
 		 
 		$.announceEvent('siteAsyncRequestStart');
-
-		if(!$.content().exists()){
-			return {html=''};
-		}
-		
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
-
-		$.event().getHandler('standardSetLocale').handle($.event());
+		
+		if($.content().exists() || !isDefined('session.dateKeyFormat')){
+			$.event().getHandler('standardSetLocale').handle($.event());
+		}
 
 		$.announceEvent('asyncRenderStart');
 
@@ -1825,6 +1822,7 @@ component extends="mura.cfobject" {
 
 		//Turn off cfformprotext js
 		request.cffpJS=true;
+		var result='';
 
 		switch($.event('object')){
 			case 'login':
@@ -1834,16 +1832,16 @@ component extends="mura.cfobject" {
 					if(isBoolean($.event('attemptChallenge')) && $.event('attemptChallenge')){
 						if(loginManager.handleChallengeAttempt($)){
 							loginManager.completedChallenge($);
-							return {redirect=request.muraJSONRedirectURL};
+							result={redirect=request.muraJSONRedirectURL};
 						} else {
 							$.event('status','challenge');
 						}
 					} else if(len($.event('username')) && len($.event('password'))){
 						if(loginManager.remoteLogin($.event().getAllValues(),'')){
 							if(len($.event('returnurl'))){
-								return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
+								result={redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 							} else {
-								return {redirect="./##"};
+								result={redirect="./##"};
 							}
 						} else {
 							if(isDefined('session.mfa')){
@@ -1855,39 +1853,41 @@ component extends="mura.cfobject" {
 					}
 				}
 
-				return {
-					html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
-				};
+				if(!isStruct(result)){
+					result={
+						html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
+					};
+				}
 
-			break;
+				break;
 
 			case 'calendar':
-				return {
+				result= {
 					html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
 				};
 
-			break;
+				break;
 
 			case 'search':
-				return {
+				result={
 					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_search_results.cfm"))
 				};
 
-			break;
+				break;
 
 			case 'displayregion':
-				return {
+				result={
 					html=applyRemoteFormat($.dspObjects(argumentCollection=$.event().getAllValues()))
 				};
 
-			break;
+				break;
 
 			case 'folder':
-				return {
+				result={
 					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
 				};
 
-			break;
+				break;
 
 			case 'editprofile':
 				switch($.event('doaction')){
@@ -1922,9 +1922,9 @@ component extends="mura.cfobject" {
 									$.getBean('userUtility').loginByUserID(userid=$.event('userBean').getUserID(),siteid=$.event('userBean').getSiteID());
 
 									if(len($.event('returnurl'))){
-										return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
+										result={redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 									} else {
-										return {redirect="./"};
+										result={redirect="./"};
 									}
 								}
 							}
@@ -1949,16 +1949,16 @@ component extends="mura.cfobject" {
 							
 							if(structIsEmpty($.event().getValue('userBean').getErrors()) && !$.event().valueExists('passwordNoCache')){
 								$.getBean('userManager').sendLoginByUser($.event().getValue('userBean'),$.event().getValue('siteid'),$.event().getValue('contentRenderer').getCurrentURL(),true);
-								return {redirect=$.event('returnurl')};
+								result={redirect=$.event('returnurl')};
 
 							} else if (structIsEmpty($.event().getValue('userBean').getErrors()) && $.event().valueExists('passwordNoCache') && $.event().getValue('userBean').getInactive() eq 0){
 								$.event().setValue('userID',$.event().getValue('userBean').getUserID());
 								$.getBean('userUtility').loginByUserID(userid=$.event('userid'),siteid=$.event('siteid'));
 
 								if(len($.event('returnurl'))){
-									return {redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
+									result={redirect=getBean('utility').sanitizeHREF($.event('returnurl'))};
 								} else {
-									return {redirect="./"};
+									result={redirect="./"};
 								}
 							}
 						}
@@ -1966,55 +1966,57 @@ component extends="mura.cfobject" {
 					break;
 				}
 
-				
-				return {
-						html=applyRemoteFormat($.dspObject_Include(theFile='dsp_edit_profile.cfm'))
-					};
-			break;
-
-		}
-		
-		if(len($.event('objectparams2'))){
-			$.event('objectparams',$.event('objectparams2'));
-		}
-
-		//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
-		//writeLog(text=serializeJSON(logdata));
-		//return $.event('objectparams');
-		
-		var args={
-				object=$.event('object'),
-				objectid=$.event('objectid'),
-				siteid=arguments.siteid,
-				assignmentPerm=$.event('perm')
-			};
-
-		if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
-			args.params=urlDecode($.event('objectparams'));
-		} else {
-			args.params={};
-			
-			if(isDefined('url') && isStruct(url)){
-				for(var u in url){
-					if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
-						args.params['#u#']=url['#u#'];
-					}
+				if(!isStruct(result)){
+					result={
+							html=applyRemoteFormat($.dspObject_Include(theFile='dsp_edit_profile.cfm'))
+						};
 				}
-			}
-			
-		}
 
-		var result=$.dspObject(argumentCollection=args);
-		
-		if(isSimpleValue(result)){
-			result={html=result};
-		}
-		
-		if(isdefined('request.muraJSONRedirectURL')){
-			return {redirect=request.muraJSONRedirectURL};
-		} else {
-			return result;
-		}
+				break;
+
+			default:
+				if(len($.event('objectparams2'))){
+					$.event('objectparams',$.event('objectparams2'));
+				}
+
+				//var logdata={object=$.event('object'),objectid=$.event('objectid'),siteid=arguments.siteid};
+				//writeLog(text=serializeJSON(logdata));
+				//return $.event('objectparams');
+				
+				var args={
+						object=$.event('object'),
+						objectid=$.event('objectid'),
+						siteid=arguments.siteid,
+						assignmentPerm=$.event('perm')
+					};
+
+				if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
+					args.params=urlDecode($.event('objectparams'));
+				} else {
+					args.params={};
+					
+					if(isDefined('url') && isStruct(url)){
+						for(var u in url){
+							if(!listFindNoCase('perm,contentid,contenthistid,object,objectid,siteid,nocache,instanceid',u)){
+								args.params['#u#']=url['#u#'];
+							}
+						}
+					}
+					
+				}
+
+				result=$.dspObject(argumentCollection=args);
+				
+				if(isSimpleValue(result)){
+					result={html=result};
+				}
+				
+				if(isdefined('request.muraJSONRedirectURL')){
+					result={redirect=request.muraJSONRedirectURL};
+				}
+		} 
+
+		return result;
 	
 	}
 

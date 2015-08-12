@@ -1303,7 +1303,6 @@ var initMura=function(config){
       data['objectparams']= $escape(JSON.stringify(data['objectparams']));
     }
 
-
     $(self).html(config.preloaderMarkup);
 
     $.ajax({
