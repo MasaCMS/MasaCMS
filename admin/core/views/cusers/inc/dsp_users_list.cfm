@@ -46,6 +46,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+	<cfset local.canEdit = rc.$.currentUser().isInGroup('Admin') || rc.$.currentUser().isSuperUser() />
 	<cfif IsDefined('rc.it')>
 
 		<cfif rc.it.hasNext()>
@@ -82,7 +83,10 @@
 
 					<!--- Users Iterator --->
 						<cfloop condition="rc.it.hasNext()">
-							<cfset local.item = rc.it.next() />
+							<cfscript>
+								local.item = rc.it.next();
+								local.canEdit = local.canEdit || local.item.getValue('isPublic') eq 1;
+							</cfscript>
 							<tr>
 
 								<!--- Icons --->
@@ -120,7 +124,7 @@
 
 								<!--- Last Name, First Name --->
 									<td class="var-width">
-										<cfif local.item.getValue('isPublic') eq 1 or (local.item.getValue('S2') eq 0 and rc.$.currentUser('S2') eq 1) or rc.$.currentUser().isSuperUser()>
+										<cfif local.canEdit>
 											<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" onclick="actionModal();">
 												#esapiEncode('html', local.item.getValue('lname'))#, #esapiEncode('html', local.item.getValue('fname'))#
 											</a>
@@ -160,7 +164,7 @@
 										<ul>
 
 											<!--- Edit --->
-												<cfif local.item.getValue('isPublic') eq 1 or (local.item.getValue('S2') eq 0 and rc.$.currentUser('S2') eq 1) or rc.$.currentUser().isSuperUser()>
+												<cfif local.canEdit>
 													<li>
 														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
 															<i class="icon-pencil"></i>
@@ -182,7 +186,7 @@
 												</cfif>
 
 											<!--- Delete --->
-												<cfif local.item.getValue('isPublic') eq 1 or (local.item.getValue('S2') eq 0 and rc.$.currentUser('S2') eq 1) or rc.$.currentUser().isSuperUser()>
+												<cfif local.canEdit>
 													<li>
 														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
 															<i class="icon-remove-sign"></i>
