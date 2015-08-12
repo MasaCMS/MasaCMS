@@ -301,23 +301,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		return hs;
 	}
 
-	function getHTTPAttrs(){
-		var configBean=getBean('configBean');
-		if(len(configBean.getProxyServer())){
-			structAppend(arguments,{
-				proxyserver=configBean.getProxyServer(),
-				proxyport=configBean.getProxyPort(),
-				proxyuser=configBean.getProxyUser(),
-				proxypassword=configBean.getProxyPassword()
-			});
+	function getHTTPAttrs(authtype=''){
+            var configBean=getBean('configBean');
+            var connectionType = "BASIC";
+             
+            if(listFindNoCase('PROXY,NTLM,BASIC',arguments.authtype)){
+                connectionType = arguments.authtype;
+            } else if(len(configBean.getProxyServer())){
+                connectionType = 'PROXY';
+            }
 
-			if(configBean.getProxyAuthType() == 'NTLM'){
-				arguments.authtype='NTLM';
-			}
-		}
-
-		return arguments;
-	}
+            structDelete(arguments,"authtype");
+             
+            if(connectionType == "NTLM") {
+                    
+                if(find('\',configBean.getProxyUser())){
+                    structAppend(arguments,{
+                        domain=listFirst(configBean.getProxyUser(),'\'),
+                        username=listLast(configBean.getProxyUser(),'\')
+                    });
+                } else {
+                    arguments.username=configBean.getProxyUser();
+                }
+                    
+                structAppend(arguments,{
+                    password=configBean.getProxyPassword(),
+                    authtype="NTLM"
+                });
+                          
+            } else if(connectionType == 'PROXY'){
+                    
+                structAppend(arguments,{
+                    proxyserver=configBean.getProxyServer(),
+                    proxyport=configBean.getProxyPort(),
+                    proxyuser=configBean.getProxyUser(),
+                    proxypassword=configBean.getProxyPassword()
+                });
+                    
+            }
+             
+            return arguments;
+       }
 </cfscript>
 
 </cfcomponent>

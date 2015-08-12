@@ -187,10 +187,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="span4">
 	<label class="control-label">For administrative Use Only?</label>
 	<div class="controls">
-		<select name="adminonly" class="span12">
-			<option value="0" <cfif not attributes.attributeBean.getAdminOnly()>selected</cfif>>False</option>
-			<option value="1" <cfif attributes.attributeBean.getAdminOnly()>selected</cfif>>True</option>
-		</select>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
 	</div>
 </div>
 </div>

@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="restrictGroups" type="string" default=""/>
 <cfproperty name="version" type="string" default="RSS 2.0" required="true" />
 <cfproperty name="channelLink" type="string" default=""/>
+<cfproperty name="authtype" type="string" default="DEFAULT"/>
 <cfproperty name="type" type="string" default="local" required="true" />
 <cfproperty name="sortBy" type="string" default="lastUpdate" required="false" />
 <cfproperty name="sortDirection" type="string" default="desc" required="true" />
@@ -129,6 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.restrictGroups="" />
 	<cfset variables.instance.Version="RSS 2.0" />
 	<cfset variables.instance.ChannelLink="" />
+	<cfset variables.instance.authtype="DEFAULT" />
 	<cfset variables.instance.type="local" />
 	<cfset variables.instance.sortBy="lastUpdate" />
 	<cfset variables.instance.sortDirection="desc" />
@@ -611,6 +613,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="clone" output="false">
 	<cfreturn getBean("feed").setAllValues(structCopy(getAllValues()))>
+</cffunction>
+
+<cffunction name="getRemoteData" output="false">
+	<cfreturn getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype)>
 </cffunction>
 
 <cfscript>

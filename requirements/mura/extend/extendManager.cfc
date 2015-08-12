@@ -1029,6 +1029,7 @@ and tclassextendattributes.type='File'
 			and tclassextend.isActive=1
 		</cfif>
 
+		and tclassextend.adminonly!=1
 		and tclassextendattributes.adminonly!=1
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
@@ -1502,6 +1503,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	<cfset destSubType.setAvailableSubTypes(sourceSubType.getAvailableSubTypes())>
 	<cfset destSubType.setIconClass(sourceSubType.getIconClass())>
+	<cfset destSubType.setAdminOnly(sourceSubType.getAdminOnly())>
 	<cfset destSubType.save()>
 	
 	<cfset extendSets=sourceSubType.getExtendSets(activeOnly=false)>
@@ -1738,6 +1740,10 @@ and tclassextendattributes.type='File'
 
 				if(isDefined("documentXML.xmlAttributes.hassummary")){
 					subType.setHasSummary( documentXML.xmlAttributes.hassummary );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.adminonly")){
+					subType.setAdminOnly( documentXML.xmlAttributes.adminonly );
 				}
 
 				if(isDefined("documentXML.xmlAttributes.hasassocfile")){

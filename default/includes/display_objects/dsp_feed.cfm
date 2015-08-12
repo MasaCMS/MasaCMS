@@ -138,11 +138,12 @@
 		<!---<cftry> --->
 		<cfsilent>
 			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
-			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),variables.feedBean.getMaxItems())/>
+			<cfset variables.feedData = variables.feedBean.getRemoteData()>
 			<cfif not structIsEmpty(objectparams) and structKeyExists(objectparams,'displaySummaries')>
 				<cfset arguments.hasSummary=objectparams.displaySummaries>	
 			</cfif>
 		</cfsilent>
+
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
 				<div class="mura-synd-remote mura-index mura-feed #this.remoteFeedWrapperClass# #variables.feedBean.getCssClass()#" id="#variables.cssID#">

@@ -492,18 +492,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedURL" required="true" >
 	<cfargument name="maxItems" required="true" >
 	<cfargument name="timeout" required="true" default="5" >
+	<cfargument name="authtype" required="true" default="">
 	<cfset var data = "" />
 	<cfset var temp = 0 />
 	<cfset var response=structNew() />
 	
 	<cftry>
 		<cfhttp attributeCollection='#getHTTPAttrs(result="temp",
-						url="#arguments.feedURL#",
+						url=arguments.feedURL,
+						authtype=arguments.authtype,
 						method="GET",
 						resolveurl="Yes",
 						throwOnError="Yes",
 						charset="UTF-8",
 						timeout="#arguments.timeout#")#'>
+	
 		<cfcatch>
 			<cfreturn ''>
 		</cfcatch>

@@ -604,7 +604,7 @@ if(len($.siteConfig('customTagGroups'))){
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module well">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h3>
-		<cfset rsTypes=application.configBean.getClassExtensionManager().getSubTypes(session.siteid)>
+		<cfset rsTypes=application.configBean.getClassExtensionManager().getSubTypes(siteid=session.siteid,activeOnly=true)>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 			<cfloop list="#$.getBean('contentManager').getTreeLevelList()#" index="i">

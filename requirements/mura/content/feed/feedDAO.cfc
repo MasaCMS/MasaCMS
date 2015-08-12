@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
 	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL, remotePubDate,
-	imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid)
+	imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid,authtype)
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getsiteID()#">,
@@ -107,7 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#arguments.feedBean.getIsLocked()#,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getCssClass() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getCssClass()#">,
 	#arguments.feedBean.getUseCategoryIntersect()#,
-	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">
+	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	)
 	</cfquery>
 	
@@ -275,7 +276,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	isLocked=#arguments.feedBean.getIsLocked()#,
 	CssClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getCssClass() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getCssClass()#">,
 	useCategoryIntersect=#arguments.feedBean.getUseCategoryIntersect()#,
-	contentpoolid=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">
+	contentpoolid=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">,
+	authtype=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
 	

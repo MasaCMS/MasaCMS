@@ -84,7 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 	<cfhttp attributeCollection='#getHTTPAttrs(
-			url="#theImport.feedBean.getChannelLink()#",
+			url=theImport.feedBean.getChannelLink(),
+			authtype=theImport.feedBean.getAuthType(),
 			method="GET",
 			resolveurl="Yes",
 			throwOnError="Yes")#'>

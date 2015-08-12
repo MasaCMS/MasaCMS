@@ -1228,6 +1228,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.contentpoolid")>
 					,contentpoolid
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.authtype")>
+					,authtype
+					</cfif>
 					)
 					values
 					(
@@ -1292,7 +1295,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<!---<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.contentpoolid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.contentpoolid#">--->
 					null			
-					</cfif>						
+					</cfif>	
+					<cfif isdefined("rstcontentfeeds.authtype")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.authtype neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.authtype#">			
+					</cfif>					
 					)
 				</cfquery>
 			</cfloop>
@@ -2938,6 +2945,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif isDefined("rstclassextend.hasConfigurator")>
 							hasConfigurator=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasConfigurator neq '',de('no'),de('yes'))#" value="#rstclassextend.hasConfigurator#">,
 							</cfif>
+							<cfif isDefined("rstclassextend.adminonly")>
+							adminonly=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasConfigurator neq '',de('no'),de('yes'))#" value="#rstclassextend.hasConfigurator#">,
+							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 						</cfquery>
@@ -2959,6 +2969,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif isDefined("rstclassextend.iconclass")>
 							iconclass,
+							</cfif>
+							<cfif isDefined("rstclassextend.adminonly")>
+							adminonly,
 							</cfif>
 							lastUpdateBy)
 							values
@@ -2989,6 +3002,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif isDefined("rstclassextend.iconclass")>
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.iconclass neq '',de('no'),de('yes'))#" value="#rstclassextend.iconclass#">,
+							</cfif>
+							<cfif isDefined("rstclassextend.adminonly")>
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.adminonly neq '',de('no'),de('yes'))#" value="#rstclassextend.adminonly#">,
 							</cfif>
 							'System'
 							)

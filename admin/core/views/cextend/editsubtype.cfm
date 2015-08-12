@@ -189,11 +189,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="span4">
 			<label class="control-label">Status</label>
 			<div class="controls">
-					<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
+				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
 				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
 			</div>
 		</div>
+		<div class="span4">
+			<label class="control-label">For administrative Use Only?</label>
+			<div class="controls">
+				<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif subType.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+				<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif subType.getAdminOnly() eq 0 >Checked</cfif>>No</label>
+			</div>
+		</div>
 	</div>
+
 </div>	
 <div class="form-actions">
 	<cfif not len(rc.subTypeID)>
