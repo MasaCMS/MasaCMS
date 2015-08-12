@@ -724,8 +724,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var servlet = "" />
 
 	<cfset loadLocalEventHandler(arguments.event)>
-
-	<cfset var muraorigsiteid=session.siteid>
 	
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
 
@@ -778,8 +776,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
 		
-		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
-		
+		<cfif arguments.event.getValue('contentBean').exists() or not isDefined('session.dateKeyFormat')>
+			<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
+		</cfif>
+
 		<cfset arguments.event.getValidator("standardMobile").validate(arguments.event)>
 
  		<cfset arguments.event.getHandler("standardSetCommentPermissions").handle(arguments.event)>
@@ -797,11 +797,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
 		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
 	</cfif>
-
-	<cfif request.mura404 and len(muraorigsiteid)>
-		<cfset arguments.event.setValue('siteid',muraorigsiteid)>
-		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
-	</cfif> 
 
 	<cfif isdefined('response')>
 		<cfif arguments.event.getContentRenderer().getSuppressWhitespace()>
