@@ -1805,10 +1805,7 @@ component extends="mura.cfobject" {
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
-		
-		if($.content().exists() || !isDefined('session.dateKeyFormat')){
-			$.event().getHandler('standardSetLocale').handle($.event());
-		}
+		$.event().getHandler('standardSetLocale').handle($.event());
 
 		$.announceEvent('asyncRenderStart');
 

@@ -775,11 +775,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset getpagecontext().getresponse().setcontenttype('application/json; charset=utf-8')>
 			<cfreturn apiUtility.getSerializer().serialize({data={redirect=request.muraJSONRedirectURL}})>
 		</cfif>
-		
-		<cfif arguments.event.getValue('contentBean').exists() or not isDefined('session.dateKeyFormat')>
-			<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
-		</cfif>
-
+	
+		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
+	
 		<cfset arguments.event.getValidator("standardMobile").validate(arguments.event)>
 
  		<cfset arguments.event.getHandler("standardSetCommentPermissions").handle(arguments.event)>
