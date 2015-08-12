@@ -85,7 +85,7 @@
 						<cfloop condition="rc.it.hasNext()">
 							<cfscript>
 								local.item = rc.it.next();
-								local.canEdit = local.canEdit || local.item.getValue('isPublic') eq 1;
+								local.canEdit = local.canEdit || local.item.getValue('isPublic') == 1;
 							</cfscript>
 							<tr>
 
