@@ -160,7 +160,7 @@
 	<cfargument name="event" required="true">
 	<cfparam name="session.siteID" default="">
 	<cfset setLocale(application.settingsManager.getSite(arguments.event.getValue('siteid')).getJavaLocale())>
-	<cfif (arguments.event.getValue('contentBean').exists() and session.siteid neq arguments.event.getValue('siteid')) or not structKeyExists(session,"locale")>
+	<cfif (not request.mura404 and arguments.event.getValue('contentBean').exists() and session.siteid neq arguments.event.getValue('siteid')) or not structKeyExists(session,"locale")>
 		<!---These are use for admin purposes--->
 		<cfset session.siteID=arguments.event.getValue('siteid')>
 		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#arguments.event.getValue('siteid')#/assets/">
