@@ -8,7 +8,20 @@
 				<select name="typeSelector"  onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentBean.getcontentHistID()#',this.value,'#esapiEncode("Javascript",rc.siteID)#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 				<cfloop list="#baseTypeList#" index="t">
 				<cfsilent>
-						<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery>
+					<cfquery name="rsst" dbtype="query">
+						select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')
+						<cfif not (rc.$.currentUser().isAdminUser() or rc.$.currentUser().isSuperUser())>
+							and (
+								adminonly !=1
+
+								or (
+									type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rc.contentBean.getType()#">
+									and subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rc.contentBean.getSubType()#">
+								)
+							)
+
+						</cfif>
+					</cfquery>
 				</cfsilent>
 				<cfif not len(subtypefilter) or listFindNoCase(subtypefilter,'#t#/Default')>
 					<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>

@@ -193,7 +193,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
 			</div>
 		</div>
-		<div class="span4">
+	</div>
+	<div class="control-group adminOnlyContainer">
+	<div class="span4">
 			<label class="control-label">For administrative Use Only?</label>
 			<div class="controls">
 				<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif subType.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
@@ -201,7 +203,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 	</div>
-
 </div>	
 <div class="form-actions">
 	<cfif not len(rc.subTypeID)>

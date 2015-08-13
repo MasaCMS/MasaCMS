@@ -74,7 +74,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rc.ptype neq 'Gallery'>
 			<cfloop list="#typeList#" index="i">
 				<cfquery name="rsItemTypes" dbtype="query">
-				select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
+					select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
+					<cfif not (
+						rc.$.currentUser().isAdminUser() 
+						or rc.$.currentUser().isSuperUser()
+						)>
+						and adminonly !=1
+					</cfif>
 				</cfquery>
 				<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
 					<li class="new#i#">
