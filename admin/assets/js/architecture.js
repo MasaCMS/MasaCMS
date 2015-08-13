@@ -59,13 +59,18 @@ var siteManager = {
 	tablist: "",
 	//submitDialogs:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
 	submitDialogs:[],
+	submitActions:[],
 	addSubmitDialog:function(dialog){
 		siteManager.submitDialogs.push(dialog)
+	},
+	addSubmitAction:function(actionFn){
+		siteManager.submitActions.push(actionFn)
 	},
 	submitContentForm: function(){
 		var handled=0;
 		var cancelled=false;
 		var dialogs=siteManager.submitDialogs;
+		var actions=siteManager.submitActions;
 
 		function submit(){
 			var i;
@@ -133,9 +138,11 @@ var siteManager = {
 			}
 
 			if(handled==dialogs.length){
+				for(var i=0;i<actions.length;i++){
+					actions[i]();
+				}
 				siteManager.formSubmitted = true;
-				//alert('test')
-				//document.contentForm.submit();
+				document.contentForm.submit();
 			}
 		}
 
