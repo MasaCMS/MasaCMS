@@ -57,15 +57,15 @@ var siteManager = {
 	copySiteID: "",
 	reloadURL: "",
 	tablist: "",
-	//submitActions:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
-	submitActions:[],
-	addSubmitAction:function(type,message,condition){
-		siteManager.submitActions.push({type:type,message:message,condition:condition})
+	//submitDialogs:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
+	submitDialogs:[],
+	addSubmitDialog:function(dialog){
+		siteManager.submitDialogs.push(dialog)
 	},
 	submitContentForm: function(){
 		var handled=0;
 		var cancelled=false;
-		var actions=siteManager.submitActions;
+		var dialogs=siteManager.submitDialogs;
 
 		function submit(){
 			var i;
@@ -74,12 +74,14 @@ var siteManager = {
 				CKEDITOR.instances[i].updateElement();
 			}
 
-			for(i=0;i<actions.length;i++){
+			for(i=0;i<dialogs.length;i++){
 				if(i == handled){
-					if(actions[i].type.toLowerCase()=='confirmation'){
-						if(typeof actions[i].condition == 'function'){
-							if(actions[i].condition()){
-								confirmDialog(actions[i].message,
+					var dialog=dialogs[i];
+
+					if(dialog.type.toLowerCase()=='confirmation'){
+						if(typeof dialog.condition == 'function'){
+							if(dialog.condition(dialog)){
+								confirmDialog(dialog.message,
 									function(){handled++; submit()}
 								);
 
@@ -88,16 +90,16 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							confirmDialog(actions[i].message,
+							confirmDialog(dialog.message,
 								function(){handled++; submit()}
 							);
 
 							return false
 						} 
-					} else if (actions[i].type.toLowerCase()=='alert'){
-						if(typeof actions[i].condition == 'function'){
-							if(actions[i].condition()){
-								alertDialog(actions[i].message,
+					} else if (dialog.type.toLowerCase()=='alert'){
+						if(typeof dialog.condition == 'function'){
+							if(dialog.condition(dialog)){
+								alertDialog(dialog.message,
 									function(){handled++; submit()}
 								);
 
@@ -106,16 +108,16 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							alertDialog(actions[i].message,
+							alertDialog(dialog.message,
 								function(){handled++; submit()}
 							);
 
 							return false
 						}
-					} else if (actions[i].type.toLowerCase()=='validation'){
-						if(typeof actions[i].condition == 'function'){
-							if(actions[i].condition()){
-								alertDialog(actions[i].message,
+					} else if (dialog.type.toLowerCase()=='validation'){
+						if(typeof dialog.condition == 'function'){
+							if(dialog.condition(dialog)){
+								alertDialog(dialog.message,
 									function(){handled++}
 								);
 
@@ -130,10 +132,10 @@ var siteManager = {
 				}
 			}
 
-			if(handled==actions.length){
+			if(handled==dialogs.length){
 				siteManager.formSubmitted = true;
 				//alert('test')
-				document.contentForm.submit();
+				//document.contentForm.submit();
 			}
 		}
 
