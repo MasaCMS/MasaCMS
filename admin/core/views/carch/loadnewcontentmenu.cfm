@@ -70,18 +70,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#$.dspZoomNoLinks(parentBean.getCrumbArray())#
 	--->
 	<div class="add-content-ui">
+		<!---<cfdump var="#rsSubTypes#">--->
 		<ul>
 		<cfif rc.ptype neq 'Gallery'>
 			<cfloop list="#typeList#" index="i">
 				<cfquery name="rsItemTypes" dbtype="query">
 					select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
-					<cfif not (
-						rc.$.currentUser().isAdminUser() 
-						or rc.$.currentUser().isSuperUser()
-						)>
-						and adminonly !=1
-					</cfif>
 				</cfquery>
+				<cfif rsItemTypes.recordcount and rsItemTypes.adminonly eq 1 and not (
+					rc.$.currentUser().isAdminUser() 
+					or rc.$.currentUser().isSuperUser()
+					)>
+					<cfbreak>
+				</cfif>
 				<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
 					<li class="new#i#">
 						<cfif len(rsItemTypes.description)>
@@ -92,6 +93,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfquery name="rsItemTypes" dbtype="query">
 				select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
+				<cfif not (
+						rc.$.currentUser().isAdminUser() 
+						or rc.$.currentUser().isSuperUser()
+						)>
+						and adminonly !=1
+					</cfif>
 				</cfquery>
 				<cfloop query="rsItemTypes">
 					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/#rsItemTypes.subType#')>
@@ -116,6 +123,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>	
 			<cfquery name="rsItemTypes" dbtype="query">
 				select * from rsSubTypes where lower(type)='file' and lower(subtype) != 'default'
+				<cfif not (
+					rc.$.currentUser().isAdminUser() 
+					or rc.$.currentUser().isSuperUser()
+					)>
+					and adminonly !=1
+				</cfif>
 			</cfquery>
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItem">
