@@ -77,10 +77,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery name="rsItemTypes" dbtype="query">
 					select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
 				</cfquery>
-				<cfif not rsItemTypes.recordcount or rsItemTypes.recordcount and rsItemTypes.adminonly eq 1 and not (
+				<cfif not rsItemTypes.recordcount or rsItemTypes.recordcount and (rsItemTypes.adminonly neq 1 or (
 					rc.$.currentUser().isAdminUser() 
 					or rc.$.currentUser().isSuperUser()
-					)>
+					))>
 					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
 						<li class="new#i#">
 							<cfif len(rsItemTypes.description)>
