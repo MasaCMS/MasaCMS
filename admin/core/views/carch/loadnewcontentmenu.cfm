@@ -70,28 +70,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#$.dspZoomNoLinks(parentBean.getCrumbArray())#
 	--->
 	<div class="add-content-ui">
+		<!---<cfdump var="#rsSubTypes#">--->
 		<ul>
 		<cfif rc.ptype neq 'Gallery'>
 			<cfloop list="#typeList#" index="i">
 				<cfquery name="rsItemTypes" dbtype="query">
 					select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) = 'default'
-					<cfif not (
+				</cfquery>
+				<cfif not rsItemTypes.recordcount or rsItemTypes.recordcount and (rsItemTypes.adminonly neq 1 or (
+					rc.$.currentUser().isAdminUser() 
+					or rc.$.currentUser().isSuperUser()
+					))>
+					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
+						<li class="new#i#">
+							<cfif len(rsItemTypes.description)>
+								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
+							</cfif>
+							<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
+						</li>
+					</cfif>
+				</cfif>
+				<cfquery name="rsItemTypes" dbtype="query">
+				select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
+				<cfif not (
 						rc.$.currentUser().isAdminUser() 
 						or rc.$.currentUser().isSuperUser()
 						)>
 						and adminonly !=1
 					</cfif>
-				</cfquery>
-				<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
-					<li class="new#i#">
-						<cfif len(rsItemTypes.description)>
-							<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
-						</cfif>
-						<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
-					</li>
-				</cfif>
-				<cfquery name="rsItemTypes" dbtype="query">
-				select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
 				</cfquery>
 				<cfloop query="rsItemTypes">
 					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/#rsItemTypes.subType#')>
@@ -116,6 +122,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>	
 			<cfquery name="rsItemTypes" dbtype="query">
 				select * from rsSubTypes where lower(type)='file' and lower(subtype) != 'default'
+				<cfif not (
+					rc.$.currentUser().isAdminUser() 
+					or rc.$.currentUser().isSuperUser()
+					)>
+					and adminonly !=1
+				</cfif>
 			</cfquery>
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItem">

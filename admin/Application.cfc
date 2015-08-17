@@ -362,7 +362,8 @@ component extends="framework" output="false" {
 			session.alerts['#session.siteid#']=structNew();
 		}
 
-		if(!len(request.context.siteid) && len(session.siteid)){
+		if(request.action neq 'core:csettings.editSite' 
+			&& !len(request.context.siteid) && len(session.siteid)){
 			request.context.siteid=session.siteid;
 		}
 			

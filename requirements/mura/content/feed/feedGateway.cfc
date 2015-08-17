@@ -345,6 +345,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 												<cfif not openGrouping>and</cfif> (
 												<cfset openGrouping=true />
+											<cfelseif listFindNoCase("and not (",param.getRelationship())>
+												<cfif not openGrouping>and</cfif> not (
+												<cfset openGrouping=true />
+											<cfelseif listFindNoCase("or not (",param.getRelationship())>
+												<cfif not openGrouping>or</cfif> not (
+												<cfset openGrouping=true />
 											<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 												)
 												<cfset openGrouping=false />
@@ -667,6 +673,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset openGrouping=true />
 							<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 								<cfif not openGrouping>and</cfif> (
+								<cfset openGrouping=true />
+							<cfelseif listFindNoCase("and not (",param.getRelationship())>
+								<cfif not openGrouping>and</cfif> not (
+								<cfset openGrouping=true />
+							<cfelseif listFindNoCase("or not (",param.getRelationship())>
+								<cfif not openGrouping>or</cfif> not (
 								<cfset openGrouping=true />
 							<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 								)
