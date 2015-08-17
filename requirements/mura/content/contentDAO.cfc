@@ -1502,8 +1502,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
+	<cfset var previewData="">
 	<cfoutput>
-		<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		<cfif isDefined('session.mura')>
+			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		</cfif>
 		<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
 			and (
 					(#arguments.table#.active = 1			
