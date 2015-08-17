@@ -1100,7 +1100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 		<cfif arguments.activeOnly>
 			<cfif isDefined('session.mura')>
-				<cfset var previewData=sessionggetCurrentUser().getValue("ChangesetPreviewData")>
+				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 			</cfif>
 			<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
 			and (
