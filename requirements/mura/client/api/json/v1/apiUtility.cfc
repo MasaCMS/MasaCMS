@@ -263,7 +263,8 @@ component extends="mura.cfobject" {
 			var httpRequestData=getHTTPRequestData();
 
 			param name="session.siteid" default=variables.siteid;
-
+			getBean('userManager').setUserStructDefaults();
+			
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
