@@ -60,6 +60,7 @@ var siteManager = {
 	//submitDialogs:[{type:'alert',message:'test1',condition:function(){return true}},{type:'confirmation',message:'test2',condition:function(){return true}}],
 	submitDialogs:[],
 	submitActions:[],
+	assigningChangeset:false,
 	addSubmitDialog:function(dialog){
 		siteManager.submitDialogs.push(dialog)
 	},
@@ -141,6 +142,18 @@ var siteManager = {
 				for(var i=0;i<actions.length;i++){
 					actions[i]();
 				}
+
+				if(siteManager.assigningChangeset){
+					$("#changesetID").val(currentChangesetSelection);
+					$("#removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
+					
+					if(currentChangesetSelection=='other'){
+						$("#changesetname").val($("#_changesetname").val());
+					} else {
+						$("#changesetname").val('');
+					}
+				}
+
 				siteManager.formSubmitted = true;
 				document.contentForm.submit();
 			}

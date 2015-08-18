@@ -203,11 +203,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#$.content('approvalstatus')#")#
 								</a>
 							<cfelseif $.content('approved') lt 1>
-								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
+								<cfif len($.content('changesetid'))>
+									<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
+									<i class="icon-ok status-queued"></i> 
+									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
+									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
+									</a>
+								<cfelse>
+									<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
 									<i class="icon-edit status-draft"></i> 
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
 								</a>
+								</cfif>
+								
 							<cfelse>
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
 									<i class="icon-book status-archived"></i> 

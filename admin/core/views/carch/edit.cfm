@@ -435,7 +435,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
 							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
 						<cfelseif rc.contentBean.getapproved() lt 1>
-							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							<cfif len(rc.contentBean.getChangesetID())>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
+							<cfelse>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							</cfif>
 						<cfelse>
 							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
 						</cfif>
