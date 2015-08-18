@@ -141,6 +141,17 @@ var siteManager = {
 				for(var i=0;i<actions.length;i++){
 					actions[i]();
 				}
+
+				if(currentChangesetSelection){
+					$("#changesetID").val(currentChangesetSelection);
+					$("#removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
+					
+					if(currentChangesetSelection=='other'){
+						$("#changesetname").val($("#_changesetname").val());
+					} else {
+						$("#changesetname").val('');
+					}
+				}
 				siteManager.formSubmitted = true;
 				document.contentForm.submit();
 			}
