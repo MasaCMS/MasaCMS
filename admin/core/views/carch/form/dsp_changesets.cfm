@@ -26,6 +26,8 @@ function removeChangesetPrompt(changesetID){
 	currentChangesetSelection=changesetID;
 }
 
+var assigningChangeset=false;
+
 function saveToChangeset(changesetid,siteid,keywords){
 	
 	var url = 'index.cfm';
@@ -39,16 +41,19 @@ function saveToChangeset(changesetid,siteid,keywords){
 			jQuery('##changesetContainer').html(data);
 			stripe('stripe');
 			});
-		
+
+
 		jQuery("##changesetContainer").dialog({
 			resizable: false,
 			modal: true,
+			close: function( event, ui ) { siteManager.assigningChangeset=false;},
 			buttons: {
 				'#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
 					jQuery(this).dialog('close');
-					if (siteManager.configuratorMode == 'backEnd') {
+					if(siteManager.configuratorMode == 'backEnd') {
+						siteManager.assigningChangeset=true;
 						if(siteManager.ckContent()){
-							submitForm(document.contentForm, 'add');
+							//submitForm(document.contentForm, 'add');
 						}
 					} else {
 						siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
