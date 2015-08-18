@@ -87,8 +87,12 @@ var siteManager = {
 					if(dialog.type.toLowerCase()=='confirmation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								confirmDialog(dialog.message,
-									function(){handled++; submit()}
+								confirmDialog(
+									{
+										message:dialog.message,
+										yesAction:function(){handled++; submit()},
+										title:dialog.title
+									}
 								);
 
 								return false
@@ -96,8 +100,12 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							confirmDialog(dialog.message,
-								function(){handled++; submit()}
+							confirmDialog(
+								{
+									message:dialog.message,
+									yesAction:function(){handled++; submit()}
+									title:dialog.title 
+								}
 							);
 
 							return false
@@ -105,8 +113,12 @@ var siteManager = {
 					} else if (dialog.type.toLowerCase()=='alert'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog(dialog.message,
-									function(){handled++; submit()}
+								alertDialog(
+									{
+										message:dialog.message,
+										okAction:function(){handled++; submit()},
+										title:dialog.title 
+									}
 								);
 
 								return false
@@ -114,8 +126,12 @@ var siteManager = {
 								handled++;
 							}
 						} else {
-							alertDialog(dialog.message,
-								function(){handled++; submit()}
+							alertDialog(
+								{
+									message:dialog.message,
+									okAction:function(){handled++; submit()},
+									title:dialog.title 
+								}
 							);
 
 							return false
@@ -123,8 +139,12 @@ var siteManager = {
 					} else if (dialog.type.toLowerCase()=='validation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog(dialog.message,
-									function(){handled++}
+								alertDialog(
+									{
+										message:dialog.message,
+										okAction:function(){handled++;},
+										title:dialog.title 
+									}
 								);
 
 								return false
