@@ -536,6 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset it.setEntityName(getValue('entityName'))>
+	<cfset it.setValue('feed',this)>
 
 	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>
