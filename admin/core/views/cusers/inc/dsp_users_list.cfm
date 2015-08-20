@@ -46,7 +46,6 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<cfset local.canEdit = rc.$.currentUser().isInGroup('Admin') || rc.$.currentUser().isSuperUser() />
 	<cfif IsDefined('rc.it')>
 
 		<cfif rc.it.hasNext()>
@@ -85,7 +84,7 @@
 						<cfloop condition="rc.it.hasNext()">
 							<cfscript>
 								local.item = rc.it.next();
-								local.canEdit = local.canEdit || local.item.getValue('isPublic') == 1;
+								local.canEdit = rc.$.currentUser().isInGroup('Admin') || rc.$.currentUser().isSuperUser() || local.item.getValue('isPublic') == 1;
 							</cfscript>
 							<tr>
 
