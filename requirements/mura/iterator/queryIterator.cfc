@@ -27,6 +27,7 @@
 	<cfset variables.maxRecordsPerPage=1000>
 	<cfset variables.recordTranslator="">
 	<cfset variables.iteratorID="">
+	<cfset variables.feed="">
 	<cfset variables.recordIDField="id">
 	<cfset variables.pageQueries=structNew()>
 
@@ -36,6 +37,20 @@
 		<cfset variables.pageIndex = 1 />
 		<cfset variables.iteratorID="i" & hash(createUUID())>
 		<cfreturn THIS />
+	</cffunction>
+
+	<cffunction name="setFeed" output="false">
+		<cfargument name="feed">
+		<cfset variables.feed=arguments.feed>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="getFeed" output="false">
+		<cfreturn variables.feed>
+	</cffunction>
+
+	<cffunction name="hasFeed" output="false">
+		<cfreturn isObject(variables.feed)>
 	</cffunction>
 	
 	<cffunction name="getIteratorID" access="public" output="false" returntype="any">
@@ -85,10 +100,6 @@
 			<cfset last=getRecordCount()>
 		</cfif>
 		<cfreturn last />
-	</cffunction>
-	
-	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
-		<cfreturn variables.pageIndex />
 	</cffunction>
 	
 	<cffunction name="setStartRow" access="public" output="false">
@@ -169,7 +180,17 @@
 		<cfreturn variables._recordCount />
 	</cffunction>
 	
-	<cffunction name="setPage" access="public" output="false">
+	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
+		<cfreturn variables.pageIndex />
+	</cffunction>
+
+	<cffunction name="setPage" output="false">
+		<cfargument name="pageIndex">
+		<cfset setPageIndex(arguments.pageIndex)>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="setPageIndex" access="public" output="false">
 		<cfargument name="pageIndex" type="numeric" required="true">
 		<cfset variables.pageIndex = arguments.pageIndex />
 		<cfset variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
@@ -179,6 +200,16 @@
 			<cfset variables.pageIndex=1>
 		</cfif>
 		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="setItemsPerPage" access="public" output="false">
+		<cfargument name="itemsPerPage">
+		<cfset setNextN(nextN=arguments.itemsPerPage)>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="getItemsPerPage" access="public" output="false" returntype="any">
+		<cfreturn variables.maxRecordsPerPage>
 	</cffunction>
 	
 	<cffunction name="setNextN" access="public" output="false">

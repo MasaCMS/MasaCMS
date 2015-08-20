@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="orderby" type="string" default=""/>
 	<cfproperty name="additionalColumns" type="string" default="" />
 	<cfproperty name="sortTable" type="string" default="" />
-	<cfproperty name="page" type="numeric" default="0" />
+	<cfproperty name="pageIndex" type="numeric" default="1" />
 	
 <cffunction name="init" output="false">
 	
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.tableFieldlist=""/>
 	<cfset variables.instance.nextN=0>
 	<cfset variables.instance.maxItems=0>
-	<cfset variables.instance.page=0>
+	<cfset variables.instance.pageIndex=1>
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
 	<cfset variables.instance.fieldAliases={}/>
@@ -110,6 +110,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="orderby">
 	<cfset variables.instance.orderby=arguments.orderby>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getSort" output="false">
+	<cfreturn variables.instance.orderby>
+</cffunction>
+
+<cffunction name="setSort" output="false">
+	<cfargument name="sort">
+	<cfset setOrderBy(orderby=arguments.sort)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSortDirection" access="public" output="false">
+	<cfargument name="sortDirection" type="any" />
+	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
+	<cfset variables.instance.sortDirection = arguments.sortDirection />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setItemsPerPage" access="public" output="false">
+	<cfargument name="itemsPerPage">
+	<cfset setNextN(nextN=arguments.itemsPerPage)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getItemsPerPage" output="false">
+	<cfreturn variables.instance.NextN>
 </cffunction>
 
 <cffunction name="setNextN" access="public" output="false">
@@ -536,18 +564,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset it.setEntityName(getValue('entityName'))>
-	<cfset it.setValue('feed',this)>
-
-	<cfset it.setQuery(rs,variables.instance.nextN)>
+	<cfset it.setQuery(rs)>
+	<cfset it.setFeed('feed',this)>
+	<cfset it.setPageIndex(getValue('pageIndex'))>
+	<cfset it.setItemsPerPage(getItemsPerPage())>
+	
 	<cfreturn it>
-</cffunction>
-
-<cffunction name="setSortDirection" access="public" output="false">
-	<cfargument name="sortDirection" type="any" />
-	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
-	<cfset variables.instance.sortDirection = arguments.sortDirection />
-	</cfif>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAvailableCount" output="false">
@@ -565,7 +587,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getOffset" output="false">
-	<cfreturn (getValue('page')-1) * getValue('nextN')>
+	<cfreturn (getValue('pageIndex')-1) * getValue('nextN')>
 </cffunction>
 
 <cffunction name="getFetch" output="false">

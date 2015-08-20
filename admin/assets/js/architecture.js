@@ -103,7 +103,7 @@ var siteManager = {
 							confirmDialog(
 								{
 									message:dialog.message,
-									yesAction:function(){handled++; submit()}
+									yesAction:function(){handled++; submit()},
 									title:dialog.title 
 								}
 							);
