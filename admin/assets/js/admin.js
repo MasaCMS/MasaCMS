@@ -582,7 +582,7 @@ function validateForm(theForm) {
 		}
 
 		$("#alertDialogMessage").html(errors);
-		("#alertDialog").attr('title','Alert');
+		$("#alertDialog").attr('title','Alert');
 		$("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
