@@ -83,7 +83,7 @@ var siteManager = {
 			for(i=0;i<dialogs.length;i++){
 				if(i == handled){
 					var dialog=dialogs[i];
-
+					
 					if(dialog.type.toLowerCase()=='confirmation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
@@ -154,6 +154,8 @@ var siteManager = {
 						} else {
 							handled++;
 						}
+					} else {
+						handled++;
 					}
 				}
 			}

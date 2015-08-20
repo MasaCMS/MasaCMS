@@ -1119,7 +1119,6 @@ function setFileSelectors() {
 }
 
 function alertDialog(message,okAction,title) {
-	_okAction = okAction;
 
 	if(typeof message == 'object'){
 		var config=message;
@@ -1128,6 +1127,8 @@ function alertDialog(message,okAction,title) {
 		title=config.title || 'Alert';
 	}
 
+	var _okAction = okAction;
+	
 	title= title || 'Alert';
 	$("#alertDialog").attr('title',title);
 
