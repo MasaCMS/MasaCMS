@@ -61,20 +61,14 @@
 </cfif>
 </cfsilent><cfoutput><cfprocessingdirective suppressWhitespace="true"><!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
-	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
+	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
+	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if (gte IE 9)|!(IE)]><!--><html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
 	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
 </cfif>
 	<head>
-		<cfif Len(application.configBean.getWindowDocumentDomain())>
-			<script type="text/javascript">
-				window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
-			</script>
-		</cfif>
-
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta charset="utf-8">
 		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
@@ -82,6 +76,12 @@
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
+
+		<cfif Len(application.configBean.getWindowDocumentDomain())>
+			<script type="text/javascript">
+				window.document.domain = '#application.configBean.getWindowDocumentDomain()#';
+			</script>
+		</cfif>
 
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -113,7 +113,6 @@
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript"></script>
 
-		
 		<!-- CK Editor/Finder -->
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/adapters/jquery.js"></script>

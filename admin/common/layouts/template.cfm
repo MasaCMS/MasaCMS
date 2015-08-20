@@ -58,14 +58,17 @@
 	</cfscript>
 </cfif>
 <cfif cgi.http_user_agent contains 'msie'>
-	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
-	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"> <![endif]-->
+	<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
+	<!--[if IE 7 ]><html class="mura ie ie7" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
+	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if (gte IE 9)|!(IE)]><!--><html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
 	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
 </cfif>
   <head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta charset="utf-8">
+
 		<cfsilent>
 			<cfparam name="request.action" default="core:cplugin.plugin">
 			<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
@@ -75,7 +78,7 @@
 			<cfparam name="rc.activetab" default="0">
 			<cfparam name="rc.renderMuraAlerts" default="#application.configBean.getValue(property='renderMuraAlerts',defaultValue=true)#">
 			<cfparam name="rc.activepanel" default="0">
-			<cfparam name="rc.siteid" default='#session.siteID#'>
+			<cfparam name="rc.siteid" default="#session.siteID#">
 			<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 			<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
 			<cfif not len(rc.siteID)>
@@ -83,89 +86,88 @@
 			</cfif>
 			<cfparam name="moduleTitle" default="">
 			<cfif not len(moduleTitle)>
-			<cfswitch expression="#rc.originalcircuit#">
-			<cfcase value="cArch">
-			<cfswitch expression="#rc.moduleID#">
-			<cfcase value="00000000000000000000000000000000003">
-				<cfset moduleTitle="Components Manager"/>
-			</cfcase>
-			<cfcase value="00000000000000000000000000000000004">
-				<cfset moduleTitle="Forms Manager"/>
-			</cfcase>
-			<cfcase value="00000000000000000000000000000000000">
-				<cfset moduleTitle="Site Manager"/>
-			</cfcase>
-			<cfdefaultcase>
-				<cfif rc.originalfuseaction eq "imagedetails">
-					<cfset moduleTitle="Image Details">
-			  <cfelseif rc.muraAction eq 'core:carch.export'>
-			    <cfset moduleTitle="Export Content">
-			  <cfelseif rc.muraAction eq 'core:carch.import'>
-			    <cfset moduleTitle="Import Content">
-				<cfelse>
-					<cfset moduleTitle="Drafts">
-				</cfif>	
-			</cfdefaultcase>
-			</cfswitch>
-			</cfcase>
-			<cfcase value="cSettings">
-			<cfset moduleTitle="Settings Manager"/>
-			</cfcase>
-			<cfcase value="cPrivateUsers">
-			<cfset moduleTitle="Admin Users"/>
-			</cfcase>
-			<cfcase value="cPublicUsers">
-			<cfset moduleTitle="Site Members"/>
-			</cfcase>
-			<cfcase value="cEmail">
-			<cfset moduleTitle="Email Broadcaster"/>
-			</cfcase>
-			<cfcase value="cLogin">
-			<cfset moduleTitle="Login"/>
-			</cfcase>
-			<cfcase value="cMailingList">
-			<cfset moduleTitle="Mailing Lists"/>
-			</cfcase>
-			<cfcase value="cMessage">
-			<cfset moduleTitle="Message"/>
-			</cfcase>
-			<cfcase value="cAdvertising">
-			<cfset moduleTitle="Advertising Manager"/>
-			</cfcase>
-			<cfcase value="cEditProfile">
-			<cfset moduleTitle="Edit Profile"/>
-			</cfcase>
-			<cfcase value="cFeed">
-			<cfset moduleTitle="Content Collections"/>
-			</cfcase>
-			<cfcase value="cFilemanager">
-			<cfset moduleTitle="File Manager"/>
-			</cfcase>
-			<cfcase value="cDashboard">
-			<cfset moduleTitle="Dashboard"/>
-			</cfcase>
-			<cfcase value="cCategory">
-			<cfset moduleTitle="Category Manager"/>
-			</cfcase>
-			<cfcase value="cExtend">
-			<cfset moduleTitle="Class Extension Manager"/>
-			</cfcase>
-			<cfcase value="cPerm">
-			<cfset moduleTitle="Permissions"/>
-			</cfcase>
-			<cfcase value="cPlugin">
-			<cfset moduleTitle="Plugins"/>
-			</cfcase>
-			<cfdefaultcase>
-			<cfset moduleTitle="">
-			</cfdefaultcase>
-			</cfswitch>
+				<cfswitch expression="#rc.originalcircuit#">
+					<cfcase value="cArch">
+					<cfswitch expression="#rc.moduleID#">
+					<cfcase value="00000000000000000000000000000000003">
+						<cfset moduleTitle="Components Manager"/>
+					</cfcase>
+					<cfcase value="00000000000000000000000000000000004">
+						<cfset moduleTitle="Forms Manager"/>
+					</cfcase>
+					<cfcase value="00000000000000000000000000000000000">
+						<cfset moduleTitle="Site Manager"/>
+					</cfcase>
+					<cfdefaultcase>
+						<cfif rc.originalfuseaction eq "imagedetails">
+							<cfset moduleTitle="Image Details">
+					  <cfelseif rc.muraAction eq 'core:carch.export'>
+					    <cfset moduleTitle="Export Content">
+					  <cfelseif rc.muraAction eq 'core:carch.import'>
+					    <cfset moduleTitle="Import Content">
+						<cfelse>
+							<cfset moduleTitle="Drafts">
+						</cfif>	
+					</cfdefaultcase>
+					</cfswitch>
+					</cfcase>
+					<cfcase value="cSettings">
+					<cfset moduleTitle="Settings Manager"/>
+					</cfcase>
+					<cfcase value="cPrivateUsers">
+					<cfset moduleTitle="Admin Users"/>
+					</cfcase>
+					<cfcase value="cPublicUsers">
+					<cfset moduleTitle="Site Members"/>
+					</cfcase>
+					<cfcase value="cEmail">
+					<cfset moduleTitle="Email Broadcaster"/>
+					</cfcase>
+					<cfcase value="cLogin">
+					<cfset moduleTitle="Login"/>
+					</cfcase>
+					<cfcase value="cMailingList">
+					<cfset moduleTitle="Mailing Lists"/>
+					</cfcase>
+					<cfcase value="cMessage">
+					<cfset moduleTitle="Message"/>
+					</cfcase>
+					<cfcase value="cAdvertising">
+					<cfset moduleTitle="Advertising Manager"/>
+					</cfcase>
+					<cfcase value="cEditProfile">
+					<cfset moduleTitle="Edit Profile"/>
+					</cfcase>
+					<cfcase value="cFeed">
+					<cfset moduleTitle="Content Collections"/>
+					</cfcase>
+					<cfcase value="cFilemanager">
+					<cfset moduleTitle="File Manager"/>
+					</cfcase>
+					<cfcase value="cDashboard">
+					<cfset moduleTitle="Dashboard"/>
+					</cfcase>
+					<cfcase value="cCategory">
+					<cfset moduleTitle="Category Manager"/>
+					</cfcase>
+					<cfcase value="cExtend">
+					<cfset moduleTitle="Class Extension Manager"/>
+					</cfcase>
+					<cfcase value="cPerm">
+					<cfset moduleTitle="Permissions"/>
+					</cfcase>
+					<cfcase value="cPlugin">
+					<cfset moduleTitle="Plugins"/>
+					</cfcase>
+					<cfdefaultcase>
+					<cfset moduleTitle="">
+					</cfdefaultcase>
+				</cfswitch>
 			</cfif>
 			<cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
 			<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
 		</cfsilent>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta charset="utf-8">
+
 		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="Blue River Interactive Group">
