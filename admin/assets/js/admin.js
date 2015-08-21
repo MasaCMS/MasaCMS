@@ -1118,86 +1118,103 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message,okAction,title) {
+function alertDialog(message,okAction,title,width) {
 
 	if(typeof message == 'object'){
 		var config=message;
 		message=config.message || 'Message not defined';
 		okAction=config.okAction || function(){};
 		title=config.title || 'Alert';
+		width=config.width || 0;
 	}
-
-	var _okAction = okAction;
 	
 	title= title || 'Alert';
-	$("#alertDialog").attr('title',title);
+	width= width || null;
 
-	$("#alertDialogMessage").html(message);
-	$("#alertDialog").dialog({
+	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
 			Ok: function() {
 				$(this).dialog('close');
-				if(_okAction){
-					if(typeof(_okAction) == 'function') {
-						_okAction();
+				if(okAction){
+					if(typeof(okAction) == 'function') {
+						okAction();
 					} else if (typeof(_okAction) == 'string'){
-						actionModal(_okAction);
+						actionModal(okAction);
 					}
 				}
 			}
 		}
-	});
+	};
+
+	if(width){
+		dialogConfig.width=width;
+	}
+
+	$("#alertDialog").attr('title',title);
+	$("#alertDialogMessage").html(message);
+	$("#alertDialog").dialog(dialogConfig);
 
 	return false;
 }
 
-function confirmDialog(message, yesAction, noAction,title) {
+function confirmDialog(message, yesAction, noAction,title,width) {
 
 	if(typeof message == 'object'){
 		var config=message;
 		message=config.message || 'Message not defined';
-		yesAction=config.yesAction || function(){};
-		noAction=config.noAction || function(){};
+		
+		if(config.yesAction){
+			yesAction=config.yesAction;
+		}
+
+		if(config.noAction){
+			noAction=config.noAction;
+		}
+		
 		title=config.title || 'Alert';
+		width=config.width || 0;
 	}
 
-	var _yesAction = yesAction;
-	var _noAction = noAction;
-
 	title= title || 'Alert';
-	$("#alertDialog").attr('title',title);
 
-	$("#alertDialogMessage").html(message);
-	$("#alertDialog").dialog({
+	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
 			'Yes': function() {
 				$(this).dialog('close');
-				if(typeof(_yesAction) == 'function') {
-					_yesAction();
+				if(typeof(yesAction) == 'function') {
+					yesAction();
 				} else {
-					actionModal(_yesAction);
+					actionModal(yesAction);
 				}
 
 			},
 			'No': function() {		
-				if(typeof(_noAction) != 'undefined') {
-					if(typeof(_noAction) == 'function') {
-						_noAction();
+				if(typeof(noAction) != 'undefined') {
+					if(typeof(noAction) == 'function') {
+						noAction();
 					} else {
-						actionModal(_noAction);
+						actionModal(noAction);
 					}
 				} else {
 					$(this).dialog('close');
 				}
 			}
 		}
-	});
+	};
+
+	if(width){
+		dialogConfig.width=width;
+	}
+
+	$("#alertDialog").attr('title',title);
+	$("#alertDialogMessage").html(message);
+	$("#alertDialog").dialog(dialogConfig);
 
 	return false;
 }

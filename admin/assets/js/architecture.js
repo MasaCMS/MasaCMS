@@ -87,65 +87,35 @@ var siteManager = {
 					if(dialog.type.toLowerCase()=='confirmation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								confirmDialog(
-									{
-										message:dialog.message,
-										yesAction:function(){handled++; submit()},
-										title:dialog.title
-									}
-								);
+								confirmDialog($.extend(dialog,{yesAction:function(){handled++; submit()}}));
 
 								return false
 							} else {
 								handled++;
 							}
 						} else {
-							confirmDialog(
-								{
-									message:dialog.message,
-									yesAction:function(){handled++; submit()},
-									title:dialog.title 
-								}
-							);
+							confirmDialog($.extend(dialog,{yesAction:function(){handled++; submit()}}));
 
 							return false
 						} 
 					} else if (dialog.type.toLowerCase()=='alert'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog(
-									{
-										message:dialog.message,
-										okAction:function(){handled++; submit()},
-										title:dialog.title 
-									}
-								);
+								alertDialog($.extend(dialog,{okAction:function(){handled++; submit()}}));
 
 								return false
 							} else {
 								handled++;
 							}
 						} else {
-							alertDialog(
-								{
-									message:dialog.message,
-									okAction:function(){handled++; submit()},
-									title:dialog.title 
-								}
-							);
+							alertDialog($.extend(dialog,{okAction:function(){handled++; submit()}}));
 
 							return false
 						}
 					} else if (dialog.type.toLowerCase()=='validation'){
 						if(typeof dialog.condition == 'function'){
 							if(dialog.condition(dialog)){
-								alertDialog(
-									{
-										message:dialog.message,
-										okAction:function(){handled++;},
-										title:dialog.title 
-									}
-								);
+								alertDialog($.extend(dialog,{okAction:function(){handled++;}}));
 
 								return false
 							} else {
