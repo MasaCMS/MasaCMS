@@ -632,22 +632,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arrayLen(pluginEventMappings)>
 		<cfoutput>
-		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
-			<cfif len(trim(renderedEvent))>
-				<cfset tabLabel = Len($.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
-				<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
-				<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
-				<cfif ListFind(tabList,tabID)>
-					<cfset tabID = tabID & i />
+			<cfset renderedEvents = '' />
+			<cfset eventIdx = 0 />
+			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+				<cfset eventToRender = pluginEventMappings[i].eventName />
+
+				<cfif ListFindNoCase(renderedEvents, eventToRender)>
+					<cfset eventIdx++ />
+				<cfelse>
+					<cfset renderedEvents = ListAppend(renderedEvents, eventToRender) />
+					<cfset eventIdx=1 />
 				</cfif>
-				<cfset tabList=listAppend(tabList,tabID)>
-				<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane fade">
-					#renderedEvent#
-				</div>
-			</cfif>
-		</cfloop>
+
+				<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
+				<cfif len(trim(renderedEvent))>
+					<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
+					<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
+					<cfset tabID="tab" & $.createCSSID(tabLabel)>
+					<cfif ListFind(tabList,tabID)>
+						<cfset tabID = tabID & i />
+					</cfif>
+					<cfset tabList=listAppend(tabList,tabID)>
+					<cfset pluginEvent.setValue("tabList",tabLabelList)>
+					<div id="#tabID#" class="tab-pane fade">
+						#renderedEvent#
+					</div>
+				</cfif>
+			</cfloop>
 		</cfoutput>
 	</cfif>
 

@@ -1719,60 +1719,64 @@ select * from tplugins order by #arguments.orderby#
 		<cftry>
 		<cfif not isGlobalEvent and len(arguments.siteID)>
 			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
-					<cfset listenerArray=variables.siteListeners[siteIDadjusted]>
-					<cfset listenerArray=listenerArray[arguments.runat]>
+
+					<cfset listenerStruct = variables.siteListeners[siteIDadjusted] />
+					<cfset listenerArray=listenerStruct[arguments.runat] />
+
 					<cfif arrayLen(listenerArray)>
-						<cfset eventHandler=variables.eventHandlers[listenerArray[arguments.index].index]>
-						<cfif isNumeric(eventHandler)>
-							<cfset scriptIndex=eventHandler>
-							<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
-							<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">			
-								<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
-								<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
-								<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>	
-								<cfsavecontent variable="local.theDisplay1">
-								<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
-									<cfinvokeargument name="event" value="#arguments.event#">
-									<cfinvokeargument name="$" value="#muraScope#">
-									<cfinvokeargument name="mura" value="#muraScope#">
-								</cfinvoke>
-								</cfsavecontent>
-							
-								<cfif isDefined("local.theDisplay2")>
-									<cfset str=str & local.theDisplay2>
-								<cfelse>
-									<cfset str=str & local.theDisplay1>
-								</cfif>
-								
-							<cfelse>
-								<cfset tracePoint=initTracePoint("/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#")>
-								<cfsavecontent variable="local.theDisplay1">
-								<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope)#</cfoutput>
-								</cfsavecontent>
-								<cfset str=str & local.theDisplay1>
-							</cfif>
-							<cfset commitTracePoint(tracePoint)>
-							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
-						<cfelse>
-							<cfif not isObject(eventHandler)>
-								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
-							<cfsavecontent variable="local.theDisplay1">
-							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
-								<cfinvokeargument name="event" value="#arguments.event#">
-								<cfinvokeargument name="$" value="#muraScope#">
-								<cfinvokeargument name="mura" value="#muraScope#">
-							</cfinvoke>	
-							</cfsavecontent>
-							<cfif isDefined("local.theDisplay2")>
-								<cfset str=str & local.theDisplay2>
-							<cfelse>
-								<cfset str=str & local.theDisplay1>
-							</cfif>
-							<cfset commitTracePoint(tracePoint)>
-							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
-						</cfif>
+
+									<cfset eventHandler=variables.eventHandlers[listenerArray[arguments.index].index]>
+									<cfif isNumeric(eventHandler)>
+										<cfset scriptIndex=eventHandler>
+										<cfset currentModuleID=variables.rsScripts.moduleID[scriptIndex]>
+										<cfif listLast(variables.rsScripts.scriptfile[scriptIndex],".") neq "cfm">			
+											<cfset componentPath="plugins.#variables.rsScripts.directory[scriptIndex]#.#variables.rsScripts.scriptfile[scriptIndex]#">
+											<cfset eventHandler=getComponent(componentPath, variables.rsScripts.pluginID[scriptIndex], arguments.siteID, variables.rsScripts.docache[scriptIndex])>
+											<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>	
+											<cfsavecontent variable="local.theDisplay1">
+												<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+													<cfinvokeargument name="event" value="#arguments.event#">
+													<cfinvokeargument name="$" value="#muraScope#">
+													<cfinvokeargument name="mura" value="#muraScope#">
+												</cfinvoke>
+											</cfsavecontent>
+										
+											<cfif isDefined("local.theDisplay2")>
+												<cfset str=str & local.theDisplay2>
+											<cfelse>
+												<cfset str=str & local.theDisplay1>
+											</cfif>
+											
+										<cfelse>
+											<cfset tracePoint=initTracePoint("/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#")>
+											<cfsavecontent variable="local.theDisplay1">
+												<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#variables.rsScripts.directory[scriptIndex]#/#variables.rsScripts.scriptfile[scriptIndex]#",pluginConfig=getConfig(variables.rsScripts.pluginID[scriptIndex]), $=muraScope, mura=muraScope)#</cfoutput>
+											</cfsavecontent>
+											<cfset str=str & local.theDisplay1>
+										</cfif>
+										<cfset commitTracePoint(tracePoint)>
+										<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
+									<cfelse>
+										<cfif not isObject(eventHandler)>
+											<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+										</cfif>
+										<cfset tracePoint=initTracePoint("#eventHandler.getValue('_objectName')#.#arguments.runat#")>
+										<cfsavecontent variable="local.theDisplay1">
+										<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
+											<cfinvokeargument name="event" value="#arguments.event#">
+											<cfinvokeargument name="$" value="#muraScope#">
+											<cfinvokeargument name="mura" value="#muraScope#">
+										</cfinvoke>	
+										</cfsavecontent>
+										<cfif isDefined("local.theDisplay2")>
+											<cfset str=str & local.theDisplay2>
+										<cfelse>
+											<cfset str=str & local.theDisplay1>
+										</cfif>
+										<cfset commitTracePoint(tracePoint)>
+										<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+									</cfif>
+
 					</cfif>
 				</cfif>
 
