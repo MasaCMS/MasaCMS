@@ -909,7 +909,7 @@
 	}
 
 	function initShadowBox(el){
-	    if($(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
+	    if(mura(el).find('[data-rel^="shadowbox"],[rel^="shadowbox"]').length){
 	      loader().load(
 	        [
 	          mura.assetpath +'/css/shadowbox.min.css',
