@@ -48,8 +48,10 @@
 <cfset rsAddress=rc.userBean.getAddressById(rc.addressID)>
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
+
 <cfoutput>
-<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);"  autocomplete="off" >
 	<h1>#rbKey('user.memberaddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
@@ -175,17 +177,16 @@ initTabs(Array("#jsStringFormat(rbKey('user.basic'))#","#jsStringFormat(rbKey('u
 
 	<div class="form-actions">
 		<cfif rc.addressid eq ''>
-        
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
-           <cfelse>
-            	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
-				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteaddressconfirm'))#');" value="#rbKey('user.delete')#" />
+			<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
+        <cfelse>
+            <input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteaddressconfirm'))#');" value="#rbKey('user.delete')#" />
            </cfif>
-    </div>
+    	</div>
 
 
 		<input type="hidden" name="action" value="">
-		<input type="hidden" name="addressID" value="#rc.addressID#">
+		<input type="hidden" name="addressID" value="#esapiEncode('html_attr',rc.addressID)#">
 		<input type="hidden" name="isPublic" value="#rc.userBean.getIsPublic()#">
 		<cfif not rc.userBean.getAddresses().recordcount><input type="hidden" name="isPrimary" value="1"></cfif>
 	

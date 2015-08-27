@@ -307,7 +307,12 @@ component persistent='false' accessors='true' output='false' extends='controller
 				break;
 		}
 
-		variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
+		if(arguments.rc.routeid=='editprofile'){
+			variables.fw.redirect(action='cEditProfile.edit', path='./');
+		} else {
+			variables.fw.redirect(action='cUsers.edituser', preserve='siteid,userid,routeid', path='./');
+		}
+		
 	}
 
 	public any function route(rc) {
