@@ -45,34 +45,34 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
-<cfset dirPrefix= "objectclass/">
+<cfparam name="rc.layoutmanager" default="false">
 <cfswitch expression="#rc.classid#">	
 	<cfcase value="feed">
-		<cfinclude template="#dirPrefix#dsp_feed_configurator.cfm">
+		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
 	</cfcase>
 	<cfcase value="feed_slideshow">
-		<cfinclude template="#dirPrefix#dsp_slideshow_configurator.cfm">
+		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
 	</cfcase>
 	<cfcase value="category_summary">
-		<cfinclude template="#dirPrefix#dsp_category_summary_configurator.cfm">
+		<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
 	</cfcase>
 	<cfcase value="related_content,related_section_content">
-		<cfinclude template="#dirPrefix#dsp_related_content_configurator.cfm">
+		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
 	</cfcase>
 	<cfcase value="tag_cloud">
-		<cfinclude template="#dirPrefix#dsp_tagcloud_configurator.cfm">
+		<cfinclude template="objectclass/dsp_tagcloud_configurator.cfm">
 	</cfcase>
 	<cfcase value="site_map">
-		<cfinclude template="#dirPrefix#dsp_sitemap_configurator.cfm">
+		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
 	</cfcase>
 	<cfcase value="form">
-		<cfinclude template="#dirPrefix#dsp_form_configurator.cfm">
+		<cfinclude template="objectclass/dsp_form_configurator.cfm">
 	</cfcase>
 	<cfcase value="component">
-		<cfinclude template="#dirPrefix#dsp_component_configurator.cfm">
+		<cfinclude template="objectclass/dsp_component_configurator.cfm">
 	</cfcase>
 	<cfcase value="folder">
-		<cfinclude template="#dirPrefix#dsp_folder_configurator.cfm">
+		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
 	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>

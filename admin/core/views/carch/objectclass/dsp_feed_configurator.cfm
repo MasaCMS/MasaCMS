@@ -84,7 +84,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 	</cfif>
 	<cfif feed.getType() eq "local">		
-
 	<div class="fieldset-wrap row-fluid">
 		<div class="fieldset">
 			<div class="control-group">
@@ -124,110 +123,113 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      
 			</div>
 			
-	<div class="control-group">
-	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
-	<div class="controls">
-		<label class="radio inline">
-		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
-			#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-		</label>
-		<label class="radio inline">
-		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>
-		#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-		</label> 
-	</div>
-</div>
-			<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
-	<div>
-	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',feed.getAltName())#" maxlength="250">
-		  </div>
-	</div>
-</div>
-
-	<div class="control-group">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
-		</label>
-		<div class="controls">
-			<input name="cssclass" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getCssClass())#" maxlength="255">
-		</div>
-	</div>
-			
-	<div class="control-group">
-	<div class="span6">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
-		</label>
-		<div class="controls">
-			<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
-		</div>
-	</div>
-
-	<div class="span6">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
-		</label>
-		<div class="controls">
-			<input name="viewalllabel" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
-		</div>
-	</div>
-</div>
 			<div class="control-group">
-	<div class="span3">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
-		<div class="controls">
-			<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam span12">
-			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-			<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
-			</cfloop>
-			<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
-			</select>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
+				<div class="controls">
+					<label class="radio inline">
+					<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
+						#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+					</label>
+					<label class="radio inline">
+					<input name="displayName" data-displayobjectparam="displayName" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>
+					#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+					</label> 
+				</div>
+			</div>
+			<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
+				<div>
+				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
+					<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',feed.getAltName())#" maxlength="250">
+					  </div>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+				</label>
+				<div class="controls">
+					<input name="cssclass" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getCssClass())#" maxlength="255">
+				</div>
+			</div>
+					
+			<div class="control-group">
+				<div class="span6">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
+					</label>
+					<div class="controls">
+						<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
+					</div>
+				</div>
+
+				<div class="span6">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
+					</label>
+					<div class="controls">
+						<input name="viewalllabel" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
+					</div>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="span3">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
+					<div class="controls">
+						<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam span12">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+						<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
+						</cfloop>
+						<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
+						</select>
+					</div>
+				</div>
+				<div class="span3">
+				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
+						<div class="controls"><select name="nextN" data-displayobjectparam="nextN" class="objectParam span12">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+						<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
+						</cfloop>
+						<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>All</option>
+						</select>
+					  </div>
+				</div>
+			</div>
+
+			<div class="control-group" id="availableFields">
+				<label class="control-label">
+					<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+				</label>
+				<div id="sortableFields" class="controls">
+					<p class="dragMsg">
+						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+					</p>	
+								
+					<cfset displayList=feed.getDisplayList()>
+					<cfset availableList=feed.getAvailableDisplayList()>
+						
+					<ul id="availableListSort" class="displayListSortOptions">
+						<cfloop list="#availableList#" index="i">
+							<li class="ui-state-default">#trim(i)#</li>
+						</cfloop>
+					</ul>
+												
+					<ul id="displayListSort" class="displayListSortOptions">
+						<cfloop list="#displayList#" index="i">
+							<li class="ui-state-highlight">#trim(i)#</li>
+						</cfloop>
+					</ul>
+					<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
+				</div>	
+			</div>
 		</div>
 	</div>
-	<div class="span3">
-	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
-			<div class="controls"><select name="nextN" data-displayobjectparam="nextN" class="objectParam span12">
-			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-			<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
-			</cfloop>
-			<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>All</option>
-			</select>
-		  </div>
-	</div>
-	</div>
-			<div class="control-group" id="availableFields">
-		<label class="control-label">
-			<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
-		</label>
-		<div id="sortableFields" class="controls">
-			<p class="dragMsg">
-				<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
-			</p>	
-						
-			<cfset displayList=feed.getDisplayList()>
-			<cfset availableList=feed.getAvailableDisplayList()>
-				
-			<ul id="availableListSort" class="displayListSortOptions">
-				<cfloop list="#availableList#" index="i">
-					<li class="ui-state-default">#trim(i)#</li>
-				</cfloop>
-			</ul>
-										
-			<ul id="displayListSort" class="displayListSortOptions">
-				<cfloop list="#displayList#" index="i">
-					<li class="ui-state-highlight">#trim(i)#</li>
-				</cfloop>
-			</ul>
-			<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
-		</div>	
-	</div>
-	
-		<cfelse>
-		<div class="fieldset-wrap row-fluid">
-			<div class="fieldset">
+	<cfelse>
+	<div class="fieldset-wrap row-fluid">
+		<div class="fieldset">
 			<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
-				<div class="control-group">
+			<div class="control-group">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#
 				</label>
@@ -243,26 +245,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 			<div class="control-group">
-			<div class="span6">
-				<label class="control-label">
-					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
-				</label>
-				<div class="controls">
-					<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
+				<div class="span6">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
+					</label>
+					<div class="controls">
+						<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
+					</div>
 				</div>
-			</div>
 
-			<div class="span6">
-				<label class="control-label">
-					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
-				</label>
-				<div class="controls">
-					<input name="viewalllabel" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
+				<div class="span6">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
+					</label>
+					<div class="controls">
+						<input name="viewalllabel" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLabel())#" maxlength="100">
+					</div>
 				</div>
 			</div>
-			</div></div>
-		</cfif>
+		</div>
 	</div>
+	</cfif>
 </div>
 </cfoutput>
 </cfsavecontent>

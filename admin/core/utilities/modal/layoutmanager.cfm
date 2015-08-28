@@ -115,7 +115,9 @@
 	            </cfif>
 	            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
 	                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-	            </cfif>
+	            </cfif> 
+	            <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
+	            <optgroup label="Legacy Objects">
                 <cfif application.settingsManager.getSite($.event('siteid')).getAdManager()>
                   <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
                 </cfif>
@@ -129,7 +131,8 @@
                   <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
                   <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
                 </cfif>
-            	 <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
+                </optgroup>
+            	
               </select>
 
 			</div>
@@ -141,20 +144,6 @@
 			</div>
 		</div>
 
-		<!---
-		<div class="mura-sidebar__objects-list__object-group">
-			<div class="mura-sidebar__objects-list__object-group-heading">Add Content</div>
-			<div class="mura-sidebar__object-group-items">
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="standard_nav">Secondary Navigation</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="collection">Collection</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="content">Content</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="media">Media</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="text">Text</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="embed">Social Embed</div>
-				<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="helloworld">Hello World</div>
-			</div>
-		</div>
-		--->
 	</div>
 </div>
 

@@ -1170,7 +1170,7 @@
 								$customaction(theForm);
 								return false;
 							} else {
-								theForm.submit();
+								document.createElement('form').submit.call(theForm);
 							}
 						} else {
 							var msg='';

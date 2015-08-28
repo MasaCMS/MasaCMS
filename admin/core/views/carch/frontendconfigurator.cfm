@@ -10,10 +10,12 @@
 		<h1 id="configuratorHeader">Loading...</h1>
 		
 		<div class="clearfix">
-		    <div id="configurator" style="float: left; width: 50%;"><div class="load-inline"></div></div>
-		    <div style="float: right; width: 50%;"><h2>Preview</h2>
+		    <div id="configurator"><div class="load-inline"></div></div>
+		   <!---
+		    <div style="float: right; width: 30%;"><h2>Preview</h2>
 		    	<iframe id="configuratorPreview" style="width:100%;height:700px;" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
 		    </div>
+		    --->
 		</div>
 		
 		<div class="form-actions">	
@@ -111,7 +113,7 @@
 				}
 
 				frontEndProxy.addEventListener(onFrontEndMessage);
-				frontEndProxy.post({cmd:'setWidth',width:1200});
+				frontEndProxy.post({cmd:'setWidth',width:'900'});
 				frontEndProxy.post({cmd:'requestObjectParams',instanceid:'#esapiEncode("javascript",rc.instanceid)#'});
 		
 			}
