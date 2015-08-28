@@ -221,6 +221,7 @@
 					muraLooseDropTarget=null;
 					mura('#dragtype').html(item.data('object'));
 					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+
 					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
 				})
 				.on('dragend',
@@ -278,7 +279,13 @@
 
 		        //displayObject.setAttribute('data-droptarget',target.getSelector());
 		        initDraggableObject(displayObject);
-		        openFrontEndToolsModal(displayObject);
+		        
+		        var objectData=mura(displayObject).data();
+
+		        if(muraInlineEditor.objectHasConfigurator(objectData)){
+		        	openFrontEndToolsModal(displayObject);
+		    	}
+
 		        mura.processAsyncObject(displayObject);
 
 		        mura(displayObject).closest('.mura-displayregion').data('dirty',true);

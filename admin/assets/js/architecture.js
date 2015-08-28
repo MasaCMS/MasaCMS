@@ -2182,6 +2182,7 @@ buttons: {
 				}
 			}
 
+			/*
 			if(siteManager.layoutmanager){
 
 				if(configure) {
@@ -2191,6 +2192,7 @@ buttons: {
 
 				checkSelection = true;
 			}
+			*/
 
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
@@ -2712,7 +2714,7 @@ buttons: {
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: (siteManager.layoutmanager) ? 900 : 600,
+				width: 600,
 				position: getDialogPosition(),
 				buttons: {
 					Save: function() {
@@ -2775,7 +2777,9 @@ buttons: {
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
-					$("#configuratorHeader").html(config.title);
+					if(!siteManager.layoutmanager){
+						$("#configuratorHeader").html(config.title);
+					}
 				} else {
 					$("#configuratorContainer").dialog('option','title',config.title);
 				}

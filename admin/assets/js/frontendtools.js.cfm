@@ -391,15 +391,17 @@
 					if(region && region.length ){
 						if(region.data('perm')){
 							
-							item.html(window.mura.layoutmanagertoolbar + item.html());
+							if(window.muraInlineEditor.objectHasConfigurator(item.data())){
+								item.html(window.mura.layoutmanagertoolbar + item.html());
 
-							item.find(".frontEndToolsModal").on(
-								'click',
-								function(event){
-									event.preventDefault();
-									openFrontEndToolsModal(this);
-								}
-							);
+								item.find(".frontEndToolsModal").on(
+									'click',
+									function(event){
+										event.preventDefault();
+										openFrontEndToolsModal(this);
+									}
+								);
+							}
 						}
 					}
 					
@@ -937,9 +939,67 @@
 				started=true;
 			}
 		</cfscript>
+
+		},
+		pluginConfigurators:[],
+		getPluginConfigurator: function(objectid) {
+			for(var i = 0; i < window.muraInlineEditor.pluginConfigurators.length; i++) {
+				if(window.muraInlineEditor.pluginConfigurators[i].objectid == objectid || window.muraInlineEditor.pluginConfigurators[i].object == objectid) {
+					return window.muraInlineEditor.pluginConfigurators[i].init;
+				}
+			}
+
+			return "";
+		},
+		<cfoutput>customtaggroups:#serializeJSON(listToArray($.siteConfig('customTagGroups')))#,
+		allowopenfeeds:#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#,</cfoutput>
+		objectHasEditor:function(displayObject){
+			if(displayObject.object == 'form') {
+				return true;
+			} else if(displayObject.object == 'component') {
+				return true;
+			}
+			return false;
+		},
+		objectHasConfigurator:function(displayObject){
+			if(displayObject.object == 'feed') {
+				return true;
+			} else if(displayObject.object == 'feed_slideshow') {
+				return true;
+			} else if(displayObject.object == 'tag_cloud' && window.muraInlineEditor.customtaggroups.length) {
+				return true;
+			} else if(window.muraInlineEditor.allowopenfeeds && displayObject.object == 'category_summary') {
+				return true;
+			} else if(displayObject.object == 'site_map') {
+				return true;
+			} else if(displayObject.object == 'related_content' || displayObject.object == 'related_section_content') {
+				return true;
+			} else if(displayObject.object == 'plugin') {
+				if(window.muraInlineEditor.getPluginConfigurator(displayObject.objectid)){
+					return true;
+				}
+			}
+
+			return false;
 		}
 	};
+
+	<cfoutput>
+	<cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
+	<cfset nonPluginDisplayObjects=$.siteConfig().getDisplayObjectLookup()>
+	<cfloop query="rsPluginDisplayObjects">
+	muraInlineEditor.pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','init':'#rsPluginDisplayObjects.configuratorInit#'});
+	</cfloop>
+	<cfloop item="i" collection="#nonPluginDisplayObjects#">
+	<cfif len(nonPluginDisplayObjects[i].configuratorInit)>
+		muraInlineEditor.pluginConfigurators.push({'objectid':'#nonPluginDisplayObjects[i].objectid#','init':'#nonPluginDisplayObjects[i].configuratorInit#'});
+	</cfif>
+	</cfloop>
+	</cfoutput>
+
 	window.muraInlineEditor=muraInlineEditor;
+
+
 	</cfif>
 	</cfif>
 	window.toggleAdminToolbar=toggleAdminToolbar;
