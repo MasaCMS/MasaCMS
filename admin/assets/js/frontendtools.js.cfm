@@ -385,13 +385,15 @@
 				utility(".mura-object").each(function(){
 					var item=utility(this);
 					var region=item.closest(".mura-displayregion");
+					var objectParams;
 
 					item.addClass("active");
 					
 					if(region && region.length ){
 						if(region.data('perm')){
+							objectParams=item.data();
 							
-							if(window.muraInlineEditor.objectHasConfigurator(item.data())){
+							if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
 								item.html(window.mura.layoutmanagertoolbar + item.html());
 
 								item.find(".frontEndToolsModal").on(
