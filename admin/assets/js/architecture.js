@@ -2777,7 +2777,7 @@ buttons: {
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
-					if(!siteManager.layoutmanager){
+					if(siteManager.layoutmanager){
 						$("#configuratorHeader").html(config.title);
 					}
 				} else {
