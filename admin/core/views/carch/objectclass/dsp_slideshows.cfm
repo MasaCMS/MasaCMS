@@ -59,24 +59,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)#
 	</cfloop>
 <cfelse>
-	<div class="control-group">
-		<div class="controls">
-		<select name="availableObjects" 
-				id="availableObjects" 
-		        class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
-			<cfloop query="rc.rslist">
+	<div class="fieldset-wrap row-fluid">
+		<div class="fieldset">
+			<div class="control-group">
+				<div class="controls">
+				<select name="availableObjects" 
+						id="availableObjects" 
+				        class="multiSelect" 
+					        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
+					<cfloop query="rc.rslist">
 
-				<cfset title=rc.rslist.name
-					& ' - ' 
-					& application.rbFactory.getKeyValue(session.rb, 
-				                                    'sitemanager.content.fields.localindexslideshow')>
+						<cfset title=rc.rslist.name
+							& ' - ' 
+							& application.rbFactory.getKeyValue(session.rb, 
+						                                    'sitemanager.content.fields.localindexslideshow')>
 
-				<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed_slideshow','objectid':'#rc.rslist.feedID#','name':'#esapiEncode('javascript',title)#'}">
-					#esapiEncode('html',title)#
-				</option>
-			</cfloop>
-		</select>
+						<option title="#esapiEncode('html_attr',title)#" value="{'object':'feed_slideshow','objectid':'#rc.rslist.feedID#','name':'#esapiEncode('javascript',title)#'}">
+							#esapiEncode('html',title)#
+						</option>
+					</cfloop>
+				</select>
+				</div>
+			</div>
 		</div>
 	</div>
 </cfif>

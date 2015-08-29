@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<h2>#esapiEncode('html','#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h2>
 	</cfif>
 --->
-
+	<div class="fieldset-wrap row-fluid">
 	<div class="fieldset">
 		<cfif rc.classid eq "related_content">
 			<div class="control-group">
@@ -206,6 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			
 			</div>
-		</div>	
+		</div>
+	</div>	
 </cfoutput>
 
