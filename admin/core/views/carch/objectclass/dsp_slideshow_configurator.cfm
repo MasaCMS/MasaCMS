@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset feed.setImageSize("medium")>
 </cfif>
-	<div id="availableObjectParams"
+<div id="availableObjectParams"
 	data-object="feed_slideshow" 
 	data-name="#esapiEncode('html_attr','#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
 	data-objectid="#feed.getFeedID()#">
@@ -177,5 +177,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>	
 		</div>
 	</div>
-
+</div>
 </cfoutput>
