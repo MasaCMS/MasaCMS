@@ -2171,28 +2171,63 @@ buttons: {
 			}
 
 			if(tmpObject.object == 'plugin') {
-				var configurator = this.getPluginConfigurator(tmpObject.objectid);
+				if(tmpObject.object.objectid && tmpObject.object.objectid.toLowerCase() != 'none'){
+					var configurator = this.getPluginConfigurator(tmpObject.objectid);
 
-				if(configurator != '') {
-					if(configure) {
-						window[configurator](tmpObject);
-						return false;
+					if(configurator != '') {
+						if(configure) {
+							window[configurator](tmpObject);
+							return false;
+						} else if (this.layoutmanager){
+							this.initGenericConfigurator(data);
+							return false;
+						}
+						checkSelection = true;
 					}
-					checkSelection = true;
+				} else if(siteManager.layoutmanager){
+					this.initGenericConfigurator(tmpObject);
 				}
 			}
 
-			/*
 			if(siteManager.layoutmanager){
 
 				if(configure) {
-					this.initGenericConfigurator(tmpObject);
-					return false;
+					if(tmpObject.object == 'container') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'collection') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'media') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'text') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'socialembed') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'text') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'form') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'system') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'plugin') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'navigation') {
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					}
 				}
 
 				checkSelection = true;
 			}
-			*/
+			
 
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
@@ -2564,29 +2599,48 @@ buttons: {
 	},
 
 	initDisplayObjectConfigurators: function() {
+		var self=this;
 		$(".displayRegions").dblclick(function() {
 			var regionid = $(this).attr("data-regionid");
-			var data = siteManager.getDisplayObjectConfig(regionid);
+			var data = self.getDisplayObjectConfig(regionid);
 
-			if(data.object == 'feed') {
-				siteManager.initFeedConfigurator(data);
+			if(data.object == 'container') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'collection') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'navigation') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'media') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'text') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'socialembed') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'form') {
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'system') {
+				self.initGenericConfigurator(data);
+			}else if(data.object == 'feed') {
+				self.initFeedConfigurator(data);
 			} else if(data.object == 'feed_slideshow') {
-				siteManager.initSlideShowConfigurator(data);
-			} else if(data.object == 'tag_cloud' && customtaggroups.length) {
-				siteManager.initTagCloudConfigurator(data);
-			} else if(allowopenfeeds && data.object == 'category_summary') {
-				siteManager.initCategorySummaryConfigurator(data);
+				self.initSlideShowConfigurator(data);
+			} else if(data.object == 'tag_cloud' && self.customtaggroups.length) {
+				self.initTagCloudConfigurator(data);
+			} else if(self.allowopenfeeds && data.object == 'category_summary') {
+				self.initCategorySummaryConfigurator(data);
 			} else if(data.object == 'site_map') {
-				siteManager.initSiteMapConfigurator(data);
+				self.initSiteMapConfigurator(data);
 			} else if(data.object == 'related_content' || data.object == 'related_section_content') {
-				siteManager.initRelatedContentConfigurator(data);
+				self.initRelatedContentConfigurator(data);
 			} else if(data.object == 'plugin') {
-				var configurator = siteManager.getPluginConfigurator(data.objectid);
+				var configurator = self.getPluginConfigurator(data.objectid);
 				if(configurator != '') {
 					window[configurator](data);
+				} else if(self.layoutmanager) {
+					self.initGenericConfigurator(data);
 				}
 			} else {
-				siteManager.initGenericConfigurator(data);
+				self.initGenericConfigurator(data);
 			}
 		});
 	},

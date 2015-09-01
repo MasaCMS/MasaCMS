@@ -964,7 +964,25 @@
 			return false;
 		},
 		objectHasConfigurator:function(displayObject){
-			if(displayObject.object == 'feed') {
+			if(displayObject.object == 'container') {
+				return true;
+			} else if(displayObject.object == 'collection') {
+				return true;
+			} else if(displayObject.object == 'media') {
+				return true;
+			} else if(displayObject.object == 'text') {
+				return true;
+			} else if(displayObject.object == 'socialembed') {
+				return true;
+			} else if(displayObject.object == 'text') {
+				return true;
+			} else if(displayObject.object == 'form') {
+				return true;
+			} else if(displayObject.object == 'system') {
+				return true;
+			} else if(displayObject.object == 'feed') {
+				return true;
+			} else if(displayObject.object == 'plugin' && displayObject.objectid && displayObject.objectid.toLowerCase() != 'none') {
 				return true;
 			} else if(displayObject.object == 'feed_slideshow') {
 				return true;

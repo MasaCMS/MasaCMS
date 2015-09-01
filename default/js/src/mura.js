@@ -1762,7 +1762,7 @@
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					this.ready(selector);
+					ready(selector);
 					return this;
 				} else {
 					return select(selector);

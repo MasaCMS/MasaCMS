@@ -74,6 +74,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="folder">
 		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
 	</cfcase>
+	<cfcase value="plugin">
+		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
+	</cfcase>
+	<cfcase value="system">
+		<cfinclude template="objectclass/dsp_system_configurator.cfm">
+	</cfcase>
+	<cfcase value="navigation">
+		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
+	</cfcase>
+	<cfcase value="container">
+		<cfinclude template="objectclass/dsp_container_configurator.cfm">
+	</cfcase>
+	<cfcase value="collection">
+		<cfinclude template="objectclass/dsp_collection_configurator.cfm">
+	</cfcase>
+	<cfcase value="text">
+		<cfinclude template="objectclass/dsp_text_configurator.cfm">
+	</cfcase>
+	<cfcase value="media">
+		<cfinclude template="objectclass/dsp_media_configurator.cfm">
+	</cfcase>
+	<cfcase value="socialembed">
+		<cfinclude template="objectclass/dsp_socialembed_configurator.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>
 		<div id="availableObjectParams"

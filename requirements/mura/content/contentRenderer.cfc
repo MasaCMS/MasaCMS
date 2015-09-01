@@ -2603,6 +2603,15 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderEditableAttribute(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="renderClassOption" output="false">
+	<cfargument name="object">
+	<cfargument name="objectid" default="">
+	<cfargument name="objectname" default="">
+	<cfargument name="objectlabel">
+	<cfset arguments.renderer=this>
+	<cfreturn variables.contentRendererUtility.renderObjectClassOption(argumentCollection=arguments)>
+</cffunction>
+
 <cfscript>
 	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
 		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);

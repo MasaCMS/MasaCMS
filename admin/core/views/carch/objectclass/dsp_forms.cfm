@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& rc.rsForms.menutitle>
 			</cfsilent>
-			#renderClassOption(
+			#contentRendererUtility.renderObjectClassOption(
 				object='form',
 				objectid=rc.rsForms.contentid,
 				objectname=title

@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,32 +44,50 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rc.rsAdZones = application.advertiserManager.getadzonesBySiteID(rc.siteid, '')/>
+
+<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
+<cfset feed=$.getBean("feed").loadBy(feedID=rc.feedID)>
+
+<cfif isDefined("form.params") and isJSON(form.params)>
+	<cfset feed.set(deserializeJSON(form.params))>
+</cfif>
+
+<cfset data=structNew()>
+<cfsavecontent variable="data.html">
 <cfoutput>
-<cfif rc.layoutmanager>
-		<cfloop query="rc.rsAdZones">
-			#contentRendererUtility.renderObjectClassOption(
-				object='adZone',
-				objectid=rc.rsAdZones.adZoneID,
-				objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
-						- 
-						#rc.rsAdZones.name#"
-			)#
-		</cfloop>
-<cfelse>
-	<div class="control-group">
-		<div class="controls">
-			<select name="availableObjects" id="availableObjects" class="multiSelect" 
-			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">		
-				<cfloop query="rc.rsAdZones">
-					<option value="{'object':'adZone','name','esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adzone')# - #rc.rsAdZones.name#')#',objectid:'#rc.rsAdZones.adZoneID#'}">
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 
-						- 
-						#rc.rsAdZones.name#
-					</option>
-				</cfloop>
-			</select>
+	
+
+	<div id="availableObjectParams"
+	data-object="collection" 
+	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#" 
+	data-objectid="none">
+	
+		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#</h2>
+
+		<div class="tabs-left">
+			<ul class="nav nav-tabs" role="tablist">
+			    <li role="presentation" class="active"><a href="##alignment" aria-controls="home" role="tab" data-toggle="tab">Alignment</a></li>
+			    <li role="presentation"><a href="##size" aria-controls="profile" role="tab" data-toggle="tab">Size</a></li>
+			    <li role="presentation"><a href="##label" aria-controls="messages" role="tab" data-toggle="tab">Label</a></li>
+				<li role="presentation"><a href="##content" aria-controls="settings" role="tab" data-toggle="tab">Content</a></li>
+			 </ul>
+
+		 	<!-- Tab panes -->
+		  	<div class="tab-content">
+		  	<cfinclude template="dsp_alignment_configurator.cfm">
+		 	<cfinclude template="dsp_size_configurator.cfm">
+		    <cfinclude template="dsp_label_configurator.cfm">
+		    <div role="tabpanel" class="tab-pane" id="content">
+		
+
+		
+			</div>
 		</div>
 	</div>
-</cfif>
+</div>
+
 </cfoutput>
+</cfsavecontent>
+<cfset data.type=feed.getType()>
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+<cfabort>
