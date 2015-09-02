@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfset feed=$.getBean("feed").loadBy(feedID=rc.feedID)>
+<cfset feed=$.getBean("content").loadBy(contenthistid=rc.contenthistid)>
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
@@ -55,8 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
 <cfoutput>
-	
-	
 <div id="availableObjectParams"
 	data-object="folder" 
 	data-name="" 
