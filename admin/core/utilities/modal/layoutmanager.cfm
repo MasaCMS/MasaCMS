@@ -147,13 +147,19 @@
 				#contentRendererUtility.renderObjectClassOption(
 					object='system',
 					objectid='',
-					objectname='System'
+					objectname='System Object'
 				)#
 
 				#contentRendererUtility.renderObjectClassOption(
 					object='form',
 					objectid='',
 					objectname='Form'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='mailing_list',
+					objectid='',
+					objectname='Mailing List'
 				)#
 
 				#contentRendererUtility.renderObjectClassOption(

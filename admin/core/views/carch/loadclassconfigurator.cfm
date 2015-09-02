@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="site_map">
 		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
 	</cfcase>
-	<cfcase value="form">
+	<cfcase value="form,form_responses">
 		<cfinclude template="objectclass/dsp_form_configurator.cfm">
 	</cfcase>
 	<cfcase value="component">
@@ -77,11 +77,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="plugin">
 		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
 	</cfcase>
-	<cfcase value="system">
+	<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
 		<cfinclude template="objectclass/dsp_system_configurator.cfm">
 	</cfcase>
-	<cfcase value="navigation">
+	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav">
 		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
+	</cfcase>
+	<cfcase value="mailing_list,mailing_list_master">
+		<cfinclude template="objectclass/dsp_mailinglist_configurator.cfm">
 	</cfcase>
 	<cfcase value="container">
 		<cfinclude template="objectclass/dsp_container_configurator.cfm">
@@ -100,10 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>
-		<div id="availableObjectParams"
-		data-object="#esapiEncode('html_attr',rc.classid)#" 
-		data-name="#esapiEncode('html_attr',rc.name)#" 
-		data-objectid="#esapiEncode('html_attr',rc.objectid)#"></div>
+		<p class="alert">This display object is not configurable.</p>
 		</cfoutput>
 	</cfdefaultcase>
 </cfswitch>

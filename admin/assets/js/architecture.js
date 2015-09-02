@@ -2211,6 +2211,10 @@ buttons: {
 						this.initGenericConfigurator(tmpObject);
 						return false;
 					} else if(tmpObject.object == 'form') {
+						tmpObject.title='Select Form';
+						this.initGenericConfigurator(tmpObject);
+						return false;
+					} else if(tmpObject.object == 'form_responses') {
 						this.initGenericConfigurator(tmpObject);
 						return false;
 					} else if(tmpObject.object == 'system') {
@@ -2243,10 +2247,12 @@ buttons: {
 				var currentSelection = this.getDisplayObjectConfig(regionid);
 
 				if(currentSelection) {
-					if(currentSelection.objectid == tmpObject.objectid) {
+					if(currentSelection.objectid == tmpObject.objectid || currentSelection.objectid == tmpObject.originid) {
 						isUpdate = true
 					}
 				}
+
+
 
 			}
 
@@ -2540,7 +2546,7 @@ buttons: {
 			data, {
 				url: './',
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
-				title: 'Configure ' + data.name,
+				title: data.title || 'Configure ' + data.name,
 				init: function(data, config) {
 					
 				}
@@ -2550,7 +2556,7 @@ buttons: {
 				resizable: true,
 				modal: true,
 				width: 400,
-				title: 'Configure' + data.name,
+				title: data.title || 'Configure ' + data.name,
 				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {
@@ -2616,7 +2622,13 @@ buttons: {
 				self.initGenericConfigurator(data);
 			} else if(data.object == 'socialembed') {
 				self.initGenericConfigurator(data);
+			} else if(data.object == 'component') {
+				data.title='Select Component';
+				self.initGenericConfigurator(data);
 			} else if(data.object == 'form') {
+				data.title='Select Form';
+				self.initGenericConfigurator(data);
+			} else if(data.object == 'form_responses') {
 				self.initGenericConfigurator(data);
 			} else if(data.object == 'system') {
 				self.initGenericConfigurator(data);
@@ -2765,6 +2777,8 @@ buttons: {
 
 			this.resetConfiguratorContainer();
 
+			var originid=data.objectid;
+
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
@@ -2773,8 +2787,26 @@ buttons: {
 				buttons: {
 					Save: function() {
 						siteManager.updateAvailableObject();
+						
 
-						if(siteManager.availableObjectValidate(data.params)) {
+						var availableObjectSelector=$('#availableObjectSelector');
+
+						if(availableObjectSelector.length){
+							selectedObject=eval('(' + availableObjectSelector.val() + ')');
+
+							siteManager.availableObject.name=selectedObject.name;
+							siteManager.availableObject.object=selectedObject.object;
+							siteManager.availableObject.objectid=selectedObject.objectid;
+							siteManager.availableObject.originid=originid;
+
+							delete selectedObject.name;
+							delete selectedObject.object;
+							delete selectedObject.objectid;
+
+							$.extend(siteManager.availableObject.params,selectedObject);
+						}
+
+						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, false);
 
 							if(typeof(config.destroy) != 'undefined') {

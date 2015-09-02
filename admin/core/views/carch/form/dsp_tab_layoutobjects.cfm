@@ -166,13 +166,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       #esapiEncode('html','Navigation')#
                     </option>
 
-                    <option title="#esapiEncode('html_attr','System')#" value='{"object":"#esapiEncode('javascript','system')#","name":"#esapiEncode('javascript','System')#","objectid":"#createUUID()#"}'>
-                      #esapiEncode('html','System')#
+                    <option title="#esapiEncode('html_attr','System Object')#" value='{"object":"#esapiEncode('javascript','system')#","name":"#esapiEncode('javascript','System Object')#","objectid":"#createUUID()#"}'>
+                      #esapiEncode('html','System Object')#
                     </option>
 
-                   <option title="#esapiEncode('html_attr','Form')#" value='{"object":"#esapiEncode('javascript','form')#","name":"#esapiEncode('javascript','Container')#","objectid":""}'>
+                   <option title="#esapiEncode('html_attr','Form')#" value='{"object":"#esapiEncode('javascript','form')#","name":"#esapiEncode('javascript','Form')#","objectid":""}'>
                       #esapiEncode('html','Form')#
                     </option>
+
+                    <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
+                    <option title="#esapiEncode('html_attr','Mailing List')#" value='{"object":"#esapiEncode('javascript','mailinglist')#","name":"#esapiEncode('javascript','Mailing List')#","objectid":""}'>
+                      #esapiEncode('html','Mailing List')#
+                    </option>
+                    </cfif>
 
                     <option title="#esapiEncode('html_attr','Plugin')#" value='{"object":"#esapiEncode('javascript','plugin')#","name":"#esapiEncode('javascript','Plugin')#","objectid":""}'>
                       #esapiEncode('html','Plugin')#
@@ -191,9 +197,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <dd>
                   <select name="classSelector" onchange="siteManager.loadObjectClass('#esapiEncode("Javascript",rc.siteid)#',this.value,'','#rc.contentBean.getContentID()#','#esapiEncode("Javascript",rc.parentID)#','#rc.contentBean.getContentHistID()#',0);" id="dragme">
                     <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
-                    <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-                    <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-                    </cfif>
                     <cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
                     <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
                     </cfif>

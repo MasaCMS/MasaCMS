@@ -102,27 +102,35 @@
 
 									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 								</cfcase>
-								<cfcase value="form,component">
-									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+								<cfcase value="form,form_responses,component">
 									
-									<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
+									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+
+									<cfif content.exists()>
+										<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
 										
 										<cflocation url="#content.getEditURL(compactDisplay=true)#&homeid=#esapiEncode('url',rc.contentid)#" addtoken="false">
-									<cfelse>
+										<cfelse>
+											<cfif rc.object eq 'Form'>
+												jQuery("##configuratorHeader").html('Edit Form');
+												<cfset configuratorWidth='standard'>
+											<cfelseif rc.object eq 'Component'>
+												jQuery("##configuratorHeader").html('Edit Component');
+												<cfset configuratorWidth='standard'>
 
-										siteManager.initGenericConfigurator(configOptions);
-										<cfif rc.object eq 'Form'>
-											jQuery("##configuratorHeader").html('Edit Form');
-											<cfset configuratorWidth='standard'>
-										<cfelseif rc.object eq 'Component'>
-											jQuery("##configuratorHeader").html('Edit Component');
-											<cfset configuratorWidth='standard'>
-
+											</cfif>
+											jQuery("##configurator").html('<p class="alert alert-error">You do not have permission to edit this form.</p>');
 										</cfif>
+									<cfelse>
+										configOptions.title='Select ' + configOptions.name;
+										siteManager.initGenericConfigurator(configOptions);
 									</cfif>
+										
+									
 			
 								</cfcase>
 								<cfdefaultcase>
+									configOptions.title='Select ' + configOptions.name;
 									siteManager.initGenericConfigurator(configOptions);
 
 									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
@@ -160,6 +168,12 @@
 			function(){
 				
 				siteManager.updateAvailableObject();
+
+				var availableObjectSelector=jQuery('##availableObjectSelector');
+
+				if(availableObjectSelector.length){
+					$.extend(siteManager.availableObject.params,eval('(' + availableObjectSelector.val() + ')') );
+				}
 				
 				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 					jQuery("##configurator").html('<div class="load-inline"></div>');

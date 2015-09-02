@@ -2826,8 +2826,10 @@ this.Element && function(ElementPrototype) {
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
+
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 								obj.html(layoutmanagertoolbar + html);
+								
 							} else {
 								obj.html(html);
 							}

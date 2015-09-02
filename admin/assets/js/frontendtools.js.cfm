@@ -59,7 +59,7 @@
 						item.data(p,parameters.params[p]);
 					}
 				}
-	
+
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
@@ -104,7 +104,6 @@
 	}
 
 	var openFrontEndToolsModal=function(a){
-		
 		var src=a.href;
 		var editableObj=utility(a);
 
@@ -112,14 +111,15 @@
 			if(utility(a).hasClass("mura-object")){
 				var editableObj=utility(a);
 			} else {
-				var editableObj=utility(a).closest(".mura-object");
+				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
 			}
 
-			if(!editableObj.data('objectid')){
-				editableObj=utility(a).closest(".mura-async-object")
-			}
-
-			var layoutmanager=false;
+			/*
+			This reloads the element in the dom to ensure that all the latest
+			values are present
+			*/
+			editableObj.hide().show();
+			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 
 			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname');
 		}
@@ -958,49 +958,53 @@
 		objectHasEditor:function(displayObject){
 			if(displayObject.object == 'form') {
 				return true;
+			} else if(displayObject.object == 'form_responses') {
+				return true;
 			} else if(displayObject.object == 'component') {
 				return true;
 			}
 			return false;
 		},
 		objectHasConfigurator:function(displayObject){
-			if(displayObject.object == 'container') {
-				return true;
-			} else if(displayObject.object == 'collection') {
-				return true;
-			} else if(displayObject.object == 'media') {
-				return true;
-			} else if(displayObject.object == 'text') {
-				return true;
-			} else if(displayObject.object == 'socialembed') {
-				return true;
-			} else if(displayObject.object == 'text') {
-				return true;
-			} else if(displayObject.object == 'form') {
-				return true;
-			} else if(displayObject.object == 'system') {
-				return true;
-			} else if(displayObject.object == 'feed') {
-				return true;
-			} else if(displayObject.object == 'plugin' && displayObject.objectid && displayObject.objectid.toLowerCase() != 'none') {
-				return true;
-			} else if(displayObject.object == 'feed_slideshow') {
-				return true;
-			} else if(displayObject.object == 'tag_cloud' && window.muraInlineEditor.customtaggroups.length) {
-				return true;
-			} else if(window.muraInlineEditor.allowopenfeeds && displayObject.object == 'category_summary') {
-				return true;
-			} else if(displayObject.object == 'site_map') {
-				return true;
-			} else if(displayObject.object == 'related_content' || displayObject.object == 'related_section_content') {
-				return true;
-			} else if(displayObject.object == 'plugin') {
-				if(window.muraInlineEditor.getPluginConfigurator(displayObject.objectid)){
-					return true;
-				}
+		
+			var configuratorMap={
+				'container':function(){return true;},
+				'media':function(){return true;},
+				'text':function(){return true;},
+				'socialembed':function(){return true;},
+				'feed':function(){return true;},
+				'form':function(){return true;},
+				'form_responses':function(){return true;},
+				'plugin':function(){return (displayObject.objectid && displayObject.objectid.toLowerCase() != 'none' || window.muraInlineEditor.getPluginConfigurator(displayObject.objectid));},
+				'feed_slideshow':function(){return true;},
+				'tag_cloud':function(){return window.muraInlineEditor.customtaggroups.length;},
+				'category_summary':function(){return window.muraInlineEditor.allowopenfeeds;},
+				'site_map':function(){return true;},
+				'related_content':function(){return true;},
+				'related_section_content':function(){return true;},
+				'system':function(){return true;},
+				'comments':function(){return true;},
+				'favorites':function(){return true;},
+				'forward_email':function(){return true;},
+				'event_reminder_form':function(){return true;},
+				'rater':function(){return true;},
+				'user_tools':function(){return true;},
+				'goToFirstChild':function(){return true;},
+				'navigation':function(){return true;},
+				'sub_nav':function(){return true;},
+				'peer_nav':function(){return true;},
+				'standard_nav':function(){return true;},
+				'portal_nav':function(){return true;},
+				'folder_nav':function(){return true;},
+				'multilevel_nav':function(){return true;},
+				'seq_nav':function(){return true;},
+				'top_nav':function(){return true;},
+				'mailing_list':function(){return true;},
+				'mailing_list_master':function(){return true;}
+
 			}
 
-			return false;
+			return (displayObject.object in configuratorMap) && configuratorMap[displayObject.object]();
 		}
 	};
 
