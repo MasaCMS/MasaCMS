@@ -22,6 +22,7 @@
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
 		</div>
 	</div>
+	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
 		siteManager.configuratorMode='frontEnd';
 		siteManager.layoutmanager=true;
@@ -68,40 +69,6 @@
 							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
-								<cfcase value="feed,feed_no_summary,remoteFeed">	
-									siteManager.initFeedConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
-									siteManager.initSlideShowConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="folder">	
-									siteManager.initFolderConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="category_summary,category_summary_rss">	
-									siteManager.initCategorySummaryConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="tag_cloud">	
-									siteManager.initTagCloudConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="site_map">	
-									siteManager.initSiteMapConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="related_content,related_section_content">	
-									siteManager.initRelatedContentConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="plugin">	
-									var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
-									
-									if(configurator!=''){
-										window[configurator](
-											configOptions
-										);
-									} else {
-										siteManager.initGenericConfigurator(configOptions);
-									}
-
-									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
-								</cfcase>
 								<cfcase value="form,form_responses,component">
 									
 									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
@@ -125,15 +92,13 @@
 										configOptions.title='Select ' + configOptions.name;
 										siteManager.initGenericConfigurator(configOptions);
 									</cfif>
-										
-									
-			
 								</cfcase>
 								<cfdefaultcase>
-									configOptions.title='Select ' + configOptions.name;
-									siteManager.initGenericConfigurator(configOptions);
-
-									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
+									if(siteManager.objectHasConfigurator(configOptions)){
+										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
+									} else {
+										siteManager.initGenericConfigurator(configOptions);
+									}
 									
 								</cfdefaultcase>
 							</cfswitch>
@@ -194,7 +159,6 @@
 			
 		});
 	</script>
-	<cfinclude template="dsp_configuratorJS.cfm">
 	</cfoutput>
 <cfelse>
 	<cfsilent>

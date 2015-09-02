@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     </option>
 
                     <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-                    <option title="#esapiEncode('html_attr','Mailing List')#" value='{"object":"#esapiEncode('javascript','mailinglist')#","name":"#esapiEncode('javascript','Mailing List')#","objectid":""}'>
+                    <option title="#esapiEncode('html_attr','Mailing List')#" value='{"object":"#esapiEncode('javascript','mailing_list')#","name":"#esapiEncode('javascript','Mailing List')#","objectid":""}'>
                       #esapiEncode('html','Mailing List')#
                     </option>
                     </cfif>

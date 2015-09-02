@@ -139,7 +139,7 @@
 				)#
 
 				#contentRendererUtility.renderObjectClassOption(
-					object='Navigation',
+					object='navigation',
 					objectid='',
 					objectname='Navigation'
 				)#

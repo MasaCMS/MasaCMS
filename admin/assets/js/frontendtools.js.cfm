@@ -953,8 +953,6 @@
 
 			return "";
 		},
-		<cfoutput>customtaggroups:#serializeJSON(listToArray($.siteConfig('customTagGroups')))#,
-		allowopenfeeds:#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#,</cfoutput>
 		objectHasEditor:function(displayObject){
 			if(displayObject.object == 'form') {
 				return true;
@@ -965,47 +963,45 @@
 			}
 			return false;
 		},
+		configuratorMap:{
+			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
+			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'plugin':{condition:function(){return (displayObject.objectid && displayObject.objectid.toLowerCase() != 'none' || siteManager.getPluginConfigurator(displayObject.objectid));},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSlideShowConfigurator(data);}},
+			'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
+			'category_summary':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
+			'related_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'related_section_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'system':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'comments':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'favorites':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'forward_email':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'event_reminder_form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'rater':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'user_tools':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'goToFirstChild':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'navigation':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'sub_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'peer_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'standard_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'portal_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'multilevel_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'seq_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'top_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
+		},
 		objectHasConfigurator:function(displayObject){
-		
-			var configuratorMap={
-				'container':function(){return true;},
-				'collection':function(){return true;},
-				'media':function(){return true;},
-				'text':function(){return true;},
-				'socialembed':function(){return true;},
-				'feed':function(){return true;},
-				'form':function(){return true;},
-				'form_responses':function(){return true;},
-				'plugin':function(){return (displayObject.objectid && displayObject.objectid.toLowerCase() != 'none' || window.muraInlineEditor.getPluginConfigurator(displayObject.objectid));},
-				'feed_slideshow':function(){return true;},
-				'tag_cloud':function(){return window.muraInlineEditor.customtaggroups.length;},
-				'category_summary':function(){return window.muraInlineEditor.allowopenfeeds;},
-				'site_map':function(){return true;},
-				'related_content':function(){return true;},
-				'related_section_content':function(){return true;},
-				'system':function(){return true;},
-				'comments':function(){return true;},
-				'favorites':function(){return true;},
-				'forward_email':function(){return true;},
-				'event_reminder_form':function(){return true;},
-				'rater':function(){return true;},
-				'user_tools':function(){return true;},
-				'goToFirstChild':function(){return true;},
-				'navigation':function(){return true;},
-				'sub_nav':function(){return true;},
-				'peer_nav':function(){return true;},
-				'standard_nav':function(){return true;},
-				'portal_nav':function(){return true;},
-				'folder_nav':function(){return true;},
-				'multilevel_nav':function(){return true;},
-				'seq_nav':function(){return true;},
-				'top_nav':function(){return true;},
-				'mailing_list':function(){return true;},
-				'mailing_list_master':function(){return true;}
-
-			}
-
-			return (displayObject.object in configuratorMap) && configuratorMap[displayObject.object]();
+			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
 		}
 	};
 
