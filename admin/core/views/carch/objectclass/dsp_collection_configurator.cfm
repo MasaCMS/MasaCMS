@@ -46,11 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfset feed=$.getBean("feed").loadBy(feedID=rc.feedID)>
 
-<cfif isDefined("form.params") and isJSON(form.params)>
-	<cfset feed.set(deserializeJSON(form.params))>
-</cfif>
 
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
@@ -62,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#" 
 	data-objectid="none">
 	
-		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#</h2>
+		<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#</h2>
 
 		<div class="tabs-left">
 			<ul class="nav nav-tabs" role="tablist">
@@ -88,6 +84,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 </cfsavecontent>
-<cfset data.type=feed.getType()>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
 <cfabort>

@@ -969,6 +969,7 @@
 		
 			var configuratorMap={
 				'container':function(){return true;},
+				'collection':function(){return true;},
 				'media':function(){return true;},
 				'text':function(){return true;},
 				'socialembed':function(){return true;},
