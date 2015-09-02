@@ -7,6 +7,7 @@
 		</cfif>
 		and object != 'payPalCart'
 		and object != 'related_content'
+		and object != 'goToFirstChild'
 	</cfquery>
 </cfsilent>
 <cfoutput>

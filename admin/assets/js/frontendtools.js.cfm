@@ -953,6 +953,8 @@
 
 			return "";
 		},
+		<cfoutput>customtaggroups:#serializeJSON(listToArray($.siteConfig('customTagGroups')))#,
+		allowopenfeeds:#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#,</cfoutput>
 		objectHasEditor:function(displayObject){
 			if(displayObject.object == 'form') {
 				return true;
@@ -974,9 +976,9 @@
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'plugin':{condition:function(){return (displayObject.objectid && displayObject.objectid.toLowerCase() != 'none' || siteManager.getPluginConfigurator(displayObject.objectid));},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSlideShowConfigurator(data);}},
-			'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
-			'category_summary':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){muraInlineEditor.initSlideShowConfigurator(data);}},
+			'tag_cloud':{condition:function(){return muraInlineEditor.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
+			'category_summary':{condition:function(){return muraInlineEditor.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
 			'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
 			'related_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
 			'related_section_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
