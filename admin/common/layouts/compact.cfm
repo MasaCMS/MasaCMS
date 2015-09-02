@@ -147,16 +147,22 @@
 		<script type="text/javascript">
 			var frontEndProxy;
 			jQuery(document).ready(function(){
+
 				if (top.location != self.location) {
+
+					function getHeight(){
+						return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+					}
+
 					frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
 											'setHeight',
-											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
+											height:getHeight()
 										});
 					jQuery(this).resize(function(e){
 						frontEndProxy.post({cmd:
 											'setHeight',
-											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
+											height:getHeight()
 										});
 					});					
 				};

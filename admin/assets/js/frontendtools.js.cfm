@@ -76,7 +76,7 @@
 	}
 
 	var frontEndModalWidthStandard=990;
-	var frontEndModalWidthConfigurator=600;
+	var frontEndModalWidthConfigurator=0;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
@@ -207,17 +207,20 @@
 
 	var resizeFrontEndToolsModal=function(frameHeight){
 		if (document.getElementById("frontEndToolsModaliframe")) {
+
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 		
+				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard 
 					&& frameHeight < utility(window).height()
 					) {
 					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
 				}
+				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 				

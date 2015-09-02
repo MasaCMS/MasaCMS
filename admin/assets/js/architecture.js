@@ -2194,8 +2194,6 @@ buttons: {
 				if(configure) {
 					if(siteManager.objectHasConfigurator(tmpObject)){
 						siteManager.configuratorMap[tmpObject.object].initConfigurator(tmpObject);
-					} else {
-						siteManager.initGenericConfigurator(tmpObject);
 					}
 				}
 
