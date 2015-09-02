@@ -2583,7 +2583,19 @@ buttons: {
 			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'plugin':{condition:function(){return (displayObject.objectid && displayObject.objectid.toLowerCase() != 'none' || siteManager.getPluginConfigurator(displayObject.objectid));},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'plugin':{
+				'condition':function(){
+					return true;
+				},
+				'initConfigurator':function(data){
+					if(data.objectid && data.objectid.toLowerCase() != 'none' && siteManager.getPluginConfigurator(data.objectid)){
+						var configurator = siteManager.getPluginConfigurator(data.objectid);
+						window[configurator](data)
+					} else {
+						siteManager.initGenericConfigurator(data);
+					}
+				}
+			},
 			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSlideShowConfigurator(data);}},
 			'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
 			'category_summary':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},

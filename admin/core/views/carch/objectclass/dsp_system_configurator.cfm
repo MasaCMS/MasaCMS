@@ -16,6 +16,10 @@
 		<div class="control-group">
 			<div class="controls">
 				<select id="availableObjectSelector">
+					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
+						-- Select System Object --
+					</option>
+
 					<cfloop query="rc.rsObjects">
 						<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript',rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
 							#esapiEncode('html',rc.rsObjects.name)#

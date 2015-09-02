@@ -25,7 +25,10 @@
 		<div class="control-group">
 			<div class="controls">
 				<select id="availableObjectSelector">
-					
+					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
+						-- Select Form --
+					</option>
+
 					<cfloop query="rc.rsForms">
 
 						<cfset title=iif(rc.rsForms.responseChart eq 1, 
