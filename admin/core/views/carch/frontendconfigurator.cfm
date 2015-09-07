@@ -52,6 +52,8 @@
 							'parentid':'#esapiEncode('javascript',rc.parentID)#'
 						}
 						
+						<cfset configuratorWidth=600>
+
 						<cfif $.siteConfig().hasDisplayObject(rc.object)>
 							var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
 
@@ -100,9 +102,31 @@
 
 									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 								</cfcase>
+								<cfcase value="form,component">
+									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+									
+									<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
+										
+										<cflocation url="#content.getEditURL(compactDisplay=true)#&homeid=#esapiEncode('url',rc.contentid)#" addtoken="false">
+									<cfelse>
+
+										siteManager.initGenericConfigurator(configOptions);
+										<cfif rc.object eq 'Form'>
+											jQuery("##configuratorHeader").html('Edit Form');
+											<cfset configuratorWidth='standard'>
+										<cfelseif rc.object eq 'Component'>
+											jQuery("##configuratorHeader").html('Edit Component');
+											<cfset configuratorWidth='standard'>
+
+										</cfif>
+									</cfif>
+			
+								</cfcase>
 								<cfdefaultcase>
 									siteManager.initGenericConfigurator(configOptions);
+
 									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
+									
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
@@ -113,7 +137,7 @@
 				}
 
 				frontEndProxy.addEventListener(onFrontEndMessage);
-				frontEndProxy.post({cmd:'setWidth',width:'900'});
+				frontEndProxy.post({cmd:'setWidth',width:'#configuratorWidth#'});
 				frontEndProxy.post({cmd:'requestObjectParams',instanceid:'#esapiEncode("javascript",rc.instanceid)#'});
 		
 			}

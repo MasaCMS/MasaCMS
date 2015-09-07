@@ -105,9 +105,6 @@
 			<div class="mura-sidebar__objects-list__object-group-heading">
 				<select name="classSelector" onchange="mura.loadObjectClass('#esapiEncode("Javascript",$.content('siteid'))#',this.value,'','#$.content('contenthistid')#','#$.content('parentid')#','#$.content('contenthistid')#',0);">
 				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
-				<!---
-				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.primary')#</option>
-				--->
                 <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
                 <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
                 <cfif application.settingsManager.getSite($.event('siteid')).getDataCollection()>
@@ -116,8 +113,6 @@
 	            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
 	                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
 	            </cfif> 
-	            <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
-	            <optgroup label="Legacy Objects">
                 <cfif application.settingsManager.getSite($.event('siteid')).getAdManager()>
                   <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
                 </cfif>
@@ -131,8 +126,7 @@
                   <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
                   <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
                 </cfif>
-                </optgroup>
-            	
+            	<option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
               </select>
 
 			</div>
