@@ -76,7 +76,7 @@
 	}
 
 	var frontEndModalWidthStandard=990;
-	var frontEndModalWidthConfigurator=0;
+	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
