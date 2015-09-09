@@ -54,48 +54,111 @@ li .cke_skin_mura {
 	}
 }
 
-// Columns
-// TODO: Switch Columns to a scaffolding library like Twitter.
-// For use with fckEditor Templates (2, 3, and 4 column templates) or anything you'd like to have a columnar layout for
 
-// HTML example:
-// <div class="columns3">
-// 	<div class="col"></div>
-// 	<div class="col"></div>
-// 	<div class="col"></div>
-// </div>
+/* Grid ~ Credits: http://getskeleton.com
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.mura-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px; //960px
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box; }
 
-// <ul class="columns3">
-// 	<li class="col"></li>
-// 	<li class="col"></li>
-// 	<li class="col"></li>
-// </ul>
+.mura-object {
+  width: 100%;
+  float: left;
+  box-sizing: border-box; }
 
-.col {
-	float: left;
-	margin-right: 1.5%;
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .mura-container {
+    width: 85%;
+    padding: 0; }
 }
 
-.columns2 .col { width: 48%; }
-.columns3 .col { width: 31%; }
-.columns4 .col { width: 23%; }
-.columns5 .col { width: 18%; }
-.columns6 .col { width: 14%; }
-.columns7 .col { width: 12%; }
-.columns8 .col { width: 10%; }
+/* For devices larger than 550px */
+@media (min-width: 550px) {
+  .mura-container {
+    width: 80%; }
+  .mura-object {
+    margin-right: 4%; }
+  .mura-column:last-child,
+  .mura-object:last-child {
+    margin-right: 0; }
 
-//end Columns
+  .mura-one.mura-object                    { width: 4.66666666667%; }
+  .mura-two.mura-object                    { width: 13.3333333333%; }
+  .mura-three.mura-object                  { width: 22%;            }
+  .mura-four.mura-object                   { width: 30.6666666667%; }
+  .mura-five.mura-object                   { width: 39.3333333333%; }
+  .mura-six.mura-object                    { width: 48%;            }
+  .mura-seven.mura-object                  { width: 56.6666666667%; }
+  .mura-eight.mura-object                  { width: 65.3333333333%; }
+  .mura-nine.mura-object                   { width: 74.0%;          }
+  .mura-ten.mura-object                    { width: 82.6666666667%; }
+  .mura-eleven.mura-object                 { width: 91.3333333333%; }
+  .mura-twelve.mura-object                 { width: 100%; margin-left: 0; }
 
-// Display Objects
-	.mura-left { float: left; }
-	.mura-right { float: right; }
-	.mura-center { margin: 0 auto; }
-	.mura-width-quarter { width: 25%; }
-	.mura-width-half { width: 50%; }
-	.mura-width-three-quarter { width: 75%; }
-	.mura-width-full { 
-		clear: both;
-		display: block;
-		width: 100%;
-	}
-//@end display objects
+  .mura-one-third.mura-object               { width: 30.6666666667%; }
+  .mura-two-thirds.mura-object              { width: 65.3333333333%; }
+  .mura-one-half.mura-object                { width: 48%; }
+
+  /* Offsets */
+  .mura-offset-by-one.mura-object          { margin-left: 8.66666666667%; }
+  .mura-offset-by-two.mura-object          { margin-left: 17.3333333333%; }
+  .mura-offset-by-three.mura-object        { margin-left: 26%;            }
+  .mura-offset-by-four.mura-object         { margin-left: 34.6666666667%; }
+  .mura-offset-by-five.mura-object         { margin-left: 43.3333333333%; }
+  .mura-offset-by-six.mura-object          { margin-left: 52%;            }
+  .mura-offset-by-seven.mura-object        { margin-left: 60.6666666667%; }
+  .mura-offset-by-eight.mura-object        { margin-left: 69.3333333333%; }
+  .mura-offset-by-nine.mura-object         { margin-left: 78.0%;          }
+  .mura-offset-by-ten.mura-object          { margin-left: 86.6666666667%; }
+  .mura-offset-by-eleven.mura-object       { margin-left: 95.3333333333%; }
+
+  .mura-offset-by-one-third.mura-object    { margin-left: 34.6666666667%; }
+  .mura-offset-by-two-thirds.mura-object   { margin-left: 69.3333333333%; }
+  .mura-offset-by-one-half.mura-object     { margin-left: 52%; }
+
+}
+
+/* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.mura-full-width {
+  width: 100%;
+  box-sizing: border-box; }
+.mura-max-full-width {
+  max-width: 100%;
+  box-sizing: border-box; }
+.mura-pull-right, .mura-right {
+  float: right; }
+.mura-pull-left, .mura-left {
+  float: left; }
+.mura-center {
+  margin: 0 auto; }
+.mura-center.mura-object {
+  float: none;
+}
+
+
+/* Misc
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+hr.mura-hr {
+  margin-top: 3rem;
+  margin-bottom: 3.5rem;
+  border-width: 0;
+  border-top: 1px solid #E1E1E1; }
+
+
+/* Clearing
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Self Clearing Goodness */
+.mura-container:after,
+.mura-row:after,
+.mura-cf {
+  content: "";
+  display: table;
+  clear: both; }
+
