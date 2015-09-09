@@ -65,7 +65,7 @@ li .cke_skin_mura {
   padding: 0 20px;
   box-sizing: border-box; }
 .mura-column,
-.mura-columns {
+.mura-object {
   width: 100%;
   float: left;
   box-sizing: border-box; }
@@ -81,63 +81,45 @@ li .cke_skin_mura {
 @media (min-width: 550px) {
   .mura-container {
     width: 80%; }
-  .mura-column,
-  .mura-columns {
-    margin-left: 4%; }
-  .mura-column:first-child,
-  .mura-columns:first-child {
-    margin-left: 0; }
+  .mura-object {
+    margin-right: 4%; }
+  .mura-column:last-child,
+  .mura-object:last-child {
+    margin-right: 0; }
 
-  .mura-one.mura-column,
-  .mura-one.mura-columns                    { width: 4.66666666667%; }
-  .mura-two.mura-columns                    { width: 13.3333333333%; }
-  .mura-three.mura-columns                  { width: 22%;            }
-  .mura-four.mura-columns                   { width: 30.6666666667%; }
-  .mura-five.mura-columns                   { width: 39.3333333333%; }
-  .mura-six.mura-columns                    { width: 48%;            }
-  .mura-seven.mura-columns                  { width: 56.6666666667%; }
-  .mura-eight.mura-columns                  { width: 65.3333333333%; }
-  .mura-nine.mura-columns                   { width: 74.0%;          }
-  .mura-ten.mura-columns                    { width: 82.6666666667%; }
-  .mura-eleven.mura-columns                 { width: 91.3333333333%; }
-  .mura-twelve.mura-columns                 { width: 100%; margin-left: 0; }
+  .mura-one.mura-object                    { width: 4.66666666667%; }
+  .mura-two.mura-object                    { width: 13.3333333333%; }
+  .mura-three.mura-object                  { width: 22%;            }
+  .mura-four.mura-object                   { width: 30.6666666667%; }
+  .mura-five.mura-object                   { width: 39.3333333333%; }
+  .mura-six.mura-object                    { width: 48%;            }
+  .mura-seven.mura-object                  { width: 56.6666666667%; }
+  .mura-eight.mura-object                  { width: 65.3333333333%; }
+  .mura-nine.mura-object                   { width: 74.0%;          }
+  .mura-ten.mura-object                    { width: 82.6666666667%; }
+  .mura-eleven.mura-object                 { width: 91.3333333333%; }
+  .mura-twelve.mura-object                 { width: 100%; margin-left: 0; }
 
-  .mura-one-third.mura-column               { width: 30.6666666667%; }
-  .mura-two-thirds.mura-column              { width: 65.3333333333%; }
-
-  .mura-one-half.mura-column                { width: 48%; }
+  .mura-one-third.mura-object               { width: 30.6666666667%; }
+  .mura-two-thirds.mura-object              { width: 65.3333333333%; }
+  .mura-one-half.mura-object                { width: 48%; }
 
   /* Offsets */
-  .mura-offset-by-one.mura-column,
-  .mura-offset-by-one.mura-columns          { margin-left: 8.66666666667%; }
-  .mura-offset-by-two.mura-column,
-  .mura-offset-by-two.mura-columns          { margin-left: 17.3333333333%; }
-  .mura-offset-by-three.mura-column,
-  .mura-offset-by-three.mura-columns        { margin-left: 26%;            }
-  .mura-offset-by-four.mura-column,
-  .mura-offset-by-four.mura-columns         { margin-left: 34.6666666667%; }
-  .mura-offset-by-five.mura-column,
-  .mura-offset-by-five.mura-columns         { margin-left: 43.3333333333%; }
-  .mura-offset-by-six.mura-column,
-  .mura-offset-by-six.mura-columns          { margin-left: 52%;            }
-  .mura-offset-by-seven.mura-column,
-  .mura-offset-by-seven.mura-columns        { margin-left: 60.6666666667%; }
-  .mura-offset-by-eight.mura-column,
-  .mura-offset-by-eight.mura-columns        { margin-left: 69.3333333333%; }
-  .mura-offset-by-nine.mura-column,
-  .mura-offset-by-nine.mura-columns         { margin-left: 78.0%;          }
-  .mura-offset-by-ten.mura-column,
-  .mura-offset-by-ten.mura-columns          { margin-left: 86.6666666667%; }
-  .mura-offset-by-eleven.mura-column,
-  .mura-offset-by-eleven.mura-columns       { margin-left: 95.3333333333%; }
+  .mura-offset-by-one.mura-object          { margin-left: 8.66666666667%; }
+  .mura-offset-by-two.mura-object          { margin-left: 17.3333333333%; }
+  .mura-offset-by-three.mura-object        { margin-left: 26%;            }
+  .mura-offset-by-four.mura-object         { margin-left: 34.6666666667%; }
+  .mura-offset-by-five.mura-object         { margin-left: 43.3333333333%; }
+  .mura-offset-by-six.mura-object          { margin-left: 52%;            }
+  .mura-offset-by-seven.mura-object        { margin-left: 60.6666666667%; }
+  .mura-offset-by-eight.mura-object        { margin-left: 69.3333333333%; }
+  .mura-offset-by-nine.mura-object         { margin-left: 78.0%;          }
+  .mura-offset-by-ten.mura-object          { margin-left: 86.6666666667%; }
+  .mura-offset-by-eleven.mura-object       { margin-left: 95.3333333333%; }
 
-  .mura-offset-by-one-third.mura-column,
-  .mura-offset-by-one-third.mura-columns    { margin-left: 34.6666666667%; }
-  .mura-offset-by-two-thirds.mura-column,
-  .mura-offset-by-two-thirds.mura-columns   { margin-left: 69.3333333333%; }
-
-  .mura-offset-by-one-half.mura-column,
-  .mura-offset-by-one-half.mura-columns     { margin-left: 52%; }
+  .mura-offset-by-one-third.mura-object    { margin-left: 34.6666666667%; }
+  .mura-offset-by-two-thirds.mura-object   { margin-left: 69.3333333333%; }
+  .mura-offset-by-one-half.mura-object     { margin-left: 52%; }
 
 }
 
@@ -149,10 +131,12 @@ li .cke_skin_mura {
 .mura-max-full-width {
   max-width: 100%;
   box-sizing: border-box; }
-.mura-pull-right {
+.mura-pull-right, .mura-right {
   float: right; }
-.mura-pull-left {
+.mura-pull-left, .mura-left {
   float: left; }
+.mura-center {
+  margin: 0 auto; }
 
 
 /* Misc
