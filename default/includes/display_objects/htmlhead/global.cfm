@@ -51,9 +51,10 @@ initMura({
 	siteid:"#variables.$.event('siteID')#",
 	contentid:"#variables.$.content('contentid')#",
 	contenthistid:"#variables.$.content('contenthistid')#",
+	parentid:"#variables.$.content('parentid')#",
 	siteID:"#variables.$.event('siteID')#",
 	context:"#variables.$.globalConfig('context')#",
-	jslib:"#variables.$.getJsLib()#",
+	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
 	siteConfig:"#variables.$.globalConfig('requirementspath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
@@ -61,9 +62,9 @@ initMura({
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
 	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
 	mobileformat: "#esapiEncode('javascript',$.event('muraMobileRequest'))#",
-	adminpreview: "#lcase(structKeyExists(url,'muraadminpreview'))#",
 	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+	layoutmanager:"#variables.$.getContentRenderer().useLayoutManager()#",
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
-	});
+});
 </script>
 </cfoutput>
