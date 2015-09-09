@@ -2818,6 +2818,20 @@ this.Element && function(ElementPrototype) {
 		function wireUpObject(html){
 			var obj=select(self);
 			
+			if(obj.data('class')){
+				var classes=obj.data('class');
+
+				if(typeof classes != 'array'){
+					var classes=classes.split(' ');
+				}
+				
+				for(var c in classes){
+					if(!obj.hasClass(classes[c])){
+						obj.addClass(classes[c]);
+					}
+				}	
+			}
+
 			if(mura.layoutmanager && mura.editing){
 				if(obj.data('object')=='folder'){
 					obj.html(layoutmanagertoolbar + html);
@@ -2865,7 +2879,6 @@ this.Element && function(ElementPrototype) {
 			each(self.getElementsByTagName('FORM'),function(el,i){
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
-
 
 			if(obj.data('nextnid')){
 				obj.find('.mura-next-n a').each(function(){

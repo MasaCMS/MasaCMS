@@ -2568,6 +2568,7 @@ buttons: {
 				}
 			}
 		})
+
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
 	},

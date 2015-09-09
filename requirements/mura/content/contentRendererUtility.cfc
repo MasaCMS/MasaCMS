@@ -865,7 +865,7 @@
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
 		
 		<cfloop collection="# arguments.objectparams#" item="local.i">
-			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',local.i)#="#esapiEncode('html_attr', arguments.objectparams[local.i])#"'>
+			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',local.i)#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
 		</cfloop>
 
 		<cfif arguments.showEditable>
@@ -875,6 +875,16 @@
 		</cfif>
 
 		<cfreturn "#openingDiv##trim(arguments.content)#</div>">
+	</cffunction>
+
+	<cffunction name="serializeObjectParam" output="false">
+		<cfargument name="paramValue">
+
+		<cfif isSimpleValue(arguments.paramValue)>
+			<cfreturn arguments.paramValue>
+		<cfelse>
+			<cfreturn serializeJSON(arguments.paramValue)>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="dspObject" access="public" output="false" returntype="string">

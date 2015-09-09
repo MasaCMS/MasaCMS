@@ -55,10 +55,26 @@
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 
 				if(typeof parameters.params == 'object'){
+					if(item.data('class')){
+						var classes=item.data('class');
+
+						if(typeof classes != 'array'){
+							classes=classes.split(' ');
+						}
+
+						for(var c in classes){
+							if(item.hasClass(classes[c])){
+								item.removeClass(classes[c]);
+							}
+						}
+					}
+
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
 				}
+
+				
 
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
@@ -118,8 +134,9 @@
 			This reloads the element in the dom to ensure that all the latest
 			values are present
 			*/
-			editableObj.hide().show();
+			
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
+			editableObj.hide().show();
 
 			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname');
 		}

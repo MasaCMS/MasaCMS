@@ -46,13 +46,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
+<cfif isDefined("form.params") and isJSON(form.params)>
+	<cfset objectParams=deserializeJSON(form.params)>
+<cfelse>
+	<cfset objectParams={}>
+</cfif>
 
-
+<cfparam name="objectParams.class" default="">
+<cfparam name="objectParams.sourcetype" default="">
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
 <cfoutput>
-	
-
 	<div id="availableObjectParams"
 	data-object="collection" 
 	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#" 
@@ -74,14 +78,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfinclude template="dsp_size_configurator.cfm">
 		    <cfinclude template="dsp_label_configurator.cfm">
 		    <div role="tabpanel" class="tab-pane" id="content">
-		
-
-		
+				Content Source<br/>
+				<select class="objectParams" name="sourcetype">
+					<option value="">Select Content Source</option> 
+					<cfloop list="Local Index,Remote Feed,Related Content" index="i">
+						<option <cfif objectParams.sourcetype eq i>selected </cfif>value="#i#">#i#</option> 
+					</cfloop>
+				</select>
 			</div>
 		</div>
 	</div>
+	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',objectParams.class)#"/>
 </div>
+<script>
+	$(function(){
 
+		$('input[name="alignment"],input[name="size"]').on('change', function() {
+			var classInput=$('input[name="class"]');
+
+			classInput.val('');
+
+  			var alignment=$('input[name="alignment"]:checked');
+
+  			if(alignment.length){
+  				classInput.val(alignment.val());
+  			}
+
+  			var size=$('input[name="size"]:checked');
+
+  			if(size.length){
+  				if(classInput.val() ){
+  					classInput.val(classInput.val() + ' ' + size.val());
+  				} else {
+  					classInput.val(size.val());
+  				}
+  			}
+
+		});
+
+		function setLabelVisibility(){
+
+			if($('select[name="addlabel"]').val() == 'true'){
+				$('##labelContainer').show();
+			} else {
+				$('##labelContainer').hide();
+			}
+		}
+
+		$('select[name="addlabel"]').on('change', function() {
+			setLabelVisibility();
+		});
+
+		setLabelVisibility();
+
+	});
+</script>
 </cfoutput>
 </cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
