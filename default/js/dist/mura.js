@@ -3609,6 +3609,20 @@ this.Element && function(ElementPrototype) {
 			return this;
 		},
 
+		submit:function(fn){
+			if(fn){
+				this.on('submit',fn);
+			} else {
+				this.each(function(el){
+					if(typeof el.submit == 'function'){
+						el.submit();
+					}
+				});
+			}
+
+			return this;
+		},
+		
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
@@ -3993,20 +4007,6 @@ this.Element && function(ElementPrototype) {
 				return false;
 			}
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
-		},
-
-		submit:function(fn){
-			if(fn){
-				this.on('submit',fn);
-			} else {
-				this.each(function(el){
-					if(typeof el.submit == 'function'){
-						el.submit();
-					}
-				});
-			}
-
-			return this;
 		},
 
 		offsetParent:function(){
