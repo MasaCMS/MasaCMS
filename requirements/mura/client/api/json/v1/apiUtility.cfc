@@ -848,7 +848,7 @@ component extends="mura.cfobject" {
 
 		var $=getBean('$').init(arguments.siteid);
 
-		var entity=$.getBean(arguments.entityName);
+		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
 
 		if(!allowAction(entity,$)){
 			throw(type="authorization");
@@ -1734,7 +1734,7 @@ component extends="mura.cfobject" {
 			var bean=getBean(data.entityname);
 			var args={'#bean.getPrimaryKey()#'=data[bean.getPrimaryKey()]
 			};
-			validations=bean.loadBy(argumentCollection=args).getValidations();
+			return bean.loadBy(argumentCollection=args).validate().getErrors();
 
 		}
 		
