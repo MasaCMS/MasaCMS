@@ -1616,6 +1616,24 @@
 	    }
 	}
 
+	function inArray(elem, array, i) {
+	    var len;
+	    if ( array ) {
+	        if ( array.indexOf ) {
+	            return array.indexOf.call( array, elem, i );
+	        }
+	        len = array.length;
+	        i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
+	        for ( ; i < len; i++ ) {
+	            // Skip accessing in sparse arrays
+	            if ( i in array && array[ i ] === elem ) {
+	                return i;
+	            }
+	        }
+	    }
+	    return -1;
+	}
+
 	function getURLParams() {
 		return getQueryStringParams(window.location.search);
 	}
@@ -1795,6 +1813,7 @@
 			on:on,
 			off:off,
 			extend:extend,
+			inArray:inArray,
 			post:post,
 			get:get,
 			deepExtend:deepExtend,

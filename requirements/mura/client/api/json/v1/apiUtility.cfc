@@ -381,7 +381,6 @@ component extends="mura.cfobject" {
 			} else {
 
 				if(arrayLen(pathInfo) > 2){
-				
 					if(len(pathInfo[3])==35){
 						params.id=pathInfo[3];
 
@@ -414,7 +413,8 @@ component extends="mura.cfobject" {
 								params.id=listAppend(params.id,pathInfo[i],'/');
 							}
 						}
-
+					}else if(pathInfo[3]=='new'){
+						params.id=pathInfo[3];
 					} else{
 						parseparamsFromPath(pathInfo,params,3);
 					}
