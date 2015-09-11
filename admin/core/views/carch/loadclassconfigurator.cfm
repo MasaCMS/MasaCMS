@@ -46,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset request.layout=false>
 <cfparam name="rc.layoutmanager" default="false">
+<cfparam name="rc.container" default="">
 <cfswitch expression="#rc.classid#">	
 	<cfcase value="feed">
 		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
@@ -90,7 +91,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="objectclass/dsp_container_configurator.cfm">
 	</cfcase>
 	<cfcase value="collection">
-		<cfinclude template="objectclass/dsp_collection_configurator.cfm">
+		<cfif rc.container eq 'layout'>
+			<cfinclude template="objectclass/collection/layout/index.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/collection/index.cfm">
+		</cfif>
 	</cfcase>
 	<cfcase value="text">
 		<cfinclude template="objectclass/dsp_text_configurator.cfm">

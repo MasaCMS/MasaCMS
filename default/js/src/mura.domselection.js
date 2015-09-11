@@ -525,6 +525,13 @@
 			}
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
+		
+		submit:function(){
+			if(this.selection.length && this.selection[0].submit){
+				this.selection[0].submit();
+			}
+			return this;
+		},
 
 		offsetParent:function(){
 			if(!this.selection.length){

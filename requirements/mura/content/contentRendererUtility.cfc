@@ -952,6 +952,16 @@
 						<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfcase>
+
+					<!--- BEGIN: New Layout Manager Objects --->
+					<cfcase value="collection">
+						<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
+						<cfset editableControl.class="editableCollection">
+						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset editableControl.isConfigurator=true>
+					</cfcase>
+					<!--- END: New Layout Manager Objects --->
+
 					<cfcase value="tag_cloud">
 						<cfif Len($.siteConfig('customTagGroups'))>	
 							<cfset showEditable=arguments.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>	
@@ -1029,7 +1039,6 @@
 				</cfif>
 			</cfif>
 				
-
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 
 			<cfif not arguments.layoutmanager>						
@@ -1040,6 +1049,8 @@
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;siteID=" & arguments.siteID>
+					<cfset editableControl.editLink = editableControl.editLink & "&amp;contenttype=" & esapiEncode('url',$.content('type'))>
+					<cfset editableControl.editLink = editableControl.editLink & "&amp;contentsubtype=" & esapiEncode('url',$.content('subtype'))>
 				</cfif>
 			<cfelse>
 				<cfset editableControl.editLink = editableControl.editLink & "&amp;siteID=" & arguments.siteID>
@@ -1105,6 +1116,13 @@
 						</cfif>
 					</cfif>
 				</cfcase>
+				<!--- BEGIN: New Layout Manager Objects --->
+				<cfcase value="collection">
+					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
+					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'collection' & arguments.params.sourceid)></cfcase>
+				
+
+				<!--- END: New Layout Manager Objects--->
 				<cfcase value="mailing_list"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="mailing_list_master"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="site_map"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>							

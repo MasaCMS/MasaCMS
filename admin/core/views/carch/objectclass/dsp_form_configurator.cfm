@@ -23,10 +23,11 @@
 <div class="fieldset-wrap row-fluid">
 	<div class="fieldset">
 		<div class="control-group">
+			<label class="control-label">Select Form</label>
 			<div class="controls">
 				<select id="availableObjectSelector">
 					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
-						-- Select Form --
+					--
 					</option>
 
 					<cfloop query="rc.rsForms">

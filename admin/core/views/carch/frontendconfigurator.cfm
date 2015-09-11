@@ -50,7 +50,9 @@
 							'siteid':'#esapiEncode('javascript',rc.siteid)#',
 							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',
-							'parentid':'#esapiEncode('javascript',rc.parentID)#'
+							'parentid':'#esapiEncode('javascript',rc.parentID)#',
+							'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
+							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#'
 						}
 						
 						<cfset configuratorWidth=600>

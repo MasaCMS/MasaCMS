@@ -5,7 +5,7 @@
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#
 			</label>
 			<div class="controls">
-				<select name="typeSelector"  onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentBean.getcontentHistID()#',this.value,'#esapiEncode("Javascript",rc.siteID)#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+				<select name="typeSelector" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentBean.getcontentHistID()#',this.value,'#esapiEncode("Javascript",rc.siteID)#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 				<cfloop list="#baseTypeList#" index="t">
 				<cfsilent>
 					<cfquery name="rsst" dbtype="query">
@@ -48,7 +48,7 @@
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#
 				</label>
 				<div class="controls">
-					<select name="typeSelector"  onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+					<select name="typeSelector" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentID()#','#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 						<cfif not len(subtypefilter) or listFindNoCase(subtypefilter,'#t#/Default')>
 							<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
 						</cfif>

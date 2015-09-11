@@ -64,6 +64,8 @@ initMura({
 	mobileformat: "#esapiEncode('javascript',$.event('muraMobileRequest'))#",
 	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
 	layoutmanager:"#variables.$.getContentRenderer().useLayoutManager()#",
+	type:"#esapiEncode('javascript',variables.$.content('type'))#",
+	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
 });
 </script>

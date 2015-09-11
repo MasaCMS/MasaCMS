@@ -2819,10 +2819,14 @@ buttons: {
 				}
 
 			});
+
+			var url=config.url + "?" + config.pars + '&contenttype=' + document.contentForm.type.value + '&contentsubtype=' + document.contentForm.subtype.value;
+		} else {
+			var url=config.url + "?" + config.pars;
 		}
 		
 		$.ajax({
-			url: config.url + "?" + config.pars,
+			url: url,
 			dataType: 'text',
 			data: data, 
 			type: 'post',
