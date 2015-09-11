@@ -3994,11 +3994,18 @@ this.Element && function(ElementPrototype) {
 			}
 			return this.selection[0].matchesSelector && this.selection[0].matchesSelector(selector);
 		},
-		
-		submit:function(){
-			if(this.selection.length && this.selection[0].submit){
-				this.selection[0].submit();
+
+		submit:function(fn){
+			if(fn){
+				this.on('submit',fn);
+			} else {
+				this.each(function(el){
+					if(typeof el.submit == 'function'){
+						el.submit();
+					}
+				});
 			}
+
 			return this;
 		},
 
