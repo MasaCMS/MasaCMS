@@ -190,10 +190,10 @@
 		},
 		save:function(){
 			var self=this;
-
+			alert('validate start')
 			return new Promise(function(resolve,reject) {
 				self.validate(function(){
-					alert('test1')
+
 					if(!self.hasErrors()){
 						window.mura.ajax({
 							type:'get',
