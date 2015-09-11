@@ -496,8 +496,10 @@ component extends="mura.cfobject" {
 								
 							}
 						} else {
-
-							if(listLen(params.id) > 1){
+							if(params.id=='new') {
+								params.method='findNew';
+								result=findNew(argumentCollection=params);
+							} else if(listLen(params.id) > 1){
 								params.ids=params.id;
 								params.method='findMany';
 								result=findMany(argumentCollection=params);
