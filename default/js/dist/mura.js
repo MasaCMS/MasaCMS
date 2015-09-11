@@ -4447,7 +4447,7 @@ this.Element && function(ElementPrototype) {
 						}
 
 						if(typeof resolve == 'function'){
-							console(resolve.toString())
+							console.log(resolve.toString())
 							resolve(self);
 						}
 					}
@@ -4471,7 +4471,7 @@ this.Element && function(ElementPrototype) {
 
 			return new Promise(function(resolve,reject) {
 				self.validate().then(function(){
-					console(self.getErrors());
+					console.log(self.getErrors());
 					if(!self.hasErrors()){
 						window.mura.ajax({
 							type:'get',
