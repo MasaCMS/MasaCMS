@@ -191,10 +191,10 @@
 		},
 		save:function(){
 			var self=this;
-
+			
 			return new Promise(function(resolve,reject) {
 				self.validate().then(function(){
-
+					console(self.getErrors());
 					if(!self.hasErrors()){
 						window.mura.ajax({
 							type:'get',
