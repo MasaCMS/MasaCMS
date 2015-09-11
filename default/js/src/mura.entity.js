@@ -155,7 +155,7 @@
 		validate:function(){
 			
 			var self=this;
-
+			alert('validate start1')
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type: 'post',
@@ -166,6 +166,7 @@
 							version: 4
 						},
 					success:function(resp){
+						console.log(resp)
 						if(resp.data != 'undefined'){
 								self.set(resp.data)
 						} else {
@@ -190,7 +191,7 @@
 		},
 		save:function(){
 			var self=this;
-			alert('validate start')
+
 			return new Promise(function(resolve,reject) {
 				self.validate(function(){
 
