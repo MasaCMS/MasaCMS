@@ -173,6 +173,7 @@
 						}
 
 						if(typeof resolve == 'function'){
+							console(resolve.toString())
 							resolve(self);
 						}
 					}
@@ -191,7 +192,9 @@
 		},
 		save:function(){
 			var self=this;
-			
+
+
+
 			return new Promise(function(resolve,reject) {
 				self.validate().then(function(){
 					console(self.getErrors());

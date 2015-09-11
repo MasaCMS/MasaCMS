@@ -4447,6 +4447,7 @@ this.Element && function(ElementPrototype) {
 						}
 
 						if(typeof resolve == 'function'){
+							console(resolve.toString())
 							resolve(self);
 						}
 					}
@@ -4465,7 +4466,9 @@ this.Element && function(ElementPrototype) {
 		},
 		save:function(){
 			var self=this;
-			
+
+
+
 			return new Promise(function(resolve,reject) {
 				self.validate().then(function(){
 					console(self.getErrors());
