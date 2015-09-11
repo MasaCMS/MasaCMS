@@ -179,13 +179,21 @@
 			});		
 
 		},
-
+		hasErrors:function(){
+			return typeof self.get('errors') != 'object' || window.mura.isEmptyObject(self.get('errors'));
+		},
+		getErrors:function(){
+			if(typeof self.get('errors') != 'object'){
+				this.set('errors',{});
+			} 
+			return this.get('errors');
+		},
 		save:function(){
 			var self=this;
 
 			return new Promise(function(resolve,reject) {
 				self.validate(function(){
-					if(window.mura.isEmptyObject(self.get('errors'))){
+					if(!self.hasErrors()){
 						window.mura.ajax({
 							type:'get',
 							url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
@@ -214,6 +222,11 @@
 								});
 							}
 						});
+					} else {
+						self.set('errors',resp.error);
+						if(typeof reject == 'function'){
+							reject(self);
+						}
 					}
 				});
 			});

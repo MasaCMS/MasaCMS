@@ -39,6 +39,8 @@
 					var parameters=messageEvent.data;
 					
 					if (parameters["cmd"] == "setObjectParams") {
+						//console.log(parameters.params)
+						configParams=parameters.params;
 						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
