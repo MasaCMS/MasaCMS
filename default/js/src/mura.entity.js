@@ -155,7 +155,7 @@
 		validate:function(){
 			
 			var self=this;
-			alert('validate start1')
+			
 			return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type: 'post',
@@ -172,6 +172,8 @@
 						} else {
 							self.set('errors',resp.error);
 						}
+
+						alert(typeof resolve == 'function');
 						if(typeof resolve == 'function'){
 							resolve(self);
 						}
