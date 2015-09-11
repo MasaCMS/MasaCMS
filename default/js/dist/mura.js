@@ -2551,8 +2551,8 @@ this.Element && function(ElementPrototype) {
 
 		try{
 			//alert(JSON.stringify(validations));
-			console.log(data);
-			console.log(validations);
+			//console.log(data);
+			//console.log(validations);
 			ajax(
 				{
 					type: 'post',
