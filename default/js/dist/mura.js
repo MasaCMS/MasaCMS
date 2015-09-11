@@ -4440,14 +4440,12 @@ this.Element && function(ElementPrototype) {
 							version: 4
 						},
 					success:function(resp){
-						console.log(resp)
 						if(resp.data != 'undefined'){
 								self.set(resp.data)
 						} else {
 							self.set('errors',resp.error);
 						}
 
-						alert(typeof resolve == 'function');
 						if(typeof resolve == 'function'){
 							resolve(self);
 						}
@@ -4469,7 +4467,7 @@ this.Element && function(ElementPrototype) {
 			var self=this;
 
 			return new Promise(function(resolve,reject) {
-				self.validate(function(){
+				self.validate().then(function(){
 
 					if(!self.hasErrors()){
 						window.mura.ajax({
