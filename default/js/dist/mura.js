@@ -277,7 +277,7 @@
   function touchstart(evt) {
     var el = evt.target;
     do {
-      if (el.draggable === true) {
+      if (el.hasAttribute("draggable") && el.getAttribute("draggable").toLowerCase()=='true') {
         // If draggable isn't explicitly set for anchors, then simulate a click event.
         // Otherwise plain old vanilla links will stop working.
         // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Touch_events#Handling_clicks
@@ -2551,8 +2551,8 @@ this.Element && function(ElementPrototype) {
 
 		try{
 			//alert(JSON.stringify(validations));
-			console.log(data);
-			console.log(validations);
+			//console.log(data);
+			//console.log(validations);
 			ajax(
 				{
 					type: 'post',
@@ -2818,6 +2818,20 @@ this.Element && function(ElementPrototype) {
 		function wireUpObject(html){
 			var obj=select(self);
 			
+			if(obj.data('class')){
+				var classes=obj.data('class');
+
+				if(typeof classes != 'array'){
+					var classes=classes.split(' ');
+				}
+				
+				for(var c in classes){
+					if(!obj.hasClass(classes[c])){
+						obj.addClass(classes[c]);
+					}
+				}	
+			}
+
 			if(mura.layoutmanager && mura.editing){
 				if(obj.data('object')=='folder'){
 					obj.html(layoutmanagertoolbar + html);
@@ -2826,8 +2840,10 @@ this.Element && function(ElementPrototype) {
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
+
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 								obj.html(layoutmanagertoolbar + html);
+								
 							} else {
 								obj.html(html);
 							}
@@ -2863,7 +2879,6 @@ this.Element && function(ElementPrototype) {
 			each(self.getElementsByTagName('FORM'),function(el,i){
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
-
 
 			if(obj.data('nextnid')){
 				obj.find('.mura-next-n a').each(function(){
@@ -3163,7 +3178,7 @@ this.Element && function(ElementPrototype) {
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					this.ready(selector);
+					ready(selector);
 					return this;
 				} else {
 					return select(selector);
@@ -3594,6 +3609,20 @@ this.Element && function(ElementPrototype) {
 			return this;
 		},
 
+		submit:function(fn){
+			if(fn){
+				this.on('submit',fn);
+			} else {
+				this.each(function(el){
+					if(typeof el.submit == 'function'){
+						el.submit();
+					}
+				});
+			}
+
+			return this;
+		},
+		
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
@@ -4400,8 +4429,9 @@ this.Element && function(ElementPrototype) {
 		validate:function(){
 			
 			var self=this;
-
+			
 			return new Promise(function(resolve,reject) {
+				
 				window.mura.ajax({
 					type: 'post',
 					url: window.mura.apiEndpoint + '?method=validate',
@@ -4412,10 +4442,11 @@ this.Element && function(ElementPrototype) {
 						},
 					success:function(resp){
 						if(resp.data != 'undefined'){
-								self.set(resp.data)
+								self.set('errors',resp.data)
 						} else {
 							self.set('errors',resp.error);
 						}
+
 						if(typeof resolve == 'function'){
 							resolve(self);
 						}
@@ -4424,44 +4455,78 @@ this.Element && function(ElementPrototype) {
 			});		
 
 		},
-
+		hasErrors:function(){
+			var errors=this.get('errors',{});
+			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !window.mura.isEmptyObject(errors));
+		},
+		getErrors:function(){
+			return this.get('errors',{});
+		},
 		save:function(){
 			var self=this;
 
-			return new Promise(function(resolve,reject) {
-				self.validate(function(){
-					if(window.mura.isEmptyObject(self.get('errors'))){
-						window.mura.ajax({
-							type:'get',
-							url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-							data:{
-								siteid:self.get('siteid'),
-								context:self.get('id')
-							},
-							success:function(resp){
-								window.mura.ajax({
-										type:'post',
-										url:window.mura.apiEndpoint + '?method=save',
-										data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
-										success:function(resp){
-											if(resp.data != 'undefined'){
-												self.set(resp.data)
-												if(typeof resolve == 'function'){
-													resolve(self);
-												}
-											} else {
-												self.set('errors',resp.error);
-												if(typeof reject == 'function'){
-													reject(self);
-												}	
-											}
-										}
-								});
-							}
-						});
-					}
+			if(!this.get('id')){
+				return new Promise(function(resolve,reject) {				
+					var temp=window.mura.deepExtend({},self.getAll());
+				
+					window.mura.ajax({
+						type:'get',
+						url:window.mura.apiEndpoint + self.get('siteid') + '/' + self.get('entityname') + '/new' ,
+						success:function(resp){
+							self.set(resp.data);
+							self.set(temp);
+							self.set('id',resp.data.id)
+							self.save().then(resolve,reject);
+						}
+					});
 				});
-			});
+
+			} else {
+				return new Promise(function(resolve,reject) {
+					self.validate().then(function(){
+
+						if(!self.hasErrors()){
+							if(self.get('entityname') == 'content'){
+								var context=self.get('contentid');
+							} else {
+								var context=self.get('id');
+							}
+							window.mura.ajax({
+								type:'post',
+								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+								data:{
+									siteid:self.get('siteid'),
+									context:context
+								},
+								success:function(resp){
+									window.mura.ajax({
+											type:'post',
+											url:window.mura.apiEndpoint + '?method=save',
+											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+											success:function(resp){
+												if(resp.data != 'undefined'){
+													self.set(resp.data)
+													if(typeof resolve == 'function'){
+														resolve(self);
+													}
+												} else {
+													self.set('errors',resp.error);
+													if(typeof reject == 'function'){
+														reject(self);
+													}	
+												}
+											}
+									});
+								}
+							});
+						} else {
+							if(typeof reject == 'function'){
+								reject(self);
+							}
+						}
+					});
+				});
+			}
 
 		},
 

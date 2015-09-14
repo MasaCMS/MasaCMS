@@ -155,8 +155,9 @@
 		validate:function(){
 			
 			var self=this;
-
+			
 			return new Promise(function(resolve,reject) {
+				
 				window.mura.ajax({
 					type: 'post',
 					url: window.mura.apiEndpoint + '?method=validate',
@@ -167,10 +168,11 @@
 						},
 					success:function(resp){
 						if(resp.data != 'undefined'){
-								self.set(resp.data)
+								self.set('errors',resp.data)
 						} else {
 							self.set('errors',resp.error);
 						}
+
 						if(typeof resolve == 'function'){
 							resolve(self);
 						}
@@ -179,44 +181,78 @@
 			});		
 
 		},
-
+		hasErrors:function(){
+			var errors=this.get('errors',{});
+			return (typeof errors=='string' && errors !='') || (typeof errors=='object' && !window.mura.isEmptyObject(errors));
+		},
+		getErrors:function(){
+			return this.get('errors',{});
+		},
 		save:function(){
 			var self=this;
 
-			return new Promise(function(resolve,reject) {
-				self.validate(function(){
-					if(window.mura.isEmptyObject(self.get('errors'))){
-						window.mura.ajax({
-							type:'get',
-							url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-							data:{
-								siteid:self.get('siteid'),
-								context:self.get('id')
-							},
-							success:function(resp){
-								window.mura.ajax({
-										type:'post',
-										url:window.mura.apiEndpoint + '?method=save',
-										data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
-										success:function(resp){
-											if(resp.data != 'undefined'){
-												self.set(resp.data)
-												if(typeof resolve == 'function'){
-													resolve(self);
-												}
-											} else {
-												self.set('errors',resp.error);
-												if(typeof reject == 'function'){
-													reject(self);
-												}	
-											}
-										}
-								});
-							}
-						});
-					}
+			if(!this.get('id')){
+				return new Promise(function(resolve,reject) {				
+					var temp=window.mura.deepExtend({},self.getAll());
+				
+					window.mura.ajax({
+						type:'get',
+						url:window.mura.apiEndpoint + self.get('siteid') + '/' + self.get('entityname') + '/new' ,
+						success:function(resp){
+							self.set(resp.data);
+							self.set(temp);
+							self.set('id',resp.data.id)
+							self.save().then(resolve,reject);
+						}
+					});
 				});
-			});
+
+			} else {
+				return new Promise(function(resolve,reject) {
+					self.validate().then(function(){
+
+						if(!self.hasErrors()){
+							if(self.get('entityname') == 'content'){
+								var context=self.get('contentid');
+							} else {
+								var context=self.get('id');
+							}
+							window.mura.ajax({
+								type:'post',
+								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+								data:{
+									siteid:self.get('siteid'),
+									context:context
+								},
+								success:function(resp){
+									window.mura.ajax({
+											type:'post',
+											url:window.mura.apiEndpoint + '?method=save',
+											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+											success:function(resp){
+												if(resp.data != 'undefined'){
+													self.set(resp.data)
+													if(typeof resolve == 'function'){
+														resolve(self);
+													}
+												} else {
+													self.set('errors',resp.error);
+													if(typeof reject == 'function'){
+														reject(self);
+													}	
+												}
+											}
+									});
+								}
+							});
+						} else {
+							if(typeof reject == 'function'){
+								reject(self);
+							}
+						}
+					});
+				});
+			}
 
 		},
 

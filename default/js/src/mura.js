@@ -1150,8 +1150,8 @@
 
 		try{
 			//alert(JSON.stringify(validations));
-			console.log(data);
-			console.log(validations);
+			//console.log(data);
+			//console.log(validations);
 			ajax(
 				{
 					type: 'post',
@@ -1417,6 +1417,20 @@
 		function wireUpObject(html){
 			var obj=select(self);
 			
+			if(obj.data('class')){
+				var classes=obj.data('class');
+
+				if(typeof classes != 'array'){
+					var classes=classes.split(' ');
+				}
+				
+				for(var c in classes){
+					if(!obj.hasClass(classes[c])){
+						obj.addClass(classes[c]);
+					}
+				}	
+			}
+
 			if(mura.layoutmanager && mura.editing){
 				if(obj.data('object')=='folder'){
 					obj.html(layoutmanagertoolbar + html);
@@ -1425,8 +1439,10 @@
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
+
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 								obj.html(layoutmanagertoolbar + html);
+								
 							} else {
 								obj.html(html);
 							}
@@ -1462,7 +1478,6 @@
 			each(self.getElementsByTagName('FORM'),function(el,i){
 				el.onsubmit=function(){return validateFormAjax(this);};
 			});
-
 
 			if(obj.data('nextnid')){
 				obj.find('.mura-next-n a').each(function(){
@@ -1599,6 +1614,24 @@
 	    } else {
 	    	return {};
 	    }
+	}
+
+	function inArray(elem, array, i) {
+	    var len;
+	    if ( array ) {
+	        if ( array.indexOf ) {
+	            return array.indexOf.call( array, elem, i );
+	        }
+	        len = array.length;
+	        i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
+	        for ( ; i < len; i++ ) {
+	            // Skip accessing in sparse arrays
+	            if ( i in array && array[ i ] === elem ) {
+	                return i;
+	            }
+	        }
+	    }
+	    return -1;
 	}
 
 	function getURLParams() {
@@ -1762,7 +1795,7 @@
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					this.ready(selector);
+					ready(selector);
 					return this;
 				} else {
 					return select(selector);
@@ -1780,6 +1813,7 @@
 			on:on,
 			off:off,
 			extend:extend,
+			inArray:inArray,
 			post:post,
 			get:get,
 			deepExtend:deepExtend,

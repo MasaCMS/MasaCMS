@@ -140,6 +140,20 @@
 			return this;
 		},
 
+		submit:function(fn){
+			if(fn){
+				this.on('submit',fn);
+			} else {
+				this.each(function(el){
+					if(typeof el.submit == 'function'){
+						el.submit();
+					}
+				});
+			}
+
+			return this;
+		},
+		
 		ready:function(fn){
 			this.on('ready',fn);
 			return this;
@@ -739,6 +753,30 @@
 				return this;
 			} else {
 				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+			}
+		},
+
+		prop:function(attributeName,value){
+			if(!this.selection.length){
+				return;
+			}
+			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
+				return window.mura.getAttributes(this.selection[0]);
+			} else if (typeof attributeName == 'object'){
+				this.each(function(el){
+					for(var p in attributeName){
+						el.setAttribute(p,attributeName[p]);
+					}
+				});
+				return this;
+
+			} else if(typeof value != 'undefined'){
+				this.each(function(el){
+					el.setAttribute(attributeName,value);
+				});
+				return this;
+			} else {
+				return window.mura.parseString(this.selection[0].getAttribute(attributeName));
 			}
 		},
 

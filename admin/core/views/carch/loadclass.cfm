@@ -53,18 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.objectid" default=""/>
 
 	<cfif rc.layoutmanager>
-		<cffunction name="renderClassOption" output="false">
-			<cfargument name="object">
-			<cfargument name="objectid" default="">
-			<cfargument name="objectname" default="">
-			<cfargument name="objectlabel">
-
-			<cfif not isDefined('arguments.objectlabel')>
-				<cfset arguments.objectlabel=arguments.objectname>
-			</cfif>
-
-			<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#">#esapiEncode('html',arguments.objectlabel)#</div>'>
-		</cffunction>
+		<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
 	</cfif>
 </cfsilent>
 

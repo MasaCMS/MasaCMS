@@ -103,13 +103,83 @@
 	<div class="mura-sidebar__objects-list">
 		<div class="mura-sidebar__objects-list__object-group">
 			<div class="mura-sidebar__objects-list__object-group-heading">
+				<a href="javascript:mura('.mura-sidebar__objects-list').toggle();">View Legacy Objects</a>
+				<h3>Content Objects</h3>
+				
+				<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='container',
+					objectid='',
+					objectname='Container'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='collection',
+					objectid='',
+					objectname='Collection'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='text',
+					objectid='',
+					objectname='Text'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='media',
+					objectid='',
+					objectname='Media'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='socialembed',
+					objectid='',
+					objectname='Social Embed'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='navigation',
+					objectid='',
+					objectname='Navigation'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='system',
+					objectid='',
+					objectname='System Object'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='form',
+					objectid='',
+					objectname='Form'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='mailing_list',
+					objectid='',
+					objectname='Mailing List'
+				)#
+
+				#contentRendererUtility.renderObjectClassOption(
+					object='plugin',
+					objectid='',
+					objectname='Plugin'
+				)#
+				
+
+			</div>
+		</div>
+	</div>
+
+	<div class="mura-sidebar__objects-list" style="display:none">
+		<div class="mura-sidebar__objects-list__object-group">
+			<div class="mura-sidebar__objects-list__object-group-heading">
+				<a href="javascript:mura('.mura-sidebar__objects-list').toggle();">&lt Back</a>
+				<h3>Legacy Objects</h3>
 				<select name="classSelector" onchange="mura.loadObjectClass('#esapiEncode("Javascript",$.content('siteid'))#',this.value,'','#$.content('contenthistid')#','#$.content('parentid')#','#$.content('contenthistid')#',0);">
 				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
-                <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
-                <option value="navigation">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.navigation')#</option>
-                <cfif application.settingsManager.getSite($.event('siteid')).getDataCollection()>
-	                <option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
-	            </cfif>
 	            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
 	                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
 	            </cfif> 
@@ -126,7 +196,6 @@
                   <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
                   <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
                 </cfif>
-            	<option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
               </select>
 
 			</div>

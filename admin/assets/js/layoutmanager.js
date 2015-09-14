@@ -210,28 +210,33 @@
 	    }
 
 	    function initClassObjects(){
-	    	mura("#classList .mura-objectclass").each(function(){
-			var item=mura(this);
-			item.attr('draggable',true);
-			item.on('dragstart',function(e){
-					//e.dataTransfer.effectAllowed = 'move';
-					dragEl=null;
-					elDropHandled=false;
-					newMuraObject=true;
-					muraLooseDropTarget=null;
-					mura('#dragtype').html(item.data('object'));
-					mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+	    	mura(".mura-objectclass").each(function(){
+				var item=mura(this);
 
-					e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
-				})
-				.on('dragend',
-					function(){
-						mura('#dragtype').html('');
+				if(!item.data('inited')){
+				item.attr('draggable',true);
+				item.on('dragstart',function(e){
+						//e.dataTransfer.effectAllowed = 'move';
 						dragEl=null;
 						elDropHandled=false;
-						newMuraObject=false;
-						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
+						newMuraObject=true;
+						muraLooseDropTarget=null;
+						mura('#dragtype').html(item.data('object'));
+						mura('.mura-sidebar').addClass('mura-sidebar--dragging');
+
+						e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
+					})
+					.on('dragend',
+						function(){
+							mura('#dragtype').html('');
+							dragEl=null;
+							elDropHandled=false;
+							newMuraObject=false;
+							mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
 					});
+
+					item.data('inited',true); 
+				}
 
 			});
 	    }
@@ -299,9 +304,15 @@
 
 		function loadObjectClass(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-			var d = mura('#classList');
+
+			if(classid == 'plugins'){
+				var d = mura('#pluginList');
+			} else {
+				var d = mura('#classList');
 			
-			mura('#classListContainer').show();
+				mura('#classListContainer').show();
+			}
+			
 
 			d.html(mura.preloaderMarkup);
 			mura.ajax({
@@ -317,5 +328,10 @@
 
 		mura.initLayoutManager=initLayoutManager;
 		mura.loadObjectClass=loadObjectClass;
+
+		mura(function(){
+			initClassObjects();
+		});
+		
 		
 	})(window);

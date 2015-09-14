@@ -277,7 +277,7 @@
   function touchstart(evt) {
     var el = evt.target;
     do {
-      if (el.draggable === true) {
+      if (el.hasAttribute("draggable") && el.getAttribute("draggable").toLowerCase()=='true') {
         // If draggable isn't explicitly set for anchors, then simulate a click event.
         // Otherwise plain old vanilla links will stop working.
         // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Touch_events#Handling_clicks
