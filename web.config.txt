@@ -100,7 +100,9 @@
 
 		<staticContent>
 			<remove fileExtension=".woff" />
-			<mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
+			<remove fileExtension=".woff2" />
+			<mimeMap fileExtension=".woff" mimeType="font/x-woff" />
+			<mimeMap fileExtension=".woff2" mimeType="application/font-woff2" />
 		</staticContent>
 
 	</system.webServer>
