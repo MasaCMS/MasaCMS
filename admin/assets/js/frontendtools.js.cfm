@@ -72,9 +72,7 @@
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
-				}
-
-				
+				}		
 
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();

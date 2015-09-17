@@ -39,7 +39,8 @@
 					var parameters=messageEvent.data;
 					
 					if (parameters["cmd"] == "setObjectParams") {
-						//console.log(parameters.params)
+						console.log('test')
+						console.log(parameters.params)
 						configParams=parameters.params;
 						
 						configOptions={
@@ -148,8 +149,7 @@
 					jQuery("##configurator").html('<div class="load-inline"></div>');
 					$('##configurator .load-inline').spin(spinnerArgs2);
 					jQuery(".form-actions").hide();
-					
-					
+									
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',

@@ -252,7 +252,7 @@
 		           		break;
 		           }
 		           */
-		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
+		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
 		           		name='#' + $node.attr('id');
 		           		path = name + (path ? ' > ' + path : '');
 		            	break;
@@ -737,7 +737,7 @@
 				return;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getDataAttributes(this.selection[0]);
+				return window.mura.getData(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -761,7 +761,7 @@
 				return;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getAttributes(this.selection[0]);
+				return window.mura.getProps(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){

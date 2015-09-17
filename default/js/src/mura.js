@@ -498,7 +498,18 @@
 	  return tmp.body.children;
 	};
 
-	function getDataAttributes(el){
+	function getData(el){
+		var data = {};
+		Array.prototype.forEach.call(el.attributes, function(attr) {
+		    if (/^data-/.test(attr.name)) {
+		        data[attr.name.substr(5)] = parseString(attr.value);
+		    }
+		});
+
+		return data;
+	}
+
+	function getProps(el){
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		    if (/^data-/.test(attr.name)) {
@@ -1353,13 +1364,25 @@
 			self.setAttribute('data-instanceid',createUUID());
 		}
 
+		/*
+		if(self.getAttribute('data-object') == 'container'){
+			if(self.getAttribute('data-html')){
+				self.innerHTML=self.getAttribute('data-html');
+			}
+
+			processMarkup(self);
+
+			return;
+		}
+		*/
+
 		function validateFormAjax(frm) {
 			
 			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var keys=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 				
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1383,7 +1406,7 @@
 						} 
 			
 			} else {
-				var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
@@ -1523,7 +1546,7 @@
 			}
 		}
 
-		var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
+		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
@@ -1821,7 +1844,8 @@
 			changeElementType:changeElementType,
 			each:each,
 			parseHTML:parseHTML,
-			getDataAttributes:getDataAttributes,
+			getData:getData,
+			getProps:getProps,
 			isEmptyObject:isEmptyObject,
 			evalScripts:evalScripts,
 			validateForm:validateForm,
