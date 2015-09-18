@@ -50,7 +50,8 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				adminProxy.post({cmd:'setObjectParams',params:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
+				adminProxy.post({cmd:'setObjectParams',params:data});
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 
@@ -605,12 +606,17 @@
 
 						for (var prop in muraInlineEditor.attributes) {
 							var attribute=muraInlineEditor.attributes[prop].getAttribute('data-attribute');
+							
 							utility(attribute)
 								.find('.mura-object')
-								.html('')
 								.removeAttr('data-perm')
 								.removeAttr('data-instanceid')
 								.removeAttr('draggable');
+
+							utility(attribute)
+								.find('.mura-object')
+								.html('');
+
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}

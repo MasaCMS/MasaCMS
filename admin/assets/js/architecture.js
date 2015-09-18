@@ -2772,7 +2772,6 @@ buttons: {
 					Save: function() {
 						siteManager.updateAvailableObject();
 						
-
 						var availableObjectSelector=$('#availableObjectSelector');
 
 						if(availableObjectSelector.length){
@@ -2860,11 +2859,13 @@ buttons: {
 
 				if(siteManager.availableObjectTemplate == "") {
 					var availableObjectContainer = $("#availableObjectParams");
+					
 					siteManager.availableObjectTemplate = {
 						object: availableObjectContainer.attr("data-object"),
 						objectid: availableObjectContainer.attr("data-objectid"),
 						name: availableObjectContainer.attr("data-name")
 					};
+					
 					siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
 				}
 

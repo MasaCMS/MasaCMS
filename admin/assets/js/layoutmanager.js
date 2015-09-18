@@ -38,12 +38,7 @@
 			})
 			.on('dragover',function(e){
 				e.preventDefault();
-			})
-			.on('dragenter',function(e){
-
 				if(dragEl || newMuraObject){
-				
-
 					var prev=mura('.mura-var-target');
 					muraLooseDropTarget=this;
 
@@ -55,11 +50,13 @@
 						}
 					}
 
-					var item=mura(this).closest('.mura-object');
 					mura(this).addClass('mura-var-target');	
-					disabledEventPropagation(e);	
+					//disabledEventPropagation(e);	
 					
 				}
+			})
+			.on('dragenter',function(e){
+				
 			})
 			.on('dragleave',function(e){
 				mura(this).removeClass('mura-var-target');
@@ -72,32 +69,38 @@
 			    if (e.stopPropagation) {
 			    	e.stopPropagation(); // stops the browser from redirecting.
 			    }
+
+			    var target=mura('.mura-var-target').node;
+
 			    if(dragEl || newMuraObject){
 					if(dragEl && dragEl != this){
-						if(this.getAttribute('data-object')=='container'){
-							this.appendChild(dragEl);
+						if(target.getAttribute('data-object')=='container'){
+							var container=mura('.mura-object[data-instanceid="' + target.getAttribute('data-instanceid') + '"] > .mura-container')
+							container.append(dragEl);
 						} else {
-							this.parentNode.insertBefore(dragEl,this.nextSibling);
+							target.parentNode.insertBefore(dragEl,target.nextSibling);
 						}	
 				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 						mura('#adminSave').show();
-						mura(this).closest('.mura-displayregion').data('dirty',true);
+						mura(target).closest('.mura-displayregion').data('dirty',true);
 						elDropHandled=true;
 						disabledEventPropagation(e);
-					} else if (dragEl==this){
+					} else if (dragEl==target){
 						elDropHandled=true;
 						disabledEventPropagation(e);
 					}
 
-					checkForNew.call(this,e);
+					checkForNew.call(target,e);
 
-				    mura(this).removeClass('mura-var-target');
-					muraLooseDropTarget=null;
-					newMuraObject=false;
+				}
 
-					if(!mura(this).attr('class')){
-						mura(this).removeAttr('class');
-					}
+
+			    mura('.mura-var-target').removeClass('mura-var-target');
+				muraLooseDropTarget=null;
+				newMuraObject=false;
+
+				if(!mura(target).attr('class')){
+					mura(target).removeAttr('class');
 				}
 				
 			}).attr('draggable',true);
@@ -145,31 +148,36 @@
 
 			    if(dragEl || newMuraObject){
 
-				    if(dragEl && dragEl != this){
-				    	if(this.getAttribute('data-object')=='container'){
-							this.appendChild(dragEl);
+			    	var target=mura('.mura-var-target').node;
+
+				    if(dragEl && dragEl != target){
+				    	if(target.getAttribute('data-object')=='container'){
+							var container=mura('.mura-object[data-instanceid="' + target.getAttribute('data-instanceid') + '"] > .mura-container')
+							container.append(dragEl);
 						} else {
-							this.parentNode.insertBefore(dragEl,this.nextSibling);
+							target.parentNode.insertBefore(dragEl,target.nextSibling);
 						}
-				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+				    	
 						mura('#adminSave').show();
 						mura(dragEl).addClass('mura-async-object');
-						mura(this).closest('.mura-displayregion').data('dirty',true);
+						mura(target).closest('.mura-displayregion').data('dirty',true);
 						elDropHandled=true;
 						disabledEventPropagation(e);
-					} else if (dragEl==this){
+					} else if (dragEl==target){
 						elDropHandled=true;
 						disabledEventPropagation(e);
 					}
 
-					checkForNew.call(this,e);
+					checkForNew.call(target,e);
 
-					mura(this).removeClass('mura-var-target');
-					muraLooseDropTarget=null;
-					if(!mura(this).attr('class')){
-						mura(this).removeAttr('class');
-					}
+				}
 
+				mura('.mura-var-target').removeClass('mura-var-target');
+				muraLooseDropTarget=null;
+				newMuraObject=false;
+
+				if(!mura(this).attr('class')){
+					mura(this).removeAttr('class');
 				}
 			});
 
@@ -232,7 +240,7 @@
 			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
 			.each(function(){ initDraggableObject(this)});
 			
-			mura('.mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+			mura('.mura-displayregion[data-loose="true"] div:not(.data-object), .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
 	    }
 
@@ -303,11 +311,11 @@
 		        var target=mura(this);
 		        if(target.hasClass('mura-object')){
 		        	if(this.getAttribute('data-object')=='container'){
-						this.appendChild(dragEl);
+						var container=mura('.mura-object[data-instanceid="' + this.getAttribute('data-instanceid') + '"] > .mura-container')
+						container.append(displayObject);
 					} else {
-						this.parentNode.insertBefore(dragEl,this.nextSibling);
-					}
-		        	this.parentNode.insertBefore(displayObject, this);				
+						this.parentNode.insertBefore(displayObject,this.nextSibling);
+					}			
 		        } else if(target.hasClass('mura-displayregion')){
 		        	this.appendChild(displayObject);	
 		        } else {

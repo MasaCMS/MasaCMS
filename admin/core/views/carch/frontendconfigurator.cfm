@@ -39,9 +39,8 @@
 					var parameters=messageEvent.data;
 					
 					if (parameters["cmd"] == "setObjectParams") {
-						console.log('test')
-						console.log(parameters.params)
-						configParams=parameters.params;
+						
+						configParams=parameters["params"];
 						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
@@ -49,7 +48,7 @@
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
-							'params':JSON.stringify(parameters.params),
+							'params':JSON.stringify(parameters["params"]),
 							'siteid':'#esapiEncode('javascript',rc.siteid)#',
 							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',
@@ -109,7 +108,7 @@
 							</cfswitch>
 						</cfif>
 
-						siteManager.loadObjectPreview(configOptions);
+						//siteManager.loadObjectPreview(configOptions);
 					
 					}
 				}

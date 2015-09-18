@@ -230,7 +230,7 @@
 			}
 		},
 
-		getSelector:function() {
+		selector:function() {
 		    var pathes = [];
 
 		    //this.selection.each(function(index, element) {

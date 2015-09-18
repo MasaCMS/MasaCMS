@@ -1364,17 +1364,9 @@
 			self.setAttribute('data-instanceid',createUUID());
 		}
 
-		/*
-		if(self.getAttribute('data-object') == 'container'){
-			if(self.getAttribute('data-html')){
-				self.innerHTML=self.getAttribute('data-html');
-			}
-
-			processMarkup(self);
-
-			return;
+		if(self.getAttribute('data-object')=='container'){
+			self.getAttribute('data-content',mura(self).children('div.mura-container').html())
 		}
-		*/
 
 		function validateFormAjax(frm) {
 			
@@ -1397,6 +1389,10 @@
 				if('nocache' in checkdata){
 					data.append('nocache',1);
 				}
+
+				if(data.object=='container' && data.contents){
+					delete data.contents;
+				}
 				
 				var postconfig={
 							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -1407,6 +1403,10 @@
 			
 			} else {
 				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+
+				if(data.object=='container' && data.contents){
+					delete data.contents;
+				}
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
@@ -1438,6 +1438,9 @@
 		}
 
 		function wireUpObject(html){
+
+			html=trim(html);
+			
 			var obj=select(self);
 			
 			if(obj.data('class')){
@@ -1477,6 +1480,18 @@
 
 			} else {
 				obj.html(html);
+			}
+
+
+			if(obj.data('object') == 'container'){
+				obj.html(obj.html() + '<div class="mura-container-meta"></div><div class="mura-container"></div>');
+				if(obj.data('content')){
+					obj.children('div.mura-container-content').html(obj.data('content'));
+				}
+
+				processMarkup(self);
+
+				return;
 			}
 
 			processMarkup(self);
@@ -1548,6 +1563,10 @@
 
 		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
+		if(data.object=='container' && data.contents){
+			delete data.contents;
+		}
+
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
@@ -1593,6 +1612,10 @@
 				});
 			}	
 		}
+	}
+
+	function trim(str) {
+	    return str.replace(/^\s+|\s+$/gm,'');
 	}
 	
 
@@ -1864,7 +1887,8 @@
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
-			readCookie:readCookie
+			readCookie:readCookie,
+			trim:trim
 			}
 		),
 		//these are here for legacy support
