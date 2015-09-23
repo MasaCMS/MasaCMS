@@ -403,7 +403,7 @@
 
 				utility(".mura-sidebar").addClass('active');
 
-				utility(".mura-object").each(function(){
+				function initObject(){
 					var item=utility(this);
 					var region=item.closest(".mura-region-local");
 					var objectParams;
@@ -413,7 +413,6 @@
 					if(region && region.length ){
 						if(region.data('perm')){
 							objectParams=item.data();
-							
 							if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
 								item.html(window.mura.layoutmanagertoolbar + item.html());
 
@@ -424,11 +423,14 @@
 										openFrontEndToolsModal(this);
 									}
 								);
+
+								item.find('.mura-object').each(initObject);
 							}
 						}
 					}
-					
-				});
+				}
+
+				utility(".mura-object").each(initObject);
 
 				utility('.mura-async-object[data-object="folder"]').each(function(){
 					var item=utility(this);
@@ -560,11 +562,22 @@
 			attribute.attr('contenteditable','true');
 			attribute.attr('title','');
 			attribute.unbind('dblclick');
-			attribute.find('.mura-object')
-				.html('')
-				.removeAttr('data-perm')
+			attribute.find('.mura-object').each(function(){
+				var self=utility(this);
+
+				self.removeAttr('data-perm')
 				.removeAttr('data-instanceid')
 				.removeAttr('draggable');
+
+				if(typeof mura !='undefined' && typeof mura.resetAsyncObject=='function'){
+					mura.resetAsyncObject(this);
+				} else {
+					self.html('');
+				}
+
+			});
+				
+				
 
 			if(!attribute.data('manualedit')){
 
@@ -615,10 +628,21 @@
 								.removeAttr('data-perm')
 								.removeAttr('data-instanceid')
 								.removeAttr('draggable');
-
-							utility(attribute)
+							
+							if(mura && mura.resetAsyncObject){
+								mura(attribute)
+									.find('.mura-object')
+									.each(function()
+									{
+										mura.resetAsyncObject(this)
+									});
+							} else {
+								utility(attribute)
 								.find('.mura-object')
 								.html('');
+								
+							}
+							
 
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;

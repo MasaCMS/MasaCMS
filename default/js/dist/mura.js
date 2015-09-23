@@ -2752,6 +2752,23 @@ this.Element && function(ElementPrototype) {
 		}	
 	}
 
+	function resetAsyncObject(el){
+		if(el.getAttribute('data-object')=='container'){
+			var self=mura(el);
+
+			self.find('.mura-object:not([data-object="container"])').html('');
+			self.find('.frontEndToolsModal').remove();
+
+			self.find('.mura-object[data-object="container"]').each(function(){
+				var self=mura(this);
+				self.children('div.mura-meta').html('');
+				self.data('content',self.children('div.mura-content').html())
+			});
+
+			self.data('content',self.children('div.mura-content').html());
+		}
+	}
+
 	function processAsyncObject(el){
 		var self=el;
 
@@ -2759,9 +2776,7 @@ this.Element && function(ElementPrototype) {
 			self.setAttribute('data-instanceid',createUUID());
 		}
 
-		if(self.getAttribute('data-object')=='container'){
-			self.getAttribute('data-content',mura(self).children('div.mura-content').html())
-		}
+		resetAsyncObject(self);
 
 		function validateFormAjax(frm) {
 			
@@ -2852,9 +2867,19 @@ this.Element && function(ElementPrototype) {
 				}	
 			}
 
+			if(obj.data('object')=='container'){
+				obj.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+				if(obj.data('content')){
+					obj.children('div.mura-content').html(obj.data('content'));
+				}
+			} else {
+				obj.html(html);
+			}
+		
 			if(mura.layoutmanager && mura.editing){
+				
 				if(obj.data('object')=='folder'){
-					obj.html(layoutmanagertoolbar + html);
+					obj.html(layoutmanagertoolbar + obj.html());
 				} else {
 					var region=mura(self).closest(".mura-region-local");
 					if(region && region.length ){
@@ -2862,28 +2887,14 @@ this.Element && function(ElementPrototype) {
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + html);
-								
-							} else {
-								obj.html(html);
+								obj.html(layoutmanagertoolbar + obj.html());
 							}
-						} else {
-							obj.html(html);
 						}
 					}
 				}
-
-			} else {
-				obj.html(html);
 			}
 
-			if(obj.data('object') == 'container'){
-				obj.html(obj.html() + '<div class="mura-meta"></div><div class="mura-content"></div>');
-				if(obj.data('content')){
-					obj.children('div.mura-content').html(obj.data('content'));
-				}
-			}
-
+			obj.hide().show();
 			processMarkup(self);
 
 			obj.find('a[href="javascript:history.back();"]').each(function(){
@@ -3243,6 +3254,7 @@ this.Element && function(ElementPrototype) {
 			},
 			{
 			processAsyncObject:processAsyncObject,
+			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
 			noSpam:noSpam,
 			addLoadEvent:addLoadEvent,
