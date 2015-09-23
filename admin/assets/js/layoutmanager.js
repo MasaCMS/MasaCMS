@@ -22,22 +22,21 @@
 			.on('dragstart',function(e){
 				//FireFox insists that the dataTranfer has been set
 				e.dataTransfer.setData('Text','');
+				e.dataTransfer.dropEffect = 'copy';
 				dragEl=this;
 				elDropHandled=false;
 				newMuraObject=false;
 				muraLooseDropTarget=null;
 			})
 			.on('dragend',function(){
-				if(dragEl && !elDropHandled){
-					mura(dragEl).remove();
-				}
-
 				dragEl=null;
 				elDropHandled=false;
 				newMuraObject=false;
 			})
 			.on('dragover',function(e){
 				e.preventDefault();
+				e.dataTransfer.dropEffect = 'copy';
+
 				if(dragEl || newMuraObject){
 					var prev=mura('.mura-var-target');
 					muraLooseDropTarget=this;
@@ -51,12 +50,8 @@
 					}
 
 					mura(this).addClass('mura-var-target');	
-					//disabledEventPropagation(e);	
 					
 				}
-			})
-			.on('dragenter',function(e){
-				
 			})
 			.on('dragleave',function(e){
 				mura(this).removeClass('mura-var-target');
@@ -65,33 +60,35 @@
 					mura(this).removeAttr('class');
 				}
 			}).on('drop',function(e){
-				// this/e.target is current target element.
-			    if (e.stopPropagation) {
-			    	e.stopPropagation(); // stops the browser from redirecting.
-			    }
-
+			 
 			    var target=mura('.mura-var-target').node;
 
-			    if(dragEl || newMuraObject){
-					if(dragEl && dragEl != this){
-						if(target.getAttribute('data-object')=='container'){
-							var container=mura('.mura-object[data-instanceid="' + target.getAttribute('data-instanceid') + '"] > .mura-container')
-							container.append(dragEl);
-						} else {
-							target.parentNode.insertBefore(dragEl,target.nextSibling);
-						}	
-				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-						mura('#adminSave').show();
-						mura(target).closest('.mura-displayregion').data('dirty',true);
-						elDropHandled=true;
-						disabledEventPropagation(e);
-					} else if (dragEl==target){
-						elDropHandled=true;
-						disabledEventPropagation(e);
+			    if(target){
+				    if(dragEl || newMuraObject){
+						if(dragEl && dragEl != this){
+							if(target.getAttribute('data-object')=='container'){
+								var container=mura(target).children('.mura-content');
+								if(container.length){
+									container.append(dragEl);
+								} else {
+									return;
+								}
+							} else {
+								target.parentNode.insertBefore(dragEl,target.nextSibling);
+							}	
+					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+							mura('#adminSave').show();
+							mura(target).closest('.mura-region-local').data('dirty',true);
+							elDropHandled=true;
+							disabledEventPropagation(e);
+						} else if (dragEl==target){
+							elDropHandled=true;
+							disabledEventPropagation(e);
+						}
+
+						checkForNew.call(target,e);
+
 					}
-
-					checkForNew.call(target,e);
-
 				}
 
 
@@ -108,8 +105,29 @@
 
 		function initLooseDropTarget(item){
 			mura(item)
-			.on('dragover',function(e){e.preventDefault()})
 			.on('dragenter',function(e){
+				e.preventDefault();
+				//disabledEventPropagation(e)
+				e.dataTransfer.dropEffect = 'copy';
+
+				if(!mura('.mura-var-target').length && (dragEl || newMuraObject)){
+
+					var item=mura(this).closest(".mura-object");
+
+					if(item){
+						item.addClass('mura-var-target');
+					} else {
+						mura(this).addClass('mura-var-target');
+					}
+					
+				}
+
+				
+			})
+			.on('dragover',function(e){
+
+				e.preventDefault();
+
 				if(dragEl || newMuraObject){
 					var prev=mura('.mura-var-target');
 					muraLooseDropTarget=this;
@@ -129,8 +147,6 @@
 					} else {
 						mura(this).addClass('mura-var-target');
 					}
-
-					disabledEventPropagation(e);
 					
 				}
 			})
@@ -141,34 +157,36 @@
 					mura(this).removeAttr('class');
 				}
 			}).on('drop',function(e){
-				// this/e.target is current target element.
-			    if (e.stopPropagation) {
-			    	e.stopPropagation(); // stops the browser from redirecting.
-			    }
+			    disabledEventPropagation(e);
 
 			    if(dragEl || newMuraObject){
 
 			    	var target=mura('.mura-var-target').node;
 
-				    if(dragEl && dragEl != target){
-				    	if(target.getAttribute('data-object')=='container'){
-							var container=mura('.mura-object[data-instanceid="' + target.getAttribute('data-instanceid') + '"] > .mura-container')
-							container.append(dragEl);
-						} else {
-							target.parentNode.insertBefore(dragEl,target.nextSibling);
+			    	if(target){
+					    if(dragEl && dragEl != target){
+					    	if(target.getAttribute('data-object')=='container'){
+								var container=mura(target).children('.mura-content')
+								container.append(dragEl);
+							} else {
+								try{
+									target.parentNode.insertBefore(dragEl,target.nextSibling);
+								} catch(e){};
+							}
+					    	
+							mura('#adminSave').show();
+							mura(dragEl).addClass('mura-async-object');
+							mura(target).closest('.mura-region-local').data('dirty',true);
+							elDropHandled=true;
+							disabledEventPropagation(e);
+						} else if (dragEl==target){
+							elDropHandled=true;
+							disabledEventPropagation(e);
 						}
-				    	
-						mura('#adminSave').show();
-						mura(dragEl).addClass('mura-async-object');
-						mura(target).closest('.mura-displayregion').data('dirty',true);
-						elDropHandled=true;
-						disabledEventPropagation(e);
-					} else if (dragEl==target){
-						elDropHandled=true;
-						disabledEventPropagation(e);
-					}
 
-					checkForNew.call(target,e);
+						checkForNew.call(target,e);
+
+					}
 
 				}
 
@@ -185,32 +203,34 @@
 
 	    function initLayoutManager(){
 			
-			mura('.mura-displayregion[data-inited="false"]').each(function(){
+			mura('.mura-region-local[data-inited="false"]').each(function(){
 
 				var region=mura(this);
-
-				if(!region.data('loose') || (region.data('loose') && region.html() == '<p></p>')){
+				
+				if(!region.data('loose') || (region.data('loose') && (region.html() == '<p></p>') || mura.trim(region.html()) =='' )){
 					region.on('drop',function(e) {
 					    var dropParent, dropIndex, dragIndex;
+
 					    e.preventDefault();
-					      // this/e.target is current target element.
-					    if (e.stopPropagation) {
-					        e.stopPropagation(); // stops the browser from redirecting.
+
+					    if(mura(this).find('.mura-object').length){	    	
+					    	return;
 					    }
 
-					    // Don't do anything if we're dropping on the same column we're dragging.
+					    if (e.stopPropagation) {
+					        e.stopPropagation(); 
+					    }
+
 					    if (dragEl && dragEl !== this) {   
 						    dropParent = this.parentNode;
 						    dragIndex = slice(dragEl.parentNode.children).indexOf(dragEl);   
 					        dropIndex = slice(this.parentNode.children).indexOf(this);
-
 					        if (this.parentNode === dragEl.parentNode && dropIndex > dragIndex){
 					            dropParent.insertBefore(dragEl, this.nextSibling);
 					        } else {
 					        	this.appendChild(dragEl);
 					        }
 
-					        //dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 					        mura('#adminSave').show();	
 					        mura(dragEl).addClass('mura-async-object');
 					        mura(this).data('dirty',true);
@@ -222,8 +242,6 @@
 					    }
 
 				      	checkForNew.call(this,e);
-				     
-				      	//wireUpObjects();
 
 				      	muraLooseDropTarget=null;
 				      	mura('.mura-var-target').removeClass('mura-var-target');
@@ -232,15 +250,14 @@
 		   			})
 					.on('dragover',function(e){
 						e.preventDefault();
-						//e.dataTransfer.dropEffect='move';
+						e.dataTransfer.dropEffect = 'copy';
 					}).data('inited','true');
 				}
 			});
 
-			mura('.mura-displayregion:not([data-loose="true"]) > .mura-object, .mura-displayregion[data-loose="true"] .mura-object')
-			.each(function(){ initDraggableObject(this)});
+			mura('.mura-region-local .mura-object').each(function(){ initDraggableObject(this)});
 			
-			mura('.mura-displayregion[data-loose="true"] div:not(.data-object), .mura-displayregion[data-loose="true"] p, .mura-displayregion[data-loose="true"] h1, .mura-displayregion[data-loose="true"] h2, .mura-displayregion[data-loose="true"] h3, .mura-displayregion[data-loose="true"] h4, .mura-displayregion[data-loose="true"] img, .mura-displayregion[data-loose="true"] table, .mura-displayregion[data-loose="true"] article, .mura-displayregion[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+			mura('div[data-object="container"], .mura-region-local[data-loose="true"] div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
 	    }
 
@@ -249,9 +266,9 @@
 				var item=mura(this);
 
 				if(!item.data('inited')){
-				item.attr('draggable',true);
-				item.on('dragstart',function(e){
-						//e.dataTransfer.effectAllowed = 'move';
+					item.attr('draggable',true);
+
+					item.on('dragstart',function(e){
 						dragEl=null;
 						elDropHandled=false;
 						newMuraObject=true;
@@ -261,13 +278,12 @@
 
 						e.dataTransfer.setData("text",JSON.stringify({object:item.data('object'),objectname:this.innerHTML,objectid:item.data('objectid')}));
 					})
-					.on('dragend',
-						function(){
-							mura('#dragtype').html('');
-							dragEl=null;
-							elDropHandled=false;
-							newMuraObject=false;
-							mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
+					.on('dragend',function(){
+						mura('#dragtype').html('');
+						dragEl=null;
+						elDropHandled=false;
+						newMuraObject=false;
+						mura('.mura-sidebar').removeClass('mura-sidebar--dragging');
 					});
 
 					item.data('inited',true); 
@@ -280,7 +296,7 @@
 			e.preventDefault();
 
 			if(e.stopPropagation) {
-		        e.stopPropagation(); // stops the browser from redirecting.
+		        e.stopPropagation(); 
 		    }
 
 			var object= e.dataTransfer.getData("text");
@@ -309,20 +325,20 @@
 				}
 		        
 		        var target=mura(this);
+
 		        if(target.hasClass('mura-object')){
 		        	if(this.getAttribute('data-object')=='container'){
-						var container=mura('.mura-object[data-instanceid="' + this.getAttribute('data-instanceid') + '"] > .mura-container')
+						var container=target.find('.mura-content');
 						container.append(displayObject);
 					} else {
 						this.parentNode.insertBefore(displayObject,this.nextSibling);
 					}			
-		        } else if(target.hasClass('mura-displayregion')){
+		        } else if(target.hasClass('mura-region-local')){
 		        	this.appendChild(displayObject);	
 		        } else {
 				    this.parentNode.insertBefore(displayObject,this.nextSibling);
 		        }
 
-		        //displayObject.setAttribute('data-droptarget',target.getSelector());
 		        initDraggableObject(displayObject);
 		        
 		        var objectData=mura(displayObject).data();
@@ -333,7 +349,7 @@
 
 		        mura.processAsyncObject(displayObject);
 
-		        mura(displayObject).closest('.mura-displayregion').data('dirty',true);
+		        mura(displayObject).closest('.mura-region-local').data('dirty',true);
 		        mura(displayObject).on('dragover',function(){})
 		        mura('#adminSave').show();	
 				disabledEventPropagation(e);
@@ -353,8 +369,8 @@
 				mura('#classListContainer').show();
 			}
 			
-
 			d.html(mura.preloaderMarkup);
+
 			mura.ajax({
 				url:mura.adminpath + "?" + pars,
 				success:function(data) {

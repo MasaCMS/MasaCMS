@@ -1365,7 +1365,7 @@
 		}
 
 		if(self.getAttribute('data-object')=='container'){
-			self.getAttribute('data-content',mura(self).children('div.mura-container').html())
+			self.getAttribute('data-content',mura(self).children('div.mura-content').html())
 		}
 
 		function validateFormAjax(frm) {
@@ -1390,8 +1390,8 @@
 					data.append('nocache',1);
 				}
 
-				if(data.object=='container' && data.contents){
-					delete data.contents;
+				if(data.object=='container' && data.content){
+					delete data.content;
 				}
 				
 				var postconfig={
@@ -1404,8 +1404,8 @@
 			} else {
 				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 
-				if(data.object=='container' && data.contents){
-					delete data.contents;
+				if(data.object=='container' && data.content){
+					delete data.content;
 				}
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
@@ -1440,7 +1440,7 @@
 		function wireUpObject(html){
 
 			html=trim(html);
-			
+
 			var obj=select(self);
 			
 			if(obj.data('class')){
@@ -1461,7 +1461,7 @@
 				if(obj.data('object')=='folder'){
 					obj.html(layoutmanagertoolbar + html);
 				} else {
-					var region=mura(self).closest(".mura-displayregion");
+					var region=mura(self).closest(".mura-region-local");
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
@@ -1482,16 +1482,11 @@
 				obj.html(html);
 			}
 
-
 			if(obj.data('object') == 'container'){
-				obj.html(obj.html() + '<div class="mura-container-meta"></div><div class="mura-container"></div>');
+				obj.html(obj.html() + '<div class="mura-meta"></div><div class="mura-content"></div>');
 				if(obj.data('content')){
-					obj.children('div.mura-container-content').html(obj.data('content'));
+					obj.children('div.mura-content').html(obj.data('content'));
 				}
-
-				processMarkup(self);
-
-				return;
 			}
 
 			processMarkup(self);
@@ -1563,16 +1558,20 @@
 
 		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
-		if(data.object=='container' && data.contents){
-			delete data.contents;
+		if(data.object=='container' && data.content){
+			delete data.content;
 		}
 
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
 		
-		self.innerHTML=window.mura.preloaderMarkup;
-
+		if(data.object=='container'){
+			mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
+		} else {
+			self.innerHTML=window.mura.preloaderMarkup;
+		}
+		
 		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});
 		
 		/*

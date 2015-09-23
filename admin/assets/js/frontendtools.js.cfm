@@ -52,6 +52,9 @@
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
 				adminProxy.post({cmd:'setObjectParams',params:data});
+			} else if(parameters["cmd"] == "deleteObject"){
+				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
+				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 
@@ -402,7 +405,7 @@
 
 				utility(".mura-object").each(function(){
 					var item=utility(this);
-					var region=item.closest(".mura-displayregion");
+					var region=item.closest(".mura-region-local");
 					var objectParams;
 
 					item.addClass("active");
@@ -621,7 +624,7 @@
 							count++;
 						}
 
-						utility('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
+						utility('.mura-region-local[data-inited="true"]:not([data-loose="true"]').each(
 							function(){
 								var objectlist=[];
 

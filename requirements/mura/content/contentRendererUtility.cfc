@@ -72,8 +72,6 @@
 		<cfargument name="enableMuraTag" default="true">
 		<cfargument name="renderer">
 		<cfscript>
-			var dataString='';
-			var inline=' inline';
 			if(not structKeyExists(arguments,'label')){
 				arguments.label=arguments.attribute;
 			}
@@ -88,23 +86,29 @@
 				arguments.value=arguments.renderer.setDynamicContent(arguments.value);
 			}
 			
-			if(arguments.renderer.hasFETools() and arguments.renderer.showInlineEditor and (listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2')) and not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
+			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
+			var layoutManager=arguments.renderer.useLayoutmanager();
+			
+			if(arguments.renderer.hasFETools() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 				
+				var dataString='';
+				var inline=' inline';
+				var cssClass="";
+
 				dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
-				
+		
 				if(yesNoFormat(arguments.required)){
 					dataString=dataString & ' data-required="true"';
 				} else {
 					dataString=dataString & ' data-required="false"';
 				}
-				
+
 				if(len(arguments.validation)){
 					dataString=dataString & ' data-validate="#arguments.validation#"';
 				}
+				
 				dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 				dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
-
-				var cssClass="";
 
 				if(arguments.type == 'HTMLEditor' ){
 					inline='';
@@ -113,17 +117,30 @@
 						arguments.value="<p></p>";
 					}
 
-					cssClass='mura-displayregion ';
+					cssClass='mura-region-local ';
 					dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
-				}
-
-				cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
 				
-				return '<div class="mura-editable inactive#inline#">
-							<label class="mura-editable-label">#ucase(arguments.label)#</label>
-							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+					cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
+			
+					return '<div class="mura-region mura-editable inactive#inline#">
+						<label class="mura-editable-label">#ucase(arguments.label)#</label>
+						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 						</div>';
-				
+
+				} else {
+					cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
+			
+					return '<div class="mura-editable inactive#inline#">
+						<label class="mura-editable-label">#ucase(arguments.label)#</label>
+						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+						</div>';
+
+				}		
+			} else if (layoutManager && arguments.type == 'htmlEditor'){
+
+				return '<div class="mura-region">
+					<div class="mura-region-local">#arguments.value#</div>
+					</div>';
 			} else {
 				return arguments.value;
 			}
@@ -1271,6 +1288,7 @@
 		</cfif>
 
 		<cfset request.muraRegionID=arguments.columnID>
+
 		<cfif (event.getValue('isOnDisplay') 
 				and ((not event.getValue('r').restrict) 
 					or (event.getValue('r').restrict and event.getValue('r').allow))) 
@@ -1292,15 +1310,32 @@
 
 			<cfif arguments.layoutmanager>
 				<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
-				
-				<cfset var header=(perm)?'<div class="mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label><div class="mura-displayregion inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">':''>
+				<cfset var header="">
+
+				<cfif perm>
+					<cfset header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+				<cfelse>
+					<cfset header='<div class="mura-region">'>
+				</cfif>
+
 
 				<cfif arguments.returnFormat eq 'array'>
 					<cfset theRegion.header=header>
-				<cfelse>
-					<cfset theRegion=theRegion & header>
+				<cfelseif len(trim(theRegion))>
+					<cfset header=header & '<div class="mura-region-inherited">#theRegion#</div>'>
 				</cfif>
+
+				<cfif perm>
+					<cfset header=header & '<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
+				<cfelse>
+					<cfset header=header & '<div class="mura-region-local">'>
+				</cfif>
+				
+				<cfif arguments.returnFormat neq 'array'>
+					<cfset theRegion=''>
+				</cfif>				
 			</cfif>
+
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
 				<cfif arguments.returnFormat eq 'array'>
@@ -1318,9 +1353,9 @@
 			</cfloop>
 			<cfif arguments.layoutmanager>
 				<cfif arguments.returnFormat eq 'array'>
-					<cfset theRegion.footer=(perm)?'</div></div>':''>
+					<cfset theRegion.footer='</div></div>'>
 				<cfelse>
-					<cfset theRegion=theRegion & ((perm)?'</div></div>':'')>
+					<cfset theRegion=header & theRegion & '</div></div>'>
 				</cfif>
 			</cfif>
 		</cfif>
@@ -1328,7 +1363,6 @@
 
 		<cfreturn theRegion >
 	</cffunction>
-
 	<cffunction name="createHREF" returntype="string" output="false" access="public">
 		<cfargument name="type" required="true" default="Page">
 		<cfargument name="filename" required="true">

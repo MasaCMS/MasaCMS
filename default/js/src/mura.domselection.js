@@ -334,7 +334,9 @@
 		},
 
 		append:function(el) {
-			this.selection[0].appendChild(el);
+			if(this.selection.length){
+				this.selection[0].appendChild(el);
+			}
 			return this;
 		},
 

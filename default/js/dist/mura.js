@@ -1,3 +1,4 @@
+//https://github.com/timruffles/ios-html5-drag-drop-shim
 (function(doc) {
 
   log = noop; // noOp, remove this line to enable debugging
@@ -16,7 +17,9 @@
     var needsPatch = !(dragDiv || evts) || /iPad|iPhone|iPod|Android/.test(navigator.userAgent);
     log((needsPatch ? "" : "not ") + "patching html5 drag drop");
 
-    if(!needsPatch) return;
+    if(!needsPatch) {
+        return;
+    }
 
     if(!config.enableEnterLeave) {
       DragDrop.prototype.synthesizeEnterLeave = noop;
@@ -32,14 +35,14 @@
     this.dragImage = null;
     this.dragImageTransform = null;
     this.dragImageWebKitTransform = null;
-    this.el = el || event.target
+    this.el = el || event.target;
 
     log("dragstart");
 
-    this.dispatchDragStart()
+    this.dispatchDragStart();
     this.createDragImage();
 
-    this.listen()
+    this.listen();
 
   }
 
@@ -56,7 +59,7 @@
       function cleanup() {
         log("cleanup");
         this.dragDataTypes = [];
-        if (this.dragImage != null) {
+        if (this.dragImage !== null) {
           this.dragImage.parentNode.removeChild(this.dragImage);
           this.dragImage = null;
           this.dragImageTransform = null;
@@ -70,7 +73,7 @@
     },
     move: function(event) {
       var pageXs = [], pageYs = [];
-      [].forEach.call(event.changedTouches, function(touch, index) {
+      [].forEach.call(event.changedTouches, function(touch) {
         pageXs.push(touch.pageX);
         pageYs.push(touch.pageY);
       });
@@ -81,17 +84,6 @@
 
       this.synthesizeEnterLeave(event);
     },
-    hideDragImage: function() {
-      if (this.dragImage && this.dragImage.style["display"] != "none") {
-        this.dragImageDisplay = this.dragImage.style["display"];
-        this.dragImage.style["display"] = "none";
-      }
-    },
-    showDragImage: function() {
-      if (this.dragImage) {
-        this.dragImage.style["display"] = this.dragImageDisplay ? this.dragImageDisplay : "block";
-      }
-    },
     // We use translate instead of top/left because of sub-pixel rendering and for the hope of better performance
     // http://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
     translateDragImage: function(x, y) {
@@ -101,13 +93,11 @@
         this.dragImage.style["-webkit-transform"] = this.dragImageWebKitTransform + translate;
       }
       if (this.dragImageTransform !== null) {
-        this.dragImage.style["transform"] = this.dragImageTransform + translate;
+        this.dragImage.style.transform = this.dragImageTransform + translate;
       }
     },
     synthesizeEnterLeave: function(event) {
-      this.hideDragImage();
       var target = elementFromTouchEvent(this.el,event)
-      this.showDragImage();
       if (target != this.lastEnter) {
         if (this.lastEnter) {
           this.dispatchLeave(event);
@@ -131,15 +121,12 @@
         this.dispatchLeave(event);
       }
 
-      this.hideDragImage();
       var target = elementFromTouchEvent(this.el,event)
-      this.showDragImage();
-
       if (target) {
         log("found drop target " + target.tagName);
-        this.dispatchDrop(target, event)
+        this.dispatchDrop(target, event);
       } else {
-        log("no drop target")
+        log("no drop target");
       }
 
       var dragendEvt = doc.createEvent("Event");
@@ -244,14 +231,14 @@
       
       duplicateStyle(this.el, this.dragImage);
       
-      this.dragImage.style["opacity"] = "0.5";
-      this.dragImage.style["position"] = "absolute";
-      this.dragImage.style["left"] = "0px";
-      this.dragImage.style["top"] = "0px";
-      this.dragImage.style["z-index"] = "999999";
-      this.dragImage.style["pointer-events"] = "none";
+      this.dragImage.style.opacity = "0.5";
+      this.dragImage.style.position = "absolute";
+      this.dragImage.style.left = "0px";
+      this.dragImage.style.top = "0px";
+      this.dragImage.style.zIndex = "999999";
 
-      var transform = this.dragImage.style["transform"];
+
+      var transform = this.dragImage.style.transform;
       if (typeof transform !== "undefined") {
         this.dragImageTransform = "";
         if (transform != "none") {
@@ -271,13 +258,13 @@
 
       doc.body.appendChild(this.dragImage);
     }
-  }
+  };
 
   // event listeners
   function touchstart(evt) {
     var el = evt.target;
     do {
-      if (el.hasAttribute("draggable") && el.getAttribute("draggable").toLowerCase()=='true') {
+      if (el.draggable === true) {
         // If draggable isn't explicitly set for anchors, then simulate a click event.
         // Otherwise plain old vanilla links will stop working.
         // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Touch_events#Handling_clicks
@@ -292,7 +279,7 @@
         evt.preventDefault();
         new DragDrop(evt,el);
       }
-    } while((el = el.parentNode) && el !== doc.body)
+    } while((el = el.parentNode) && el !== doc.body);
   }
 
   // DOM helpers
@@ -302,11 +289,13 @@
       touch[coordinateSystemForElementFromPoint + "X"],
       touch[coordinateSystemForElementFromPoint + "Y"]
     );
-    return target
+    return target;
   }
 
   function onEvt(el, event, handler, context) {
-    if(context) handler = handler.bind(context)
+    if(context) {
+      handler = handler.bind(context);
+    }
     el.addEventListener(event, handler);
     return {
       off: function() {
@@ -316,7 +305,9 @@
   }
 
   function once(el, event, handler, context) {
-    if(context) handler = handler.bind(context)
+    if(context) {
+      handler = handler.bind(context);
+    }
     function listener(evt) {
       handler(evt);
       return el.removeEventListener(event,listener);
@@ -340,12 +331,15 @@
         var csName = cs[i];
         dstNode.style.setProperty(csName, cs.getPropertyValue(csName), cs.getPropertyPriority(csName));
       }
+
+      // Pointer events as none makes the drag image transparent to document.elementFromPoint()
+      dstNode.style.pointerEvents = "none";
     }
 
     // Do the same for the children
     if (srcNode.hasChildNodes()) {
-      for (var i = 0; i < srcNode.childNodes.length; i++) {
-        duplicateStyle(srcNode.childNodes[i], dstNode.childNodes[i]);
+      for (var j = 0; j < srcNode.childNodes.length; j++) {
+        duplicateStyle(srcNode.childNodes[j], dstNode.childNodes[j]);
       }
     }
   }
@@ -2766,7 +2760,7 @@ this.Element && function(ElementPrototype) {
 		}
 
 		if(self.getAttribute('data-object')=='container'){
-			self.getAttribute('data-content',mura(self).children('div.mura-container').html())
+			self.getAttribute('data-content',mura(self).children('div.mura-content').html())
 		}
 
 		function validateFormAjax(frm) {
@@ -2791,8 +2785,8 @@ this.Element && function(ElementPrototype) {
 					data.append('nocache',1);
 				}
 
-				if(data.object=='container' && data.contents){
-					delete data.contents;
+				if(data.object=='container' && data.content){
+					delete data.content;
 				}
 				
 				var postconfig={
@@ -2805,8 +2799,8 @@ this.Element && function(ElementPrototype) {
 			} else {
 				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 
-				if(data.object=='container' && data.contents){
-					delete data.contents;
+				if(data.object=='container' && data.content){
+					delete data.content;
 				}
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
@@ -2839,6 +2833,9 @@ this.Element && function(ElementPrototype) {
 		}
 
 		function wireUpObject(html){
+
+			html=trim(html);
+
 			var obj=select(self);
 			
 			if(obj.data('class')){
@@ -2859,7 +2856,7 @@ this.Element && function(ElementPrototype) {
 				if(obj.data('object')=='folder'){
 					obj.html(layoutmanagertoolbar + html);
 				} else {
-					var region=mura(self).closest(".mura-displayregion");
+					var region=mura(self).closest(".mura-region-local");
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
@@ -2880,16 +2877,11 @@ this.Element && function(ElementPrototype) {
 				obj.html(html);
 			}
 
-
 			if(obj.data('object') == 'container'){
-				obj.html(obj.html() + '<div class="mura-container-meta"></div><div class="mura-container"></div>');
+				obj.html(obj.html() + '<div class="mura-meta"></div><div class="mura-content"></div>');
 				if(obj.data('content')){
-					obj.children('div.mura-container-content').html(obj.data('content'));
+					obj.children('div.mura-content').html(obj.data('content'));
 				}
-
-				processMarkup(self);
-
-				return;
 			}
 
 			processMarkup(self);
@@ -2961,16 +2953,20 @@ this.Element && function(ElementPrototype) {
 
 		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
-		if(data.object=='container' && data.contents){
-			delete data.contents;
+		if(data.object=='container' && data.content){
+			delete data.content;
 		}
 
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
 		
-		self.innerHTML=window.mura.preloaderMarkup;
-
+		if(data.object=='container'){
+			mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
+		} else {
+			self.innerHTML=window.mura.preloaderMarkup;
+		}
+		
 		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});
 		
 		/*
@@ -3867,7 +3863,9 @@ this.Element && function(ElementPrototype) {
 		},
 
 		append:function(el) {
-			this.selection[0].appendChild(el);
+			if(this.selection.length){
+				this.selection[0].appendChild(el);
+			}
 			return this;
 		},
 

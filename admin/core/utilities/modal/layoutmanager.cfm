@@ -19,6 +19,13 @@
 		width:250px;
 	}
 	
+
+	*[draggable=true] {
+	  -moz-user-select:none;
+	  -khtml-user-drag: element;
+	  cursor: move;
+	}
+
 	.mura-sidebar.active:hover {
 		transform: translateX(0);
 		opacity: 1;
@@ -69,7 +76,7 @@
 	}
 
 
-	.mura-displayregion {
+	.mura-region-local {
 		min-height: 15px;
 	}
 

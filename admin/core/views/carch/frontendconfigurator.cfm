@@ -19,6 +19,7 @@
 		</div>
 		
 		<div class="form-actions">	
+			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
 		</div>
 	</div>
@@ -157,6 +158,15 @@
 					});
 
 				}
+			});
+
+			jQuery("##deleteObject").bind("click",
+			function(){
+				frontEndProxy.post(
+				{
+					cmd:'deleteObject',
+					instanceid:instanceid
+				});
 			});
 				
 			

@@ -2693,7 +2693,7 @@ Display Objects
  	}
 
  	public function useLayoutManager(){
- 		return (this.layoutmanager && isStruct(variables.$.event('r')) && listFindNoCase('author,editor',variables.$.event('r').perm) || !isStruct(variables.$.event('r')) && this.layoutmanager) ? true : false;
+ 		return this.layoutmanager;
  	}
 
 </cfscript>
