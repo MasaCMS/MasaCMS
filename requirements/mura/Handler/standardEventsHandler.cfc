@@ -788,16 +788,8 @@
 
 				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
 					var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
-					var regionData=$.dspObjects(columnid=r,returnFormat='array');
-
-					for(var d=1;d<=arrayLen(regionData.items);d++){
 					
-						if(isSimpleValue(regionData.items[d])){
-							regionData.items[d]={html=apiUtility.applyRemoteFormat(regionData.items[d])};
-						}
-					}
-
-					result.displayRegions[regionName]={header=regionData.header,footer=regionData.footer,items=regionData.items};
+					result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
 				}
 			}
 

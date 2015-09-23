@@ -94,6 +94,9 @@ If it has not, set application.appInitialized=false. --->
 					not application.appInitialized 
 					or structKeyExists(url,application.appReloadKey)
 				)
+			and not (
+				isDefined('url.method') and url.method eq 'processAsyncObject'
+			)
 		)
 	)
 	>

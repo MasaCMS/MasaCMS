@@ -88,7 +88,7 @@
 			
 			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
 			var layoutManager=arguments.renderer.useLayoutmanager();
-			
+
 			if(arguments.renderer.hasFETools() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 				
 				var dataString='';
@@ -120,7 +120,7 @@
 					cssClass='mura-region-local ';
 					dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
 				
-					cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
+					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 			
 					return '<div class="mura-region mura-editable inactive#inline#">
 						<label class="mura-editable-label">#ucase(arguments.label)#</label>
@@ -128,7 +128,7 @@
 						</div>';
 
 				} else {
-					cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
+					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 			
 					return '<div class="mura-editable inactive#inline#">
 						<label class="mura-editable-label">#ucase(arguments.label)#</label>
@@ -1278,9 +1278,12 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var rsObjects="">	
-		<cfset var theRegion=(arguments.returnFormat eq 'array')?{header='',footer='',items=[]}:''/>
+		<cfset var theRegion={header='',footer='',inherited={header='',footer='',items=[]},local={header='',footer='',items=[]}}/>
 		<cfset var theObject="">
-		
+		<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
+		<cfset var i=''>
+		<cfset var html=''>
+
 		<cfif arguments.renderer.uselayoutmanager()>
 			<cfset var inheritedObjectsPerm='none'>
 		<cfelse>
@@ -1288,6 +1291,19 @@
 		</cfif>
 
 		<cfset request.muraRegionID=arguments.columnID>
+		
+		<cfif perm>
+			<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+			<cfset theRegion.local.header='<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
+		<cfelse>
+			<cfset theRegion.header='<div class="mura-region">'>
+			<cfset theRegion.local.header='<div class="mura-region-local">'>
+		</cfif>
+
+		<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
+		<cfset theRegion.inherited.footer='</div>'>
+		<cfset theRegion.local.footer='</div>'>
+		<cfset theRegion.footer='</div>'>
 
 		<cfif (event.getValue('isOnDisplay') 
 				and ((not event.getValue('r').restrict) 
@@ -1299,70 +1315,67 @@
 				and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 					<cfset rsObjects=getBean('contentGateway').getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 					<cfloop query="rsObjects">
-						<cfif arguments.returnFormat eq 'array'>
-							<cfset arrayAppend(theRegion,arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name))/>
-						<cfelse>
-							<cfset theRegion = theRegion & arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name) />
+						<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name)>
+						<cfif isSimpleValue(theObject)>
+							<cfset theObject={html=theObject}>
 						</cfif>
+						<cfset arrayAppend(theRegion.inherited.items,theObject) />
 						<cfset request.muraRegionID=arguments.columnID>
 					</cfloop>	
 			</cfif>
 
-			<cfif arguments.layoutmanager>
-				<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
-				<cfset var header="">
-
-				<cfif perm>
-					<cfset header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
-				<cfelse>
-					<cfset header='<div class="mura-region">'>
-				</cfif>
-
-
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset theRegion.header=header>
-				<cfelseif len(trim(theRegion))>
-					<cfset header=header & '<div class="mura-region-inherited">#theRegion#</div>'>
-				</cfif>
-
-				<cfif perm>
-					<cfset header=header & '<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
-				<cfelse>
-					<cfset header=header & '<div class="mura-region-local">'>
-				</cfif>
-				
-				<cfif arguments.returnFormat neq 'array'>
-					<cfset theRegion=''>
-				</cfif>				
-			</cfif>
-
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset arrayAppend(theRegion.items,arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentID=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)) />
-				<cfelse>
-					<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)>
-					<cfif isSimpleValue(theObject)>
-						<cfset theRegion = theRegion & theObject />
-					<cfelse>
-						<cfset theRegion = theRegion & "<!-- Display object return invalid format -->" />
-					</cfif>
+				<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)>
+				<cfif isSimpleValue(theObject)>
+					<cfset theObject={html=theObject}>
 				</cfif>
-				
+				<cfset arrayAppend(theRegion.local.items,theObject) />
 				<cfset request.muraRegionID=arguments.columnID>
 			</cfloop>
-			<cfif arguments.layoutmanager>
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset theRegion.footer='</div></div>'>
-				<cfelse>
-					<cfset theRegion=header & theRegion & '</div></div>'>
-				</cfif>
-			</cfif>
 		</cfif>
 		<cfset request.muraRegionID=0>
 
-		<cfreturn theRegion >
+
+		<cfif arguments.returnFormat eq 'array'>
+			<cfreturn theRegion >
+		<cfelse>
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.header>
+			</cfif>
+			
+			<cfif arrayLen(theRegion.inherited.items)>
+				<cfif arguments.layoutmanager>
+					<cfset html=html & theRegion.inherited.header>
+				</cfif>
+
+				<cfloop array="#theRegion.inherited.items#" index="i"> 
+					<cfset html=html & i.html>
+				</cfloop>
+
+				<cfif arguments.layoutmanager>
+					<cfset html=html & theRegion.inherited.footer>
+				</cfif>
+			</cfif>
+
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.local.header>
+			</cfif>
+
+			<cfloop array="#theRegion.local.items#" index="i"> 
+				<cfset html=html & i.html>
+			</cfloop>
+
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.local.footer>
+				<cfset html=html & theRegion.footer>
+			</cfif>
+
+			<cfreturn html>
+		</cfif>
+
 	</cffunction>
+
 	<cffunction name="createHREF" returntype="string" output="false" access="public">
 		<cfargument name="type" required="true" default="Page">
 		<cfargument name="filename" required="true">
