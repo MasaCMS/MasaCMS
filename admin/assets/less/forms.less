@@ -365,10 +365,17 @@ label:last-child {
 		
 		.btn {
 			.btn-primary;
+			&.btn-danger{
+				.buttonBackground(@orange, darken(@orange,10%));
+				border-color: @orange @orange darken(@orange, 8%) @orange !important;
+				i {
+					color: darken(@orange,30%);
+				}
 			}
-		
 		}
+		
 	}
+}
 	
 #configurator {
 	
