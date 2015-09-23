@@ -114,7 +114,7 @@
 
 					var item=mura(this).closest(".mura-object");
 
-					if(item){
+					if(item.length){
 						item.addClass('mura-var-target');
 					} else {
 						mura(this).addClass('mura-var-target');
@@ -142,7 +142,7 @@
 
 					var item=mura(this).closest(".mura-object");
 
-					if(item){
+					if(item.length){
 						item.addClass('mura-var-target');
 					} else {
 						mura(this).addClass('mura-var-target');

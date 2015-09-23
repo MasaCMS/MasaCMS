@@ -3859,7 +3859,7 @@ this.Element && function(ElementPrototype) {
 		        el = parent;
 		    }
 
-		    return null;
+		    return window.mura([]);;
 		},
 
 		append:function(el) {

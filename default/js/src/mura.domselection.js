@@ -330,7 +330,7 @@
 		        el = parent;
 		    }
 
-		    return null;
+		    return window.mura([]);;
 		},
 
 		append:function(el) {
