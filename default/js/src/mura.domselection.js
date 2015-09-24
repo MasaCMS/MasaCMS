@@ -49,7 +49,7 @@
 		this.selection=selection;
 		this.origSelector=origSelector;
 
-		if(this.selection.length){
+		if(this.selection.length && this.selection[0]){
 			this.parentNode=this.selection[0].parentNode;
 			this.childNodes=this.selection[0].childNodes;
 			this.node=selection[0];
