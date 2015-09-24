@@ -881,11 +881,6 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
-				if(entity.getValue('saveErrors')){
-					saveErrors=entity.getValue('saveErrors');
-					errors=entity.validate().getValue('errors');
-				}
-
 				if(entity.getIsNew() && len(entity.getChangesetID())){
 					//create default that is not in changeset
 					entity.setBody("[]").setChangesetID('').setApproved(1).save();
@@ -898,11 +893,6 @@ component extends="mura.cfobject" {
 					.set(
 						$.event().getAllValues()
 					);
-
-				if(entity.getValue('saveErrors')){
-					saveErrors=entity.getValue('saveErrors');
-					errors=entity.validate().getValue('errors');
-				}
 
 				entity.save();
 			}
@@ -917,6 +907,10 @@ component extends="mura.cfobject" {
 		} else {
 			loadByparams={'#pk#'=entity.getValue(pk)};
 		}
+
+
+		saveErrors=entity.getValue('saveErrors');
+		errors=entity.getValue('errors');
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
