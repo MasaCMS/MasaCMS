@@ -335,7 +335,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
-		if(!hasErrors() || getValue('saveDirty')){
+		if(!hasErrors() || getValue('saveErrors')){
 			var props=getProperties();
 			var columns=getColumns();
 			var prop={};
