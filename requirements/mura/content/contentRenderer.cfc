@@ -1239,7 +1239,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="dspObject_Include" access="public" output="false" returntype="string">
-	<cfargument name="siteid" type="string" />
+	<cfargument name="siteid" type="string" default="#variables.$.event('siteid')#"/>
 	<cfargument name="object" type="string" default="" />
 	<cfargument name="objectid" type="string" default=""/>
 	<cfargument name="theFile" type="string" />

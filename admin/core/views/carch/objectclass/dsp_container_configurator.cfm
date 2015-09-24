@@ -55,8 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectParams.class" default="mura-left mura-twelve">
 <cfparam name="objectParams.addlabel" default="false">
 <cfparam name="objectParams.label" default="">
-<cfparam name="objectParams.sourcetype" default="">
-<cfparam name="objectParams.sourceid" default="">
+<cfparam name="objectParams.content" default="">
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
 <cfoutput>
@@ -175,6 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',objectParams.class)#"/>
+	<input name="content" type="hidden" class="objectParam" value="#esapiEncode('html_attr',objectParams.content)#"/>
 </div>
 <script>
 	$(function(){

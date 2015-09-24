@@ -447,8 +447,8 @@
         el.dispatchEvent(event);
 	};
 
-	function off(el,eventName){
-		el.removeEventListener(eventName);
+	function off(el,eventName,fn){
+		el.removeEventListener(eventName,fn);
 	}
 
 	function parseSelection(selector){

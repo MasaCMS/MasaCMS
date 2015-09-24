@@ -16,202 +16,224 @@
 		   }
 		}
 
+		function initDraggableObject_dragstart(e){
+			//FireFox insists that the dataTranfer has been set
+			e.dataTransfer.setData('Text','');
+			e.dataTransfer.dropEffect = 'copy';
+			dragEl=this;
+			elDropHandled=false;
+			newMuraObject=false;
+			muraLooseDropTarget=null;
+		}
+
+		function initDraggableObject_dragend(){
+			dragEl=null;
+			elDropHandled=false;
+			newMuraObject=false;
+		}
+
+		function initDraggableObject_dragover(e){
+			e.preventDefault();
+			e.dataTransfer.dropEffect = 'copy';
+
+			if(dragEl || newMuraObject){
+				var prev=mura('.mura-var-target');
+				muraLooseDropTarget=this;
+
+				if(prev.length){
+					prev.removeClass('mura-var-target');
+
+					if(!prev.attr('class')){
+						prev.removeAttr('class');
+					}
+				}
+
+				mura(this).addClass('mura-var-target');	
+				
+			}
+		}
+
+		function initDraggableObject_dragleave(e){
+			mura(this).removeClass('mura-var-target');
+			muraLooseDropTarget=null;
+			if(!mura(this).attr('class')){
+				mura(this).removeAttr('class');
+			}
+		}
+
+		function initDraggableObject_drop(e){
+		 
+		    var target=mura('.mura-var-target').node;
+
+		    if(target){
+			    if(dragEl || newMuraObject){
+					if(dragEl && dragEl != this){
+						if(target.getAttribute('data-object')=='container'){
+							var container=mura(target).children('.mura-content');
+							if(container.length){
+								container.append(dragEl);
+							} else {
+								return;
+							}
+						} else {
+							target.parentNode.insertBefore(dragEl,target.nextSibling);
+						}	
+				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
+						mura('#adminSave').show();
+						mura(target).closest('.mura-region-local').data('dirty',true);
+						elDropHandled=true;
+						disabledEventPropagation(e);
+					} else if (dragEl==target){
+						elDropHandled=true;
+						disabledEventPropagation(e);
+					}
+
+					checkForNew.call(target,e);
+
+				}
+			}
+
+
+		    mura('.mura-var-target').removeClass('mura-var-target');
+			muraLooseDropTarget=null;
+			newMuraObject=false;
+
+			if(!mura(target).attr('class')){
+				mura(target).removeAttr('class');
+			}
+			
+		}
+
 	    function initDraggableObject(item){
 
 			mura(item)
-			.off('dragenter')
-			.off('dragover')
-			.off('drop')
-			.off('dragleave')
-			.on('dragstart',function(e){
-				//FireFox insists that the dataTranfer has been set
-				e.dataTransfer.setData('Text','');
-				e.dataTransfer.dropEffect = 'copy';
-				dragEl=this;
-				elDropHandled=false;
-				newMuraObject=false;
-				muraLooseDropTarget=null;
-			})
-			.on('dragend',function(){
-				dragEl=null;
-				elDropHandled=false;
-				newMuraObject=false;
-			})
-			.on('dragover',function(e){
-				e.preventDefault();
-				e.dataTransfer.dropEffect = 'copy';
+			.off('dragenter',initDraggableObject_dragstart)
+			.off('dragover',initDraggableObject_dragover)
+			.off('drop',initDraggableObject_drop)
+			.off('dragleave',initDraggableObject_dragleave)
+			.on('dragstart',initDraggableObject_dragstart)
+			.on('dragend',initDraggableObject_dragend)
+			.on('dragover',initDraggableObject_dragover)
+			.on('dragleave',initDraggableObject_dragleave)
+			.on('drop',initDraggableObject_drop).attr('draggable',true);
+		}
 
-				if(dragEl || newMuraObject){
-					var prev=mura('.mura-var-target');
-					muraLooseDropTarget=this;
+		function initLooseDropTarget_dragenter(e){
+			e.preventDefault();
+			//disabledEventPropagation(e)
+			e.dataTransfer.dropEffect = 'copy';
 
-					if(prev.length){
-						prev.removeClass('mura-var-target');
+			if(!mura('.mura-var-target').length && (dragEl || newMuraObject)){
 
-						if(!prev.attr('class')){
-							prev.removeAttr('class');
-						}
-					}
+				var item=mura(this).closest(".mura-object");
 
-					mura(this).addClass('mura-var-target');	
-					
-				}
-			})
-			.on('dragleave',function(e){
-				mura(this).removeClass('mura-var-target');
-				muraLooseDropTarget=null;
-				if(!mura(this).attr('class')){
-					mura(this).removeAttr('class');
-				}
-			}).on('drop',function(e){
-			 
-			    var target=mura('.mura-var-target').node;
-
-			    if(target){
-				    if(dragEl || newMuraObject){
-						if(dragEl && dragEl != this){
-							if(target.getAttribute('data-object')=='container'){
-								var container=mura(target).children('.mura-content');
-								if(container.length){
-									container.append(dragEl);
-								} else {
-									return;
-								}
-							} else {
-								target.parentNode.insertBefore(dragEl,target.nextSibling);
-							}	
-					    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
-							mura('#adminSave').show();
-							mura(target).closest('.mura-region-local').data('dirty',true);
-							elDropHandled=true;
-							disabledEventPropagation(e);
-						} else if (dragEl==target){
-							elDropHandled=true;
-							disabledEventPropagation(e);
-						}
-
-						checkForNew.call(target,e);
-
-					}
-				}
-
-
-			    mura('.mura-var-target').removeClass('mura-var-target');
-				muraLooseDropTarget=null;
-				newMuraObject=false;
-
-				if(!mura(target).attr('class')){
-					mura(target).removeAttr('class');
+				if(item.length){
+					item.addClass('mura-var-target');
+				} else {
+					mura(this).addClass('mura-var-target');
 				}
 				
-			}).attr('draggable',true);
+			}
+
+			
+		}
+
+		function initLooseDropTarget_dragover(e){
+
+			e.preventDefault();
+
+			if(dragEl || newMuraObject){
+				var prev=mura('.mura-var-target');
+				muraLooseDropTarget=this;
+
+				if(prev.length){
+					prev.removeClass('mura-var-target');
+
+					if(!prev.attr('class')){
+						prev.removeAttr('class');
+					}
+				}
+
+				var item=mura(this).closest(".mura-object");
+
+				if(item.length){
+					item.addClass('mura-var-target');
+				} else {
+					mura(this).addClass('mura-var-target');
+				}
+				
+			}
+		}
+
+		function initLooseDropTarget_dragleave(e){
+			mura(this).removeClass('mura-var-target');
+			muraLooseDropTarget=null;
+			if(!mura(this).attr('class')){
+				mura(this).removeAttr('class');
+			}
+		}
+
+		function initLooseDropTarget_drop(e){
+		    disabledEventPropagation(e);
+
+		    if(dragEl || newMuraObject){
+
+		    	var target=mura('.mura-var-target').node;
+
+		    	if(target){
+
+				    if(dragEl && dragEl != target){
+				    	if(target.getAttribute('data-object')=='container'){
+							var container=mura(target).children('.mura-content')
+							container.append(dragEl);
+						} else {
+							try{
+								target.parentNode.insertBefore(dragEl,target.nextSibling);
+							} catch(e){};
+						}
+				    	
+						mura('#adminSave').show();
+						mura(dragEl).addClass('mura-async-object');
+						mura(target).closest('.mura-region-local').data('dirty',true);
+						
+						initDraggableObject(target);
+						elDropHandled=true;
+						disabledEventPropagation(e);
+
+					} else if (dragEl==target){
+						elDropHandled=true;
+						disabledEventPropagation(e);
+					}
+
+					checkForNew.call(target,e);
+
+				}
+
+			}
+
+			mura('.mura-var-target').removeClass('mura-var-target');
+			muraLooseDropTarget=null;
+			newMuraObject=false;
+
+			if(!mura(this).attr('class')){
+				mura(this).removeAttr('class');
+			}
 		}
 
 		function initLooseDropTarget(item){
 			mura(item)
-			.off('dragenter')
-			.off('dragover')
-			.off('drop')
-			.off('dragleave')
-			.on('dragenter',function(e){
-				e.preventDefault();
-				//disabledEventPropagation(e)
-				e.dataTransfer.dropEffect = 'copy';
-
-				if(!mura('.mura-var-target').length && (dragEl || newMuraObject)){
-
-					var item=mura(this).closest(".mura-object");
-
-					if(item.length){
-						item.addClass('mura-var-target');
-					} else {
-						mura(this).addClass('mura-var-target');
-					}
-					
-				}
-
-				
-			})
-			.on('dragover',function(e){
-
-				e.preventDefault();
-
-				if(dragEl || newMuraObject){
-					var prev=mura('.mura-var-target');
-					muraLooseDropTarget=this;
-
-					if(prev.length){
-						prev.removeClass('mura-var-target');
-
-						if(!prev.attr('class')){
-							prev.removeAttr('class');
-						}
-					}
-
-					var item=mura(this).closest(".mura-object");
-
-					if(item.length){
-						item.addClass('mura-var-target');
-					} else {
-						mura(this).addClass('mura-var-target');
-					}
-					
-				}
-			})
-			.on('dragleave',function(e){
-				mura(this).removeClass('mura-var-target');
-				muraLooseDropTarget=null;
-				if(!mura(this).attr('class')){
-					mura(this).removeAttr('class');
-				}
-			}).on('drop',function(e){
-			    disabledEventPropagation(e);
-
-			    if(dragEl || newMuraObject){
-
-			    	var target=mura('.mura-var-target').node;
-
-			    	if(target){
-
-					    if(dragEl && dragEl != target){
-					    	if(target.getAttribute('data-object')=='container'){
-								var container=mura(target).children('.mura-content')
-								container.append(dragEl);
-							} else {
-								try{
-									target.parentNode.insertBefore(dragEl,target.nextSibling);
-								} catch(e){};
-							}
-					    	
-							mura('#adminSave').show();
-							mura(dragEl).addClass('mura-async-object');
-							mura(target).closest('.mura-region-local').data('dirty',true);
-							
-							initDraggableObject(target);
-							elDropHandled=true;
-							disabledEventPropagation(e);
-
-						} else if (dragEl==target){
-							elDropHandled=true;
-							disabledEventPropagation(e);
-						}
-
-						checkForNew.call(target,e);
-
-					}
-
-				}
-
-				mura('.mura-var-target').removeClass('mura-var-target');
-				muraLooseDropTarget=null;
-				newMuraObject=false;
-
-				if(!mura(this).attr('class')){
-					mura(this).removeAttr('class');
-				}
-			});
+			.off('dragenter',initLooseDropTarget_dragenter)
+			.off('dragover',initLooseDropTarget_dragover)
+			.off('drop',initLooseDropTarget_drop)
+			.off('dragleave',initLooseDropTarget_dragleave)
+			.on('dragenter',initLooseDropTarget_dragenter)
+			.on('dragover',initLooseDropTarget_dragover)
+			.on('dragleave',initLooseDropTarget_dragleave)
+			.on('drop',initLooseDropTarget_drop);
 
 		}
+
+
 
 	    function initClassObjects(){
 	    	mura(".mura-objectclass").each(function(){

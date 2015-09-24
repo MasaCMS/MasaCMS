@@ -159,20 +159,20 @@
 			return this;
 		},
 
-		off:function(eventName){
+		off:function(eventName,fn){
 			this.each(function(el){
-				el.removeEventListener(eventName);
+				el.removeEventListener(eventName,fn);
 			});
 			return this;
 		},
 
-		unbind:function(eventName){
-			this.off(eventName);
+		unbind:function(eventName,fn){
+			this.off(eventName,fn);
 			return this;
 		},
 
-		bind:function(eventName){
-			this.on(eventName);
+		bind:function(eventName,fn){
+			this.on(eventName,fn);
 			return this;
 		},
 
