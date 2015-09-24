@@ -606,7 +606,7 @@
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
-
+						/*
 						utility('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
 							function(){
 								var objectlist=[];
@@ -631,6 +631,7 @@
 								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
 							}
 						);
+						*/
 
 						utility('.mura-async-object[data-object="folder"]').each(function(){
 							var item=utility(this);
