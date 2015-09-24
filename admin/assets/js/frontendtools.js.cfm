@@ -380,6 +380,7 @@
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
 
+			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
 				utility(".mura-sidebar").addClass('active');
@@ -429,6 +430,7 @@
 
 				window.mura.initLayoutManager();
 			}
+			</cfif>
 
 			utility('.mura-editable-attribute').each(
 				function(){
@@ -520,18 +522,23 @@
 			return false;				 
 		},
 		initEditableObjectData:function(){
+			var self=this;
 			var attributename=this.getAttribute('data-attribute').toLowerCase();
+			
+			var attribute=document.getElementById('mura-editable-attribute-' + attributename);
 			
 			if(!(attributename in muraInlineEditor.attributes)){
 				if(attributename in muraInlineEditor.preprocessed){
-					this.innerHtml=muraInlineEditor.preprocessed[attributename];
+					
+					attribute.innerHTML=muraInlineEditor.preprocessed[attributename];
+					
 					if(mura.processMarkup){
 						mura.processMarkup(this);
 					}
 				}
 				
 
-				muraInlineEditor.attributes[attributename]=this;
+				muraInlineEditor.attributes[attributename]=attribute;
 			}
 		},
 		initEditableAttribute:function(){
