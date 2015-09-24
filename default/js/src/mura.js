@@ -1484,6 +1484,7 @@
 
 			if(obj.data('object')=='container'){
 				obj.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+				obj.children('div.mura-meta').html(html);
 				if(obj.data('content')){
 					obj.children('div.mura-content').html(obj.data('content'));
 				}

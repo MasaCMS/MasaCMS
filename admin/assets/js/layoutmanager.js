@@ -233,8 +233,6 @@
 
 		}
 
-
-
 	    function initClassObjects(){
 	    	mura(".mura-objectclass").each(function(){
 				var item=mura(this);

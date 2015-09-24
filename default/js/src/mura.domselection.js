@@ -53,13 +53,15 @@
 			this.parentNode=this.selection[0].parentNode;
 			this.childNodes=this.selection[0].childNodes;
 			this.node=selection[0];
+			this.length=this.selection.length;
 		} else {
 			this.parentNode=null;
 			this.childNodes=null;
 			this.node=null;
+			this.length=0;
 		}
 
-		this.length=this.selection.length;
+		
 	}
 
 	MuraDOMSelection.prototype={

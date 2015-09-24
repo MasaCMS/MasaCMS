@@ -2879,6 +2879,7 @@ this.Element && function(ElementPrototype) {
 
 			if(obj.data('object')=='container'){
 				obj.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+				obj.children('div.mura-meta').html(html);
 				if(obj.data('content')){
 					obj.children('div.mura-content').html(obj.data('content'));
 				}
@@ -3604,13 +3605,15 @@ this.Element && function(ElementPrototype) {
 			this.parentNode=this.selection[0].parentNode;
 			this.childNodes=this.selection[0].childNodes;
 			this.node=selection[0];
+			this.length=this.selection.length;
 		} else {
 			this.parentNode=null;
 			this.childNodes=null;
 			this.node=null;
+			this.length=0;
 		}
 
-		this.length=this.selection.length;
+		
 	}
 
 	MuraDOMSelection.prototype={

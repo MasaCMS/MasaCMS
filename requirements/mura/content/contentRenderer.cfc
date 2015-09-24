@@ -1268,7 +1268,7 @@ Display Objects
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
 	<cfset var objectParams="">
-	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object) and arguments.object neq 'container'>
 	
 	<cfif isJSON(arguments.params)>
 		<cfset objectParams=deserializeJSON(arguments.params)>
