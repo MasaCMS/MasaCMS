@@ -851,7 +851,7 @@ component extends="mura.cfobject" {
 		var $=getBean('$').init(arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
-		var saveDirty=false;
+		var saveErrors=false;
 		var errors={};
 
 		if(!allowAction(entity,$)){
@@ -881,8 +881,8 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
-				if(entity.getValue('saveDirty')){
-					saveDirty=entity.getValue('saveDirty');
+				if(entity.getValue('saveErrors')){
+					saveErrors=entity.getValue('saveErrors');
 					errors=entity.validate().getValue('errors');
 				}
 
@@ -899,8 +899,8 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
-				if(entity.getValue('saveDirty')){
-					saveDirty=entity.getValue('saveDirty');
+				if(entity.getValue('saveErrors')){
+					saveErrors=entity.getValue('saveErrors');
 					errors=entity.validate().getValue('errors');
 				}
 
@@ -922,7 +922,7 @@ component extends="mura.cfobject" {
 
 		var returnStruct=getFilteredValues(entity,$);
 
-		returnStruct.saveDirty=saveDirty;
+		returnStruct.saveErrors=saveErrors;
 		returnStruct.errors=errors;
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
@@ -987,6 +987,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'extenddatatable');
 			structDelete(vals,'extenddata');
 			structDelete(vals,'extendAutoComplete');
+			structDelete(vals,'saveErrors');
 			if(listFindNoCase("user,group",entityConfigName)){
 				structDelete(vals,'sourceiterator');
 				structDelete(vals,'ukey');

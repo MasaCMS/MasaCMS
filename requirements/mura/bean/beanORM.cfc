@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="mura.bean.bean" versioned=false {
 
-	property name="saveDirty" type="boolean" persistent="false" comparable="false" default=false;
+	property name="saveErrors" type="boolean" persistent="false" comparable="false" default=false;
 
 	function init(){
 		super.init();
@@ -165,9 +165,9 @@ component extends="mura.bean.bean" versioned=false {
 		return variables.dbUtility;
 	}
 
-	function setSaveDirty(saveDirty){
-		if(isBoolean(arguments.saveDirty)){
-			variables.instance.saveDirty=arguments.saveDirty;
+	function setSaveErrors(saveErrors){
+		if(isBoolean(arguments.saveErrors)){
+			variables.instance.saveErrors=arguments.saveErrors;
 		}
 		return this;
 	}
@@ -357,7 +357,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors() || getValue('saveDirty')){
+				if(!hasErrors() || getValue('saveErrors')){
 
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
@@ -414,7 +414,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors() || getValue('saveDirty')){
+				if(!hasErrors() || getValue('saveErrors')){
 
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
