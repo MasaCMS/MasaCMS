@@ -1357,21 +1357,31 @@
 		}	
 	}
 
-	function resetAsyncObject(el){
-		if(el.getAttribute('data-object')=='container'){
-			var self=mura(el);
+	function resetAsyncObject(el,test){
+		var self=mura(el);
 
+		if(self.data('object')=='container' && self.children('.mura-content').length){
 			self.find('.mura-object:not([data-object="container"])').html('');
-			self.find('.frontEndToolsModal').remove();
-
+		
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
-				self.children('div.mura-meta').html('');
-				self.data('content',self.children('div.mura-content').html())
+				var content=self.children('div.mura-content');
+
+				if(content.length){
+					self.data('content',content.html());
+				}
+
+				content.html('');
 			});
 
-			self.data('content',self.children('div.mura-content').html());
+			var content=self.children('div.mura-content');
+
+			if(content.length){
+				self.data('content',content.html());
+			}
 		}
+
+		self.html('');
 	}
 
 	function processAsyncObject(el){

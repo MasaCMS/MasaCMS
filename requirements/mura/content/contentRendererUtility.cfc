@@ -932,6 +932,12 @@
 		<cfset var tempObject="">
 		<cfset var args={}>
 
+		<cfif isJSON(arguments.params)>
+			<cfset arguments.params=deserializeJSON(arguments.params)>
+		<cfelseif not isStruct(arguments.params)>
+			<cfset arguments.params={}>
+		</cfif>
+
 		<cfset request.muraValidObject=true>
 		<cfset request.muraAsyncEditableObject=false>
 
@@ -1153,7 +1159,7 @@
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
 					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="text/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'text' & arguments.params.sourceid)></cfcase>
 				<cfcase value="container">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="container/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'container')></cfcase>
+					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="container/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<!--- END: New Layout Manager Objects--->
 				<cfcase value="mailing_list"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="mailing_list_master"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
@@ -1184,11 +1190,6 @@
 				<cfcase value="favorites"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="favorites/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="dragable_feeds"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dragablefeeds/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="related_content">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
 					<cfparam name="arguments.params.relatedContentSetName" default="default">
 					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & arguments.renderer.getListFormat() & arguments.params.relatedContentSetName,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>
@@ -1197,11 +1198,6 @@
 				</cfcase>
 				<cfcase value="user_tools"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="tag_cloud">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
 					<cfset theObject=theObject & tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>

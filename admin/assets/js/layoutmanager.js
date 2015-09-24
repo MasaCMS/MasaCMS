@@ -19,6 +19,10 @@
 	    function initDraggableObject(item){
 
 			mura(item)
+			.off('dragenter')
+			.off('dragover')
+			.off('drop')
+			.off('dragleave')
 			.on('dragstart',function(e){
 				//FireFox insists that the dataTranfer has been set
 				e.dataTransfer.setData('Text','');
@@ -105,6 +109,10 @@
 
 		function initLooseDropTarget(item){
 			mura(item)
+			.off('dragenter')
+			.off('dragover')
+			.off('drop')
+			.off('dragleave')
 			.on('dragenter',function(e){
 				e.preventDefault();
 				//disabledEventPropagation(e)
@@ -164,6 +172,7 @@
 			    	var target=mura('.mura-var-target').node;
 
 			    	if(target){
+
 					    if(dragEl && dragEl != target){
 					    	if(target.getAttribute('data-object')=='container'){
 								var container=mura(target).children('.mura-content')
@@ -177,8 +186,11 @@
 							mura('#adminSave').show();
 							mura(dragEl).addClass('mura-async-object');
 							mura(target).closest('.mura-region-local').data('dirty',true);
+							
+							initDraggableObject(target);
 							elDropHandled=true;
 							disabledEventPropagation(e);
+
 						} else if (dragEl==target){
 							elDropHandled=true;
 							disabledEventPropagation(e);
@@ -378,7 +390,7 @@
 
 			mura('.mura-region-local .mura-object').each(function(){ initDraggableObject(this)});
 			
-			mura('div[data-object="container"], .mura-region-local[data-loose="true"] div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+			mura('div[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
 	    }
 

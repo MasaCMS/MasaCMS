@@ -399,6 +399,7 @@
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
 
+			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
 				utility(".mura-sidebar").addClass('active');
@@ -448,61 +449,68 @@
 					);
 				});
 
-				window.mura.initLayoutManager();
+
+				
 			}
+			</cfif>
 
 			utility('.mura-editable-attribute').each(
 				function(){
-				
-				<cfif $.getContentRenderer().useLayoutManager()>
 				var attribute=utility(this);
-				if(attribute.attr('data-attribute')){
-					muraInlineEditor.initEditableObjectData.call(this);
-
-					utility(this).on('dblclick',
-						function(){
-							muraInlineEditor.initEditableAttribute.call(this);
-						}
-					);	
-				}												
-								
-				<cfelse>
-				var attribute=utility(this);
-				var attributename=attribute.attr('data-attribute').toLowerCase();
-
-				attribute.attr('contenteditable','true');
-				attribute.attr('title','');
 				
-				utility(this).unbind('dblclick');
+				if(attribute.data('attribute')){
 
-				utility(this).click(
-					function(){
+					<cfif $.getContentRenderer().useLayoutManager()>	
+					if(attribute.attr('data-attribute')){
 						muraInlineEditor.initEditableObjectData.call(this);
-					}
-				);													
-								
-				if(!(attributename in muraInlineEditor.attributes)){
 
-					if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
-						typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
-					){
-						var editor=CKEDITOR.inline( 
-						document.getElementById( attribute.attr('id') ),
-						{
-							toolbar: 'QuickEdit',
-							width: "75%",
-							customConfig: 'config.js.cfm'
-						});
-
-						editor.on('change', function(){
-							if(utility('##adminSave').css('display') == 'none'){
-								utility('##adminSave').fadeIn();	
+						utility(this)
+						.off('dblclick')
+						.on('dblclick',
+							function(){
+								muraInlineEditor.initEditableAttribute.call(this);
 							}
-						});
-					}
-								
-				}	
-				</cfif>
+						);	
+					}												
+									
+					<cfelse>
+					
+					var attributename=attribute.attr('data-attribute').toLowerCase();
+
+					attribute.attr('contenteditable','true');
+					attribute.attr('title','');
+					
+					utility(this)
+					.unbind('click')
+					.click(
+						function(){
+							muraInlineEditor.initEditableObjectData.call(this);
+						}
+					);													
+									
+					if(!(attributename in muraInlineEditor.attributes)){
+
+						if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+							typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+						){
+							var editor=CKEDITOR.inline( 
+							document.getElementById( attribute.attr('id') ),
+							{
+								toolbar: 'QuickEdit',
+								width: "75%",
+								customConfig: 'config.js.cfm'
+							});
+
+							editor.on('change', function(){
+								if(utility('##adminSave').css('display') == 'none'){
+									utility('##adminSave').fadeIn();	
+								}
+							});
+						}
+									
+					}	
+					</cfif>
+				}
 				
 			});
 
@@ -541,18 +549,23 @@
 			return false;				 
 		},
 		initEditableObjectData:function(){
+			var self=this;
 			var attributename=this.getAttribute('data-attribute').toLowerCase();
+			
+			var attribute=document.getElementById('mura-editable-attribute-' + attributename);
 			
 			if(!(attributename in muraInlineEditor.attributes)){
 				if(attributename in muraInlineEditor.preprocessed){
-					this.innerHtml=muraInlineEditor.preprocessed[attributename];
+					
+					attribute.innerHTML=muraInlineEditor.preprocessed[attributename];
+					
 					if(mura.processMarkup){
 						mura.processMarkup(this);
 					}
 				}
 				
 
-				muraInlineEditor.attributes[attributename]=this;
+				muraInlineEditor.attributes[attributename]=attribute;
 			}
 		},
 		initEditableAttribute:function(){
@@ -575,9 +588,7 @@
 					self.html('');
 				}
 
-			});
-				
-				
+			});	
 
 			if(!attribute.data('manualedit')){
 
@@ -607,6 +618,7 @@
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
 			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
+				CKEDITOR.instances[attributeid].updateElement();
 				return CKEDITOR.instances[attributeid].getData();
 			} else if(muraInlineEditor.attributes[attribute].getAttribute('data-type').toLowerCase() == 'htmleditor') {
 				return muraInlineEditor.attributes[attribute].innerHTML;
@@ -616,6 +628,7 @@
 		},
 		save:function(){
 			try{
+
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
@@ -639,11 +652,9 @@
 							} else {
 								utility(attribute)
 								.find('.mura-object')
-								.html('');
-								
+								.html('');	
 							}
 							
-
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
@@ -652,24 +663,37 @@
 							function(){
 								var objectlist=[];
 
-								utility(this).find('.mura-object').each(function(){
-									var item=utility(this);
-									var params=item.data();
+								utility(this).children('.mura-object').each(function(){
+									
+									if(mura && mura.resetAsyncObject){
+										mura.resetAsyncObject(this);
+										var item=mura(this);
+									} else {
+										var item=utility(this);
+										item.html('');	
+									}
 
+									var params=item.data();
+									
 									delete params['instanceid'];
 									delete params['objectname'];
 									delete params['objectid'];
 									delete params['isconfigurator'];
 									delete params['perm'];
+									delete params['async'];
 
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));
 									}
 
-									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
+									
+
+									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(params))
+
 								});
 
 								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
+								count++;
 							}
 						);
 
@@ -692,6 +716,9 @@
 
 						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
+						//alert(muraInlineEditor.data.objectlist3);
+						//return;
+
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){
 								if(confirm('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
@@ -701,6 +728,9 @@
 								}
 
 							}
+
+							//console.log(muraInlineEditor.data)
+							//return;
 
 							utility.ajax({ 
 					        type: "POST",
@@ -714,7 +744,7 @@
 					        }
 					       });
 						} else {
-							location.reload();
+						 	location.reload();
 						}
 					}
 				);
