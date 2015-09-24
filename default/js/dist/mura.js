@@ -2984,6 +2984,7 @@ this.Element && function(ElementPrototype) {
 		}
 		
 		if(data.object=='container'){
+			data.object='meta';
 			mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
 		} else {
 			self.innerHTML=window.mura.preloaderMarkup;

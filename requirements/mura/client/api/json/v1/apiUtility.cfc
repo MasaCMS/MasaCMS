@@ -851,6 +851,8 @@ component extends="mura.cfobject" {
 		var $=getBean('$').init(arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
+		var saveDirty=false;
+		var errors={};
 
 		if(!allowAction(entity,$)){
 			throw(type="authorization");
@@ -879,6 +881,11 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
+				if(entity.getValue('saveDirty')){
+					saveDirty=entity.getValue('saveDirty');
+					errors=entity.validate().getValue('errors');
+				}
+
 				if(entity.getIsNew() && len(entity.getChangesetID())){
 					//create default that is not in changeset
 					entity.setBody("[]").setChangesetID('').setApproved(1).save();
@@ -890,8 +897,14 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadByparams)
 					.set(
 						$.event().getAllValues()
-					)
-					.save();
+					);
+
+				if(entity.getValue('saveDirty')){
+					saveDirty=entity.getValue('saveDirty');
+					errors=entity.validate().getValue('errors');
+				}
+
+				entity.save();
 			}
 		} else {
 			throw(type="invalidTokens");
@@ -905,11 +918,12 @@ component extends="mura.cfobject" {
 			loadByparams={'#pk#'=entity.getValue(pk)};
 		}
 
-		entity=$.getBean(entityName).loadBy(
-				argumentCollection=loadByparams
-				);
+		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
 		var returnStruct=getFilteredValues(entity,$);
+
+		returnStruct.saveDirty=saveDirty;
+		returnStruct.errors=errors;
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
 	

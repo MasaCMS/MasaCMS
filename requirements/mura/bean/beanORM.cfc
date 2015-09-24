@@ -47,6 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="mura.bean.bean" versioned=false {
 
+	property name="saveDirty" type="boolean" persistent="false" comparable="false" default=false;
+
 	function init(){
 		super.init();
 		variables.dbUtility="";
@@ -161,6 +163,13 @@ component extends="mura.bean.bean" versioned=false {
 			}	
 		}
 		return variables.dbUtility;
+	}
+
+	function setSaveDirty(saveDirty){
+		if(isBoolean(arguments.saveDirty)){
+			variables.instance.saveDirty=arguments.saveDirty;
+		}
+		return this;
 	}
 
 	function getDbType(){
@@ -326,7 +335,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
-		if(!hasErrors()){
+		if(!hasErrors() || getValue('saveDirty')){
 			var props=getProperties();
 			var columns=getColumns();
 			var prop={};
@@ -348,7 +357,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors()){
+				if(!hasErrors() || getValue('saveDirty')){
 
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
@@ -405,7 +414,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors()){
+				if(!hasErrors() || getValue('saveDirty')){
 
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
