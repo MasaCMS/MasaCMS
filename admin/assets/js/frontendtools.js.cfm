@@ -399,6 +399,7 @@
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
 
+
 			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
@@ -450,7 +451,7 @@
 				});
 
 
-				
+				mura.initLayoutManager();
 			}
 			</cfif>
 
