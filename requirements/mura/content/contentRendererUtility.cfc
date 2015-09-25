@@ -403,17 +403,23 @@
 	</cffunction>
 
 	<cffunction name="getCurrentURL" access="public" returntype="string" output="false">
-		<cfargument name="complete" required="true" type="boolean" default="true" />
-		<cfargument name="injectVars" required="true" type="string" default="" />
-		<cfargument name="filterVars" required="true" type="boolean" default="true" />
+		<cfargument name="complete" required="true" type="boolean" default="true">
+		<cfargument name="injectVars" required="true" type="string" default="">
+		<cfargument name="filterVars" required="true" type="boolean" default="true">
 		<cfargument name="domain" default="#listFirst(cgi.http_host,":")#">
 		<cfargument name="renderer">
+		<cfargument name="filterVars" default="">
 		<cfset var qrystr=''>
 		<cfset var host=''>
 		<cfset var item = "" />
+		<cfset var filterVarsList='NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
 		
+		<cfif len(arguments.filterVars)>
+			<cfset filterVarsList=filterVarsList & ',' & arguments.filterVars>
+		</cfif>
+
 		<cfloop collection="#url#" item="item">
-			<cfif not arguments.filterVars and item neq 'path' or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+			<cfif not arguments.filterVars and item neq 'path' or (not listFindNoCase(filterVarsList,item) 
 				 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 				<cftry>
 				<cfif len(qrystr)>	
