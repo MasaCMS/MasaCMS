@@ -1160,10 +1160,10 @@
 				<!--- BEGIN: New Layout Manager Objects --->
 				<cfcase value="collection">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'collection' & arguments.params.sourceid)></cfcase>
+					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<cfcase value="text">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="text/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'text' & arguments.params.sourceid)></cfcase>
+					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="text/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<cfcase value="container">
 					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="container/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<cfcase value="meta">
