@@ -624,13 +624,19 @@ buttons: {
 	loadObjectClass: function(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 		var url = './';
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-		var d = $('#classList');
+		var d = $('#configurator');
+		var id = '#configurator';
+		
+		if(!d.length){
+			$('#classlist')
+			id= '#classlist';
+		}
 
 		d.html('<div class="load-inline"></div>');
-		$('#classList .load-inline').spin(spinnerArgs2);
+		$( id + ' .load-inline').spin(spinnerArgs2);
 		$.get(url + "?" + pars, function(data) {
-			$('#classList .load-inline').spin(false);
-			$('#classList').html(data);
+			$( id + ' .load-inline').spin(false);
+			$(id).html(data);
 			siteManager.availableObjectTemplate = "";
 			siteManager.availalbeObjectParams = {};
 			siteManager.availableObject = {};

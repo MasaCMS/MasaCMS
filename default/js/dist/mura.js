@@ -2049,6 +2049,10 @@ this.Element && function(ElementPrototype) {
         );
 	}
 
+	function $unescape(value){
+		return unescape(value);
+	}
+
 	//deprecated
 	function addLoadEvent(func) {
 		 var oldonload = window.onload;
@@ -2757,7 +2761,8 @@ this.Element && function(ElementPrototype) {
 
 		if(self.data('object')=='container' && self.children('.mura-content').length){
 			self.find('.mura-object:not([data-object="container"])').html('');
-		
+			self.find('.frontEndToolsModal').remove();
+
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
 				var content=self.children('div.mura-content');
@@ -2777,6 +2782,18 @@ this.Element && function(ElementPrototype) {
 		}
 
 		self.html('');
+	}
+
+	function initContainer(container){
+		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+		container.hide().show();
+		if(container.data('content')){
+			container.children('div.mura-content').html(container.data('content'));
+			container.find('.mura-object[data-object="container"]').each(
+			function(){
+				initContainer(mura(this));
+			});
+		}
 	}
 
 	function processAsyncObject(el){
@@ -2878,11 +2895,7 @@ this.Element && function(ElementPrototype) {
 			}
 
 			if(obj.data('object')=='container'){
-				obj.html('<div class="mura-meta"></div><div class="mura-content"></div>');
-				obj.children('div.mura-meta').html(html);
-				if(obj.data('content')){
-					obj.children('div.mura-content').html(obj.data('content'));
-				}
+				initContainer(obj);
 			} else {
 				obj.html(html);
 			}
@@ -3291,6 +3304,7 @@ this.Element && function(ElementPrototype) {
 			evalScripts:evalScripts,
 			validateForm:validateForm,
 			escape:$escape,
+			unescape:$unescape,
 			getBean:getEntity,
 			getEntity:getEntity,
 			renderFilename:renderFilename,
