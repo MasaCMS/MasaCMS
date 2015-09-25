@@ -2786,7 +2786,6 @@ this.Element && function(ElementPrototype) {
 
 	function initContainer(container){
 		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
-		container.hide().show();
 		if(container.data('content')){
 			container.children('div.mura-content').html(container.data('content'));
 			container.find('.mura-object[data-object="container"]').each(
@@ -2896,6 +2895,7 @@ this.Element && function(ElementPrototype) {
 
 			if(obj.data('object')=='container'){
 				initContainer(obj);
+				obj.children('.mura-meta').html(html);
 			} else {
 				obj.html(html);
 			}
@@ -2988,16 +2988,15 @@ this.Element && function(ElementPrototype) {
 
 		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
-		if(data.object=='container' && data.content){
-			delete data.content;
-		}
-
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
 		
 		if(data.object=='container'){
 			data.object='meta';
+			if(data.content){
+				delete data.content;
+			}
 			mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
 		} else {
 			self.innerHTML=window.mura.preloaderMarkup;
