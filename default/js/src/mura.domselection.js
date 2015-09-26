@@ -755,8 +755,10 @@
 					el.setAttribute("data-" + attributeName,value);
 				});
 				return this;
-			} else {
+			} else if (this.selection[0].getAttribute) {
 				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+			} else {
+				return undefined;
 			}
 		},
 

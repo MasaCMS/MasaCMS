@@ -2625,27 +2625,37 @@ this.Element && function(ElementPrototype) {
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
 
-	function processMarkup(scope){
+	function processMarkup(scope,processed,spawnid,unpackedContainer){
 		var self=scope;
 
 		scope=select(scope);
 
+		function find(selector){
+			return scope.find(selector);
+		}
+
 		var processors=[
 
 			function(){
-				scope.find(".mura-async-object").each(function(){
-					processAsyncObject(this);
+				if(spawnid == scope.data('instanceid')){
+					find(".mura-async-object").each(function(){
+						this.setAttribute('data-instanceid',createUUID());
+					});
+				}
+
+				find(".mura-async-object").each(function(){
+					processAsyncObject(this,processed,spawnid,unpackedContainer);
 				});
 			},
 
 			function(){
-				scope.find(".htmlEditor").each(function(){
+				find(".htmlEditor").each(function(){
 					setHTMLEditor(this);
 				});
 			},
 
 			function(){
-				if(scope.find(".cffp_applied  .cffp_mm .cffp_kp").length){
+				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", window.mura.requirementspath + '/cfformprotect/js/cffp.js')
@@ -2655,7 +2665,7 @@ this.Element && function(ElementPrototype) {
 			},
 
 			function(){
-				if(scope.find(".g-recaptcha" ).length){
+				if(find(".g-recaptcha" ).length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?hl=" + window.mura.reCAPTCHALanguage)
@@ -2664,11 +2674,11 @@ this.Element && function(ElementPrototype) {
 
 				}
 
-				if(scope.find(".g-recaptcha-container" ).length){
+				if(find(".g-recaptcha-container" ).length){
 					loader().loadjs(
 						'https://www.google.com/recaptcha/api.js?hl=' + window.mura.reCAPTCHALanguage,
 						function(){
-							each(scope.find(".g-recaptcha-container" ),function(el){
+							each(find(".g-recaptcha-container" ),function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
@@ -2702,7 +2712,7 @@ this.Element && function(ElementPrototype) {
 						resizeEditableObject(this);
 					}); 
 
-					scope.find(".editableObject").each(function(){
+					find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
 	
@@ -2713,7 +2723,7 @@ this.Element && function(ElementPrototype) {
 
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").on(
+					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
 							event.preventDefault();
@@ -2730,7 +2740,7 @@ this.Element && function(ElementPrototype) {
 
 			function(){
 				if(typeof urlparams.muraadminpreview != 'undefined'){
-					scope.find("a").each(function() {
+					find("a").each(function() {
 						var h=this.getAttribute('href');
 						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
 							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
@@ -2756,10 +2766,10 @@ this.Element && function(ElementPrototype) {
 		}	
 	}
 
-	function resetAsyncObject(el,test){
+	function resetAsyncObject(el){
 		var self=mura(el);
 
-		if(self.data('object')=='container' && self.children('.mura-content').length){
+		if(self.data('object')=='container'){
 			self.find('.mura-object:not([data-object="container"])').html('');
 			self.find('.frontEndToolsModal').remove();
 
@@ -2774,6 +2784,7 @@ this.Element && function(ElementPrototype) {
 				content.html('');
 			});
 
+			self.find('.mura-meta').html('');
 			var content=self.children('div.mura-content');
 
 			if(content.length){
@@ -2788,21 +2799,42 @@ this.Element && function(ElementPrototype) {
 		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
 		if(container.data('content')){
 			container.children('div.mura-content').html(container.data('content'));
-			container.find('.mura-object[data-object="container"]').each(
-			function(){
+			container.find('.mura-object[data-object="container"]').each(function(){
 				initContainer(mura(this));
 			});
 		}
 	}
 
-	function processAsyncObject(el){
+	function processAsyncObject(el,processed,spawnid,unpackedContainer){
 		var self=el;
-
+		//alert(JSON.stringify(mura(el).data()))
+		
 		if(!self.getAttribute('data-instanceid')){
 			self.setAttribute('data-instanceid',createUUID());
 		}
+		//alert(processed)
+		processed=processed || {items:[]};
+		spawnid=spawnid || self.getAttribute('data-instanceid');
 
-		resetAsyncObject(self);
+		if(processed.items.indexOf(self.getAttribute('data-instanceid')) > -1){
+			return;
+		}
+
+		processed.items.push(self.getAttribute('data-instanceid'));
+
+		if(!unpackedContainer){
+			resetAsyncObject(self);
+		}
+
+		if(self.getAttribute('data-object')=='container' && !unpackedContainer){
+			initContainer(mura(self));
+			mura(self).find('.mura-object').each(function(){
+				this.setAttribute('data-instanceid',createUUID());
+			});
+			mura(self).hide().show();
+			unpackedContainer=true;
+
+		}
 
 		function validateFormAjax(frm) {
 			
@@ -2894,12 +2926,11 @@ this.Element && function(ElementPrototype) {
 			}
 
 			if(obj.data('object')=='container'){
-				initContainer(obj);
 				obj.children('.mura-meta').html(html);
 			} else {
 				obj.html(html);
 			}
-		
+
 			if(mura.layoutmanager && mura.editing){
 				
 				if(obj.data('object')=='folder'){
@@ -2919,7 +2950,8 @@ this.Element && function(ElementPrototype) {
 			}
 
 			obj.hide().show();
-			processMarkup(self);
+			
+			processMarkup(self,processed,spawnid,unpackedContainer);
 
 			obj.find('a[href="javascript:history.back();"]').each(function(){
 				mura(this).off("click").on("click",function(e){
@@ -2997,7 +3029,8 @@ this.Element && function(ElementPrototype) {
 			if(data.content){
 				delete data.content;
 			}
-			mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
+
+			//mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
 		} else {
 			self.innerHTML=window.mura.preloaderMarkup;
 		}
@@ -4321,8 +4354,10 @@ this.Element && function(ElementPrototype) {
 					el.setAttribute("data-" + attributeName,value);
 				});
 				return this;
-			} else {
+			} else if (this.selection[0].getAttribute) {
 				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+			} else {
+				return undefined;
 			}
 		},
 
