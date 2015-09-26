@@ -1400,12 +1400,12 @@
 		self.html('');
 	}
 
-	function initContainer(container){
+	function unpackContainer(container){
 		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
 		if(container.data('content')){
 			container.children('div.mura-content').html(container.data('content'));
 			container.find('.mura-object[data-object="container"]').each(function(){
-				initContainer(mura(this));
+				unpackContainer(mura(this));
 			});
 		}
 	}
@@ -1432,7 +1432,7 @@
 		}
 
 		if(self.getAttribute('data-object')=='container' && !unpackedContainer){
-			initContainer(mura(self));
+			unpackContainer(mura(self));
 			mura(self).find('.mura-object').each(function(){
 				this.setAttribute('data-instanceid',createUUID());
 			});
