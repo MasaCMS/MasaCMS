@@ -59,6 +59,9 @@
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 
 				if(typeof parameters.params == 'object'){
+
+					delete parameters.params.params;
+
 					if(item.data('class')){
 						var classes=item.data('class');
 
@@ -77,7 +80,7 @@
 						item.data(p,parameters.params[p]);
 					}
 				}		
-
+				
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
@@ -659,7 +662,7 @@
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
-						
+
 						utility('.mura-region-local[data-inited="true"]:not([data-loose="true"])').each(
 							function(){
 								var objectlist=[];

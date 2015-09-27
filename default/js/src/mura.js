@@ -1230,7 +1230,7 @@
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
 
-	function processMarkup(scope,processed,spawnid,unpackedContainer){
+	function processMarkup(scope){
 		var self=scope;
 
 		scope=select(scope);
@@ -1242,14 +1242,8 @@
 		var processors=[
 
 			function(){
-				if(spawnid == scope.data('instanceid')){
-					find(".mura-async-object").each(function(){
-						this.setAttribute('data-instanceid',createUUID());
-					});
-				}
-
 				find(".mura-async-object").each(function(){
-					processAsyncObject(this,processed,spawnid,unpackedContainer);
+					processAsyncObject(this);
 				});
 			},
 
@@ -1404,34 +1398,20 @@
 		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
 		if(container.data('content')){
 			container.children('div.mura-content').html(container.data('content'));
-			container.find('.mura-object[data-object="container"]').each(function(){
-				unpackContainer(mura(this));
-			});
 		}
 	}
 
-	function processAsyncObject(el,processed,spawnid,unpackedContainer){
+	function processAsyncObject(el){
 		var self=el;
-		//alert(JSON.stringify(mura(el).data()))
 		
 		if(!self.getAttribute('data-instanceid')){
 			self.setAttribute('data-instanceid',createUUID());
 		}
-		//alert(processed)
-		processed=processed || {items:[]};
-		spawnid=spawnid || self.getAttribute('data-instanceid');
 
-		if(processed.items.indexOf(self.getAttribute('data-instanceid')) > -1){
-			return;
-		}
+		//console.log(el);
 
-		processed.items.push(self.getAttribute('data-instanceid'));
-
-		if(!unpackedContainer){
-			resetAsyncObject(self);
-		}
-
-		if(self.getAttribute('data-object')=='container' && !unpackedContainer){
+		if(self.getAttribute('data-object')=='container'){
+			//resetAsyncObject(self);
 			unpackContainer(mura(self));
 			mura(self).find('.mura-object').each(function(){
 				this.setAttribute('data-instanceid',createUUID());
@@ -1556,7 +1536,7 @@
 
 			obj.hide().show();
 			
-			processMarkup(self,processed,spawnid,unpackedContainer);
+			processMarkup(self);
 
 			obj.find('a[href="javascript:history.back();"]').each(function(){
 				mura(this).off("click").on("click",function(e){
@@ -1629,6 +1609,8 @@
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
 		
+		delete data.params;
+
 		if(data.object=='container'){
 			data.object='meta';
 			if(data.content){
@@ -1639,18 +1621,8 @@
 		} else {
 			self.innerHTML=window.mura.preloaderMarkup;
 		}
-		
-		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});
-		
-		/*
-		ajax({
-			type:'get',
-			url:window.mura.apiEndpoint + '?method=processAsyncObject',
-			data:data,
-			success:handleResponse}
-		);
-		*/
-		
+
+		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		
 
 	}
 

@@ -727,7 +727,7 @@
 				return this;
 			
 			} else {
-				if(this.selection[0].getAttribute){
+				if(this.selection[0] && this.selection[0].getAttribute){
 					return this.selection[0].getAttribute(attributeName);
 				} else {
 					return undefined;
@@ -755,7 +755,7 @@
 					el.setAttribute("data-" + attributeName,value);
 				});
 				return this;
-			} else if (this.selection[0].getAttribute) {
+			} else if (this.selection[0] && this.selection[0].getAttribute) {
 				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
 			} else {
 				return undefined;

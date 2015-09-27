@@ -24,9 +24,23 @@ module.exports = function(grunt) {
           'dist/mura.min.js': ['dist/mura.js']
         }
       }
+    },
+    handlebars: {
+      options: {
+          namespace: 'mura.templates',
+          processName: function(filePath) {
+              return filePath.replace(/^src\/templates\//, '').replace(/\.hbs$/, '');
+          }
+      },
+      all: {
+          files: {
+              "js/templates.js": ["src/templates/**/*.hbs"]
+          }
+      }
     }
-});
+  });
 
+  grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
