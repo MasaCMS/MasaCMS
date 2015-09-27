@@ -4235,7 +4235,7 @@ this.Element && function(ElementPrototype) {
 			}
 			
 			this.each(function(el){
-				if(el.remoteAttribute){
+				if(el.removeAttribute){
 					el.removeAttribute(attributeName);
 				}
 				
