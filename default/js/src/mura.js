@@ -1617,7 +1617,7 @@
 				delete data.content;
 			}
 
-			//mura(self).children('.mura-content').html(window.mura.preloaderMarkup);
+			mura(self).children('.mura-meta').html(window.mura.preloaderMarkup);
 		} else {
 			self.innerHTML=window.mura.preloaderMarkup;
 		}
