@@ -68,7 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul id="steps" class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active"><a href="##placement" aria-controls="home" role="tab" data-toggle="tab">Placement</a></li>
 		    <li role="presentation"><a href="##label" aria-controls="messages" role="tab" data-toggle="tab">Label</a></li>
+			<!---
 			<li role="presentation"><a href="##preview" aria-controls="settings" role="tab" data-toggle="tab">Preview</a></li>
+			--->
 		 </ul>
 
 	 	<!-- Tab panes -->
@@ -158,6 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 			</div>
+			<!---
 			<div role="tabpanel" class="tab-pane" id="preview">
 				<div class="fieldset-wrap row-fluid">
 					<div class="fieldset">
@@ -170,6 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 			</div>
+			--->
 		</div>
 	</div>
 

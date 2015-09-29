@@ -80,7 +80,7 @@
 						item.data(p,parameters.params[p]);
 					}
 				}		
-				
+
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
@@ -688,9 +688,7 @@
 
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));
-									}
-
-									
+									}			
 
 									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(params))
 

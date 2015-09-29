@@ -8,11 +8,13 @@ module.exports = function(grunt) {
         dist: {
           src: [
           'external/polyfill.js',
+          'external/handlebars.runtime.js',
           'src/mura.js',
           'src/mura.loader.js',
           'src/mura.domselection.js',
           'src/mura.entity.js',
-          'src/mura.entitycollection.js'
+          'src/mura.entitycollection.js',
+          'src/mura.templates.js'
           ],
           dest: 'dist/mura.js',
         },
@@ -26,25 +28,22 @@ module.exports = function(grunt) {
       }
     },
     handlebars: {
-      options: {
-          namespace: 'mura.templates',
-          processName: function(filePath) {
-              return filePath.replace(/^src\/templates\//, '').replace(/\.hbs$/, '');
-          }
-      },
-      all: {
-          files: {
-              "js/templates.js": ["src/templates/**/*.hbs"]
-          }
-      }
+        all: {
+            files: {
+                'src/mura.templates.js': 'src/templates/*.hbs'
+            },
+            options: {
+                 namespace: 'mura.templates',
+            }
+        }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-handlebars-compiler');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['concat','uglify']);
+  grunt.registerTask('default',['handlebars','concat','uglify']);
    
 
 };

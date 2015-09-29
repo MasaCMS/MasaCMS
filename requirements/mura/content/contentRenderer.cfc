@@ -1224,17 +1224,35 @@ Display Objects
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
+	<cfset var result="">
 
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
+			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)>
+			<cfif isSimpleValue(result)>
+				<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
+			<cfelse>
+				<cfset request.cacheItem=false>
+			</cfif>
 		</cf_cacheomatic>
 		</cfsavecontent>
+
+		<cfif not isDefined('result') or isSimpleValue(result)>
+			<cfreturn trim(theContent)>
+		<cfelse>
+			<cfreturn result>
+		</cfif>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
+		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
+		
+		<cfif isSimpleValue(result)>
+			<cfreturn trim(result)>
+		<cfelse>
+			<cfreturn result>
+		</cfif>
 	</cfif>
-	<cfreturn theContent />
+	
 
 </cffunction>
 
@@ -1278,7 +1296,8 @@ Display Objects
 		<cfset objectParams=structNew()>
 	</cfif>
 
-	<cfparam name="objectParams.async" default="false">
+	<cfset objectParams.async=false>
+	<cfset objectParams.returnFormat='html'>
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
 	<cfif arguments.thefile eq "dsp_feed.cfm">
@@ -1301,14 +1320,26 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif doLayoutManagerWrapper>	
-		<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+	<cfif doLayoutManagerWrapper>
+		<cfif objectParams.returnFormat eq 'json'>
+				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+				objectid=arguments.objectid,
+				content='',
+				objectParams=objectParams,
+				showEditable=arguments.showEditable,
+				isConfigurator=arguments.isConfigurator,
+				objectname=arguments.objectname) />
+		<cfelse>
+			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content=theContent,
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname) />
+		</cfif>
+	<cfelseif objectParams.returnFormat eq 'json'>
+		<cfreturn objectParams>
 	<cfelse>
 		<cfreturn trim(theContent) />
 	</cfif>

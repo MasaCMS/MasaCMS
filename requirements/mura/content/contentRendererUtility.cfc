@@ -1340,7 +1340,6 @@
 		</cfif>
 		<cfset request.muraRegionID=0>
 
-
 		<cfif arguments.returnFormat eq 'array'>
 			<cfreturn theRegion >
 		<cfelse>

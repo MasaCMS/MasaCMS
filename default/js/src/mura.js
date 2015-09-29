@@ -89,6 +89,20 @@
 
 	}
 
+	function escapeHTML(str) {
+	    var div = document.createElement('div');
+	    div.appendChild(document.createTextNode(str));
+	    return div.innerHTML;
+	};
+
+	// UNSAFE with unsafe strings; only use on previously-escaped ones!
+	function unescapeHTML(escapedStr) {
+	    var div = document.createElement('div');
+	    div.innerHTML = escapedStr;
+	    var child = div.childNodes[0];
+	    return child ? child.nodeValue : '';
+	};
+
 	function renderFilename(filename,params){
 
 		var query = [];
@@ -1242,8 +1256,8 @@
 		var processors=[
 
 			function(){
-				find(".mura-async-object").each(function(){
-					processAsyncObject(this);
+				find('.mura-object[data-returnformat="json"]:not(.mura-async-object), .mura-async-object').each(function(){
+					processObject(this);
 				});
 			},
 
@@ -1402,13 +1416,20 @@
 	}
 
 	function processAsyncObject(el){
+		obj=mura(el);
+		obj.addClass('mura-async-object');
+		processObject(obj);
+	}
+
+	function processObject(el){
+
+		var obj=(el.node) ? el : mura(el);
+		el =el.node || el;
 		var self=el;
-		
+
 		if(!self.getAttribute('data-instanceid')){
 			self.setAttribute('data-instanceid',createUUID());
 		}
-
-		//console.log(el);
 
 		if(self.getAttribute('data-object')=='container'){
 			//resetAsyncObject(self);
@@ -1490,11 +1511,7 @@
 			
 		}
 
-		function wireUpObject(html){
-
-			html=trim(html);
-
-			var obj=select(self);
+		function wireUpObject(response){
 			
 			if(obj.data('class')){
 				var classes=obj.data('class');
@@ -1510,12 +1527,37 @@
 				}	
 			}
 
-			if(obj.data('object')=='container'){
-				obj.children('.mura-meta').html(html);
+			if(response){
+				if(typeof response == 'string'){
+					obj.html(trim(response));
+				} else if (response.html){
+					obj.html(trim(response.html));
+				} else {
+					if(obj.data('object')=='container'){
+						mura(self).children('.mura-meta').html(mura.templates.meta(response));
+					} else {
+						if(typeof mura.templates[obj.data('object')] == 'function'){
+							obj.html(mura.templates[obj.data('object')](response));
+						} else {
+							console.log('Missing Client Template for:');
+							console.log(obj.data());
+						}
+					}
+				}
 			} else {
-				obj.html(html);
+				if(obj.data('object')=='container'){
+					mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+				} else {
+					if(typeof mura.templates[obj.data('object')] == 'function'){
+						obj.html(mura.templates[obj.data('object')](obj.data()));
+						processMarkup(el)
+					} else {
+						console.log('Missing Client Template for:');
+						console.log(obj.data());
+					}
+				}
 			}
-
+			
 			if(mura.layoutmanager && mura.editing){
 				
 				if(obj.data('object')=='folder'){
@@ -1579,11 +1621,11 @@
 
 		function handleResponse(resp){
 
-			if('html' in resp.data){
+			if(resp.data.html){
 				wireUpObject(resp.data.html);
-			} else if('redirect' in resp.data){
+			} else if(resp.data.redirect){
 				location.href=resp.data.redirect;
-			} else if('render' in resp.data){
+			} else if(resp.data.render){
 				ajax({ 
 			        type:"POST",
 			        xhrFields:{ withCredentials: true },
@@ -1597,6 +1639,8 @@
 			        		wireUpObject(data.html);
 			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
 			        		wireUpObject(data.data.html);
+			        	} else {
+			        		wireUpObject(data.data);
 			        	}
 			        }
 		   		});
@@ -1608,21 +1652,40 @@
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
-		
+
 		delete data.params;
 
 		if(data.object=='container'){
-			data.object='meta';
 			if(data.content){
 				delete data.content;
 			}
-
-			mura(self).children('.mura-meta').html(window.mura.preloaderMarkup);
+			wireUpObject(obj.data());
+			
 		} else {
-			self.innerHTML=window.mura.preloaderMarkup;
+			if(!obj.hasClass("mura-async-object")){
+				if(object.data('returnformat')=='json'){
+					wireUpObject(obj.data());
+				} 
+			} else {	
+				self.innerHTML=window.mura.preloaderMarkup;
+				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		
+			}
+
 		}
 
-		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		
+		/*
+		mura.templates={};
+		mura.templates['meta']=function(context){
+			if(context.label){
+				return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
+			} else {
+				return '';
+			}
+				
+		}
+		*/
+
+		
 
 	}
 
@@ -1766,6 +1829,7 @@
 
 		ready(function(){
 			
+
 			var hash=window.location.hash;
 
 			if(hash){
@@ -1887,6 +1951,9 @@
 				}
 			},
 			{
+			escapeHTML:escapeHTML,
+			unescapeHTML:unescapeHTML,
+			processObject:processObject,
 			processAsyncObject:processAsyncObject,
 			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
