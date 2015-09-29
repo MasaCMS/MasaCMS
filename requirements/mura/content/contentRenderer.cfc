@@ -1285,15 +1285,14 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
-	<cfset var objectParams="">
-	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object) and arguments.object neq 'meta'>
-	
+	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
+
 	<cfif isJSON(arguments.params)>
-		<cfset objectParams=deserializeJSON(arguments.params)>
+		<cfset var objectParams=deserializeJSON(arguments.params)>
 	<cfelseif isStruct(arguments.params)>
-		<cfset objectParams=arguments.params>
+		<cfset var objectParams=arguments.params>
 	<cfelse>
-		<cfset objectParams=structNew()>
+		<cfset var objectParams=structNew()>
 	</cfif>
 
 	<cfset objectParams.async=false>
@@ -1320,7 +1319,7 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif doLayoutManagerWrapper>
+	<cfif doLayoutManagerWrapper && not (objectParams.returnFormat eq 'json' and request.returnFormat eq 'json')>
 		<cfif objectParams.returnFormat eq 'json'>
 
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
