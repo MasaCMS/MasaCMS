@@ -1296,7 +1296,7 @@ Display Objects
 	</cfif>
 
 	<cfset objectParams.async=false>
-	<cfset objectParams.render=''>
+	<cfset objectParams.render='server'>
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
 	<cfif arguments.thefile eq "dsp_feed.cfm">

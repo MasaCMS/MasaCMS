@@ -879,7 +879,7 @@
 
 		<cfparam name="arguments.objectParams.async" default="false">
 
-		<cfset var openingDiv='<div class="mura-object'>
+		<cfset var openingDiv='<div class="mura-object'> 
 
 		<cfif arguments.objectParams.async>
 			<cfset openingDiv=openingDiv & " mura-async-object">
@@ -888,7 +888,7 @@
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
 		
 		<cfloop collection="# arguments.objectparams#" item="local.i">
-			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',local.i)#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
+			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
 		</cfloop>
 
 		<cfif arguments.showEditable>
