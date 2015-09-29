@@ -876,9 +876,7 @@
 		<cfargument name="showEditable">
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
-
-		<cfparam name="arguments.objectParams.async" default="false">
-
+		
 		<cfset var openingDiv='<div class="mura-object'> 
 
 		<cfif arguments.objectParams.async>

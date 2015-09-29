@@ -1431,6 +1431,10 @@
 			self.setAttribute('data-instanceid',createUUID());
 		}
 
+		if(obj.data('async')){
+			obj.addClass("mura-async-object");
+		}
+
 		if(self.getAttribute('data-object')=='container'){
 			//resetAsyncObject(self);
 			unpackContainer(mura(self));
