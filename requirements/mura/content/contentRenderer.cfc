@@ -1206,7 +1206,7 @@ Display Objects
 <cfreturn str />
 </cffunction>
 
-<cffunction name="dspObject_Render" access="public" output="false" returntype="string">
+<cffunction name="dspObject_Render" access="public" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
@@ -1231,14 +1231,14 @@ Display Objects
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
 			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)>
 			<cfif isSimpleValue(result)>
-				<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
+				<cfoutput>#result#</cfoutput>
 			<cfelse>
 				<cfset request.cacheItem=false>
 			</cfif>
 		</cf_cacheomatic>
 		</cfsavecontent>
 
-		<cfif not isDefined('result') or isSimpleValue(result)>
+		<cfif isSimpleValue(result)>
 			<cfreturn trim(theContent)>
 		<cfelse>
 			<cfreturn result>
@@ -1256,7 +1256,7 @@ Display Objects
 
 </cffunction>
 
-<cffunction name="dspObject_Include" access="public" output="false" returntype="string">
+<cffunction name="dspObject_Include" access="public" output="false">
 	<cfargument name="siteid" type="string" default="#variables.$.event('siteid')#"/>
 	<cfargument name="object" type="string" default="" />
 	<cfargument name="objectid" type="string" default=""/>
@@ -1322,6 +1322,7 @@ Display Objects
 
 	<cfif doLayoutManagerWrapper>
 		<cfif objectParams.returnFormat eq 'json'>
+
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content='',
@@ -1902,7 +1903,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.dspZoomNoLinks(argumentCollection=arguments) />
 </cffunction>
 
-<cffunction name="dspObject" access="public" output="false" returntype="string">
+<cffunction name="dspObject" access="public" output="false">
 	<cfargument name="object" type="string">
 	<cfargument name="objectid" type="string" required="true" default="">
 	<cfargument name="siteid" type="string" required="true" default="#variables.event.getValue('siteID')#">

@@ -4254,9 +4254,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		function handleResponse(resp){
 
-			if(resp.data.html){
-				wireUpObject(resp.data.html);
-			} else if(resp.data.redirect){
+			if(resp.data.redirect){
 				location.href=resp.data.redirect;
 			} else if(resp.data.render){
 				ajax({ 
@@ -4277,6 +4275,8 @@ return /******/ (function(modules) { // webpackBootstrap
 			        	}
 			        }
 		   		});
+			} else {
+				wireUpObject(resp.data);
 			}
 		}
 

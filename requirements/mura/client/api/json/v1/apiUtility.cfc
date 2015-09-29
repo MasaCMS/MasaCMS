@@ -2015,13 +2015,12 @@ component extends="mura.cfobject" {
 
 				result=$.dspObject(argumentCollection=args);
 				
-				if(isSimpleValue(result)){
-					result={html=result};
-				}
 				
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
-				}
+				} else if(isSimpleValue(result)){
+					result={html=result};
+				} 
 		} 
 
 		return result;
