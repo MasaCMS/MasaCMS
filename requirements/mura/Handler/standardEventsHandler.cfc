@@ -782,8 +782,6 @@
 				renderer.injectMethod('showMemberToolBar',false);
 				renderer.injectMethod('showEditableObjects',false);
 
-				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
-			
 				result.displayRegions={};
 
 				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
@@ -791,6 +789,8 @@
 					
 					result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
 				}
+				
+				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
 			}
 
 			result.config={
