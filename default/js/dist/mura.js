@@ -3889,7 +3889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		var processors=[
 
 			function(){
-				find('.mura-object[data-returnformat="json"]:not(.mura-async-object), .mura-async-object').each(function(){
+				find('.mura-object[data-render="client"], .mura-async-object').each(function(){
 					processObject(this);
 				});
 			},
@@ -4296,7 +4296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			
 		} else {
 			if(!obj.hasClass("mura-async-object")){
-				if(object.data('returnformat')=='json'){
+				if(object.data('render')=='client'){
 					wireUpObject(obj.data());
 				} 
 			} else {	

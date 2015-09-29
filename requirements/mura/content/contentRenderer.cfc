@@ -1296,7 +1296,7 @@ Display Objects
 	</cfif>
 
 	<cfset objectParams.async=false>
-	<cfset objectParams.returnFormat='html'>
+	<cfset objectParams.render=''>
 
 	<!--- For backward compatability with old dsp_feed.cfm files --->
 	<cfif arguments.thefile eq "dsp_feed.cfm">
@@ -1319,8 +1319,8 @@ Display Objects
 	</cfif>
 	</cfsavecontent>
 
-	<cfif doLayoutManagerWrapper && not (objectParams.returnFormat eq 'json' and request.returnFormat eq 'json')>
-		<cfif objectParams.returnFormat eq 'json'>
+	<cfif doLayoutManagerWrapper && not (objectParams.render eq 'client' and request.returnFormat eq 'json')>
+		<cfif objectParams.render eq 'client'>
 
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1338,7 +1338,7 @@ Display Objects
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname) />
 		</cfif>
-	<cfelseif objectParams.returnFormat eq 'json'>
+	<cfelseif objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelse>
 		<cfreturn trim(theContent) />
