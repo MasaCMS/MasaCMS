@@ -1298,26 +1298,31 @@ Display Objects
 	<cfset objectParams.async=false>
 	<cfset objectParams.render='server'>
 
-	<!--- For backward compatability with old dsp_feed.cfm files --->
-	<cfif arguments.thefile eq "dsp_feed.cfm">
-		<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
+	<cfif arguments.object eq 'plugin'>
+		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
+	<cfelse>
+		<!--- For backward compatability with old dsp_feed.cfm files --->
+		<cfif arguments.thefile eq "dsp_feed.cfm">
+			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
+		</cfif>
+		
+		<cfsavecontent variable="theContent">
+			<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
+				<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
+				<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
+				<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			</cfif>
+		</cfsavecontent>
 	</cfif>
 	
-	<cfsavecontent variable="theContent">
-	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
-		<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
-	<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
-		<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
-	<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
-		<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
-	</cfif>
-	</cfsavecontent>
 
 	<cfif doLayoutManagerWrapper && not (objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>

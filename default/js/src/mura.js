@@ -1534,7 +1534,7 @@
 			if(response){
 				if(typeof response == 'string'){
 					obj.html(trim(response));
-				} else if (response.html){
+				} else if (typeof response.html =='string'){
 					obj.html(trim(response.html));
 				} else {
 					if(obj.data('object')=='container'){

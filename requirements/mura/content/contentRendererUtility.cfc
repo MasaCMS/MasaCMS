@@ -876,7 +876,7 @@
 		<cfargument name="showEditable">
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
-		
+
 		<cfset var openingDiv='<div class="mura-object'> 
 
 		<cfif arguments.objectParams.async>
@@ -1136,25 +1136,7 @@
 				<cfcase value="top_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_top.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="contact"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
 				<cfcase value="calendar_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="plugin">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
-					<cfset theObject=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=event,params=arguments.params,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>		
-					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif request.muraFrontEndRequest>
-								theObject=renderObjectInManager(object=arguments.object,
-								objectid=arguments.objectid,
-								content=theObject,
-								objectParams=arguments.params,
-								showEditable=arguments.showEditable,
-								isConfigurator=editableControl.isConfigurator,
-								objectname=arguments.objectname)>
-						</cfif>
-					</cfif>
-				</cfcase>
+				<cfcase value="plugin"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<!--- BEGIN: New Layout Manager Objects --->
 				<cfcase value="collection">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
