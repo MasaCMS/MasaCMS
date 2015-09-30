@@ -1295,9 +1295,11 @@ Display Objects
 		<cfset var objectParams=structNew()>
 	</cfif>
 
-	<cfset objectParams.async=false>
-	<cfset objectParams.render='server'>
-
+	<cfif this.layoutmanager>
+		<cfset objectParams.async=false>
+		<cfset objectParams.render='server'>
+	</cfif>
+	
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
 	<cfelse>
@@ -1342,8 +1344,8 @@ Display Objects
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname) />
-		</cfif>
-	<cfelseif objectParams.render eq 'client'>
+		</cfif>'
+	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelse>
 		<cfreturn trim(theContent) />
