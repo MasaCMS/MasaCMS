@@ -1382,11 +1382,12 @@
 
 	function submitForm(frm,obj){
 		frm=(frm.node) ? frm.node : frm;
-		obj=(obj.node) ? obj : mura(obj);
-
-		if(!obj){
-			obj=mura(frm).closest('.mura-object');
-		}
+     
+	    if(obj){
+	      obj=(obj.node) ? obj : mura(obj);
+	    } else {
+	      obj=mura(frm).closest('.mura-async-object');
+	    }
 
 		if(!obj.length){
 			frm.submit();

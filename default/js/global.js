@@ -1179,12 +1179,13 @@ var initMura=function(config){
   var submitForm=function(frm,obj){
 
     frm=(typeof frm.get=='function') ? frm.get(0) : frm;
-    obj=(typeof obj.get=='function') ? obj : $(obj);
-
-    if(!obj){
-      obj=$(frm).closest('.mura-object-async');
+     
+    if(obj){
+      obj=(typeof obj.get=='function') ? obj : $(obj);
+    } else {
+      obj=$(frm).closest('.mura-async-object');
     }
-
+   
     if(!obj.length){
       frm.submit();
     }

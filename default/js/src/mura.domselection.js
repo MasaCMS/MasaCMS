@@ -148,7 +148,7 @@
 			} else {
 				this.each(function(el){
 					if(typeof el.submit == 'function'){
-						el.submit();
+						window.mura.submitForm(el);
 					}
 				});
 			}
