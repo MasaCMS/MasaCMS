@@ -1543,8 +1543,10 @@
 				if(obj.data('object')=='container'){
 					mura(self).children('.mura-meta').html(mura.templates.meta(response));
 				} else {
-					if(typeof mura.templates[obj.data('object')] == 'function'){
-						obj.html(mura.templates[obj.data('object')](response));
+					var template=obj.data('clienttemplate') || obj.data('object');
+
+					if(typeof mura.templates[template] == 'function'){
+						obj.html(mura.templates[template](response));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -1555,8 +1557,10 @@
 			if(obj.data('object')=='container'){
 				mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
 			} else {
-				if(typeof mura.templates[obj.data('object')] == 'function'){
-					obj.html(mura.templates[obj.data('object')](obj.data()));
+				var template=obj.data('clienttemplate') || obj.data('object');
+
+				if(typeof mura.templates[template] == 'function'){
+					obj.html(mura.templates[template](obj.data()));
 					processMarkup(self)
 				} else {
 					console.log('Missing Client Template for:');
