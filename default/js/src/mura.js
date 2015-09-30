@@ -1386,6 +1386,8 @@
 			self.find('.mura-object:not([data-object="container"])').html('');
 			self.find('.frontEndToolsModal').remove();
 
+			self.find('.mura-object').removeClass('active');
+
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
 				var content=self.children('div.mura-content');
