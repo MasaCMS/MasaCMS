@@ -5544,7 +5544,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			}
 			
 			this.each(function(el){
-				if(el.removeAttribute){
+				if(typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
 				
