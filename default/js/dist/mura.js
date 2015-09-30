@@ -5950,49 +5950,52 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			} else {
 				return new Promise(function(resolve,reject) {
-					self.validate().then(function(){
+					
+					if(self.get('entityname') == 'content'){
+						var context=self.get('contentid');
+					} else {
+						var context=self.get('id');
+					}
 
-						if(!self.hasErrors()){
-							if(self.get('entityname') == 'content'){
-								var context=self.get('contentid');
-							} else {
-								var context=self.get('id');
-							}
+					window.mura.ajax({
+						type:'post',
+						url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
+						data:{
+							siteid:self.get('siteid'),
+							context:context
+						},
+						success:function(resp){
 							window.mura.ajax({
-								type:'post',
-								url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-								data:{
-									siteid:self.get('siteid'),
-									context:context
-								},
-								success:function(resp){
-									window.mura.ajax({
-											type:'post',
-											url:window.mura.apiEndpoint + '?method=save',
-											data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
-											success:function(resp){
-												if(resp.data != 'undefined'){
-													self.set(resp.data)
-													if(typeof resolve == 'function'){
-														resolve(self);
-													}
-												} else {
-													self.set('errors',resp.error);
-													if(typeof reject == 'function'){
-														reject(self);
-													}	
+									type:'post',
+									url:window.mura.apiEndpoint + '?method=save',
+									data:window.mura.extend(self.getAll(),{'csrf_token':resp.data.csrf_token,'csrf_token_expires':resp.data.csrf_token_expires}),
+									success:function(resp){
+										if(resp.data != 'undefined'){
+											self.set(resp.data)
+
+											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
+												if(typeof resolve == 'function'){
+													resolve(self);
+												}
+											} else {
+												if(typeof reject == 'function'){
+													reject(self);
 												}
 											}
-									});
-								}
+											
+										} else {
+											self.set('errors',resp.error);
+											if(typeof reject == 'function'){
+												reject(self);
+											}	
+										}
+									}
 							});
-						} else {
-							if(typeof reject == 'function'){
-								reject(self);
-							}
 						}
 					});
+
 				});
+				
 			}
 
 		},
