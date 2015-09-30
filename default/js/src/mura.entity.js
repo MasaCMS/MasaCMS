@@ -232,7 +232,7 @@
 										if(resp.data != 'undefined'){
 											self.set(resp.data)
 
-											if(self.get('saveErrors') || window.mura.isEmptyObject(self.getErrors())){
+											if((self.get('saveErrors') || self.get('saveerrors')) || window.mura.isEmptyObject(self.getErrors())){
 												if(typeof resolve == 'function'){
 													resolve(self);
 												}
