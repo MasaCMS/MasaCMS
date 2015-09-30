@@ -1176,68 +1176,20 @@ var initMura=function(config){
     }
   }
 
-  var processAsyncObject=function(el){
-    var self=el;
+  var submitForm=function(frm,obj){
 
-    var wireUpObject=function(html){
-      $(self).html(html);
-      
-      $(self).find('a[href="javascript:history.back();"]').each(function(){
-        $(this).off('click').on("click",function(e){
-          if(self.prevInnerHTML){
-            e.preventDefault();
-            wireUpObject(self.prevInnerHTML);
+    frm=(typeof frm.get=='function') ? frm.get(0) : frm;
+    obj=(typeof obj.get=='function') ? obj : $(obj);
 
-            if(self.prevData){
-              for(var p in self.prevData){
-                $('[name="' + p + '"]').val(self.prevData[p]);
-              }
-            }
-            self.prevInnerHTML=false;
-            self.prevData=false;
-          }
-        });
-      });
+    if(!obj){
+      obj=mura(frm).closest('.mura-object[data-object="form"]');
+    }
 
-      processHandlers(self);
+    if(!obj.length){
+      frm.submit();
+    }
 
-      $(self).find('form').each(function(){
-        $(this).removeAttr('onsubmit');
-        $(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
-      });
-
-      announceEvent('asyncObjectRendered',self);
-      $(self).trigger('asyncObjectRendered');
-
-    };
-
-    var handleResponse=function(resp){
-
-      if('html' in resp.data){
-        wireUpObject(resp.data.html);
-      } else if('redirect' in resp.data){
-        location.href=resp.data.redirect;
-      } else if('render' in resp.data){
-        $.ajax({ 
-              type:"POST",
-              xhrFields:{ withCredentials: true },
-              crossDomain:true,
-              url:resp.data.render,
-              data:resp.data,
-              success:function(data){
-                if(typeof data=='string'){
-                  wireUpObject(data);
-                } else if (typeof data=='object' && 'html' in data) {
-                  wireUpObject(data.html);
-                }
-              }
-          });
-      }
-    };
-
-    var validateFormAjax=function(frm) {
-
-      if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
+   if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
         var data=new FormData(frm);
         var checkdata=setLowerCaseKeys($(frm).serializeObject());
         var keys=$.extend(true,setLowerCaseKeys($(self).data()),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
@@ -1262,7 +1214,8 @@ var initMura=function(config){
               data: data,
               processData: false,
               contentType: false,
-              dataType: 'JSON'
+              dataType: 'JSON',
+              success: function(resp){handleResponse(obj,resp);}
             } 
       
       } else {
@@ -1280,16 +1233,25 @@ var initMura=function(config){
               url:  config.apiEndpoint + '?method=processAsyncObject',
               type: 'POST',
               data: data,
-              dataType: 'JSON'
+              dataType: 'JSON',
+              success: function(resp){handleResponse(obj,resp);}
             } 
       }
 
+      var self=obj.get(0);
+      self.prevInnerHTML=self.innerHTML;
+      self.prevData=obj.data();
+      self.innerHTML=window.mura.preloaderMarkup;
+
+      $.ajax(postconfig);
+  }
+
+  var wireUpObject=function(obj,html){
+
+    var validateFormAjax=function(frm) {
       validateForm(frm,
         function(frm){
-          self.prevInnerHTML=self.innerHTML;
-          self.prevData=data;
-          $(self).html(config.preloaderMarkup);
-          $.ajax(postconfig).then(handleResponse);
+         submitForm(frm,obj);
         }
       );
 
@@ -1297,6 +1259,69 @@ var initMura=function(config){
       
     }
 
+    obj=(typeof obj.get=='function') ? obj : $(obj);
+
+    var self=obj.get(0);
+
+    $(self).html(html);
+    
+    $(self).find('a[href="javascript:history.back();"]').each(function(){
+      $(this).off('click').on("click",function(e){
+        if(self.prevInnerHTML){
+          e.preventDefault();
+          wireUpObject(self.prevInnerHTML);
+
+          if(self.prevData){
+            for(var p in self.prevData){
+              $('[name="' + p + '"]').val(self.prevData[p]);
+            }
+          }
+          self.prevInnerHTML=false;
+          self.prevData=false;
+        }
+      });
+    });
+
+    processHandlers(self);
+
+    $(self).find('form').each(function(){
+      $(this).removeAttr('onsubmit');
+      $(this).on('submit',function(){return validateFormAjax(document.getElementById($(this).attr('id')));});
+    });
+
+    announceEvent('asyncObjectRendered',self);
+    $(self).trigger('asyncObjectRendered');
+
+  };
+
+  var handleResponse=function(obj,resp){
+
+    obj=(typeof obj.get=='function') ? obj : $(obj);
+
+    if('html' in resp.data){
+      wireUpObject(obj,resp.data.html);
+    } else if('redirect' in resp.data){
+      location.href=resp.data.redirect;
+    } else if('render' in resp.data){
+      $.ajax({ 
+            type:"POST",
+            xhrFields:{ withCredentials: true },
+            crossDomain:true,
+            url:resp.data.render,
+            data:resp.data,
+            success:function(data){
+              if(typeof data=='string'){
+                wireUpObject(obj,data);
+              } else if (typeof data=='object' && 'html' in data) {
+                wireUpObject(obj,data.html);
+              }
+            }
+        });
+    }
+  };
+
+  var processAsyncObject=function(el){
+    var self=el;
     var data=$.extend(true,$(self).data(),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid});
     
     if('objectparams' in data){
@@ -1310,10 +1335,11 @@ var initMura=function(config){
         type: 'GET',
         data: data,
         dataType: 'JSON'
-    }).then(handleResponse);
+    }).then(function(resp){handleResponse(mura(el),resp);});
   }
   
   $.extend(config,{
+    submitForm:submitForm,
     processAsyncObject:processAsyncObject,
     setLowerCaseKeys:setLowerCaseKeys,
     noSpam:noSpam,

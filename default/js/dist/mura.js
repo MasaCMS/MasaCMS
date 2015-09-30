@@ -4608,6 +4608,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 			},
 			{
+			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
 			processObject:processObject,

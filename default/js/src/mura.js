@@ -1975,6 +1975,7 @@
 				}
 			},
 			{
+			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
 			processObject:processObject,
