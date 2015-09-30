@@ -4012,6 +4012,81 @@ return /******/ (function(modules) { // webpackBootstrap
 		}	
 	}
 
+
+	function submitForm(frm,obj){
+		frm=(frm.node) ? frm.node : frm;
+		obj=(obj.node) ? obj : mura(obj);
+
+		if(!obj){
+			obj=mura(frm).closest('.mura-object[data-object="form"]');
+		}
+
+		if(!obj.length){
+			frm.submit();
+		}
+
+		if(typeof FormData != 'undefined' && frm.getAttribute('enctype')=='multipart/form-data'){
+
+				var data=new FormData(frm);
+				var checkdata=setLowerCaseKeys(formToObject(frm));
+				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				
+				for(var k in keys){
+					if(!(k in checkdata)){
+						data.append(k,keys[k]);
+					}
+				}
+
+				if('objectparams' in checkdata){
+					data.append('objectparams2', $escape(JSON.stringify(self.getAttribute('data-objectparams'))));
+				}
+
+				if('nocache' in checkdata){
+					data.append('nocache',1);
+				}
+
+				if(data.object=='container' && data.content){
+					delete data.content;
+				}
+				
+				var postconfig={
+							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
+							type: 'POST',
+							data: data,
+							success:function(resp){handleResponse(obj,resp);}
+						} 
+			
+			} else {
+				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+
+				if(data.object=='container' && data.content){
+					delete data.content;
+				}
+
+				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
+					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
+				}
+
+				if('objectparams' in data){
+					data['objectparams']= $escape(JSON.stringify(data['objectparams']));
+				}
+
+				var postconfig={
+							url: window.mura.apiEndpoint + '?method=processAsyncObject',
+							type: 'POST',
+							data: data,
+							success:function(resp){handleResponse(obj,resp);}
+						} 
+			}
+
+			var self=obj.node;
+			self.prevInnerHTML=self.innerHTML;
+			self.prevData=obj.data();
+			self.innerHTML=window.mura.preloaderMarkup;
+
+			ajax(postconfig);
+	}
+
 	function resetAsyncObject(el){
 		var self=mura(el);
 
@@ -4057,7 +4132,159 @@ return /******/ (function(modules) { // webpackBootstrap
 	function processAsyncObject(el){
 		obj=mura(el);
 		obj.addClass('mura-async-object');
+		obj.data('async',true);
 		processObject(obj);
+	}
+
+	function wireUpObject(obj,response){
+		
+		function validateFormAjax(frm) {
+			validateForm(frm,
+				function(frm){
+					submitForm(frm,obj);
+				}
+			);
+
+			return false;
+			
+		}
+
+		obj=(obj.node) ? obj : mura(obj);
+		var self=obj.node;
+
+		if(obj.data('class')){
+			var classes=obj.data('class');
+
+			if(typeof classes != 'array'){
+				var classes=classes.split(' ');
+			}
+			
+			for(var c in classes){
+				if(!obj.hasClass(classes[c])){
+					obj.addClass(classes[c]);
+				}
+			}	
+		}
+
+		if(response){
+			if(typeof response == 'string'){
+				obj.html(trim(response));
+			} else if (typeof response.html =='string'){
+				obj.html(trim(response.html));
+			} else {
+				if(obj.data('object')=='container'){
+					mura(self).children('.mura-meta').html(mura.templates.meta(response));
+				} else {
+					if(typeof mura.templates[obj.data('object')] == 'function'){
+						obj.html(mura.templates[obj.data('object')](response));
+					} else {
+						console.log('Missing Client Template for:');
+						console.log(obj.data());
+					}
+				}
+			}
+		} else {
+			if(obj.data('object')=='container'){
+				mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+			} else {
+				if(typeof mura.templates[obj.data('object')] == 'function'){
+					obj.html(mura.templates[obj.data('object')](obj.data()));
+					processMarkup(self)
+				} else {
+					console.log('Missing Client Template for:');
+					console.log(obj.data());
+				}
+			}
+		}
+		
+		if(mura.layoutmanager && mura.editing){
+			
+			if(obj.data('object')=='folder'){
+				obj.html(layoutmanagertoolbar + obj.html());
+			} else {
+				var region=mura(self).closest(".mura-region-local");
+				if(region && region.length ){
+					if(region.data('perm')){
+						var objectData=obj.data();
+
+						if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+							obj.html(layoutmanagertoolbar + obj.html());
+						}
+					}
+				}
+			}
+		}
+
+		obj.hide().show();
+		
+		processMarkup(obj.node);
+
+		obj.find('a[href="javascript:history.back();"]').each(function(){
+			mura(this).off("click").on("click",function(e){
+				if(self.prevInnerHTML){
+					e.preventDefault();
+					wireUpObject(obj,self.prevInnerHTML);
+
+					if(self.prevData){
+				 		for(var p in self.prevData){
+				 			select('[name="' + p + '"]').val(self.prevData[p]);
+				 		}
+				 	}
+					self.prevInnerHTML=false;
+					self.prevData=false;
+				}
+			});
+		});
+		
+		each(self.getElementsByTagName('FORM'),function(el,i){
+			el.onsubmit=function(){return validateFormAjax(this);};
+		});
+
+		if(obj.data('nextnid')){
+			obj.find('.mura-next-n a').each(function(){
+				mura(this).on('click',function(e){
+					e.preventDefault();
+					var a=this.getAttribute('href').split('?');
+					if(a.length==2){
+						window.location.hash=a[1];
+					}
+				
+				});
+			})
+		}
+			
+		obj.trigger('asyncObjectRendered');
+
+	}
+
+	function handleResponse(obj,resp){
+
+		obj=(obj.node) ? obj : mura(obj);
+
+		if(resp.data.redirect){
+			location.href=resp.data.redirect;
+		} else if(resp.data.apiEndpoint){
+			ajax({ 
+		        type:"POST",
+		        xhrFields:{ withCredentials: true },
+		        crossDomain:true,
+		        url:resp.data.apiEndpoint,
+		        data:resp.data,
+		        success:function(data){
+		        	if(typeof data=='string'){
+		        		wireUpObject(obj,data);
+		        	} else if (typeof data=='object' && 'html' in data) {
+		        		wireUpObject(obj,data.html);
+		        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
+		        		wireUpObject(obj,data.data.html);
+		        	} else {
+		        		wireUpObject(obj,data.data);
+		        	}
+		        }
+	   		});
+		} else {
+			wireUpObject(obj,resp.data);
+		}
 	}
 
 	function processObject(el){
@@ -4085,211 +4312,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 		}
 
-		function validateFormAjax(frm) {
-			
-			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
-
-				var data=new FormData(frm);
-				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
-				
-				for(var k in keys){
-					if(!(k in checkdata)){
-						data.append(k,keys[k]);
-					}
-				}
-
-				if('objectparams' in checkdata){
-					data.append('objectparams2', $escape(JSON.stringify(self.getAttribute('data-objectparams'))));
-				}
-
-				if('nocache' in checkdata){
-					data.append('nocache',1);
-				}
-
-				if(data.object=='container' && data.content){
-					delete data.content;
-				}
-				
-				var postconfig={
-							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
-							type: 'POST',
-							data: data,
-							success:handleResponse
-						} 
-			
-			} else {
-				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
-
-				if(data.object=='container' && data.content){
-					delete data.content;
-				}
-
-				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
-					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
-				}
-
-				if('objectparams' in data){
-					data['objectparams']= $escape(JSON.stringify(data['objectparams']));
-				}
-
-				var postconfig={
-							url: window.mura.apiEndpoint + '?method=processAsyncObject',
-							type: 'POST',
-							data: data,
-							success:handleResponse
-						} 
-			}
-
-			validateForm(frm,
-				function(frm){
-					self.prevInnerHTML=self.innerHTML;
-					self.prevData=data;
-					self.innerHTML=window.mura.preloaderMarkup;
-					ajax(postconfig);
-				}
-			);
-
-			return false;
-			
-		}
-
-		function wireUpObject(response){
-			
-			if(obj.data('class')){
-				var classes=obj.data('class');
-
-				if(typeof classes != 'array'){
-					var classes=classes.split(' ');
-				}
-				
-				for(var c in classes){
-					if(!obj.hasClass(classes[c])){
-						obj.addClass(classes[c]);
-					}
-				}	
-			}
-
-			if(response){
-				if(typeof response == 'string'){
-					obj.html(trim(response));
-				} else if (typeof response.html =='string'){
-					obj.html(trim(response.html));
-				} else {
-					if(obj.data('object')=='container'){
-						mura(self).children('.mura-meta').html(mura.templates.meta(response));
-					} else {
-						if(typeof mura.templates[obj.data('object')] == 'function'){
-							obj.html(mura.templates[obj.data('object')](response));
-						} else {
-							console.log('Missing Client Template for:');
-							console.log(obj.data());
-						}
-					}
-				}
-			} else {
-				if(obj.data('object')=='container'){
-					mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
-				} else {
-					if(typeof mura.templates[obj.data('object')] == 'function'){
-						obj.html(mura.templates[obj.data('object')](obj.data()));
-						processMarkup(el)
-					} else {
-						console.log('Missing Client Template for:');
-						console.log(obj.data());
-					}
-				}
-			}
-			
-			if(mura.layoutmanager && mura.editing){
-				
-				if(obj.data('object')=='folder'){
-					obj.html(layoutmanagertoolbar + obj.html());
-				} else {
-					var region=mura(self).closest(".mura-region-local");
-					if(region && region.length ){
-						if(region.data('perm')){
-							var objectData=obj.data();
-
-							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + obj.html());
-							}
-						}
-					}
-				}
-			}
-
-			obj.hide().show();
-			
-			processMarkup(self);
-
-			obj.find('a[href="javascript:history.back();"]').each(function(){
-				mura(this).off("click").on("click",function(e){
-					if(self.prevInnerHTML){
-						e.preventDefault();
-						wireUpObject(self.prevInnerHTML);
-
-						if(self.prevData){
-					 		for(var p in self.prevData){
-					 			select('[name="' + p + '"]').val(self.prevData[p]);
-					 		}
-					 	}
-						self.prevInnerHTML=false;
-						self.prevData=false;
-					}
-				});
-			});
-			
-			each(self.getElementsByTagName('FORM'),function(el,i){
-				el.onsubmit=function(){return validateFormAjax(this);};
-			});
-
-			if(obj.data('nextnid')){
-				obj.find('.mura-next-n a').each(function(){
-					mura(this).on('click',function(e){
-						e.preventDefault();
-						var a=this.getAttribute('href').split('?');
-						if(a.length==2){
-							window.location.hash=a[1];
-						}
-					
-					});
-				})
-			}
-				
-
-			obj.trigger('asyncObjectRendered');
-
-		}
-
-		function handleResponse(resp){
-
-			if(resp.data.redirect){
-				location.href=resp.data.redirect;
-			} else if(resp.data.apiEndpoint){
-				ajax({ 
-			        type:"POST",
-			        xhrFields:{ withCredentials: true },
-			        crossDomain:true,
-			        url:resp.data.apiEndpoint,
-			        data:resp.data,
-			        success:function(data){
-			        	if(typeof data=='string'){
-			        		wireUpObject(data);
-			        	} else if (typeof data=='object' && 'html' in data) {
-			        		wireUpObject(data.html);
-			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
-			        		wireUpObject(data.data.html);
-			        	} else {
-			        		wireUpObject(data.data);
-			        	}
-			        }
-		   		});
-			} else {
-				wireUpObject(resp.data);
-			}
-		}
-
 		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
 		if('objectparams' in data){
@@ -4299,13 +4321,13 @@ return /******/ (function(modules) { // webpackBootstrap
 		delete data.params;
 
 		if(obj.data('object')=='container'){
-			wireUpObject();
+			wireUpObject(obj);
 		} else {
 			if(!obj.data('async') && obj.data('render')=='client'){
-				wireUpObject();
+				wireUpObject(obj);
 			} else {	
 				self.innerHTML=window.mura.preloaderMarkup;
-				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		
+				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:function(resp){handleResponse(obj,resp);}});		
 			}
 
 		}
@@ -4321,8 +4343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 		}
 		*/
-
-		
 
 	}
 
