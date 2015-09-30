@@ -337,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			var params=$.extend(configParams,siteManager.availableObject.params);
 
-			console.log(params);
+			//console.log(params);
 			$.ajax(
 			 {
 			 	type: 'post',
