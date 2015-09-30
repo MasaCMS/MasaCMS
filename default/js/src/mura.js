@@ -1629,12 +1629,12 @@
 
 			if(resp.data.redirect){
 				location.href=resp.data.redirect;
-			} else if(resp.data.render){
+			} else if(resp.data.apiEndpoint){
 				ajax({ 
 			        type:"POST",
 			        xhrFields:{ withCredentials: true },
 			        crossDomain:true,
-			        url:resp.data.render,
+			        url:resp.data.apiEndpoint,
 			        data:resp.data,
 			        success:function(data){
 			        	if(typeof data=='string'){
