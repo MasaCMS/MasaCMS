@@ -89,6 +89,20 @@
 
 	}
 
+	function escapeHTML(str) {
+	    var div = document.createElement('div');
+	    div.appendChild(document.createTextNode(str));
+	    return div.innerHTML;
+	};
+
+	// UNSAFE with unsafe strings; only use on previously-escaped ones!
+	function unescapeHTML(escapedStr) {
+	    var div = document.createElement('div');
+	    div.innerHTML = escapedStr;
+	    var child = div.childNodes[0];
+	    return child ? child.nodeValue : '';
+	};
+
 	function renderFilename(filename,params){
 
 		var query = [];
@@ -447,8 +461,8 @@
         el.dispatchEvent(event);
 	};
 
-	function off(el,eventName){
-		el.removeEventListener(eventName);
+	function off(el,eventName,fn){
+		el.removeEventListener(eventName,fn);
 	}
 
 	function parseSelection(selector){
@@ -498,7 +512,18 @@
 	  return tmp.body.children;
 	};
 
-	function getDataAttributes(el){
+	function getData(el){
+		var data = {};
+		Array.prototype.forEach.call(el.attributes, function(attr) {
+		    if (/^data-/.test(attr.name)) {
+		        data[attr.name.substr(5)] = parseString(attr.value);
+		    }
+		});
+
+		return data;
+	}
+
+	function getProps(el){
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		    if (/^data-/.test(attr.name)) {
@@ -641,6 +666,10 @@
        	 	new RegExp( "\\+", "g" ), 
         	"%2B" 
         );
+	}
+
+	function $unescape(value){
+		return unescape(value);
 	}
 
 	//deprecated
@@ -1220,22 +1249,26 @@
 
 		scope=select(scope);
 
+		function find(selector){
+			return scope.find(selector);
+		}
+
 		var processors=[
 
 			function(){
-				scope.find(".mura-async-object").each(function(){
-					processAsyncObject(this);
+				find('.mura-object[data-render="client"], .mura-async-object').each(function(){
+					processObject(this);
 				});
 			},
 
 			function(){
-				scope.find(".htmlEditor").each(function(){
+				find(".htmlEditor").each(function(){
 					setHTMLEditor(this);
 				});
 			},
 
 			function(){
-				if(scope.find(".cffp_applied  .cffp_mm .cffp_kp").length){
+				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", window.mura.requirementspath + '/cfformprotect/js/cffp.js')
@@ -1245,7 +1278,7 @@
 			},
 
 			function(){
-				if(scope.find(".g-recaptcha" ).length){
+				if(find(".g-recaptcha" ).length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?hl=" + window.mura.reCAPTCHALanguage)
@@ -1254,11 +1287,11 @@
 
 				}
 
-				if(scope.find(".g-recaptcha-container" ).length){
+				if(find(".g-recaptcha-container" ).length){
 					loader().loadjs(
 						'https://www.google.com/recaptcha/api.js?hl=' + window.mura.reCAPTCHALanguage,
 						function(){
-							each(scope.find(".g-recaptcha-container" ),function(el){
+							each(find(".g-recaptcha-container" ),function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
@@ -1292,7 +1325,7 @@
 						resizeEditableObject(this);
 					}); 
 
-					scope.find(".editableObject").each(function(){
+					find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
 	
@@ -1303,7 +1336,7 @@
 
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").on(
+					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
 							event.preventDefault();
@@ -1320,7 +1353,7 @@
 
 			function(){
 				if(typeof urlparams.muraadminpreview != 'undefined'){
-					scope.find("a").each(function() {
+					find("a").each(function() {
 						var h=this.getAttribute('href');
 						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
 							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
@@ -1346,11 +1379,77 @@
 		}	
 	}
 
+	function resetAsyncObject(el){
+		var self=mura(el);
+
+		if(self.data('object')=='container'){
+			self.find('.mura-object:not([data-object="container"])').html('');
+			self.find('.frontEndToolsModal').remove();
+
+			self.find('.mura-object').each(function(){
+				var self=mura(this);
+				self.removeClass('active');
+				self.removeAttr('data-perm');
+			});
+			
+			self.find('.mura-object[data-object="container"]').each(function(){
+				var self=mura(this);
+				var content=self.children('div.mura-content');
+
+				if(content.length){
+					self.data('content',content.html());
+				}
+
+				content.html('');
+			});
+
+			self.find('.mura-meta').html('');
+			var content=self.children('div.mura-content');
+
+			if(content.length){
+				self.data('content',content.html());
+			}
+		}
+
+		self.html('');
+	}
+
+	function unpackContainer(container){
+		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+		if(container.data('content')){
+			container.children('div.mura-content').html(container.data('content'));
+		}
+	}
+
 	function processAsyncObject(el){
+		obj=mura(el);
+		obj.addClass('mura-async-object');
+		processObject(obj);
+	}
+
+	function processObject(el){
+
+		var obj=(el.node) ? el : mura(el);
+		el =el.node || el;
 		var self=el;
 
 		if(!self.getAttribute('data-instanceid')){
 			self.setAttribute('data-instanceid',createUUID());
+		}
+
+		if(obj.data('async')){
+			obj.addClass("mura-async-object");
+		}
+
+		if(self.getAttribute('data-object')=='container'){
+			//resetAsyncObject(self);
+			unpackContainer(mura(self));
+			mura(self).find('.mura-object').each(function(){
+				this.setAttribute('data-instanceid',createUUID());
+			});
+			mura(self).hide().show();
+			unpackedContainer=true;
+
 		}
 
 		function validateFormAjax(frm) {
@@ -1359,7 +1458,7 @@
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var keys=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 				
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1374,6 +1473,10 @@
 				if('nocache' in checkdata){
 					data.append('nocache',1);
 				}
+
+				if(data.object=='container' && data.content){
+					delete data.content;
+				}
 				
 				var postconfig={
 							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -1383,7 +1486,11 @@
 						} 
 			
 			} else {
-				var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+
+				if(data.object=='container' && data.content){
+					delete data.content;
+				}
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
@@ -1414,8 +1521,7 @@
 			
 		}
 
-		function wireUpObject(html){
-			var obj=select(self);
+		function wireUpObject(response){
 			
 			if(obj.data('class')){
 				var classes=obj.data('class');
@@ -1431,31 +1537,57 @@
 				}	
 			}
 
-			if(mura.layoutmanager && mura.editing){
-				if(obj.data('object')=='folder'){
-					obj.html(layoutmanagertoolbar + html);
+			if(response){
+				if(typeof response == 'string'){
+					obj.html(trim(response));
+				} else if (typeof response.html =='string'){
+					obj.html(trim(response.html));
 				} else {
-					var region=mura(self).closest(".mura-displayregion");
+					if(obj.data('object')=='container'){
+						mura(self).children('.mura-meta').html(mura.templates.meta(response));
+					} else {
+						if(typeof mura.templates[obj.data('object')] == 'function'){
+							obj.html(mura.templates[obj.data('object')](response));
+						} else {
+							console.log('Missing Client Template for:');
+							console.log(obj.data());
+						}
+					}
+				}
+			} else {
+				if(obj.data('object')=='container'){
+					mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+				} else {
+					if(typeof mura.templates[obj.data('object')] == 'function'){
+						obj.html(mura.templates[obj.data('object')](obj.data()));
+						processMarkup(el)
+					} else {
+						console.log('Missing Client Template for:');
+						console.log(obj.data());
+					}
+				}
+			}
+			
+			if(mura.layoutmanager && mura.editing){
+				
+				if(obj.data('object')=='folder'){
+					obj.html(layoutmanagertoolbar + obj.html());
+				} else {
+					var region=mura(self).closest(".mura-region-local");
 					if(region && region.length ){
 						if(region.data('perm')){
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + html);
-								
-							} else {
-								obj.html(html);
+								obj.html(layoutmanagertoolbar + obj.html());
 							}
-						} else {
-							obj.html(html);
 						}
 					}
 				}
-
-			} else {
-				obj.html(html);
 			}
 
+			obj.hide().show();
+			
 			processMarkup(self);
 
 			obj.find('a[href="javascript:history.back();"]').each(function(){
@@ -1499,16 +1631,14 @@
 
 		function handleResponse(resp){
 
-			if('html' in resp.data){
-				wireUpObject(resp.data.html);
-			} else if('redirect' in resp.data){
+			if(resp.data.redirect){
 				location.href=resp.data.redirect;
-			} else if('render' in resp.data){
+			} else if(resp.data.apiEndpoint){
 				ajax({ 
 			        type:"POST",
 			        xhrFields:{ withCredentials: true },
 			        crossDomain:true,
-			        url:resp.data.render,
+			        url:resp.data.apiEndpoint,
 			        data:resp.data,
 			        success:function(data){
 			        	if(typeof data=='string'){
@@ -1517,30 +1647,48 @@
 			        		wireUpObject(data.html);
 			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
 			        		wireUpObject(data.data.html);
+			        	} else {
+			        		wireUpObject(data.data);
 			        	}
 			        }
 		   		});
+			} else {
+				wireUpObject(resp.data);
 			}
 		}
 
-		var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
+		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 		
 		if('objectparams' in data){
 			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 		}
-		
-		self.innerHTML=window.mura.preloaderMarkup;
 
-		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});
-		
+		delete data.params;
+
+		if(obj.data('object')=='container'){
+			wireUpObject();
+		} else {
+			if(!obj.data('async') && obj.data('render')=='client'){
+				wireUpObject();
+			} else {	
+				self.innerHTML=window.mura.preloaderMarkup;
+				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		
+			}
+
+		}
+
 		/*
-		ajax({
-			type:'get',
-			url:window.mura.apiEndpoint + '?method=processAsyncObject',
-			data:data,
-			success:handleResponse}
-		);
+		mura.templates={};
+		mura.templates['meta']=function(context){
+			if(context.label){
+				return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
+			} else {
+				return '';
+			}
+				
+		}
 		*/
+
 		
 
 	}
@@ -1570,6 +1718,10 @@
 				});
 			}	
 		}
+	}
+
+	function trim(str) {
+	    return str.replace(/^\s+|\s+$/gm,'');
 	}
 	
 
@@ -1681,6 +1833,7 @@
 
 		ready(function(){
 			
+
 			var hash=window.location.hash;
 
 			if(hash){
@@ -1802,7 +1955,11 @@
 				}
 			},
 			{
+			escapeHTML:escapeHTML,
+			unescapeHTML:unescapeHTML,
+			processObject:processObject,
 			processAsyncObject:processAsyncObject,
+			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
 			noSpam:noSpam,
 			addLoadEvent:addLoadEvent,
@@ -1821,11 +1978,13 @@
 			changeElementType:changeElementType,
 			each:each,
 			parseHTML:parseHTML,
-			getDataAttributes:getDataAttributes,
+			getData:getData,
+			getProps:getProps,
 			isEmptyObject:isEmptyObject,
 			evalScripts:evalScripts,
 			validateForm:validateForm,
 			escape:$escape,
+			unescape:$unescape,
 			getBean:getEntity,
 			getEntity:getEntity,
 			renderFilename:renderFilename,
@@ -1840,7 +1999,8 @@
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
-			readCookie:readCookie
+			readCookie:readCookie,
+			trim:trim
 			}
 		),
 		//these are here for legacy support

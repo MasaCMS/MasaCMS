@@ -18,7 +18,6 @@
 			<div class="controls">
 				<select id="availableObjectSelector">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
-					--
 					</option>
 
 					<cfloop query="rc.rsObjects">

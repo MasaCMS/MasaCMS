@@ -44,9 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset request.layout=false>
-<cfparam name="rc.layoutmanager" default="false">
-<cfparam name="rc.container" default="">
+<cfsilent>
+	<cfset request.layout=false>
+	<cfparam name="rc.layoutmanager" default="false">
+	<cfparam name="rc.container" default="">
+	<cfparam name="rc.contentid" default="">
+	<cfparam name="rc.parentid" default="">
+	<cfparam name="rc.contenthistid" default="">
+	<cfparam name="rc.objectid" default=""/>
+	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
+</cfsilent>
+
 <cfswitch expression="#rc.classid#">	
 	<cfcase value="feed">
 		<cfinclude template="objectclass/dsp_feed_configurator.cfm">

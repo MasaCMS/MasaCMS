@@ -72,8 +72,6 @@
 		<cfargument name="enableMuraTag" default="true">
 		<cfargument name="renderer">
 		<cfscript>
-			var dataString='';
-			var inline=' inline';
 			if(not structKeyExists(arguments,'label')){
 				arguments.label=arguments.attribute;
 			}
@@ -88,23 +86,29 @@
 				arguments.value=arguments.renderer.setDynamicContent(arguments.value);
 			}
 			
-			if(arguments.renderer.hasFETools() and arguments.renderer.showInlineEditor and (listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2')) and not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
+			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
+			var layoutManager=arguments.renderer.useLayoutmanager();
+
+			if(arguments.renderer.hasFETools() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 				
+				var dataString='';
+				var inline=' inline';
+				var cssClass="";
+
 				dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
-				
+		
 				if(yesNoFormat(arguments.required)){
 					dataString=dataString & ' data-required="true"';
 				} else {
 					dataString=dataString & ' data-required="false"';
 				}
-				
+
 				if(len(arguments.validation)){
 					dataString=dataString & ' data-validate="#arguments.validation#"';
 				}
+				
 				dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 				dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
-
-				var cssClass="";
 
 				if(arguments.type == 'HTMLEditor' ){
 					inline='';
@@ -113,17 +117,30 @@
 						arguments.value="<p></p>";
 					}
 
-					cssClass='mura-displayregion ';
+					cssClass='mura-region-local ';
 					dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
-				}
-
-				cssClass=cssClass & "mura-mura-editable inactive mura-editable-attribute#inline#";
 				
-				return '<div class="mura-editable inactive#inline#">
-							<label class="mura-editable-label">#ucase(arguments.label)#</label>
-							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+			
+					return '<div class="mura-region mura-editable inactive#inline#">
+						<label class="mura-editable-label">#ucase(arguments.label)#</label>
+						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 						</div>';
-				
+
+				} else {
+					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+			
+					return '<div class="mura-editable inactive#inline#">
+						<label class="mura-editable-label">#ucase(arguments.label)#</label>
+						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+						</div>';
+
+				}		
+			} else if (layoutManager && arguments.type == 'htmlEditor'){
+
+				return '<div class="mura-region">
+					<div class="mura-region-local">#arguments.value#</div>
+					</div>';
 			} else {
 				return arguments.value;
 			}
@@ -386,17 +403,23 @@
 	</cffunction>
 
 	<cffunction name="getCurrentURL" access="public" returntype="string" output="false">
-		<cfargument name="complete" required="true" type="boolean" default="true" />
-		<cfargument name="injectVars" required="true" type="string" default="" />
-		<cfargument name="filterVars" required="true" type="boolean" default="true" />
+		<cfargument name="complete" required="true" type="boolean" default="true">
+		<cfargument name="injectVars" required="true" type="string" default="">
+		<cfargument name="filterVars" required="true" type="boolean" default="true">
 		<cfargument name="domain" default="#listFirst(cgi.http_host,":")#">
 		<cfargument name="renderer">
+		<cfargument name="filterVarsList" default="">
 		<cfset var qrystr=''>
 		<cfset var host=''>
 		<cfset var item = "" />
+		<cfset var _filterVarsList='NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#,#filterVars#'>
 		
+		<cfif len(arguments.filterVarsList)>
+			<cfset _filterVarsList=_filterVarsList & ',' & arguments.filterVarsList>
+		</cfif>
+
 		<cfloop collection="#url#" item="item">
-			<cfif not arguments.filterVars and item neq 'path' or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+			<cfif not arguments.filterVars and item neq 'path' or (not listFindNoCase(_filterVarsList,item) 
 				 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 				<cftry>
 				<cfif len(qrystr)>	
@@ -854,9 +877,9 @@
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
 
+		<cfset var openingDiv='<div class="mura-object'> 
+		
 		<cfparam name="arguments.objectParams.async" default="false">
-
-		<cfset var openingDiv='<div class="mura-object'>
 
 		<cfif arguments.objectParams.async>
 			<cfset openingDiv=openingDiv & " mura-async-object">
@@ -865,7 +888,7 @@
 		<cfset openingDiv=openingDiv & '" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-instanceid="#createUUID()#"'>
 		
 		<cfloop collection="# arguments.objectparams#" item="local.i">
-			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',local.i)#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
+			<cfset openingDiv=openingDiv & ' data-#esapiEncode('html_attr',lcase(local.i))#="#esapiEncode('html_attr', serializeObjectParam(arguments.objectparams[local.i]))#"'>
 		</cfloop>
 
 		<cfif arguments.showEditable>
@@ -887,7 +910,7 @@
 		</cfif>
 	</cffunction>
 
-	<cffunction name="dspObject" access="public" output="false" returntype="string">
+	<cffunction name="dspObject" access="public" output="false">
 		<cfargument name="object" type="string">
 		<cfargument name="objectid" type="string" required="true" default="">
 		<cfargument name="siteid" type="string" required="true" default="">
@@ -914,6 +937,12 @@
 		<cfset var historyID="">
 		<cfset var tempObject="">
 		<cfset var args={}>
+
+		<cfif isJSON(arguments.params)>
+			<cfset arguments.params=deserializeJSON(arguments.params)>
+		<cfelseif not isStruct(arguments.params)>
+			<cfset arguments.params={}>
+		</cfif>
 
 		<cfset request.muraValidObject=true>
 		<cfset request.muraAsyncEditableObject=false>
@@ -957,6 +986,18 @@
 					<cfcase value="collection">
 						<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 						<cfset editableControl.class="editableCollection">
+						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset editableControl.isConfigurator=true>
+					</cfcase>
+					<cfcase value="text">
+						<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
+						<cfset editableControl.class="editableText">
+						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
+						<cfset editableControl.isConfigurator=true>
+					</cfcase>
+					<cfcase value="container">
+						<cfset showEditable=arguments.showEditableObjects and  (arguments.renderer.useLayoutManager() or arguments.hasConfigurator) and listFindNoCase("editor,author",arguments.assignmentPerm)>
+						<cfset editableControl.class="editableContainer">
 						<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/?muraAction=#configuratorAction#cArch.frontEndConfigurator">
 						<cfset editableControl.isConfigurator=true>
 					</cfcase>
@@ -1083,95 +1124,72 @@
 					<cfreturn trim(theDisplay1)>
 				</cfif>			
 			<cfelse>
-				<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator)>
+				<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator)>
 			</cfif>
 		<cfelse>
 			<cfswitch expression="#arguments.object#">
-				<cfcase value="sub_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sub.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="peer_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_peer.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="standard_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_standard.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="portal_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_portal.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="folder_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_folder.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="multilevel_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_multilevel.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="seq_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sequential.cfm",cachekey=cacheKeyContentId & event.getValue('startRow'),showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="top_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_top.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="contact"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
-				<cfcase value="calendar_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="plugin">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
-					<cfset theObject=theObject & application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=event,params=arguments.params,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>		
-					<cfif arguments.renderer.useLayoutmanager()>
-						<cfif request.muraFrontEndRequest>
-								theObject=renderObjectInManager(object=arguments.object,
-								objectid=arguments.objectid,
-								content=theObject,
-								objectParams=arguments.params,
-								showEditable=arguments.showEditable,
-								isConfigurator=editableControl.isConfigurator,
-								objectname=arguments.objectname)>
-						</cfif>
-					</cfif>
-				</cfcase>
+				<cfcase value="sub_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sub.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="peer_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_peer.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="standard_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_standard.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="portal_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_portal.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="folder_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_folder.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="multilevel_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_multilevel.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="seq_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_sequential.cfm",cachekey=cacheKeyContentId & event.getValue('startRow'),showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="top_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_top.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="contact"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
+				<cfcase value="calendar_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="plugin"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<!--- BEGIN: New Layout Manager Objects --->
 				<cfcase value="collection">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params,cachekey=cacheKeyContentId & 'collection' & arguments.params.sourceid)></cfcase>
-				
-
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
+				<cfcase value="text">
+					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="text/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
+				<cfcase value="container">
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="container/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
+				<cfcase value="meta">
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="meta/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<!--- END: New Layout Manager Objects--->
-				<cfcase value="mailing_list"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="mailing_list_master"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="site_map"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>							
-				<cfcase value="category_summary"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="archive_nav"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_archive.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="form"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="datacollection/index.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="form_responses"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dataresponses/index.cfm",cachekey=cacheKeyObjectId & event.getValue("responseID") & event.getValue("startrow"),showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="component"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="ad"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
-				<cfcase value="comments"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
-				<cfcase value="event_reminder_form"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="forward_email"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="adzone"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_adZone.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="mailing_list"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="mailing_list_master"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="site_map"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>							
+				<cfcase value="category_summary"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="archive_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/dsp_archive.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="form"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="datacollection/index.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="form_responses"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dataresponses/index.cfm",cachekey=cacheKeyObjectId & event.getValue("responseID") & event.getValue("startrow"),showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="component"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="ad"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_ad.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
+				<cfcase value="comments"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_comments.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator)></cfcase>
+				<cfcase value="event_reminder_form"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_event_reminder_form.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="forward_email"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_forward_email.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="adzone"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_adZone.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="feed">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & arguments.renderer.getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & arguments.renderer.getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>	
 				<cfcase value="feed_slideshow">
 					<cfif not request.muraMobileTemplate>	
-						<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+						<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 					<cfelse>
-						<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+						<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 					</cfif>
 				</cfcase>
-				<cfcase value="feed_table"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="feedtable/index.cfm",cachekey=arguments.object,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="payPalCart"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="paypalcart/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="rater"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="rater/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="favorites"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="favorites/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="dragable_feeds"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dragablefeeds/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="feed_table"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="feedtable/index.cfm",cachekey=arguments.object,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="payPalCart"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="paypalcart/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="rater"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="rater/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="favorites"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="favorites/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="dragable_feeds"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dragablefeeds/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="related_content">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
 					<cfparam name="arguments.params.relatedContentSetName" default="default">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & arguments.renderer.getListFormat() & arguments.params.relatedContentSetName,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & arguments.renderer.getListFormat() & arguments.params.relatedContentSetName,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>
 				<cfcase value="related_section_content">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & arguments.renderer.getListFormat(),params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & arguments.renderer.getListFormat(),params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>
-				<cfcase value="user_tools"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="user_tools"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_user_tools.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="tag_cloud">
-					<cfif isJSON(arguments.params)>
-						<cfset arguments.params=deserializeJSON(arguments.params)>
-					<cfelseif not isStruct(arguments.params)>
-						<cfset arguments.params={}>
-					</cfif>
 					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
-					<cfset theObject=theObject & tempObject>
+					<cfset theObject=tempObject>
 					<cfif arguments.renderer.useLayoutmanager()>
 						<cfif request.muraFrontEndRequest>
 								<cfset theObject=renderObjectInManager(object=arguments.object,
@@ -1184,35 +1202,35 @@
 						</cfif>
 					</cfif>
 				</cfcase>
-				<cfcase value="goToFirstChild"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="act_goToFirstChild.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="goToFirstChild"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="act_goToFirstChild.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<!--- BEGIN DEPRICATED --->
-				<cfcase value="submit_event"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_submit_event.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="promo"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_promo.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="public_content_form"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_public_content_form.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="category_summary_rss"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",showEditable=showEditable,cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="submit_event"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_submit_event.cfm",cachekey=cacheKeyContentId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="promo"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_promo.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="public_content_form"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_public_content_form.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="category_summary_rss"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",showEditable=showEditable,cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="feed_no_summary">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>
 				<cfcase value="feed_slideshow_no_summary">
 					<cfif not request.muraMobileTemplate>
-						<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+						<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 					<cfelse>
-						<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+						<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 					</cfif>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>	
 				<cfcase value="features">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>
 				<cfcase value="features_no_summary">
-					<cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
+					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)>
 				</cfcase>		
-				<cfcase value="category_features"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="category_features_no_summary"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="category_Folder_features"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<cfcase value="category_Folder_features_no_summary"><cfset theObject=theObject & arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="category_features"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="category_features_no_summary"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="category_Folder_features"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
+				<cfcase value="category_Folder_features_no_summary"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_category_Folder_features.cfm",cachekey=cacheKeyObjectId,hasSummary=false,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<!--- END DEPRICATED --->
 			</cfswitch>
 		</cfif>
@@ -1246,9 +1264,12 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var rsObjects="">	
-		<cfset var theRegion=(arguments.returnFormat eq 'array')?{header='',footer='',items=[]}:''/>
+		<cfset var theRegion={header='',footer='',inherited={header='',footer='',items=[]},local={header='',footer='',items=[]}}/>
 		<cfset var theObject="">
-		
+		<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
+		<cfset var i=''>
+		<cfset var html=''>
+
 		<cfif arguments.renderer.uselayoutmanager()>
 			<cfset var inheritedObjectsPerm='none'>
 		<cfelse>
@@ -1256,6 +1277,20 @@
 		</cfif>
 
 		<cfset request.muraRegionID=arguments.columnID>
+		
+		<cfif perm>
+			<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+			<cfset theRegion.local.header='<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
+		<cfelse>
+			<cfset theRegion.header='<div class="mura-region">'>
+			<cfset theRegion.local.header='<div class="mura-region-local">'>
+		</cfif>
+
+		<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
+		<cfset theRegion.inherited.footer='</div>'>
+		<cfset theRegion.local.footer='</div>'>
+		<cfset theRegion.footer='</div>'>
+
 		<cfif (event.getValue('isOnDisplay') 
 				and ((not event.getValue('r').restrict) 
 					or (event.getValue('r').restrict and event.getValue('r').allow))) 
@@ -1266,52 +1301,64 @@
 				and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 					<cfset rsObjects=getBean('contentGateway').getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 					<cfloop query="rsObjects">
-						<cfif arguments.returnFormat eq 'array'>
-							<cfset arrayAppend(theRegion,arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name))/>
-						<cfelse>
-							<cfset theRegion = theRegion & arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name) />
+						<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=event.getValue('inheritedObjects'), regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=inheritedObjectsPerm,objectname=rsObjects.name)>
+						<cfif isSimpleValue(theObject)>
+							<cfset theObject={html=theObject}>
 						</cfif>
+						<cfset arrayAppend(theRegion.inherited.items,theObject) />
 						<cfset request.muraRegionID=arguments.columnID>
 					</cfloop>	
 			</cfif>
 
-			<cfif arguments.layoutmanager>
-				<cfset var perm=(listFindNoCase('author,editor',$.event('r').perm))?true:false>
-				
-				<cfset var header=(perm)?'<div class="mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label><div class="mura-displayregion inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">':''>
-
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset theRegion.header=header>
-				<cfelse>
-					<cfset theRegion=theRegion & header>
-				</cfif>
-			</cfif>
 			<cfset rsObjects=getBean('contentGateway').getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset arrayAppend(theRegion.items,arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentID=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)) />
-				<cfelse>
-					<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)>
-					<cfif isSimpleValue(theObject)>
-						<cfset theRegion = theRegion & theObject />
-					<cfelse>
-						<cfset theRegion = theRegion & "<!-- Display object return invalid format -->" />
-					</cfif>
+				<cfset theObject=arguments.renderer.dspObject(object=rsObjects.object,objectid=rsObjects.objectid,siteid=event.getValue('siteID'), params=rsObjects.params, assignmentid=arguments.contentHistID, regionid=arguments.columnID, orderno=rsObjects.orderno, hasConfigurator=len(rsObjects.configuratorInit),assignmentPerm=$.event('r').perm,objectname=rsObjects.name)>
+				<cfif isSimpleValue(theObject)>
+					<cfset theObject={html=theObject}>
 				</cfif>
-				
+				<cfset arrayAppend(theRegion.local.items,theObject) />
 				<cfset request.muraRegionID=arguments.columnID>
 			</cfloop>
-			<cfif arguments.layoutmanager>
-				<cfif arguments.returnFormat eq 'array'>
-					<cfset theRegion.footer=(perm)?'</div></div>':''>
-				<cfelse>
-					<cfset theRegion=theRegion & ((perm)?'</div></div>':'')>
-				</cfif>
-			</cfif>
 		</cfif>
 		<cfset request.muraRegionID=0>
 
-		<cfreturn theRegion >
+		<cfif arguments.returnFormat eq 'array'>
+			<cfreturn theRegion >
+		<cfelse>
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.header>
+			</cfif>
+			
+			<cfif arrayLen(theRegion.inherited.items)>
+				<cfif arguments.layoutmanager>
+					<cfset html=html & theRegion.inherited.header>
+				</cfif>
+
+				<cfloop array="#theRegion.inherited.items#" index="i"> 
+					<cfset html=html & i.html>
+				</cfloop>
+
+				<cfif arguments.layoutmanager>
+					<cfset html=html & theRegion.inherited.footer>
+				</cfif>
+			</cfif>
+
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.local.header>
+			</cfif>
+
+			<cfloop array="#theRegion.local.items#" index="i"> 
+				<cfset html=html & i.html>
+			</cfloop>
+
+			<cfif arguments.layoutmanager>
+				<cfset html=html & theRegion.local.footer>
+				<cfset html=html & theRegion.footer>
+			</cfif>
+
+			<cfreturn html>
+		</cfif>
+
 	</cffunction>
 
 	<cffunction name="createHREF" returntype="string" output="false" access="public">

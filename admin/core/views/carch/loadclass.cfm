@@ -51,10 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.parentid" default="">
 	<cfparam name="rc.contenthistid" default="">
 	<cfparam name="rc.objectid" default=""/>
-
-	<cfif rc.layoutmanager>
-		<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
-	</cfif>
+	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
 </cfsilent>
 
 <cfswitch expression="#rc.classid#">
@@ -96,6 +93,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfcase value="plugins">
 		<cfinclude template="objectclass/dsp_plugins.cfm">
+	</cfcase>
+	<cfcase value="plugin">
+		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
 	</cfcase>
 </cfswitch>
 

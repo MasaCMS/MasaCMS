@@ -49,17 +49,19 @@
 		this.selection=selection;
 		this.origSelector=origSelector;
 
-		if(this.selection.length){
+		if(this.selection.length && this.selection[0]){
 			this.parentNode=this.selection[0].parentNode;
 			this.childNodes=this.selection[0].childNodes;
 			this.node=selection[0];
+			this.length=this.selection.length;
 		} else {
 			this.parentNode=null;
 			this.childNodes=null;
 			this.node=null;
+			this.length=0;
 		}
 
-		this.length=this.selection.length;
+		
 	}
 
 	MuraDOMSelection.prototype={
@@ -159,20 +161,20 @@
 			return this;
 		},
 
-		off:function(eventName){
+		off:function(eventName,fn){
 			this.each(function(el){
-				el.removeEventListener(eventName);
+				el.removeEventListener(eventName,fn);
 			});
 			return this;
 		},
 
-		unbind:function(eventName){
-			this.off(eventName);
+		unbind:function(eventName,fn){
+			this.off(eventName,fn);
 			return this;
 		},
 
-		bind:function(eventName){
-			this.on(eventName);
+		bind:function(eventName,fn){
+			this.on(eventName,fn);
 			return this;
 		},
 
@@ -230,7 +232,7 @@
 			}
 		},
 
-		getSelector:function() {
+		selector:function() {
 		    var pathes = [];
 
 		    //this.selection.each(function(index, element) {
@@ -252,7 +254,7 @@
 		           		break;
 		           }
 		           */
-		           if($node.attr('id') && $node.attr('id') != 'mura-variation-el'){
+		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
 		           		name='#' + $node.attr('id');
 		           		path = name + (path ? ' > ' + path : '');
 		            	break;
@@ -330,11 +332,13 @@
 		        el = parent;
 		    }
 
-		    return null;
+		    return window.mura([]);;
 		},
 
 		append:function(el) {
-			this.selection[0].appendChild(el);
+			if(this.selection.length){
+				this.selection[0].appendChild(el);
+			}
 			return this;
 		},
 
@@ -660,7 +664,7 @@
 			}
 			
 			this.each(function(el){
-				if(el.remoteAttribute){
+				if(typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
 				
@@ -723,7 +727,7 @@
 				return this;
 			
 			} else {
-				if(this.selection[0].getAttribute){
+				if(this.selection[0] && this.selection[0].getAttribute){
 					return this.selection[0].getAttribute(attributeName);
 				} else {
 					return undefined;
@@ -737,7 +741,7 @@
 				return;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getDataAttributes(this.selection[0]);
+				return window.mura.getData(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){
@@ -751,8 +755,10 @@
 					el.setAttribute("data-" + attributeName,value);
 				});
 				return this;
-			} else {
+			} else if (this.selection[0] && this.selection[0].getAttribute) {
 				return window.mura.parseString(this.selection[0].getAttribute("data-" + attributeName));
+			} else {
+				return undefined;
 			}
 		},
 
@@ -761,7 +767,7 @@
 				return;
 			}
 			if(typeof value == 'undefined' && typeof attributeName == 'undefined'){
-				return window.mura.getAttributes(this.selection[0]);
+				return window.mura.getProps(this.selection[0]);
 			} else if (typeof attributeName == 'object'){
 				this.each(function(el){
 					for(var p in attributeName){

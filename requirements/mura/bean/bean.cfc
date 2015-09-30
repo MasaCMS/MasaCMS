@@ -586,16 +586,7 @@ component extends="mura.cfobject" output="false" {
 					       	 	}
 
 					       	 	if(structKeyExists(prop,'cfc')){
-					       	 		prop.persistent=true;
-
-					       	 		if(prop.fieldtype eq 'one-to-many'){
-					       	 			prop.persistent=false;
-					       	 		} else {
-					       	 			prop.persistent=true;
-					       	 			setPropAsIDColumn(prop,false);
-					       	 			//writeDump(var=prop,abort=true);
-					       	 		}
-
+					       	 		
 					       	 		param name="prop.fkcolumn" default="primaryKey";
 
 					       	 		prop.column=prop.fkcolumn;
@@ -688,6 +679,16 @@ component extends="mura.cfobject" output="false" {
 					       	 		}
 
 					       	 		param name="prop.cascade" default="none";
+
+					       	 		prop.persistent=true;
+
+					       	 		if(prop.column=='primarykey'){
+					       	 			prop.persistent=false;
+					       	 		} else {
+					       	 			prop.persistent=true;
+					       	 			setPropAsIDColumn(prop,false);
+					       	 		}
+
 
 					       	 	} else if(!structKeyExists(prop,"persistent") ){
 					       	 		prop.persistent=true;

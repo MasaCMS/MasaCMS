@@ -19,6 +19,7 @@
 		</div>
 		
 		<div class="form-actions">	
+			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
 		</div>
 	</div>
@@ -39,8 +40,8 @@
 					var parameters=messageEvent.data;
 					
 					if (parameters["cmd"] == "setObjectParams") {
-						//console.log(parameters.params)
-						configParams=parameters.params;
+						
+						configParams=parameters["params"];
 						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
@@ -48,7 +49,7 @@
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
-							'params':JSON.stringify(parameters.params),
+							'params':JSON.stringify(parameters["params"]),
 							'siteid':'#esapiEncode('javascript',rc.siteid)#',
 							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',
@@ -108,7 +109,7 @@
 							</cfswitch>
 						</cfif>
 
-						siteManager.loadObjectPreview(configOptions);
+						//siteManager.loadObjectPreview(configOptions);
 					
 					}
 				}
@@ -148,8 +149,7 @@
 					jQuery("##configurator").html('<div class="load-inline"></div>');
 					$('##configurator .load-inline').spin(spinnerArgs2);
 					jQuery(".form-actions").hide();
-					
-					
+									
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
@@ -158,6 +158,15 @@
 					});
 
 				}
+			});
+
+			jQuery("##deleteObject").bind("click",
+			function(){
+				frontEndProxy.post(
+				{
+					cmd:'deleteObject',
+					instanceid:instanceid
+				});
 			});
 				
 			

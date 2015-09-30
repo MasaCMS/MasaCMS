@@ -851,6 +851,8 @@ component extends="mura.cfobject" {
 		var $=getBean('$').init(arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName).set($.event().getAllValues());
+		var saveErrors=false;
+		var errors={};
 
 		if(!allowAction(entity,$)){
 			throw(type="authorization");
@@ -890,8 +892,9 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadByparams)
 					.set(
 						$.event().getAllValues()
-					)
-					.save();
+					);
+
+				entity.save();
 			}
 		} else {
 			throw(type="invalidTokens");
@@ -905,11 +908,16 @@ component extends="mura.cfobject" {
 			loadByparams={'#pk#'=entity.getValue(pk)};
 		}
 
-		entity=$.getBean(entityName).loadBy(
-				argumentCollection=loadByparams
-				);
+
+		saveErrors=entity.getValue('saveErrors');
+		errors=entity.getValue('errors');
+
+		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
 		var returnStruct=getFilteredValues(entity,$);
+
+		returnStruct.saveErrors=saveErrors;
+		returnStruct.errors=errors;
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
 	
@@ -973,6 +981,7 @@ component extends="mura.cfobject" {
 			structDelete(vals,'extenddatatable');
 			structDelete(vals,'extenddata');
 			structDelete(vals,'extendAutoComplete');
+			structDelete(vals,'saveErrors');
 			if(listFindNoCase("user,group",entityConfigName)){
 				structDelete(vals,'sourceiterator');
 				structDelete(vals,'ukey');
@@ -2006,13 +2015,12 @@ component extends="mura.cfobject" {
 
 				result=$.dspObject(argumentCollection=args);
 				
-				if(isSimpleValue(result)){
-					result={html=result};
-				}
 				
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
-				}
+				} else if(isSimpleValue(result)){
+					result={html=result};
+				} 
 		} 
 
 		return result;
