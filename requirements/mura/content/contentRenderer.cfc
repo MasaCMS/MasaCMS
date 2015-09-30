@@ -1302,6 +1302,9 @@ Display Objects
 	
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
+		<cfif isSimpleValue(result)>
+			<cfset theContent=result>
+		</cfif>
 	<cfelse>
 		<!--- For backward compatability with old dsp_feed.cfm files --->
 		<cfif arguments.thefile eq "dsp_feed.cfm">
