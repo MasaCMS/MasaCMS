@@ -628,8 +628,8 @@ buttons: {
 		var id = '#configurator';
 		
 		if(!d.length){
-			$('#classlist')
-			id= '#classlist';
+			$('#classList')
+			id= '#classList';
 		}
 
 		d.html('<div class="load-inline"></div>');

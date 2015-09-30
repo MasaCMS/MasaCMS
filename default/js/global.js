@@ -1182,17 +1182,17 @@ var initMura=function(config){
     obj=(typeof obj.get=='function') ? obj : $(obj);
 
     if(!obj){
-      obj=mura(frm).closest('.mura-object[data-object="form"]');
+      obj=$(frm).closest('.mura-object-async');
     }
 
     if(!obj.length){
       frm.submit();
     }
 
-   if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
+    if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
         var data=new FormData(frm);
         var checkdata=setLowerCaseKeys($(frm).serializeObject());
-        var keys=$.extend(true,setLowerCaseKeys($(self).data()),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
+        var keys=$.extend(true,setLowerCaseKeys(obj.data()),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
         
         for(var k in keys){
           if(!(k in checkdata)){
@@ -1201,7 +1201,7 @@ var initMura=function(config){
         }
 
         if('objectparams' in checkdata){
-          data.append('objectparams2', $escape(JSON.stringify($(self).data('objectparams'))));
+          data.append('objectparams2', $escape(JSON.stringify(obj.data('objectparams'))));
         }
 
         if('nocache' in checkdata){
@@ -1219,7 +1219,7 @@ var initMura=function(config){
             } 
       
       } else {
-        var data=$.extend(true,setLowerCaseKeys($(self).data()),urlparams,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
+        var data=$.extend(true,setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
 
         if(!('g-recaptcha-response' in data) && $("#g-recaptcha-response").length){
           data['g-recaptcha-response']=$("#g-recaptcha-response").val();
@@ -1335,7 +1335,7 @@ var initMura=function(config){
         type: 'GET',
         data: data,
         dataType: 'JSON'
-    }).then(function(resp){handleResponse(mura(el),resp);});
+    }).then(function(resp){handleResponse($(el),resp);});
   }
   
   $.extend(config,{

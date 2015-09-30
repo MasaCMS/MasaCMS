@@ -1385,7 +1385,7 @@
 		obj=(obj.node) ? obj : mura(obj);
 
 		if(!obj){
-			obj=mura(frm).closest('.mura-object[data-object="form"]');
+			obj=mura(frm).closest('.mura-object');
 		}
 
 		if(!obj.length){
@@ -1405,7 +1405,7 @@
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams2', $escape(JSON.stringify(self.getAttribute('data-objectparams'))));
+					data.append('objectparams2', $escape(JSON.stringify(obj.data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
