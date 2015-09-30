@@ -1210,7 +1210,7 @@ Display Objects
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
-	<cfargument name="fileName" type="string" />
+	<cfargument name="fileName" type="string" default=''/>
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
