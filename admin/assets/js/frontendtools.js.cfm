@@ -81,10 +81,12 @@
 					}
 				}		
 
+				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				var item=mura('[data-objectid="' + parameters.objectid + '"]');
+				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			}

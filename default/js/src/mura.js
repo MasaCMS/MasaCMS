@@ -1659,16 +1659,12 @@
 
 		delete data.params;
 
-		if(data.object=='container'){
-			if(data.content){
-				delete data.content;
-			}
-			wireUpObject(obj.data());
-			
+		if(obj.data('object')=='container'){
+			wireUpObject();
 		} else {
 			if(!obj.hasClass("mura-async-object")){
 				if(object.data('render')=='client'){
-					wireUpObject(obj.data());
+					wireUpObject();
 				} 
 			} else {	
 				self.innerHTML=window.mura.preloaderMarkup;
