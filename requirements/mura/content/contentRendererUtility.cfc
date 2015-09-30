@@ -878,6 +878,8 @@
 		<cfargument name="objectname">
 
 		<cfset var openingDiv='<div class="mura-object'> 
+		
+		<cfparam name="arguments.objectParams.async" default="false">
 
 		<cfif arguments.objectParams.async>
 			<cfset openingDiv=openingDiv & " mura-async-object">
