@@ -67,7 +67,8 @@ component extends="mura.cfobject" {
 	      .asInteger('totalitems')
 	      .asInteger('pageindex')
 	      .asInteger('code')
-	      .asString('title');
+	      .asString('title')
+	      .asBoolean('saveErrors');
 
 	    registerEntity('site',{
 	    	public=true,
