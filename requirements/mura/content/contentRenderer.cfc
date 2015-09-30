@@ -1324,7 +1324,7 @@ Display Objects
 	</cfif>
 	
 
-	<cfif doLayoutManagerWrapper && not (objectParams.render eq 'client' and request.returnFormat eq 'json')>
+	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
 
 				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,

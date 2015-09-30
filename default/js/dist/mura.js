@@ -4019,8 +4019,12 @@ return /******/ (function(modules) { // webpackBootstrap
 			self.find('.mura-object:not([data-object="container"])').html('');
 			self.find('.frontEndToolsModal').remove();
 
-			self.find('.mura-object').removeClass('active');
-
+			self.find('.mura-object').each(function(){
+				var self=mura(this);
+				self.removeClass('active');
+				self.removeAttr('data-perm');
+			});
+			
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
 				var content=self.children('div.mura-content');
@@ -4297,10 +4301,8 @@ return /******/ (function(modules) { // webpackBootstrap
 		if(obj.data('object')=='container'){
 			wireUpObject();
 		} else {
-			if(!obj.hasClass("mura-async-object")){
-				if(object.data('render')=='client'){
-					wireUpObject();
-				} 
+			if(!obj.data('async') && obj.data('render')=='client'){
+				wireUpObject();
 			} else {	
 				self.innerHTML=window.mura.preloaderMarkup;
 				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});		

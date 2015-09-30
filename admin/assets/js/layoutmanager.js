@@ -194,6 +194,7 @@
 				    	
 						mura('#adminSave').show();
 						mura(dragEl).addClass('mura-async-object');
+						mura(dragEl).data('async',true);
 						mura(target).closest('.mura-region-local').data('dirty',true);
 						
 						initDraggableObject(target);
@@ -286,6 +287,7 @@
 				var displayObject=document.createElement("DIV");
 				displayObject.setAttribute('data-object',object.object);
 				displayObject.setAttribute('data-objectname',object.objectname);
+				displayObject.setAttribute('data-async',true);
 				displayObject.setAttribute('data-perm','author');
 				displayObject.setAttribute('data-instanceid',mura.createUUID());
 				displayObject.setAttribute('class','mura-async-object mura-object active');
@@ -384,7 +386,8 @@
 					        	this.appendChild(dragEl);
 					        }
 
-					        mura('#adminSave').show();	
+					        mura('#adminSave').show();
+					        mura(dragEl).data('async',true);	
 					        mura(dragEl).addClass('mura-async-object');
 					        mura(this).data('dirty',true);
 					        elDropHandled=true;
