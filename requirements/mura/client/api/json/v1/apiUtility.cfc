@@ -1619,7 +1619,7 @@ component extends="mura.cfobject" {
 
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/_path/#entity.getFilename()#";
-			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
+			links['renderered']="#baseurl#/content/_path/#entity.getFilename()#";
 			if(entity.getType()=='Variation'){
 				links['self']=links['renderered'];
 			} else {
