@@ -5007,15 +5007,32 @@ return /******/ (function(modules) { // webpackBootstrap
 			return isNumeric(this.selection[0]);
 		},
 
-		on:function(eventName,fn){
+		on:function(eventName,selector,fn){
+			if(typeof selector == 'function'){
+				fn=selector;
+				selector='';
+			} 
+
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
-					fn.call(document);
+					if(typeof selector == 'string'){
+						mura(this).find(selector).each(function(){
+							fn.call(this,event);
+						});
+					} else {
+						fn.call(document);
+					}
 				} else { 
 					document.addEventListener(
 						'DOMContentLoaded',
 						function(event){
-								fn.call(el,event);
+							if(typeof selector == 'string'){
+								mura(this).find(selector).each(function(){
+									fn.call(this,event);
+								});
+							} else {
+								fn.call(this,event);
+							}
 						},
 						true
 					);	
@@ -5026,13 +5043,20 @@ return /******/ (function(modules) { // webpackBootstrap
 						el.addEventListener(
 							eventName, 
 							function(event){
-								fn.call(el,event);
+								if(typeof selector == 'string'){
+									mura(this).find(selector).each(function(){
+										fn.call(this,event);
+									});
+								} else {
+									fn.call(this,event);
+								}
+								
 							},
 							true
 						);
 					}
 				});
-			}
+			}	
 
 			return this;
 		},
