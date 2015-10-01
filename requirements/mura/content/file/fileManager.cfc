@@ -600,7 +600,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    	<cfreturn GetPageContext().formScope().getUploadResource(arguments.fieldname).getName()>	
 	    </cfif>
 	    <cfcatch>
-	    	<cflog type="Error" file="exception" text="#exception.stacktrace#">
+	    	<cflog type="Error" file="exception" text="#cfcatch.type#: #cfcatch.detail#">
 		</cfcatch>
     </cftry>
 

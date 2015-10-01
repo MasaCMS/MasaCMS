@@ -14,10 +14,10 @@
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
+			<label class="control-label">Select System Object</label>
 			<div class="controls">
 				<select id="availableObjectSelector">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
-						-- Select System Object --
 					</option>
 
 					<cfloop query="rc.rsObjects">
