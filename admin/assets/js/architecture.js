@@ -2177,9 +2177,10 @@ buttons: {
 			}
 
 			if(tmpObject.object == 'plugin') {
-				if(tmpObject.object.objectid && tmpObject.object.objectid.toLowerCase() != 'none'){
+				if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
+				
 					var configurator = this.getPluginConfigurator(tmpObject.objectid);
-
+					
 					if(configurator != '') {
 						if(configure) {
 							window[configurator](tmpObject);
