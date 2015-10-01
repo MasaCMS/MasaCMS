@@ -1335,7 +1335,9 @@
 				</cfif>
 
 				<cfloop array="#theRegion.inherited.items#" index="i"> 
-					<cfset html=html & i.html>
+					<cfif isDefined('i.html')>
+						<cfset html=html & i.html>
+					</cfif>
 				</cfloop>
 
 				<cfif arguments.layoutmanager>
@@ -1348,7 +1350,9 @@
 			</cfif>
 
 			<cfloop array="#theRegion.local.items#" index="i"> 
-				<cfset html=html & i.html>
+				<cfif isDefined('i.html')>
+					<cfset html=html & i.html>
+				</cfif>
 			</cfloop>
 
 			<cfif arguments.layoutmanager>
