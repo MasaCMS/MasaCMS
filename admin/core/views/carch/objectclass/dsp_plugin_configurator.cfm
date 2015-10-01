@@ -1,5 +1,6 @@
 <cfsilent>
 	<cfparam name="rc.subclassid" default="">
+
 	<cfif listLen(rc.subclassid) gt 1>
 		<cfset rc.objectid = listLast(rc.subclassid)>
 		<cfset rc.subclassid = listFirst(rc.subclassid)>
@@ -14,11 +15,12 @@
 	    modulesOnly=true
 	)/>
 
-	<cfif isdefined('rc.moduleid')>
+	<cfif isdefined('rc.moduleid') and len(rc.moduleid)>
 		<cfset rc.subclassid=rc.moduleid>
 	</cfif>
-	</cfsilent>
+</cfsilent>	
 <cfoutput>
+
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">

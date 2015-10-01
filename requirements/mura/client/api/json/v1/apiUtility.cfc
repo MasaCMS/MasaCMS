@@ -290,6 +290,7 @@ component extends="mura.cfobject" {
 				}
 
 				if(isDefined('#params.method#')){
+
 					result=evaluate('#params.method#(argumentCollection=params)');
 					
 					if(!isJson(result)){
@@ -1048,6 +1049,11 @@ component extends="mura.cfobject" {
 				var pk="feedid";
 			} else {
 				var pk=entity.getPrimaryKey();
+			}
+
+
+			if(arguments.entityName == 'site'){
+				arguments.id=arguments.siteid;
 			}
 			
 			var loadparams={'#pk#'=arguments.id};

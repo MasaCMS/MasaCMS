@@ -2110,7 +2110,7 @@ buttons: {
 
 		//if the tmpValue evaluated into a js object pull out it's values
 		var checkSelection = false;
-
+		console.log(tmpObject);
 		if(typeof(tmpObject) == "object") {
 			//object^name^objectID^params
 			tmpObject.regionid = regionid;
