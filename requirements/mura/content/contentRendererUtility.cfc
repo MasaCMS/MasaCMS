@@ -1279,7 +1279,11 @@
 		<cfset request.muraRegionID=arguments.columnID>
 		
 		<cfif perm>
-			<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
+				<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+			<cfelse>
+				<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION: #arguments.columnid#</label>'>
+			</cfif>
 			<cfset theRegion.local.header='<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
 		<cfelse>
 			<cfset theRegion.header='<div class="mura-region">'>
