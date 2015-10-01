@@ -108,7 +108,7 @@
 
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
-					if(typeof selector == 'string'){
+					if(selector){
 						mura(this).find(selector).each(function(){
 							fn.call(this,event);
 						});
@@ -119,7 +119,7 @@
 					document.addEventListener(
 						'DOMContentLoaded',
 						function(event){
-							if(typeof selector == 'string'){
+							if(selector){
 								mura(this).find(selector).each(function(){
 									fn.call(this,event);
 								});
@@ -136,7 +136,7 @@
 						el.addEventListener(
 							eventName, 
 							function(event){
-								if(typeof selector == 'string'){
+								if(selector){
 									mura(this).find(selector).each(function(){
 										fn.call(this,event);
 									});

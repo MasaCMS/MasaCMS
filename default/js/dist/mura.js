@@ -5015,7 +5015,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
-					if(typeof selector == 'string'){
+					if(selector){
 						mura(this).find(selector).each(function(){
 							fn.call(this,event);
 						});
@@ -5026,7 +5026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					document.addEventListener(
 						'DOMContentLoaded',
 						function(event){
-							if(typeof selector == 'string'){
+							if(selector){
 								mura(this).find(selector).each(function(){
 									fn.call(this,event);
 								});
@@ -5043,7 +5043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						el.addEventListener(
 							eventName, 
 							function(event){
-								if(typeof selector == 'string'){
+								if(selector){
 									mura(this).find(selector).each(function(){
 										fn.call(this,event);
 									});
