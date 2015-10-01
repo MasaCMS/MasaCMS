@@ -3246,7 +3246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function deepExtend(out) {
 		out = out || {};
-
+	
 		for (var i = 1; i < arguments.length; i++) {
 		    var obj = arguments[i];
 
@@ -3254,11 +3254,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      	continue;
 
 		    for (var key in obj) {
+
 		        if (obj.hasOwnProperty(key)) {
 		        	if(Array.isArray(obj[key])){
 		       			out[key]=obj[key].slice(0);
 			        } else if (typeof obj[key] === 'object') {
-			          	deepExtend(out[key], obj[key]);
+			          	out[key]=deepExtend({}, obj[key]);
 			        } else {
 			          	out[key] = obj[key];
 			        }

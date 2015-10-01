@@ -1258,7 +1258,7 @@ var initMura=function(config){
 
       return false;
       
-    }
+    } 
 
     obj=(typeof obj.get=='function') ? obj : $(obj);
 
