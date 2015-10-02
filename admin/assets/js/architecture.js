@@ -2053,11 +2053,12 @@ buttons: {
 	},
 
 
-	addDisplayObject: function(objectToAdd, regionid, configure) {
+	addDisplayObject: function(objectToAdd, regionid, configure, isUpdate) {
 		var tmpObject = "";
 		var tmpValue = "";
 		var tmpText = "";
-		var isUpdate = false;
+
+		isUpdate= isUpdate || false;
 
 		//If it's not a js object then it must be an id of a form input or select
 		if(typeof(objectToAdd) == "string") {
@@ -2220,7 +2221,7 @@ buttons: {
 				tmpValue = tmpValue + "~" + JSON.stringify(tmpObject.params);
 			}
 
-			if(checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
+			if(!isUpdate && checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
 				var currentSelection = this.getDisplayObjectConfig(regionid);
 
 				if(currentSelection) {
@@ -2803,10 +2804,10 @@ buttons: {
 							}
 
 							$(this).dialog("destroy");
+						
+							configure=((originid !='' && originid !='none') && siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
 
-							configure=(originid!=siteManager.availableObject.objectid);
-				
-							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure);
+							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}
 
 					},

@@ -153,10 +153,10 @@
 					
 					var reload=false;
 
-					if(siteManager.availableObject.objectid != originid){
-						reload=siteManager.objectHasConfigurator(siteManager.availableObject.params);
+					if((originid != '' && originid != 'none') && availableObject.params.objectid && availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
+						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
-
+					
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
