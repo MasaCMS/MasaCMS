@@ -2177,23 +2177,25 @@ buttons: {
 			}
 
 			if(tmpObject.object == 'plugin') {
-				if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
-				
-					var configurator = this.getPluginConfigurator(tmpObject.objectid);
+				if(configure){
+					if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
 					
-					if(configurator != '') {
-						if(configure) {
+						var configurator = this.getPluginConfigurator(tmpObject.objectid);
+					
+						if(configurator != '') {
 							window[configurator](tmpObject);
 							return false;
-						} else if (this.layoutmanager){
-							this.initGenericConfigurator(data);
+						} else {
+							this.initGenericConfigurator(tmpObject);
 							return false;
 						}
-						checkSelection = true;
+
+					} else if(siteManager.layoutmanager){
+						this.initGenericConfigurator(tmpObject);
 					}
-				} else if(siteManager.layoutmanager){
-					this.initGenericConfigurator(tmpObject);
-				}
+				} 
+
+				checkSelection = true;	
 			}
 
 			if(siteManager.layoutmanager){
@@ -2226,8 +2228,6 @@ buttons: {
 						isUpdate = true
 					}
 				}
-
-
 
 			}
 
@@ -2797,13 +2797,16 @@ buttons: {
 						}
 
 						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, false);
-
+							
 							if(typeof(config.destroy) != 'undefined') {
 								config.destroy(data, config);
 							}
 
 							$(this).dialog("destroy");
+
+							configure=(originid!=siteManager.availableObject.objectid);
+				
+							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure);
 						}
 
 					},

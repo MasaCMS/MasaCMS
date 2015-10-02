@@ -82,8 +82,13 @@
 				}		
 
 				mura.resetAsyncObject(item.node);
-				mura.processAsyncObject(item.node);
-				closeFrontEndToolsModal();
+				mura.processAsyncObject(item.node).then(function(){
+					closeFrontEndToolsModal();
+					if(parameters.reinit){
+						openFrontEndToolsModal(item.node);
+					}	
+				});
+				
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				var item=mura('[data-objectid="' + parameters.objectid + '"]');
 				mura.resetAsyncObject(item.node);

@@ -30,6 +30,7 @@
 
 		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
 		var configOptions={};
+		var originid='#esapiEncode('javascript',rc.objectid)#';
 
 		jQuery(document).ready(function(){
 
@@ -149,12 +150,19 @@
 					jQuery("##configurator").html('<div class="load-inline"></div>');
 					$('##configurator .load-inline').spin(spinnerArgs2);
 					jQuery(".form-actions").hide();
-									
+					
+					var reload=false;
+
+					if(siteManager.availableObject.objectid != originid){
+						reload=siteManager.objectHasConfigurator(siteManager.availableObject.params);
+					}
+
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
 						instanceid:instanceid,
-						params:siteManager.availableObject.params
+						params:siteManager.availableObject.params,
+						reinit:(reload) ? true : false
 					});
 
 				}

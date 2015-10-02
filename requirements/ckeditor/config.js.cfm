@@ -96,7 +96,7 @@ CKEDITOR.editorConfig = function( config )
 			{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 			{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 			{name: 'group8', items:['Link','Unlink','Anchor']},'/',
-			{name: 'group9', items:['Image','Flash','oembed','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+			{name: 'group9', items:['Image','Flash','leaflet','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 			{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 		];
 
@@ -159,7 +159,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';

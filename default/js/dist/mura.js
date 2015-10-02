@@ -4135,7 +4135,7 @@ return /******/ (function(modules) { // webpackBootstrap
 		obj=mura(el);
 		obj.addClass('mura-async-object');
 		obj.data('async',true);
-		processObject(obj);
+		return processObject(obj);
 	}
 
 	function wireUpObject(obj,response){
@@ -4294,49 +4294,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function processObject(el){
+		return new Promise(function(resolve,reject) {
+			var obj=(el.node) ? el : mura(el);
+			el =el.node || el;
+			var self=el;
 
-		var obj=(el.node) ? el : mura(el);
-		el =el.node || el;
-		var self=el;
-
-		if(!self.getAttribute('data-instanceid')){
-			self.setAttribute('data-instanceid',createUUID());
-		}
-
-		if(obj.data('async')){
-			obj.addClass("mura-async-object");
-		}
-
-		if(self.getAttribute('data-object')=='container'){
-			//resetAsyncObject(self);
-			unpackContainer(mura(self));
-			mura(self).find('.mura-object').each(function(){
-				this.setAttribute('data-instanceid',createUUID());
-			});
-			mura(self).hide().show();
-			unpackedContainer=true;
-
-		}
-
-		var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
-		
-		if('objectparams' in data){
-			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
-		}
-
-		delete data.params;
-
-		if(obj.data('object')=='container'){
-			wireUpObject(obj);
-		} else {
-			if(!obj.data('async') && obj.data('render')=='client'){
-				wireUpObject(obj);
-			} else {	
-				self.innerHTML=window.mura.preloaderMarkup;
-				ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:function(resp){handleResponse(obj,resp);}});		
+			if(!self.getAttribute('data-instanceid')){
+				self.setAttribute('data-instanceid',createUUID());
 			}
 
-		}
+			if(obj.data('async')){
+				obj.addClass("mura-async-object");
+			}
+
+			if(self.getAttribute('data-object')=='container'){
+				//resetAsyncObject(self);
+				unpackContainer(mura(self));
+				mura(self).find('.mura-object').each(function(){
+					this.setAttribute('data-instanceid',createUUID());
+				});
+				mura(self).hide().show();
+				unpackedContainer=true;
+
+			}
+
+			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
+			
+			if('objectparams' in data){
+				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
+			}
+
+			delete data.params;
+
+			if(obj.data('object')=='container'){
+				wireUpObject(obj);
+				if(typeof resolve == 'function'){
+					resolve(obj);
+				}
+			} else {
+				if(!obj.data('async') && obj.data('render')=='client'){
+					wireUpObject(obj);
+					if(typeof resolve == 'function'){
+						resolve(obj);
+					}
+				} else {	
+					self.innerHTML=window.mura.preloaderMarkup;
+					ajax({
+						url:window.mura.apiEndpoint + '?method=processAsyncObject',
+						type:'get',
+						data:data,
+						success:function(resp){
+							handleResponse(obj,resp);
+							if(typeof resolve == 'function'){
+								resolve(obj);
+							}
+						}
+					});		
+				}
+
+			}
+		});
 
 		/*
 		mura.templates={};
