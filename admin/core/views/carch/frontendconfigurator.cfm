@@ -153,7 +153,7 @@
 					
 					var reload=false;
 
-					if((originid != '' && originid != 'none') && availableObject.params.objectid && availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
+					if(siteManager.availableObject.params.objectid && siteManager.availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
 						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
 					}
 					

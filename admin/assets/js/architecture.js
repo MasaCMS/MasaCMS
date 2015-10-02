@@ -2804,8 +2804,8 @@ buttons: {
 							}
 
 							$(this).dialog("destroy");
-						
-							configure=((originid !='' && originid !='none') && siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
+							
+							configure=(siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
 
 							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}

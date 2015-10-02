@@ -127,6 +127,7 @@
                 };
 
                 String.prototype.beginsWith = function(string) {
+                    //console.warn(this)
                     return (this.indexOf(string) === 0);
                 };
 
