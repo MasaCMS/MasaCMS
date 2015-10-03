@@ -159,7 +159,7 @@ CKEDITOR.editorConfig = function( config )
 
 	<!--- /Toolbars --->
 
-	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';//oembed
+	config.extraPlugins = 'SelectComponent,Selectlink,leaflet,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror,image2,widget,lineutils,dialog,oembed,sourcedialog,fakeobjects,dialogui,showprotected,stylesheetparser';
 
 	<cfif len($.siteConfig().getRazunaSettings().getApiKey())>
 		config.extraPlugins += ',razuna';

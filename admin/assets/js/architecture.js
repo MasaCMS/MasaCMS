@@ -2783,7 +2783,7 @@ buttons: {
 						var availableObjectSelector=$('#availableObjectSelector');
 
 						if(availableObjectSelector.length){
-							selectedObject=eval('(' + availableObjectSelector.val() + ')');
+							var selectedObject=eval('(' + availableObjectSelector.val() + ')');
 
 							siteManager.availableObject.name=selectedObject.name;
 							siteManager.availableObject.object=selectedObject.object;
@@ -2795,6 +2795,8 @@ buttons: {
 							delete selectedObject.objectid;
 
 							$.extend(siteManager.availableObject.params,selectedObject);
+
+							
 						}
 
 						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
@@ -2804,8 +2806,18 @@ buttons: {
 							}
 
 							$(this).dialog("destroy");
+
+
+							//for some reason the availableObject sometimes has methods from the string.prototype.
+							for(var p in siteManager.availableObject){
+								if(typeof siteManager.availableObject[p] == 'function'){
+									delete siteManager.availableObject[p];
+								}
+							}
 							
 							configure=(siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
+						
+							console.log(siteManager.availableObject)
 
 							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}
