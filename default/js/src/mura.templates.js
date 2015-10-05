@@ -7,9 +7,15 @@ mura.templates['meta']=function(context){
   }  
 }
 mura.templates['text']=function(context){
+  var str='<div class="mura-meta">';
+  str+=mura.templates['meta'](context);
+  str+='</div><div class="mura-content">'; 
   if(context.text){
-    return "<p>" + mura.escapeHTML(context.text) + "</p>";
+     str+="<p>" + mura.escapeHTML(context.text) + "</p>";
   } else {
-    return '<p>This text has not been configured.</p>';
+     str+='<p>This text has not been configured.</p>';
   }  
+  str+='</div>';
+
+  return str;
 }
