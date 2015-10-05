@@ -2557,7 +2557,7 @@ buttons: {
 	updateAvailableObject: function() {
 		var availableObjectParams = {};
 
-		$("#availableObjectParams").find(".objectParam").each(
+		$(".objectParam").each(
 
 		function() {
 			var item = $(this);
@@ -2683,7 +2683,7 @@ buttons: {
 
 	initConfiguratorParams: function() {
 		this.updateAvailableObject();
-		$("#availableObjectParams").find(".objectParam").bind("change", function() {
+		$(".objectParam").bind("change", function() {
 			siteManager.updateAvailableObject();
 		});
 	},
