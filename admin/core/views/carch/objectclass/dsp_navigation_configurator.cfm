@@ -4,6 +4,8 @@
 		select * from rc.rsObjects where object like '%nav%'
 	</cfquery>
 </cfsilent>
+
+<cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap">
 	<div class="fieldset">
@@ -24,3 +26,4 @@
 	</div>
 </div>
 </cfoutput>
+</cf_objectconfigurator>

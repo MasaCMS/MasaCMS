@@ -20,7 +20,7 @@
 	</cfif>
 </cfsilent>	
 <cfoutput>
-
+<cf_objectconfigurator>
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
@@ -125,6 +125,7 @@
 		</div>
 	</div>
 </div>
+</cf_objectconfigurator>
 </cfoutput>
 
 

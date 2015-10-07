@@ -1,4 +1,5 @@
 <cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
+<cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap row-fluid">
 	<div class="fieldset">
@@ -26,3 +27,4 @@
 	</div>
 </div>
 </cfoutput>
+</cf_objectconfigurator>

@@ -1626,13 +1626,9 @@ this.Element && function(ElementPrototype) {
 	}
 
 	function ready(fn) {
-	  if(document.readyState != 'loading'){
-	    fn.call(document);
-	  } else {
 	    document.addEventListener('DOMContentLoaded',function(event){
 			fn.call(event.target,event);
 		});
-	  }
 	}
 
 	function get(url,data){

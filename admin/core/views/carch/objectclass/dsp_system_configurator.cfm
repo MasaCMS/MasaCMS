@@ -10,6 +10,7 @@
 		and object != 'goToFirstChild'
 	</cfquery>
 </cfsilent>
+<cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap">
 	<div class="fieldset">
@@ -31,3 +32,4 @@
 	</div>
 </div>
 </cfoutput>
+</cf_objectconfigurator>

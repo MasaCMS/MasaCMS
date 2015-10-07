@@ -54,8 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset params.taggroup="">	
 </cfif>
 
+<cf_objectconfigurator params="#params#">
 <cfoutput>
-
 <div id="availableObjectParams" 
 	data-object="tag_cloud" 
 	data-name="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.taggroup')#" 
@@ -80,6 +80,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 </div>
-
 </cfoutput>
+</cf_objectconfigurator>
 
