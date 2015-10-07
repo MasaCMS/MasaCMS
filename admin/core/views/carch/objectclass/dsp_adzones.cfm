@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.layoutmanager>
 		<cfloop query="rc.rsAdZones">
-			#renderClassOption(
+			#contentRendererUtility.renderObjectClassOption(
 				object='adZone',
 				objectid=rc.rsAdZones.adZoneID,
 				objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.adzone')# 

@@ -50,20 +50,48 @@
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
-				adminProxy.post({cmd:'setObjectParams',params:mura('[data-instanceid="' + parameters["instanceid"] + '"]').data()});
+				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
+				adminProxy.post({cmd:'setObjectParams',params:data});
+			} else if(parameters["cmd"] == "deleteObject"){
+				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
+				closeFrontEndToolsModal();
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 
 				if(typeof parameters.params == 'object'){
+
+					delete parameters.params.params;
+
+					if(item.data('class')){
+						var classes=item.data('class');
+
+						if(typeof classes != 'array'){
+							classes=classes.split(' ');
+						}
+
+						for(var c in classes){
+							if(item.hasClass(classes[c])){
+								item.removeClass(classes[c]);
+							}
+						}
+					}
+
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
-				}
-	
-				mura.processAsyncObject(item.node);
-				closeFrontEndToolsModal();
+				}		
+
+				mura.resetAsyncObject(item.node);
+				mura.processAsyncObject(item.node).then(function(){
+					closeFrontEndToolsModal();
+					if(parameters.reinit){
+						openFrontEndToolsModal(item.node);
+					}	
+				});
+				
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
 				var item=mura('[data-objectid="' + parameters.objectid + '"]');
+				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			}
@@ -104,7 +132,6 @@
 	}
 
 	var openFrontEndToolsModal=function(a){
-		
 		var src=a.href;
 		var editableObj=utility(a);
 
@@ -112,16 +139,18 @@
 			if(utility(a).hasClass("mura-object")){
 				var editableObj=utility(a);
 			} else {
-				var editableObj=utility(a).closest(".mura-object");
+				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
 			}
 
-			if(!editableObj.data('objectid')){
-				editableObj=utility(a).closest(".mura-async-object")
-			}
+			/*
+			This reloads the element in the dom to ensure that all the latest
+			values are present
+			*/
+			
+			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
+			editableObj.hide().show();
 
-			var layoutmanager=false;
-
-			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname');
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname') + '&contenttype=' + mura.type + '&contentsubtype=' + mura.subtype;
 		}
 
 		var isModal=editableObj.attr("data-configurator");
@@ -207,24 +236,26 @@
 
 	var resizeFrontEndToolsModal=function(frameHeight){
 		if (document.getElementById("frontEndToolsModaliframe")) {
+
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, utility(window).height());
 		
+				/*
 				if (frontEndModalWidth==frontEndModalWidthStandard 
 					&& frameHeight < utility(window).height()
 					) {
 					frameHeight= Math.max(utility(window).height() * .80,frameHeight);
 				}
+				*/
 
 				utility('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 				
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
-				
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
@@ -378,13 +409,15 @@
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
 
+
+			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
 				utility(".mura-sidebar").addClass('active');
 
-				utility(".mura-object").each(function(){
+				function initObject(){
 					var item=utility(this);
-					var region=item.closest(".mura-displayregion");
+					var region=item.closest(".mura-region-local");
 					var objectParams;
 
 					item.addClass("active");
@@ -392,7 +425,6 @@
 					if(region && region.length ){
 						if(region.data('perm')){
 							objectParams=item.data();
-							
 							if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
 								item.html(window.mura.layoutmanagertoolbar + item.html());
 
@@ -403,11 +435,14 @@
 										openFrontEndToolsModal(this);
 									}
 								);
+
+								item.find('.mura-object').each(initObject);
 							}
 						}
 					}
-					
-				});
+				}
+
+				utility(".mura-object").each(initObject);
 
 				utility('.mura-async-object[data-object="folder"]').each(function(){
 					var item=utility(this);
@@ -425,61 +460,68 @@
 					);
 				});
 
-				window.mura.initLayoutManager();
+
+				mura.initLayoutManager();
 			}
+			</cfif>
 
 			utility('.mura-editable-attribute').each(
 				function(){
-				
-				<cfif $.getContentRenderer().useLayoutManager()>
 				var attribute=utility(this);
-				if(attribute.attr('data-attribute')){
-					muraInlineEditor.initEditableObjectData.call(this);
-
-					utility(this).on('dblclick',
-						function(){
-							muraInlineEditor.initEditableAttribute.call(this);
-						}
-					);	
-				}												
-								
-				<cfelse>
-				var attribute=utility(this);
-				var attributename=attribute.attr('data-attribute').toLowerCase();
-
-				attribute.attr('contenteditable','true');
-				attribute.attr('title','');
 				
-				utility(this).unbind('dblclick');
+				if(attribute.data('attribute')){
 
-				utility(this).click(
-					function(){
+					<cfif $.getContentRenderer().useLayoutManager()>	
+					if(attribute.attr('data-attribute')){
 						muraInlineEditor.initEditableObjectData.call(this);
-					}
-				);													
-								
-				if(!(attributename in muraInlineEditor.attributes)){
 
-					if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
-						typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
-					){
-						var editor=CKEDITOR.inline( 
-						document.getElementById( attribute.attr('id') ),
-						{
-							toolbar: 'QuickEdit',
-							width: "75%",
-							customConfig: 'config.js.cfm'
-						});
-
-						editor.on('change', function(){
-							if(utility('##adminSave').css('display') == 'none'){
-								utility('##adminSave').fadeIn();	
+						utility(this)
+						.off('dblclick')
+						.on('dblclick',
+							function(){
+								muraInlineEditor.initEditableAttribute.call(this);
 							}
-						});
-					}
-								
-				}	
-				</cfif>
+						);	
+					}												
+									
+					<cfelse>
+					
+					var attributename=attribute.attr('data-attribute').toLowerCase();
+
+					attribute.attr('contenteditable','true');
+					attribute.attr('title','');
+					
+					utility(this)
+					.unbind('click')
+					.click(
+						function(){
+							muraInlineEditor.initEditableObjectData.call(this);
+						}
+					);													
+									
+					if(!(attributename in muraInlineEditor.attributes)){
+
+						if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+							typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+						){
+							var editor=CKEDITOR.inline( 
+							document.getElementById( attribute.attr('id') ),
+							{
+								toolbar: 'QuickEdit',
+								width: "75%",
+								customConfig: 'config.js.cfm'
+							});
+
+							editor.on('change', function(){
+								if(utility('##adminSave').css('display') == 'none'){
+									utility('##adminSave').fadeIn();	
+								}
+							});
+						}
+									
+					}	
+					</cfif>
+				}
 				
 			});
 
@@ -518,18 +560,23 @@
 			return false;				 
 		},
 		initEditableObjectData:function(){
+			var self=this;
 			var attributename=this.getAttribute('data-attribute').toLowerCase();
+			
+			var attribute=document.getElementById('mura-editable-attribute-' + attributename);
 			
 			if(!(attributename in muraInlineEditor.attributes)){
 				if(attributename in muraInlineEditor.preprocessed){
-					this.innerHtml=muraInlineEditor.preprocessed[attributename];
+					
+					attribute.innerHTML=muraInlineEditor.preprocessed[attributename];
+					
 					if(mura.processMarkup){
 						mura.processMarkup(this);
 					}
 				}
 				
 
-				muraInlineEditor.attributes[attributename]=this;
+				muraInlineEditor.attributes[attributename]=attribute;
 			}
 		},
 		initEditableAttribute:function(){
@@ -539,11 +586,20 @@
 			attribute.attr('contenteditable','true');
 			attribute.attr('title','');
 			attribute.unbind('dblclick');
-			attribute.find('.mura-object')
-				.html('')
-				.removeAttr('data-perm')
+			attribute.find('.mura-object').each(function(){
+				var self=utility(this);
+
+				self.removeAttr('data-perm')
 				.removeAttr('data-instanceid')
 				.removeAttr('draggable');
+
+				if(typeof mura !='undefined' && typeof mura.resetAsyncObject=='function'){
+					mura.resetAsyncObject(this);
+				} else {
+					self.html('');
+				}
+
+			});	
 
 			if(!attribute.data('manualedit')){
 
@@ -573,6 +629,7 @@
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
 			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
+				CKEDITOR.instances[attributeid].updateElement();
 				return CKEDITOR.instances[attributeid].getData();
 			} else if(muraInlineEditor.attributes[attribute].getAttribute('data-type').toLowerCase() == 'htmleditor') {
 				return muraInlineEditor.attributes[attribute].innerHTML;
@@ -582,44 +639,70 @@
 		},
 		save:function(){
 			try{
+
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
 
 						for (var prop in muraInlineEditor.attributes) {
 							var attribute=muraInlineEditor.attributes[prop].getAttribute('data-attribute');
+							
 							utility(attribute)
 								.find('.mura-object')
-								.html('')
 								.removeAttr('data-perm')
 								.removeAttr('data-instanceid')
 								.removeAttr('draggable');
+							
+							if(mura && mura.resetAsyncObject){
+								mura(attribute)
+									.find('.mura-object')
+									.each(function()
+									{
+										mura.resetAsyncObject(this)
+									});
+							} else {
+								utility(attribute)
+								.find('.mura-object')
+								.html('');	
+							}
+							
 							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
 							count++;
 						}
 
-						utility('.mura-displayregion[data-inited="true"]:not([data-loose="true"]').each(
+						utility('.mura-region-local[data-inited="true"]:not([data-loose="true"])').each(
 							function(){
 								var objectlist=[];
 
-								utility(this).find('.mura-object').each(function(){
-									var item=utility(this);
-									var params=item.data();
+								utility(this).children('.mura-object').each(function(){
+									
+									if(mura && mura.resetAsyncObject){
+										mura.resetAsyncObject(this);
+										var item=mura(this);
+									} else {
+										var item=utility(this);
+										item.html('');	
+									}
 
+									var params=item.data();
+									
 									delete params['instanceid'];
 									delete params['objectname'];
 									delete params['objectid'];
 									delete params['isconfigurator'];
 									delete params['perm'];
+									delete params['async'];
 
 									if(!item.data('objectname')){
 										item.data('objectname',item.data('object'));
-									}
+									}			
 
-									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(item.data()))
+									objectlist.push(item.data('object') + '~' + item.data('objectname') + '~' + item.data('objectid') + '~' + JSON.stringify(params))
+
 								});
 
 								muraInlineEditor.data['objectlist' + this.getAttribute('data-regionid')]=objectlist.join('^');
+								count++;
 							}
 						);
 
@@ -642,6 +725,9 @@
 
 						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
+						//alert(muraInlineEditor.data.objectlist3);
+						//return;
+
 						if(count){
 							if(muraInlineEditor.data.approvalstatus=='Pending'){
 								if(confirm('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
@@ -651,6 +737,9 @@
 								}
 
 							}
+
+							//console.log(muraInlineEditor.data)
+							//return;
 
 							utility.ajax({ 
 					        type: "POST",
@@ -664,7 +753,7 @@
 					        }
 					       });
 						} else {
-							location.reload();
+						 	location.reload();
 						}
 					}
 				);
@@ -958,31 +1047,65 @@
 		objectHasEditor:function(displayObject){
 			if(displayObject.object == 'form') {
 				return true;
+			} else if(displayObject.object == 'form_responses') {
+				return true;
 			} else if(displayObject.object == 'component') {
 				return true;
 			}
 			return false;
 		},
-		objectHasConfigurator:function(displayObject){
-			if(displayObject.object == 'feed') {
-				return true;
-			} else if(displayObject.object == 'feed_slideshow') {
-				return true;
-			} else if(displayObject.object == 'tag_cloud' && window.muraInlineEditor.customtaggroups.length) {
-				return true;
-			} else if(window.muraInlineEditor.allowopenfeeds && displayObject.object == 'category_summary') {
-				return true;
-			} else if(displayObject.object == 'site_map') {
-				return true;
-			} else if(displayObject.object == 'related_content' || displayObject.object == 'related_section_content') {
-				return true;
-			} else if(displayObject.object == 'plugin') {
-				if(window.muraInlineEditor.getPluginConfigurator(displayObject.objectid)){
+		configuratorMap:{
+			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
+			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'plugin':{
+				'condition':function(){
 					return true;
+				},
+				'initConfigurator':function(data){
+					if(data.objectid && data.objectid.toLowerCase() != 'none' && siteManager.getPluginConfigurator(data.objectid)){
+						var configurator = siteManager.getPluginConfigurator(data.objectid);
+						window[configurator](data)
+					} else {
+						siteManager.initGenericConfigurator(data);
+					}
 				}
-			}
-
-			return false;
+			},
+			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){muraInlineEditor.initSlideShowConfigurator(data);}},
+			'tag_cloud':{condition:function(){return muraInlineEditor.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
+			'category_summary':{condition:function(){return muraInlineEditor.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'category_summary_rss':{condition:function(){return muraInlineEditor.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
+			'related_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'related_section_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'system':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'comments':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'favorites':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'forward_email':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'event_reminder_form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'rater':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'user_tools':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'goToFirstChild':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'navigation':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'sub_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'peer_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'standard_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'portal_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'multilevel_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'seq_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'top_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
+		},
+		objectHasConfigurator:function(displayObject){
+			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
 		}
 	};
 

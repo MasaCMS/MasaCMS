@@ -1206,11 +1206,11 @@ Display Objects
 <cfreturn str />
 </cffunction>
 
-<cffunction name="dspObject_Render" access="public" output="false" returntype="string">
+<cffunction name="dspObject_Render" access="public" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
-	<cfargument name="fileName" type="string" />
+	<cfargument name="fileName" type="string" default=''/>
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
@@ -1224,22 +1224,40 @@ Display Objects
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
+	<cfset var result="">
 
 	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey##request.muraFrontEndRequest#" nocache="#variables.event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)#</cfoutput>
+			<cfset result=dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname)>
+			<cfif isSimpleValue(result)>
+				<cfoutput>#result#</cfoutput>
+			<cfelse>
+				<cfset request.cacheItem=false>
+			</cfif>
 		</cf_cacheomatic>
 		</cfsavecontent>
+
+		<cfif isSimpleValue(result)>
+			<cfreturn trim(theContent)>
+		<cfelse>
+			<cfreturn result>
+		</cfif>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
+		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
+		
+		<cfif isSimpleValue(result)>
+			<cfreturn trim(result)>
+		<cfelse>
+			<cfreturn result>
+		</cfif>
 	</cfif>
-	<cfreturn theContent />
+	
 
 </cffunction>
 
-<cffunction name="dspObject_Include" access="public" output="false" returntype="string">
-	<cfargument name="siteid" type="string" />
+<cffunction name="dspObject_Include" access="public" output="false">
+	<cfargument name="siteid" type="string" default="#variables.$.event('siteid')#"/>
 	<cfargument name="object" type="string" default="" />
 	<cfargument name="objectid" type="string" default=""/>
 	<cfargument name="theFile" type="string" />
@@ -1267,48 +1285,71 @@ Display Objects
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
-	<cfset var objectParams="">
 	<cfset var doLayoutManagerWrapper=request.muraFrontEndRequest and this.layoutmanager and len(arguments.object)>
-	
+
 	<cfif isJSON(arguments.params)>
-		<cfset objectParams=deserializeJSON(arguments.params)>
+		<cfset var objectParams=deserializeJSON(arguments.params)>
 	<cfelseif isStruct(arguments.params)>
-		<cfset objectParams=arguments.params>
+		<cfset var objectParams=arguments.params>
 	<cfelse>
-		<cfset objectParams=structNew()>
+		<cfset var objectParams=structNew()>
 	</cfif>
 
-	<cfparam name="objectParams.async" default="false">
-
-	<!--- For backward compatability with old dsp_feed.cfm files --->
-	<cfif arguments.thefile eq "dsp_feed.cfm">
-		<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
+	<cfif this.layoutmanager>
+		<cfset objectParams.async=false>
+		<cfset objectParams.render='server'>
 	</cfif>
 	
-	<cfsavecontent variable="theContent">
-	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
-		<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
-	<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
-		<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
-	<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
-		<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
-		<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
-		<cfset commitTracePoint(tracePoint)>
+	<cfif arguments.object eq 'plugin'>
+		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
+		<cfif isSimpleValue(result)>
+			<cfset theContent=result>
+		</cfif>
+	<cfelse>
+		<!--- For backward compatability with old dsp_feed.cfm files --->
+		<cfif arguments.thefile eq "dsp_feed.cfm">
+			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
+		</cfif>
+		
+		<cfsavecontent variable="theContent">
+			<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
+				<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
+				<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
+				<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
+				<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
+				<cfset commitTracePoint(tracePoint)>
+			</cfif>
+		</cfsavecontent>
 	</cfif>
-	</cfsavecontent>
+	
 
-	<cfif doLayoutManagerWrapper>	
-		<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
+		<cfif objectParams.render eq 'client'>
+
+				<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
+				objectid=arguments.objectid,
+				content='',
+				objectParams=objectParams,
+				showEditable=arguments.showEditable,
+				isConfigurator=arguments.isConfigurator,
+				objectname=arguments.objectname) />
+		<cfelse>
+			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
 				content=theContent,
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname) />
+		</cfif>'
+	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
+		<cfreturn objectParams>
 	<cfelse>
 		<cfreturn trim(theContent) />
 	</cfif>
@@ -1871,7 +1912,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.dspZoomNoLinks(argumentCollection=arguments) />
 </cffunction>
 
-<cffunction name="dspObject" access="public" output="false" returntype="string">
+<cffunction name="dspObject" access="public" output="false">
 	<cfargument name="object" type="string">
 	<cfargument name="objectid" type="string" required="true" default="">
 	<cfargument name="siteid" type="string" required="true" default="#variables.event.getValue('siteID')#">
@@ -2603,6 +2644,15 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderEditableAttribute(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="renderClassOption" output="false">
+	<cfargument name="object">
+	<cfargument name="objectid" default="">
+	<cfargument name="objectname" default="">
+	<cfargument name="objectlabel">
+	<cfset arguments.renderer=this>
+	<cfreturn variables.contentRendererUtility.renderObjectClassOption(argumentCollection=arguments)>
+</cffunction>
+
 <cfscript>
 	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
 		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);
@@ -2684,7 +2734,7 @@ Display Objects
  	}
 
  	public function useLayoutManager(){
- 		return (this.layoutmanager && isStruct(variables.$.event('r')) && listFindNoCase('author,editor',variables.$.event('r').perm) || !isStruct(variables.$.event('r')) && this.layoutmanager) ? true : false;
+ 		return this.layoutmanager;
  	}
 
 </cfscript>

@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						& ' - ' 
 						& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')>
 
-				#renderClassOption(
+				#contentRendererUtility.renderObjectClassOption(
 					object='category_summary',
 					objectid=rc.rsSections.contentid,
 					objectname=title
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					& application.rbFactory.getKeyValue(session.rb, 
 				                                    'sitemanager.content.fields.relatedcontent')>
 
-				#renderClassOption(
+				#contentRendererUtility.renderObjectClassOption(
 					object='related_section_content',
 					objectid=rc.rsSections.contentid,
 					objectname=title
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					& ' - ' 
 					& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')>
 
-				#renderClassOption(
+				#contentRendererUtility.renderObjectClassOption(
 					object='calendar_nav',
 					objectid=rc.rsSections.contentid,
 					objectname=title

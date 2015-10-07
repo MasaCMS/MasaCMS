@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<select name="subClassSelector" 
-	        onchange="siteManager.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);">
+	        onchange="mura.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectplugin')#
 		</option>
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			<cfoutput>
 				<select name="customObjectSelector" 
-				        onchange="siteManager.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);">
+				        onchange="mura.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);">
 					<option value="">
 						#application.rbFactory.getKeyValue(session.rb, 
 					                                    'sitemanager.content.fields.selectplugindisplayobjectclass')#
@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			<cfif rs.recordcount>
 				<cfoutput query="rs">
-					#renderClassOption(
+					#contentRendererUtility.renderObjectClassOption(
 						object='plugin',
 						objectid=rs.objectID,
 						objectname='#rs.title# - #rs.name#',

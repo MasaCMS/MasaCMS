@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif rc.layoutmanager>
 	<cfloop query="rc.rsObjects">
-		#renderClassOption(
+		#contentRendererUtility.renderObjectClassOption(
 			object=rc.rsObjects.object,
 			objectid=createUUID(),
 			objectname=rc.rsObjects.name

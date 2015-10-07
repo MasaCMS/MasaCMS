@@ -7,9 +7,14 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
     property name="content" fieldtype="one-to-one" cfc="content" fkcolumn="contentHistID";
     property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userID";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
-    property name="group" fieldtype="many-to-one" cfc="user" fkcolumn="groupID";
+    property name="group" fieldtype="many-to-one" cfc="user"  loadkey="userid" fkcolumn="groupID";
     property name="actions" singularname="action" fieldtype="one-to-many" cfc="approvalAction" orderby="created asc" cascade="delete";
 
+    function init(){
+        setValue('created',now());
+        super.init(argumentCollection=arguments);
+    }
+    
     function approve(comments){
     	
     	if(getValue('status') eq 'Pending'){

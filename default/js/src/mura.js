@@ -89,6 +89,20 @@
 
 	}
 
+	function escapeHTML(str) {
+	    var div = document.createElement('div');
+	    div.appendChild(document.createTextNode(str));
+	    return div.innerHTML;
+	};
+
+	// UNSAFE with unsafe strings; only use on previously-escaped ones!
+	function unescapeHTML(escapedStr) {
+	    var div = document.createElement('div');
+	    div.innerHTML = escapedStr;
+	    var child = div.childNodes[0];
+	    return child ? child.nodeValue : '';
+	};
+
 	function renderFilename(filename,params){
 
 		var query = [];
@@ -217,13 +231,9 @@
 	}
 
 	function ready(fn) {
-	  if(document.readyState != 'loading'){
-	    fn.call(document);
-	  } else {
 	    document.addEventListener('DOMContentLoaded',function(event){
-			fn.call(event.target,event);
-		});
-	  }
+	      fn.call(event.target,event);
+	    });
 	}
 
 	function get(url,data){
@@ -447,8 +457,8 @@
         el.dispatchEvent(event);
 	};
 
-	function off(el,eventName){
-		el.removeEventListener(eventName);
+	function off(el,eventName,fn){
+		el.removeEventListener(eventName,fn);
 	}
 
 	function parseSelection(selector){
@@ -498,7 +508,18 @@
 	  return tmp.body.children;
 	};
 
-	function getDataAttributes(el){
+	function getData(el){
+		var data = {};
+		Array.prototype.forEach.call(el.attributes, function(attr) {
+		    if (/^data-/.test(attr.name)) {
+		        data[attr.name.substr(5)] = parseString(attr.value);
+		    }
+		});
+
+		return data;
+	}
+
+	function getProps(el){
 		var data = {};
 		Array.prototype.forEach.call(el.attributes, function(attr) {
 		    if (/^data-/.test(attr.name)) {
@@ -588,7 +609,7 @@
 
 	function deepExtend(out) {
 		out = out || {};
-
+	
 		for (var i = 1; i < arguments.length; i++) {
 		    var obj = arguments[i];
 
@@ -596,11 +617,12 @@
 	      	continue;
 
 		    for (var key in obj) {
+
 		        if (obj.hasOwnProperty(key)) {
 		        	if(Array.isArray(obj[key])){
 		       			out[key]=obj[key].slice(0);
 			        } else if (typeof obj[key] === 'object') {
-			          	deepExtend(out[key], obj[key]);
+			          	out[key]=deepExtend({}, obj[key]);
 			        } else {
 			          	out[key] = obj[key];
 			        }
@@ -641,6 +663,10 @@
        	 	new RegExp( "\\+", "g" ), 
         	"%2B" 
         );
+	}
+
+	function $unescape(value){
+		return unescape(value);
 	}
 
 	//deprecated
@@ -1150,8 +1176,8 @@
 
 		try{
 			//alert(JSON.stringify(validations));
-			console.log(data);
-			console.log(validations);
+			//console.log(data);
+			//console.log(validations);
 			ajax(
 				{
 					type: 'post',
@@ -1220,22 +1246,26 @@
 
 		scope=select(scope);
 
+		function find(selector){
+			return scope.find(selector);
+		}
+
 		var processors=[
 
 			function(){
-				scope.find(".mura-async-object").each(function(){
-					processAsyncObject(this);
+				find('.mura-object[data-render="client"], .mura-async-object').each(function(){
+					processObject(this);
 				});
 			},
 
 			function(){
-				scope.find(".htmlEditor").each(function(){
+				find(".htmlEditor").each(function(){
 					setHTMLEditor(this);
 				});
 			},
 
 			function(){
-				if(scope.find(".cffp_applied  .cffp_mm .cffp_kp").length){
+				if(find(".cffp_applied  .cffp_mm .cffp_kp").length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", window.mura.requirementspath + '/cfformprotect/js/cffp.js')
@@ -1245,7 +1275,7 @@
 			},
 
 			function(){
-				if(scope.find(".g-recaptcha" ).length){
+				if(find(".g-recaptcha" ).length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
 				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?hl=" + window.mura.reCAPTCHALanguage)
@@ -1254,11 +1284,11 @@
 
 				}
 
-				if(scope.find(".g-recaptcha-container" ).length){
+				if(find(".g-recaptcha-container" ).length){
 					loader().loadjs(
 						'https://www.google.com/recaptcha/api.js?hl=' + window.mura.reCAPTCHALanguage,
 						function(){
-							each(scope.find(".g-recaptcha-container" ),function(el){
+							each(find(".g-recaptcha-container" ),function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
@@ -1292,7 +1322,7 @@
 						resizeEditableObject(this);
 					}); 
 
-					scope.find(".editableObject").each(function(){
+					find(".editableObject").each(function(){
 						resizeEditableObject(this);
 					});
 	
@@ -1303,7 +1333,7 @@
 
 				if(typeof openFrontEndToolsModal == 'function' ){ 
 					
-					scope.find(".frontEndToolsModal").on(
+					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
 							event.preventDefault();
@@ -1320,7 +1350,7 @@
 
 			function(){
 				if(typeof urlparams.muraadminpreview != 'undefined'){
-					scope.find("a").each(function() {
+					find("a").each(function() {
 						var h=this.getAttribute('href');
 						if(typeof h =='string' && h.indexOf('muraadminpreview')==-1){
 							h=h + (h.indexOf('?') != -1 ? "&muraadminpreview&mobileformat=" + window.mura.mobileformat : "?muraadminpreview&muraadminpreview&mobileformat=" + window.mura.mobileformat);
@@ -1346,20 +1376,25 @@
 		}	
 	}
 
-	function processAsyncObject(el){
-		var self=el;
 
-		if(!self.getAttribute('data-instanceid')){
-			self.setAttribute('data-instanceid',createUUID());
+	function submitForm(frm,obj){
+		frm=(frm.node) ? frm.node : frm;
+     
+	    if(obj){
+	      obj=(obj.node) ? obj : mura(obj);
+	    } else {
+	      obj=mura(frm).closest('.mura-async-object');
+	    }
+
+		if(!obj.length){
+			frm.submit();
 		}
 
-		function validateFormAjax(frm) {
-			
-			if(typeof FormData != 'undefined' && $(frm).attr('enctype')=='multipart/form-data'){
+		if(typeof FormData != 'undefined' && frm.getAttribute('enctype')=='multipart/form-data'){
 
 				var data=new FormData(frm);
 				var checkdata=setLowerCaseKeys(formToObject(frm));
-				var keys=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var keys=deepExtend(setLowerCaseKeys(obj.data()),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
 				
 				for(var k in keys){
 					if(!(k in checkdata)){
@@ -1368,22 +1403,30 @@
 				}
 
 				if('objectparams' in checkdata){
-					data.append('objectparams2', $escape(JSON.stringify(self.getAttribute('data-objectparams'))));
+					data.append('objectparams2', $escape(JSON.stringify(obj.data('objectparams'))));
 				}
 
 				if('nocache' in checkdata){
 					data.append('nocache',1);
+				}
+
+				if(data.object=='container' && data.content){
+					delete data.content;
 				}
 				
 				var postconfig={
 							url:  window.mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
-							success:handleResponse
+							success:function(resp){handleResponse(obj,resp);}
 						} 
 			
 			} else {
-				var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+				var data=deepExtend(setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys(formToObject(frm)),{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid,nocache:1});
+
+				if(data.object=='container' && data.content){
+					delete data.content;
+				}
 
 				if(!('g-recaptcha-response' in data) && document.querySelectorAll("#g-recaptcha-response").length){
 					data['g-recaptcha-response']=document.getElementById('recaptcha-response').value;
@@ -1397,16 +1440,73 @@
 							url: window.mura.apiEndpoint + '?method=processAsyncObject',
 							type: 'POST',
 							data: data,
-							success:handleResponse
+							success:function(resp){handleResponse(obj,resp);}
 						} 
 			}
 
+			var self=obj.node;
+			self.prevInnerHTML=self.innerHTML;
+			self.prevData=obj.data();
+			self.innerHTML=window.mura.preloaderMarkup;
+
+			ajax(postconfig);
+	}
+
+	function resetAsyncObject(el){
+		var self=mura(el);
+
+		if(self.data('object')=='container'){
+			self.find('.mura-object:not([data-object="container"])').html('');
+			self.find('.frontEndToolsModal').remove();
+
+			self.find('.mura-object').each(function(){
+				var self=mura(this);
+				self.removeClass('active');
+				self.removeAttr('data-perm');
+			});
+			
+			self.find('.mura-object[data-object="container"]').each(function(){
+				var self=mura(this);
+				var content=self.children('div.mura-content');
+
+				if(content.length){
+					self.data('content',content.html());
+				}
+
+				content.html('');
+			});
+
+			self.find('.mura-meta').html('');
+			var content=self.children('div.mura-content');
+
+			if(content.length){
+				self.data('content',content.html());
+			}
+		}
+
+		self.html('');
+	}
+
+	function unpackContainer(container){
+		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+		if(container.data('content')){
+			container.children('div.mura-content').html(container.data('content'));
+		}
+	}
+
+	function processAsyncObject(el){
+		obj=mura(el);
+		obj.addClass('mura-async-object');
+		obj.data('async',true);
+		return processObject(obj);
+	}
+
+	function wireUpObject(obj,response){
+		
+		function validateFormAjax(frm) {
 			validateForm(frm,
 				function(frm){
-					self.prevInnerHTML=self.innerHTML;
-					self.prevData=data;
-					self.innerHTML=window.mura.preloaderMarkup;
-					ajax(postconfig);
+					submitForm(frm,obj);
 				}
 			);
 
@@ -1414,119 +1514,221 @@
 			
 		}
 
-		function wireUpObject(html){
-			var obj=select(self);
+		obj=(obj.node) ? obj : mura(obj);
+		var self=obj.node;
+
+		if(obj.data('class')){
+			var classes=obj.data('class');
+
+			if(typeof classes != 'array'){
+				var classes=classes.split(' ');
+			}
 			
-			if(mura.layoutmanager && mura.editing){
-				if(obj.data('object')=='folder'){
-					obj.html(layoutmanagertoolbar + html);
+			for(var c in classes){
+				if(!obj.hasClass(classes[c])){
+					obj.addClass(classes[c]);
+				}
+			}	
+		}
+
+		if(response){
+			if(typeof response == 'string'){
+				obj.html(trim(response));
+			} else if (typeof response.html =='string'){
+				obj.html(trim(response.html));
+			} else {
+				if(obj.data('object')=='container'){
+					mura(self).children('.mura-meta').html(mura.templates.meta(response));
 				} else {
-					var region=mura(self).closest(".mura-displayregion");
-					if(region && region.length ){
-						if(region.data('perm')){
-							var objectData=obj.data();
-							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + html);
-							} else {
-								obj.html(html);
-							}
-						} else {
-							obj.html(html);
+					var template=obj.data('clienttemplate') || obj.data('object');
+
+					if(typeof mura.templates[template] == 'function'){
+						obj.html(mura.templates[template](response));
+					} else {
+						console.log('Missing Client Template for:');
+						console.log(obj.data());
+					}
+				}
+			}
+		} else {
+			if(obj.data('object')=='container'){
+				mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+			} else {
+				var template=obj.data('clienttemplate') || obj.data('object');
+
+				if(typeof mura.templates[template] == 'function'){
+					obj.html(mura.templates[template](obj.data()));
+					processMarkup(self)
+				} else {
+					console.log('Missing Client Template for:');
+					console.log(obj.data());
+				}
+			}
+		}
+		
+		if(mura.layoutmanager && mura.editing){
+			
+			if(obj.data('object')=='folder'){
+				obj.html(layoutmanagertoolbar + obj.html());
+			} else {
+				var region=mura(self).closest(".mura-region-local");
+				if(region && region.length ){
+					if(region.data('perm')){
+						var objectData=obj.data();
+
+						if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+							obj.html(layoutmanagertoolbar + obj.html());
 						}
 					}
 				}
+			}
+		}
 
-			} else {
-				obj.html(html);
+		obj.hide().show();
+		
+		processMarkup(obj.node);
+
+		obj.find('a[href="javascript:history.back();"]').each(function(){
+			mura(this).off("click").on("click",function(e){
+				if(self.prevInnerHTML){
+					e.preventDefault();
+					wireUpObject(obj,self.prevInnerHTML);
+
+					if(self.prevData){
+				 		for(var p in self.prevData){
+				 			select('[name="' + p + '"]').val(self.prevData[p]);
+				 		}
+				 	}
+					self.prevInnerHTML=false;
+					self.prevData=false;
+				}
+			});
+		});
+		
+		each(self.getElementsByTagName('FORM'),function(el,i){
+			el.onsubmit=function(){return validateFormAjax(this);};
+		});
+
+		if(obj.data('nextnid')){
+			obj.find('.mura-next-n a').each(function(){
+				mura(this).on('click',function(e){
+					e.preventDefault();
+					var a=this.getAttribute('href').split('?');
+					if(a.length==2){
+						window.location.hash=a[1];
+					}
+				
+				});
+			})
+		}
+			
+		obj.trigger('asyncObjectRendered');
+
+	}
+
+	function handleResponse(obj,resp){
+
+		obj=(obj.node) ? obj : mura(obj);
+
+		if(resp.data.redirect){
+			location.href=resp.data.redirect;
+		} else if(resp.data.apiEndpoint){
+			ajax({ 
+		        type:"POST",
+		        xhrFields:{ withCredentials: true },
+		        crossDomain:true,
+		        url:resp.data.apiEndpoint,
+		        data:resp.data,
+		        success:function(data){
+		        	if(typeof data=='string'){
+		        		wireUpObject(obj,data);
+		        	} else if (typeof data=='object' && 'html' in data) {
+		        		wireUpObject(obj,data.html);
+		        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
+		        		wireUpObject(obj,data.data.html);
+		        	} else {
+		        		wireUpObject(obj,data.data);
+		        	}
+		        }
+	   		});
+		} else {
+			wireUpObject(obj,resp.data);
+		}
+	}
+
+	function processObject(el){
+		return new Promise(function(resolve,reject) {
+			var obj=(el.node) ? el : mura(el);
+			el =el.node || el;
+			var self=el;
+
+			if(!self.getAttribute('data-instanceid')){
+				self.setAttribute('data-instanceid',createUUID());
 			}
 
-			processMarkup(self);
+			if(obj.data('async')){
+				obj.addClass("mura-async-object");
+			}
 
-			obj.find('a[href="javascript:history.back();"]').each(function(){
-				mura(this).off("click").on("click",function(e){
-					if(self.prevInnerHTML){
-						e.preventDefault();
-						wireUpObject(self.prevInnerHTML);
-
-						if(self.prevData){
-					 		for(var p in self.prevData){
-					 			select('[name="' + p + '"]').val(self.prevData[p]);
-					 		}
-					 	}
-						self.prevInnerHTML=false;
-						self.prevData=false;
-					}
+			if(self.getAttribute('data-object')=='container'){
+				//resetAsyncObject(self);
+				unpackContainer(mura(self));
+				mura(self).find('.mura-object').each(function(){
+					this.setAttribute('data-instanceid',createUUID());
 				});
-			});
+				mura(self).hide().show();
+				unpackedContainer=true;
+
+			}
+
+			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
-			each(self.getElementsByTagName('FORM'),function(el,i){
-				el.onsubmit=function(){return validateFormAjax(this);};
-			});
+			if('objectparams' in data){
+				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
+			}
 
+			delete data.params;
 
-			if(obj.data('nextnid')){
-				obj.find('.mura-next-n a').each(function(){
-					mura(this).on('click',function(e){
-						e.preventDefault();
-						var a=this.getAttribute('href').split('?');
-						if(a.length==2){
-							window.location.hash=a[1];
+			if(obj.data('object')=='container'){
+				wireUpObject(obj);
+				if(typeof resolve == 'function'){
+					resolve(obj);
+				}
+			} else {
+				if(!obj.data('async') && obj.data('render')=='client'){
+					wireUpObject(obj);
+					if(typeof resolve == 'function'){
+						resolve(obj);
+					}
+				} else {	
+					self.innerHTML=window.mura.preloaderMarkup;
+					ajax({
+						url:window.mura.apiEndpoint + '?method=processAsyncObject',
+						type:'get',
+						data:data,
+						success:function(resp){
+							handleResponse(obj,resp);
+							if(typeof resolve == 'function'){
+								resolve(obj);
+							}
 						}
-					
-					});
-				})
+					});		
+				}
+
+			}
+		});
+
+		/*
+		mura.templates={};
+		mura.templates['meta']=function(context){
+			if(context.label){
+				return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
+			} else {
+				return '';
 			}
 				
-
-			obj.trigger('asyncObjectRendered');
-
 		}
-
-		function handleResponse(resp){
-
-			if('html' in resp.data){
-				wireUpObject(resp.data.html);
-			} else if('redirect' in resp.data){
-				location.href=resp.data.redirect;
-			} else if('render' in resp.data){
-				ajax({ 
-			        type:"POST",
-			        xhrFields:{ withCredentials: true },
-			        crossDomain:true,
-			        url:resp.data.render,
-			        data:resp.data,
-			        success:function(data){
-			        	if(typeof data=='string'){
-			        		wireUpObject(data);
-			        	} else if (typeof data=='object' && 'html' in data) {
-			        		wireUpObject(data.html);
-			        	} else if (typeof data=='object' && 'data' in data && 'html' in data.data) {
-			        		wireUpObject(data.data.html);
-			        	}
-			        }
-		   		});
-			}
-		}
-
-		var data=deepExtend(setLowerCaseKeys(getDataAttributes(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
-		
-		if('objectparams' in data){
-			data['objectparams']= $escape(JSON.stringify(data['objectparams']));
-		}
-		
-		self.innerHTML=window.mura.preloaderMarkup;
-
-		ajax({url:window.mura.apiEndpoint + '?method=processAsyncObject',type:'get',data:data,success:handleResponse});
-		
-		/*
-		ajax({
-			type:'get',
-			url:window.mura.apiEndpoint + '?method=processAsyncObject',
-			data:data,
-			success:handleResponse}
-		);
 		*/
-		
 
 	}
 
@@ -1555,6 +1757,10 @@
 				});
 			}	
 		}
+	}
+
+	function trim(str) {
+	    return str.replace(/^\s+|\s+$/gm,'');
 	}
 	
 
@@ -1599,6 +1805,24 @@
 	    } else {
 	    	return {};
 	    }
+	}
+
+	function inArray(elem, array, i) {
+	    var len;
+	    if ( array ) {
+	        if ( array.indexOf ) {
+	            return array.indexOf.call( array, elem, i );
+	        }
+	        len = array.length;
+	        i = i ? i < 0 ? Math.max( 0, len + i ) : i : 0;
+	        for ( ; i < len; i++ ) {
+	            // Skip accessing in sparse arrays
+	            if ( i in array && array[ i ] === elem ) {
+	                return i;
+	            }
+	        }
+	    }
+	    return -1;
 	}
 
 	function getURLParams() {
@@ -1648,6 +1872,7 @@
 
 		ready(function(){
 			
+
 			var hash=window.location.hash;
 
 			if(hash){
@@ -1762,14 +1987,19 @@
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					this.ready(selector);
+					ready(selector);
 					return this;
 				} else {
 					return select(selector);
 				}
 			},
 			{
+			submitForm:submitForm,
+			escapeHTML:escapeHTML,
+			unescapeHTML:unescapeHTML,
+			processObject:processObject,
 			processAsyncObject:processAsyncObject,
+			resetAsyncObject:resetAsyncObject,
 			setLowerCaseKeys:setLowerCaseKeys,
 			noSpam:noSpam,
 			addLoadEvent:addLoadEvent,
@@ -1780,6 +2010,7 @@
 			on:on,
 			off:off,
 			extend:extend,
+			inArray:inArray,
 			post:post,
 			get:get,
 			deepExtend:deepExtend,
@@ -1787,11 +2018,13 @@
 			changeElementType:changeElementType,
 			each:each,
 			parseHTML:parseHTML,
-			getDataAttributes:getDataAttributes,
+			getData:getData,
+			getProps:getProps,
 			isEmptyObject:isEmptyObject,
 			evalScripts:evalScripts,
 			validateForm:validateForm,
 			escape:$escape,
+			unescape:$unescape,
 			getBean:getEntity,
 			getEntity:getEntity,
 			renderFilename:renderFilename,
@@ -1806,7 +2039,8 @@
 			layoutmanagertoolbar:layoutmanagertoolbar,
 			parseString:parseString,
 			createCookie:createCookie,
-			readCookie:readCookie
+			readCookie:readCookie,
+			trim:trim
 			}
 		),
 		//these are here for legacy support

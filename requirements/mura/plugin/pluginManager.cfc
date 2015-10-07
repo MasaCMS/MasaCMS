@@ -2264,7 +2264,11 @@ select * from tplugins order by #arguments.orderby#
 			</cfsavecontent>
 			<cfset commitTracePoint(tracePoint)>
 			<cfif isdefined("theDisplay2")>
-				<cfreturn trim(theDisplay2)>
+				<cfif isSimpleValue(theDisplay2)>
+					<cfreturn trim(theDisplay2)>
+				<cfelse>
+					<cfreturn theDisplay2>
+				</cfif>
 			<cfelse>
 				<cfreturn trim(theDisplay1)>
 			</cfif>			

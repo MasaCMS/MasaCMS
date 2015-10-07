@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			& ' - '  
 			& application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')>
 
-		#renderClassOption(
+		#contentRendererUtility.renderObjectClassOption(
 			object='feed',
 			objectid=rc.rslist.feedid,
 			objectname=title

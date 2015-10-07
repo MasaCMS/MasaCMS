@@ -44,8 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset request.layout=false>
-<cfparam name="rc.layoutmanager" default="false">
+<cfsilent>
+	<cfset request.layout=false>
+	<cfparam name="rc.layoutmanager" default="false">
+	<cfparam name="rc.container" default="">
+	<cfparam name="rc.contentid" default="">
+	<cfparam name="rc.parentid" default="">
+	<cfparam name="rc.contenthistid" default="">
+	<cfparam name="rc.objectid" default=""/>
+	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
+</cfsilent>
+
 <cfswitch expression="#rc.classid#">	
 	<cfcase value="feed">
 		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
@@ -65,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="site_map">
 		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
 	</cfcase>
-	<cfcase value="form">
+	<cfcase value="form,form_responses">
 		<cfinclude template="objectclass/dsp_form_configurator.cfm">
 	</cfcase>
 	<cfcase value="component">
@@ -74,12 +83,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="folder">
 		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
 	</cfcase>
+	<cfcase value="plugin">
+		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
+	</cfcase>
+	<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
+		<cfinclude template="objectclass/dsp_system_configurator.cfm">
+	</cfcase>
+	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav">
+		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
+	</cfcase>
+	<cfcase value="mailing_list,mailing_list_master">
+		<cfinclude template="objectclass/dsp_mailinglist_configurator.cfm">
+	</cfcase>
+	<cfcase value="container">
+		<cfinclude template="objectclass/dsp_container_configurator.cfm">
+	</cfcase>
+	<cfcase value="collection">
+		<cfif rc.container eq 'layout'>
+			<cfinclude template="objectclass/collection/layout/index.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/collection/index.cfm">
+		</cfif>
+	</cfcase>
+	<cfcase value="text">
+		<cfinclude template="objectclass/dsp_text_configurator.cfm">
+	</cfcase>
+	<cfcase value="media">
+		<cfinclude template="objectclass/dsp_media_configurator.cfm">
+	</cfcase>
+	<cfcase value="socialembed">
+		<cfinclude template="objectclass/dsp_socialembed_configurator.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>
-		<div id="availableObjectParams"
-		data-object="#esapiEncode('html_attr',rc.classid)#" 
-		data-name="#esapiEncode('html_attr',rc.name)#" 
-		data-objectid="#esapiEncode('html_attr',rc.objectid)#"></div>
+		<p class="alert">This display object is not configurable.</p>
 		</cfoutput>
 	</cfdefaultcase>
 </cfswitch>

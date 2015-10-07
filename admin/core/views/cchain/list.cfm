@@ -71,7 +71,11 @@
 		<td class="var-width">
 			<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#">#esapiEncode('html',chain.getName())#</a>
 		</td>
-		<td>#LSDateFormat(chain.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(chain.getLastUpdate(),"medium")#</td>
+		<td>
+			<cfif isDate(chain.getLastUpdate())>
+			#LSDateFormat(chain.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(chain.getLastUpdate(),"medium")#
+			</cfif>
+		</td>
 		<td class="actions">
 			<ul>
 				<li class="edit">

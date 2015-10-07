@@ -58,9 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset mapclass="mura-site-map">	
 </cfif>
 	
-
+<cf_objectconfigurator params="#params#">
 <cfoutput>
-
 <div id="availableObjectParams" 
 	data-object="site_map" 
 	data-name="#esapiEncode('html_attr','Site Map')#" 
@@ -85,6 +84,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 </div>
-
 </cfoutput>
+</cf_objectconfigurator>
 

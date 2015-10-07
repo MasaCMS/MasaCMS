@@ -3163,7 +3163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							optionlabellist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
 							
 							<cfif isDefined("rstclassextendattributes.adminonly")>
-							,adminonly=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.adminonly neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.adminonly#">,
+							,adminonly=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.adminonly neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.adminonly#">
 							</cfif>
 
 							where attributeID=<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextendattributes.attributeID)#">

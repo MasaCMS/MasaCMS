@@ -11,6 +11,10 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
     property name="requests" singularname="request" fieldtype="one-to-many" cfc="approvalRequest" orderby="created asc" cascade="delete";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
 
+    function init(){
+        setValue('created',now());
+        super.init(argumentCollection=arguments);
+    }
 
     function getAvailableGroupsIterator(){
         var site=getBean('settingsManager').getSite(getValue('siteID'));
@@ -37,6 +41,16 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
     function save(){
 
         //writeDump(var=getValue('groupID'),abort=true);
+        setValue('lastUpdate',now());
+
+        if(isDefined("session.mura") and session.mura.isLoggedIn){
+            setValue('lastUpdateBy',left(session.mura.fname & " " & session.mura.lname,50));
+            setValue('lastUpdateById', session.mura.userID);
+        } else {
+             setValue('lastUpdateBy','');
+            setValue('lastUpdateById','');
+        }
+
         if(valueExists('groupID')){
             var groupID=getValue('groupID');
             var deleteID='';

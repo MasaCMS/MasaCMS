@@ -1,6 +1,6 @@
 <cfoutput>
 <script>
-var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
+siteManager.customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
 
 var remoteFeedConfiguratorTitle='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
 var localIndexConfiguratorTitle='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';
@@ -19,7 +19,7 @@ var contenthistid='#rc.contentBean.getContentHistID()#';
 var contenthistid='#esapiEncode("javascript",rc.contenthistid)#';
 </cfif>
 
-var allowopenfeeds=#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#;
+siteManager.allowopenfeeds=#application.configBean.getValue(property='allowopenfeeds',defaultValue=false)#;
 <cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
 <cfset nonPluginDisplayObjects=$.siteConfig().getDisplayObjectLookup()>
 var pluginConfigurators=new Array();

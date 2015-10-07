@@ -19,15 +19,18 @@
 		</div>
 		
 		<div class="form-actions">	
+			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
 		</div>
 	</div>
+	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
 		siteManager.configuratorMode='frontEnd';
 		siteManager.layoutmanager=true;
 
 		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
 		var configOptions={};
+		var originid='#esapiEncode('javascript',rc.objectid)#';
 
 		jQuery(document).ready(function(){
 
@@ -39,17 +42,21 @@
 					
 					if (parameters["cmd"] == "setObjectParams") {
 						
+						configParams=parameters["params"];
+						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
 							'objectid':'#esapiEncode('javascript',rc.objectid)#',
 							'name':'#esapiEncode('javascript',rc.objectname)#',
 							'regionid':'0',
 							'context':'#application.configBean.getContext()#',
-							'params':JSON.stringify(parameters.params),
+							'params':JSON.stringify(parameters["params"]),
 							'siteid':'#esapiEncode('javascript',rc.siteid)#',
 							'contenthistid':'#esapiEncode('javascript',rc.contenthistid)#',
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',
-							'parentid':'#esapiEncode('javascript',rc.parentID)#'
+							'parentid':'#esapiEncode('javascript',rc.parentID)#',
+							'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
+							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#'
 						}
 						
 						<cfset configuratorWidth=600>
@@ -68,70 +75,42 @@
 							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
-								<cfcase value="feed,feed_no_summary,remoteFeed">	
-									siteManager.initFeedConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
-									siteManager.initSlideShowConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="folder">	
-									siteManager.initFolderConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="category_summary,category_summary_rss">	
-									siteManager.initCategorySummaryConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="tag_cloud">	
-									siteManager.initTagCloudConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="site_map">	
-									siteManager.initSiteMapConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="related_content,related_section_content">	
-									siteManager.initRelatedContentConfigurator(configOptions);
-								</cfcase>
-								<cfcase value="plugin">	
-									var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rc.objectid)#');
+								<cfcase value="form,form_responses,component">
 									
-									if(configurator!=''){
-										window[configurator](
-											configOptions
-										);
+									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+
+									<cfif content.exists()>
+										<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
+										
+										<cflocation url="#content.getEditURL(compactDisplay=true)#&homeid=#esapiEncode('url',rc.contentid)#" addtoken="false">
+										<cfelse>
+											<cfif rc.object eq 'Form'>
+												jQuery("##configuratorHeader").html('Edit Form');
+												<cfset configuratorWidth='standard'>
+											<cfelseif rc.object eq 'Component'>
+												jQuery("##configuratorHeader").html('Edit Component');
+												<cfset configuratorWidth='standard'>
+
+											</cfif>
+											jQuery("##configurator").html('<p class="alert alert-error">You do not have permission to edit this form.</p>');
+										</cfif>
+									<cfelse>
+										configOptions.title='Select ' + configOptions.name;
+										siteManager.initGenericConfigurator(configOptions);
+									</cfif>
+								</cfcase>
+								<cfdefaultcase>
+									if(siteManager.objectHasConfigurator(configOptions)){
+										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
 									} else {
 										siteManager.initGenericConfigurator(configOptions);
 									}
-
-									jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
-								</cfcase>
-								<cfcase value="form,component">
-									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
-									
-									<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
-										
-										<cflocation url="#content.getEditURL(compactDisplay=true)#&homeid=#esapiEncode('url',rc.contentid)#" addtoken="false">
-									<cfelse>
-
-										siteManager.initGenericConfigurator(configOptions);
-										<cfif rc.object eq 'Form'>
-											jQuery("##configuratorHeader").html('Edit Form');
-											<cfset configuratorWidth='standard'>
-										<cfelseif rc.object eq 'Component'>
-											jQuery("##configuratorHeader").html('Edit Component');
-											<cfset configuratorWidth='standard'>
-
-										</cfif>
-									</cfif>
-			
-								</cfcase>
-								<cfdefaultcase>
-									siteManager.initGenericConfigurator(configOptions);
-
-									jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 									
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
 
-						siteManager.loadObjectPreview(configOptions);
+						//siteManager.loadObjectPreview(configOptions);
 					
 					}
 				}
@@ -160,27 +139,47 @@
 			function(){
 				
 				siteManager.updateAvailableObject();
+
+				var availableObjectSelector=jQuery('##availableObjectSelector');
+
+				if(availableObjectSelector.length){
+					$.extend(siteManager.availableObject.params,eval('(' + availableObjectSelector.val() + ')') );
+				}
 				
 				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 					jQuery("##configurator").html('<div class="load-inline"></div>');
 					$('##configurator .load-inline').spin(spinnerArgs2);
 					jQuery(".form-actions").hide();
 					
+					var reload=false;
+
+					if(siteManager.availableObject.params.objectid && siteManager.availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
+						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
+					}
 					
 					frontEndProxy.post(
 					{
 						cmd:'setObjectParams',
 						instanceid:instanceid,
-						params:siteManager.availableObject.params
+						params:siteManager.availableObject.params,
+						reinit:(reload) ? true : false
 					});
 
 				}
+			});
+
+			jQuery("##deleteObject").bind("click",
+			function(){
+				frontEndProxy.post(
+				{
+					cmd:'deleteObject',
+					instanceid:instanceid
+				});
 			});
 				
 			
 		});
 	</script>
-	<cfinclude template="dsp_configuratorJS.cfm">
 	</cfoutput>
 <cfelse>
 	<cfsilent>

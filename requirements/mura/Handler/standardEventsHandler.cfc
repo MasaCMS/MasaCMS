@@ -782,23 +782,15 @@
 				renderer.injectMethod('showMemberToolBar',false);
 				renderer.injectMethod('showEditableObjects',false);
 
-				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
-			
 				result.displayRegions={};
 
 				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
 					var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
-					var regionData=$.dspObjects(columnid=r,returnFormat='array');
-
-					for(var d=1;d<=arrayLen(regionData.items);d++){
 					
-						if(isSimpleValue(regionData.items[d])){
-							regionData.items[d]={html=apiUtility.applyRemoteFormat(regionData.items[d])};
-						}
-					}
-
-					result.displayRegions[regionName]={header=regionData.header,footer=regionData.footer,items=regionData.items};
+					result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
 				}
+				
+				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
 			}
 
 			result.config={

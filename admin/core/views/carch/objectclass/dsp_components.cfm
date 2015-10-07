@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.rsUserDefinedTemplates = application.contentManager.getComponents("00000000000000000000000000000000000", rc.siteid)/>
 	<cfif rc.layoutmanager>
 		<cfloop query="rc.rsUserDefinedTemplates">
-			#renderClassOption(
+			#contentRendererUtility.renderObjectClassOption(
 				object='component',
 				objectid=rc.rsUserDefinedTemplates.contentid,
 				objectname=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')

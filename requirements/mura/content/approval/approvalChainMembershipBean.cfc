@@ -4,9 +4,14 @@ component extends="mura.bean.beanORM"  table="tapprovalmemberships" entityname="
     property name="orderno" type="int" default="1";
     property name="created" type="timestamp";
     property name="approvalChain" fieldtype="many-to-one" cfc="approvalChain" fkcolumn="chainID";   
-    property name="group" fieldtype="many-to-one" cfc="user" fkcolumn="groupID";
+    property name="group" fieldtype="many-to-one" cfc="user"  loadkey="userid" fkcolumn="groupID";
     property name="site" fieldtype="one-to-one" cfc="site" fkcolumn="siteID";
 
+    function init(){
+        setValue('created',now());
+        super.init(argumentCollection=arguments);
+    }
+    
     function getPendingContentIterator(){
         var qs = new Query();
         var sql="

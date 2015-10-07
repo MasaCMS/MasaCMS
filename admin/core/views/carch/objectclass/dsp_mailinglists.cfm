@@ -47,14 +47,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
 <cfoutput>
 <cfif rc.layoutmanager>
-	#renderClassOption(
+	#contentRendererUtility.renderObjectClassOption(
 			object='mailing_list_master',
 			objectid=createUUID(),
 			objectname=application.rbFactory.getKeyValue(session.rb, 
 			                                    'sitemanager.content.fields.mastermailinglistsignupform')
 		)#
 	<cfloop query="rc.rsmailinglists">
-		#renderClassOption(
+		#contentRendererUtility.renderObjectClassOption(
 			object='mailing_list',
 			objectid=rc.rsmailinglists.mlid,
 			objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# - #rc.rsmailinglists.name#"

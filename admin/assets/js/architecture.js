@@ -624,13 +624,19 @@ buttons: {
 	loadObjectClass: function(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 		var url = './';
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-		var d = $('#classList');
+		var d = $('#configurator');
+		var id = '#configurator';
+		
+		if(!d.length){
+			$('#classList')
+			id= '#classList';
+		}
 
 		d.html('<div class="load-inline"></div>');
-		$('#classList .load-inline').spin(spinnerArgs2);
+		$( id + ' .load-inline').spin(spinnerArgs2);
 		$.get(url + "?" + pars, function(data) {
-			$('#classList .load-inline').spin(false);
-			$('#classList').html(data);
+			$( id + ' .load-inline').spin(false);
+			$(id).html(data);
 			siteManager.availableObjectTemplate = "";
 			siteManager.availalbeObjectParams = {};
 			siteManager.availableObject = {};
@@ -2047,11 +2053,12 @@ buttons: {
 	},
 
 
-	addDisplayObject: function(objectToAdd, regionid, configure) {
+	addDisplayObject: function(objectToAdd, regionid, configure, isUpdate) {
 		var tmpObject = "";
 		var tmpValue = "";
 		var tmpText = "";
-		var isUpdate = false;
+
+		isUpdate= isUpdate || false;
 
 		//If it's not a js object then it must be an id of a form input or select
 		if(typeof(objectToAdd) == "string") {
@@ -2104,7 +2111,7 @@ buttons: {
 
 		//if the tmpValue evaluated into a js object pull out it's values
 		var checkSelection = false;
-
+		
 		if(typeof(tmpObject) == "object") {
 			//object^name^objectID^params
 			tmpObject.regionid = regionid;
@@ -2134,7 +2141,7 @@ buttons: {
 				checkSelection = true;
 			}
 
-			if(tmpObject.object == 'tag_cloud' && customtaggroups.length) {
+			if(tmpObject.object == 'tag_cloud' && siteManager.customtaggroups.length) {
 				if(configure) {
 					tmpObject.regionid = regionid;
 					this.initTagCloudConfigurator(tmpObject)
@@ -2143,7 +2150,7 @@ buttons: {
 				checkSelection = true;
 			}
 
-			if(allowopenfeeds && tmpObject.object == 'category_summary') {
+			if(siteManager.allowopenfeeds && tmpObject.object == 'category_summary') {
 				if(configure) {
 					tmpObject.regionid = regionid;
 					this.initCategorySummaryConfigurator(tmpObject)
@@ -2171,28 +2178,38 @@ buttons: {
 			}
 
 			if(tmpObject.object == 'plugin') {
-				var configurator = this.getPluginConfigurator(tmpObject.objectid);
+				if(configure){
+					if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
+					
+						var configurator = this.getPluginConfigurator(tmpObject.objectid);
+					
+						if(configurator != '') {
+							window[configurator](tmpObject);
+							return false;
+						} else if(siteManager.layoutmanager){
+							this.initGenericConfigurator(tmpObject);
+							return false;
+						}
 
-				if(configurator != '') {
-					if(configure) {
-						window[configurator](tmpObject);
-						return false;
+					} else if(siteManager.layoutmanager){
+						this.initGenericConfigurator(tmpObject);
 					}
-					checkSelection = true;
-				}
+				} 
+
+				checkSelection = true;	
 			}
 
-			/*
 			if(siteManager.layoutmanager){
 
 				if(configure) {
-					this.initGenericConfigurator(tmpObject);
-					return false;
+					if(siteManager.objectHasConfigurator(tmpObject)){
+						siteManager.configuratorMap[tmpObject.object].initConfigurator(tmpObject);
+					}
 				}
 
 				checkSelection = true;
 			}
-			*/
+			
 
 			tmpValue = tmpObject.object;
 			tmpValue = tmpValue + "~" + tmpObject.name;
@@ -2204,11 +2221,11 @@ buttons: {
 				tmpValue = tmpValue + "~" + JSON.stringify(tmpObject.params);
 			}
 
-			if(checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
+			if(!isUpdate && checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
 				var currentSelection = this.getDisplayObjectConfig(regionid);
 
 				if(currentSelection) {
-					if(currentSelection.objectid == tmpObject.objectid) {
+					if(currentSelection.objectid == tmpObject.objectid || currentSelection.objectid == tmpObject.originid) {
 						isUpdate = true
 					}
 				}
@@ -2505,7 +2522,7 @@ buttons: {
 			data, {
 				url: './',
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
-				title: 'Configure ' + data.name,
+				title: data.title || 'Configure ' + data.name,
 				init: function(data, config) {
 					
 				}
@@ -2515,7 +2532,7 @@ buttons: {
 				resizable: true,
 				modal: true,
 				width: 400,
-				title: 'Configure' + data.name,
+				title: data.title || 'Configure ' + data.name,
 				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {
@@ -2540,7 +2557,7 @@ buttons: {
 	updateAvailableObject: function() {
 		var availableObjectParams = {};
 
-		$("#availableObjectParams").find(".objectParam").each(
+		$(".objectParam").each(
 
 		function() {
 			var item = $(this);
@@ -2559,34 +2576,75 @@ buttons: {
 				}
 			}
 		})
+
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
 	},
-
+	configuratorMap:{
+			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
+			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'plugin':{
+				'condition':function(){
+					return true;
+				},
+				'initConfigurator':function(data){
+					if(data.objectid && data.objectid.toLowerCase() != 'none' && siteManager.getPluginConfigurator(data.objectid)){
+						var configurator = siteManager.getPluginConfigurator(data.objectid);
+						window[configurator](data)
+					} else {
+						siteManager.initGenericConfigurator(data);
+					}
+				}
+			},
+			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSlideShowConfigurator(data);}},
+			'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
+			'category_summary':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'category_summary_rss':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
+			'related_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'related_section_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
+			'system':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'comments':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'favorites':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'forward_email':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'event_reminder_form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'rater':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'user_tools':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'goToFirstChild':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'navigation':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'sub_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'peer_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'standard_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'portal_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'folder_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'multilevel_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'seq_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'top_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
+	},
+	customtaggroups:[],
+	allowopenfeeds:false,
+	objectHasConfigurator:function(displayObject){
+		return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
+	},
 	initDisplayObjectConfigurators: function() {
+		var self=this;
 		$(".displayRegions").dblclick(function() {
 			var regionid = $(this).attr("data-regionid");
-			var data = siteManager.getDisplayObjectConfig(regionid);
+			var data = self.getDisplayObjectConfig(regionid);
 
-			if(data.object == 'feed') {
-				siteManager.initFeedConfigurator(data);
-			} else if(data.object == 'feed_slideshow') {
-				siteManager.initSlideShowConfigurator(data);
-			} else if(data.object == 'tag_cloud' && customtaggroups.length) {
-				siteManager.initTagCloudConfigurator(data);
-			} else if(allowopenfeeds && data.object == 'category_summary') {
-				siteManager.initCategorySummaryConfigurator(data);
-			} else if(data.object == 'site_map') {
-				siteManager.initSiteMapConfigurator(data);
-			} else if(data.object == 'related_content' || data.object == 'related_section_content') {
-				siteManager.initRelatedContentConfigurator(data);
-			} else if(data.object == 'plugin') {
-				var configurator = siteManager.getPluginConfigurator(data.objectid);
-				if(configurator != '') {
-					window[configurator](data);
-				}
+			if(self.objectHasConfigurator(data)){
+				self.configuratorMap[data.object].initConfigurator(data);
 			} else {
-				siteManager.initGenericConfigurator(data);
+				self.initGenericConfigurator(data);
 			}
 		});
 	},
@@ -2625,7 +2683,7 @@ buttons: {
 
 	initConfiguratorParams: function() {
 		this.updateAvailableObject();
-		$("#availableObjectParams").find(".objectParam").bind("change", function() {
+		$(".objectParam").bind("change", function() {
 			siteManager.updateAvailableObject();
 		});
 	},
@@ -2711,6 +2769,8 @@ buttons: {
 
 			this.resetConfiguratorContainer();
 
+			var originid=data.objectid;
+
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
@@ -2719,15 +2779,47 @@ buttons: {
 				buttons: {
 					Save: function() {
 						siteManager.updateAvailableObject();
+						
+						var availableObjectSelector=$('#availableObjectSelector');
 
-						if(siteManager.availableObjectValidate(data.params)) {
-							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, false);
+						if(availableObjectSelector.length){
+							var selectedObject=eval('(' + availableObjectSelector.val() + ')');
 
+							siteManager.availableObject.name=selectedObject.name;
+							siteManager.availableObject.object=selectedObject.object;
+							siteManager.availableObject.objectid=selectedObject.objectid;
+							siteManager.availableObject.originid=originid;
+
+							delete selectedObject.name;
+							delete selectedObject.object;
+							delete selectedObject.objectid;
+
+							$.extend(siteManager.availableObject.params,selectedObject);
+
+							
+						}
+
+						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+							
 							if(typeof(config.destroy) != 'undefined') {
 								config.destroy(data, config);
 							}
 
 							$(this).dialog("destroy");
+
+
+							//for some reason the availableObject sometimes has methods from the string.prototype.
+							for(var p in siteManager.availableObject){
+								if(typeof siteManager.availableObject[p] == 'function'){
+									delete siteManager.availableObject[p];
+								}
+							}
+							
+							configure=(siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
+						
+							console.log(siteManager.availableObject)
+
+							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}
 
 					},
@@ -2749,10 +2841,14 @@ buttons: {
 				}
 
 			});
+
+			var url=config.url + "?" + config.pars + '&contenttype=' + document.contentForm.type.value + '&contentsubtype=' + document.contentForm.subtype.value;
+		} else {
+			var url=config.url + "?" + config.pars;
 		}
 		
 		$.ajax({
-			url: config.url + "?" + config.pars,
+			url: url,
 			dataType: 'text',
 			data: data, 
 			type: 'post',
@@ -2777,7 +2873,7 @@ buttons: {
 				//$("#configuratorContainer").parent().find("span.ui-dialog-title").html(test);
 
 				if(siteManager.configuratorMode=='frontEnd'){
-					if(!siteManager.layoutmanager){
+					if(siteManager.layoutmanager){
 						$("#configuratorHeader").html(config.title);
 					}
 				} else {
@@ -2786,11 +2882,13 @@ buttons: {
 
 				if(siteManager.availableObjectTemplate == "") {
 					var availableObjectContainer = $("#availableObjectParams");
+					
 					siteManager.availableObjectTemplate = {
 						object: availableObjectContainer.attr("data-object"),
 						objectid: availableObjectContainer.attr("data-objectid"),
 						name: availableObjectContainer.attr("data-name")
 					};
+					
 					siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
 				}
 
