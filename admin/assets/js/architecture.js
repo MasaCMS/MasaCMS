@@ -2186,7 +2186,7 @@ buttons: {
 						if(configurator != '') {
 							window[configurator](tmpObject);
 							return false;
-						} else {
+						} else if(siteManager.layoutmanager){
 							this.initGenericConfigurator(tmpObject);
 							return false;
 						}
