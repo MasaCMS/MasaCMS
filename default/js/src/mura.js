@@ -232,8 +232,8 @@
 
 	function ready(fn) {
 	    document.addEventListener('DOMContentLoaded',function(event){
-			fn.call(event.target,event);
-		});
+	      fn.call(event.target,event);
+	    });
 	}
 
 	function get(url,data){
