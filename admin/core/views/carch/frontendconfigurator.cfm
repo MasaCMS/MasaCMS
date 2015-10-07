@@ -30,9 +30,10 @@
 
 		var instanceid='#esapiEncode('javascript',rc.instanceid)#';
 		var configOptions={};
+		var originParams={};
 		var originid='#esapiEncode('javascript',rc.objectid)#';
 
-		jQuery(document).ready(function(){
+		$(function(){
 
 			function initConifuratorProxy(){
 
@@ -42,7 +43,9 @@
 					
 					if (parameters["cmd"] == "setObjectParams") {
 						
-						configParams=parameters["params"];
+						if(parameters["params"]){
+							originParams=parameters["params"];
+						}
 						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',

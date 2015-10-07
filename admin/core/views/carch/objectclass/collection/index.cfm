@@ -176,20 +176,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 
 			function setLayoutOptions(){
+				
 				siteManager.updateAvailableObject();
 
 				siteManager.availableObject.params.sourceid = siteManager.availableObject.params.sourceid || '';
 
-				if(configParams){
-					var params=$.extend(configParams,siteManager.availableObject.params);
+				if(originParams){
+					var params=$.extend(siteManager.availableObject.params,originParams);
 				} else {
-
 					var params=siteManager.availableObject.params;
-					var configParams=params;
 				}
 				
-
-				//console.log(params);
 				$.ajax(
 				 {
 				 	type: 'post',
