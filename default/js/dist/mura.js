@@ -1752,12 +1752,12 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function ready(fn) {
-		//not on windows
-	    if(!(document.all && !window.opera) && document.readyState != 'loading'){
-	      fn.call(document);
+	    if(document.readyState != 'loading'){
+	      //IE set the readyState to interative too early
+	      setTimeout(fn,1);
 	    } else {
-	      document.addEventListener('DOMContentLoaded',function(event){
-	        fn.call(event.target,event);
+	      document.addEventListener('DOMContentLoaded',function(){
+	        fn();
 	      });
 	    }
 	  }
@@ -1931,7 +1931,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function on(el,eventName,fn){
 		if(eventName=='ready'){
-			ready(fn);
+			mura.ready(fn);
 		} else {
 			if(typeof el.addEventListener == 'function'){
 				el.addEventListener(
@@ -3088,7 +3088,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			}
 		}
-		
+
 		if(mura.layoutmanager && mura.editing){
 			
 			if(obj.data('object')=='folder'){
@@ -3393,9 +3393,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		extend(window.mura,config);
 
-		ready(function(){
+		mura(function(){
 			
-
 			var hash=window.location.hash;
 
 			if(hash){
@@ -3499,7 +3498,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				});
 			*/	
 
-			select(document).trigger('muraReady');
+			mura(document).trigger('muraReady');
 			
 		});
 
@@ -3510,7 +3509,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					ready(selector);
+					mura.ready(selector);
 					return this;
 				} else {
 					return select(selector);
@@ -4156,17 +4155,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 
 		    var el = this.selection[0];
-		 
-		    // traverse parents
-		    while (el!==null) {
-		        parent = el.parentElement;
-		        if (parent!==null && parent.matchesSelector(selector)) {
-		            return window.mura(parent);
-		        }
-		        el = parent;
-		    }
 
-		    return window.mura([]);;
+		    for( var parent = el ; parent !== null  && parent.matchesSelector && !parent.matchesSelector(selector) ; parent = el.parentElement ){ el = parent; };
+
+		    if(parent){
+		    	 return window.mura(parent)
+		    } else {
+		    	 return window.mura([]);
+		    }
+		   
 		},
 
 		append:function(el) {

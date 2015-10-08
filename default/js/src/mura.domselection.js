@@ -346,17 +346,15 @@
 			}
 
 		    var el = this.selection[0];
-		 
-		    // traverse parents
-		    while (el!==null) {
-		        parent = el.parentElement;
-		        if (parent!==null && parent.matchesSelector(selector)) {
-		            return window.mura(parent);
-		        }
-		        el = parent;
-		    }
 
-		    return window.mura([]);;
+		    for( var parent = el ; parent !== null  && parent.matchesSelector && !parent.matchesSelector(selector) ; parent = el.parentElement ){ el = parent; };
+
+		    if(parent){
+		    	 return window.mura(parent)
+		    } else {
+		    	 return window.mura([]);
+		    }
+		   
 		},
 
 		append:function(el) {

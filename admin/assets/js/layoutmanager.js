@@ -231,7 +231,6 @@
 			.on('dragover',initLooseDropTarget_dragover)
 			.on('dragleave',initLooseDropTarget_dragleave)
 			.on('drop',initLooseDropTarget_drop);
-
 		}
 
 	    function initClassObjects(){
@@ -334,7 +333,7 @@
 
 		function loadObjectClass(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-
+			alert('test')
 			if(classid == 'plugins'){
 				var d = mura('#pluginList');
 			} else {
@@ -357,7 +356,8 @@
 		}
 
 		 function initLayoutManager(){
-			
+			initClassObjects();
+
 			mura('.mura-region-local[data-inited="false"]').each(function(){
 
 				var region=mura(this);
@@ -419,10 +419,5 @@
 
 		mura.initLayoutManager=initLayoutManager;
 		mura.loadObjectClass=loadObjectClass;
-
-		mura(function(){
-			initClassObjects();
-		});
-		
 		
 	})(window);

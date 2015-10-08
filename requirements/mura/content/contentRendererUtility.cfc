@@ -892,7 +892,7 @@
 		</cfloop>
 
 		<cfif arguments.showEditable>
-			<cfset openingDiv=openingDiv & 'data-objectname="#esapiEncode('html_attr',arguments.objectname)#" data-perm="author" data-isconfigurator="#esapiEncode('html_attr',arguments.isConfigurator)#">'>
+			<cfset openingDiv=openingDiv & ' data-objectname="#esapiEncode('html_attr',arguments.objectname)#" data-perm="author" data-isconfigurator="#esapiEncode('html_attr',arguments.isConfigurator)#">'>
 		<cfelse>
 			<cfset openingDiv=openingDiv & ">">
 		</cfif>

@@ -231,12 +231,12 @@
 	}
 
 	function ready(fn) {
-		//not on windows
-	    if(!(document.all && !window.opera) && document.readyState != 'loading'){
-	      fn.call(document);
+	    if(document.readyState != 'loading'){
+	      //IE set the readyState to interative too early
+	      setTimeout(fn,1);
 	    } else {
-	      document.addEventListener('DOMContentLoaded',function(event){
-	        fn.call(event.target,event);
+	      document.addEventListener('DOMContentLoaded',function(){
+	        fn();
 	      });
 	    }
 	  }
@@ -410,7 +410,7 @@
 
 	function on(el,eventName,fn){
 		if(eventName=='ready'){
-			ready(fn);
+			mura.ready(fn);
 		} else {
 			if(typeof el.addEventListener == 'function'){
 				el.addEventListener(
@@ -1567,7 +1567,7 @@
 				}
 			}
 		}
-		
+
 		if(mura.layoutmanager && mura.editing){
 			
 			if(obj.data('object')=='folder'){
@@ -1872,9 +1872,8 @@
 
 		extend(window.mura,config);
 
-		ready(function(){
+		mura(function(){
 			
-
 			var hash=window.location.hash;
 
 			if(hash){
@@ -1978,7 +1977,7 @@
 				});
 			*/	
 
-			select(document).trigger('muraReady');
+			mura(document).trigger('muraReady');
 			
 		});
 
@@ -1989,7 +1988,7 @@
 		mura:extend(
 			function(selector){
 				if(typeof selector == 'function'){
-					ready(selector);
+					mura.ready(selector);
 					return this;
 				} else {
 					return select(selector);

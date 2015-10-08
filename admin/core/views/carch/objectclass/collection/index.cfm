@@ -217,12 +217,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##remotefeed').addClass('objectParam');
 					$('##remotefeedcontainer').show();
 				} else if(val=='relatedcontent'){
+					$('##relatedContentSetData').val('');
+					$('##selectRelatedContent').html('');
+					$('##selectedRelatedContent').html('');
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
 					<cfif rc.configuratormode neq 'backend'>
 
 					var sourceid=$('##relatedcontent').val();
-					$('##relatedContentSetData').val('');
 
 					if(sourceid){
 						$('##relatedContentContainer').show();
