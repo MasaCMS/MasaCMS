@@ -181,11 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				siteManager.availableObject.params.sourceid = siteManager.availableObject.params.sourceid || '';
 
-				if(originParams){
-					var params=$.extend(siteManager.availableObject.params,originParams);
-				} else {
-					var params=siteManager.availableObject.params;
-				}
+				var params=siteManager.availableObject.params;
 				
 				$.ajax(
 				 {

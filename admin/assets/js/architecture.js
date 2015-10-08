@@ -2579,6 +2579,11 @@ buttons: {
 
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
+
+		if(typeof originParams == 'object'){
+			this.availableObject.params=$.extend(this.availableObject.params,originParams);
+		}
+
 	},
 	configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
