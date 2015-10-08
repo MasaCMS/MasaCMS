@@ -449,7 +449,7 @@
       	
       	if(eventClass=='Custom'){
 	    	var event = document.createEvent('CustomEvent');
-	    	event.initEvent(eventName, true, true);
+	    	event.initCustomEvent(eventName, true, true);
 	        
 	    } else {
 	    	var event = document.createEvent(eventClass);
