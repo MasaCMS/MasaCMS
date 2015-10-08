@@ -111,7 +111,7 @@
 							<select id="availableObjectSelector" class="multiSelect" 
 					        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 								<cfloop query="rs">
-									<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.title# - #rs.name#')#','objectid':'#rs.objectID#',moduleid:'#rs.moduleid#'}" <cfif rc.objectid eq rs.objectid>selected</cfif>>
+									<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.name#')#','objectid':'#rs.objectID#',moduleid:'#rs.moduleid#'}" <cfif rc.objectid eq rs.objectid>selected</cfif>>
 										#rs.name#					
 									</option>
 								</cfloop>

@@ -231,10 +231,15 @@
 	}
 
 	function ready(fn) {
-	    document.addEventListener('DOMContentLoaded',function(event){
-	      fn.call(event.target,event);
-	    });
-	}
+		//not on windows
+	    if(!(document.all && !window.opera) && document.readyState != 'loading'){
+	      fn.call(document);
+	    } else {
+	      document.addEventListener('DOMContentLoaded',function(event){
+	        fn.call(event.target,event);
+	      });
+	    }
+	  }
 
 	function get(url,data){
 		return new Promise(function(resolve, reject) {
@@ -419,43 +424,39 @@
 	}
 
 	function trigger(el, eventName, eventDetail) {
-        var eventClass = "";
+      	var eventClass = "";
 
-        switch (eventName) {
-            case "click": 
-            case "mousedown":
-            case "mouseup":
-                eventClass = "MouseEvents";
-                break;
+      	switch (eventName) {
+          	case "click": 
+          	case "mousedown":
+          	case "mouseup":
+              	eventClass = "MouseEvents";
+              	break;
 
-            case "focus":
-            case "change":
-            case "blur":
-            case "select":
-                eventClass = "HTMLEvents";
-                break;
+          	case "focus":
+          	case "change":
+          	case "blur":
+          	case "select":
+              	eventClass = "HTMLEvents";
+              	break;
 
-            default:
-                eventClass = "Custom";
-                break;
-        }
+          default:
+              	eventClass = "Event";
+              	break;
+       	}
 
-        var bubbles=eventName == "change" ? false : true;
-
-        if(eventClass=='Custom'){
-        	if(eventDetail && !isEmptyObject(eventDetail)){
-        		var event = new CustomEvent(eventName,{"detail":eventDetail,"bubbles":bubbles,"cancelable":true});
-	        } else {
-	        	var event = new Event(eventClass, {"bubbles":bubbles,"cancelable":true});
-	        }
+      	var bubbles=eventName == "change" ? false : true;
+      	
+      	if(eventClass=='Custom'){
+	    	var event = document.createEvent('CustomEvent');
+	    	event.initEvent(eventName, true, true);
+	        
 	    } else {
 	    	var event = document.createEvent(eventClass);
-	        event.initEvent(eventName, bubbles, true); 
-	        event.synthetic = true; 
+	    	event.initEvent(eventName, bubbles, true); 
+	    	event.synthetic = true; 
 	    }
-    
-        el.dispatchEvent(event);
-	};
+  	};
 
 	function off(el,eventName,fn){
 		el.removeEventListener(eventName,fn);
