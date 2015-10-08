@@ -837,9 +837,10 @@ buttons: {
 		});
 	},
 
-	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid){
+	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,rcsname){
 		var url = './';
-		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
+		rcsname=rcsname||'';
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&rcsname=' + rcsname + '&cacheid=' + Math.random();
 		
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');

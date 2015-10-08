@@ -1,3 +1,4 @@
+<cfparam name="rc.rcsname" default="">
 <cfset rc.contentBean=$.getBean('content').loadBy(contenthistid=rc.contenthistid,siteid=rc.siteid)>
 <cfset subtype = application.classExtensionManager.getSubTypeByName(rc.type, rc.subtype, rc.siteid)>
 <cfset relatedContentSets = subtype.getRelatedContentSets()>
@@ -17,6 +18,9 @@
 
 	<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 		<cfset rcsBean = relatedContentSets[s]/>
+		<cfif not len(rc.rcsname) or rc.rcsname eq rcsBean.getName()>
+			
+		
 		<cfset rcsRs = rcsBean.getRelatedContentQuery(rc.contentBean.getContentHistID())>
 		<cfset emptyClass = "item empty">
 		<cfoutput>
@@ -48,6 +52,7 @@
 				</ul>
 			</div>
 		</cfoutput>
+		</cfif>
 	</cfloop>
 	
 </cfoutput>

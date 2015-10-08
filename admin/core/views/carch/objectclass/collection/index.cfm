@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset objectParams=deserializeJSON(form.params)>
 <cfelse>
@@ -120,6 +119,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</cfloop>
 									</select>
 								</div>
+								<cfif rc.configuratormode neq 'backend'>
+								<div id="relatedContentContainer">
+									<div id="selectRelatedContent"></div>
+									<div id="selectedRelatedContent" class="control-group"></div>
+								</div>
+								<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
+								</cfif>
 							</div>
 
 						</div>
@@ -145,7 +151,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
+
 	<script>
 		$(function(){
 
@@ -155,9 +162,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			$('select[name="sourceid"]').on('change', function() {
 				setLayoutOptions();
+
+				if($('select[name="sourcetype"]').val()=='relatedcontent'){
+					setContentSourceVisibility();
+				}
 			});
 
 			function setContentSourceVisibility(){
+				<cfif rc.configuratormode neq 'backend'>
+				<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+
+				function getType(){
+					var type=$('input[name="type"]');
+
+					if(type.length){
+						return type.val();
+					} else {
+						return '#esapiEncode("javascript",content.getType())#';
+					}
+				}
+
+				function getSubType(){
+					var subtype=$('input[name="subtype"]');
+
+					if(subtype.length){
+						return subtype.val();
+					} else {
+						return '#esapiEncode("javascript",content.getSubType())#';
+					}
+				}
+
+				function getContentID(){
+					return '#esapiEncode("javascript",content.getContentID())#';
+				}
+
+				function getContentHistID(){
+					return '#esapiEncode("javascript",content.getContentHistID())#';
+				}
+
+				function getSiteID(){
+					return '#esapiEncode("javascript",rc.siteid)#';
+				}
+				</cfif>
+
 				$('select[name="sourceid"]').removeClass('objectParam');
 				$('.sourceid-container').hide();
 
@@ -172,6 +219,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				} else if(val=='relatedcontent'){
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
+					<cfif rc.configuratormode neq 'backend'>
+
+					var sourceid=$('##relatedcontent').val();
+					$('##relatedContentSetData').val('');
+
+					if(sourceid){
+						$('##relatedContentContainer').show();
+						siteManager
+							.loadRelatedContentSets(
+								getContentID(),
+								getContentHistID(),
+								getType(),
+								getSubType(),
+								getSiteID(),
+								sourceid
+							);
+					} else {
+						$('##relatedContentContainer').hide();
+					}	
+					
+					</cfif>
 				}
 			}
 

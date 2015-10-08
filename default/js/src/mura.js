@@ -329,18 +329,19 @@
 		} 
 		
 		request.onload = function() {
-		  if (request.status >= 200 && request.status < 400) {
+		  	//IE9 doesn't appear to return the request status
+     		if(typeof request.status == 'undefined' || (request.status >= 200 && request.status < 400)) {
 		  
-		    try{
-		    	var data = JSON.parse(request.responseText);
-		    } catch(e){
-		    	var data = request.responseText;
-		    }
+			    try{
+			    	var data = JSON.parse(request.responseText);
+			    } catch(e){
+			    	var data = request.responseText;
+			    }
 
-		    params.success(data);
-		  } else {
-		   	params.error(request);
-		  }
+			    params.success(data);
+			} else {
+			   	params.error(request);
+			}
 		}
 
 		request.onerror = params.onerror;			
