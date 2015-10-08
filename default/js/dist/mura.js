@@ -3917,49 +3917,50 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
-					if(selector){
-						mura(this).find(selector).each(function(){
-							fn.call(this,event);
-						});
-					} else {
-						fn.call(document);
-					}
-				} else { 
-					document.addEventListener(
-						'DOMContentLoaded',
+					var self=this;
+
+					setTimeout(
+						function(){
+							self.each(function(){
+								if(selector){
+									mura(this).find(selector).each(function(){
+										fn.call(this);
+									});	
+								} else {
+									fn.call(this);	
+								}
+							});
+						},
+						1
+					);
+					
+					return this;
+
+				} else {
+					eventName='DOMContentLoaded';
+				}
+			}
+					
+			this.each(function(){
+				if(typeof this.addEventListener == 'function'){
+					var self=this;
+					this.addEventListener(
+						eventName, 
 						function(event){
 							if(selector){
-								mura(this).find(selector).each(function(){
+								mura(self).find(selector).each(function(){
 									fn.call(this,event);
 								});
 							} else {
-								fn.call(this,event);
+								fn.call(self,event);
 							}
+							
 						},
 						true
-					);	
+					);
 				}
-			} else {
-				this.each(function(el){
-					if(typeof el.addEventListener == 'function'){
-						el.addEventListener(
-							eventName, 
-							function(event){
-								if(selector){
-									mura(this).find(selector).each(function(){
-										fn.call(this,event);
-									});
-								} else {
-									fn.call(this,event);
-								}
-								
-							},
-							true
-						);
-					}
-				});
-			}	
-
+			});
+			
 			return this;
 		},
 
