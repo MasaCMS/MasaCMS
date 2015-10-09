@@ -535,6 +535,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return false;
 		}
 
+		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
+			arguments.scope=structCopy(arguments.scope);
+			structDelete(arguments.scope,'body');
+		}
+
 		for (var i in arguments.scope){
 			if(structKeyExists(arguments.scope,'#i#') && isSimpleValue(arguments.scope['#i#']) ){
 				if(isPostedFile(i)){
