@@ -2582,7 +2582,7 @@ buttons: {
 		this.availableObject.params = availableObjectParams;
 
 		if(typeof originParams == 'object'){
-			this.availableObject.params=$.extend(this.availableObject.params,originParams);
+			this.availableObject.params=$.extend(originParams,this.availableObject.params);
 		}
 
 	},
