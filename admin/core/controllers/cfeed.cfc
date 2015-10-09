@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.regionID" default="0" />
 	<cfparam name="arguments.rc.orderno" default="0" />
 	<cfparam name="arguments.rc.instanceParams" default="" />
+	<cfparam name="arguments.rc.instanceid" default=""/>
 </cffunction>
 
 <cffunction name="list" output="false">

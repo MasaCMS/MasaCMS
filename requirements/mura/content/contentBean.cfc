@@ -1218,7 +1218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arguments.compactDisplay>
-		<cfset arguments.compactDisplay=true>
+		<cfset arguments.compactDisplay='true'>
 	</cfif>
 	
 	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >

@@ -26,7 +26,8 @@
 
 	<cfparam name="arguments.rc.ajaxrequest" default="false"/>
 	<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
-	
+	<cfparam name="arguments.rc.instanceid" default=""/>
+
 	<cfif not arguments.rc.ajaxrequest>
 		<cfparam name="arguments.rc.return" default=""/>
 		<cfparam name="arguments.rc.startrow" default="1"/>
@@ -226,6 +227,13 @@
 	
 </cffunction>
 
+<cffunction name="editLive" output="false">
+	<cfargument name="rc">
+	<cfset var content=arguments.rc.$.getBean('content').loadBy(contentid=arguments.rc.contentid,siteid=arguments.rc.siteid)>
+	<cfset content.setType(arguments.rc.type)>
+	<cflocation url="#content.getEditURL(compactDisplay='true')#&instanceid=#esapiEncode('url',arguments.rc.instanceid)#" addtoken="false">
+</cffunction>
+
 <cffunction name="edit" output="false">
 	<cfargument name="rc">
 
@@ -235,22 +243,22 @@
 	
   	<cfif local.currentBean.getIsNew()>
 		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid,true)/>
-	 <cfelse>
+	<cfelse>
 		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true)/>
 	</cfif>
 
-   <cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
+   	<cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
   
-   <cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1>
+   	<cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1 and not len(arguments.rc.instanceid)>
 		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./")>
-   </cfif>
+   	</cfif>
    
   	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
   	<cfset arguments.rc.rsPageCount=variables.contentManager.getPageCount(arguments.rc.siteid) />
   	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
   	<cfset arguments.rc.rsTemplates=variables.contentUtility.getTemplates(arguments.rc.siteid,arguments.rc.type) />
 	<cfif arguments.rc.moduleID eq '00000000000000000000000000000000000'>
-		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
+		<cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
 	
 	<cfif arguments.rc.locknode>

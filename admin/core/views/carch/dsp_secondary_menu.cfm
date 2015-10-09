@@ -54,6 +54,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <cfset rc.originalcircuit=listFirst(listLast(request.action,":"),".")>
 <div id="nav-module-specific" class="btn-group">
+	<cfif rc.compactDisplay eq 'true'>
+		<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+		</a>
+	</cfif>
+					
 	<cfswitch expression="#rc.moduleid#">
 		<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 			<cfswitch expression="#rc.originalfuseaction#">

@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset objectParams={}>
 </cfif>
 <cfset data=structNew()>
+<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectparams#">
@@ -92,6 +93,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.sourceid> selected</cfif>>#esapiEncode('html',rs.name)#</option>
 										</cfloop>
 									</select>
+
+									<cfif hasFeedManagerAccess>
+										<button class="btn" id="editBtnLocalIndex">Create New</button>
+									</cfif>
+
 								</div>
 							</div>
 							<div id="remotefeedcontainer" class="control-group sourceid-container" style="display:none">
@@ -104,6 +110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.sourceid> selected</cfif>>#esapiEncode('html',rs.name)#</option>
 										</cfloop>
 									</select>
+
+									<cfif hasFeedManagerAccess>
+										<button class="btn" id="editBtnRemoteFeed">Create New</button>
+									</cfif>
 								</div>
 							</div>
 							<div id="relatedcontentcontainer" class="control-group sourceid-container" style="display:none">
@@ -156,17 +166,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<script>
 		$(function(){
 
-			$('select[name="sourcetype"]').on('change', function() {
-				setContentSourceVisibility();
-			});
+			function setRemoteFeedEditOption(){
+				var selector=$('##remotefeed');
+			 	if(selector.val()){
+			 		$('##editBtnRemoteFeed').html('Edit');
+			 	} else {
+			 		$('##editBtnRemoteFeed').html('Create New');
+			 	}
+			}
 
-			$('select[name="sourceid"]').on('change', function() {
-				setLayoutOptions();
-
-				if($('select[name="sourcetype"]').val()=='relatedcontent'){
-					setContentSourceVisibility();
-				}
-			});
+			function setLocalIndexEditOption(){
+				var selector=$('##localindex');
+			 	if(selector.val()){
+			 		$('##editBtnLocalIndex').html('Edit');
+			 	} else {
+			 		$('##editBtnLocalIndex').html('Create New');
+			 	}
+			}
 
 			function setContentSourceVisibility(){
 				<cfif rc.configuratormode neq 'backend'>
@@ -286,9 +302,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 				})
 			}
-		
+
+			$('select[name="sourcetype"]').on('change', function() {
+				setContentSourceVisibility();
+			});
+
+			$('select[name="sourceid"]').on('change', function() {
+				setLayoutOptions();
+
+
+				if($('select[name="sourcetype"]').val()=='relatedcontent'){
+					setContentSourceVisibility();
+				}
+			});
+
+			$('##localindex').change(setLocalIndexEditOption);
+			$('##remotefeed').change(setRemoteFeedEditOption);
+
+
+			$('##editBtnLocalIndex').click(function(){
+					document.location='./?muraAction=cFeed.edit&feedid=' +$('##localindex').val() + '&type=Local&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+			
+			});
+
+			$('##editBtnRemoteFeed').click(function(){
+					document.location='./?muraAction=cFeed.edit&feedid=' +$('##remotefeed').val() + '&type=Remote&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+			
+			});
+
 			setContentSourceVisibility();
 			setLayoutOptions();
+			setLocalIndexEditOption()
+			setRemoteFeedEditOption()
 
 		});
 	</script>

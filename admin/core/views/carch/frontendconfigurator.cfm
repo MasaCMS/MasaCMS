@@ -59,7 +59,8 @@
 							'contentid':'#esapiEncode('javascript',rc.contentID)#',
 							'parentid':'#esapiEncode('javascript',rc.parentID)#',
 							'contenttype':'#esapiEncode('javascript',rc.contenttype)#',
-							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#'
+							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
+							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
 						}
 						
 						<cfset configuratorWidth=600>
@@ -78,6 +79,7 @@
 							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
+								<!---
 								<cfcase value="form,form_responses,component">
 									
 									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
@@ -102,6 +104,7 @@
 										siteManager.initGenericConfigurator(configOptions);
 									</cfif>
 								</cfcase>
+								--->
 								<cfdefaultcase>
 									if(siteManager.objectHasConfigurator(configOptions)){
 										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);

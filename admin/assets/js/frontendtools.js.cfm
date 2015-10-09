@@ -47,6 +47,8 @@
 				window.location=decodeURIComponent(parameters["location"]);
 			} else if(parameters["cmd"] == "setHeight"){
 				resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
+			} else if(parameters["cmd"] == "scrollToTop"){
+				window.scrollTo(0, 0);	
 			} else if(parameters["cmd"] == "autoScroll"){
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
@@ -79,7 +81,7 @@
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
-				}		
+				}
 
 				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node).then(function(){
@@ -90,7 +92,12 @@
 				});
 				
 			} else if (parameters["cmd"]=='reloadObjectAndClose') {
-				var item=mura('[data-objectid="' + parameters.objectid + '"]');
+				if(parameters.instanceid){
+					var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
+				} else {
+					var item=mura('[data-objectid="' + parameters.objectid + '"]');
+				}
+				
 				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
@@ -110,6 +117,7 @@
 	var frontEndModalIE8=document.all && document.querySelector && !document.addEventListener;
 
 	var autoScroll=function(y){
+
 		var st = utility(window).scrollTop();
 	    var o = utility('##frontEndToolsModalBody').offset().top;
 	    var t = utility(window).scrollTop() + 80;

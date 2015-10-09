@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
 	<cfif rc.$.getContentRenderer().useLayoutmanager() and listFind('Form,Component',rc.contentBean.getType())>
-		var cmd={cmd:'reloadObjectAndClose',objectid:'#rc.contentBean.getContentID()#'};
+		var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{objectid:'#rc.contentBean.getContentId()#'}};
 	<cfelse>
 		var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
 	</cfif>
@@ -96,10 +96,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
+					frontEndProxy.post({cmd:'scrollToTop'});
 					frontEndProxy.post(cmd);
 				});
 			}
 			else {
+				frontEndProxy.post({cmd:'scrollToTop'});
 				frontEndProxy.post(cmd);
 			}
 			

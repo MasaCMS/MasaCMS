@@ -63,15 +63,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	function reload(){
 		if (top.location != self.location) {
+
+			<cfif rc.$.getContentRenderer().useLayoutmanager()>
+				var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{sourceid:'#rc.feedBean.getFeedId()#'}};
+
+				<cfif rc.feedBean.getType() eq 'Local'>
+					cmd.params.sourcetype='localindex';
+				<cfelse>
+					cmd.params.sourcetype='remotefeed';
+				</cfif>
+
+			<cfelse>
+				var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
+			</cfif>
+
 			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
-					frontEndProxy.post({cmd:'setLocation',location: encodeURIComponent("#esapiEncode('javascript',href)#")});
+					frontEndProxy.post({cmd:'scrollToTop'});
+					frontEndProxy.post(cmd);
 				});
+			} else {
+				frontEndProxy.post({cmd:'scrollToTop'});
+				frontEndProxy.post(cmd);
 			}
-			else {
-				frontEndProxy.post({cmd:'setLocation',location: encodeURIComponent("#esapiEncode('javascript',href)#")});
-			}
+
 		} else {
 			location.href="#esapiEncode('javascript',href)#";
 		}
