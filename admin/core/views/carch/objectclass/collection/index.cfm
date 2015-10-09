@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="fieldset-wrap row-fluid">
 						<div class="fieldset">
 							<div>
-								<iframe id="configuratorPreview" width="500px" height="700px" frameBorder="0"></iframe>
+								<iframe id="configuratorPreview" width="500px" height="500px" frameBorder="0"></iframe>
 							</div>
 						</div>
 					</div>
