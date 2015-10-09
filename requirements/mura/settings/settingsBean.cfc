@@ -1043,7 +1043,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-
 <cffunction name="getContext" output="false">
 	<cfif getValue('isRemote')>
 		<cfreturn getValue('RemoteContext')>
@@ -1073,17 +1072,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
+	<cfargument name="useProtocol" default="1">
 
 	<cfif not isDefined('arguments.domain')>
 		<cfset arguments.domain=getValue('domain')>
 	</cfif>
 	
 	<cfif arguments.secure or arguments.complete>
-		<cfif arguments.secure>
-			<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
+		<cfif arguments.useProtocol>
+			<cfif arguments.secure>
+				<cfreturn 'https://' & arguments.domain & getServerPort() & getContext()>
+			<cfelse>
+				<cfreturn getScheme() & '://' & arguments.domain & getServerPort() & getContext()>
+			</cfif>
 		<cfelse>
-			<cfreturn getScheme() & '://' & arguments.domain & getServerPort() & getContext()>
+			<cfreturn '//' & arguments.domain & getServerPort() & getContext()>
 		</cfif>
+		
 	<cfelse>
 		<cfreturn getContext()>
 	</cfif>
@@ -1093,6 +1098,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getResourcePath" output="false">
 	<cfargument name="complete" default=0>
 	<cfargument name="domain" default="#getValue('domain')#">
+	<cfargument name="useProtocol" default="1">
 
 	<cfif not isDefined('arguments.domain')>
 		<cfset arguments.domain=getValue('domain')>
@@ -1100,11 +1106,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif getValue('isRemote') and len(getValue('resourceDomain'))>
 		<cfset var configBean=getBean('configBean')>
-		<cfif getValue('resourceSSL')>
-			<cfreturn "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+		
+		<cfif arguments.useProtocol>
+			<cfif getValue('resourceSSL')>
+				<cfreturn "https://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+			<cfelse>
+				<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+			</cfif>
 		<cfelse>
-			<cfreturn "http://" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
+			<cfreturn "//" & getValue('resourceDomain') & configBean.getServerPort() & configBean.getContext()>
 		</cfif>
+		
 	<cfelseif arguments.complete>
 		<cfreturn getWebPath(argumentCollection=arguments)>
 	<cfelse>
@@ -1115,12 +1127,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getRequirementsPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
+	<cfargument name="useProtocol" default="1">
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/requirements">
 </cffunction>
 
 <cffunction name="getPluginsPath" output="false">
 	<cfargument name="secure" default="#getValue('useSSL')#">
 	<cfargument name="complete" default=0>
+	<cfargument name="useProtocol" default="1">
 	<cfreturn getResourcePath(argumentCollection=arguments) & "/plugins">
 </cffunction>
 
