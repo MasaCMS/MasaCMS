@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 </cfoutput>
-<cf_objectconfigurator>
+</cf_objectconfigurator>
 </cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
 <cfabort>
