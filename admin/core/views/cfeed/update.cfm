@@ -65,14 +65,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if (top.location != self.location) {
 
 			<cfif rc.$.getContentRenderer().useLayoutmanager()>
-				var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{sourceid:'#rc.feedBean.getFeedId()#'}};
+				<cfif len(rc.instanceid)>
+					var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{sourceid:'#rc.feedBean.getFeedId()#'}};
 
-				<cfif rc.feedBean.getType() eq 'Local'>
-					cmd.params.sourcetype='localindex';
+					<cfif rc.feedBean.getType() eq 'Local'>
+						cmd.params.sourcetype='localindex';
+					<cfelse>
+						cmd.params.sourcetype='remotefeed';
+					</cfif>
 				<cfelse>
-					cmd.params.sourcetype='remotefeed';
+					var cmd={cmd:'reloadObjectAndClose',objectid:'#rc.feedBean.getFeedId()#'};
 				</cfif>
-
+				
 			<cfelse>
 				var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
 			</cfif>
