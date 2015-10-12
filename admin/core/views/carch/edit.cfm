@@ -398,13 +398,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentBean.getIsNew()) or not rc.contentBean.getIsNew()>
 <cfoutput>
 	<cfif rc.type eq "Component">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcomponent")#</h1>
+		</cfif>
 	<cfelseif rc.type eq "Form">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
+		<cfdump var="#rc.contentBean.exists()#">
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createform")#</h1>
+		</cfif>
 	<cfelseif rc.type eq "Variation">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editvariation")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editvariation")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createvariation")#</h1>
+		</cfif>
 	<cfelse>
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcontent")#</h1>
+		</cfif>
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">

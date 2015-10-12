@@ -2978,6 +2978,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	function resetAsyncObject(el){
 		var self=mura(el);
 
+		self.removeClass('active');
+		self.removeAttr('data-perm');
+
 		if(self.data('object')=='container'){
 			self.find('.mura-object:not([data-object="container"])').html('');
 			self.find('.frontEndToolsModal').remove();
@@ -3240,18 +3243,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			}
 		});
-
-		/*
-		mura.templates={};
-		mura.templates['meta']=function(context){
-			if(context.label){
-				return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
-			} else {
-				return '';
-			}
-				
-		}
-		*/
 
 	}
 

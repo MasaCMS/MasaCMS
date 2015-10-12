@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					</a>
 					</cfif>
-					<cfif len(rc.contentID)>
+					<cfif rc.contentBean.exists()>
 						<cfswitch expression="#rc.type#">		
 						<cfcase value="Form">
 							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfcase>
 						</cfswitch>
-						<cfif rc.contentid neq "">
+						<cfif rc.contentBean.exists()>
 						<cfif started>
 						<div class="btn-group">
 						</cfif>
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtoforms')#
 						</cfif>
 					</a>
-					<cfif len(rc.contentID)>
+					<cfif rc.contentBean.exists()>
 					<cfswitch expression="#rc.type#">
 					<cfcase value="Form">
 						<cfif listFind(session.mura.memberships,'S2IsPrivate')>

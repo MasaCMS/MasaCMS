@@ -1,9 +1,7 @@
 <cfsilent>
-	<cfparam name="objectParams.layout" default="default">
-	<cfparam name="objectParams.addlabel" default="false">
-	<cfparam name="objectParams.label" default="Placeholder">
 	<cfparam name="objectParams.sourcetype" default="">
-	<cfparam name="objectParams.sourceid" default="">
+	<cfparam name="objectParams.source" default="">
+	<cfparam name="objectParams.layout" default="">
 	<cfset objectParams.layout=listFirst(listLast(replace(objectParams.layout, "\", "/", "ALL"),'/'),'.')>
 </cfsilent>
 <cfoutput>

@@ -44,14 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfif isDefined("form.params") and isJSON(form.params)>
-	<cfset objectParams=deserializeJSON(form.params)>
-<cfelse>
-	<cfset objectParams={}>
-</cfif>
-<cfset data=structNew()>
-<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
-
+<cfsilent>
+	<cfif isDefined("form.params") and isJSON(form.params)>
+		<cfset objectParams=deserializeJSON(form.params)>
+	<cfelse>
+		<cfset objectParams={}>
+	</cfif>
+	<cfparam name="objectParams.sourcetype" default="">
+	<cfparam name="objectParams.source" default="">
+	<cfset data=structNew()>
+	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
+</cfsilent>
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectparams#">
 	<cfoutput>
@@ -83,14 +86,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</select>
 								</div>
 							</div>
-							<div id="localindexcontainer" class="control-group sourceid-container" style="display:none">
+							<div id="localindexcontainer" class="control-group source-container" style="display:none">
 								<label class="control-label">Select Local Index</label>
 								<div class="controls">
 									<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnlt=true)>
-									<select name="sourceid" id="localindex">
+									<select name="source" id="localindex">
 										<option value="">Select Local Index</option> 	
 										<cfloop query="rs">
-											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.sourceid> selected</cfif>>#esapiEncode('html',rs.name)#</option>
+											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
 										</cfloop>
 									</select>
 
@@ -100,14 +103,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 								</div>
 							</div>
-							<div id="remotefeedcontainer" class="control-group sourceid-container" style="display:none">
+							<div id="remotefeedcontainer" class="control-group source-container" style="display:none">
 								<label class="control-label">Select Remote Feed</label>
 								<div class="controls">
 									<cfset rs=rc.$.getBean('feedManager').getFeeds(type='remote',siteid=rc.$.event('siteid'),activeOnlt=true)>
-									<select name="sourceid" id="remotefeed">
+									<select name="source" id="remotefeed">
 										<option value="">Select Remote Feed</option> 	
 										<cfloop query="rs">
-											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.sourceid> selected</cfif>>#esapiEncode('html',rs.name)#</option>
+											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
 										</cfloop>
 									</select>
 
@@ -116,16 +119,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								</div>
 							</div>
-							<div id="relatedcontentcontainer" class="control-group sourceid-container" style="display:none">
+							<div id="relatedcontentcontainer" class="control-group source-container" style="display:none">
 								<label class="control-label">Select Related Content Set</label>
 								<div class="controls">
 									<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
 									<cfset relatedContentSets = subtype.getRelatedContentSets()>
-									<select name="sourceid" id="relatedcontent">
+									<select name="source" id="relatedcontent">
 										<option value="">Select Related Content</option> 	
 										<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 											<cfset rcsBean = relatedContentSets[s]/>
-											<option value="#rcsBean.getName()#"<cfif objectParams.sourceid eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
+											<option value="#rcsBean.getName()#"<cfif objectParams.source eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
 										</cfloop>
 									</select>
 								</div>
@@ -221,8 +224,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				</cfif>
 
-				$('select[name="sourceid"]').removeClass('objectParam');
-				$('.sourceid-container').hide();
+				$('select[name="source"]').removeClass('objectParam');
+				$('.source-container').hide();
 
 				var val=$('select[name="sourcetype"]').val();
 
@@ -240,9 +243,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##relatedcontent').addClass('objectParam');
 					<cfif rc.configuratormode neq 'backend'>
 
-					var sourceid=$('##relatedcontent').val();
+					var source=$('##relatedcontent').val();
 
-					if(sourceid){
+					if(source){
 						$('##relatedContentContainer').show();
 						siteManager
 							.loadRelatedContentSets(
@@ -251,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								getType(),
 								getSubType(),
 								getSiteID(),
-								sourceid
+								source
 							);
 					} else {
 						$('##relatedContentContainer').hide();
@@ -265,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				siteManager.updateAvailableObject();
 
-				siteManager.availableObject.params.sourceid = siteManager.availableObject.params.sourceid || '';
+				siteManager.availableObject.params.source = siteManager.availableObject.params.source || '';
 
 				var params=siteManager.availableObject.params;
 				
@@ -307,7 +310,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				setContentSourceVisibility();
 			});
 
-			$('select[name="sourceid"]').on('change', function() {
+			$('select[name="source"]').on('change', function() {
 				setLayoutOptions();
 
 

@@ -44,30 +44,176 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfif isDefined("form.params") and isJSON(form.params)>
-	<cfset objectParams=deserializeJSON(form.params)>
-<cfelse>
-	<cfset objectParams={}>
-</cfif>
-
-<cfparam name="objectParams.class" default="mura-left mura-twelve">
-<cfparam name="objectParams.addlabel" default="false">
-<cfparam name="objectParams.label" default="">
-<cfparam name="objectParams.sourcetype" default="">
-<cfparam name="objectParams.sourceid" default="">
-<cfset data=structNew()>
+<cfsilent>
+	<cfif isDefined("form.params") and isJSON(form.params)>
+		<cfset objectParams=deserializeJSON(form.params)>
+	<cfelse>
+		<cfset objectParams={}>
+	</cfif>
+	<cfparam name="objectParams.sourcetype" default="">
+	<cfparam name="objectParams.source" default="">
+	<cfset data=structNew()>
+	<cfset hasModuleAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
+	<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+</cfsilent>
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectparams#">
-<cfoutput>
-<div id="availableObjectParams"
-	data-object="text" 
-	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.text')#')#" 
-	data-objectid="none">
+	<cfoutput>
+	<div id="availableObjectParams"
+		data-object="collection" 
+		data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.text')#')#" 
+		data-objectid="none">
+		<div class="fieldset-wrap row-fluid">
+			<div class="fieldset">
+				<div class="control-group">
+					<label class="control-label">Content Source</label>
+					<div class="controls">
+						<select class="objectParam" name="sourcetype">
+							<option value="">Select Content Source</option> 	
+							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">Free Text</option>	
+							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="bound">Bound Attribute</option>
+							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">Component</option>
+						</select>
+					</div>
+				</div>
+				<div id="componentcontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Select Component</label>
+					<div class="controls">
+						<cfset rs=rc.$.getBean('contentManager').getList(args={moduleid='00000000000000000000000000000000003',siteid=session.siteid})>
+						<select name="source" id="component">
+							<option value="">Select Component</option> 	
+							<cfloop query="rs">
+								<option value="#rs.contentid#"<cfif rs.contentid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.title)#</option>
+							</cfloop>
+						</select>
 
-</div>
-</cfoutput>
+						<cfif hasModuleAccess>
+							<button class="btn" id="editBtnComponent">Create New</button>
+						</cfif>
+
+					</div>
+				</div>
+				<div id="freetextcontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Set Free Text</label>
+					<div class="controls">
+						<textarea name="source" id="freetext" class="htmlEditor"><cfif objectParams.sourceType eq 'freetext'>#objectParams.source#</cfif></textarea>
+					</div>
+				</div>
+				<div id="boundattributecontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Select Bound Attribute</label>
+					<div class="controls">
+						<cfsilent>
+						<cfset options=arrayNew(2) />
+						<cfset options[1][1]="menutitle">
+						<cfset options[1][2]=application.rbFactory.getKeyValue(session.rb,'params.menutitle')>
+						<cfset options[2][1]="title">
+						<cfset options[2][2]=application.rbFactory.getKeyValue(session.rb,'params.title')>
+						<cfset options[3][1]="credits">
+						<cfset options[3][2]=application.rbFactory.getKeyValue(session.rb,'params.credits')>
+						<cfset options[4][1]="summary">
+						<cfset options[4][2]=application.rbFactory.getKeyValue(session.rb,'params.summary')>
+				
+						<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tcontent",activeOnly=true,type=content.getType(),subtype=content.getSubType())>
+						<cfloop query="rsExtend">
+						<cfset options[rsExtend.currentRow + 4][1]=rsExtend.attribute>
+						<cfset options[rsExtend.currentRow + 4][2]=rsExtend.attribute/>
+						</cfloop>
+					</cfsilent>
+						<select name="source" id="boundattribute">
+							<option value="">Select Bound Attribute</option> 
+							<cfloop from="1" to="#arrayLen(options)#" index="i">
+								<option value="#esapiEncode('html_attr',options[i][1])#"<cfif objectParams.source eq options[i][1]> selected</cfif>>#esapiEncode('html',options[i][2])#</option> 
+							</cfloop>
+						</select>
+					</div>
+				</div>
+			</div>			
+		</div>
+	</div>	
+
+	<script>
+		$(function(){
+
+			function setComponentEditOption(){
+				var selector=$('##component');
+			 	if(selector.val()){
+			 		$('##editBtnComponent').html('Edit');
+			 	} else {
+			 		$('##editBtnComponent').html('Create New');
+			 	}
+			}
+
+			function setContentSourceVisibility(){
+				<cfif rc.configuratormode neq 'backend'>
+
+				function getType(){
+					var type=$('input[name="type"]');
+
+					if(type.length){
+						return type.val();
+					} else {
+						return '#esapiEncode("javascript",content.getType())#';
+					}
+				}
+
+				function getSubType(){
+					var subtype=$('input[name="subtype"]');
+
+					if(subtype.length){
+						return subtype.val();
+					} else {
+						return '#esapiEncode("javascript",content.getSubType())#';
+					}
+				}
+
+				function getContentID(){
+					return '#esapiEncode("javascript",content.getContentID())#';
+				}
+
+				function getContentHistID(){
+					return '#esapiEncode("javascript",content.getContentHistID())#';
+				}
+
+				function getSiteID(){
+					return '#esapiEncode("javascript",rc.siteid)#';
+				}
+				</cfif>
+
+				$('select[name="source"]').removeClass('objectParam');
+				$('.source-container').hide();
+
+				var val=$('select[name="sourcetype"]').val();
+
+				if(val=='freetext'){
+					$('##freetext').addClass('objectParam');
+					$('##freetextcontainer').show();
+				} else if(val=='boundattribute'){
+					$('##boundattribute').addClass('objectParam');
+					$('##boundattributecontainer').show();
+				} else if(val=='component'){
+					$('##component').addClass('objectParam');
+					$('##componentcontainer').show();	
+				}
+			}
+
+			$('select[name="sourcetype"]').on('change', function() {
+				setContentSourceVisibility();
+			});
+
+			$('##component').change(setComponentEditOption);
+			
+			$('##editBtnComponent').click(function(){
+					document.location='./?muraAction=cArch.editLive&contentId=' +  $('##component').val() + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+			
+			});
+
+			setHTMLEditors('##availableObjectParams','#rc.$.siteConfig("themeAssetPath")#');
+			setContentSourceVisibility();
+			setComponentEditOption();
+
+		});
+	</script>
+	</cfoutput>
 </cf_objectconfigurator>
 </cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>

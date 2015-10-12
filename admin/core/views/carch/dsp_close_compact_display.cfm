@@ -87,7 +87,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
 	<cfif rc.$.getContentRenderer().useLayoutmanager() and listFind('Form,Component',rc.contentBean.getType())>
-		var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{objectid:'#rc.contentBean.getContentId()#'}};
+		<cfif rc.contentBean.getType() eq 'Form'>
+			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{objectid:'#rc.contentBean.getContentId()#'}};
+		<cfelse>
+			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{sourceid:'#rc.contentBean.getContentId()#',sourcetype:'component'}};
+		</cfif>
+		
 	<cfelse>
 		var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
 	</cfif>

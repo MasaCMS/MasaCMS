@@ -24,8 +24,6 @@
 		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
 		<cfparam name="attributes.params.addlabel" default="false">
 		<cfparam name="attributes.params.label" default="">
-		<cfparam name="attributes.params.sourcetype" default="">
-		<cfparam name="attributes.params.sourceid" default="">
 	</cfsilent>
 
 	<cfif $.getContentRenderer().useLayoutManager()>
