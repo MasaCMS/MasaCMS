@@ -11,6 +11,8 @@
 	#$.content(objectParams.source)#
 <cfelseif objectParams.sourcetype eq 'freetext'>
 	#objectParams.source#
+<cfelse>
+	<p>This text has not been configured.</p>
 </cfif>
 </div>
 </cfoutput>
