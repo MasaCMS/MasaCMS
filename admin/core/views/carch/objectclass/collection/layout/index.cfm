@@ -2,7 +2,7 @@
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfset params=deserializeJSON(form.params)>
 <cfparam name="params.maxitems" default="5">
-<cfset feed=$.getBean("feed").loadBy(feedID=params.sourceid)>
+<cfset feed=$.getBean("feed").loadBy(feedID=params.source)>
 <cfset feed.set(params)>
 
 </cfsilent>

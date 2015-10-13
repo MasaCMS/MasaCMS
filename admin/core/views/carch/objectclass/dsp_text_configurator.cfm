@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<select class="objectParam" name="sourcetype">
 							<option value="">Select Content Source</option> 	
 							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">Free Text</option>	
-							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="bound">Bound Attribute</option>
+							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">Bound Attribute</option>
 							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">Component</option>
 						</select>
 					</div>

@@ -172,6 +172,13 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
+	function getSaveErrors(){
+		if(!isBoolean(variables.instance.saveErrors)){
+			variables.instance.saveErrors=false;
+		}
+		return variables.instance.saveErrors;
+	}
+
 	function getDbType(){
 		return getDbUtility().getDbType();
 	}
@@ -335,7 +342,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
-		if(!hasErrors() || getValue('saveErrors')){
+		if(!hasErrors() || getSaveErrors()){
 			var props=getProperties();
 			var columns=getColumns();
 			var prop={};
@@ -357,7 +364,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors() || getValue('saveErrors')){
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
@@ -414,7 +421,7 @@ component extends="mura.bean.bean" versioned=false {
 					}
 				}
 
-				if(!hasErrors() || getValue('saveErrors')){
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');

@@ -404,7 +404,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcomponent")#</h1>
 		</cfif>
 	<cfelseif rc.type eq "Form">
-		<cfdump var="#rc.contentBean.exists()#">
 		<cfif rc.contentBean.exists()>
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
 		<cfelse>
