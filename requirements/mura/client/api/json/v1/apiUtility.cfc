@@ -1224,12 +1224,11 @@ component extends="mura.cfobject" {
 		}
 
 		var returnArray=[];
+		var finalArray=[];
 		var itemStruct={};
 		var item='';
-		var subIterator='';
-		var subItem='';
-		var subItemArray=[];
-		var p='';
+		var i1='';
+		var i2='';
 
 		while(iterator.hasNext()){
 			item=iterator.next();
@@ -1250,7 +1249,17 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(iterator,returnArray,'findmany');
+		
+		for(i1 in listToArray(arguments.ids)){
+			for(i2 in returnArray){
+				if(i2.id==i1){
+					arrayAppend(finalArray,i2);
+					break;
+				}
+			}
+		}
+
+		return formatIteratorResult(iterator,finalArray,'findmany');
 	}
 
 	function findQuery(entityName,siteid){

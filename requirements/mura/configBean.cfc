@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
-<cfset variables.instance.scriptProtectExceptions="body" />
+<cfset variables.instance.scriptProtectExceptions="body,source,params" />
 <cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />

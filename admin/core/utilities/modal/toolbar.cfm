@@ -294,13 +294,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="icon-pencil"></i>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="icon-pencil"></i>
+											<cfif useLayoutManager()>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
+											<cfelse>
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#
+											</cfif></a>
 									</li>
 									<cfif this.showInlineEditor>	
 									<li id="adminQuickEdit">
 										<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i>
 										<cfif useLayoutManager()>
-											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-inline')#
+											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
 										<cfelse>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
 										</cfif></a>

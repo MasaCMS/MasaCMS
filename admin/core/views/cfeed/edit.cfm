@@ -810,7 +810,13 @@ jQuery(document).ready(function(){
 <cfset tablist="tabBasic,tabCategorization">
 <cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<cfif rc.compactDisplay eq "true">
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
+	</div>
+<cfelse>
+	<cfinclude template="dsp_secondary_menu.cfm">
+</cfif>
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>

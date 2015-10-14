@@ -5,7 +5,7 @@
 <cfelse>
 	<cfset objectParams={}>
 </cfif>
-
+<cfparam name="objectParams.source" default="">
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectParams#">
@@ -14,7 +14,16 @@
 	data-object="media" 
 	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.media')#')#" 
 	data-objectid="none">
-
+<div class="fieldset-wrap">
+	<div class="fieldset">
+		<div class="control-group">
+			<label class="control-label">Enter Embed Code</label>
+			<div class="controls">
+				<textarea name="source" class="objectParam">#objectParams.source#</textarea>
+			</div>
+		</div>
+	</div>
+</div>
 </div>
 </cfoutput>
 </cf_objectconfigurator>

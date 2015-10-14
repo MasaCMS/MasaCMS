@@ -79,7 +79,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<label class="control-label">Content Source</label>
 								<div class="controls">
 									<select class="objectParam" name="sourcetype">
-										<option value="">Select Content Source</option> 	
+										<option value="">Select Content Source</option>
+										<option <cfif objectParams.sourcetype eq 'childcontent'>selected </cfif>value="childcontent">Child Content</option>
+										<option <cfif objectParams.sourcetype eq 'peers'>selected </cfif>value="peercontent">Peer Content</option>
 										<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">Local Index</option>	
 										<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">Remote Feed</option>
 										<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">Related Content</option>
@@ -125,13 +127,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
 									<cfset relatedContentSets = subtype.getRelatedContentSets()>
 									<select name="source" id="relatedcontent">
-										<option value="">Select Related Content</option> 	
+										<option value="">Select Related Content</option>	
 										<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 											<cfset rcsBean = relatedContentSets[s]/>
 											<option value="#rcsBean.getName()#"<cfif objectParams.source eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
 										</cfloop>
 									</select>
+
+									<button class="btn" id="editBtnRelatedContent">Edit</button>
 								</div>
+								<!---
 								<cfif rc.configuratormode neq 'backend'>
 								<div id="relatedContentContainer">
 									<div id="selectRelatedContent"></div>
@@ -139,6 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</div>
 								<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
 								</cfif>
+								--->
 							</div>
 
 						</div>
@@ -187,6 +193,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	}
 			}
 
+			function setRelatedContentEditOption(){
+				var selector=$('##relatedcontent');
+			 	if(selector.val()){
+			 		$('##editBtnRelatedContent').show();
+			 		$('##editBtnRelatedContent').html('Edit Content');
+			 	} else {
+			 		$('##editBtnRelatedContent').hide();
+			 	}
+			}
 			function setContentSourceVisibility(){
 				<cfif rc.configuratormode neq 'backend'>
 				<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
@@ -241,6 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##selectedRelatedContent').html('');
 					$('##relatedcontentcontainer').show();
 					$('##relatedcontent').addClass('objectParam');
+					<!---
 					<cfif rc.configuratormode neq 'backend'>
 
 					var source=$('##relatedcontent').val();
@@ -261,6 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}	
 					
 					</cfif>
+					--->
 				}
 			}
 
@@ -321,6 +338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			$('##localindex').change(setLocalIndexEditOption);
 			$('##remotefeed').change(setRemoteFeedEditOption);
+			$('##relatedcontent').change(setRelatedContentEditOption);
 
 
 			$('##editBtnLocalIndex').click(function(){
@@ -333,10 +351,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			});
 
+			$('##editBtnRelatedContent').click(function(){
+					document.location='#content.getEditURL(compactDisplay="true")#&instanceid=#esapiEncode("javascript",rc.instanceid)###tabRelatedcontent';
+			
+			});
+
 			setContentSourceVisibility();
 			setLayoutOptions();
 			setLocalIndexEditOption()
 			setRemoteFeedEditOption()
+			setRelatedContentEditOption()
 
 		});
 	</script>
