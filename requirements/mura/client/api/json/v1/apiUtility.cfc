@@ -1249,14 +1249,17 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		
-		for(i1 in listToArray(arguments.ids)){
-			for(i2 in returnArray){
-				if(i2.id==i1){
-					arrayAppend(finalArray,i2);
-					break;
+		if(!len($.event('sort')) && !len($.event('orderby'))){
+			for(i1 in listToArray(arguments.ids)){
+				for(i2 in returnArray){
+					if(i2.id==i1){
+						arrayAppend(finalArray,i2);
+						break;
+					}
 				}
 			}
+		} else {
+			finalArray=returnArray;
 		}
 
 		return formatIteratorResult(iterator,finalArray,'findmany');
