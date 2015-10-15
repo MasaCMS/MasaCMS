@@ -48,6 +48,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="local" default="#structNew()#">
 	<cfset local.pluginEvent="">
 
+	<cfscript>
+		if(server.coldfusion.productname != 'ColdFusion Server'){
+			backportdir='';
+			include "/mura/backport/backport.cfm";
+		} else {
+			backportdir='/mura/backport/';
+			include "#backportdir#backport.cfm";
+		}
+	</cfscript>
+
 	<cflog type="Error" file="exception" text="#exception.stacktrace#">
 
 	<cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>

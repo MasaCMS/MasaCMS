@@ -65,12 +65,12 @@ component extends="mura.bean.bean" versioned=false {
 						variables.instance[prop.name]={};
 					} else if(prop.type eq "array"){
 						variables.instance[prop.name]=[];
-					}
+					} 
 				} else if(prop.persistent){
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
 						variables.instance[prop.column]=createUUID();
-					} else if (listFindNoCase('created,lastupdate',prop.column) && prop.datatype=='datetime' && !(structKeyExists(prop,"default") && prop.default != 'null')){
+					} else if (listFindNoCase('created,lastupdate',prop.column) && (listFindNoCase('datetime,timestamp',prop.datatype) && !(structKeyExists(prop,"default") && prop.default != 'null') || structKeyExists(prop,"default") && prop.default=='now()') ){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){

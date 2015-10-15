@@ -292,7 +292,10 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
-	function get(String property,defaultValue){
+	function get(String property='',defaultValue){
+		if(arguments.property==''){
+			return getAllValues(argumentCollection=arguments);
+		}
 		return getValue(argumentCollection=arguments);
 	}
 

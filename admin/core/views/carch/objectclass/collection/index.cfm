@@ -195,12 +195,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			function setRelatedContentEditOption(){
 				var selector=$('##relatedcontent');
-			 	if(selector.val()){
+			 	//if(selector.val()){
 			 		$('##editBtnRelatedContent').show();
-			 		$('##editBtnRelatedContent').html('Edit Content');
+			 		$('##editBtnRelatedContent').html('Edit');
+			 	/*
 			 	} else {
 			 		$('##editBtnRelatedContent').hide();
 			 	}
+			 	*/
 			}
 			function setContentSourceVisibility(){
 				<cfif rc.configuratormode neq 'backend'>
