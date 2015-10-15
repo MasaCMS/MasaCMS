@@ -598,13 +598,13 @@
 			<script>
 				siteID='#session.siteID#';
 				<cfif session.copySiteID eq rc.siteID>
-				copyContentID = '#session.copyContentID#';
-				copySiteID = '#session.copySiteID#';
-				copyAll = '#session.copyAll#';
+				siteManager.copyContentID = '#session.copyContentID#';
+				siteManager.copySiteID = '#session.copySiteID#';
+				siteManager.copyAll = '#session.copyAll#';
 				<cfelse>
-				copyContentID = '';
-				copySiteID = '';
-				copyAll = 'false';
+				siteManager.copyContentID = '';
+				siteManager.copySiteID = '';
+				siteManager.copyAll = 'false';
 				</cfif>
 			</script>
 		 

@@ -155,11 +155,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
 </cffunction>
 
-<cffunction name="injectMethod" access="public" output="false">
+<cffunction name="injectMethod" access="public" output="false" deprecated="Use inject method">
 	<cfargument name="toObjectMethod" type="string" required="true" />
 	<cfargument name="fromObjectMethod" type="any" required="true" />
-	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
-	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	<cfset inject(toObjectMethod,fromObjectMethod) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="inject" access="public" output="false">
+	<cfargument name="property" type="string" required="true" />
+	<cfargument name="propertValue" type="any" required="true" />
+	<cfset this[ arguments.property ] =  arguments.propertValue  />
+	<cfset variables[ arguments.property ] =  arguments.propertValue />
 	<cfreturn this>
 </cffunction>
 
