@@ -354,7 +354,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			});
 
 			$('##editBtnRelatedContent').click(function(){
-					document.location='#content.getEditURL(compactDisplay="true")#&instanceid=#esapiEncode("javascript",rc.instanceid)###tabRelatedcontent';
+					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("javascript",rc.siteid)#&contenthistid=#esapiEncode("javascript",rc.contenthistid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#';
 			
 			});
 
