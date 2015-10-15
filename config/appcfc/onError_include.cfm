@@ -52,13 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		try{
 			esapiencode('html','test');
 		} catch (Any e){
-			if(server.coldfusion.productname != 'ColdFusion Server'){
-				backportdir='';
-				include '/mura/backport/esapiencode.cfm';
-			} else {
-				backportdir='/mura/backport/';
-				include '/mura/backport/esapiencode.cfm';
-			}
+			include '/mura/backport/esapiencode.cfm';
 		}
 	</cfscript>
 
