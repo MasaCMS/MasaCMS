@@ -598,9 +598,9 @@
 			<script>
 				siteID='#session.siteID#';
 				<cfif session.copySiteID eq rc.siteID>
-				siteManager.copyContentID = '#session.copyContentID#';
-				siteManager.copySiteID = '#session.copySiteID#';
-				siteManager.copyAll = '#session.copyAll#';
+				siteManager.copyContentID = '#esapiEncode("javascript",session.copyContentID)#';
+				siteManager.copySiteID = '#esapiEncode("javascript",session.copySiteID)#';
+				siteManager.copyAll = '#esapiEncode("javascript",session.copyAll)#';
 				<cfelse>
 				siteManager.copyContentID = '';
 				siteManager.copySiteID = '';

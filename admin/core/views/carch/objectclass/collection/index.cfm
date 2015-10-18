@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
+	<cfparam name="objectParams.items" default="#arrayNew(1)#">
 	<cfset data=structNew()>
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
@@ -130,8 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<option value="">Select Related Content</option>	
 										<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 											<cfset rcsBean = relatedContentSets[s]/>
-											<option value="#rcsBean.getName()#"<cfif objectParams.source eq rcsBean.getName()> selected</cfif>>#rcsBean.getName()#</option>
+											<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
 										</cfloop>
+										<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>Custom</option>
 									</select>
 
 									<button class="btn" id="editBtnRelatedContent">Edit</button>
@@ -195,15 +197,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			function setRelatedContentEditOption(){
 				var selector=$('##relatedcontent');
-			 	//if(selector.val()){
+			 	if(selector.val()=='custom'){
 			 		$('##editBtnRelatedContent').show();
 			 		$('##editBtnRelatedContent').html('Edit');
-			 	/*
+			 
 			 	} else {
 			 		$('##editBtnRelatedContent').hide();
 			 	}
-			 	*/
 			}
+
 			function setContentSourceVisibility(){
 				<cfif rc.configuratormode neq 'backend'>
 				<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
@@ -354,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			});
 
 			$('##editBtnRelatedContent').click(function(){
-					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("javascript",rc.siteid)#&contenthistid=#esapiEncode("javascript",rc.contenthistid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#';
+					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("javascript",rc.siteid)#&contenthistid=#esapiEncode("javascript",rc.contenthistid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=' + $('##relatedcontent').val() + '&items=#esapiEncode("javascript",serializeJSON(objectparams.items))#';
 			
 			});
 

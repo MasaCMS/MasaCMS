@@ -82,7 +82,7 @@
 		this.subHead4 = "h5";
 
 		// preloader markup for async objects
-		this.preloaderMarkup='<i class="fa fa-refresh fa-spin"></i>';
+		this.preloaderMarkup='';//'<i class="fa fa-refresh fa-spin"></i>';
 
 		// nav and list item vars
 		this.navWrapperClass = this.generalWrapperClass;

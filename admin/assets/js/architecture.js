@@ -837,10 +837,11 @@ buttons: {
 		});
 	},
 
-	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,rcsname){
+	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,relatedcontentsetid,relateditems){
 		var url = './';
-		rcsname=rcsname||'';
-		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&rcsname=' + rcsname + '&cacheid=' + Math.random();
+		relatedcontentsetid=relatedcontentsetid||'';
+		relateditems=relateditems||'[]';
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&cacheid=' + Math.random();
 		
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');
