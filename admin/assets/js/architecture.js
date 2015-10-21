@@ -2261,8 +2261,8 @@ buttons: {
 
 		// add it.
 
-		if(isUpdate) {
-			myoption = selectedObjects.options[document.getElementById("selectedObjects" + regionid).selectedIndex];
+		if(isUpdate && selectedObjects.selectedIndex != -1) {
+			myoption = selectedObjects.options[selectedObjects.selectedIndex];
 			myoption.text = tmpText;
 			myoption.value = tmpValue;
 		} else {
