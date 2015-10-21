@@ -2865,6 +2865,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					);
 				}
 
+				/*
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
 				find("img")
 					.off(
@@ -2875,6 +2876,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						muraInlineEditor.checkforImageCropHandler
 					);
 				}
+				*/
 			},
 
 			function(){

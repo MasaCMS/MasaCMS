@@ -444,7 +444,7 @@
 									}
 								);
 
-
+								/*
 								item.find("img")
 								.off(
 									'click',
@@ -453,6 +453,7 @@
 									'click',
 									muraInlineEditor.checkforImageCropHandler
 								);
+								*/
 
 								item.find('.mura-object').each(initObject);
 							}

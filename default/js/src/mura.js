@@ -1344,6 +1344,7 @@
 					);
 				}
 
+				/*
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
 				find("img")
 					.off(
@@ -1354,6 +1355,7 @@
 						muraInlineEditor.checkforImageCropHandler
 					);
 				}
+				*/
 			},
 
 			function(){
