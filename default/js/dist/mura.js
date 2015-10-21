@@ -2863,7 +2863,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							openFrontEndToolsModal(this);
 						}
 					);
+				}
 
+				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
+				find("img")
+					.off(
+						'click',
+						muraInlineEditor.checkforImageCropHandler)
+					.on(
+						'click',
+						muraInlineEditor.checkforImageCropHandler
+					);
 				}
 			},
 
@@ -2993,7 +3003,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
-				var content=self.children('div.mura-content');
+				var content=self.children('div.mura-object-content');
 
 				if(content.length){
 					self.data('content',content.html());
@@ -3002,8 +3012,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				content.html('');
 			});
 
-			self.find('.mura-meta').html('');
-			var content=self.children('div.mura-content');
+			self.find('.mura-object-meta').html('');
+			var content=self.children('div.mura-object-content');
 
 			if(content.length){
 				self.data('content',content.html());
@@ -3014,9 +3024,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function unpackContainer(container){
-		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
 		if(container.data('content')){
-			container.children('div.mura-content').html(container.data('content'));
+			container.children('div.mura-object-content').html(container.data('content'));
 		}
 	}
 
@@ -3064,7 +3074,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-meta').html(mura.templates.meta(response));
+					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -3078,7 +3088,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -3093,7 +3103,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			
 			if(obj.data('object')=='folder'){
 				obj.html(layoutmanagertoolbar + obj.html());
 			} else {
@@ -3607,7 +3616,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
 	
-	if( ! window.ljs ){
+	if( ! window.mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement
@@ -4490,6 +4499,19 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
+				
+			});
+			return this;
+			
+		},
+
+		changeElementType:function(type){
+			if(!this.selection.length){
+				return;
+			}
+			
+			this.each(function(el){
+				window.mura.changeElementType(el,type)
 				
 			});
 			return this;

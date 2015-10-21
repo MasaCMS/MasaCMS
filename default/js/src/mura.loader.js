@@ -35,7 +35,7 @@
 	;
 	//avoid multiple inclusion to override current loader but allow tag content evaluation
 	
-	if( ! window.ljs ){
+	if( ! window.mura.ljs ){
 		var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
 			//-- keep trace of header as we will make multiple access to it
 			,header  = D[getElementsByTagName]("head")[0] || D.documentElement

@@ -809,7 +809,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
 	
-	<cfif not ListFindNoCase('jpg,jpeg,png,gif', arguments.fileEXT)>
+	<cfif not ListFindNoCase('jpg,jpeg,png,gif,svg', arguments.fileEXT)>
 		<cfreturn ''>
 	</cfif>
 	
@@ -839,56 +839,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.direct and listFindNoCase("fileDir,s3",application.configBean.getFileStore())>
-
-		<cfif arguments.size eq 'undefined'>
-			<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
-				<cfset arguments.size ='Custom'>
-			<cfelse>
-				<cfset arguments.size ='Large'>
-			</cfif>
-		</cfif>
-
-		<cfif arguments.size neq 'Custom'>			
-			<cfset arguments.width="auto">
-			<cfset arguments.height="auto">
+		<cfif arguments.fileEXT eq 'svg'>
+			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & "." & arguments.fileEXT>
 		<cfelse>
-			<cfif not isNumeric(arguments.width)>
+			<cfif arguments.size eq 'undefined'>
+				<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
+					<cfset arguments.size ='Custom'>
+				<cfelse>
+					<cfset arguments.size ='Large'>
+				</cfif>
+			</cfif>
+
+			<cfif arguments.size neq 'Custom'>			
 				<cfset arguments.width="auto">
-			</cfif>
-
-			<cfif not isNumeric(arguments.height)>
 				<cfset arguments.height="auto">
-			</cfif>
-
-			<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
-				<cfset arguments.size="Custom">
-			</cfif>
-
-			<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
-				<cfset arguments.size="small">
-			</cfif>
-		</cfif>
-		
-		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
-			<cfif arguments.size eq "large">
-				<cfset imgSuffix="">
 			<cfelse>
-				<cfset imgSuffix="_" & lcase(arguments.size)>
+				<cfif not isNumeric(arguments.width)>
+					<cfset arguments.width="auto">
+				</cfif>
+
+				<cfif not isNumeric(arguments.height)>
+					<cfset arguments.height="auto">
+				</cfif>
+
+				<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
+					<cfset arguments.size="Custom">
+				</cfif>
+
+				<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
+					<cfset arguments.size="small">
+				</cfif>
 			</cfif>
-			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
-		<cfelseif arguments.size neq 'custom'>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
-		<cfelse>
-			<cfif not len(arguments.width)>
-				<cfset arguments.width="auto">
+			
+			<cfif listFindNoCase('small,medium,large,source',arguments.size)>
+				<cfif arguments.size eq "large">
+					<cfset imgSuffix="">
+				<cfelse>
+					<cfset imgSuffix="_" & lcase(arguments.size)>
+				</cfif>
+				<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
+			<cfelseif arguments.size neq 'custom'>
+				<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+			<cfelse>
+				<cfif not len(arguments.width)>
+					<cfset arguments.width="auto">
+				</cfif>
+				<cfif not len(arguments.height)>
+					<cfset arguments.height="auto">
+				</cfif>
+				<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 			</cfif>
-			<cfif not len(arguments.height)>
-				<cfset arguments.height="auto">
-			</cfif>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 		</cfif>
 	<cfelse>
-		<cfif arguments.size eq "large">
+		<cfif arguments.size eq "large" or arguments.fileExt eq 'svg'>
 			<cfset imgSuffix="file">
 		<cfelse>
 			<cfset imgSuffix=arguments.size>

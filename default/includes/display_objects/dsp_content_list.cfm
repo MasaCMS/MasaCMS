@@ -118,7 +118,7 @@
 			<cfset arguments.class=listAppend(arguments.class,"last"," ")/> 
 		</cfif>
 			
-		<cfset arguments.hasImage=arguments.hasImages and len(arguments.item.getValue('fileID')) and showImageInList(arguments.item.getValue('fileEXT')) />
+		<cfset arguments.hasImage=arguments.hasImages and len(arguments.item.getValue('fileID')) and variables.$.showImageInList(arguments.item.getValue('fileEXT')) />
 			
 		<cfif arguments.hasImage>
 			<cfset arguments.class=listAppend(arguments.class,"hasImage"," ")>

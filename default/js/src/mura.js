@@ -1342,7 +1342,17 @@
 							openFrontEndToolsModal(this);
 						}
 					);
+				}
 
+				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
+				find("img")
+					.off(
+						'click',
+						muraInlineEditor.checkforImageCropHandler)
+					.on(
+						'click',
+						muraInlineEditor.checkforImageCropHandler
+					);
 				}
 			},
 
@@ -1472,7 +1482,7 @@
 			
 			self.find('.mura-object[data-object="container"]').each(function(){
 				var self=mura(this);
-				var content=self.children('div.mura-content');
+				var content=self.children('div.mura-object-content');
 
 				if(content.length){
 					self.data('content',content.html());
@@ -1481,8 +1491,8 @@
 				content.html('');
 			});
 
-			self.find('.mura-meta').html('');
-			var content=self.children('div.mura-content');
+			self.find('.mura-object-meta').html('');
+			var content=self.children('div.mura-object-content');
 
 			if(content.length){
 				self.data('content',content.html());
@@ -1493,9 +1503,9 @@
 	}
 
 	function unpackContainer(container){
-		container.html('<div class="mura-meta"></div><div class="mura-content"></div>');
+		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
 		if(container.data('content')){
-			container.children('div.mura-content').html(container.data('content'));
+			container.children('div.mura-object-content').html(container.data('content'));
 		}
 	}
 
@@ -1543,7 +1553,7 @@
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-meta').html(mura.templates.meta(response));
+					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -1557,7 +1567,7 @@
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-meta').html(mura.templates.meta(obj.data()));
+				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -1572,7 +1582,6 @@
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			
 			if(obj.data('object')=='folder'){
 				obj.html(layoutmanagertoolbar + obj.html());
 			} else {

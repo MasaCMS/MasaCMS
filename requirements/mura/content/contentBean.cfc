@@ -1372,7 +1372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasImage">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif',getValue('fileEXT'))>
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT'))>
 </cffunction>
 
 	<cffunction name="getStatusID" output="false">

@@ -9,72 +9,19 @@
 <cfoutput>
 	<cfif feed.getType() eq "local">		
 		<div class="control-group">
-			<div class="span4">
-		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-				<div class="controls">
-						<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-							<cfloop list="Small,Medium,Large" index="i">
-								<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
-							</cfloop>
-					
-							<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-													
-							<cfloop condition="imageSizes.hasNext()">
-								<cfset image=imageSizes.next()>
-								<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-							</cfloop>
-								<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
-						</select>
-				</div>
-			</div>
-			<span id="feedCustomImageOptions" class=""<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>				
-				<div class="span4">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-					<div class="controls">
-						<input class="objectParam span6" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
-					</div>
-				</div>
-				
-				<div class="span4">	
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-					<div class="controls">
-			      		<input class="objectParam span6" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-			      	</div>
-			      </div>
-		     </span>
-		      
-		</div>
-		
-		<div class="control-group">
-			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
-			<div class="controls">
-				<label class="radio inline">
-				<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
-					#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			<div class="span12">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
 				</label>
-				<label class="radio inline">
-				<input name="displayName" data-displayobjectparam="displayName" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>
-				#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-				</label> 
+				<div class="controls">
+					<select name="layout" class="objectParam">
+						<cfloop list="a,b,c,d,e" index="i">
+							<option name="#i#"<cfif feed.getLayout() eq i> selected</cfif>>#i#</option>
+						</cfloop>
+					</select>
+				</div>
 			</div>
 		</div>
-		<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
-			<div>
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-				<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#esapiEncode('html_attr',feed.getAltName())#" maxlength="250">
-				  </div>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label">
-				#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
-			</label>
-			<div class="controls">
-				<input name="cssclass" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getCssClass())#" maxlength="255">
-			</div>
-		</div>
-				
 		<div class="control-group">
 			<div class="span6">
 				<label class="control-label">
@@ -133,7 +80,9 @@
 					
 				<ul id="availableListSort" class="displayListSortOptions">
 					<cfloop list="#availableList#" index="i">
-						<li class="ui-state-default">#trim(i)#</li>
+						<cfif i neq 'image'>
+							<li class="ui-state-default">#trim(i)#</li>
+						</cfif>
 					</cfloop>
 				</ul>
 											

@@ -3,8 +3,8 @@
 	<cfparam name="objectParams.source" default="">
 </cfsilent>
 <cfoutput>
-<div class="mura-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
-<div class="mura-content">
+<div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
+<div class="mura-object-content">
 <cfif objectParams.sourceType eq 'component'>
 	#$.dspObject(objectid=objectParams.source,object='component')#
 <cfelseif objectParams.sourceType eq 'boundattribute'>

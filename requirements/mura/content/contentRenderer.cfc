@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.suppressWhitespace=true/>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
-<cfset this.showMetaList="jpg,jpeg,png,gif">
-<cfset this.imageInList="jpg,jpeg,png,gif">
+<cfset this.showMetaList="jpg,jpeg,png,gif,svg">
+<cfset this.imageInList="jpg,jpeg,png,gif,svg">
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
@@ -1947,20 +1947,22 @@ Display Objects
 
 <cffunction name="getContentListProperty" output="false">
 	<cfargument name="property" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
-	<cfset arguments.contentListPropertyMap=this.contentListPropertyMap>
 	<cfreturn variables.contentRendererUtility.getContentListProperty(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getContentListPropertyValue" output="false">
 	<cfargument name="property" default="">
 	<cfargument name="value" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListPropertyValue(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getContentListLabel" output="false">
 	<cfargument name="property" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListLabel(argumentCollection=arguments)>
 </cffunction>
@@ -1968,6 +1970,7 @@ Display Objects
 <cffunction name="getContentListAttributes" returntype="string" output="false">
 	<cfargument name="property" default="">
 	<cfargument name="class" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListAttributes(argumentCollection=arguments)>
 </cffunction>

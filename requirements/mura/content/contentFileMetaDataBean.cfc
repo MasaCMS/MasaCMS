@@ -93,6 +93,11 @@ component extends="mura.bean.beanORMVersioned"
 
 	function hasImageFileExt(){
 
+		return listFindNoCase("png,jpg,jpeg,svg,gif",getValue('fileExt'));
+	}
+
+	function hasCroppableImageFileExt(){
+
 		return listFindNoCase("png,jpg,jpeg",getValue('fileExt'));
 	}
 

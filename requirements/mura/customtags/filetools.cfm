@@ -36,7 +36,9 @@
 
 	<cfif fileMetaData.hasImageFileExt()>
 		<div class="btn-group imageToolsButtonGroup">
+			<cfif fileMetaData.hasCroppableImageFileExt()>
 			<a class="btn" href="./?muraAction=cArch.imagedetails&contenthistid=#attributes.bean.getContentHistID()#&siteid=#attributes.bean.getSiteID()#&fileid=#attributes.bean.getvalue(attributes.property)#&compactDisplay=#urlEncodedFormat(attributes.compactDisplay)#"><i class="icon-crop"></i></a>
+			</cfif>
 			<a class="btn" href="" onclick="return openFileMetaData('#fileMetaData.getContentHistID()#','#fileMetaData.getFileID()#','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
 	</cfif>
 	<cfif attributes.property neq "fileid" or (attributes.property eq "fileid"  and attributes.bean.getType() neq 'File') >

@@ -483,8 +483,9 @@
 		<cfargument name="property" default="">
 		<cfargument name="value" default="">
 		<cfargument name="renderer">
+		<cfargument name="contentListPropertyMap">
 
-		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property)>
+		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property,arguments.contentListPropertyMap)>
 		<cfif structKeyExists(propStruct,arguments.value)>
 			<cfreturn propStruct[arguments.value]>
 		<cfelse>
@@ -495,8 +496,9 @@
 	<cffunction name="getContentListLabel" output="false">
 		<cfargument name="property" default="">
 		<cfargument name="renderer">
+		<cfargument name="contentListPropertyMap">
 
-		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property)>
+		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property,arguments.contentListPropertyMap)>
 		<cfset var returnString="">
 
 		<cfif structKeyExists(propStruct,"showLabel") and propStruct.showLabel>
@@ -504,7 +506,7 @@
 			<cfif structKeyExists(propStruct,"labelEl")>
 				<cfset labelEl=propStruct.labelEl>
 			</cfif>
-			<cfset returnString="<" & arguments.renderer.getContentListPropertyValue(labelEl,'tag') &  arguments.renderer.getContentListAttributes(labelEl)& ">">
+			<cfset returnString="<" & arguments.renderer.getContentListPropertyValue(labelEl,'tag',arguments.contentListPropertyMap) &  arguments.renderer.getContentListAttributes(labelEl,'',arguments.contentListPropertyMap) & ">">
 			<cfif structKeyExists(propStruct, "rbKey")>
 				<cfset returnString=returnString & htmlEditFormat(arguments.renderer.getMuraScope().rbKey(propStruct.rbkey))>
 			<cfelseif structKeyExists(propStruct, "label")>
@@ -515,7 +517,7 @@
 			<cfif structKeyExists(propStruct, "labelDelim")>
 				<cfset returnString=returnString & propStruct.labelDelim>
 			</cfif>
-			<cfset returnString=returnString & "</" & arguments.renderer.getContentListPropertyValue(labelEl,'tag') & ">">
+			<cfset returnString=returnString & "</" & arguments.renderer.getContentListPropertyValue(labelEl,'tag',arguments.contentListPropertyMap) & ">">
 		</cfif>
 		
 		<cfreturn returnString>
@@ -524,12 +526,13 @@
 	<cffunction name="getContentListAttributes" returntype="string" output="false">
 		<cfargument name="property" default="">
 		<cfargument name="class" default="">
+		<cfargument name="contentListPropertyMap">
 		<cfargument name="renderer">
-
-		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property)>
+		
+		<cfset var propStruct=arguments.renderer.getContentListProperty(arguments.property,arguments.contentListPropertyMap)>
 		<cfset var returnstring="">
 		<cfset var propclass="">
-
+	
 		<cfif structKeyExists(propStruct,"class")>
 			<cfset propclass=propStruct.class>
 		<cfelseif not listFindNoCase('containerel,itemel',arguments.property)>
@@ -545,7 +548,7 @@
 		<cfif structKeyExists(propStruct,"attributes")>
 			<cfset returnstring= trim(returnstring & " " & propStruct.attributes)>
 		</cfif>
-
+	
 		<cfreturn returnstring>
 	</cffunction>
 

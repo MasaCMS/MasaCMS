@@ -444,6 +444,16 @@
 									}
 								);
 
+
+								item.find("img")
+								.off(
+									'click',
+									muraInlineEditor.checkforImageCropHandler)
+								.on(
+									'click',
+									muraInlineEditor.checkforImageCropHandler
+								);
+
 								item.find('.mura-object').each(initObject);
 							}
 						}
@@ -1114,8 +1124,28 @@
 		},
 		objectHasConfigurator:function(displayObject){
 			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
+		},
+		checkforImageCropHandler:function(event){
+			if(window.mura && window.mura.editing && mura(this).data('fileid')){
+				
+				var path=mura(this).attr('src').split( '/' );
+				var filename=path[path.length-1].split('.')[0];
+				var fileInfo=filename.split('_');
+				var fileid=fileInfo[0];
+				
+				if(fileid.length==35){
+					event.preventDefault();
+					fileInfo.shift()
+				
+					var name=fileInfo.join('_');
+
+					alert(fileid + ' ' + name );
+				}
+				
+			}
 		}
-	};
+		
+	}
 
 	<cfoutput>
 	<cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>

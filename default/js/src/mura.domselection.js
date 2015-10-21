@@ -696,6 +696,19 @@
 			
 		},
 
+		changeElementType:function(type){
+			if(!this.selection.length){
+				return;
+			}
+			
+			this.each(function(el){
+				window.mura.changeElementType(el,type)
+				
+			});
+			return this;
+			
+		},
+
         val:function(value){
 			if(!this.selection.length){
 				return;
