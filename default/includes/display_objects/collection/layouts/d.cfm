@@ -10,7 +10,7 @@
 			
 			<div class="mura-item-content">
 				<cfif item.hasImage()>
-					<a href="#item.getURL()#"><img src="#item.getImageURL(height=600,width=1000)#" data-fileid="#esapiEncode('html_attr',item.getFileID())#"></a>
+					<a href="#item.getURL()#"><img src="#item.getImageURL(height=600,width=1000)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 				</cfif>
 			</div>
 
@@ -34,7 +34,7 @@
 			
 			<div class="mura-item-content">
 				<cfif item.hasImage()>
-					<a href="#item.getURL()#"><img src="#item.getImageURL(height=300,width=500)#" data-fileid="#esapiEncode('html_attr',item.getFileID())#"></a>
+					<a href="#item.getURL()#"><img src="#item.getImageURL(height=300,width=500)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 				</cfif>
 			</div>
 

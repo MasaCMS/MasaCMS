@@ -1139,16 +1139,22 @@
 				
 				if(fileid.length==35 && (fileext=='jpg' || fileext=='jpeg' || fileext=='png')){
 					fileInfo.shift()
-				
-					var size=fileInfo.join('_');
-
-					img.closest('a').off().on('click',function(e){e.preventDefault()});
-					img=mura('img[data-instanceid="' + instanceid + '"]' );
-
-					mura('img[data-instanceid="' + instanceid + '"]' ).on('click',function(){
+					
+					function initCropper(){
 						openFrontEndToolsModal({
-							href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
-						});
+								href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
+							});
+					}
+
+					var size=fileInfo.join('_');
+					img.css({display:'inline block;'})
+					img.closest('a').off();
+					img=mura('img[data-instanceid="' + instanceid + '"]' );
+					img.on('click',function(e){e.preventDefault();});
+					
+					
+					mura('img[data-instanceid="' + instanceid + '"]' ).on('click',function(){
+						initCropper();
 					});
 				}
 				

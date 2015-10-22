@@ -1039,8 +1039,8 @@ and tclassextendattributes.type='File'
 			and tclassextend.isActive=1
 		</cfif>
 
-		and tclassextend.adminonly!=1
-		and tclassextendattributes.adminonly!=1
+		and (tclassextend.adminonly!=1 or tclassextend.adminonly is null)
+		and (tclassextendattributes.adminonly!=1 or tclassextendattributes.adminonly is null)
 
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>

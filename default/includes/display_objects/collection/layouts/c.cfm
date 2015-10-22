@@ -10,7 +10,7 @@
 			
 			<div class="mura-item-content">
 				<cfif item.hasImage()>
-					<a href="#item.getURL()#"><img src="#item.getImageURL(height=150,width=250)#"></a>
+					<a href="#item.getURL()#"><img src="#item.getImageURL(height=150,width=250)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 				</cfif>
 			</div>
 
