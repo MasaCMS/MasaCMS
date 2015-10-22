@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfabort>
 	</cfif>
 	<cfset feedIt = application.serviceFactory.getBean("contentIterator").setQuery(rs)>
-	<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#application.settingsManager.getSite(feedBean.getSiteID()).getDisplayPoolID()#.includes.contentRenderer").init() />
+	<cfset renderer = application.serviceFactory.getBean('$').getContentRenderer() />
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920">
 			<cfinclude template="rss0920.cfm">
