@@ -1345,16 +1345,10 @@
 				}
 
 				
-				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
+				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
 					
 					find("img").each(function(){
-						mura(this).off(
-							'click',
-							muraInlineEditor.checkforImageCropHandler)
-						.on(
-							'click',
-							muraInlineEditor.checkforImageCropHandler
-						);
+						 window.muraInlineEditor.checkforImageCroppers(this);
 					});
 						
 				}
