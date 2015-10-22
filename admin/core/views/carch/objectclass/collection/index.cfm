@@ -81,8 +81,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<div class="controls">
 									<select class="objectParam" name="sourcetype">
 										<option value="">Select Content Source</option>
-										<option <cfif objectParams.sourcetype eq 'childcontent'>selected </cfif>value="childcontent">Child Content</option>
-										<option <cfif objectParams.sourcetype eq 'peers'>selected </cfif>value="peercontent">Peer Content</option>
 										<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">Local Index</option>	
 										<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">Remote Feed</option>
 										<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">Related Content</option>

@@ -773,9 +773,12 @@ buttons: {
 		});
 	},
 	
-	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch) {
+	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external) {
+		if(typeof external == 'undefined'){
+			external =true;
+		}
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -832,16 +835,21 @@ buttons: {
 					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
 				}
 				$('#mura-rc-quickedit').hide();				
-				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching);
+				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external);
 			});
 		});
 	},
 
-	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,relatedcontentsetid,relateditems){
+	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,relatedcontentsetid,relateditems,external){
 		var url = './';
 		relatedcontentsetid=relatedcontentsetid||'';
 		relateditems=relateditems||'[]';
-		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&cacheid=' + Math.random();
+	
+		if(typeof external == 'undefined'){
+			external =true;
+		}
+
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&external=' + external +'&cacheid=' + Math.random();
 		
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -852,7 +860,8 @@ buttons: {
 			}
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
-			siteManager.setupRCSortable(contentid);
+
+			siteManager.setupRCSortable(contentid,external);
 		});
 
 	},
@@ -918,7 +927,11 @@ buttons: {
 		});
 	},
 
-	setupRCSortable: function(contentid) {
+	setupRCSortable: function(contentid,external) {
+		if(typeof external == 'undefined'){
+			external =true;
+		}
+		
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
@@ -937,7 +950,7 @@ buttons: {
 			cancel: "li.empty"
 		}).disableSelection();
 	
-		siteManager.loadRelatedContent(contentid,siteid, 1, '', false);
+		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external);
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();
