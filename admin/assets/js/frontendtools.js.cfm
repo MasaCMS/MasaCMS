@@ -101,6 +101,16 @@
 				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
+			} else if(parameters["cmd"] == "setImageSrc"){
+				utility('img[data-instanceid="' + parameters.instanceid + '"]')
+					.attr('src',parameters.src)
+					.off(
+						'click',
+						muraInlineEditor.checkforImageCropHandler)
+					.on(
+						'click',
+						muraInlineEditor.checkforImageCropHandler
+					);;
 			}
 		}			
 	}
@@ -444,16 +454,17 @@
 									}
 								);
 
-								/*
-								item.find("img")
-								.off(
-									'click',
-									muraInlineEditor.checkforImageCropHandler)
-								.on(
-									'click',
-									muraInlineEditor.checkforImageCropHandler
-								);
-								*/
+
+				item.find("img").each(function(){
+					//mura(this).closest('a').on('click',function(e){e.preventDefault()})
+					mura(this).off(
+						'click',
+						muraInlineEditor.checkforImageCropHandler)
+					.on(
+						'click',
+						muraInlineEditor.checkforImageCropHandler
+					);
+				});
 
 								item.find('.mura-object').each(initObject);
 							}
@@ -1127,23 +1138,42 @@
 			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
 		},
 		checkforImageCropHandler:function(event){
-			if(window.mura && window.mura.editing && mura(this).data('fileid')){
-				
-				var path=mura(this).attr('src').split( '/' );
-				var filename=path[path.length-1].split('.')[0];
+
+			if(window.mura && window.mura.editing){
+				var img=mura(this);
+					img.data('instanceid',mura.createUUID());
+				var path=img.attr('src').split( '?' )[0].split('/');
+				var fileParts=path[path.length-1].split('.');
+				var filename=fileParts[0];
+				var fileext=fileParts[1].toLowerCase();
 				var fileInfo=filename.split('_');
 				var fileid=fileInfo[0];
 				
-				if(fileid.length==35){
+				if(fileid.length==35 && (fileext=='jpg' || fileext=='jpeg' || fileext=='png')){
 					event.preventDefault();
 					fileInfo.shift()
 				
-					var name=fileInfo.join('_');
+					var size=fileInfo.join('_');
 
-					alert(fileid + ' ' + name );
+					openFrontEndToolsModal({
+						href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
+					});
 				}
 				
 			}
+		},
+		reloadImg:function(img) {
+
+		   var src = img.src;
+		 
+		   var pos = img.indexOf('?');
+		   if (pos >= 0) {
+		      src = src.substr(0, pos);
+		   }
+			
+		   img.src = src + '?v=' + Math.random();
+
+		   return false;
 		}
 		
 	}

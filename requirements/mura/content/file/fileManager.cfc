@@ -953,11 +953,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 			<cfelse>
 				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
-				<cfset variables.imageProcessor.resizeImage(
-					image=file,
-					height=customImageSize.getHeight(),
-					width=customImageSize.getWidth()
-				)>
+				<cfif customImageSize.exists()>
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				<cfelse>
+					<!--- Assume it's an adhoc custom size with HX_WX name --->
+					<cfset customImageSize.setName(arguments.size)>
+					<cfset customImageSize.parseName()>
+					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				</cfif>
+				
 			</cfif>
 		<cfelse>
 			<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
@@ -969,11 +982,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 			<cfelse>
 				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
-				<cfset variables.imageProcessor.resizeImage(
+				<cfif customImageSize.exists()>
+					<cfset variables.imageProcessor.resizeImage(
 					image=file,
 					height=customImageSize.getHeight(),
 					width=customImageSize.getWidth()
 				)>
+				<cfelse>
+					<!--- Assume it's an adhoc custom size with HX_WX name --->
+					<cfset customImageSize.setName(arguments.size)>
+					<cfset customImageSize.parseName()>
+					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				</cfif>
+				
 			</cfif>
 		</cfif>
 

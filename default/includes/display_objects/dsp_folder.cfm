@@ -59,7 +59,7 @@
 		 <cfset objectparams.async=true>
 	<cfelse>
 		<cfoutput>
-		<div class="mura-async-object" 
+		<div class="mura-object mura-async-object" 
 			data-object="folder"
 			data-objectname="Folder"
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#" 

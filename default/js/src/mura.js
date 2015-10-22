@@ -1344,18 +1344,21 @@
 					);
 				}
 
-				/*
+				
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCropHandler){
-				find("img")
-					.off(
-						'click',
-						muraInlineEditor.checkforImageCropHandler)
-					.on(
-						'click',
-						muraInlineEditor.checkforImageCropHandler
-					);
+					
+					find("img").each(function(){
+						mura(this).off(
+							'click',
+							muraInlineEditor.checkforImageCropHandler)
+						.on(
+							'click',
+							muraInlineEditor.checkforImageCropHandler
+						);
+					});
+						
 				}
-				*/
+				
 			},
 
 			function(){

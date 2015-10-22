@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.viewcontent')#
 						</a>
 					</cfif>
-				<cfelse>
+				<cfelseif rc.compactDisplay eq 'false'>
 					<!--- Back --->
 					<a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>

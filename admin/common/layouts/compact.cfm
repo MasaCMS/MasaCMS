@@ -154,7 +154,7 @@
 						if(document.all){
 							return Math.max(document.body.scrollHeight, document.body.offsetHeight);
 						} else {
-							return Math.min(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+							return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
 						}
 					}
 

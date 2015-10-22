@@ -183,4 +183,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="parseName" output="false">
+	<cfset var param=listFirst(getValue('name'),'-')>
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+
+	<cfset param=listLast(getValue('name'),'-')>
+
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+</cffunction>
 </cfcomponent>
