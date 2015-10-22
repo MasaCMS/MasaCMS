@@ -104,13 +104,7 @@
 			} else if(parameters["cmd"] == "setImageSrc"){
 				utility('img[data-instanceid="' + parameters.instanceid + '"]')
 					.attr('src',parameters.src)
-					.off(
-						'click',
-						muraInlineEditor.checkforImageCropHandler)
-					.on(
-						'click',
-						muraInlineEditor.checkforImageCropHandler
-					);;
+					.each(muraInlineEditor.checkForImageCroppers);
 			}
 		}			
 	}
@@ -433,6 +427,8 @@
 
 				utility(".mura-sidebar").addClass('active');
 
+				utility("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+
 				function initObject(){
 					var item=utility(this);
 					var region=item.closest(".mura-region-local");
@@ -455,16 +451,7 @@
 								);
 
 
-				item.find("img").each(function(){
-					//mura(this).closest('a').on('click',function(e){e.preventDefault()})
-					mura(this).off(
-						'click',
-						muraInlineEditor.checkforImageCropHandler)
-					.on(
-						'click',
-						muraInlineEditor.checkforImageCropHandler
-					);
-				});
+								item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
 
 								item.find('.mura-object').each(initObject);
 							}
@@ -1137,11 +1124,12 @@
 		objectHasConfigurator:function(displayObject){
 			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
 		},
-		checkforImageCropHandler:function(event){
+		checkforImageCroppers:function(el){
 
 			if(window.mura && window.mura.editing){
-				var img=mura(this);
-					img.data('instanceid',mura.createUUID());
+				var img=mura(el);
+				var instanceid=mura.createUUID();
+					img.data('instanceid',instanceid);
 				var path=img.attr('src').split( '?' )[0].split('/');
 				var fileParts=path[path.length-1].split('.');
 				var filename=fileParts[0];
@@ -1150,13 +1138,17 @@
 				var fileid=fileInfo[0];
 				
 				if(fileid.length==35 && (fileext=='jpg' || fileext=='jpeg' || fileext=='png')){
-					event.preventDefault();
 					fileInfo.shift()
 				
 					var size=fileInfo.join('_');
 
-					openFrontEndToolsModal({
-						href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
+					img.closest('a').off().on('click',function(e){e.preventDefault()});
+					img=mura('img[data-instanceid="' + instanceid + '"]' );
+
+					mura('img[data-instanceid="' + instanceid + '"]' ).on('click',function(){
+						openFrontEndToolsModal({
+							href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
+						});
 					});
 				}
 				

@@ -3892,21 +3892,21 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		each:function(fn){
-			this.selection.forEach( function(el,idx){
-				fn.call(el,el,idx);
+			this.selection.forEach( function(el,idx,array){
+				fn.call(el,el,idx,array);
 			});
 			return this;
 		},
 
 		filter:function(fn){
-			return window.mura(this.selection.filter( function(el,idx){
-				return fn.call(el,el,idx);
+			return window.mura(this.selection.filter( function(el,idx,array){
+				return fn.call(el,el,idx,array);
 			}));
 		},
 
 		map:function(fn){
-			return window.mura(this.selection.map( function(el,idx){
-				return fn.call(el,el,idx);
+			return window.mura(this.selection.map( function(el,idx,array){
+				return fn.call(el,el,idx,array);
 			}));
 		},
 
@@ -4001,8 +4001,20 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		off:function(eventName,fn){
-			this.each(function(el){
-				el.removeEventListener(eventName,fn);
+			this.each(function(el,idx,array){
+				if(typeof eventName != 'undefined'){
+					if(typeof fn != 'undefined'){
+						el.removeEventListener(eventName,fn);
+					} else {
+						el[eventName]=null;
+					}
+				} else {
+					var elClone = el.cloneNode(true);
+					el.parentNode.replaceChild(elClone, el);
+					array[idx]=elClone;
+
+				}
+					
 			});
 			return this;
 		},
