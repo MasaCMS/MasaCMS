@@ -1,6 +1,7 @@
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="free">
 	<cfparam name="objectParams.source" default="">
+	<cfparam name="objectParams.render" default="server">
 </cfsilent>
 <cfoutput>
 <div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>

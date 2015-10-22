@@ -4,7 +4,7 @@
 	<cfsilent>
 		<cfset item=arguments.iterator.next()>
 	</cfsilent>
-	<div class="mura-collection-item" data-contentid="#esapiEncode('html_attr',item.getContentID())#" data-contenthistid="#esapiEncode('html_attr',item.getContentHistID())#" data-siteid="#esapiEncode('html_attr',item.getSiteID())#">
+	<div class="mura-collection-item">
 		
 		<div class="mura-collection-item__holder">
 			
@@ -28,7 +28,7 @@
 	<cfsilent>
 		<cfset item=arguments.iterator.next()>		
 	</cfsilent>
-	<div class="mura-collection-item" data-contentid="#esapiEncode('html_attr',item.getContentID())#" data-contenthistid="#esapiEncode('html_attr',item.getContentHistID())#" data-siteid="#esapiEncode('html_attr',item.getSiteID())#">
+	<div class="mura-collection-item">
 		
 		<div class="mura-collection-item__holder">
 			

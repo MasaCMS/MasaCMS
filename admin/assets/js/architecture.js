@@ -1145,7 +1145,7 @@ buttons: {
 		}
 
 		this.checkExtendSetTargeting();
-		setHTMLEditors(context, themeAssetPath);
+		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
 		setColorPickers(".tab-content .colorpicker");
 		setFinders(".tab-content .mura-ckfinder");

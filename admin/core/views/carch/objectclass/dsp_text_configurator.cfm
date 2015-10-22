@@ -130,7 +130,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>			
 		</div>
 	</div>	
-
+	<cfparam name="objectParams.render" default="server">
+	<input type="hidden" class="objectParams" name="render" value="#esapiEncode('html_attr',objectParams.render)#">
 	<script>
 		$(function(){
 
@@ -187,12 +188,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if(val=='freetext'){
 					$('##freetext').addClass('objectParam');
 					$('##freetextcontainer').show();
+					$('input[name="render"]').val('client');
 				} else if(val=='boundattribute'){
 					$('##boundattribute').addClass('objectParam');
 					$('##boundattributecontainer').show();
+					$('input[name="render"]').val('server');
 				} else if(val=='component'){
 					$('##component').addClass('objectParam');
-					$('##componentcontainer').show();	
+					$('##componentcontainer').show();
+					$('input[name="render"]').val('server');	
 				}
 			}
 
@@ -207,7 +211,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			});
 
-			setHTMLEditors('##availableObjectParams','#rc.$.siteConfig("themeAssetPath")#');
+			$('textarea.htmlEditor').each(function(){
+				var textarea=$(this);
+
+				var instance = CKEDITOR.instances[textarea.attr('id')];
+
+				if(typeof(instance) != 'undefined' && instance != null) {
+					CKEDITOR.remove(instance);
+				}
+
+				if(!textarea.val()){
+					textarea.val('<p></p>');
+				}
+				textarea.ckeditor({
+					toolbar: 'htmlEditor',
+					customConfig: 'config.js.cfm'
+				});
+			})
 			setContentSourceVisibility();
 			setComponentEditOption();
 
