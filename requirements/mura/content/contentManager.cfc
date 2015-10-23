@@ -2813,16 +2813,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfscript>
 		function findMany(contentids,siteid){
-			return getBean('contentIterator')
-				.setArray(
-					variables.settingsManager.getSite(arguments.siteid)
-						.getApi(version='v1')
-						.findMany(
-							entityName='content',
-							siteid=arguments.siteid,
-							ids=arguments.contentids
-						).items
-					);
+			var iterator=getBean('feed')
+				.set(arguments)
+				.addParam(name='contentid',condition='in',criteria=arguments.contentids)
+				.getIterator();
+
+			if(isdefined('arguments.orderby') or isdefined('arguments.sortby')){
+				return iterator;
+			} else {
+				var rs=iterator.getQuery();
+				var finalArray=[];
+				var returnArray=[];
+				var utility=getBean('utility');
+
+				for(var i=1;i <= rs.recordcount;i++){
+					arrayAppend(returnArray,utility.queryRowToStruct(rs,i));
+				}
+
+				for(var i1 in listToArray(arguments.contentids)){
+					for(var i2 in returnArray){
+						if(i2.contentid==i1){
+							arrayAppend(finalArray,i2);
+							break;
+						}
+					}
+				}
+
+				return getBean('contentIterator').setArray(finalArray);
+			}
 		}
 	</cfscript>
 

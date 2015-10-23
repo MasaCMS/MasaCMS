@@ -4,6 +4,7 @@
 	<cfparam name="objectParams.layout" default="default">
 	<cfparam name="objectParams.displaylist" default="">
 	<cfparam name="objectParams.items" default="">
+	<cfparam name="objectParams.maxitems" default="5">
 	
 	<cfset objectParams.layout=listFirst(listLast(replace(objectParams.layout, "\", "/", "ALL"),'/'),'.')>
 
@@ -16,10 +17,11 @@
 				<cfif isArray(objectParams.items)>
 					<cfset objectparams.items=arrayToList(objectparams.items)>
 				</cfif>
+				<cfset objectParams.contentids=objectParams.items>
+				<cfset objectParams.siteid=$.event('siteid')>
 				<cfset iterator=$.getBean('contentManager')
 					.findMany(
-						contentid=objectParams.items,
-						siteid=$.event('siteid')
+						argumentCollection=objectParams
 					)>
 					
 			<cfelse>
