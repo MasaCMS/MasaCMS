@@ -265,6 +265,8 @@ component extends="mura.cfobject" {
 
 			param name="session.siteid" default=variables.siteid;
 
+			params.checkAccess=true;
+
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
 			arrayDeleteAt(pathInfo,1);
@@ -1112,7 +1114,7 @@ component extends="mura.cfobject" {
 		return returnStruct;
 	}
 
-	function findAll(siteid,entityName){
+	function findAll(siteid,entityName,checkAccess=true){
 		var $=getBean('$').init(arguments.siteid);
 
 		if(entityName=='entityname'){
@@ -1128,7 +1130,7 @@ component extends="mura.cfobject" {
 		
 		var entity=$.getBean(arguments.entityName);
 
-		if(!allowAccess(entity,$)){
+		if(arguments.checkAccess && !allowAccess(entity,$)){
 			throw(type="authorization");
 		}
 
@@ -1185,15 +1187,15 @@ component extends="mura.cfobject" {
 		return formatIteratorResult(iterator,returnArray,'findall');
 	}
 
-	function findMany(entityName,ids,siteid){
+	function findMany(entityName,ids,siteid,checkAccess=true){
 		
 		var $=getBean('$').init(arguments.siteid);
 
-		if(!allowAccess(entityName,$)){
+		if(arguments.checkAccess && !allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
 
-		if($.event('entityName')=='content' && len($.event('feedid'))){
+		if(arguments.entityName=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 		} else {
 			var entity=$.getBean(arguments.entityName);
@@ -1204,9 +1206,9 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		if($.event('entityName')=='content'){
+		if(arguments.entityName=='content'){
 			var pk="contentid";
-		} else if($.event('entityName')=='feed'){
+		} else if(arguments.entityName=='feed'){
 			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
@@ -1265,11 +1267,11 @@ component extends="mura.cfobject" {
 		return formatIteratorResult(iterator,finalArray,'findmany');
 	}
 
-	function findQuery(entityName,siteid){
+	function findQuery(entityName,siteid,checkAccess=true){
 		
 		var $=getBean('$').init(arguments.siteid);
 
-		if(!allowAccess(arguments.entityName,$)){
+		if(arguments.checkAccess && !allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
 

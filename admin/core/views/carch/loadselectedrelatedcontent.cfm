@@ -38,7 +38,7 @@
 
 	<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
 		<cfset rcsBean = relatedContentSets[s]/>
-		<cfif not rcsBean.getIsNew()>
+		<cfif not rcsBean.exists()>
 			<cfset rcsRs = rcsBean.getRelatedContentQuery(rc.contentBean.getContentHistID())>
 		<cfelse>
 			<cfset rcsRs=queryNew('contentid,siteid,type,subtype,url,title')>

@@ -3,12 +3,28 @@
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.layout" default="default">
 	<cfparam name="objectParams.displaylist" default="">
+	<cfparam name="objectParams.items" default="">
 	
 	<cfset objectParams.layout=listFirst(listLast(replace(objectParams.layout, "\", "/", "ALL"),'/'),'.')>
 
 	<cfswitch expression="#objectParams.sourceType#">
 		<cfcase value="relatedcontent">
-			<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
+			<cfif objectParams.source eq 'custom'>
+				<cfif isJson(objectParams.items)>
+					<cfset objectParams.items=deserializeJSON(objectParams.items)>
+				</cfif>
+				<cfif isArray(objectParams.items)>
+					<cfset objectparams.items=arrayToList(objectparams.items)>
+				</cfif>
+				<cfset iterator=$.getBean('contentManager')
+					.findMany(
+						contentid=objectParams.items,
+						siteid=$.event('siteid')
+					)>
+					
+			<cfelse>
+				<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
+			</cfif>
 		</cfcase>
 		<cfdefaultcase>
 			<cfset iterator=$.getBean('feed')

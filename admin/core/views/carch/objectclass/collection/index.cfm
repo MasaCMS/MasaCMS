@@ -345,17 +345,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 			$('##editBtnLocalIndex').click(function(){
-					document.location='./?muraAction=cFeed.edit&feedid=' +$('##localindex').val() + '&type=Local&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+					document.location='./?muraAction=cFeed.edit&feedid=' +$('##localindex').val() + '&type=Local&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true';
 			
 			});
 
 			$('##editBtnRemoteFeed').click(function(){
-					document.location='./?muraAction=cFeed.edit&feedid=' +$('##remotefeed').val() + '&type=Remote&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+					document.location='./?muraAction=cFeed.edit&feedid=' +$('##remotefeed').val() + '&type=Remote&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true';
 			
 			});
 
 			$('##editBtnRelatedContent').click(function(){
-					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("javascript",rc.siteid)#&contenthistid=#esapiEncode("javascript",rc.contenthistid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=' + $('##relatedcontent').val() + '&items=#esapiEncode("javascript",serializeJSON(objectparams.items))#';
+					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=' + $('##relatedcontent').val() + '&items=#esapiEncode("url",serializeJSON(objectparams.items))#';
 			
 			});
 

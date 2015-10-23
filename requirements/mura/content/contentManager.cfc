@@ -2811,4 +2811,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.contentGateway.getKidsCount(argumentCollection=arguments)>
 	</cffunction>
 
+	<cfscript>
+		function findMany(contentids,siteid){
+			return getBean('contentIterator')
+				.setArray(
+					variables.settingsManager.getSite(arguments.siteid)
+						.getApi(version='v1')
+						.findMany(
+							entityName='content',
+							siteid=arguments.siteid,
+							ids=arguments.contentids
+						).items
+					);
+		}
+	</cfscript>
+
 </cfcomponent>
