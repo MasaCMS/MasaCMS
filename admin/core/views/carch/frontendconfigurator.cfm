@@ -47,6 +47,8 @@
 							originParams=parameters["params"];
 						}
 						
+						console.log(parameters)
+						
 						configOptions={
 							'object':'#esapiEncode('javascript',rc.object)#',
 							'objectid':'#esapiEncode('javascript',rc.objectid)#',

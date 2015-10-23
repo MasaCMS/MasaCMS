@@ -158,7 +158,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="injectMethod" access="public" output="false" deprecated="Use inject method">
 	<cfargument name="toObjectMethod" type="string" required="true" />
 	<cfargument name="fromObjectMethod" type="any" required="true" />
-	<cfset inject(toObjectMethod,fromObjectMethod) />
+	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
+	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
 	<cfreturn this>
 </cffunction>
 
