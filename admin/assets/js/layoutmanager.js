@@ -192,9 +192,14 @@
 							} catch(e){};
 						}
 				    	
+				    	var mDragEl=mura(dragEl);
 						mura('#adminSave').show();
-						mura(dragEl).addClass('mura-async-object');
-						mura(dragEl).data('async',true);
+						mDragEl.addClass('mura-async-object');
+						
+						if(!(mDragEl.data('object')=='text' && mDragEl.data('render')=='client' && mDragEl.data('async')=='false')){
+							mDragEl.data('async',true);
+						}
+						
 						mura(target).closest('.mura-region-local').data('dirty',true);
 						
 						initDraggableObject(target);

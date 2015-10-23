@@ -53,6 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.items" default="#arrayNew(1)#">
+	<cfparam name="objectParams.layout" default="a">
 	<cfset data=structNew()>
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>

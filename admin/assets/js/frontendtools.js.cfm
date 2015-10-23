@@ -83,8 +83,9 @@
 					}
 				}
 
-				
+
 				mura.resetAsyncObject(item.node);
+				item.addClass('active');
 				mura.processAsyncObject(item.node).then(function(){
 					closeFrontEndToolsModal();
 					if(parameters.reinit){
@@ -100,6 +101,7 @@
 				}
 				
 				mura.resetAsyncObject(item.node);
+				item.addClass('active');
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setImageSrc"){

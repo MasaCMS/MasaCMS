@@ -23,6 +23,7 @@
 		
 	</cfif>
 </cfsilent>
+
 <cfoutput>
 	<div id="mura-rc-quickedit" style="display:none;">
 		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>
@@ -40,18 +41,19 @@
 		<cfif not rcsBean.getIsNew()>
 			<cfset rcsRs = rcsBean.getRelatedContentQuery(rc.contentBean.getContentHistID())>
 		<cfelse>
-			<cfset rcsRs=queryNew('contentid,siteid,type,subtype,url,title,exists')>
-			<cfif isJSON(rc.relateditems)>
-				<cfset rc.relateditems=deserializeJSON(rc.relateditems)>
-			<cfelse>
-				<cfset rc.relateditems=[]>
+			<cfset rcsRs=queryNew('contentid,siteid,type,subtype,url,title')>
+			<cfif not isArray(rc.relateditems)>
+				<cfif isJSON(rc.relateditems)>
+					<cfset rc.relateditems=deserializeJSON(rc.relateditems)>
+				<cfelse>
+					<cfset rc.relateditems=[]>
+				</cfif>	
 			</cfif>
-
+		
 			<cfloop from="1" to="#arrayLen(rc.relateditems)#" index="i">
 				<cfset item=rc.relateditems[i]>
-
 				<cfif isSimpleValue(item)>
-					<cfset itemBean=rc.$.getBean('content').loadBy(content=item)>
+					<cfset itemBean=rc.$.getBean('content').loadBy(contentid=item)>
 					<cfif itemBean.exists()>
 						<cfset queryAddRow(rcsRs,1)>
 						<cfloop list="#rcsRs.columnlist#" index="c">
@@ -63,11 +65,10 @@
 					<cfloop list="contentid,url,title" index="c">
 						<cfset querySetCell(rcsRs, lcase(c),item[c], rcsRs.recordcount)>
 					</cfloop>
-					<cfset querySetCell(rcsRs, 'exists', 0, rcsRs.recordcount)>
+					<cfset querySetCell(rcsRs, '', 0, rcsRs.recordcount)>
 					<cfset querySetCell(rcsRs, 'type', 'Link', rcsRs.recordcount)>
 					<cfset querySetCell(rcsRs, 'subtype', 'Default', rcsRs.recordcount)>
 				</cfif>
-
 			</cfloop>
 		</cfif>
 		<cfset emptyClass = "item empty">
@@ -87,15 +88,9 @@
 					<cfif rcsRS.recordCount>
 						<cfset emptyClass = emptyClass & " noShow">
 						<cfloop query="rcsRs">
-							<cfif rcsRs.exists>
-								<cfset crumbdata = application.contentManager.getCrumbList(rcsRs.contentid, rcsRs.siteid)>
-							</cfif>
+							<cfset crumbdata = application.contentManager.getCrumbList(rcsRs.contentid, rcsRs.siteid)>
 							<li class="item" data-contentid="#rcsRs.contentID#" data-content-type="#rcsRs.type#/#rcsRs.subtype#">
-								<cfif rcsRs.exists>
-									#$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
-								<cfelse>
-									<ul class="navZoom"><li class="icon-link"> <strong>#esapiEncode('html',rcsRs.title)#</strong></li></ul>
-								</cfif>
+								#$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 								<a class="delete"></a>
 							</li>
 						</cfloop>
