@@ -83,6 +83,7 @@
 					}
 				}
 
+				
 				mura.resetAsyncObject(item.node);
 				mura.processAsyncObject(item.node).then(function(){
 					closeFrontEndToolsModal();

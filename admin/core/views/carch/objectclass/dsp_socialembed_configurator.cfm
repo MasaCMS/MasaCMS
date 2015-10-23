@@ -20,6 +20,8 @@
 			<label class="control-label">Enter Embed Code</label>
 			<div class="controls">
 				<textarea name="source" class="objectParam">#objectParams.source#</textarea>
+				<input type="hidden" class="objectParam" name="render" value="client">
+				<input type="hidden" class="objectParam" name="async" value="false">
 			</div>
 		</div>
 	</div>

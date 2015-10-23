@@ -5,7 +5,7 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfoutput>
-<h1>Edit Selected Content</h1>
+<h1>Select Content</h1>
 <div id="nav-module-specific" class="btn-group">
 	<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
 	</a>

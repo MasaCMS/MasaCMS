@@ -1510,8 +1510,9 @@
 
 	function processAsyncObject(el){
 		obj=mura(el);
-		obj.addClass('mura-async-object');
-		obj.data('async',true);
+		if(obj.data('async')===null){
+			obj.data('async',true);
+		}
 		return processObject(obj);
 	}
 

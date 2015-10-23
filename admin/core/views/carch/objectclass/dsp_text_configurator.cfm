@@ -131,7 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>	
 	<cfparam name="objectParams.render" default="server">
-	<input type="hidden" class="objectParams" name="render" value="#esapiEncode('html_attr',objectParams.render)#">
+	<input type="hidden" class="objectParam" name="render" value="#esapiEncode('html_attr',objectParams.render)#">
+	<input type="hidden" class="objectParam" name="async" value="#esapiEncode('html_attr',objectParams.async)#">
 	<script>
 		$(function(){
 
@@ -189,14 +190,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$('##freetext').addClass('objectParam');
 					$('##freetextcontainer').show();
 					$('input[name="render"]').val('client');
+					$('input[name="async"]').val('false');
 				} else if(val=='boundattribute'){
 					$('##boundattribute').addClass('objectParam');
 					$('##boundattributecontainer').show();
 					$('input[name="render"]').val('server');
+					$('input[name="async"]').val('true');
 				} else if(val=='component'){
 					$('##component').addClass('objectParam');
 					$('##componentcontainer').show();
 					$('input[name="render"]').val('server');	
+					$('input[name="async"]').val('true');
 				}
 			}
 
