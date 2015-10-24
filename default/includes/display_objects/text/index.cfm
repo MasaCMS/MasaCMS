@@ -3,6 +3,7 @@
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.render" default="server">
 </cfsilent>
+<cfif objectParams.sourcetype neq 'freetext'>
 <cfoutput>
 <div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
 <div class="mura-object-content">
@@ -17,3 +18,6 @@
 </cfif>
 </div>
 </cfoutput>
+<cfelse>
+<cfset objectParams.render="client">
+</cfif>
