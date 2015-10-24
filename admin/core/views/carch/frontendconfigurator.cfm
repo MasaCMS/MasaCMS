@@ -147,7 +147,7 @@
 			function(){
 				
 				siteManager.updateAvailableObject();
-
+				
 				var availableObjectSelector=jQuery('##availableObjectSelector');
 
 				if(availableObjectSelector.length){

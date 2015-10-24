@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				</cfif>
 
-				$('select[name="source"]').removeClass('objectParam');
+				$('select[name="source"], textarea[name="source"]').removeClass('objectParam');
 				$('.source-container').hide();
 
 				var val=$('select[name="sourcetype"]').val();
