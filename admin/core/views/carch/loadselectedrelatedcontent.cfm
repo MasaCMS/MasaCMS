@@ -45,8 +45,9 @@
 			<cfif not isArray(rc.relateditems)>
 				<cfif isJSON(rc.relateditems)>
 					<cfset rc.relateditems=deserializeJSON(rc.relateditems)>
-				<cfelse>
-					<cfset rc.relateditems=[]>
+				</cfif>
+				<cfif not isArray(rc.relateditems)>
+					<cfset rc.relateditems=listToArray(rc.relateditems)>
 				</cfif>	
 			</cfif>
 		
