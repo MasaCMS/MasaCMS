@@ -53,7 +53,7 @@
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
-				console.log(data)
+				//console.log(data)
 				adminProxy.post({cmd:'setObjectParams',params:data});
 			} else if(parameters["cmd"] == "deleteObject"){
 				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();

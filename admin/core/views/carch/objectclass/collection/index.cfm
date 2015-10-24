@@ -119,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif hasFeedManagerAccess>
 										<button class="btn" id="editBtnRemoteFeed">Create New</button>
 									</cfif>
+									<input name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
 								</div>
 							</div>
 							<div id="relatedcontentcontainer" class="control-group source-container" style="display:none">
@@ -199,9 +200,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	if(selector.val()=='custom'){
 			 		$('##editBtnRelatedContent').show();
 			 		$('##editBtnRelatedContent').html('Edit');
+			 		$('##items').addClass('objectParam');
 			 
 			 	} else {
 			 		$('##editBtnRelatedContent').hide();
+			 		$('##items').removeClass('objectParam');
 			 	}
 			}
 
@@ -242,9 +245,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				</cfif>
 
-				$('select[name="source"]').removeClass('objectParam');
+				$('select[name="source"], ##items').removeClass('objectParam');
 				$('.source-container').hide();
-
+			
 				var val=$('select[name="sourcetype"]').val();
 
 				if(val=='localindex'){
