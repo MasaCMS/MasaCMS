@@ -12,7 +12,7 @@
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
-					Select Form
+						Select Form
 					</option>
 
 					<cfloop query="rc.rsForms">

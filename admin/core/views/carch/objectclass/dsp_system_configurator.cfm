@@ -19,6 +19,7 @@
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
+						Select System Object
 					</option>
 
 					<cfloop query="rc.rsObjects">

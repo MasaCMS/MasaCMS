@@ -12,8 +12,9 @@
 		<div class="control-group">
 			<label class="control-label">Select Navigation</label>
 			<div class="controls">
-				<select id="availableObjectSelector">
+				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'navigation',name:'#esapiEncode('html_attr','Select Navigation')#',objectid:''}">
+						Select Navigation
 					</option>
 					<cfloop query="rc.rsObjects">
 						<option <cfif rc.object eq rc.rsobjects.object>selected </cfif>title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript','Navigation')#","objectid":"#createUUID()#"}'>
