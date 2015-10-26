@@ -205,7 +205,8 @@
 				folder_nav:true,
 				multilevel_nav:true,
 				seq_nav:true,
-				top_nav:true
+				top_nav:true,
+				rater:true
 			};
 
 			if(map[editableObj.data('object')]
