@@ -19,7 +19,7 @@
 		<div class="control-group">
 			<label class="control-label">Enter Embed Code</label>
 			<div class="controls">
-				<textarea name="source" class="objectParam">#objectParams.source#</textarea>
+				<textarea name="source" class="objectParam span12">#objectParams.source#</textarea>
 			</div>
 		</div>
 	</div>

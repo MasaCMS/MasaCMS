@@ -10,9 +10,9 @@
 		<div class="control-group">
 			<label class="control-label">Select Form</label>
 			<div class="controls">
-				<select id="availableObjectSelector">
+				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
-					--
+					Select Form
 					</option>
 
 					<cfloop query="rc.rsForms">
@@ -22,18 +22,7 @@
 						<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsForms.contentid#'}">
 							#esapiEncode('html',title)#
 						</option>
-						<!---
-						<cfif rc.rsForms.responseChart neq 1>
-
-							<cfset title=application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.dataresponses')
-								& ' - ' 
-								& rc.rsForms.menutitle>
-								
-							<option <cfif rc.objectid eq rc.rsForms.contentid and rc.object eq 'form_responses'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{'object':'form_responses','name':'#esapiEncode('html_attr',title)#','objectid':'#rc.rsForms.contentid#'}">
-								#esapiEncode('html',title)#
-							</option>
-						</cfif>
-						--->
+				
 					</cfloop>
 				</select>
 				<cfif hasModulePerm>
@@ -60,7 +49,11 @@
 		setEditOption();
 		 
 		$('##editBtn').click(function(){
-				document.location='./?muraAction=cArch.editLive&contentId=' + eval('(' + $('##availableObjectSelector').val() + ')').objectid  + '&type=Form&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+				frontEndProxy.post({
+					cmd:'openModal',
+					src:'?muraAction=cArch.editLive&contentId=' + eval('(' + $('##availableObjectSelector').val() + ')').objectid  + '&type=Form&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
+					}
+				);
 		})
 
 	});

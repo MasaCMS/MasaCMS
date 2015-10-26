@@ -17,7 +17,7 @@
 		<div class="control-group">
 			<label class="control-label">Select System Object</label>
 			<div class="controls">
-				<select id="availableObjectSelector">
+				<select id="availableObjectSelector" class="span12">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
 					</option>
 

@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 					<label class="control-label">Content Source</label>
 					<div class="controls">
-						<select class="objectParam" name="sourcetype">
+						<select class="objectParam span12" name="sourcetype">
 							<option value="">Select Content Source</option> 	
 							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">Free Text</option>	
 							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">Bound Attribute</option>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset options[rsExtend.currentRow + 4][2]=rsExtend.attribute/>
 						</cfloop>
 					</cfsilent>
-						<select name="source" id="boundattribute">
+						<select name="source" id="boundattribute" class="span12">
 							<option value="">Select Bound Attribute</option> 
 							<cfloop from="1" to="#arrayLen(options)#" index="i">
 								<option value="#esapiEncode('html_attr',options[i][1])#"<cfif objectParams.source eq options[i][1]> selected</cfif>>#esapiEncode('html',options[i][2])#</option> 
@@ -211,7 +211,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			$('##component').change(setComponentEditOption);
 			
 			$('##editBtnComponent').click(function(){
-					document.location='./?muraAction=cArch.editLive&contentId=' +  $('##component').val() + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true';
+				frontEndProxy.post({
+					cmd:'openModal',
+					src:'?muraAction=cArch.editLive&contentId=' +  $('##component').val() + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
+					}
+				);
 			
 			});
 

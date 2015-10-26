@@ -5,7 +5,7 @@
 	<div class="fieldset">
 		<div class="control-group">
 			<div class="controls">
-			<select id="availableObjectSelector">
+			<select id="availableObjectSelector" class="span12">
 				<option value="{object:'system',name:'#esapiEncode('html_attr','Select Mailing List')#',objectid:''}">
 						-- Select Mailing List --
 					</option>

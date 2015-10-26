@@ -4,17 +4,18 @@
 <cfparam name="params.maxitems" default="5">
 <cfset feed=$.getBean("feed").loadBy(feedID=params.source)>
 <cfset feed.set(params)>
+<cfparam name="params.sourcetype" default="local">
 
 </cfsilent>
 <cfoutput>
-	<cfif feed.getType() eq "local">		
+	<cfif params.sourcetype neq "remotefeed">		
 		<div class="control-group">
 			<div class="span12">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
 				</label>
 				<div class="controls">
-					<select name="layout" class="objectParam">
+					<select name="layout" class="objectParam span12">
 						<cfloop list="a,b,c,d,e" index="i">
 							<option name="#i#"<cfif feed.getLayout() eq i> selected</cfif>>#i#</option>
 						</cfloop>
@@ -22,8 +23,38 @@
 				</div>
 			</div>
 		</div>
+		
+
+		<div class="control-group" id="availableFields">
+			<label class="control-label">
+				<span class="span6">Selected Fields</span>
+				<button id="editFields" class="btn">Edit</button>
+				<script>
+					$(function(){
+						$('##editFields').click(function(){
+							frontEndProxy.post({
+								cmd:'openModal',
+								src:'?muraAction=cArch.selectfields&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&displaylist=' + $("##displayList").val()
+								}
+							);
+						});
+					});
+				</script>	
+			</label>
+			<div class="controls">
+				<cfset displayList=feed.getDisplayList()>
+				<ul id="displayListSort" class="displayListSortOptions">
+					<cfloop list="#displayList#" index="i">
+						<li class="ui-state-highlight">#trim(i)#</li>
+					</cfloop>
+				</ul>
+				
+				<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',feed.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
+			</div>	
+		</div>
+
 		<div class="control-group">
-			<div class="span6">
+			<div class="span12">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
@@ -31,8 +62,9 @@
 					<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
 				</div>
 			</div>
-
-			<div class="span6">
+		</div>
+		<div class="control-group">
+			<div class="span12">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
@@ -41,9 +73,9 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="control-group">
-			<div class="span3">
+			<div class="span6">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
 				<div class="controls">
 					<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam span12">
@@ -54,7 +86,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="span3">
+			<div class="span6">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 					<div class="controls"><select name="nextN" data-displayobjectparam="nextN" class="objectParam span12">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
@@ -64,35 +96,6 @@
 					</select>
 				  </div>
 			</div>
-		</div>
-
-		<div class="control-group" id="availableFields">
-			<label class="control-label">
-				<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
-			</label>
-			<div id="sortableFields" class="controls">
-				<p class="dragMsg">
-					<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
-				</p>	
-							
-				<cfset displayList=feed.getDisplayList()>
-				<cfset availableList=feed.getAvailableDisplayList()>
-					
-				<ul id="availableListSort" class="displayListSortOptions">
-					<cfloop list="#availableList#" index="i">
-						<cfif i neq 'image'>
-							<li class="ui-state-default">#trim(i)#</li>
-						</cfif>
-					</cfloop>
-				</ul>
-											
-				<ul id="displayListSort" class="displayListSortOptions">
-					<cfloop list="#displayList#" index="i">
-						<li class="ui-state-highlight">#trim(i)#</li>
-					</cfloop>
-				</ul>
-				<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
-			</div>	
 		</div>
 	<cfelse>
 		<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
@@ -112,7 +115,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<div class="span6">
+			<div class="span12">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
@@ -120,8 +123,9 @@
 					<input name="viewalllink" class="objectParam span12" type="text" value="#esapiEncode('html_attr',feed.getViewAllLink())#" maxlength="255">
 				</div>
 			</div>
-
-			<div class="span6">
+		</div>
+		<div class="control-group">
+			<div class="span12">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>

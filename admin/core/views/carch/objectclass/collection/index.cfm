@@ -65,113 +65,87 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.collection')#')#" 
 		data-objectid="none">
 
-		<div class="tabs">
-			<ul id="steps" class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="##content" aria-controls="settings" role="tab" data-toggle="tab">Content</a></li>
-				<li role="presentation"><a href="##layout" aria-controls="settings" role="tab" data-toggle="tab">Layout</a></li>
-				<li role="presentation"><a href="##preview" aria-controls="settings" role="tab" data-toggle="tab">Preview</a></li>
-			 </ul>
-
-		 	<!-- Tab panes -->
-		  	<div class="tab-content">
-			    <div role="tabpanel" class="tab-pane active" id="content">
-					<div class="fieldset-wrap row-fluid">
-						<div class="fieldset">
-							<div class="control-group">
-								<label class="control-label">Content Source</label>
-								<div class="controls">
-									<select class="objectParam" name="sourcetype">
-										<option value="">Select Content Source</option>
-										<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">Local Index</option>	
-										<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">Remote Feed</option>
-										<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">Related Content</option>
-									</select>
-								</div>
-							</div>
-							<div id="localindexcontainer" class="control-group source-container" style="display:none">
-								<label class="control-label">Select Local Index</label>
-								<div class="controls">
-									<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnlt=true)>
-									<select name="source" id="localindex">
-										<option value="">Select Local Index</option> 	
-										<cfloop query="rs">
-											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
-										</cfloop>
-									</select>
-
-									<cfif hasFeedManagerAccess>
-										<button class="btn" id="editBtnLocalIndex">Create New</button>
-									</cfif>
-
-								</div>
-							</div>
-							<div id="remotefeedcontainer" class="control-group source-container" style="display:none">
-								<label class="control-label">Select Remote Feed</label>
-								<div class="controls">
-									<cfset rs=rc.$.getBean('feedManager').getFeeds(type='remote',siteid=rc.$.event('siteid'),activeOnlt=true)>
-									<select name="source" id="remotefeed">
-										<option value="">Select Remote Feed</option> 	
-										<cfloop query="rs">
-											<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
-										</cfloop>
-									</select>
-
-									<cfif hasFeedManagerAccess>
-										<button class="btn" id="editBtnRemoteFeed">Create New</button>
-									</cfif>
-									<input name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
-								</div>
-							</div>
-							<div id="relatedcontentcontainer" class="control-group source-container" style="display:none">
-								<label class="control-label">Select Related Content Set</label>
-								<div class="controls">
-									<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
-									<cfset relatedContentSets = subtype.getRelatedContentSets()>
-									<select name="source" id="relatedcontent">
-										<option value="">Select Related Content</option>	
-										<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
-											<cfset rcsBean = relatedContentSets[s]/>
-											<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
-										</cfloop>
-										<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>Custom</option>
-									</select>
-
-									<button class="btn" id="editBtnRelatedContent">Edit</button>
-								</div>
-								<!---
-								<cfif rc.configuratormode neq 'backend'>
-								<div id="relatedContentContainer">
-									<div id="selectRelatedContent"></div>
-									<div id="selectedRelatedContent" class="control-group"></div>
-								</div>
-								<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
-								</cfif>
-								--->
-							</div>
-
-						</div>
+		<div class="fieldset-wrap">
+			<div class="fieldset">
+				<div class="control-group">
+					<label class="control-label">Content Source</label>
+					<div class="controls">
+						<select class="objectParam span12" name="sourcetype">
+							<option value="">Select Content Source</option>
+							<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">Local Index</option>	
+							<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">Remote Feed</option>
+							<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">Related Content</option>
+						</select>
 					</div>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="layout">
-					<div class="fieldset-wrap row-fluid">
-						<div class="fieldset">
-							
-							<div id="layoutcontainer" class="controls"></div>
-		
-						</div>
+				<div id="localindexcontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Select Local Index</label>
+					<div class="controls">
+						<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnlt=true)>
+						<select name="source" id="localindex" class="span12">
+							<option value="">Select Local Index</option> 	
+							<cfloop query="rs">
+								<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
+							</cfloop>
+						</select>
+
+						<cfif hasFeedManagerAccess>
+							<button class="btn" id="editBtnLocalIndex">Create New</button>
+						</cfif>
+
 					</div>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="preview">
-					<div class="fieldset-wrap row-fluid">
-						<div class="fieldset">
-							<div>
-								<iframe id="configuratorPreview" width="500px" height="500px" frameBorder="0"></iframe>
-							</div>
-						</div>
+				<div id="remotefeedcontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Select Remote Feed</label>
+					<div class="controls">
+						<cfset rs=rc.$.getBean('feedManager').getFeeds(type='remote',siteid=rc.$.event('siteid'),activeOnlt=true)>
+						<select name="source" id="remotefeed" class="span12">
+							<option value="">Select Remote Feed</option> 	
+							<cfloop query="rs">
+								<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
+							</cfloop>
+						</select>
+
+						<cfif hasFeedManagerAccess>
+							<button class="btn" id="editBtnRemoteFeed">Create New</button>
+						</cfif>
 					</div>
 				</div>
+				<div id="relatedcontentcontainer" class="control-group source-container" style="display:none">
+					<label class="control-label">Select Related Content Set</label>
+					<div class="controls">
+						<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
+						<cfset relatedContentSets = subtype.getRelatedContentSets()>
+						<select name="source" id="relatedcontent" class="span12">
+							<option value="">Select Related Content</option>	
+							<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="s">
+								<cfset rcsBean = relatedContentSets[s]/>
+								<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
+							</cfloop>
+							<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>Custom</option>
+						</select>
+						<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
+						<button class="btn" id="editBtnRelatedContent">Edit</button>
+					</div>
+					<!---
+					<cfif rc.configuratormode neq 'backend'>
+					<div id="relatedContentContainer">
+						<div id="selectRelatedContent"></div>
+						<div id="selectedRelatedContent" class="control-group"></div>
+					</div>
+					<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
+					</cfif>
+					--->
+				</div>
+
 			</div>
 		</div>
+		<div class="fieldset-wrap">	
+			<div id="layoutcontainer" class="fieldset"></div>
+	
+			</div>
+		</div>
+	
 	</div>	
 
 	<script>
@@ -299,14 +273,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 {
 				 	type: 'post',
 				 	dataType: 'text',
-					url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&classid=' + configOptions.object + '&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
+					url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=' + configOptions.object + '&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
 
 					data:{params:JSON.stringify(params)},
 					success:function(response){
 						$('##layoutcontainer').html(response);
 
-						$("##availableListSort, ##displayListSort").sortable({
-							connectWith: ".displayListSortOptions",
+						$("##displayListSort").sortable({
 							update: function(event) {
 								event.stopPropagation();
 								$("##displayList").val("");
@@ -331,6 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			$('select[name="sourcetype"]').on('change', function() {
 				setContentSourceVisibility();
+				setLayoutOptions();
 			});
 
 			$('select[name="source"]').on('change', function() {
@@ -348,17 +322,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 			$('##editBtnLocalIndex').click(function(){
-					document.location='./?muraAction=cFeed.edit&feedid=' +$('##localindex').val() + '&type=Local&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true';
-			
+				frontEndProxy.post({
+					cmd:'openModal',
+					src:'?muraAction=cFeed.edit&feedid=' +$('##localindex').val() + '&type=Local&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true'
+					}
+				);
 			});
 
 			$('##editBtnRemoteFeed').click(function(){
-					document.location='./?muraAction=cFeed.edit&feedid=' +$('##remotefeed').val() + '&type=Remote&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true';
-			
+				frontEndProxy.post({
+					cmd:'openModal',
+					src:'?muraAction=cFeed.edit&feedid=' +$('##remotefeed').val() + '&type=Remote&siteId=#esapiEncode("url",rc.siteid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true'
+					}
+				);
 			});
 
 			$('##editBtnRelatedContent').click(function(){
-					document.location='./?muraAction=cArch.relatedcontent&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=' + $('##relatedcontent').val() + '&items=#esapiEncode("url",serializeJSON(objectparams.items))#';
+				frontEndProxy.post({
+					cmd:'openModal',
+					src:'?muraAction=cArch.relatedcontent&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=' + $('##relatedcontent').val() + '&items=#esapiEncode("url",serializeJSON(objectparams.items))#'
+					}
+				);
 			
 			});
 

@@ -55,6 +55,7 @@
 <cfparam name="rc.siteid" default="#session.siteID#">
 <cfparam name="rc.frontEndProxyLoc" default="">
 <cfparam name="session.frontEndProxyLoc" default="#rc.frontEndProxyLoc#">
+<cfparam name="rc.sourceFrame" default="modal">
 
 <cfif len(rc.frontEndProxyLoc)>
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
@@ -161,12 +162,14 @@
 					frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 					frontEndProxy.post({cmd:
 											'setHeight',
-											height:getHeight()
+											height:getHeight(),
+											'targetFrame': '#esapiEncode("javascript",rc.sourceFrame)#'
 										});
 					jQuery(this).resize(function(e){
 						frontEndProxy.post({cmd:
 											'setHeight',
-											height:getHeight()
+											height:getHeight(),
+											'targetFrame': '#esapiEncode("javascript",rc.sourceFrame)#'
 										});
 					});					
 				};
@@ -185,8 +188,11 @@
 		</cfif>
 	</head>
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact">
-		<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
-		<cfinclude template="includes/dialog.cfm">
+		<cfif rc.sourceFrame eq 'modal'>
+			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
+			<cfinclude template="includes/dialog.cfm">
+		</cfif>
+		
 		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
 		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>

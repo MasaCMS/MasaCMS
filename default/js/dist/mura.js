@@ -4230,7 +4230,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		show:function(){
 			this.each(function(el){
-				el.style.removeProperty('display');
+				el.style.display = '';
 			});
 			return this;
 		},

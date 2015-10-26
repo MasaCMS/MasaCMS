@@ -2405,7 +2405,7 @@ buttons: {
 			title: "Loading...",
 			init: function(data, config) {
 				//alert(JSON.stringify(data));
-				folderConfiguratorTitle="Configure Folder";
+				folderConfiguratorTitle="Folder";
 				
 				if(siteManager.configuratorMode=='frontEnd'){
 					$("#configuratorHeader").html(folderConfiguratorTitle);
@@ -2537,7 +2537,7 @@ buttons: {
 			data, {
 				url: './',
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
-				title: data.title || 'Configure ' + data.name,
+				title: data.title || data.name,
 				init: function(data, config) {
 					
 				}
@@ -2547,7 +2547,7 @@ buttons: {
 				resizable: true,
 				modal: true,
 				width: 400,
-				title: data.title || 'Configure ' + data.name,
+				title: data.title || data.name,
 				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {
@@ -2769,7 +2769,7 @@ buttons: {
 	
 		this.resetAvailableObject();
 		this.previewURL='';
-
+		
 		if(typeof(config.validate) != 'undefined') {
 			this.availableObjectValidate = config.validate;
 		}

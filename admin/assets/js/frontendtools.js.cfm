@@ -46,7 +46,11 @@
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
 			} else if(parameters["cmd"] == "setHeight"){
-				resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
+				if(parameters["targetFrame"]=='sidebar'){
+					resizeFrontEndToolsSidebar(decodeURIComponent(parameters["height"]));
+				} else {
+					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
+				}		
 			} else if(parameters["cmd"] == "scrollToTop"){
 				window.scrollTo(0, 0);	
 			} else if(parameters["cmd"] == "autoScroll"){
@@ -54,13 +58,17 @@
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
 				//console.log(data)
-				adminProxy.post({cmd:'setObjectParams',params:data});
+				if(parameters["targetFrame"]=='sidebar'){
+					sidebarProxy.post({cmd:'setObjectParams',params:data});
+				} else {
+					modalProxy.post({cmd:'setObjectParams',params:data});
+				}
 			} else if(parameters["cmd"] == "deleteObject"){
 				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
 				closeFrontEndToolsModal();
+				muraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
-
 				if(typeof parameters.params == 'object'){
 
 					delete parameters.params.params;
@@ -109,13 +117,20 @@
 				utility('img[data-instanceid="' + parameters.instanceid + '"]')
 					.attr('src',parameters.src)
 					.each(muraInlineEditor.checkForImageCroppers);
+			} else if (parameters["cmd"] == "openModal"){
+				initFrontendUI({href:adminLoc + parameters["src"]});
 			}
 		}			
 	}
 
-	initAdminProxy=function(){
-			adminProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsModaliframe');
-			adminProxy.addEventListener(onAdminMessage);
+	initModalProxy=function(){
+			modalProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsModaliframe');
+			modalProxy.addEventListener(onAdminMessage);
+	}
+
+	initSidebarProxy=function(){
+			sidebarProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsSidebariframe');
+			sidebarProxy.addEventListener(onAdminMessage);
 	}
 
 	var frontEndModalWidthStandard=990;
@@ -148,17 +163,21 @@
 	}
 
 	var openFrontEndToolsModal=function(a){
+		return initFrontendUI(a);
+	};
+
+	var initFrontendUI=function(a){
 		var src=a.href;
 		var editableObj=utility(a);
+		var targetFrame='modal';
 
 		if(!src){
 			if(utility(a).hasClass("mura-object")){
-				var editableObj=utility(a);
+			var editableObj=utility(a);
 			} else {
 				var editableObj=utility(a).closest(".mura-object,.mura-async-object");
 			}
-
-			/*
+				/*
 			This reloads the element in the dom to ensure that all the latest
 			values are present
 			*/
@@ -166,91 +185,134 @@
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
-			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname') + '&contenttype=' + mura.type + '&contentsubtype=' + mura.subtype;
+			var map={
+				collection:true,
+				text:true,
+				mailing_list:true,
+				site_map:true,
+				navigation:true,
+				socialembed:true,
+				media:true,
+				container:true,
+				system:true,
+				tag_cloud:true,
+				form:true,
+				comments:true,
+				mailing_list:true,
+				mailing_list_master:true,
+				sub_nav:true,
+				peer_nav:true,
+				folder_nav:true,
+				multilevel_nav:true,
+				seq_nav:true,
+				top_nav:true
+			};
+
+			if(map[editableObj.data('object')]
+			){
+				targetFrame='sidebar'; 
+			} 
+				
+			var src= adminLoc + '?muraAction=cArch.frontEndConfigurator&compactDisplay=true&siteid=' + mura.siteid + '&instanceid=' +  editableObj.data('instanceid') + '&contenthistid=' + mura.contenthistid + '&contentid=' + mura.contentid + '&parentid=' + mura.parentid + '&object=' +  editableObj.data('object') + '&objectid=' +  editableObj.data('objectid') + '&layoutmanager=' +  mura.layoutmanager + '&objectname=' + editableObj.data('objectname') + '&contenttype=' + mura.type + '&contentsubtype=' + mura.subtype + '&sourceFrame=' + targetFrame;
+
 		}
 
-		var isModal=editableObj.attr("data-configurator");
+		if(targetFrame=='modal'){
+			var isModal=editableObj.attr("data-configurator");
 
-		//These are for the preview iframes
-		var width=editableObj.attr("data-modal-width");
-		var ispreview=editableObj.attr("data-modal-preview");
+			//These are for the preview iframes
+			var width=editableObj.attr("data-modal-width");
+			var ispreview=editableObj.attr("data-modal-preview");
 
-		frontEndModalHeight=0;
-		frontEndModalWidth=0;
-		
-		if(!isNaN(width)){
-			frontEndModalWidth = width;
-		}
-
-		closeFrontEndToolsModal();
-		
-		if(ispreview){
-			if(src.indexOf("?") == -1) {
-				src = src + '?muraadminpreview';
-			} else {
-				src = src + '&muraadminpreview';
-			}
-
-			frontEndModalHeight=600;
-			frontEndModalWidth=1075;
-
-			var $tools='<div id="mura-preview-device-selector">';
-				$tools=$tools+'<p>Preview Mode</p>';
-				$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
-				$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
-				$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
-				$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
-				$tools=$tools+'<a class="mura-device-phone-landscape" title="Phone Landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
-				$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>';
-				$tools=$tools+'</div>';
-
-		} else {
-			if(!frontEndModalHeight){
-				if (isModal == undefined) {
-					frontEndModalWidth = frontEndModalWidthStandard;
-				} else if (isModal == "true") {
-					frontEndModalWidth=frontEndModalWidthConfigurator;
-				} else {
-					frontEndModalWidth = frontEndModalWidthStandard;
-				}
-			}
-
-			src=src + "&frontEndProxyLoc=" + frontEndProxyLoc;
-			var $tools='';
-		}
-
-
-		utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
-		'<div id="frontEndToolsModalBody">' + $tools +
-		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
-		'</div>' +
-		'</div>');
-		
-		if(ispreview){
-			utility('##mura-preview-device-selector a').on('click', function () {
-				var data=utility(this).data();
-
-				frontEndModalWidth=data.width;
-			   	frontEndModalHeight=data.height;
-
-			   	utility('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
-			    utility('##mura-preview-device-selector a').removeClass('active');
-			    utility(this).addClass('active');
-
-			    resizeFrontEndToolsModal(data.height);
-			    return false;
-			});
-
-			utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
-			resizeFrontEndToolsModal(frontEndModalHeight);
-		} else{
 			frontEndModalHeight=0;
-			utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+50) + "px")
-			resizeFrontEndToolsModal(0);
+			frontEndModalWidth=0;
+			
+			if(!isNaN(width)){
+				frontEndModalWidth = width;
+			}
+
+			closeFrontEndToolsModal();
+			
+			if(ispreview){
+				if(src.indexOf("?") == -1) {
+					src = src + '?muraadminpreview';
+				} else {
+					src = src + '&muraadminpreview';
+				}
+
+				frontEndModalHeight=600;
+				frontEndModalWidth=1075;
+
+				var $tools='<div id="mura-preview-device-selector">';
+					$tools=$tools+'<p>Preview Mode</p>';
+					$tools=$tools+'<a class="mura-device-standard active" title="Desktop" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
+					$tools=$tools+'<a class="mura-device-tablet" title="Tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
+					$tools=$tools+'<a class="mura-device-tablet-landscape" title="Tablet Landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
+					$tools=$tools+'<a class="mura-device-phone" title="Phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
+					$tools=$tools+'<a class="mura-device-phone-landscape" title="Phone Landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
+					$tools=$tools+'<a id="preview-close" title="Close" href="##" onclick="closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>';
+					$tools=$tools+'</div>';
+
+			} else {
+				if(!frontEndModalHeight){
+					if (isModal == undefined) {
+						frontEndModalWidth = frontEndModalWidthStandard;
+					} else if (isModal == "true") {
+						frontEndModalWidth=frontEndModalWidthConfigurator;
+					} else {
+						frontEndModalWidth = frontEndModalWidthStandard;
+					}
+				}
+
+				src=src + "&frontEndProxyLoc=" + frontEndProxyLoc;
+				var $tools='';
+			}
+
+
+			utility("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+			'<div id="frontEndToolsModalBody">' + $tools +
+			'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
+			'</div>' +
+			'</div>');
+			
+			if(ispreview){
+				utility('##mura-preview-device-selector a').on('click', function () {
+					var data=utility(this).data();
+
+					frontEndModalWidth=data.width;
+				   	frontEndModalHeight=data.height;
+
+				   	utility('##frontEndToolsModaliframe').attr('src',src + '&mobileFormat=' + data.mobileformat);
+				    utility('##mura-preview-device-selector a').removeClass('active');
+				    utility(this).addClass('active');
+
+				    resizeFrontEndToolsModal(data.height);
+				    return false;
+				});
+
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+80) + "px")
+				resizeFrontEndToolsModal(frontEndModalHeight);
+			} else{
+				frontEndModalHeight=0;
+				utility("##frontEndToolsModalBody").css("top",(utility(document).scrollTop()+50) + "px")
+				resizeFrontEndToolsModal(0);
+			}
+		} else {
+			utility('##frontEndToolsSidebariframe').attr('src',src);
+			muraInlineEditor.sidebarAction('showconfigurator');
 		}
 	}
 
+	var resizeFrontEndToolsSidebar=function(frameHeight){
+		var iframe=document.getElementById("frontEndToolsSidebariframe");
+		if (iframe){
+			iframe.style.height=frameHeight + "px";
+		}
+
+	}
+
 	var resizeFrontEndToolsModal=function(frameHeight){
+
 		if (document.getElementById("frontEndToolsModaliframe")) {
 
 			var frame = document.getElementById("frontEndToolsModaliframe");
@@ -383,7 +445,10 @@
 				resizeEditableObject(this);
 			});
 			
-			initAdminProxy();
+			initModalProxy();
+			<cfif $.getContentRenderer().useLayoutManager()>
+			initSidebarProxy();
+			</cfif>
 			
 			if(frontEndModalIE8){
 				utility("##adminQuickEdit").remove();
@@ -1176,6 +1241,21 @@
 		   img.src = src + '?v=' + Math.random();
 
 		   return false;
+		},
+		sidebarAction(action){
+			if(action=='showobjects'){
+				mura('#mura-sidebar-configurator').hide();
+				mura('#mura-sidebar-objects-legacy').hide();
+				mura('#mura-sidebar-objects').show();
+			} else if(action=='showlegacyobjects'){
+				mura('#mura-sidebar-configurator').hide();
+				mura('#mura-sidebar-objects-legacy').show();
+				mura('#mura-sidebar-objects').hide();
+			} else if(action=='showconfigurator'){
+				mura('#mura-sidebar-configurator').show();
+				mura('#mura-sidebar-objects-legacy').hide();
+				mura('#mura-sidebar-objects').hide();
+			}
 		}
 		
 	}

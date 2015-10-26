@@ -182,9 +182,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif rc.compactDisplay eq "true">
-	<div id="nav-module-specific" class="btn-group">
-		<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
-	</div>
+		<div id="nav-module-specific" class="btn-group">
+		<cfif rc.$.useLayoutManager()>
+			<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});">
+				<i class="icon-circle-arrow-left"></i>
+			 	#application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		<cfelse>
+			<a class="btn" onclick="history.go(-1);">
+				<i class="icon-circle-arrow-left"></i>
+			 	#application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		</cfif>
+		</div>
 	</cfif>
 <cfelse>
 	<!---<h2>#esapiEncode('html',rc.feedBean.getName())#</h2>--->

@@ -421,7 +421,7 @@
 
 		show:function(){
 			this.each(function(el){
-				el.style.removeProperty('display');
+				el.style.display = '';
 			});
 			return this;
 		},

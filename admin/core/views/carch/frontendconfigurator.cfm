@@ -2,12 +2,13 @@
 	<cfset event=request.event>
 	<cfset $=rc.$>
 	<cfparam name="rc.layoutmanager" default="false">
+	<cfparam name="rc.sourceFrame" default="sidebar">
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<div id="configuratorContainer">
-		<h1 id="configuratorHeader">Loading...</h1>
+		<h1 id="configuratorHeader"></h1>
 		
 		<div class="clearfix">
 		    <div id="configurator"><div class="load-inline"></div></div>
@@ -20,7 +21,7 @@
 		
 		<div class="form-actions">	
 			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
-			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#"/>
+			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
 		</div>
 	</div>
 	<cfinclude template="dsp_configuratorJS.cfm">
@@ -78,42 +79,15 @@
 								$('##configurator').html('');
 							}
 
-							jQuery("##configuratorHeader").html('Configure #esapiEncode('javascript',rc.objectname)#');
+							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');
 						<cfelse>
 							<cfswitch expression="#rc.object#">
-								<!---
-								<cfcase value="form,form_responses,component">
-									
-									<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
-
-									<cfif content.exists()>
-										<cfif listFindNoCase('Author,Editor',application.permUtility.getDisplayObjectPerm(content.getSiteID(),"component",content.getContentID()))>
-										
-										<cflocation url="#content.getEditURL(compactDisplay=true)#&homeid=#esapiEncode('url',rc.contentid)#" addtoken="false">
-										<cfelse>
-											<cfif rc.object eq 'Form'>
-												jQuery("##configuratorHeader").html('Edit Form');
-												<cfset configuratorWidth='standard'>
-											<cfelseif rc.object eq 'Component'>
-												jQuery("##configuratorHeader").html('Edit Component');
-												<cfset configuratorWidth='standard'>
-
-											</cfif>
-											jQuery("##configurator").html('<p class="alert alert-error">You do not have permission to edit this form.</p>');
-										</cfif>
-									<cfelse>
-										configOptions.title='Select ' + configOptions.name;
-										siteManager.initGenericConfigurator(configOptions);
-									</cfif>
-								</cfcase>
-								--->
 								<cfdefaultcase>
 									if(siteManager.objectHasConfigurator(configOptions)){
 										siteManager.configuratorMap[configOptions.object].initConfigurator(configOptions);
 									} else {
 										siteManager.initGenericConfigurator(configOptions);
 									}
-									
 								</cfdefaultcase>
 							</cfswitch>
 						</cfif>
@@ -123,9 +97,15 @@
 					}
 				}
 
+				
 				frontEndProxy.addEventListener(onFrontEndMessage);
 				frontEndProxy.post({cmd:'setWidth',width:'#configuratorWidth#'});
-				frontEndProxy.post({cmd:'requestObjectParams',instanceid:'#esapiEncode("javascript",rc.instanceid)#'});
+				frontEndProxy.post({
+					cmd:'requestObjectParams',
+					instanceid:'#esapiEncode("javascript",rc.instanceid)#',
+					targetFrame:'#esapiEncode("javascript",rc.sourceFrame)#'
+					}
+				);
 		
 			}
 
@@ -155,9 +135,12 @@
 				}
 				
 				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-					jQuery("##configurator").html('<div class="load-inline"></div>');
-					$('##configurator .load-inline').spin(spinnerArgs2);
-					jQuery(".form-actions").hide();
+
+					<cfif rc.sourceFrame eq 'modal'>
+						jQuery("##configurator").html('<div class="load-inline"></div>');
+						$('##configurator .load-inline').spin(spinnerArgs2);
+						jQuery(".form-actions").hide();
+					</cfif>
 					
 					var reload=false;
 
