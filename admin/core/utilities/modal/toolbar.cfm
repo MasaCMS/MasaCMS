@@ -426,11 +426,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 
+				<!---
 				<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
 					<cfinclude template="layoutmanager.cfm">
 				</cfif>
+				--->
 		</div>
 	</div>
+	<cfif this.layoutmanager and $.currentUser().isLoggedIn() and not request.contentBean.getIsNew()>
+		<cfinclude template="layoutmanager.cfm">
+	</cfif>
 </cfoutput>
 </cfif>
 

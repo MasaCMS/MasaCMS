@@ -4231,6 +4231,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		show:function(){
 			this.each(function(el){
 				el.style.display = '';
+				//el.style.removeProperty('display');
 			});
 			return this;
 		},
@@ -4508,7 +4509,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 			
 			this.each(function(el){
-				if(typeof el.removeAttribute == 'function'){
+				if(el && typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
 				

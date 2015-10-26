@@ -69,7 +69,7 @@
 			    if(dragEl || newMuraObject){
 					if(dragEl && dragEl != this){
 						if(target.getAttribute('data-object')=='container'){
-							var container=mura(target).children('.mura-content');
+							var container=mura(target).children('.mura-object-content');
 							if(container.length){
 								container.append(dragEl);
 							} else {
@@ -184,7 +184,7 @@
 
 				    if(dragEl && dragEl != target){
 				    	if(target.getAttribute('data-object')=='container'){
-							var container=mura(target).children('.mura-content')
+							var container=mura(target).children('.mura-object-content')
 							container.append(dragEl);
 						} else {
 							try{
@@ -306,7 +306,7 @@
 
 		        if(target.hasClass('mura-object')){
 		        	if(this.getAttribute('data-object')=='container'){
-						var container=target.find('.mura-content');
+						var container=target.find('.mura-object-content');
 						container.append(displayObject);
 					} else {
 						this.parentNode.insertBefore(displayObject,this.nextSibling);
@@ -338,7 +338,7 @@
 
 		function loadObjectClass(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 			var pars = 'muraAction=cArch.loadclass&compactDisplay=true&layoutmanager=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-			alert('test')
+			
 			if(classid == 'plugins'){
 				var d = mura('#pluginList');
 			} else {
@@ -362,6 +362,7 @@
 
 		 function initLayoutManager(){
 			initClassObjects();
+			mura('body').addClass('-state__pushed--left');
 
 			mura('.mura-region-local[data-inited="false"]').each(function(){
 

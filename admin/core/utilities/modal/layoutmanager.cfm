@@ -1,39 +1,9 @@
 <style>
-	.mura-sidebar {
-		font-family: Helvetica, sans-serif;
-		font-size: 12px;
-		position: absolute;
-		top: 100%;
-		height: calc(100vh - 32px);
-		background: #fff;
-		
-		width: 350px;
-		
-		transform: translateX(-300px);
-		opacity: 0;
-		
-		transition: all .3s ease;
-	}
-
-	.mura-sidebar select {
-		width:250px;
-	}
-	
 
 	*[draggable=true] {
 	  -moz-user-select:none;
 	  -khtml-user-drag: element;
 	  cursor: move;
-	}
-
-	.mura-sidebar.active:hover {
-		transform: translateX(0);
-		opacity: 1;
-	}
-
-	.mura-sidebar.active.mura-sidebar--dragging {
-		transform: translateX(-300px);
-		opacity: 0;
 	}
 	
 	/* 
@@ -104,10 +74,60 @@
 	    user-select: none;
 	}
 	*/
+
+	body {
+	padding-left: 0;
+	transition: padding-left 0.3s ease;
+}
+
+.-state__pushed--left {
+	display: table;
+	padding-left: 300px;
+	
+	transition: padding-left 0.3s ease;
+	min-width: 100%;
+	
+	box-sizing: border-box;
+}
+
+.mura__layout-manager__controls {
+	width: 300px;
+	position: fixed;
+	
+	left: -300px;
+	top: 0;
+	bottom: 0;
+	
+	/*z-index: 1000;*/
+	
+	transition: left 0.3s ease;
+	
+	height: 100vh;
+}
+
+.mura__layout-manager__controls__scrollable {
+	height: inherit;
+	width: inherit;
+	overflow: scroll;
+}
+
+.mura__layout-manager__controls__objects {
+	padding: 50px 10px;
+}
+
+.-state__pushed--left .mura__layout-manager__controls {
+	left: 0;
+	transition: left 0.3s ease;
+}
 </style>
 <cfoutput>
-<div class="mura-sidebar">
-	<div class="mura-sidebar__objects-list">
+<div class="mura__layout-manager__controls">
+					
+	<div class="mura__layout-manager__controls__scrollable">
+	
+		<div class="mura__layout-manager__controls__objects">
+	
+			<div class="mura-sidebar__objects-list">
 		<div class="mura-sidebar__objects-list__object-group">
 			<div class="mura-sidebar__objects-list__object-group-heading">
 				<a href="javascript:mura('.mura-sidebar__objects-list').toggle();">View Legacy Objects</a>
@@ -215,6 +235,9 @@
 		</div>
 
 	</div>
+		</div>
+	</div>
+	
 </div>
 
 <script>
