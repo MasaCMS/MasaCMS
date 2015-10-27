@@ -1071,12 +1071,12 @@ var initMura=function(config){
       function(){
         if($(scope).find( ".g-recaptcha" ).length){
           //loader().loadjs('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
-          $.getScript('https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage);
+          $.getScript('https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit');
         }
 
         if($(scope).find( ".g-recaptcha-container" ).length){
           loader().loadjs(
-            'https://www.google.com/recaptcha/api.js?hl=' + config.reCAPTCHALanguage,
+            'https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit',
             function(){
               $(scope).find( ".g-recaptcha-container" ).each(function(){
                 var self=this;
