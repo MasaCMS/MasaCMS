@@ -1280,7 +1280,7 @@
 				if(find(".g-recaptcha" ).length){
 					var fileref=document.createElement('script')
 				        fileref.setAttribute("type","text/javascript")
-				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?hl=" + window.mura.reCAPTCHALanguage)
+				        fileref.setAttribute("src", "https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit")
 
 					document.getElementsByTagName("head")[0].appendChild(fileref)
 
@@ -1288,7 +1288,7 @@
 
 				if(find(".g-recaptcha-container" ).length){
 					loader().loadjs(
-						'https://www.google.com/recaptcha/api.js?hl=' + window.mura.reCAPTCHALanguage,
+						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
 						function(){
 							each(find(".g-recaptcha-container" ),function(el){
 								var self=el;
