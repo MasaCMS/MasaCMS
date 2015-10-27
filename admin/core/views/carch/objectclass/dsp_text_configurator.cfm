@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label class="control-label">Select Component</label>
 					<div class="controls">
 						<cfset rs=rc.$.getBean('contentManager').getList(args={moduleid='00000000000000000000000000000000003',siteid=session.siteid})>
-						<select name="source" id="component">
+						<select name="source" id="component" class="span12">
 							<option value="">Select Component</option> 	
 							<cfloop query="rs">
 								<option value="#rs.contentid#"<cfif rs.contentid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.title)#</option>

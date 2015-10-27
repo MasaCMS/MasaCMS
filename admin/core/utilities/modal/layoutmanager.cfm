@@ -119,6 +119,10 @@
 	left: 0;
 	transition: left 0.3s ease;
 }
+
+.mura__layout-manager__controls {
+	background-color: #FFFFFF;
+}
 </style>
 <cfoutput>
 <div class="mura__layout-manager__controls">

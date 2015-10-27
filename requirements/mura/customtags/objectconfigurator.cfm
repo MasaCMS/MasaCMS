@@ -22,7 +22,6 @@
 
 		<cfparam name="attributes.configurable" default="true">
 		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
-		<cfparam name="attributes.params.addlabel" default="false">
 		<cfparam name="attributes.params.label" default="">
 	</cfsilent>
 

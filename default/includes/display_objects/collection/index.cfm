@@ -2,9 +2,9 @@
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.layout" default="default">
-	<cfparam name="objectParams.displaylist" default="">
+	<cfparam name="objectParams.displaylist" default="Date,Title,Summary,Credits,Tags">
 	<cfparam name="objectParams.items" default="">
-	<cfparam name="objectParams.maxitems" default="5">
+	<cfparam name="objectParams.maxitems" default="4">
 	
 	<cfset objectParams.layout=listFirst(listLast(replace(objectParams.layout, "\", "/", "ALL"),'/'),'.')>
 
