@@ -441,18 +441,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.filename)>
 			<cfset var useCache=site.getCache()>
 
-			<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.lookupMap') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-				<cfset var lookupHash=hash(arguments.filename)>
+			<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+				<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+					<cfset var lookupHash=hash(arguments.filename)>
 
-				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
-					<cfset bean=getContentVersion(argumentCollection=arguments)>
+					<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+						<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+						<cfset bean=getContentVersion(argumentCollection=arguments)>
 
-					<cfif bean.exists()>
-						<cfreturn bean>
-					<cfelse>
-						<cfset useCache=false>
+						<cfif bean.exists()>
+							<cfreturn bean>
+						<cfelse>
+							<cfset useCache=false>
+						</cfif>
 					</cfif>
+				<cfelse>
+					<cfset useCache=false>
 				</cfif>
 			</cfif>
 
@@ -508,18 +512,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.lookupMap') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfset var lookupHash=hash(arguments.remoteid)>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.remoteid)>
 
-			<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-				<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
-				<cfset bean=getContentVersion(argumentCollection=arguments)>
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
-				<cfif bean.exists()>
-					<cfreturn bean>
-				<cfelse>
-					<cfset useCache=false>
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
 				</cfif>
+			<cfelse>
+				<cfset useCache=false>
 			</cfif>
 		</cfif>
 
@@ -570,18 +578,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.lookupMap') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfset var lookupHash=hash(arguments.title)>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.title)>
 
-			<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-				<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
-				<cfset bean=getContentVersion(argumentCollection=arguments)>
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
-				<cfif bean.exists()>
-					<cfreturn bean>
-				<cfelse>
-					<cfset useCache=false>
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
 				</cfif>
+			<cfelse>
+				<cfset useCache=false>
 			</cfif>
 		</cfif>
 
@@ -632,18 +644,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.lookupMap') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfset var lookupHash=hash(arguments.urltitle)>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.urltitle)>
 
-			<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-				<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
-				<cfset bean=getContentVersion(argumentCollection=arguments)>
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
-				<cfif bean.exists()>
-					<cfreturn bean>
-				<cfelse>
-					<cfset useCache=false>
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
 				</cfif>
+			<cfelse>
+				<cfset useCache=false>
 			</cfif>
 		</cfif>
 
@@ -694,18 +710,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var bean=arguments.contentBean/>
 		<cfset var useCache=site.getCache()>
 
-		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.lookupMap') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
-			<cfset var lookupHash=arguments.contentid>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=arguments.contentid>
 
-			<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
-				<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
-				<cfset bean=getContentVersion(argumentCollection=arguments)>
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
 
-				<cfif bean.exists()>
-					<cfreturn bean>
-				<cfelse>
-					<cfset useCache=false>
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
 				</cfif>
+			<cfelse>
+				<cfset useCache=false>
 			</cfif>
 		</cfif>
 
