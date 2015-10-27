@@ -20,6 +20,9 @@
 			<label class="control-label">Enter Embed Code</label>
 			<div class="controls">
 				<textarea name="source" class="objectParam span12">#objectParams.source#</textarea>
+				<input type="hidden" class="objectParam" name="render" value="client">
+				<input type="hidden" class="objectParam" name="async" value="false">
+				<input type="hidden" class="objectParam" name="clientTemplate" value="socialembed">
 			</div>
 		</div>
 	</div>

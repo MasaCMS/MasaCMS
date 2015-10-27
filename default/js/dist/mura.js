@@ -3038,7 +3038,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function wireUpObject(obj,response){
-		
+	
 		function validateFormAjax(frm) {
 			validateForm(frm,
 				function(frm){
@@ -3070,7 +3070,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		if(response){
 			if(typeof response == 'string'){
 				obj.html(trim(response));
-			} else if (typeof response.html =='string'){
+			} else if (typeof response.html =='string' && obj.data('render') != 'client'){
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
@@ -3192,6 +3192,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function processObject(el){
+
 		return new Promise(function(resolve,reject) {
 			var obj=(el.node) ? el : mura(el);
 			el =el.node || el;
@@ -5086,14 +5087,15 @@ mura.templates['meta']=function(context){
   }  
 }
 mura.templates['text']=function(context){
-	context.freetext=context.freetext || '<p>This free text object has not been configured.</p>';
+	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
  		html+='<div class="mura-object-content">' + context.source + '</div>';
  	return html;
 }
 mura.templates['socialembed']=function(context){
-	context.source=context.source || '<p>This social embed object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
+	context.source=context.source || '<p>This object has not been configured.</p>';
+ 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
  		html+='<div class="mura-object-content">' + context.source + '</div>';
+ 
  	return html;
 }

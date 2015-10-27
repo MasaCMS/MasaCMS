@@ -1517,7 +1517,7 @@
 	}
 
 	function wireUpObject(obj,response){
-		
+	
 		function validateFormAjax(frm) {
 			validateForm(frm,
 				function(frm){
@@ -1549,7 +1549,7 @@
 		if(response){
 			if(typeof response == 'string'){
 				obj.html(trim(response));
-			} else if (typeof response.html =='string'){
+			} else if (typeof response.html =='string' && obj.data('render') != 'client'){
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
@@ -1671,6 +1671,7 @@
 	}
 
 	function processObject(el){
+
 		return new Promise(function(resolve,reject) {
 			var obj=(el.node) ? el : mura(el);
 			el =el.node || el;
