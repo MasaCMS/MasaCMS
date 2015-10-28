@@ -251,7 +251,7 @@
 				<a href="javascript:muraInlineEditor.sidebarAction('showobjects');">&lt Back</a>
 				
 				<iframe src="" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsSidebariframe">
-					</iframe>
+				</iframe>
 			</div>
 			
 		</div>

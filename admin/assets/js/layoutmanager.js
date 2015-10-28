@@ -24,14 +24,16 @@
 			elDropHandled=false;
 			newMuraObject=false;
 			muraLooseDropTarget=null;
-
+			muraInlineEditor.sidebarAction('showobjects');
 			mura('.mura-object-selected').removeClass('mura-object-selected');
+			mura(this).addClass('mura-object-selected');
 		}
 
 		function initDraggableObject_dragend(){
 			dragEl=null;
 			elDropHandled=false;
 			newMuraObject=false;
+			mura('.mura-object-selected').removeClass('mura-object-selected');
 		}
 
 		function initDraggableObject_dragover(e){

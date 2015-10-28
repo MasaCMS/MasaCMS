@@ -63,7 +63,10 @@
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
 				//console.log(data)
-				mura('##mura-sidebar-configurator').show();
+				if(parameters["targetFrame"]=='sidebar'){
+					mura('##mura-sidebar-configurator').show();
+				}
+				
 				if(parameters["targetFrame"]=='sidebar'){
 					sidebarProxy.post({cmd:'setObjectParams',params:data});
 				} else {

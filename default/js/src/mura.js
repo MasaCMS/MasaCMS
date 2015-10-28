@@ -1255,7 +1255,7 @@
 		var processors=[
 
 			function(){
-				find('.mura-object').each(function(){
+				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
 					processObject(this);
 				});
 			},
