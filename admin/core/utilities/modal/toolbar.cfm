@@ -305,7 +305,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<li id="adminQuickEdit">
 										<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i>
 										<cfif useLayoutManager()>
+											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-layout')#
+											</cfif>
 										<cfelse>
 											#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#
 										</cfif></a>
