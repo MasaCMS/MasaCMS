@@ -74,6 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">Bound Attribute</option>
 							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">Component</option>
 						</select>
+						<button id="editSource" class="btn">Edit</button>
 					</div>
 				</div>
 				<div id="componentcontainer" class="control-group source-container" style="display:none">
@@ -95,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 				<div id="freetextcontainer" class="control-group source-container" style="display:none">
 					<div class="controls">
-					<button id="editSource" class="btn">Edit</button>
+					
 					</div>
 					<textarea name="source" id="freetext" style="display:none;"><cfif objectParams.sourceType eq 'freetext'>#objectParams.source#</cfif></textarea>
 					<script>
@@ -195,12 +196,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				$('select[name="source"], textarea[name="source"]').removeClass('objectParam');
 				$('.source-container').hide();
+				$('##editSource').hide();
 
 				var val=$('select[name="sourcetype"]').val();
 
 				if(val=='freetext'){
 					$('##freetext').addClass('objectParam');
-					$('##freetextcontainer').show();
+					$('##editSource').show();
 					$('input[name="render"]').val('client');
 					$('input[name="async"]').val('false');
 				} else if(val=='boundattribute'){

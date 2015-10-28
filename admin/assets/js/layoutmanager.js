@@ -24,6 +24,8 @@
 			elDropHandled=false;
 			newMuraObject=false;
 			muraLooseDropTarget=null;
+
+			mura('.mura-object-selected').removeClass('mura-object-selected');
 		}
 
 		function initDraggableObject_dragend(){

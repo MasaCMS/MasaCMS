@@ -183,6 +183,10 @@
 			values are present
 			*/
 			
+			mura('.mura-object-selected').removeClass('mura-object-selected');
+
+			editableObj.addClass('mura-object-selected');
+
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
@@ -731,6 +735,8 @@
 		save:function(){
 			try{
 
+				mura('.mura-object-selected').removeClass('mura-object-selected');
+				
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
@@ -1252,10 +1258,12 @@
 		},
 		sidebarAction(action){
 			if(action=='showobjects'){
+				mura('.mura-object-selected').removeClass('mura-object-selected');
 				mura('#mura-sidebar-configurator').hide();
 				mura('#mura-sidebar-objects-legacy').hide();
 				mura('#mura-sidebar-objects').show();
 			} else if(action=='showlegacyobjects'){
+				mura('.mura-object-selected').removeClass('mura-object-selected');
 				mura('#mura-sidebar-configurator').hide();
 				mura('#mura-sidebar-objects-legacy').show();
 				mura('#mura-sidebar-objects').hide();

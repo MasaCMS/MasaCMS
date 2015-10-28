@@ -64,6 +64,11 @@
 		margin-bottom: -1px;
 	}
 
+	.mura-object-selected {
+		border-style: dotted;
+		border-color: red;
+	}
+
 	/*
 	body {
 	    -webkit-touch-callout: none;
