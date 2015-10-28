@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfoutput>
-
+<cf_objectconfigurator>
 <div id="availableObjectParams" 
 	data-object="category_summary" 
 	data-name="#esapiEncode('html_attr','#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
@@ -82,6 +82,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 </div>
-
+</cf_objectconfigurator>
 </cfoutput>
 

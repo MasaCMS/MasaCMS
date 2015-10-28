@@ -49,8 +49,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.archiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",variables.$.event("filterBy"))>
 <cfif arguments.objectID eq variables.$.content("contentID")>
 	<cfset variables.archive=variables.$.content()>
-<cfelse>
+<cfelseif isValid('uuid',arguments.objectid)>
 	<cfset variables.archive=variables.$.getBean("content").loadBy(contentID=arguments.objectID)>
+<cfelse>
+	<cfset variables.archive=variables.$.content()>
+	<cfset variables.crumbIterator=variables.archive.getCrumbIterator()>
+
+	<cfloop condition="variables.crumbIterator.hasNext()">
+		<cfset variables.crumb=variables.crumbIterator.next()>
+		<cfif listFindNoCase('Folder',variables.crumb.getType())>
+			<cfset variables.archive=variables.crumb>
+			<cfbreak>
+		</cfif>
+	</cfloop>
 </cfif>
 </cfsilent>
 <cfoutput>

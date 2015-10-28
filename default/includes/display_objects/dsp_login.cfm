@@ -56,7 +56,7 @@
 --->
 <cfif request.muraFrontEndRequest and this.asyncObjects>
 	<cfoutput>
-		<div class="mura-async-object" 
+		<div class="mura-object mura-async-object" 
 			data-object="login" 
 			data-returnurl="#esapiEncode('html_attr',$.event('returnurl'))#">
 		</div>

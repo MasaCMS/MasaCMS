@@ -21,6 +21,18 @@
 							#esapiEncode('html',rc.rsObjects.name)#
 						</option>
 					</cfloop>
+					<option <cfif rc.object eq 'archive_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#" value='{"object":"archive_nav","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#","objectid":"none"}'>
+							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation'))#
+						</option>
+						<option <cfif rc.object eq 'category_summary'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#" value='{"object":"category_summary","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#","objectid":"none"}'>
+							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary'))#
+						</option>
+						<option <cfif rc.object eq 'calendar_nav'>selected </cfif>title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#" value='{"object":"calendar_nav","name":"#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#","objectid":"none"}'>
+							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#
+						</option>
+						<option <cfif rc.object eq 'tag_cloud'>selected </cfif>title="Tag Cloud" value='{"object":"tag_cloud","name":"Tag Cloud","objectid":"none"}'>
+							Tag Cloud
+						</option>
 				</select>
 			</div>
 		</div>

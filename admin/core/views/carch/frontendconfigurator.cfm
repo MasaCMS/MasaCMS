@@ -3,6 +3,12 @@
 	<cfset $=rc.$>
 	<cfparam name="rc.layoutmanager" default="false">
 	<cfparam name="rc.sourceFrame" default="sidebar">
+	<cfparam name="rc.object" default="">
+	<cfparam name="rc.objectname" default="">
+
+	<cfif not len(rc.objectname) and len(rc.object) gt 1>
+		<cfset rc.objectname=ucase(left(rc.object,1)) & right(rc.object,len(rc.object)-1)>
+	</cfif>
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfif rc.layoutmanager>

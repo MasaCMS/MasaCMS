@@ -47,6 +47,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="objectparams" default="#structNew()#">
 <cfparam name="objectparams.displayRSS" default="false">
 <cfparam name="useRss" default="#objectparams.displayRSS#">
+<cfif not isValid('uuid',arguments.objectid)>
+	<cfset variables.crumbIterator=variables.$.content().getCrumbIterator()>
+
+	<cfloop condition="variables.crumbIterator.hasNext()">
+		<cfset variables.crumb=variables.crumbIterator.next()>
+		<cfif listFindNoCase('Folder',variables.crumb.getType())>
+			<cfset arguments.objectid=variables.crumb.getContentID()>
+			<cfbreak>
+		</cfif>
+	</cfloop>
+</cfif>
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#variables.$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 <cfif rsSection.recordcount>
 <cfsilent>
