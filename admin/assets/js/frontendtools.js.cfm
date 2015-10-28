@@ -536,9 +536,8 @@
 
 				utility(".mura-object").each(initObject);
 
-				utility('.mura-async-object[data-object="folder"]').each(function(){
+				utility('.mura-object[data-object="folder"]').each(function(){
 					var item=utility(this);
-				
 					item.addClass("active");
 							
 					item.html(window.mura.layoutmanagertoolbar + item.html());

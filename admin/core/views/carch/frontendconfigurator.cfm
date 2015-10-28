@@ -42,7 +42,7 @@
 
 		$(function(){
 
-			function initConifuratorProxy(){
+			function initConfiguratorProxy(){
 
 				function onFrontEndMessage(messageEvent){
 					
@@ -119,11 +119,11 @@
 				if(jQuery("##ProxyIFrame").length){
 					jQuery("##ProxyIFrame").load(
 						function(){
-							initConifuratorProxy()
+							initConfiguratorProxy()
 						}
 					);	
 				} else {
-					initConifuratorProxy();
+					initConfiguratorProxy();
 				}
 			}
 

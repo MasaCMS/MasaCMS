@@ -66,7 +66,7 @@ $(function(){
 	if($("##ProxyIFrame").length){
 		$("##ProxyIFrame").load(
 			function(){
-				frontEndProxy.post({cmd:'setWidth',width:'standard'});
+				frontEndProxy.post({cmd:'setWidth',width:600});
 			}
 		);	
 	} else {

@@ -94,10 +94,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 				<div id="freetextcontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Set Free Text</label>
 					<div class="controls">
-						<textarea name="source" id="freetext" class="htmlEditor"><cfif objectParams.sourceType eq 'freetext'>#objectParams.source#</cfif></textarea>
+					<button id="editSource" class="btn">Edit</button>
 					</div>
+					<textarea name="source" id="freetext" style="display:none;"><cfif objectParams.sourceType eq 'freetext'>#objectParams.source#</cfif></textarea>
+					<script>
+					$(function(){
+						$('##editSource').click(function(){
+							frontEndProxy.post({
+								cmd:'openModal',
+								src:'?muraAction=cArch.edittext&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true'
+								}
+							);
+						});
+					});
+					</script>
+					
 				</div>
 				<div id="boundattributecontainer" class="control-group source-container" style="display:none">
 					<label class="control-label">Select Bound Attribute</label>
@@ -218,24 +230,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				);
 			
 			});
-
-			$('textarea.htmlEditor').each(function(){
-				var textarea=$(this);
-
-				var instance = CKEDITOR.instances[textarea.attr('id')];
-
-				if(typeof(instance) != 'undefined' && instance != null) {
-					CKEDITOR.remove(instance);
-				}
-
-				if(!textarea.val()){
-					textarea.val('<p></p>');
-				}
-				textarea.ckeditor({
-					toolbar: 'htmlEditor',
-					customConfig: 'config.js.cfm'
-				});
-			})
 			setContentSourceVisibility();
 			setComponentEditOption();
 
