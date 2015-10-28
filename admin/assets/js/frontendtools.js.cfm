@@ -182,10 +182,6 @@
 			This reloads the element in the dom to ensure that all the latest
 			values are present
 			*/
-			
-			mura('.mura-object-selected').removeClass('mura-object-selected');
-
-			editableObj.addClass('mura-object-selected');
 
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
@@ -308,6 +304,11 @@
 				resizeFrontEndToolsModal(0);
 			}
 		} else {
+
+			mura('.mura-object-selected').removeClass('mura-object-selected');
+
+			editableObj.addClass('mura-object-selected');
+			
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			muraInlineEditor.sidebarAction('showconfigurator');
 		}
@@ -736,7 +737,7 @@
 			try{
 
 				mura('.mura-object-selected').removeClass('mura-object-selected');
-				
+
 				muraInlineEditor.validate(
 					function(){
 						var count=0;
