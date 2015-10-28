@@ -81,9 +81,9 @@
 	*/
 
 	body {
-	padding-left: 0;
-	transition: padding-left 0.3s ease;
-}
+		padding-left: 0;
+		transition: padding-left 0.3s ease;
+	}
 
 .-state__pushed--left {
 	display: table;
@@ -247,9 +247,11 @@
 			</div>
 			
 			<div id="mura-sidebar-configurator" style="display:none">
+				
 				<a href="javascript:muraInlineEditor.sidebarAction('showobjects');">&lt Back</a>
+				
 				<iframe src="" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsSidebariframe">
-				</iframe>
+					</iframe>
 			</div>
 			
 		</div>

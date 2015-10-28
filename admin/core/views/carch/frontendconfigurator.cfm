@@ -2,7 +2,13 @@
 	<cfset event=request.event>
 	<cfset $=rc.$>
 	<cfparam name="rc.layoutmanager" default="false">
-	<cfparam name="rc.sourceFrame" default="sidebar">
+
+	<cfif $.useLayoutManager()>
+		<cfparam name="rc.sourceFrame" default="sidebar">
+	<cfelse>
+		<cfparam name="rc.sourceFrame" default="modal">
+	</cfif>
+	
 	<cfparam name="rc.object" default="">
 	<cfparam name="rc.objectname" default="">
 

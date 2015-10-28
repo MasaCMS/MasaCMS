@@ -40,7 +40,12 @@
 				} else {
 					frontEndModalWidth=frontEndModalWidthStandard;
 				}
-				resizeFrontEndToolsModal();	
+				
+				if(parameters["targetFrame"]=='sidebar'){
+					resizeFrontEndToolsSidebar(decodeURIComponent(parameters["height"]));
+				} else {
+					resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
+				}
 			} else if(parameters["cmd"] == "close"){
 				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
@@ -308,7 +313,7 @@
 			mura('.mura-object-selected').removeClass('mura-object-selected');
 
 			editableObj.addClass('mura-object-selected');
-			
+
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			muraInlineEditor.sidebarAction('showconfigurator');
 		}
