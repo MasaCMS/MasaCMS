@@ -1225,7 +1225,11 @@
 				var path=img.attr('src').split( '?' )[0].split('/');
 				var fileParts=path[path.length-1].split('.');
 				var filename=fileParts[0];
-				var fileext=fileParts[1].toLowerCase();
+				
+				if(fileParts.length > 1){
+					var fileext=fileParts[1].toLowerCase();
+				}
+				
 				var fileInfo=filename.split('_');
 				var fileid=fileInfo[0];
 				
