@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset variables.rsArchive=variables.$.getBean('contentGateway').getReleaseCountByMonth(variables.$.event('siteID'),arguments.objectID)>
+
 <cfset variables.archiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",variables.$.event("filterBy"))>
 <cfif arguments.objectID eq variables.$.content("contentID")>
 	<cfset variables.archive=variables.$.content()>
@@ -54,17 +54,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset variables.archive=variables.$.content()>
 	<cfset variables.crumbIterator=variables.archive.getCrumbIterator()>
-
 	<cfloop condition="variables.crumbIterator.hasNext()">
 		<cfset variables.crumb=variables.crumbIterator.next()>
 		<cfif listFindNoCase('Folder',variables.crumb.getType())>
-			<cfset variables.archive=variables.crumb>
+			<cfset variables.archive=variables.$.getBean('content').loadBy(contentid=crumb.getContentID())>
 			<cfbreak>
 		</cfif>
 	</cfloop>
+
 </cfif>
+
+<cfset variables.rsArchive=variables.$.getBean('contentGateway').getReleaseCountByMonth(variables.$.event('siteID'),variables.archive.getContentID())>
 </cfsilent>
 <cfoutput>
+
 <nav id="navArchive" <cfif this.navWrapperClass neq "">class="mura-nav-archive #this.navWrapperClass#"</cfif>>
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass#">
