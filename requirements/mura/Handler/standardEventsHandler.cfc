@@ -840,8 +840,9 @@
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
 
 		} catch (any e){
+			result.error = e;
 			$.announceEvent('onapierror');
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=e.stacktrace}));
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=result.error.stacktrace}));
 		}
 
 	</cfscript>
