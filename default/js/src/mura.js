@@ -1241,7 +1241,7 @@
 
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal">[EDIT]</i></div>';
 
 	function processMarkup(scope){
 
@@ -1250,7 +1250,7 @@
 		}
 		
 		var self=scope;
-		
+
 		function find(selector){
 			return scope.find(selector);
 		}
