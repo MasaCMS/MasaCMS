@@ -109,10 +109,12 @@
 	
 	<cfset getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
 	
-	<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
-	<cfif arguments.event.getValue('r').restrict>
-		<cfset arguments.event.setValue('nocache',1)>
-	</cfif>	
+	<cfif isArray(arguments.event.getValue('crumbdata')) and arrayLen(arguments.event.getValue('crumbdata'))>
+		<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
+		<cfif arguments.event.getValue('r').restrict>
+			<cfset arguments.event.setValue('nocache',1)>
+		</cfif>
+	</cfif>
 </cffunction>
 
 <cffunction name="standardSetCommentPermissionsHandler" output="false" returnType="any">

@@ -2765,10 +2765,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
 
 	function processMarkup(scope){
+
+		if(!(scope instanceof window.mura.MuraDOMSelection)){
+			scope=select(scope);
+		}
+		
 		var self=scope;
-
-		scope=select(scope);
-
+		
 		function find(selector){
 			return scope.find(selector);
 		}
@@ -3106,13 +3109,20 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			if(obj.data('object')=='folder'){
 				obj.html(layoutmanagertoolbar + obj.html());
 			} else {
-				var region=mura(self).closest(".mura-region-local");
-				if(region && region.length ){
-					if(region.data('perm')){
-						var objectData=obj.data();
+				if(mura.type == 'Variation'){
+					var objectData=obj.data();
+					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+						obj.html(layoutmanagertoolbar + obj.html());
+					}
+				} else {
+					var region=mura(self).closest(".mura-region-local");
+					if(region && region.length ){
+						if(region.data('perm')){
+							var objectData=obj.data();
 
-						if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-							obj.html(layoutmanagertoolbar + obj.html());
+							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+								obj.html(layoutmanagertoolbar + obj.html());
+							}
 						}
 					}
 				}
@@ -5087,12 +5097,14 @@ mura.templates['meta']=function(context){
   }  
 }
 mura.templates['text']=function(context){
+	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
  		html+='<div class="mura-object-content">' + context.source + '</div>';
  	return html;
 }
 mura.templates['socialembed']=function(context){
+	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
  		html+='<div class="mura-object-content">' + context.source + '</div>';

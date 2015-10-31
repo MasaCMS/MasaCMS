@@ -1019,7 +1019,7 @@ component extends="mura.cfobject" {
 					if(!content.exists()){
 						content.setType('Variation');
 						content.setIsNew(1);
-						content.setRemoteID(0);
+						content.setRemoteID(id);
 						content.setSiteID(arguments.siteid);
 						request.contentBean=content;
 					}
@@ -1845,6 +1845,14 @@ component extends="mura.cfobject" {
 			$.event('currentFilenameAdjusted',$.content('filename'));
 		}
 
+		if(!$.content().exists()){
+			$.content().setType('Variation');
+			$.content().setIsNew(1);
+			$.content().setRemoteID(0);
+			$.content().setSiteID(arguments.siteid);
+			request.contentBean=$.content();
+		}
+
 		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
@@ -1858,7 +1866,8 @@ component extends="mura.cfobject" {
 			$.event().getHandler('standardSetCommentPermissions').handle($.event());
 		}
 
-		if($.event('r').restrict){
+
+		if($.content().getType() != 'Variation' && $.event('r').restrict){
 			$.event('nocache',1);
 		}
 

@@ -46,11 +46,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->	
 
 	<cfparam name="Cookie.fetDisplay" default="">
-	<cfif variables.$.content('type') neq 'Variation'>
+	<cfif variables.$.content('type') eq 'Variation'>
+		<cfoutput>
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+
+		<script>
+			mura(function(){
+
+				if(!window.CKEDITOR){
+					mura.loader().loadjs(
+							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');	
+				}
+
+				if(!window.CKFinder){
+					mura.loader().loadjs(
+						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
+					
+				}
+				
+				mura.loader().loadjs(
+						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
+						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/frontendtools.js.cfm?siteid=#esapiEncode("url",variables.$.event("siteid"))#&contenthistid=#$.content("contenthistid")#&coreversion=#application.coreversion#&showInlineEditor=#getShowInlineEditor()#&cacheid=#createUUID()#&contentType=Variation');
+			});
+		</script>
+		</cfoutput>
+	<cfelse>
 		<cfoutput>
 		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-		
+	
 		<script>
 			var hasMuraLoader=(typeof(mura) != 'undefined' && typeof(mura.loader) != 'undefined');	
 			if(!window.CKEDITOR){
@@ -96,6 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		    </style>
 		<![endif]--->
 		</cfoutput>
+	<ce
 	</cfif>
 
 	<cfif getShowToolbar()>
@@ -227,7 +252,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 						
 						<cfif listFindNoCase('editor,author',request.r.perm)>
-							<cfset edittype=($.content('type') eq 'Variation')?'var':'inline'>
+							<!---<cfset edittype=($.content('type') eq 'Variation')?'var':'inline'>--->
+							<cfset edittype='inline'>
 							<li id="adminSave" class="dropdown" style="display:none">
 								<a href="" class="dropdown-toggle" onclick="return false;">
 									<i class="icon-ok-sign"></i> Save</a>
@@ -288,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif ListFindNoCase('editor,author',request.r.perm)>
 						<ul id="tools-version">
 							<cfif $.content('type') eq 'Variation'>
-							<li id="adminEditPage" class="dropdown"><a id="mura-var-edit"><i class="icon-pencil"></i></a></li>
+							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="icon-pencil"></i></a></li>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
 							<cfelse>
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>

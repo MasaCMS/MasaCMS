@@ -1244,10 +1244,13 @@
 	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
 
 	function processMarkup(scope){
+
+		if(!(scope instanceof window.mura.MuraDOMSelection)){
+			scope=select(scope);
+		}
+		
 		var self=scope;
-
-		scope=select(scope);
-
+		
 		function find(selector){
 			return scope.find(selector);
 		}
@@ -1585,13 +1588,20 @@
 			if(obj.data('object')=='folder'){
 				obj.html(layoutmanagertoolbar + obj.html());
 			} else {
-				var region=mura(self).closest(".mura-region-local");
-				if(region && region.length ){
-					if(region.data('perm')){
-						var objectData=obj.data();
+				if(mura.type == 'Variation'){
+					var objectData=obj.data();
+					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+						obj.html(layoutmanagertoolbar + obj.html());
+					}
+				} else {
+					var region=mura(self).closest(".mura-region-local");
+					if(region && region.length ){
+						if(region.data('perm')){
+							var objectData=obj.data();
 
-						if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-							obj.html(layoutmanagertoolbar + obj.html());
+							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
+								obj.html(layoutmanagertoolbar + obj.html());
+							}
 						}
 					}
 				}

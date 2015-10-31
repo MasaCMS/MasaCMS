@@ -7,12 +7,14 @@ mura.templates['meta']=function(context){
   }  
 }
 mura.templates['text']=function(context){
+	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
  		html+='<div class="mura-object-content">' + context.source + '</div>';
  	return html;
 }
 mura.templates['socialembed']=function(context){
+	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
  		html+='<div class="mura-object-content">' + context.source + '</div>';

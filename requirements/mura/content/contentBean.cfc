@@ -1199,6 +1199,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setBody" output="false">
+	<cfargument name="body">
+
+	<cfif getValue('type') eq 'Variation'>
+		<cfif not isSimpleValue(arguments.body)>
+			<cfset arguments.body=serializeJSON(arguments.body)>
+		</cfif>
+		<cfif not isJSON(arguments.body)>
+			<cfset arguments.body=urlDecode(arguments.body)>
+			<cfif not isJSON(arguments.body)>
+				<cfset arguments.body="[]">
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfset variables.instance.body=arguments.body>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setAssocURL" output="false">
 	<cfargument name="assocURL">
 	<cfif variables.instance.type eq 'Link'>
