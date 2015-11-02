@@ -2762,7 +2762,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="fa fa-cog"></i></div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal">[EDIT]</div>';
 
 	function processMarkup(scope){
 
@@ -2771,7 +2771,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 		
 		var self=scope;
-		
+
 		function find(selector){
 			return scope.find(selector);
 		}

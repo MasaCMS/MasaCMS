@@ -150,7 +150,7 @@ CKEDITOR.editorConfig = function( config )
 		];
 
 		config.toolbar_htmlEditor = [
-			//{name: 'group0', items: ['Source']},
+			{name: 'group0', items: ['Source']},
 			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker','Scayt']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
 			{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
