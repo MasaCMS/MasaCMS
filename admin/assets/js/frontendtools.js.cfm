@@ -1340,6 +1340,10 @@
 							//console.log(muraInlineEditor.data)
 							//return;
 
+							if($ && $.support){
+								$.support.cors = true;
+							}
+							
 							utility.ajax({ 
 					        type: "POST",
 					        xhrFields: { withCredentials: true },
@@ -1353,6 +1357,10 @@
 					        		var resp = eval('(' + data + ')');
 						        	location.href=resp.location;
 					        	</cfif>
+						     
+					        },
+					         error: function(data){
+					        	console.log(JSON.stringify(data));
 						     
 					        }
 					       });
