@@ -110,6 +110,7 @@
 @import url("add-content-ui.less");
 @import url("mobile-preview.less");
 
+
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */
   /*height: [Set in dialog.js];*/
@@ -671,6 +672,16 @@
 		width: 95%
 	}
 	
+}
+
+@media print{
+	.mura-toolbar{
+		display: none;
+	}
+	
+	.editableObject ul.editableObjectControl{
+		display: none !important;
+	}
 }
 	
 // CK Editor			
