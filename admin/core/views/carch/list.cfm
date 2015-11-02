@@ -447,7 +447,6 @@
 			<cfparam name="session.copySiteID" default="">
 			<cfparam name="session.copyAll" default="false">
 			<cfparam name="session.flatViewArgs" default="#structNew()#">
-			<cfparam name="session.flatViewArgs" default="#structNew()#">
 
 			<cfscript>
 				if(not structKeyExists(session.flatViewArgs,session.siteid)){
