@@ -1351,15 +1351,8 @@
 					        		location.reload();
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
-						        	//location.href=resp.location;
+						        	location.href=resp.location;
 					        	</cfif>
-						     
-					        },
-					        error: function(data){
-					        	console.log(adminLoc);
-					        	
-					        	return;
-					        	
 						     
 					        }
 					       });
