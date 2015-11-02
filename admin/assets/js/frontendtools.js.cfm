@@ -518,7 +518,7 @@
 			utility('.mura-editable').removeClass('inactive');
 			window.mura.editing=true;
 
-			mura('##mura-deactivate-editors').click(function(){
+			utility('##mura-deactivate-editors').click(function(){
 				muraInlineEditor.sidebarAction('showobjects');
 			});
 			
@@ -1171,7 +1171,7 @@
 		save:function(){
 			try{
 
-				mura('.mura-object-selected').removeClass('mura-object-selected');
+				utility('.mura-object-selected').removeClass('mura-object-selected');
 
 				muraInlineEditor.validate(
 					function(){
@@ -1203,7 +1203,7 @@
 							count++;
 						}
 
-						mura('.mxp-editable').each(function(){
+						utility('.mxp-editable').each(function(){
 							if(mura && mura.resetAsyncObject){
 								mura(this)
 									.find('.mura-object')
