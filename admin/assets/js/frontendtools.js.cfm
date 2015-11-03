@@ -231,7 +231,7 @@
 			if(map[editableObj.data('object')]
 			){
 				targetFrame='sidebar'; 
-				if(muraInlineEditor.commitEdit){
+				if(muraInlineEditor.commitEdit && mura.currentId){
 					muraInlineEditor.commitEdit(mura('##' + mura.currentId));
 				}
 			} 
@@ -657,12 +657,10 @@
 						} else {
 							variation.adjusted=currentEl.html();
 						}
-							
-					
 
 						currentEl.attr('contenteditable','false');
 
-						mura.processMarkup('##' + mura.currentId)
+						mura.processMarkup(currentEl)
 
 						mura.currentId='';
 
