@@ -68,7 +68,8 @@
 				autoScroll(parameters["y"]);
 			} else if(parameters["cmd"] == "requestObjectParams"){
 				var data=mura('[data-instanceid="' + parameters["instanceid"] + '"]').data();
-				if(parameters["targetFrame"]=='sidebar'){
+				
+				if(parameters["targetFrame"]=='sidebar' && document.getElementById('mura-sidebar-editor').style.display=='none'){
 					mura('##mura-sidebar-configurator').show();
 				}
 				

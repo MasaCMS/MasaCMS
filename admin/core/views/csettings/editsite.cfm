@@ -820,7 +820,6 @@ to your own modified versions of Mura CMS.
 					</div>
 			</div>
 
-			<!---
 			 <div class="control-group">
 				<label class="control-label">Content Rejection Script</label>
 				<div class="controls">
@@ -828,7 +827,6 @@ to your own modified versions of Mura CMS.
 						<textarea rows="6" class="span12" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
 					</div>
 			</div>
-			--->
 
 			<div class="control-group">
 				<label class="control-label">User Login Authorization Code Challenge Script</label>

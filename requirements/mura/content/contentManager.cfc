@@ -936,6 +936,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doTrimVersionHistory=false>
 		<cfset var doPreserveVersionedObjects=false>
 		<cfset var doDeleteDraftHistAll=false>
+		<cfset var doSaveApproval=false>
 		<cfset var activeBean="">
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
@@ -1120,7 +1121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset approvalRequest.setContentHistID(newBean.getContentHistID())>
 						<cfset approvalRequest.setStatus("Pending")>
 						<cfset approvalRequest.setGroupID("")>
-						<cfset approvalRequest.save()>
+						<cfset doSaveApproval=true>
 						<cfset newBean.setApproved(0)>
 
 					<!--- If it has an approval request that has been rejected or is pending then create a new request --->
@@ -1149,7 +1150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset approvalRequest.setcontentHistID(newBean.getContentHistID())>
 						<cfset approvalRequest.setStatus("Pending")>
 						<cfset approvalRequest.setGroupID("")>
-						<cfset approvalRequest.save()>
+						<cfset doSaveApproval=true>
 						<cfset newBean.setApproved(0)>
 
 					</cfif>
@@ -1537,6 +1538,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
 						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'',newBean) />
+				</cfif>
+
+				<cfif doSaveApproval>
+					<cfset approvalRequest.save()>
 				</cfif>
 
 				<cfset getBean('contentSourceMap')

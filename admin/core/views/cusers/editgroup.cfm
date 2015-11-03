@@ -250,10 +250,12 @@
 								</div>
 							</div>
 						<cfelse>
-							<input type="hidden" name="isPublic" value="1">
+							<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
 						</cfif>
 
 					</div>
+				<cfelse>
+					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
 				</cfif>
 			</div>
 

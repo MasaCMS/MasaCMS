@@ -76,4 +76,9 @@
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="onApplicationLoad" output="false">
+		<cfargument name="$">
+		<cfset $.siteConfig('ContentPendingScript','[m]$.content().getURL(complete=1,queryString="previewid=" & $.content("contenthistid"))[/m]')>
+	</cffunction>
+
 </cfcomponent>

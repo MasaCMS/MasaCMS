@@ -1229,22 +1229,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="boolean" required="true" default="false"/>
 	<cfargument name="tab">
+	<cfargument name="complete" required="true" default="false">
+	<cfargument name="hash" required="true" default="false">
 	<cfset var returnStr="">
 	<cfset var topID="00000000000000000000000000000000001">
 	
 	<cfif listFindNoCase("Form,Component", variables.instance.type)>
-		<cfset topID=variables.instance.moduleID>
+		<cfset topID=getValue('moduleid')>
 	</cfif>
 
 	<cfif arguments.compactDisplay>
 		<cfset arguments.compactDisplay='true'>
 	</cfif>
 	
-	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#getValue('type')#&siteId=#getValue('siteid')#&topId=#topID#&parentId=#getValue('parentid')#&moduleId=#getValue('moduleid')#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfif structKeyExists(arguments,"tab")>
 		<cfset returnStr=returnStr & "##" & arguments.tab>
 	</cfif>
+
+	<cfif arguments.hash>
+		<cfset var redirectid=getBean('utility').createRedirectId(returnStr)>
+		<cfset returnStr=getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().createHREF(complete=arguments.complete,filename=redirectid)>
+	</cfif>
+
 	<cfreturn returnStr>
 </cffunction> 
 
