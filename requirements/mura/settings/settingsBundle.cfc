@@ -329,8 +329,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="changesetID" default="">
 		<cfargument name="parentid" default="">
-		
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var zipDir	= "" />
 		<cfset var extendManager = getBean('extendManager') />
 		<cfset var rstcontent=getValue("rstcontent")>
@@ -363,16 +361,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 	
-			<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>--->
+			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() /> 
 	
-			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 	
 			<cfloop query="rstfiles">
-				<cfif fileExists( "#siteRoot#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
-					<cfset fileCopy("#siteRoot#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+				<cfif fileExists( "#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
+					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				<cfelse>
-					<cfset fileCopy("#siteRoot#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				</cfif>
 			</cfloop>
 			
@@ -415,7 +412,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset directoryCreate(backupPath)/>
 					</cfif>
 					<cfif not fileExists(filePath)>
-						<cfset fileCopy(URLDecode('#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
+						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
 					</cfif>					
 				</cfloop>
 			</cfif>
@@ -448,11 +445,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var find = 1 />
 		<cfset var path = "" />
 		<cfset var pathArray = [] />
-	
+		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 		<cfloop condition="find gt 0">
 			<cfset block = {} />
 			
-			<cfset find = refindNoCase('src=\"\/#arguments.siteID#\/assets',arguments.content,pos)>
+			<cfset find = refindNoCase('\/#filePoolID#\/assets',arguments.content,pos)>
 			
 			<cfset block['find'] = find />
 			
