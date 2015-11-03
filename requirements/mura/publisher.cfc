@@ -3104,7 +3104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset local.item=local.it.next()>
 					<cfset local.item.setSiteID(arguments.toSiteID)>
 					<cfset local.item.setRelatedContentID(keys.get(local.item.getRelatedContentID()))>
-					<cfset local.item.setRelatedContentID(keys.get(local.item.getSubTypeID()))>
+					<cfset local.item.setSubTypeID(keys.get(local.item.getSubTypeID()))>
 					<cfset local.item.save()>
 				</cfloop>
 			</cfif>
