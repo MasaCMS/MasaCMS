@@ -397,17 +397,36 @@
 
 	var toggleAdminToolbar=function(){
 		var tools=utility("##frontEndTools");
-		if(typeof tools.animate == 'function'){
-			utility("##frontEndTools").animate({opacity: "toggle"});
+
+		if(utility('HTML').hasClass('mura-edit-mode')){
+			if(typeof tools.fadeOut == 'function'){
+				utility("##frontEndTools").fadeOut();
+			} else {
+				utility("##frontEndTools").hide();
+			}
+
+			utility('HTML').removeClass('mura-edit-mode');
+			utility(".editableObject").addClass('editableObjectHide');
+
+			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
+				utility(".mura-editable").addClass('inactive');
+			}
+
 		} else {
-			tools.toggle();
+			if(typeof tools.fadeOut == 'function'){
+				utility("##frontEndTools").fadeIn();
+			} else {
+				utility("##frontEndTools").show();
+			}
+
+			utility('HTML').addClass('mura-edit-mode');
+			utility(".editableObject").removeClass('editableObjectHide');
+
+			if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
+				utility(".mura-editable").removeClass('inactive');
+			}
 		}
-		utility('HTML').toggleClass('mura-edit-mode');
-		utility(".editableObject").toggleClass('editableObjectHide');
-			
-		if(typeof muraInlineEditor != 'undefined' && muraInlineEditor.inited){
-			utility(".mura-editable").toggleClass('inactive');
-		}
+		
 	}
 
 	var resizeEditableObject=function(target){
