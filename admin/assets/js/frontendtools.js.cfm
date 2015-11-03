@@ -1360,7 +1360,7 @@
 							//console.log(muraInlineEditor.data)
 							//return;
 
-							if($ && $.support){
+							if(typeof $ != 'undefined' && $.support){
 								$.support.cors = true;
 							}
 							

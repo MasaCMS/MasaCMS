@@ -261,7 +261,9 @@
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
+						<cfif $.content('type') neq 'Variation'>
 						<a href="##" id="mura-objects-legacy-btn">View Legacy Objects</a>
+						</cfif>
 						<h3>Content Objects</h3>
 						
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
@@ -285,27 +287,9 @@
 						)#
 
 						#contentRendererUtility.renderObjectClassOption(
-							object='media',
-							objectid='',
-							objectname='Media'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
 							object='socialembed',
 							objectid='',
 							objectname='Social Embed'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='navigation',
-							objectid='',
-							objectname='Navigation'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='system',
-							objectid='',
-							objectname='System Object'
 						)#
 
 						#contentRendererUtility.renderObjectClassOption(
@@ -314,11 +298,25 @@
 							objectname='Form'
 						)#
 
-						#contentRendererUtility.renderObjectClassOption(
-							object='mailing_list',
-							objectid='',
-							objectname='Mailing List'
-						)#
+						<cfif $.content('type') neq 'Variation'>
+							#contentRendererUtility.renderObjectClassOption(
+								object='navigation',
+								objectid='',
+								objectname='Navigation'
+							)#
+
+							#contentRendererUtility.renderObjectClassOption(
+								object='system',
+								objectid='',
+								objectname='System Object'
+							)#
+
+							#contentRendererUtility.renderObjectClassOption(
+								object='mailing_list',
+								objectid='',
+								objectname='Mailing List'
+							)#
+						</cfif>
 
 						#contentRendererUtility.renderObjectClassOption(
 							object='plugin',
@@ -330,7 +328,7 @@
 					</div>
 				</div>
 			</div>
-
+			<cfif $.content('type') neq 'Variation'>
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
@@ -367,6 +365,7 @@
 				</div>
 		
 			</div>
+			</cfif>
 			
 			<div id="mura-sidebar-configurator" style="display:none">
 				
