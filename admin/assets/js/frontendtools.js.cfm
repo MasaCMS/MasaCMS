@@ -552,6 +552,8 @@
 						selector:item.selector()
 					});
 
+					item.addClass('active');
+
 				});
 
 				var displayVariations=function(){
