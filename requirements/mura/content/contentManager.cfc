@@ -1542,6 +1542,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif doSaveApproval>
 					<cfset approvalRequest.save()>
+					<cfset doPurgeContentCache=true>
 				</cfif>
 
 				<cfset getBean('contentSourceMap')
