@@ -49,7 +49,7 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 	function save(processFile=true){
 		if(arguments.processFile && len(getValue('fileField')) && len(getValue(getValue('fileField')))){
 			setValue('fileID',createUUID());
-		
+
 			var fileManager=getBean('fileManager');
 
 			if(fileManager.isPostedFile(getValue('fileField'))){
@@ -69,8 +69,9 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 			}
 
 			var allowableExtensions=getBean('configBean').getFmAllowedExtensions();
+			var allowableMimeTypes=getBean('configBean').getAllowedMimeTypes();
 
-			if(!len(allowableExtensions) || listFindNoCase(allowableExtensions,local.tempFile.serverFileExt)){
+			if((!len(allowableExtensions) || listFindNoCase(allowableExtensions, local.tempFile.serverFileExt)) && (!len(allowableMimeTypes) || listFindNoCase(allowableMimeTypes, '#local.tempFile.contentType#/#local.tempFile.contentSubType#'))){
 				structAppend(variables.instance, local.tempFile);
 				structAppend(variables.instance, fileManager.process(local.tempFile,getValue('siteid')));
 				variables.instance.fileExt=local.tempFile.serverFileExt;
@@ -80,12 +81,12 @@ component extends="mura.bean.beanORM" table='tfiles' entityName="file" {
 
 				param name='variables.instance.content' default='';
 				param name='variables.instance.exif' default={};
-				
+
 				fileManager.create(argumentCollection=variables.instance);
-			
+
 				setAllValues(getBean('file').loadBy(fileID=getValue('fileID')).getAllValues());
 			}	else {
-				
+
 				var fileDelim='/';
 
 				try{
