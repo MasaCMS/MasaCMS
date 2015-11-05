@@ -366,7 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													#param.getFieldStatement()# 
 
 													<cfif param.getCriteria() eq 'null'>
-														IS NULL
+														#param.getCondition()# NULL
 													<cfelse>
 														#param.getCondition()# 
 														<cfif isListParam> (</cfif>
@@ -381,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 															#param.getFieldStatement()# 
 
 															<cfif param.getCriteria() eq 'null'>
-																IS NULL
+																#param.getCondition()# NULL
 															<cfelse>
 																#param.getCondition()# 
 																<cfif isListParam>(</cfif>
@@ -417,7 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														</cfif>
 														
 														<cfif param.getCriteria() eq 'null'>
-															IS NULL
+															#param.getCondition()# NULL
 														<cfelse>
 															#param.getCondition()# 
 															<cfif isListParam> (</cfif>
@@ -696,7 +696,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									#param.getFieldStatement()# 
 
 									<cfif param.getCriteria() eq 'null'>
-										IS NULL
+										#param.getCondition()# NULL
 									<cfelse>
 										#param.getCondition()# 
 										<cfif isListParam>(</cfif>
@@ -711,7 +711,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											#param.getFieldStatement()# 
 											
 											<cfif param.getCriteria() eq 'null'>
-												IS NULL
+												#param.getCondition()# NULL
 											<cfelse>
 												#param.getCondition()# 
 												<cfif isListParam>(</cfif>
@@ -756,7 +756,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfif>
 
 											<cfif param.getCriteria() eq 'null'>
-												IS NULL
+												#param.getCondition()# NULL
 											<cfelse>
 												#param.getCondition()#
 												<cfif isListParam>(</cfif>
