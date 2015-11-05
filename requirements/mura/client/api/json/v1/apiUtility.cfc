@@ -2038,7 +2038,8 @@ component extends="mura.cfobject" {
 						object=$.event('object'),
 						objectid=$.event('objectid'),
 						siteid=arguments.siteid,
-						assignmentPerm=$.event('perm')
+						assignmentPerm=$.event('perm'),
+						cacheKey=CGI.QUERY_STRING
 					};
 
 				if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
