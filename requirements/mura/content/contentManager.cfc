@@ -1542,7 +1542,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif doSaveApproval>
 					<cfset approvalRequest.save()>
-					<cfset doPurgeContentCache=true>
+					<cfset purgeContentCacheKey(
+						variables.settingsManager.getSite(newBean.getSiteID()).getCacheFactory(name="data"),
+						"version" & newBean.getSiteID() & newBean.getContentHistID(),
+						false)>
 				</cfif>
 
 				<cfset getBean('contentSourceMap')
@@ -2730,6 +2733,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 	</cffunction>
+
 
 	<cffunction name="purgeContentCache" output="false">
 	<cfargument name="contentID">
