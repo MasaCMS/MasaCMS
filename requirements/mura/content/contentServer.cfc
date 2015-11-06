@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(getContextRoot()) and getContextRoot() NEQ "/">
 		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
 	</cfif>
-	<cfif len(application.configBean.getContext()) and listFirst(parsed_path_info,"/") eq application.configBean.getContext()>
+	<cfif len(application.configBean.getContext()) and listFirst(parsed_path_info,"/") eq right(application.configBean.getContext(),len(application.configBean.getContext())-1)>
 		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext() & "/","")/>
 	</cfif>
 	<cfif isDefined('arguments.siteid') && listFirst(parsed_path_info,"/") eq arguments.siteID>
