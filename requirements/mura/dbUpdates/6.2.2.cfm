@@ -8,4 +8,8 @@
 	try{
 		dbUtility.setTable("tcontentfeeds").addColumn(column="channellink",dataType="longtext");
 	} catch (any e){}; 
+	
+	if(getValue(property='advancedScheduling',defaultValue=false)){
+		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=255);
+	}
 </cfscript>
