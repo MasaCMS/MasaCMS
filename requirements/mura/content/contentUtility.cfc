@@ -1169,25 +1169,26 @@ and parentID is null
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfset newSummary = replaceNoCase(rs.summary,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop> 
 
-		<cfquery datasource="#arguments.datasource#" name="rs">
+		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs">
 			select tclassextenddata.dataid, tclassextenddata.attributevalue, tclassextenddata.stringvalue from tclassextenddata 
 			inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
-			 where 
-			 tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			 and tclassextendattributes.validation='HTMLEditor'
-			 and tclassextenddata.attributevalue like '%#arguments.find#%'
+			where 
+			tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			and tclassextendattributes.type='HTMLEditor'
+			and tclassextenddata.attributevalue like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
 		</cfquery>
 
 		<cfloop query="rs">
-			<cfset newAttributeValue=replace(rs.attributeValue,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfset newAttributeValue = replaceNoCase(rs.attributeValue,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfset newStringValue=replace(rs.stringvalue,"#arguments.find#","#arguments.replace#","ALL")>
-			<cfquery datasource="#arguments.datasource#">
+			
+			<cfquery>
 				update tclassextenddata set
 				attributeValue=<cfqueryparam value="#newAttributeValue#" cfsqltype="cf_sql_longvarchar" >,
 				stringvalue=<cfqueryparam value="#newStringValue#" cfsqltype="cf_sql_longvarchar" >

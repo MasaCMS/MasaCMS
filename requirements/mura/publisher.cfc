@@ -102,7 +102,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var bundleContext="">
 		<cfset var rssite="">
 		<cfset var themeDir="">
-		
+		<cfset var doFindAndReplace=false>
+
 		<cfsetting requestTimeout = "7200">
 		
 		<cfif structKeyExists(arguments,"Bundle")>
@@ -170,34 +171,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset getToWorkSyncMeta(argumentCollection=arguments)>
 				<cfset getToWorkTrash(argumentCollection=arguments)>
 				
-				<cfset rssite=arguments.Bundle.getValue("rssite")>
-				<cfif rssite.recordcount and isDefined("rssite.siteID")>
-					<cfset bundleAssetPath=arguments.Bundle.getValue("assetPath")>
-					
-					<cfif isSimpleValue(bundleAssetPath)>
-						<cfif bundleAssetPath neq application.configBean.getAssetPath()>
-							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/cache/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/cache/", arguments.toSiteID)>
-							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/assets/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/assets/", arguments.toSiteID)>
-						</cfif>
-					</cfif>
-					
-					<cfif isDefined("rssite.domain") 
-						and len(rssite.domain) 
-						and rssite.domain neq application.settingsManager.getSite(arguments.toSiteID).getDomain()>
-						<cfset application.contentUtility.findAndReplace("//#rssite.domain#","//#application.settingsManager.getSite(arguments.toSiteID).getDomain()#" , arguments.toSiteID)>
-					</cfif>
-					
-					<cfif rssite.siteID neq arguments.toSiteID>
-						<cfset application.contentUtility.findAndReplace("/#rssite.siteID#/", "/#arguments.toSiteID#/", arguments.toSiteID)>
-					</cfif>
-					
-					<cfset bundleContext=arguments.Bundle.getValue("context")>
-					<cfif isSimpleValue(bundleContext) and len(bundleContext) >
-						<cfif bundleContext neq application.configBean.getContext()>
-							<cfset application.contentUtility.findAndReplace("#bundleContext#/", "#application.configBean.getContext()#/", "#arguments.toSiteID#")>
-						</cfif>
-					</cfif>
-				</cfif>
+				<cfset doFindAndReplace=true>
+
 			</cfif>
 			
 		</cfif>
@@ -209,6 +184,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.toSiteID) and (arguments.usersMode neq "none" or arguments.contentMode neq "none")>
 			<cfset getToWorkFiles(argumentCollection=arguments)>
 			<cfset getToWorkClassExtensions(argumentCollection=arguments)>
+		</cfif>
+		
+		<cfif doFindAndReplace>
+			<cfset rssite=arguments.Bundle.getValue("rssite")>
+			<cfif rssite.recordcount and isDefined("rssite.siteID")>
+				<cfset bundleAssetPath=arguments.Bundle.getValue("assetPath")>
+				
+				<cfif isSimpleValue(bundleAssetPath)>
+					<cfif bundleAssetPath neq application.configBean.getAssetPath()>
+						<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/cache/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/cache/", arguments.toSiteID)>
+						<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/assets/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/assets/", arguments.toSiteID)>
+					</cfif>
+				</cfif>
+				
+				<cfif isDefined("rssite.domain") 
+					and len(rssite.domain) 
+					and rssite.domain neq application.settingsManager.getSite(arguments.toSiteID).getDomain()>
+					<cfset application.contentUtility.findAndReplace("//#rssite.domain#","//#application.settingsManager.getSite(arguments.toSiteID).getDomain()#" , arguments.toSiteID)>
+				</cfif>
+				
+				<cfif rssite.siteID neq arguments.toSiteID>
+					<cfset application.contentUtility.findAndReplace("/#rssite.siteID#/", "/#arguments.toSiteID#/", arguments.toSiteID)>
+				</cfif>
+				
+				<cfset bundleContext=arguments.Bundle.getValue("context")>
+				<cfif isSimpleValue(bundleContext) and len(bundleContext) >
+					<cfif bundleContext neq application.configBean.getContext()>
+						<cfset application.contentUtility.findAndReplace("#bundleContext#/", "#application.configBean.getContext()#/", "#arguments.toSiteID#")>
+					</cfif>
+				</cfif>
+			</cfif>
 		</cfif>
 		
 		<!---<cfif len(arguments.toSiteID) and (arguments.usersMode neq "none" or arguments.contentMode neq "none")
