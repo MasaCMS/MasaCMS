@@ -355,6 +355,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(variables.instance.displayStop), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
 			
 			</cfif>
+
+			<cfif getBean('configBean').getValue(property='advancedScheduling',defaultValue=false)>
+						
+			</cfif>
 		</cfif>
 		
 		<cfif variables.instance.isFeature eq 2 
