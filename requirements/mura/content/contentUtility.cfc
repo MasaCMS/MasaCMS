@@ -1132,6 +1132,8 @@ and parentID is null
 	<cfset var newSummary ="" />
 	<cfset var newBody ="" />
 	<cfset var newFilename ="" />
+	<cfset var newAttributeValue ="" />
+	<cfset var newStringValue ="" />
 	
 	<cfif arguments.find neq "/">
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1172,6 +1174,26 @@ and parentID is null
 			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop> 
+
+		<cfquery datasource="#arguments.datasource#" name="rs">
+			select tclassextenddata.dataid, tclassextenddata.attributevalue, tclassextenddata.stringvalue from tclassextenddata 
+			inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
+			 where 
+			 tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			 and tclassextendattributes.validation='HTMLEditor'
+			 and tclassextenddata.attributevalue like '%#arguments.find#%'
+		</cfquery>
+
+		<cfloop query="rs">
+			<cfset newAttributeValue=replace(rs.attributeValue,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfset newStringValue=replace(rs.stringvalue,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfquery datasource="#arguments.datasource#">
+				update tclassextenddata set
+				attributeValue=<cfqueryparam value="#newAttributeValue#" cfsqltype="cf_sql_longvarchar" > ,
+				stringvalue=<cfqueryparam value="#newStringValue#" cfsqltype="cf_sql_longvarchar" >
+				where dataid=<cfqueryparam value="#rs.dataid#" cfsqltype="cf_sql_integer" >
+			</cfquery>
+		</cfloop> 	
 	</cfif>
 </cffunction>
 
