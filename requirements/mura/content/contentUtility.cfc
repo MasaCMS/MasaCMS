@@ -1189,7 +1189,7 @@ and parentID is null
 			<cfset newStringValue=replace(rs.stringvalue,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfquery datasource="#arguments.datasource#">
 				update tclassextenddata set
-				attributeValue=<cfqueryparam value="#newAttributeValue#" cfsqltype="cf_sql_longvarchar" > ,
+				attributeValue=<cfqueryparam value="#newAttributeValue#" cfsqltype="cf_sql_longvarchar" >,
 				stringvalue=<cfqueryparam value="#newStringValue#" cfsqltype="cf_sql_longvarchar" >
 				where dataid=<cfqueryparam value="#rs.dataid#" cfsqltype="cf_sql_integer" >
 			</cfquery>
