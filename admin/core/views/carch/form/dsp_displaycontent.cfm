@@ -27,9 +27,7 @@
 					</div>
 					<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
 						<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
-						
-						<cfdump var="#displayInterval#">
-						
+					
 						<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
 
 						<div class="controls">
@@ -42,7 +40,7 @@
 							<div class="mura-repeat-options" style="display:none">
 								<div class="controls">
 									<select id="displayIntervalType" name="displayIntervalType" class="span4 mura-repeat-option">
-										<cfloop list="Daily,Weekly,Bi-Weekly,Monthly,WeekDays,WeekEnds,Week1,Week2,Week3,Week4,WeekLast,Yearly" index="i">
+										<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
 										<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 										</cfloop>
 									</select>
@@ -139,18 +137,27 @@
 									//alert(type)
 									if(type=='after'){
 										$('##mura-interval-end-after').show();
+										$('##mura-datepicker-displayStop').val('');
 									} else if(type=='on'){
 										$('##mura-interval-end-on').show();
 
-										/*
-										if(!$('##displayIntervalEndOn').val()){
-											$('##displayIntervalEndOn').val($('##mura-displayStop').val())
+										var start=$('##mura-datepicker-displayStart');
+										var stop=$('##mura-datepicker-displayStop');
+										var endon=$('##displayIntervalEndOn');
+
+										if(!stop.val() && endon.val()){
+											stop.val(endon.val());
 										}
 
-										if(!$('##displayIntervalEndOn').val()){
-											$('##displayIntervalEndOn').val($('##mura-displayStart').val())
+										if(!endon.val()){
+											endon.val(stop.val())
 										}
-										*/
+
+										if(!endon.val()){
+											endon.val(start.val());
+											stop.val(start.val());
+										}
+										
 										
 									}
 
@@ -161,18 +168,18 @@
 									$('.mura-interval-every-label').hide();
 
 									switch(type){
-										case 'Weekly':
-										case 'WeekEnds':
-										case 'WeekDays':
+										case 'weekly':
+										case 'weekends':
+										case 'weekdays':
 										$('##mura-interval-every-label-weeks').show();
 										break;
-										case 'Bi-Weekly':
+										case 'bi-weekly':
 										$('##mura-interval-every-label-biweeks').show();
 										break;
-										case 'Yearly':
+										case 'yearly':
 										$('##mura-interval-every-label-years').show();
 										break;
-										case 'Daily':
+										case 'daily':
 										$('##mura-interval-every-label-days').show();
 										break;
 										default:
@@ -201,13 +208,24 @@
 										$('.mura-repeat-options').show();
 										setDaysOfWeekDefault();
 
+										/*
 										if(!isNaN(input.val())){
 											input.val(0);
 										}
+										*/
 										
 									} else {
 										$('.mura-repeat-options').hide();
-										input.val(0);
+										$('##displayIntervalType').val('daily');
+										
+										if($('##displayIntervalEndOn').val()){
+											$('##displayIntervalEnd').val('on');
+										} else {
+											$('##displayIntervalEnd').val('never');
+										}
+										
+										setEndOption()
+										//input.val(0);
 									}
 
 									setIntervalUnitLabel();
@@ -217,6 +235,14 @@
 								$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
 								$('##displayIntervalType').on('change',toggleRepeatOptions);
 								$('##displayIntervalEnd').on('change',setEndOption);
+
+								$('##displayIntervalEndOn')
+									.on('change',
+									function(){
+										$('##mura-datepicker-displayStop').val($(this).val());
+									}
+								);
+
 								var repeats=$('input[name="displayIntervalEvery"]').val();
 								
 								if(!isNaN(repeats) && parseInt(repeats)){
