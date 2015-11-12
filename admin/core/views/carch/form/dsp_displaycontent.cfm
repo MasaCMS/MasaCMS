@@ -15,17 +15,14 @@
 				</select>
 			</div>
 			<div id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
+					
+				<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</label>
 					<div class="controls">
-						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#">
-					</div>		
-					<label class="control-label">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
-					</label>
-					<div class="controls">
+						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> To
 						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
-					</div>
-					<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+					</div>		
+					
 						<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
 					
 						<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
@@ -207,7 +204,7 @@
 									if($('##displayIntervalRepeats').is(':checked')){
 										$('.mura-repeat-options').show();
 										setDaysOfWeekDefault();
-
+										$('##mura-datepicker-displayStop').hide();
 										/*
 										if(!isNaN(input.val())){
 											input.val(0);
@@ -216,6 +213,7 @@
 										
 									} else {
 										$('.mura-repeat-options').hide();
+										$('##mura-datepicker-displayStop').show();
 										$('##displayIntervalType').val('daily');
 										
 										if($('##displayIntervalEndOn').val()){
@@ -224,7 +222,8 @@
 											$('##displayIntervalEnd').val('never');
 										}
 										
-										setEndOption()
+										setEndOption();
+										toggleRepeatOptions();
 										//input.val(0);
 									}
 
@@ -257,6 +256,16 @@
 
 						</script>
 					<cfelse>
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
+						<div class="controls">
+							<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#">
+						</div>		
+						<label class="control-label">
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
+						</label>
+						<div class="controls">
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
+						</div>
 						<label class="control-label">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
 						</label>
