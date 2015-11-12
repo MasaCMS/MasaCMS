@@ -12,15 +12,15 @@
 	      		<select name="display" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
 					<option value="1"  <cfif  rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 					<option value="0"  <cfif  rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-					<option value="2"  <cfif  bydate> selected</CFIF>>Per Schedule</option>
+					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
 				</select>
 			</div>
 			<div id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
 					
 				<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-					<label class="control-label">Schedule</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 					<div class="controls">
-						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">To</span>
+						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
 						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59"></span>
 					</div>		
 					
@@ -30,10 +30,10 @@
 
 						<div class="controls">
 							<label for="displayIntervalAllDay" class="control-label">
-								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;All Day
+								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 							</label>
 							<label for="displayIntervalRepeats" class="control-label">
-								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;Repeats
+								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
 							</label>
 							<div class="mura-repeat-options" style="display:none">
 								<div class="controls">
@@ -42,18 +42,18 @@
 										<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 										</cfloop>
 									</select>
-									&nbsp;every&nbsp;
+									&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#&nbsp;
 									<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="span1 mura-repeat-option" size="3">
 								
 									&nbsp;
-									<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">weeks</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-months" style="display:none">months</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-years" style="display:none">years</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-days" style="display:none">days</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-biweeks" style="display:none">bi-weeks</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.weeks')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-months" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-years" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.years')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-days" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.days')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-biweeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.bi-weeks')#</span>
 								</div>
 								<div class="controls mura-daysofweek" style="display:none">
-									on
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#
 
 									<input class="mura-repeat-option" id="dow1" name="displayIntervalDays" type="checkbox" value="1"<cfif listFind(displayInterval.daysofweek,1)> checked</cfif>/> S
 									<input class="mura-repeat-option" id="dow2" name="displayIntervalDays" type="checkbox" value="2"<cfif listFind(displayInterval.daysofweek,2)> checked</cfif>/> M
@@ -65,15 +65,15 @@
 								
 								</div>
 								<div class="controls">
-									ends 
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#
 									<select id="displayIntervalEnd" name="displayIntervalEnd" class="span2 mura-repeat-option">
-										<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>Never</option>
-										<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>After</option>
-										<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>On</option>
+										<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
+										<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
+										<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')#</option>
 									</select>
 									<span class="mura-interval-end" id="mura-interval-end-after" style="display:none">
 										<input type="text" id="displayIntervalEndAfter" name="displayIntervalEndAfter" value="#esapiEncode('html_attr',displayInterval.endafter)#" class="span1 mura-repeat-option" size="3">
-										occurences
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')#
 									</span>
 									<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
 										<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker span3 mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
