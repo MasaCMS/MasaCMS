@@ -85,20 +85,24 @@
 							$(function(){
 
 								function updateDisplayInterval(){
-									$('##displayInterval').val(
-										JSON.stringify(
-											{
-												repeats: $('##displayIntervalRepeats').val() || 0,
-												allday: $('##displayIntervalAllDay').val() || 0,
-												every: $('##displayIntervalEvery').val() || 0,
-												type: $('##displayIntervalType').val(),
-												end: $('##displayIntervalEnd').val(),
-												endon: $('##displayIntervalEndOn').val(),
-												endafter: $('##displayIntervalEndAfter').val(),
-												daysofweek: getDaysOfWeek()
-											}
-										)
-									);
+									var options={
+										repeats: $('##displayIntervalRepeats').val() || 0,
+										allday: $('##displayIntervalAllDay').val() || 0,
+										every: $('##displayIntervalEvery').val() || 0,
+										type: $('##displayIntervalType').val(),
+										end: $('##displayIntervalEnd').val(),
+										endon: $('##displayIntervalEndOn').val(),
+										endafter: $('##displayIntervalEndAfter').val(),
+										daysofweek: getDaysOfWeek()
+									};
+									$('##displayInterval').val(JSON.stringify(options));
+									
+									if(options.end=='on'){
+										$('##mura-datepicker-displayStop').val(options.endon);
+										$('##mura-datepicker-displayStop').trigger('change');
+									} else {
+										$('##mura-datepicker-displayStop').val('');
+									}
 								}
 
 								function getDaysOfWeek(){
@@ -145,7 +149,7 @@
 										var endon=$('##displayIntervalEndOn');
 
 										if(!stop.val() && endon.val()){
-											stop.val(endon.val());
+											stop.val(endon.val()).trigger('change');
 										}
 
 										if(!endon.val()){
@@ -154,7 +158,7 @@
 
 										if(!endon.val()){
 											endon.val(start.val());
-											stop.val(start.val());
+											stop.val(start.val()).trigger('change');
 										}
 										
 										
@@ -281,13 +285,6 @@
 								$('##displayIntervalAllDay').click(toggleAllDayOptions);
 								$('##displayIntervalType').on('change',toggleRepeatOptions);
 								$('##displayIntervalEnd').on('change',setEndOption);
-
-								$('##displayIntervalEndOn')
-									.on('change',
-									function(){
-										$('##mura-datepicker-displayStop').val($(this).val());
-									}
-								);
 
 								var repeats=$('input[name="displayIntervalEvery"]').val();
 								
