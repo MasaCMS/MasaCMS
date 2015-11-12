@@ -1,5 +1,6 @@
 
 		<cfset bydate=iif(rc.contentBean.getdisplay() EQ 2 or (rc.ptype eq 'Calendar' and rc.contentBean.getIsNew()),de('true'),de('false'))>
+		<cfparam name="session.localeHasDayParts" default="true">
 		<cfoutput>
 		<div class="control-group">
 	      	<label class="control-label">
@@ -19,8 +20,8 @@
 				<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</label>
 					<div class="controls">
-						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> To
-						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
+						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">To</span>
+						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59"></span>
 					</div>		
 					
 						<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
@@ -29,7 +30,7 @@
 
 						<div class="controls">
 							<label for="displayIntervalAllDay" class="control-label">
-								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1"/>&nbsp;&nbsp;All Day
+								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;All Day
 							</label>
 							<label for="displayIntervalRepeats" class="control-label">
 								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;Repeats
@@ -88,6 +89,7 @@
 										JSON.stringify(
 											{
 												repeats: $('##displayIntervalRepeats').val() || 0,
+												allday: $('##displayIntervalAllDay').val() || 0,
 												every: $('##displayIntervalEvery').val() || 0,
 												type: $('##displayIntervalType').val(),
 												end: $('##displayIntervalEnd').val(),
@@ -198,6 +200,41 @@
 									setIntervalUnitLabel();
 								}
 
+								function toggleAllDayOptions(){
+									if($('##displayIntervalAllDay').is(':checked')){
+										$('##mura-displayStartHour').hide();
+										$('##mura-displayStartMinute').hide();
+										$('##mura-displayStartDayPart').hide();
+										$('##mura-displayStopHour').hide();
+										$('##mura-displayStopMinute').hide();
+										$('##mura-displayStopDayPart').hide();
+										$('##displayIntervalToLabel').hide();
+
+										<cfif session.localeHasDayParts>
+											$('##mura-displayStartHour').val('12');
+											$('##mura-displayStartMinute').val('0');
+											$('##mura-displayStartDayPart').val('AM');
+											$('##mura-displayStopHour').val('11');
+											$('##mura-displayStopMinute').val('59');
+											$('##mura-displayStopDayPart').val('PM');
+										<cfelse>
+											$('##mura-displayStartHour').val('0');
+											$('##mura-displayStartMinute').val('0');
+											$('##mura-displayStopHour').val('23');
+											$('##mura-displayStopMinute').val('59');
+										</cfif>
+									
+									} else {
+										$('##mura-displayStartHour').show();
+										$('##mura-displayStartMinute').show();
+										$('##mura-displayStartDayPart').show();
+										$('##mura-displayStopHour').show();
+										$('##mura-displayStopMinute').show();
+										$('##mura-displayStopDayPart').show();
+										$('##displayIntervalToLabel').show();
+									}
+								}
+
 								function toggleRepeatOptionsContainer(){
 									var input=$('input[name="displayIntervalEvery"]');
 
@@ -232,6 +269,7 @@
 
 								$('.mura-repeat-option').on('change',updateDisplayInterval);
 								$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
+								$('##displayIntervalAllDay').click(toggleAllDayOptions);
 								$('##displayIntervalType').on('change',toggleRepeatOptions);
 								$('##displayIntervalEnd').on('change',setEndOption);
 
@@ -250,6 +288,7 @@
 
 								toggleRepeatOptionsContainer();
 								toggleRepeatOptions();
+								toggleAllDayOptions();
 								setEndOption();
 							})
 
