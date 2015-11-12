@@ -2,6 +2,52 @@
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
 
+<cffunction name="deserializeInterval" output="false">
+	<cfargument name="interval">
+	<cfargument name="displayStart">
+	<cfargument name="displayStop">
+
+	<cfset var data=''>
+	<cfif isJSON(arguments.interval)>
+		<cfset data=deserializeJSON(arguments.interval)>
+	<cfelse>
+		<cfset data={}>
+		<cfif len(arguments.interval)>
+			<cfset data.type=arguments.interval>
+		</cfif>
+	</cfif>
+
+	<cfparam name="data.every" default=0>
+	<cfparam name="data.type" default="daily">
+	<cfparam name="data.end" default="never">
+	<cfparam name="data.endon" default="">
+	<cfparam name="data.endafter" default="0">
+	<cfparam name="data.allday" default="0">
+
+	<cfif not structKeyExists(data,'repeats')>
+		<cfif data.type eq 'daily' and not data.every>
+			<cfset data.repeats=0>
+		<cfelse>
+			<cfset data.repeats=1>
+		</cfif>
+	</cfif>
+	
+	<cfset var hasdaysofweek=listFindNoCase('weekly,bi-weekly,monthly,week1,week2,week3,week4,weeklast',data.type)>
+		
+	<cfif hasdaysofweek>
+		<cfif not structkeyExists(data,'daysofweek')>
+			<cfset data.daysofweek=''>
+			<cfif isDate(arguments.displayStart)>
+				<cfset data.daysofweek=dayofweek(displayStart)>
+			</cfif>
+		</cfif>
+	<cfelse>
+		<cfset data.daysofweek=''>
+	</cfif>
+
+	<cfreturn data>
+</cffunction>
+
 <cffunction
 	name="apply"
 	access="public"
@@ -67,99 +113,75 @@
 	<cfset local.currentrow=1>
 	
 	<cfloop condition="local.currentrow lte arguments.query.recordcount">
-		<cfif len(arguments.query.displayInterval[local.currentrow]) and isJSON(arguments.query.displayInterval[local.currentrow])>
-			<cfset local.intervalIsJSON=true>
-			<cfset local.displayInterval=deserializeJSON(arguments.query.displayInterval[local.currentrow])>
-		
-			<cfif not isStruct(local.displayInterval)>
-				<cfset local.displayInterval={}>
-			</cfif>
-		<cfelse>
-			<cfset local.intervalIsJSON=false>
-			<cfset local.displayInterval={type=arguments.query.displayInterval[local.currentrow]}>
-		</cfif>
-
-		<cfparam name="local.displayInterval.repeats" default=0>
-		<cfparam name="local.displayInterval.type" default="daily">
-		<cfparam name="local.displayInterval.end" default="">
-		<cfparam name="local.displayInterval.allday" default="0">
-
-		<cfif listFindNoCase('weekly,bi-weekly,monthly,week1,week2,week3,week4,weeklast',local.displayInterval.type) and not structkeyExists(local.displayInterval,'daysofweek')>
-			<cfset local.displayInterval.daysofweek=''>
-			<cfif isDate(arguments.query.displayStart[local.currentrow])>
-				<cfset local.displayInterval.daysofweek=dayofweek(arguments.query.displayStart[local.currentrow])>
-			</cfif>
-		</cfif>
+		<cfset local.displayInterval=deserializeInterval(arguments.query.displayInterval[local.currentrow],arguments.query.displayStart[local.currentrow],arguments.query.displayStop[local.currentrow])>
 
 		<cfset arrayAppend(local.displayIntervals,local.displayInterval)>
 
-		<cfif not local.intervalIsJSON>
-			<cfset querySetCell(
-				arguments.query,
-				"displayInterval",
-				serializeJSON(local.displayInterval),
-				local.currentrow
-			) />
-		</cfif>
-		
-		<cfif local.displayInterval.repeats>
-			<cfset local.repeatcount=0>
-			<cfset local.repeatmax=1000>
-			<cfset local.repeatuntil=fix(dateAdd('d',local.repeatmax,now()))>
+		<cfset querySetCell(
+			arguments.query,
+			"displayInterval",
+			serializeJSON(local.displayInterval),
+			local.currentrow
+		) />
 
-			<cfif isNumeric(local.displayInterval.end)>
+		<cfif local.displayInterval.repeats and local.displayInterval.every>
+			<cfset local.repeatcount=0>
+			<cfset local.repeatmax=365>
+			<cfset local.repeatuntil=fix(dateAdd('yyyy',1,now()))>
+
+			<cfif local.displayInterval.end eq 'after' and  isNumeric(local.displayInterval.endafter)>
 				<cfset local.repeatmax=1000>
-			<cfelseif isDate(local.displayInterval.end)>
-				<cfset local.repeatuntil=local.displayInterval.end>
+			<cfelseif local.displayInterval.end eq 'on' and isDate(local.displayInterval.endon)>
+				<cfset local.repeatuntil=local.displayInterval.endon>
 			</cfif>
 
-			<cfloop from="1" to="#local.displayInterval.repeats#" index="local.currentrepeat">
+			<cfloop condition="true">
 				<cfset local.repeatcount=local.repeatcount+1>
 				<cfset local.displayIntervalrepeat=structCopy(local.displayInterval)>
 				<cfset local.displayIntervalrepeat.repeats=0>
 
 				<cfswitch expression="#local.displayInterval.type#">
 					<cfcase value="weekly">
-						<cfset local.displayStart=fix(dateAdd('ww',local.repeatcount,arguments.query.displayStart[local.currentrow]))>
+						<cfset local.displayStart=fix(dateAdd('ww',local.repeatcount * local.displayInterval.every,arguments.query.displayStart[local.currentrow]))>
 				
 						<cfif isDate(arguments.query.displayStop[local.currentrow])>
-							<cfset LOCAL.DisplayStop=fix(dateAdd('ww',local.repeatcount,arguments.query.displayStop[local.currentrow]))>
+							<cfset LOCAL.DisplayStop=fix(dateAdd('ww',local.repeatcount * local.displayInterval.every,arguments.query.displayStop[local.currentrow]))>
 						<cfelse>
 							<cfset LOCAL.DisplayStop=0>
 						</cfif>
 					</cfcase>
 					<cfcase value="bi-weekly">
-						<cfset local.displayStart=fix(dateAdd('ww',local.repeatcount*2,arguments.query.displayStart[local.currentrow]))>
+						<cfset local.displayStart=fix(dateAdd('ww',(local.repeatcount*2) * local.displayInterval.every,arguments.query.displayStart[local.currentrow]))>
 				
 						<cfif isDate(arguments.query.displayStop[local.currentrow])>
-							<cfset LOCAL.DisplayStop=fix(dateAdd('ww',local.repeatcount*2,arguments.query.displayStop[local.currentrow]))>
+							<cfset LOCAL.DisplayStop=fix(dateAdd('ww',(local.repeatcount*2)  * local.displayInterval.every,arguments.query.displayStop[local.currentrow]))>
 						<cfelse>
 							<cfset LOCAL.DisplayStop=0>
 						</cfif>
 					</cfcase>
 					<cfcase value="monthly,week1,week2,week3,week4,weeklast">
-						<cfset local.displayStart=fix(dateAdd('m',local.repeatcount,arguments.query.displayStart[local.currentrow]))>
+						<cfset local.displayStart=fix(dateAdd('m',local.repeatcount * local.displayInterval.every,arguments.query.displayStart[local.currentrow]))>
 				
 						<cfif isDate(arguments.query.displayStop[local.currentrow])>
-							<cfset LOCAL.DisplayStop=fix(dateAdd('m',local.repeatcount,arguments.query.displayStop[local.currentrow]))>
+							<cfset LOCAL.DisplayStop=fix(dateAdd('m',local.repeatcount * local.displayInterval.every,arguments.query.displayStop[local.currentrow]))>
 						<cfelse>
 							<cfset LOCAL.DisplayStop=0>
 						</cfif>
 					</cfcase>
 					<cfcase value="yearly">
-						<cfset local.displayStart=fix(dateAdd('yyyy',local.repeatcount,arguments.query.displayStart[local.currentrow]))>
+						<cfset local.displayStart=fix(dateAdd('yyyy',local.repeatcount * local.displayInterval.every,arguments.query.displayStart[local.currentrow]))>
 				
 						<cfif isDate(arguments.query.displayStop[local.currentrow])>
-							<cfset LOCAL.DisplayStop=fix(dateAdd('yyyy',local.repeatcount,arguments.query.displayStop[local.currentrow]))>
+							<cfset LOCAL.DisplayStop=fix(dateAdd('yyyy',local.repeatcount * local.displayInterval.every,arguments.query.displayStop[local.currentrow]))>
 						<cfelse>
 							<cfset LOCAL.DisplayStop=0>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
-						<cfset local.displayStart=fix(dateAdd('d',local.repeatcount,arguments.query.displayStart[local.currentrow]))>
+						<cfset local.displayStart=fix(dateAdd('d',local.repeatcount * local.displayInterval.every,arguments.query.displayStart[local.currentrow]))>
 				
 						<cfif isDate(arguments.query.displayStop[local.currentrow])>
-							<cfset LOCAL.DisplayStop=fix(dateAdd('d',local.repeatcount,arguments.query.displayStop[local.currentrow]))>
+							<cfset LOCAL.DisplayStop=fix(dateAdd('d',local.repeatcount * local.displayInterval.every,arguments.query.displayStop[local.currentrow]))>
 						<cfelse>
 							<cfset LOCAL.DisplayStop=0>
 						</cfif>
@@ -233,9 +255,14 @@
 	--->
 	<cfset local.currentrow=1>
 	<cfset local.recordcount=arguments.query.recordcount>
-
-	<cfloop from="1" to="#local.recordcount#" index="local.currentrow">
 	
+	<cfif false and arguments.current>
+		<cfdump var="#arguments.query#">
+		<cfdump var="#local.displayintervals#" abort=1>
+	</cfif>
+	
+	<cfloop from="1" to="#local.recordcount#" index="local.currentrow">
+		
 		<!--- 
 			No matter what kind of repeating event type we are 
 			dealing with, the TO date will always be calculated 
@@ -246,8 +273,11 @@
 			is no end date on the event, then the TO date is the
 			end of the time period we are examining.
 		--->
+
+		<cfset local.displayInterval=deserializeJSON(arguments.query.displayInterval[local.currentrow])>
+
 		<cfif arguments.query.display[local.currentrow] eq 2 
-		and len(local.displayIntervals[local.currentrow].type) >
+		and len(local.DISPLAYINTERVAL.type) >
 
 			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
 			
@@ -309,7 +339,7 @@
 				iteration.
 			--->
 
-			<cfswitch expression="#local.displayIntervals[local.currentrow].type#">
+			<cfswitch expression="#local.displayInterval.type#">
 			
 				
 				<!--- Repeat weekly. --->
@@ -345,7 +375,7 @@
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.LoopIncrement = 1 />
-					<cfset LOCAL.DaysOfWeek = local.displayIntervals[local.currentrow].daysofweek>
+					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
 					
 				</cfcase>
 				
@@ -392,7 +422,7 @@
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.LoopIncrement = 8 />
 					<cfset LOCAL.hasdaysofweek = true />
-					<cfset LOCAL.DaysOfWeek = local.displayIntervals[local.currentrow].daysofweek>
+					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
 					
 				</cfcase>
 				
@@ -417,6 +447,7 @@
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "m" />
 					<cfset LOCAL.LoopIncrement = 1 />
+					<cfset LOCAL.hasdaysofweek = false />
 				
 				</cfcase>
 
@@ -433,7 +464,7 @@
 						efficient, but the easist way of dealing 
 						with it.
 					--->
-					<cfset local.LoopIncrement=right(local.displayIntervals[local.currentrow].type,1)>
+					<cfset local.LoopIncrement=right(local.displayInterval.type,1)>
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
@@ -447,7 +478,7 @@
 						<cfset LOCAL.LoopType = "nthweek" />
 					</cfif>
 
-					<cfset LOCAL.DaysOfWeek = local.displayIntervals[local.currentrow].daysofweek>
+					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.LoopIncrement = 1 />
 				</cfcase>

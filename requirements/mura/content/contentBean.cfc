@@ -793,6 +793,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.responseDisplayFields>
 </cffunction>
 
+<cffunction name="setDisplayInterval" output="false">
+	<cfargument name="displayInterval">
+
+	<cfif not isSimpleValue(arguments.displayInterval)>
+		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
+	</cfif>
+
+	<cfset variables.instance.displayInterval=arguments.displayInterval>
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayInterval" output="false">
+	<cfargument name="deserialize" default="false">
+
+	<cfif arguments.deserialize>
+		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+			interval=variables.instance.displayInterval,
+			displayStart=getValue('displayStart'),
+			displayStop=getValue('displayStop')
+		)>
+	<cfelse>
+		<cfreturn variables.instance.displayInterval>
+	</cfif>
+	
+</cffunction>
+
 <cffunction name="getAvailableDisplayList" output="false">
 	<cfset var returnList="">
 	<cfset var i=0>
