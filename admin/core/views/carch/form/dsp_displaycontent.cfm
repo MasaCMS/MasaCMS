@@ -12,13 +12,13 @@
 	      		<select name="display" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
 					<option value="1"  <cfif  rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 					<option value="0"  <cfif  rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
+					<option value="2"  <cfif  bydate> selected</CFIF>>Per Schedule</option>
 				</select>
 			</div>
 			<div id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
 					
 				<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</label>
+					<label class="control-label">Schedule</label>
 					<div class="controls">
 						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">To</span>
 						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59"></span>
@@ -189,7 +189,7 @@
 								function toggleRepeatOptions(){
 									var input=$('##displayIntervalType');
 									
-									if(input.val().toLowerCase().search('week') > -1 && input.val() != 'WeekEnds' && input.val() != 'WeekDays'){
+									if(input.val().toLowerCase().search('week') > -1 && input.val() != 'weekends' && input.val() != 'weekdays'){
 										$('.mura-daysofweek').show();
 										setDaysOfWeekDefault();
 									
@@ -242,17 +242,26 @@
 										$('.mura-repeat-options').show();
 										setDaysOfWeekDefault();
 										$('##mura-datepicker-displayStop').hide();
-										/*
-										if(!isNaN(input.val())){
-											input.val(0);
-										}
-										*/
+										
+										$('##mura-datepicker-displayStart')
+											.removeClass('span2')
+											.addClass('span3');
+										$('##mura-datepicker-displayStop')
+											.removeClass('span2')
+											.addClass('span3');
 										
 									} else {
 										$('.mura-repeat-options').hide();
 										$('##mura-datepicker-displayStop').show();
 										$('##displayIntervalType').val('daily');
 										
+										$('##mura-datepicker-displayStart')
+											.removeClass('span3')
+											.addClass('span2');
+										$('##mura-datepicker-displayStop')
+											.removeClass('span3')
+											.addClass('span2');
+
 										if($('##displayIntervalEndOn').val()){
 											$('##displayIntervalEnd').val('on');
 										} else {
