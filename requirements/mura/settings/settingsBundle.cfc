@@ -361,15 +361,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 	
-			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() /> 
-	
-			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
+			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />  
+		
+ 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 	
 			<cfloop query="rstfiles">
-				<cfif fileExists( "#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
-					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				<cfelse>
-					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				</cfif>
 			</cfloop>
 			
@@ -399,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset ArrayAppend(fileArray, extendedAttributeFileArray[i]) />	
 				</cfloop>
 			</cfloop>
-
+			
 			<!--- Copy CKFinder Assets to Backup --->
 			<cfif ArrayLen(fileArray)>
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
@@ -411,6 +412,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not directoryExists(backupPath)>
 						<cfset directoryCreate(backupPath)/>
 					</cfif>
+
 					<cfif not fileExists(filePath)>
 						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
 					</cfif>					
@@ -455,7 +457,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset block['find'] = find />
 			
 			<cfif find>
-				<cfset find = find+5 />
+				<!---<cfset find = find+5 />--->
 				<cfset end = refind('\"',arguments.content,find) />
 				<cfset block['end'] = end />
 				<cfif end>
@@ -466,7 +468,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset ArrayDeleteAt( pathArray,1 ) />
 					<cfset ArrayDeleteAt( pathArray,ArrayLen(pathArray) ) />
 					<cfset block['path'] = arrayToList( pathArray,"/" ) />
-
 					<cfset ArrayAppend( fileArray,block ) />
 				<cfelse>
 					<cfset find = 0 />
@@ -474,7 +475,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pos = end />
 			</cfif>
 		</cfloop>
-	
+		
 		<cfreturn fileArray />
 	</cffunction>
 
