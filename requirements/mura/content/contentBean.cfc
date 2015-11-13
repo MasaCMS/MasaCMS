@@ -797,6 +797,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
+		<cfif isDefined('arguments.displayInterval.end') 
+			and arguments.displayInterval.end eq 'on'
+			and isDefined('arguments.displayInterval.endon') 
+			and isDate(arguments.displayInterval.end eq 'on')>
+				<cfset setValue('displayStop',arguments.displayInterval.end)>
+			</cfif>
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
@@ -955,6 +961,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
 	<cfreturn it>
+</cffunction>
+
+<cffunction name="getEventsQuery" output="false">
+	<cfif getValue('type') neq 'Calendar'>
+		<cfthrow message="The method is only for calendars">
+	</cfif>
+	<cfset arguments.calendarid=getValue('contentid')>
+	<cfset arguments.siteid=getValue('siteid')>
+	<cfreturn getBean('$')
+		.init(getValue('siteid'))
+		.getCalendarUtility()
+		.getCalendarItems(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getEventsIterator">
+	<cfscript>
+		var q = getEventsQuery(argumentCollection=arguments);
+		var it = getBean('contentIterator').init();
+		it.setQuery(q);
+		return it;
+	</cfscript>
 </cffunction>
 
 <cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">

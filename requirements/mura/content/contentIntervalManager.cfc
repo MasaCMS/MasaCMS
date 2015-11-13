@@ -427,7 +427,7 @@
 				</cfcase>
 				
 				<!--- Repeat saturday - sunday. --->
-				<cfcase value="weekend">
+				<cfcase value="weekends">
 					
 					<!--- 
 						Set the start date of the loop. For 
@@ -540,7 +540,7 @@
 					<cfif local.repeatmax and local.repeatcount eq local.repeatmax>
 						<cfbreak>
 					</cfif>
-
+					
 					<cfif NOT Len(LOCAL.DaysOfWeek) OR
 							ListFind( 
 								LOCAL.DaysOfWeek, 
