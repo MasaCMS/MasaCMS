@@ -361,15 +361,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 	
-			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() /> 
+			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
+			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />  
 	
 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 	
 			<cfloop query="rstfiles">
-				<cfif fileExists( "#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
-					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				<cfelse>
-					<cfset fileCopy("#assetdir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				</cfif>
 			</cfloop>
 			
