@@ -10,7 +10,7 @@
 	<cfset var data=''>
 	<cfif isJSON(arguments.interval)>
 		<cfset data=deserializeJSON(arguments.interval)>
-	<cfelse>
+	<cfelseif isSimpleValue(arguments.interval)>
 		<cfset data={}>
 		<cfif len(arguments.interval)>
 			<cfset data.type=arguments.interval>
