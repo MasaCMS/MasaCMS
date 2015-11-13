@@ -1,5 +1,6 @@
 
 		<cfset bydate=iif(rc.contentBean.getdisplay() EQ 2 or (rc.ptype eq 'Calendar' and rc.contentBean.getIsNew()),de('true'),de('false'))>
+		<cfparam name="session.localeHasDayParts" default="true">
 		<cfoutput>
 		<div class="control-group">
 	      	<label class="control-label">
@@ -11,76 +12,112 @@
 	      		<select name="display" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
 					<option value="1"  <cfif  rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 					<option value="0"  <cfif  rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
+					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
 				</select>
 			</div>
 			<div id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
+					
+				<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 					<div class="controls">
-						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#">
+						<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
+						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59"></span>
 					</div>		
-					<label class="control-label">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
-					</label>
-					<div class="controls">
-						<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
-					</div>
-					<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+					
+						<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
+					
+						<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
+
 						<div class="controls">
 							<label for="displayIntervalAllDay" class="control-label">
-								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1"/>&nbsp;&nbsp;All Day
+								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 							</label>
 							<label for="displayIntervalRepeats" class="control-label">
-								<input type="checkbox" id="displayIntervalRepeats" name="displayIntervalRepeats">&nbsp;&nbsp;Repeats
+								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
 							</label>
 							<div class="mura-repeat-options" style="display:none">
 								<div class="controls">
-									<select id="displayIntervalType" name="displayIntervalType" class="span4">
-										<cfloop list="Daily,Weekly,Bi-Weekly,Monthly,WeekDays,WeekEnds,Week1,Week2,Week3,Week4,WeekLast,Yearly" index="i">
-										<option value="#i#"<cfif rc.contentBean.getDisplayInterval() eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
+									<select id="displayIntervalType" name="displayIntervalType" class="span4 mura-repeat-option">
+										<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
+										<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 										</cfloop>
 									</select>
-									&nbsp;every&nbsp;
-									<input type="text" name="displayIntervalEvery" value="0" class="span1" size="3">
+									&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#&nbsp;
+									<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="span1 mura-repeat-option" size="3">
 								
 									&nbsp;
-									<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">weeks</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-months" style="display:none">months</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-years" style="display:none">years</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-days" style="display:none">days</span>
-									<span class="mura-interval-every-label" id="mura-interval-every-label-biweeks" style="display:none">bi-weeks</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.weeks')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-months" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-years" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.years')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-days" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.days')#</span>
+									<span class="mura-interval-every-label" id="mura-interval-every-label-biweeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.bi-weeks')#</span>
 								</div>
 								<div class="controls mura-daysofweek" style="display:none">
-									on
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#
 
-									<input id="dow1" name="displayIntervalDays" type="checkbox" value="1"/> S
-									<input id="dow2" name="displayIntervalDays" type="checkbox" value="2"/> M
-									<input id="dow3" name="displayIntervalDays" type="checkbox" value="3"/> T
-									<input id="dow4" name="displayIntervalDays" type="checkbox" value="4"/> W
-									<input id="dow5" name="displayIntervalDays" type="checkbox" value="5"/> T
-									<input id="dow6" name="displayIntervalDays" type="checkbox" value="6"/> F
-									<input id="dow7" name="displayIntervalDays" type="checkbox" value="7"/> S
+									<input class="mura-repeat-option" id="dow1" name="displayIntervalDays" type="checkbox" value="1"<cfif listFind(displayInterval.daysofweek,1)> checked</cfif>/> S
+									<input class="mura-repeat-option" id="dow2" name="displayIntervalDays" type="checkbox" value="2"<cfif listFind(displayInterval.daysofweek,2)> checked</cfif>/> M
+									<input class="mura-repeat-option" id="dow3" name="displayIntervalDays" type="checkbox" value="3"<cfif listFind(displayInterval.daysofweek,3)> checked</cfif>/> T
+									<input class="mura-repeat-option" id="dow4" name="displayIntervalDays" type="checkbox" value="4"<cfif listFind(displayInterval.daysofweek,4)> checked</cfif>/> W
+									<input class="mura-repeat-option" id="dow5" name="displayIntervalDays" type="checkbox" value="5"<cfif listFind(displayInterval.daysofweek,5)> checked</cfif>/> T
+									<input class="mura-repeat-option" id="dow6" name="displayIntervalDays" type="checkbox" value="6"<cfif listFind(displayInterval.daysofweek,6)> checked</cfif>/> F
+									<input class="mura-repeat-option" id="dow7" name="displayIntervalDays" type="checkbox" value="7"<cfif listFind(displayInterval.daysofweek,7)> checked</cfif>/> S
 								
 								</div>
 								<div class="controls">
-									ends 
-									<select id="displayIntervalEndType" name="displayIntervalEndType" class="span2">
-										<option value="never">Never</option>
-										<option value="occurences">After</option>
-										<option value="on">On</option>
+									#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#
+									<select id="displayIntervalEnd" name="displayIntervalEnd" class="span2 mura-repeat-option">
+										<option value="never" <cfif displayInterval.end eq 'never'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.never')#</option>
+										<option value="after"<cfif displayInterval.end eq 'after'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.after')#</option>
+										<option value="on"<cfif displayInterval.end eq 'on'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')#</option>
 									</select>
-									<span class="mura-interval-end" id="mura-interval-end-occurences" style="display:none">
-										<input type="text" name="displayIntervalEndOccurrences" value="0" class="span1" size="3">
-										occurences
+									<span class="mura-interval-end" id="mura-interval-end-after" style="display:none">
+										<input type="text" id="displayIntervalEndAfter" name="displayIntervalEndAfter" value="#esapiEncode('html_attr',displayInterval.endafter)#" class="span1 mura-repeat-option" size="3">
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')#
 									</span>
 									<span class="mura-interval-end" id="mura-interval-end-on" style="display:none">
-										<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="datepicker span3 mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat('',session.dateKeyFormat)#" maxlength="12"/>
+										<input type="text" id="displayIntervalEndOn" name="displayIntervalEndOn" class="mura-repeat-option datepicker span3 mura-datepickerdisplayIntervalEndOn" value="#LSDateFormat(displayInterval.endon,session.dateKeyFormat)#" maxlength="12"/>
 									</span>
 								</div>
 							</div>
 						</div>
 						<script>
 							$(function(){
+
+								function updateDisplayInterval(){
+									var options={
+										repeats: $('##displayIntervalRepeats').val() || 0,
+										allday: $('##displayIntervalAllDay').val() || 0,
+										every: $('##displayIntervalEvery').val() || 0,
+										type: $('##displayIntervalType').val(),
+										end: $('##displayIntervalEnd').val(),
+										endon: $('##displayIntervalEndOn').val(),
+										endafter: $('##displayIntervalEndAfter').val(),
+										daysofweek: getDaysOfWeek()
+									};
+									$('##displayInterval').val(JSON.stringify(options));
+									
+									if(options.end=='on'){
+										$('##mura-datepicker-displayStop').val(options.endon);
+										$('##mura-datepicker-displayStop').trigger('change');
+									} else {
+										$('##mura-datepicker-displayStop').val('');
+									}
+								}
+
+								function getDaysOfWeek(){
+									var daysofweek=[];
+
+									$('input[name="displayIntervalDays"]').each(function(){
+										var day=$(this);
+										if(day.is(':checked')){
+											daysofweek.push(day.val());
+										}
+									});
+
+									return daysofweek.join();
+								}
+
 								function setDaysOfWeekDefault(){
 
 									if(!$('input[name="displayIntervalDays"]:checked').length){
@@ -97,24 +134,34 @@
 								}
 
 								function setEndOption(){
-									var type=$('##displayIntervalEndType').val();
+									var type=$('##displayIntervalEnd').val();
 
 									$('.mura-interval-end').hide();
 									//alert(type)
-									if(type=='occurences'){
-										$('##mura-interval-end-occurences').show();
+									if(type=='after'){
+										$('##mura-interval-end-after').show();
+										$('##mura-datepicker-displayStop').val('');
 									} else if(type=='on'){
 										$('##mura-interval-end-on').show();
 
-										/*
-										if(!$('##displayIntervalEndOn').val()){
-											$('##displayIntervalEndOn').val($('##mura-displayStop').val())
+										var start=$('##mura-datepicker-displayStart');
+										var stop=$('##mura-datepicker-displayStop');
+										var endon=$('##displayIntervalEndOn');
+
+										if(!stop.val() && endon.val()){
+											stop.val(endon.val()).trigger('change');
 										}
 
-										if(!$('##displayIntervalEndOn').val()){
-											$('##displayIntervalEndOn').val($('##mura-displayStart').val())
+										if(!endon.val()){
+											endon.val(stop.val())
 										}
-										*/
+
+										if(!endon.val()){
+											endon.val(start.val());
+											stop.val(start.val()).trigger('change');
+										}
+										
+										
 									}
 
 								}
@@ -124,18 +171,18 @@
 									$('.mura-interval-every-label').hide();
 
 									switch(type){
-										case 'Weekly':
-										case 'WeekEnds':
-										case 'WeekDays':
+										case 'weekly':
+										case 'weekends':
+										case 'weekdays':
 										$('##mura-interval-every-label-weeks').show();
 										break;
-										case 'Bi-Weekly':
+										case 'bi-weekly':
 										$('##mura-interval-every-label-biweeks').show();
 										break;
-										case 'Yearly':
+										case 'yearly':
 										$('##mura-interval-every-label-years').show();
 										break;
-										case 'Daily':
+										case 'daily':
 										$('##mura-interval-every-label-days').show();
 										break;
 										default:
@@ -146,7 +193,7 @@
 								function toggleRepeatOptions(){
 									var input=$('##displayIntervalType');
 									
-									if(input.val().toLowerCase().search('week') > -1 && input.val() != 'WeekEnds' && input.val() != 'WeekDays'){
+									if(input.val().toLowerCase().search('week') > -1 && input.val() != 'weekends' && input.val() != 'weekdays'){
 										$('.mura-daysofweek').show();
 										setDaysOfWeekDefault();
 									
@@ -157,28 +204,88 @@
 									setIntervalUnitLabel();
 								}
 
+								function toggleAllDayOptions(){
+									if($('##displayIntervalAllDay').is(':checked')){
+										$('##mura-displayStartHour').hide();
+										$('##mura-displayStartMinute').hide();
+										$('##mura-displayStartDayPart').hide();
+										$('##mura-displayStopHour').hide();
+										$('##mura-displayStopMinute').hide();
+										$('##mura-displayStopDayPart').hide();
+										$('##displayIntervalToLabel').hide();
+
+										<cfif session.localeHasDayParts>
+											$('##mura-displayStartHour').val('12');
+											$('##mura-displayStartMinute').val('0');
+											$('##mura-displayStartDayPart').val('AM');
+											$('##mura-displayStopHour').val('11');
+											$('##mura-displayStopMinute').val('59');
+											$('##mura-displayStopDayPart').val('PM');
+										<cfelse>
+											$('##mura-displayStartHour').val('0');
+											$('##mura-displayStartMinute').val('0');
+											$('##mura-displayStopHour').val('23');
+											$('##mura-displayStopMinute').val('59');
+										</cfif>
+									
+									} else {
+										$('##mura-displayStartHour').show();
+										$('##mura-displayStartMinute').show();
+										$('##mura-displayStartDayPart').show();
+										$('##mura-displayStopHour').show();
+										$('##mura-displayStopMinute').show();
+										$('##mura-displayStopDayPart').show();
+										$('##displayIntervalToLabel').show();
+									}
+								}
+
 								function toggleRepeatOptionsContainer(){
 									var input=$('input[name="displayIntervalEvery"]');
 
 									if($('##displayIntervalRepeats').is(':checked')){
 										$('.mura-repeat-options').show();
 										setDaysOfWeekDefault();
-
-										if(!isNaN(input.val()) && parseInt(input.val())==0){
-											input.val(1);
-										}
+										$('##mura-datepicker-displayStop').hide();
+										
+										$('##mura-datepicker-displayStart')
+											.removeClass('span2')
+											.addClass('span3');
+										$('##mura-datepicker-displayStop')
+											.removeClass('span2')
+											.addClass('span3');
 										
 									} else {
 										$('.mura-repeat-options').hide();
-										input.val(0);
+										$('##mura-datepicker-displayStop').show();
+										$('##displayIntervalType').val('daily');
+										
+										$('##mura-datepicker-displayStart')
+											.removeClass('span3')
+											.addClass('span2');
+										$('##mura-datepicker-displayStop')
+											.removeClass('span3')
+											.addClass('span2');
+
+										if($('##displayIntervalEndOn').val()){
+											$('##displayIntervalEnd').val('on');
+										} else {
+											$('##displayIntervalEnd').val('never');
+										}
+										
+										setEndOption();
+										toggleRepeatOptions();
+										//input.val(0);
 									}
 
 									setIntervalUnitLabel();
 								}
 
+								$('.mura-repeat-option').on('change',updateDisplayInterval);
 								$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
+								$('##displayIntervalAllDay').click(toggleAllDayOptions);
 								$('##displayIntervalType').on('change',toggleRepeatOptions);
-								$('##displayIntervalEndType').on('change',setEndOption);
+								$('##displayIntervalEnd').on('change',setEndOption);
+
 								var repeats=$('input[name="displayIntervalEvery"]').val();
 								
 								if(!isNaN(repeats) && parseInt(repeats)){
@@ -187,12 +294,23 @@
 
 								toggleRepeatOptionsContainer();
 								toggleRepeatOptions();
+								toggleAllDayOptions();
 								setEndOption();
 							})
 
 
 						</script>
 					<cfelse>
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
+						<div class="controls">
+							<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#">
+						</div>		
+						<label class="control-label">
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
+						</label>
+						<div class="controls">
+							<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
+						</div>
 						<label class="control-label">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
 						</label>

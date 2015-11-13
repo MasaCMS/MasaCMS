@@ -99,12 +99,14 @@
 						, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
 						, weekends: true // show weekends?
 						, weekMode: 'fixed' // fixed, liquid, or variable
-						/*
+						<cfif $.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
 						, header: {
 							left: 'today prev,next'
 							, center: 'title'
 							, right: 'agendaDay,agendaWeek,month'
-						}*/
+						}
+						</cfif>
+						
 						, defaultView: 'month'
 						, allDayDefault: false
 						, loading: function(isLoading) {
