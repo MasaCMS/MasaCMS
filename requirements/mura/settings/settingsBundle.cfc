@@ -1890,10 +1890,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cffile action="read" variable="content" file="#variables.backupDir#wddx_rstcontent.xml">
 		<cfset content = rereplaceNoCase( content,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
+		<cfset content = rereplaceNoCase( content,'src="\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cfset content = rereplaceNoCase( content,'src=''\/#arguments.siteID#\/assets','src=''/^^siteid^^/assets','all' ) />
+		
 		<cffile action="write" output="#content#" file="#variables.backupDir#wddx_rstcontent.xml"  charset="utf-8">
 		
 		<cffile action="read" variable="extenddata" file="#variables.backupDir#wddx_rstclassextenddata.xml">
 		<cfset extenddata = rereplaceNoCase( extenddata,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
+		<cfset extenddata = rereplaceNoCase( extenddata,'src="\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cfset extenddata = rereplaceNoCase( extenddata,'src=''\/#arguments.siteID#\/assets','src''/^^siteid^^/assets','all' ) />
+
 		<cffile action="write" output="#extenddata#" file="#variables.backupDir#wddx_rstclassextenddata.xml"  charset="utf-8">
 	</cffunction>
 	
