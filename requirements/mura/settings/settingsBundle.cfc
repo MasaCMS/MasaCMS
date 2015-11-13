@@ -813,11 +813,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													
 			<cfquery name="rstcontentobjects">
 				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
 				and contenthistID in 
 				(
 					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+					<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
+					</cfif>
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
@@ -826,7 +827,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tcontent.active = 1
 					</cfif>
 				)
-				</cfif>
 				<cfif isDate(arguments.sinceDate)>
 					<cfif rstcontent.recordcount>
 						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
@@ -844,20 +844,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 			<cfquery name="rstcontenttags">
 				select * from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-				and contenthistID in
+				and contenthistID in 
 				(
 					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+					<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
+					</cfif>
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
-						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
 						and tcontent.active = 1
 					</cfif>
 				)
-				</cfif>
 				<cfif isDate(arguments.sinceDate)>
 					<cfif rstcontent.recordcount>
 						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
@@ -944,11 +944,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- tcontentcategoryassign --->
 				<cfquery name="rstcontentcategoryassign">
 					select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					<cfif not arguments.includeVersionHistory>
-					and contentHistID in
+					and contenthistID in 
 					(
 						select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						<cfif not arguments.includeVersionHistory>
 						and (active = 1 or (changesetID is not null and approved=0))
+						</cfif>
 						<cfif len(arguments.changesetID)>
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
@@ -957,7 +958,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and tcontent.active = 1
 						</cfif>
 					)
-					</cfif>
 					<cfif isDate(arguments.sinceDate)>
 						<cfif rstcontent.recordcount>
 							and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
