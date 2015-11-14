@@ -797,12 +797,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
-		<cfif isDefined('arguments.displayInterval.end') 
-			and arguments.displayInterval.end eq 'on'
+		<cfif isDefined('arguments.displayInterval.end') >
+			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon') 
-			and isDate(arguments.displayInterval.end eq 'on')>
+			and isDate(arguments.displayInterval.endon)>
 				<cfset setValue('displayStop',arguments.displayInterval.end)>
+			<cfelseif arguments.displayInterval.end eq 'after'
+				and isDefined('arguments.displayInterval.endafter') 
+				and isNumeric(arguments.displayInterval.endafter)>
+				<cfset setValue('displayStop','')>
 			</cfif>
+		</cfif>
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
