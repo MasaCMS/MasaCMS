@@ -804,8 +804,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setValue('displayStop',arguments.displayInterval.end)>
 			<cfelseif arguments.displayInterval.end eq 'after'
 				and isDefined('arguments.displayInterval.endafter') 
-				and isNumeric(arguments.displayInterval.endafter)>
-				<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+				and isNumeric(arguments.displayInterval.endafter)
+				or arguments.displayInterval.end eq 'never'>
+				<cfif isDate(getValue('displayStop'))>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
+				<cfelse>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+				</cfif>
 			</cfif>
 		</cfif>
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
