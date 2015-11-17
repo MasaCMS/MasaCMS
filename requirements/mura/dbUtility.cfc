@@ -1099,14 +1099,16 @@
 <cffunction name="transformIndexName" access="public">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
+	<cfset var length = 63>
 	<cfswitch expression="#variables.dbtype#">
-			<cfcase value="mssql,mysql,postgresql,nuodb">
-				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-			<cfcase value="oracle">
-				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","ALL"),"[[:space:]]","","All")>
-			</cfcase>
-		</cfswitch>
+		<cfcase value="mssql">
+			<cfset length = 127>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfset length = 30>
+		</cfcase>
+	</cfswitch>
+	<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",length),",","_","ALL"),"[[:space:]]","","All")>
 </cffunction>
 
 <cffunction name="indexes" output="false">
@@ -1432,7 +1434,7 @@
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
-	<cfreturn buildForeignKeyMetaData(	
+	<cfreturn buildForeignKeyMetaData(
 		rs = rsCheck,
 		table = arguments.table
 	)>
