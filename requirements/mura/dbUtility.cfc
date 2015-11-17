@@ -1099,10 +1099,10 @@
 <cffunction name="transformIndexName" access="public">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var length = 63>
+	<cfset var length = 64>
 	<cfswitch expression="#variables.dbtype#">
 		<cfcase value="mssql">
-			<cfset length = 127>
+			<cfset length = 128>
 		</cfcase>
 		<cfcase value="oracle">
 			<cfset length = 30>
