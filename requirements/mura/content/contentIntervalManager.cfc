@@ -14,7 +14,7 @@
 			<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
 
 			<cfif displayInterval.detectconflicts and displayInterval.detectspan>
-				<cfset var events=calendar.getEventsIterator(from=now(),to=dateAdd('m',displayInterval.detectspan,now()))>
+				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',displayInterval.detectspan,now()))>
 				<cfset var rsevents=events.getQuery()>
 				<cfset var rscheck=''>
 				<cfset var rsresult=''>
@@ -28,41 +28,42 @@
 				<cfloop condition="events.hasNext()">
 					<cfset var event=events.next()>
 
-					<cfquery name="rscheck" dbtype="query">
-						select * from rsevents
-						where contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.content.getContentID()#">
-						and
-						 	(
+					<cfif event.getContentID() eq arguments.content.getContentID()>
+						<cfquery name="rscheck" dbtype="query">
+							select * from rsevents
+							where contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.content.getContentID()#">
+							and
 							 	(
-							 		displaystart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
-									and displaystart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
-								)
-								or
+								 	(
+								 		displaystart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
+									or
 
-								(
-							 		displaystop <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
-									and displaystop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									(
+								 		displaystop <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
 								)
-							)
-					</cfquery>
+						</cfquery>
 
-					<cfloop query="rscheck">
-						<cfset QueryAddRow(rsresult) />
-								
-						<cfloop list="#rsresult.columnList#" index="local.i">			
-							<cfset querySetCell(rsresult,
-							local.i,
-							rscheck[local.i][rscheck.currentrow],
-							rsresult.recordCount) />
+						<cfloop query="rscheck">
+							<cfset QueryAddRow(rsresult) />
+									
+							<cfloop list="#rsresult.columnList#" index="local.i">			
+								<cfset querySetCell(rsresult,
+								local.i,
+								rscheck[local.i][rscheck.currentrow],
+								rsresult.recordCount) />
+							</cfloop>
 						</cfloop>
-					</cfloop>
-					
+					</cfif>
 				</cfloop>
 
 				<cfif rsresult.recordcount>
 					<cfset var utility=getBean("utility")>
 					<cfquery name="rsresultfinal" dbtype="query">
-						select distinct contentid,contenthistid,siteid from rsresult
+						select distinct contentid,contenthistid,siteid,menutitle,title from rsresult
 					</cfquery>
 
 					<cfloop query="rsresultfinal">

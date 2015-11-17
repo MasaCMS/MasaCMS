@@ -70,14 +70,27 @@
 		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
 	</p>
 </cfif>
-<!---
+
 <cfset conflicts=rc.contentBean.getDisplayConflicts()>
+
 <cfif conflicts.hasNext()>
-	<p class="alert alert-error">
-		<cfdump var="#conflicts.getQuery()#">
-	</p>
+	<cfset calendar=rc.contentBean.getParent()>
+	<div class="alert alert-error">
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
+		<cfloop condition="conflicts.hasNext()">
+			<cfset conflict=conflicts.next()>
+			<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
+				<cfset conflictDetails=conflict.getConfictDetailIterator()>
+				<cfloop condition="conflictDetails.hasNext()">
+					<cfset conflictdetail=conflictDetails.next()>
+					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" target="_blank">#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+					<cfif conflictDetails.hasNext()>, </cfif>
+				</cfloop>
+			</p>
+		</cfloop>
+	</div>
 </cfif>
---->
+
 <script>
 function viewStatusInfo(contenthistid,siteid){
 	

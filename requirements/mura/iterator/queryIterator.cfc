@@ -73,10 +73,16 @@
 		<cfset var idList="">
 		<cfset var i="">
 
-		<cfif getRecordCount() and not isArray(variables.records)>
-			<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
-				<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
-			</cfloop>
+		<cfif getRecordCount()>
+			<cfif isArray(variables.records)>
+				<cfloop array="#variables.records#" index="i">
+					<cfset idList=listAppend(idList,i[getRecordIDField()])>
+				</cfloop>
+			<cfelse>
+				<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
+					<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
+				</cfloop>
+			</cfif>
 		</cfif>
 		
 		<cfreturn idList>

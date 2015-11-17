@@ -115,6 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
 	<cfif len(arguments.property)>
+
 		<cfif isDefined("this.get#arguments.property#")>
 			<cfset var tempFunc=this["get#arguments.property#"]>
 			<cfreturn tempFunc()>	
