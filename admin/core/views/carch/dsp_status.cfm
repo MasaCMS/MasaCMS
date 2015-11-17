@@ -70,6 +70,14 @@
 		<strong><a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewdetails")#</a></strong>
 	</p>
 </cfif>
+<!---
+<cfset conflicts=rc.contentBean.getDisplayConflicts()>
+<cfif conflicts.hasNext()>
+	<p class="alert alert-error">
+		<cfdump var="#conflicts.getQuery()#">
+	</p>
+</cfif>
+--->
 <script>
 function viewStatusInfo(contenthistid,siteid){
 	

@@ -835,6 +835,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
+<cffunction name="getDisplayConflicts" output="false">
+	<cfreturn getBean('contentIntervalManager').findConflicts(this)>
+</cffunction>
+
 <cffunction name="getAvailableDisplayList" output="false">
 	<cfset var returnList="">
 	<cfset var i=0>

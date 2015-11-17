@@ -84,7 +84,7 @@
 				"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 				function(){
 					$('##mura-calendar').fullCalendar({
-						timezone: 'false'
+						timezone: 'local'
 						, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 						, buttonText: {
 							day: '#variables.$.rbKey('calendar.day')#'

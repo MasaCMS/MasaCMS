@@ -32,6 +32,9 @@
 							<label for="displayIntervalAllDay" class="control-label">
 								<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 							</label>
+							<label for="displayIntervalDetectConflicts" class="control-label">
+								<input type="checkbox" class="mura-repeat-option" id="displayIntervalDetectConflicts" value="1" name="displayIntervalDetectConflicts"<cfif displayInterval.detectconflicts> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.detectconflicts')#
+							</label>
 							<label for="displayIntervalRepeats" class="control-label">
 								<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
 							</label>
@@ -87,6 +90,7 @@
 								function updateDisplayInterval(){
 									var options={
 										repeats: $('##displayIntervalRepeats').val() || 0,
+										detectconflicts: $('##displayIntervalDetectConflicts').val() || 0,
 										allday: $('##displayIntervalAllDay').val() || 0,
 										every: $('##displayIntervalEvery').val() || 0,
 										type: $('##displayIntervalType').val(),
