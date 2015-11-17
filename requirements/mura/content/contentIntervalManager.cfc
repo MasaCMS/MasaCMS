@@ -820,8 +820,6 @@
 						</cfif>
 					</cfif>
 
-					
-
 				</cfloop>
 			</cfif>
 

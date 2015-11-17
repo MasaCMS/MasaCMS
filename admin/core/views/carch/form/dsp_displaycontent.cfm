@@ -145,6 +145,7 @@
 									if(type=='after'){
 										$('##mura-interval-end-after').show();
 										$('##mura-datepicker-displayStop').val('');
+										$('##mura-datepicker-displayStop').trigger('change');
 									} else if(type=='on'){
 										$('##mura-interval-end-on').show();
 
@@ -164,8 +165,10 @@
 											endon.val(start.val());
 											stop.val(start.val()).trigger('change');
 										}
-										
-										
+									} else if(type=='never'){
+
+										$('##mura-datepicker-displayStop').val('');
+										$('##mura-datepicker-displayStop').trigger('change');
 									}
 
 								}

@@ -83,7 +83,7 @@
 				<cfset conflictDetails=conflict.getConfictDetailIterator()>
 				<cfloop condition="conflictDetails.hasNext()">
 					<cfset conflictdetail=conflictDetails.next()>
-					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" target="_blank">#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
 					<cfif conflictDetails.hasNext()>, </cfif>
 				</cfloop>
 			</p>
