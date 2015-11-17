@@ -439,8 +439,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif len(arguments.filename)>
-			<cfset key="filename" & arguments.siteid & arguments.filename  & arguments.type/>
-			<cfif site.getCache() and not request.muraChangesetPreview>
+			<cfset var useCache=site.getCache()>
+
+			<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+				<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+					<cfset var lookupHash=hash(arguments.filename)>
+
+					<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+						<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+						<cfset bean=getContentVersion(argumentCollection=arguments)>
+
+						<cfif bean.exists()>
+							<cfreturn bean>
+						<cfelse>
+							<cfset useCache=false>
+						</cfif>
+					</cfif>
+				<cfelse>
+					<cfset useCache=false>
+				</cfif>
+			</cfif>
+
+			<cfif useCache>
+				<cfset key="filename" & arguments.siteid & arguments.filename  & arguments.type/>
+
 				<!--- check to see if it is cached. if not then pass in the context --->
 				<!--- otherwise grab it from the cache --->
 				<cfif NOT cacheFactory.has( key )>
@@ -488,8 +510,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
+		<cfset var useCache=site.getCache()>
 
-		<cfif site.getCache() and not request.muraChangesetPreview>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.remoteid)>
+
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
+
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
+				</cfif>
+			<cfelse>
+				<cfset useCache=false>
+			</cfif>
+		</cfif>
+
+		<cfif useCache>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -534,8 +576,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
+		<cfset var useCache=site.getCache()>
 
- 		<cfif site.getCache() and not request.muraChangesetPreview>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.title)>
+
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
+
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
+				</cfif>
+			<cfelse>
+				<cfset useCache=false>
+			</cfif>
+		</cfif>
+
+		<cfif useCache>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -580,8 +642,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
+		<cfset var useCache=site.getCache()>
 
-		<cfif site.getCache() and not request.muraChangesetPreview>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=hash(arguments.urltitle)>
+
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
+
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
+				</cfif>
+			<cfelse>
+				<cfset useCache=false>
+			</cfif>
+		</cfif>
+
+		<cfif useCache>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -602,7 +684,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfreturn bean />
 					<cfcatch>
 						<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.use404,bean,arguments.type)  />
-						<cfif not isArray(bean) and not bean.getIsNew()>
+						<cfif not isArray(bean) and not bean.getIsNew() >
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
 						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
@@ -626,8 +708,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
+		<cfset var useCache=site.getCache()>
 
-		<cfif site.getCache() and not request.muraChangesetPreview>
+		<cfif request.muraChangesetPreview and isDefined('session.mura.ChangesetPreviewData.siteid') and session.mura.ChangesetPreviewData.siteid eq arguments.siteid>
+			<cfif isDefined('session.mura.ChangesetPreviewData.lookupMap')>
+				<cfset var lookupHash=arguments.contentid>
+
+				<cfif structKeyExists(session.mura.ChangesetPreviewData.lookupMap,'#lookupHash#')>
+					<cfset arguments.contenthistid=session.mura.ChangesetPreviewData.lookupMap['#lookupHash#']>
+					<cfset bean=getContentVersion(argumentCollection=arguments)>
+
+					<cfif bean.exists()>
+						<cfreturn bean>
+					<cfelse>
+						<cfset useCache=false>
+					</cfif>
+				</cfif>
+			<cfelse>
+				<cfset useCache=false>
+			</cfif>
+		</cfif>
+
+		<cfif useCache>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -834,6 +936,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doTrimVersionHistory=false>
 		<cfset var doPreserveVersionedObjects=false>
 		<cfset var doDeleteDraftHistAll=false>
+		<cfset var doSaveApproval=false>
 		<cfset var activeBean="">
 		<cfset var addObjects=[]>
 		<cfset var removeObjects=[]>
@@ -1018,7 +1121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset approvalRequest.setContentHistID(newBean.getContentHistID())>
 						<cfset approvalRequest.setStatus("Pending")>
 						<cfset approvalRequest.setGroupID("")>
-						<cfset approvalRequest.save()>
+						<cfset doSaveApproval=true>
 						<cfset newBean.setApproved(0)>
 
 					<!--- If it has an approval request that has been rejected or is pending then create a new request --->
@@ -1047,7 +1150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset approvalRequest.setcontentHistID(newBean.getContentHistID())>
 						<cfset approvalRequest.setStatus("Pending")>
 						<cfset approvalRequest.setGroupID("")>
-						<cfset approvalRequest.save()>
+						<cfset doSaveApproval=true>
 						<cfset newBean.setApproved(0)>
 
 					</cfif>
@@ -1435,6 +1538,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
 						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'',newBean) />
+				</cfif>
+
+				<cfif doSaveApproval>
+					<cfset approvalRequest.save()>
+					<cfset purgeContentCacheKey(
+						variables.settingsManager.getSite(newBean.getSiteID()).getCacheFactory(name="data"),
+						"version" & newBean.getSiteID() & newBean.getContentHistID(),
+						false)>
 				</cfif>
 
 				<cfset getBean('contentSourceMap')
@@ -2623,6 +2734,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cffunction>
 
+
 	<cffunction name="purgeContentCache" output="false">
 	<cfargument name="contentID">
 	<cfargument name="siteID">
@@ -2810,5 +2922,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="menutype" default="default" required="true">
 		<cfreturn variables.contentGateway.getKidsCount(argumentCollection=arguments)>
 	</cffunction>
+
+	<cfscript>
+		function findMany(contentids,siteid){
+			var iterator=getBean('feed')
+				.set(arguments)
+				.addParam(name='contentid',condition='in',criteria=arguments.contentids)
+				.getIterator();
+
+			if(isdefined('arguments.orderby') or isdefined('arguments.sortby')){
+				return iterator;
+			} else {
+				var rs=iterator.getQuery();
+				var finalArray=[];
+				var returnArray=[];
+				var utility=getBean('utility');
+
+				for(var i=1;i <= rs.recordcount;i++){
+					arrayAppend(returnArray,utility.queryRowToStruct(rs,i));
+				}
+
+				for(var i1 in listToArray(arguments.contentids)){
+					for(var i2 in returnArray){
+						if(i2.contentid==i1){
+							arrayAppend(finalArray,i2);
+							break;
+						}
+					}
+				}
+
+				return getBean('contentIterator').setArray(finalArray);
+			}
+		}
+	</cfscript>
 
 </cfcomponent>

@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.suppressWhitespace=true/>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
-<cfset this.showMetaList="jpg,jpeg,png,gif">
-<cfset this.imageInList="jpg,jpeg,png,gif">
+<cfset this.showMetaList="jpg,jpeg,png,gif,svg">
+<cfset this.imageInList="jpg,jpeg,png,gif,svg">
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.hasEditableObjects=false>
@@ -1210,7 +1210,7 @@ Display Objects
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
-	<cfargument name="fileName" type="string" />
+	<cfargument name="fileName" type="string" default=''/>
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
@@ -1295,11 +1295,16 @@ Display Objects
 		<cfset var objectParams=structNew()>
 	</cfif>
 
-	<cfset objectParams.async=false>
-	<cfset objectParams.render='server'>
-
+	<cfif this.layoutmanager>
+		<cfset objectParams.async=false>
+		<cfset objectParams.render='server'>
+	</cfif>
+	
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
+		<cfif isSimpleValue(result)>
+			<cfset theContent=result>
+		</cfif>
 	<cfelse>
 		<!--- For backward compatability with old dsp_feed.cfm files --->
 		<cfif arguments.thefile eq "dsp_feed.cfm">
@@ -1342,8 +1347,8 @@ Display Objects
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
 				objectname=arguments.objectname) />
-		</cfif>
-	<cfelseif objectParams.render eq 'client'>
+		</cfif>'
+	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
 	<cfelse>
 		<cfreturn trim(theContent) />
@@ -1942,20 +1947,22 @@ Display Objects
 
 <cffunction name="getContentListProperty" output="false">
 	<cfargument name="property" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
-	<cfset arguments.contentListPropertyMap=this.contentListPropertyMap>
 	<cfreturn variables.contentRendererUtility.getContentListProperty(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getContentListPropertyValue" output="false">
 	<cfargument name="property" default="">
 	<cfargument name="value" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListPropertyValue(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getContentListLabel" output="false">
 	<cfargument name="property" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListLabel(argumentCollection=arguments)>
 </cffunction>
@@ -1963,6 +1970,7 @@ Display Objects
 <cffunction name="getContentListAttributes" returntype="string" output="false">
 	<cfargument name="property" default="">
 	<cfargument name="class" default="">
+	<cfargument name="contentListPropertyMap" default="#this.contentListPropertyMap#">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getContentListAttributes(argumentCollection=arguments)>
 </cffunction>

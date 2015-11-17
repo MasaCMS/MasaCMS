@@ -1,5 +1,6 @@
 <cfsilent>
 	<cfparam name="rc.subclassid" default="">
+
 	<cfif listLen(rc.subclassid) gt 1>
 		<cfset rc.objectid = listLast(rc.subclassid)>
 		<cfset rc.subclassid = listFirst(rc.subclassid)>
@@ -14,11 +15,12 @@
 	    modulesOnly=true
 	)/>
 
-	<cfif isdefined('rc.moduleid')>
+	<cfif isdefined('rc.moduleid') and len(rc.moduleid)>
 		<cfset rc.subclassid=rc.moduleid>
 	</cfif>
-	</cfsilent>
+</cfsilent>	
 <cfoutput>
+<cf_objectconfigurator>
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
@@ -109,7 +111,7 @@
 							<select id="availableObjectSelector" class="multiSelect" 
 					        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 								<cfloop query="rs">
-									<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.title# - #rs.name#')#','objectid':'#rs.objectID#',moduleid:'#rs.moduleid#'}" <cfif rc.objectid eq rs.objectid>selected</cfif>>
+									<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.name#')#','objectid':'#rs.objectID#',moduleid:'#rs.moduleid#'}" <cfif rc.objectid eq rs.objectid>selected</cfif>>
 										#rs.name#					
 									</option>
 								</cfloop>
@@ -123,6 +125,7 @@
 		</div>
 	</div>
 </div>
+</cf_objectconfigurator>
 </cfoutput>
 
 

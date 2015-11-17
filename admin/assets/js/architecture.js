@@ -628,8 +628,8 @@ buttons: {
 		var id = '#configurator';
 		
 		if(!d.length){
-			$('#classlist')
-			id= '#classlist';
+			$('#classList')
+			id= '#classList';
 		}
 
 		d.html('<div class="load-inline"></div>');
@@ -773,9 +773,12 @@ buttons: {
 		});
 	},
 	
-	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch) {
+	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external) {
+		if(typeof external == 'undefined'){
+			external =true;
+		}
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -832,14 +835,21 @@ buttons: {
 					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
 				}
 				$('#mura-rc-quickedit').hide();				
-				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching);
+				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external);
 			});
 		});
 	},
 
-	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid){
+	loadRelatedContentSets:function(contentid,contenthistid,type,subtype,siteid,relatedcontentsetid,relateditems,external){
 		var url = './';
-		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
+		relatedcontentsetid=relatedcontentsetid||'';
+		relateditems=relateditems||'[]';
+	
+		if(typeof external == 'undefined'){
+			external =true;
+		}
+
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&relatedcontentsetid=' + relatedcontentsetid + '&relateditems=' + relateditems + '&external=' + external +'&cacheid=' + Math.random();
 		
 		var d = $('#selectedRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -850,7 +860,8 @@ buttons: {
 			}
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
-			siteManager.setupRCSortable(contentid);
+
+			siteManager.setupRCSortable(contentid,external);
 		});
 
 	},
@@ -916,7 +927,11 @@ buttons: {
 		});
 	},
 
-	setupRCSortable: function(contentid) {
+	setupRCSortable: function(contentid,external) {
+		if(typeof external == 'undefined'){
+			external =true;
+		}
+		
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
 			revert: true,
@@ -935,7 +950,7 @@ buttons: {
 			cancel: "li.empty"
 		}).disableSelection();
 	
-		siteManager.loadRelatedContent(contentid,siteid, 1, '', false);
+		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external);
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();
@@ -1143,7 +1158,7 @@ buttons: {
 		}
 
 		this.checkExtendSetTargeting();
-		setHTMLEditors(context, themeAssetPath);
+		setHTMLEditors();
 		setDatePickers(".tab-content .datepicker", dtLocale);
 		setColorPickers(".tab-content .colorpicker");
 		setFinders(".tab-content .mura-ckfinder");
@@ -2053,11 +2068,12 @@ buttons: {
 	},
 
 
-	addDisplayObject: function(objectToAdd, regionid, configure) {
+	addDisplayObject: function(objectToAdd, regionid, configure, isUpdate) {
 		var tmpObject = "";
 		var tmpValue = "";
 		var tmpText = "";
-		var isUpdate = false;
+
+		isUpdate= isUpdate || false;
 
 		//If it's not a js object then it must be an id of a form input or select
 		if(typeof(objectToAdd) == "string") {
@@ -2110,7 +2126,7 @@ buttons: {
 
 		//if the tmpValue evaluated into a js object pull out it's values
 		var checkSelection = false;
-
+		
 		if(typeof(tmpObject) == "object") {
 			//object^name^objectID^params
 			tmpObject.regionid = regionid;
@@ -2177,22 +2193,25 @@ buttons: {
 			}
 
 			if(tmpObject.object == 'plugin') {
-				if(tmpObject.object.objectid && tmpObject.object.objectid.toLowerCase() != 'none'){
-					var configurator = this.getPluginConfigurator(tmpObject.objectid);
-
-					if(configurator != '') {
-						if(configure) {
+				if(configure){
+					if(tmpObject.objectid && tmpObject.objectid.toLowerCase() != 'none'){
+					
+						var configurator = this.getPluginConfigurator(tmpObject.objectid);
+					
+						if(configurator != '') {
 							window[configurator](tmpObject);
 							return false;
-						} else if (this.layoutmanager){
-							this.initGenericConfigurator(data);
+						} else if(siteManager.layoutmanager){
+							this.initGenericConfigurator(tmpObject);
 							return false;
 						}
-						checkSelection = true;
+
+					} else if(siteManager.layoutmanager){
+						this.initGenericConfigurator(tmpObject);
 					}
-				} else if(siteManager.layoutmanager){
-					this.initGenericConfigurator(tmpObject);
-				}
+				} 
+
+				checkSelection = true;	
 			}
 
 			if(siteManager.layoutmanager){
@@ -2217,7 +2236,7 @@ buttons: {
 				tmpValue = tmpValue + "~" + JSON.stringify(tmpObject.params);
 			}
 
-			if(checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
+			if(!isUpdate && checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1) {
 				var currentSelection = this.getDisplayObjectConfig(regionid);
 
 				if(currentSelection) {
@@ -2225,8 +2244,6 @@ buttons: {
 						isUpdate = true
 					}
 				}
-
-
 
 			}
 
@@ -2257,8 +2274,8 @@ buttons: {
 
 		// add it.
 
-		if(isUpdate) {
-			myoption = selectedObjects.options[document.getElementById("selectedObjects" + regionid).selectedIndex];
+		if(isUpdate && selectedObjects.selectedIndex != -1) {
+			myoption = selectedObjects.options[selectedObjects.selectedIndex];
 			myoption.text = tmpText;
 			myoption.value = tmpValue;
 		} else {
@@ -2388,7 +2405,7 @@ buttons: {
 			title: "Loading...",
 			init: function(data, config) {
 				//alert(JSON.stringify(data));
-				folderConfiguratorTitle="Configure Folder";
+				folderConfiguratorTitle="Folder";
 				
 				if(siteManager.configuratorMode=='frontEnd'){
 					$("#configuratorHeader").html(folderConfiguratorTitle);
@@ -2520,7 +2537,7 @@ buttons: {
 			data, {
 				url: './',
 				pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid + '&objectid=' + data.objectid + '&cacheid=' + Math.random(),
-				title: data.title || 'Configure ' + data.name,
+				title: data.title || data.name,
 				init: function(data, config) {
 					
 				}
@@ -2530,7 +2547,7 @@ buttons: {
 				resizable: true,
 				modal: true,
 				width: 400,
-				title: data.title || 'Configure ' + data.name,
+				title: data.title || data.name,
 				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {
@@ -2555,11 +2572,15 @@ buttons: {
 	updateAvailableObject: function() {
 		var availableObjectParams = {};
 
-		$("#availableObjectParams").find(".objectParam").each(
+		$(".objectParam").each(
 
 		function() {
 			var item = $(this);
 			if((item.attr("type") != "radio" && item.attr("type") != "checkbox") || ((item.attr("type") == "radio" || item.attr("type") == "checkbox") && item.is(':checked'))) {
+				if(item.attr('id') && typeof CKEDITOR.instances[item.attr('id')] != 'undefined'){
+					CKEDITOR.instances[item.attr('id')].updateElement();
+				}
+
 				if(typeof(availableObjectParams[item.attr("name")]) == 'undefined') {
 					availableObjectParams[item.attr("name")] = item.val();
 				} else {
@@ -2577,6 +2598,11 @@ buttons: {
 
 		this.availableObject = $.extend({}, this.availableObjectTemplate);
 		this.availableObject.params = availableObjectParams;
+
+		if(typeof originParams == 'object'){
+			this.availableObject.params=$.extend(originParams,this.availableObject.params);
+		}
+
 	},
 	configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
@@ -2586,6 +2612,7 @@ buttons: {
 			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
 			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'component':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'plugin':{
@@ -2603,7 +2630,9 @@ buttons: {
 			},
 			'feed_slideshow':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSlideShowConfigurator(data);}},
 			'tag_cloud':{condition:function(){return siteManager.customtaggroups.length;},'initConfigurator':function(data){siteManager.initTagCloudConfigurator(data);}},
-			'category_summary':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
+			'category_summary':{condition:function(){return true;},'initConfigurator':function(data){if(siteManager.allowopenfeeds){siteManager.initCategorySummaryConfigurator(data);} else {siteManager.initGenericConfigurator(data);}}},
+			'archive_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'calendar_nav':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'category_summary_rss':{condition:function(){return siteManager.allowopenfeeds;},'initConfigurator':function(data){siteManager.initCategorySummaryConfigurator(data);}},
 			'site_map':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initSiteMapConfigurator(data);}},
 			'related_content':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initRelatedContentConfigurator(data);}},
@@ -2681,7 +2710,7 @@ buttons: {
 
 	initConfiguratorParams: function() {
 		this.updateAvailableObject();
-		$("#availableObjectParams").find(".objectParam").bind("change", function() {
+		$(".objectParam").bind("change", function() {
 			siteManager.updateAvailableObject();
 		});
 	},
@@ -2781,7 +2810,7 @@ buttons: {
 						var availableObjectSelector=$('#availableObjectSelector');
 
 						if(availableObjectSelector.length){
-							selectedObject=eval('(' + availableObjectSelector.val() + ')');
+							var selectedObject=eval('(' + availableObjectSelector.val() + ')');
 
 							siteManager.availableObject.name=selectedObject.name;
 							siteManager.availableObject.object=selectedObject.object;
@@ -2793,16 +2822,31 @@ buttons: {
 							delete selectedObject.objectid;
 
 							$.extend(siteManager.availableObject.params,selectedObject);
+
+							
 						}
 
 						if(siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, false);
-
+							
 							if(typeof(config.destroy) != 'undefined') {
 								config.destroy(data, config);
 							}
 
 							$(this).dialog("destroy");
+
+
+							//for some reason the availableObject sometimes has methods from the string.prototype.
+							for(var p in siteManager.availableObject){
+								if(typeof siteManager.availableObject[p] == 'function'){
+									delete siteManager.availableObject[p];
+								}
+							}
+							
+							configure=(siteManager.availableObject.objectid != 'none' && originid!=siteManager.availableObject.objectid && siteManager.getPluginConfigurator(siteManager.availableObject.objectid));
+						
+							console.log(siteManager.availableObject)
+
+							siteManager.addDisplayObject(siteManager.availableObject, data.regionid, configure,true);
 						}
 
 					},

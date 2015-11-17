@@ -329,8 +329,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sinceDate" type="any" default="">
 		<cfargument name="changesetID" default="">
 		<cfargument name="parentid" default="">
-		
-		<cfset var siteRoot = variables.configBean.getValue('webroot') & '/' & arguments.siteID /> 
 		<cfset var zipDir	= "" />
 		<cfset var extendManager = getBean('extendManager') />
 		<cfset var rstcontent=getValue("rstcontent")>
@@ -363,16 +361,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>
 			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 	
-			<!---<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>--->
-	
-			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
-			<!--- We do not want to include files collected from mura forms or the advertising manager --->
+			<cfset var assetdir=variables.configBean.getValue('assetdir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />
+			<cfset var filedir=variables.configBean.getValue('filedir') & '/' & getBean('settingsManager').getSite(arguments.siteid).getFilePoolID() />  
+		
+ 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
 	
 			<cfloop query="rstfiles">
-				<cfif fileExists( "#siteRoot#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
-					<cfset fileCopy("#siteRoot#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+				<cfif fileExists( "#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#" )>
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#_source.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				<cfelse>
-					<cfset fileCopy("#siteRoot#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
+					<cfset fileCopy("#filedir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#","#variables.backupDir#/cache/file/#rstfiles.fileid#.#rstfiles.fileext#") />
 				</cfif>
 			</cfloop>
 			
@@ -402,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset ArrayAppend(fileArray, extendedAttributeFileArray[i]) />	
 				</cfloop>
 			</cfloop>
-
+			
 			<!--- Copy CKFinder Assets to Backup --->
 			<cfif ArrayLen(fileArray)>
 				<cfloop from="1" to="#ArrayLen(fileArray)#" index="i">
@@ -414,8 +412,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not directoryExists(backupPath)>
 						<cfset directoryCreate(backupPath)/>
 					</cfif>
+
 					<cfif not fileExists(filePath)>
-						<cfset fileCopy(URLDecode('#siteRoot#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
+						<cfset fileCopy(URLDecode('#assetdir#/#fileArray[i]['path']#/#fileArray[i]['file']#', 'utf-8'), filePath) />
 					</cfif>					
 				</cfloop>
 			</cfif>
@@ -448,16 +447,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var find = 1 />
 		<cfset var path = "" />
 		<cfset var pathArray = [] />
-	
+		<cfset var filePoolID =getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+
 		<cfloop condition="find gt 0">
 			<cfset block = {} />
 			
-			<cfset find = refindNoCase('src=\"\/#arguments.siteID#\/assets',arguments.content,pos)>
+			<cfset find = refindNoCase('\/#filePoolID#\/assets',arguments.content,pos)>
 			
 			<cfset block['find'] = find />
 			
 			<cfif find>
-				<cfset find = find+5 />
+				<!---<cfset find = find+5 />--->
 				<cfset end = refind('\"',arguments.content,find) />
 				<cfset block['end'] = end />
 				<cfif end>
@@ -468,7 +468,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset ArrayDeleteAt( pathArray,1 ) />
 					<cfset ArrayDeleteAt( pathArray,ArrayLen(pathArray) ) />
 					<cfset block['path'] = arrayToList( pathArray,"/" ) />
-
 					<cfset ArrayAppend( fileArray,block ) />
 				<cfelse>
 					<cfset find = 0 />
@@ -476,7 +475,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pos = end />
 			</cfif>
 		</cfloop>
-	
+		
 		<cfreturn fileArray />
 	</cffunction>
 
@@ -815,11 +814,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													
 			<cfquery name="rstcontentobjects">
 				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
 				and contenthistID in 
 				(
 					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+					<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
+					</cfif>
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
@@ -828,7 +828,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and tcontent.active = 1
 					</cfif>
 				)
-				</cfif>
 				<cfif isDate(arguments.sinceDate)>
 					<cfif rstcontent.recordcount>
 						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
@@ -846,20 +845,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 			<cfquery name="rstcontenttags">
 				select * from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				<cfif not arguments.includeVersionHistory>
-				and contenthistID in
+				and contenthistID in 
 				(
 					select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+					<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
+					</cfif>
 					<cfif len(arguments.changesetID)>
 						and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 						and tcontent.active = 1
 					<cfelseif len(arguments.parentid)>
-						where contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
+						and contentid IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rsparentids.contentid)#" LIST="true">)
 						and tcontent.active = 1
 					</cfif>
 				)
-				</cfif>
 				<cfif isDate(arguments.sinceDate)>
 					<cfif rstcontent.recordcount>
 						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
@@ -946,11 +945,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- tcontentcategoryassign --->
 				<cfquery name="rstcontentcategoryassign">
 					select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					<cfif not arguments.includeVersionHistory>
-					and contentHistID in
+					and contenthistID in 
 					(
 						select contenthistID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						<cfif not arguments.includeVersionHistory>
 						and (active = 1 or (changesetID is not null and approved=0))
+						</cfif>
 						<cfif len(arguments.changesetID)>
 							and changesetid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
 							and tcontent.active = 1
@@ -959,7 +959,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and tcontent.active = 1
 						</cfif>
 					)
-					</cfif>
 					<cfif isDate(arguments.sinceDate)>
 						<cfif rstcontent.recordcount>
 							and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
@@ -1891,10 +1890,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cffile action="read" variable="content" file="#variables.backupDir#wddx_rstcontent.xml">
 		<cfset content = rereplaceNoCase( content,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
+		<cfset content = rereplaceNoCase( content,'src="\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cfset content = rereplaceNoCase( content,'src=''\/#arguments.siteID#\/assets','src=''/^^siteid^^/assets','all' ) />
+		
 		<cffile action="write" output="#content#" file="#variables.backupDir#wddx_rstcontent.xml"  charset="utf-8">
 		
 		<cffile action="read" variable="extenddata" file="#variables.backupDir#wddx_rstclassextenddata.xml">
 		<cfset extenddata = rereplaceNoCase( extenddata,'src=\&quot;\/#arguments.siteID#\/assets','src=&quot;/^^siteid^^/assets','all' ) />
+		<cfset extenddata = rereplaceNoCase( extenddata,'src="\/#arguments.siteID#\/assets','src="/^^siteid^^/assets','all' ) />
+		<cfset extenddata = rereplaceNoCase( extenddata,'src=''\/#arguments.siteID#\/assets','src''/^^siteid^^/assets','all' ) />
+
 		<cffile action="write" output="#extenddata#" file="#variables.backupDir#wddx_rstclassextenddata.xml"  charset="utf-8">
 	</cffunction>
 	

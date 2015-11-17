@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.rcStartDate" default="">
 <cfparam name="rc.rcEndDate" default="">
 <cfparam name="rc.rcCategoryID" default="">
+<cfparam name="rc.external" default="true">
 <cfset request.layout=false>
 <cfset baseTypeList = "Page,Folder,Calendar,Gallery,File,Link"/>
 <cfset rsSubTypes = application.classExtensionManager.getSubTypes(siteID=rc.siteID, activeOnly=true) />
@@ -57,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif listFind(contentPoolSiteIDs, $.event('siteid'))>
 	<cfset contentPoolSiteIDs = listDeleteAt(contentPoolSiteIDs, listFind(contentPoolSiteIDs, $.event('siteid')))>
 </cfif>
-
+<cfset request.layout=false>
 <cfoutput>
 	<script>
 		function toggleRelatedType(clicked){
@@ -117,13 +118,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		}		
 	</script>
-	<div class="control-group">
-		<label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
-		<div class="controls">
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
+	<cfif rc.external>
+		<div class="control-group">
+			<label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
+			<div class="controls">
+				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
+				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
+			</div>
 		</div>
-	</div>
+	</cfif>
+	
 	<div class="control-group mura-related-internal">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 		<div id="internalContent" class="form-inline">
@@ -285,7 +289,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 		</cfif>
 
-		
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
 			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>		

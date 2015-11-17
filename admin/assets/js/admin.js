@@ -1081,8 +1081,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	   
 	    $elm.find(".mura-file-option").find('input').change(
 	    	function(){
-	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif)$/;
-	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/;
+	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif|.svg)$/;
+	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|jpeg|gif|png|svg)/;
 	    		if(reg1.test( $(this).val().toLowerCase()) || reg2.test( $(this).val().toLowerCase())){
 	    			$(this).parent().find('.file-meta-open').show();
 	    		}else{

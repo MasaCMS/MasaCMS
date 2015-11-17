@@ -969,11 +969,18 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif len(settingsLen)>
 		<cfloop from="1" to="#settingsLen#" index="i">
+			<cfif structKeyExists(pluginXML.plugin.settings.setting[i],'name')>
+				<cfset local.settingName=pluginXML.plugin.settings.setting[i].name.xmlText>
+				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']>
+			<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'name')>
+				<cfset local.settingName=pluginXML.plugin.settings.setting.xmlAttributes.name>
+				<cfset local.settingValue=arguments.args['#pluginXML.plugin.settings.setting[i].xmlAttributes.name#']>
+			</cfif>
 			<cfquery>
 			insert into tpluginsettings (moduleID,name,settingValue) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.settings.setting[i].name.xmlText#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args['#pluginXML.plugin.settings.setting[i].name.xmlText#']#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.settingName#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.settingValue#">
 			)
 			</cfquery>
 		</cfloop>
@@ -2264,7 +2271,11 @@ select * from tplugins order by #arguments.orderby#
 			</cfsavecontent>
 			<cfset commitTracePoint(tracePoint)>
 			<cfif isdefined("theDisplay2")>
-				<cfreturn trim(theDisplay2)>
+				<cfif isSimpleValue(theDisplay2)>
+					<cfreturn trim(theDisplay2)>
+				<cfelse>
+					<cfreturn theDisplay2>
+				</cfif>
 			<cfelse>
 				<cfreturn trim(theDisplay1)>
 			</cfif>			

@@ -109,10 +109,12 @@
 	
 	<cfset getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
 	
-	<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
-	<cfif arguments.event.getValue('r').restrict>
-		<cfset arguments.event.setValue('nocache',1)>
-	</cfif>	
+	<cfif isArray(arguments.event.getValue('crumbdata')) and arrayLen(arguments.event.getValue('crumbdata'))>
+		<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
+		<cfif arguments.event.getValue('r').restrict>
+			<cfset arguments.event.setValue('nocache',1)>
+		</cfif>
+	</cfif>
 </cffunction>
 
 <cffunction name="standardSetCommentPermissionsHandler" output="false" returnType="any">
@@ -840,7 +842,9 @@
 			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data=result}));
 
 		} catch (any e){
-			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=e.stacktrace}));
+			result.error = e;
+			$.announceEvent('onapierror');
+			$.event('__MuraResponse__',apiUtility.getSerializer().serialize({error=result.error.stacktrace}));
 		}
 
 	</cfscript>

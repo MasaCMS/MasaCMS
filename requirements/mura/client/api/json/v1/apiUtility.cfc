@@ -67,7 +67,8 @@ component extends="mura.cfobject" {
 	      .asInteger('totalitems')
 	      .asInteger('pageindex')
 	      .asInteger('code')
-	      .asString('title');
+	      .asString('title')
+	      .asBoolean('saveErrors');
 
 	    registerEntity('site',{
 	    	public=true,
@@ -289,6 +290,7 @@ component extends="mura.cfobject" {
 				}
 
 				if(isDefined('#params.method#')){
+
 					result=evaluate('#params.method#(argumentCollection=params)');
 					
 					if(!isJson(result)){
@@ -818,6 +820,8 @@ component extends="mura.cfobject" {
 			}
 		}
 
+		checkFormChangesetRequest('content',arguments.siteid);
+
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
 		var calendarUtility = $.getCalendarUtility();
 		var items=$.getCalendarUtility().getCalendarItems(argumentCollection=arguments);
@@ -1001,6 +1005,8 @@ component extends="mura.cfobject" {
 	function findOne(entityName,id,siteid,render=false,variation=false){
 		var $=getBean('$').init(arguments.siteid);
 		
+		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+
 		if(arguments.entityName=='content'){
 			var pk = 'contentid';
 
@@ -1013,7 +1019,7 @@ component extends="mura.cfobject" {
 					if(!content.exists()){
 						content.setType('Variation');
 						content.setIsNew(1);
-						content.setRemoteID(0);
+						content.setRemoteID(id);
 						content.setSiteID(arguments.siteid);
 						request.contentBean=content;
 					}
@@ -1047,6 +1053,11 @@ component extends="mura.cfobject" {
 				var pk="feedid";
 			} else {
 				var pk=entity.getPrimaryKey();
+			}
+
+
+			if(arguments.entityName == 'site'){
+				arguments.id=arguments.siteid;
 			}
 			
 			var loadparams={'#pk#'=arguments.id};
@@ -1118,7 +1129,8 @@ component extends="mura.cfobject" {
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};
 		}
 
-		
+		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+
 		var entity=$.getBean(arguments.entityName);
 
 		if(!allowAccess(entity,$)){
@@ -1186,6 +1198,8 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
+		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
 		} else {
@@ -1217,12 +1231,11 @@ component extends="mura.cfobject" {
 		}
 
 		var returnArray=[];
+		var finalArray=[];
 		var itemStruct={};
 		var item='';
-		var subIterator='';
-		var subItem='';
-		var subItemArray=[];
-		var p='';
+		var i1='';
+		var i2='';
 
 		while(iterator.hasNext()){
 			item=iterator.next();
@@ -1243,7 +1256,20 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(iterator,returnArray,'findmany');
+		if(!len($.event('sort')) && !len($.event('orderby'))){
+			for(i1 in listToArray(arguments.ids)){
+				for(i2 in returnArray){
+					if(i2.id==i1){
+						arrayAppend(finalArray,i2);
+						break;
+					}
+				}
+			}
+		} else {
+			finalArray=returnArray;
+		}
+
+		return formatIteratorResult(iterator,finalArray,'findmany');
 	}
 
 	function findQuery(entityName,siteid){
@@ -1253,6 +1279,8 @@ component extends="mura.cfobject" {
 		if(!allowAccess(arguments.entityName,$)){
 			throw(type="authorization");
 		}
+
+		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){		
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
@@ -1464,6 +1492,8 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
+		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+
 		var params={'#pk#'=arguments.id};
 		var iterator=entity.loadBy(argumentCollection=params).getCrumbIterator();
 		var returnArray=[];
@@ -1611,8 +1641,8 @@ component extends="mura.cfobject" {
 		*/
 
 		if(entity.getEntityName()=='content'){
-			links['self']="#baseurl#/_path/#entity.getFilename()#";
-			links['renderered']="#baseurl#/_path/#entity.getFilename()#";
+			links['self']="#baseurl#/content/#entity.getContentID()#";
+			links['renderered']="#baseurl#/content/_path/#entity.getFilename()#";
 			if(entity.getType()=='Variation'){
 				links['self']=links['renderered'];
 			} else {
@@ -1639,6 +1669,8 @@ component extends="mura.cfobject" {
 		if(!allowAccess('content',$)){
 			throw(type="authorization");
 		}
+
+		checkFormChangesetRequest('content',arguments.siteid);
 
 		var entity=$.getBean('content').loadBy(contentid=arguments.id);
 
@@ -1797,6 +1829,8 @@ component extends="mura.cfobject" {
 
 		var $=request.servletEvent.getValue("MuraScope");
 		
+		checkFormChangesetRequest('content',arguments.siteid);
+		
 		if(len($.event('filename'))){
 			$.event('currentFilename',$.event('filename'));
 			getBean('contentServer').parseCustomURLVars($.event());
@@ -1810,7 +1844,15 @@ component extends="mura.cfobject" {
 			$.event('currentFilename',$.content('filename'));
 			$.event('currentFilenameAdjusted',$.content('filename'));
 		}
-		 
+
+		if(!$.content().exists()){
+			$.content().setType('Variation');
+			$.content().setIsNew(1);
+			$.content().setRemoteID(0);
+			$.content().setSiteID(arguments.siteid);
+			request.contentBean=$.content();
+		}
+
 		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
 		$.event().getHandler('standardSetContentRenderer').handle($.event());
@@ -1824,7 +1866,8 @@ component extends="mura.cfobject" {
 			$.event().getHandler('standardSetCommentPermissions').handle($.event());
 		}
 
-		if($.event('r').restrict){
+
+		if($.content().getType() != 'Variation' && $.event('r').restrict){
 			$.event('nocache',1);
 		}
 
@@ -1995,7 +2038,8 @@ component extends="mura.cfobject" {
 						object=$.event('object'),
 						objectid=$.event('objectid'),
 						siteid=arguments.siteid,
-						assignmentPerm=$.event('perm')
+						assignmentPerm=$.event('perm'),
+						cacheKey=CGI.QUERY_STRING
 					};
 
 				if(len($.event('objectparams')) && !isJson($.event('objectparams'))){
@@ -2025,6 +2069,13 @@ component extends="mura.cfobject" {
 
 		return result;
 	
+	}
+
+	function checkFormChangesetRequest(entityName,siteid){
+		if(arguments.entityName=='content'){
+			var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
+			request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.siteid;
+		}
 	}
 
 	function generateCSRFTokens(siteid,context){

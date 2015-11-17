@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="availableObjectParams"
 	data-object="folder" 
-	data-name="" 
+	data-name="Folder" 
 	data-objectid="#rc.contentid#">
 	
 	<h2>Edit Folder Listing</h2>

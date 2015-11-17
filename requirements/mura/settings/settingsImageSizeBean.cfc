@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.bean" output="false" table="timagesizes">
  
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="sizeID" type="string" default="" required="true" />
@@ -183,4 +183,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="parseName" output="false">
+	<cfset var param=listFirst(getValue('name'),'-')>
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+
+	<cfset param=listLast(getValue('name'),'-')>
+
+	<cfif left(param,1) eq 'H'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('height',param)>
+		</cfif>
+	<cfelseif left(param,1) eq 'W'>
+		<cfset param=right(param,len(param)-1)>
+		<cfif isNumeric(param)>
+			<cfset setValue('width',param)>
+		</cfif>
+	</cfif>
+</cffunction>
 </cfcomponent>

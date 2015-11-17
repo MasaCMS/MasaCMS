@@ -54,6 +54,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <cfset rc.originalcircuit=listFirst(listLast(request.action,":"),".")>
 <div id="nav-module-specific" class="btn-group">
+	<cfif rc.compactDisplay eq 'true'>
+		<cfif rc.$.useLayoutManager()>
+			<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		<cfelse>
+			<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		</cfif>
+		
+	</cfif>
+					
 	<cfswitch expression="#rc.moduleid#">
 		<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099">
 			<cfswitch expression="#rc.originalfuseaction#">
@@ -102,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					</a>
 					</cfif>
-					<cfif len(rc.contentID)>
+					<cfif rc.contentBean.exists()>
 						<cfswitch expression="#rc.type#">		
 						<cfcase value="Form">
 							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
@@ -111,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfcase>
 						</cfswitch>
-						<cfif rc.contentid neq "">
+						<cfif rc.contentBean.exists()>
 						<cfif started>
 						<div class="btn-group">
 						</cfif>
@@ -154,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtoforms')#
 						</cfif>
 					</a>
-					<cfif len(rc.contentID)>
+					<cfif rc.contentBean.exists()>
 					<cfswitch expression="#rc.type#">
 					<cfcase value="Form">
 						<cfif listFind(session.mura.memberships,'S2IsPrivate')>
@@ -294,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.viewcontent')#
 						</a>
 					</cfif>
-				<cfelse>
+				<cfelseif rc.compactDisplay eq 'false'>
 					<!--- Back --->
 					<a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>

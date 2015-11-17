@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 				</cfoutput>
 				<cfoutput query="rs">
-					<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.title# - #rs.name#')#','objectid':'#rs.objectID#'}">
+					<option value="{'object':'plugin','name':'#esapiEncode('javascript','#rs.name#')#','objectid':'#rs.objectID#'}">
 						#rs.name#					
 					</option>
 				</cfoutput>

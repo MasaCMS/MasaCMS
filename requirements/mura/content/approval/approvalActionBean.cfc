@@ -12,4 +12,9 @@ component extends="mura.bean.beanORM" table="tapprovalactions" entityname="appro
     property name="user" fieldtype="many-to-one" cfc="user" fkcolumn="userID";
     property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
 
+    function init(){
+        setValue('created',now());
+        super.init(argumentCollection=arguments);
+    }
+    
 }

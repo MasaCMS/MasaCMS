@@ -400,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset arguments.subject='#struser.from# Account Information'>
 								</cfif>
 								
-								<cfset sendLogin(struser,'#arguments.email#','#struser.from#',arguments.subject,'#arguments.siteid#','','',arguments.message)>
+								<cfset sendLogin(struser,'#arguments.email#','#struser.from#',arguments.subject,'#arguments.siteid#','',variables.configBean.getValue("sendLoginBcc"),arguments.message)>
 								<cfset msg="Your account information has been sent to you.">
 							</cfif>
 						</cfloop>

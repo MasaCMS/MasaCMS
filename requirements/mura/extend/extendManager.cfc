@@ -1005,6 +1005,8 @@ and tclassextendattributes.type='File'
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">
 <cfargument name="activeOnly" required="true" default="false">
+<cfargument name="type" required="true" default="">
+<cfargument name="subtype" required="true" default="">
 	<cfset var rs="">
 	
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
@@ -1019,6 +1021,14 @@ and tclassextendattributes.type='File'
 		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+		
+		<cfif len(arguments.type)>
+			and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+		</cfif>
+
+		<cfif len(arguments.subtype)>
+			and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
+		</cfif>
 		and (
 			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
 			<cfif arguments.baseTable eq 'tcontent'>
@@ -1029,8 +1039,9 @@ and tclassextendattributes.type='File'
 			and tclassextend.isActive=1
 		</cfif>
 
-		and tclassextend.adminonly!=1
-		and tclassextendattributes.adminonly!=1
+		and (tclassextend.adminonly!=1 or tclassextend.adminonly is null)
+		and (tclassextendattributes.adminonly!=1 or tclassextendattributes.adminonly is null)
+
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
 	

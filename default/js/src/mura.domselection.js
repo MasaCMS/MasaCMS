@@ -78,21 +78,21 @@
 		},
 
 		each:function(fn){
-			this.selection.forEach( function(el,idx){
-				fn.call(el,el,idx);
+			this.selection.forEach( function(el,idx,array){
+				fn.call(el,el,idx,array);
 			});
 			return this;
 		},
 
 		filter:function(fn){
-			return window.mura(this.selection.filter( function(el,idx){
-				return fn.call(el,el,idx);
+			return window.mura(this.selection.filter( function(el,idx,array){
+				return fn.call(el,el,idx,array);
 			}));
 		},
 
 		map:function(fn){
-			return window.mura(this.selection.map( function(el,idx){
-				return fn.call(el,el,idx);
+			return window.mura(this.selection.map( function(el,idx,array){
+				return fn.call(el,el,idx,array);
 			}));
 		},
 
@@ -100,33 +100,58 @@
 			return isNumeric(this.selection[0]);
 		},
 
-		on:function(eventName,fn){
+		on:function(eventName,selector,fn){
+			if(typeof selector == 'function'){
+				fn=selector;
+				selector='';
+			} 
+
 			if(eventName=='ready'){
 				if(document.readyState != 'loading'){
-					fn.call(document);
-				} else { 
-					document.addEventListener(
-						'DOMContentLoaded',
+					var self=this;
+
+					setTimeout(
+						function(){
+							self.each(function(){
+								if(selector){
+									mura(this).find(selector).each(function(){
+										fn.call(this);
+									});	
+								} else {
+									fn.call(this);	
+								}
+							});
+						},
+						1
+					);
+					
+					return this;
+
+				} else {
+					eventName='DOMContentLoaded';
+				}
+			}
+					
+			this.each(function(){
+				if(typeof this.addEventListener == 'function'){
+					var self=this;
+					this.addEventListener(
+						eventName, 
 						function(event){
-								fn.call(el,event);
+							if(selector){
+								mura(self).find(selector).each(function(){
+									fn.call(this,event);
+								});
+							} else {
+								fn.call(self,event);
+							}
+							
 						},
 						true
-					);	
+					);
 				}
-			} else {
-				this.each(function(el){
-					if(typeof el.addEventListener == 'function'){
-						el.addEventListener(
-							eventName, 
-							function(event){
-								fn.call(el,event);
-							},
-							true
-						);
-					}
-				});
-			}
-
+			});
+			
 			return this;
 		},
 
@@ -148,7 +173,7 @@
 			} else {
 				this.each(function(el){
 					if(typeof el.submit == 'function'){
-						el.submit();
+						window.mura.submitForm(el);
 					}
 				});
 			}
@@ -162,8 +187,20 @@
 		},
 
 		off:function(eventName,fn){
-			this.each(function(el){
-				el.removeEventListener(eventName,fn);
+			this.each(function(el,idx,array){
+				if(typeof eventName != 'undefined'){
+					if(typeof fn != 'undefined'){
+						el.removeEventListener(eventName,fn);
+					} else {
+						el[eventName]=null;
+					}
+				} else {
+					var elClone = el.cloneNode(true);
+					el.parentNode.replaceChild(elClone, el);
+					array[idx]=elClone;
+
+				}
+					
 			});
 			return this;
 		},
@@ -322,17 +359,15 @@
 			}
 
 		    var el = this.selection[0];
-		 
-		    // traverse parents
-		    while (el!==null) {
-		        parent = el.parentElement;
-		        if (parent!==null && parent.matchesSelector(selector)) {
-		            return window.mura(parent);
-		        }
-		        el = parent;
-		    }
 
-		    return window.mura([]);;
+		    for( var parent = el ; parent !== null  && parent.matchesSelector && !parent.matchesSelector(selector) ; parent = el.parentElement ){ el = parent; };
+
+		    if(parent){
+		    	 return window.mura(parent)
+		    } else {
+		    	 return window.mura([]);
+		    }
+		   
 		},
 
 		append:function(el) {
@@ -664,9 +699,22 @@
 			}
 			
 			this.each(function(el){
-				if(typeof el.removeAttribute == 'function'){
+				if(el && typeof el.removeAttribute == 'function'){
 					el.removeAttribute(attributeName);
 				}
+				
+			});
+			return this;
+			
+		},
+
+		changeElementType:function(type){
+			if(!this.selection.length){
+				return;
+			}
+			
+			this.each(function(el){
+				window.mura.changeElementType(el,type)
 				
 			});
 			return this;

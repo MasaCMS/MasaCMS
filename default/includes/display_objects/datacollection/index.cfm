@@ -88,7 +88,7 @@
             .set($.event().getAllValues())
             .render($)#
           <cfelse>
-            <cfset request.muraValidObject=false>
+             <p>This form has not been configured.</p>
         </cfif>
     </cfif>	
 	</cfoutput>

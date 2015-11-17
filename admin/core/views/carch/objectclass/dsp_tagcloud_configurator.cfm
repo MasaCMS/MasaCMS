@@ -54,8 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset params.taggroup="">	
 </cfif>
 
+<cf_objectconfigurator params="#params#">
 <cfoutput>
-
 <div id="availableObjectParams" 
 	data-object="tag_cloud" 
 	data-name="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.taggroup')#" 
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selecttaggroup')#
 				</label>
 				<div class="controls">
-					<select name="taggroup" class="objectParam">
+					<select name="taggroup" class="objectParam span12">
 						<option value="">Default</option>
 						<cfif len($.siteConfig('customTagGroups'))>
 							<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
@@ -80,6 +80,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 </div>
-
 </cfoutput>
+</cf_objectconfigurator>
 

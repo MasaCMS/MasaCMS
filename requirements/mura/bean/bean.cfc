@@ -95,7 +95,7 @@ component extends="mura.cfobject" output="false" {
 							//writeDump(var=bean.getProperties());
 							
 							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')
-								|| !bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey)
+								|| !(structKeyExists(bean,'has') && bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey))
 							){
 								if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
 									if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args, "inverse")){
@@ -292,7 +292,10 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
-	function get(String property,defaultValue){
+	function get(String property='',defaultValue){
+		if(arguments.property==''){
+			return getAllValues(argumentCollection=arguments);
+		}
 		return getValue(argumentCollection=arguments);
 	}
 

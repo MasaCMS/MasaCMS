@@ -7,17 +7,20 @@
 		</cfif>
 		and object != 'payPalCart'
 		and object != 'related_content'
+		and object != 'tag_cloud'
 		and object != 'goToFirstChild'
 	</cfquery>
 </cfsilent>
+<cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">Select System Object</label>
 			<div class="controls">
-				<select id="availableObjectSelector">
+				<select id="availableObjectSelector" class="span12">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">
+						Select System Object
 					</option>
 
 					<cfloop query="rc.rsObjects">
@@ -31,3 +34,4 @@
 	</div>
 </div>
 </cfoutput>
+</cf_objectconfigurator>

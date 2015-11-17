@@ -61,6 +61,17 @@
 <cfparam name="request.day" default="#day(now())#"/>
 
 <cfset $.addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
+<cfif not isValid('uuid',arguments.objectid)>
+	<cfset variables.crumbIterator=variables.$.content().getCrumbIterator()>
+
+	<cfloop condition="variables.crumbIterator.hasNext()">
+		<cfset variables.crumb=variables.crumbIterator.next()>
+		<cfif listFindNoCase('Folder',variables.crumb.getType())>
+			<cfset arguments.objectid=variables.crumb.getContentID()>
+			<cfbreak>
+		</cfif>
+	</cfloop>
+</cfif>
 </cfsilent>
 <cf_CacheOMatic key="#arguments.object##$.event('siteid')##arguments.objectid##$.event('month')##$.event('year')#" nocache="#$.event('nocache')#">
 <cfsilent>

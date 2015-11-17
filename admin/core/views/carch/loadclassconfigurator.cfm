@@ -63,7 +63,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
 	</cfcase>
 	<cfcase value="category_summary">
-		<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
+		<cfif application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
+			<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
+		</cfif>
 	</cfcase>
 	<cfcase value="related_content,related_section_content">
 		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
@@ -89,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
 		<cfinclude template="objectclass/dsp_system_configurator.cfm">
 	</cfcase>
-	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav">
+	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav">
 		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
 	</cfcase>
 	<cfcase value="mailing_list,mailing_list_master">
@@ -115,8 +119,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="objectclass/dsp_socialembed_configurator.cfm">
 	</cfcase>
 	<cfdefaultcase>
-		<cfoutput>
-		<p class="alert">This display object is not configurable.</p>
-		</cfoutput>
+		<cfif rc.$.useLayoutManager()>
+			<cf_objectconfigurator></cf_objectconfigurator>
+		<cfelse>
+			<cfoutput>
+				<p class="alert">This display object is not configurable.</p>
+			</cfoutput>
+		</cfif>	
 	</cfdefaultcase>
 </cfswitch>

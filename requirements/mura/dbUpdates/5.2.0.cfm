@@ -356,8 +356,8 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 	<cftry>
 		<cfquery>
 		CREATE TABLE IF NOT EXISTS  `tuserstrikes` (
-		  `username` varchar(100) default NULL,
-		  `strikes` int(10) default NULL,
+		  `username` varchar(100),
+		  `strikes` int(10),
 		  `lastAttempt` datetime NOT NULL,
 		  PRIMARY KEY  (`username`)
 		) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
@@ -365,9 +365,9 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 		<cfcatch>
 			<cfquery>
 			CREATE TABLE IF NOT EXISTS  `tuserstrikes` (
-			  `username` varchar(100) default NULL,
-			  `strikes` int(10) default NULL,
-			  `lastAttempt` datetime default NULL,
+			  `username` varchar(100),
+			  `strikes` int(10),
+			  `lastAttempt` datetime,
 			  PRIMARY KEY  (`username`)
 			) 
 			</cfquery>
@@ -380,8 +380,8 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold NUMBER(10,0)
 	<cfquery>
 	CREATE TABLE IF NOT EXISTS tuserstrikes (
 		username varchar(100) NOT NULL,
-		strikes integer default NULL,
-		lastAttempt timestamp default NULL,
+		strikes integer,
+		lastAttempt timestamp,
 		CONSTRAINT PK_tuserstrikes_username PRIMARY KEY (username)
 	)
 	</cfquery>

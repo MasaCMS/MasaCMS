@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         dist: {
           src: [
           'external/polyfill.js',
-          'external/handlebars.runtime.js',
+          //'external/handlebars.runtime.js',
           'src/mura.js',
           'src/mura.loader.js',
           'src/mura.domselection.js',
@@ -27,6 +27,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    /*
     handlebars: {
         all: {
             files: {
@@ -37,13 +38,14 @@ module.exports = function(grunt) {
             }
         }
     }
+    */
   });
 
-  grunt.loadNpmTasks('grunt-handlebars-compiler');
+  //grunt.loadNpmTasks('grunt-handlebars-compiler');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default',['handlebars','concat','uglify']);
+  grunt.registerTask('default',['concat','uglify']);
    
 
 };

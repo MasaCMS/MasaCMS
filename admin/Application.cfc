@@ -487,6 +487,10 @@ component extends="framework" output="false" {
 	  	}
 
 		application.rbFactory.setAdminLocale();
+
+		var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
+		request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq request.context.siteid;
+		
 		application.pluginManager.announceEvent("onAdminRequestStart",request.event);
 		
 	}

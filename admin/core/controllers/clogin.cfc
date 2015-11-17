@@ -63,7 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.redirect" default=""/>
 	<cfparam name="arguments.rc.parentid" default=""/>
 	<cfparam name="arguments.rc.siteid" default=""/>
-	<cfparam name="arguments.rc.status" default=""/>
 </cffunction>
 
 <cffunction name="main" output="false">
