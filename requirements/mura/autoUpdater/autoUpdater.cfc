@@ -251,14 +251,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getProductionVersion" output="false">
-	<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
-	<cfif isNumeric(version)>
-		<cfreturn version>
-	<cfelse>
-		<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
-			<cfreturn getProductionData().preview>
+	<cfargument name="siteid" default="">
+	<!--- The production version for a site should always be the current core version --->
+	<cfif len(arguments.siteid)>
+		<cfreturn getCurrentVersion('')>
+	<cfelse>	
+		<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
+		<cfif isNumeric(version)>
+			<cfreturn version>
 		<cfelse>
-			<cfreturn getProductionData().production>
+			<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
+				<cfreturn getProductionData().preview>
+			<cfelse>
+				<cfreturn getProductionData().production>
+			</cfif>
 		</cfif>
 	</cfif>
 </cffunction>
