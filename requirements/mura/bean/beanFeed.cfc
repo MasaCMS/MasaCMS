@@ -268,6 +268,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.field=arguments.name>
 		</cfif>
 
+		<cfif structKeyExists(arguments,'value')>
+			<cfset arguments.criteria=arguments.value>
+		</cfif>
+
 		<cfif structKeyExists(variables.instance.fieldAliases,arguments.field)>
 			<cfset arguments.datatype=variables.instance.fieldAliases[arguments.field].datatype>
 			<cfset arguments.field=variables.instance.fieldAliases[arguments.field].field>

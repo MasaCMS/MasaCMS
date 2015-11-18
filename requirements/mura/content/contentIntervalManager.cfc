@@ -2,6 +2,62 @@
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
 
+<cffunction name="createIntervalSummary" output="false">
+	<cfargument name="content">
+
+	<cfset var displayInterval=deserializeInterval(arguments.content.getDisplayInterval())>
+
+	<!---
+	calendar.summary.on.daily=Daily
+	calendar.summary.on.weekly=Every week on {1}
+	calendar.summary.on.week1=Every 1st week of the month on {1}
+	calendar.summary.on.week2=Every 2nd week of the month on {1}
+	calendar.summary.on.week3=Every 3rd week of the month on {1}
+	calendar.summary.on.week4=Every 4th week of the month on {1}
+	calendar.summary.on.weeklast=Every last week of the month on {1}
+	calendar.summary.on.monthly=Every month on {1}
+	calendar.summary.on.yearly=Every year on {1}
+	calendar.summary.timespan=from {1} to {2}
+	calendar.summary.datespan=from {1} to {2}
+	calendar.summary.until=until {1}
+	calendar.weekdayShort=S,M,T,W,T,F,S
+	calendar.weekdaylong=Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday
+	--->
+	<cfswitch expression="#displayInterval.type#">
+		<cfcase value="weekly">
+		
+		</cfcase>
+		<cfcase value="bi-weekly">
+		
+		</cfcase>
+		<cfcase value="week1">
+		
+		</cfcase>
+		<cfcase value="week2">
+		
+		</cfcase>
+		<cfcase value="week3">
+		
+		</cfcase>
+		<cfcase value="week4">
+		
+		</cfcase>
+		<cfcase value="weeklast">
+		
+		</cfcase>
+		<cfcase value="daily">
+		
+		</cfcase>
+		<cfcase value="monthly">
+		
+		</cfcase>
+		<cfcase value="yearly">
+		
+		</cfcase>
+	</cfswitch>
+</cffunction>
+
+
 <cffunction name="findConflicts">
 	<cfargument name="content">
 
@@ -86,7 +142,6 @@
 	<cfreturn getBean('contentIterator').setArray(result)>
 
 </cffunction>
-
 
 <cffunction name="deserializeInterval" output="false">
 	<cfargument name="interval">

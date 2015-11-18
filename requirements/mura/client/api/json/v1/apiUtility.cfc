@@ -1202,6 +1202,7 @@ component extends="mura.cfobject" {
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
 			var feed=entity.getFeed();
@@ -1284,8 +1285,10 @@ component extends="mura.cfobject" {
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){		
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+			var entity=$.getBean(arguments.entityName);
 		} else if($.event('entityName')=='content' && len($.event('feedname'))){
 			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
+			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
 			var feed=entity.getFeed();
