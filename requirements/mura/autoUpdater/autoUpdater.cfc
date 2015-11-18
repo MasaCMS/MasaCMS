@@ -198,11 +198,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+		<cfset returnStruct.currentVersion=updateVersion/>
+		<cfset returnStruct.files=updatedArray>
+		
 		</cflock>
 	</cfif>
-
-	<cfset returnStruct.currentVersion=updateVersion/>
-	<cfset returnStruct.files=updatedArray>
 
 	<cfif arrayLen(updatedArray)>	
 		<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
