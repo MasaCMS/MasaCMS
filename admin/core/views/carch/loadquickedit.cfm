@@ -101,22 +101,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				dateclass="mura-quickEdit-datepicker" 
 			 	datetime="#content.getdisplaystart()#" 
 			 	break="true">
-			<!---<input type="text" id="mura-quickEdit-displayStart" value="#LSDateFormat(content.getdisplaystart(),session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-
-				<cf_timeselector name="start" 
-			 	time="#content.getdisplaystart()#" 
-			 	hourid="mura-quickEdit-startHour"
-			 	minuteid="mura-quickEdit-startMinute"
-			 	daypartid="mura-quickEdit-startDayPart"
-			 	hourname=""
-			 	minutename=""
-			 	daypartname="">
-
-				
-				<select id="mura-quickEdit-startHour"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(content.getdisplaystart())  and h eq 12 or (LSisDate(content.getdisplaystart()) and (hour(content.getdisplaystart()) eq h or (hour(content.getdisplaystart()) - 12) eq h or hour(content.getdisplaystart()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-				<select id="mura-quickEdit-startMinute"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(content.getdisplaystart()) and minute(content.getdisplaystart()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-				<select id="mura-quickEdit-startDayPart"><option value="AM">AM</option><option value="PM" <cfif LSisDate(content.getdisplaystart()) and hour(content.getdisplaystart()) gte 12>selected</cfif>>PM</option></select>
-				--->
 			</li>
 			<li><label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</label>
 			<cf_datetimeselector name="quickEdit-displayStop" 
@@ -125,24 +109,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	defaulthour="23" 
 			 	defaultminute="59"
 			 	break="true">
-			<!---<input type="text" id="mura-quickEdit-displayStop" value="#LSDateFormat(content.getdisplaystop(),session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-
-				<cf_timeselector name="stop" 
-			 	time="#content.getdisplaystop()#" 
-			 	defaulthour="23" 
-			 	defaultminute="59"
-			 	hourid="mura-quickEdit-stopHour"
-			 	minuteid="mura-quickEdit-stopMinute"
-			 	daypartid="mura-quickEdit-stopDayPart"
-			 	hourname=""
-			 	minutename=""
-			 	daypartname="">
-
-				
-				<select id="mura-quickEdit-stopHour"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(content.getdisplaystop())  and h eq 11 or (LSisDate(content.getdisplaystop()) and (hour(content.getdisplaystop()) eq h or (hour(content.getdisplaystop()) - 12) eq h or hour(content.getdisplaystop()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-				<select id="mura-quickEdit-stopMinute"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(content.getdisplaystop()) and m eq 59) or (LSisDate(content.getdisplaystop()) and minute(content.getdisplaystop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-				<select id="mura-quickEdit-stopDayPart"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(content.getdisplaystop()) and (hour(content.getdisplaystop()) gte 12)) or not LSisDate(content.getdisplaystop())>selected</cfif>>PM</option></select>
-				--->
 			</li>
 		</ol>	</cfif>
 	<div class="form-actions">
