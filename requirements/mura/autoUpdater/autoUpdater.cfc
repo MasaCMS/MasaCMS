@@ -197,16 +197,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cfif arrayLen(updatedArray)>	
-			<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
-		</cfif>
+		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
+		<cfset returnStruct.currentVersion=updateVersion/>
+		<cfset returnStruct.files=updatedArray>
+		
 		</cflock>
 	</cfif>
 
 	<cfif arrayLen(updatedArray)>	
-		<cfset returnStruct.currentVersion=updateVersion/>
-		<cfset returnStruct.files=updatedArray>
-
 		<cfif server.ColdFusion.ProductName neq "Coldfusion Server">
 			<cfscript>pagePoolClear();</cfscript>
 		</cfif>
@@ -251,14 +249,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getProductionVersion" output="false">
-	<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
-	<cfif isNumeric(version)>
-		<cfreturn version>
-	<cfelse>
-		<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
-			<cfreturn getProductionData().preview>
+	<cfargument name="siteid" default="">
+	<!--- The production version for a site should always be the current core version --->
+	<cfif len(arguments.siteid)>
+		<cfreturn getCurrentVersion('')>
+	<cfelse>	
+		<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
+		<cfif isNumeric(version)>
+			<cfreturn version>
 		<cfelse>
-			<cfreturn getProductionData().production>
+			<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
+				<cfreturn getProductionData().preview>
+			<cfelse>
+				<cfreturn getProductionData().production>
+			</cfif>
 		</cfif>
 	</cfif>
 </cffunction>

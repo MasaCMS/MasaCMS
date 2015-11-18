@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="context">
 	<cfset var contexts=structNew()>
 	
-	<cfif getMetaData(arguments.context).name eq "mura.MuraScope">
+	<cfif listLast(getMetaData(arguments.context).name, '.') eq "MuraScope">
 		<cfset contexts.muraScope=arguments.context>
 		<cfset contexts.event=arguments.context.event()>
 	<cfelse>

@@ -1736,6 +1736,11 @@ buttons: {
 
 						setDatePickers(".mura-quickEdit-datepicker", dtLocale, dtCh);
 						setToolTips(".mura-quickEdit-datepicker");
+
+						setDatePickers("#mura-datepicker-displayStart", dtLocale, dtCh);
+						setDatePickers("#mura-datepicker-displayStop", dtLocale, dtCh);
+						setDatePickers("#mura-datepicker-displayIntervalEndOn", dtLocale, dtCh);
+						
 						if($("#hasDraftsMessage").length) {
 							dd.addClass("hasDraft");
 						}
@@ -1850,11 +1855,23 @@ buttons: {
 			}
 			*/
 
-			var attributeParams = {
-				'display': $("#mura-quickEdit-display").val(),
-				'displayStop': $("#mura-quickEdit-displayStop").val(),
-				'displayStart': $("#mura-quickEdit-displayStart").val(),
+			if($("#displayInterval").length){
+
+				var attributeParams = {
+					'display': $("#mura-display").val(),
+					'displayStop': $("#mura-displayStop").val(),
+					'displayStart': $("#mura-displayStart").val(),
+					'displayInterval': $("#displayInterval").val()
+				}
+
+			} else {
+				var attributeParams = {
+					'display': $("#mura-quickEdit-display").val(),
+					'displayStop': $("#mura-quickEdit-displayStop").val(),
+					'displayStart': $("#mura-quickEdit-displayStart").val()
+				}
 			}
+			
 
 		}
 

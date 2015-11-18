@@ -60,7 +60,10 @@
 		 <cfset objectparams.async=true>
 	<cfelse>
 		<div class="mura-async-object" 
-			data-object="calendar">
+			data-object="calendar"
+			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
+			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
+			data-day="#esapiEncode('html_attr',variables.$.event('day'))#">
 		</div>
 	</cfif>
 <cfelse>
@@ -84,7 +87,7 @@
 				"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 				function(){
 					$('##mura-calendar').fullCalendar({
-						timezone: 'false'
+						timezone: 'local'
 						, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 						, buttonText: {
 							day: '#variables.$.rbKey('calendar.day')#'
@@ -105,9 +108,14 @@
 							, center: 'title'
 							, right: 'agendaDay,agendaWeek,month'
 						}
+						<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
+							, defaultView: 'agendaDay'
+						<cfelse>
+							, defaultView: 'month'
 						</cfif>
-						
+						<cfelse>
 						, defaultView: 'month'
+						</cfif>
 						, allDayDefault: false
 						, loading: function(isLoading) {
 								$('##mura-calendar-loading').toggle(isLoading);

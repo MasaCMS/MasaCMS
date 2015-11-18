@@ -1,6 +1,147 @@
-<cfcomponent extend="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false">
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
+
+<cffunction name="createIntervalSummary" output="false">
+	<cfargument name="content">
+
+	<cfset var displayInterval=deserializeInterval(arguments.content.getDisplayInterval())>
+
+	<!---
+	calendar.summary.on.daily=Daily
+	calendar.summary.on.weekly=Every week on {1}
+	calendar.summary.on.week1=Every 1st week of the month on {1}
+	calendar.summary.on.week2=Every 2nd week of the month on {1}
+	calendar.summary.on.week3=Every 3rd week of the month on {1}
+	calendar.summary.on.week4=Every 4th week of the month on {1}
+	calendar.summary.on.weeklast=Every last week of the month on {1}
+	calendar.summary.on.monthly=Every month on {1}
+	calendar.summary.on.yearly=Every year on {1}
+	calendar.summary.timespan=from {1} to {2}
+	calendar.summary.datespan=from {1} to {2}
+	calendar.summary.until=until {1}
+	calendar.weekdayShort=S,M,T,W,T,F,S
+	calendar.weekdaylong=Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday
+	--->
+	<cfswitch expression="#displayInterval.type#">
+		<cfcase value="weekly">
+		
+		</cfcase>
+		<cfcase value="bi-weekly">
+		
+		</cfcase>
+		<cfcase value="week1">
+		
+		</cfcase>
+		<cfcase value="week2">
+		
+		</cfcase>
+		<cfcase value="week3">
+		
+		</cfcase>
+		<cfcase value="week4">
+		
+		</cfcase>
+		<cfcase value="weeklast">
+		
+		</cfcase>
+		<cfcase value="daily">
+		
+		</cfcase>
+		<cfcase value="monthly">
+		
+		</cfcase>
+		<cfcase value="yearly">
+		
+		</cfcase>
+	</cfswitch>
+</cffunction>
+
+
+<cffunction name="findConflicts">
+	<cfargument name="content">
+
+	<cfset var result=[]>
+
+	<cfif arguments.content.getDisplay() eq 2 and arguments.content.hasParent()>
+		<cfset var calendar=content.getParent()>
+
+		<cfif calendar.getType() eq 'Calendar'>
+			<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+
+			<cfif displayInterval.detectconflicts and displayInterval.detectspan>
+				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',displayInterval.detectspan,now()))>
+				<cfset var rsevents=events.getQuery()>
+				<cfset var rscheck=''>
+				<cfset var rsresult=''>
+				<cfset var rsresultfinal=''>
+				<cfset var rsitemdetails=''>
+				
+				<cfquery name="rsresult" dbtype="query">
+					select * from rsevents where 0=1
+				</cfquery>
+
+				<cfloop condition="events.hasNext()">
+					<cfset var event=events.next()>
+
+					<cfif event.getContentID() eq arguments.content.getContentID()>
+						<cfquery name="rscheck" dbtype="query">
+							select * from rsevents
+							where contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.content.getContentID()#">
+							and
+							 	(
+								 	(
+								 		displaystart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
+									or
+
+									(
+								 		displaystop <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
+								)
+						</cfquery>
+
+						<cfloop query="rscheck">
+							<cfset QueryAddRow(rsresult) />
+									
+							<cfloop list="#rsresult.columnList#" index="local.i">			
+								<cfset querySetCell(rsresult,
+								local.i,
+								rscheck[local.i][rscheck.currentrow],
+								rsresult.recordCount) />
+							</cfloop>
+						</cfloop>
+					</cfif>
+				</cfloop>
+
+				<cfif rsresult.recordcount>
+					<cfset var utility=getBean("utility")>
+					<cfquery name="rsresultfinal" dbtype="query">
+						select distinct contentid,contenthistid,siteid,menutitle,title from rsresult
+					</cfquery>
+
+					<cfloop query="rsresultfinal">
+						<cfset arrayAppend(result, utility.queryRowToStruct(rsresultfinal,rsresultfinal.currentrow))>
+
+						<cfquery name="rsitemdetails" dbtype="query">
+							select * from rsresult 
+							where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsresultfinal.contentid#">
+						</cfquery>
+
+						<cfset result[arrayLen(result)].confictdetailiterator=getBean('contentIterator').setQuery(rsitemdetails)>
+					</cfloop>
+				</cfif>
+			</cfif>
+
+		</cfif>
+		
+	</cfif>	
+
+	<cfreturn getBean('contentIterator').setArray(result)>
+
+</cffunction>
 
 <cffunction name="deserializeInterval" output="false">
 	<cfargument name="interval">
@@ -23,6 +164,8 @@
 	<cfparam name="data.endon" default="">
 	<cfparam name="data.endafter" default="0">
 	<cfparam name="data.allday" default="0">
+	<cfparam name="data.detectconflicts" default="0">
+	<cfparam name="data.detectspan" default="3">
 
 	<cfif not structKeyExists(data,'repeats')>
 		<cfif data.type eq 'daily' and not data.every>
@@ -731,8 +874,6 @@
 							<cfset LOCAL.day=local.displayStart>
 						</cfif>
 					</cfif>
-
-					
 
 				</cfloop>
 			</cfif>

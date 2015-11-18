@@ -797,12 +797,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayInterval">
 
 	<cfif not isSimpleValue(arguments.displayInterval)>
-		<cfif isDefined('arguments.displayInterval.end') 
-			and arguments.displayInterval.end eq 'on'
+		<cfif isDefined('arguments.displayInterval.end') >
+			<cfif arguments.displayInterval.end eq 'on'
 			and isDefined('arguments.displayInterval.endon') 
-			and isDate(arguments.displayInterval.end eq 'on')>
+			and isDate(arguments.displayInterval.endon)>
 				<cfset setValue('displayStop',arguments.displayInterval.end)>
+			<cfelseif arguments.displayInterval.end eq 'after'
+				and isDefined('arguments.displayInterval.endafter') 
+				and isNumeric(arguments.displayInterval.endafter)
+				or arguments.displayInterval.end eq 'never'>
+				<cfif isDate(getValue('displayStop'))>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
+				<cfelse>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+				</cfif>
 			</cfif>
+		</cfif>
 		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
 	</cfif>
 
@@ -823,6 +833,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.displayInterval>
 	</cfif>
 	
+</cffunction>
+
+<cffunction name="getDisplayConflicts" output="false">
+	<cfreturn getBean('contentIntervalManager').findConflicts(this)>
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
@@ -1299,7 +1313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.compactDisplay='true'>
 	</cfif>
 	
-	<cfset returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#getValue('type')#&siteId=#getValue('siteid')#&topId=#topID#&parentId=#getValue('parentid')#&moduleId=#getValue('moduleid')#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#getContentHistId()#&contentid=#getContentId()#&type=#getValue('type')#&siteid=#getValue('siteid')#&topid=#topID#&parentid=#getValue('parentid')#&moduleid=#getValue('moduleid')#&compactdisplay=#arguments.compactdisplay#" >
 	
 	<cfif structKeyExists(arguments,"tab")>
 		<cfset returnStr=returnStr & "##" & arguments.tab>
