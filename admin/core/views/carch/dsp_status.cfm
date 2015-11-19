@@ -71,26 +71,31 @@
 	</p>
 </cfif>
 
-<cfset conflicts=rc.contentBean.getDisplayConflicts()>
+<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+	<cfset conflicts=rc.contentBean.getDisplayConflicts()>
 
-<cfif conflicts.hasNext()>
-	<cfset calendar=rc.contentBean.getParent()>
-	<div class="alert alert-error">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
-		<cfloop condition="conflicts.hasNext()">
-			<cfset conflict=conflicts.next()>
-			<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
-				<cfset conflictDetails=conflict.getConfictDetailIterator()>
-				<cfloop condition="conflictDetails.hasNext()">
-					<cfset conflictdetail=conflictDetails.next()>
-					<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
-					<cfif conflictDetails.hasNext()>, </cfif>
-				</cfloop>
-			</p>
-		</cfloop>
-	</div>
+	<cfif rc.contentBean.getDisplay() eq 2>
+		<p class="alert"><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#:</strong> #rc.contentBean.getDisplayIntervalDesc()#</p>
+	</cfif>
+
+	<cfif conflicts.hasNext()>
+		<cfset calendar=rc.contentBean.getParent()>
+		<div class="alert alert-error">
+			<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.displayinterval.schedulingconflicts")#:</h3>
+			<cfloop condition="conflicts.hasNext()">
+				<cfset conflict=conflicts.next()>
+				<p><strong><a href="#conflict.getEditURL()#">#esapiEncode('html',conflict.getTitle())#:</strong></a>
+					<cfset conflictDetails=conflict.getConfictDetailIterator()>
+					<cfloop condition="conflictDetails.hasNext()">
+						<cfset conflictdetail=conflictDetails.next()>
+						<a href="#rc.$.createHREF(filename='#calendar.getFilename()#/_/date/#year(conflictdetail.getDisplayStart())#/#month(conflictdetail.getDisplayStart())#/#day(conflictdetail.getDisplayStart())#',complete=true)#" <cfif rc.compactdisplay eq 'true'>target="_top"<cfelse>target="_blank"</cfif>>#LSDateFormat(conflictdetail.getDisplayStart(),session.dateKeyFormat)#</a>
+						<cfif conflictDetails.hasNext()>, </cfif>
+					</cfloop>
+				</p>
+			</cfloop>
+		</div>
+	</cfif>
 </cfif>
-
 <script>
 function viewStatusInfo(contenthistid,siteid){
 	

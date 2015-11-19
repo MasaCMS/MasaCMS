@@ -820,6 +820,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>	
 </cffunction>
 
+<cffunction name="getDisplayIntervalDesc" output="false">
+	<cfreturn getBean('contentIntervalManager').renderIntervalDesc(this)>
+</cffunction>
+
 <cffunction name="getDisplayInterval" output="false">
 	<cfargument name="deserialize" default="false">
 

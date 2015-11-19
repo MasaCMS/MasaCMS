@@ -96,6 +96,34 @@
 	</div>
 	<script>
 		$(function(){
+			function pushDisplayStopOut(){
+				$('##mura-datepicker-displayStop').val('');
+					$('##mura-datepicker-displayStop').trigger('change');
+
+					var stopMinute = ($('##mura-displayStopMinute').length) ? $('##mura-displayStopMinute').val() : 0;
+					var stopHour=($('##mura-displayStopHour').length) ? $('##mura-displayStopHour').val() : 0;
+
+					if($('##mura-displayStopDayPart').length){
+						if($('##mura-displayStopDayPart').val().toLowerCase() == 'pm'){
+							stopHour=parseInt(stopHour) + 12;
+							if(stopHour==24){
+								stopHour=12;
+							}
+						} else if (parseInt(stopHour) ==12) {
+							stopHour=0;
+						}
+					}
+
+					if(stopHour.length==1){
+						stopHour='0' + stopHour;
+					}
+
+					if(stopMinute.length==1){
+						stopMinute='0' + stopMinute;
+					}
+				
+					$('##mura-displayStop').val("{ts '2100-01-01 " + stopHour + ":" + stopMinute + ":00'}");
+			}
 
 			function updateDisplayInterval(){
 				var options={
@@ -115,7 +143,7 @@
 					$('##mura-datepicker-displayStop').val(options.endon);
 					$('##mura-datepicker-displayStop').trigger('change');
 				} else {
-					$('##mura-datepicker-displayStop').val('');
+					pushDisplayStopOut();
 				}
 			}
 
@@ -146,7 +174,7 @@
 					}
 				}
 			}
-
+ 
 			function setEndOption(){
 				var type=$('##displayIntervalEnd').val();
 
@@ -154,8 +182,7 @@
 				//alert(type)
 				if(type=='after'){
 					$('##mura-interval-end-after').show();
-					$('##mura-datepicker-displayStop').val('');
-					$('##mura-datepicker-displayStop').trigger('change');
+					pushDisplayStopOut();
 				} else if(type=='on'){
 					$('##mura-interval-end-on').show();
 
@@ -176,9 +203,7 @@
 						stop.val(start.val()).trigger('change');
 					}
 				} else if(type=='never'){
-
-					$('##mura-datepicker-displayStop').val('');
-					$('##mura-datepicker-displayStop').trigger('change');
+					pushDisplayStopOut();
 				}
 
 			}
