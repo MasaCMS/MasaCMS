@@ -2,61 +2,45 @@
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
 
-<cffunction name="createIntervalSummary" output="false">
+<cffunction name="renderIntervalDesc" output="false">
 	<cfargument name="content">
 
-	<cfset var displayInterval=deserializeInterval(arguments.content.getDisplayInterval())>
+	<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+	<cfset var returnstring=''>
 
-	<!---
-	calendar.summary.on.daily=Daily
-	calendar.summary.on.weekly=Every week on {1}
-	calendar.summary.on.week1=Every 1st week of the month on {1}
-	calendar.summary.on.week2=Every 2nd week of the month on {1}
-	calendar.summary.on.week3=Every 3rd week of the month on {1}
-	calendar.summary.on.week4=Every 4th week of the month on {1}
-	calendar.summary.on.weeklast=Every last week of the month on {1}
-	calendar.summary.on.monthly=Every month on {1}
-	calendar.summary.on.yearly=Every year on {1}
-	calendar.summary.timespan=from {1} to {2}
-	calendar.summary.datespan=from {1} to {2}
-	calendar.summary.until=until {1}
-	calendar.weekdayShort=S,M,T,W,T,F,S
-	calendar.weekdaylong=Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday
-	--->
-	<cfswitch expression="#displayInterval.type#">
-		<cfcase value="weekly">
-		
-		</cfcase>
-		<cfcase value="bi-weekly">
-		
-		</cfcase>
-		<cfcase value="week1">
-		
-		</cfcase>
-		<cfcase value="week2">
-		
-		</cfcase>
-		<cfcase value="week3">
-		
-		</cfcase>
-		<cfcase value="week4">
-		
-		</cfcase>
-		<cfcase value="weeklast">
-		
-		</cfcase>
-		<cfcase value="daily">
-		
-		</cfcase>
-		<cfcase value="monthly">
-		
-		</cfcase>
-		<cfcase value="yearly">
-		
-		</cfcase>
-	</cfswitch>
+	<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop()) 
+		and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())
+		and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
+		and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
+		<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+	<cfelse>
+		<cfset returnstring=  application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.#displayInterval.type#')>
+	</cfif>
+
+	<cfif listFindNoCase('weekly,bi-weekly,monthly,week1,week2,week3,week4,weeklast',displayInterval.type)>
+		<cfset returnstring=returnstring & ' ' & lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.on')) & ' '>
+		<cfset var started=false>
+		<cfloop list="#displayInterval.daysofweek#" index="local.i">
+			<cfif started><cfset returnstring=returnstring & ', '></cfif>
+			<cfset returnstring=returnstring & listGetAt(application.rbFactory.getKeyValue(session.rb,'calendar.weekdaylong'),local.i)>
+		</cfloop>
+	</cfif>
+
+	<cfif isDate(arguments.content.getDisplayStop())>
+		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')>
+		<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+	<cfelse>
+		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart())>
+	</cfif>
+
+	<cfif displayInterval.end eq 'on'>
+		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until') & ' ' & LSDateFormat(displayinterval.endon,session.dateKeyFormat)>
+	<cfelseif displayInterval.end eq 'after'>
+		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until') & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
+	</cfif>
+	
+	<cfreturn returnstring>
 </cffunction>
-
 
 <cffunction name="findConflicts">
 	<cfargument name="content">
@@ -160,12 +144,21 @@
 
 	<cfparam name="data.every" default=1>
 	<cfparam name="data.type" default="daily">
-	<cfparam name="data.end" default="never">
-	<cfparam name="data.endon" default="">
 	<cfparam name="data.endafter" default="0">
+	<cfparam name="data.endon" default="">
 	<cfparam name="data.allday" default="0">
 	<cfparam name="data.detectconflicts" default="0">
 	<cfparam name="data.detectspan" default="3">
+
+	<cfif not structKeyExists(data,'end')>
+		<cfif isDate(arguments.displayStop)>
+			<cfset data.end='on'>
+			<cfset data.endon=arguments.displayStop>
+		<cfelse>
+			<cfset data.end='never'>
+			<cfset data.endon=''>
+		</cfif>
+	</cfif>
 
 	<cfif not structKeyExists(data,'repeats')>
 		<cfif data.type eq 'daily' and not data.every>
