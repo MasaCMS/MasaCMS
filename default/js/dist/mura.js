@@ -3377,7 +3377,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 
 		if(!config.pluginspath){
-			config.pluginpath=config.context + '/plugins';
+			config.pluginspath=config.context + '/plugins';
 		}
 
 		if(!config.requirementspath){
