@@ -1855,6 +1855,10 @@
 			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
 		}
 
+		if(!config.pluginspath){
+			config.pluginpath=config.context + '/plugins';
+		}
+
 		if(!config.requirementspath){
 			config.requirementspath=config.context + '/requirements';
 		}
