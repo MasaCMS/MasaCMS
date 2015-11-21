@@ -206,8 +206,7 @@
 				mailing_list:true,
 				site_map:true,
 				navigation:true,
-				socialembed:true,
-				media:true,
+				embed:true,
 				container:true,
 				system:true,
 				tag_cloud:true,
@@ -225,7 +224,10 @@
 				calendar_nav:true,
 				archive_nav:true,
 				rater:true,
-				component:true
+				component:true,
+				folder:true,
+				gallery:true,
+				calendar:true
 			};
 
 			if(map[editableObj.data('object')]
@@ -1271,12 +1273,12 @@
 							}
 						);
 
-						utility('.mura-async-object[data-object="folder"]').each(function(){
+						utility('.mura-async-object[data-object="folder"], .mura-async-object[data-object="gallery"]').each(function(){
 							var item=utility(this);
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
 							}
-							if(item.data('imagesize1 ')){
+							if(item.data('imagesize')){
 								muraInlineEditor.data['imagesize']=item.data('imagesize');
 							}
 							if(item.data('imagewidth')){
@@ -1284,6 +1286,9 @@
 							}
 							if(item.data('imageheight')){
 								muraInlineEditor.data['imageheight']=item.data('imageheight');
+							}
+							if(item.data('layout')){
+								muraInlineEditor.data['layout']=item.data('layout');
 							}
 						});
 
@@ -1689,13 +1694,14 @@
 		configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'embed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
 			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'component':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'gallery':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'calendar':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'plugin':{
 				'condition':function(){
@@ -1762,18 +1768,31 @@
 				if(fileid.length==35 && (fileext=='jpg' || fileext=='jpeg' || fileext=='png')){
 					fileInfo.shift()
 					
-					function initCropper(){
-						openFrontEndToolsModal({
-								href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
-							});
-					}
+				
+					img.css({display:'inline-block;'});
 
 					var size=fileInfo.join('_');
-					img.css({display:'inline block;'})
-					img.closest('a').off();
+
+					var actionhref=adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true';
+
+					function initCropper(){
+						openFrontEndToolsModal({
+								href:actionhref
+						});
+					}
+
+					
+					var a=img.closest('a');
+
+
+					if(a.length){
+						a.click(function(e){e.preventDefault();});
+						a.attr('onclick',"openFrontEndToolsModal({href:'" + actionhref + "'}); return false;");
+						a.off();
+					}
+					
 					img=mura('img[data-instanceid="' + instanceid + '"]' );
 					img.on('click',function(e){e.preventDefault();});
-					
 					
 					mura('img[data-instanceid="' + instanceid + '"]' ).on('click',function(){
 						initCropper();

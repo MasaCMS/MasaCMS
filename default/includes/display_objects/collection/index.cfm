@@ -6,6 +6,10 @@
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
 	<cfparam name="objectParams.nextN" default="20">
+
+	<cfif not len(objectparams.layout)>
+		<cfset objectParams.layout='default'>
+	</cfif>
 </cfsilent>
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfsilent>
@@ -28,8 +32,7 @@
 						.findMany(
 							argumentCollection=objectParams
 						)>
-
-						
+	
 				<cfelse>
 					<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
 				</cfif>
@@ -37,11 +40,21 @@
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 
 					iterator=iterator, 
-					nextN=objectParams.nextN,
+					nextN=iterator.getNextN(),
 					source=objectParams.source
 				)>
 
-			</cfcase>		
+			</cfcase>
+			<cfcase value="children">
+				<cfset iterator=$.content().getKidsIterator()>
+			
+				<cfset variables.pagination=variables.$.dspObject_include(
+					theFile='collection/dsp_pagination.cfm', 
+					iterator=iterator, 
+					nextN=iterator.getNextN(),
+					source=objectParams.source
+				)>
+			</cfcase>
 			<cfdefaultcase>
 				<cfset iterator=$.getBean('feed')
 					.loadBy(feedid=objectParams.source)
@@ -51,7 +64,7 @@
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 
 					iterator=iterator, 
-					nextN=objectParams.nextN,
+					nextN=iterator.getNextN(),
 					source=objectParams.source
 				)>
 

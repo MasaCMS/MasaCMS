@@ -291,9 +291,9 @@
 						)#
 
 						#contentRendererUtility.renderObjectClassOption(
-							object='socialembed',
+							object='embed',
 							objectid='',
-							objectname='Social Embed'
+							objectname='Embed'
 						)#
 
 						#contentRendererUtility.renderObjectClassOption(

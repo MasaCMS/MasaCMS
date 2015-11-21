@@ -22,7 +22,7 @@
 				<textarea name="source" class="objectParam span12">#objectParams.source#</textarea>
 				<input type="hidden" class="objectParam" name="render" value="client">
 				<input type="hidden" class="objectParam" name="async" value="false">
-				<input type="hidden" class="objectParam" name="clientTemplate" value="socialembed">
+				<input type="hidden" class="objectParam" name="clientTemplate" value="embed">
 			</div>
 		</div>
 	</div>

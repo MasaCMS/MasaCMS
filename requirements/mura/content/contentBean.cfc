@@ -790,7 +790,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
-	<cfreturn variables.instance.responseDisplayFields>
+	<cfif not len(variables.instance.responseDisplayFields) and getValue('isNew')>
+		<cfreturn "Date,Title,Summary,Credits">
+	<cfelse>
+		<cfreturn variables.instance.responseDisplayFields>
+	</cfif>
 </cffunction>
 
 <cffunction name="setDisplayInterval" output="false">

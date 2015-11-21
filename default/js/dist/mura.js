@@ -2870,7 +2870,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 				
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
-					
 					find("img").each(function(){
 						 window.muraInlineEditor.checkforImageCroppers(this);
 					});
@@ -5107,7 +5106,7 @@ mura.templates['text']=function(context){
  		html+='<div class="mura-object-content">' + context.source + '</div>';
  	return html;
 }
-mura.templates['socialembed']=function(context){
+mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
  	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	

@@ -11,8 +11,8 @@
 <cf_objectconfigurator params="#objectParams#">
 <cfoutput>
 <div id="availableObjectParams"
-	data-object="socialembed" 
-	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.socialembed')#')#" 
+	data-object="embed" 
+	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.embed')#')#" 
 	data-objectid="none">
 <div class="fieldset-wrap">
 	<div class="fieldset">

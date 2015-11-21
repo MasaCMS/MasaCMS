@@ -1547,6 +1547,7 @@ Display Objects
 							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 							 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 							</cf_CacheOMatic>
+							<br/><br/>
 						</cfcase> 
 						<cfcase value="Calendar">
 							 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">

@@ -1349,7 +1349,6 @@
 
 				
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
-					
 					find("img").each(function(){
 						 window.muraInlineEditor.checkforImageCroppers(this);
 					});

@@ -154,12 +154,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       #esapiEncode('html','Text')#
                     </option>
 
-                   <option title="#esapiEncode('html_attr','Media')#" value='{"object":"#esapiEncode('javascript','media')#","name":"#esapiEncode('javascript','Media')#","objectid":"#createUUID()#"}'>
-                      #esapiEncode('html','Media')#
-                    </option>
-
-                   <option title="#esapiEncode('html_attr','Social Embed')#" value='{"object":"#esapiEncode('javascript','socialembed')#","name":"#esapiEncode('javascript','Social Embed')#","objectid":"#createUUID()#"}'>
-                      #esapiEncode('html','Social Embed')#
+                   <option title="#esapiEncode('html_attr','Social Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
+                      #esapiEncode('html','Embed')#
                     </option>
 
                    <option title="#esapiEncode('html_attr','navigation')#" value='{"object":"#esapiEncode('javascript','navigation')#","name":"#esapiEncode('javascript','Navigation')#","objectid":"#createUUID()#"}'>

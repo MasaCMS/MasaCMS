@@ -23,9 +23,10 @@
 		<cfparam name="attributes.configurable" default="true">
 		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
 		<cfparam name="attributes.params.label" default="">
+		<cfparam name="attributes.params.object" default="">
 	</cfsilent>
 
-	<cfif $.getContentRenderer().useLayoutManager()>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery',attributes.params.object)>
 	<cfoutput>
 	
 			
@@ -34,7 +35,7 @@
 	</cfif>
 <cfelseif thisTag.ExecutionMode eq 'end'>
 	<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
-	<cfif $.getContentRenderer().useLayoutManager()>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery',attributes.params.object)>
 	</div>
 	<div class="fieldset-wrap">
 		<div class="fieldset">

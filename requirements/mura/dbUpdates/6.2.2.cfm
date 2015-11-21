@@ -10,6 +10,9 @@
 	} catch (any e){}; 
 	
 	if(getValue(property='advancedScheduling',defaultValue=false)){
-		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=255);
+		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=200);
+	}
+	if(getValue(property='layoutmanager',defaultValue=false)){
+		dbUtility.setTable("tcontent").addColumn(column="layout",dataType="varchar",length=50);
 	}
 </cfscript>

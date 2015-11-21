@@ -1936,13 +1936,6 @@ component extends="mura.cfobject" {
 
 				break;
 
-			case 'folder':
-				result={
-					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
-				};
-
-				break;
-
 			case 'editprofile':
 				switch($.event('doaction')){
 					case 'updateprofile':
@@ -2028,6 +2021,22 @@ component extends="mura.cfobject" {
 
 				break;
 
+			case 'gallery'
+			case 'folder':
+				if($.getContentRenderer().useLayoutManager()){
+					$.event('object','collection');
+					$.event('objectid',$.content('contentid'));
+					url.object='collection';
+					url.sourcetype='children';
+					url.source=$.content('contentid');
+
+				} else {
+					result={
+						html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
+					};
+					break;
+				}
+				
 			default:
 				if(len($.event('objectparams2'))){
 					$.event('objectparams',$.event('objectparams2'));

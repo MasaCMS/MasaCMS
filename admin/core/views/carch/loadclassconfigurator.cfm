@@ -115,8 +115,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="media">
 		<cfinclude template="objectclass/dsp_media_configurator.cfm">
 	</cfcase>
-	<cfcase value="socialembed">
-		<cfinclude template="objectclass/dsp_socialembed_configurator.cfm">
+	<cfcase value="embed">
+		<cfinclude template="objectclass/dsp_embed_configurator.cfm">
 	</cfcase>
 	<cfdefaultcase>
 		<cfif rc.$.useLayoutManager()>

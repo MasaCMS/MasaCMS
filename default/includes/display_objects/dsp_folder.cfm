@@ -70,8 +70,10 @@
 			data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
 			data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
 			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
-			data-nextnid="#esapiEncode('html_attr',variables.$.content('contentid'))#"
-			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"></div>
+			data-source="#esapiEncode('html_attr',variables.$.content('contentid'))#"
+			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
+			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
+			data-layout="#esapiEncode('html_attr',variables.$.content('layout'))#"></div>
 		</cfoutput>
 	</cfif>
 <cfelse>
