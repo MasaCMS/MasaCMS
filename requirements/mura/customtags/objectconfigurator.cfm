@@ -26,7 +26,7 @@
 		<cfparam name="attributes.params.object" default="">
 	</cfsilent>
 
-	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery',attributes.params.object)>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 	<cfoutput>
 	
 			
@@ -35,7 +35,7 @@
 	</cfif>
 <cfelseif thisTag.ExecutionMode eq 'end'>
 	<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
-	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery',attributes.params.object)>
+	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 	</div>
 	<div class="fieldset-wrap">
 		<div class="fieldset">

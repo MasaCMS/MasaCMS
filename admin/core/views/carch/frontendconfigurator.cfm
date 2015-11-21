@@ -32,7 +32,9 @@
 		</div>
 		
 		<div class="form-actions">	
-			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
+			<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
+				<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
+			</cfif>
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
 		</div>
 	</div>
