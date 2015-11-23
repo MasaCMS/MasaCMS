@@ -79,6 +79,8 @@
 							'contentsubtype':'#esapiEncode('javascript',rc.contentsubtype)#',
 							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
 						}
+
+						console.log(configOptions);
 						
 						<cfset configuratorWidth=600>
 

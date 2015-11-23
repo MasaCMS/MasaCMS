@@ -2021,7 +2021,7 @@ component extends="mura.cfobject" {
 
 				break;
 
-			case 'gallery'
+			case 'gallery':
 			case 'folder':
 				if($.getContentRenderer().useLayoutManager()){
 					$.event('object','collection');

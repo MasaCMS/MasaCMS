@@ -46,7 +46,7 @@
 
 			</cfcase>
 			<cfcase value="children">
-				<cfset iterator=$.content().getKidsIterator()>
+				<cfset iterator=$.content().set(objectParams).getKidsIterator()>
 			
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 

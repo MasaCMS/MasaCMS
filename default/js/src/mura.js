@@ -1584,7 +1584,7 @@
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.data('object')=='folder'){
+			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
 				obj.html(layoutmanagertoolbar + obj.html());
 			} else {
 				if(mura.type == 'Variation'){

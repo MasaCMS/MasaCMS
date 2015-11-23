@@ -74,7 +74,8 @@
           <cfset objectparams.async=true>
         <cfelse>
           <div class="mura-async-object" 
-            data-object="form" 
+            data-object="form"
+            data-objectname="Form"  
             data-objectid="#esapiEncode('html_attr',bean.getContentID())#" 
             data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" 
             data-objectparams=#serializeJSON(objectParams)#>

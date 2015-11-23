@@ -953,7 +953,7 @@
 
 				utility(".mura-object").each(initObject);
 
-				utility('.mura-object[data-object="folder"]').each(function(){
+				utility('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
 					var item=utility(this);
 					item.addClass("active");
 							
@@ -1088,7 +1088,7 @@
 						
 						attribute.attr('contenteditable','false');
 						attribute.addClass('active');
-
+						attribute.data('manualedit',false);
 						mura.processMarkup(this);
 
 						attribute.find('.mura-object').each(function(){
@@ -1155,7 +1155,6 @@
 			});	
 
 			if(!attribute.data('manualedit')){
-
 				if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
 					typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
 				){
@@ -1273,7 +1272,7 @@
 							}
 						);
 
-						utility('.mura-async-object[data-object="folder"], .mura-async-object[data-object="gallery"]').each(function(){
+						utility('.mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
 							var item=utility(this);
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
@@ -1289,6 +1288,15 @@
 							}
 							if(item.data('layout')){
 								muraInlineEditor.data['layout']=item.data('layout');
+							}
+							if(item.data('nextn')){
+								muraInlineEditor.data['nextn']=item.data('nextn');
+							}
+							if(item.data('sortby')){
+								muraInlineEditor.data['sortby']=item.data('sortby');
+							}
+							if(item.data('sortdirection')){
+								muraInlineEditor.data['sortdirection']=item.data('sortdirection');
 							}
 						});
 

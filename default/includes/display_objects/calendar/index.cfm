@@ -59,8 +59,10 @@
 	<cfif this.layoutmanager and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
-		<div class="mura-async-object" 
+		<div class="mura-object mura-async-object" 
 			data-object="calendar"
+			data-objectname="Calendar"
+			data-objectid="#$.content('contentid')#"
 			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
 			data-day="#esapiEncode('html_attr',variables.$.event('day'))#">
