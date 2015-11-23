@@ -13,6 +13,6 @@
 		dbUtility.setTable("tcontent").addColumn(column="displayInterval",dataType="varchar",length=200);
 	}
 	if(getValue(property='layoutmanager',defaultValue=false)){
-		dbUtility.setTable("tcontent").addColumn(column="layout",dataType="varchar",length=50);
+		dbUtility.setTable("tcontent").addColumn(column="objectParams",dataType="text");
 	}
 </cfscript>

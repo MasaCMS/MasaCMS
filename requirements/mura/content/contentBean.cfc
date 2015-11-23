@@ -240,6 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.approvalChainOverride = false />
 	<cfset variables.instance.approvingChainRequest = false />
 	<cfset variables.instance.relatedContentSetData = "" />
+	<cfset variables.instance.objectParams={}>
 	
 	<cfset variables.displayRegions = structNew()>
 		
@@ -1095,6 +1096,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.child.setModuleID(variables.instance.moduleID)>
 	<cfset arrayAppend(variables.instance.addObjects,arguments.child)>	
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setObjectParams" output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="objectParams">
+
+	<cfif isSimpleValue(arguments.objectParams) and len(arguments.objectParams) and isJSON(arguments.objectParams)>
+		<cfset var val=deserializeJSON(arguments.objectParams)>
+		
+		<cfif isStruct(val)>
+			<cfset variables.instance.objectParams=val>
+		</cfif>
+	<cfelseif not isSimpleValue(arguments.objectParams)>
+		<cfset variables.instance.objectParams=arguments.objectParams>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getObjectParams"  output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="serialize" default="false">
+	<cfif arguments.serialize>
+		<cfreturn serializeJSON(variables.instance.objectParams)>
+	<cfelse>
+		<cfreturn variables.instance.objectParams>
+	</cfif>
+</cffunction>
+
+<cffunction name="getObjectParam"  output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="param">
+	<cfargument name="defaultValue">
+	<cfset var val=getValue('param')>
+	<cfif len(val)>
+		<cfreturn val>
+	<cfelse>
+		<cfset params=getObjectParams()>
+
+		<cfif structKeyExists(params,arguments.param)>
+			<cfreturn params['#arguments.param#']>
+		<cfelseif isDefined('arguments.defaultValue')>
+			<cfreturn arguments.defaultValue>
+		<cfelse>
+			<cfreturn ''>
+		</cfif>
+	</cfif>
 </cffunction>
 
 <cffunction name="addDisplayObject" output="false">

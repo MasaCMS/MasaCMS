@@ -1707,6 +1707,14 @@
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
+			if(self.getAttribute('data-contentid')){
+				data.contentid=self.getAttribute('data-contentid');
+			}
+
+			if(self.getAttribute('data-contenthistid')){
+				data.contenthistid=self.getAttribute('data-contenthistid');
+			}
+
 			if('objectparams' in data){
 				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 			}

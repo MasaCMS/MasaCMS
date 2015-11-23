@@ -70,7 +70,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfset variables.uselayoutmanager=variables.configBean.getValue(property='layoutmanager',defaultValue=false)>
 		
 		<cfif variables.uselayoutmanager>
-			<cfset variables.fieldlist=listAppend(variables.fieldlist,'tcontent.layout')>
+			<cfset variables.fieldlist=listAppend(variables.fieldlist,'tcontent.objectParams')>
 		</cfif>
 <cfreturn this />
 </cffunction>
@@ -575,7 +575,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	  expires,
 	  displayInterval
 	  <cfif variables.uselayoutmanager>
-	  ,layout
+	  ,objectParams
 	  </cfif>)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
@@ -710,7 +710,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getDisplayInterval() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getDisplayInterval()#">
 		<cfif variables.uselayoutmanager>
-			,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getLayout() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getLayout()#">
+			,<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getObjectParams(serialize=true) neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getObjectParams(serialize=true)#">
 		 </cfif>
 		)
  </CFQUERY>

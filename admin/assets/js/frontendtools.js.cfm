@@ -1274,6 +1274,7 @@
 
 						utility('.mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
 							var item=utility(this);
+
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
 							}
@@ -1286,9 +1287,6 @@
 							if(item.data('imageheight')){
 								muraInlineEditor.data['imageheight']=item.data('imageheight');
 							}
-							if(item.data('layout')){
-								muraInlineEditor.data['layout']=item.data('layout');
-							}
 							if(item.data('nextn')){
 								muraInlineEditor.data['nextn']=item.data('nextn');
 							}
@@ -1298,8 +1296,10 @@
 							if(item.data('sortdirection')){
 								muraInlineEditor.data['sortdirection']=item.data('sortdirection');
 							}
-						});
 
+							muraInlineEditor.data['objectparams']=JSON.stringify(item.data());
+							
+						});
 
 						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
