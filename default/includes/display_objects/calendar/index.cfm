@@ -67,7 +67,6 @@
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
 			data-day="#esapiEncode('html_attr',variables.$.event('day'))#">
 		</div>
-		<br><br>
 	</cfif>
 <cfelse>
 	<div class="mura-calendar-wrapper">

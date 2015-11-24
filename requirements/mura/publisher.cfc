@@ -650,6 +650,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.displayInterval")>
 					,displayInterval
 					</cfif>
+					<cfif isdefined("rstContent.objectParams")>
+					,objectParams
+					</cfif>
 					)
 					values
 					(
@@ -739,6 +742,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.displayInterval")>
 						,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">
+					</cfif>
+					<cfif isdefined("rstContent.objectParams")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.objectParams neq '',de('no'),de('yes'))#" value="#rstContent.objectParams#">
 					</cfif>
 					)
 				</cfquery>
