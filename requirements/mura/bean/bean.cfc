@@ -977,4 +977,8 @@ component extends="mura.cfobject" output="false" {
 		return false;
 	}
 
+	function allowRead(){
+		return false;
+	}
+
 }

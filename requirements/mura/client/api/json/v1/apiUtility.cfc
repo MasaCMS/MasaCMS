@@ -858,10 +858,6 @@ component extends="mura.cfobject" {
 		var saveErrors=false;
 		var errors={};
 
-		if(!(entity.allowSave() || allowAction(entity,$)) ){
-			throw(type="authorization");
-		}
-
 		var pk=entity.getPrimaryKey();
 
 		if(arguments.id=='new'){
@@ -885,6 +881,10 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
+				if(!(entity.allowSave() || allowAction(entity,$)) ){
+					throw(type="authorization");
+				}
+
 				if(entity.getIsNew() && len(entity.getChangesetID())){
 					//create default that is not in changeset
 					entity.setBody("[]").setChangesetID('').setApproved(1).save();
@@ -898,6 +898,10 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
+				if(!(entity.allowSave() || allowAction(entity,$)) ){
+					throw(type="authorization");
+				}
+				
 				entity.save();
 			}
 		} else {
@@ -1097,7 +1101,7 @@ component extends="mura.cfobject" {
 		var loadparams={'#pk#'=''};
 		entity.loadBy(argumentCollection=loadparams);
 	
-		if(!allowAccess(entity,$)){
+		if(!(entity.allowRead() || allowAccess(entity,$)){
 			throw(type="authorization");
 		}
 
@@ -1579,9 +1583,9 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 
 			if(entity.exists()){
-				if(!allowAction(entity,$)){
-					throw(type="authorization");
-				}
+				if(!(entity.allowDelete() || allowAction(entity,$))){
+						throw(type="authorization");
+					}
 
 				if($.validateCSRFTokens(context=arguments.id)){
 					entity.delete();
