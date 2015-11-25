@@ -901,7 +901,7 @@ component extends="mura.cfobject" {
 				if(!(entity.allowSave() || allowAction(entity,$)) ){
 					throw(type="authorization");
 				}
-				
+
 				entity.save();
 			}
 		} else {
@@ -1101,7 +1101,7 @@ component extends="mura.cfobject" {
 		var loadparams={'#pk#'=''};
 		entity.loadBy(argumentCollection=loadparams);
 	
-		if(!(entity.allowRead() || allowAccess(entity,$)){
+		if(!(entity.allowRead() || allowAccess(entity,$))){
 			throw(type="authorization");
 		}
 
