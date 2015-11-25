@@ -50,12 +50,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset params=deserializeJSON(form.params)>
-	<cfif isDefined("params.mapclass")>
-		<cfset mapclass=params.mapclass>
-	</cfif>	
+<cfelse>
+	<cfset params={}>
 </cfif>
-<cfif not isDefined("mapclass") or not len (mapclass)>
-	<cfset mapclass="mura-site-map">	
+
+<cfif not isDefined("params.mapclass") or not len (params.mapclass)>
+	<cfset params.mapclass="mura-site-map">	
 </cfif>
 	
 <cf_objectconfigurator params="#params#">
@@ -72,11 +72,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 				<div class="controls">
 					<label class="radio">	
-						<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif mapclass eq "mura-site-map">checked</cfif>>
+						<input name="mapclass" type="radio" value="mura-site-map" class="objectParam radio" <cfif params.mapclass eq "mura-site-map">checked</cfif>>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
 					</label>
 					<label class="radio">
-						<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif mapclass eq "mura-site-map-tree">checked</cfif>>
+						<input name="mapclass" type="radio" value="mura-site-map-tree" class="objectParam radio" <cfif params.mapclass eq "mura-site-map-tree">checked</cfif>>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.treeview')#
 					</label>
 				</div>
