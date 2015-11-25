@@ -968,4 +968,13 @@ component extends="mura.cfobject" output="false" {
 		getBean("content").setAllValues(structCopy(getAllValues()));
 	}
 
+	//used in json api for entity specific permission checking
+	function allowSave(){
+		return false;
+	}
+
+	function allowDelete(){
+		return false;
+	}
+
 }

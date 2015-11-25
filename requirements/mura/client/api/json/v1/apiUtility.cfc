@@ -858,7 +858,7 @@ component extends="mura.cfobject" {
 		var saveErrors=false;
 		var errors={};
 
-		if(!allowAction(entity,$)){
+		if(!(entity.allowSave() || allowAction(entity,$)) ){
 			throw(type="authorization");
 		}
 
@@ -1542,7 +1542,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!allowAction(entity,$)){
+					if(!(entity.allowDelete() || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
@@ -1555,7 +1555,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!allowAction(entity,$)){
+					if(!(entity.allowDelete() || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
