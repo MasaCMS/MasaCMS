@@ -549,7 +549,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</cfif>
 
-		<cfif listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+		<cfif not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
 				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
 		</cfif>	
 		
