@@ -67,7 +67,7 @@
 			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
 			data-filterby="#esapiEncode('html_attr',variables.$.event('filterBy'))#"
 			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
-			data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
+			data-sortby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
 			data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
 			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
 			data-source="#esapiEncode('html_attr',variables.$.content('contentid'))#"

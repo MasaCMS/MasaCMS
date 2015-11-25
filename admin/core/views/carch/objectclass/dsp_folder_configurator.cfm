@@ -52,8 +52,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset objectParams={}>
 		</cfif>
-		
+		<cfparam name="objectParams.sortBy" default="">
+		<cfparam name="objectParams.sortDirection" default="">
 		<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+
+		<cfif not len(objectParams.sortBy)>
+			<cfset objectParams.sortBy=content.getValue('sortBy')>
+		</cfif>
+
+		<cfif not len(objectParams.sortDirection)>
+			<cfset objectParams.sortDirection=content.getValue('sortDirection')>
+		</cfif>
+
 		<cfset content.set(objectParams)>
 
 		<cfparam name="objectParams.layout" default="a">
@@ -125,7 +135,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<option value="100000" <cfif content.getNextN() eq 100000>selected</cfif>>All</option>
 							</select>
 					 	</div>
-					 </div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
+						<div class="controls">
+							<select name="sortby"class="objectParam span12">
+			                <option value="orderno" <cfif content.getSortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+			                <option value="releaseDate" <cfif content.getSortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
+			                <option value="lastUpdate" <cfif content.getSortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+			                <option value="created" <cfif content.getSortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+			                <option value="menuTitle" <cfif content.getSortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
+			                <option value="title" <cfif content.getSortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+			                <option value="rating" <cfif content.getSortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
+			                <option value="comments" <cfif content.getSortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+			                 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
+			                <cfloop query="rsExtend">
+			                  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif content.getSortBy() eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
+			                </cfloop>
+		             		</select>
+	             		</div>
+	             	</div>
+	             	<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
+						<div class="controls">
+				            <select name="sortdirection" class="objectParam span12">
+				                <option value="asc" <cfif content.getSortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
+				                <option value="desc" <cfif content.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
+				            </select>
+						</div>	
+					</div>
 				</div>
 			</div>
 		

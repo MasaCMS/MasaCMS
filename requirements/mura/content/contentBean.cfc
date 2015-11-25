@@ -959,7 +959,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
-	
+	<cfargument name="sortBy" required="true" default="#getValue('sortBy')#">
+	<cfargument name="sortDirection" required="true" default="#getValue('sortDirection')#">
+	<cfargument name="nextN" required="true" default="#getValue('nextN')#">
 	<cfset arguments.parentid=getContentID()>
 	<cfset arguments.siteid=getValue('siteid')>
 	<cfreturn variables.contentManager.getKidsQuery(argumentCollection=arguments) />
@@ -970,6 +972,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
+	<cfargument name="sortBy" required="true" default="#getValue('sortBy')#">
+	<cfargument name="sortDirection" required="true" default="#getValue('sortDirection')#">
+	<cfargument name="nextN" required="true" default="#getValue('nextN')#">
 
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>

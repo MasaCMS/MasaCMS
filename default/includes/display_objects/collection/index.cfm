@@ -6,6 +6,8 @@
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
 	<cfparam name="objectParams.nextN" default="20">
+	<cfparam name="objectParams.sortBy" default="">
+	<cfparam name="objectParams.sortDirection" default="">
 
 	<cfif not len(objectparams.layout)>
 		<cfset objectParams.layout='default'>
@@ -46,8 +48,43 @@
 
 			</cfcase>
 			<cfcase value="children">
-				<cfset iterator=$.content().set(objectParams).getKidsIterator()>
-			
+				<cfif not isNumeric(variables.$.event('year'))>
+					<cfset variables.$.event('year',year(now()))>
+				</cfif>
+
+				<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
+					and variables.$.event('filterBy') eq "releaseDate">
+					<cfset variables.menuType="releaseDate">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
+					<cfset variables.menuType="releaseMonth">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+				<cfelseif variables.$.event('filterBy') eq "releaseYear">
+					<cfset variables.menuType="releaseYear">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
+				<cfelse>
+					<cfset variables.menuDate=now()>
+					<cfset variables.menuType="default">
+				</cfif>
+
+				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
+				<cfif not isNumeric(variables.maxPortalItems)>
+					<cfset variables.maxPortalItems=100>
+				</cfif>
+
+				<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+					<cfset objectParams.applyPermFilter=true/>
+				<cfelse>
+					<cfset objectParams.applyPermFilter=false/>
+				</cfif>
+
+				<cfif not len(objectParams.sortBy)>
+					<cfset objectParams.sortBy=$.content('sortBy')>
+				</cfif>
+				<cfif not len(objectParams.sortDirection)>
+					<cfset objectParams.sortDirection=$.content('sortDirection')>
+				</cfif>
+				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 
 					iterator=iterator, 
