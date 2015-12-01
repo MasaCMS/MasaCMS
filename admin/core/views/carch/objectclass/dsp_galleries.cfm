@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					object='related_section_content',
 					objectid=rc.rsSections.contentid,
 					objectname=title
-				)#>
+				)#
 
 				<cfset title=rc.rsSections.pathString
 					& ' - ' 
