@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="fieldset-wrap">
 			<div class="fieldset">
 				<div class="control-group">
-					<label class="control-label">Content Source</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</label>
 					<div class="controls">
 						<select class="objectParam span12" name="sourcetype">
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</option>

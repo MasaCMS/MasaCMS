@@ -10,7 +10,7 @@
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
-			<label class="control-label">Select Navigation</label>
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')#</label>
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'navigation',name:'#esapiEncode('html_attr','Select Navigation')#',objectid:''}">
@@ -31,7 +31,7 @@
 							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation'))#
 						</option>
 						<option <cfif rc.object eq 'tag_cloud'>selected </cfif>title="Tag Cloud" value='{"object":"tag_cloud","name":"Tag Cloud","objectid":"none"}'>
-							Tag Cloud
+							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.tagcloud')#
 						</option>
 				</select>
 			</div>
