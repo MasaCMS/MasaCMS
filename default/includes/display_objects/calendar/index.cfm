@@ -70,7 +70,6 @@
 			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
 			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="month"))#">
 		</div>
-		<br><br>
 	</cfif>
 <cfelse>
 	<cfsilent>
