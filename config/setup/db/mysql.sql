@@ -687,7 +687,7 @@ CREATE TABLE `tsessiontracking` (
   `user_agent` varchar(200) character set utf8 default NULL,
   `script_name` varchar(200) character set utf8 default NULL,
   `urlToken` varchar(130) character set utf8 NOT NULL default '',
-  `entered` datetime NOT NULL default NOW(),
+  `entered` datetime NOT NULL,
   `country` varchar(50) character set utf8 default NULL,
   `lang` varchar(50) character set utf8 default NULL,
   `locale` varchar(50) character set utf8 default NULL,
