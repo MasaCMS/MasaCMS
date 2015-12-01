@@ -820,7 +820,7 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
 		var calendarUtility = $.getCalendarUtility();
@@ -1009,7 +1009,7 @@ component extends="mura.cfobject" {
 	function findOne(entityName,id,siteid,render=false,variation=false){
 		var $=getBean('$').init(arguments.siteid);
 		
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if(arguments.entityName=='content'){
 			var pk = 'contentid';
@@ -1133,7 +1133,7 @@ component extends="mura.cfobject" {
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName);
 
@@ -1202,7 +1202,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
@@ -1285,7 +1285,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){		
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
@@ -1499,7 +1499,7 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var params={'#pk#'=arguments.id};
 		var iterator=entity.loadBy(argumentCollection=params).getCrumbIterator();
@@ -1677,7 +1677,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 
 		var entity=$.getBean('content').loadBy(contentid=arguments.id);
 
@@ -1836,7 +1836,7 @@ component extends="mura.cfobject" {
 
 		var $=request.servletEvent.getValue("MuraScope");
 		
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 		
 		if(len($.event('filename'))){
 			$.event('currentFilename',$.event('filename'));
@@ -1916,13 +1916,6 @@ component extends="mura.cfobject" {
 						html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
 					};
 				}
-
-				break;
-
-			case 'calendar':
-				result= {
-					html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
-				};
 
 				break;
 
@@ -2024,24 +2017,30 @@ component extends="mura.cfobject" {
 				}
 
 				break;
-
-			case 'gallery':
-			case 'folder':
-				if($.getContentRenderer().useLayoutManager()){
-					$.event('object','collection');
-					$.event('objectid',$.content('contentid'));
-					url.object='collection';
-					url.sourcetype='children';
-					url.source=$.content('contentid');
-
-				} else {
-					result={
-						html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
-					};
-					break;
-				}
 				
 			default:
+				if(listFindNoCase('folder,gallery',$.event('object'))){
+					if($.getContentRenderer().useLayoutManager()){
+						$.event('object','collection');
+						$.event('objectid',$.content('contentid'));
+						url.object='collection';
+						url.sourcetype='children';
+						url.source=$.content('contentid');
+
+					} else {
+						result={
+							html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
+						};
+						break;
+					}
+				/*
+				} else if ($.event('object')=='calendar'){
+					result= {
+						html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
+					};
+				*/
+				}
+
 				if(len($.event('objectparams2'))){
 					$.event('objectparams',$.event('objectparams2'));
 				}
@@ -2087,7 +2086,7 @@ component extends="mura.cfobject" {
 	
 	}
 
-	function checkFormChangesetRequest(entityName,siteid){
+	function checkForChangesetRequest(entityName,siteid){
 		if(arguments.entityName=='content'){
 			var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
 			request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.siteid;

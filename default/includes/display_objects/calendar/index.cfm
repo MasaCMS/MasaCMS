@@ -65,10 +65,29 @@
 			data-objectid="#$.content('contentid')#"
 			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
-			data-day="#esapiEncode('html_attr',variables.$.event('day'))#">
+			data-day="#esapiEncode('html_attr',variables.$.event('day'))#"
+			data-items="#esapiEncode('html_attr',serializeJSON($.content().getObjectParam(param='items',defaultValue=[])))#"
+			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
+			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="month"))#">
 		</div>
 	</cfif>
 <cfelse>
+	<cfsilent>
+		<cfparam name="objectParams.items" default="[]">
+		<cfparam name="objectParams.viewoptions" default="agendaDay,agendaWeek,month">
+		<cfparam name="objectParams.viewdefault" default="month">
+		<cfif isJson(objectParams.items)>
+			<cfset objectParams.items=deserializeJSON(objectParams.items)>
+		<cfelseif isSimpleValue(objectParams.items)>
+			<cfset objectParams.items=listToArray(objectParams.items)>
+		</cfif>
+		<cfif not isArray(objectParams.items)>
+			<cfset objectParam.items=[]>
+		</cfif>
+		<cfif not arrayFind(objectParams.items,variables.$.content('contentid'))>
+			<cfset arrayAppend(objectParams.items,variables.$.content('contentid'))>
+		</cfif>
+	</cfsilent>
 	<div class="mura-calendar-wrapper">
 		<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
 			<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
@@ -77,7 +96,6 @@
 		<div id="mura-calendar" class="mura-calendar-object"></div>
 		<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 	</div>
-
 	<script>
 	$(function(){
 		mura.loader()
@@ -108,12 +126,12 @@
 						, header: {
 							left: 'today prev,next'
 							, center: 'title'
-							, right: 'agendaDay,agendaWeek,month'
+							, right: '#esapiEncode("javascript",objectParams.viewoptions)#'
 						}
 						<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
 							, defaultView: 'agendaDay'
 						<cfelse>
-							, defaultView: 'month'
+							, defaultView: '#esapiEncode("javascript",objectParams.viewdefault)#'
 						</cfif>
 						<cfelse>
 						, defaultView: 'month'
@@ -124,23 +142,26 @@
 						}
 						//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 						, eventSources: [
-							{
-								url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
-								, type: 'POST'
-								, data: {
-									method: 'getFullCalendarItems'
-									, calendarid: '#variables.$.content('contentid')#'
-									, siteid: '#variables.$.content('siteid')#'
-									, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
-									, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+							<cfloop array="#objectParams.items#" index="i">	
+								{
+									url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
+									, type: 'POST'
+									, data: {
+										method: 'getFullCalendarItems'
+										, calendarid: '#esapiEncode("javascript",i)#'
+										, siteid: '#variables.$.content('siteid')#'
+										, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
+										, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+									}
+									, color: '##3a87ad' // sets calendar events background+border colors
+									, textColor: 'white'
+									, error: function() { 
+										$('##mura-calendar-error').show();
+									}
 								}
-								, color: '##3a87ad' // sets calendar events background+border colors
-								, textColor: 'white'
-								, error: function() { 
-									$('##mura-calendar-error').show();
-								}
-							}
-
+								,
+							</cfloop>
+							
 							// optionally include U.S. Holidays
 							// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
 							// , {

@@ -12,7 +12,7 @@
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
-						Select Form
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
 					</option>
 
 					<cfloop query="rc.rsForms">
@@ -26,7 +26,7 @@
 					</cfloop>
 				</select>
 				<cfif hasModulePerm>
-					<button class="btn" id="editBtn">Edit</button>
+					<button class="btn" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 				</cfif>
 			</div>
 		</div>

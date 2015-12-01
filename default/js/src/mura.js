@@ -1732,7 +1732,8 @@
 					if(typeof resolve == 'function'){
 						resolve(obj);
 					}
-				} else {	
+				} else {
+					console.log(data);	
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',

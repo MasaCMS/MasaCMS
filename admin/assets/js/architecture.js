@@ -773,12 +773,12 @@ buttons: {
 		});
 	},
 	
-	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external) {
+	loadRelatedContent: function(contentid, siteid, isNew, values, advSearch,external,relatedcontentsetid) {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
 		var url = './';
-		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&contentid=' + contentid + '&siteid=' + siteid + '&external=' + external + '&isNew=' + isNew + '&relatedcontentsetid=' + relatedcontentsetid + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#selectRelatedContent');
 		d.html('<div class="load-inline"></div>');
@@ -835,7 +835,7 @@ buttons: {
 					valueSelector = '#selectRelatedContent input, #selectRelatedContent select';	
 				}
 				$('#mura-rc-quickedit').hide();				
-				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external);
+				siteManager.loadRelatedContent(contentid,siteid, 0, $(valueSelector).serialize(), advSearching,external,relatedcontentsetid);
 			});
 		});
 	},
@@ -861,7 +861,7 @@ buttons: {
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
 
-			siteManager.setupRCSortable(contentid,external);
+			siteManager.setupRCSortable(contentid,external,relatedcontentsetid);
 		});
 
 	},
@@ -927,7 +927,7 @@ buttons: {
 		});
 	},
 
-	setupRCSortable: function(contentid,external) {
+	setupRCSortable: function(contentid,external,relatedcontentsetid) {
 		if(typeof external == 'undefined'){
 			external =true;
 		}
@@ -950,7 +950,7 @@ buttons: {
 			cancel: "li.empty"
 		}).disableSelection();
 	
-		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external);
+		siteManager.loadRelatedContent(contentid,siteid, 1, '', false,external,relatedcontentsetid);
 		siteManager.bindDelete();
 		siteManager.bindMouse();
 		siteManager.updateRCForm();

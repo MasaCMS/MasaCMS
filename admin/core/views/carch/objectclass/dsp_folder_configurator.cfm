@@ -100,8 +100,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<div class="control-group" id="availableFields">
 						<label class="control-label">
-							<span class="span6">Selected Fields</span>
-							<button id="editFields" class="btn">Edit</button>
+							<span class="span6">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectedfields')#</span>
+							<button id="editFields" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 							<script>
 								$(function(){
 									$('##editFields').click(function(){

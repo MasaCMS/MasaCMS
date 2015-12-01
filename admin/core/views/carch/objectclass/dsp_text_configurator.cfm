@@ -66,30 +66,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="fieldset-wrap row-fluid">
 			<div class="fieldset">
 				<div class="control-group">
-					<label class="control-label">Content Source</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</label>
 					<div class="controls">
 						<select class="objectParam span12" name="sourcetype">
-							<option value="">Select Content Source</option> 	
-							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">Free Text</option>	
-							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">Bound Attribute</option>
-							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">Component</option>
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcontentsource')#</option> 	
+							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.freetext')#</option>	
+							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.boundattribute')#</option>
+							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
 						</select>
-						<button id="editSource" class="btn">Edit</button>
+						<button id="editSource" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 					</div>
 				</div>
 				<div id="componentcontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Select Component</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
 					<div class="controls">
 						<cfset rs=rc.$.getBean('contentManager').getList(args={moduleid='00000000000000000000000000000000003',siteid=session.siteid})>
 						<select name="source" id="component" class="span12">
-							<option value="">Select Component</option> 	
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</option> 	
 							<cfloop query="rs">
 								<option value="#rs.contentid#"<cfif rs.contentid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.title)#</option>
 							</cfloop>
 						</select>
 
 						<cfif hasModuleAccess>
-							<button class="btn" id="editBtnComponent">Create New</button>
+							<button class="btn" id="editBtnComponent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 						</cfif>
 
 					</div>
@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				</div>
 				<div id="boundattributecontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Select Bound Attribute</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectboundattribute')#</label>
 					<div class="controls">
 						<cfsilent>
 						<cfset options=arrayNew(2) />
@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfloop>
 					</cfsilent>
 						<select name="source" id="boundattribute" class="span12">
-							<option value="">Select Bound Attribute</option> 
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectboundattribute')#e</option> 
 							<cfloop from="1" to="#arrayLen(options)#" index="i">
 								<option value="#esapiEncode('html_attr',options[i][1])#"<cfif objectParams.source eq options[i][1]> selected</cfif>>#esapiEncode('html',options[i][2])#</option> 
 							</cfloop>

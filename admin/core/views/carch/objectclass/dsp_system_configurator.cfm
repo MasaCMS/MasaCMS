@@ -16,7 +16,7 @@
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
-			<label class="control-label">Select System Object</label>
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectsystemobject')#</label>
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option  value="{object:'system',name:'#esapiEncode('html_attr','Select System Object')#',objectid:''}">

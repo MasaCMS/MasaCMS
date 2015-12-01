@@ -37,23 +37,24 @@
 	<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
 	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 	</div>
+	<cfoutput>
 	<div class="fieldset-wrap">
 		<div class="fieldset">
 			<div class="control-group">
-		      	<label class="control-label">Alignment</label>
+		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
 				<div class="controls">
 					 <select name="alignment" class="span12">
-						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>Left</option>
-						<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>Center</option>
-						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>Right</option>
+						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
+						<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
+						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 					</select>
 				</div>
 			</div>
 			<div id="offsetcontainer" class="control-group" style="display:none">
-		      	<label class="control-label">Offset</label>
+		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
 				<div class="controls">
 					<select name="offset" class="span12">
-						<option value="">None</option>
+						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
 						<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
 						<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
 						<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
@@ -69,7 +70,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label">Width</label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 				<div class="controls">
 					<select name="width" class="span12">
 						<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
@@ -91,17 +92,14 @@
 	</div>
 	<div class="fieldset-wrap">
 		<div class="fieldset">
-			<cfoutput>
 			<div id="labelContainer"class="control-group">
-				<label class="control-label">Label</label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
 				<div class="controls">
 					<input name="label" type="text" class="span12 objectParam" value="#esapiEncode('html_attr',attributes.params.label)#"/>
 				</div>
-			</div>	
-			</cfoutput>	   
+			</div>	 
 		</div>
 	</div>
-	<cfoutput>
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 	</cfoutput>
 	</div>

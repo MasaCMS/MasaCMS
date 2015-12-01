@@ -71,15 +71,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label class="control-label">Content Source</label>
 					<div class="controls">
 						<select class="objectParam span12" name="sourcetype">
-							<option value="">Select Content Source</option>
-							<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">Local Index</option>	
-							<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">Remote Feed</option>
-							<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">Related Content</option>
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentsource')#</option>
+							<option <cfif objectParams.sourcetype eq 'localindex'>selected </cfif>value="localindex">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#</option>	
+							<option <cfif objectParams.sourcetype eq 'remotefeed'>selected </cfif>value="remotefeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#</option>
+							<option <cfif objectParams.sourcetype eq 'relatedcontent'>selected </cfif>value="relatedcontent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#</option>
 						</select>
 					</div>
 				</div>
 				<div id="localindexcontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Select Local Index</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectlocalindex')#</label>
 					<div class="controls">
 						<cfset rs=rc.$.getBean('feedManager').getFeeds(type='local',siteid=rc.$.event('siteid'),activeOnlt=true)>
 						<select name="source" id="localindex" class="span12">
@@ -96,23 +96,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 				<div id="remotefeedcontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Select Remote Feed</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectremotefeed')#</label>
 					<div class="controls">
 						<cfset rs=rc.$.getBean('feedManager').getFeeds(type='remote',siteid=rc.$.event('siteid'),activeOnlt=true)>
 						<select name="source" id="remotefeed" class="span12">
-							<option value="">Select Remote Feed</option> 	
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectremotefeed')#</option> 	
 							<cfloop query="rs">
 								<option value="#rs.feedid#"<cfif rs.feedid eq objectParams.source> selected</cfif>>#esapiEncode('html',rs.name)#</option>
 							</cfloop>
 						</select>
 
 						<cfif hasFeedManagerAccess>
-							<button class="btn" id="editBtnRemoteFeed">Create New</button>
+							<button class="btn" id="editBtnRemoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 						</cfif>
 					</div>
 				</div>
 				<div id="relatedcontentcontainer" class="control-group source-container" style="display:none">
-					<label class="control-label">Select Related Content Set</label>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectrelatedcontentset')#</label>
 					<div class="controls">
 						<cfset subtype = application.classExtensionManager.getSubTypeByName(rc.contenttype, rc.contentsubtype,rc.siteid)>
 						<cfset relatedContentSets = subtype.getRelatedContentSets()>
@@ -122,10 +122,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset rcsBean = relatedContentSets[s]/>
 								<option value="#rcsBean.getRelatedContentSetId()#"<cfif objectParams.source eq rcsBean.getRelatedContentSetId()> selected</cfif>>#rcsBean.getName()#</option>
 							</cfloop>
-							<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>Custom</option>
+							<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>
 						</select>
 						<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
-						<button class="btn" id="editBtnRelatedContent">Edit</button>
+						<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 					</div>
 					<!---
 					<cfif rc.configuratormode neq 'backend'>

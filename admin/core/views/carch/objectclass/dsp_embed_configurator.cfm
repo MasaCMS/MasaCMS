@@ -17,7 +17,7 @@
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
-			<label class="control-label">Enter Embed Code</label>
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.enterembedcode')#</label>
 			<div class="controls">
 				<textarea name="source" class="objectParam span12">#objectParams.source#</textarea>
 				<input type="hidden" class="objectParam" name="render" value="client">
