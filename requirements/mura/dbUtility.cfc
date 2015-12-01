@@ -1101,10 +1101,10 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfswitch expression="#variables.dbtype#">
 			<cfcase value="mssql,mysql,postgresql,nuodb">
-				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","ALL"),"[[:space:]]","","All")>
+				<cfreturn rereplace(replace("IX_#arguments.table#_#arguments.column#",",","","ALL"),"[[:space:]]","","All")>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","ALL"),"[[:space:]]","","All")>
+				<cfreturn rereplace(replace(right("IX_#arguments.table#_#arguments.column#",30),",","","ALL"),"[[:space:]]","","All")>
 			</cfcase>
 		</cfswitch>
 </cffunction>
@@ -1154,7 +1154,7 @@
 	<cfset var i="">
 	<cfif arrayLen(indexArray)>
 		<cfloop from="1" to="#arrayLen(indexArray)#" index="i">
-			<cfif indexArray[i].column eq arguments.column>
+			<cfif indexArray[i].column eq arguments.column or indexArray[i].name eq transformIndexName(argumentCollection=arguments)>
 				<cfreturn true>
 			</cfif>
 		</cfloop>
@@ -1432,7 +1432,7 @@
 		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
-	<cfreturn buildForeignKeyMetaData(	
+	<cfreturn buildForeignKeyMetaData(
 		rs = rsCheck,
 		table = arguments.table
 	)>
