@@ -20,28 +20,59 @@
 }
 
 .mura-sidebar__objects-list__object-group {
-/* 	background: #fff; */
 	margin: 18px;
 }
 
-.mura-sidebar__objects-list__object-group-heading {
-	box-sizing: border-box;
-	padding: 18px;
-		
-	/*font-weight: bold;
-	
-	border-bottom: 3px solid rgba(0,0,0,.05);*/
+
+.mura-sidebar__objects-list__object-group h3 {
+	margin: 0 0 .5em 0;
+	padding: 0;
+	font-size: 32px;
+	font-weight: bold;
+	color: #ff3a00;
+	line-height: 44px;
+	letter-spacing: -0.05em;
+}
+
+.mura-sidebar__objects-list__object-group-heading {}
+
+/* legacy, initial set */
+.mura-sidebar__object-group-items,
+.mura-sidebar__objects-list__object-group-items {
+	padding: 8px;
+	background-color: #e6e6e6;
+	border-radius: 3px;
+}
+
+.mura-sidebar__object-group-items {
+	padding: 8px;
+	background-color: #e6e6e6;
+	border-radius: 3px;
+}
+
+.mura-sidebar__object-group-items select,
+.mura-sidebar__objects-list__object-group-items select {
+	margin: .5em 0;
+	width: 100%;
 }
 
 .mura-sidebar__objects-list__object-item {
 	box-sizing: border-box;
 	padding: .5em;
-	border: 1px solid #eee;
 	margin-bottom: -1px;
+	background-color: #F5F5F5;
+	font-size: 13px;
+	color: #000;
+	text-shadow: 0 1px 0 #fff;
+	font-weight: bold;
+}
+
+.mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
+	border-top: 1px solid rgba(0,0,0,0.07);
 }
 
 .mura-sidebar__objects-list__object-item:hover {
-	background: #f7f7f7;
+	background: #f9f9f9;
 	cursor: pointer;
 }
 
@@ -53,32 +84,24 @@
 	cursor: pointer;
 }
 
+.mura-object.active {
+	box-shadow: inset 0 0 0 1px #eee;
+}
+
 .mura-object.active:hover,
 .mura-async-object.active[data-object="folder"]:hover {
-/* 	background: #f7f7f7; */
-/* 	cursor: pointer; */
 	box-shadow: inset 0 0 0 2px #999;
 }
-				
+
 .mura-drop-target {
 	border-bottom: dotted #ff0000;
 	margin-bottom: -1px;
 }
 
-.mura-object.active.mura-object-selected {
+.mura-object.active.mura-object-selected,
+.mura-async-object.active[data-object="folder"].mura-object-selected {
 	box-shadow: inset 0 0 0 2px #ff3800;
 }
-
-/*
-body {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-*/
 
 body {
 	padding-left: 0;
@@ -94,9 +117,6 @@ body {
 }
 
 .-state__pushed--left {
-/*
-	padding-left: 300px;
-*/
 
 	/* temporarily set left class to right styles */
 	padding-right: 300px;
@@ -106,24 +126,18 @@ body {
 	width: 300px;
 	position: fixed;
 	
-/* 	left: -300px; */
 	right: -300px;
 	top: 0;
 	bottom: 0;
 	
-	z-index: 15; /* 1 higher than navbar? */
+	z-index: 15; /* 1 higher than navbar */
 	
 	transition: right 0.3s ease;
 	
 	height: 100vh;
-	
-/*
-	-webkit-box-shadow:inset -1px 0 0 0 rgba(0,0,0,0.1);
-	box-shadow:inset -1px 0 0 0 rgba(0,0,0,0.1);
-*/
 
-	-webkit-box-shadow:inset 1px 0 0 0 rgba(0,0,0,0.1);
-	box-shadow:inset 1px 0 0 0 rgba(0,0,0,0.1);
+	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);
+	
 }
 
 .mura__layout-manager__controls__scrollable {
@@ -137,10 +151,6 @@ body {
 }
 
 .-state__pushed--left .mura__layout-manager__controls {
-/*
-	left: 0;
-	transition: left 0.3s ease;
-*/
 	/* temporarily set left class to right styles */
 	
 	right: 0;
@@ -185,7 +195,7 @@ body {
 
 
 [data-object="folder"] .frontEndToolsModal {
-	transform: translateX(-100%);
+/* 	transform: translateX(-100%); */
 }
 
 /* bug fixes

@@ -119,7 +119,7 @@
 			</div>
 			</cfif>
 			
-			<div id="mura-sidebar-configurator" style="display:none">
+			<div id="mura-sidebar-configurator" class="mura-sidebar__objects-list__object-group" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group-heading">
 				<a href="##" class="mura-objects-back-btn">&lt Back</a>
 				</div>
@@ -129,13 +129,11 @@
 			
 			</div>
 			
-			<div id="mura-sidebar-editor" class="mura-sidebar__objects-list" style="display:none">
+			<div id="mura-sidebar-editor" class="mura-sidebar__objects-list__object-group"style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
 						<button class="btn" id="mura-deactivate-editors">Done</button>
-		              </select>
-
 					</div>
 				</div>
 
