@@ -119,17 +119,19 @@
 			</div>
 			</cfif>
 			
-			<div id="mura-sidebar-configurator" class="mura-sidebar__objects-list__object-group" style="display:none">
-				<div class="mura-sidebar__objects-list__object-group-heading">
-				<a href="##" class="mura-objects-back-btn">&lt Back</a>
+			<div id="mura-sidebar-configurator" style="display:none">
+				<div class="mura-sidebar__objects-list__object-group">
+					<div class="mura-sidebar__objects-list__object-group-heading">
+					<a href="##" class="mura-objects-back-btn">&lt Back</a>
+					</div>
 				</div>
-			
+				
 				<iframe src="" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsSidebariframe">
 				</iframe>
 			
 			</div>
 			
-			<div id="mura-sidebar-editor" class="mura-sidebar__objects-list__object-group"style="display:none">
+			<div id="mura-sidebar-editor" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
