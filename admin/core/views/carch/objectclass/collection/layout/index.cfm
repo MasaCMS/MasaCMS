@@ -53,7 +53,7 @@
 				<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',feed.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
 			</div>	
 		</div>
-
+		<!---
 		<div class="control-group">
 			<div class="span12">
 				<label class="control-label">
@@ -74,6 +74,7 @@
 				</div>
 			</div>
 		</div>
+		--->
 
 		<div class="control-group">
 			<div class="span6">
