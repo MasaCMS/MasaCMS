@@ -9,8 +9,8 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asDate('start')
-      .asDate('end')
+      .asUTCDate('start')
+      .asUTCDate('end')
       .asString('title');
 
     var qoq = new Query();

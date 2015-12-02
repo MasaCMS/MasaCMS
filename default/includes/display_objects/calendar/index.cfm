@@ -107,7 +107,7 @@
 				"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
 				function(){
 					$('##mura-calendar').fullCalendar({
-						timezone: 'local'
+						timezone: 'false'
 						, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
 						, buttonText: {
 							day: '#variables.$.rbKey('calendar.day')#'
@@ -136,10 +136,11 @@
 						<cfelse>
 						, defaultView: 'month'
 						</cfif>
-						, allDayDefault: false
+						, allDayDefault: true
 						, loading: function(isLoading) {
 								$('##mura-calendar-loading').toggle(isLoading);
 						}
+						, eventLimit: true
 						//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
 						, eventSources: [
 							<cfloop array="#objectParams.items#" index="i">	

@@ -11,6 +11,22 @@
 	</cfif>
 </cffunction>
 
+<cffunction name="isAllDay" output="false">
+	<cfargument name="start">
+	<cfargument name="stop">
+
+	<cfreturn (isDate(arguments.start) 
+		and hour(arguments.start) eq 0
+		and minute(arguments.start) eq 0
+		and (
+			not isDate(arguments.stop)
+			or hour(arguments.stop) eq 23
+			and minute(arguments.stop) eq 59
+			)
+		)>
+
+</cffunction>
+
 <cffunction name="renderIntervalDesc" output="false">
 	<cfargument name="content">
 
@@ -21,11 +37,17 @@
 		<cfreturn ''>
 	</cfif>
 
+	<cfset var allday=isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
+
 	<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop()) 
 		and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())
 		and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 		and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
-		<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+		<cfif allday>
+			<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+		<cfelse>
+			<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+		</cfif>
 	<cfelse>
 		<cfif dateCompare(now(),arguments.content.getDisplayStart(),'d') eq -1>
 			<cfset returnstring= application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ', '>
@@ -38,15 +60,24 @@
 		<cfset var started=false>
 		<cfloop list="#displayInterval.daysofweek#" index="local.i">
 			<cfif started><cfset returnstring=returnstring & ', '></cfif>
+			<cfset started=true>
 			<cfset returnstring=returnstring & listGetAt(application.rbFactory.getKeyValue(session.rb,'calendar.weekdaylong'),local.i)>
 		</cfloop>
 	</cfif>
 
 	<cfif isDate(arguments.content.getDisplayStop())>
-		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')>
-		<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+		<cfif allday>
+			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+		<cfelse>
+			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')>
+			<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+		</cfif>
 	<cfelse>
-		<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart())>
+		<cfif allday>
+			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+		<cfelse>
+			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart())>
+		</cfif>
 	</cfif>
 
 	<cfif displayInterval.end eq 'on'>
