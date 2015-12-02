@@ -135,7 +135,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<button class="btn" id="mura-deactivate-editors">Done</button>
+						<a href="javascript:" class="mura-objects-back-btn" id="mura-deactivate-editors">Done Editing</a>
 					</div>
 				</div>
 
