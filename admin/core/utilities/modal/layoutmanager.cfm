@@ -120,12 +120,13 @@
 			</cfif>
 			
 			<div id="mura-sidebar-configurator" style="display:none">
+				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 					<a href="##" class="mura-objects-back-btn">&lt Back</a>
 					</div>
 				</div>
-				
+				--->
 				<iframe src="" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsSidebariframe">
 				</iframe>
 			

@@ -20,6 +20,7 @@
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<div id="configuratorContainer">
+		<a class="btn" onclick="frontEndProxy.post({cmd:'showobjects'});">&lt Back</a>
 		<h1 id="configuratorHeader"></h1>
 		
 		<div class="clearfix">

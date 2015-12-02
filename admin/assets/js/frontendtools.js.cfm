@@ -82,6 +82,8 @@
 				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
 				closeFrontEndToolsModal();
 				muraInlineEditor.sidebarAction('showobjects');
+			} else if(parameters["cmd"] == "showobjects"){
+				muraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 				if(typeof parameters.params == 'object'){
