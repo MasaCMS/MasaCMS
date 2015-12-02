@@ -1293,12 +1293,13 @@
 					loader().loadjs(
 						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
 						function(){
-							each(find(".g-recaptcha-container" ),function(el){
+							find(".g-recaptcha-container" ).each(function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
 									   if (typeof grecaptcha == 'object' )
 									   {
+									   	console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
