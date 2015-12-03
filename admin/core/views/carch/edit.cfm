@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							document.contentForm.murakeepediting.value=true;
 							</cfif>
 
-						    if(siteManager.ckContent(draftremovalnotice)){
+						    if(siteManager.ckContent(draftremovalnotice,true)){
 								submitForm(document.contentForm,'add');
 							} else {
 								document.contentForm.approved.value=0;
