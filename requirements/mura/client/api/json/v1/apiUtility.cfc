@@ -881,7 +881,7 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
-				if(!(entity.allowSave() || allowAction(entity,$)) ){
+				if(!(entity.allowSave($) || allowAction(entity,$)) ){
 					throw(type="authorization");
 				}
 
@@ -898,7 +898,7 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
-				if(!(entity.allowSave() || allowAction(entity,$)) ){
+				if(!(entity.allowSave($) || allowAction(entity,$)) ){
 					throw(type="authorization");
 				}
 
