@@ -24,14 +24,26 @@
 			</select>
 		</div>
 		<div id="editDates" <cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
+			<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 			<div class="controls">
-				<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
-				<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59"></span>
+				<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
+				<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"></span>
 			</div>		
-			
-			<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
-			
+			<div id="mura-tz-container" style="display:none">
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
+				<div class="controls">
+				<cfset tz=CreateObject("java", "java.util.TimeZone")>
+				<cfset timezones=tz.getAvailableIDs()>
+				<cfset timezones=listToArray(arrayToList(timezones))>
+				<cfset arraySort(timezones,'text')>
+				<select name="displayIntervalTZ" id="displayIntervalTZ">
+					<cfloop array="#timezones#" index="i">
+						<option value="#i#"<cfif i eq displayInterval.timezone> selected </cfif>>#i#</option>
+					</cfloop>
+				</select>
+				</div>
+			</div>
 			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
 
 			<div class="controls">
@@ -130,6 +142,7 @@
 					repeats: $('##displayIntervalRepeats').val() || 0,
 					detectconflicts: $('##displayIntervalDetectConflicts').val() || 0,
 					allday: $('##displayIntervalAllDay').val() || 0,
+					timezone: $('##displayIntervalTZ').val(),
 					every: $('##displayIntervalEvery').val() || 0,
 					type: $('##displayIntervalType').val(),
 					end: $('##displayIntervalEnd').val(),
@@ -254,7 +267,10 @@
 					$('##mura-displayStopHour').hide();
 					$('##mura-displayStopMinute').hide();
 					$('##mura-displayStopDayPart').hide();
+					$('##mura-tz-container').hide();
 					$('##displayIntervalToLabel').hide();
+
+					$('##displayIntervalTZ').val('#tz.getDefault().getID()#');
 
 					<cfif session.localeHasDayParts>
 						$('##mura-displayStartHour').val('12');
@@ -271,6 +287,7 @@
 					</cfif>
 				
 				} else {
+					$('##mura-tz-container').show();
 					$('##mura-displayStartHour').show();
 					$('##mura-displayStartMinute').show();
 					$('##mura-displayStartDayPart').show();

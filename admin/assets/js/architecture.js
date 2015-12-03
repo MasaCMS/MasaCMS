@@ -147,6 +147,7 @@ var siteManager = {
 				}
 
 				siteManager.formSubmitted = true;
+	
 				actionModal(function(){document.contentForm.submit()});
 			}
 		}

@@ -207,6 +207,10 @@
 		</cfif>
 	</cfif>
 
+	<cfif not structKeyExists(data,'timezone') or not len(data.timezone) or data.allday>
+		<cfset data.timezone=CreateObject("java", "java.util.TimeZone").getDefault().getID()>
+	</cfif>
+
 	<cfif not structKeyExists(data,'repeats')>
 		<cfif data.type eq 'daily' and not data.every>
 			<cfset data.repeats=0>
