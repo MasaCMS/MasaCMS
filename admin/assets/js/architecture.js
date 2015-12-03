@@ -155,7 +155,7 @@ var siteManager = {
 		submit();
 	},
 
-	ckContent: function(draftremovalnotice) {
+	ckContent: function(draftremovalnotice,validateOnly) {
 
 		var autosave=false;
 
@@ -244,68 +244,72 @@ var siteManager = {
 			return false;
 		}
 
-		if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
-//			alert('b')
-			confirmDialog(this.unlocknodeconfirm, function() {
-				//alert('true')
-				$("#unlocknodewithpublish").val("true");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			}, function() {
-				//alert('false')
-				$("#unlocknodewithpublish").val("false");
-				if(siteManager.ckContent(false)) {
-					siteManager.submitContentForm();
-				}
-			});
-
-			this.nodeLockConfirmed = true;
-			return false;
-		}
-
-		//alert(document.contentForm.muraPreviouslyApproved)
-		//alert(document.contentForm.approved.value)
-		//alert(cancelPendingApproval)
-
-		if(!autosave && document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
-		 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
-
-				confirmDialog(publishitemfromchangeset, function() {
-					siteManager.submitContentForm();
-				});
-
-				return false;
-			} else if(pendingApproval != 'undefined' && pendingApproval) {
-
-				confirmDialog(cancelPendingApproval, 
-					function() {
-						document.contentForm.cancelpendingapproval.value='true';
-						siteManager.submitContentForm();
-					},
-					 function() {
-						document.contentForm.cancelpendingapproval.value='false';
+		if(!validateOnly){
+			if(!autosave && typeof(this.hasNodeLock) != 'undefined' && this.hasNodeLock && !this.nodeLockConfirmed) {
+	//			alert('b')
+				confirmDialog(this.unlocknodeconfirm, function() {
+					//alert('true')
+					$("#unlocknodewithpublish").val("true");
+					if(siteManager.ckContent(false)) {
 						siteManager.submitContentForm();
 					}
-				);
+				}, function() {
+					//alert('false')
+					$("#unlocknodewithpublish").val("false");
+					if(siteManager.ckContent(false)) {
+						siteManager.submitContentForm();
+					}
+				});
 
+				this.nodeLockConfirmed = true;
 				return false;
+			}
+
+			//alert(document.contentForm.muraPreviouslyApproved)
+			//alert(document.contentForm.approved.value)
+			//alert(cancelPendingApproval)
+
+			if(!autosave && document.contentForm.muraPreviouslyApproved.value == 0 && document.contentForm.approved.value == 1){
+			 if(typeof(currentChangesetID) != 'undefined' && currentChangesetID != '') {
+
+					confirmDialog(publishitemfromchangeset, function() {
+						siteManager.submitContentForm();
+					});
+
+					return false;
+				} else if(pendingApproval != 'undefined' && pendingApproval) {
+
+					confirmDialog(cancelPendingApproval, 
+						function() {
+							document.contentForm.cancelpendingapproval.value='true';
+							siteManager.submitContentForm();
+						},
+						 function() {
+							document.contentForm.cancelpendingapproval.value='false';
+							siteManager.submitContentForm();
+						}
+					);
+
+					return false;
+				} else {
+					siteManager.submitContentForm();
+					return false;
+				}
 			} else {
-				siteManager.submitContentForm();
-				return false;
+				if(autosave){
+					var data= new FormData(document.contentForm)
+					$.ajax({
+					    url: $(document.contentForm).attr("action"),
+					    type: "post",
+					    data: data
+					});
+				} else {
+					siteManager.submitContentForm();
+					return false;
+				}
 			}
 		} else {
-			if(autosave){
-				var data= new FormData(document.contentForm)
-				$.ajax({
-				    url: $(document.contentForm).attr("action"),
-				    type: "post",
-				    data: data
-				});
-			} else {
-				siteManager.submitContentForm();
-				return false;
-			}
+			return true;
 		}
 
 	},
