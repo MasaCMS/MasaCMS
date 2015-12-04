@@ -2762,7 +2762,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal"><i class="icon-pencil"></i> Edit</div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i></div>';
 
 	function processMarkup(scope){
 
