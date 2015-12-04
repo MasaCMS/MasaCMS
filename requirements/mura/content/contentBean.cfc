@@ -784,6 +784,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getDisplayStart" output="false">
+	<cfargument name="timezone" default="">
+
+	<cfif len(arguments.timezone) and isDate(variables.instance.displaystart)>
+		<cfreturn convertTimezone(datetime=variables.instance.displaystart,to=arguments.timezone)>
+	<cfelse>
+		<cfreturn variables.instance.displaystart>
+	</cfif>
+	
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayStop" output="false">
+	<cfargument name="timezone" default="">
+
+	<cfif len(arguments.timezone) and isDate(variables.instance.displaystop)>
+		<cfreturn convertTimezone(datetime=variables.instance.displaystop,to=arguments.timezone)>
+	<cfelse>
+		<cfreturn variables.instance.displaystop>
+	</cfif>
+	
+	<cfreturn this>	
+</cffunction>
+
 <cffunction name="setDisplayList" output="false">
 	<cfargument name="displayList">
 	<cfset variables.instance.responseDisplayFields=arguments.displayList>

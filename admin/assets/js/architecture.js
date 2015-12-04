@@ -158,7 +158,7 @@ var siteManager = {
 	ckContent: function(draftremovalnotice,validateOnly) {
 
 		var autosave=false;
-
+		
 		if(autosave){
 			$("#unlockfilewithnew").val("false");
 			$("#unlocknodewithpublish").val("false");

@@ -933,8 +933,8 @@
 		<cfset var event=arguments.renderer.getEvent()>
 		<cfset var $=arguments.renderer.getMuraScope()>
 		<cfset var theObject = "" />
-		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & cacheKey />
-		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & cacheKey/>
+		<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() & arguments.cacheKey />
+		<cfset var cacheKeyObjectId = arguments.object & arguments.objectid & arguments.cacheKey/>
 		<cfset var showEditable=false/>
 		<cfset var editableControl={editLink='',isConfigurator=false}>
 		<cfset var historyID="">

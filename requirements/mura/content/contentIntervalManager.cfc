@@ -44,13 +44,13 @@
 		and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 		and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
 		<cfif allday>
-			<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+			<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
 		<cfelse>
-			<cfreturn LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+			<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone))>
 		</cfif>
 	<cfelse>
 		<cfif dateCompare(now(),arguments.content.getDisplayStart(),'d') eq -1>
-			<cfset returnstring= application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(),session.dateKeyFormat) & ', '>
+			<cfset returnstring= application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ', '>
 		</cfif>
 		<cfset returnstring= returnstring & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.#displayInterval.type#')>
 	</cfif>
@@ -70,13 +70,13 @@
 			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
 		<cfelse>
 			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from')>
-			<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart()) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop())>
+			<cfset returnstring=returnstring & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone))>
 		</cfif>
 	<cfelse>
 		<cfif allday>
 			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
 		<cfelse>
-			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart())>
+			<cfset returnstring=returnstring & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.at') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone))>
 		</cfif>
 	</cfif>
 
@@ -86,6 +86,8 @@
 		<cfset returnstring=returnstring & ', ' & properCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
 	</cfif>
 	
+	<cfset returnstring=returnstring & " (" & getTimezone(displayInterval.timezone).getDisplayName() & ")">
+
 	<cfreturn returnstring>
 </cffunction>
 

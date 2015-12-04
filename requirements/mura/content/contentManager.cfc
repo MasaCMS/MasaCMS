@@ -1109,6 +1109,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID##newBean.getContentID()#" timeout="600">
 
+				<cfif variables.configBean.getValue(property='advancedScheduling',defaultValue=false) 
+					and newBean.getDisplay() eq 2
+					and isBoolean(newBean.getConvertDisplayTimeZone())
+					and newBean.getConvertDisplayTimeZone()>
+					<cfset var displayInterval=newBean.getDisplayInterval(deserialize=true)>
+
+					<cfif not displayInterval.allday>
+						<cfif isDate(newBean.getDisplayStart())>
+							<cfset newBean.setDisplayStart(convertTimezone(datetime=newBean.getDisplayStart(),from=displayInterval.timezone))>
+						</cfif>
+						<cfif isDate(newBean.getDisplayStop())>
+							<cfset newBean.setDisplayStop(convertTimezone(datetime=newBean.getDisplayStop(),from=displayInterval.timezone))>
+						</cfif>
+					</cfif>
+				</cfif>
+			
 				<cfif isObject(pluginEvent.getValue('approvalRequest'))>
 					<cfset var approvalRequest=pluginEvent.getValue('approvalRequest')>
 					<!---If it does not have a currently pending aproval request create one --->

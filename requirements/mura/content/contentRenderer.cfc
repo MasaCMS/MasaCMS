@@ -2367,16 +2367,6 @@ Display Objects
 				<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
 			</cfif>
 					
-			<!--- Add modal edit --->
-			<cfif getShowModal()>
-				<!---
-				<cfif getJSLib() eq "prototype">
-					<cfset loadShadowboxJS() />
-				</cfif>--->
-				<cfif this.showEditableObjects and this.enableFrontEndTools>
-					<cfsavecontent variable="headerStr"><cfoutput><link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" /></cfoutput></cfsavecontent>
-				</cfif>
-			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>

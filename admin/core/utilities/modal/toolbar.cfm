@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="Cookie.fetDisplay" default="">
 	<cfif variables.$.content('type') eq 'Variation'>
 		<cfoutput>
-		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 		<script>
 			mura(function(){
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
-		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 	
 		<script>

@@ -26,25 +26,36 @@
 		<div id="editDates" <cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 			<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+			
+			<!---
+			<cfdump var="#rc.contentBean.getDisplayStart()#">
+			<cfdump var="#rc.contentBean.getDisplayStop()#">
+			<cfdump var="#rc.contentBean.getDisplayInterval()#">
+			--->
+
 			<div class="controls">
 				<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
 				<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"></span>
-			</div>		
+			</div>
 			<div id="mura-tz-container" style="display:none">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
 				<div class="controls">
 				<cfset tz=CreateObject("java", "java.util.TimeZone")>
+				<cfset defaultTZ=tz.getDefault().getID()>
 				<cfset timezones=tz.getAvailableIDs()>
 				<cfset timezones=listToArray(arrayToList(timezones))>
 				<cfset arraySort(timezones,'text')>
-				<select name="displayIntervalTZ" id="displayIntervalTZ">
+				<select name="displayIntervalTZ" id="displayIntervalTZ" class="mura-repeat-option">
 					<cfloop array="#timezones#" index="i">
-						<option value="#i#"<cfif i eq displayInterval.timezone> selected </cfif>>#i#</option>
+						<cfif true or i eq defaultTZ or refind('US',i)>
+								<option value="#i#"<cfif i eq displayInterval.timezone> selected </cfif>>#i#</option>
+						</cfif>
 					</cfloop>
 				</select>
 				</div>
 			</div>
 			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
+			<input name="convertDisplayTimeZone" type="hidden" value="true">
 
 			<div class="controls">
 				<label for="displayIntervalAllDay" class="control-label">
@@ -109,39 +120,47 @@
 	<script>
 		$(function(){
 			function pushDisplayStopOut(){
-				$('##mura-datepicker-displayStop').val('');
-					$('##mura-datepicker-displayStop').trigger('change');
+				$('##mura-datepicker-displayStop').val($('##mura-datepicker-displayStart').val());
+				$('##mura-datepicker-displayStop').trigger('change');
 
-					var stopMinute = ($('##mura-displayStopMinute').length) ? $('##mura-displayStopMinute').val() : 0;
-					var stopHour=($('##mura-displayStopHour').length) ? $('##mura-displayStopHour').val() : 0;
+				var stopMinute = ($('##mura-displayStopMinute').length) ? $('##mura-displayStopMinute').val() : 0;
+				var stopHour=($('##mura-displayStopHour').length) ? $('##mura-displayStopHour').val() : 0;
 
-					if($('##mura-displayStopDayPart').length){
-						if($('##mura-displayStopDayPart').val().toLowerCase() == 'pm'){
-							stopHour=parseInt(stopHour) + 12;
-							if(stopHour==24){
-								stopHour=12;
-							}
-						} else if (parseInt(stopHour) ==12) {
-							stopHour=0;
+				if($('##mura-displayStopDayPart').length){
+					if($('##mura-displayStopDayPart').val().toLowerCase() == 'pm'){
+						stopHour=parseInt(stopHour) + 12;
+						if(stopHour==24){
+							stopHour=12;
 						}
+					} else if (parseInt(stopHour) ==12) {
+						stopHour=0;
 					}
+				}
 
-					if(stopHour.length==1){
-						stopHour='0' + stopHour;
-					}
+				if(stopHour.length==1){
+					stopHour='0' + stopHour;
+				}
 
-					if(stopMinute.length==1){
-						stopMinute='0' + stopMinute;
-					}
-				
-					$('##mura-displayStop').val("{ts '2100-01-01 " + stopHour + ":" + stopMinute + ":00'}");
+				if(stopMinute.length==1){
+					stopMinute='0' + stopMinute;
+				}
+			
+				$('##mura-displayStop').val("{ts '2100-01-01 " + stopHour + ":" + stopMinute + ":00'}");
 			}
 
 			function updateDisplayInterval(){
+				
+				if($('##displayIntervalEnd').val()=='on'){
+					$('##mura-datepicker-displayStop').val($('##displayIntervalEndOn').val());
+					$('##mura-datepicker-displayStop').trigger('change');
+				} else {
+					pushDisplayStopOut();
+				}
+
 				var options={
-					repeats: $('##displayIntervalRepeats').val() || 0,
-					detectconflicts: $('##displayIntervalDetectConflicts').val() || 0,
-					allday: $('##displayIntervalAllDay').val() || 0,
+					repeats: $('##displayIntervalRepeats').is(':checked') ? 1 : 0,
+					detectconflicts: $('##displayIntervalDetectConflicts').is(':checked') ? 1 : 0,
+					allday: $('##displayIntervalAllDay').is(':checked') ? 1 : 0,
 					timezone: $('##displayIntervalTZ').val(),
 					every: $('##displayIntervalEvery').val() || 0,
 					type: $('##displayIntervalType').val(),
@@ -150,14 +169,8 @@
 					endafter: $('##displayIntervalEndAfter').val(),
 					daysofweek: getDaysOfWeek()
 				};
+
 				$('##displayInterval').val(JSON.stringify(options));
-				
-				if(options.end=='on'){
-					$('##mura-datepicker-displayStop').val(options.endon);
-					$('##mura-datepicker-displayStop').trigger('change');
-				} else {
-					pushDisplayStopOut();
-				}
 			}
 
 			function getDaysOfWeek(){
@@ -296,6 +309,8 @@
 					$('##mura-displayStopDayPart').show();
 					$('##displayIntervalToLabel').show();
 				}
+
+				updateDisplayInterval();
 			}
 
 			function toggleRepeatOptionsContainer(){
