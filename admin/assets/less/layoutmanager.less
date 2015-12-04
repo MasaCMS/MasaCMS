@@ -198,11 +198,13 @@ body {
 /* 	transform: translateX(-100%); */
 }
 
-/* bug fixes
-===================================== */
 
-.mura-region.mura-editable {
+// apply only when sidebar is open
+.-state__pushed--left .mura-region.mura-editable {
 	clear: both;
+}
+.-state__pushed--left .mura-asset + .mura-region.mura-editable {
+	clear: none;
 }
 
 /* iframe

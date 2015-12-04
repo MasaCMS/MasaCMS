@@ -676,6 +676,14 @@
 	
 }
 
+// bug fix for meta image not being clickable
+.mura-asset + .mura-region.mura-editable {
+	position: relative;
+	z-index: 1;
+}
+
+
+
 @media print{
 	.mura-toolbar{
 		display: none;
