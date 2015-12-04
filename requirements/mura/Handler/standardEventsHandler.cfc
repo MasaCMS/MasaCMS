@@ -736,7 +736,8 @@
 
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
-		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
+		<cfset request.muraJSONRedirectURL = $.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=request.muraJSONRedirectURL}}))>
 	<cfelse>
 		<cfset $.getContentRenderer().renderFile($.content('fileid'),$.event('method'),$.event('size')) />
 	</cfif>
