@@ -9,7 +9,7 @@
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<cfif $.content('type') neq 'Variation'>
-						<a href="##" id="mura-objects-legacy-btn">View Legacy Objects</a>
+						<a href="##" id="mura-objects-legacy-btn" class="btn btn-default">View Legacy Objects</a>
 						</cfif>
 						<h3>Content Objects</h3>
 					</div>
@@ -80,7 +80,7 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<a href="##" class="mura-objects-back-btn">&lt Back</a>
+						<a href="##" class="mura-objects-back-btn" class="btn btn-default"><i class="icon-circle-arrow-left"></i> Back</a>
 						<h3>Legacy Objects</h3>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items">
@@ -121,7 +121,7 @@
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-					<a href="##" class="mura-objects-back-btn">&lt Back</a>
+					<a href="##" class="mura-objects-back-btn" class="btn btn-default"><i class="icon-circle-arrow-left"></i> Back</a>
 					</div>
 				</div>
 				--->
@@ -134,7 +134,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<a href="javascript:" class="mura-objects-back-btn" id="mura-deactivate-editors">Done Editing</a>
+						<a href="javascript:" class="mura-objects-back-btn btn btn-default" id="mura-deactivate-editors">Done Editing</a>
 					</div>
 				</div>
 

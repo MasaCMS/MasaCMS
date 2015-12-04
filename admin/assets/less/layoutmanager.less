@@ -89,8 +89,6 @@
 }
 
 
-
-
 //a region that IS being interacted with
 .mura-object.active.mura-active-target, 
 .mura-async-object.active.mura-active-target[data-object="folder"],
@@ -125,7 +123,6 @@ body {
 	min-width: 100%;
 	box-sizing: border-box;
 	display: table;
-	
 	transition: padding 0.3s ease;
 }
 
@@ -138,19 +135,13 @@ body {
 .mura__layout-manager__controls {
 	width: 300px;
 	position: fixed;
-	
 	right: -300px;
 	top: 0;
 	bottom: 0;
-	
 	z-index: 15; /* 1 higher than navbar */
-	
 	transition: right 0.3s ease;
-	
 	height: 100vh;
-
-	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);
-	
+	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);	
 }
 
 .mura__layout-manager__controls__scrollable {
@@ -181,12 +172,17 @@ body {
 .frontEndToolsModal.mura {
 	position: relative;
 	z-index:1;	
+	opacity: 0;
 }
 
+.mura-object.active.mura-active-target > .frontEndToolsModal.mura, 
+.mura-object.active.mura-object-selected > .frontEndToolsModal.mura {
+	opacity: 1;
+}
+
+
 /* button colors - reproducing bootstrap */
-.frontEndToolsModal.mura,
-#mura-objects-legacy-btn,
-.mura-objects-back-btn {
+.frontEndToolsModal.mura {
 	background-color: #337ab7;
 	color: #fff;
 	line-height: 24px;
@@ -194,34 +190,10 @@ body {
 }
 
 /* mini -- reproducing bootstrap */
-.frontEndToolsModal.mura,
-#mura-objects-legacy-btn,
-.mura-objects-back-btn {
+.frontEndToolsModal.mura {
 	padding: 0 6px;
 	font-size: 10.5px;
 }
-
-/* border radius */
-#mura-objects-legacy-btn,
-.mura-objects-back-btn {
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-}
-
-
-[data-object="folder"] .frontEndToolsModal {
-/* 	transform: translateX(-100%); */
-}
-
-
-// apply only when sidebar is open
-// .-state__pushed--left .mura-region.mura-editable {
-// 	clear: both;
-// }
-// .-state__pushed--left .mura-asset + .mura-region.mura-editable {
-// 	clear: none;
-// }
 
 /* iframe
 ===================================== */
