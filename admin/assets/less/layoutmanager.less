@@ -88,9 +88,13 @@
 	box-shadow: inset 0 0 0 1px #eee;
 }
 
+
+
+
 //a region that IS being interacted with
-.mura-object.active.mura-object-active-target:hover,
-.mura-async-object.active.mura-object-active-target[data-object="folder"]:hover {
+
+.mura-object.active.mura-active-target,
+.mura-async-object.active.mura-active-target[data-object="folder"] {
 	box-shadow: inset 0 0 0 2px #999;
 }
 
@@ -98,6 +102,11 @@
 .mura-object.active.mura-object-selected,
 .mura-async-object.active[data-object="folder"].mura-object-selected {
 	box-shadow: inset 0 0 0 2px #ff3800;
+}
+
+
+.mura-active-target {
+	border: 2px solid green !important;
 }
 
 .mura-drop-target {

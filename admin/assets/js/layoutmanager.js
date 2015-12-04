@@ -119,7 +119,18 @@
 			.on('dragend',initDraggableObject_dragend)
 			.on('dragover',initDraggableObject_dragover)
 			.on('dragleave',initDraggableObject_dragleave)
-			.on('drop',initDraggableObject_drop).attr('draggable',true);
+			.on('drop',initDraggableObject_drop).attr('draggable',true)
+			.hover(
+				function(e){
+					//e.stopPropagation();
+					mura('.mura-active-target').removeClass('mura-active-target');
+					mura(this).addClass('mura-active-target');
+				},
+				function(e){
+					//e.stopPropagation();
+					mura(this).removeClass('mura-active-target');
+				}
+			);
 		}
 
 		function initLooseDropTarget_dragenter(e){
