@@ -353,7 +353,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
     function convertTimezone(datetime,from,to){
-		var tz=getTimezone();
+		var tz=getJavaTimezone();
 		
 		if(!isDefined('arguments.from')){
 			arguments.from=tz.getDefault().getID();
@@ -369,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			
 			var currentdate=createObject('java','java.lang.System').currentTimeMillis();
-			var offset=(tz.getTimeZone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
+			var offset=(tz.getJavaTimezone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
 			
 			if(offset > 0){
 				offset = 0 - abs(offset);
@@ -385,7 +385,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	   		arguments.datetime= dateAdd(
 				"s",
-	   			(tz.getTimeZone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
+	   			(tz.getJavaTimezone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
 	   			arguments.datetime
 	   		);
    			
@@ -393,11 +393,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 	}
 
-	function getTimezone(timezone){
+	function getJavaTimezone(timezone){
 		var tz=createObject( "java", "java.util.TimeZone" );
 
 		if(isDefined('arguments.timezone')){
-			return tz.getTimeZone(arguments.timezone);
+			return tz.getJavaTimezone(arguments.timezone);
 		} else {
 			return tz;
 		}

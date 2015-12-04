@@ -86,7 +86,7 @@
 		<cfset returnstring=returnstring & ', ' & properCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
 	</cfif>
 	
-	<cfset returnstring=returnstring & " (" & getTimezone(displayInterval.timezone).getDisplayName() & ")">
+	<cfset returnstring=returnstring & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 
 	<cfreturn returnstring>
 </cffunction>
