@@ -1,6 +1,4 @@
 <cfoutput>
-<link href="#variables.$.globalConfig('adminPath')#/assets/css/layoutmanager.css" rel="stylesheet" type="text/css" />
-
 <div class="mura__layout-manager__controls">
 					
 	<div class="mura__layout-manager__controls__scrollable">
@@ -166,6 +164,7 @@ mura.ready(function(){
 	});
 
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
+	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
 });
 </script>
 </cfoutput>
