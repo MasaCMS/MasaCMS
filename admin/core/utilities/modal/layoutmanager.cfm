@@ -166,7 +166,6 @@ mura.ready(function(){
 	});
 
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
-	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
 });
 </script>
 </cfoutput>
