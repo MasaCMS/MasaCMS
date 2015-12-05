@@ -106,6 +106,8 @@
 	<script>
 		$(function(){
 		
+			var inited=false;
+
 			$('select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();
 			});
@@ -134,7 +136,7 @@
 	  					classInput.val(width.val());
 	  				}
 
-	  				if(typeof updateDraft == 'function'){
+	  				if(inited && typeof updateDraft == 'function'){
 	  					updateDraft();
 	  				}
 	  			}
@@ -149,7 +151,7 @@
 		  					classInput.val(offset.val());
 		  				}
 
-		  				if(typeof updateDraft == 'function'){
+		  				if(inited && typeof updateDraft == 'function'){
 		  					updateDraft();
 		  				}
 		  				
@@ -174,6 +176,7 @@
 				$('#globalSettingsBtn').show();
 			});
 
+			inited=true;
 		});
 	</script>
 	</cfif>
