@@ -85,7 +85,7 @@
 						</a>
 						<h3>Legacy Objects</h3>
 					</div>
-					<div class="mura-sidebar__objects-list__object-group-items">
+					<div class="mura-sidebar__objects-list__object-group-items controls">
 						<select name="classSelector" onchange="mura.loadObjectClass('#esapiEncode("Javascript",$.content('siteid'))#',this.value,'','#$.content('contenthistid')#','#$.content('parentid')#','#$.content('contenthistid')#',0);">
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 			            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>

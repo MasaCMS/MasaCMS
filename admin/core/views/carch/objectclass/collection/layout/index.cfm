@@ -42,7 +42,7 @@
 					});
 				</script>	
 			</label>
-			<div class="controls">
+			<div id="sortableFields" class="controls sortable-sidebar">
 				<cfset displayList=feed.getDisplayList()>
 				<ul id="displayListSort" class="displayListSortOptions">
 					<cfloop list="#displayList#" index="i">
