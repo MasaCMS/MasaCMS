@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								});
 							</script>	
 						</label>
-						<div class="controls">
+						<div id="sortableFields" class="controls sortable-sidebar">
 							<cfset displayList=content.getDisplayList()>
 							<ul id="displayListSort" class="displayListSortOptions">
 								<cfloop list="#displayList#" index="i">
