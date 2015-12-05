@@ -45,7 +45,7 @@
 				<div class="controls">
 					 <select name="alignment" class="span12">
 						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
-						<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>
+						<!--<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
 						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
 					</select>
 				</div>
@@ -133,6 +133,10 @@
 	  				} else {
 	  					classInput.val(width.val());
 	  				}
+
+	  				if(typeof updateDraft == 'function'){
+	  					updateDraft();
+	  				}
 	  			}
 
 	  			if(alignment.val()=='mura-left'){
@@ -144,6 +148,11 @@
 		  				} else {
 		  					classInput.val(offset.val());
 		  				}
+
+		  				if(typeof updateDraft == 'function'){
+		  					updateDraft();
+		  				}
+		  				
 		  			}
 		  		}
 			}

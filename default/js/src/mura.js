@@ -1338,7 +1338,6 @@
 			function(){
 
 				if(typeof openFrontEndToolsModal == 'function' ){ 
-					
 					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
@@ -1587,11 +1586,38 @@
 		if(mura.layoutmanager && mura.editing){
 			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
 				obj.html(layoutmanagertoolbar + obj.html());
+
+				obj
+				.addClass('active')
+				.hover(
+					function(e){
+						//e.stopPropagation();
+						mura('.mura-active-target').removeClass('mura-active-target');
+						mura(this).addClass('mura-active-target');
+					},
+					function(e){
+						//e.stopPropagation();
+						mura(this).removeClass('mura-active-target');
+					}
+				);
 			} else {
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 						obj.html(layoutmanagertoolbar + obj.html());
+						obj
+							.addClass('active')
+							.hover(
+								function(e){
+									//e.stopPropagation();
+									mura('.mura-active-target').removeClass('mura-active-target');
+									mura(this).addClass('mura-active-target');
+								},
+								function(e){
+									//e.stopPropagation();
+									mura(this).removeClass('mura-active-target');
+								}
+							);
 					}
 				} else {
 					var region=mura(self).closest(".mura-region-local");
@@ -1601,6 +1627,19 @@
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 								obj.html(layoutmanagertoolbar + obj.html());
+								obj
+									.addClass('active')
+									.hover(
+										function(e){
+											//e.stopPropagation();
+											mura('.mura-active-target').removeClass('mura-active-target');
+											mura(this).addClass('mura-active-target');
+										},
+										function(e){
+											//e.stopPropagation();
+											mura(this).removeClass('mura-active-target');
+										}
+									);
 							}
 						}
 					}

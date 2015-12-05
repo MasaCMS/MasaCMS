@@ -134,5 +134,5 @@
 	#variables.pagination#
 	</cfoutput>
 <cfelse>
-	#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#
+	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>
 </cfif>

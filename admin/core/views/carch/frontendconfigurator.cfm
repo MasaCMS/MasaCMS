@@ -33,13 +33,14 @@
 		    </div>
 		    --->
 		</div>
-		
+		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
 		<div class="form-actions">	
-			<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
-				<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
-			</cfif>
+			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
+			<!---
 			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
+			--->
 		</div>
+		</cfif>
 	</div>
 	<cfinclude template="dsp_configuratorJS.cfm">
 	<script>
@@ -50,6 +51,41 @@
 		var configOptions={};
 		var originParams={};
 		var originid='#esapiEncode('javascript',rc.objectid)#';
+
+		var updateDraft=function(){
+				
+				siteManager.updateAvailableObject();
+				
+				var availableObjectSelector=jQuery('##availableObjectSelector');
+
+				if(availableObjectSelector.length){
+					$.extend(siteManager.availableObject.params,eval('(' + availableObjectSelector.val() + ')') );
+				}
+				
+				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+
+					<cfif rc.sourceFrame eq 'modal'>
+						jQuery("##configurator").html('<div class="load-inline"></div>');
+						$('##configurator .load-inline').spin(spinnerArgs2);
+						jQuery(".form-actions").hide();
+					</cfif>
+					
+					var reload=false;
+
+					if(siteManager.availableObject.params.objectid && siteManager.availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
+						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
+					}
+					
+					frontEndProxy.post(
+					{
+						cmd:'setObjectParams',
+						instanceid:instanceid,
+						params:siteManager.availableObject.params,
+						reinit:(reload) ? true : false
+					});
+
+				}
+			}
 
 		$(function(){
 
@@ -142,41 +178,11 @@
 
 			$('##configurator .load-inline').spin(spinnerArgs2);
 			
-			jQuery("##saveConfigDraft").bind("click",
-			function(){
-				
-				siteManager.updateAvailableObject();
-				
-				var availableObjectSelector=jQuery('##availableObjectSelector');
-
-				if(availableObjectSelector.length){
-					$.extend(siteManager.availableObject.params,eval('(' + availableObjectSelector.val() + ')') );
-				}
-				
-				if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-
-					<cfif rc.sourceFrame eq 'modal'>
-						jQuery("##configurator").html('<div class="load-inline"></div>');
-						$('##configurator .load-inline').spin(spinnerArgs2);
-						jQuery(".form-actions").hide();
-					</cfif>
-					
-					var reload=false;
-
-					if(siteManager.availableObject.params.objectid && siteManager.availableObject.params.objectid != 'none' & siteManager.availableObject.params.objectid != originid){
-						reload=siteManager.getPluginConfigurator(siteManager.availableObject.params.objectid);
-					}
-					
-					frontEndProxy.post(
-					{
-						cmd:'setObjectParams',
-						instanceid:instanceid,
-						params:siteManager.availableObject.params,
-						reinit:(reload) ? true : false
-					});
-
-				}
-			});
+			<cfif rc.sourceFrame eq 'modal'>
+			jQuery("##saveConfigDraft").bind("click",updateDraft);
+			<cfelse>
+			jQuery('##configuratorContainer').on('change','.objectParam, ##availableObjectSelector',updateDraft);
+			</cfif>
 
 			jQuery("##deleteObject").bind("click",
 			function(){
