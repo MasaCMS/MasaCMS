@@ -46,6 +46,12 @@
 							objectname='Form'
 						)#
 
+						#contentRendererUtility.renderObjectClassOption(
+							object='component',
+							objectid='',
+							objectname='Component'
+						)#
+
 						<cfif $.content('type') neq 'Variation'>
 							#contentRendererUtility.renderObjectClassOption(
 								object='navigation',
@@ -164,6 +170,8 @@ mura.ready(function(){
 		e.preventDefault();
 		muraInlineEditor.sidebarAction('showobjects');
 	});
+
+	//mura('.mura-region.mura-editable').attr('style','clear:both;');
 
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
 	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');

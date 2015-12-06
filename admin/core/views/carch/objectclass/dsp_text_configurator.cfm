@@ -72,7 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcontentsource')#</option> 	
 							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.freetext')#</option>	
 							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.boundattribute')#</option>
+							<!---
 							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
+							--->
 						</select>
 						<button id="editSource" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 					</div>

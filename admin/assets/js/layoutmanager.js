@@ -169,12 +169,18 @@
 					}
 				}
 
-				var item=mura(this).closest(".mura-object");
+				var item=mura(this).closest('.mura-object[data-object="container"]');
 
 				if(item.length){
 					item.addClass('mura-drop-target');
 				} else {
-					mura(this).addClass('mura-drop-target');
+					item=mura(this).closest('.mura-object');
+					
+					if(item.length){
+						item.addClass('mura-drop-target');
+					} else {
+						mura(this).addClass('mura-drop-target');
+					}
 				}
 				
 			}
@@ -444,7 +450,7 @@
 
 			mura('.mura-region-local .mura-object').each(function(){ initDraggableObject(this)});
 			
-			mura('div[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
+			mura('.mura-object[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
 	    }
 
