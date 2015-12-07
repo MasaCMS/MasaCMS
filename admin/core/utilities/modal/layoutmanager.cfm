@@ -172,7 +172,7 @@ mura.ready(function(){
 	});
 
 	//mura('.mura-region.mura-editable').attr('style','clear:both;');
-
+	mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
 	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
 });
