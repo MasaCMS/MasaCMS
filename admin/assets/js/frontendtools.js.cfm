@@ -900,6 +900,8 @@
 
 				utility("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
 
+				muraInlineEditor.setAnchorSaveChecks(document);
+
 				function initObject(){
 					var item=utility(this);
 					
@@ -1387,10 +1389,20 @@
 					        data: muraInlineEditor.data,
 					        success: function(data){
 					        	<cfif node.getType() eq 'Variation'>
-					        		location.reload();
+					        		if(muraInlineEditor.requestedURL){
+										location.href=muraInlineEditor.requestedURL
+									} else {
+					        			location.reload();
+									}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
-						        	location.href=resp.location;
+
+					        		if(muraInlineEditor.requestedURL){
+										location.href=muraInlineEditor.requestedURL
+									} else {
+										location.href=resp.location;
+									}
+						        	
 					        	</cfif>
 						     
 					        },
@@ -1400,7 +1412,12 @@
 					        }
 					       });
 						} else {
-						 	location.reload();
+							if(muraInlineEditor.requestedURL){
+								location.href=muraInlineEditor.requestedURL
+							} else {
+								location.reload();
+							}
+						 	
 						}
 					}
 				);
@@ -1852,8 +1869,31 @@
 				mura('#mura-sidebar-objects').hide();
 				mura('#mura-sidebar-editor').show();
 			}
+		},
+		setAnchorSaveChecks:function(el){
+			function handleEditCheck(){
+				if(confirm("Save as draft?")){
+					muraInlineEditor.requestedURL=this.href;
+					muraInlineEditor.save();
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			var anchors=el.querySelectorAll('a');
+
+			for(var i=0;i<anchors.length;i++){	
+				try{
+					if (typeof(anchors[i].onclick) != 'function' 
+						&& typeof(anchors[i].getAttribute('href')) == 'string' 
+						&& anchors[i].getAttribute('href').indexOf('#') == -1
+						&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
+			   			anchors[i].onclick = handleEditCheck;
+					}
+				} catch(err){}
+			}
 		}
-		
 	}
 
 	<cfoutput>
@@ -1868,7 +1908,6 @@
 	</cfif>
 	</cfloop>
 	</cfoutput>
-
 	window.muraInlineEditor=muraInlineEditor;
 	</cfif>
 	</cfif>

@@ -46,6 +46,12 @@
 							objectname='Form'
 						)#
 
+						#contentRendererUtility.renderObjectClassOption(
+							object='component',
+							objectid='',
+							objectname='Component'
+						)#
+
 						<cfif $.content('type') neq 'Variation'>
 							#contentRendererUtility.renderObjectClassOption(
 								object='navigation',
@@ -165,6 +171,8 @@ mura.ready(function(){
 		muraInlineEditor.sidebarAction('showobjects');
 	});
 
+	//mura('.mura-region.mura-editable').attr('style','clear:both;');
+	mura.rb.saveasdraft='#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#';
 	mura.adminpath='#variables.$.globalConfig("adminPath")#';
 	mura.loader().loadjs('#variables.$.globalConfig("adminpath")#/assets/js/layoutmanager.js');
 });

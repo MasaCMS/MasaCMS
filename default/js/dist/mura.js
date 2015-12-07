@@ -3579,6 +3579,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			},
 			{
+			rb:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
