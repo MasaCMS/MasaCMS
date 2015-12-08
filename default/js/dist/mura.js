@@ -3107,7 +3107,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		if(mura.layoutmanager && mura.editing){
 			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
 				obj.html(layoutmanagertoolbar + obj.html());
-
+				muraInlineEditor.setAnchorSaveChecks(obj.node);
+				
 				obj
 				.addClass('active')
 				.hover(
@@ -3126,6 +3127,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 						obj.html(layoutmanagertoolbar + obj.html());
+						muraInlineEditor.setAnchorSaveChecks(obj.node);
+
 						obj
 							.addClass('active')
 							.hover(
@@ -3148,6 +3151,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
 								obj.html(layoutmanagertoolbar + obj.html());
+								muraInlineEditor.setAnchorSaveChecks(obj.node);
+
 								obj
 									.addClass('active')
 									.hover(

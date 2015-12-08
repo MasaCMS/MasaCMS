@@ -453,6 +453,18 @@
 			
 			mura('.mura-object[data-object="container"], .mura-region-local div, .mura-region-local[data-loose="true"] p, .mura-region-local[data-loose="true"] h1, .mura-region-local[data-loose="true"] h2, .mura-region-local[data-loose="true"] h3, .mura-region-local[data-loose="true"] h4, .mura-region-local[data-loose="true"] img, .mura-region-local[data-loose="true"] table, .mura-region-local[data-loose="true"] article, .mura-region-local[data-loose="true"] dl').each(function(){ initLooseDropTarget(this)});
 
+			mura('.mura-object[data-object="folder"],.mura-object[data-object="calendar"],.mura-object[data-object="gallery"]')
+			.hover(
+				function(e){
+					//e.stopPropagation();
+					mura('.mura-active-target').removeClass('mura-active-target');
+					mura(this).addClass('mura-active-target');
+				},
+				function(e){
+					//e.stopPropagation();
+					mura(this).removeClass('mura-active-target');
+				}
+			);
 			
 	    }
 
