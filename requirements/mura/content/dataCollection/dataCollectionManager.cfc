@@ -331,7 +331,7 @@ order by tformresponsepackets.entered asc
 			frm.find("input[type='radio']").each(function(){
 				polllist.push($(this).val());
 			});
-			if(polllist.length > 0) {action += '&polllist='+ polllist.toString());}		
+			if(polllist.length > 0) {action += '&polllist='+ polllist.toString();}		
 		</cfif>
 	
 		frm.attr('action',action + '###frmID#');
