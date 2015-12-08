@@ -82,6 +82,7 @@
 				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
 				closeFrontEndToolsModal();
 				muraInlineEditor.sidebarAction('showobjects');
+				muraInlineEditor.isDirty=true;
 			} else if(parameters["cmd"] == "showobjects"){
 				muraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
@@ -107,6 +108,8 @@
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
+
+					muraInlineEditor.isDirty=true;
 				}
 
 
@@ -130,6 +133,7 @@
 				item.addClass('active');
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
+				muraInlineEditor.isDirty=true;
 			} else if(parameters["cmd"] == "setImageSrc"){
 				utility('img[data-instanceid="' + parameters.instanceid + '"]')
 					.attr('src',parameters.src)
@@ -805,6 +809,8 @@
 					});
 					*/
 
+					muraInlineEditor.isDirty=true;
+
 					currentEl.addClass('mura-var-current');
 					return false;
 				}
@@ -1180,6 +1186,7 @@
 				attribute.data('manualedit',true);		
 			}
 					
+			muraInlineEditor.isDirty=true;
 
 		},
 		getAttributeValue: function(attribute){
@@ -1872,7 +1879,7 @@
 		},
 		setAnchorSaveChecks:function(el){
 			function handleEditCheck(){
-				if(confirm("Save as draft?")){
+				if(muraInlineEditor.isDirty && confirm("Save as draft?")){
 					muraInlineEditor.requestedURL=this.href;
 					muraInlineEditor.save();
 					return false;
@@ -1893,7 +1900,8 @@
 					}
 				} catch(err){}
 			}
-		}
+		},
+		isDirty:false
 	}
 
 	<cfoutput>
