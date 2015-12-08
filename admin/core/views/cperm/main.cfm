@@ -58,7 +58,7 @@
   <cfset colspan=colspan+1>
 </cfif>
 <cfif chains.hasNext()>
-  <cfset adminGroup=$.getBean('group').loadBy(groupname='Admin')>
+  <cfset adminGroup=rc.$.getBean('group').loadBy(groupname='Admin',isPublic=0)>
 </cfif>
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
