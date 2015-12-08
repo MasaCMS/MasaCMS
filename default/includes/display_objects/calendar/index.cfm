@@ -59,7 +59,7 @@
 	<cfif this.layoutmanager and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
-		<div class="mura-object mura-async-object" 
+		<div class="mura-object mura-async-object mura-object-primary" 
 			data-object="calendar"
 			data-objectname="Calendar"
 			data-objectid="#$.content('contentid')#"
