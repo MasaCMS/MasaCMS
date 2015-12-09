@@ -1585,7 +1585,7 @@
 
 		if(mura.layoutmanager && mura.editing){
 			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
-				obj.html(layoutmanagertoolbar + obj.html());
+				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 				
 				obj
@@ -1605,7 +1605,7 @@
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-						obj.html(layoutmanagertoolbar + obj.html());
+						obj.prepend(layoutmanagertoolbar);
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
@@ -1629,7 +1629,7 @@
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + obj.html());
+								obj.prepend(layoutmanagertoolbar);
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj

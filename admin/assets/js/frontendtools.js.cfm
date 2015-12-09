@@ -904,12 +904,12 @@
 			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
-				utility("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+				mura("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
 
 				muraInlineEditor.setAnchorSaveChecks(document);
 
 				function initObject(){
-					var item=utility(this);
+					var item=mura(this);
 					
 					var objectParams;
 
@@ -961,14 +961,12 @@
 					}
 				}
 
-				utility(".mura-object").each(initObject);
+				mura(".mura-object").each(initObject);
 
-				utility('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
-					var item=utility(this);
+				mura('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
+					var item=mura(this);
 					item.addClass("active");
-							
-					item.html(window.mura.layoutmanagertoolbar + item.html());
-
+					item.prepend(window.mura.layoutmanagertoolbar);
 					item.find(".frontEndToolsModal").on(
 						'click',
 						function(event){
@@ -977,7 +975,6 @@
 						}
 					);
 				});
-
 
 				mura.initLayoutManager();
 			}

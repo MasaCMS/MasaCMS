@@ -13,7 +13,7 @@
 					<a href="#item.getURL()#"><img src="#item.getImageURL(height=300,width=500)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 				</cfif>
 			</div>
-		</cfif>s
+		</cfif>
 			#variables.$.dspObject_include(
 				theFile='collection/dsp_meta_list.cfm', 
 				propertyMap=arguments.propertyMap, 

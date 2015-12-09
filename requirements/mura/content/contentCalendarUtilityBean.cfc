@@ -9,9 +9,18 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asDate('start')
-      .asDate('end')
       .asString('title');
+
+    if(getBean('configBean').getValue(property='layoutmanager',defaultValue=false)){
+      serializer
+        .asDate('start')
+        .asDate('end');
+    } else {
+       serializer
+        .asUTCDate('start')
+        .asUTCDate('end');
+    }
+    
 
     var qoq = new Query();
     qoq.setDBType('query');

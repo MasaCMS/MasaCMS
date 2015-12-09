@@ -371,9 +371,14 @@
 		},
 
 		append:function(el) {
-			if(this.selection.length){
-				this.selection[0].appendChild(el);
-			}
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforeend', htmlString);
+				} else {
+					this.parentNode.appendChild(el);
+				}
+				
+			});
 			return this;
 		},
 
@@ -393,7 +398,14 @@
 		},
 
 		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterbegin', el);
+				} else {
+					this.parentNode.insertBefore(el,this.parent.firstChild);
+				}
+				
+			});
 			return this;
 		},
 
@@ -478,16 +490,17 @@
 			return this;
 		},
 
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
+		after:function(el){
+			this.each(function(){
+				if(type)
+				this.insertAdjacentHTML('afterend', el);
 			});
 			return this;
 		},
 
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
+		before:function(el){
+			this.each(function(){
+				this.insertAdjacentHTML('beforebegin', el);
 			});
 			return this;
 		},
@@ -513,7 +526,6 @@
 		},
 
 		html:function(htmlString){
-
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;

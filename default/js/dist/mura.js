@@ -3106,7 +3106,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		if(mura.layoutmanager && mura.editing){
 			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
-				obj.html(layoutmanagertoolbar + obj.html());
+				obj.prepend(layoutmanagertoolbar);
 				muraInlineEditor.setAnchorSaveChecks(obj.node);
 				
 				obj
@@ -3126,7 +3126,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-						obj.html(layoutmanagertoolbar + obj.html());
+						obj.prepend(layoutmanagertoolbar);
 						muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 						obj
@@ -3150,7 +3150,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + obj.html());
+								obj.prepend(layoutmanagertoolbar);
 								muraInlineEditor.setAnchorSaveChecks(obj.node);
 
 								obj
@@ -4249,9 +4249,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		append:function(el) {
-			if(this.selection.length){
-				this.selection[0].appendChild(el);
-			}
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforeend', htmlString);
+				} else {
+					this.parentNode.appendChild(el);
+				}
+				
+			});
 			return this;
 		},
 
@@ -4271,7 +4276,14 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterbegin', el);
+				} else {
+					this.parentNode.insertBefore(el,this.parent.firstChild);
+				}
+				
+			});
 			return this;
 		},
 
@@ -4356,16 +4368,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			return this;
 		},
 
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
+		after:function(el){
+			this.each(function(){
+				if(type)
+				this.insertAdjacentHTML('afterend', el);
 			});
 			return this;
 		},
 
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
+		before:function(el){
+			this.each(function(){
+				this.insertAdjacentHTML('beforebegin', el);
 			});
 			return this;
 		},
@@ -4391,7 +4404,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		html:function(htmlString){
-
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
