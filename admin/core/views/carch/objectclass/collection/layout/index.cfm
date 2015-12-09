@@ -17,7 +17,7 @@
 				</label>
 				<div class="controls">
 					<select name="layout" class="objectParam span12">
-						<cfloop list="a,b,c,d,e" index="i">
+						<cfloop list="default,a,b,c,d,e" index="i">
 							<option name="#i#"<cfif feed.getLayout() eq i> selected</cfif>>#i#</option>
 						</cfloop>
 					</select>
@@ -53,7 +53,7 @@
 				<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',feed.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
 			</div>	
 		</div>
-		<!---
+		
 		<div class="control-group">
 			<div class="span12">
 				<label class="control-label">
@@ -74,7 +74,6 @@
 				</div>
 			</div>
 		</div>
-		--->
 
 		<div class="control-group">
 			<div class="span6">

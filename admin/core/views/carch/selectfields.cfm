@@ -27,9 +27,7 @@
 				
 			<ul id="availableListSort" class="displayListSortOptions">
 				<cfloop list="#availableList#" index="i">
-					<cfif i neq 'image'>
-						<li class="ui-state-default">#trim(i)#</li>
-					</cfif>
+					<li class="ui-state-default">#trim(i)#</li>
 				</cfloop>
 			</ul>
 										

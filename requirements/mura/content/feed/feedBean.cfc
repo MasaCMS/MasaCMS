@@ -547,7 +547,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var hasRating=false>
 	<cfset var hasComments=false>
 	
-	<cfif not len(variables.instance.displayList) and not getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().useLayoutManager()>
+	<cfif not len(variables.instance.displayList)>
 		<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits" />
 		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
 		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>

@@ -8,6 +8,8 @@
 	<cfparam name="objectParams.nextN" default="20">
 	<cfparam name="objectParams.sortBy" default="">
 	<cfparam name="objectParams.sortDirection" default="">
+	<cfparam name="objectParams.viewalllink" default="">
+	<cfparam name="objectParams.viewalllabel" default="">
 
 	<cfif not len(objectparams.layout)>
 		<cfset objectParams.layout='default'>
@@ -132,6 +134,10 @@
 
 	</div>
 	#variables.pagination#
+
+	<cfif len(objectParams.viewalllink)>
+		<a class="view-all" href="#arguments.objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
+	</cfif>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>

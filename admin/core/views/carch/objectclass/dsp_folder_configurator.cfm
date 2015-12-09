@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</label>
 							<div class="controls">
 								<select name="layout" class="objectParam span12">
-									<cfloop list="a,b,c,d,e" index="i">
+									<cfloop list="default,a,b,c,d,e" index="i">
 										<option name="#i#"<cfif content.getLayout() eq i> selected</cfif>>#i#</option>
 									</cfloop>
 								</select>
