@@ -49,7 +49,7 @@
 				)>
 
 			</cfcase>
-			<cfcase value="children">
+			<cfcase value="children,calendar">
 				<cfif not isNumeric(variables.$.event('year'))>
 					<cfset variables.$.event('year',year(now()))>
 				</cfif>
@@ -80,12 +80,18 @@
 					<cfset objectParams.applyPermFilter=false/>
 				</cfif>
 
-				<cfif not len(objectParams.sortBy)>
-					<cfset objectParams.sortBy=$.content('sortBy')>
+				<cfif objectParams.sourcetype eq 'calendar'>
+					<cfset objectParams.sortBy='displayStart'>
+					<cfset objectParams.sortDirection='asc'>
+				<cfelse>
+					<cfif not len(objectParams.sortBy)>
+						<cfset objectParams.sortBy=$.content('sortBy')>
+					</cfif>
+					<cfif not len(objectParams.sortDirection)>
+						<cfset objectParams.sortDirection=$.content('sortDirection')>
+					</cfif>
 				</cfif>
-				<cfif not len(objectParams.sortDirection)>
-					<cfset objectParams.sortDirection=$.content('sortDirection')>
-				</cfif>
+				
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 

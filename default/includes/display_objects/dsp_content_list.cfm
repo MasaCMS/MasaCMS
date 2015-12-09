@@ -133,7 +133,7 @@
 				#variables.$.getContentListPropertyValue(arguments.field,"openingOuterMarkUp")#
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
-						<cfif listFindNoCase("Folder,Portal",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
+						<cfif listFindNoCase("Folder,Portal,Children",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
 							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
 							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 								#variables.$.getContentListLabel(arguments.field)#

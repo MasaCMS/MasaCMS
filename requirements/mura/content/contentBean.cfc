@@ -815,7 +815,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
-	<cfif not len(variables.instance.responseDisplayFields) and getValue('isNew')>
+	<cfif not len(variables.instance.responseDisplayFields)>
 		<cfreturn "Image,Date,Title,Summary,Credits">
 	<cfelse>
 		<cfreturn variables.instance.responseDisplayFields>

@@ -74,7 +74,7 @@
 			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
 			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
 			data-layout="#esapiEncode('html_attr',variables.$.content().getObjectParam('layout'))#"
-			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#">></div>
+			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#"></div>
 		</cfoutput>
 	</cfif>
 <cfelse>
