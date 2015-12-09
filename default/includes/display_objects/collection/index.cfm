@@ -49,7 +49,70 @@
 				)>
 
 			</cfcase>
-			<cfcase value="children,calendar">
+			<cfcase value="calendar">
+				<cfset calendarUtility=variables.$.getCalendarUtility()>
+
+				<cfif not isNumeric(variables.$.event('year'))>
+					<cfset variables.$.event('year',year(now()))>
+				</cfif>
+
+				<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
+					and variables.$.event('filterBy') eq "releaseDate">
+					<cfset variables.menuType="releaseDate">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+					<cfset iterator=calendarUtility.getCalendarItems(
+						calendarid=arrayToList(objectParams.items),
+						tag=variables.$.event('tag'),
+						categoryid=variables.$.event('categoryid'),
+						start=variables.menuDate,
+						end=variables.menuDate,
+						returnFormat='iterator'
+					)>
+				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
+					<cfset variables.menuType="releaseMonth">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+					<cfset iterator=calendarUtility.getCalendarItems(
+						calendarid=arrayToList(objectParams.items),
+						tag=variables.$.event('tag'),
+						categoryid=variables.$.event('categoryid'),
+						start=createDate(year(variables.menudate),month(variables.menudate),1),
+						end=createDate(year(variables.menudate),month(variables.menudate),daysInMonth(variables.menudate)),
+						returnFormat='iterator'
+					)>
+				<cfelseif variables.$.event('filterBy') eq "releaseYear">
+					<cfset variables.menuType="releaseYear">
+					<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
+					<cfset iterator=calendarUtility.getCalendarItems(
+						calendarid=arrayToList(objectParams.items),
+						tag=variables.$.event('tag'),
+						categoryid=variables.$.event('categoryid'),
+						start=createDate(year(variables.menudate),1,1),
+						end=createDate(year(variables.menudate),12,31),
+						returnFormat='iterator'
+					)>
+				<cfelse>
+					<cfset variables.menuDate=now()>
+					<cfset variables.menuType="default">
+					<cfset iterator=calendarUtility.getCalendarItems(
+						calendarid=arrayToList(objectParams.items),
+						tag=variables.$.event('tag'),
+						categoryid=variables.$.event('categoryid'),
+						start=createDate(year(variables.menudate),month(variables.menudate),1),
+						end=createDate(year(variables.menudate),month(variables.menudate),daysInMonth(variables.menudate)),
+						returnFormat='iterator'
+					)>
+				</cfif>
+
+				<cfset iterator.setNextN(variables.$.event('nextn'))>
+				<cfset iterator.setStartRow(variables.$.event('startrow'))>
+				<cfset variables.pagination=variables.$.dspObject_include(
+					theFile='collection/dsp_pagination.cfm', 
+					iterator=iterator, 
+					nextN=iterator.getNextN(),
+					source=objectParams.source
+				)>
+			</cfcase>
+			<cfcase value="children">
 				<cfif not isNumeric(variables.$.event('year'))>
 					<cfset variables.$.event('year',year(now()))>
 				</cfif>
@@ -79,20 +142,17 @@
 				<cfelse>
 					<cfset objectParams.applyPermFilter=false/>
 				</cfif>
-
-				<cfif objectParams.sourcetype eq 'calendar'>
-					<cfset objectParams.sortBy='displayStart'>
-					<cfset objectParams.sortDirection='asc'>
-				<cfelse>
-					<cfif not len(objectParams.sortBy)>
-						<cfset objectParams.sortBy=$.content('sortBy')>
-					</cfif>
-					<cfif not len(objectParams.sortDirection)>
-						<cfset objectParams.sortDirection=$.content('sortDirection')>
-					</cfif>
-				</cfif>
 				
+				<cfif not len(objectParams.sortBy)>
+					<cfset objectParams.sortBy=$.content('sortBy')>
+				</cfif>
+
+				<cfif not len(objectParams.sortDirection)>
+					<cfset objectParams.sortDirection=$.content('sortDirection')>
+				</cfif>
+
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
+				
 				<cfset variables.pagination=variables.$.dspObject_include(
 					theFile='collection/dsp_pagination.cfm', 
 					iterator=iterator, 

@@ -3,7 +3,7 @@
 #variables.$.dspObject_include(
 	theFile='dsp_content_list.cfm', 
 	type=arguments.objectParams.sourcetype, 
-	iterator= variables.iterator,
+	iterator=variables.iterator,
 	imageSize='small',
 	fields=arguments.objectParams.displaylist
 )#

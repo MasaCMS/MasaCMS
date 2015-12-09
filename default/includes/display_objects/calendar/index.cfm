@@ -90,6 +90,7 @@
 		<cfparam name="objectParams.nextn" default="#$.content('next')#">
 		<cfparam name="objectParams.categoryid" default="">
 		<cfparam name="objectParams.startrow" default="1">
+		<cfparam name="objectParams.tag" default="">
 		<cfparam name="objectParams.layout" default="default">
 
 		<cfif isJson(objectParams.items)>

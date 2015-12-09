@@ -66,7 +66,7 @@
 
 	<cfloop condition="variables.crumbIterator.hasNext()">
 		<cfset variables.crumb=variables.crumbIterator.next()>
-		<cfif listFindNoCase('Folder',variables.crumb.getType())>
+		<cfif listFindNoCase('Folder,Calendar',variables.crumb.getType())>
 			<cfset arguments.objectid=variables.crumb.getContentID()>
 			<cfbreak>
 		</cfif>
