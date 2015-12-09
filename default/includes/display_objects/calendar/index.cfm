@@ -69,7 +69,7 @@
 			data-items="#esapiEncode('html_attr',serializeJSON($.content().getObjectParam(param='items',defaultValue=[])))#"
 			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
 			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewdefault',defaultValue="month"))#"
-			data-format="#esapiEncode('html_attr',$.content().getObjectParam(param='displayformat',defaultValue="calendar"))#"
+			data-format="#esapiEncode('html_attr',$.content().getObjectParam(param='format',defaultValue="calendar"))#"
 			data-displaylist="#esapiEncode('html_attr',$.content('displaylist'))#"
 			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
 			data-sortby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
@@ -86,7 +86,7 @@
 		<cfparam name="objectParams.viewoptions" default="agendaDay,agendaWeek,month">
 		<cfparam name="objectParams.viewdefault" default="month">
 		<cfparam name="objectParams.displaylist" default="#$.content('displaylist')#">
-		<cfparam name="objectParams.ormat" default="calendar">
+		<cfparam name="objectParams.format" default="calendar">
 		<cfparam name="objectParams.nextn" default="#$.content('next')#">
 		<cfparam name="objectParams.categoryid" default="">
 		<cfparam name="objectParams.startrow" default="1">
