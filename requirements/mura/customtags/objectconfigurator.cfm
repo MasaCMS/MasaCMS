@@ -36,11 +36,14 @@
 	</cfif>
 <cfelseif thisTag.ExecutionMode eq 'end'>
 	<cfset $=application.serviceFactory.getBean("muraScope").init(session.siteid)>
-	<cfif $.getContentRenderer().useLayoutManager() and not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
+
+	<cfif $.getContentRenderer().useLayoutManager()>
+
 	</div>
 	<cfoutput>
 	<div class="fieldset-wrap">
 		<div class="fieldset">
+			<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 			<div class="control-group">
 		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
 				<div class="controls">
@@ -89,6 +92,7 @@
 					</select>
 				</div>
 			</div>
+			</cfif>
 			<div class="control-group">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
@@ -99,6 +103,7 @@
 			</div>
 		</div>
 	</div>
+	<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
 	<div class="fieldset-wrap">
 		<div class="fieldset">
 			<div id="labelContainer"class="control-group">
@@ -109,6 +114,7 @@
 			</div>	 
 		</div>
 	</div>
+	</cfif>
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 	</cfoutput>
 	</div>
