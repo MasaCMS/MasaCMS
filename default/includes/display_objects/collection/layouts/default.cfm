@@ -7,7 +7,7 @@
 	theFile='dsp_content_list.cfm', 
 	type=arguments.objectParams.sourcetype, 
 	iterator=variables.iterator,
-	imageSize='small',
+	imageSize=arguments.objectParams.imageSize,
 	imageWidth=arguments.objectParams.imageWidth,
 	imageHeight=arguments.objectParams.imageHeight,
 	fields=arguments.objectParams.displaylist

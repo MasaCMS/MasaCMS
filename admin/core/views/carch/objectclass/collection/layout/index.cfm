@@ -24,7 +24,39 @@
 				</div>
 			</div>
 		</div>
-		
+		<div id="imagesizecontainer" class="control-group" style="display:none">	
+	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+			<div class="controls">
+					<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10">
+						<cfloop list="Small,Medium,Large" index="i">
+							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+						</cfloop>
+				
+						<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+												
+						<cfloop condition="imageSizes.hasNext()">
+							<cfset image=imageSizes.next()>
+							<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+						</cfloop>
+							<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
+					</select>
+			</div>
+		</div>
+			
+		<div id="imageoptionscontainer" class="control-group span12" style="display:none">
+			<div class="span6">	
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				<div class="controls">
+		      		<input class="objectParam span12" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+		      	</div>
+		    </div>
+			<div class="span6">						
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+				<div class="controls">
+					<input class="objectParam span12" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+				</div>
+			</div>	
+		</div>
 
 		<div class="control-group" id="availableFields">
 			<label class="control-label">

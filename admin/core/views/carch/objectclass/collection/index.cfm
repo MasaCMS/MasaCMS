@@ -299,6 +299,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								
 							}
 						}).disableSelection();
+
+
+						function setImageOptions(){
+							if($('select[name="layout"]').val()=='default'){
+								$('##imagesizecontainer').show()
+								
+								if($('select[name="imageSize"]').val()=='custom'){
+									$('##imageoptionscontainer').show()
+								}else{
+									$('##imageoptionscontainer').hide();
+									$('##imageoptionscontainer').find(':input').val('AUTO');
+								}
+							}else{
+								$('##imagesizecontainer').hide();
+								$('##imageoptionscontainer').hide()
+							}
+							
+						}
+
+						$('select[name="layout"], select[name="imageSize"]').change(setImageOptions);
+
+						setImageOptions();
+						
 					}
 				})
 			}

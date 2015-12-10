@@ -97,7 +97,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</div>
 						</div>
 					</div>
-					
+					<div id="imagesizecontainer" class="control-group" style="display:none">	
+				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+						<div class="controls">
+								<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10">
+									<cfloop list="Small,Medium,Large" index="i">
+										<option value="#lcase(i)#"<cfif i eq content.getImageSize()> selected</cfif>>#I#</option>
+									</cfloop>
+							
+									<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+															
+									<cfloop condition="imageSizes.hasNext()">
+										<cfset image=imageSizes.next()>
+										<option value="#lcase(image.getName())#"<cfif image.getName() eq content.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
+									</cfloop>
+										<option value="custom"<cfif "custom" eq content.getImageSize()> selected</cfif>>Custom</option>
+								</select>
+						</div>
+					</div>
+						
+					<div id="imageoptionscontainer" class="control-group span12" style="display:none">
+						<div class="span6">	
+							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+							<div class="controls">
+					      		<input class="objectParam span12" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#content.getImageHeight()#" />
+					      	</div>
+					    </div>
+						<div class="span6">						
+							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+							<div class="controls">
+								<input class="objectParam span12" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#content.getImageWidth()#" />
+							</div>
+						</div>	
+					</div>
+
 					<div class="control-group" id="availableFields">
 						<label class="control-label">
 							<span class="span6">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectedfields')#</span>
@@ -190,6 +223,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 					}
 				}).disableSelection();
+
+				function setImageOptions(){
+					if($('select[name="layout"]').val()=='default'){
+						$('##imagesizecontainer').show()
+						
+						if($('select[name="imageSize"]').val()=='custom'){
+							$('##imageoptionscontainer').show()
+						}else{
+							$('##imageoptionscontainer').hide();
+							$('##imageoptionscontainer').find(':input').val('AUTO');
+						}
+					}else{
+						$('##imagesizecontainer').hide();
+						$('##imageoptionscontainer').hide()
+					}
+					
+				}
+
+				$('select[name="layout"], select[name="imageSize"]').change(setImageOptions);
+
+				setImageOptions();
 			});
 		</script>
 		</cfoutput>
