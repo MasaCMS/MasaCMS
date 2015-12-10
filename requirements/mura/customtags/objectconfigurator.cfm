@@ -22,6 +22,7 @@
 
 		<cfparam name="attributes.configurable" default="true">
 		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
+		<cfparam name="attributes.params.cssclass" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
 	</cfsilent>
@@ -88,6 +89,14 @@
 					</select>
 				</div>
 			</div>
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+				</label>
+				<div class="controls">
+					<input name="cssclass" class="objectParam span12" type="text" value="#esapiEncode('html_attr',attributes.params.cssclass)#" maxlength="255">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="fieldset-wrap">
@@ -108,7 +117,7 @@
 		
 			var inited=false;
 
-			$('select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
+			$('input[name="cssclass"],select[name="alignment"],select[name="width"],select[name="offset"]').on('change', function() {
 				setPlacementVisibility();
 			});
 
@@ -155,6 +164,18 @@
 		  					updateDraft();
 		  				}
 		  				
+		  			}
+		  		}
+
+		  		var cssclassInput=$('input[name="cssclass"]');
+		  		
+		  		if(cssclassInput.val()){
+		  		
+		  				if(classInput.val() ){
+		  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
+		  				} else {
+		  					classInput.val(cssclassInput.val());
+		  				}
 		  			}
 		  		}
 			}

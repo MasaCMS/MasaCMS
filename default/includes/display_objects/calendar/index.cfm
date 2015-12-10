@@ -77,7 +77,16 @@
 			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
 			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
 			data-layout="#esapiEncode('html_attr',variables.$.content().getObjectParam('layout'))#"
-			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#">>>
+			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#"
+			data-cssclass="#esapiEncode('html_attr',variables.$.content().getObjectParam('cssclass'))#"
+			<cfif $.content().getObjectParam(param='format',defaultValue="calendar") eq 'list' and $.content().getObjectParam(param='layout',defaultValue="default") eq 'default'>
+					data-imagesize="#esapiEncode('html_attr',variables.$.content('imageSize'))#"
+					<cfif variables.$.content('imageSize') eq 'custom'>
+						data-imageheight="#esapiEncode('html_attr',variables.$.content('imageHeight'))#"
+						data-imagewidth="#esapiEncode('html_attr',variables.$.content('imageWith'))#"
+					</cfif>
+			</cfif>
+			>
 		</div>
 	</cfif>
 <cfelse>

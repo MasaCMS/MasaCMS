@@ -397,7 +397,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var tz=createObject( "java", "java.util.TimeZone" );
 
 		if(isDefined('arguments.timezone')){
-			return tz.getJavaTimezone(arguments.timezone);
+			return tz.getTimezone(arguments.timezone);
 		} else {
 			return tz;
 		}

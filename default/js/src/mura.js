@@ -1548,6 +1548,20 @@
 			}	
 		}
 
+		if(obj.data('cssclass')){
+			var classes=obj.data('cssclass');
+
+			if(typeof classes != 'array'){
+				var classes=classes.split(' ');
+			}
+			
+			for(var c in classes){
+				if(!obj.hasClass(classes[c])){
+					obj.addClass(classes[c]);
+				}
+			}	
+		}
+
 		if(response){
 			if(typeof response == 'string'){
 				obj.html(trim(response));
