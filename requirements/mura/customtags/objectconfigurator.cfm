@@ -170,13 +170,11 @@
 		  		var cssclassInput=$('input[name="cssclass"]');
 		  		
 		  		if(cssclassInput.val()){
-		  		
-		  				if(classInput.val() ){
-		  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
-		  				} else {
-		  					classInput.val(cssclassInput.val());
-		  				}
-		  			}
+	  				if(classInput.val() ){
+	  					classInput.val(classInput.val() + ' ' + cssclassInput.val());
+	  				} else {
+	  					classInput.val(cssclassInput.val());
+	  				}
 		  		}
 			}
 
