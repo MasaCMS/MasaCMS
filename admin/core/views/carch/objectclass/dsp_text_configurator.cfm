@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset objectParams={}>
 	</cfif>
-	<cfparam name="objectParams.sourcetype" default="">
+	<cfparam name="objectParams.sourcetype" default="freetext">
 	<cfparam name="objectParams.source" default="">
 	<cfset data=structNew()>
 	<cfset hasModuleAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
