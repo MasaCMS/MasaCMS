@@ -9,7 +9,7 @@
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<cfif $.content('type') neq 'Variation'>
-						<a href="##" id="mura-objects-legacy-btn" class="btn btn-default">View Legacy Objects</a>
+						<button id="mura-objects-legacy-btn" class="btn btn-default">View Legacy Objects</button>
 						</cfif>
 						<h3>Content Objects</h3>
 					</div>
@@ -86,9 +86,9 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<a href="##" class="mura-objects-back-btn btn btn-default">
+						<button class="mura-objects-back-btn btn btn-default">
 							<i class="icon-circle-arrow-left"></i> Back
-						</a>
+						</button>
 						<h3>Legacy Objects</h3>
 					</div>
 					<div class="mura-sidebar__objects-list__object-group-items controls">
@@ -142,7 +142,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<a href="javascript:" class="mura-objects-back-btn btn btn-default" id="mura-deactivate-editors">Done Editing</a>
+						<button class="mura-objects-back-btn btn btn-default" id="mura-deactivate-editors">Done Editing</button>
 					</div>
 				</div>
 

@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://cksource.com/ckfinder
- * Moveright (C) 2007-2014, CKSource - Frederico Knabben. All rights reserved.
+ * Moveright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, THIS file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, moveing,
