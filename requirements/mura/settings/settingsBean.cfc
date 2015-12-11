@@ -813,7 +813,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
 		
 		<cfif directoryExists(dir)>
-			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">
+			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm|*.html|*.hbs">
 			<cfquery name="rs" dbType="query">
 			select * from rs order by name
 			</cfquery>
@@ -823,7 +823,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfdefaultcase>
 		
-		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm">
+		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm|*.html|*.htm|*.hbs">
 		<cfquery name="rs" dbType="query">
 			select * from rs order by name
 		</cfquery>
@@ -831,6 +831,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	
 	<cfreturn rs />
+</cffunction>
+
+<cffunction name="getLayouts" access="public" output="false">
+	<cfargument name="type" required="true" default="collection/layouts">
+	<cfset var rs1 = "">
+	<cfset var rs2 = "">
+	<cfset var rsFinal = "">
+	<cfset var dir1=expandPath("#getIncludePath()#/includes/display_objects/#lcase(arguments.type)#")>
+	<cfset var dir2=expandPath("#getThemeIncludePath()#/display_objects/#lcase(arguments.type)#")>
+
+	<cfif directoryExists(dir1)>
+		<cfdirectory action="list" directory="#dir1#" name="rs1" filter="*.cfm|*.html|*.hbs">
+	</cfif>
+	
+	<cfif directoryExists(dir2)>
+		<cfdirectory action="list" directory="#dir2#" name="rs2" filter="*.cfm|*.html|*.hbs">
+	</cfif>
+
+	<cfif isQuery(rs1) and isQuery(rs2)>
+		<cfquery name="rsFinal" dbType="query">
+			select name from rs1
+
+			union
+
+			select name from rs2
+		</cfquery>
+	<cfelseif isQuery(rs1)>
+		<cfset rsFinal=rs1>
+	<cfelseif isQuery(rs2)>
+		<cfset rsFinal=rs2>
+	<cfelse>
+		<cfset rsFinal=queryNew("name")>
+	</cfif>
+
+	<cfquery name="rsFinal" dbType="query">
+	select name from rsFinal order by name asc
+	</cfquery>
+	
+	<cfreturn rsFinal />
 </cffunction>
 
 <cffunction name="isValidDomain" output="false" returntype="boolean">

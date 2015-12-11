@@ -90,8 +90,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</label>
 							<div class="controls">
 								<select name="layout" class="objectParam span12">
-									<cfloop list="default,a,b,c,d,e" index="i">
-										<option name="#i#"<cfif content.getLayout() eq i> selected</cfif>>#i#</option>
+									<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
+									<cfset layout=content.getLayout()>
+									<cfset layout=(len(layout)) ? layout :' default.cfm'>
+									<cfloop query="layouts">
+										<option value="#layouts.name#"<cfif content.getLayout() eq layouts.name> selected</cfif>>#listFirst(layouts.name,'.')#</option>
 									</cfloop>
 								</select>
 							</div>

@@ -263,6 +263,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates(arguments.type) />
 </cffunction>
 
+<cffunction name="getLayouts" returntype="query" access="public" output="false">
+	<cfargument name="siteid" type="string" required="true">
+	<cfargument name="type" type="string" required="true" default="collection/layouts">
+	<cfreturn variables.settingsManager.getSite(arguments.siteID).getLayouts(arguments.type) />
+</cffunction>
+
 <cffunction name="getRestrictGroups" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">

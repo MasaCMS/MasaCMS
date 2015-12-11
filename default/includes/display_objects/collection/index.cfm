@@ -1,7 +1,7 @@
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
-	<cfparam name="objectParams.layout" default="default">
+	<cfparam name="objectParams.layout" default="default.cfm">
 	<cfparam name="objectParams.displaylist" default="Date,Title,Summary,Credits,Tags">
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
@@ -12,14 +12,18 @@
 	<cfparam name="objectParams.viewalllabel" default="">
 
 	<cfif not len(objectparams.layout)>
-		<cfset objectParams.layout='default'>
+		<cfset objectParams.layout='default.cfm'>
+	</cfif>
+
+	<cfset objectParams.layout=listLast(replace(objectParams.layout, "\", "/", "ALL"),"/")>
+
+	<cfif not listLen(objectParams.layout,'.') gt 1>
+		<cfset objectParams.layout=objectParams.layout & ".cfm">
 	</cfif>
 </cfsilent>
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfsilent>
 		<cfset variables.pagination=''>
-
-		<cfset objectParams.layout=listFirst(listLast(replace(objectParams.layout, "\", "/", "ALL"),'/'),'.')>
 
 		<cfswitch expression="#objectParams.sourceType#">
 			<cfcase value="relatedcontent">
@@ -192,7 +196,7 @@
 	<div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
 	<div class="mura-object-content">
 		#variables.$.dspObject_include(
-					theFile='collection/layouts/#objectParams.layout#.cfm', 
+					theFile='collection/layouts/#objectParams.layout#', 
 					propertyMap=propertyMap, 
 					iterator=iterator, 
 					objectParams=objectParams

@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
                 <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
                 <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
