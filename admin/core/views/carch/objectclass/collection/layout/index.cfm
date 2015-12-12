@@ -2,7 +2,7 @@
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
 <cfset params=deserializeJSON(form.params)>
 <cfparam name="params.maxitems" default="4">
-<cfparam name="params.displaylist" default="Date,Title,Summary,Credits,Tags">
+<cfparam name="params.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
 <cfset feed=$.getBean("feed").loadBy(feedID=params.source)>
 <cfset feed.set(params)>
 <cfparam name="params.sourcetype" default="local">
