@@ -97,8 +97,10 @@
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 	      			<span id="mover1" class="text"> 
 	      				<cfif arrayLen(rc.crumbData)>
-	      					<cfif rc.contentBean.getIsNew()>
-	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+	      					<cfif rc.contentBean.exists() and arrayLen(rc.crumbData) gte 2>
+	      						"#rc.crumbData[2].menutitle#"
+	      					<cfelse>
+	      						"#rc.crumbData[1].menutitle#"
 	      					</cfif>
 	      				</cfif>
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
