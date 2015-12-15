@@ -369,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			
 			var currentdate=createObject('java','java.lang.System').currentTimeMillis();
-			var offset=(tz.getJavaTimezone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
+			var offset=(tz.getTimezone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
 			
 			if(offset > 0){
 				offset = 0 - abs(offset);
@@ -385,7 +385,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	   		arguments.datetime= dateAdd(
 				"s",
-	   			(tz.getJavaTimezone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
+	   			(tz.getTimezone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
 	   			arguments.datetime
 	   		);
    			

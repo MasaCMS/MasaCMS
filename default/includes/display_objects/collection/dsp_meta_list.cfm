@@ -93,10 +93,14 @@
 						<#variables.$.getContentListPropertyValue(arguments.field,'tag',arguments.propertyMap)# class="mura-item-meta__date">
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							#variables.$.getContentListLabel(arguments.field,arguments.propertyMap)#
-							<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>
-								<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#</time>
+							<cfif variables.$.globalConfig('advancedScheduling')>
+									#item.getDisplayIntervalDesc()#
 							<cfelse>
-								<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</time>
+								<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>
+									<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#</time>
+								<cfelse>
+									<time>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</time>
+								</cfif>
 							</cfif>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp",arguments.propertyMap)#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>

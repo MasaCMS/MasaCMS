@@ -307,4 +307,57 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn getContentBean().getExtendedAttributesQuery(name=arguments.name) />
 </cffunction>
 
+<cffunction name="setDisplayInterval" output="false">
+	<cfargument name="displayInterval">
+
+	<cfif not isSimpleValue(arguments.displayInterval)>
+		<cfif isDefined('arguments.displayInterval.end') >
+			<cfif arguments.displayInterval.end eq 'on'
+			and isDefined('arguments.displayInterval.endon') 
+			and isDate(arguments.displayInterval.endon)>
+				<cfset setValue('displayStop',arguments.displayInterval.end)>
+			<cfelseif arguments.displayInterval.end eq 'after'
+				and isDefined('arguments.displayInterval.endafter') 
+				and isNumeric(arguments.displayInterval.endafter)
+				or arguments.displayInterval.end eq 'never'>
+				<cfif isDate(getValue('displayStop'))>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
+				<cfelse>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+				</cfif>
+			</cfif>
+		</cfif>
+		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
+	</cfif>
+
+	<cfset variables.instance.struct.displayInterval=arguments.displayInterval>
+	<cfset getContentBean().setValue("displayInterval", arguments.displayInterval)>
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayIntervalDesc" output="false">
+	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this)>
+</cffunction>
+
+<cffunction name="getDisplayInterval" output="false">
+	<cfargument name="deserialize" default="false">
+	
+	<cfif structKeyExists(variables.instance.struct,"displayInterval")>
+		<cfset var result=variables.instance.struct["displayInterval"]>
+	<cfelse>
+		<cfset var result=getContentBean().getValue("displayInterval")>
+	</cfif>
+
+	<cfif arguments.deserialize>
+		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+			interval=result,
+			displayStart=getValue('displayStart'),
+			displayStop=getValue('displayStop')
+		)>
+	<cfelse>
+		<cfreturn result>
+	</cfif>
+	
+</cffunction>
+
 </cfcomponent>

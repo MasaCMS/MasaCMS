@@ -2646,6 +2646,12 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderObjectClassOption(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="renderIntervalDesc" output="false">
+	<cfargument name="content">
+	<cfset arguments.renderer=this>
+	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
+</cffunction>
+
 <cfscript>
 	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
 		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);
