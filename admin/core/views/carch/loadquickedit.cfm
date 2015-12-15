@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cf_datetimeselector name="displayStart" datetime="#content.getDisplayStart(timezone=displayInterval.timezone)#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
 				<cf_datetimeselector name="displayStop" datetime="#content.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"></span>
 			</div>
+			<cfif len(rc.$.globalConfig('tzRegex'))>
 			<div id="mura-tz-container" style="display:none">
 				<!---
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.timezone')#</label>
@@ -136,6 +137,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 				</div>
 			</div>
+			<cfelse>
+				<cfset tz=CreateObject("java", "java.util.TimeZone")>
+				<cfset defaultTZ=tz.getDefault().getID()>
+				<input type="hidden" name="displayIntervalTZ" id="displayIntervalTZ" value="#defaultTZ#">
+			</cfif>
 			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',content.getDisplayInterval())#">
 			<input name="convertDisplayTimeZone" type="hidden" value="true">
 
