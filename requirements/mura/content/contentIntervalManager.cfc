@@ -127,7 +127,7 @@
 	<cfparam name="data.detectspan" default="3">
 
 	<cfif not structKeyExists(data,'end')>
-		<cfif isDate(arguments.displayStop)>
+		<cfif not len(arguments.displayStart) or isDate(arguments.displayStop)>
 			<cfset data.end='on'>
 			<cfset data.endon=arguments.displayStop>
 		<cfelse>
