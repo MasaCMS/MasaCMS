@@ -1436,7 +1436,10 @@ Display Objects
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
-					</cfif>			
+					</cfif>
+					<cfif variables.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+						<p>#$.content().getDisplayIntervalDesc()#</p>
+					</cfif>		
 				</cfoutput>
 
 				<!--- For backwards compatibility --->
