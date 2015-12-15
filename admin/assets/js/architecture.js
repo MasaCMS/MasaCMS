@@ -1744,7 +1744,7 @@ buttons: {
 
 						setDatePickers("#mura-datepicker-displayStart", dtLocale, dtCh);
 						setDatePickers("#mura-datepicker-displayStop", dtLocale, dtCh);
-						setDatePickers("#mura-datepicker-displayIntervalEndOn", dtLocale, dtCh);
+						setDatePickers("#displayIntervalEndOn", dtLocale, dtCh);
 						
 						if($("#hasDraftsMessage").length) {
 							dd.addClass("hasDraft");

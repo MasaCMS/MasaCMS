@@ -122,7 +122,7 @@
 	<cfparam name="data.type" default="daily">
 	<cfparam name="data.endafter" default="0">
 	<cfparam name="data.endon" default="">
-	<cfparam name="data.allday" default="0">
+	<cfparam name="data.allday" default="1">
 	<cfparam name="data.detectconflicts" default="0">
 	<cfparam name="data.detectspan" default="3">
 
