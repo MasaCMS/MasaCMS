@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arraySort(timezones,'text')>
 				<select name="displayIntervalTZ" id="displayIntervalTZ" class="mura-repeat-option">
 					<option value="#defaultTZ#"<cfif defaultTZ eq displayInterval.timezone> selected </cfif>>
-							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')#
+							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.default')# (#defaultTZ#)
 					</option>
 					<cfloop array="#timezones#" index="i">
 						<cfif i neq defaultTZ and (len(rc.$.globalConfig('tzRegex')) and refind(rc.$.globalConfig('tzRegex'),i) or not len(rc.$.globalConfig('tzRegex')))>
