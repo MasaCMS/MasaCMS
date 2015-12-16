@@ -12,7 +12,6 @@
 						, crumbList=false
 						, showMetaImage=true
 						, metaImageClass='thumbnail'
-						, displayIntervalDesc=$.content().getDisplayIntervalDesc()
 					)#
 					#$.dspObjects(2)#
 				</section>

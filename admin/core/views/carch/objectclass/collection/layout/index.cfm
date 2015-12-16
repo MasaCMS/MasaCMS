@@ -16,12 +16,15 @@
 					#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
 				</label>
 				<div class="controls">
+					<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
+					<cfset layout=feed.getLayout()>
+					<cfset layout=(len(layout)) ? layout :' default.cfm'>
 					<select name="layout" class="objectParam span12">
-						<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
-						<cfset layout=feed.getLayout()>
-						<cfset layout=(len(layout)) ? layout :' default.cfm'>
+						<option value="default"<cfif feed.getLayout() eq "default.cfm"> selected</cfif>>default</option>
 						<cfloop query="layouts">
+							<cfif layouts.name neq 'default.cfm'>
 							<option value="#layouts.name#"<cfif feed.getLayout() eq layouts.name> selected</cfif>>#listFirst(layouts.name,'.')#</option>
+							</cfif>
 						</cfloop>
 					</select>
 				</div>
