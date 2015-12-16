@@ -220,7 +220,10 @@ var siteManager = {
 			return false;
 		}
 
-
+		if(!validateForm(document.contentForm)){
+			return false;
+		}
+		
 		if(document.contentForm.approved.value == 1 && draftremovalnotice != "" && !confirm(draftremovalnotice)) {
 			return false;
 		}
