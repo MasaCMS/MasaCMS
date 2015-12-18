@@ -1074,13 +1074,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setUseSSL" access="public" output="false">
-	<cfargument name="useSSL"  />
-	<cfif isNumeric(arguments.useSSL)>
-		<cfset variables.instance.useSSL = arguments.useSSL />
+<cffunction name="setUseSSL" output="false">
+	<cfargument name="useSSL">
+
+	<cfif isBoolean(arguments.useSSL)>
+		<cfif arguments.useSSL>
+			<cfset variables.instance.useSSL=1>
+			<cfset variables.instance.extranetSSL=1>
+		<cfelse>
+			<cfset variables.instance.useSSL=0>
+			<cfset variables.instance.extranetSSL=0>
+		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
+
 
 <cffunction name="getContext" output="false">
 	<cfif getValue('isRemote')>
