@@ -20,9 +20,11 @@
 <cfif rc.layoutmanager>
 	<cfoutput>
 	<div id="configuratorContainer">
-		
-		<a class="btn btn-default" onclick="frontEndProxy.post({cmd:'showobjects'});"><i class="icon-circle-arrow-left"></i> Back</a>
-		
+		<cfif rc.sourceFrame eq 'sidebar'>
+			<a class="btn btn-default" onclick="frontEndProxy.post({cmd:'showobjects'});">
+		<i class="icon-circle-arrow-left"></i> Back</a>
+		</cfif>
+	
 		<h1 id="configuratorHeader"></h1>
 		
 		<div class="clearfix">
