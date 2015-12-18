@@ -774,6 +774,10 @@
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
 
+			result.template=renderer.getTemplate();
+			result.metakeywords=renderer.getMetaKeyWords();
+			result.metadesc=renderer.getMetaDesc();
+
 			$.event('response',result);
 
 			if(result.type != 'Variation'){

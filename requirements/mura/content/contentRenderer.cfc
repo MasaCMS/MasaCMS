@@ -2125,7 +2125,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.getMetaDesc(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getMetaKeyWords"  output="false" returntype="string">
+<cffunction name="getMetaKeywords"  output="false" returntype="string">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getMetaKeyWords(argumentCollection=arguments)>
 </cffunction>
@@ -2740,6 +2740,25 @@ Display Objects
  	public function useLayoutManager(){
  		return this.layoutmanager;
  	}
+
+ 	public function registerDisplayObject(
+ 			object,name='',
+ 			displaymethod='',
+ 			displayobjectFile='',
+ 			configuratorJS='',
+ 			configuratorInit='',
+ 			siteid='#variables.$.event('siteid')#'){
+ 		getBean('settingsManager').getSite(arguments.siteid).registerDisplayObject(argumentCollection=arguments);
+ 		return this;
+	}
+
+	public function hasDisplayObject(object,siteid='#variables.$.event('siteid')#'){
+		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
+
+	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
+		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
 
 </cfscript>
 
