@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset objectParams={}>
 	</cfif>
-	<cfparam name="objectParams.sourcetype" default="freetext">
+	<cfparam name="objectParams.sourcetype" default="custom">
 	<cfparam name="objectParams.source" default="">
 	<cfset data=structNew()>
 	<cfset hasModuleAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="controls">
 						<select class="objectParam span12" name="sourcetype">
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcontentsource')#</option> 	
-							<option <cfif objectParams.sourcetype eq 'freetext'>selected </cfif>value="freetext">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.freetext')#</option>	
+							<option <cfif objectParams.sourcetype eq 'custom'>selected </cfif>value="custom">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>	
 							<option <cfif objectParams.sourcetype eq 'boundattribute'>selected </cfif>value="boundattribute">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.boundattribute')#</option>
 							<!---
 							<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
@@ -96,11 +96,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					</div>
 				</div>
-				<div id="freetextcontainer" class="control-group source-container" style="display:none">
+				<div id="customcontainer" class="control-group source-container" style="display:none">
 					<div class="controls">
 					
 					</div>
-					<textarea name="source" id="freetext" style="display:none;"><cfif objectParams.sourceType eq 'freetext'>#objectParams.source#</cfif></textarea>
+					<textarea name="source" id="custom" style="display:none;"><cfif objectParams.sourceType eq 'custom'>#objectParams.source#</cfif></textarea>
 					<script>
 					$(function(){
 						$('##editSource').click(function(){
@@ -202,8 +202,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				var val=$('select[name="sourcetype"]').val();
 
-				if(val=='freetext'){
-					$('##freetext').addClass('objectParam');
+				if(val=='custom'){
+					$('##custom').addClass('objectParam');
 					$('##editSource').show();
 					$('input[name="render"]').val('client');
 					$('input[name="async"]').val('false');
