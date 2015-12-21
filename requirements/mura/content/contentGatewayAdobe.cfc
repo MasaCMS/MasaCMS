@@ -1556,7 +1556,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1651,7 +1653,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename,tcontentfilemetadata.altText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END
 		
 		
 		<cfif kw neq ''>	
@@ -1661,7 +1665,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 		FROM tcontent 
 		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1712,33 +1718,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,tfiles.filename, tcontentfilemetadata.altText,
+		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END
 	</cfif>
+	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
 	</cfquery> 
 	
-	<cfif variables.configBean.getDbType() neq 'oracle'>
-		<cfquery name="rsPrivateSearch" dbtype="query">
-		select *,0 as supersort from rsPrivateSearch 
-		where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-		
-
-		UNION
-
-		select *,1 as supersort from rsPrivateSearch 
-		where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-		
-		</cfquery>
-
-		<cfquery name="rsPrivateSearch" dbtype="query">
-		select * from rsPrivateSearch 
-		order by supersort, priority, title
-		</cfquery>
-	</cfif>
-
 	<cfreturn rsPrivateSearch />
 </cffunction>
 
@@ -1765,8 +1751,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
-	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.created sortdate, 0 priority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
+	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1878,8 +1866,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
-	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText
+	tcontent.releaseDate sortdate, 0 priority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, 
+	tcontent.expires,tfiles.filename as assocFilename, tcontentfilemetadata.altText as fileAltText,
+	CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
+		or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END AS superSort
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1980,32 +1970,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				#renderMobileClause()#			
+
+	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
 	</cfquery>
 
-	<cfif variables.configBean.getDbType() neq 'oracle'>
-		<cfquery name="rsPublicSearch" dbtype="query">
-			select *, 0 as supersort
-			from rsPublicSearch 
-			where (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-
-			UNION 
-
-			select *, 1 as supersort
-			from rsPublicSearch 
-			where not (title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-					or menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
-				)
-			
-		</cfquery>
-
-		<cfquery name="rsPublicSearch" dbtype="query">
-		select * from rsPublicSearch 
-		order by supersort, sortpriority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
-		</cfquery>
-	</cfif>
-	
 	<cfreturn rsPublicSearch />
 </cffunction>
 
