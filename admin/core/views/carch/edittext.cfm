@@ -36,7 +36,7 @@ $(function(){
 				source:$('##source').val(),
 				render:'client',
 				async:false,
-				sourcetype:'freetext'
+				sourcetype:'custom'
 				}
 			});
 	});
@@ -54,7 +54,7 @@ $(function(){
 				}
 
 				console.log(parameters)
-				if(parameters["params"].sourcetype == 'freetext'){}
+				if(parameters["params"].sourcetype == 'custom'){}
 					$('##source').val(parameters["params"].source);
 				}
 				
