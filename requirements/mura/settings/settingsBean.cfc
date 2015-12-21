@@ -813,7 +813,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
 		
 		<cfif directoryExists(dir)>
-			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm|*.html|*.hbs">
+			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm|*.html|*.htm|*.hbs">
 			<cfquery name="rs" dbType="query">
 			select * from rs order by name
 			</cfquery>
@@ -842,11 +842,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var dir2=expandPath("#getThemeIncludePath()#/display_objects/#lcase(arguments.type)#")>
 
 	<cfif directoryExists(dir1)>
-		<cfdirectory action="list" directory="#dir1#" name="rs1" filter="*.cfm|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir1#" name="rs1" filter="*.cfm|*.html|*.html|*.hbs">
 	</cfif>
 	
 	<cfif directoryExists(dir2)>
-		<cfdirectory action="list" directory="#dir2#" name="rs2" filter="*.cfm|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir2#" name="rs2" filter="*.cfm|*.html|*.html|*.hbs">
 	</cfif>
 
 	<cfif isQuery(rs1) and isQuery(rs2)>

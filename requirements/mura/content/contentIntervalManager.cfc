@@ -124,7 +124,7 @@
 	<cfparam name="data.endon" default="">
 	<cfparam name="data.allday" default="1">
 	<cfparam name="data.detectconflicts" default="0">
-	<cfparam name="data.detectspan" default="3">
+	<cfparam name="data.detectspan" default="12">
 
 	<cfif not structKeyExists(data,'end')>
 		<cfif not len(arguments.displayStart) or isDate(arguments.displayStop)>

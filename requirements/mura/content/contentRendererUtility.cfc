@@ -813,7 +813,7 @@
 				<cfreturn event.getValue('contentBean').getTemplate() />
 			<cfelseif arrayLen(crumbdata) gt 1>
 				<cfloop from="2" to="#arrayLen(crumbdata)#" index="I">
-					<cfif  crumbdata[I].template neq ''>
+					<cfif listFindNoCase('cfm,cfml,htm,html,hbs',listLast(crumbdata[I].template,'.'))>
 						<cfreturn crumbdata[I].template />
 					</cfif>
 				</cfloop>
@@ -1741,7 +1741,7 @@
 			<cfif allday>
 				<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
 			<cfelse>
-				<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone))>
+				<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone)) & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 			</cfif>
 		<cfelse>
 			<cfif dateCompare(now(),arguments.content.getDisplayStart(),'d') eq -1>
