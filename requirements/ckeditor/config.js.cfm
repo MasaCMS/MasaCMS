@@ -89,7 +89,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_Default = [
 			{name: 'group1', items:['Source']},
-			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -102,7 +102,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_QuickEdit = [
 			{name: 'group1', items:['Sourcedialog']},
-			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items:['BidiLtr','BidiRtl']},'/',
 			{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -115,7 +115,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_Summary = [
 			{name: 'group1', items: ['Source']},
-			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -128,7 +128,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_Form = [
 			{name: 'group1', items: ['Source']},
-			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+			{name: 'group2', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print']},
 			{name: 'group3', items: ['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 			{name: 'group4', items: ['BidiLtr','BidiRtl']},
 			{name: 'group5', items: ['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},
@@ -151,7 +151,7 @@ CKEDITOR.editorConfig = function( config )
 
 		config.toolbar_htmlEditor = [
 			{name: 'group0', items: ['Source']},
-			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','-','SpellChecker','Scayt']},
+			{name: 'group1', items: ['Cut','Copy','Paste','PasteText','PasteFromWord']},
 			{name: 'group2', items: ['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']},
 			{name: 'group3', items: ['Selectlink','SelectComponent','Templates']},
 		];

@@ -1730,6 +1730,8 @@
 
 		<cfif not isDate(arguments.content.getdisplayStart())>
 			<cfreturn ''>
+		<cfelseif content.hasParent()>
+			<cfset returnstring=esapiEncode('html',UCase(content.getParent().getMenuTitle())) & ': '>
 		</cfif>
 
 		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
@@ -1739,13 +1741,13 @@
 			and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 			and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
 			<cfif allday>
-				<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
+				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')>
 			<cfelse>
-				<cfreturn LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone)) & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
+				<cfreturn returnstring & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.from') & ' ' & LSTimeFormat(arguments.content.getDisplayStart(timezone=displayInterval.timezone)) & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to') & ' ' & LSTimeFormat(arguments.content.getDisplayStop(timezone=displayInterval.timezone)) & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 			</cfif>
 		<cfelse>
 			<cfif dateCompare(now(),arguments.content.getDisplayStart(),'d') eq -1>
-				<cfset returnstring= application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ', '>
+				<cfset returnstring= returnstring & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.starting') & ' ' & LSDateFormat(arguments.content.getdisplayStart(timezone=displayInterval.timezone),session.dateKeyFormat) & ', '>
 			</cfif>
 			<cfset returnstring= returnstring & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.#displayInterval.type#')>
 		</cfif>

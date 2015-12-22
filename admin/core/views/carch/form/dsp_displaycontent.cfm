@@ -97,7 +97,7 @@
 					</div>
 					<div class="controls mura-daysofweek" style="display:none">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#
-						<cfset daysofweekshortlabels=application.rbFactory.getKeyValue(session.rb,'calendar.weekdayShort')>
+						<cfset daysofweekshortlabels=application.rbFactory.getKeyValue(session.rb,'calendar.weekdayAbrev')>
 						<input class="mura-repeat-option" id="dow1" name="displayIntervalDays" type="checkbox" value="1"<cfif listFind(displayInterval.daysofweek,1)> checked</cfif>/> #listGetAt(daysofweekshortlabels,1)#
 						<input class="mura-repeat-option" id="dow2" name="displayIntervalDays" type="checkbox" value="2"<cfif listFind(displayInterval.daysofweek,2)> checked</cfif>/> #listGetAt(daysofweekshortlabels,2)#
 						<input class="mura-repeat-option" id="dow3" name="displayIntervalDays" type="checkbox" value="3"<cfif listFind(displayInterval.daysofweek,3)> checked</cfif>/> #listGetAt(daysofweekshortlabels,3)#
