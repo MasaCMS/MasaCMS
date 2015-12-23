@@ -228,6 +228,12 @@
 			"default"={tag="dd"}
 		};
 
+		this.contentGridStyleMap={
+			'layout-a'='layout-a',
+			'layout-b'='layout-b',
+			'layout-c'='layout-c'
+		};
+
 		this.contentListWrapperDivClass="";
 		this.contentListItemImageLinkClass="";
 		

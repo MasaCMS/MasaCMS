@@ -2820,7 +2820,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 									{
 									   if (typeof grecaptcha == 'object' )
 									   {
-									   	console.log(self)
+									   	//console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
@@ -3313,7 +3313,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						resolve(obj);
 					}
 				} else {
-					console.log(data);	
+					//console.log(data);	
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',

@@ -85,13 +85,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="objectclass/dsp_component_configurator.cfm">
 	</cfcase>
 	<cfcase value="folder">
-		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
+		<cfif rc.container eq 'layout'>
+			<cfinclude template="objectclass/collection/layout/index.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/dsp_folder_configurator.cfm">
+		</cfif>
 	</cfcase>
 	<cfcase value="calendar">
-		<cfinclude template="objectclass/dsp_calendar_configurator.cfm">
+		<cfif rc.container eq 'layout'>
+			<cfinclude template="objectclass/collection/layout/index.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/dsp_calendar_configurator.cfm">
+		</cfif>
 	</cfcase>
 	<cfcase value="gallery">
-		<cfinclude template="objectclass/dsp_gallery_configurator.cfm">
+		<cfif rc.container eq 'layout'>
+			<cfinclude template="objectclass/collection/layout/index.cfm">
+		<cfelse>
+			<cfinclude template="objectclass/dsp_gallery_configurator.cfm">
+		</cfif>
 	</cfcase>
 	<cfcase value="plugin">
 		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">

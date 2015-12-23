@@ -1,7 +1,7 @@
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
-	<cfparam name="objectParams.layout" default="default.cfm">
+	<cfparam name="objectParams.layout" default="default">
 	<cfparam name="objectParams.displaylist" default="Date,Title,Summary,Credits,Tags">
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
@@ -12,14 +12,13 @@
 	<cfparam name="objectParams.viewalllabel" default="">
 
 	<cfif not len(objectparams.layout)>
-		<cfset objectParams.layout='default.cfm'>
+		<cfset objectParams.layout='default'>
 	</cfif>
 
 	<cfset objectParams.layout=listLast(replace(objectParams.layout, "\", "/", "ALL"),"/")>
 
-	<cfif not listLen(objectParams.layout,'.') gt 1>
-		<cfset objectParams.layout=objectParams.layout & ".cfm">
-	</cfif>
+	<cfset objectParams.layout=objectParams.layout>
+	
 </cfsilent>
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfsilent>
@@ -156,13 +155,7 @@
 				</cfif>
 
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
-				
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
+			
 			</cfcase>
 			<cfdefaultcase>
 				<cfset iterator=$.getBean('feed')
@@ -196,18 +189,12 @@
 	<div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
 	<div class="mura-object-content">
 		#variables.$.dspObject_include(
-					theFile='collection/layouts/#objectParams.layout#', 
+					theFile='collection/layouts/#objectParams.layout#/index.cfm', 
 					propertyMap=propertyMap, 
 					iterator=iterator, 
 					objectParams=objectParams
 				)#
-
 	</div>
-	#variables.pagination#
-
-	<cfif len(objectParams.viewalllink)>
-		<a class="view-all" href="#arguments.objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
-	</cfif>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>

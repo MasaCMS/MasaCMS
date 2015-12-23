@@ -121,7 +121,7 @@
 							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
 						}
 
-						console.log(configOptions);
+						//console.log(configOptions);
 						
 						<cfset configuratorWidth=600>
 

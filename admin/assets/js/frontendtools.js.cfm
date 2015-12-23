@@ -566,7 +566,7 @@
 
 				var displayVariations=function(){
 					
-					console.log(mura.variations);
+					//console.log(mura.variations);
 
 					if(mura.variations.length){
 						mura(".mura-var-undo").show();

@@ -257,6 +257,7 @@ Display Objects
 		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		default={tag="dd"}
 	}>
+
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
@@ -2758,6 +2759,16 @@ Display Objects
 
 	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
 		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
+
+	public function getGridStyles(){
+		if(isDefined('this.#arguments.property#')){
+			return this[arguments.property];
+		} else if (isDefined('variables.#argumentsproperty#')){
+			return this[arguments.property];
+		}
+
+		return '';
 	}
 
 </cfscript>

@@ -83,87 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div class="fieldset-wrap">	
 				<div class="fieldset">
-				<div class="control-group">
-						<div class="span12">
-							<label class="control-label">
-								#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
-							</label>
-							<div class="controls">
-								<cfset layouts=rc.$.siteConfig().getLayouts('collection/layouts')>
-								<cfset layout=content.getLayout()>
-								<cfset layout=(len(layout)) ? layout :' default.cfm'>
-								<select name="layout" class="objectParam span12">
-									<option value="default"<cfif content.getLayout() eq "default.cfm"> selected</cfif>>default</option>
-									<cfloop query="layouts">
-										<cfif layouts.name neq 'default.cfm'>
-										<option value="#layouts.name#"<cfif content.getLayout() eq layouts.name> selected</cfif>>#listFirst(layouts.name,'.')#</option>
-										</cfif>
-									</cfloop>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div id="imagesizecontainer" class="control-group" style="display:none">	
-				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
-						<div class="controls">
-								<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10">
-									<cfloop list="Small,Medium,Large" index="i">
-										<option value="#lcase(i)#"<cfif i eq content.getImageSize()> selected</cfif>>#I#</option>
-									</cfloop>
-							
-									<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-															
-									<cfloop condition="imageSizes.hasNext()">
-										<cfset image=imageSizes.next()>
-										<option value="#lcase(image.getName())#"<cfif image.getName() eq content.getImageSize()> selected</cfif>>#esapiEncode('html',image.getName())#</option>
-									</cfloop>
-										<option value="custom"<cfif "custom" eq content.getImageSize()> selected</cfif>>Custom</option>
-								</select>
-						</div>
-					</div>
-						
-					<div id="imageoptionscontainer" class="control-group span12" style="display:none">
-						<div class="span6">	
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-							<div class="controls">
-					      		<input class="objectParam span12" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#content.getImageHeight()#" />
-					      	</div>
-					    </div>
-						<div class="span6">						
-							<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-							<div class="controls">
-								<input class="objectParam span12" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#content.getImageWidth()#" />
-							</div>
-						</div>	
-					</div>
-
-					<div class="control-group" id="availableFields">
-						<label class="control-label">
-							<span class="span6">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectedfields')#</span>
-							<button id="editFields" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
-							<script>
-								$(function(){
-									$('##editFields').click(function(){
-										frontEndProxy.post({
-											cmd:'openModal',
-											src:'?muraAction=cArch.selectfields&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&displaylist=' + $("##displayList").val()
-											}
-										);
-									});
-								});
-							</script>	
-						</label>
-						<div id="sortableFields" class="controls sortable-sidebar">
-							<cfset displayList=content.getDisplayList()>
-							<ul id="displayListSort" class="displayListSortOptions">
-								<cfloop list="#displayList#" index="i">
-									<li class="ui-state-highlight">#trim(i)#</li>
-								</cfloop>
-							</ul>
-							
-							<input type="hidden" id="displayList" class="objectParam" value="#esapiEncode('html_attr',content.getDisplayList())#" name="displayList"  data-displayobjectparam="displayList"/>
-						</div>	
-					</div>
+					<div id="layoutcontainer"></div>
+	
 					<div class="control-group">
 				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 						<div class="controls">
@@ -207,49 +128,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		
 		</div>	
-
 		<script>
 			$(function(){
-				$("##displayListSort").sortable({
-					update: function(event) {
-						event.stopPropagation();
-						$("##displayList").val("");
-						$("##displayListSort > li").each(function() {
-							var current = $("##displayList").val();
+				setLayoutOptions=function(){
+				
+					siteManager.updateAvailableObject();
 
-							if(current != '') {
-								$("##displayList").val(current + "," + $(this).html());
-							} else {
-								$("##displayList").val($(this).html());
-							}
+					siteManager.availableObject.params.source = siteManager.availableObject.params.source || '';
 
-						});
-
-						siteManager.updateObjectPreview();
-						
-					}
-				}).disableSelection();
-
-				function setImageOptions(){
-					if($('select[name="layout"]').val()=='default'){
-						$('##imagesizecontainer').show()
-						
-						if($('select[name="imageSize"]').val()=='custom'){
-							$('##imageoptionscontainer').show()
-						}else{
-							$('##imageoptionscontainer').hide();
-							$('##imageoptionscontainer').find(':input').val('AUTO');
-						}
-					}else{
-						$('##imagesizecontainer').hide();
-						$('##imageoptionscontainer').hide()
-					}
+					var params=siteManager.availableObject.params;
 					
+					$.ajax(
+					 {
+					 	type: 'post',
+					 	dataType: 'text',
+						url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=folder&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
+
+						data:{params:JSON.stringify(params)},
+						success:function(response){
+							$('##layoutcontainer').html(response);
+							
+						}
+					})
 				}
 
-				$('select[name="layout"], select[name="imageSize"]').change(setImageOptions);
-
-				setImageOptions();
+				setLayoutOptions();
 			});
 		</script>
 		</cfoutput>

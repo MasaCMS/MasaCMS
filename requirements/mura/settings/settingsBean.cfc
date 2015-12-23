@@ -842,11 +842,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var dir2=expandPath("#getThemeIncludePath()#/display_objects/#lcase(arguments.type)#")>
 
 	<cfif directoryExists(dir1)>
-		<cfdirectory action="list" directory="#dir1#" name="rs1" filter="*.cfm|*.html|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir1#" name="rs1" type="dir">
 	</cfif>
 	
 	<cfif directoryExists(dir2)>
-		<cfdirectory action="list" directory="#dir2#" name="rs2" filter="*.cfm|*.html|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir2#" name="rs2"type="dir">
 	</cfif>
 
 	<cfif isQuery(rs1) and isQuery(rs2)>

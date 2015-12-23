@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.items" default="#arrayNew(1)#">
-	<cfparam name="objectParams.layout" default="default.cfm">
+	<cfparam name="objectParams.layout" default="default">
 	<cfset data=structNew()>
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
@@ -261,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 			}
 
-			function setLayoutOptions(){
+			setLayoutOptions=function(){
 				
 				siteManager.updateAvailableObject();
 
@@ -278,49 +278,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					data:{params:JSON.stringify(params)},
 					success:function(response){
 						$('##layoutcontainer').html(response);
-
-						$("##displayListSort").sortable({
-							update: function(event) {
-								event.stopPropagation();
-								$("##displayList").val("");
-								$("##displayListSort > li").each(function() {
-									var current = $("##displayList").val();
-
-									if(current != '') {
-										$("##displayList").val(current + "," + $(this).html());
-									} else {
-										$("##displayList").val($(this).html());
-									}
-
-									updateDraft();
-								});
-
-								siteManager.updateObjectPreview();
-								
-							}
-						}).disableSelection();
-
-
-						function setImageOptions(){
-							if($('select[name="layout"]').val()=='default'){
-								$('##imagesizecontainer').show()
-								
-								if($('select[name="imageSize"]').val()=='custom'){
-									$('##imageoptionscontainer').show()
-								}else{
-									$('##imageoptionscontainer').hide();
-									$('##imageoptionscontainer').find(':input').val('AUTO');
-								}
-							}else{
-								$('##imagesizecontainer').hide();
-								$('##imageoptionscontainer').hide()
-							}
-							
-						}
-
-						$('select[name="layout"], select[name="imageSize"]').change(setImageOptions);
-
-						setImageOptions();
 						
 					}
 				})
