@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,35 +45,35 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
-	<cfquery name="rc.rsObjects" dbtype="query">
-		select * from rc.rsObjects where object not like '%nav%'
-		<cfif not application.settingsManager.getSite(rc.siteid).getHasComments()>
-			and object != 'comments'
-		</cfif>
-	</cfquery>
+	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
+	<cfparam name="objectParams.taggroup" default="">
 </cfsilent>
+<cf_objectconfigurator params="#objectParams#">
 <cfoutput>
-<cfif rc.layoutmanager>
-	<cfloop query="rc.rsObjects">
-		#contentRendererUtility.renderObjectClassOption(
-			object=rc.rsObjects.object,
-			objectid=createUUID(),
-			objectname=rc.rsObjects.name
-		)#
-	</cfloop>
-<cfelse>
-	<div class="control-group">
-		<div class="controls">
-		<select name="availableObjects" id="availableObjects" class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
-			<cfloop query="rc.rsObjects">
-				<option title="#esapiEncode('html_attr',rc.rsObjects.name)#" value='{"object":"#esapiEncode('javascript',rc.rsobjects.object)#","name":"#esapiEncode('javascript',rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
-					#esapiEncode('html',rc.rsObjects.name)#
-				</option>
-			</cfloop>
-		</select>
+<div id="availableObjectParams" 
+	data-object="tag_cloud" 
+	data-name="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.taggroup')#" 
+	data-objectid="#createUUID()#">
+	<div class="fieldset-wrap">
+		<div class="fieldset">
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selecttaggroup')#
+				</label>
+				<div class="controls">
+					<select name="taggroup" class="objectParam span12">
+						<option value="">Default</option>
+						<cfif len(rc.$.siteConfig('customTagGroups'))>
+							<cfloop list="#rc.$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
+								<option value="#g#" <cfif g eq objectParams.taggroup>selected</cfif>>#g#</option>
+							</cfloop>
+						</cfif>
+					</select>
+				</div>
+			</div>
 		</div>
 	</div>
-</cfif>
+</div>
 </cfoutput>
+</cf_objectconfigurator>
+

@@ -1602,7 +1602,14 @@ component extends="mura.cfobject" {
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
-				request.apiEndpoint="#getBean('utility').getRequestProtocol()#://#cgi.server_name##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
+
+				if(getBean('configBean').getAdminSSL()){
+					var protocol='http';
+				} else {
+					var protocol=getBean('utility').getRequestProtocol();
+				}
+				
+				request.apiEndpoint="#protocol#://#cgi.server_name##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
 			}
 			return request.apiEndpoint;
 		} 

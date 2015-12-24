@@ -45,16 +45,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfif isDefined("form.params") and isJSON(form.params)>
-		<cfset objectParams=deserializeJSON(form.params)>
-	<cfelse>
-		<cfset objectParams={}>
-	</cfif>
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
 	<cfparam name="objectParams.items" default="#arrayNew(1)#">
 	<cfparam name="objectParams.layout" default="default">
-	<cfset data=structNew()>
 	<cfset hasFeedManagerAccess=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000011',rc.siteid)>
 </cfsilent>
 <cfsavecontent variable="data.html">

@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,44 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfset content=$.getBean("content").loadBy(contentID=rc.objectid)>
-
-<cfif isDefined("form.params") and isJSON(form.params)>
-	<cfset params=deserializeJSON(form.params)>
-	<cfset displayRSS=isDefined("params.displayRSS") and yesNoFormat(params.displayRSS)>	
-	
-<cfelse>
-	<cfset displayRSS=false>	
-</cfif>
-
+<cfsavecontent variable="data.html">
+<cf_objectconfigurator configurable=false params="#objectParams#">
 <cfoutput>
-<cf_objectconfigurator>
-<div id="availableObjectParams" 
-	data-object="category_summary" 
-	data-name="#esapiEncode('html_attr','#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
-	data-objectid="#content.getContentID()#">
-	<div class="fieldset-wrap">
-		<div class="fieldset">
-			<div class="control-group">
-				<label class="control-label">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#
-				</label>
-				<div class="controls">
-					<label class="radio">	
-						<input name="displayRSS" type="radio" value="1" class="objectParam radio" <cfif displayRSS>checked</cfif>>
-						#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-					</label>
-					<label class="radio">
-						<input name="displayRSS" type="radio" value="0" class="objectParam radio" <cfif not displayRSS>checked</cfif>>
-					#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-					</label>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</cf_objectconfigurator>
-</cfoutput>
+<div id="availableObjectParams"
+	data-object="collection" 
+	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.container')#')#" 
+	data-objectid="none">
 
+</div>
+</cfoutput>
+</cf_objectconfigurator>
+</cfsavecontent>
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+<cfabort>

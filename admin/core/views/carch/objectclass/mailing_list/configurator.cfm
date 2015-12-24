@@ -1,4 +1,6 @@
-<cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
+<cfsilent>
+	<cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
+</cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap row-fluid">

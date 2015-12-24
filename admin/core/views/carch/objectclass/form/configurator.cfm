@@ -1,8 +1,9 @@
-
-<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
-<cfset content.setType('Form')>
-<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
-<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000004',rc.siteid)>
+<cfsilent>
+	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
+	<cfset content.setType('Form')>
+	<cfset rc.rsForms = application.contentManager.getComponentType(rc.siteid, 'Form')/>
+	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000004',rc.siteid)>
+</cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
 <div class="fieldset-wrap row-fluid">

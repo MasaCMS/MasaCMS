@@ -1,12 +1,6 @@
-
-<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfif isDefined("form.params") and isJSON(form.params)>
-	<cfset objectParams=deserializeJSON(form.params)>
-<cfelse>
-	<cfset objectParams={}>
-</cfif>
-<cfparam name="objectParams.source" default="">
-<cfset data=structNew()>
+<cfsilent>
+	<cfparam name="objectParams.source" default="">
+</cfsilent>
 <cfsavecontent variable="data.html">
 <cf_objectconfigurator params="#objectParams#">
 <cfoutput>

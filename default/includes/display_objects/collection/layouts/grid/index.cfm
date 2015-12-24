@@ -1,6 +1,15 @@
 <cfsilent>
 	<cfparam name="arguments.objectParams.gridstyle" default="layout-a">
-		
+	<cfparam name="arguments.objectParams.imageSize" default="medium">
+	<cfparam name="arguments.objectParams.imageHeight" default="AUTO">
+	<cfparam name="arguments.objectParams.imageWidth" default="AUTO">
+	
+	<cfset imageSizeArgs={
+		size=arguments.objectParams.imageSize,
+		height=arguments.objectParams.imageHeight,
+		width=arguments.objectParams.imageWidth
+	}>
+	
 	<cfif isDefined('this.contentGridStyleMap') and structKeyExists(this.contentGridStyleMap,'#arguments.objectParams.gridstyle#')>
 		<cfset gridClasses=this.contentGridStyleMap['#arguments.objectParams.gridstyle#']>
 	<cfelse>
@@ -19,7 +28,7 @@
 			<cfif listFindNoCase(arguments.objectParams.displaylist,'Image')>
 			<div class="mura-item-content">
 				<cfif item.hasImage()>
-					<a href="#item.getURL()#"><img src="#item.getImageURL(size=arguments.objectParams.imageSize)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
+					<a href="#item.getURL()#"><img src="#item.getImageURL(argumentCollection=imageSizeArgs)#" alt="#esapiEncode('html_attr',item.getValue('title'))#"></a>
 				</cfif>
 			</div>
 			</cfif>

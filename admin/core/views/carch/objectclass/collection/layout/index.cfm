@@ -1,16 +1,13 @@
 <cfsilent>
-<cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfset params=deserializeJSON(form.params)>
-<cfparam name="params.maxitems" default="4">
-<cfparam name="params.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
-<cfset feed=$.getBean("feed").loadBy(feedID=params.source)>
-<cfset feed.set(params)>
-<cfparam name="params.sourcetype" default="local">
+<cfparam name="objectParams.maxitems" default="4">
+<cfparam name="objectParams.displaylist" default="Image,Date,Title,Summary,Credits,Tags">
+<cfset feed=rc.$.getBean("feed").loadBy(feedID=objectParams.source)>
+<cfset feed.set(objectParams)>
+<cfparam name="objectParams.sourcetype" default="local">
 </cfsilent>
 <cfoutput>
-	<cfif params.sourcetype neq "remotefeed">		
+	<cfif objectParams.sourcetype neq "remotefeed">		
 		<div class="control-group">
-	
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'collections.layout')#
 			</label>
@@ -30,13 +27,18 @@
 		</div>
 
 		<!---- Begin layout based configuration --->
-		<cfset configFile=$.siteConfig('themeIncludePath') & "/display_objects/collection/layouts/#layout#/configurator.cfm">
+		<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/collection/layouts/#layout#/configurator.cfm">
 		<cfif fileExists(expandPath(configFile))>
 			<cfinclude template="#configFile#">
 		<cfelse>
-			<cfset configFile=$.siteConfig('includePath') & "/includes/display_objects/collection/layouts/#layout#/configurator.cfm">
+			<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/custom/collection/layouts/#layout#/configurator.cfm">
 			<cfif fileExists(expandPath(configFile))>
 				<cfinclude template="#configFile#">
+			<cfelse>
+				<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/collection/layouts/#layout#/configurator.cfm">
+				<cfif fileExists(expandPath(configFile))>
+					<cfinclude template="#configFile#">
+				</cfif>
 			</cfif>
 		</cfif>
 		<script>
@@ -44,7 +46,7 @@
 		</script>
 		<!---  End layout based configuration --->
 
-		<cfif params.object eq 'collection'>
+		<cfif objectParams.object eq 'collection'>
 			<div class="control-group">
 				<div class="span12">
 					<label class="control-label">
@@ -66,7 +68,7 @@
 				</div>
 			</div>
 		</cfif>
-		<cfif params.object eq 'collection'>
+		<cfif objectParams.object eq 'collection'>
 			<div class="control-group">
 				<div class="span6">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>

@@ -53,96 +53,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.contenthistid" default="">
 	<cfparam name="rc.objectid" default=""/>
 	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
+	<cfset rc.classid=listLast(replace(rc.classid, "\", "/", "ALL"),"/")>
+	<cfset rc.container=listLast(replace(rc.container, "\", "/", "ALL"),"/")>
+	<cfif isDefined("form.params") and isJSON(form.params)>
+		<cfset objectParams=deserializeJSON(form.params)>
+	<cfelse>
+		<cfset objectParams={}>
+	</cfif>
+	<cfset data=structNew()>
 </cfsilent>
+<cfif rc.classid eq "category_summary">
+	<cfif application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
+		<cfinclude template="objectclass/category_summary/configurator.cfm">
+	<cfelse>
+		<cfinclude template="objectclass/navigation/configurator.cfm">
+	</cfif>
+<cfelseif fileExists(expandPath('core/views/carch/objectclass/#rc.classid#/configurator.cfm'))>
+	<cfif len(rc.container) and fileExists(expandPath('core/views/carch/objectclass/#rc.classid#/#rc.container#/index.cfm'))>
+		<cfinclude template="objectclass/#rc.classid#/#rc.container#/index.cfm">
+	<cfelse>
 
-<cfswitch expression="#rc.classid#">	
-	<cfcase value="feed">
-		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
-	</cfcase>
-	<cfcase value="feed_slideshow">
-		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
-	</cfcase>
-	<cfcase value="category_summary">
-		<cfif application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
-			<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="related_content,related_section_content">
-		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
-	</cfcase>
-	<cfcase value="tag_cloud">
-		<cfinclude template="objectclass/dsp_tagcloud_configurator.cfm">
-	</cfcase>
-	<cfcase value="site_map">
-		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
-	</cfcase>
-	<cfcase value="form,form_responses">
-		<cfinclude template="objectclass/dsp_form_configurator.cfm">
-	</cfcase>
-	<cfcase value="component">
-		<cfinclude template="objectclass/dsp_component_configurator.cfm">
-	</cfcase>
-	<cfcase value="folder">
-		<cfif rc.container eq 'layout'>
-			<cfinclude template="objectclass/collection/layout/index.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/dsp_folder_configurator.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="calendar">
-		<cfif rc.container eq 'layout'>
-			<cfinclude template="objectclass/collection/layout/index.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/dsp_calendar_configurator.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="gallery">
-		<cfif rc.container eq 'layout'>
-			<cfinclude template="objectclass/collection/layout/index.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/dsp_gallery_configurator.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="plugin">
-		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
-	</cfcase>
-	<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
-		<cfinclude template="objectclass/dsp_system_configurator.cfm">
-	</cfcase>
-	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav">
-		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
-	</cfcase>
-	<cfcase value="mailing_list,mailing_list_master">
-		<cfinclude template="objectclass/dsp_mailinglist_configurator.cfm">
-	</cfcase>
-	<cfcase value="container">
-		<cfinclude template="objectclass/dsp_container_configurator.cfm">
-	</cfcase>
-	<cfcase value="collection">
-		<cfif rc.container eq 'layout'>
-			<cfinclude template="objectclass/collection/layout/index.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/collection/index.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="text">
-		<cfinclude template="objectclass/dsp_text_configurator.cfm">
-	</cfcase>
-	<cfcase value="media">
-		<cfinclude template="objectclass/dsp_media_configurator.cfm">
-	</cfcase>
-	<cfcase value="embed">
-		<cfinclude template="objectclass/dsp_embed_configurator.cfm">
-	</cfcase>
-	<cfdefaultcase>
-		<cfif rc.$.useLayoutManager()>
-			<cf_objectconfigurator></cf_objectconfigurator>
-		<cfelse>
-			<cfoutput>
-				<p class="alert">This display object is not configurable.</p>
-			</cfoutput>
-		</cfif>	
-	</cfdefaultcase>
-</cfswitch>
+		<cfinclude template="objectclass/#rc.classid#/configurator.cfm">
+	</cfif>
+<cfelse>
+	<cfswitch expression="#rc.classid#">	
+		<cfcase value="feed">
+			<cfinclude template="objectclass/legacy/dsp_feed_configurator.cfm">
+		</cfcase>
+		<cfcase value="feed_slideshow">
+			<cfinclude template="objectclass/legacy/dsp_slideshow_configurator.cfm">
+		</cfcase>
+		<cfcase value="related_content,related_section_content">
+			<cfinclude template="objectclass/legacy/dsp_related_content_configurator.cfm">
+		</cfcase>
+		<cfcase value="form,form_responses">
+			<cfinclude template="objectclass/form/configurator.cfm">
+		</cfcase>
+		<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
+			<cfinclude template="objectclass/system/configurator.cfm">
+		</cfcase>
+		<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav">
+			<cfinclude template="objectclass/navigation/configurator.cfm">
+		</cfcase>
+		<cfcase value="mailing_list,mailing_list_master">
+			<cfinclude template="objectclass/mailing_list/configurator.cfm">
+		</cfcase>
+		<cfcase value="container">
+			<cfinclude template="objectclass/container/configurator.cfm">
+		</cfcase>
+		<cfdefaultcase>
+			<cfif rc.$.useLayoutManager()>
+				<cf_objectconfigurator></cf_objectconfigurator>
+			<cfelse>
+				<cfoutput>
+					<p class="alert">This display object is not configurable.</p>
+				</cfoutput>
+			</cfif>	
+		</cfdefaultcase>
+	</cfswitch>
+</cfif>

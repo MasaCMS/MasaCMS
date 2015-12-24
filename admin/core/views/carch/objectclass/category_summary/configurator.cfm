@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,41 +44,36 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rc.rsmailinglists = application.contentUtility.getMailingLists(rc.siteid)/>
+<cfsilent>
+	<cfset content=rc.$.getBean("content").loadBy(contentID=rc.objectid)>
+	<cfset displayRSS=isDefined("params.displayRSS") and yesNoFormat(params.displayRSS)>	
+</cfsilent>
 <cfoutput>
-<cfif rc.layoutmanager>
-	#contentRendererUtility.renderObjectClassOption(
-			object='mailing_list_master',
-			objectid=createUUID(),
-			objectname=application.rbFactory.getKeyValue(session.rb, 
-			                                    'sitemanager.content.fields.mastermailinglistsignupform')
-		)#
-	<cfloop query="rc.rsmailinglists">
-		#contentRendererUtility.renderObjectClassOption(
-			object='mailing_list',
-			objectid=rc.rsmailinglists.mlid,
-			objectname="#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# - #rc.rsmailinglists.name#"
-		)#
-	</cfloop>
-<cfelse>
-	<div class="control-group">
-		<div class="controls">
-		<select name="availableObjects" id="availableObjects" class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
-			
-			<option value="{'object':'mailing_list_master','name':'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mastermailinglistsignupform'))#','objectid':'none'}">
-				#application.rbFactory.getKeyValue(session.rb, 
-			                                    'sitemanager.content.fields.mastermailinglistsignupform')#
-			</option>
-			<cfloop query="rc.rsmailinglists">
-				<option value="{'object':'mailing_list','name':'#esapiEncode('html_attr','Mailing List - #rc.rsmailinglists.name#')#','objectid':'#rc.rsmailinglists.mlid#'}">
-					#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.mailinglist')# 
-					- 
-					#rc.rsmailinglists.name#
-				</option>
-			</cfloop>
-		</select>
+<cf_objectconfigurator>
+<div id="availableObjectParams" 
+	data-object="category_summary" 
+	data-name="#esapiEncode('html_attr','#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
+	data-objectid="#content.getContentID()#">
+	<div class="fieldset-wrap">
+		<div class="fieldset">
+			<div class="control-group">
+				<label class="control-label">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#
+				</label>
+				<div class="controls">
+					<label class="radio">	
+						<input name="displayRSS" type="radio" value="1" class="objectParam radio" <cfif displayRSS>checked</cfif>>
+						#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+					</label>
+					<label class="radio">
+						<input name="displayRSS" type="radio" value="0" class="objectParam radio" <cfif not displayRSS>checked</cfif>>
+					#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+					</label>
+				</div>
+			</div>
 		</div>
 	</div>
-</cfif>
+</div>
+</cf_objectconfigurator>
 </cfoutput>
+

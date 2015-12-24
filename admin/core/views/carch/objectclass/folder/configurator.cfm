@@ -47,109 +47,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.layoutmanager>
 	<cfsilent>
-			<cfif isDefined("form.params") and isJSON(form.params)>
-			<cfset objectParams=deserializeJSON(form.params)>
-		<cfelse>
-			<cfset objectParams={}>
-		</cfif>
-		
+		<cfparam name="objectParams.sortBy" default="">
+		<cfparam name="objectParams.sortDirection" default="">
 		<cfset content=rc.$.getBean('content').loadBy(contenthistid=rc.contenthistid)>
+
+		<cfif not len(objectParams.sortBy)>
+			<cfset objectParams.sortBy=content.getValue('sortBy')>
+		</cfif>
+
+		<cfif not len(objectParams.sortDirection)>
+			<cfset objectParams.sortDirection=content.getValue('sortDirection')>
+		</cfif>
+
 		<cfset content.set(objectParams)>
 
-		<cfparam name="objectParams.items" default="#arrayNew(1)#">
-		<cfparam name="objectParams.viewoptions" default="">
-		<cfparam name="objectParams.format" default="calendar">
-
-		<cfif not len(objectParams.viewoptions)>
-			<cfset objectParams.viewoptions='agendaDay,agendaWeek,month'>
-		</cfif>
-
-		<cfparam name="objectParams.viewdefault" default="">
-		<cfif not len(objectParams.viewdefault)>
-			<cfset objectParams.viewdefault='month'>
-		</cfif>
-
+		<cfparam name="objectParams.layout" default="a">
+		
 		<cfset objectParams.source=content.getContentID()>
-		<cfset objectParams.sourcetype='calendar'>
-
-		<cfset data=structNew()>
+		<cfset objectParams.sourcetype='children'>
 	</cfsilent>
 	<cfsavecontent variable="data.html">
 	<cf_objectconfigurator params="#objectparams#">
 		<cfoutput>
 		<div id="availableObjectParams"
-			data-object="calendar" 
-			data-name="Calendar" 
+			data-object="folder" 
+			data-objectname="Folder" 
 			data-objectid="#esapiEncode('html_attr',rc.contentid)#">
+
 			<div class="fieldset-wrap">	
 				<div class="fieldset">
-					<div class="control-group">
-						<div class="span12">
-							<label class="control-label">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.format')#
-							</label>
-							<div class="controls">
-								<select id="formatselector" name="format" class="objectParam span12">
-									<cfloop list="Calendar,List" index="i">
-										<option name="#i#"<cfif objectparams.format eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.#i#')#</option>
-									</cfloop>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label">
-							<span class="span12">#application.rbFactory.getKeyValue(session.rb,'calendar.additionalcalendars')#</span>
-							<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>	
-						</label>
-						<div class="controls">
-							<cfif arrayLen(objectParams.items)>
-							<ul>
-							<cfloop array="#objectParams.items#" index="i">
-							 	<cfset item=rc.$.getBean('content').loadBy(contentid=i)>
-							 	<li><a href="#item.getURL()#" target="_top">#esapiEncode('html',item.getMenuTitle())#</a></li>
-							</cfloop>
-							</ul>
-							<cfelse>
-							<p class="alert">#application.rbFactory.getKeyValue(session.rb,'calendar.noadditional')#</p>
-							</cfif>	
-						</div>
-					</div>
-		
-					<div id="calendarformatoptions" style="display:none">
-						<div class="control-group">
-							<label class="control-label">
-								<span class="span12">#application.rbFactory.getKeyValue(session.rb,'calendar.availableviews')#</span>
-								
-							</label>
-							<div class="controls">
-								<ul>
-								<cfloop list="month,basicWeek,basicDay,agendaWeek,agendaDay" index="i">
-								<li>
-									<input type="checkbox" class="objectParam" name="viewoptions" value="#i#" <cfif listFindNoCase(objectParams.viewoptions,i)> checked</cfif>/> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</li>
-								</cfloop>
-								</ul>
-							</div>
-						</div>
-						<div class="control-group">
-							<label class="control-label">
-								<span class="span12">#application.rbFactory.getKeyValue(session.rb,'calendar.defaultview')#</span>
-								
-							</label>
-							<div class="controls">
-								<select name="viewdefault" class="objectParam span12">
-								<cfloop list="month,basicWeek,basicDay,agendaWeek,agendaDay" index="i">
-									<option value="#i#" <cfif objectParams.viewdefault eq i> selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'calendar.#i#')#</option>
-								</cfloop>
-								</select>
-							</div>
-						</div>
-				
-					<input type="hidden" class="objectParam" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">	
-				</div>
-
-			<div id="listformatoptions" style="display:none">
 					<div id="layoutcontainer"></div>
+	
 					<div class="control-group">
 				      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 						<div class="controls">
@@ -161,37 +89,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</select>
 					 	</div>
 					</div>
+					<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
+						<div class="controls">
+							<select name="sortby"class="objectParam span12">
+			                <option value="orderno" <cfif content.getSortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+			                <option value="releaseDate" <cfif content.getSortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
+			                <option value="lastUpdate" <cfif content.getSortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+			                <option value="created" <cfif content.getSortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+			                <option value="menuTitle" <cfif content.getSortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
+			                <option value="title" <cfif content.getSortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+			                <option value="rating" <cfif content.getSortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
+			                <option value="comments" <cfif content.getSortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+			                 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
+			                <cfloop query="rsExtend">
+			                  <option value="#esapiEncode('html_attr',rsExtend.attribute)#" <cfif content.getSortBy() eq rsExtend.attribute>selected</cfif>>#esapiEncode('html',rsExtend.Type)#/#esapiEncode('html',rsExtend.subType)# - #esapiEncode('html',rsExtend.attribute)#</option>
+			                </cfloop>
+		             		</select>
+	             		</div>
+	             	</div>
+	             	<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
+						<div class="controls">
+				            <select name="sortdirection" class="objectParam span12">
+				                <option value="asc" <cfif content.getSortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
+				                <option value="desc" <cfif content.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
+				            </select>
+						</div>	
+					</div>
 				</div>
 			</div>
-			</div>
+		
 		</div>	
 		<script>
 			$(function(){
-
-				function setOptionDisplay(){
-					if($('##formatselector').val().toLowerCase()=='list'){
-						$('##listformatoptions').show();
-						$('##calendarformatoptions').hide();
-					} else {
-						$('##listformatoptions').hide();
-						$('##calendarformatoptions').show();
-					}
-				}
-
-				$('##formatselector').change(setOptionDisplay);
-				
-				$('##editBtnRelatedContent').click(function(){
-					frontEndProxy.post({
-						cmd:'openModal',
-						src:'?muraAction=cArch.relatedcontent&siteid=#esapiEncode("url",rc.siteid)#&contenthistid=#esapiEncode("url",rc.contenthistid)#&instanceid=#esapiEncode("url",rc.instanceid)#&compactDisplay=true&relatedcontentsetid=calendar&items=#esapiEncode("url",serializeJSON(objectparams.items))#'
-						}
-					);
-				
-				});
-
-				setColorPickers(".colorpicker");
-				setOptionDisplay();
-
 				setLayoutOptions=function(){
 				
 					siteManager.updateAvailableObject();
@@ -204,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 {
 					 	type: 'post',
 					 	dataType: 'text',
-						url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=calendar&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
+						url: './?muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + configOptions.siteid + '&instanceid=#esapiEncode("url",rc.instanceid)#&classid=folder&contentid=' + contentid + '&parentid=' + configOptions.parentid + '&contenthistid=' + configOptions.contenthistid + '&regionid=' + configOptions.regionid + '&objectid=' + configOptions.objectid + '&contenttype=' + configOptions.contenttype + '&contentsubtype=' + configOptions.contentsubtype + '&container=layout&cacheid=' + Math.random(),
 
 						data:{params:JSON.stringify(params)},
 						success:function(response){
@@ -234,11 +165,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsavecontent variable="data.html">
 	<cfoutput>
 	<div id="availableObjectParams"
-		data-object="calendar" 
-		data-name="Calendar" 
+		data-object="folder" 
+		data-name="Folder" 
 		data-objectid="#rc.contentid#">
 		
-		<h2>Edit Calendar Listing</h2>
+		<h2>Edit Folder Listing</h2>
 			
 		<div class="fieldset-wrap row-fluid">
 			<div class="fieldset">
