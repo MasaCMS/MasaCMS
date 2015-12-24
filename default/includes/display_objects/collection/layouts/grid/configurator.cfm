@@ -1,5 +1,5 @@
 <cfoutput>
-<cfset gridStyles=$.getContentRenderer().get('contentGridStyleMap')>
+<cfset gridStyles=$.getContentRenderer().contentGridStyleMap>
 <cfif isStruct(gridStyles)>
 <div class="control-group">	
   	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.gridstyle')#</label>
@@ -18,7 +18,7 @@
 	<div class="controls">
 			<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span12">
 				<cfloop list="Small,Medium,Large" index="i">
-					<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+					<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#i#</option>
 				</cfloop>
 		
 				<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>

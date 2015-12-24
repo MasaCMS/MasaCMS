@@ -2761,7 +2761,7 @@ Display Objects
 		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
 	}
 
-	public function getGridStyles(){
+	public function get(){
 		if(isDefined('this.#arguments.property#')){
 			return this[arguments.property];
 		} else if (isDefined('variables.#argumentsproperty#')){
