@@ -24,7 +24,7 @@
 			</div>
 			</cfif>
 			#variables.$.dspObject_include(
-				theFile='collection/layouts/grid/dsp_meta_list.cfm', 
+				theFile='collection/includes/dsp_meta_list.cfm', 
 				item=item, 
 				fields=arguments.objectParams.displaylist
 			)#
@@ -34,7 +34,7 @@
 </div>
 
 #variables.$.dspObject_include(
-	theFile='collection/dsp_pagination.cfm', 
+	theFile='collection/includes/dsp_pagination.cfm', 
 	iterator=iterator, 
 	nextN=iterator.getNextN(),
 	source=arguments.objectParams.source

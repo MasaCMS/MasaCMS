@@ -1,11 +1,13 @@
 <cfoutput>
-<cfset gridStyles=$.getContentRenderer().contentGridStyleMap>
+<cfset renderer=$.getContentRenderer()>
+<cfset gridStyles=(isdefined('renderer.contentGridStyleMap')) ? renderer.contentGridStyleMap : ''>
 <cfif isStruct(gridStyles)>
+<cfset gridStyles=listSort(structKeyList(gridStyles),'TextNoCase')>
 <div class="control-group">	
   	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.gridstyle')#</label>
 	<div class="controls">
 		<select name="gridstyle" data-displayobjectparam="gridstyle" class="objectParam span12">
-			<cfloop collection="#gridStyles#" item="style">
+			<cfloop list="#gridStyles#" index="style">
 				<option value="#style#"<cfif feed.getGridStyle() eq style> selected</cfif>>#style#</option>
 			</cfloop>
 		</select>

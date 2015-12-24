@@ -44,13 +44,6 @@
 					<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
 				</cfif>
 
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
-
 			</cfcase>
 			<cfcase value="calendar">
 				<cfset calendarUtility=variables.$.getCalendarUtility()>
@@ -108,12 +101,6 @@
 
 				<cfset iterator.setNextN(variables.$.event('nextn'))>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 			</cfcase>
 			<cfcase value="children">
 				<cfif not isNumeric(variables.$.event('year'))>
@@ -162,13 +149,6 @@
 					.loadBy(feedid=objectParams.source)
 					.set(objectParams)
 					.getIterator()>
-
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 
 			</cfdefaultcase>
 		</cfswitch>

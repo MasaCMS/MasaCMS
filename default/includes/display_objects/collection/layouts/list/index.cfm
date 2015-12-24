@@ -4,7 +4,7 @@
 <cfoutput>
 <div id="svIndex" class="mura-index #this.folderWrapperClass#">
 #variables.$.dspObject_include(
-	theFile='collection/layouts/list/dsp_content_list.cfm', 
+	theFile='collection/includes/dsp_content_list.cfm', 
 	type=arguments.objectParams.sourcetype, 
 	iterator=variables.iterator,
 	imageSize=arguments.objectParams.imageSize,
@@ -15,7 +15,7 @@
 </div>
 
 #variables.$.dspObject_include(
-	theFile='collection/dsp_pagination.cfm', 
+	theFile='collection/includes/dsp_pagination.cfm', 
 	iterator=iterator, 
 	nextN=iterator.getNextN(),
 	source=arguments.objectParams.source
