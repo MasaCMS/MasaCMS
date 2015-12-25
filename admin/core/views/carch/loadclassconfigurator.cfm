@@ -83,24 +83,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset configFileSuffix="#rc.classid#/configurator.cfm">
 	</cfif>
 
+	<cfset lookupArray=[
+		rc.$.siteConfig('themeIncludePath') & "/display_objects/",
+		rc.$.siteConfig('includePath') & "/includes/display_objects/custom/",
+		rc.$.siteConfig('includePath') & "/includes/display_objects/"
+	]>
 	<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/#configFileSuffix#">
-	<cfif fileExists(expandPath(configFile))>
-		<cfset filefound=true>
-	<cfelse>
-		<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/custom/#configFileSuffix#">
+
+	<cfloop array="#lookupArray#" index="dir">
+		<cfset configFile=dir & configFileSuffix>
 		<cfif fileExists(expandPath(configFile))>
 			<cfset filefound=true>
-		<cfelse>
-			<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/#configFileSuffix#">
-			<cfif fileExists(expandPath(configFile))>
-				<cfset filefound=true>
-			<cfelse>
-				<cfset configFile="core/views/carch/objectclass/#configFileSuffix#">
-				<cfif fileExists(expandPath(configFile))>
-					<cfset configFile="objectclass/#configFileSuffix#">
-					<cfset filefound=true>
-				</cfif>
-			</cfif>
+			<cfbreak>
+		</cfif>
+	</cfloop>
+
+	<cfif not filefound>
+		<cfset configFile="core/views/carch/objectclass/#configFileSuffix#">
+		<cfif fileExists(expandPath(configFile))>
+			<cfset configFile="objectclass/#configFileSuffix#">
+			<cfset filefound=true>
 		</cfif>
 	</cfif>
 </cfsilent>
