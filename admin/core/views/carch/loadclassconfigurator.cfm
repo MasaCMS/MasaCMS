@@ -61,20 +61,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset objectParams={}>
 	</cfif>
 	<cfset data=structNew()>
-</cfsilent>
-<cfif rc.classid eq "category_summary">
-	<cfif application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
-		<cfinclude template="objectclass/category_summary/configurator.cfm">
-	<cfelse>
-		<cfinclude template="objectclass/navigation/configurator.cfm">
-	</cfif>
-<cfelseif fileExists(expandPath('core/views/carch/objectclass/#rc.classid#/configurator.cfm'))>
-	<cfif len(rc.container) and fileExists(expandPath('core/views/carch/objectclass/#rc.classid#/#rc.container#/index.cfm'))>
-		<cfinclude template="objectclass/#rc.classid#/#rc.container#/index.cfm">
-	<cfelse>
+	<cfset filefound=false>
 
-		<cfinclude template="objectclass/#rc.classid#/configurator.cfm">
+	<cfif rc.classid eq "category_summary" and not application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
+		<cfset rc.classid='navigation'>
 	</cfif>
+
+	<cfif rc.classid eq 'form_responses'>
+		<cfset rc.classid='form'>
+	<cfelseif rc.classid eq 'mailing_list_master'>
+		<cfset rc.classid='mailing_list'>
+	<cfelseif listFindNoCase('comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild',rc.classid)>
+		<cfset rc.classid='system'>
+	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav',rc.classid)>
+		<cfset rc.classid='navigation'>
+	</cfif>
+
+	<cfif rc.container eq 'layout'>
+		<cfset configFileSuffix="#rc.classid#/layout/index.cfm">
+	<cfelse>
+		<cfset configFileSuffix="#rc.classid#/configurator.cfm">
+	</cfif>
+
+	<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/#configFileSuffix#">
+	<cfif fileExists(expandPath(configFile))>
+		<cfset filefound=true>
+	<cfelse>
+		<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/custom/#configFileSuffix#">
+		<cfif fileExists(expandPath(configFile))>
+			<cfset filefound=true>
+		<cfelse>
+			<cfset configFile=rc.$.siteConfig('includePath') & "/includes/display_objects/#configFileSuffix#">
+			<cfif fileExists(expandPath(configFile))>
+				<cfset filefound=true>
+			<cfelse>
+				<cfset configFile="core/views/carch/objectclass/#configFileSuffix#">
+				<cfif fileExists(expandPath(configFile))>
+					<cfset configFile="objectclass/#configFileSuffix#">
+					<cfset filefound=true>
+				</cfif>
+			</cfif>
+		</cfif>
+	</cfif>
+</cfsilent>
+<cfif filefound>
+	<cfinclude template="#configFile#">
 <cfelse>
 	<cfswitch expression="#rc.classid#">	
 		<cfcase value="feed">
@@ -85,21 +116,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfcase value="related_content,related_section_content">
 			<cfinclude template="objectclass/legacy/dsp_related_content_configurator.cfm">
-		</cfcase>
-		<cfcase value="form,form_responses">
-			<cfinclude template="objectclass/form/configurator.cfm">
-		</cfcase>
-		<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
-			<cfinclude template="objectclass/system/configurator.cfm">
-		</cfcase>
-		<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav">
-			<cfinclude template="objectclass/navigation/configurator.cfm">
-		</cfcase>
-		<cfcase value="mailing_list,mailing_list_master">
-			<cfinclude template="objectclass/mailing_list/configurator.cfm">
-		</cfcase>
-		<cfcase value="container">
-			<cfinclude template="objectclass/container/configurator.cfm">
 		</cfcase>
 		<cfdefaultcase>
 			<cfif rc.$.useLayoutManager()>
