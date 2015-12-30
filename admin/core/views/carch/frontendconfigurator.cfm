@@ -133,7 +133,7 @@
 									configOptions
 								);
 							} else {
-								$('##configurator').html('');
+								siteManager.initGenericConfigurator(configOptions);
 							}
 
 							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');

@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset data=structNew()>
 	<cfset filefound=false>
-
+	<cfset $=rc.$>
 	<cfif rc.classid eq "category_summary" and not application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
 		<cfset rc.classid='navigation'>
 	</cfif>
@@ -83,30 +83,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset configFileSuffix="#rc.classid#/configurator.cfm">
 	</cfif>
 
-	<cfset lookupArray=[
-		rc.$.siteConfig('themeIncludePath') & "/display_objects/",
-		rc.$.siteConfig('includePath') & "/includes/display_objects/custom/",
-		rc.$.siteConfig('includePath') & "/includes/display_objects/"
-	]>
-	<cfset configFile=rc.$.siteConfig('themeIncludePath') & "/display_objects/#configFileSuffix#">
-
-	<cfloop array="#lookupArray#" index="dir">
-		<cfset configFile=dir & configFileSuffix>
-		<cfif fileExists(expandPath(configFile))>
-			<cfset filefound=true>
-			<cfbreak>
-		</cfif>
-	</cfloop>
-
-	<cfif not filefound>
-		<cfset configFile="core/views/carch/objectclass/#configFileSuffix#">
-		<cfif fileExists(expandPath(configFile))>
-			<cfset configFile="objectclass/#configFileSuffix#">
-			<cfset filefound=true>
-		</cfif>
-	</cfif>
+	<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath(configFileSuffix)>
 </cfsilent>
-<cfif filefound>
+
+<cfif len(configFile)>
 	<cfinclude template="#configFile#">
 <cfelse>
 	<cfswitch expression="#rc.classid#">	

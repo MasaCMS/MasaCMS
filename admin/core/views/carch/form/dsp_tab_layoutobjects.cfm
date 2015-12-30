@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
       </div>
     </div>
-    
+    <cfif not rc.$.getContentRenderer().useLayoutManager()>
     <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
       <div class="controls" id="editObjects">       
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div> <!--- /#availableRegions --->
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
-
+    </cfif>
   
   </div>  
 

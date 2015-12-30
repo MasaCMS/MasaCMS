@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 						<cfset title=rc.rsComponents.menutitle>
 
-						<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'form',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsComponents.contentid#'}">
+						<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'component',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsComponents.contentid#'}">
 							#esapiEncode('html',title)#
 						</option>
 				
