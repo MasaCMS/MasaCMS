@@ -155,17 +155,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
 					and variables.$.event('filterBy') eq "releaseDate">
-					<cfset variables.menuType="releaseDate">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+					<cfset objectParams.type="releaseDate">
+					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
 				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
-					<cfset variables.menuType="releaseMonth">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+					<cfset objectParams.type="releaseMonth">
+					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 				<cfelseif variables.$.event('filterBy') eq "releaseYear">
-					<cfset variables.menuType="releaseYear">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
+					<cfset objectParams.type="releaseYear">
+					<cfset objectParams.today=createDate(variables.$.event('year'),1,1)>
 				<cfelse>
-					<cfset variables.menuDate=now()>
-					<cfset variables.menuType="default">
+					<cfset objectParams.today=now()>
+					<cfset objectParams.type="default">
 				</cfif>
 
 				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
@@ -188,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
-			
+				
 			</cfcase>
 			<cfdefaultcase>
 				<cfset iterator=$.getBean('feed')
