@@ -1294,7 +1294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	]>
 	<cfset var dir="">
 	<cfloop array="#lookupArray#" index="dir">
-		<cfset registerDisplayObjectDir(dir)>
+		<cfset registerDisplayObjectDir(dir,false)>
 	</cfloop>
 
 	<cfreturn this>
@@ -1302,10 +1302,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="registerDisplayObjectDir" output="false">
 	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
 	<cfset var rs="">
 	<cfset var config="">
 	<cfset var objectArgs={}>
 	<cfset var o="">
+	<cfset var objectfound=(arguments.conditional) ? false : true>
+
 	<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
 	<cfloop query="rs">
 
@@ -1335,14 +1338,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset registerDisplayObject(
 						argumentCollection=objectArgs
 					)>
+					<cfset objectfound=true>
+					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
 				</cfif>
 				
 			</cfif>
 		</cfif>
 	</cfloop>
 
-	<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
-
+	<cfif objectfound>
+		<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 

@@ -365,7 +365,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfobjectcache action="clear"/>
 		<cfcatch></cfcatch>
 	</cftry>
-
 	
 	<cfset rs=getList() />
 
@@ -378,10 +377,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid,builtSites['#rs.siteid#'].getDisplayPoolID()) />
 		</cfif>
-		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
  	</cfloop>
 
 	<cfset variables.sites=builtSites>
+
+	<cfloop query="rs">
+		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+ 	</cfloop>
 	
 </cffunction>
 
