@@ -1290,7 +1290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		'/muraWRM/admin/core/views/carch/objectclass/',
 		getIncludePath()  & "/includes/display_objects/",
 		getIncludePath()  & "/includes/display_objects/custom/",
-		getThemeIncludePath() & "/display_objects"
+		getThemeIncludePath() & "/display_objects/"
 	]>
 	<cfset var dir="">
 	<cfloop array="#lookupArray#" index="dir">
