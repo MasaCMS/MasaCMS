@@ -1722,7 +1722,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		CASE WHEN tcontent.title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#">
 			or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.keywords)#"> THEN 0 ELSE 1 END
 	</cfif>
-	ORDER BY supersort, priority, <cfif variables.configBean.getDBType() neq 'nuodb'>sortdate<cfelse>releasedate</cfif> desc
+	ORDER BY supersort, priority, title
 	</cfquery> 
 	
 	<cfreturn rsPrivateSearch />
