@@ -1306,7 +1306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid 
 		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
 		and tplugins.deployed=1
-		order by tplugins.loadPriority asc
+		order by tplugins.loadPriority desc
 	</cfquery>
 
 	<cfloop query="rs">
