@@ -52,7 +52,6 @@ initMura({
 	contentid:"#variables.$.content('contentid')#",
 	contenthistid:"#variables.$.content('contenthistid')#",
 	parentid:"#variables.$.content('parentid')#",
-	siteID:"#variables.$.event('siteID')#",
 	context:"#variables.$.globalConfig('context')#",
 	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
