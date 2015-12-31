@@ -1331,36 +1331,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
 				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
-				<cfif isXML(config)>
-
-					<cfset config=xmlParse(config)>
-					
-					<cfif isDefined('config.displayobject.xmlAttributes.name')>
-						<cfset objectArgs={
-							object=rs.name
-							}>
-						<cfif structKeyExists(objectArgs,'displayObjectFile')>
-							<cfset objectArgs.displayObjectFile=
-							displayObjectFile=rs.name & "/" & objectArgs.displayObjectFile>
-						<cfelseif structKeyExists(objectArgs,'component')>
-							<cfset objectArgs.displayObjectFile=
-							displayObjectFile=objectArgs["component"]>
-						<cfelse>
-							<cfset objectArgs.displayObjectFile=
-							displayObjectFile=rs.name & "/index.cfm">
-						</cfif>
-						<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
-							<cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
-						</cfloop>
-						<cfset registerDisplayObject(
-							argumentCollection=objectArgs
-						)>
-						<cfset objectfound=true>
-						<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
-					</cfif>
-					
-				</cfif>
+			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
 			</cfif>
+			
+			<cfif isXML(config)>
+
+				<cfset config=xmlParse(config)>
+				
+				<cfif isDefined('config.displayobject.xmlAttributes.name')>
+					<cfset objectArgs={
+						object=rs.name
+						}>
+					<cfif structKeyExists(objectArgs,'displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=rs.name & "/" & objectArgs.displayObjectFile>
+					<cfelseif structKeyExists(objectArgs,'component')>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=objectArgs["component"]>
+					<cfelse>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=rs.name & "/index.cfm">
+					</cfif>
+					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
+						<cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+					</cfloop>
+					<cfset registerDisplayObject(
+						argumentCollection=objectArgs
+					)>
+					<cfset objectfound=true>
+					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+				</cfif>
+				
+			</cfif>
+			
 		</cfloop>
 
 		<cfif objectfound>
