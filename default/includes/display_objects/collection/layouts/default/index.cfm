@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 #variables.$.dspObject_include(
 	theFile='collection/layouts/list/index.cfm', 
-	objectParams=arguments.objectParams
+	objectParams=arguments.objectParams,
+	iterator=arguments.iterator
 )#
 </cfoutput>
