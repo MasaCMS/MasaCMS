@@ -1566,17 +1566,15 @@
 			if(typeof response == 'string'){
 				obj.html(trim(response));
 			} else if (typeof response.html =='string' && obj.data('render') != 'client'){
-				obj.children('.mura-object-meta').html(mura.templates.meta(response));
-				obj.children('.mura-object-content').html(trim(response.html));
+				obj.html(trim(response.html));
 			} else {
-
-				obj.children('.mura-object-meta').html(mura.templates.meta(response));
-				
-				if(obj.data('object')!='container'){
+				if(obj.data('object')=='container'){
+					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						obj.children('.mura-object-content').html(mura.templates[template](response));
+						obj.html(mura.templates[template](response));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -1584,13 +1582,13 @@
 				}
 			}
 		} else {
-			obj.children('.mura-object-meta').html(mura.templates.meta(obj.data()));
-			
-			if(obj.data('object')!='container'){
+			if(obj.data('object')=='container'){
+				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					obj.children('.mura-object-content').html(mura.templates[template](obj.data()));
+					obj.html(mura.templates[template](obj.data()));
 					processMarkup(self)
 				} else {
 					console.log('Missing Client Template for:');
@@ -1755,15 +1753,15 @@
 				obj.addClass("mura-async-object");
 			}
 
-			obj.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
-
 			if(self.getAttribute('data-object')=='container'){
 				//resetAsyncObject(self);
-				obj.children('div.mura-object-content').html(container.data('content'));
+				unpackContainer(mura(self));
 				mura(self).find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
 				mura(self).hide().show();
+				unpackedContainer=true;
+
 			}
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
@@ -1795,7 +1793,7 @@
 					}
 				} else {
 					//console.log(data);	
-					//self.innerHTML=window.mura.preloaderMarkup;
+					self.innerHTML=window.mura.preloaderMarkup;
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',
 						type:'get',
