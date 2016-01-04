@@ -907,7 +907,7 @@
 		</cfif>
 
 		<cfif arguments.renderer.useLayoutManager()>
-			<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='meta/index.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='content/index.cfm',params=arguments)#</div>'>
+			<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
 		</cfif>

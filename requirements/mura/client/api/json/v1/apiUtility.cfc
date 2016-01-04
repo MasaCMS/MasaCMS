@@ -2087,7 +2087,7 @@ component extends="mura.cfobject" {
 				} else if(isSimpleValue(result)){
 					if($.useLayoutManager()){
 						args.params.content=result;
-						result={html=trim('#$.dspObject_include(theFile='meta/index.cfm',params=args.params)##$.dspObject_include(theFile='content/index.cfm',params=args.params)#')};
+						result={html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)##$.dspObject_include(theFile='object/content.cfm',params=args.params)#')};
 					} else {
 						result={html=result};
 					}

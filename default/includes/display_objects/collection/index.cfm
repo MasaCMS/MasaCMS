@@ -212,7 +212,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}>
 	</cfsilent>
 	<cfoutput>
-	<div class="mura-object-content">
 		#variables.$.dspObject_include(
 					theFile='collection/layouts/#objectParams.layout#/index.cfm', 
 					propertyMap=propertyMap, 

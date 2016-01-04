@@ -1503,13 +1503,6 @@
 		self.html('');
 	}
 
-	function unpackContainer(container){
-		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
-		if(container.data('content')){
-			container.children('div.mura-object-content').html(container.data('content'));
-		}
-	}
-
 	function processAsyncObject(el){
 		obj=mura(el);
 		if(obj.data('async')===null){
@@ -1569,12 +1562,15 @@
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+					obj.prepend(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						obj.html(mura.templates[template](response));
+						var context=obj.data();
+						context.html=mura.templates[template](obj.data());
+						obj.html(mura.templates.content(context));
+						obj.prepend(mura.templates.meta(context));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -1583,13 +1579,15 @@
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					obj.html(mura.templates[template](obj.data()));
-					processMarkup(self)
+					var context=obj.data();
+					context.html=mura.templates[template](obj.data());
+					obj.html(mura.templates.content(context));
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
@@ -1753,24 +1751,24 @@
 				obj.addClass("mura-async-object");
 			}
 
-			if(self.getAttribute('data-object')=='container'){
-				//resetAsyncObject(self);
-				unpackContainer(mura(self));
-				mura(self).find('.mura-object').each(function(){
+			if(obj.data('object')=='container'){
+				
+				obj.html(mura.templates.content(obj.data()));
+
+				obj.find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
-				mura(self).hide().show();
-				unpackedContainer=true;
+				obj.hide().show();
 
 			}
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
-			if(self.getAttribute('data-contentid')){
+			if(obj.data('contentid')){
 				data.contentid=self.getAttribute('data-contentid');
 			}
 
-			if(self.getAttribute('data-contenthistid')){
+			if(obj.data('contenthistid')){
 				data.contenthistid=self.getAttribute('data-contenthistid');
 			}
 
