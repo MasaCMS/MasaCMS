@@ -236,8 +236,7 @@
 				calendar:true
 			};
 
-			if(map[editableObj.data('object')]
-			){
+			if(editableObj.data('object') != 'plugin' && editableObj.data('object') != 'feed'){
 				targetFrame='sidebar'; 
 				if(muraInlineEditor.commitEdit && mura.currentId){
 					muraInlineEditor.commitEdit(mura('##' + mura.currentId));
@@ -1777,7 +1776,7 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
-			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
+			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
 		},
 		checkforImageCroppers:function(el){
 

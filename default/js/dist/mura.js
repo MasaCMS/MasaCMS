@@ -4162,56 +4162,40 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		selector:function() {
-		    var pathes = [];
+			var pathes = [];
+			var path, node = window.mura(this.selection[0]);
 
-		    //this.selection.each(function(index, element) {
-		        var path, $node = window.mura(this.selection[0]);
+			while (node.length) {
+				var realNode = node.get(0), name = realNode.localName;
+				if (!name) { break; }
 
-		        while ($node.length) {
-		           var realNode = $node.get(0), name = realNode.localName;
-		           if (!name) { break; }
+				if(!node.data('hastempid') && node.attr('id') && node.attr('id') != 'mura-variation-el'){
+			   		name='#' + node.attr('id');
+					path = name + (path ? ' > ' + path : '');
+					break;
+				} else {
 
-		           /*
-		           if(omitSysEls 
-		           		&& (
-		           			$node.hasClass('mura-editable')
-							|| $node.hasClass('editableObjectContents')
-							|| $node.hasClass('editableObject')
-		           		)
+				    name = name.toLowerCase();
+				    var parent = node.parent();
+				    var sameTagSiblings = parent.children(name);
 
-		           	){
-		           		break;
-		           }
-		           */
-		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
-		           		name='#' + $node.attr('id');
-		           		path = name + (path ? ' > ' + path : '');
-		            	break;
-		           } else {
+				    if (sameTagSiblings.length > 1)
+				    {
+				        allSiblings = parent.children();
+				        var index = allSiblings.index(realNode) +1;
 
-		                name = name.toLowerCase();
-		                var parent = $node.parent();
-		                var sameTagSiblings = parent.children(name);
+				        if (index > 0) {
+				            name += ':nth-child(' + index + ')';
+				        }
+				    }
 
-		                if (sameTagSiblings.length > 1)
-		                {
-		                    allSiblings = parent.children();
-		                    var index = allSiblings.index(realNode) +1;
+				    path = name + (path ? ' > ' + path : '');
+					node = parent;
+				}
+			
+			}
 
-		                    if (index > 0) {
-		                        name += ':nth-child(' + index + ')';
-		                    }
-		                }
-
-		                path = name + (path ? ' > ' + path : '');
-		            	$node = parent;
-		       		 }
-
-		           
-		        }
-
-		        pathes.push(path);
-		    //});
+			pathes.push(path);
 
 		    return pathes.join(',');
 		},
