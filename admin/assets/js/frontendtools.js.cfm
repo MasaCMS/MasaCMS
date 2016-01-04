@@ -206,37 +206,17 @@
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
-			var map={
-				collection:true,
-				text:true,
-				mailing_list:true,
-				site_map:true,
-				navigation:true,
-				embed:true,
-				container:true,
-				system:true,
-				tag_cloud:true,
-				form:true,
-				comments:true,
-				mailing_list:true,
-				mailing_list_master:true,
-				sub_nav:true,
-				peer_nav:true,
-				folder_nav:true,
-				multilevel_nav:true,
-				seq_nav:true,
-				top_nav:true,
-				category_summary:true,
-				calendar_nav:true,
-				archive_nav:true,
-				rater:true,
-				component:true,
-				folder:true,
-				gallery:true,
-				calendar:true
-			};
-
-			if(editableObj.data('object') != 'plugin' && editableObj.data('object') != 'feed'){
+			var legacyMap={
+				feed:true,
+				feed_slideshow:true,
+				feed_no_summary:true,
+				feed_slideshow_no_summary:true,
+				related_content:true,
+				related_section_content:true,
+				plugin:true
+			}
+			
+			if(!legacyMap[editableObj.data('object')]){
 				targetFrame='sidebar'; 
 				if(muraInlineEditor.commitEdit && mura.currentId){
 					muraInlineEditor.commitEdit(mura('##' + mura.currentId));

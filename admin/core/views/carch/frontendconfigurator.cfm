@@ -38,9 +38,9 @@
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
 		<div class="form-actions">	
 			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
-			<!---
-			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
-			--->
+			<cfif rc.sourceFrame eq 'modal'>
+				<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
+			</cfif>
 		</div>
 		</cfif>
 	</div>

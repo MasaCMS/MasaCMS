@@ -138,6 +138,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>			
 		</div>
+		<div class="fieldset-wrap">
+			<div class="fieldset">
+				<div id="labelContainer"class="control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
+					<div class="controls">
+						<input name="label" type="text" class="span12 objectParam" value="#esapiEncode('html_attr',objectParams.label)#"/>
+					</div>
+				</div>	 
+			</div>
+		</div>
 	</div>	
 	<cfparam name="objectParams.render" default="server">
 	<input type="hidden" class="objectParam" name="render" value="#esapiEncode('html_attr',objectParams.render)#">

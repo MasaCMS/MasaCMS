@@ -45,13 +45,22 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsavecontent variable="data.html">
-<cf_objectconfigurator configurable=false params="#objectParams#">
+<cf_objectconfigurator params="#objectParams#">
 <cfoutput>
 <div id="availableObjectParams"
 	data-object="collection" 
 	data-name="#esapiEncode('html_attr','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.container')#')#" 
 	data-objectid="none">
-
+	<div class="fieldset-wrap">
+		<div class="fieldset">
+			<div id="labelContainer"class="control-group">
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
+				<div class="controls">
+					<input name="label" type="text" class="span12 objectParam" value="#esapiEncode('html_attr',objectParams.label)#"/>
+				</div>
+			</div>	 
+		</div>
+	</div>
 </div>
 </cfoutput>
 </cf_objectconfigurator>
