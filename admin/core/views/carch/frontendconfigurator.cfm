@@ -38,9 +38,9 @@
 		<cfif not listFindNoCase('folder,calendar,gallery',rc.object)>
 		<div class="form-actions">	
 			<input type="button" class="btn" id="deleteObject" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.delete"))#"/>
-			<!---
-			<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
-			--->
+			<cfif rc.sourceFrame eq 'modal'>
+				<input type="button" class="btn" id="saveConfigDraft" value="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.apply"))#"/>
+			</cfif>
 		</div>
 		</cfif>
 	</div>
@@ -121,7 +121,7 @@
 							'instanceid':'#esapiEncode('javascript',rc.instanceid)#'
 						}
 
-						console.log(configOptions);
+						//console.log(configOptions);
 						
 						<cfset configuratorWidth=600>
 
@@ -133,7 +133,7 @@
 									configOptions
 								);
 							} else {
-								$('##configurator').html('');
+								siteManager.initGenericConfigurator(configOptions);
 							}
 
 							jQuery("##configuratorHeader").html('#esapiEncode('javascript',rc.objectname)#');

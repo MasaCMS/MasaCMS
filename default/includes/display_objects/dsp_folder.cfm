@@ -213,6 +213,3 @@
 	     </cfoutput>
 	</cfif>
 </cfif>
-
-	
-

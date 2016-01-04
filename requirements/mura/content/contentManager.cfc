@@ -2946,7 +2946,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				.addParam(name='contentid',condition='in',criteria=arguments.contentids)
 				.getIterator();
 
-			if(isdefined('arguments.orderby') or isdefined('arguments.sortby')){
+			if(isdefined('arguments.orderby') and len(arguments.orderby) or isdefined('arguments.sortby') and len(arguments.sortby)){
 				return iterator;
 			} else {
 				var rs=iterator.getQuery();

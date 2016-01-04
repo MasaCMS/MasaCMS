@@ -1,7 +1,53 @@
+ <!--- This file is part of Mura CMS.
+
+Mura CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+
+Mura CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
+
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+
+Your custom code 
+
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
+
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+--->
 <cfsilent>
 	<cfparam name="objectParams.sourcetype" default="">
 	<cfparam name="objectParams.source" default="">
-	<cfparam name="objectParams.layout" default="default.cfm">
+	<cfparam name="objectParams.layout" default="default">
 	<cfparam name="objectParams.displaylist" default="Date,Title,Summary,Credits,Tags">
 	<cfparam name="objectParams.items" default="">
 	<cfparam name="objectParams.maxitems" default="4">
@@ -12,14 +58,13 @@
 	<cfparam name="objectParams.viewalllabel" default="">
 
 	<cfif not len(objectparams.layout)>
-		<cfset objectParams.layout='default.cfm'>
+		<cfset objectParams.layout='default'>
 	</cfif>
 
 	<cfset objectParams.layout=listLast(replace(objectParams.layout, "\", "/", "ALL"),"/")>
 
-	<cfif not listLen(objectParams.layout,'.') gt 1>
-		<cfset objectParams.layout=objectParams.layout & ".cfm">
-	</cfif>
+	<cfset objectParams.layout=objectParams.layout>
+	
 </cfsilent>
 <cfif objectParams.sourcetype neq 'remotefeed'>
 	<cfsilent>
@@ -44,13 +89,6 @@
 				<cfelse>
 					<cfset iterator=$.content().getRelatedContentIterator(relatedcontentsetid=objectParams.source)>
 				</cfif>
-
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 
 			</cfcase>
 			<cfcase value="calendar">
@@ -109,12 +147,6 @@
 
 				<cfset iterator.setNextN(variables.$.event('nextn'))>
 				<cfset iterator.setStartRow(variables.$.event('startrow'))>
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 			</cfcase>
 			<cfcase value="children">
 				<cfif not isNumeric(variables.$.event('year'))>
@@ -123,17 +155,17 @@
 
 				<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
 					and variables.$.event('filterBy') eq "releaseDate">
-					<cfset variables.menuType="releaseDate">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+					<cfset objectParams.type="releaseDate">
+					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
 				<cfelseif variables.$.event('filterBy') eq "releaseMonth">
-					<cfset variables.menuType="releaseMonth">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+					<cfset objectParams.type="releaseMonth">
+					<cfset objectParams.today=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 				<cfelseif variables.$.event('filterBy') eq "releaseYear">
-					<cfset variables.menuType="releaseYear">
-					<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
+					<cfset objectParams.type="releaseYear">
+					<cfset objectParams.today=createDate(variables.$.event('year'),1,1)>
 				<cfelse>
-					<cfset variables.menuDate=now()>
-					<cfset variables.menuType="default">
+					<cfset objectParams.today=now()>
+					<cfset objectParams.type="default">
 				</cfif>
 
 				<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
@@ -157,25 +189,12 @@
 
 				<cfset iterator=$.content().set(objectParams).getKidsIterator(argumentCollection=objectParams)>
 				
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset iterator=$.getBean('feed')
 					.loadBy(feedid=objectParams.source)
 					.set(objectParams)
 					.getIterator()>
-
-				<cfset variables.pagination=variables.$.dspObject_include(
-					theFile='collection/dsp_pagination.cfm', 
-					iterator=iterator, 
-					nextN=iterator.getNextN(),
-					source=objectParams.source
-				)>
 
 			</cfdefaultcase>
 		</cfswitch>
@@ -196,18 +215,12 @@
 	<div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
 	<div class="mura-object-content">
 		#variables.$.dspObject_include(
-					theFile='collection/layouts/#objectParams.layout#', 
+					theFile='collection/layouts/#objectParams.layout#/index.cfm', 
 					propertyMap=propertyMap, 
 					iterator=iterator, 
 					objectParams=objectParams
 				)#
-
 	</div>
-	#variables.pagination#
-
-	<cfif len(objectParams.viewalllink)>
-		<a class="view-all" href="#arguments.objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
-	</cfif>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>

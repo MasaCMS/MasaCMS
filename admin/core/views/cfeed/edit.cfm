@@ -150,13 +150,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset isObjectInstance=false>
 </cfif>
 
-<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
-<cfif isObjectInstance>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+<cfif rc.$.getContentRenderer().useLayoutManager()>
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 <cfelse>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
+	<cfif isObjectInstance>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfelse>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	</cfif>
 </cfif>
-
 <cfset endpoint=rc.$.siteConfig().getApi('feed','v1').getEndpoint()>
 </cfsilent>
 
@@ -321,6 +325,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 
+			<cfif rc.$.getContentRenderer().useLayoutManager()>
+			<div class="control-group">
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
+					<div class="controls">
+						<select name="#displaNamePrefix#maxItems" data-displayobjectparam="maxItems">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+						<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
+						</cfloop>
+						<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>All</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="span6">
+				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
+						<div class="controls"><select name="#displaNamePrefix#nextN" data-displayobjectparam="nextN">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+						<option value="#r#" <cfif r eq rc.feedBean.getNextN()>selected</cfif>>#r#</option>
+						</cfloop>
+						<option value="100000" <cfif rc.feedBean.getNextN() eq 100000>selected</cfif>>All</option>
+						</select>
+					  </div>
+				</div>
+			</div>
+			</cfif>
+
 			<!--- Features + Nav --->
 			<div class="control-group">
 				<!--- Features Only --->
@@ -467,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 </cfif>
-
+<cfif not rc.$.getContentRenderer().useLayoutManager()>
 <div id="tabDisplay" class="tab-pane fade">
 <div class="fieldset">
 <cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
@@ -623,7 +654,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </div>
 </div>
-
+</cfif>
 <cfif not isObjectInstance>
 <div id="tabRss" class="tab-pane fade">
 <div class="fieldset">

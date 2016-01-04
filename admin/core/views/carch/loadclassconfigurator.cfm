@@ -53,84 +53,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="rc.contenthistid" default="">
 	<cfparam name="rc.objectid" default=""/>
 	<cfset contentRendererUtility=rc.$.getBean('contentRendererUtility')>
+	<cfset rc.classid=listLast(replace(rc.classid, "\", "/", "ALL"),"/")>
+	<cfset rc.container=listLast(replace(rc.container, "\", "/", "ALL"),"/")>
+	<cfif isDefined("form.params") and isJSON(form.params)>
+		<cfset objectParams=deserializeJSON(form.params)>
+	<cfelse>
+		<cfset objectParams={}>
+	</cfif>
+	<cfset data=structNew()>
+	<cfset filefound=false>
+	<cfset $=rc.$>
+	<cfif rc.classid eq "category_summary" and not application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
+		<cfset rc.classid='navigation'>
+	</cfif>
+
+	<cfif rc.classid eq 'form_responses'>
+		<cfset rc.classid='form'>
+	<cfelseif rc.classid eq 'mailing_list_master'>
+		<cfset rc.classid='mailing_list'>
+	<cfelseif listFindNoCase('comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild',rc.classid)>
+		<cfset rc.classid='system'>
+	<cfelseif listFindNoCase('sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav',rc.classid)>
+		<cfset rc.classid='navigation'>
+	</cfif>
+
+	<cfif rc.container eq 'layout'>
+		<cfset configFileSuffix="#rc.classid#/layout/index.cfm">
+	<cfelse>
+		<cfset configFileSuffix="#rc.classid#/configurator.cfm">
+	</cfif>
+
+	<cfset configFile=rc.$.siteConfig().lookupDisplayObjectFilePath(configFileSuffix)>
 </cfsilent>
 
-<cfswitch expression="#rc.classid#">	
-	<cfcase value="feed">
-		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
-	</cfcase>
-	<cfcase value="feed_slideshow">
-		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
-	</cfcase>
-	<cfcase value="category_summary">
-		<cfif application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
-			<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="related_content,related_section_content">
-		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
-	</cfcase>
-	<cfcase value="tag_cloud">
-		<cfinclude template="objectclass/dsp_tagcloud_configurator.cfm">
-	</cfcase>
-	<cfcase value="site_map">
-		<cfinclude template="objectclass/dsp_sitemap_configurator.cfm">
-	</cfcase>
-	<cfcase value="form,form_responses">
-		<cfinclude template="objectclass/dsp_form_configurator.cfm">
-	</cfcase>
-	<cfcase value="component">
-		<cfinclude template="objectclass/dsp_component_configurator.cfm">
-	</cfcase>
-	<cfcase value="folder">
-		<cfinclude template="objectclass/dsp_folder_configurator.cfm">
-	</cfcase>
-	<cfcase value="calendar">
-		<cfinclude template="objectclass/dsp_calendar_configurator.cfm">
-	</cfcase>
-	<cfcase value="gallery">
-		<cfinclude template="objectclass/dsp_gallery_configurator.cfm">
-	</cfcase>
-	<cfcase value="plugin">
-		<cfinclude template="objectclass/dsp_plugin_configurator.cfm">
-	</cfcase>
-	<cfcase value="system,comments,favorites,forward_email,event_reminder_form,rater,payPalCart,user_tools,goToFirstChild">
-		<cfinclude template="objectclass/dsp_system_configurator.cfm">
-	</cfcase>
-	<cfcase value="navigation,sub_nav,peer_nav,standard_nav,portal_nav,folder_nav,multilevel_nav,seq_nav,top_nav,calendar_nav,archive_nav">
-		<cfinclude template="objectclass/dsp_navigation_configurator.cfm">
-	</cfcase>
-	<cfcase value="mailing_list,mailing_list_master">
-		<cfinclude template="objectclass/dsp_mailinglist_configurator.cfm">
-	</cfcase>
-	<cfcase value="container">
-		<cfinclude template="objectclass/dsp_container_configurator.cfm">
-	</cfcase>
-	<cfcase value="collection">
-		<cfif rc.container eq 'layout'>
-			<cfinclude template="objectclass/collection/layout/index.cfm">
-		<cfelse>
-			<cfinclude template="objectclass/collection/index.cfm">
-		</cfif>
-	</cfcase>
-	<cfcase value="text">
-		<cfinclude template="objectclass/dsp_text_configurator.cfm">
-	</cfcase>
-	<cfcase value="media">
-		<cfinclude template="objectclass/dsp_media_configurator.cfm">
-	</cfcase>
-	<cfcase value="embed">
-		<cfinclude template="objectclass/dsp_embed_configurator.cfm">
-	</cfcase>
-	<cfdefaultcase>
-		<cfif rc.$.useLayoutManager()>
-			<cf_objectconfigurator></cf_objectconfigurator>
-		<cfelse>
-			<cfoutput>
-				<p class="alert">This display object is not configurable.</p>
-			</cfoutput>
-		</cfif>	
-	</cfdefaultcase>
-</cfswitch>
+<cfif len(configFile)>
+	<cfinclude template="#configFile#">
+<cfelse>
+	<cfswitch expression="#rc.classid#">	
+		<cfcase value="feed">
+			<cfinclude template="objectclass/legacy/dsp_feed_configurator.cfm">
+		</cfcase>
+		<cfcase value="feed_slideshow">
+			<cfinclude template="objectclass/legacy/dsp_slideshow_configurator.cfm">
+		</cfcase>
+		<cfcase value="related_content,related_section_content">
+			<cfinclude template="objectclass/legacy/dsp_related_content_configurator.cfm">
+		</cfcase>
+		<cfdefaultcase>
+			<cfif rc.$.useLayoutManager()>
+				<cf_objectconfigurator></cf_objectconfigurator>
+			<cfelse>
+				<cfoutput>
+					<p class="alert">This display object is not configurable.</p>
+				</cfoutput>
+			</cfif>	
+		</cfdefaultcase>
+	</cfswitch>
+</cfif>

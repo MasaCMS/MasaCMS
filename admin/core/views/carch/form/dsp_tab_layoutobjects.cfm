@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
       </div>
     </div>
-    
+    <cfif not rc.$.getContentRenderer().useLayoutManager()>
     <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
       <div class="controls" id="editObjects">       
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       #esapiEncode('html','Text')#
                     </option>
 
-                   <option title="#esapiEncode('html_attr','Social Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
+                   <option title="#esapiEncode('html_attr','Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
                       #esapiEncode('html','Embed')#
                     </option>
 
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div> <!--- /#availableRegions --->
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
-
+    </cfif>
   
   </div>  
 

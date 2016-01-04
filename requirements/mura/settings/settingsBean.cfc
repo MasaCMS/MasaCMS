@@ -245,6 +245,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.resourceSSL=0/>
 	<cfset variables.instance.resourceDomain=""/>
 	<cfset variables.instance.displayObjectLookup={}/>
+	<cfset variables.instance.displayObjectFilePathLookup={}/>
+	<cfset variables.instance.displayObjectLoopUpArray=[]>
 
 	<cfreturn this />
 </cffunction>
@@ -842,11 +844,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var dir2=expandPath("#getThemeIncludePath()#/display_objects/#lcase(arguments.type)#")>
 
 	<cfif directoryExists(dir1)>
-		<cfdirectory action="list" directory="#dir1#" name="rs1" filter="*.cfm|*.html|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir1#" name="rs1" type="dir">
 	</cfif>
 	
 	<cfif directoryExists(dir2)>
-		<cfdirectory action="list" directory="#dir2#" name="rs2" filter="*.cfm|*.html|*.html|*.hbs">
+		<cfdirectory action="list" directory="#dir2#" name="rs2"type="dir">
 	</cfif>
 
 	<cfif isQuery(rs1) and isQuery(rs2)>
@@ -1228,9 +1230,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayObjectFile" default="">
 	<cfargument name="configuratorInit" default="">
 	<cfargument name="configuratorJS" default="">
+	<cfargument name="contenttypes" default="">
+	<cfargument name="condition" default="true">
 	<cfset arguments.objectid=arguments.object>
 	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="lookupDisplayObjectFilePath" output="false">
+	<cfargument name="filePath">
+
+	<cfif hasDisplayObjectFilePath(arguments.filePath)>
+		<cfreturn getDisplayObjectFilePath(arguments.filePath)>
+	</cfif>
+
+	<cfset var dir="">
+	<cfset var result="">
+
+	<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
+		<cfset result=dir & arguments.filePath>
+		<cfif fileExists(expandPath(result))>
+			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
+			<cfreturn result>
+		</cfif>
+	</cfloop>
+
+	<cfreturn "">
 </cffunction>
 
 <cffunction name="hasDisplayObject" output="false">
@@ -1243,4 +1268,119 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.displayObjectLookup['#arguments.object#']>
 </cffunction>
 
+<cffunction name="hasDisplayObjectFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn structKeyExists(variables.instance.displayObjectFilePathLookup,'#arguments.filepath#')>
+</cffunction>
+
+<cffunction name="getDisplayObjectFilePath" output="false">
+	<cfargument name="filepath">
+	<cfreturn variables.instance.displayObjectFilePathLookup['#arguments.filepath#']>
+</cffunction>
+
+<cffunction name="setDisplayObjectFilePath" output="false">
+	<cfargument name="filepath">
+	<cfargument name="result">
+	<cfset variables.instance.displayObjectFilePathLookup['#arguments.filepath#']=arguments.result>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="discoverDisplayObjects" output="false">
+	<cfset var lookupArray=[
+		'/muraWRM/admin/core/views/carch/objectclass/',
+		getIncludePath()  & "/includes/display_objects/",
+		getIncludePath()  & "/includes/display_objects/custom/",
+		getThemeIncludePath() & "/display_objects/"
+	]>
+
+	<cfset var dir="">
+
+	<cfloop array="#lookupArray#" index="dir">
+		<cfset registerDisplayObjectDir(dir,false)>
+	</cfloop>
+
+	<cfset var rs="">
+
+	<cfquery name="rs">
+		select tplugins.directory 
+		from tplugins inner join tcontent on tplugins.moduleid = tcontent.contentid 
+		where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getValue('siteid')#">
+		and tplugins.deployed=1
+		order by tplugins.loadPriority desc
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfset registerDisplayObjectDir(getBean('configBean').getPluginDir() & '/' & rs.directory & '/display_objects/',true)>
+	</cfloop>
+
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerDisplayObjectDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="conditional" default="true">
+	<cfset var rs="">
+	<cfset var config="">
+	<cfset var objectArgs={}>
+	<cfset var o="">
+	<cfset var objectfound=(arguments.conditional) ? false : true>
+
+	<cfif directoryExists(expandPath(arguments.dir))>
+		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" type="dir">
+		<cfloop query="rs">
+
+			<cfif fileExists('#rs.directory#/#rs.name#/config.xml.cfm')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml.cfm" variable="config">
+			<cfelseif fileExists('#rs.directory#/#rs.name#/config.xml')>
+				<cffile action="read" file="#rs.directory#/#rs.name#/config.xml" variable="config">
+			<cfelse>
+				<cfset config="">
+			</cfif>
+			
+			<cfif isXML(config)>
+
+				<cfset config=xmlParse(config)>
+				
+				<cfif isDefined('config.displayobject.xmlAttributes.name')>
+					<cfset objectArgs={
+						object=rs.name
+						}>
+					<cfif structKeyExists(objectArgs,'displayObjectFile')>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=rs.name & "/" & objectArgs.displayObjectFile>
+					<cfelseif structKeyExists(objectArgs,'component')>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=objectArgs["component"]>
+					<cfelse>
+						<cfset objectArgs.displayObjectFile=
+						displayObjectFile=rs.name & "/index.cfm">
+					</cfif>
+					<cfloop collection="#config.displayobject.xmlAttributes#" item="o">
+						<cfset objectArgs[o]=config.displayobject.xmlAttributes[o]>
+					</cfloop>
+					<cfset registerDisplayObject(
+						argumentCollection=objectArgs
+					)>
+					<cfset objectfound=true>
+					<cfset getBean('configBean').getClassExtensionManager().loadConfigXML(config,getValue('siteid'))>
+				</cfif>
+				
+			</cfif>
+			
+		</cfloop>
+
+		<cfif objectfound>
+			<cfif not listFind('/,\',right(arguments.dir,1))>
+				<cfset arguments.dir=arguments.dir & getBean('configBean').getFileDelim()>
+			</cfif>
+			<cfset arrayPrepend(variables.instance.displayObjectLoopUpArray,arguments.dir)>
+		</cfif>
+	
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getDisplayObjects">
+	<cfreturn variables.instance.displayObjectLookup>
+</cffunction>
 </cfcomponent>

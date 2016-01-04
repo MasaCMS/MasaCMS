@@ -103,18 +103,6 @@
 			</div>
 		</div>
 	</div>
-	<cfif not listFindNoCase('folder,gallery,calendar',attributes.params.object)>
-	<div class="fieldset-wrap">
-		<div class="fieldset">
-			<div id="labelContainer"class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.label')#</label>
-				<div class="controls">
-					<input name="label" type="text" class="span12 objectParam" value="#esapiEncode('html_attr',attributes.params.label)#"/>
-				</div>
-			</div>	 
-		</div>
-	</div>
-	</cfif>
 	<input name="class" type="hidden" class="objectParam" value="#esapiEncode('html_attr',attributes.params.class)#"/>
 	</cfoutput>
 	</div>

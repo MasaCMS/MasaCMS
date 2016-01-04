@@ -16,68 +16,22 @@
 					<div class="mura-sidebar__objects-list__object-group-items">
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
 
-						#contentRendererUtility.renderObjectClassOption(
-							object='container',
-							objectid='',
-							objectname='Container'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='collection',
-							objectid='',
-							objectname='Collection'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='text',
-							objectid='',
-							objectname='Text'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='embed',
-							objectid='',
-							objectname='Embed'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='form',
-							objectid='',
-							objectname='Form'
-						)#
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='component',
-							objectid='',
-							objectname='Component'
-						)#
-
-						<cfif $.content('type') neq 'Variation'>
-							#contentRendererUtility.renderObjectClassOption(
-								object='navigation',
-								objectid='',
-								objectname='Navigation'
-							)#
-
-							#contentRendererUtility.renderObjectClassOption(
-								object='system',
-								objectid='',
-								objectname='System Object'
-							)#
-
-							#contentRendererUtility.renderObjectClassOption(
-								object='mailing_list',
-								objectid='',
-								objectname='Mailing List'
-							)#
-						</cfif>
-
-						#contentRendererUtility.renderObjectClassOption(
-							object='plugin',
-							objectid='',
-							objectname='Plugin'
-						)#
+						<cfset displayObjects=$.siteConfig('displayObjects')>
 						
+						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
+						<cfloop list="#objectKeys#" index="key">
+							<cfif (displayobjects['#key#'].contenttypes eq '*'
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type')))
+							and evaluate(displayobjects['#key#'].condition)>
+
+								#contentRendererUtility.renderObjectClassOption(
+									object=displayObjects[key].object,
+									objectid='',
+									objectname=displayObjects[key].name
+								)#
+
+							</cfif>
+						</cfloop>
 
 					</div>
 				</div>

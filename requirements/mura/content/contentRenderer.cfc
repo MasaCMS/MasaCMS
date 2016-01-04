@@ -257,6 +257,7 @@ Display Objects
 		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		default={tag="dd"}
 	}>
+
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
@@ -1311,23 +1312,20 @@ Display Objects
 			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
 		</cfif>
 		
+		<cfset var filePath=variables.$.siteConfig().lookupDisplayObjectFilePath(arguments.theFile)>
+
 		<cfsavecontent variable="theContent">
-			<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
-				<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
-			<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
-				<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
-			<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
-				<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
+			<cfif len(filepath)>
+			<cfset tracePoint=initTracePoint("#filepath#")>
+			<cfinclude template="#filepath#" />
+			<cfset commitTracePoint(tracePoint)>
+			<cfelse>
+			<cfset tracePoint=initTracePoint("The requested file '#arguments.theFile#' could not be found.")>
+			<cfoutput><!-- The requested file '#arguments.theFile#' could not be found.--></cfoutput>
+			<cfset commitTracePoint(tracePoint)>
 			</cfif>
 		</cfsavecontent>
 	</cfif>
-	
 
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
@@ -2758,6 +2756,16 @@ Display Objects
 
 	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
 		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
+
+	public function get(){
+		if(isDefined('this.#arguments.property#')){
+			return this[arguments.property];
+		} else if (isDefined('variables.#argumentsproperty#')){
+			return this[arguments.property];
+		}
+
+		return '';
 	}
 
 </cfscript>
