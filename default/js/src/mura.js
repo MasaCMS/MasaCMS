@@ -1531,22 +1531,6 @@
 			
 		}
 
-		function addHTML(obj,html,response){
-			if(!obj.children('.mura-object-meta').length){
-				obj.prepend('<div class="mura-object-meta"></div>');
-				obj.children('.mura-object-meta').html(mura.templates['meta'](response));
-			}
-
-			if(!obj.children('.mura-object-content').length){
-				obj.append('<div class="mura-object-content"></div>');
-					mura(obj).children('.mura-object-content').html(trim(html));
-			}
-
-			if(obj.data('object')=!'container'){
-				mura(obj).children('.mura-object-content').html(trim(html));
-			}
-		}
-
 		obj=(obj.node) ? obj : mura(obj);
 		var self=obj.node;
 
@@ -1582,11 +1566,10 @@
 			if(typeof response == 'string'){
 				obj.html(trim(response));
 			} else if (typeof response.html =='string' && obj.data('render') != 'client'){
-				addHTML(obj,response.html,response);
+				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					addHTML(obj,'',response);
-					//mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -1600,8 +1583,7 @@
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				addHTML(obj,'',obj.data());
-				//mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
