@@ -2085,7 +2085,13 @@ component extends="mura.cfobject" {
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
 				} else if(isSimpleValue(result)){
-					result={html=result};
+					if($.useLayoutManager()){
+						args.params.content=result;
+						result={html=trim('#$.dspObject_include(theFile='meta/index.cfm',params=args.params)##$.dspObject_include(theFile='content/index.cfm',params=args.params)#')};
+					} else {
+						result={html=result};
+					}
+					
 				} 
 		} 
 

@@ -884,6 +884,7 @@
 		<cfargument name="showEditable">
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
+		<cfargument name="renderer">
 
 		<cfset var openingDiv='<div class="mura-object'>
 
@@ -905,7 +906,12 @@
 			<cfset openingDiv=openingDiv & ">">
 		</cfif>
 
-		<cfreturn "#openingDiv##trim(arguments.content)#</div>">
+		<cfif arguments.renderer.useLayoutManager()>
+			<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='meta/index.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='content/index.cfm',params=arguments)#</div>'>
+		<cfelse>
+			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
+		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="serializeObjectParam" output="false">
@@ -1234,7 +1240,8 @@
 									objectParams=arguments.params,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
-									objectname=arguments.objectname)>
+									objectname=arguments.objectname,
+									renderer=arguments.renderer)>
 						</cfif>
 					</cfif>
 				</cfcase>

@@ -1336,7 +1336,8 @@ Display Objects
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
-				objectname=arguments.objectname) />
+				objectname=arguments.objectname,
+				renderer=this) />
 		<cfelse>
 			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1344,7 +1345,8 @@ Display Objects
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
-				objectname=arguments.objectname) />
+				objectname=arguments.objectname,
+				renderer=this) />
 		</cfif>'
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>

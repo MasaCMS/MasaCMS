@@ -212,7 +212,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}>
 	</cfsilent>
 	<cfoutput>
-	<div class="mura-object-meta">#$.dspObject_Include(thefile='meta/index.cfm',params=objectParams)#</div>
 	<div class="mura-object-content">
 		#variables.$.dspObject_include(
 					theFile='collection/layouts/#objectParams.layout#/index.cfm', 
@@ -220,7 +219,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					iterator=iterator, 
 					objectParams=objectParams
 				)#
-	</div>
 	</cfoutput>
 <cfelse>
 	<cfoutput>#variables.dspObject(object='feed',objectid=objectParams.source,params=objectParams)#</cfoutput>
