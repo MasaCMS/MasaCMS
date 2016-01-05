@@ -45,7 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="objectParams.label" default="">
-<cfset objectParams.async=true>
 <cfif len(objectParams.label)>
-	<cfoutput><h2>#esapiEncode('html',objectParams.label)#</h2></cfoutput>
+	<cfoutput><div class="mura-object-meta"><h2>#esapiEncode('html',objectParams.label)#</h2></div></cfoutput>
 </cfif>

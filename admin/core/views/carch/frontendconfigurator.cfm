@@ -133,6 +133,7 @@
 									configOptions
 								);
 							} else {
+								console.log(configOptions)
 								siteManager.initGenericConfigurator(configOptions);
 							}
 

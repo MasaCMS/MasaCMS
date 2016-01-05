@@ -44,23 +44,5 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsilent>
-	<cfparam name="objectParams.sourcetype" default="free">
-	<cfparam name="objectParams.source" default="">
-	<cfparam name="objectParams.render" default="server">
-</cfsilent>
-<cfif objectParams.sourcetype neq 'custom'>
-<cfoutput>
-<cfif objectParams.sourceType eq 'component'>
-	#$.dspObject(objectid=objectParams.source,object='component')#
-<cfelseif objectParams.sourceType eq 'boundattribute'>
-	#$.content(objectParams.source)#
-<cfelseif objectParams.sourcetype eq 'custom'>
-	#objectParams.source#
-<cfelse>
-	<p>This text has not been configured.</p>
-</cfif>
-</cfoutput>
-<cfelse>
-<cfset objectParams.render="client">
-</cfif>
+<cfparam name="objectParams.content" default="">
+<cfoutput><div class="mura-object-content">#objectParams.content#</div></cfoutput>

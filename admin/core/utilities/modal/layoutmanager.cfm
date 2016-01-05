@@ -1,4 +1,5 @@
 <cfoutput>
+<div class="mura">
 <div class="mura__layout-manager__controls">
 					
 	<div class="mura__layout-manager__controls__scrollable">
@@ -21,7 +22,10 @@
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type')))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & $.content('subtype'))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
+							)
 							and evaluate(displayobjects['#key#'].condition)>
 
 								#contentRendererUtility.renderObjectClassOption(
@@ -112,9 +116,12 @@
 	</div>
 	
 </div>
-
+</div>
 <script>
 mura.ready(function(){
+
+	mura('body').addClass('mura-sidebar-state__hidden--right');
+	
 	mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
 		muraInlineEditor.sidebarAction('showlegacyobjects');

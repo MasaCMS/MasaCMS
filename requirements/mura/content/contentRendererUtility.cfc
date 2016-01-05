@@ -94,7 +94,7 @@
 			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
 			var layoutManager=arguments.renderer.useLayoutmanager();
 
-			if(arguments.renderer.hasFETools() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
+			if(arguments.renderer.getShowToolbar() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 
 				var dataString='';
 				var inline=' inline';
@@ -884,6 +884,7 @@
 		<cfargument name="showEditable">
 		<cfargument name="isConfigurator">
 		<cfargument name="objectname">
+		<cfargument name="renderer">
 
 		<cfset var openingDiv='<div class="mura-object'>
 
@@ -905,7 +906,12 @@
 			<cfset openingDiv=openingDiv & ">">
 		</cfif>
 
-		<cfreturn "#openingDiv##trim(arguments.content)#</div>">
+		<cfif arguments.renderer.useLayoutManager()>
+			<cfreturn '#openingDiv##arguments.renderer.dspObject_include(theFile='object/meta.cfm',params=arguments.objectParams)##arguments.renderer.dspObject_include(theFile='object/content.cfm',params=arguments)#</div>'>
+		<cfelse>
+			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
+		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="serializeObjectParam" output="false">
@@ -1234,7 +1240,8 @@
 									objectParams=arguments.params,
 									showEditable=showEditable,
 									isConfigurator=editableControl.isConfigurator,
-									objectname=arguments.objectname)>
+									objectname=arguments.objectname,
+									renderer=arguments.renderer)>
 						</cfif>
 					</cfif>
 				</cfcase>

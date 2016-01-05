@@ -3024,13 +3024,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		self.html('');
 	}
 
-	function unpackContainer(container){
-		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
-		if(container.data('content')){
-			container.children('div.mura-object-content').html(container.data('content'));
-		}
-	}
-
 	function processAsyncObject(el){
 		obj=mura(el);
 		if(obj.data('async')===null){
@@ -3090,12 +3083,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+					obj.prepend(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						obj.html(mura.templates[template](response));
+						var context=obj.data();
+						context.html=mura.templates[template](obj.data());
+						obj.html(mura.templates.content(context));
+						obj.prepend(mura.templates.meta(context));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -3104,13 +3100,15 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					obj.html(mura.templates[template](obj.data()));
-					processMarkup(self)
+					var context=obj.data();
+					context.html=mura.templates[template](obj.data());
+					obj.html(mura.templates.content(context));
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
@@ -3274,24 +3272,24 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.addClass("mura-async-object");
 			}
 
-			if(self.getAttribute('data-object')=='container'){
-				//resetAsyncObject(self);
-				unpackContainer(mura(self));
-				mura(self).find('.mura-object').each(function(){
+			if(obj.data('object')=='container'){
+				
+				obj.html(mura.templates.content(obj.data()));
+
+				obj.find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
-				mura(self).hide().show();
-				unpackedContainer=true;
+				obj.hide().show();
 
 			}
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
-			if(self.getAttribute('data-contentid')){
+			if(obj.data('contentid')){
 				data.contentid=self.getAttribute('data-contentid');
 			}
 
-			if(self.getAttribute('data-contenthistid')){
+			if(obj.data('contenthistid')){
 				data.contenthistid=self.getAttribute('data-contenthistid');
 			}
 
@@ -5158,24 +5156,25 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 })(window);
 ;mura.templates={};
 mura.templates['meta']=function(context){
-  if(context.label){
-    return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
-  } else {
-    return '';
-  }  
+	
+	if(context.label){
+		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
+	} else {
+	    return '';
+	}  
+}
+mura.templates['content']=function(context){
+	context.html=context.html || context.content || context.source || '';
+
+  	return '<div class="mura-object-content">' + context.html + '</div>';
 }
 mura.templates['text']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
  	return html;
 }
 mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
- 
  	return html;
 }
