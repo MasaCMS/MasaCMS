@@ -1,5 +1,5 @@
 <cfoutput>
-<div class="mura">
+<div id="mura-sidebar-container" class="mura" style="display:none">
 <div class="mura__layout-manager__controls">
 					
 	<div class="mura__layout-manager__controls__scrollable">
@@ -121,7 +121,7 @@
 mura.ready(function(){
 
 	mura('body').addClass('mura-sidebar-state__hidden--right');
-	
+	mura('##mura-sidebar-container').show();
 	mura('##mura-objects-legacy-btn').click(function(e){
 		e.preventDefault();
 		muraInlineEditor.sidebarAction('showlegacyobjects');
