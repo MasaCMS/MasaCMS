@@ -1241,7 +1241,7 @@
 
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i></div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
 
 	function processMarkup(scope){
 

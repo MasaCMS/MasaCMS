@@ -1,5 +1,5 @@
 <cfoutput>
-<div class="mura__layout-manager__controls">
+<div class="mura__layout-manager__controls mura">
 					
 	<div class="mura__layout-manager__controls__scrollable">
 	
@@ -21,7 +21,10 @@
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type')))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & $.content('subtype'))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
+							)
 							and evaluate(displayobjects['#key#'].condition)>
 
 								#contentRendererUtility.renderObjectClassOption(

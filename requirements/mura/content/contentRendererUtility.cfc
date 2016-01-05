@@ -94,7 +94,7 @@
 			var perm=(listFindNoCase('editor,author',arguments.renderer.getMuraScope().event('r').perm) or listFind(session.mura.memberships,'S2'));
 			var layoutManager=arguments.renderer.useLayoutmanager();
 
-			if(arguments.renderer.hasFETools() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
+			if(arguments.renderer.getShowToolbar() && arguments.renderer.showInlineEditor && perm && not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 
 				var dataString='';
 				var inline=' inline';

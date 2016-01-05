@@ -2944,6 +2944,10 @@ buttons: {
 						name: availableObjectContainer.attr("data-name")
 					};
 					
+					siteManager.availableObjectTemplate.object=siteManager.availableObjectTemplate.object || data.object;
+					siteManager.availableObjectTemplate.objectid=siteManager.availableObjectTemplate.object || data.objectid;
+					siteManager.availableObjectTemplate.name=siteManager.availableObjectTemplate.name || data.name;
+
 					siteManager.availableObject = $.extend({}, siteManager.availableObjectTemplate);
 				}
 
