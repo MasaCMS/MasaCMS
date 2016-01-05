@@ -1,79 +1,65 @@
-/* section 1 */
-
-*[draggable=true] {
-  -moz-user-select:none;
-  -khtml-user-drag: element;
-  cursor: move;
+// push the body padding around, transition
+body.mura-sidebar-state__hidden--left {
+	padding-left: 0;
 }
 
-/* 
-	DEV NOTE
-	ie10 does not allow use of 'inherit' on calculated parent
-	example: .mura-sidebar uses a calculated height, therefore the child elements cannot use 'inherit' for height
-	http://stackoverflow.com/questions/19423384/css-less-calc-method-is-crashing-my-ie10
-*/
-
-.mura-sidebar__objects-list {
-	height: 100%;
-	width: 100%;
-	overflow: scroll;
+body.mura-sidebar-state__hidden--right {
+	padding-right: 0;
 }
 
-.mura-sidebar__objects-list__object-group {
-	margin: 18px;
+body.mura-sidebar-state__hidden--left,
+body.mura-sidebar-state__hidden--right {
+	transition: padding 0.3s ease;
 }
 
-.mura-sidebar__objects-list__object-group h3 {
-	margin: 0 0 .5em 0;
-	padding: 0;
-	font-size: 32px;
-	font-weight: bold;
-	color: #ff3a00;
-	line-height: 44px;
-	letter-spacing: -0.05em;
-}
-
-.mura-sidebar__objects-list__object-group-heading {}
-
-/* legacy, initial set */
-.mura-sidebar__object-group-items,
-.mura-sidebar__objects-list__object-group-items {
-	padding: 8px;
-	background-color: #e6e6e6;
-	border-radius: 3px;
-}
-
-.mura-sidebar__object-group-items {
-	padding: 8px;
-	background-color: #e6e6e6;
-	border-radius: 3px;
-}
-
-.mura-sidebar__object-group-items select,
-.mura-sidebar__objects-list__object-group-items select {
-	margin: .5em 0;
-	width: 100%;
-}
-
-.mura-sidebar__objects-list__object-item {
+body.mura-sidebar-state__pushed--left,
+body.mura-sidebar-state__pushed--right {
+	min-width: 100%;
 	box-sizing: border-box;
-	padding: .5em;
-	margin-bottom: -1px;
-	background-color: #F5F5F5;
-	font-size: 13px;
-	color: #000;
-	text-shadow: 0 1px 0 #fff;
-	font-weight: bold;
+	display: table;
+	transition: padding 0.3s ease;
 }
 
-.mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
-	border-top: 1px solid rgba(0,0,0,0.07);
+body.mura-sidebar-state__pushed--left {
+	padding-left: 300px;
 }
 
-.mura-sidebar__objects-list__object-item:hover {
-	background: #f9f9f9;
-	cursor: pointer;
+body.mura-sidebar-state__pushed--right {
+	padding-right: 300px;
 }
+	
+//transition the sidebar
+
+body.mura-sidebar-state__hidden--left .mura__layout-manager__controls {
+	transition: left 0.3s ease;
+	left: -300px;
+}
+
+body.mura-sidebar-state__hidden--right .mura__layout-manager__controls {
+	transition: right 0.3s ease;
+	right: -300px;
+}
+
+body.mura-sidebar-state__pushed--left .mura__layout-manager__controls {
+	left: 0;
+	transition: left 0.3s ease;
+}
+
+body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
+	right: 0;
+	transition: right 0.3s ease;
+}
+
+body.mura-sidebar-state__hidden--left .mura__layout-manager__controls,
+body.mura-sidebar-state__pushed--left .mura__layout-manager__controls {
+	box-shadow: 1px 0 0 0 rgba(0,0,0,0.1);
+}
+
+body.mura-sidebar-state__hidden--right .mura__layout-manager__controls,
+body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
+	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);
+}
+
 
 .mura-region-local {
 	min-height: 15px;
@@ -113,60 +99,6 @@
 	margin-bottom: -2px;
 }
 
-body {
-	padding-left: 0;
-	transition: padding 0.3s ease;
-}
-
-.-state__pushed--left {
-	min-width: 100%;
-	box-sizing: border-box;
-	display: table;
-	transition: padding 0.3s ease;
-}
-
-.-state__pushed--left {
-
-	/* temporarily set left class to right styles */
-	padding-right: 300px;
-}
-
-.mura__layout-manager__controls {
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	width: 300px;
-	position: fixed;
-	right: -300px;
-	top: 0;
-	bottom: 0;
-	z-index: 15; /* 1 higher than navbar */
-	transition: right 0.3s ease;
-	height: 100vh;
-	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);
-}
-
-.mura__layout-manager__controls__scrollable {
-	height: inherit;
-	width: inherit;
-	overflow: scroll;
-}
-
-.mura__layout-manager__controls__objects {
-	padding: 50px 0;
-}
-
-.-state__pushed--left .mura__layout-manager__controls {
-	/* temporarily set left class to right styles */
-	
-	right: 0;
-	transition: right 0.3s ease;
-}
-
-.mura__layout-manager__controls {
-	background-color: #FFFFFF;
-}
-
-
-
 /* buttons
 ===================================== */
 .frontEndToolsModal.mura {
@@ -199,30 +131,4 @@ body {
 	clear: both;
 	display: block;
 	float: none;
-}
-
-/* iframe
-===================================== */
-
-.mura #sortableFields.sortable-sidebar #displayListSort {
-	width: 100%;
-	float: none;
-}
-
-.mura-editable .mura-editable-attribute::after {
-	content: '';
-	display: table;
-	clear: both;
-}
-
-.mura #configurator .fieldset-wrap {
-	padding: 5px !important;
-}
-
-.mura__layout-manager__controls .mura #configurator .fieldset-wrap {
-	padding: 5px;
-}
-
-.mura__layout-manager__controls .mura #configurator .fieldset-wrap + .fieldset-wrap {
-	margin-top: 1em;
 }

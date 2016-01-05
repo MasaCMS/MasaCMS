@@ -383,7 +383,9 @@
 
 		 function initLayoutManager(){
 			initClassObjects();
-			mura('body').addClass('-state__pushed--left');
+			mura('body')
+			.removeClass('mura-sidebar-state__hidden--right')
+			.addClass('mura-sidebar-state__pushed--right');
 
 			mura('.mxp-editable').each(function(){
 				var item=mura(this);

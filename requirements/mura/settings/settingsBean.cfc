@@ -837,41 +837,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getLayouts" access="public" output="false">
 	<cfargument name="type" required="true" default="collection/layouts">
-	<cfset var rs1 = "">
-	<cfset var rs2 = "">
-	<cfset var rsFinal = "">
-	<cfset var dir1=expandPath("#getIncludePath()#/includes/display_objects/#lcase(arguments.type)#")>
-	<cfset var dir2=expandPath("#getThemeIncludePath()#/display_objects/#lcase(arguments.type)#")>
-
-	<cfif directoryExists(dir1)>
-		<cfdirectory action="list" directory="#dir1#" name="rs1" type="dir">
-	</cfif>
 	
-	<cfif directoryExists(dir2)>
-		<cfdirectory action="list" directory="#dir2#" name="rs2"type="dir">
-	</cfif>
+	<cfparam name="variables.instance.collectionLayouts" default="">
 
-	<cfif isQuery(rs1) and isQuery(rs2)>
+	<cfif not isQuery(variables.instance.collectionLayouts)>
+
+		<cfset var rsFinal = queryNew('name','varchar')>
+		<cfset var rs = "">
+		<cfset var dir = "">
+		
+		<cfloop array="#variables.instance.displayObjectLoopUpArray#" index="dir">
+			<cfset dir=expandPath('#dir##trim(arguments.type)#')>
+			
+			<cfif directoryExists(dir)>
+				<cfdirectory action="list" directory="#dir#" name="rs" type="dir">
+
+				<cfif rs.recordcount>
+					<cfquery name="rsFinal" dbType="query">
+						select name from rsFinal
+
+						union
+
+						select name from rs
+					</cfquery>
+				</cfif>
+			</cfif>
+		</cfloop>
+
 		<cfquery name="rsFinal" dbType="query">
-			select name from rs1
-
-			union
-
-			select name from rs2
+			select name from rsFinal
+			order by name asc
 		</cfquery>
-	<cfelseif isQuery(rs1)>
-		<cfset rsFinal=rs1>
-	<cfelseif isQuery(rs2)>
-		<cfset rsFinal=rs2>
-	<cfelse>
-		<cfset rsFinal=queryNew("name")>
-	</cfif>
 
-	<cfquery name="rsFinal" dbType="query">
-	select name from rsFinal order by name asc
-	</cfquery>
+		<cfset variables.instance.collectionLayouts=rsFinal>
+	</cfif>
 	
-	<cfreturn rsFinal />
+	<cfreturn variables.instance.collectionLayouts />
 </cffunction>
 
 <cffunction name="isValidDomain" output="false" returntype="boolean">
