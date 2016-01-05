@@ -1241,6 +1241,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
 
+	<cfif len(request.altTheme)>
+		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/">
+		<cfif fileExists(expandPath(altThemePath))>
+			<cfreturn altThemePath>
+		</cfif>
+	</cfif>
+
 	<cfif hasDisplayObjectFilePath(arguments.filePath)>
 		<cfreturn getDisplayObjectFilePath(arguments.filePath)>
 	</cfif>
@@ -1256,6 +1263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
+	<cfset setDisplayObjectFilePath(arguments.filePath,"")>
 	<cfreturn "">
 </cffunction>
 
@@ -1291,7 +1299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		'/muraWRM/admin/core/views/carch/objectclass/',
 		getIncludePath()  & "/includes/display_objects/",
 		getIncludePath()  & "/includes/display_objects/custom/",
-		getThemeIncludePath() & "/display_objects/"
+		getThemeIncludePath(getValue('theme')) & "/display_objects/"
 	]>
 
 	<cfset var dir="">

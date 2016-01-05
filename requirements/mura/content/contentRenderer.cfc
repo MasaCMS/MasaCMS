@@ -1462,34 +1462,35 @@ Display Objects
 
 				<cfif len(eventOutput)>
 					<cfoutput>#eventOutput#</cfoutput>
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!--- [dynamic theme path]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#themeIncludePath#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!---[dynamic theme path]/display_objects//extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#themeIncludePath#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+				</cfif>
 
-				<!--- [siteid]/includes/themes/[theme]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
+				<cfset var filePath="">
+
+				<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm')>
+
+				<cfif len(filePath)>
+					<cfinclude template="#filepath#">
+				<cfelseif $.content('type') eq 'folder'>
+					<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_Portal_#safesubtype#.cfm')>
+					<cfif len(filePath)>
+						<cfinclude template="#filepath#">
+					</cfif>
+				</cfif>
+
+				<cfif not len(filePath)>
+					<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm')>
+
+					<cfif len(filePath)>
+						<cfinclude template="#filepath#">
+					<cfelseif $.content('type') eq 'folder'>
+						<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
+						<cfif len(filePath)>
+							<cfinclude template="#filepath#">
+						</cfif>
+					</cfif>
+				</cfif>
 				
-				<!--- [siteid]/includes/themes/[theme]/display_objects/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!--- [siteid]/includes/display_objects/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<cfelse>
+				<cfif not len(eventOutput) and not len(filePath)>
 					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
 					<cfcase value="File">
 						<cfif variables.event.getValue('contentBean').getContentType() eq "Image" 
@@ -1550,7 +1551,18 @@ Display Objects
 						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 						<cfcase value="Folder">
 							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+							 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
+
+							 <cfif len(filePath)>
+							 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+							 <cfelse>
+							 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
+							 	 <cfif len(filePath)>
+								 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm')#</cfoutput>
+								 <cfelse>
+								 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm')#</cfoutput>
+								 </cfif>
+							</cfif>
 							</cf_CacheOMatic>
 						</cfcase> 
 						<cfcase value="Calendar">
