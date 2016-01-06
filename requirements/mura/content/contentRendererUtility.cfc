@@ -1323,20 +1323,29 @@
 
 		<cfif perm>
 			<cfif listLen($.siteConfig('columnnames'),'^') gte arguments.columnid>
-				<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION : #UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))#</label>'>
+				<cfset var regionLabel=UCASE(listGetAt($.siteConfig('columnnames'),arguments.columnid,'^'))>
 			<cfelse>
-				<cfset theRegion.header='<div class="mura-region mura-editable inactive"><label class="mura-editable-label">DISPLAY REGION: #arguments.columnid#</label>'>
+				<cfset var regionLabel=arguments.columnid>
 			</cfif>
-			<cfset theRegion.local.header='<div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#">'>
+			<cfset theRegion.header='<div class="mura-region">'>
+			<cfset theRegion.footer='</div>'>
+
+			<cfset theRegion.local.header='<div class="mura-editable inactive"><div class="mura-region-local inactive mura-editable-attribute" data-loose="false" data-regionid="#arguments.columnid#" data-inited="false" data-perm="#perm#"><label class="mura-editable-label">DISPLAY REGION : #regionLabel#</label>'>
+			<cfset theRegion.local.footer='</div></div>'>
+
+			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
+			<cfset theRegion.inherited.footer='</div>'>
+			
 		<cfelse>
 			<cfset theRegion.header='<div class="mura-region">'>
-			<cfset theRegion.local.header='<div class="mura-region-local">'>
-		</cfif>
+			<cfset theRegion.footer='</div>'>
 
-		<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
-		<cfset theRegion.inherited.footer='</div>'>
-		<cfset theRegion.local.footer='</div>'>
-		<cfset theRegion.footer='</div>'>
+			<cfset theRegion.local.header='<div class="mura-region-local">'>
+			<cfset theRegion.local.footer='</div>'>
+
+			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
+			<cfset theRegion.inherited.footer='</div>'>
+		</cfif>
 
 		<cfif (event.getValue('isOnDisplay')
 				and ((not event.getValue('r').restrict)
