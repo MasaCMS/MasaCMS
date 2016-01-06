@@ -245,17 +245,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset tempValue=getExtendedAttribute(arguments.property,true) />
-		<cfif tempValue neq "useMuraDefault">
-			<cfset variables.instance["#arguments.property#"]=tempValue />
-			<cfreturn tempValue>
-		<cfelse>
-			<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
-			<cfreturn arguments.defaultValue />
-		</cfif>
 	<cfelseif variables.instance.extendAutoComplete>
-		<cfreturn getExtendedAttribute(arguments.property) />
+		<cfif structKeyExists(arguments,"defaultValue")>
+			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
+			<cfif tempValue neq "useMuraDefault">
+				<cfset variables.instance["#arguments.property#"]=tempValue />
+				<cfreturn tempValue>
+			<cfelse>
+				<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+				<cfreturn arguments.defaultValue />
+			</cfif>
+		<cfelse>
+			<cfreturn getExtendedAttribute(arguments.property) />
+		</cfif>
+	<cfelseif structKeyExists(arguments,"defaultValue")>
+		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+		<cfreturn arguments.defaultValue />
 	<cfelse>
 		<cfreturn ''>
 	</cfif>
