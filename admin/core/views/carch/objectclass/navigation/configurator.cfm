@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">
-			<label class="control-label">#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')#</label>
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectnavigation')#</label>
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
 					<option value="{object:'navigation',name:'#esapiEncode('html_attr','Select Navigation')#',objectid:''}">
