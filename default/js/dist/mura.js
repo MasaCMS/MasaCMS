@@ -5171,10 +5171,10 @@ mura.templates['content']=function(context){
 mura.templates['text']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	return html;
+ 	return context.source;
 }
 mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	return html;
+ 	return context.source;
 }

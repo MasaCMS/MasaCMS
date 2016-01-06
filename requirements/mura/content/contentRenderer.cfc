@@ -1321,7 +1321,7 @@ Display Objects
 			<cfset commitTracePoint(tracePoint)>
 			<cfelse>
 			<cfset tracePoint=initTracePoint("The requested file '#arguments.theFile#' could not be found.")>
-			<cfoutput><!-- The requested file '#arguments.theFile#' could not be found.--></cfoutput>
+			<cfoutput><cfif arguments.throwError><!-- The requested file '#arguments.theFile#' could not be found.--></cfif></cfoutput>
 			<cfset commitTracePoint(tracePoint)>
 			</cfif>
 		</cfsavecontent>
