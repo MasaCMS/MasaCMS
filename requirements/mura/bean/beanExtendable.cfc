@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.extendSetID="" />
 	<cfset variables.instance.extendDataTable="tclassextenddata" />
 	<cfset variables.instance.extendAutoComplete = true />
+	<cfset variables.instance.frommuracache = false />
 	<cfset variables.instance.type = "Custom" />
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
@@ -227,21 +228,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var tempFunc=this["set#arguments.property#"]>
 		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
-		<!---
-		<cfif not structKeyExists(variables.instance,arguments.property)>
-			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-			<cfif not structIsEmpty(extData)>
-				<cfset structAppend(variables.instance,extData.data,false)>	
-				<cfloop list="#extData.extendSetID#" index="i">
-					<cfif not listFind(variables.instance.extendSetID,i)>
-						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-		--->
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-		
 	</cfif>
 
 	<cfreturn this>
@@ -257,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif not variables.instance.extendAutoComplete>
+	<cfelseif not variables.instance.frommuracache>
 		<cfif structKeyExists(arguments,"defaultValue")>
 			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
 			<cfif tempValue neq "useMuraDefault">
