@@ -136,6 +136,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
 </cffunction>
 
+<cffunction name="getExtendedAttributeDefault" returnType="string" output="false" access="public">
+	<cfargument name="attributeName" type="string" required="true">
+	<cfreturn getBean('configBean')
+		.getClassExtensionManager()
+		.getAttributeDefault(
+			attributeName=arguments.attributeName,
+			siteid=getValue('siteid'),
+			type=getValue('type'),
+			subtype=getValue('subtype')) />
+</cffunction>
+
 <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
 	<cfargument name="name" default="" hint="Extend Set Name" />
 
@@ -262,7 +273,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
 		<cfreturn arguments.defaultValue />
 	<cfelse>
-		<cfreturn ''>
+		<cfset variables.instance["#arguments.property#"]=getExtendedAttributeDefault(attributeName=arguments.property) />
+		<cfreturn variables.instance["#arguments.property#"]>
 	</cfif>
 
 </cffunction>
