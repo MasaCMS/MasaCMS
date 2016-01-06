@@ -191,6 +191,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			</cfcase>
 			<cfdefaultcase>
+				<cfif not len(objectParams.sortBy)>
+					<cfset structDelete(objectParams,'sortby')>
+				</cfif>
+
+				<cfif not len(objectParams.sortDirection)>
+					<cfset structDelete(objectParams,'sortDirection')>
+				</cfif>
+
 				<cfset iterator=$.getBean('feed')
 					.loadBy(feedid=objectParams.source)
 					.set(objectParams)
