@@ -214,32 +214,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.definitionsQuery>
 </cffunction>
 
-<cffunction name="getAttributeDefault" output="false">
-	<cfargument name="attributeName">
-	<cfargument name="siteid">
-	<cfargument name="type">
-	<cfargument name="subtype">
+<cffunction name="appendMissingAttributes" output="false">
+	<cfargument name="instance">
 
 	<cfset var rs=getDefinitionsQuery()>
-		
+	<cfset var renderer=getBean('settingsManager').getSite(arguments.instance.siteid).getContentRenderer()>
+	
 	<cfquery name="rs" dbtype="query">
-		select defaultvalue from rs
-		where attributeName=<cfqueryparam value="#arguments.attributeName#" cfsqltype="cf_sql_varchar">
-		and subtype=<cfqueryparam value="#arguments.subtype#" cfsqltype="cf_sql_varchar">
-		and type=<cfqueryparam value="#arguments.type#" cfsqltype="cf_sql_varchar">
-		and siteid=<cfqueryparam value="#arguments.siteid#" cfsqltype="cf_sql_varchar">
+		select attributename, defaultvalue from rs
+		where subtype=<cfqueryparam value="#arguments.instance.subtype#" cfsqltype="cf_sql_varchar">
+		and type=<cfqueryparam value="#arguments.instance.type#" cfsqltype="cf_sql_varchar">
+		and siteid=<cfqueryparam value="#arguments.instance.siteid#" cfsqltype="cf_sql_varchar">
 	</cfquery>
 
-	<cfif rs.recordcount and len(rs.defaultValue)>
-		<cftry>
-			<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().setDynamicContent(rs.defaultValue)>
-			<cfcatch>
-				<cfreturn ''>
-			</cfcatch>
-		</cftry>
-	<cfelse>
-		<cfreturn ''>
-	</cfif>
+	<cfloop query="rs">
+		<cfif not structKeyExists(arguments.instance,'#rs.attributeName#')>
+			<cfif len(rs.defaultValue)>
+				<cftry>
+					<cfreturn renderer.setDynamicContent(rs.defaultValue)>
+					<cfcatch>
+						<cfset arguments.instance['#rs.attributeName#']=''>
+					</cfcatch>
+				</cftry>
+			<cfelse>
+				<cfset arguments.instance['#attributeName#']=''>
+			</cfif>
+		</cfif>
+	</cfloop>
 </cffunction>
 
 <cffunction name="purgeDefinitionsQuery" output="false">
