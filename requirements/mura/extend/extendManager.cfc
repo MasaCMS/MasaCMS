@@ -214,6 +214,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.definitionsQuery>
 </cffunction>
 
+<cffunction name="getAttributeDefault" output="false">
+	<cfargument name="attributeName">
+	<cfargument name="siteid">
+	<cfargument name="type">
+	<cfargument name="subtype">
+
+	<cfset var rs=getDefinitionsQuery()>
+		
+	<cfquery name="rs" dbtype="query">
+		select defaultvalue from rs
+		where attributeName=<cfqueryparam value="#arguments.attributeName#" cfsqltype="cf_sql_varchar">
+		and subtype=<cfqueryparam value="#arguments.subtype#" cfsqltype="cf_sql_varchar">
+		and type=<cfqueryparam value="#arguments.type#" cfsqltype="cf_sql_varchar">
+		and siteid=<cfqueryparam value="#arguments.siteid#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+
+	<cfif rs.recordcount and len(rs.defaultValue)>
+		<cftry>
+			<cfreturn getBean('settingsManager').getSite(arguments.siteid).getContentRenderer().setDynamicContent(rs.defaultValue)>
+			<cfcatch>
+				<cfreturn ''>
+			</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfreturn ''>
+	</cfif>
+</cffunction>
+
 <cffunction name="purgeDefinitionsQuery" output="false">
 	<cfset variables.definitionsQuery="">
 </cffunction>
