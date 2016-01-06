@@ -369,6 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=variables.DAO.getBean("category")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
 				<cfreturn bean />
 				<cfcatch>
@@ -376,7 +377,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: categoryBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -412,6 +413,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=variables.DAO.getBean("category")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
 				<cfreturn bean />
 				<cfcatch>
@@ -419,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: categoryBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -455,6 +457,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=variables.DAO.getBean("category")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
 				<cfreturn bean />
 				<cfcatch>
@@ -462,7 +465,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: categoryBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -521,13 +524,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfreturn bean />
 				<cfcatch>
 					<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.siteID,bean) >
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: categoryBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -563,6 +567,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=variables.DAO.getBean("category")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
 				<cfreturn bean />
 				<cfcatch>
@@ -570,7 +575,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: categoryBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: categoryBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>

@@ -254,8 +254,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
 			<cfreturn arguments.defaultValue />
 		</cfif>
-	<cfelse>
+	<cfelseif variables.instance.extendAutoComplete>
 		<cfreturn getExtendedAttribute(arguments.property) />
+	<cfelse>
+		<cfreturn ''>
 	</cfif>
 
 </cffunction>

@@ -190,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=getBean("feed")/>
 				</cfif>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfreturn bean />
 				<cfcatch>
@@ -197,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -235,13 +236,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfreturn bean />
 				<cfcatch>
 					<cfset bean=variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
@@ -279,13 +281,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setValue('frommuracache',true)>
 				<cfreturn bean />
 				<cfcatch>
 					<cfset bean=variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
 					<cfreturn bean/>
 				</cfcatch>
 			</cftry>
