@@ -64,6 +64,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
 	<cfset variables.instance.sourceIterator = "" />
+
+	<cfset variables.missingDefaultAppended=false>
+
 	<cfreturn this>
 </cffunction>
 
@@ -136,15 +139,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
 </cffunction>
 
-<cffunction name="getExtendedAttributeDefault" returnType="string" output="false" access="public">
-	<cfargument name="attributeName" type="string" required="true">
-	<cfreturn getBean('configBean')
+<cffunction name="appendMissingAttributes" returnType="string" output="false" access="public">
+	<cfif not variables.missingDefaultAppended>
+		<cfset getBean('configBean')
 		.getClassExtensionManager()
-		.getAttributeDefault(
-			attributeName=arguments.attributeName,
-			siteid=getValue('siteid'),
-			type=getValue('type'),
-			subtype=getValue('subtype')) />
+		.appendMissingAttributes(variables.instance) />
+		<cfset variables.missingDefaultAppended=true>
+	</cfif>
 </cffunction>
 
 <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
@@ -273,8 +274,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
 		<cfreturn arguments.defaultValue />
 	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=getExtendedAttributeDefault(attributeName=arguments.property) />
-		<cfreturn variables.instance["#arguments.property#"]>
+		<cfset appendMissingAttributes()>
+
+		<cfif structKeyExists(variables.instance,"#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"]>
+		<cfelse>
+			<cfreturn ''>
+		</cfif>
 	</cfif>
 
 </cffunction>
@@ -298,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfset purgeExtendedData()>
-		
+
 	<cfreturn variables.instance />
 </cffunction>
 
