@@ -53,7 +53,7 @@ $(function(){
 					originParams=parameters["params"];
 				}
 
-				console.log(parameters)
+				//console.log(parameters)
 				if(parameters["params"].sourcetype == 'custom'){}
 					$('##source').val(parameters["params"].source);
 				}
