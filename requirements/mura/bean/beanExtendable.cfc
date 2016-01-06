@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="type" type="string" default="Custom" required="true" />
 <cfproperty name="subType" type="string" default="Default" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="extendAutoComplete" type="boolean" default="false" required="true" comparable="false"/>
+<cfproperty name="extendAutoComplete" type="boolean" default="true" required="true" comparable="false"/>
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
@@ -245,7 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelseif variables.instance.extendAutoComplete>
+	<cfelseif not variables.instance.extendAutoComplete>
 		<cfif structKeyExists(arguments,"defaultValue")>
 			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
 			<cfif tempValue neq "useMuraDefault">
