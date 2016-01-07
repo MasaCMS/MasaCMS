@@ -774,29 +774,23 @@
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
 
+			request.cffpJS=true;
+
 			result.template=renderer.getTemplate();
 			result.metakeywords=renderer.getMetaKeyWords();
 			result.metadesc=renderer.getMetaDesc();
 
 			$.event('response',result);
 
-			if(result.type != 'Variation'){
+			result.displayRegions={};
 
-				request.cffpJS=true;
-
-				renderer.injectMethod('showInlineEditor',false);
-				renderer.injectMethod('showAdminToolBar',false);
-				renderer.injectMethod('showMemberToolBar',false);
-				renderer.injectMethod('showEditableObjects',false);
-
-				result.displayRegions={};
-
-				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
-					var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
-					
-					result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
-				}
+			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
+				var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
 				
+				result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
+			}
+
+			if(result.type != 'Variation'){
 				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
 			}
 
