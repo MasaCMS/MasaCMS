@@ -1239,6 +1239,14 @@
 		return (obj);
 	}
 
+	function isScrolledIntoView(el) {
+	    var elemTop = el.getBoundingClientRect().top;
+	    var elemBottom = el.getBoundingClientRect().bottom;
+
+	    var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+	    return isVisible;
+	}
+
 	function loader(){return window.mura.ljs;}
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
@@ -1259,7 +1267,17 @@
 
 			function(){
 				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
-					processObject(this);
+
+					function queueObject(el){
+						if(isScrolledIntoView(el)){
+							processObject(el);
+						} else {
+							setTimeout(function(){queueObject(el)},10);
+						}
+					}
+
+					queueObject(this);
+		
 				});
 			},
 
@@ -1738,10 +1756,11 @@
 
 	function processObject(el){
 
+		var obj=(el.node) ? el : mura(el);
+		el =el.node || el;
+		var self=el;
+
 		return new Promise(function(resolve,reject) {
-			var obj=(el.node) ? el : mura(el);
-			el =el.node || el;
-			var self=el;
 
 			if(!self.getAttribute('data-instanceid')){
 				self.setAttribute('data-instanceid',createUUID());
