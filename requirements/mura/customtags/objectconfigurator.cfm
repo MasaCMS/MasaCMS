@@ -21,7 +21,7 @@
 		</cfif>
 
 		<cfparam name="attributes.configurable" default="true">
-		<cfparam name="attributes.params.class" default="mura-left mura-twelve">
+		<cfparam name="attributes.params.class" default="">
 		<cfparam name="attributes.params.cssclass" default="">
 		<cfparam name="attributes.params.label" default="">
 		<cfparam name="attributes.params.object" default="">
@@ -48,6 +48,7 @@
 		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.alignment')#</label>
 				<div class="controls">
 					 <select name="alignment" class="span12">
+					 	<option value="">--</option>
 						<option value="mura-left"<cfif listFind(attributes.params.class,'mura-left',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.left')#</option>
 						<!--<option value="mura-center"<cfif listFind(attributes.params.class,'mura-center',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.center')#</option>--->
 						<option value="mura-right"<cfif listFind(attributes.params.class,'mura-right',' ')> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.right')#</option>
@@ -58,7 +59,7 @@
 		      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.offset')#</label>
 				<div class="controls">
 					<select name="offset" class="span12">
-						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+						<option value="">--</option>
 						<option value="mura-offset-by-one"<cfif listFind(attributes.params.class,'mura-offset-by-one',' ')> selected</cfif>>One Twelfth</option>
 						<option value="mura-offset-by-two"<cfif listFind(attributes.params.class,'mura-offset-by-two',' ')> selected</cfif>>One Sixth</option>
 						<option value="mura-offset-by-three"<cfif listFind(attributes.params.class,'mura-offset-by-three',' ')> selected</cfif>>One Fourth</option>
@@ -77,6 +78,7 @@
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.width')#</label>
 				<div class="controls">
 					<select name="width" class="span12">
+						<option value="">--</option>
 						<option value="mura-one"<cfif listFind(attributes.params.class,'mura-one',' ')> selected</cfif>>One Twelfth</option>
 						<option value="mura-two"<cfif listFind(attributes.params.class,'mura-two',' ')> selected</cfif>>One Sixth</option>
 						<option value="mura-three"<cfif listFind(attributes.params.class,'mura-three',' ')> selected</cfif>>One Fourth</option>
