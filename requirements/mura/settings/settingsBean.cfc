@@ -1242,7 +1242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filePath">
 
 	<cfif len(request.altTheme)>
-		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/">
+		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath>
 		<cfif fileExists(expandPath(altThemePath))>
 			<cfreturn altThemePath>
 		</cfif>
