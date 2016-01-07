@@ -1150,7 +1150,13 @@
 					<cfreturn trim(theDisplay1)>
 				</cfif>
 			<cfelse>
-				<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator)>
+				<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+
+				<cfif objectargs.object neq 'plugin'>
+					<cfset objectargs.cacheKey=cacheKeyObjectId>
+				</cfif>
+
+				<cfset theObject=arguments.renderer.dspObject_Render(argumentCollection=objectArgs)>
 			</cfif>
 		<cfelse>
 			<cfswitch expression="#arguments.object#">
