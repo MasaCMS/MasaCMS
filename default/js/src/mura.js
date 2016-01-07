@@ -1247,6 +1247,8 @@
 	    return isVisible;
 	}
 
+
+
 	function loader(){return window.mura.ljs;}
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
@@ -1267,17 +1269,7 @@
 
 			function(){
 				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
-
-					function queueObject(el){
-						if(isScrolledIntoView(el)){
-							processObject(el);
-						} else {
-							setTimeout(function(){queueObject(el)},10);
-						}
-					}
-
-					queueObject(this);
-		
+					processObject(this,true);
 				});
 			},
 
@@ -1755,11 +1747,26 @@
 	}
 
 	function processObject(el){
+		if(isScrolledIntoView(el)){
+			processObject(el);
+		} else {
+			setTimeout(function(){queueObject(el)},10);
+		}
+	}
+
+	function processObject(el,queue){
 
 		var obj=(el.node) ? el : mura(el);
 		el =el.node || el;
 		var self=el;
 
+		queue=(queue==null) ? false : queue;
+
+		if(queue && !isScrolledIntoView(el)){
+			setTimeout(function(){processObject(el,true)},10);
+			return;
+		}
+		
 		return new Promise(function(resolve,reject) {
 
 			if(!self.getAttribute('data-instanceid')){
