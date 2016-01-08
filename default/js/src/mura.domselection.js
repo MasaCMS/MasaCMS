@@ -386,7 +386,7 @@
 				if(typeof el == 'string'){
 					this.insertAdjacentHTML('afterbegin', el);
 				} else {
-					this.insertBefore(el,this.parent.firstChild);
+					this.insertBefore(el,this.firstChild);
 				}
 				
 			});

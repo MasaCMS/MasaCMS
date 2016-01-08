@@ -1247,8 +1247,6 @@
 	    return isVisible;
 	}
 
-
-
 	function loader(){return window.mura.ljs;}
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';

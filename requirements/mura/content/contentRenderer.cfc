@@ -1524,16 +1524,25 @@ Display Objects
 							and len(variables.event.getValue('contentBean').getFileID()) 
 							and variables.event.getValue('contentBean').getContentType() eq "Image" 
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
-								<cfset loadShadowBoxJS() />
-								<cfoutput>
-								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<cfif useLayoutManager()>
+									<cfoutput>
+										<cfif arguments.includeMetaHREF><cfset loadShadowBoxJS() /></cfif>
+										<div class="mura-asset">
+											<cfif arguments.includeMetaHREF><a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]"></cfif><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /><cfif arguments.includeMetaHREF></a></cfif>
+										</div>
+									</cfoutput>	
+								<cfelse>
+									<cfoutput>
+									<cfif arguments.includeMetaHREF>
+										<cfset loadShadowBoxJS() />
+										<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
-									<div id="svAsset" class="mura-asset">
-									<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
-									</div>
+										<div id="svAsset" class="mura-asset">
+										<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
+										</div>
+									</cfif>
+									</cfoutput>	
 								</cfif>
-								</cfoutput>	
 						</cfif>		
 						<cfoutput>
 							<cfif structKeyExists(arguments,'bodyAttribute')>

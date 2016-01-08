@@ -2768,8 +2768,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	    return isVisible;
 	}
 
-
-
 	function loader(){return window.mura.ljs;}
 
 	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
@@ -4302,7 +4300,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(typeof el == 'string'){
 					this.insertAdjacentHTML('afterbegin', el);
 				} else {
-					this.insertBefore(el,this.parent.firstChild);
+					this.insertBefore(el,this.firstChild);
 				}
 				
 			});
