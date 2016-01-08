@@ -58,8 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label class="control-label">Select Component</label>
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
-					<option value="{object:'component',name:'#esapiEncode('html_attr','Select Component')#',objectid:''}">
-						Select Component
+					<option value="{object:'component',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component'))#',objectid:''}">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
 					</option>
 
 					<cfloop query="rc.rsComponents">

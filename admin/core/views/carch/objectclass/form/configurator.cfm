@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label class="control-label">Select Form</label>
 			<div class="controls">
 				<select id="availableObjectSelector" class="span12">
-					<option value="{object:'form',name:'#esapiEncode('html_attr','Select Form')#',objectid:''}">
+					<option value="{object:'form',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform'))#',objectid:''}">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectform')#
 					</option>
 
