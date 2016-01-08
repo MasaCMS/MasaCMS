@@ -212,7 +212,7 @@
 					}
 				}
 
-				var item=mura(this).closest('.mura-object[data-object="container"]');
+				var item=mura(this).closest('.mura-object');
 
 				if(item.length){
 					item
