@@ -743,12 +743,9 @@ li .cke_skin_mura table {
   padding: 0 20px;
   box-sizing: border-box;
 }
-.mura-object[data-object="container"],
-.mura-object .mura-object {
-  float: left;
-}
 .mura-object {
   width: 100%;
+  float: left;
   box-sizing: border-box;
 }
 /* For devices larger than 400px */
