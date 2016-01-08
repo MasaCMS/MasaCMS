@@ -4307,6 +4307,30 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			return this;
 		},
 
+		before:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforebegin', el);
+				} else {
+					this.parent.insertBefore(el,this);
+				}
+				
+			});
+			return this;
+		},
+
+		after:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterend', el);
+				} else {
+					this.parent.insertBefore(el,this.parent.firstChild);
+				}
+				
+			});
+			return this;
+		},
+
 		prependMuraObject:function(data) {
 		    var el=createElement('div');
 		    el.setAttribute('class','mura-async-object');
