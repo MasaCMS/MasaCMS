@@ -4275,7 +4275,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(typeof el == 'string'){
 					this.insertAdjacentHTML('beforeend', htmlString);
 				} else {
-					this.parentNode.appendChild(el);
+					this.appendChild(el);
 				}
 				
 			});
@@ -4302,7 +4302,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(typeof el == 'string'){
 					this.insertAdjacentHTML('afterbegin', el);
 				} else {
-					this.parentNode.insertBefore(el,this.parent.firstChild);
+					this.insertBefore(el,this.parent.firstChild);
 				}
 				
 			});

@@ -70,6 +70,7 @@
 		    var target=mura('.mura-drop-target').node;
 
 		    if(target){
+		    	console.log(1)
 			    if(dragEl || newMuraObject){
 					if(dragEl && dragEl != this){
 						if(target.getAttribute('data-object')=='container'){
@@ -80,7 +81,12 @@
 								return;
 							}
 						} else {
-							target.parentNode.insertBefore(dragEl,target.nextSibling);
+							var container=mura(target).closest('.mura-object[data-object="container"]');
+							if(container.length){
+								container.append(dragEl);
+							} else {
+								target.parentNode.insertBefore(dragEl,target.nextSibling);
+							}
 						}	
 				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 						mura('#adminSave').show();
