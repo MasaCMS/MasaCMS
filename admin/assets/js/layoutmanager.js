@@ -45,20 +45,29 @@
 				muraLooseDropTarget=this;
 
 				if(prev.length){
-					prev.removeClass('mura-drop-target');
+					prev
+						.removeClass('mura-drop-target')
+						.removeClass('mura-append')
+						.removeClass('mura-prepend');
 
 					if(!prev.attr('class')){
 						prev.removeAttr('class');
 					}
 				}
 
-				mura(this).addClass('mura-drop-target');	
+				mura(this)
+					.addClass('mura-drop-target')
+					.addClass('mura-' + getDropDirection(e,this));	
 				
 			}
 		}
 
 		function initDraggableObject_dragleave(e){
-			mura(this).removeClass('mura-drop-target');
+			mura(this)
+				.removeClass('mura-drop-target')
+				.removeClass('mura-append')
+				.removeClass('mura-prepend');
+
 			muraLooseDropTarget=null;
 			if(!mura(this).attr('class')){
 				mura(this).removeAttr('class');
@@ -123,7 +132,11 @@
 			}
 
 
-		    mura('.mura-drop-target').removeClass('mura-drop-target');
+		    mura('.mura-drop-target')
+		    	.removeClass('mura-drop-target')
+				.removeClass('mura-append')
+				.removeClass('mura-prepend');
+
 			muraLooseDropTarget=null;
 			newMuraObject=false;
 
@@ -170,7 +183,9 @@
 				if(item.length){
 					item.addClass('mura-drop-target');
 				} else {
-					mura(this).addClass('mura-drop-target');
+					mura(this)
+						.addClass('mura-drop-target')
+						.addClass('mura-' + getDropDirection(e,this));
 				}
 				
 			}
@@ -187,7 +202,10 @@
 				muraLooseDropTarget=this;
 
 				if(prev.length){
-					prev.removeClass('mura-drop-target');
+					prev
+						.removeClass('mura-drop-target')
+						.removeClass('mura-append')
+						.removeClass('mura-prepend');
 
 					if(!prev.attr('class')){
 						prev.removeAttr('class');
@@ -197,14 +215,20 @@
 				var item=mura(this).closest('.mura-object[data-object="container"]');
 
 				if(item.length){
-					item.addClass('mura-drop-target');
+					item
+						.addClass('mura-drop-target')
+						.addClass('mura-' + getDropDirection(e,this));
 				} else {
 					item=mura(this).closest('.mura-object');
 					
 					if(item.length){
-						item.addClass('mura-drop-target');
+						item
+							.addClass('mura-drop-target')
+							.addClass('mura-' + getDropDirection(e,this));
 					} else {
-						mura(this).addClass('mura-drop-target');
+						mura(this)
+							.addClass('mura-drop-target')
+							.addClass('mura-' + getDropDirection(e,this));;
 					}
 				}
 				
@@ -212,7 +236,11 @@
 		}
 
 		function initLooseDropTarget_dragleave(e){
-			mura(this).removeClass('mura-drop-target');
+			mura(this)
+				.removeClass('mura-drop-target')
+				.removeClass('mura-append')
+				.removeClass('mura-prepend');
+
 			muraLooseDropTarget=null;
 			if(!mura(this).attr('class')){
 				mura(this).removeAttr('class');
@@ -273,7 +301,11 @@
 
 			}
 
-			mura('.mura-drop-target').removeClass('mura-drop-target');
+			mura('.mura-drop-target')
+				.removeClass('mura-drop-target')
+				.removeClass('mura-append')
+				.removeClass('mura-prepend');
+
 			muraLooseDropTarget=null;
 			newMuraObject=false;
 
@@ -498,7 +530,10 @@
 				      	checkForNew.call(this,e);
 
 				      	muraLooseDropTarget=null;
-				      	mura('.mura-drop-target').removeClass('mura-drop-target');
+				      	mura('.mura-drop-target')
+				      		.removeClass('mura-drop-target')
+							.removeClass('mura-append')
+							.removeClass('mura-prepend');
 
 				      	return true;
 		   			})
