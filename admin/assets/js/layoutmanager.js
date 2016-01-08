@@ -70,7 +70,6 @@
 		    var target=mura('.mura-drop-target').node;
 
 		    if(target){
-		    	console.log(1)
 			    if(dragEl || newMuraObject){
 					if(dragEl && dragEl != this){
 						if(target.getAttribute('data-object')=='container'){
@@ -81,12 +80,7 @@
 								return;
 							}
 						} else {
-							var container=mura(target).closest('.mura-object[data-object="container"]');
-							if(container.length){
-								container.append(dragEl);
-							} else {
-								target.parentNode.insertBefore(dragEl,target.nextSibling);
-							}
+							target.parentNode.insertBefore(dragEl,target.nextSibling);
 						}	
 				    	//dragEl.setAttribute('data-droptarget',mura(this).getSelector());
 						mura('#adminSave').show();
@@ -333,7 +327,7 @@
 
 		        if(target.hasClass('mura-object')){
 		        	if(this.getAttribute('data-object')=='container'){
-						var container=target.find('.mura-object-content');
+						var container=target.children('.mura-object-content');
 						container.append(displayObject);
 					} else {
 						this.parentNode.insertBefore(displayObject,this.nextSibling);
