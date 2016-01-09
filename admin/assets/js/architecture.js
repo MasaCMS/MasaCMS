@@ -632,13 +632,15 @@ buttons: {
 	loadObjectClass: function(siteid, classid, subclassid, contentid, parentid, contenthistid) {
 		var url = './';
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid + '&classid=' + classid + '&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
-		var d = $('#configurator');
-		var id = '#configurator';
 		
-		if(!d.length){
-			$('#classList')
-			id= '#classList';
+		if(this.configuratorMode=='backEnd'){
+			var d=$('#classList');
+			var id= '#classList';
+		} else {
+			var d = $('#configurator');
+			var id = '#configurator';
 		}
+		
 
 		d.html('<div class="load-inline"></div>');
 		$( id + ' .load-inline').spin(spinnerArgs2);
