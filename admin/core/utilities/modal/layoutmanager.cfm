@@ -36,7 +36,6 @@
 
 							</cfif>
 						</cfloop>
-
 					</div>
 				</div>
 			</div>

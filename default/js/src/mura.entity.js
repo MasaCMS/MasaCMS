@@ -61,6 +61,8 @@
 
 		get:function(propertyName,defaultValue){
 
+			
+
 			if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
@@ -72,19 +74,21 @@
 				self=this;
 
 				return new Promise(function(resolve,reject) {
+
+
 					window.mura.ajax({
 						type:'get',
-						url:this.properties.links[propertyName],
+						url:self.properties.links[propertyName],
 						success:function(resp){
 							
 							if('items' in resp.data){
 								var returnObj = new window.mura.MuraEntityCollection(resp.data);
-
-								returnObj.set('items',returnObj.get('items').map(function(obj){
-									return new window.mura.MuraEntity(obj);
-								}));
 							} else {
-								var returnObj = new window.mura.MuraEntity(resp.data);
+								if(window.mura.entities[obj.entityname]){
+									var returnObj = new window.mura.entities[obj.entityname](obj);
+								} else {
+									var returnObj = new window.mura.MuraEntity(resp.data);
+								}	
 							}
 							
 							self.set(propertyName,returnObj);

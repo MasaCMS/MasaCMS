@@ -159,10 +159,6 @@
 					data:params,
 					success:function(resp){
 							var collection=new window.mura.MuraEntityCollection(resp.data)
-							//console.log(collection.get('items'))
-							collection.set('items',collection.get('items').map(function(obj){
-								return new window.mura.MuraEntity(obj);
-							}));
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -2100,6 +2096,7 @@
 			},
 			{
 			rb:{},
+			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,

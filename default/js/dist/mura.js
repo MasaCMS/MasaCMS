@@ -1680,10 +1680,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					data:params,
 					success:function(resp){
 							var collection=new window.mura.MuraEntityCollection(resp.data)
-							//console.log(collection.get('items'))
-							collection.set('items',collection.get('items').map(function(obj){
-								return new window.mura.MuraEntity(obj);
-							}));
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -3621,6 +3617,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			},
 			{
 			rb:{},
+			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,
@@ -4878,6 +4875,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 		get:function(propertyName,defaultValue){
 
+			
+
 			if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
 			} else if (typeof defaultValue != 'undefined') {
@@ -4889,19 +4888,21 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				self=this;
 
 				return new Promise(function(resolve,reject) {
+
+
 					window.mura.ajax({
 						type:'get',
-						url:this.properties.links[propertyName],
+						url:self.properties.links[propertyName],
 						success:function(resp){
 							
 							if('items' in resp.data){
 								var returnObj = new window.mura.MuraEntityCollection(resp.data);
-
-								returnObj.set('items',returnObj.get('items').map(function(obj){
-									return new window.mura.MuraEntity(obj);
-								}));
 							} else {
-								var returnObj = new window.mura.MuraEntity(resp.data);
+								if(window.mura.entities[obj.entityname]){
+									var returnObj = new window.mura.entities[obj.entityname](obj);
+								} else {
+									var returnObj = new window.mura.MuraEntity(resp.data);
+								}	
 							}
 							
 							self.set(propertyName,returnObj);
@@ -5167,6 +5168,20 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
+
+			var self=this;
+
+			if(Array.isArray(self.get('items'))){
+				self.set('items',self.get('items').map(function(obj){
+					if(window.mura.entities[obj.entityname]){
+						return new window.mura.entities[obj.entityname](obj);
+					} else {
+						return new window.mura.MuraEntity(obj);
+					}
+				}));
+			}
+
+			return this;
 		},
 
 		item:function(idx){
@@ -5176,6 +5191,22 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
+
+		getAll:function(){
+			var self=this;
+
+			return mura.extend(
+				{},
+				self.properties,
+				{
+					items:self.map(function(obj){
+						return obj.getAll();
+					})
+				}
+			);
+	
+		},
+
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
