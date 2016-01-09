@@ -4269,7 +4269,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				} else {
 					this.appendChild(el);
 				}
-				
 			});
 			return this;
 		},
@@ -4295,8 +4294,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					this.insertAdjacentHTML('afterbegin', el);
 				} else {
 					this.insertBefore(el,this.firstChild);
-				}
-				
+				}	
 			});
 			return this;
 		},
@@ -4308,7 +4306,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				} else {
 					this.parent.insertBefore(el,this);
 				}
-				
 			});
 			return this;
 		},
@@ -4320,7 +4317,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				} else {
 					this.parent.insertBefore(el,this.parent.firstChild);
 				}
-				
 			});
 			return this;
 		},
