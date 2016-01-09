@@ -463,6 +463,7 @@
 		}
 
 		 function initLayoutManager(el){
+
 		 	if(el){
 			 	var obj=(el.node) ? el : mura(el);
 				el =el.node || el;

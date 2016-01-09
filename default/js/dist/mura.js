@@ -3004,6 +3004,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				var self=mura(this);
 				self.removeClass('active');
 				self.removeAttr('data-perm');
+				self.removeAttr('data-inited');
 			});
 			
 			self.find('.mura-object[data-object="container"]').each(function(){
@@ -3065,6 +3066,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			}	
 		}
+
+		obj.data('inited',true);
 
 		if(obj.data('cssclass')){
 			var classes=obj.data('cssclass');
@@ -3261,14 +3264,6 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		}
 	}
 
-	function processObject(el){
-		if(isScrolledIntoView(el)){
-			processObject(el);
-		} else {
-			setTimeout(function(){queueObject(el)},10);
-		}
-	}
-
 	function processObject(el,queue){
 
 		var obj=(el.node) ? el : mura(el);
@@ -3305,6 +3300,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
+			delete data.inited;
+
 			if(obj.data('contentid')){
 				data.contentid=self.getAttribute('data-contentid');
 			}
