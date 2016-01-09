@@ -897,25 +897,20 @@
 					if(mura.type =='Variation'){
 						objectParams=item.data();
 						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
-							
-							if(item.data('inited')){
-								item.html(window.mura.layoutmanagertoolbar + item.html());
+							item.html(window.mura.layoutmanagertoolbar + item.html());
 
-								item.find(".frontEndToolsModal").on(
-									'click',
-									function(event){
-										event.preventDefault();
-										openFrontEndToolsModal(this);
-									}
-								);
+							item.find(".frontEndToolsModal").on(
+								'click',
+								function(event){
+									event.preventDefault();
+									openFrontEndToolsModal(this);
+								}
+							);
 
 
-								item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+							item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
 
-								item.find('.mura-object').each(initObject);
-							} else {
-								mura.processObject(item);
-							}
+							item.find('.mura-object').each(initObject);
 						}
 					} else {
 						var region=item.closest(".mura-region-local");
@@ -924,25 +919,20 @@
 							if(region.data('perm')){
 								objectParams=item.data();
 								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
+									item.html(window.mura.layoutmanagertoolbar + item.html());
 
-									if(item.data('inited')){
-										item.html(window.mura.layoutmanagertoolbar + item.html());
-
-										item.find(".frontEndToolsModal").on(
-											'click',
-											function(event){
-												event.preventDefault();
-												openFrontEndToolsModal(this);
-											}
-										);
+									item.find(".frontEndToolsModal").on(
+										'click',
+										function(event){
+											event.preventDefault();
+											openFrontEndToolsModal(this);
+										}
+									);
 
 
-										item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+									item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
 
-										item.find('.mura-object').each(initObject);
-									} else {
-										mura.processObject(item);
-									}
+									item.find('.mura-object').each(initObject);
 								}
 							}
 						}
