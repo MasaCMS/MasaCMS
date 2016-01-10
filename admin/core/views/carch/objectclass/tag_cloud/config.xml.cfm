@@ -1,2 +1,2 @@
-<displayobject name="Tag Cloud" displayobjectfile="../dsp_tag_cloud.cfm"/>
+<displayobject name="Tag Cloud" displayobjectfile="../nav/dsp_tag_cloud.cfm"/>
 

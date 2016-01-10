@@ -1126,7 +1126,7 @@
 			<cfset arguments.renderer.setHasEditableObjects(true)>
 		</cfif>
 
-		<cfif $.siteConfig().hasDisplayObject(arguments.object)>
+		<cfif $.siteConfig().hasDisplayObject(arguments.object) and arguments.object neq 'tag_cloud'>
 			<cfset var displayobject=$.siteConfig().getDisplayObject(arguments.object)>
 
 			<!--- may push for standardization of display object rendering via .cfm files--->
