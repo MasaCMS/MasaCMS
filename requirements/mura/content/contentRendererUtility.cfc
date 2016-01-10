@@ -1126,37 +1126,55 @@
 			<cfset arguments.renderer.setHasEditableObjects(true)>
 		</cfif>
 
-		<cfif $.siteConfig().hasDisplayObject(arguments.object) and arguments.object neq 'tag_cloud'>
-			<cfset var displayobject=$.siteConfig().getDisplayObject(arguments.object)>
-
-			<!--- may push for standardization of display object rendering via .cfm files--->
-			<cfif listLast(displayobject.displayobjectfile,".") neq "cfm">
-				<cfset var theDisplay1=''>
-				<cfset var theDisplay2=''>
-				<cfset var componentPath="#displayobject.displayobjectfile#">
-				<cfset var eventHandler=createObject(componentPath).init()>
-				<cfset var tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#displayobject.displaymethod#")>
-				<cfsavecontent variable="theDisplay1">
-				<cfinvoke component="#eventHandler#" method="#displayobject.displaymethod#" returnvariable="theDisplay2">
-					<cfinvokeargument name="event" value="#event#">
-					<cfinvokeargument name="$" value="#$#">
-					<cfinvokeargument name="mura" value="#$#">
-				</cfinvoke>
-				</cfsavecontent>
-				<cfset commitTracePoint(tracePoint)>
-				<cfif isdefined("theDisplay2")>
-					<cfreturn trim(theDisplay2)>
-				<cfelse>
-					<cfreturn trim(theDisplay1)>
-				</cfif>
+		<cfif $.siteConfig().hasDisplayObject(arguments.object)>
+			<cfif arguments.object eq 'tag_cloud'>
+					<cfsavecontent variable="tempObject"><cf_CacheOMatic key="#cacheKeyObjectId#" nocache="#event.getValue('nocache')#"><cfoutput>#arguments.renderer.dspTagCloud(argumentCollection=arguments)#</cfoutput></cf_CacheOMatic></cfsavecontent>
+					<cfset theObject=tempObject>
+					<cfif arguments.renderer.useLayoutmanager()>
+						<cfif request.muraFrontEndRequest>
+								<cfset theObject=renderObjectInManager(object=arguments.object,
+									objectid=arguments.objectid,
+									content=theObject,
+									objectParams=arguments.params,
+									showEditable=showEditable,
+									isConfigurator=editableControl.isConfigurator,
+									objectname=arguments.objectname,
+									renderer=arguments.renderer)>
+						</cfif>
+					</cfif>
+					<cfreturn theObject>
 			<cfelse>
-				<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+				<cfset var displayobject=$.siteConfig().getDisplayObject(arguments.object)>
 
-				<cfif objectargs.object neq 'plugin'>
-					<cfset objectargs.cacheKey=cacheKeyObjectId>
+				<!--- may push for standardization of display object rendering via .cfm files--->
+				<cfif listLast(displayobject.displayobjectfile,".") neq "cfm">
+					<cfset var theDisplay1=''>
+					<cfset var theDisplay2=''>
+					<cfset var componentPath="#displayobject.displayobjectfile#">
+					<cfset var eventHandler=createObject(componentPath).init()>
+					<cfset var tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#displayobject.displaymethod#")>
+					<cfsavecontent variable="theDisplay1">
+					<cfinvoke component="#eventHandler#" method="#displayobject.displaymethod#" returnvariable="theDisplay2">
+						<cfinvokeargument name="event" value="#event#">
+						<cfinvokeargument name="$" value="#$#">
+						<cfinvokeargument name="mura" value="#$#">
+					</cfinvoke>
+					</cfsavecontent>
+					<cfset commitTracePoint(tracePoint)>
+					<cfif isdefined("theDisplay2")>
+						<cfreturn trim(theDisplay2)>
+					<cfelse>
+						<cfreturn trim(theDisplay1)>
+					</cfif>
+				<cfelse>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+
+					<cfif objectargs.object neq 'plugin'>
+						<cfset objectargs.cacheKey=cacheKeyObjectId>
+					</cfif>
+
+					<cfset theObject=arguments.renderer.dspObject_Render(argumentCollection=objectArgs)>
 				</cfif>
-
-				<cfset theObject=arguments.renderer.dspObject_Render(argumentCollection=objectArgs)>
 			</cfif>
 		<cfelse>
 			<cfswitch expression="#arguments.object#">

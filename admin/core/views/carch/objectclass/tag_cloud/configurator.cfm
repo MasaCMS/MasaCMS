@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selecttaggroup')#
 				</label>
 				<div class="controls">
-					<select name="taggroup" class="objectParam">
+					<select name="taggroup" class="objectParam<cfif rc.layoutmanager> span12</cfif>">
 						<option value="">Default</option>
 						<cfif len(rc.$.siteConfig('customTagGroups'))>
 							<cfloop list="#rc.$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
