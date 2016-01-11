@@ -978,7 +978,11 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	function allowRead(){
-		return false;
+		return true;
+	}
+
+	function allowQueryParams(params){
+		return true;
 	}
 
 }

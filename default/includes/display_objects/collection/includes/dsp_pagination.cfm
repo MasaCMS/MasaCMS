@@ -54,6 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
+<cfif arguments.iterator.hasNext()>
 <cfsilent>		
 	<cfset variables.$.event("currentNextNID", arguments.source)>
 
@@ -73,4 +74,5 @@
 </cfsilent>
 <cfif variables.nextN.numberofpages gt 1>
 	<cfoutput>#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
+</cfif>
 </cfif>

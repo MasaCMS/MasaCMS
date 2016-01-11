@@ -1072,6 +1072,10 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
+		if(!entity.allowRead()){
+			throw(type="authorization");
+		}
+
 		var returnStruct=getFilteredValues(entity,$);
 		returnStruct.links=getLinks(entity);		
 		returnStruct.id=returnStruct[pk];
@@ -1101,7 +1105,7 @@ component extends="mura.cfobject" {
 		var loadparams={'#pk#'=''};
 		entity.loadBy(argumentCollection=loadparams);
 	
-		if(!(entity.allowRead() || allowAccess(entity,$))){
+		if(!allowAccess(entity,$)){
 			throw(type="authorization");
 		}
 
@@ -1244,21 +1248,23 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			itemStruct=getFilteredValues(item,$,false);
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
+			if(!isDefined('entity.allowRead') || entity.allowRead()){
+				itemStruct=getFilteredValues(item,$,false);
+				if(len(pk)){
+					itemStruct.id=itemStruct[pk];
+				}
+				itemStruct.links=getLinks(item);
+
+				if(listFindNoCase('content,contentnav',arguments.entityName)){
+					itemStruct.images=setImageURLS(item,$);
+					itemStruct.url=item.getURL();
+				}
+
+				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+				//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+
+				arrayAppend(returnArray, itemStruct );
 			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
-				itemStruct.url=item.getURL();
-			}
-
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-
-			arrayAppend(returnArray, itemStruct );
 		}
 
 		if(!len($.event('sort')) && !len($.event('orderby'))){
@@ -1308,6 +1314,10 @@ component extends="mura.cfobject" {
 			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
+		}
+
+		if(!entity.allowQueryParams(url)){
+			throw(type="authorization");
 		}
 
 		if(entity.getEntityName()=='user'){
@@ -1377,7 +1387,7 @@ component extends="mura.cfobject" {
 
 	function setFeedProps(feed,$){
 		var sort='';
-		
+
 		if(len($.event('orderby'))){
 			sort=$.event('orderby');
 		}
