@@ -1145,6 +1145,10 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
+		if(!entity.allowQueryParams(url)){
+			throw(type="authorization");
+		}
+		
 		var feed=entity.getFeed();
 		
 		if(arguments.entityName=='group'){
