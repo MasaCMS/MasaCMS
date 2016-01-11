@@ -1248,23 +1248,28 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			if(!isDefined('entity.allowRead') || entity.allowRead()){
-				itemStruct=getFilteredValues(item,$,false);
-				if(len(pk)){
-					itemStruct.id=itemStruct[pk];
-				}
-				itemStruct.links=getLinks(item);
-
-				if(listFindNoCase('content,contentnav',arguments.entityName)){
-					itemStruct.images=setImageURLS(item,$);
-					itemStruct.url=item.getURL();
-				}
-
-				//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-				//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-
-				arrayAppend(returnArray, itemStruct );
+			
+			if(isDefined('item.allowRead') && !entity.allowRead()){
+				throw(type="authorization");
 			}
+
+			itemStruct=getFilteredValues(item,$,false);
+			
+			if(len(pk)){
+				itemStruct.id=itemStruct[pk];
+			}
+			itemStruct.links=getLinks(item);
+
+			if(listFindNoCase('content,contentnav',arguments.entityName)){
+				itemStruct.images=setImageURLS(item,$);
+				itemStruct.url=item.getURL();
+			}
+
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+
+			arrayAppend(returnArray, itemStruct );
+			
 		}
 
 		if(!len($.event('sort')) && !len($.event('orderby'))){
