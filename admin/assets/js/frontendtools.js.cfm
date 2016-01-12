@@ -312,7 +312,7 @@
 			mura('.mura-object-selected').removeClass('mura-object-selected');
 
 			editableObj.addClass('mura-object-selected');
-
+			console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			muraInlineEditor.sidebarAction('showconfigurator');
 		}

@@ -57,12 +57,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					mura.loader().loadjs(
 							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');	
 				}
-
+				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
 					mura.loader().loadjs(
 						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
 					
 				}
+				</cfif>
 				
 				mura.loader().loadjs(
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
@@ -90,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}	
 			}
 
+			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
 					mura.loader().loadjs(
@@ -98,6 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');		
 				}
 			}
+			</cfif>
 
 			if(hasMuraLoader){
 				mura.loader().loadjs(

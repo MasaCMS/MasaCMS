@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset content=rc.$.getBean('content').loadBy(contentid=rc.objectid)>
 	<cfset content.setType('Component')>
 	<cfset rc.rsComponents = application.contentManager.getComponentType(rc.siteid, 'Component')/>
-	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000000',rc.siteid)>
+	<cfset hasModulePerm=rc.configuratormode neq 'backend' and rc.$.getBean('permUtility').getModulePerm('00000000000000000000000000000000003',rc.siteid)>
 </cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		$('##editBtn').click(function(){
 				frontEndProxy.post({
 					cmd:'openModal',
-					src:'?muraAction=cArch.editLive&contentId=' + eval('(' + $('##availableObjectSelector').val() + ')').objectid  + '&type=Form&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
+					src:'?muraAction=cArch.editLive&contentId=' + eval('(' + $('##availableObjectSelector').val() + ')').objectid  + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
 					}
 				);
 		})
