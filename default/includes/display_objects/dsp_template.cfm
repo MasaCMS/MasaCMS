@@ -61,7 +61,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 			and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>	
 </cfsilent>
-
 <cfif not bean.getIsNew()>
 	<cfif variables.rsTemplate.isOnDisplay>
 		<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
@@ -82,6 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not variables.rsTemplate.doCache>
 		<cfset request.cacheItem=variables.rsTemplate.doCache/>
 	</cfif>
+<cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>	
+	<p>This Component has not been configured.</p>
 <cfelse>
 	<cfset request.muraValidObject=false>
 </cfif>

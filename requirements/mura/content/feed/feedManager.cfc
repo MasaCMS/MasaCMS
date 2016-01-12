@@ -163,9 +163,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(arguments.feedID) and len(arguments.siteid)>
 		<cfif len(arguments.name)>
-			<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
+			<cfreturn readByName(arguments.name,arguments.siteid,arguments.feedBean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
+			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
 		</cfif>
 	</cfif>
 	
@@ -191,12 +191,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
 				<cfset bean.setValue('frommuracache',true)>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setAllValues( duplicate(cacheFactory.get( key )) )>
 				<cfreturn bean />
 				<cfcatch>
 					<cfset bean=variables.feedDAO.read(arguments.feedID,bean) />
 					<cfif not isArray(bean) and not bean.getIsNew()>
-						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						<cfset cacheFactory.get( key, duplicate(bean.getAllValues()) ) />
 					</cfif>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
 					<cfreturn bean/>
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
 			<cfif not isArray(bean) and not bean.getIsNew()>
-				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+				<cfset cacheFactory.get( key, duplicate(bean.getAllValues()) ) />
 			</cfif>
 			<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 			<cfreturn bean/>
@@ -235,13 +235,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean=getBean("feed")/>
 				</cfif>
 				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: feedBean, key: #key#}"))>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfset bean.setAllValues( duplicate(cacheFactory.get( key )) )>
 				<cfset bean.setValue('frommuracache',true)>
 				<cfreturn bean />
 				<cfcatch>
 					<cfset bean=variables.feedDAO.readByName(arguments.name,arguments.siteid,bean) />
 					<cfif not isArray(bean) and not bean.getIsNew()>
-						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						<cfset cacheFactory.get( key, duplicate(bean.getAllValues()) ) />
 					</cfif>
 					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: feedBean, key: #key#}"))>
 					<cfreturn bean/>

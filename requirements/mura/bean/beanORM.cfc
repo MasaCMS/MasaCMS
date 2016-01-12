@@ -781,7 +781,7 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	function clone(){
-		return getBean(variables.entityName).setAllValues(structCopy(getAllValues()));
+		return getBean(variables.entityName).setAllValues(duplicate(getAllValues()));
 	}
 
 	function getFeed(){		

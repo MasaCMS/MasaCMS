@@ -1628,7 +1628,15 @@ component extends="mura.cfobject" {
 					var protocol=getBean('utility').getRequestProtocol();
 				}
 				
-				request.apiEndpoint="#protocol#://#cgi.server_name##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
+				if(len(configBean.getApiEndpoint())){
+					var domain=configBean.getApiEndpoint();
+				} else if(len(configBean.getAdminDomain())){
+					var domain=configBean.getAdminDomain();
+				} else {
+					var domain=cgi.server_name;
+				}
+
+				request.apiEndpoint="#protocol#://#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
 			}
 			return request.apiEndpoint;
 		} 

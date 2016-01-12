@@ -311,18 +311,18 @@
 
 		var request = new XMLHttpRequest();
 
+		if(params.crossDomain){
+			if (!("withCredentials" in request)
+				&& typeof XDomainRequest != "undefined") {
+			    // Check if the XMLHttpRequest object has a "withCredentials" property.
+			    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+			    // Otherwise, check if XDomainRequest.
+			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			    request =new XDomainRequest();
+			}
 
-		if (params.crossDomain 
-			&& !("withCredentials" in request) 
-			&& typeof XDomainRequest != "undefined") {
-
-		    // Check if the XMLHttpRequest object has a "withCredentials" property.
-		    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-		    // Otherwise, check if XDomainRequest.
-		    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-		    request =new XDomainRequest();
-
-		} 
+			request.withCredentials=true;
+		}
 		
 		request.onload = function() {
 		  	//IE9 doesn't appear to return the request status
