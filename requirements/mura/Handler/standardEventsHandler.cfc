@@ -812,7 +812,8 @@
 				mobileformat=esapiEncode('javascript',$.event('muraMobileRequest')),
 				adminpreview=lcase(structKeyExists(url,'muraadminpreview')),
 				windowdocumentdomain=$.globalConfig('WindowDocumentDomain'),
-				perm=$.event('r').perm
+				perm=$.event('r').perm,
+				apiEndpoint=apiUtility.getEndPoint()
 			};
 
 			result.HTMLHeadQueue=$.renderHTMLQueue('head');
