@@ -969,7 +969,7 @@
 				<cfset var configuratorAction="">
 			</cfif>
 
-			<cfif $.siteConfig().hasDisplayObject(arguments.object)>
+			<cfif $.siteConfig().hasDisplayObject(arguments.object) and arguments.object eq 'plugin'>
 				<cfset showEditable=(arguments.renderer.useLayoutManager() or len($.siteConfig().getDisplayObject(arguments.object).configuratorInit)) and listFindNoCase("editor,author",arguments.assignmentPerm)>
 				<cfif showEditable>
 					<cfset editableControl.class="editablePlugin">
