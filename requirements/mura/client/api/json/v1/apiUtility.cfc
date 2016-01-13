@@ -1170,7 +1170,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		if(!entity.allowQueryParams(url)){
+		if(!entity.allowQueryParams(url,$)){
 			throw(type="authorization");
 		}
 		
@@ -1350,7 +1350,7 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
-		if(!entity.allowQueryParams(url)){
+		if(!entity.allowQueryParams(url,$)){
 			throw(type="authorization");
 		}
 
