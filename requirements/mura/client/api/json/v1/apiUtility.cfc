@@ -266,12 +266,12 @@ component extends="mura.cfobject" {
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
-			if( structKeyExists( headers, 'X-csrf-token' )){
-				params['csrf_token']=headers['X-csrf-token'];
+			if( structKeyExists( headers, 'X-csrf_token' )){
+				params['csrf_token']=headers['X-csrf_token'];
 			}
 
-			if( structKeyExists( headers, 'X-csrf-token-expires' )){
-				params['csrf_token_expires']=headers['X-csrf-token-expires'];
+			if( structKeyExists( headers, 'X-csrf_token_expires' )){
+				params['csrf_token_expires']=headers['X-csrf_token_expires'];
 			}
 
 			structAppend(form,params);
