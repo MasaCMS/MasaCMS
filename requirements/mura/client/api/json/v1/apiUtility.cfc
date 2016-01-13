@@ -259,8 +259,10 @@ component extends="mura.cfobject" {
 
 			structAppend(params,url);
 			structAppend(params,form);
-			
-			if(isJSON(httpRequestData.content)){
+
+			if(structKeyExists(headers,'Content-Type') 
+				&& headers['Content-Type'] == 'application/json'
+				&& isJSON(httpRequestData.content)){
 				structAppend(params,deserializeJSON(httpRequestData.content));
 			}
 
