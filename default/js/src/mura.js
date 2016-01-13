@@ -123,7 +123,7 @@
 					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new window.mura.MuraEntity();
+							var item=new window.mura.Entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -141,7 +141,7 @@
 			properties.entityname=properties.entityname || 'content';
 			properties.siteid=properties.siteid || window.mura.siteid;
 		}	
-		return new window.mura.MuraEntity(properties);
+		return new window.mura.Entity(properties);
 	}
 
 	function findQuery(params){
@@ -158,7 +158,7 @@
 					url:window.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new window.mura.MuraEntityCollection(resp.data)
+							var collection=new window.mura.EntityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -497,7 +497,7 @@
 	}
 
 	function select(selector){
-		return new window.mura.MuraDOMSelection(parseSelection(selector),selector);
+		return new window.mura.DOMSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -1249,7 +1249,7 @@
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof window.mura.MuraDOMSelection)){
+		if(!(scope instanceof window.mura.DOMSelection)){
 			scope=select(scope);
 		}
 		

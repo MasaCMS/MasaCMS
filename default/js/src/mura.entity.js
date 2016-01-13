@@ -45,13 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraEntity(properties){
-		this.init.apply(this,arguments)
-
-		return this;
-	}
-
-	MuraEntity.prototype={
+	window.mura.Entity=window.mura.CoreObject.extend({
 		init:function(properties){
 			properties || {};
 			properties.entityname = properties.entityname || 'content';
@@ -60,8 +54,6 @@
 		},
 
 		get:function(propertyName,defaultValue){
-
-			
 
 			if(typeof this.properties[propertyName] != 'undefined'){
 				return this.properties[propertyName];
@@ -82,12 +74,12 @@
 						success:function(resp){
 							
 							if('items' in resp.data){
-								var returnObj = new window.mura.MuraEntityCollection(resp.data);
+								var returnObj = new window.mura.EntityCollection(resp.data);
 							} else {
 								if(window.mura.entities[obj.entityname]){
 									var returnObj = new window.mura.entities[obj.entityname](obj);
 								} else {
-									var returnObj = new window.mura.MuraEntity(resp.data);
+									var returnObj = new window.mura.Entity(resp.data);
 								}	
 							}
 							
@@ -298,7 +290,6 @@
 		
 		}
 
-	}
-
-	window.mura.MuraEntity=MuraEntity;
+	});
+	
 })(window);

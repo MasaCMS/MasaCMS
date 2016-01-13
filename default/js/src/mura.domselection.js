@@ -45,26 +45,24 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraDOMSelection(selection,origSelector){
-		this.selection=selection;
-		this.origSelector=origSelector;
+	window.mura.DOMSelection=window.mura.CoreObject.extend({
+		init:function(selection,origSelector){
+			this.selection=selection;
+			this.origSelector=origSelector;
 
-		if(this.selection.length && this.selection[0]){
-			this.parentNode=this.selection[0].parentNode;
-			this.childNodes=this.selection[0].childNodes;
-			this.node=selection[0];
-			this.length=this.selection.length;
-		} else {
-			this.parentNode=null;
-			this.childNodes=null;
-			this.node=null;
-			this.length=0;
-		}
+			if(this.selection.length && this.selection[0]){
+				this.parentNode=this.selection[0].parentNode;
+				this.childNodes=this.selection[0].childNodes;
+				this.node=selection[0];
+				this.length=this.selection.length;
+			} else {
+				this.parentNode=null;
+				this.childNodes=null;
+				this.node=null;
+				this.length=0;
+			}
+		},
 
-		
-	}
-
-	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -893,8 +891,6 @@
 		  	});
 		  	return this;
 		}
-	}
-
-	window.mura.MuraDOMSelection=MuraDOMSelection;
+	});
 
 })(window);

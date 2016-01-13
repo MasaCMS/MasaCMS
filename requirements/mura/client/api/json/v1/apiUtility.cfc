@@ -240,28 +240,39 @@ component extends="mura.cfobject" {
 			getBean('utility').suppressDebugging();
 
 			var headers = getHttpRequestData().headers;
-			
-			
+	
 			if( structKeyExists( headers, 'Origin' )){
 				
 			  	var origin =  headers['Origin'];;
-			  	var PC = getpagecontext().getresponse();
 			 
 			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
 			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginList(), origin )) {
-			   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-			   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+			   		responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
+			   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 			  	}
 		  	}
 
-			structAppend(params,url);
-			structAppend(params,form);
-			structAppend(form,params);
-
 			var paramsArray=[];
 			var pathInfo=listToArray(arguments.path,'/');
-			var method="GET";
 			var httpRequestData=getHTTPRequestData();
+			var method='GET';
+
+			structAppend(params,url);
+			structAppend(params,form);
+			
+			if(isJSON(httpRequestData.content)){
+				structAppend(params,deserializeJSON(httpRequestData.content));
+			}
+
+			if( structKeyExists( headers, 'X-csrf-token' )){
+				params['csrf_token']=headers['X-csrf-token'];
+			}
+
+			if( structKeyExists( headers, 'X-csrf-token-expires' )){
+				params['csrf_token_expires']=headers['X-csrf-token-expires'];
+			}
+
+			structAppend(form,params);
 
 			param name="session.siteid" default=variables.siteid;
 
@@ -377,7 +388,11 @@ component extends="mura.cfobject" {
 				if(arrayLen(pathInfo) == 3){
 					params.relatedEntity=pathInfo[3];
 				} else {
-					method=httpRequestData.method;
+					if(structKeyExists(headers,'X-HTTP-Method-Override')){
+						method=headers['X-HTTP-Method-Override'];
+					} else {
+						method=httpRequestData.method;
+					}
 				}
 
 			} else {
@@ -392,7 +407,11 @@ component extends="mura.cfobject" {
 								params.relatedEntity=pathInfo[4];
 							}
 						} else {
-							method=httpRequestData.method;
+							if(structKeyExists(headers,'X-HTTP-Method-Override')){
+								method=headers['X-HTTP-Method-Override'];
+							} else {
+								method=httpRequestData.method;
+							}
 						}
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -422,7 +441,11 @@ component extends="mura.cfobject" {
 					}
 						
 				} else {
-					method=httpRequestData.method;
+					if(structKeyExists(headers,'X-HTTP-Method-Override')){
+						method=headers['X-HTTP-Method-Override'];
+					} else {
+						method=httpRequestData.method;
+					}
 				}
 
 			}
