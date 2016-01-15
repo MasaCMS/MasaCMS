@@ -55,7 +55,7 @@
 	Mura CMS.
 --->
 <cfif this.asyncObjects>
-	<cfif this.layoutmanager and len(arguments.object)>
+	<cfif this.layoutmanager and isDefined('arguments.object') and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
 		<cfoutput>
