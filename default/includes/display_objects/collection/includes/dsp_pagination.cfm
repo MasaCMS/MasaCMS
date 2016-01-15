@@ -54,7 +54,7 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfif arguments.iterator.hasNext()>
+<cfif arguments.iterator.getRecordCount()>
 <cfsilent>		
 	<cfset variables.$.event("currentNextNID", arguments.source)>
 
