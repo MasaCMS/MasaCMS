@@ -1377,7 +1377,6 @@ Display Objects
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
-	<cfset var safesubtype=REReplace(variables.event.getValue('contentBean').getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
@@ -1444,53 +1443,13 @@ Display Objects
 					</cfif>		
 				</cfoutput>
 
-				<!--- For backwards compatibility --->
-				<cfif variables.event.getContentBean().getType() eq 'Folder'>
-					<cfset eventOutput=application.pluginManager.renderEvent("onPortalBodyRender",variables.event)>
-					<cfif not len(eventOutput)>
-						<cfset eventOutput=application.pluginManager.renderEvent("onPortal#variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
-					</cfif>
-				</cfif>
-				<!--- --->
+				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
 				
-				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
-				</cfif>
-				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
-				</cfif>
-
-				<cfif len(eventOutput)>
-					<cfoutput>#eventOutput#</cfoutput>
-				</cfif>
-
-				<cfset var filePath="">
-
-				<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm')>
-
-				<cfif len(filePath)>
-					<cfinclude template="#filepath#">
-				<cfelseif $.content('type') eq 'folder'>
-					<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_Portal_#safesubtype#.cfm')>
-					<cfif len(filePath)>
-						<cfinclude template="#filepath#">
-					</cfif>
-				</cfif>
-
-				<cfif not len(filePath)>
-					<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm')>
-
-					<cfif len(filePath)>
-						<cfinclude template="#filepath#">
-					<cfelseif $.content('type') eq 'folder'>
-						<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
-						<cfif len(filePath)>
-							<cfinclude template="#filepath#">
-						</cfif>
-					</cfif>
-				</cfif>
-				
-				<cfif not len(eventOutput) and not len(filePath)>
+				<cfif isDefined('bodyLookup.eventOutput')>
+					#bodyLookup.eventOutput#
+				<cfelseif isDefined('bodyLookup.filepath')>
+					<cfinclude template="#bodyLookup.filepath#">
+				<cfelse>
 					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
 					<cfcase value="File">
 						<cfif variables.event.getValue('contentBean').getContentType() eq "Image" 
@@ -1623,6 +1582,20 @@ Display Objects
 	<cfreturn str />
 </cffunction>
 
+<cffunction name="dspContentTypeBody" output="false">
+	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>		
+	<cfset var eventOutput="">
+	<cfsavecontent variable="eventOutput">
+	<cfoutput>
+	<cfif isDefined('bodyLookup.eventOutput')>
+		#bodyLookup.eventOutput#
+	<cfelseif isDefined('bodyLookup.filepath')>
+		<cfinclude template="#bodyLookup.filepath#">
+	</cfif>
+	</cfoutput>
+	</cfsavecontent>
+	<cfreturn eventOutput>
+</cffunction>
 <cffunction name="dspNestedNavPrimary" output="false" returntype="string">
 		<cfargument name="contentid" type="string">
 		<cfargument name="viewDepth" type="numeric" required="true" default="1">

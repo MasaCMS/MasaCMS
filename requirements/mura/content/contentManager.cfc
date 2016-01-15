@@ -2947,6 +2947,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfscript>
 		function findMany(contentids,siteid){
+
+			if(isArray(arguments.contentids)){
+				arguments.contentids=arrayToList(arguments.contentids);
+			}
+			
 			var iterator=getBean('feed')
 				.set(arguments)
 				.addParam(name='contentid',condition='in',criteria=arguments.contentids)

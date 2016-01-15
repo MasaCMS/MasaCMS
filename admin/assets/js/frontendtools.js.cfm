@@ -183,12 +183,6 @@
 		});
 	}
 
-
-	var openFrontEndToolsModalHandler=function(event){
-		event.preventDefault();
-		openFrontEndToolsModal(this);
-	}
-
 	var openFrontEndToolsModal=function(a){
 		return initFrontendUI(a);
 	};
@@ -432,9 +426,11 @@
 			function(){
 				utility(this).find(".frontEndToolsModal").each(
 					function(){
-						utility(this)
-							.off('click',openFrontEndToolsModalHandler)
-							.click(openFrontEndToolsModalHandler);
+						utility(this).click(function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
 				});
 					
 				utility(this).children().each(
@@ -471,9 +467,11 @@
 		utility(".frontEndToolsModal").each(
 			function(el){
 				
-				utility(this)
-					.off('click',openFrontEndToolsModalHandler)
-					.click(openFrontEndToolsModalHandler);
+				utility(this).on('click',function(event){
+					event.preventDefault();
+					openFrontEndToolsModal(this);
+				}
+			);
 		});
 
 		utility(".editableObject").each(function(){
@@ -901,9 +899,13 @@
 						if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
 							item.html(window.mura.layoutmanagertoolbar + item.html());
 
-							item.find(".frontEndToolsModal")
-								.off('click',openFrontEndToolsModalHandler)
-								.click(openFrontEndToolsModalHandler);
+							item.find(".frontEndToolsModal").on(
+								'click',
+								function(event){
+									event.preventDefault();
+									openFrontEndToolsModal(this);
+								}
+							);
 
 
 							item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
@@ -919,9 +921,13 @@
 								if(window.muraInlineEditor.objectHasConfigurator(objectParams) || window.muraInlineEditor.objectHasEditor(objectParams)){
 									item.html(window.mura.layoutmanagertoolbar + item.html());
 
-									item.find(".frontEndToolsModal")
-									.off('click',openFrontEndToolsModalHandler)
-									.click(openFrontEndToolsModalHandler);
+									item.find(".frontEndToolsModal").on(
+										'click',
+										function(event){
+											event.preventDefault();
+											openFrontEndToolsModal(this);
+										}
+									);
 
 
 									item.find("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
@@ -940,9 +946,13 @@
 					var item=mura(this);
 					item.addClass("active");
 					item.prepend(window.mura.layoutmanagertoolbar);
-					item.find(".frontEndToolsModal")
-						.off('click',openFrontEndToolsModalHandler)
-						.click(openFrontEndToolsModalHandler);
+					item.find(".frontEndToolsModal").on(
+						'click',
+						function(event){
+							event.preventDefault();
+							openFrontEndToolsModal(this);
+						}
+					);
 				});
 
 				mura.initLayoutManager();

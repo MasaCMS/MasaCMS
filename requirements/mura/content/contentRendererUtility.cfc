@@ -1820,4 +1820,58 @@
 		<cfreturn returnstring>
 	</cffunction>
 
+	<cffunction name="processContentTypeBody" output="false">
+		<cfargument name="$">
+		<cfset var safesubtype=REReplace(arguments.$.content().getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
+		<cfset var eventOutput="">
+
+		<!--- For backwards compatibility --->
+		<cfif arguments.$.content().getType() eq 'Folder'>
+			<cfset eventOutput=arguments.$.renderEvent("onPortalBodyRender")>
+			<cfif not len(eventOutput)>
+				<cfset eventOutput=arguments.$.renderEvent("onPortal#arguments.$.content().getSubType()#BodyRender")>
+			</cfif>
+		</cfif>
+		<!--- --->
+
+		<cfif not len(eventOutput)>
+			<cfset eventOutput=arguments.$.renderEvent("on#arguments.$.content().getType()##arguments.$.content().getSubType()#BodyRender")>
+		</cfif>
+		<cfif not len(eventOutput)>
+			<cfset eventOutput=arguments.$.renderEvent("on#arguments.$.content().getType()#BodyRender")>
+		</cfif>
+
+		<cfif len(eventOutput)>
+			<cfreturn {eventOutput=eventOutput}>
+		</cfif>
+
+		<cfset var filePath="">
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
+
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		<cfelseif $.content('type') eq 'folder'>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_Portal_#safesubtype#.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
+
+		<cfif not len(filePath)>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
+
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			<cfelseif $.content('type') eq 'folder'>
+				<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
+				<cfif len(filePath)>
+					<cfreturn {filepath=filePath}>
+				</cfif>
+			</cfif>
+		</cfif>
+
+		<cfreturn {}>
+	</cffunction>
+
 </cfcomponent>

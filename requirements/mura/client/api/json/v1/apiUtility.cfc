@@ -2082,7 +2082,7 @@ component extends="mura.cfobject" {
 
 					} else {
 						result={
-							html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
+							html=$.getContentRenderer().dspContentTypeBody()
 						};
 						break;
 					}

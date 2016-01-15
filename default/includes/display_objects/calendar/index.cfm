@@ -111,23 +111,101 @@
 			<cfset objectParam.items=[]>
 		</cfif>
 		<cfif not arrayFind(objectParams.items,variables.$.content('contentid'))>
-			<cfset arrayAppend(objectParams.items,variables.$.content('contentid'))>
+			<cfset arrayPrepend(objectParams.items,variables.$.content('contentid'))>
 		</cfif>
 	</cfsilent>
 	<cfif objectParams.format eq 'list'>
 		<cfset objectParams.sourcetype='calendar'>
 		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
 	<cfelse>
+		<cfset this.calendarcolors=[
+			{background='##3a87ad',text='white'},
+			{background='blue',text='white'}
+		]>
+
+
 		<div class="mura-calendar-wrapper">
 			<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
 				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
 				<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 			</div>
+
+			<cfif arrayLen(objectParams.items) gt 1>
+				<cfset calendars=$.getBean('contentManager')
+					.findMany(
+						contentids=objectParams.items,
+						siteid=$.event('siteid')
+					)>
+				
+				<div class="mura-calender__filters" style="display:none;">
+				<cfloop condition="calendars.hasNext()">
+					<cfset calendar=calendars.next()>
+					<div class="mura-calendar__filter-item">
+						<label class="mura-calendar__filter-item__option">
+							<cfset i=calendars.currentIndex()-1>
+							<input type="checkbox" class="input-style--swatch" data-index="#i#" checked="true" value="#this.calendarcolors[calendars.currentIndex()].background#" style="display:none;">
+							<span>
+								<span class="mura-calendar__filter-item__swatch"></span>
+								<span class="mura-calendar__filter-item__swatch-label">#esapiEncode('html',calendar.getMenuTitle())#</span>
+							</span>
+						</label>
+					</div>
+				</cfloop>
+				</div>
+			</cfif>
+		
 			<div id="mura-calendar" class="mura-calendar-object"></div>
 			<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 		</div>
 		<script>
 		$(function(){
+
+			var colors=#lcase(serializeJSON(this.calendarcolors))#;
+			var calendars=#lcase(serializeJSON(objectparams.items))#;
+			var eventSources=[
+				<cfset colorIndex=0>
+				<cfloop array="#objectParams.items#" index="i">	
+					<cfsilent>
+						<cfset colorIndex=colorIndex+1>
+						<cfif colorIndex lt arrayLen(this.calendarcolors)>
+							<cfset colorIndex=1>
+						</cfif>
+					</cfsilent>
+					{
+						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
+						, type: 'POST'
+						, data: {
+							method: 'getFullCalendarItems'
+							, calendarid: '#esapiEncode("javascript",i)#'
+							, siteid: '#variables.$.content('siteid')#'
+							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
+							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
+						}
+						, color: '#this.calendarcolors[colorIndex].background#' 
+						, textColor: '#this.calendarcolors[colorIndex].text#'
+						, error: function() { 
+							$('##mura-calendar-error').show();
+						}
+					},
+				</cfloop>
+			];
+
+			$('.mura-calendar__filter-item').each(function(){
+				var optionContainer=$(this);
+				optionContainer.find('.input-style--swatch').on('change',function(){
+					var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
+					var self=$(this);
+					if(self.is(':checked')){	
+						swatch.css('background-color',self.val());
+					} else {
+						swatch.css('background-color','');
+					}
+				}).trigger('change');
+
+			});
+
+			$('.mura-calender__filters').show();
+
 			mura.loader()
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
 				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})		
@@ -171,57 +249,12 @@
 									$('##mura-calendar-loading').toggle(isLoading);
 							}
 							, eventLimit: true
-							, eventRender: function(event, el) {
-								// render the timezone offset below the event title
-								/*
-								if (event.start.hasZone()) {
-									el.find('.fc-title').after(
-										$('<div class="tzo"/>').text(event.start.format('Z'))
-									);
-								}
-								*/
-							}
-							, dayClick: function(date) {
-								//console.log('dayClick', date.format());
-							}
-
-							//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
-							, eventSources: [
-								<cfloop array="#objectParams.items#" index="i">	
-									{
-										url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
-										, type: 'POST'
-										, data: {
-											method: 'getFullCalendarItems'
-											, calendarid: '#esapiEncode("javascript",i)#'
-											, siteid: '#variables.$.content('siteid')#'
-											, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
-											, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
-										}
-										, color: '##3a87ad' // sets calendar events background+border colors
-										, textColor: 'white'
-										, error: function() { 
-											$('##mura-calendar-error').show();
-										}
-									}
-									,
-								</cfloop>
-								
-								// optionally include U.S. Holidays
-								// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
-								// , {
-								// 	googleCalendarApiKey: '<YOUR API KEY>'
-								// 	, url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
-								// 	, color: 'yellow'
-								// 	, textColor: 'black'
-								// }
-							]
-							// example of how to open events in a separate window
-							// , eventClick: function(event) {
-							// 	window.open(event.url, 'fcevent', 'width=700,height=600');
-							// 	return false;
-							// }
 						});
+
+						for(var i in eventSources){
+							$('##mura-calendar').fullCalendar('addEventSource',eventSources[i]);
+						}
+						
 					}
 				);
 		});
