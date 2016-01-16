@@ -140,10 +140,10 @@
 				<div class="mura-calender__filters" style="display:none;">
 				<cfloop condition="calendars.hasNext()">
 					<cfset calendar=calendars.next()>
+					<cfset i=calendars.currentIndex()-1>
 					<div class="mura-calendar__filter-item">
 						<label class="mura-calendar__filter-item__option">
-							<cfset i=calendars.currentIndex()-1>
-							<input type="checkbox" class="input-style--swatch" data-index="#i#" checked="true" value="#this.calendarcolors[calendars.currentIndex()].background#" style="display:none;">
+							<input type="checkbox" class="input-style--swatch" data-index="#i#" data-contentid="#calendar.getContentID()#" data-color="#this.calendarcolors[calendars.currentIndex()].background#" style="display:none;">
 							<span>
 								<span class="mura-calendar__filter-item__swatch"></span>
 								<span class="mura-calendar__filter-item__swatch-label">#esapiEncode('html',calendar.getMenuTitle())#</span>
@@ -159,6 +159,13 @@
 		</div>
 		<script>
 		$(function(){
+			var hiddenCalendars=window.localStorage.getItem('muraHiddenCalendars');
+
+			if(hiddenCalendars){
+				hiddenCalendars=hiddenCalendars.split(',');
+			} else {
+				hiddenCalendars=[];
+			}
 
 			var colors=#lcase(serializeJSON(this.calendarcolors))#;
 			var calendars=#lcase(serializeJSON(objectparams.items))#;
@@ -172,7 +179,7 @@
 						</cfif>
 					</cfsilent>
 					{
-						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
+						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc?calendarid=#esapiEncode("javascript",i)#'
 						, type: 'POST'
 						, data: {
 							method: 'getFullCalendarItems'
@@ -189,20 +196,6 @@
 					},
 				</cfloop>
 			];
-
-			$('.mura-calendar__filter-item').each(function(){
-				var optionContainer=$(this);
-				optionContainer.find('.input-style--swatch').on('change',function(){
-					var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
-					var self=$(this);
-					if(self.is(':checked')){	
-						swatch.css('background-color',self.val());
-					} else {
-						swatch.css('background-color','');
-					}
-				}).trigger('change');
-
-			});
 
 			$('.mura-calender__filters').show();
 
@@ -250,10 +243,44 @@
 							}
 							, eventLimit: true
 						});
+						
+						<cfif arrayLen(objectParams.items) eq 1>
+							$('##mura-calendar').fullCalendar('addEventSource',eventSources[0]);
+						<cfelse>
+							$('.mura-calendar__filter-item').each(function(){
+								var optionContainer=$(this);
+								var calendarToggleInput=optionContainer.find('.input-style--swatch');
 
-						for(var i in eventSources){
-							$('##mura-calendar').fullCalendar('addEventSource',eventSources[i]);
-						}
+								if(hiddenCalendars.indexOf(calendarToggleInput.data('contentid')) == -1){
+									calendarToggleInput.attr('checked',true);
+								} else {
+									calendarToggleInput.attr('checked',false);
+								}
+
+								calendarToggleInput.on('change',function(){
+									var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
+									var self=$(this);
+									if(self.is(':checked')){	
+										swatch.css('background-color',self.data('color'));
+										$('##mura-calendar').fullCalendar('addEventSource',eventSources[self.data('index')]);
+										
+										var temp=[];
+										var contentid=self.data('contentid');
+										for(var i in hiddenCalendars){
+											if(hiddenCalendars[i] !=contentid){
+												temp.push(hiddenCalendars[i])
+											}
+										}
+										hiddenCalendars=temp;;
+									} else {
+										swatch.css('background-color','');
+										$('##mura-calendar').fullCalendar('removeEventSource',eventSources[self.data('index')]);
+										hiddenCalendars.push(self.data('contentid'));
+									}
+									window.localStorage.setItem('muraHiddenCalendars',hiddenCalendars.join(','));
+								}).trigger('change');
+							});
+						</cfif>
 						
 					}
 				);

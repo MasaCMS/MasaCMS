@@ -323,6 +323,9 @@ a.mura-asset.zip {
 .mura-calendar__filter-item__option input[type="checkbox"]:checked ~ span .mura-calendar__filter-item__swatch {
   border-color: transparent;
 }
+.mura-calender__filters {
+  padding-bottom: 40px;
+}
 .mura-calendar {
   text-align: center;
   margin-bottom: 1em;
