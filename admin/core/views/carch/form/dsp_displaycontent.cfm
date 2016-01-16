@@ -71,9 +71,20 @@
 					<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 				</label>
 				<cfif rc.ptype eq 'Calendar'>
-				<label for="displayIntervalDetectConflicts" class="control-label">
-					<input type="checkbox" class="mura-repeat-option" id="displayIntervalDetectConflicts" value="1" name="displayIntervalDetectConflicts"<cfif displayInterval.detectconflicts> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.detectconflicts')#
-				</label>
+					<label for="displayIntervalDetectConflicts" class="control-label">
+						<input type="checkbox" class="mura-repeat-option" id="displayIntervalDetectConflicts" value="1" name="displayIntervalDetectConflicts"<cfif displayInterval.detectconflicts> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.detectconflicts')#
+					</label>
+
+					<div id="mura-detectspan-container"<cfif displayInterval.detectconflicts> style="display:none;"</cfif>>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.for')#
+						<select id="mura-detectspan">
+							<cfloop from="1" to="12" index="m">
+								<option value="#m#"<cfif m eq displayInterval.detectspan> selected</cfif>>
+								#m#
+								</option>
+							</cfloop>
+						</select> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#
+					</div>
 				</cfif>
 				<label for="displayIntervalRepeats" class="control-label">
 					<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
@@ -105,7 +116,6 @@
 						<input class="mura-repeat-option" id="dow5" name="displayIntervalDays" type="checkbox" value="5"<cfif listFind(displayInterval.daysofweek,5)> checked</cfif>/> #listGetAt(daysofweekshortlabels,5)#
 						<input class="mura-repeat-option" id="dow6" name="displayIntervalDays" type="checkbox" value="6"<cfif listFind(displayInterval.daysofweek,6)> checked</cfif>/> #listGetAt(daysofweekshortlabels,6)#
 						<input class="mura-repeat-option" id="dow7" name="displayIntervalDays" type="checkbox" value="7"<cfif listFind(displayInterval.daysofweek,7)> checked</cfif>/> #listGetAt(daysofweekshortlabels,7)#
-					
 					</div>
 					<div class="controls">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ends')#
@@ -169,6 +179,7 @@
 				var options={
 					repeats: $('##displayIntervalRepeats').is(':checked') ? 1 : 0,
 					detectconflicts: $('##displayIntervalDetectConflicts').is(':checked') ? 1 : 0,
+					detectspan: $('##mura-detectspan').val(),
 					allday: $('##displayIntervalAllDay').is(':checked') ? 1 : 0,
 					timezone: $('##displayIntervalTZ').val(),
 					every: $('##displayIntervalEvery').val() || 0,
@@ -363,9 +374,19 @@
 				setIntervalUnitLabel();
 			}
 
+			function toggleDetectConflicts(){
+				if($('##displayIntervalDetectConflicts').is(':checked')){
+					$('##mura-detectspan-container').show();
+				} else {
+					$('##mura-detectspan-container').show();
+				}
+				
+			}
+			
 			$('.mura-repeat-option').on('change',updateDisplayInterval);
 			$('##displayIntervalRepeats').click(toggleRepeatOptionsContainer);
 			$('##displayIntervalAllDay').click(toggleAllDayOptions);
+			$('##displayIntervalDetectConflicts').click(toggleDetectConflicts);
 			$('##displayIntervalType').on('change',toggleRepeatOptions);
 			$('##displayIntervalEnd').on('change',setEndOption);
 
@@ -379,6 +400,7 @@
 			toggleRepeatOptions();
 			toggleAllDayOptions();
 			setEndOption();
+			toggleDetectConflicts();
 		})
 
 

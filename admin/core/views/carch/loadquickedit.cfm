@@ -248,6 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						var options={
 							repeats: $('##displayIntervalRepeats').is(':checked') ? 1 : 0,
 							detectconflicts: $('##displayIntervalDetectConflicts').is(':checked') ? 1 : 0,
+							detectspan: #int(displayInterval.detectspan)#,
 							allday: $('##displayIntervalAllDay').is(':checked') ? 1 : 0,
 							timezone: $('##displayIntervalTZ').val(),
 							every: $('##displayIntervalEvery').val() || 0,
