@@ -59,20 +59,39 @@
 <cfparam name="request.sortBy" default=""/>
 <cfparam name="request.sortDirection" default=""/>
 <cfparam name="request.day" default="#day(now())#"/>
-
+<cfset targetFormat='list'>
 <cfset $.addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
 <cfif not isValid('uuid',arguments.objectid)>
 	<cfset variables.crumbIterator=variables.$.content().getCrumbIterator()>
-
 	<cfloop condition="variables.crumbIterator.hasNext()">
 		<cfset variables.crumb=variables.crumbIterator.next()>
 		<cfif listFindNoCase('Folder,Calendar',variables.crumb.getType())>
 			<cfset arguments.objectid=variables.crumb.getContentID()>
+			<cfif variables.crumb.getType() eq 'Calendar'>
+				<cfset targetFormat=variables.$.content().getObjectParam('format')>
+				<cfif not len(targetFormat)>
+					<cfset targetFormat='Calendar'>
+				</cfif>
+			</cfif>
 			<cfbreak>
 		</cfif>
 	</cfloop>
+<cfelseif variables.$.content('contentid') neq arguments.objectid>
+	<cfset targetContent=variables.$.getBean('content').loadBy(contentid=arguments.objectid)>
+	<cfif targetContent.getType() eq 'Calendar'>
+		<cfset targetFormat=targetContent.getObjectParam('format')>
+		<cfif not len(targetFormat)>
+			<cfset targetFormat='Calendar'>
+		</cfif>
+	</cfif>
+<cfelseif variables.$.content('type') eq 'Calendar'>
+	<cfset targetFormat=variables.$.content().getObjectParam('format')>
+	<cfif not len(targetFormat)>
+		<cfset targetFormat='Calendar'>
+	</cfif>
 </cfif>
 </cfsilent>
+<cfif targetFormat neq 'Calendar'>
 <cf_CacheOMatic key="#arguments.object##$.event('siteid')##arguments.objectid##$.event('month')##$.event('year')#" nocache="#$.event('nocache')#">
 <cfsilent>
 <cfset navTools=createObject("component","navTools").init($)>
@@ -101,3 +120,4 @@
 </nav>
 </cfoutput>
 </cf_CacheOMatic>
+</cfif>
