@@ -167,6 +167,25 @@
 				hiddenCalendars=[];
 			}
 
+			var muraCalendarView=JSON.parse(window.sessionStorage.getItem('muraCalendarView'));
+
+			if(!muraCalendarView){
+				muraCalendarView={
+					name:'#esapiEncode("javascript",objectParams.viewdefault)#',
+				};
+			}
+
+			<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
+				var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
+			<cfelse>
+				if(muraCalendarView.defaultDate){
+				var defaultDate=  muraCalendarView.defaultDate;
+				} else {
+					var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
+				}
+			</cfif>
+			
+			
 			var colors=#lcase(serializeJSON(this.calendarcolors))#;
 			var calendars=#lcase(serializeJSON(objectparams.items))#;
 			var eventSources=[
@@ -209,7 +228,7 @@
 					function(){
 						$('##mura-calendar').fullCalendar({
 							timezone: 'local'
-							, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
+							, defaultDate: defaultDate
 							, buttonText: {
 								day: '#variables.$.rbKey('calendar.day')#'
 								, week: '#variables.$.rbKey('calendar.week')#'
@@ -232,12 +251,22 @@
 							<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
 								, defaultView: 'agendaDay'
 							<cfelse>
-								, defaultView: '#esapiEncode("javascript",objectParams.viewdefault)#'
+								, defaultView:  muraCalendarView.name
 							</cfif>
 							<cfelse>
 							, defaultView: 'month'
 							</cfif>
-							
+							, viewRender: function(view,element){
+								if(view.end){
+									var newDefaultDate=new Date((new Date(view.start).getTime() + new Date(view.end).getTime()) / 2)
+								} else {
+									var newDefaultDate=view.start;
+								}
+								window.sessionStorage.setItem('muraCalendarView',JSON.stringify({
+									name:view.name,
+									defaultDate:newDefaultDate
+								}));
+							}
 							, loading: function(isLoading) {
 									$('##mura-calendar-loading').toggle(isLoading);
 							}
