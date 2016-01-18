@@ -179,6 +179,12 @@ component extends='mura.cfobject' {
     return defaultDate;
   }
 
+   public any function hasCustomDateParams() {
+    return (isdefined('url.year') || isdefined('form.year'))
+      || (isdefined('url.month') || isdefined('form.month'))
+      || (isdefined('url.day') || isdefined('form.day'));
+  }
+
   public any function filterCalendarItems(required query data, numeric maxItems=1000) {
     var maxRows = !arguments.maxItems ? 100000 : arguments.maxItems;
     var qoq = new Query();

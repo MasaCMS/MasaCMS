@@ -63,9 +63,12 @@
 			data-object="calendar"
 			data-objectname="Calendar"
 			data-objectid="#$.content('contentid')#"
+			<cfif variables.$.getCalendarUtility().hasCustomDateParams()>
 			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
 			data-day="#esapiEncode('html_attr',variables.$.event('day'))#"
+			data-dateparams="true"
+			</cfif>
 			data-items="#esapiEncode('html_attr',serializeJSON($.content().getObjectParam(param='items',defaultValue=[])))#"
 			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
 			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewdefault',defaultValue="month"))#"
@@ -101,7 +104,7 @@
 		<cfparam name="objectParams.startrow" default="1">
 		<cfparam name="objectParams.tag" default="">
 		<cfparam name="objectParams.layout" default="default">
-
+		<cfparam name="objectParams.dateparams" default="false">
 		<cfif isJson(objectParams.items)>
 			<cfset objectParams.items=deserializeJSON(objectParams.items)>
 		<cfelseif isSimpleValue(objectParams.items)>
@@ -128,8 +131,6 @@
 				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
 				<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 			</div>
-
-			
 
 			<cfif arrayLen(objectParams.items) gt 1>
 				<cfsilent>
@@ -162,12 +163,12 @@
 				</cfloop>
 				</div>
 			</cfif>
-		
 			<div id="mura-calendar" class="mura-calendar-object"></div>
 			<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
 		</div>
 		<script>
 		$(function(){
+			<cfset muraCalenderView='muraCalenderView' & replace(variables.$.content('contentid'),'-','','all')>
 			<cfset muraHiddenCals='muraHiddenCals' & replace(variables.$.content('contentid'),'-','','all')>
 			var hiddenCalendars=window.sessionStorage.getItem('#muraHiddenCals#');
 
@@ -177,7 +178,7 @@
 				hiddenCalendars=[];
 			}
 
-			var muraCalendarView=JSON.parse(window.sessionStorage.getItem('muraCalendarView'));
+			var muraCalendarView=JSON.parse(window.sessionStorage.getItem('#muraCalenderView#'));
 
 			if(!muraCalendarView){
 				muraCalendarView={
@@ -185,7 +186,7 @@
 				};
 			}
 
-			<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
+			<cfif objectParams.dateparams>
 				var defaultDate= '#variables.$.getCalendarUtility().getDefaultDate()#';
 			<cfelse>
 				if(muraCalendarView.defaultDate){
@@ -271,7 +272,7 @@
 								} else {
 									var newDefaultDate=view.start;
 								}
-								window.sessionStorage.setItem('muraCalendarView',JSON.stringify({
+								window.sessionStorage.setItem('#muraCalenderView#',JSON.stringify({
 									name:view.name,
 									defaultDate:newDefaultDate
 								}));

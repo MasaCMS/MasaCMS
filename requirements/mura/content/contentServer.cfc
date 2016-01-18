@@ -483,16 +483,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arrayLen(dateArray)>
 		<cfif arrayLen(dateArray) gte 1 and isNumeric(dateArray[1])>
+			<cfset url.year=dateArray[1]>
 			<cfset arguments.event.setValue("year",dateArray[1])>
 			<cfset arguments.event.setValue("filterBy","releaseYear")>		
 		</cfif>
 			
 		<cfif arrayLen(dateArray) gte 2 and isNumeric(dateArray[2])>
+			<cfset url.month=dateArray[2]>
 			<cfset arguments.event.setValue("month",dateArray[2])>
 			<cfset arguments.event.setValue("filterBy","releaseMonth")>		
 		</cfif>
 			
 		<cfif arrayLen(dateArray) gte 3 and isNumeric(dateArray[3])>
+			<cfset url.day=dateArray[3]>
 			<cfset arguments.event.setValue("day",dateArray[3])>	
 			<cfset arguments.event.setValue("filterBy","releaseDate")>	
 		</cfif>
