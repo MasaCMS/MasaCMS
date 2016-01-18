@@ -310,46 +310,98 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function getHTTPAttrs(authtype=''){
-            var configBean=getBean('configBean');
-            var connectionType = "BASIC";
-             
-            if(listFindNoCase('PROXY,NTLM,BASIC',arguments.authtype)){
-                connectionType = arguments.authtype;
-            } else if(len(configBean.getProxyServer())){
-                connectionType = 'PROXY';
-            }
+        var configBean=getBean('configBean');
+        var connectionType = "BASIC";
+         
+        if(listFindNoCase('PROXY,NTLM,BASIC',arguments.authtype)){
+            connectionType = arguments.authtype;
+        } else if(len(configBean.getProxyServer())){
+            connectionType = 'PROXY';
+        }
 
-            structDelete(arguments,"authtype");
-             
-            if(connectionType == "NTLM") {
-                    
-                if(find('\',configBean.getProxyUser())){
-                    structAppend(arguments,{
-                        domain=listFirst(configBean.getProxyUser(),'\'),
-                        username=listLast(configBean.getProxyUser(),'\')
-                    });
-                } else {
-                    arguments.username=configBean.getProxyUser();
-                }
-                    
+        structDelete(arguments,"authtype");
+         
+        if(connectionType == "NTLM") {
+                
+            if(find('\',configBean.getProxyUser())){
                 structAppend(arguments,{
-                    password=configBean.getProxyPassword(),
-                    authtype="NTLM"
+                    domain=listFirst(configBean.getProxyUser(),'\'),
+                    username=listLast(configBean.getProxyUser(),'\')
                 });
-                          
-            } else if(connectionType == 'PROXY'){
-                    
-                structAppend(arguments,{
-                    proxyserver=configBean.getProxyServer(),
-                    proxyport=configBean.getProxyPort(),
-                    proxyuser=configBean.getProxyUser(),
-                    proxypassword=configBean.getProxyPassword()
-                });
-                    
+            } else {
+                arguments.username=configBean.getProxyUser();
             }
-             
-            return arguments;
-       }
+                
+            structAppend(arguments,{
+                password=configBean.getProxyPassword(),
+                authtype="NTLM"
+            });
+                      
+        } else if(connectionType == 'PROXY'){
+                
+            structAppend(arguments,{
+                proxyserver=configBean.getProxyServer(),
+                proxyport=configBean.getProxyPort(),
+                proxyuser=configBean.getProxyUser(),
+                proxypassword=configBean.getProxyPassword()
+            });
+                
+        }
+         
+        return arguments;
+   }
+
+
+    function convertTimezone(datetime,from,to){
+		var tz=getJavaTimezone();
+		
+		if(!isDefined('arguments.from')){
+			arguments.from=tz.getDefault().getID();
+		}
+
+		if(!isDefined('arguments.to')){
+			arguments.to=tz.getDefault().getID();
+		}
+
+		if (arguments.from == arguments.to){
+			return arguments.datetime;
+		} else {
+
+			
+			var currentdate=createObject('java','java.lang.System').currentTimeMillis();
+			var offset=(tz.getTimezone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
+			
+			if(offset > 0){
+				offset = 0 - abs(offset);
+			} else {
+				offset = 0 + abs(offset);
+			}
+
+			arguments.datetime= dateAdd(
+				"s",
+	   			offset,
+	   			arguments.datetime
+	   		);
+
+	   		arguments.datetime= dateAdd(
+				"s",
+	   			(tz.getTimezone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
+	   			arguments.datetime
+	   		);
+   			
+			return arguments.datetime;
+		}
+	}
+
+	function getJavaTimezone(timezone){
+		var tz=createObject( "java", "java.util.TimeZone" );
+
+		if(isDefined('arguments.timezone')){
+			return tz.getTimezone(arguments.timezone);
+		} else {
+			return tz;
+		}
+	}
 </cfscript>
 
 </cfcomponent>

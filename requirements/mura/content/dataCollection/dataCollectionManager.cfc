@@ -316,11 +316,12 @@ order by tformresponsepackets.entered asc
 		var frm=$('###frmID#');
 		var action=frm.attr('action');
 
-		if(action){
+		if(typeof action != 'undefined'){
 			action=action.split('?');
 			action='?nocache=1&' + action[action.length-1];
+		} else {
+			action='?nocache=1';
 		}
-		frm.attr('action','?nocache=1');
 	
 		if(frm.attr('onsubmit') == undefined){
 			frm.on('submit',function(){return validateForm(this);})
@@ -330,7 +331,7 @@ order by tformresponsepackets.entered asc
 			frm.find("input[type='radio']").each(function(){
 				polllist.push($(this).val());
 			});
-			if(polllist.length > 0) {action += '&polllist='+ polllist.toString());}		
+			if(polllist.length > 0) {action += '&polllist='+ polllist.toString();}		
 		</cfif>
 	
 		frm.attr('action',action + '###frmID#');

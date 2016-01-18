@@ -1051,7 +1051,6 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				}
 			);
 		}
-	   
 
 	    var clickHandler=function(){
 	    	setTab($(this).val());

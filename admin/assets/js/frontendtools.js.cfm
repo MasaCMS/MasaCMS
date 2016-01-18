@@ -82,6 +82,9 @@
 				mura('[data-instanceid="' + parameters["instanceid"] + '"]').remove();
 				closeFrontEndToolsModal();
 				muraInlineEditor.sidebarAction('showobjects');
+				muraInlineEditor.isDirty=true;
+			} else if(parameters["cmd"] == "showobjects"){
+				muraInlineEditor.sidebarAction('showobjects');
 			} else if (parameters["cmd"]=="setObjectParams"){
 				var item=mura('[data-instanceid="' + parameters.instanceid + '"]');
 				if(typeof parameters.params == 'object'){
@@ -105,6 +108,8 @@
 					for(var p in parameters.params){
 						item.data(p,parameters.params[p]);
 					}
+
+					muraInlineEditor.isDirty=true;
 				}
 
 
@@ -128,6 +133,7 @@
 				item.addClass('active');
 				mura.processAsyncObject(item.node);
 				closeFrontEndToolsModal();
+				muraInlineEditor.isDirty=true;
 			} else if(parameters["cmd"] == "setImageSrc"){
 				utility('img[data-instanceid="' + parameters.instanceid + '"]')
 					.attr('src',parameters.src)
@@ -200,36 +206,17 @@
 			editableObj=mura('[data-instanceid="' + editableObj.data('instanceid') + '"]');
 			editableObj.hide().show();
 
-			var map={
-				collection:true,
-				text:true,
-				mailing_list:true,
-				site_map:true,
-				navigation:true,
-				socialembed:true,
-				media:true,
-				container:true,
-				system:true,
-				tag_cloud:true,
-				form:true,
-				comments:true,
-				mailing_list:true,
-				mailing_list_master:true,
-				sub_nav:true,
-				peer_nav:true,
-				folder_nav:true,
-				multilevel_nav:true,
-				seq_nav:true,
-				top_nav:true,
-				category_summary:true,
-				calendar_nav:true,
-				archive_nav:true,
-				rater:true,
-				component:true
-			};
-
-			if(map[editableObj.data('object')]
-			){
+			var legacyMap={
+				feed:true,
+				feed_slideshow:true,
+				feed_no_summary:true,
+				feed_slideshow_no_summary:true,
+				related_content:true,
+				related_section_content:true,
+				plugin:true
+			}
+			
+			if(!legacyMap[editableObj.data('object')]){
 				targetFrame='sidebar'; 
 				if(muraInlineEditor.commitEdit && mura.currentId){
 					muraInlineEditor.commitEdit(mura('##' + mura.currentId));
@@ -325,7 +312,7 @@
 			mura('.mura-object-selected').removeClass('mura-object-selected');
 
 			editableObj.addClass('mura-object-selected');
-
+			console.log(src)
 			utility('##frontEndToolsSidebariframe').attr('src',src);
 			muraInlineEditor.sidebarAction('showconfigurator');
 		}
@@ -558,7 +545,7 @@
 
 				var displayVariations=function(){
 					
-					console.log(mura.variations);
+					//console.log(mura.variations);
 
 					if(mura.variations.length){
 						mura(".mura-var-undo").show();
@@ -801,6 +788,8 @@
 					});
 					*/
 
+					muraInlineEditor.isDirty=true;
+
 					currentEl.addClass('mura-var-current');
 					return false;
 				}
@@ -894,10 +883,12 @@
 			<cfif $.getContentRenderer().useLayoutManager()>
 			if(window.mura.layoutmanager){
 
-				utility("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+				mura("img").each(function(){muraInlineEditor.checkforImageCroppers(this);});
+
+				muraInlineEditor.setAnchorSaveChecks(document);
 
 				function initObject(){
-					var item=utility(this);
+					var item=mura(this);
 					
 					var objectParams;
 
@@ -949,14 +940,12 @@
 					}
 				}
 
-				utility(".mura-object").each(initObject);
+				mura(".mura-object").each(initObject);
 
-				utility('.mura-object[data-object="folder"]').each(function(){
-					var item=utility(this);
+				mura('.mura-object[data-object="folder"], .mura-object[data-object="calendar"], .mura-object[data-object="gallery"]').each(function(){
+					var item=mura(this);
 					item.addClass("active");
-							
-					item.html(window.mura.layoutmanagertoolbar + item.html());
-
+					item.prepend(window.mura.layoutmanagertoolbar);
 					item.find(".frontEndToolsModal").on(
 						'click',
 						function(event){
@@ -965,7 +954,6 @@
 						}
 					);
 				});
-
 
 				mura.initLayoutManager();
 			}
@@ -1086,7 +1074,7 @@
 						
 						attribute.attr('contenteditable','false');
 						attribute.addClass('active');
-
+						attribute.data('manualedit',false);
 						mura.processMarkup(this);
 
 						attribute.find('.mura-object').each(function(){
@@ -1153,7 +1141,6 @@
 			});	
 
 			if(!attribute.data('manualedit')){
-
 				if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
 					typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
 				){
@@ -1175,6 +1162,7 @@
 				attribute.data('manualedit',true);		
 			}
 					
+			muraInlineEditor.isDirty=true;
 
 		},
 		getAttributeValue: function(attribute){
@@ -1271,12 +1259,13 @@
 							}
 						);
 
-						utility('.mura-async-object[data-object="folder"]').each(function(){
+						utility('.mura-object[data-object="folder"], .mura-object[data-object="gallery"], .mura-object[data-object="calendar"]').each(function(){
 							var item=utility(this);
+
 							if(item.data('displaylist')){
 								muraInlineEditor.data['displaylist']=item.data('displaylist');
 							}
-							if(item.data('imagesize1 ')){
+							if(item.data('imagesize')){
 								muraInlineEditor.data['imagesize']=item.data('imagesize');
 							}
 							if(item.data('imagewidth')){
@@ -1285,8 +1274,19 @@
 							if(item.data('imageheight')){
 								muraInlineEditor.data['imageheight']=item.data('imageheight');
 							}
-						});
+							if(item.data('nextn')){
+								muraInlineEditor.data['nextn']=item.data('nextn');
+							}
+							if(item.data('sortby')){
+								muraInlineEditor.data['sortby']=item.data('sortby');
+							}
+							if(item.data('sortdirection')){
+								muraInlineEditor.data['sortdirection']=item.data('sortdirection');
+							}
 
+							muraInlineEditor.data['objectparams']=JSON.stringify(item.data());
+							
+						});
 
 						//objectlistarguments.regionID=rs.object~rs.name~rs.objectID~rs.params^
 
@@ -1372,10 +1372,20 @@
 					        data: muraInlineEditor.data,
 					        success: function(data){
 					        	<cfif node.getType() eq 'Variation'>
-					        		location.reload();
+					        		if(muraInlineEditor.requestedURL){
+										location.href=muraInlineEditor.requestedURL
+									} else {
+					        			location.reload();
+									}
 					        	<cfelse>
 					        		var resp = eval('(' + data + ')');
-						        	location.href=resp.location;
+
+					        		if(muraInlineEditor.requestedURL){
+										location.href=muraInlineEditor.requestedURL
+									} else {
+										location.href=resp.location;
+									}
+						        	
 					        	</cfif>
 						     
 					        },
@@ -1385,7 +1395,12 @@
 					        }
 					       });
 						} else {
-						 	location.reload();
+							if(muraInlineEditor.requestedURL){
+								location.href=muraInlineEditor.requestedURL
+							} else {
+								location.reload();
+							}
+						 	
 						}
 					}
 				);
@@ -1689,13 +1704,14 @@
 		configuratorMap:{
 			'container':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'collection':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'media':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'text':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
-			'socialembed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'embed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'feed':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initFeedConfigurator(data);}},
 			'form':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'component':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'folder':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'gallery':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
+			'calendar':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'form_responses':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}},
 			'plugin':{
 				'condition':function(){
@@ -1740,7 +1756,7 @@
 			'mailing_list_master':{condition:function(){return true;},'initConfigurator':function(data){siteManager.initGenericConfigurator(data);}}
 		},
 		objectHasConfigurator:function(displayObject){
-			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition();
+			return (displayObject.object in this.configuratorMap) && this.configuratorMap[displayObject.object].condition() || !(displayObject.object in this.configuratorMap);
 		},
 		checkforImageCroppers:function(el){
 
@@ -1762,18 +1778,31 @@
 				if(fileid.length==35 && (fileext=='jpg' || fileext=='jpeg' || fileext=='png')){
 					fileInfo.shift()
 					
-					function initCropper(){
-						openFrontEndToolsModal({
-								href:adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true'
-							});
-					}
+				
+					img.css({display:'inline-block;'});
 
 					var size=fileInfo.join('_');
-					img.css({display:'inline block;'})
-					img.closest('a').off();
+
+					var actionhref=adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true';
+
+					function initCropper(){
+						openFrontEndToolsModal({
+								href:actionhref
+						});
+					}
+
+					
+					var a=img.closest('a');
+
+
+					if(a.length){
+						a.click(function(e){e.preventDefault();});
+						a.attr('onclick',"openFrontEndToolsModal({href:'" + actionhref + "'}); return false;");
+						a.off();
+					}
+					
 					img=mura('img[data-instanceid="' + instanceid + '"]' );
 					img.on('click',function(e){e.preventDefault();});
-					
 					
 					mura('img[data-instanceid="' + instanceid + '"]' ).on('click',function(){
 						initCropper();
@@ -1823,8 +1852,32 @@
 				mura('#mura-sidebar-objects').hide();
 				mura('#mura-sidebar-editor').show();
 			}
-		}
-		
+		},
+		setAnchorSaveChecks:function(el){
+			function handleEditCheck(){
+				if(muraInlineEditor.isDirty && confirm("Save as draft?")){
+					muraInlineEditor.requestedURL=this.href;
+					muraInlineEditor.save();
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			var anchors=el.querySelectorAll('a');
+
+			for(var i=0;i<anchors.length;i++){	
+				try{
+					if (typeof(anchors[i].onclick) != 'function' 
+						&& typeof(anchors[i].getAttribute('href')) == 'string' 
+						&& anchors[i].getAttribute('href').indexOf('#') == -1
+						&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
+			   			anchors[i].onclick = handleEditCheck;
+					}
+				} catch(err){}
+			}
+		},
+		isDirty:false
 	}
 
 	<cfoutput>
@@ -1839,7 +1892,6 @@
 	</cfif>
 	</cfloop>
 	</cfoutput>
-
 	window.muraInlineEditor=muraInlineEditor;
 	</cfif>
 	</cfif>

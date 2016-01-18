@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="Cookie.fetDisplay" default="">
 	<cfif variables.$.content('type') eq 'Variation'>
 		<cfoutput>
-		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 
 		<script>
 			mura(function(){
@@ -57,12 +57,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					mura.loader().loadjs(
 							'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckeditor/ckeditor.js');	
 				}
-
+				<cfif not $.getContentRenderer().useLayoutManager()>
 				if(!window.CKFinder){
 					mura.loader().loadjs(
 						'#variables.$.globalConfig().getRequirementsPath(complete=1)#/ckfinder/ckfinder.js');
 					
 				}
+				</cfif>
 				
 				mura.loader().loadjs(
 						'#variables.$.globalConfig().getAdminPath(complete=1)#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#',
@@ -72,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	<cfelse>
 		<cfoutput>
-		<link href="#variables.$.globalConfig('adminPath')#/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+		<link href="#variables.$.globalConfig('adminPath')#/assets/css/admin-frontend.min.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="#variables.$.globalConfig('adminPath')#/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 	
 		<script>
@@ -90,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}	
 			}
 
+			<cfif not $.getContentRenderer().useLayoutManager()>
 			if(!window.CKFinder){
 				if(hasMuraLoader){
 					mura.loader().loadjs(
@@ -98,6 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					$.getScript('#variables.$.globalConfig("requirementsPath")#/ckfinder/ckfinder.js');		
 				}
 			}
+			</cfif>
 
 			if(hasMuraLoader){
 				mura.loader().loadjs(
@@ -312,10 +315,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not request.contentBean.getIsNew()>
 					<cfif ListFindNoCase('editor,author',request.r.perm)>
 						<ul id="tools-version">
+							<!---
 							<cfif $.content('type') eq 'Variation'>
 							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="icon-pencil"></i></a></li>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
 							<cfelse>
+							--->
 							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
@@ -340,13 +345,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</li>
 									</cfif>
 								</ul>				
-							</li>			
+							</li>
+							<cfif $.content('type') neq 'Variation'>		
 							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i></a>
 							</li>	
+							</cfif>
 							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
+							<cfif $.content('type') neq 'Variation'>
 							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i></a>
 							</li>
 							</cfif>
+							<!---</cfif>--->
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 								<cfif request.contentBean.getType() eq 'Variation'>
 									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i></a></li>

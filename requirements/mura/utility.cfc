@@ -756,7 +756,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 			var secret = $.siteConfig('reCAPTCHASecret');
 
 			if ( Len(secret) && StructKeyExists(form, 'g-recaptcha-response') && Len(form['g-recaptcha-response']) ) {
-				var reCaptcha = new mura.ReCAPTCHA(secret);
+				var reCaptcha = new mura.reCAPTCHA(secret);
 				var verified = reCaptcha.verifyResponse(response=form['g-recaptcha-response'], remoteid=cgi.remote_addr);
 			}
 

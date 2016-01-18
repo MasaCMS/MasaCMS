@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://cksource.com/ckfinder
- * Copyright (C) 2007-2014, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -23,7 +23,7 @@
 
 	<cfswitch expression="#command#" >
 		<!--- execute command that returns XML --->
-		<cfcase value="CopyFiles;MoveFiles;Init;LoadCookies;GetFiles;GetFolders;RenameFile;DeleteFiles;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
+		<cfcase value="CopyFiles;MoveFiles;Init;GetFiles;GetFolders;RenameFile;DeleteFiles;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
 			<!--- check if connector is enabled --->
 			<cfif not REQUEST.CheckAuthentication()>
 				<cfthrow type="ckfinder" errorCode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED#" />

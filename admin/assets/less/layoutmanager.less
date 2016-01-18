@@ -1,0 +1,161 @@
+// push the body padding around, transition
+body.mura-sidebar-state__hidden--left {
+	padding-left: 0;
+}
+
+body.mura-sidebar-state__hidden--right {
+	padding-right: 0;
+}
+
+body.mura-sidebar-state__hidden--left,
+body.mura-sidebar-state__hidden--right {
+	transition: padding 0.3s ease;
+}
+
+body.mura-sidebar-state__pushed--left,
+body.mura-sidebar-state__pushed--right {
+	min-width: 100%;
+	box-sizing: border-box;
+	display: table;
+	transition: padding 0.3s ease;
+}
+
+body.mura-sidebar-state__pushed--left {
+	padding-left: 300px;
+}
+
+body.mura-sidebar-state__pushed--right {
+	padding-right: 300px;
+}
+	
+//transition the sidebar
+
+body.mura-sidebar-state__hidden--left .mura__layout-manager__controls {
+	transition: left 0.3s ease;
+	left: -300px;
+}
+
+body.mura-sidebar-state__hidden--right .mura__layout-manager__controls {
+	transition: right 0.3s ease;
+	right: -300px;
+}
+
+body.mura-sidebar-state__pushed--left .mura__layout-manager__controls {
+	left: 0;
+	transition: left 0.3s ease;
+}
+
+body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
+	right: 0;
+	transition: right 0.3s ease;
+}
+
+body.mura-sidebar-state__hidden--left .mura__layout-manager__controls,
+body.mura-sidebar-state__pushed--left .mura__layout-manager__controls {
+	box-shadow: 1px 0 0 0 rgba(0,0,0,0.1);
+}
+
+body.mura-sidebar-state__hidden--right .mura__layout-manager__controls,
+body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
+	box-shadow: -1px 0 0 0 rgba(0,0,0,0.1);
+}
+
+.mura-region-local,
+.mura-region-inherited {
+    min-height: 15px;
+}
+
+// clearfixes
+
+.mura-region::after,
+.mura-region > .mura-editable > .mura-region-local::after,
+.mura-region > .mura-region-inherited::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.mura-object + .mura-region {
+   float: none;
+   clear: both;
+   margin-top: 15px;
+}
+
+
+.mura-region-inherited + .mura-region-local.mura-editable-attribute {
+    margin-top: 15px;
+}
+
+//a region that CAN be interacted with
+.mura-object.active {
+	box-shadow: inset 0 0 0 1px #eee;
+}
+
+.mura-region-inherited .mura-object.active {
+	box-shadow: none;
+}
+
+
+//a region that IS being interacted with
+.mura-object.active.mura-active-target, 
+.mura-async-object.active.mura-active-target[data-object="folder"],
+.mura-async-object.active.mura-active-target[data-object="calendar"],
+.mura-async-object.active.mura-active-target[data-object="gallery"] {
+	box-shadow: inset 0 0 0 2px #999;
+}
+
+.mura-object.active .mura-object.active:not('.mura-drop-target') {
+	border: 2px solid transparent;
+}
+
+//a region that IS being currently selected
+.mura-object.active.mura-object-selected,
+.mura-async-object.active[data-object="folder"].mura-object-selected,
+.mura-async-object.active[data-object="calendar"].mura-object-selected,
+.mura-async-object.active[data-object="gallery"].mura-object-selected {
+	box-shadow: inset 0 0 0 2px #ff3800;
+}
+
+.mura-drop-target.mura-append {
+	border-bottom: 2px dotted #ff0000;
+	margin-bottom: -2px;
+}
+
+.mura-drop-target.mura-prepend {
+	border-top: 2px dotted #ff0000;
+	margin-top: -2px;
+}
+
+/* buttons
+===================================== */
+.frontEndToolsModal.mura {
+	position: relative;
+	z-index:1;	
+	opacity: 0;
+}
+
+.mura-object.active.mura-active-target > .frontEndToolsModal.mura, 
+.mura-object.active.mura-object-selected > .frontEndToolsModal.mura {
+	opacity: 1;
+}
+
+
+/* button colors - reproducing bootstrap */
+.frontEndToolsModal.mura {
+	background-color: #337ab7;
+	color: #fff;
+	line-height: 24px;
+	display: inline-block;
+}
+
+/* mini -- reproducing bootstrap */
+.frontEndToolsModal.mura {
+	padding: 0 6px;
+	font-size: 10.5px;
+}
+
+.mura-object-primary {
+	clear: both;
+	display: block;
+	float: none;
+}

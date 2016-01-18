@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://cksource.com/ckfinder
- * Copyright (C) 2007-2014, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2015, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -57,7 +57,7 @@
 		<cfset destination="#ARGUMENTS.thumbPath#">
 	</cfif>
 	<cfimage action="read" source="#ARGUMENTS.filePath#" name="oImage" />
-	<cfset ImageResize(oImage, oSize.Width, oSize.Height, application.configBean.getImageInterpolation())>
+	<cfset ImageResize(oImage, oSize.Width, oSize.Height, "highQuality")>
 	<cfset quality = (quality/100)>
 	<cfimage action="write" source="#oImage#" destination="#destination#" quality="#quality#" overwrite="yes">
 

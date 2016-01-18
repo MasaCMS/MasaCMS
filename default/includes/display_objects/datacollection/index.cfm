@@ -74,7 +74,8 @@
           <cfset objectparams.async=true>
         <cfelse>
           <div class="mura-async-object" 
-            data-object="form" 
+            data-object="form"
+            data-objectname="Form"  
             data-objectid="#esapiEncode('html_attr',bean.getContentID())#" 
             data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" 
             data-objectparams=#serializeJSON(objectParams)#>
@@ -87,9 +88,11 @@
           #$.getBean('dataCollectionBean')
             .set($.event().getAllValues())
             .render($)#
-          <cfelse>
-             <p>This form has not been configured.</p>
+        <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>  
+          <p>This Form has not been configured.</p>
+        <cfelse>
+          <cfset request.muraValidObject=false>
         </cfif>
-    </cfif>	
+    </cfif>
 	</cfoutput>
 </cfif>

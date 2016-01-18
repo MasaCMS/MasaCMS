@@ -197,17 +197,12 @@
 			<cfset local.args.display=arguments.rc.display>
 			
 			<cfset local.args.displayStop=arguments.rc.displayStop>
-			<!---
-			<cfset local.args.stopHour=arguments.rc.stopHour>
-			<cfset local.args.stopMinute=arguments.rc.stopMinute>
-			<cfset local.args.stopDayPart=arguments.rc.stopDayPart>
-			--->
+			
 			<cfset local.args.displayStart=arguments.rc.displayStart>
-			<!---
-			<cfset local.args.startHour=arguments.rc.startHour>
-			<cfset local.args.startMinute=arguments.rc.startMinute>
-			<cfset local.args.startDayPart=arguments.rc.startDayPart>
-			--->
+			
+			<cfif arguments.rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+				<cfset local.args.displayInterval=arguments.rc.displayInterval>
+			</cfif>
 		
 		<cfelseif arguments.rc.attribute eq "template">
 			<cfset local.args.template=arguments.rc.template>
@@ -361,42 +356,46 @@
 
 		 </cfif>
 		 
-		  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
-		      <cfif not (
-			  		listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
-			  		and listFindNoCase(rc.contentBean.getPath(),session.topID)
+		 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
+		    <cfif not (
+			  	listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
+			  	and listFindNoCase(rc.contentBean.getPath(),session.topID)
 			  )>
-		     	 <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
-			  </cfif>
-		  </cfif>
-		 
+		     	<cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+			</cfif>
+		</cfif>
+
+		<cfif not arguments.rc.murakeepediting>
+			<cfset arguments.rc.murakeepediting=arguments.rc.contentBean.getDisplayConflicts().hasNext()>
+		</cfif>
+
 		<cfif (arguments.rc.closeCompactDisplay neq 'true'  or arguments.rc.murakeepediting) and arguments.rc.action neq 'multiFileUpload'>
 			
-				<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.preview eq 0 and not arguments.rc.murakeepediting))>
-					<cflocation url="#rc.returnURL#" addtoken="false"/>
+			<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.preview eq 0 and not arguments.rc.murakeepediting))>
+				<cflocation url="#rc.returnURL#" addtoken="false"/>
+			</cfif>
+			
+			<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0 and not arguments.rc.murakeepediting)>
+				<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay")>
+			</cfif>
+			
+			<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID()) and not arguments.rc.murakeepediting>
+				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
+			</cfif>
+
+			<cfif structIsEmpty(arguments.rc.contentBean.getErrors())>
+				<cfset structDelete(session.mura,"editBean")>
+				<cfif arguments.rc.preview eq 0 and not arguments.rc.murakeepediting>
+					<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./")>
+				<cfelse>
+					<cfset arguments.rc.parentid=arguments.rc.contentBean.getParentID()>
+					<cfset arguments.rc.type=arguments.rc.contentBean.getType()>
+					<cfset arguments.rc.contentid=arguments.rc.contentBean.getContentID()>
+					<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+					<cfset arguments.rc.preview=arguments.rc.preview>
+					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./")>
 				</cfif>
-				
-				<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0 and not arguments.rc.murakeepediting)>
-					<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay")>
-				</cfif>
-				
-				<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID()) and not arguments.rc.murakeepediting>
-					<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
-				</cfif>
-				
-				<cfif structIsEmpty(arguments.rc.contentBean.getErrors())>
-					<cfset structDelete(session.mura,"editBean")>
-					<cfif arguments.rc.preview eq 0 and not arguments.rc.murakeepediting>
-						<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./")>
-					<cfelse>
-						<cfset arguments.rc.parentid=arguments.rc.contentBean.getParentID()>
-						<cfset arguments.rc.type=arguments.rc.contentBean.getType()>
-						<cfset arguments.rc.contentid=arguments.rc.contentBean.getContentID()>
-						<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-						<cfset arguments.rc.preview=arguments.rc.preview>
-						<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./")>
-					</cfif>
-				</cfif>
+			</cfif>
 
 		</cfif>
 

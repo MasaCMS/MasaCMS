@@ -59,96 +59,233 @@
 	<cfif this.layoutmanager and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
-		<div class="mura-async-object" 
-			data-object="calendar">
+		<div class="mura-object mura-async-object mura-object-primary" 
+			data-object="calendar"
+			data-objectname="Calendar"
+			data-objectid="#$.content('contentid')#"
+			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
+			data-month="#esapiEncode('html_attr',variables.$.event('month'))#"
+			data-day="#esapiEncode('html_attr',variables.$.event('day'))#"
+			data-items="#esapiEncode('html_attr',serializeJSON($.content().getObjectParam(param='items',defaultValue=[])))#"
+			data-viewoptions="#esapiEncode('html_attr',$.content().getObjectParam(param='viewoptions',defaultValue="agendaDay,agendaWeek,month"))#"
+			data-viewdefault="#esapiEncode('html_attr',$.content().getObjectParam(param='viewdefault',defaultValue="month"))#"
+			data-format="#esapiEncode('html_attr',$.content().getObjectParam(param='format',defaultValue="calendar"))#"
+			data-displaylist="#esapiEncode('html_attr',$.content('displaylist'))#"
+			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
+			data-sortby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
+			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
+			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
+			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
+			data-layout="#esapiEncode('html_attr',variables.$.content().getObjectParam('layout'))#"
+			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#"
+			data-cssclass="#esapiEncode('html_attr',variables.$.content().getObjectParam('cssclass'))#"
+			<cfif $.content().getObjectParam(param='format',defaultValue="calendar") eq 'list' and $.content().getObjectParam(param='layout',defaultValue="default") eq 'default'>
+					data-imagesize="#esapiEncode('html_attr',variables.$.content('imageSize'))#"
+					<cfif variables.$.content('imageSize') eq 'custom'>
+						data-imageheight="#esapiEncode('html_attr',variables.$.content('imageHeight'))#"
+						data-imagewidth="#esapiEncode('html_attr',variables.$.content('imageWith'))#"
+					</cfif>
+			</cfif>
+			>
 		</div>
 	</cfif>
 <cfelse>
-	<div class="mura-calendar-wrapper">
-		<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
-			<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
-			<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
-		</div>
-		<div id="mura-calendar" class="mura-calendar-object"></div>
-		<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
-	</div>
+	<cfsilent>
+		<cfparam name="objectParams.items" default="[]">
+		<cfparam name="objectParams.viewoptions" default="agendaDay,agendaWeek,month">
+		<cfparam name="objectParams.viewdefault" default="month">
+		<cfparam name="objectParams.displaylist" default="#$.content('displaylist')#">
+		<cfparam name="objectParams.format" default="calendar">
+		<cfparam name="objectParams.nextn" default="#$.content('next')#">
+		<cfparam name="objectParams.categoryid" default="">
+		<cfparam name="objectParams.startrow" default="1">
+		<cfparam name="objectParams.tag" default="">
+		<cfparam name="objectParams.layout" default="default">
 
-	<script>
-	$(function(){
-		mura.loader()
-			.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
-			.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})		
-			.loadjs(
-				"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
-				"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
-				"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
-				function(){
-					$('##mura-calendar').fullCalendar({
-						timezone: 'false'
-						, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
-						, buttonText: {
-							day: '#variables.$.rbKey('calendar.day')#'
-							, week: '#variables.$.rbKey('calendar.week')#'
-							, month: '#variables.$.rbKey('calendar.month')#'
-							, today: '#variables.$.rbKey('calendar.today')#'
+		<cfif isJson(objectParams.items)>
+			<cfset objectParams.items=deserializeJSON(objectParams.items)>
+		<cfelseif isSimpleValue(objectParams.items)>
+			<cfset objectParams.items=listToArray(objectParams.items)>
+		</cfif>
+		<cfif not isArray(objectParams.items)>
+			<cfset objectParam.items=[]>
+		</cfif>
+		<cfif not arrayFind(objectParams.items,variables.$.content('contentid'))>
+			<cfset arrayPrepend(objectParams.items,variables.$.content('contentid'))>
+		</cfif>
+	</cfsilent>
+	<cfif objectParams.format eq 'list'>
+		<cfset objectParams.sourcetype='calendar'>
+		#variables.dspObject(object='collection',objectid=variables.$.content('contentid'),params=objectParams)#
+	<cfelse>
+		<cfset this.calendarcolors=[
+			{background='##3a87ad',text='white'},
+			{background='blue',text='white'}
+		]>
+
+
+		<div class="mura-calendar-wrapper">
+			<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
+				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
+				<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
+			</div>
+
+			<cfif arrayLen(objectParams.items) gt 1>
+				<cfset calendars=$.getBean('contentManager')
+					.findMany(
+						contentids=objectParams.items,
+						siteid=$.event('siteid')
+					)>
+				
+				<div class="mura-calender__filters" style="display:none;">
+				<cfloop condition="calendars.hasNext()">
+					<cfset calendar=calendars.next()>
+					<cfset i=calendars.currentIndex()-1>
+					<div class="mura-calendar__filter-item">
+						<label class="mura-calendar__filter-item__option">
+							<input type="checkbox" class="input-style--swatch" data-index="#i#" data-contentid="#calendar.getContentID()#" data-color="#this.calendarcolors[calendars.currentIndex()].background#" style="display:none;">
+							<span>
+								<span class="mura-calendar__filter-item__swatch"></span>
+								<span class="mura-calendar__filter-item__swatch-label">#esapiEncode('html',calendar.getMenuTitle())#</span>
+							</span>
+						</label>
+					</div>
+				</cfloop>
+				</div>
+			</cfif>
+		
+			<div id="mura-calendar" class="mura-calendar-object"></div>
+			<div id="mura-calendar-loading">#this.preloaderMarkup#</div>
+		</div>
+		<script>
+		$(function(){
+			var hiddenCalendars=window.localStorage.getItem('muraHiddenCalendars');
+
+			if(hiddenCalendars){
+				hiddenCalendars=hiddenCalendars.split(',');
+			} else {
+				hiddenCalendars=[];
+			}
+
+			var colors=#lcase(serializeJSON(this.calendarcolors))#;
+			var calendars=#lcase(serializeJSON(objectparams.items))#;
+			var eventSources=[
+				<cfset colorIndex=0>
+				<cfloop array="#objectParams.items#" index="i">	
+					<cfsilent>
+						<cfset colorIndex=colorIndex+1>
+						<cfif colorIndex lt arrayLen(this.calendarcolors)>
+							<cfset colorIndex=1>
+						</cfif>
+					</cfsilent>
+					{
+						url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc?calendarid=#esapiEncode("javascript",i)#'
+						, type: 'POST'
+						, data: {
+							method: 'getFullCalendarItems'
+							, calendarid: '#esapiEncode("javascript",i)#'
+							, siteid: '#variables.$.content('siteid')#'
+							, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
+							, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
 						}
-						, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
-						, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
-						, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
-						, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
-						, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
-						, weekends: true // show weekends?
-						, weekMode: 'fixed' // fixed, liquid, or variable
-						<cfif $.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-						, header: {
-							left: 'today prev,next'
-							, center: 'title'
-							, right: 'agendaDay,agendaWeek,month'
+						, color: '#this.calendarcolors[colorIndex].background#' 
+						, textColor: '#this.calendarcolors[colorIndex].text#'
+						, error: function() { 
+							$('##mura-calendar-error').show();
 						}
+					},
+				</cfloop>
+			];
+
+			$('.mura-calender__filters').show();
+
+			mura.loader()
+				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.css",{media:'all'})
+				.loadcss("#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.print.css",{media:'print'})		
+				.loadjs(
+					"#$.siteConfig('requirementspath')#/fullcalendar/lib/moment.min.js",
+					"#$.siteConfig('requirementspath')#/fullcalendar/fullcalendar.min.js",
+					"#$.siteConfig('requirementspath')#/fullcalendar/gcal.js",
+					function(){
+						$('##mura-calendar').fullCalendar({
+							timezone: 'local'
+							, defaultDate: '#variables.$.getCalendarUtility().getDefaultDate()#'
+							, buttonText: {
+								day: '#variables.$.rbKey('calendar.day')#'
+								, week: '#variables.$.rbKey('calendar.week')#'
+								, month: '#variables.$.rbKey('calendar.month')#'
+								, today: '#variables.$.rbKey('calendar.today')#'
+							}
+							, monthNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthLong')))#
+							, monthNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.monthShort')))#
+							, dayNames: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdaylong')))#
+							, dayNamesShort: #SerializeJSON(ListToArray(variables.$.rbKey('calendar.weekdayShort')))#
+							, firstDay: 0 // (0=Sunday, 1=Monday, etc.)
+							, weekends: true // show weekends?
+							, weekMode: 'fixed' // fixed, liquid, or variable
+							<cfif $.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+							, header: {
+								left: 'today prev,next'
+								, center: 'title'
+								, right: '#esapiEncode("javascript",objectParams.viewoptions)#'
+							}
+							<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')>
+								, defaultView: 'agendaDay'
+							<cfelse>
+								, defaultView: '#esapiEncode("javascript",objectParams.viewdefault)#'
+							</cfif>
+							<cfelse>
+							, defaultView: 'month'
+							</cfif>
+							
+							, loading: function(isLoading) {
+									$('##mura-calendar-loading').toggle(isLoading);
+							}
+							, eventLimit: true
+						});
+						
+						<cfif arrayLen(objectParams.items) eq 1>
+							$('##mura-calendar').fullCalendar('addEventSource',eventSources[0]);
+						<cfelse>
+							$('.mura-calendar__filter-item').each(function(){
+								var optionContainer=$(this);
+								var calendarToggleInput=optionContainer.find('.input-style--swatch');
+
+								if(hiddenCalendars.indexOf(calendarToggleInput.data('contentid')) == -1){
+									calendarToggleInput.attr('checked',true);
+								} else {
+									calendarToggleInput.attr('checked',false);
+								}
+
+								calendarToggleInput.on('change',function(){
+									var swatch=optionContainer.find('.mura-calendar__filter-item__swatch');
+									var self=$(this);
+									if(self.is(':checked')){	
+										swatch.css('background-color',self.data('color'));
+										$('##mura-calendar').fullCalendar('addEventSource',eventSources[self.data('index')]);
+										
+										var temp=[];
+										var contentid=self.data('contentid');
+										for(var i in hiddenCalendars){
+											if(hiddenCalendars[i] !=contentid){
+												temp.push(hiddenCalendars[i])
+											}
+										}
+										hiddenCalendars=temp;;
+									} else {
+										swatch.css('background-color','');
+										$('##mura-calendar').fullCalendar('removeEventSource',eventSources[self.data('index')]);
+										hiddenCalendars.push(self.data('contentid'));
+									}
+									window.localStorage.setItem('muraHiddenCalendars',hiddenCalendars.join(','));
+								}).trigger('change');
+							});
 						</cfif>
 						
-						, defaultView: 'month'
-						, allDayDefault: false
-						, loading: function(isLoading) {
-								$('##mura-calendar-loading').toggle(isLoading);
-						}
-						//, timeFormat: 'LT' // see http://arshaw.com/fullcalendar/docs/utilities/date_formatting_string/ for options
-						, eventSources: [
-							{
-								url: '#variables.$.siteConfig('requirementspath')#/fullcalendar/proxy.cfc'
-								, type: 'POST'
-								, data: {
-									method: 'getFullCalendarItems'
-									, calendarid: '#variables.$.content('contentid')#'
-									, siteid: '#variables.$.content('siteid')#'
-									, categoryid: '#esapiEncode('javascript',variables.$.event('categoryid'))#'
-									, tag: '#esapiEncode('javascript',variables.$.event('tag'))#'
-								}
-								, color: '##3a87ad' // sets calendar events background+border colors
-								, textColor: 'white'
-								, error: function() { 
-									$('##mura-calendar-error').show();
-								}
-							}
-
-							// optionally include U.S. Holidays
-							// NOTE: if using Google Calendars, you must first have a Google Calendar API Key! See http://fullcalendar.io/docs/google_calendar/
-							// , {
-							// 	googleCalendarApiKey: '<YOUR API KEY>'
-							// 	, url: 'http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic'
-							// 	, color: 'yellow'
-							// 	, textColor: 'black'
-							// }
-						]
-						// example of how to open events in a separate window
-						// , eventClick: function(event) {
-						// 	window.open(event.url, 'fcevent', 'width=700,height=600');
-						// 	return false;
-						// }
-					});
-				}
-			);
-	});
-	</script>
+					}
+				);
+		});
+		</script>
+	</cfif>
 </cfif>
 </cfoutput>

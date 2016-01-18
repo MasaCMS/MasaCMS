@@ -1,23 +1,24 @@
 mura.templates={};
 mura.templates['meta']=function(context){
-  if(context.label){
-    return "<h3>" + mura.escapeHTML(context.label) + "</h3>";
-  } else {
-    return '';
-  }  
+	
+	if(context.label){
+		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
+	} else {
+	    return '';
+	}  
+}
+mura.templates['content']=function(context){
+	context.html=context.html || context.content || context.source || '';
+
+  	return '<div class="mura-object-content">' + context.html + '</div>';
 }
 mura.templates['text']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
- 	return html;
+ 	return context.source;
 }
-mura.templates['socialembed']=function(context){
+mura.templates['embed']=function(context){
 	context=context || {};
 	context.source=context.source || '<p>This object has not been configured.</p>';
- 	var html='<div class="mura-object-meta">' + mura.templates['meta'](context) + '</div>';	
- 		html+='<div class="mura-object-content">' + context.source + '</div>';
- 
- 	return html;
+ 	return context.source;
 }

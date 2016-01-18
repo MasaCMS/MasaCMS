@@ -9,9 +9,18 @@ component extends='mura.cfobject' {
     var serializer = new mura.jsonSerializer()
       .asString('id')
       .asString('url')
-      .asDate('start')
-      .asDate('end')
       .asString('title');
+
+    if(getBean('configBean').getValue(property='layoutmanager',defaultValue=false)){
+      serializer
+        .asDate('start')
+        .asDate('end');
+    } else {
+       serializer
+        .asUTCDate('start')
+        .asUTCDate('end');
+    }
+    
 
     var qoq = new Query();
     qoq.setDBType('query');
@@ -42,13 +51,20 @@ component extends='mura.cfobject' {
   ) {
     var tp = variables.$.initTracePoint('mura.content.contentCalendarUtilityBean.getCalendarItems');
     var local = {};
+    var allowable=[];
 
-    local.contentBean = variables.$.getBean('content').loadBy(contentid=arguments.calendarid, siteid=arguments.siteid);
+    for(var i in listToArray(arguments.calendarid)){
+      local.contentBean = variables.$.getBean('content').loadBy(contentid=i, siteid=arguments.siteid);
+      
+      local.applyPermFilter = variables.$.siteConfig('extranet') == 1 
+        && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
+      
+      if ( !(local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar') ) {
+          arrayAppend(allowable,i);
+      }
+    }
 
-    local.applyPermFilter = variables.$.siteConfig('extranet') == 1 
-      && variables.$.getBean('permUtility').setRestriction(local.contentBean.getCrumbArray()).restrict == 1;
-
-    if ( local.contentBean.getIsNew() || local.contentBean.getType() != 'Calendar' ) {
+    if ( !arrayLen(allowable) ) {
       return QueryNew('url,contentid,menutitle,displaystart,displaystop');
     }
 
@@ -65,6 +81,7 @@ component extends='mura.cfobject' {
     // start and end dates
     local.displaystart = DateFormat(arguments.start, 'yyyy-mm-dd');
     local.displaystop = DateFormat(arguments.end, 'yyyy-mm-dd');
+    
 
     // the calendar feed
     local.feed = variables.$.getBean('feed')
@@ -74,8 +91,8 @@ component extends='mura.cfobject' {
       .addParam(
         relationship='AND'
         ,field='tcontent.parentid'
-        ,condition='EQ'
-        ,criteria=local.contentBean.getContentID()
+        ,condition=(arrayLen(allowable) > 1) ? 'IN': 'EQ'
+        ,criteria=arrayToList(allowable)
       )
       // filter records with a displayStart date that is before the displayStop date
       .addParam(

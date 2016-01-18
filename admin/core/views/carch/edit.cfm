@@ -297,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					confirmDialog(
 						'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
 						function(){
-							if(siteManager.ckContent(draftremovalnotice)){
+							if(siteManager.ckContent(draftremovalnotice,true)){
 								document.contentForm.approved.value=0;
 								document.contentForm.preview.value=0;
 								document.contentForm.murakeepediting.value=true;
@@ -305,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							}
 						},
 						function(){	
-							if(siteManager.ckContent(draftremovalnotice)){
+							if(siteManager.ckContent(draftremovalnotice,true)){
 								document.contentForm.approved.value=0;
 								document.contentForm.preview.value=0;
 								document.contentForm.murakeepediting.value=false;
@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							document.contentForm.murakeepediting.value=true;
 							</cfif>
 
-						    if(siteManager.ckContent(draftremovalnotice)){
+						    if(siteManager.ckContent(draftremovalnotice,true)){
 								submitForm(document.contentForm,'add');
 							} else {
 								document.contentForm.approved.value=0;
@@ -549,7 +549,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</cfif>
 
-		<cfif listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+		<cfif not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
 				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
 		</cfif>	
 		

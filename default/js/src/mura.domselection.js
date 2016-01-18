@@ -45,26 +45,24 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	function MuraDOMSelection(selection,origSelector){
-		this.selection=selection;
-		this.origSelector=origSelector;
+	window.mura.DOMSelection=window.mura.CoreObject.extend({
+		init:function(selection,origSelector){
+			this.selection=selection;
+			this.origSelector=origSelector;
 
-		if(this.selection.length && this.selection[0]){
-			this.parentNode=this.selection[0].parentNode;
-			this.childNodes=this.selection[0].childNodes;
-			this.node=selection[0];
-			this.length=this.selection.length;
-		} else {
-			this.parentNode=null;
-			this.childNodes=null;
-			this.node=null;
-			this.length=0;
-		}
+			if(this.selection.length && this.selection[0]){
+				this.parentNode=this.selection[0].parentNode;
+				this.childNodes=this.selection[0].childNodes;
+				this.node=selection[0];
+				this.length=this.selection.length;
+			} else {
+				this.parentNode=null;
+				this.childNodes=null;
+				this.node=null;
+				this.length=0;
+			}
+		},
 
-		
-	}
-
-	MuraDOMSelection.prototype={
 		get:function(index){
 			return this.selection[index];
 		},
@@ -270,56 +268,40 @@
 		},
 
 		selector:function() {
-		    var pathes = [];
+			var pathes = [];
+			var path, node = window.mura(this.selection[0]);
 
-		    //this.selection.each(function(index, element) {
-		        var path, $node = window.mura(this.selection[0]);
+			while (node.length) {
+				var realNode = node.get(0), name = realNode.localName;
+				if (!name) { break; }
 
-		        while ($node.length) {
-		           var realNode = $node.get(0), name = realNode.localName;
-		           if (!name) { break; }
+				if(!node.data('hastempid') && node.attr('id') && node.attr('id') != 'mura-variation-el'){
+			   		name='#' + node.attr('id');
+					path = name + (path ? ' > ' + path : '');
+					break;
+				} else {
 
-		           /*
-		           if(omitSysEls 
-		           		&& (
-		           			$node.hasClass('mura-editable')
-							|| $node.hasClass('editableObjectContents')
-							|| $node.hasClass('editableObject')
-		           		)
+				    name = name.toLowerCase();
+				    var parent = node.parent();
+				    var sameTagSiblings = parent.children(name);
 
-		           	){
-		           		break;
-		           }
-		           */
-		           if(!$node.data('hastempid') && $node.attr('id') && $node.attr('id') != 'mura-variation-el'){
-		           		name='#' + $node.attr('id');
-		           		path = name + (path ? ' > ' + path : '');
-		            	break;
-		           } else {
+				    if (sameTagSiblings.length > 1)
+				    {
+				        allSiblings = parent.children();
+				        var index = allSiblings.index(realNode) +1;
 
-		                name = name.toLowerCase();
-		                var parent = $node.parent();
-		                var sameTagSiblings = parent.children(name);
+				        if (index > 0) {
+				            name += ':nth-child(' + index + ')';
+				        }
+				    }
 
-		                if (sameTagSiblings.length > 1)
-		                {
-		                    allSiblings = parent.children();
-		                    var index = allSiblings.index(realNode) +1;
+				    path = name + (path ? ' > ' + path : '');
+					node = parent;
+				}
+			
+			}
 
-		                    if (index > 0) {
-		                        name += ':nth-child(' + index + ')';
-		                    }
-		                }
-
-		                path = name + (path ? ' > ' + path : '');
-		            	$node = parent;
-		       		 }
-
-		           
-		        }
-
-		        pathes.push(path);
-		    //});
+			pathes.push(path);
 
 		    return pathes.join(',');
 		},
@@ -371,9 +353,13 @@
 		},
 
 		append:function(el) {
-			if(this.selection.length){
-				this.selection[0].appendChild(el);
-			}
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforeend', htmlString);
+				} else {
+					this.appendChild(el);
+				}
+			});
 			return this;
 		},
 
@@ -393,7 +379,35 @@
 		},
 
 		prepend:function(el) {
-			this.selection[0].parentNode.insertBefore(el, this.parentNode.firstChild);
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterbegin', el);
+				} else {
+					this.insertBefore(el,this.firstChild);
+				}	
+			});
+			return this;
+		},
+
+		before:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('beforebegin', el);
+				} else {
+					this.parent.insertBefore(el,this);
+				}
+			});
+			return this;
+		},
+
+		after:function(el) {
+			this.each(function(){
+				if(typeof el == 'string'){
+					this.insertAdjacentHTML('afterend', el);
+				} else {
+					this.parent.insertBefore(el,this.parent.firstChild);
+				}
+			});
 			return this;
 		},
 
@@ -478,16 +492,17 @@
 			return this;
 		},
 
-		after:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('afterend', htmlString);
+		after:function(el){
+			this.each(function(){
+				if(type)
+				this.insertAdjacentHTML('afterend', el);
 			});
 			return this;
 		},
 
-		before:function(htmlString){
-			this.each(function(el){
-				el.insertAdjacentHTML('beforebegin', htmlString);
+		before:function(el){
+			this.each(function(){
+				this.insertAdjacentHTML('beforebegin', el);
 			});
 			return this;
 		},
@@ -513,7 +528,6 @@
 		},
 
 		html:function(htmlString){
-
 			if(typeof htmlString != 'undefined'){
 				this.each(function(el){
 					el.innerHTML=htmlString;
@@ -877,8 +891,6 @@
 		  	});
 		  	return this;
 		}
-	}
-
-	window.mura.MuraDOMSelection=MuraDOMSelection;
+	});
 
 })(window);

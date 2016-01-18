@@ -1,0 +1,2 @@
+<displayobject name="System" contenttypes="*"/>
+

@@ -67,17 +67,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow message="The records have not been set.">
 	</cfif>
 		
-	<cfset variables.content.set(item,this) />
+	<cfset variables.content=getBean("contentNavBean").set(item,this) />
 	
 	<cfreturn variables.content>
 </cffunction>
 
 <cffunction name="getRecordIdField" access="public" output="false" returntype="any">
+	<cfif isArray(variables.records)>
+		<cfif arrayLen(variables.records) and structKeyExists(variables.records[1],'contenthistid')>
+			<cfreturn "contenthistid">
+		<cfelse>
+			<cfreturn "contentid">
+		</cfif>
+	<cfelse>
 		<cfif isdefined("variables.records.contenthistid")>
 			<cfreturn "contenthistid">
 		<cfelse>
 			<cfreturn "contentid">
 		</cfif>
+	</cfif>
+		
 </cffunction>
 
 <cffunction name="buildQueryFromList" output="false" access="public">

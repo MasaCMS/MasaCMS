@@ -45,11 +45,24 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	
-	window.mura.MuraEntityCollection=window.mura.extendClass(window.mura.MuraEntity,{
+	window.mura.EntityCollection=window.mura.Entity.extend({
 		init:function(properties){
 			properties=properties || {};
 			this.set(properties);
+
+			var self=this;
+
+			if(Array.isArray(self.get('items'))){
+				self.set('items',self.get('items').map(function(obj){
+					if(window.mura.entities[obj.entityname]){
+						return new window.mura.entities[obj.entityname](obj);
+					} else {
+						return new window.mura.Entity(obj);
+					}
+				}));
+			}
+
+			return this;
 		},
 
 		item:function(idx){
@@ -59,6 +72,22 @@
 		index:function(item){
 			return this.properties.items.indexOf(item);
 		},
+
+		getAll:function(){
+			var self=this;
+
+			return mura.extend(
+				{},
+				self.properties,
+				{
+					items:self.map(function(obj){
+						return obj.getAll();
+					})
+				}
+			);
+	
+		},
+
 		each:function(fn){
 			this.properties.items.forEach( function(item,idx){
 				fn.call(item,item,idx);
@@ -71,14 +100,14 @@
 		},
 
 		filter:function(fn){
-			var collection=new window.mura.MuraEntityCollection(this.properties);
+			var collection=new window.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').filter( function(item,idx){
 				return fn.call(item,item,idx);
 			}));
 		},
 
 		map:function(fn){
-			var collection=new window.mura.MuraEntityCollection(this.properties);
+			var collection=new window.mura.EntityCollection(this.properties);
 			return collection.set('items',collection.get('items').map( function(item,idx){
 				return fn.call(item,item,idx);
 			}));

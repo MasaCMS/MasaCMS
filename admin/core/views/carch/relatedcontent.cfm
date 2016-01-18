@@ -5,7 +5,12 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfoutput>
-<h1>Select Content</h1>
+<cfif rc.relatedcontentsetid eq 'calendar'>
+	<h1>Select Additional Calendars</h1>
+<cfelse>
+	<h1>Select Content</h1>
+</cfif>
+
 <div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
 	</a>

@@ -123,7 +123,7 @@
 					url:window.mura.apiEndpoint + params.siteid + '/content/_path/' + filename + '?' + query.join('&'),
 					success:function(resp){
 						if(typeof resolve == 'function'){
-							var item=new window.mura.MuraEntity();
+							var item=new window.mura.Entity();
 							item.set(resp.data);
 							resolve(item);
 						}
@@ -141,7 +141,7 @@
 			properties.entityname=properties.entityname || 'content';
 			properties.siteid=properties.siteid || window.mura.siteid;
 		}	
-		return new window.mura.MuraEntity(properties);
+		return new window.mura.Entity(properties);
 	}
 
 	function findQuery(params){
@@ -158,11 +158,7 @@
 					url:window.mura.apiEndpoint,
 					data:params,
 					success:function(resp){
-							var collection=new window.mura.MuraEntityCollection(resp.data)
-							//console.log(collection.get('items'))
-							collection.set('items',collection.get('items').map(function(obj){
-								return new window.mura.MuraEntity(obj);
-							}));
+							var collection=new window.mura.EntityCollection(resp.data)
 
 							if(typeof resolve == 'function'){
 								resolve(collection);
@@ -315,18 +311,18 @@
 
 		var request = new XMLHttpRequest();
 
+		if(params.crossDomain){
+			if (!("withCredentials" in request)
+				&& typeof XDomainRequest != "undefined") {
+			    // Check if the XMLHttpRequest object has a "withCredentials" property.
+			    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+			    // Otherwise, check if XDomainRequest.
+			    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+			    request =new XDomainRequest();
+			}
 
-		if (params.crossDomain 
-			&& !("withCredentials" in request) 
-			&& typeof XDomainRequest != "undefined") {
-
-		    // Check if the XMLHttpRequest object has a "withCredentials" property.
-		    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-		    // Otherwise, check if XDomainRequest.
-		    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-		    request =new XDomainRequest();
-
-		} 
+			request.withCredentials=true;
+		}
 		
 		request.onload = function() {
 		  	//IE9 doesn't appear to return the request status
@@ -501,7 +497,7 @@
 	}
 
 	function select(selector){
-		return new window.mura.MuraDOMSelection(parseSelection(selector),selector);
+		return new window.mura.DOMSelection(parseSelection(selector),selector);
 	}
 
 	function parseHTML(str) {
@@ -1239,13 +1235,21 @@
 		return (obj);
 	}
 
+	function isScrolledIntoView(el) {
+	    var elemTop = el.getBoundingClientRect().top;
+	    var elemBottom = el.getBoundingClientRect().bottom;
+
+	    var isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+	    return isVisible;
+	}
+
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal">[EDIT]</div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
 
 	function processMarkup(scope){
 
-		if(!(scope instanceof window.mura.MuraDOMSelection)){
+		if(!(scope instanceof window.mura.DOMSelection)){
 			scope=select(scope);
 		}
 		
@@ -1259,7 +1263,7 @@
 
 			function(){
 				find('.mura-object[data-async="true"], .mura-object[data-render="client"], .mura-async-object').each(function(){
-					processObject(this);
+					processObject(this,true);
 				});
 			},
 
@@ -1293,12 +1297,13 @@
 					loader().loadjs(
 						"https://www.google.com/recaptcha/api.js?onload=checkForReCaptcha&render=explicit",
 						function(){
-							each(find(".g-recaptcha-container" ),function(el){
+							find(".g-recaptcha-container" ).each(function(el){
 								var self=el;
 								var checkForReCaptcha=function()
 									{
 									   if (typeof grecaptcha == 'object' )
 									   {
+									   	//console.log(self)
 									     grecaptcha.render(self.getAttribute('id'), {
 									          'sitekey' : self.getAttribute('data-sitekey'),
 									          'theme' : self.getAttribute('data-theme'),
@@ -1337,7 +1342,6 @@
 			function(){
 
 				if(typeof openFrontEndToolsModal == 'function' ){ 
-					
 					find(".frontEndToolsModal").on(
 						'click',
 						function(event){
@@ -1349,7 +1353,6 @@
 
 				
 				if(window.muraInlineEditor && window.muraInlineEditor.checkforImageCroppers){
-					
 					find("img").each(function(){
 						 window.muraInlineEditor.checkforImageCroppers(this);
 					});
@@ -1480,6 +1483,7 @@
 				var self=mura(this);
 				self.removeClass('active');
 				self.removeAttr('data-perm');
+				self.removeAttr('data-inited');
 			});
 			
 			self.find('.mura-object[data-object="container"]').each(function(){
@@ -1502,13 +1506,6 @@
 		}
 
 		self.html('');
-	}
-
-	function unpackContainer(container){
-		container.html('<div class="mura-object-meta"></div><div class="mura-object-content"></div>');
-		if(container.data('content')){
-			container.children('div.mura-object-content').html(container.data('content'));
-		}
 	}
 
 	function processAsyncObject(el){
@@ -1549,6 +1546,22 @@
 			}	
 		}
 
+		obj.data('inited',true);
+
+		if(obj.data('cssclass')){
+			var classes=obj.data('cssclass');
+
+			if(typeof classes != 'array'){
+				var classes=classes.split(' ');
+			}
+			
+			for(var c in classes){
+				if(!obj.hasClass(classes[c])){
+					obj.addClass(classes[c]);
+				}
+			}	
+		}
+
 		if(response){
 			if(typeof response == 'string'){
 				obj.html(trim(response));
@@ -1556,12 +1569,15 @@
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					mura(self).children('.mura-object-meta').html(mura.templates.meta(response));
+					obj.prepend(mura.templates.meta(response));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						obj.html(mura.templates[template](response));
+						var context=obj.data();
+						context.html=mura.templates[template](obj.data());
+						obj.html(mura.templates.content(context));
+						obj.prepend(mura.templates.meta(context));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -1570,13 +1586,15 @@
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				mura(self).children('.mura-object-meta').html(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(obj.data()));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					obj.html(mura.templates[template](obj.data()));
-					processMarkup(self)
+					var context=obj.data();
+					context.html=mura.templates[template](obj.data());
+					obj.html(mura.templates.content(context));
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
@@ -1585,13 +1603,43 @@
 		}
 
 		if(mura.layoutmanager && mura.editing){
-			if(obj.data('object')=='folder'){
-				obj.html(layoutmanagertoolbar + obj.html());
+			if(obj.data('object')=='folder' || obj.data('object')=='gallery' || obj.data('object')=='calendar'){
+				obj.prepend(layoutmanagertoolbar);
+				muraInlineEditor.setAnchorSaveChecks(obj.node);
+				
+				obj
+				.addClass('active')
+				.hover(
+					function(e){
+						//e.stopPropagation();
+						mura('.mura-active-target').removeClass('mura-active-target');
+						mura(this).addClass('mura-active-target');
+					},
+					function(e){
+						//e.stopPropagation();
+						mura(this).removeClass('mura-active-target');
+					}
+				);
 			} else {
 				if(mura.type == 'Variation'){
 					var objectData=obj.data();
 					if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-						obj.html(layoutmanagertoolbar + obj.html());
+						obj.prepend(layoutmanagertoolbar);
+						muraInlineEditor.setAnchorSaveChecks(obj.node);
+
+						obj
+							.addClass('active')
+							.hover(
+								function(e){
+									//e.stopPropagation();
+									mura('.mura-active-target').removeClass('mura-active-target');
+									mura(this).addClass('mura-active-target');
+								},
+								function(e){
+									//e.stopPropagation();
+									mura(this).removeClass('mura-active-target');
+								}
+							);
 					}
 				} else {
 					var region=mura(self).closest(".mura-region-local");
@@ -1600,7 +1648,22 @@
 							var objectData=obj.data();
 
 							if(window.muraInlineEditor && (window.muraInlineEditor.objectHasConfigurator(objectData) || window.muraInlineEditor.objectHasEditor(objectData))){
-								obj.html(layoutmanagertoolbar + obj.html());
+								obj.prepend(layoutmanagertoolbar);
+								muraInlineEditor.setAnchorSaveChecks(obj.node);
+
+								obj
+									.addClass('active')
+									.hover(
+										function(e){
+											//e.stopPropagation();
+											mura('.mura-active-target').removeClass('mura-active-target');
+											mura(this).addClass('mura-active-target');
+										},
+										function(e){
+											//e.stopPropagation();
+											mura(this).removeClass('mura-active-target');
+										}
+									);
 							}
 						}
 					}
@@ -1680,12 +1743,20 @@
 		}
 	}
 
-	function processObject(el){
+	function processObject(el,queue){
 
+		var obj=(el.node) ? el : mura(el);
+		el =el.node || el;
+		var self=el;
+
+		queue=(queue==null) ? false : queue;
+
+		if(queue && !isScrolledIntoView(el)){
+			setTimeout(function(){processObject(el,true)},10);
+			return;
+		}
+		
 		return new Promise(function(resolve,reject) {
-			var obj=(el.node) ? el : mura(el);
-			el =el.node || el;
-			var self=el;
 
 			if(!self.getAttribute('data-instanceid')){
 				self.setAttribute('data-instanceid',createUUID());
@@ -1695,19 +1766,29 @@
 				obj.addClass("mura-async-object");
 			}
 
-			if(self.getAttribute('data-object')=='container'){
-				//resetAsyncObject(self);
-				unpackContainer(mura(self));
-				mura(self).find('.mura-object').each(function(){
+			if(obj.data('object')=='container'){
+				
+				obj.html(mura.templates.content(obj.data()));
+
+				obj.find('.mura-object').each(function(){
 					this.setAttribute('data-instanceid',createUUID());
 				});
-				mura(self).hide().show();
-				unpackedContainer=true;
+				obj.hide().show();
 
 			}
 
 			var data=deepExtend(setLowerCaseKeys(getData(self)),urlparams,{siteid:window.mura.siteid,contentid:window.mura.contentid,contenthistid:window.mura.contenthistid});
 			
+			delete data.inited;
+
+			if(obj.data('contentid')){
+				data.contentid=self.getAttribute('data-contentid');
+			}
+
+			if(obj.data('contenthistid')){
+				data.contenthistid=self.getAttribute('data-contenthistid');
+			}
+
 			if('objectparams' in data){
 				data['objectparams']= $escape(JSON.stringify(data['objectparams']));
 			}
@@ -1725,7 +1806,8 @@
 					if(typeof resolve == 'function'){
 						resolve(obj);
 					}
-				} else {	
+				} else {
+					//console.log(data);	
 					self.innerHTML=window.mura.preloaderMarkup;
 					ajax({
 						url:window.mura.apiEndpoint + '?method=processAsyncObject',
@@ -1853,6 +1935,10 @@
 
 		if(!config.apiEndpoint){
 			config.apiEndpoint=config.context + '/index.cfm/_api/json/v1/';
+		}
+
+		if(!config.pluginspath){
+			config.pluginspath=config.context + '/plugins';
 		}
 
 		if(!config.requirementspath){
@@ -2006,6 +2092,8 @@
 				}
 			},
 			{
+			rb:{},
+			entities:{},
 			submitForm:submitForm,
 			escapeHTML:escapeHTML,
 			unescapeHTML:unescapeHTML,

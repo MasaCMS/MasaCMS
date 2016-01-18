@@ -736,7 +736,8 @@
 
 	<cfif request.returnFormat eq 'JSON'>
 		<cfset var apiUtility=$.siteConfig().getApi('json','v1')>
-		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=$.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')}}))>
+		<cfset request.muraJSONRedirectURL = $.siteConfig().getResourcePath(complete=true) & '/index.cfm/_api/render/file/?fileid=' & $.content('fileid')>
+		<cfset $.event('__MuraResponse__',apiUtility.getSerializer().serialize({'apiversion'=apiUtility.getApiVersion(),'method'='findOne','params'=apiUtility.getParamsWithOutMethod(form),data={redirect=request.muraJSONRedirectURL}}))>
 	<cfelse>
 		<cfset $.getContentRenderer().renderFile($.content('fileid'),$.event('method'),$.event('size')) />
 	</cfif>
@@ -773,25 +774,23 @@
 			var result=structCopy($.content().getAllValues());
 			var renderer=$.getContentRenderer();
 
+			request.cffpJS=true;
+
+			result.template=renderer.getTemplate();
+			result.metakeywords=renderer.getMetaKeyWords();
+			result.metadesc=renderer.getMetaDesc();
+
 			$.event('response',result);
 
-			if(result.type != 'Variation'){
+			result.displayRegions={};
 
-				request.cffpJS=true;
-
-				renderer.injectMethod('showInlineEditor',false);
-				renderer.injectMethod('showAdminToolBar',false);
-				renderer.injectMethod('showMemberToolBar',false);
-				renderer.injectMethod('showEditableObjects',false);
-
-				result.displayRegions={};
-
-				for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
-					var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
-					
-					result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
-				}
+			for(var r =1;r<=ListLen($.siteConfig('columnNames'),'^');r++){
+				var regionName='#replace(listGetAt($.siteConfig('columnNames'),r,'^'),' ','','all')#';
 				
+				result.displayRegions[regionName]=$.dspObjects(columnid=r,returnFormat='array');	
+			}
+
+			if(result.type != 'Variation'){
 				result.body=apiUtility.applyRemoteFormat($.dspBody(body=$.content('body'),crumblist=false,renderKids=true,showMetaImage=false));
 			}
 
@@ -813,7 +812,8 @@
 				mobileformat=esapiEncode('javascript',$.event('muraMobileRequest')),
 				adminpreview=lcase(structKeyExists(url,'muraadminpreview')),
 				windowdocumentdomain=$.globalConfig('WindowDocumentDomain'),
-				perm=$.event('r').perm
+				perm=$.event('r').perm,
+				apiEndpoint=apiUtility.getEndPoint()
 			};
 
 			result.HTMLHeadQueue=$.renderHTMLQueue('head');

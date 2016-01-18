@@ -368,6 +368,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="hasParent" output="false" returntype="any">
+	<cfreturn structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
+</cffunction>
+
 <cffunction name="getBean" returntype="any" access="public" output="false">
 	<cfargument name="beanName">
 	<cfargument name="siteID" default="">

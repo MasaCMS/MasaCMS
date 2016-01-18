@@ -43,7 +43,7 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
+---> 
 <cfcomponent extends="mura.cfobject" output="false">
 
 	<cffunction name="update" returntype="void" output="false">
@@ -650,6 +650,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.displayInterval")>
 					,displayInterval
 					</cfif>
+					<cfif isdefined("rstContent.objectParams")>
+					,objectParams
+					</cfif>
 					)
 					values
 					(
@@ -739,6 +742,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.displayInterval")>
 						,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">
+					</cfif>
+					<cfif isdefined("rstContent.objectParams")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.objectParams neq '',de('no'),de('yes'))#" value="#rstContent.objectParams#">
 					</cfif>
 					)
 				</cfquery>

@@ -93,7 +93,6 @@
 </cfif>
 </cfsilent>
 <cfoutput>
-	
 	<div class="mura-next-n #this.nextNWrapperClass#">
 			<ul <cfif this.ulPaginationClass neq "">class="#this.ulPaginationClass#"</cfif>>
 			<cfif variables.nextN.currentpagenumber gt 1>

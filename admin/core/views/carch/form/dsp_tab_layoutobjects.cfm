@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
                 <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
                 <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
       </div>
     </div>
-    
+    <cfif not rc.$.getContentRenderer().useLayoutManager()>
     <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
       <div class="controls" id="editObjects">       
@@ -154,12 +154,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       #esapiEncode('html','Text')#
                     </option>
 
-                   <option title="#esapiEncode('html_attr','Media')#" value='{"object":"#esapiEncode('javascript','media')#","name":"#esapiEncode('javascript','Media')#","objectid":"#createUUID()#"}'>
-                      #esapiEncode('html','Media')#
-                    </option>
-
-                   <option title="#esapiEncode('html_attr','Social Embed')#" value='{"object":"#esapiEncode('javascript','socialembed')#","name":"#esapiEncode('javascript','Social Embed')#","objectid":"#createUUID()#"}'>
-                      #esapiEncode('html','Social Embed')#
+                   <option title="#esapiEncode('html_attr','Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
+                      #esapiEncode('html','Embed')#
                     </option>
 
                    <option title="#esapiEncode('html_attr','navigation')#" value='{"object":"#esapiEncode('javascript','navigation')#","name":"#esapiEncode('javascript','Navigation')#","objectid":"#createUUID()#"}'>
@@ -290,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div> <!--- /#availableRegions --->
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
-
+    </cfif>
   
   </div>  
 

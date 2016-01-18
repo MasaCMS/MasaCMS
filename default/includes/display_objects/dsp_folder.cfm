@@ -55,11 +55,11 @@
 	Mura CMS.
 --->
 <cfif this.asyncObjects>
-	<cfif this.layoutmanager and len(arguments.object)>
+	<cfif this.layoutmanager and isDefined('arguments.object') and len(arguments.object)>
 		 <cfset objectparams.async=true>
 	<cfelse>
 		<cfoutput>
-		<div class="mura-object mura-async-object" 
+		<div class="mura-object mura-async-object mura-object-primary" 
 			data-object="folder"
 			data-objectname="Folder"
 			data-month="#esapiEncode('html_attr',variables.$.event('month'))#" 
@@ -67,11 +67,22 @@
 			data-year="#esapiEncode('html_attr',variables.$.event('year'))#"
 			data-filterby="#esapiEncode('html_attr',variables.$.event('filterBy'))#"
 			data-tag="#esapiEncode('html_attr',variables.$.event('tag'))#"
-			data-sortyby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
+			data-sortby="#esapiEncode('html_attr',variables.$.event('sortyby'))#"
 			data-sortdirection="#esapiEncode('html_attr',variables.$.event('sortdirection'))#"
 			data-categoryid ="#esapiEncode('html_attr',variables.$.event('categoryid'))#"
-			data-nextnid="#esapiEncode('html_attr',variables.$.content('contentid'))#"
-			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"></div>
+			data-source="#esapiEncode('html_attr',variables.$.content('contentid'))#"
+			data-startrow="#esapiEncode('html_attr',variables.$.event('startrow'))#"
+			data-displaylist="#esapiEncode('html_attr',variables.$.content('displaylist'))#"
+			data-layout="#esapiEncode('html_attr',variables.$.content().getObjectParam('layout'))#"
+			data-nextn="#esapiEncode('html_attr',variables.$.content('nextn'))#"
+			data-cssclass="#esapiEncode('html_attr',variables.$.content().getObjectParam('cssclass'))#"
+			<cfif $.content().getObjectParam(param='layout',defaultValue="default") eq 'default'>
+					data-imagesize="#esapiEncode('html_attr',variables.$.content('imageSize'))#"
+					<cfif variables.$.content('imageSize') eq 'custom'>
+						data-imageheight="#esapiEncode('html_attr',variables.$.content('imageHeight'))#"
+						data-imagewidth="#esapiEncode('html_attr',variables.$.content('imageWith'))#"
+					</cfif>
+			</cfif>></div>
 		</cfoutput>
 	</cfif>
 <cfelse>
@@ -202,6 +213,3 @@
 	     </cfoutput>
 	</cfif>
 </cfif>
-
-	
-

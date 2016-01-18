@@ -11,6 +11,7 @@ module.exports = function(grunt) {
           //'external/handlebars.runtime.js',
           'src/mura.js',
           'src/mura.loader.js',
+          'src/mura.coreobject.js',
           'src/mura.domselection.js',
           'src/mura.entity.js',
           'src/mura.entitycollection.js',

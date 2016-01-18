@@ -260,7 +260,7 @@ component extends="mura.cfobject" output="false" {
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
+				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
 					setValue(prop,arguments.data['#prop#']);
 				}
 			}		
@@ -966,6 +966,23 @@ component extends="mura.cfobject" output="false" {
 
 	function clone(){
 		getBean("content").setAllValues(structCopy(getAllValues()));
+	}
+
+	//used in json api for entity specific permission checking
+	function allowSave(){
+		return false;
+	}
+
+	function allowDelete(){
+		return false;
+	}
+
+	function allowRead(){
+		return true;
+	}
+
+	function allowQueryParams(params){
+		return true;
 	}
 
 }

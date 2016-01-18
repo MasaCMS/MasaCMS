@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.isNew" default="1">
 <cfparam name="rc.keywords" default="">
 <cfparam name="rc.searchTypeSelector" default="">
+<cfparam name="rc.relatedcontentsetid" default="">
 <cfparam name="rc.rcStartDate" default="">
 <cfparam name="rc.rcEndDate" default="">
 <cfparam name="rc.rcCategoryID" default="">
@@ -142,6 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-related-internal">
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="control-group">
+				<cfif rc.relatedcontentsetid neq 'calendar'>
 				<div class="span4">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
 					<div class="controls">
@@ -160,7 +162,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 						</select>
 					</div>
-				</div>	
+				</div>
+				</cfif>	
 				<div class="span8">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 					<div class="controls">
@@ -199,15 +202,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
-			if (len($.event("searchTypeSelector"))) {
-				feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
-				feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
+			if(rc.relatedcontentsetid=='calendar'){
+				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");	
+			} else {
+				if (len($.event("searchTypeSelector"))) {
+					feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
+					feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
+				}
 			}
 			
 			if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
 				feed.addParam(relationship="and (");
-				
-
+			
 				started=false;
 
 				feed.addParam(relationship="(");

@@ -302,7 +302,7 @@
 				<cfelse>
 					#transformDataType(arguments.datatype,arguments.length)#
 					<cfif not arguments.nullable> not null </cfif>
-					<cfif not(not arguments.nullable and arguments.default eq 'null')>
+					<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 						default
 						<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 							#arguments.default#
@@ -517,7 +517,7 @@
 					<cfelse>
 						#transformDataType(arguments.datatype,arguments.length)#
 						<cfif not arguments.nullable> not null </cfif>
-						<cfif not(not arguments.nullable and arguments.default eq 'null')>
+						<cfif not(not arguments.nullable and arguments.default eq 'null') and arguments.default neq 'null'>
 							default
 							<cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>
 								#arguments.default#
@@ -1156,7 +1156,7 @@
 	<cfset var i="">
 	<cfif arrayLen(indexArray)>
 		<cfloop from="1" to="#arrayLen(indexArray)#" index="i">
-			<cfif indexArray[i].column eq arguments.column>
+			<cfif indexArray[i].column eq arguments.column or indexArray[i].name eq transformIndexName(argumentCollection=arguments)>
 				<cfreturn true>
 			</cfif>
 		</cfloop>

@@ -1,6 +1,107 @@
-<cfcomponent extend="mura.cfobject" output="false">
+<cfcomponent extends="mura.cfobject" output="false">
 
 <!--- Heavily borrowed from http://www.bennadel.com/projects/kinky-calendar.htm --->
+
+<cffunction name="isAllDay" output="false">
+	<cfargument name="start">
+	<cfargument name="stop">
+
+	<cfreturn (isDate(arguments.start) 
+		and hour(arguments.start) eq 0
+		and minute(arguments.start) eq 0
+		and (
+			not isDate(arguments.stop)
+			or hour(arguments.stop) eq 23
+			and minute(arguments.stop) eq 59
+			)
+		)>
+
+</cffunction>
+
+<cffunction name="findConflicts">
+	<cfargument name="content">
+
+	<cfset var result=[]>
+
+	<cfif arguments.content.getDisplay() eq 2 and arguments.content.hasParent()>
+		<cfset var calendar=content.getParent()>
+
+		<cfif calendar.getType() eq 'Calendar'>
+			<cfset var displayInterval=arguments.content.getDisplayInterval(deserialize=true)>
+
+			<cfif displayInterval.detectconflicts and displayInterval.detectspan>
+				<cfset var events=calendar.getEventsIterator(start=now(),end=dateAdd('m',displayInterval.detectspan,now()))>
+				<cfset var rsevents=events.getQuery()>
+				<cfset var rscheck=''>
+				<cfset var rsresult=''>
+				<cfset var rsresultfinal=''>
+				<cfset var rsitemdetails=''>
+				
+				<cfquery name="rsresult" dbtype="query">
+					select * from rsevents where 0=1
+				</cfquery>
+
+				<cfloop condition="events.hasNext()">
+					<cfset var event=events.next()>
+
+					<cfif event.getContentID() eq arguments.content.getContentID()>
+						<cfquery name="rscheck" dbtype="query">
+							select * from rsevents
+							where contentid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.content.getContentID()#">
+							and
+							 	(
+								 	(
+								 		displaystart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
+									or
+
+									(
+								 		displaystop <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStop()#">
+										and displaystop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#event.getDisplayStart()#">
+									)
+								)
+						</cfquery>
+
+						<cfloop query="rscheck">
+							<cfset QueryAddRow(rsresult) />
+									
+							<cfloop list="#rsresult.columnList#" index="local.i">			
+								<cfset querySetCell(rsresult,
+								local.i,
+								rscheck[local.i][rscheck.currentrow],
+								rsresult.recordCount) />
+							</cfloop>
+						</cfloop>
+					</cfif>
+				</cfloop>
+
+				<cfif rsresult.recordcount>
+					<cfset var utility=getBean("utility")>
+					<cfquery name="rsresultfinal" dbtype="query">
+						select distinct contentid,contenthistid,siteid,menutitle,title from rsresult
+					</cfquery>
+
+					<cfloop query="rsresultfinal">
+						<cfset arrayAppend(result, utility.queryRowToStruct(rsresultfinal,rsresultfinal.currentrow))>
+
+						<cfquery name="rsitemdetails" dbtype="query">
+							select * from rsresult 
+							where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsresultfinal.contentid#">
+						</cfquery>
+
+						<cfset result[arrayLen(result)].confictdetailiterator=getBean('contentIterator').setQuery(rsitemdetails)>
+					</cfloop>
+				</cfif>
+			</cfif>
+
+		</cfif>
+		
+	</cfif>	
+
+	<cfreturn getBean('contentIterator').setArray(result)>
+
+</cffunction>
 
 <cffunction name="deserializeInterval" output="false">
 	<cfargument name="interval">
@@ -19,10 +120,25 @@
 
 	<cfparam name="data.every" default=1>
 	<cfparam name="data.type" default="daily">
-	<cfparam name="data.end" default="never">
-	<cfparam name="data.endon" default="">
 	<cfparam name="data.endafter" default="0">
-	<cfparam name="data.allday" default="0">
+	<cfparam name="data.endon" default="">
+	<cfparam name="data.allday" default="1">
+	<cfparam name="data.detectconflicts" default="0">
+	<cfparam name="data.detectspan" default="3">
+
+	<cfif not structKeyExists(data,'end')>
+		<cfif not len(arguments.displayStart) or isDate(arguments.displayStop)>
+			<cfset data.end='on'>
+			<cfset data.endon=arguments.displayStop>
+		<cfelse>
+			<cfset data.end='never'>
+			<cfset data.endon=''>
+		</cfif>
+	</cfif>
+
+	<cfif not structKeyExists(data,'timezone') or not len(data.timezone) or data.allday>
+		<cfset data.timezone=CreateObject("java", "java.util.TimeZone").getDefault().getID()>
+	</cfif>
 
 	<cfif not structKeyExists(data,'repeats')>
 		<cfif data.type eq 'daily' and not data.every>
@@ -731,8 +847,6 @@
 							<cfset LOCAL.day=local.displayStart>
 						</cfif>
 					</cfif>
-
-					
 
 				</cfloop>
 			</cfif>

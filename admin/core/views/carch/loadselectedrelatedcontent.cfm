@@ -7,7 +7,7 @@
 	<cfset request.layout=false>
 
 	<cfif len(rc.relatedcontentsetid)>
-		<cfif rc.relatedcontentsetid eq 'custom'>
+		<cfif rc.relatedcontentsetid eq 'custom' or rc.relatedcontentsetid eq 'calendar'>
 			<cfset rcsBean=subtype.getRelatedContentSetBean()>
 			<cfset rcsBean.setName('Custom')>
 			<cfset rcsBean.setRelatedContentSetId('custom')>
@@ -23,7 +23,6 @@
 		
 	</cfif>
 </cfsilent>
-
 <cfoutput>
 	<div id="mura-rc-quickedit" style="display:none;">
 		<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.relatedcontentsets')#</h3>

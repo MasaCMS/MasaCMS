@@ -240,28 +240,41 @@ component extends="mura.cfobject" {
 			getBean('utility').suppressDebugging();
 
 			var headers = getHttpRequestData().headers;
-			
-			
+	
 			if( structKeyExists( headers, 'Origin' )){
 				
 			  	var origin =  headers['Origin'];;
-			  	var PC = getpagecontext().getresponse();
 			 
 			  	// If the Origin is okay, then echo it back, otherwise leave out the header key
 			  	if(listFindNoCase(application.settingsManager.getAccessControlOriginList(), origin )) {
-			   		PC.setHeader( 'Access-Control-Allow-Origin', origin );
-			   		PC.setHeader( 'Access-Control-Allow-Credentials', 'true' );
+			   		responseObject.setHeader( 'Access-Control-Allow-Origin', origin );
+			   		responseObject.setHeader( 'Access-Control-Allow-Credentials', 'true' );
 			  	}
 		  	}
 
-			structAppend(params,url);
-			structAppend(params,form);
-			structAppend(form,params);
-
 			var paramsArray=[];
 			var pathInfo=listToArray(arguments.path,'/');
-			var method="GET";
 			var httpRequestData=getHTTPRequestData();
+			var method='GET';
+
+			structAppend(params,url);
+			structAppend(params,form);
+
+			if(structKeyExists(headers,'Content-Type') 
+				&& headers['Content-Type'] == 'application/json'
+				&& isJSON(httpRequestData.content)){
+				structAppend(params,deserializeJSON(httpRequestData.content));
+			}
+
+			if( structKeyExists( headers, 'X-csrf_token' )){
+				params['csrf_token']=headers['X-csrf_token'];
+			}
+
+			if( structKeyExists( headers, 'X-csrf_token_expires' )){
+				params['csrf_token_expires']=headers['X-csrf_token_expires'];
+			}
+
+			structAppend(form,params);
 
 			param name="session.siteid" default=variables.siteid;
 
@@ -377,7 +390,11 @@ component extends="mura.cfobject" {
 				if(arrayLen(pathInfo) == 3){
 					params.relatedEntity=pathInfo[3];
 				} else {
-					method=httpRequestData.method;
+					if(structKeyExists(headers,'X-HTTP-Method-Override')){
+						method=headers['X-HTTP-Method-Override'];
+					} else {
+						method=httpRequestData.method;
+					}
 				}
 
 			} else {
@@ -392,7 +409,11 @@ component extends="mura.cfobject" {
 								params.relatedEntity=pathInfo[4];
 							}
 						} else {
-							method=httpRequestData.method;
+							if(structKeyExists(headers,'X-HTTP-Method-Override')){
+								method=headers['X-HTTP-Method-Override'];
+							} else {
+								method=httpRequestData.method;
+							}
 						}
 					} else if (params.entityName=='content') {
 						params.id=pathInfo[3];
@@ -422,7 +443,11 @@ component extends="mura.cfobject" {
 					}
 						
 				} else {
-					method=httpRequestData.method;
+					if(structKeyExists(headers,'X-HTTP-Method-Override')){
+						method=headers['X-HTTP-Method-Override'];
+					} else {
+						method=httpRequestData.method;
+					}
 				}
 
 			}
@@ -820,7 +845,7 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 
 		var $ = application.serviceFactory.getBean('$').init(arguments.siteid);
 		var calendarUtility = $.getCalendarUtility();
@@ -858,10 +883,6 @@ component extends="mura.cfobject" {
 		var saveErrors=false;
 		var errors={};
 
-		if(!allowAction(entity,$)){
-			throw(type="authorization");
-		}
-
 		var pk=entity.getPrimaryKey();
 
 		if(arguments.id=='new'){
@@ -885,6 +906,10 @@ component extends="mura.cfobject" {
 						$.event().getAllValues()
 					);
 
+				if(!(entity.allowSave($) || allowAction(entity,$)) ){
+					throw(type="authorization");
+				}
+
 				if(entity.getIsNew() && len(entity.getChangesetID())){
 					//create default that is not in changeset
 					entity.setBody("[]").setChangesetID('').setApproved(1).save();
@@ -897,6 +922,10 @@ component extends="mura.cfobject" {
 					.set(
 						$.event().getAllValues()
 					);
+
+				if(!(entity.allowSave($) || allowAction(entity,$)) ){
+					throw(type="authorization");
+				}
 
 				entity.save();
 			}
@@ -1005,7 +1034,7 @@ component extends="mura.cfobject" {
 	function findOne(entityName,id,siteid,render=false,variation=false){
 		var $=getBean('$').init(arguments.siteid);
 		
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if(arguments.entityName=='content'){
 			var pk = 'contentid';
@@ -1065,6 +1094,10 @@ component extends="mura.cfobject" {
 		}
 		
 		if(!allowAccess(entity,$)){
+			throw(type="authorization");
+		}
+
+		if(!entity.allowRead()){
 			throw(type="authorization");
 		}
 
@@ -1129,7 +1162,7 @@ component extends="mura.cfobject" {
 			return {items=returnArray,links={self=getEndPoint()},entityname='entityname'};
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var entity=$.getBean(arguments.entityName);
 
@@ -1137,6 +1170,10 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
+		if(!entity.allowQueryParams(url,$)){
+			throw(type="authorization");
+		}
+		
 		var feed=entity.getFeed();
 		
 		if(arguments.entityName=='group'){
@@ -1198,10 +1235,11 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
 			var feed=entity.getFeed();
@@ -1239,7 +1277,13 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
+			
+			if(isDefined('item.allowRead') && !entity.allowRead()){
+				throw(type="authorization");
+			}
+
 			itemStruct=getFilteredValues(item,$,false);
+			
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
@@ -1254,6 +1298,7 @@ component extends="mura.cfobject" {
 			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 			arrayAppend(returnArray, itemStruct );
+			
 		}
 
 		if(!len($.event('sort')) && !len($.event('orderby'))){
@@ -1280,12 +1325,14 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		if($.event('entityName')=='content' && len($.event('feedid'))){		
 			var feed=$.getBean('feed').loadBy(feedid=$.event('feedid'));
+			var entity=$.getBean(arguments.entityName);
 		} else if($.event('entityName')=='content' && len($.event('feedname'))){
 			var feed=$.getBean('feed').loadBy(name=$.event('feedname'));
+			var entity=$.getBean(arguments.entityName);
 		} else {
 			var entity=$.getBean(arguments.entityName);
 			var feed=entity.getFeed();
@@ -1301,6 +1348,10 @@ component extends="mura.cfobject" {
 			var pk="feedid";
 		} else {
 			var pk=entity.getPrimaryKey();
+		}
+
+		if(!entity.allowQueryParams(url,$)){
+			throw(type="authorization");
 		}
 
 		if(entity.getEntityName()=='user'){
@@ -1370,7 +1421,7 @@ component extends="mura.cfobject" {
 
 	function setFeedProps(feed,$){
 		var sort='';
-		
+
 		if(len($.event('orderby'))){
 			sort=$.event('orderby');
 		}
@@ -1492,7 +1543,7 @@ component extends="mura.cfobject" {
 			var pk=entity.getPrimaryKey();
 		}
 
-		checkFormChangesetRequest(arguments.entityName,arguments.siteid);
+		checkForChangesetRequest(arguments.entityName,arguments.siteid);
 
 		var params={'#pk#'=arguments.id};
 		var iterator=entity.loadBy(argumentCollection=params).getCrumbIterator();
@@ -1539,7 +1590,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!allowAction(entity,$)){
+					if(!(entity.allowDelete() || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
@@ -1552,7 +1603,7 @@ component extends="mura.cfobject" {
 				entity.loadBy(argumentCollection=loadparams);
 
 				if(entity.exists()){
-					if(!allowAction(entity,$)){
+					if(!(entity.allowDelete() || allowAction(entity,$))){
 						throw(type="authorization");
 					}
 
@@ -1576,9 +1627,9 @@ component extends="mura.cfobject" {
 			entity.loadBy(argumentCollection=loadparams);
 
 			if(entity.exists()){
-				if(!allowAction(entity,$)){
-					throw(type="authorization");
-				}
+				if(!(entity.allowDelete() || allowAction(entity,$))){
+						throw(type="authorization");
+					}
 
 				if($.validateCSRFTokens(context=arguments.id)){
 					entity.delete();
@@ -1595,7 +1646,16 @@ component extends="mura.cfobject" {
 		if(request.muraApiRequest){
 			var configBean=getBean('configBean');
 			if(!isDefined('request.apiEndpoint')){
-				request.apiEndpoint="#getBean('utility').getRequestProtocol()#://#cgi.server_name##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
+
+				if(getBean('configBean').getAdminSSL()){
+					var protocol='http';
+				} else {
+					var protocol=getBean('utility').getRequestProtocol();
+				}
+				
+				var domain=cgi.server_name;
+
+				request.apiEndpoint="#protocol#://#domain##configBean.getServerPort()##configBean.getContext()#/index.cfm/_api/json/v1/#variables.siteid#";	
 			}
 			return request.apiEndpoint;
 		} 
@@ -1670,7 +1730,7 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 
 		var entity=$.getBean('content').loadBy(contentid=arguments.id);
 
@@ -1829,7 +1889,7 @@ component extends="mura.cfobject" {
 
 		var $=request.servletEvent.getValue("MuraScope");
 		
-		checkFormChangesetRequest('content',arguments.siteid);
+		checkForChangesetRequest('content',arguments.siteid);
 		
 		if(len($.event('filename'))){
 			$.event('currentFilename',$.event('filename'));
@@ -1912,13 +1972,6 @@ component extends="mura.cfobject" {
 
 				break;
 
-			case 'calendar':
-				result= {
-					html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
-				};
-
-				break;
-
 			case 'search':
 				result={
 					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_search_results.cfm"))
@@ -1929,13 +1982,6 @@ component extends="mura.cfobject" {
 			case 'displayregion':
 				result={
 					html=applyRemoteFormat($.dspObjects(argumentCollection=$.event().getAllValues()))
-				};
-
-				break;
-
-			case 'folder':
-				result={
-					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_folder.cfm"))
 				};
 
 				break;
@@ -2024,8 +2070,30 @@ component extends="mura.cfobject" {
 				}
 
 				break;
-
+				
 			default:
+				if(listFindNoCase('folder,gallery',$.event('object'))){
+					if($.getContentRenderer().useLayoutManager()){
+						$.event('object','collection');
+						$.event('objectid',$.content('contentid'));
+						url.object='collection';
+						url.sourcetype='children';
+						url.source=$.content('contentid');
+
+					} else {
+						result={
+							html=$.getContentRenderer().dspContentTypeBody()
+						};
+						break;
+					}
+				/*
+				} else if ($.event('object')=='calendar'){
+					result= {
+						html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
+					};
+				*/
+				}
+
 				if(len($.event('objectparams2'))){
 					$.event('objectparams',$.event('objectparams2'));
 				}
@@ -2063,7 +2131,13 @@ component extends="mura.cfobject" {
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
 				} else if(isSimpleValue(result)){
-					result={html=result};
+					if($.useLayoutManager()){
+						args.params.content=result;
+						result={html=trim('#$.dspObject_include(theFile='object/meta.cfm',params=args.params)##$.dspObject_include(theFile='object/content.cfm',params=args.params)#')};
+					} else {
+						result={html=result};
+					}
+					
 				} 
 		} 
 
@@ -2071,7 +2145,7 @@ component extends="mura.cfobject" {
 	
 	}
 
-	function checkFormChangesetRequest(entityName,siteid){
+	function checkForChangesetRequest(entityName,siteid){
 		if(arguments.entityName=='content'){
 			var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
 			request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.siteid;

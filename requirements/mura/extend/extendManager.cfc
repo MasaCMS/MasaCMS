@@ -214,6 +214,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.definitionsQuery>
 </cffunction>
 
+<cffunction name="appendMissingAttributes" output="false">
+	<cfargument name="instance">
+
+	<cfset var rs=getDefinitionsQuery()>
+	<cfset var renderer=getBean('settingsManager').getSite(arguments.instance.siteid).getContentRenderer()>
+	
+	<cfquery name="rs" dbtype="query">
+		select attributename, defaultvalue from rs
+		where subtype=<cfqueryparam value="#arguments.instance.subtype#" cfsqltype="cf_sql_varchar">
+		and type=<cfqueryparam value="#arguments.instance.type#" cfsqltype="cf_sql_varchar">
+		and siteid=<cfqueryparam value="#arguments.instance.siteid#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfif not structKeyExists(arguments.instance,'#rs.attributeName#')>
+			<cfif len(rs.defaultValue)>
+				<cftry>
+					<cfreturn renderer.setDynamicContent(rs.defaultValue)>
+					<cfcatch>
+						<cfset arguments.instance['#rs.attributeName#']=''>
+					</cfcatch>
+				</cftry>
+			<cfelse>
+				<cfset arguments.instance['#attributeName#']=''>
+			</cfif>
+		</cfif>
+	</cfloop>
+</cffunction>
+
 <cffunction name="purgeDefinitionsQuery" output="false">
 	<cfset variables.definitionsQuery="">
 </cffunction>
@@ -1707,6 +1736,8 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="theme">
 	<cfelseif isDefined("arguments.configXML.mura")>
 		<cfset baseElement="mura">
+	<cfelseif isDefined("arguments.configXML.displayobject")>
+		<cfset baseElement="displayobject">
 	</cfif>	
 
 	<cfif len(baseElement) 

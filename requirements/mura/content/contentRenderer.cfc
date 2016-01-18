@@ -257,6 +257,7 @@ Display Objects
 		rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 		default={tag="dd"}
 	}>
+
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
@@ -1311,23 +1312,20 @@ Display Objects
 			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
 		</cfif>
 		
+		<cfset var filePath=variables.$.siteConfig().lookupDisplayObjectFilePath(arguments.theFile)>
+
 		<cfsavecontent variable="theContent">
-			<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
-				<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
-			<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
-				<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
-			<cfelseif arguments.throwError or fileExists(expandedDisplayObjectPath & fileDelim & arguments.theFile)>
-				<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
-				<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
-				<cfset commitTracePoint(tracePoint)>
+			<cfif len(filepath)>
+			<cfset tracePoint=initTracePoint("#filepath#")>
+			<cfinclude template="#filepath#" />
+			<cfset commitTracePoint(tracePoint)>
+			<cfelse>
+			<cfset tracePoint=initTracePoint("The requested file '#arguments.theFile#' could not be found.")>
+			<cfoutput><cfif arguments.throwError><!-- The requested file '#arguments.theFile#' could not be found.--></cfif></cfoutput>
+			<cfset commitTracePoint(tracePoint)>
 			</cfif>
 		</cfsavecontent>
 	</cfif>
-	
 
 	<cfif doLayoutManagerWrapper && not (objectParams.async and objectParams.render eq 'client' and request.returnFormat eq 'json')>
 		<cfif objectParams.render eq 'client'>
@@ -1338,7 +1336,8 @@ Display Objects
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
-				objectname=arguments.objectname) />
+				objectname=arguments.objectname,
+				renderer=this) />
 		<cfelse>
 			<cfreturn variables.contentRendererUtility.renderObjectInManager(object=arguments.object,
 				objectid=arguments.objectid,
@@ -1346,7 +1345,8 @@ Display Objects
 				objectParams=objectParams,
 				showEditable=arguments.showEditable,
 				isConfigurator=arguments.isConfigurator,
-				objectname=arguments.objectname) />
+				objectname=arguments.objectname,
+				renderer=this) />
 		</cfif>'
 	<cfelseif isDefined('objectParams.render') and objectParams.render eq 'client'>
 		<cfreturn objectParams>
@@ -1367,6 +1367,8 @@ Display Objects
 	<cfargument name="metaImageSizeArgs" default="#this.bodyMetaImageSizeArgs#">
 	<cfargument name="metaImageClass" default="#this.bodymetaImageClass#">
 	<cfargument name="renderKids" default="true">
+	<cfargument name="displayIntervalDesc" type="string" default="">
+	<cfargument name="displayIntervalClass" type="string" default="">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var themeIncludePath = variables.event.getSite().getThemeIncludePath() />
@@ -1375,7 +1377,6 @@ Display Objects
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
-	<cfset var safesubtype=REReplace(variables.event.getValue('contentBean').getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
@@ -1436,54 +1437,18 @@ Display Objects
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
-					</cfif>			
+					</cfif>
+					<cfif variables.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false) and $.hasParent() and $.getParent().getType() eq 'Calendar' and len(arguments.displayIntervalDesc)>
+						<p<cfif len(displayIntervalClass)> class="#displayIntervalClass#"</cfif>>#arguments.displayIntervalDesc#</p>
+					</cfif>		
 				</cfoutput>
 
-				<!--- For backwards compatibility --->
-				<cfif variables.event.getContentBean().getType() eq 'Folder'>
-					<cfset eventOutput=application.pluginManager.renderEvent("onPortalBodyRender",variables.event)>
-					<cfif not len(eventOutput)>
-						<cfset eventOutput=application.pluginManager.renderEvent("onPortal#variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
-					</cfif>
-				</cfif>
-				<!--- --->
+				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
 				
-				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
-				</cfif>
-				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
-				</cfif>
-
-				<cfif len(eventOutput)>
-					<cfoutput>#eventOutput#</cfoutput>
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				<cfelseif $.content('type') eq 'Folder' and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_Portal_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!--- [dynamic theme path]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#themeIncludePath#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!---[dynamic theme path]/display_objects//extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(themeIncludePath) & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#themeIncludePath#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-
-				<!--- [siteid]/includes/themes/[theme]/display_objects/custom/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!--- [siteid]/includes/themes/[theme]/display_objects/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif len(request.altTheme) and fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/themes/#variables.$.siteConfig('theme')#/display_objects/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
-				<!--- [siteid]/includes/display_objects/extensions/dsp_[type]_[subtype].cfm --->
-				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & safesubtype & ".cfm")>
-					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#safesubtype#.cfm">
-				
+				<cfif isDefined('bodyLookup.eventOutput')>
+					#bodyLookup.eventOutput#
+				<cfelseif isDefined('bodyLookup.filepath')>
+					<cfinclude template="#bodyLookup.filepath#">
 				<cfelse>
 					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
 					<cfcase value="File">
@@ -1518,16 +1483,25 @@ Display Objects
 							and len(variables.event.getValue('contentBean').getFileID()) 
 							and variables.event.getValue('contentBean').getContentType() eq "Image" 
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
-								<cfset loadShadowBoxJS() />
-								<cfoutput>
-								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<cfif useLayoutManager()>
+									<cfoutput>
+										<cfif arguments.includeMetaHREF><cfset loadShadowBoxJS() /></cfif>
+										<div class="mura-asset">
+											<cfif arguments.includeMetaHREF><a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]"></cfif><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /><cfif arguments.includeMetaHREF></a></cfif>
+										</div>
+									</cfoutput>	
+								<cfelse>
+									<cfoutput>
+									<cfif arguments.includeMetaHREF>
+										<cfset loadShadowBoxJS() />
+										<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]" id="svAsset" class="mura-asset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
-									<div id="svAsset" class="mura-asset">
-									<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
-									</div>
+										<div id="svAsset" class="mura-asset">
+										<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
+										</div>
+									</cfif>
+									</cfoutput>	
 								</cfif>
-								</cfoutput>	
 						</cfif>		
 						<cfoutput>
 							<cfif structKeyExists(arguments,'bodyAttribute')>
@@ -1545,7 +1519,18 @@ Display Objects
 						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 						<cfcase value="Folder">
 							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+							 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
+
+							 <cfif len(filePath)>
+							 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+							 <cfelse>
+							 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
+							 	 <cfif len(filePath)>
+								 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm')#</cfoutput>
+								 <cfelse>
+								 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm')#</cfoutput>
+								 </cfif>
+							</cfif>
 							</cf_CacheOMatic>
 						</cfcase> 
 						<cfcase value="Calendar">
@@ -1597,6 +1582,20 @@ Display Objects
 	<cfreturn str />
 </cffunction>
 
+<cffunction name="dspContentTypeBody" output="false">
+	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>		
+	<cfset var eventOutput="">
+	<cfsavecontent variable="eventOutput">
+	<cfoutput>
+	<cfif isDefined('bodyLookup.eventOutput')>
+		#bodyLookup.eventOutput#
+	<cfelseif isDefined('bodyLookup.filepath')>
+		<cfinclude template="#bodyLookup.filepath#">
+	</cfif>
+	</cfoutput>
+	</cfsavecontent>
+	<cfreturn eventOutput>
+</cffunction>
 <cffunction name="dspNestedNavPrimary" output="false" returntype="string">
 		<cfargument name="contentid" type="string">
 		<cfargument name="viewDepth" type="numeric" required="true" default="1">
@@ -2120,7 +2119,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.getMetaDesc(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="getMetaKeyWords"  output="false" returntype="string">
+<cffunction name="getMetaKeywords"  output="false" returntype="string">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.getMetaKeyWords(argumentCollection=arguments)>
 </cffunction>
@@ -2367,16 +2366,6 @@ Display Objects
 				<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
 			</cfif>
 					
-			<!--- Add modal edit --->
-			<cfif getShowModal()>
-				<!---
-				<cfif getJSLib() eq "prototype">
-					<cfset loadShadowboxJS() />
-				</cfif>--->
-				<cfif this.showEditableObjects and this.enableFrontEndTools>
-					<cfsavecontent variable="headerStr"><cfoutput><link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" /></cfoutput></cfsavecontent>
-				</cfif>
-			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>
@@ -2656,6 +2645,12 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.renderObjectClassOption(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="renderIntervalDesc" output="false">
+	<cfargument name="content">
+	<cfset arguments.renderer=this>
+	<cfreturn variables.contentRendererUtility.renderIntervalDesc(argumentCollection=arguments)>
+</cffunction>
+
 <cfscript>
 	public any function dspComponent(string componentid, boolean allowEditable=this.showEditableObjects) {
 		return variables.$.dspObject(object='component',objectid=arguments.componentid,allowEditable=arguments.allowEditable);
@@ -2739,6 +2734,35 @@ Display Objects
  	public function useLayoutManager(){
  		return this.layoutmanager;
  	}
+
+ 	public function registerDisplayObject(
+ 			object,name='',
+ 			displaymethod='',
+ 			displayobjectFile='',
+ 			configuratorJS='',
+ 			configuratorInit='',
+ 			siteid='#variables.$.event('siteid')#'){
+ 		getBean('settingsManager').getSite(arguments.siteid).registerDisplayObject(argumentCollection=arguments);
+ 		return this;
+	}
+
+	public function hasDisplayObject(object,siteid='#variables.$.event('siteid')#'){
+		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
+
+	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
+		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+	}
+
+	public function get(){
+		if(isDefined('this.#arguments.property#')){
+			return this[arguments.property];
+		} else if (isDefined('variables.#argumentsproperty#')){
+			return this[arguments.property];
+		}
+
+		return '';
+	}
 
 </cfscript>
 

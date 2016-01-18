@@ -218,11 +218,18 @@ component
 
 			} else if ( ( hint == "utcdate" ) && ( isDate( input ) || isNumericDate( input ) ) ) {
 
-				// Write the date in ISO 8601 time string format. We're going to assume that the 
-				// date is already in the dezired timezone. 
-				input=DateConvert('local2utc',input);
-				writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss.l" ) & "Z""" );
-
+				if(hour(input) == 0  && minute(input) == 0 || hour(input)==23 && minute(input)==59){
+					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & """" );
+				} else {
+					// Write the date in ISO 8601 time string format. We're going to assume that the 
+					// date is already in the dezired timezone. 
+					//input=DateConvert('local2utc',input);
+					var tzinfo=getTimeZoneInfo();
+					var tzmod=(tzinfo.utcTotalOffset < 0) ? '+' : '-';
+					var tsmin=(tzinfo.utcMinuteOffset < 10) ? '0#tzinfo.utcMinuteOffset#' : tzinfo.utcMinuteOffset;
+					var tshour=(tzinfo.utcHourOffset < 10) ? '0#tzinfo.utcHourOffset#' : tzinfo.utcHourOffset;
+					writeOutput( """" & dateFormat( input, "yyyy-mm-dd" ) & "T" & timeFormat( input, "HH:mm:ss" ) & tzmod & tshour & ":" & tsmin & """" );
+				}
 			} else {
 
 				writeOutput( serializeJson( input ) );
