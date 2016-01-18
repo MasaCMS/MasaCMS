@@ -1240,6 +1240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="lookupDisplayObjectFilePath" output="false">
 	<cfargument name="filePath">
+	 <cfset arguments.filePath=Replace(arguments.filePath, "\", "/", "ALL")>
 
 	<cfif len(request.altTheme)>
 		<cfset var altThemePath=getThemeIncludePath(request.altTheme) & "/display_objects/" & arguments.filePath>
@@ -1260,6 +1261,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif fileExists(expandPath(result))>
 			<cfset setDisplayObjectFilePath(arguments.filePath,result)>
 			<cfreturn result>
+		<cfelse>
+			<!--- For legacy support --->
+			<cfset result=dir & replace(arguments.filePath,'../','','all')>
+			<cfif fileExists(expandPath(result))>
+				<cfset setDisplayObjectFilePath(arguments.filePath,result)>
+				<cfreturn result>
+			</cfif>
 		</cfif>
 	</cfloop>
 
