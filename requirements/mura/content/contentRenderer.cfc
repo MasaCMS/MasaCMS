@@ -1446,7 +1446,7 @@ Display Objects
 				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
 				
 				<cfif isDefined('bodyLookup.eventOutput')>
-					#bodyLookup.eventOutput#
+					<cfoutput>#bodyLookup.eventOutput#</cfoutput>
 				<cfelseif isDefined('bodyLookup.filepath')>
 					<cfinclude template="#bodyLookup.filepath#">
 				<cfelse>
