@@ -168,7 +168,8 @@
 		</div>
 		<script>
 		$(function(){
-			var hiddenCalendars=window.localStorage.getItem('muraHiddenCalendars');
+			<cfset muraHiddenCals='muraHiddenCals' & replace(variables.$.content('contentid'),'-','','all')>
+			var hiddenCalendars=window.sessionStorage.getItem('#muraHiddenCals#');
 
 			if(hiddenCalendars){
 				hiddenCalendars=hiddenCalendars.split(',');
@@ -314,7 +315,7 @@
 										$('##mura-calendar').fullCalendar('removeEventSource',eventSources[self.data('index')]);
 										hiddenCalendars.push(self.data('contentid'));
 									}
-									window.localStorage.setItem('muraHiddenCalendars',hiddenCalendars.join(','));
+									window.sessionStorage.setItem('#muraHiddenCals#',hiddenCalendars.join(','));
 								}).trigger('change');
 							});
 						</cfif>
