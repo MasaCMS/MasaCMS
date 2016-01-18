@@ -123,27 +123,36 @@
 			{background='blue',text='white'}
 		]>
 
-
 		<div class="mura-calendar-wrapper">
 			<div id="mura-calendar-error" class="alert alert-warning" role="alert" style="display:none;">
 				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">#variables.$.rbKey('calendar.close')#</span></button>
 				<i class="fa fa-warning"></i> #variables.$.rbKey('calendar.eventfetcherror')#
 			</div>
 
+			
+
 			<cfif arrayLen(objectParams.items) gt 1>
-				<cfset calendars=$.getBean('contentManager')
-					.findMany(
-						contentids=objectParams.items,
-						siteid=$.event('siteid')
-					)>
-				
+				<cfsilent>
+					<cfset colorIndex=0>
+					<cfset calendars=$.getBean('contentManager')
+						.findMany(
+							contentids=objectParams.items,
+							siteid=$.event('siteid')
+						)>
+				</cfsilent>
 				<div class="mura-calender__filters" style="display:none;">
 				<cfloop condition="calendars.hasNext()">
-					<cfset calendar=calendars.next()>
-					<cfset i=calendars.currentIndex()-1>
+					<cfsilent>
+						<cfset calendar=calendars.next()>
+						<cfset i=calendars.currentIndex()-1>
+						<cfset colorIndex=colorIndex+1>
+						<cfif colorIndex gt arrayLen(this.calendarcolors)>
+							<cfset colorIndex=1>
+						</cfif>
+					</cfsilent>
 					<div class="mura-calendar__filter-item">
 						<label class="mura-calendar__filter-item__option">
-							<input type="checkbox" class="input-style--swatch" data-index="#i#" data-contentid="#calendar.getContentID()#" data-color="#this.calendarcolors[calendars.currentIndex()].background#" style="display:none;">
+							<input type="checkbox" class="input-style--swatch" data-index="#i#" data-contentid="#calendar.getContentID()#" data-color="#this.calendarcolors[colorIndex].background#" style="display:none;">
 							<span>
 								<span class="mura-calendar__filter-item__swatch"></span>
 								<span class="mura-calendar__filter-item__swatch-label">#esapiEncode('html',calendar.getMenuTitle())#</span>
@@ -185,7 +194,6 @@
 				}
 			</cfif>
 			
-			
 			var colors=#lcase(serializeJSON(this.calendarcolors))#;
 			var calendars=#lcase(serializeJSON(objectparams.items))#;
 			var eventSources=[
@@ -193,7 +201,7 @@
 				<cfloop array="#objectParams.items#" index="i">	
 					<cfsilent>
 						<cfset colorIndex=colorIndex+1>
-						<cfif colorIndex lt arrayLen(this.calendarcolors)>
+						<cfif colorIndex gt arrayLen(this.calendarcolors)>
 							<cfset colorIndex=1>
 						</cfif>
 					</cfsilent>
