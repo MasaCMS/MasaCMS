@@ -167,6 +167,14 @@
 				hiddenCalendars=[];
 			}
 
+			var currentTime=window.localStorage.getItem('muraCalendarDate');
+
+			if(currentTime){
+				currentTime=JSON.parse(currentTime);
+			} else {
+				currentTime=Date.now();
+			}
+
 			var colors=#lcase(serializeJSON(this.calendarcolors))#;
 			var calendars=#lcase(serializeJSON(objectparams.items))#;
 			var eventSources=[
@@ -241,7 +249,8 @@
 							, loading: function(isLoading) {
 									$('##mura-calendar-loading').toggle(isLoading);
 							}
-							, eventLimit: true
+							, eventLimit: true,
+							now: currentTime
 						});
 						
 						<cfif arrayLen(objectParams.items) eq 1>
