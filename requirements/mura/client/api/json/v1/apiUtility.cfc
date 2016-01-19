@@ -44,7 +44,7 @@ component extends="mura.cfobject" {
 		
 		variables.config={
 			linkMethods=[],
-			publicMethods="findOne,findMany,findAll,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent",
+			publicMethods="findOne,findMany,findAll,findNew,findQuery,save,delete,findCrumbArray,generateCSRFTokens,validateEmail,login,logout,submitForm,findCalendarItems,validate,processAsyncObject,findRelatedContent,getURLForImage",
 			entities={
 				'contentnav'={
 					fields="parentid,moduleid,path,contentid,contenthistid,changesetid,siteid,active,approved,title,menutitle,summary,tags,type,subtype,displayStart,displayStop,display,filename,url,assocurl,isNew"
@@ -2156,6 +2156,11 @@ component extends="mura.cfobject" {
 		var tokens=getBean('$').init(arguments.siteid).generateCSRFTokens(context=arguments.context);
 
 		return {csrf_token=tokens.token,csrf_token_expires=tokens.expires};
+	}
+
+	function getURLForImage(fileid,size='small',height='auto',width='auto',siteid,complete=true,secure=false,useProtocol=false){
+		var $=getBean('$').init(arguments.siteid);
+		return {url=$.getURLForImage(argumentCollection=arguments)};
 	}
 
 }

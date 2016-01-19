@@ -252,6 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="width" default=""/>
 	<cfargument name="default" default=""/>
 	<cfargument name="secure" default="false">
+	<cfargument name="useProtocol" default="true">
 	<cfset arguments.bean=this>
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>

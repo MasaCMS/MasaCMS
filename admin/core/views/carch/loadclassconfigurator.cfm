@@ -63,6 +63,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset data=structNew()>
 	<cfset filefound=false>
 	<cfset $=rc.$>
+
+	<cfset $.event('contentBean',$.getBean('content').loadBy(contehistid=rc.contenthistid))>
+
 	<cfif rc.classid eq "category_summary" and not application.configBean.getValue(property='allowopenfeeds',defaultValue=false)>
 		<cfset rc.classid='navigation'>
 	</cfif>

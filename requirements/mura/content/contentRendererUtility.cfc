@@ -1846,7 +1846,7 @@
 		</cfif>
 
 		<cfset var filePath="">
-
+		
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
 		<cfif len(filePath)>

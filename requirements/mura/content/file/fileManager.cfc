@@ -800,6 +800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
 <cfargument name="secure" default="false">
+<cfargument name="useProtocol" default="true">
 
 	<cfset var imgSuffix="">
 	<cfset var returnURL="">
@@ -825,10 +826,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		AND len(variables.$.event('siteID')) 
 		AND variables.$.event('siteID') neq arguments.siteID
 		AND !isValid('URL', application.configBean.getAssetPath())>
-		<cfif arguments.secure>
-			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfif arguments.useProtocol>
+			<cfif arguments.secure>
+				<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfelse>
+				<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			</cfif>
 		<cfelse>
-			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset begin='//#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		</cfif>
 	<cfelse>
 		<cfset var begin="">
