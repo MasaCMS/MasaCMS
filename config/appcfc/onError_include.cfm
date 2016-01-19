@@ -55,6 +55,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			hasesapiencode=true;
 		} catch (Any e){
 			hasesapiencode=false;
+
+			try{
+				encodeForHTML('html');
+				hasencodeforhtml=true;
+			} catch (Any e){
+				hasencodeforhtml=false;
+			}
 		}
 	</cfscript>
 
@@ -130,8 +137,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.Message)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.Message)#
+			<cfelse>
+				#htmlEditFormat(errorData.Message)#
 			</cfif>
 			</cfoutput><br /></h2>
 		</cfif>
@@ -139,8 +148,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3><cfoutput>Datasource: 
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.DataSource)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.DataSource)#
+			<cfelse>
+				#htmlEditFormat(errorData.DataSource)#
 			</cfif>
 		</cfoutput><br /></h3>
 		</cfif>
@@ -148,8 +159,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h4><cfoutput>SQL:
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.sql)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.sql)#
+			<cfelse>
+				#htmlEditFormat(errorData.sql)#
 			</cfif>
 			</cfoutput><br /></h4>
 		</cfif>
@@ -157,8 +170,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3><cfoutput>Code: 
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.errorCode)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.errorCode)#
+			<cfelse>
+				#htmlEditFormat(errorData.errorCode)#
 			</cfif>
 			</cfoutput><br /></h3>
 		</cfif>
@@ -166,8 +181,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3><cfoutput>Type: 
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.type)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.type)#
+			<cfelse>
+				#htmlEditFormat(errorData.type)#
 			</cfif>
 			</cfoutput><br /></h3>
 		</cfif>
@@ -175,8 +192,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3><cfoutput>
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.Detail)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.Detail)#
+			<cfelse>
+				#htmlEditFormat(errorData.Detail)#
 			</cfif>
 			</cfoutput><br /></h3>
 		</cfif>
@@ -184,8 +203,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3><cfoutput>
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.extendedInfo)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.extendedInfo)#
+			<cfelse>
+				#htmlEditFormat(errorData.extendedInfo)#
 			</cfif>
 			</cfoutput><br /></h3>
 		</cfif>
@@ -193,8 +214,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<pre><cfoutput>
 			<cfif hasesapiencode>
 				#esapiEncode('html',errorData.StackTrace)#
-			<cfelse>
+			<cfelseif hasencodeforhtml>
 				#encodeForHTML(errorData.StackTrace)#
+			<cfelse>
+				#htmlEditFormat(errorData.StackTrace)#
 			</cfif></cfoutput></pre><br />
 		</cfif>
 		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
@@ -220,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isDefined('errorContexts.TYPE')>
 						Type: #esapiEncode('html',errorContexts.TYPE)#<br />
 					</cfif>
-				<cfelse>
+				<cfelseif hasencodeforhtml>
 					<cfif isDefined('errorContexts.COLUMN')>
 					Column: #encodeForHTML(errorContexts.COLUMN)#<br />
 					</cfif>
@@ -238,6 +261,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif isDefined('errorContexts.TYPE')>
 						Type: #encodeForHTML(errorContexts.TYPE)#<br />
+					</cfif>
+				<cfelse>
+					<cfif isDefined('errorContexts.COLUMN')>
+					Column: #htmlEditFormat(errorContexts.COLUMN)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.ID')>
+						ID: #htmlEditFormat(errorContexts.ID)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.Line')>
+						Line: #htmlEditFormat(errorContexts.Line)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.RAW_TRACE')>
+						Raw Trace: #htmlEditFormat(errorContexts.RAW_TRACE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TEMPLATE')>
+						Template: #htmlEditFormat(errorContexts.TEMPLATE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TYPE')>
+						Type: #htmlEditFormat(errorContexts.TYPE)#<br />
 					</cfif>
 				</cfif>
 				<br />
