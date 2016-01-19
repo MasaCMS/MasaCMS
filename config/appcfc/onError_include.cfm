@@ -51,8 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfscript>
 		try{
 			esapiencode('html','test');
+
+			hasesapiencode=true;
 		} catch (Any e){
-			include '/mura/backport/esapiencode.cfm';
+			hasesapiencode=false;
 		}
 	</cfscript>
 
@@ -124,50 +126,119 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset errorData=arguments.exception>
 		</cfif>
 		<cfif isdefined('errorData.Message') and len(errorData.Message)>
-			<h2><cfoutput>#esapiEncode('html',errorData.Message)#</cfoutput><br /></h2>
+			<h2>
+			<cfoutput>
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.Message)#
+			<cfelse>
+				#encodeForHTML(errorData.Message)#
+			</cfif>
+			</cfoutput><br /></h2>
 		</cfif>
 		<cfif isdefined('errorData.DataSource') and len(errorData.DataSource)>
-			<h3><cfoutput>Datasource: #esapiEncode('html',errorData.DataSource)#</cfoutput><br /></h3>
+			<h3><cfoutput>Datasource: 
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.DataSource)#
+			<cfelse>
+				#encodeForHTML(errorData.DataSource)#
+			</cfif>
+		</cfoutput><br /></h3>
 		</cfif>
 		<cfif isdefined('errorData.sql') and len(errorData.sql)>
-			<h4><cfoutput>SQL: #esapiEncode('html',errorData.sql)#</cfoutput><br /></h4>
+			<h4><cfoutput>SQL:
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.sql)#
+			<cfelse>
+				#encodeForHTML(errorData.sql)#
+			</cfif>
+			</cfoutput><br /></h4>
 		</cfif>
 		<cfif isdefined('errorData.errorCode') and len(errorData.errorCode)>
-			<h3><cfoutput>Code: #esapiEncode('html',errorData.errorCode)#</cfoutput><br /></h3>
+			<h3><cfoutput>Code: 
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.errorCode)#
+			<cfelse>
+				#encodeForHTML(errorData.errorCode)#
+			</cfif>
+			</cfoutput><br /></h3>
 		</cfif>
-		<cfif isdefined('errorData.type') and len(errorData.errorCode)>
-			<h3><cfoutput>Type: #esapiEncode('html',errorData.errorCode)#</cfoutput><br /></h3>
+		<cfif isdefined('errorData.type') and len(errorData.type)>
+			<h3><cfoutput>Type: 
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.type)#
+			<cfelse>
+				#encodeForHTML(errorData.type)#
+			</cfif>
+			</cfoutput><br /></h3>
 		</cfif>
 		<cfif isdefined('errorData.Detail') and len(errorData.Detail)>
-			<h3><cfoutput>#esapiEncode('html',errorData.Detail)#</cfoutput><br /></h3>
+			<h3><cfoutput>
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.Detail)#
+			<cfelse>
+				#encodeForHTML(errorData.Detail)#
+			</cfif>
+			</cfoutput><br /></h3>
 		</cfif>
 		<cfif isdefined('errorData.extendedInfo') and len(errorData.extendedInfo)>
-			<h3><cfoutput>#esapiEncode('html',errorData.extendedInfo)#</cfoutput><br /></h3>
+			<h3><cfoutput>
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.extendedInfo)#
+			<cfelse>
+				#encodeForHTML(errorData.extendedInfo)#
+			</cfif>
+			</cfoutput><br /></h3>
 		</cfif>
 		<cfif isdefined('errorData.StackTrace')>
-			<pre><cfoutput>#esapiEncode('html',errorData.StackTrace)#</cfoutput></pre><br />
+			<pre><cfoutput>
+			<cfif hasesapiencode>
+				#esapiEncode('html',errorData.StackTrace)#
+			<cfelse>
+				#encodeForHTML(errorData.StackTrace)#
+			</cfif></cfoutput></pre><br />
 		</cfif>
 		<cfif isDefined('errorData.TagContext') and isArray(errorData.TagContext)>
 			<cfloop array="#errorData.TagContext#" index="errorContexts">
 				<cfoutput>
 				<hr />
-				<cfif isDefined('errorContexts.COLUMN')>
-					Column: #esapiEncode('html',errorContexts.COLUMN)#<br />
-				</cfif>
-				<cfif isDefined('errorContexts.ID')>
-					ID: #esapiEncode('html',errorContexts.ID)#<br />
-				</cfif>
-				<cfif isDefined('errorContexts.Line')>
-					Line: #esapiEncode('html',errorContexts.Line)#<br />
-				</cfif>
-				<cfif isDefined('errorContexts.RAW_TRACE')>
-					Raw Trace: #esapiEncode('html',errorContexts.RAW_TRACE)#<br />
-				</cfif>
-				<cfif isDefined('errorContexts.TEMPLATE')>
-					Template: #esapiEncode('html',errorContexts.TEMPLATE)#<br />
-				</cfif>
-				<cfif isDefined('errorContexts.TYPE')>
-					Type: #esapiEncode('html',errorContexts.TYPE)#<br />
+				<cfif hasesapiencode>
+					<cfif isDefined('errorContexts.COLUMN')>
+						Column: #esapiEncode('html',errorContexts.COLUMN)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.ID')>
+						ID: #esapiEncode('html',errorContexts.ID)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.Line')>
+						Line: #esapiEncode('html',errorContexts.Line)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.RAW_TRACE')>
+						Raw Trace: #esapiEncode('html',errorContexts.RAW_TRACE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TEMPLATE')>
+						Template: #esapiEncode('html',errorContexts.TEMPLATE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TYPE')>
+						Type: #esapiEncode('html',errorContexts.TYPE)#<br />
+					</cfif>
+				<cfelse>
+					<cfif isDefined('errorContexts.COLUMN')>
+					Column: #encodeForHTML(errorContexts.COLUMN)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.ID')>
+						ID: #encodeForHTML(errorContexts.ID)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.Line')>
+						Line: #encodeForHTML(errorContexts.Line)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.RAW_TRACE')>
+						Raw Trace: #encodeForHTML(errorContexts.RAW_TRACE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TEMPLATE')>
+						Template: #encodeForHTML(errorContexts.TEMPLATE)#<br />
+					</cfif>
+					<cfif isDefined('errorContexts.TYPE')>
+						Type: #encodeForHTML(errorContexts.TYPE)#<br />
+					</cfif>
 				</cfif>
 				<br />
 				</cfoutput>
