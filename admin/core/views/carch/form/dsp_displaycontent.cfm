@@ -378,7 +378,7 @@
 				if($('##displayIntervalDetectConflicts').is(':checked')){
 					$('##mura-detectspan-container').show();
 				} else {
-					$('##mura-detectspan-container').show();
+					$('##mura-detectspan-container').hide();
 				}
 				
 			}
