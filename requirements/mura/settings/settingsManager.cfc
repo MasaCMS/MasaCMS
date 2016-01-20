@@ -383,6 +383,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfloop query="rs">
 		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+		<cfset builtSites['#rs.siteid#'].discoverBeans()>
+		<cfset builtSites['#rs.siteid#'].discoverHandlers()>
  	</cfloop>
 	
 </cffunction>

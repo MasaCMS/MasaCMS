@@ -23,7 +23,7 @@
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'
 							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type'))
-							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & $.content('subtype'))
+							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('type') & '/' & $.content('subtype'))
 							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
 							)
 							and evaluate(displayobjects['#key#'].condition)>

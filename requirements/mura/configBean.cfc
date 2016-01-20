@@ -1755,4 +1755,106 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="registerBeanDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfset var rs="">
+	<cfif directoryExists(expandPath(arguments.dir))>		
+		<cfif not isDefined('arguments.package')>
+			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
+		</cfif>	
+		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
+		<cfloop query="rs">
+			<cfif rs.type eq 'dir'>
+				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfelse>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				</cfif>
+			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+				<cfset registerBean(componentPath="#package#.#listFirst(rs.name,'.')#",siteid=arguments.siteid,moduleid=arguments.moduleid)>
+			</cfif>
+		</cfloop>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerBean" output="false">
+	<cfargument name="componentPath">
+	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfset var ioc=getServiceFactory()>
+	<cfset var checkSchema=isDefined('url.applydbupdates')>
+	<cfset var isSingleton=listFindNoCase(arguments.componentPath,'entities','.') or listFindNoCase(arguments.componentPath,'beans','.')>
+	<cfset var isORM=false>
+	<cfset var isPublic=false>
+	<cfset var beanName=listLast(arguments.componentPath,'.')>
+	<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
+	<cfset var levelObj=metadata>
+	<cfloop condition="structKeyExists(levelObj,'extends')">
+		<cfif isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public>
+			<cfset isPublic=true>
+		</cfif>
+		<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
+			<cfset isORM=true>
+			<cfbreak>
+		</cfif>
+		<cfset levelObj=levelObj.extends>
+	</cfloop>
+	<cfset ioc.declareBean(beanName=beanName, dottedPath='#arguments.componentPath#', isSingleton =isSingleton )>
+	<cfif isDefined('metadata.entityname') and metadata.entityname neq beanName>
+		<cfset beanName=metadata.entityname>
+		<cfset ioc.addAlias(metadata.entityname,beanName)>
+	</cfif>
+	<cfif isORM>
+		<cfif checkSchema>
+			<cfset ioc.getBean(beanName).checkSchema()>
+		</cfif>
+
+		<cfloop list="#arguments.siteid#" index="local.i">
+			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
+				moduleid=arguments.moduleid,
+				public=isPublic
+			})>
+		</cfloop>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="registerHandlerDir" output="false">
+	<cfargument name="dir">
+	<cfargument name="package">
+	<cfargument name="siteid" hint="Can be a list">
+	<cfargument name="moduleid" default="00000000000000000000000000000000000">
+	<cfset var rs="">
+	<cfif directoryExists(expandPath(arguments.dir))>
+		<cfif not isDefined('arguments.package')>
+			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
+		</cfif>		
+		<cfset var beanName=''>
+		<cfset var beanInstance=''>
+		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
+		<cfloop query="rs">
+			<cfif rs.type eq 'dir'>
+				<cfif listFindNoCase('handlers,eventHandlers',rs.name)>
+					<cfset registerHandlerDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				<cfelse>
+					<cfset registerBeanDir(dir=listAppend(arguments.dir,rs.name,'/'),package=arguments.package & "." & rs.name,siteid=arguments.siteid,moduleid=arguments.moduleid)>
+				</cfif>
+			<cfelseif listLast(rs.name,'.') eq 'cfc'>
+				<cfset beanName=listFirst(rs.name,'.')>
+				<cfset beanInstance=createObject('component','#package#.#beanName#').init()>
+				<cfset var applyglobal=true>
+				<cfloop list="#arguments.siteid#" index="local.i">
+					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyglobal)>
+					<cfset var applyglobal=true>
+				</cfloop>
+			</cfif>	
+		</cfloop>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 </cfcomponent>

@@ -2782,4 +2782,15 @@ select * from rs order by name
 	<cfreturn pluginFileLocation>
 </cffunction>
 
+<cffunction name="discoverBeans" output="false">
+	<cfset var rs="">
+	<cfquery name="rs">
+		select moduleid from tplugins where deployed >=1 order by loadPriority desc
+	</cfquery>
+	<cfloop query="rs">
+		<cfset getConfig(id=rs.moduleid).discoverBeans().discoverHandlers()>
+	</cfloop>
+	<cfreturn this>
+</cffunction>
+
 </cfcomponent>
