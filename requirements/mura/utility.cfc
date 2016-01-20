@@ -494,15 +494,15 @@ Blog: www.codfusion.com--->
 	<cftry>
 		<cfif isdefined('session.CFID')>
 			<cfif server.coldfusion.productname neq 'Coldfusion Server'>
-				<cfset setCookie('cfid', session.CFID, "never", "", "/", application.configBean.getSecureCookies(), true, true)>
-				<cfset setCookie('cftoken', session.CFTOKEN, "never", "", "/", application.configBean.getSecureCookies(), true, true)>
+				<cfset setCookie('cfid', session.CFID, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
+				<cfset setCookie('cftoken', session.CFTOKEN, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
 			<cfelse>
-				<cfcookie name="CFID" value="#session.CFID#" expires="never" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
-				<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="never" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+				<cfcookie name="CFID" value="#session.CFID#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+				<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 			</cfif>
 		</cfif>
 		<cfif isdefined('session.jsessionid')>
-			<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="never" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+			<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 		</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
