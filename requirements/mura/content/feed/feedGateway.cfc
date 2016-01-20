@@ -345,6 +345,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 												<cfif not openGrouping>and</cfif> (
 												<cfset openGrouping=true />
+											<cfelseif listFindNoCase("and not (",param.getRelationship())>
+												<cfif not openGrouping>and</cfif> not (
+												<cfset openGrouping=true />
+											<cfelseif listFindNoCase("or not (",param.getRelationship())>
+												<cfif not openGrouping>or</cfif> not (
+												<cfset openGrouping=true />
 											<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 												)
 												<cfset openGrouping=false />
@@ -360,7 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 													#param.getFieldStatement()# 
 
 													<cfif param.getCriteria() eq 'null'>
-														IS NULL
+														#param.getCondition()# NULL
 													<cfelse>
 														#param.getCondition()# 
 														<cfif isListParam> (</cfif>
@@ -375,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 															#param.getFieldStatement()# 
 
 															<cfif param.getCriteria() eq 'null'>
-																IS NULL
+																#param.getCondition()# NULL
 															<cfelse>
 																#param.getCondition()# 
 																<cfif isListParam>(</cfif>
@@ -411,7 +417,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 														</cfif>
 														
 														<cfif param.getCriteria() eq 'null'>
-															IS NULL
+															#param.getCondition()# NULL
 														<cfelse>
 															#param.getCondition()# 
 															<cfif isListParam> (</cfif>
@@ -635,6 +641,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND tcontent.searchExclude = 0
 				</cfif>
 
+				AND tcontent.contentid <> '00000000000000000000000000000000001'
 				AND tcontent.type <>'Module'
 
 				<!--- rsParams --->
@@ -668,6 +675,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 								<cfif not openGrouping>and</cfif> (
 								<cfset openGrouping=true />
+							<cfelseif listFindNoCase("and not (",param.getRelationship())>
+								<cfif not openGrouping>and</cfif> not (
+								<cfset openGrouping=true />
+							<cfelseif listFindNoCase("or not (",param.getRelationship())>
+								<cfif not openGrouping>or</cfif> not (
+								<cfset openGrouping=true />
 							<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 								)
 								<cfset openGrouping=false />
@@ -683,7 +696,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									#param.getFieldStatement()# 
 
 									<cfif param.getCriteria() eq 'null'>
-										IS NULL
+										#param.getCondition()# NULL
 									<cfelse>
 										#param.getCondition()# 
 										<cfif isListParam>(</cfif>
@@ -698,7 +711,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											#param.getFieldStatement()# 
 											
 											<cfif param.getCriteria() eq 'null'>
-												IS NULL
+												#param.getCondition()# NULL
 											<cfelse>
 												#param.getCondition()# 
 												<cfif isListParam>(</cfif>
@@ -743,7 +756,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfif>
 
 											<cfif param.getCriteria() eq 'null'>
-												IS NULL
+												#param.getCondition()# NULL
 											<cfelse>
 												#param.getCondition()#
 												<cfif isListParam>(</cfif>
@@ -1087,29 +1100,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var previewData="">
 	<cfoutput>
 		<cfif arguments.activeOnly>
-			<cfif request.muraChangesetPreview>
+			<cfif isDefined('session.mura')>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
-				and (
-						(#arguments.table#.active = 1
-						<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-						)
-						
-						or 
-						
-						(
-						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-						)	
-					)
-				<cfelse>	
-					and #arguments.table#.active = 1
+			</cfif>
+			<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1
 					<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-				</cfif>
-			<cfelse>
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)	
+				)
+			<cfelse>	
 				and #arguments.table#.active = 1
 				<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
-			</cfif>	
+			</cfif>
 		</cfif>
 	</cfoutput>
 </cffunction>

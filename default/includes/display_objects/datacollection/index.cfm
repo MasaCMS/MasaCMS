@@ -68,22 +68,31 @@
 	</cfsilent>
 
 	<cfoutput>
-    <cfif request.muraFrontEndRequest and this.asyncObjects and isJson(bean.getBody())>
-        <div class="mura-async-object" 
-          data-object="form" 
-          data-objectid="#esapiEncode('html_attr',bean.getContentID())#" 
-          data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" 
-          data-objectparams=#serializeJSON(objectParams)#>
-        </div>
+    <cfif this.asyncObjects and (isJson(bean.getBody()) or this.layoutmanager)>
+        <cfif this.layoutmanager>
+          <cfset objectparams.responsechart=bean.getResponseChart()>
+          <cfset objectparams.async=true>
+        <cfelse>
+          <div class="mura-async-object" 
+            data-object="form"
+            data-objectname="Form"  
+            data-objectid="#esapiEncode('html_attr',bean.getContentID())#" 
+            data-responsechart="#esapiEncode('html_attr',bean.getResponseChart())#" 
+            data-objectparams=#serializeJSON(objectParams)#>
+          </div>
+        </cfif>
+        
     <cfelse>
         <cfif not bean.getIsNew() and bean.getIsOnDisplay()>
           <cfset variables.rsForm=bean.getAllValues()>
           #$.getBean('dataCollectionBean')
             .set($.event().getAllValues())
             .render($)#
-          <cfelse>
-            <cfset request.muraValidObject=false>
+        <cfelseif listFindNoCase('author,editor',variables.$.event('r').perm)>  
+          <p>This Form has not been configured.</p>
+        <cfelse>
+          <cfset request.muraValidObject=false>
         </cfif>
-    </cfif>	
+    </cfif>
 	</cfoutput>
 </cfif>

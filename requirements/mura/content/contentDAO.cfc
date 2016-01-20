@@ -67,6 +67,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.utility=arguments.utility>
+		<cfset variables.uselayoutmanager=variables.configBean.getValue(property='layoutmanager',defaultValue=false)>
+		
+		<cfif variables.uselayoutmanager>
+			<cfset variables.fieldlist=listAppend(variables.fieldlist,'tcontent.objectParams')>
+		</cfif>
 <cfreturn this />
 </cffunction>
 
@@ -483,7 +488,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
 			where 
 			<cfif arguments.filename neq ''>
-			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
+			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#lcase(arguments.filename)#" />
 			#renderActiveClause("tcontent",arguments.siteID)#
 			and tcontent.type in('Page','Folder','Calendar','Gallery','File','Link') 
 			<cfelse>
@@ -568,7 +573,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	  majorVersion,
 	  minorVersion,
 	  expires,
-	  displayInterval)
+	  displayInterval
+	  <cfif variables.uselayoutmanager>
+	  ,objectParams
+	  </cfif>)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -701,6 +709,9 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			null
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getDisplayInterval() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getDisplayInterval()#">
+		<cfif variables.uselayoutmanager>
+			,<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getObjectParams(serialize=true) neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getObjectParams(serialize=true)#">
+		 </cfif>
 		)
  </CFQUERY>
 
@@ -1186,7 +1197,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="siteID" type="string" required="yes" default="" />
 	<cfargument name="oldContentHistID" type="string" required="yes" default="" />
 	<cfargument name="bean" />
-	<cfset var I = "">
+	<cfset var i = "">
+	<cfset var s = "">
 	<cfset var j = "">
 	<cfset var rcs = "">
 	<cfset var item = "">
@@ -1196,17 +1208,31 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rsCheck="">
 	<cfset var relatedBean="">
 	<cfset var relatedIDList=structNew()>
+	<cfset var relatedContentSets=variables.configBean
+			.getClassExtensionManager()
+			.getSubTypeByName(arguments.bean.getValue('type'), arguments.bean.getValue('subtype'), arguments.bean.getValue('siteid'))
+			.getRelatedContentSets(includeInheritedSets=true)>
 
 	<cfif isDefined('arguments.data.relatedContentSetData') and ((isArray(arguments.data.relatedContentSetData) and arrayLen(arguments.data.relatedContentSetData) gte 1) or isJSON(arguments.data.relatedContentSetData))>
-	
 		<cfif isJSON(arguments.data.relatedContentSetData)>
 			<cfset rcsData = deserializeJSON(arguments.data.relatedContentSetData)>
 		<cfelseif isArray(arguments.data.relatedContentSetData)>
 			<cfset rcsData = arguments.data.relatedContentSetData>
 		</cfif>
+	<cfelse>
+		<cfset rcsData=[]>
+	</cfif>
 
-		<cfloop from="1" to="#arrayLen(rcsData)#" index="i">
-			<cfset rcs = rcsData[i]>
+	<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="i">
+		<cfset rcs=''>
+		<cfloop from="1" to="#arrayLen(rcsData)#" index="s">
+			<cfif relatedContentSets[i].getRelatedContentSetId() eq rcsData[s].relatedContentSetID>
+				<cfset rcs = rcsData[s]>
+				<cfbreak>
+			</cfif>
+		</cfloop>
+
+		<cfif isStruct(rcs)>
 			<cfset relatedIDList['setid-#rcs.relatedContentSetID#'] = "">
 			<cfloop from="1" to="#arrayLen(rcs.items)#" index="j">
 				<cfif isStruct(rcs.items[j])>
@@ -1275,27 +1301,26 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					<cfset relatedIDList['setid-#rcs.relatedContentSetID#']=listAppend(relatedIDList['setid-#rcs.relatedContentSetID#'],relatedID)>
 				</cfif>
 			</cfloop>
-			
-		</cfloop>
-	<cfelseif arguments.oldContentHistID neq ''>
-		<cfset rsRelatedContent = readRelatedItems(arguments.oldContentHistID, arguments.siteID)>
-		<cfloop query="rsRelatedContent">
-			<cftry>
-				<cfquery>
-					insert into tcontentrelated (contentID,contentHistID,relatedID,siteid,relatedContentSetID,orderNo)
-					values (
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsRelatedContent.relatedID#"/>,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsRelatedContent.relatedContentSetID#"/>,
-					<cfqueryparam cfsqltype="cf_sql_integer" value="#rsRelatedContent.orderNo#"/>
-					)
-				</cfquery>
-				<cfcatch></cfcatch>
-			</cftry>
-		</cfloop>
-	</cfif>
+		<cfelseif arguments.oldContentHistID neq ''>
+			<cfset rsRelatedContent = readRelatedItems(contenthistid=arguments.oldContentHistID, siteid=arguments.siteID, relatedContentSetID=relatedContentSets[i].getRelatedContentSetId())>
+			<cfloop query="rsRelatedContent">
+				<cftry>
+					<cfquery>
+						insert into tcontentrelated (contentID,contentHistID,relatedID,siteid,relatedContentSetID,orderNo)
+						values (
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsRelatedContent.relatedID#"/>,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsRelatedContent.relatedContentSetID#"/>,
+						<cfqueryparam cfsqltype="cf_sql_integer" value="#rsRelatedContent.orderNo#"/>
+						)
+					</cfquery>
+					<cfcatch></cfcatch>
+				</cftry>
+			</cfloop>
+		</cfif>
+	</cfloop>
 
 </cffunction> 
 
@@ -1312,12 +1337,17 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="readRelatedItems" returntype="query" access="public" output="false">
 	<cfargument name="contentHistID" type="string" required="yes" default="" />
 	<cfargument name="siteid" type="string" required="yes" default="" />
+	<cfargument name="relatedcontentsetid" type="string" required="yes" default="" />
 	
 	 <cfset var rsRelatedItems =""/>
 	
 	<cfquery name="rsRelatedItems">
 		select relatedID, relatedContentSetID, orderNo from tcontentrelated
-		where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> 
+		and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		<cfif len(arguments.relatedcontentsetid)>
+			and relatedcontentsetid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.relatedcontentsetid#"/>
+		</cfif>
 	</cfquery>
 	
 	<cfreturn rsRelatedItems />
@@ -1504,27 +1534,24 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfargument name="siteID">
 	<cfset var previewData="">
 	<cfoutput>
-			<cfif request.muraChangesetPreview>
-				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif isDefined('previewData') and len(previewData.contentIDList)>
-					and (
-							(#arguments.table#.active = 1			
-							and #arguments.table#.contentID not in (#previewData.contentIDList#)	
-							)
-							
-							or 
-							
-							(
-							#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-							)		
-						)	
-				<cfelse>
-					and #arguments.table#.active = 1	
-				</cfif>
-			<cfelse>
-				and #arguments.table#.active = 1
-				
-			</cfif>	
+		<cfif isDefined('session.mura')>
+			<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+		</cfif>
+		<cfif isStruct(previewData) and previewData.siteID eq arguments.siteid and isDefined('previewData.contentIDList') and len(previewData.contentIDList)>
+			and (
+					(#arguments.table#.active = 1			
+					and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+					)
+					
+					or 
+					
+					(
+					#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+					)		
+				)	
+		<cfelse>
+			and #arguments.table#.active = 1	
+		</cfif>	
 	</cfoutput>
 </cffunction>
 

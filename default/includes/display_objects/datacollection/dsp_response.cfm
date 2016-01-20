@@ -123,6 +123,7 @@
 		</cfif>
 	
 		<cfif isdefined("request.redirect_url")>
+			<cfset request.redirect_url=variables.$.getBean('utility').sanitizeHref(request.redirect_url)>
 			<cfset variables.customResponse=application.pluginManager.renderEvent("onBeforeFormSubmitRedirect",variables.event)>
 			<cfif len(variables.customResponse)>
 				#variables.customResponse#

@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="restrictGroups" type="string" default=""/>
 <cfproperty name="version" type="string" default="RSS 2.0" required="true" />
 <cfproperty name="channelLink" type="string" default=""/>
+<cfproperty name="authtype" type="string" default="DEFAULT"/>
 <cfproperty name="type" type="string" default="local" required="true" />
 <cfproperty name="sortBy" type="string" default="lastUpdate" required="false" />
 <cfproperty name="sortDirection" type="string" default="desc" required="true" />
@@ -129,6 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.restrictGroups="" />
 	<cfset variables.instance.Version="RSS 2.0" />
 	<cfset variables.instance.ChannelLink="" />
+	<cfset variables.instance.authtype="DEFAULT" />
 	<cfset variables.instance.type="local" />
 	<cfset variables.instance.sortBy="lastUpdate" />
 	<cfset variables.instance.sortDirection="desc" />
@@ -176,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
-    
+   
     <cfif not isDefined('arguments.feed')>
 	    <cfif isSimpleValue(arguments.property)>
 	      <cfreturn setValue(argumentCollection=arguments)>
@@ -186,13 +188,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfif>
     
 	<cfset var prop=""/>
-		
+	
 	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>
 		<cfloop list="#arguments.feed.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.feed[prop][1]) />
 		</cfloop>
 		
 	<cfelseif isStruct(arguments.feed)>
+
 		<cfloop collection="#arguments.feed#" item="prop">
 			<cfset setValue(prop,arguments.feed[prop]) />
 		</cfloop>
@@ -536,7 +539,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 
@@ -611,6 +614,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="clone" output="false">
 	<cfreturn getBean("feed").setAllValues(structCopy(getAllValues()))>
+</cffunction>
+
+<cffunction name="getRemoteData" output="false">
+	<cfreturn getBean('feedManager').getRemoteFeedData(feedURL=variables.instance.channellink,maxItems=variables.instance.maxitems,authtype=variables.instance.authtype)>
 </cffunction>
 
 <cfscript>

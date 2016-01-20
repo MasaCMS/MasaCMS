@@ -144,9 +144,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</div>
 	<!---- If there's nothing in the main body of the dashboard just move on the the site manager--->
-	<cfif not started>
-	<cflocation url="./?muraAction=cArch.list&siteid=#session.siteID#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
-	</cfif>
+	<!--- <cfif not started>
+		<cflocation url="./?muraAction=cArch.list&siteid=#session.siteID#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
+	</cfif> --->
 
 	<div id="contentSecondary" class="sidebar span3">
 

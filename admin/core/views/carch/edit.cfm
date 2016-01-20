@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
 		where 
-			<cfif not len(subtypefilter)>
+			<cfif not len(subtypefilter) or not listFind(nodeLevelList,rc.type)>
 				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
 				or type='Base'
 			<cfelse>
@@ -297,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					confirmDialog(
 						'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
 						function(){
-							if(siteManager.ckContent(draftremovalnotice)){
+							if(siteManager.ckContent(draftremovalnotice,true)){
 								document.contentForm.approved.value=0;
 								document.contentForm.preview.value=0;
 								document.contentForm.murakeepediting.value=true;
@@ -305,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							}
 						},
 						function(){	
-							if(siteManager.ckContent(draftremovalnotice)){
+							if(siteManager.ckContent(draftremovalnotice,true)){
 								document.contentForm.approved.value=0;
 								document.contentForm.preview.value=0;
 								document.contentForm.murakeepediting.value=false;
@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							document.contentForm.murakeepediting.value=true;
 							</cfif>
 
-						    if(siteManager.ckContent(draftremovalnotice)){
+						    if(siteManager.ckContent(draftremovalnotice,true)){
 								submitForm(document.contentForm,'add');
 							} else {
 								document.contentForm.approved.value=0;
@@ -398,13 +398,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentBean.getIsNew()) or not rc.contentBean.getIsNew()>
 <cfoutput>
 	<cfif rc.type eq "Component">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcomponent")#</h1>
+		</cfif>
 	<cfelseif rc.type eq "Form">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createform")#</h1>
+		</cfif>
 	<cfelseif rc.type eq "Variation">
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editvariation")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editvariation")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createvariation")#</h1>
+		</cfif>
 	<cfelse>
-		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
+		<cfif rc.contentBean.exists()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcontent")#</h1>
+		</cfif>
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">
@@ -435,7 +451,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
 							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
 						<cfelseif rc.contentBean.getapproved() lt 1>
-							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							<cfif len(rc.contentBean.getChangesetID())>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
+							<cfelse>
+								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
+							</cfif>
 						<cfelse>
 							#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
 						</cfif>
@@ -529,7 +549,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</cfif>
 
-		<cfif listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+		<cfif not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
 				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
 		</cfif>	
 		
@@ -628,22 +648,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arrayLen(pluginEventMappings)>
 		<cfoutput>
-		<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
-			<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)>
-			<cfif len(trim(renderedEvent))>
-				<cfset tabLabel = Len($.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
-				<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
-				<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
-				<cfif ListFind(tabList,tabID)>
-					<cfset tabID = tabID & i />
+			<cfset renderedEvents = '' />
+			<cfset eventIdx = 0 />
+			<cfloop from="1" to="#arrayLen(pluginEventMappings)#" index="i">
+				<cfset eventToRender = pluginEventMappings[i].eventName />
+
+				<cfif ListFindNoCase(renderedEvents, eventToRender)>
+					<cfset eventIdx++ />
+				<cfelse>
+					<cfset renderedEvents = ListAppend(renderedEvents, eventToRender) />
+					<cfset eventIdx=1 />
 				</cfif>
-				<cfset tabList=listAppend(tabList,tabID)>
-				<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane fade">
-					#renderedEvent#
-				</div>
-			</cfif>
-		</cfloop>
+
+				<cfset renderedEvent=$.getBean('pluginManager').renderEvent(eventToRender=eventToRender,currentEventObject=$,index=eventIdx)>
+				<cfif len(trim(renderedEvent))>
+					<cfset tabLabel = Len($.event('tabLabel')) && !ListFindNoCase(tabLabelList, $.event('tabLabel')) ? $.event('tabLabel') : pluginEventMappings[i].pluginName />
+					<cfset tabLabelList=listAppend(tabLabelList, tabLabel)/>
+					<cfset tabID="tab" & $.createCSSID(tabLabel)>
+					<cfif ListFind(tabList,tabID)>
+						<cfset tabID = tabID & i />
+					</cfif>
+					<cfset tabList=listAppend(tabList,tabID)>
+					<cfset pluginEvent.setValue("tabList",tabLabelList)>
+					<div id="#tabID#" class="tab-pane fade">
+						#renderedEvent#
+					</div>
+				</cfif>
+			</cfloop>
 		</cfoutput>
 	</cfif>
 
@@ -735,6 +766,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />	
+	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
 
 	#rc.$.renderCSRFTokens(context=rc.contentBean.getContentHistID() & "add",format="form")#
 

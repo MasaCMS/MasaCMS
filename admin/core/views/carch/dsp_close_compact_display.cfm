@@ -86,16 +86,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
+	<cfif rc.$.getContentRenderer().useLayoutmanager() and len(rc.instanceid)>
+		<cfif rc.contentBean.getType() eq 'Form'>
+			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{objectid:'#rc.contentBean.getContentId()#'}};
+		<cfelseif rc.contentBean.getType() eq 'Component'>
+			var cmd={cmd:'setObjectParams',reinit:true,instanceid:'#rc.instanceid#',params:{sourceid:'#rc.contentBean.getContentId()#',sourcetype:'component'}};
+		<cfelse>
+			var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
+		</cfif>
+		
+	<cfelse>
+		var cmd={cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")};
+	</cfif>
 	function reload(){
 		if (top.location != self.location) {
 			frontEndProxy = new Porthole.WindowProxy("#esapiEncode('javascript',session.frontEndProxyLoc)##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
-					frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")});
+					frontEndProxy.post({cmd:'scrollToTop'});
+					frontEndProxy.post(cmd);
 				});
 			}
 			else {
-				frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent("#esapiEncode('javascript',href)#")});
+				frontEndProxy.post({cmd:'scrollToTop'});
+				frontEndProxy.post(cmd);
 			}
 			
 		} else {

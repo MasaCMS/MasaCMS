@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="categoryID" fieldtype="id" type="string" default="" />
 <cfproperty name="kids" fieldtype="one-to-many" cfc="category" nested=true orderby="name asc" cascade="delete"/>
 <cfproperty name="parent" fieldtype="many-to-one" cfc="category" fkcolumn="parentid"/>
-<cfproperty name="site" fieldtype="one-to-many" cfc="site" fkcolumn="siteid" />
+<cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteid" />
 <cfproperty name="dateCreated" type="date" default="" />
 <cfproperty name="lastUpdate" type="date" default="" />
 <cfproperty name="lastUpdateBy" type="string" default="" />
@@ -236,11 +236,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 	
 <cffunction name="getParent" output="false" returntype="any">
+	<!---
 	<cfif len(getValue('parentid'))>
+	--->
 		<cfreturn getBean('category').loadBy(categoryID=variables.instance.parentID, siteid=variables.instance.siteID )>
+	<!---
 	<cfelse>
 		<cfthrow message="Parent category does not exist.">
 	</cfif>
+	--->
 </cffunction>
 	
 <cffunction name="getCrumbQuery" output="false" returntype="any">
@@ -260,7 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cCategory.edit&categoryID=#variables.instance.categoryID#&parentID=#variables.instance.parentID#&siteid=#variables.instance.siteID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath()#/?muraAction=cCategory.edit&categoryID=#variables.instance.categoryID#&parentID=#variables.instance.parentID#&siteid=#variables.instance.siteID#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 

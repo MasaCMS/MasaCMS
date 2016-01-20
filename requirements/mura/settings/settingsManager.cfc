@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bundleArgs.bundleImportModuleID = "">
 	<cfset bundleArgs.bundleImportFormDataMode = "none">
 				
-	<cfhttp method="post" url="#serverArgs.serverURL#">
+	<cfhttp attributeCollection='#getHTTPAttrs(method="post",url="#serverArgs.serverURL#")#'>
 		<cfhttpparam name="method" type="url" value="call">
 		<cfhttpparam name="serviceName" type="url" value="bundle">
 		<cfhttpparam name="methodName" type="url" value="deploy">
@@ -365,7 +365,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfobjectcache action="clear"/>
 		<cfcatch></cfcatch>
 	</cftry>
-
 	
 	<cfset rs=getList() />
 
@@ -381,6 +380,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	</cfloop>
 
 	<cfset variables.sites=builtSites>
+
+	<cfloop query="rs">
+		<cfset builtSites['#rs.siteid#'].discoverDisplayObjects()>
+ 	</cfloop>
 	
 </cffunction>
 
@@ -681,18 +684,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(!isDefined("variables.AccessControlOriginList")){
 			lock name="originlist#application.instanceid#" type="exclusive" timeout="10"{
 				if(!isDefined("variables.AccessControlOriginList")){
+					variables.AccessControlOriginList='';
+
+					var admindomain=variables.configBean.getAdminDomain();
+					
+					if(len(admindomain)){
+						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"http://#admindomain#");
+						variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,"https://#admindomain#");
+					}
+
 					var sites=getSites();
 					var originArray=[];
 					var origin='';
-
-					variables.AccessControlOriginList='';
+					
 					for(var site in sites){
 						if(sites[site].getJSONApi()){
 							originArray=listToArray(sites[site].getAccessControlOriginList());
 							if(arrayLen(originArray)){
 								for(origin in originArray){
 									if(!listFind(variables.AccessControlOriginList,origin)){
-										listAppend(variables.AccessControlOriginList,origin);
+										variables.AccessControlOriginList=listAppend(variables.AccessControlOriginList,origin);
 									}
 								}
 							}

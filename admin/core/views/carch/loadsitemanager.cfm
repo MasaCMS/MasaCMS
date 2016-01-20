@@ -106,7 +106,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset icon=icon & " " & rc.rsTop.subtype>
 </cfif>
 <cfset isFileIcon= rc.rsTop.type eq 'File' and listFirst(icon,"-") neq "icon">
+<cfparam name="session.flatViewArgs" default="#structNew()#">
+
+<cfif not structKeyExists(session.flatViewArgs,'#rc.siteid#')>
+    <cfset session.flatViewArgs['#rc.siteid#']={}>
+</cfif>
+
 <cfset session.flatViewArgs["#rc.siteID#"].tab=0>
+
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>	
 </cfsilent>
 

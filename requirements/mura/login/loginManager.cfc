@@ -84,217 +84,410 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="login" access="public" output="false" returntype="void">
-<cfargument name="data" type="struct" />
-<cfargument name="loginObject" type="any"  required="true" default=""/>
-
-<cfset var isloggedin =false />
-<cfset var returnUrl ="" />
-<cfset var site=""/>
-<cfset var returnDomain="">
-<cfset var indexFile="./">
-<cfset var loginURL="" />
-
-<cfparam name="arguments.data.returnUrl" default="" />
-<cfparam name="arguments.data.rememberMe" default="0" />
-<cfparam name="arguments.data.contentid" default="" />
-<cfparam name="arguments.data.linkServID" default="" />
-<cfparam name="arguments.data.isAdminLogin" default="false" />
-<cfparam name="arguments.data.compactDisplay" default="false" />
-
-<cfif arguments.data.isAdminLogin>
-	<cfset indexFile="./">
-</cfif>
-
-<cfset session.rememberMe=arguments.data.rememberMe />
-
-<!--- Make sure that the domain of the returnURL is the same as the current domain--->
-<cfif len(arguments.data.returnURL) and listFindNoCase("http,https",listFirst(arguments.data.returnURL,":"))>
-	<cfset returnDomain = reReplace( arguments.data.returnURL, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
+<cffunction name="handleSuccess" output="false">
+	<cfargument name="returnUrl" default="">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin"default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
 	
-	<cfif len(returnDomain)>
-		<cfif len(cgi.http_host)>	
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,listFirst(cgi.http_host,":"))>
+	<cfset var isloggedin =false />
+	<cfset var site=""/>
+	<cfset var returnDomain="">
+	<cfset var returnProtocol="">
+	<cfset var indexFile="./">
+	<cfset var loginURL="" />
+
+	<cfif isDefined('session.mfa')>
+		<cfset structDelete(session,'mfa')>
+	</cfif>
+
+	<cfif arguments.isAdminLogin>
+		<cfset indexFile="./">
+	</cfif>
+
+	<cfset session.rememberMe=arguments.rememberMe />
+
+	<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+
+		<cfset session.siteArray=arrayNew(1) />
+			<cfloop collection="#variables.settingsManager.getSites()#" item="site">
+			<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
+					<cfset arrayAppend(session.siteArray,site) />
+			</cfif>
+		</cfloop>
+	
+		<cfif arguments.returnUrl eq ''>				
+			<cfif len(arguments.linkServID)>
+				<cfset arguments.returnURL="#indexFile#?LinkServID=#arguments.linkServID#">
+			<cfelse>
+				<cfset arguments.returnURL="#indexFile#">
+			</cfif>	
 		<cfelse>
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,cgi.server_name)>
+			<cfset arguments.returnURL = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
+		</cfif>
+	<cfelseif arguments.returnUrl neq ''>
+		<cfset arguments.returnURL = getBean('utility').sanitizeHREF(replace(arguments.returnUrl, 'doaction=logout', '', 'ALL'))>
+	<cfelse>
+		<cfif len(arguments.linkServID)>
+			<cfset arguments.returnURL="#indexFile#?LinkServID=#arguments.linkServID#">
+		<cfelse>
+			<cfset arguments.returnURL="#indexFile#">
 		</cfif>
 	</cfif>
+
+	<cfset structDelete(session,'mfa')>
+
+	<cfif request.muraAPIRequest>
+		<cfset request.muraJSONRedirectURL=arguments.returnURL>
+	<cfelse>
+		<cflocation url="#arguments.returnURL#" addtoken="false">
+	</cfif>
+
+</cffunction>
+
+<cffunction name="sendAuthCode" output="false">
+	<cfset sendAuthCodeByEmail()>
+</cffunction>
+
+<cffunction name="sendAuthCodeByEmail" output="false">
+<cfset var site=getBean('settingsManager').getSite(session.mfa.siteid)>
+<cfset var contactEmail=site.getContact()>
+<cfset var contactName=site.getSite()>
+<cfset var mailText=site.getSendAuthCodeScript()>
+<cfset var user=getBean('user').loadBy(userid=session.mfa.userid,siteid=session.mfa.siteid)>
+<cfset var firstName=user.getFname()>
+<cfset var lastName=user.getLname()>
+<cfset var email=user.getEmail()>
+<cfset var username=user.getUsername()>
+<cfset var authcode=session.mfa.authcode>
+<cfset var mailer=getBean('mailer')>
+
+<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.deviceauthorizationcode')>
+<cfelse>
+	<cfset var emailtitle=application.rbFactory.getKeyValue(session.rb,'login.authorizationcode')>
 </cfif>
 
-<cfif not isdefined('arguments.data.username')>
+<cfif not len(mailText)>
+<cfsavecontent variable="mailText">
+<cfoutput>#firstName#,
 
-	<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+Here is the authorization code you requested for username: #username#. It expires in the next 3 hours.
+
+Authorization Code: #authcode#
+
+If you did not request a new authorization, contact #contactEmail#.
+</cfoutput>
+</cfsavecontent>
 
 <cfelse>
-	
-	<cfif not isObject(arguments.loginObject)>
-		<cfset isloggedin=variables.userUtility.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
-	<cfelse>
-		<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+	<cfset var finder=refind('##.+?##',mailText,1,"true")>
+	<cfloop condition="#finder.len[1]#">
+		<cftry>
+			<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'#trim(evaluate(mid(mailText, finder.pos[1], finder.len[1])))#')>
+			<cfcatch>
+				<cfset mailText=replace(mailText,mid(mailText, finder.pos[1], finder.len[1]),'')>
+			</cfcatch>
+		</cftry>
+		<cfset finder=refind('##.+?##',mailText,1,"true")>
+	</cfloop>
+</cfif>
+
+<cfset mailer.sendText(trim(mailText),
+	email,
+	contactEmail,
+	emailtitle,
+	user.getSiteID()
+	) />
+
+</cffunction>
+
+<cffunction name="handleChallenge" output="false">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin" default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
+
+	<cfset session.mfa.authcode=userUtility.getRandomPassword()>
+
+	<cfif getBean('configBean').getValue(property='MFASendAuthCode',defaultValue=true)>
+		<cfset sendAuthCode()>
 	</cfif>
-	
-	<cfif isloggedin>
-		
-		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-		
-			<cfset session.siteArray=arrayNew(1) />
-				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
-				<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
-						<cfset arrayAppend(session.siteArray,site) />
-				</cfif>
-			</cfloop>
-		
-			<cfif arguments.data.returnUrl eq ''>				
-				<cfif len(arguments.data.linkServID)>
-					<cflocation url="#indexFile#?LinkServID=#arguments.data.linkServID#" addtoken="false">
-				<cfelse>
-					<cflocation url="#indexFile#" addtoken="false">
-				</cfif>	
-			<cfelse>
-				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
-				<cflocation url="#returnUrl#" addtoken="false">
-			</cfif>
-		<cfelseif arguments.data.returnUrl neq ''>
-			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
-			<cflocation url="#returnUrl#" addtoken="false">
-		<cfelse>
-			<cfif len(arguments.data.linkServID)>
-				<cflocation url="#indexFile#?LinkServID=#arguments.data.linkServID#" addtoken="false">
-			<cfelse>
-				<cflocation url="#indexFile#" addtoken="false">
-			</cfif>
-		</cfif>
+
+	<cfif arguments.isAdminLogin>
+		<cflocation url="./?muraAction=cLogin.main&display=login&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
 	<cfelse>
-		<cfif arguments.data.isAdminLogin>
-			<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.data.compactDisplay)#" addtoken="false">
+		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfif find('?', loginURL)>
+			<cfset loginURL &= "&status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
 		<cfelse>
-			<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
-			<cfif find('?', loginURL)>
-				<cfset loginURL &= "&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" />
-			<cfelse>
-				<cfset loginURL &= "?status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" />
-			</cfif>
+			<cfset loginURL &= "?status=challenge&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		</cfif>
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
 			<cflocation url="#loginURL#" addtoken="false">
 		</cfif>
 	</cfif>
-</cfif>
+
+</cffunction>
+
+<cffunction name="handleFailure" output="false">
+	<cfargument name="rememberMe" default="0">
+	<cfargument name="contentid" default="">
+	<cfargument name="linkServID" default="">
+	<cfargument name="isAdminLogin" default="false">
+	<cfargument name="compactDisplay" default="false">
+	<cfargument name="deviceid" default="">
+	<cfargument name="publicDevice" default="false">
+
+	<cfset structDelete(session,'mfa')>
+
+	<cfif arguments.isAdminLogin>
+		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.compactDisplay)#" addtoken="false">
+	<cfelse>
+		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfif find('?', loginURL)>
+			<cfset loginURL &= "&status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		<cfelse>
+			<cfset loginURL &= "?status=failed&rememberMe=#arguments.rememberMe#&contentid=#arguments.contentid#&LinkServID=#arguments.linkServID#&returnURL=#urlEncodedFormat(arguments.returnUrl)#" />
+		</cfif>
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL=loginURL>
+		<cfelse>
+			<cflocation url="#loginURL#" addtoken="false">
+		</cfif>
+	</cfif>
+</cffunction>
+
+<cffunction name="attemptChallenge" output="false">
+	<cfargument name="$">
+	<cfreturn len(arguments.$.event('authcode')) and isDefined('session.mfa.authcode') and arguments.$.event('authcode') eq session.mfa.authcode>
+</cffunction>
+
+<cffunction name="handleChallengeAttempt" output="false">
+	<cfargument name="$">
+	<cfif isBoolean(arguments.$.event('attemptChallenge')) and arguments.$.event('attemptChallenge')>
+		<cfset var strikes = createObject("component","mura.user.userstrikes").init(session.mfa.username,getBean('configBean'))>
+		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
+		<cfif attemptChallenge($=arguments.$)>
+			<cfset strikes.clear()>
+			<cfreturn true>
+		<cfelse>
+			<cfset strikes.addStrike()>
+		</cfif>
+	</cfif>
+	<cfreturn false>
+</cffunction>
+
+<cffunction name="completedChallenge" output="false">
+	<cfargument name="$">
+	<cfif isDefined('session.mfa')>
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false) and isBoolean(arguments.$.event('rememberdevice')) and arguments.$.event('rememberdevice')>
+			<cfset var userDevice=getBean('userDevice')
+						.loadBy(
+							userid=session.mfa.userid,
+							deviceid=session.mfa.deviceid,
+							siteid=session.mfa.siteid
+						)
+						.setLastLogin(now())
+						.save()>
+		</cfif>
+		<cfset variables.userUtility.loginByUserID(argumentCollection=session.mfa)>
+		<cfset handleSuccess(argumentCollection=session.mfa)>
+	</cfif>	
+</cffunction>
+
+<cffunction name="login" access="public" output="false">
+	<cfargument name="data" type="struct" />
+	<cfargument name="loginObject" type="any"  required="true" default=""/>
+
+	<cfset var isloggedin =false />
+	<cfset var returnUrl ="" />
+	<cfset var site=""/>
+	<cfset var returnDomain="">
+	<cfset var returnProtocol="">
+	<cfset var indexFile="./">
+	<cfset var loginURL="" />
+
+	<cfset structDelete(session,'mfa')>
+
+	<cfparam name="arguments.data.returnUrl" default="" />
+	<cfparam name="arguments.data.rememberMe" default="0" />
+	<cfparam name="arguments.data.contentid" default="" />
+	<cfparam name="arguments.data.linkServID" default="" />
+	<cfparam name="arguments.data.isAdminLogin" default="false" />
+	<cfparam name="arguments.data.compactDisplay" default="false" />
+
+	<cfif not isdefined('arguments.data.username')>
+		<cfif request.muraAPIRequest>
+			<cfset request.muraJSONRedirectURL="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#">
+			<cfreturn false>
+		<cfelse>
+			<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+		</cfif>
+	<cfelse>
+		
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
+			<cfset var rsUser=variables.userUtility.lookupByCredentials(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+
+			<cfif rsUser.recordcount>
+			
+				<cfset var $=getBean('$').init(arguments.data.siteid)>
+
+				<cfset session.mfa={
+					userid=rsuser.userid,
+					siteid=rsuser.siteid,
+					username=rsuser.username,
+					returnUrl=arguments.data.returnURL,
+					rememberMe=arguments.data.rememberMe,
+					contentid=arguments.data.contentid,
+					linkServID=arguments.data.linkServID,
+					isAdminLogin=arguments.data.isAdminLogin,
+					compactDisplay=arguments.data.compactDisplay,
+					deviceid=cookie.originalurltoken}>
+
+				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
+
+					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=session.mfa.userid,deviceid=session.mfa.deviceid,siteid=session.mfa.siteid)>
+					
+					<cfif userDevice.exists()>
+						<cfset userDevice.setLastLogin(now()).save()>
+						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
+						<cfset handleSuccess(argumentCollection=session.mfa)>
+						<cfreturn true>
+					</cfif>	
+				</cfif>
+
+				<cfset handleChallenge(argumentCollection=arguments.data)>
+				<cfreturn false>
+			<cfelse>
+				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
+			</cfif>
+		<cfelse>
+
+			<cfif not isObject(arguments.loginObject)>
+				<cfset isloggedin=variables.userUtility.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+			<cfelse>
+				<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+			</cfif>
+			
+			<cfif isloggedin>
+				<cfset handleSuccess(argumentCollection=arguments.data)>
+				<cfreturn true>
+			<cfelse>
+				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
+			</cfif>
+
+		</cfif>
+	</cfif>
 
 </cffunction>
 
 <cffunction name="remoteLogin" access="public" output="false" returntype="any">
-<cfargument name="data" type="struct" />
-<cfargument name="loginObject" type="any"  required="true" default=""/>
+	<cfargument name="data" type="struct" />
+	<cfargument name="loginObject" type="any"  required="true" default=""/>
 
-<cfset var isloggedin =false />
-<cfset var returnUrl ="" />
-<cfset var site=""/>
+	<cfset var isloggedin =false />
+	<cfset var returnUrl ="" />
+	<cfset var site=""/>
 
-<cfif not isdefined('arguments.data.username')
-	or not isdefined('arguments.data.password')
-	or not isdefined('arguments.data.siteid')>
+	<cfif not isdefined('arguments.data.username')
+		or not isdefined('arguments.data.password')
+		or not isdefined('arguments.data.siteid')>
 
-	<cfreturn false>
-
-<cfelse>
-	
-	<cfif not isObject(arguments.loginObject)>
-		<cfset isloggedin=variables.userUtility.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
-	<cfelse>
-		<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
-	</cfif>
-	
-	<cfif isloggedin>
-		
-		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-			<cfset session.siteArray=arrayNew(1) />
-				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
-				<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
-						<cfset arrayAppend(session.siteArray,site) />
-				</cfif>
-			</cfloop>
-		</cfif>
-		
-		<cfreturn true>
-	<cfelse>
 		<cfreturn false>
+
+	<cfelse>	
+		<cfreturn login(data=arguments.data)>
 	</cfif>
-</cfif>
 
 </cffunction>
 
-<cffunction name="loginByUserID" access="public" output="true" returntype="void">
-<cfargument name="data" type="struct" />
-<cfset var isloggedin =false />
-<cfset var returnURL=""/>
-<cfset var site=""/>
-<cfset var returnDomain=""/> 
+<cffunction name="loginByUserID" access="public" output="true">
+	<cfargument name="data" type="struct" />
+	<cfset var isloggedin =false />
+	<cfset var returnURL=""/>
+	<cfset var site=""/>
+	<cfset var returnDomain=""/> 
 
-<cfparam name="arguments.data.redirect" default="" />
-<cfparam name="arguments.data.returnUrl" default="" />
-<cfparam name="arguments.data.rememberMe" default="0" />
-<cfparam name="arguments.data.contentid" default="" />
-<cfparam name="arguments.data.linkServID" default="" />
+	<cfparam name="arguments.data.redirect" default="" />
+	<cfparam name="arguments.data.returnUrl" default="" />
+	<cfparam name="arguments.data.rememberMe" default="0" />
+	<cfparam name="arguments.data.contentid" default="" />
+	<cfparam name="arguments.data.linkServID" default="" />
+	<cfparam name="arguments.data.contentid" default="" />
+	<cfparam name="arguments.data.compactDisplay" default="false" />
+	<cfparam name="arguments.data.isAdminLogin" default="false" />
 
-<cfset session.rememberMe=arguments.data.rememberMe />
+	<cfset session.rememberMe=arguments.data.rememberMe />
 
-<!--- Make sure that the domain of the returnURL is the same as the current domain--->
-<cfif len(arguments.data.returnURL) and listFindNoCase("http,https",listFirst(arguments.data.returnURL,":"))>
-	<cfset returnDomain = reReplace( arguments.data.returnURL, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
-	
-	<cfif len(returnDomain)>
-		<cfif len(cgi.http_host)>	
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,listFirst(cgi.http_host,":"))>
-		<cfelse>
-			<cfset arguments.data.returnURL=replace(arguments.data.returnURL,returnDomain,cgi.server_name)>
-		</cfif>
-	</cfif>
-</cfif>
+	<cfif not isdefined('arguments.data.userid')>
 
-<cfif not isdefined('arguments.data.userid')>
+		<cflocation url="./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
-	<cflocation url="./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
-
-<cfelse>
-	
-	<cfset isloggedin=variables.userUtility.loginByUserID(arguments.data.userID,arguments.data.siteid)>
-	
-	<cfif isloggedin>
-		
-		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-		
-			<cfset session.siteArray=arrayNew(1) />
-				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
-				<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
-						<cfset arrayAppend(session.siteArray,site) />
-				</cfif>
-			</cfloop>
-
-			<cfif arguments.data.redirect eq '' and arguments.data.returnUrl eq ''>
-				<cfif len(arguments.data.linkServID)>
-					<cflocation url="./index.cfm?LinkServID=#arguments.data.linkServID#" addtoken="false">
-				<cfelse>
-					<cflocation url="./" addtoken="false">
-				</cfif>
-			<cfelseif arguments.data.returnUrl neq ''>
-				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
-				<cflocation url="#returnUrl#" addtoken="false">
-			<cfelse>
-				<cflocation url="./?muraAction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
-			</cfif>
-		<cfelseif arguments.data.returnUrl neq ''>
-			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
-			<cflocation url="#returnUrl#" addtoken="false">
-		<cfelse>
-			<cfif len(arguments.data.linkServID)>
-				<cflocation url="./index.cfm?LinkServID=#arguments.data.linkServID#" addtoken="false">
-			<cfelse>
-				<cflocation url="./" addtoken="false">
-			</cfif>
-		</cfif>
 	<cfelse>
-		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="false">
+		<cfif getBean('configBean').getValue(property='MFA',defaultValue=false)>
+			<cfset var $=getBean('$').init(arguments.data.siteid)>
+
+			<cfset var user=$.getBean('user').loadBy(userid=arguments.data.userid,siteid=arguments.data.siteid)>
+
+			<cfif user.exists()>
+			
+				<cfset session.mfa={
+					userid=user.getUserID(),
+					siteid=user.getSiteID(),
+					username=user.getUsername(),
+					returnUrl=arguments.data.returnURL,
+					redirect=arguments.data.redirect,
+					rememberMe=arguments.data.rememberMe,
+					contentid=arguments.data.contentid,
+					linkServID=arguments.data.linkServID,
+					isAdminLogin=arguments.data.isAdminLogin,
+					compactDisplay=arguments.data.compactDisplay,
+					deviceid=session.trackingID}>
+
+				<!--- if the deviceid is supplied then check to see if the user has validated the device--->
+				<cfif getBean('configBean').getValue(property='MFAPerDevice',defaultValue=false)>	
+
+					<cfset var userDevice=$.getBean('userDevice').loadBy(userid=arguments.data.userid,deviceid=session.mfa.deviceid)>
+					
+					<cfif userDevice.exists()>
+						<cfset userDevice.setLastLogin(now()).save()>
+						<cfset userUtility.loginByUserId(siteid=rsuser.siteid,userid=rsuser.userid)>
+						<cfset handleSuccess(argumentCollection=session.mfa)>
+						<cfreturn true>
+					</cfif>	
+				</cfif>
+
+				<cfset handleChallenge(argumentCollection=arguments.data)>
+				<cfreturn false>
+			<cfelse>
+				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
+			</cfif>
+		<cfelse>
+			<cfset isloggedin=variables.userUtility.loginByUserID(arguments.data.userID,arguments.data.siteid)>
+			
+			<cfif isloggedin>
+				<cfset handleSuccess(argumentCollection=arguments.data)>
+				<cfreturn true>
+			<cfelse>
+				<cfset handleFailure(argumentCollection=arguments.data)>
+				<cfreturn false>
+			</cfif>
+		</cfif>
 	</cfif>
-</cfif>
 
 </cffunction>
 

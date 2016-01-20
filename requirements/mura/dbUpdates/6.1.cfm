@@ -19,15 +19,15 @@
 	if(getDbType() == 'MySQL'  && dbUtility.version().database_productname=='MySQL'){
 		if(!dbUtility.columnExists('caption')){
 			new Query().execute(sql="ALTER TABLE tfiles
-				ADD COLUMN caption text DEFAULT null,
-				ADD COLUMN credits varchar(255) DEFAULT null,
-				ADD COLUMN alttext varchar(255) DEFAULT null,
-				ADD COLUMN remoteID varchar(255) DEFAULT null,
-				ADD COLUMN remoteURL varchar(255) DEFAULT null,
-				ADD COLUMN remotePubDate datetime DEFAULT null,
-				ADD COLUMN remoteSource varchar(255) DEFAULT null,
-				ADD COLUMN remoteSourceURL varchar(255) DEFAULT null,
-				ADD COLUMN exif text DEFAULT null,
+				ADD COLUMN caption text,
+				ADD COLUMN credits varchar(255),
+				ADD COLUMN alttext varchar(255),
+				ADD COLUMN remoteID varchar(255),
+				ADD COLUMN remoteURL varchar(255),
+				ADD COLUMN remotePubDate datetime,
+				ADD COLUMN remoteSource varchar(255),
+				ADD COLUMN remoteSourceURL varchar(255),
+				ADD COLUMN exif text,
 				ADD INDEX #dbUtility.transformIndexName('siteid')# (siteID),
 				ADD INDEX #dbUtility.transformIndexName('contentid')# (contentID),
 				ADD INDEX #dbUtility.transformIndexName('remoteid')# (remoteID),
@@ -37,7 +37,7 @@
 		try{
 			if(!dbUtility.columnExists('exif')){
 				new Query().execute(sql="ALTER TABLE tfiles
-					ADD COLUMN exif text DEFAULT null");
+					ADD COLUMN exif text");
 			}
 		} catch(Any e){}
 		
@@ -173,14 +173,12 @@
 </cfscript>
 
 <cfquery name="rsCheck">
-select moduleID from tcontent where type='Module' and moduleID='00000000000000000000000000000000015'
+select siteID from tsettings where siteid not in(
+	select siteid from tcontent where type='Module' and moduleID='00000000000000000000000000000000015'
+)
 </cfquery>
 
-<cfif not rsCheck.recordcount>
-	<cfquery name="rsCheck">
-	select siteID from tsettings
-	</cfquery>
-	
+<cfif rsCheck.recordcount>
 	<cfloop query="rsCheck">
 		<cfquery>
 		INSERT INTO tcontent 

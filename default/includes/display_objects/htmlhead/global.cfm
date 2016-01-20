@@ -51,20 +51,21 @@ initMura({
 	siteid:"#variables.$.event('siteID')#",
 	contentid:"#variables.$.content('contentid')#",
 	contenthistid:"#variables.$.content('contenthistid')#",
-	siteID:"#variables.$.event('siteID')#",
+	parentid:"#variables.$.content('parentid')#",
 	context:"#variables.$.globalConfig('context')#",
-	jslib:"#variables.$.getJsLib()#",
 	nocache:#val($.event('nocache'))#,
 	assetpath:"#variables.$.siteConfig('assetPath')#",
-	siteConfig:"#variables.$.globalConfig('requirementspath')#",
+	requirementspath:"#variables.$.globalConfig('requirementspath')#",
 	themepath:"#variables.$.siteConfig('themeAssetPath')#",
 	rb:"#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#",
 	reCAPTCHALanguage:"#$.siteConfig('reCAPTCHALanguage')#",
 	preloaderMarkup: "#esapiEncode('javascript',this.preloaderMarkup)#",
 	mobileformat: "#esapiEncode('javascript',$.event('muraMobileRequest'))#",
-	adminpreview: "#lcase(structKeyExists(url,'muraadminpreview'))#",
 	windowdocumentdomain: "#application.configBean.getWindowDocumentDomain()#",
+	layoutmanager:"#variables.$.getContentRenderer().useLayoutManager()#",
+	type:"#esapiEncode('javascript',variables.$.content('type'))#",
+	subtype:"#esapiEncode('javascript',variables.$.content('subtype'))#",
 	#trim(variables.$.siteConfig('JSDateKeyObjInc'))#
-	});
+});
 </script>
 </cfoutput>

@@ -93,7 +93,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset responseid=createuuid()>
 		<cfset fieldlist=arguments.data.fieldnames>
-	</cfif> 
+	</cfif>
+
+	<cfset info['responseid'] = responseid />
 	
 	<cfloop list="#fieldlist#" index="f">
 	<cfif Not ListFindNoCase(ignoreList, f)>
@@ -311,10 +313,16 @@ order by tformresponsepackets.entered asc
 <cfif request.muraFrontEndRequest>
 <script type="text/javascript">
 	$(function(){
-		frm=$('###frmID#');
-		frm.attr('action','?nocache=1');
-		frm.attr('method','post');
+		var frm=$('###frmID#');
+		var action=frm.attr('action');
 
+		if(typeof action != 'undefined'){
+			action=action.split('?');
+			action='?nocache=1&' + action[action.length-1];
+		} else {
+			action='?nocache=1';
+		}
+	
 		if(frm.attr('onsubmit') == undefined){
 			frm.on('submit',function(){return validateForm(this);})
 		}
@@ -323,9 +331,11 @@ order by tformresponsepackets.entered asc
 			frm.find("input[type='radio']").each(function(){
 				polllist.push($(this).val());
 			});
-			if(polllist.length > 0) {frm.attr('action','?nocache=1&polllist='+ polllist.toString());}		
+			if(polllist.length > 0) {action += '&polllist='+ polllist.toString();}		
 		</cfif>
-		frm.attr('action',frm.attr('action') + '###frmID#');
+	
+		frm.attr('action',action + '###frmID#');
+		frm.attr('method','post');
 	});
 </script></cfif></cfoutput>
 </cfsavecontent>

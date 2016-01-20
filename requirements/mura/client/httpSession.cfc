@@ -308,14 +308,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tempValue ="">
 	<cfset var tempNew=structNew()>
 
-	<cfhttp
-	method="#arguments.httpMethod#"
-	url="#getBaseURL()##arguments.url#"
-	useragent="#getUserAgent()#"
-	result="objGet"
-	resolveurl="#getResolveURL()#" 
-	timeout="#getTimeout()#"
-	throwOnError="#getThrowOnError()#" charset="#getCharSet()#">
+	<cfhttp attributeCollection='#getHTTPAttrs(
+				method="#arguments.httpMethod#",
+				url="#getBaseURL()##arguments.url#",
+				useragent="#getUserAgent()#",
+				result="objGet",
+				resolveurl="#getResolveURL()#",
+				timeout="#getTimeout()#",
+				throwOnError="#getThrowOnError()#",
+				charset="#getCharSet()#")#'>
 		
 	<cfif len(arguments.referer)>
 		<cfhttpparam
@@ -398,17 +399,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset StructAppend(arguments.data, params, "yes")>
 	</cfif>
 	
-	<cfhttp
-	method="#arguments.httpMethod#"
-	url="#getBaseURL()##arguments.url#"
-	useragent="#getUserAgent()#"
-	result="objGet"
-	resolveurl="#getResolveURL()#" 
-	timeout="#getTimeout()#"
-	throwOnError="#getThrowOnError()#" charset="#getCharSet()#"
-	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"
-	>
+	<cfhttp attributeCollection='#getHTTPAttrs(
+		method="#arguments.httpMethod#",
+		url="#getBaseURL()##arguments.url#",
+		useragent="#getUserAgent()#",
+		result="objGet",
+		resolveurl="#getResolveURL()#",
+		timeout="#getTimeout()#",
+		throwOnError="#getThrowOnError()#",
+		charset="#getCharSet()#")#'>
  
 	<cfif len(arguments.referer)>
 		<cfhttpparam

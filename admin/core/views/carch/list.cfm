@@ -447,7 +447,6 @@
 			<cfparam name="session.copySiteID" default="">
 			<cfparam name="session.copyAll" default="false">
 			<cfparam name="session.flatViewArgs" default="#structNew()#">
-			<cfparam name="session.flatViewArgs" default="#structNew()#">
 
 			<cfscript>
 				if(not structKeyExists(session.flatViewArgs,session.siteid)){
@@ -585,6 +584,7 @@
 						<cfset application.pluginManager.announceEvent("onAfterContentSort",pluginEvent)>
 					</cfif>
 					
+					<cfset rc.$.getBean('contentManager').purgeContentCache(contentBean=current)>
 					<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
 				</cflock>
 			</cfif>
@@ -598,13 +598,13 @@
 			<script>
 				siteID='#session.siteID#';
 				<cfif session.copySiteID eq rc.siteID>
-				copyContentID = '#session.copyContentID#';
-				copySiteID = '#session.copySiteID#';
-				copyAll = '#session.copyAll#';
+				siteManager.copyContentID = '#esapiEncode("javascript",session.copyContentID)#';
+				siteManager.copySiteID = '#esapiEncode("javascript",session.copySiteID)#';
+				siteManager.copyAll = '#esapiEncode("javascript",session.copyAll)#';
 				<cfelse>
-				copyContentID = '';
-				copySiteID = '';
-				copyAll = 'false';
+				siteManager.copyContentID = '';
+				siteManager.copySiteID = '';
+				siteManager.copyAll = 'false';
 				</cfif>
 			</script>
 		 

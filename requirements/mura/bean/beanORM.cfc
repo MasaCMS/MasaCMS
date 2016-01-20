@@ -47,6 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 */
 component extends="mura.bean.bean" versioned=false {
 
+	property name="saveErrors" type="boolean" persistent="false" comparable="false" default=false;
+
 	function init(){
 		super.init();
 		variables.dbUtility="";
@@ -63,12 +65,12 @@ component extends="mura.bean.bean" versioned=false {
 						variables.instance[prop.name]={};
 					} else if(prop.type eq "array"){
 						variables.instance[prop.name]=[];
-					}
+					} 
 				} else if(prop.persistent){
 
 					if(structKeyExists(prop,"fieldType") and prop.fieldType eq "id"){
 						variables.instance[prop.column]=createUUID();
-					} else if (listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					} else if (listFindNoCase('created,lastupdate',prop.column) && (listFindNoCase('datetime,timestamp',prop.datatype) && !(structKeyExists(prop,"default") && prop.default != 'null') || structKeyExists(prop,"default") && prop.default=='now()') ){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
@@ -94,7 +96,7 @@ component extends="mura.bean.bean" versioned=false {
 
 				} 
 				else {
-					if(listFindNoCase('created,lastupdate',prop.column) and listFindNoCase("date,datetime,timestamp",prop.datatype) and !(structKeyExists(prop,"default") and prop.default != 'null')){
+					if(listFindNoCase('created,lastupdate',prop.column) && prop.datatype=='datetime' && !(structKeyExists(prop,"default") && prop.default != 'null')){
 						variables.instance[prop.column]=now();
 					} else if(structKeyExists(prop,"default")){
 						if(prop.default neq 'null'){
@@ -161,6 +163,20 @@ component extends="mura.bean.bean" versioned=false {
 			}	
 		}
 		return variables.dbUtility;
+	}
+
+	function setSaveErrors(saveErrors){
+		if(isBoolean(arguments.saveErrors)){
+			variables.instance.saveErrors=arguments.saveErrors;
+		}
+		return this;
+	}
+
+	function getSaveErrors(){
+		if(!isBoolean(variables.instance.saveErrors)){
+			variables.instance.saveErrors=false;
+		}
+		return variables.instance.saveErrors;
 	}
 
 	function getDbType(){
@@ -234,7 +250,7 @@ component extends="mura.bean.bean" versioned=false {
 					if(structKeyExists(props[prop],"fieldtype")){
 						if(props[prop].fieldtype eq "id"){
 							getDbUtility().addPrimaryKey(argumentCollection=props[prop]);
-						} else if ( listFindNoCase('one-to-many,many-to-one,index',props[prop].fieldtype) ){
+						} else if ( listFindNoCase('one-to-one,one-to-many,many-to-one,index',props[prop].fieldtype) ){
 							getDbUtility().addIndex(argumentCollection=props[prop]);
 						}
 					}
@@ -326,7 +342,7 @@ component extends="mura.bean.bean" versioned=false {
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
-		if(!hasErrors()){
+		if(!hasErrors() || getSaveErrors()){
 			var props=getProperties();
 			var columns=getColumns();
 			var prop={};
@@ -334,21 +350,21 @@ component extends="mura.bean.bean" versioned=false {
 			var sql='';
 			var qs=getQueryService();
 
-			for (prop in props){
-				if(props[prop].persistent){
-					addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
-				}
-			}
-
 			qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 
 			if(qs.execute(sql='select #getPrimaryKey()# from #getTable()# where #getPrimaryKey()# = :primarykey').getResult().recordcount){
 				
-				preUpdate();
-			
 				pluginManager.announceEvent('onBefore#variables.entityName#Update',event);
 
-				if(!hasErrors()){
+				preUpdate();
+
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
+
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('update #getTable()# set ');
@@ -393,14 +409,19 @@ component extends="mura.bean.bean" versioned=false {
 				}
 				
 			} else{
+				
+				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
 
 				preCreate();
 				preInsert();
-				
 
-				pluginManager.announceEvent('onBefore#variables.entityName#Create',event);
+				for (prop in props){
+					if(props[prop].persistent){
+						addQueryParam(qs,props[prop],variables.instance[props[prop].column]);
+					}
+				}
 
-				if(!hasErrors()){
+				if(!hasErrors() || getSaveErrors()){
 
 					savecontent variable="sql" {
 						writeOutput('insert into #getTable()# (');
@@ -640,6 +661,10 @@ component extends="mura.bean.bean" versioned=false {
 		var primaryFound=false;
 		var primarykeyargvalue='';
 
+		if(!isDefined('arguments.siteid') && hasProperty('siteid') && len(getValue('siteID'))){
+			arguments.siteid=getValue('siteID');
+		}
+
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
 			for(var arg in arguments){
@@ -756,7 +781,7 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	function clone(){
-		return getBean(variables.entityName).setAllValues(structCopy(getAllValues()));
+		return getBean(variables.entityName).setAllValues(duplicate(getAllValues()));
 	}
 
 	function getFeed(){		

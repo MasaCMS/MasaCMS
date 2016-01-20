@@ -179,6 +179,7 @@ var extendManager = {
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
 			$(".hasAssocFileContainer").hide();
+			$(".adminOnlyContainer").hide();
 		} else if(dataArray[0] == "Site") {
 			$(".hasRow1Container").hide();
 			$(".subTypeContainer").hide();
@@ -187,6 +188,7 @@ var extendManager = {
 			$(".hasBodyContainer").hide();
 			$(".hasConfiguratorContainer").hide();
 			$(".hasAssocFileContainer").hide();
+			$(".adminOnlyContainer").hide();
 			$("#subType").val("Default");
 		} else if(dataArray[0] == "1" || dataArray[0] == "2" || dataArray[0] == "Address" || dataArray[0] == "Custom" || dataArray[0] == "Base") {
 			$(".hasRow1Container").hide();
@@ -197,6 +199,7 @@ var extendManager = {
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
 			$(".hasAssocFileContainer").hide();
+			$(".adminOnlyContainer").hide();
 		} else if(dataArray[0] == "File" || dataArray[0] == "Link") {
 			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
@@ -210,6 +213,7 @@ var extendManager = {
 			} else {
 				$(".hasAssocFileContainer").show();
 			}
+			$(".adminOnlyContainer").show();
 		} else if(dataArray[0] == "Component" || dataArray[0] == "Form") {
 			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
@@ -219,15 +223,20 @@ var extendManager = {
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").hide();
 			$(".hasAssocFileContainer").hide();
+			$(".adminOnlyContainer").show();
 		} else if(dataArray[0] == "Folder" || dataArray[0] == "Gallery" || dataArray[0] == "Calendar") {
 			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
 			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
+			if ( $("input[name='isnew']").val() === '1' ) {
+				$('#hasConfiguratorYes').prop('checked', true);
+			}
 			$(".hasConfiguratorContainer").show();
 			$(".availableSubTypesContainer").show();
 			$(".hasAssocFileContainer").show();
+			$(".adminOnlyContainer").show();
 		} else {
 			$(".hasRow1Container").show();
 			$(".subTypeContainer").show();
@@ -237,6 +246,7 @@ var extendManager = {
 			$(".hasConfiguratorContainer").hide();
 			$(".availableSubTypesContainer").show();
 			$(".hasAssocFileContainer").show();
+			$(".adminOnlyContainer").show();
 		}
 
 		

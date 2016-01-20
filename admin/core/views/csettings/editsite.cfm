@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="icon-plus-sign"></i> Add</button>
 					<cfelse>
 					<cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
-						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});"><i class="icon-remove-sign"></i> Delete</button>
+						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="icon-remove-sign"></i> Delete</button>
 					</cfif>
 					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="icon-ok-sign"></i> Update</button>
 				</cfif>
@@ -820,7 +820,6 @@ to your own modified versions of Mura CMS.
 					</div>
 			</div>
 
-
 			 <div class="control-group">
 				<label class="control-label">Content Rejection Script</label>
 				<div class="controls">
@@ -829,19 +828,28 @@ to your own modified versions of Mura CMS.
 					</div>
 			</div>
 
-				<div class="control-group">
+			<div class="control-group">
+				<label class="control-label">User Login Authorization Code Challenge Script</label>
+				<div class="controls">
+					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##email## ##authcode## ##contactEmail## ##contactName##</p>
+					<textarea rows="6" class="span12" name="sendAuthCodeScript">#esapiEncode('html',rc.siteBean.getSendAuthCodeScript())#</textarea>
+				</div>
+			</div>
+
+			<div class="control-group">
 				<label class="control-label">User Login Info Request Script</label>
 				<div class="controls">
-						<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##</p>
-						<textarea rows="6" class="span12" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
-					</div>
+					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##</p>
+					<textarea rows="6" class="span12" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
+				</div>
 			</div>
-				<div class="control-group">
+
+			<div class="control-group">
 				<label class="control-label">Mailing List Confirmation Script</label>
 				<div class="controls">
-						<p class="help-block">Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##</p>
-						<textarea rows="6" class="span12" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
-					</div>
+					<p class="help-block">Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##</p>
+					<textarea rows="6" class="span12" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
+				</div>
 			</div>
 				<div class="control-group">
 				<label class="control-label">Account Activation Script</label>

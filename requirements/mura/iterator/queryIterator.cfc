@@ -27,14 +27,30 @@
 	<cfset variables.maxRecordsPerPage=1000>
 	<cfset variables.recordTranslator="">
 	<cfset variables.iteratorID="">
+	<cfset variables.feed="">
 	<cfset variables.recordIDField="id">
 	<cfset variables.pageQueries=structNew()>
 
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = 0 />
+		<cfset variables._recordcount = 0 />
 		<cfset variables.pageIndex = 1 />
 		<cfset variables.iteratorID="i" & hash(createUUID())>
 		<cfreturn THIS />
+	</cffunction>
+
+	<cffunction name="setFeed" output="false">
+		<cfargument name="feed">
+		<cfset variables.feed=arguments.feed>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="getFeed" output="false">
+		<cfreturn variables.feed>
+	</cffunction>
+
+	<cffunction name="hasFeed" output="false">
+		<cfreturn isObject(variables.feed)>
 	</cffunction>
 	
 	<cffunction name="getIteratorID" access="public" output="false" returntype="any">
@@ -57,10 +73,16 @@
 		<cfset var idList="">
 		<cfset var i="">
 
-		<cfif getRecordCount() and not isArray(variables.records)>
-			<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
-				<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
-			</cfloop>
+		<cfif getRecordCount()>
+			<cfif isArray(variables.records)>
+				<cfloop array="#variables.records#" index="i">
+					<cfset idList=listAppend(idList,i[getRecordIDField()])>
+				</cfloop>
+			<cfelse>
+				<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
+					<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
+				</cfloop>
+			</cfif>
 		</cfif>
 		
 		<cfreturn idList>
@@ -80,14 +102,10 @@
 	
 	<cffunction name="getLastRecordOnPageIndex" access="public" output="false" returntype="numeric">
 		<cfset var last=(((variables.pageIndex-1) * variables.maxRecordsPerPage) + variables.maxRecordsPerPage)>
-		<cfif last gt variables.records.recordcount>
-			<cfset last=variables.records.recordcount>
+		<cfif last gt getRecordCount()>
+			<cfset last=getRecordCount()>
 		</cfif>
 		<cfreturn last />
-	</cffunction>
-	
-	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
-		<cfreturn variables.pageIndex />
 	</cffunction>
 	
 	<cffunction name="setStartRow" access="public" output="false">
@@ -165,18 +183,20 @@
 	</cffunction>
 	
 	<cffunction name="getRecordCount" access="public" output="false" returntype="numeric">
-		<cfset var recordCount = 0 />
-		<cfif structKeyExists(variables,"records")>
-			<cfif isQuery(variables.records)>
-				<cfset recordCount =variables.records.recordCount />
-			<cfelseif isArray(variables.records)>
-				<cfset recordCount= arrayLen(variables.records) />
-			</cfif>
-		</cfif>
-		<cfreturn recordCount />
+		<cfreturn variables._recordCount />
 	</cffunction>
 	
-	<cffunction name="setPage" access="public" output="false">
+	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
+		<cfreturn variables.pageIndex />
+	</cffunction>
+
+	<cffunction name="setPage" output="false">
+		<cfargument name="pageIndex">
+		<cfset setPageIndex(arguments.pageIndex)>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="setPageIndex" access="public" output="false">
 		<cfargument name="pageIndex" type="numeric" required="true">
 		<cfset variables.pageIndex = arguments.pageIndex />
 		<cfset variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
@@ -186,6 +206,16 @@
 			<cfset variables.pageIndex=1>
 		</cfif>
 		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="setItemsPerPage" access="public" output="false">
+		<cfargument name="itemsPerPage">
+		<cfset setNextN(nextN=arguments.itemsPerPage)>
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="getItemsPerPage" access="public" output="false" returntype="any">
+		<cfreturn variables.maxRecordsPerPage>
 	</cffunction>
 	
 	<cffunction name="setNextN" access="public" output="false">
@@ -207,7 +237,8 @@
 		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
 
 		<cfset variables.records = arguments.array />
-			
+		<cfset variables._recordcount=arrayLen(arguments.array)>
+
 		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage)>
 			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
 		<cfelse>
@@ -237,11 +268,12 @@
 		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
 
 		<cfset variables.records = arguments.rs />
+		<cfset variables._recordcount=rs.recordcount>
 
 		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage) and arguments.maxRecordsPerPage>
 			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
 		<cfelse>
-			<cfset variables.maxRecordsPerPage = variables.records.recordcount />
+			<cfset variables.maxRecordsPerPage = getRecordCount() />
 		</cfif>
 		<cfreturn this>
 	</cffunction>

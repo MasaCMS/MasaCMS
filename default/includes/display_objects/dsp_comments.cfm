@@ -54,4 +54,4 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<cfoutput>#variables.$.dspObject_Include(thefile='comments/index.cfm')#</cfoutput>
+<cfoutput>#variables.$.dspObject_Include(thefile='comments/index.cfm',params=objectParams)#</cfoutput>

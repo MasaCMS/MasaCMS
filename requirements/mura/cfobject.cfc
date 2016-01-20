@@ -155,11 +155,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
 </cffunction>
 
-<cffunction name="injectMethod" access="public" output="false">
+<cffunction name="injectMethod" access="public" output="false" deprecated="Use inject method">
 	<cfargument name="toObjectMethod" type="string" required="true" />
 	<cfargument name="fromObjectMethod" type="any" required="true" />
 	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
 	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="inject" access="public" output="false">
+	<cfargument name="property" type="string" required="true" />
+	<cfargument name="propertValue" type="any" required="true" />
+	<cfset this[ arguments.property ] =  arguments.propertValue  />
+	<cfset variables[ arguments.property ] =  arguments.propertValue />
 	<cfreturn this>
 </cffunction>
 
@@ -263,10 +271,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(!getBean('configBean').getValue(property='allowQueryCaching',defaultValue=true)){
 				structDelete(arguments,'cachedWithin');
 			}
+
+			structDelete(arguments,'readOnly');
 			
 			return arguments;
-		} else if (isDefined('arguments.readOnly') && arguments.readOnly) {
-			return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+		} else if (isDefined('arguments.readOnly')) {
+			if(arguments.readOnly){
+				return getBean('configBean').getReadOnlyQRYAttrs(argumentCollection=arguments);
+			} else {
+				structDelete(arguments,'readOnly');
+				return arguments;
+			}
 		} else {
 			return structNew();
 		}
@@ -274,6 +289,118 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	function getQueryService(readOnly=false){
 		return new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments));
+	}
+
+	function getHTTPService(){
+		var configBean=getBean('configBean');
+		var hs=new http();
+		if(len(configBean.getProxyServer())){
+			hs.setProxyServer(configBean.getProxyServer());
+			hs.setProxyPort(configBean.getProxyPort());
+			
+			hs.setProxyUser(configBean.getProxyUser());
+			hs.setProxyPassword(configBean.getProxyPassword());
+
+			if(configBean.getProxyAuthType() == 'NTLM'){
+				hs.setAuthType('NTLM');
+			}
+		}
+
+		return hs;
+	}
+
+	function getHTTPAttrs(authtype=''){
+        var configBean=getBean('configBean');
+        var connectionType = "BASIC";
+         
+        if(listFindNoCase('PROXY,NTLM,BASIC',arguments.authtype)){
+            connectionType = arguments.authtype;
+        } else if(len(configBean.getProxyServer())){
+            connectionType = 'PROXY';
+        }
+
+        structDelete(arguments,"authtype");
+         
+        if(connectionType == "NTLM") {
+                
+            if(find('\',configBean.getProxyUser())){
+                structAppend(arguments,{
+                    domain=listFirst(configBean.getProxyUser(),'\'),
+                    username=listLast(configBean.getProxyUser(),'\')
+                });
+            } else {
+                arguments.username=configBean.getProxyUser();
+            }
+                
+            structAppend(arguments,{
+                password=configBean.getProxyPassword(),
+                authtype="NTLM"
+            });
+                      
+        } else if(connectionType == 'PROXY'){
+                
+            structAppend(arguments,{
+                proxyserver=configBean.getProxyServer(),
+                proxyport=configBean.getProxyPort(),
+                proxyuser=configBean.getProxyUser(),
+                proxypassword=configBean.getProxyPassword()
+            });
+                
+        }
+         
+        return arguments;
+   }
+
+
+    function convertTimezone(datetime,from,to){
+		var tz=getJavaTimezone();
+		
+		if(!isDefined('arguments.from')){
+			arguments.from=tz.getDefault().getID();
+		}
+
+		if(!isDefined('arguments.to')){
+			arguments.to=tz.getDefault().getID();
+		}
+
+		if (arguments.from == arguments.to){
+			return arguments.datetime;
+		} else {
+
+			
+			var currentdate=createObject('java','java.lang.System').currentTimeMillis();
+			var offset=(tz.getTimezone(arguments.from).getOffSet(javaCast('long',currentdate)) / 1000);
+			
+			if(offset > 0){
+				offset = 0 - abs(offset);
+			} else {
+				offset = 0 + abs(offset);
+			}
+
+			arguments.datetime= dateAdd(
+				"s",
+	   			offset,
+	   			arguments.datetime
+	   		);
+
+	   		arguments.datetime= dateAdd(
+				"s",
+	   			(tz.getTimezone(arguments.to).getOffSet(javaCast('long',currentdate)) / 1000),
+	   			arguments.datetime
+	   		);
+   			
+			return arguments.datetime;
+		}
+	}
+
+	function getJavaTimezone(timezone){
+		var tz=createObject( "java", "java.util.TimeZone" );
+
+		if(isDefined('arguments.timezone')){
+			return tz.getTimezone(arguments.timezone);
+		} else {
+			return tz;
+		}
 	}
 </cfscript>
 

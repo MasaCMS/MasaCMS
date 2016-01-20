@@ -94,7 +94,9 @@ component extends="mura.cfobject" output="false" {
 							var bean=getBean(synthedFunctions[arguments.MissingMethodName].args.cfc);
 							//writeDump(var=bean.getProperties());
 							
-							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')){
+							if(!structKeyExists(synthedFunctions[arguments.MissingMethodName].args,'loadKey')
+								|| !(structKeyExists(bean,'has') && bean.has(synthedFunctions[arguments.MissingMethodName].args.loadkey))
+							){
 								if(synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
 									if(structKeyExists(synthedFunctions[arguments.MissingMethodName].args, "inverse")){
 										synthedFunctions[arguments.MissingMethodName].args.loadKey=getPrimaryKey();
@@ -178,10 +180,22 @@ component extends="mura.cfobject" output="false" {
 	}
 
 	private function synthArgs(args){
+		var translatedLoadKey=translatePropKey(args.loadkey);
 		var returnArgs={
-				"#translatePropKey(args.loadkey)#"=getValue(translatePropKey(arguments.args.fkcolumn)),
+				"#translatedLoadKey#"=getValue(translatePropKey(arguments.args.fkcolumn)),
 				returnFormat=arguments.args.returnFormat
 			};
+
+
+		/*
+		This should only happen with loading many-to-one relationships when local
+		fkcolumn (many) value is empty.
+		*/
+		if(!len(returnArgs[translatedLoadKey])){
+			setValue(translatedLoadKey,createUUID());
+			returnArgs[translatedLoadKey]=getValue(translatedLoadKey);
+		}
+
 		if(structKeyExists(arguments.args,'siteid')){
 			returnArgs.siteid=getValue('siteid');
 		}
@@ -203,8 +217,11 @@ component extends="mura.cfobject" output="false" {
 
  	function parseDateArg(String arg){
 
- 		arguments.arg=replace(arguments.arg,'T',' ');
- 		
+ 		//fix so that date's like 2015-06-23T14:22:35 can be parsed
+ 		if(refind('(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d)',arguments.arg)){
+ 			arguments.arg=replace(arguments.arg,'T',' ');
+ 		}
+
 		if(lsisDate(arguments.arg)){
 			try{
 				return lsparseDateTime(arguments.arg);
@@ -243,7 +260,7 @@ component extends="mura.cfobject" output="false" {
 			variables.instance.isNew=0;
 		} else if(isStruct(arguments.data)){
 			for(prop in arguments.data){
-				if ( IsSimpleValue(prop) && Len(prop) ) {
+				if ( IsSimpleValue(prop) && !isNull(arguments.data[prop]) && Len(prop) && !(prop==getPrimaryKey() && !len(arguments.data['#prop#'])) ) {
 					setValue(prop,arguments.data['#prop#']);
 				}
 			}		
@@ -261,6 +278,13 @@ component extends="mura.cfobject" output="false" {
 		if(arguments.property != 'value' && isValid('variableName',arguments.property) && isDefined("this.set#arguments.property#")){
 			var tempFunc=this["set#arguments.property#"];
 			tempFunc(arguments.propertyValue);
+		} else if (len(variables.entityName)) {
+			var props=getProperties();
+			if(structKeyExists(props,'#arguments.property#') && props['#arguments.property#'].datatype=='datetime'){
+				variables.instance["#arguments.property#"]=parseDateArg(arguments.propertyValue);
+			} else {
+				variables.instance["#arguments.property#"]=arguments.propertyValue;
+			}
 		} else {
 			variables.instance["#arguments.property#"]=arguments.propertyValue;
 		}
@@ -268,7 +292,10 @@ component extends="mura.cfobject" output="false" {
 		return this;
 	}
 
-	function get(String property,defaultValue){
+	function get(String property='',defaultValue){
+		if(arguments.property==''){
+			return getAllValues(argumentCollection=arguments);
+		}
 		return getValue(argumentCollection=arguments);
 	}
 
@@ -298,8 +325,16 @@ component extends="mura.cfobject" output="false" {
 		return variables.instance;
 	}
 
+	function getAll(){
+		return getAllValues(argumentCollection=arguments);
+	}
+
 	function valueExists(valueKey){
 		return structKeyExists(variables.instance,arguments.valueKey);
+	}
+
+	function has(valueKey){
+		return valueExists(argumentCollection=arguments);
 	}
 
 	function validate(){
@@ -549,21 +584,17 @@ component extends="mura.cfobject" output="false" {
 					       	 		}
 					       	 	}
 
+					       	 	if(listFindNoCase('date,timetamp',prop.dataType)){
+					       	 		prop.dataType='datetime';
+					       	 	}
+
 					       	 	if(structKeyExists(prop,'cfc')){
-					       	 		prop.persistent=true;
-
-					       	 		if(prop.fieldtype eq 'one-to-many'){
-					       	 			prop.persistent=false;
-					       	 		} else {
-					       	 			prop.persistent=true;
-					       	 			setPropAsIDColumn(prop,false);
-					       	 			//writeDump(var=prop,abort=true);
-					       	 		}
-
+					       	 		
 					       	 		param name="prop.fkcolumn" default="primaryKey";
 
 					       	 		prop.column=prop.fkcolumn;
-					       	 		prop.loadkey=prop.fkcolumn;
+
+					       	 		param name="prop.loadkey" default=prop.fkcolumn;
 
 					       	 		if(prop.nested){
 					       	 			prop.loadkey='parentid';
@@ -651,6 +682,16 @@ component extends="mura.cfobject" output="false" {
 					       	 		}
 
 					       	 		param name="prop.cascade" default="none";
+
+					       	 		prop.persistent=true;
+
+					       	 		if(prop.column=='primarykey'){
+					       	 			prop.persistent=false;
+					       	 		} else {
+					       	 			prop.persistent=true;
+					       	 			setPropAsIDColumn(prop,false);
+					       	 		}
+
 
 					       	 	} else if(!structKeyExists(prop,"persistent") ){
 					       	 		prop.persistent=true;
@@ -925,6 +966,23 @@ component extends="mura.cfobject" output="false" {
 
 	function clone(){
 		getBean("content").setAllValues(structCopy(getAllValues()));
+	}
+
+	//used in json api for entity specific permission checking
+	function allowSave(){
+		return false;
+	}
+
+	function allowDelete(){
+		return false;
+	}
+
+	function allowRead(){
+		return true;
+	}
+
+	function allowQueryParams(params){
+		return true;
 	}
 
 }

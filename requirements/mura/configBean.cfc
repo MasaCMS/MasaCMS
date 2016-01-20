@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
-<cfset variables.instance.scriptProtectExceptions="body" />
+<cfset variables.instance.scriptProtectExceptions="body,source,params" />
 <cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
@@ -177,6 +177,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.javaEnabled=true/>
 <cfset variables.instance.bCryptPasswords=true/>
 <cfset variables.instance.allowQueryCaching=true/>
+<cfset variables.instance.skipCleanFileCache=false/>
+<cfset variables.instance.saveEmptyExtendedValues=true/>
+<cfset variables.instance.MFAPerDeviceEnabled=false/>
+<cfset variables.instance.MFAEnabled=false/>
+<cfset variables.instance.MFASendAuthCode=true/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1697,6 +1702,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not getValue(property='allowQueryCaching',defaultValue=true)>
 		<cfset structDelete(arguments,'cachedWithin')>
 	</cfif>
+
+	<cfset structDelete(arguments,'readOnly')>
 	<cfreturn arguments>
 </cffunction>
 
@@ -1705,19 +1712,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAdminPath" output="false">
+	<cfargument name="useProtocol" default="1">
 	<cfif len( getValue('admindomain') )>
-		<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+		<cfif arguments.useProtocol>
+			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+		<cfelse>
+			<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/admin">
+		</cfif>
 	<cfelse>
 		<cfreturn getValue('context') & "/admin">
 	</cfif>
 </cffunction>
 
 <cffunction name="getPluginsPath" output="false">
+	<cfargument name="useProtocol" default="1">
 	<cfif len(variables.instance.pluginsPath)>
 		<cfreturn variables.instance.pluginsPath>
 	<cfelse>
 		<cfif len( getValue('admindomain') )>
-			<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+			<cfif arguments.useProtocol>
+				<cfreturn getScheme() & '://' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+			<cfelse>
+				<cfreturn '//' & getValue('admindomain') & getServerPort() & getValue('context') & "/plugins">
+			</cfif>
 		<cfelse>
 			<cfreturn getValue('context') & "/plugins">
 		</cfif>
@@ -1725,6 +1742,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getRequirementsPath" output="false">
+	<cfargument name="useProtocol" default="1">
+
 	<cfif len(variables.instance.requirementsPath)>
 		<cfreturn variables.instance.requirementsPath>
 	<cfelse>

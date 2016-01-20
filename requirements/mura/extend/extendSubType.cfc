@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.isActive=1/>
 <cfset variables.instance.sets=""/>
 <cfset variables.instance.isNew=1/>
+<cfset variables.instance.adminonly=0/>
 <cfset variables.instance.errors=structnew() />
 <cfset variables.contentRenderer="" />
 
@@ -99,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select subtypeid,siteID,baseTable,baseKeyField,dataTable,type,subtype,
-		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes,iconclass,hasassocfile,hasConfigurator
+		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes,iconclass,hasassocfile,hasConfigurator,adminonly
 		from tclassextend 
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		or (
@@ -150,6 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setDescription(arguments.data.description)/>
 			<cfset setIconClass(arguments.data.iconclass)/>
 			<cfset setAvailableSubTypes(arguments.data.availableSubTypes)/>
+			<cfset setAdminOnly(arguments.data.adminOnly)/>
 			
 		<cfelseif isStruct(arguments.data)>
 			
@@ -348,6 +350,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getAdminOnly" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.adminonly />
+</cffunction>
+
+<cffunction name="setAdminOnly" access="public" output="false">
+	<cfargument name="adminonly" />
+	<cfif isNumeric(arguments.adminonly)>
+	<cfset variables.instance.adminonly = arguments.adminonly />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getIconClass" returntype="String" access="public" output="false">
 	<cfargument name="includeDefault" default="false">
 	<cfset var returnVar = variables.instance.iconclass>
@@ -520,6 +534,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	
+	<cfloop from="1" to="#arrayLen(relatedContentSetArray)#" index="s">
+		<cfset relatedContentSetArray[s].setIsNew(0)>
+	</cfloop>
+
 	<cfreturn relatedContentSetArray />
 </cffunction>
 
@@ -580,7 +598,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		availableSubTypes=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
 		iconClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">,
 		hasAssocFile=#getHasAssocFile()#,
-		hasConfigurator=#getHasConfigurator()#
+		hasConfigurator=#getHasConfigurator()#,
+		adminOnly=#getAdminOnly()#
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
 
@@ -600,7 +619,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 		<cfquery>
-		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes,iconclass,hasAssocFile,hasConfigurator) 
+		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes,iconclass,hasAssocFile,hasConfigurator,adminonly) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubTypeID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -616,7 +635,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">,
 		#getHasAssocFile()#,
-		#getHasConfigurator()#
+		#getHasConfigurator()#,
+		#getAdminOnly()#
 		)
 		</cfquery>
 		<!---

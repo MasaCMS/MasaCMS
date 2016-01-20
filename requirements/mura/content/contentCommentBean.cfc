@@ -565,11 +565,13 @@ To Unsubscribe Click Here:
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	<cfif getKids()>
+	<!---<cfif getKids()>--->
 		<cfreturn variables.contentManager.readComments(variables.instance.contentID, variables.instance.siteID, arguments.isEditor, arguments.sortOrder, getCommentID() ) />
+	<!---
 	<cfelse>
 		<cfreturn queryNew("contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path,kids,fileid,fileExt")>
 	</cfif>
+	--->
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
@@ -588,7 +590,7 @@ To Unsubscribe Click Here:
 		<cfset commentBean.load() />
 		<cfreturn commentBean>
 	<cfelse>
-		<cfthrow message="Parent comment does not exist.">
+		<cfreturn commentBean>
 	</cfif>
 </cffunction>
 

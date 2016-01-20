@@ -182,6 +182,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </div>
 
+<div class="fieldset">
+<div class="control-group">
+<div class="span4">
+	<label class="control-label">For administrative Use Only?</label>
+	<div class="controls">
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
+	</div>
+</div>
+</div>
+</div>
+
 <div class="form-actions">
 <cfif attributes.action eq "add">
 	<input type="button" class="btn" onclick="submitForm(document.forms.#esapiEncode('html',attributes.formName)#,'add');" value="Add" />

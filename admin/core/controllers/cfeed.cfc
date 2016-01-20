@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.regionID" default="0" />
 	<cfparam name="arguments.rc.orderno" default="0" />
 	<cfparam name="arguments.rc.instanceParams" default="" />
+	<cfparam name="arguments.rc.instanceid" default=""/>
 </cffunction>
 
 <cffunction name="list" output="false">
@@ -88,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	
 	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
-	<cfset arguments.rc.feedBean=variables.feedManager.read(arguments.rc.feedID) />
+	<cfset arguments.rc.feedBean=variables.feedManager.read(feedid=arguments.rc.feedID,siteid=arguments.rc.siteid) />
 	<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.feedBean) />
 </cffunction>
 
@@ -99,14 +100,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.rc.action eq 'update'>
 			<cfif len(arguments.rc.assignmentID) and isJSON(arguments.rc.instanceParams)>
 				<cfset getBean("contentManager").updateContentObjectParams(arguments.rc.assignmentID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.instanceParams)>
-				<cfset arguments.rc.feedBean=variables.feedManager.read(feedID=arguments.rc.feedID)>
+				<cfset arguments.rc.feedBean=variables.feedManager.read(feedid=arguments.rc.feedID,siteid=arguments.rc.siteid)>
 			<cfelse>
 				<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
 			</cfif>
 		</cfif>
 
 		<cfif arguments.rc.action eq 'delete'>
-			<cfset variables.feedManager.delete(arguments.rc.feedID)>
+			<cfset variables.feedManager.delete(arguments.rc.feedID,arguments.rc.siteid)>
 		</cfif>
 	  	
 		<cfif arguments.rc.action eq 'add'>

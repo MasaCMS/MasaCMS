@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.criteria="" />
 <cfset variables.orderBy="" />
 <cfset variables.isValid=true />
-<cfset variables.grouprelationships="(,and (,or (,),openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping">
+<cfset variables.grouprelationships="(,and (,or (,),and not (,or not (,openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping">
 
 <cffunction name="init" returntype="any" access="public">
 	<cfargument name="relationship" default="">
@@ -167,8 +167,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getCondition">
-	<cfif variables.criteria eq "null" and variables.condition eq "=">
-		<cfreturn "is">
+	<cfif variables.criteria eq "null">
+		<cfif variables.condition eq "=">
+			<cfreturn "is">
+		<cfelseif variables.condition eq "!=">
+			<cfreturn "is not">
+		</cfif>
 	<cfelse> 
 		<cfreturn variables.condition />
 	</cfif>

@@ -365,6 +365,7 @@
 	<cfelse>
 		<cfset local.data=structNew()>
 		<cfset local.data.previewMap=structNew()>
+		<cfset local.data.lookupRedirect=structNew()>
 		<cfset local.data.contentIDList="">
 		<cfset local.data.contentHistIDList="">
 		<cfset local.data.dependentList="">
@@ -372,6 +373,7 @@
 	</cfif>
 
 	<cfparam name="local.data.showToolbar" default="false">
+	<cfparam name="local.data.lookupRedirect" default="#structNew()#">
 
 	<cfif arguments.showToolbar>
 		<cfset local.data.showToolbar=arguments.showToolbar>
@@ -415,6 +417,21 @@
 					<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.prereqs.name>
 					<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.prereqs.publishDate>
 					<cfset local.data.previewMap[local.assignments.contentID].dependent=true>			
+				
+					<cfset local.data.lookupMap[hash(local.assignments.contentID)]=	local.assignments.contentHistID>
+					
+					<cfif len(local.assignments.urltitle)>
+							<cfset local.data.lookupMap[hash(local.assignments.urltitle)]=	local.assignments.contentHistID>
+					</cfif>
+				
+					<cfif len(local.assignments.remoteid)>
+						<cfset local.data.lookupMap[hash(local.assignments.remoteid)]=	local.assignments.contentHistID>
+					</cfif>
+
+					<cfif len(local.assignments.filename)>
+						<cfset local.data.lookupMap[hash(local.assignments.filename)]=	local.assignments.contentHistID>	
+					</cfif>
+
 				</cfloop>
 			</cfif>
 		</cfloop>
@@ -433,9 +450,26 @@
 			<cfset local.data.previewMap[local.assignments.contentID].changesetID=local.changeset.getchangesetID()>
 			<cfset local.data.previewMap[local.assignments.contentID].changesetName=local.changeset.getName()>
 			<cfset local.data.previewMap[local.assignments.contentID].publishDate=local.changeset.getPublishDate()>
-			<cfset local.data.previewMap[local.assignments.contentID].dependent=false>				
+			<cfset local.data.previewMap[local.assignments.contentID].dependent=false>
+
+			<cfset local.data.lookupMap[local.assignments.contentID]=	local.assignments.contentHistID>
+					
+			<cfif len(local.assignments.urltitle)>
+					<cfset local.data.lookupMap[hash(local.assignments.urltitle)]=	local.assignments.contentHistID>
+			</cfif>
+		
+			<cfif len(local.assignments.remoteid)>
+				<cfset local.data.lookupMap[hash(local.assignments.remoteid)]=	local.assignments.contentHistID>
+			</cfif>
+			
+			<cfif len(local.assignments.filename)>
+				<cfset local.data.lookupMap[hash(local.assignments.filename)]=	local.assignments.contentHistID>	
+			</cfif>
 		</cfloop>
 	</cfif>
+	
+	<cfset local.data.contentIDList=''>
+	<cfset local.data.contentHistIDList=''>
 	
 	<cfif not structIsEmpty(local.data.previewMap)>
 		<cfloop collection="#local.data.previewMap#" item="local.key">
@@ -450,6 +484,7 @@
 	<cfset structAppend(local.data,local.changeset.getAllValues())>
 	<cfset local.data.lastApplied=now()>
 	<cfset local.currentUser.setValue("ChangesetPreviewData",local.data)>
+	<cfset request.muraChangesetPreview=len(local.data.changesetIDList)>
 <cfelseif not arguments.append>
 	<cfset removeSessionPreviewData()>
 </cfif>
@@ -459,6 +494,7 @@
 <cffunction name="removeSessionPreviewData" access="public" returntype="any" output="false">
 	<cfset getCurrentUser().setValue("ChangesetPreviewData","")>
 	<cfset request.muraChangesetPreviewToolbar=false>
+	<cfset request.muraChangesetPreview=false>
 </cffunction>
 
 <cffunction name="publish" access="public" returntype="any" output="false">
@@ -542,7 +578,7 @@
 	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.subtype, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate,
 	tcontent.lastupdateby, tcontent.lastupdatebyid, 
 	tcontent.display, tcontent.displaystart, tcontent.displaystop, tcontent.moduleid, tcontent.isnav, tcontent.notes,tcontent.isfeature,tcontent.inheritObjects,tcontent.filename,tcontent.targetParams,tcontent.releaseDate,
-	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle, tapprovalrequests.status approvalStatus, tapprovalrequests.status approvalStatus,tapprovalrequests.requestID,tcontent.remoteid,tcontent.remoteurl
+	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle, tapprovalrequests.status approvalStatus, tapprovalrequests.status approvalStatus,tapprovalrequests.requestID,tcontent.remoteid,tcontent.remoteurl,tcontent.urltitle
 	from tcontent 
 	left join tfiles on tcontent.fileID=tfiles.fileID
 	left join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)

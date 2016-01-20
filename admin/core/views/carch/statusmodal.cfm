@@ -105,8 +105,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<i class="icon-time"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#content.getApprovalStatus()#")#</p>
 			<cfelseif content.getapproved() lt 1>
-				<i class="icon-edit"></i>
-				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</p>
+				<cfif len(content.getChangesetID())>
+					<i class="icon-ok-sign"></i>
+					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#</p
+				<cfelse>
+					<i class="icon-edit"></i>
+					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</p>
+				</cfif>
 			<cfelse>
 				<i class="icon-book"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</p>

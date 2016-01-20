@@ -46,15 +46,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <!--- Works just like the standard nav, but omits items in a portal to avoid potentially unmanageably long sub nav for something like a news portal with 100 items --->
-
-<!---
-<cfif request.muraFrontEndRequest and this.asyncObjects>
-	<cfoutput>
-		<div class="mura-async-object" 
-			data-object="#esapiEncode('html_attr',arguments.object)#">
-		</div>
-	</cfoutput>
-<cfelse>
---->
-	<cfoutput><nav id="navFolder"<cfif this.navWrapperClass neq ""> class="mura-nav-folder #this.navWrapperClass#"</cfif>>#dspFolderNav()#</nav></cfoutput>
-<!---</cfif>--->
+<cfoutput><nav id="navFolder"<cfif this.navWrapperClass neq ""> class="mura-nav-folder #this.navWrapperClass#"</cfif>>#dspFolderNav()#</nav></cfoutput>

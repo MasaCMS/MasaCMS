@@ -14,7 +14,7 @@
 <cfparam name="attributes.daypartclass" default="time">
 <cfparam name="arguments.mySession.localeHasDayParts" default="true">
 
-<cfif lsIsdate(attributes.time)>
+<cfif lsIsdate(attributes.time) or  isdate(attributes.time)>
 	<cfset attributes.defaulthour=hour(attributes.time)>
 	<cfset attributes.defaultminute=minute(attributes.time)>
 </cfif>

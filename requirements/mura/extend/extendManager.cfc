@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
 	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
 	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
-	tclassextend.hasSummary,tclassextend.hasBody,
+	tclassextend.hasSummary,tclassextend.hasBody,tclassextendattributes.adminonly,
 	<cfif variables.configBean.getDBType() eq "oracle">
 		to_char(tclassextend.description) as description
 	<cfelse>
@@ -212,6 +212,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.definitionsQuery=buildDefinitionsQuery()>
 	</cfif>
 	<cfreturn variables.definitionsQuery>
+</cffunction>
+
+<cffunction name="appendMissingAttributes" output="false">
+	<cfargument name="instance">
+
+	<cfset var rs=getDefinitionsQuery()>
+	<cfset var renderer=getBean('settingsManager').getSite(arguments.instance.siteid).getContentRenderer()>
+	
+	<cfquery name="rs" dbtype="query">
+		select attributename, defaultvalue from rs
+		where subtype=<cfqueryparam value="#arguments.instance.subtype#" cfsqltype="cf_sql_varchar">
+		and type=<cfqueryparam value="#arguments.instance.type#" cfsqltype="cf_sql_varchar">
+		and siteid=<cfqueryparam value="#arguments.instance.siteid#" cfsqltype="cf_sql_varchar">
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfif not structKeyExists(arguments.instance,'#rs.attributeName#')>
+			<cfif len(rs.defaultValue)>
+				<cftry>
+					<cfreturn renderer.setDynamicContent(rs.defaultValue)>
+					<cfcatch>
+						<cfset arguments.instance['#rs.attributeName#']=''>
+					</cfcatch>
+				</cftry>
+			<cfelse>
+				<cfset arguments.instance['#attributeName#']=''>
+			</cfif>
+		</cfif>
+	</cfloop>
 </cffunction>
 
 <cffunction name="purgeDefinitionsQuery" output="false">
@@ -383,6 +412,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempDate=""/>
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
+<cfset var saveEmptyExtendedValues=variables.configBean.getValue(property='saveEmptyExtendedValues',default=true)>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -424,71 +454,62 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfset theValue="">
 		</cfif>
 		
+		<cfif len(theValue)>
+			<cfif listFindNoCase("Date,DateTime",rs.validation)>
+				<cfif lsisDate(theValue)>
+					<cftry>
+					<cfset theValue = lsparseDateTime(theValue) />
+					<cfcatch>
+						<cfset theValue = parseDateTime(theValue) />
+					</cfcatch>
+					</cftry>
+				<cfelseif isDate(theValue)>	
+					<cfset theValue = parseDateTime(theValue) />
+				</cfif>
+			<cfelseif rs.validation eq "Numeric">
+				<cfif not isNumeric(theValue)>
+					<cfset theValue=''>
+				</cfif>
+			</cfif>
+		</cfif>
+
 		<cfquery>
 			delete from #arguments.dataTable# 
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
-			
-		<cfquery>
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
-			)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
-			<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
-			
-			<cfif len(theValue)>
-				
-				<cfif listFindNoCase("Date,DateTime",rs.validation)>
-					<cfif lsisDate(theValue)>
-						<cftry>
-						<cfset theValue = lsparseDateTime(theValue) />
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-						null						
-						<cfcatch>
-							<cfset theValue = parseDateTime(theValue) />
-							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-							null
-						</cfcatch>
-						</cftry>
-					<cfelseif isDate(theValue)>	
-						<cfset theValue = parseDateTime(theValue) />
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
-						null
-					<cfelse>
-						null,
-						null,
-						null
-					</cfif>
+		
+		<cfif len(theValue) or saveEmptyExtendedValues>
+			<cfquery>
+				insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
+				)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
+				<cfqueryparam cfsqltype="cf_sql_integer"  value="#rs.attributeID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,250)#">,
+				<cfif not len(theValue)>
+					null,
+					null,
+					null
+				<cfelseif listFindNoCase("Date,DateTime",rs.validation)>
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
+					null						
 				<cfelseif rs.validation eq "Numeric">
-					<cfif isNumeric(theValue)>
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						null,
-						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
-					<cfelse>
-						null,
-						null,
-						null
-					</cfif>
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+					null,
+					<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
 				<cfelse>
 					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 					null,
 					null
 				</cfif>	
-			<cfelse>
-				null,
-				null,
-				null
-			</cfif>,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
-			)
-		</cfquery>
-		
+				,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">
+				)
+			</cfquery>
+		</cfif>
 	</cfif>
 </cfloop>
 
@@ -1013,6 +1034,8 @@ and tclassextendattributes.type='File'
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">
 <cfargument name="activeOnly" required="true" default="false">
+<cfargument name="type" required="true" default="">
+<cfargument name="subtype" required="true" default="">
 	<cfset var rs="">
 	
 	<cfif variables.configBean.getDBType() eq 'MSSQL'>
@@ -1027,6 +1050,14 @@ and tclassextendattributes.type='File'
 		inner join tclassextendsets #tableModifier# on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend #tableModifier# on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+		
+		<cfif len(arguments.type)>
+			and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+		</cfif>
+
+		<cfif len(arguments.subtype)>
+			and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
+		</cfif>
 		and (
 			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
 			<cfif arguments.baseTable eq 'tcontent'>
@@ -1036,6 +1067,10 @@ and tclassextendattributes.type='File'
 		<cfif arguments.activeOnly>
 			and tclassextend.isActive=1
 		</cfif>
+
+		and (tclassextend.adminonly!=1 or tclassextend.adminonly is null)
+		and (tclassextendattributes.adminonly!=1 or tclassextendattributes.adminonly is null)
+
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
 	
@@ -1508,6 +1543,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	<cfset destSubType.setAvailableSubTypes(sourceSubType.getAvailableSubTypes())>
 	<cfset destSubType.setIconClass(sourceSubType.getIconClass())>
+	<cfset destSubType.setAdminOnly(sourceSubType.getAdminOnly())>
 	<cfset destSubType.save()>
 	
 	<cfset extendSets=sourceSubType.getExtendSets(activeOnly=false)>
@@ -1533,6 +1569,7 @@ and tclassextendattributes.type='File'
 					<cfset destAttribute.setType(sourceAttribute.getType())>
 					<cfset destAttribute.setOrderNo(sourceAttribute.getOrderNo())>
 					<cfset destAttribute.setIsActive(sourceAttribute.getIsActive())>
+					<cfset destAttribute.setAdminOnly(sourceAttribute.getAdminOnly())>
 					<cfset destAttribute.setRequired(sourceAttribute.getRequired())>
 					<cfset destAttribute.setValidation(sourceAttribute.getValidation())>
 					<cfset destAttribute.setRegex(sourceAttribute.getRegex())>
@@ -1674,6 +1711,8 @@ and tclassextendattributes.type='File'
 	<cfset var documentXML="">
 	<cfset var ext="">
 	<cfset var subtype="">
+	<cfset var subtypeArray=[]>
+	<cfset var subtypetype="">
 	<cfset var extset="">
 	<cfset var relset="">
 	<cfset var at="">
@@ -1697,6 +1736,8 @@ and tclassextendattributes.type='File'
 		<cfset baseElement="theme">
 	<cfelseif isDefined("arguments.configXML.mura")>
 		<cfset baseElement="mura">
+	<cfelseif isDefined("arguments.configXML.displayobject")>
+		<cfset baseElement="displayobject">
 	</cfif>	
 
 	<cfif len(baseElement) 
@@ -1706,131 +1747,142 @@ and tclassextendattributes.type='File'
 		)>
 	<cfscript>
 		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].extensions.xmlChildren); ext=ext+1){
-						
+				
 			documentXML=arguments.configXML[baseElement].extensions.extension[ext];
-
-			subType = application.classExtensionManager.getSubTypeBean();
 			
-
 			if(isDefined("documentXML.xmlAttributes.type")){
-				if(documentXML.xmlAttributes.type eq 'User'){
+				subtypeArray=listToArray(documentXML.xmlAttributes.type,'^');
+			} else {
+				break;
+			}
+
+			for(var subtypetype in subtypeArray){
+				
+				subType = application.classExtensionManager.getSubTypeBean();
+
+				if(subtypetype eq 'User'){
 					subType.setType( 2 );
-				} else if(documentXML.xmlAttributes.type eq 'Group'){
+				} else if(subtypetype eq 'Group'){
 					subType.setType( 1);
 				} else {
-					subType.setType( documentXML.xmlAttributes.type );
+					subType.setType( subtypetype );
 				}
-			}
-						
-			if(isDefined("documentXML.xmlAttributes.subtype")){
-				subType.setSubType( documentXML.xmlAttributes.subtype );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.description")){
-				subType.setDescription( documentXML.xmlAttributes.description );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.availableSubTypes")){
-				subType.setAvailableSubTypes( documentXML.xmlAttributes.availableSubTypes );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hassummary")){
-				subType.setHasSummary( documentXML.xmlAttributes.hassummary );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasassocfile")){
-				subType.setHasAssocfile( documentXML.xmlAttributes.hasassocfile );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasconfigurator")){
-				subType.setHasConfigurator( documentXML.xmlAttributes.hasconfigurator );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.hasbody")){
-				subType.setHasBody( documentXML.xmlAttributes.hasbody );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.isactive")){
-				subType.setIsActive( documentXML.xmlAttributes.isactive );
-			}
-
-			if(isDefined("documentXML.xmlAttributes.iconClass")){
-				subType.setIconClass( documentXML.xmlAttributes.iconClass );
-			}
-				      	
-			subType.setSiteID( arguments.siteID );
-			subType.load();
-
-			if(subtype.getIsNew()){
-				if(subtype.getType() eq "Site"){
-			  		subType.setBaseTable( "tsettings" );
-					subType.setBaseKeyField( "baseID" );
-				} else if(listFindNoCase("1,2,Group,User",subtype.getType())){
-					subType.setBaseTable( "tusers" );
-					subType.setBaseKeyField( "userid" );
-					subType.setDataTable("tclassextenddatauseractivity");
-				} else if(subtype.getType() eq "Address"){
-			  		subType.setBaseTable( "tusersaddresses" );
-			  		subType.setDataTable("tclassextenddatauseractivity");
-					subType.setBaseKeyField( "addressid" );	
+					
+				if(isDefined("documentXML.xmlAttributes.subtype")){
+					subType.setSubType( documentXML.xmlAttributes.subtype );
 				}
 
-				subType.save();
-			}
+				if(isDefined("documentXML.xmlAttributes.description")){
+					subType.setDescription( documentXML.xmlAttributes.description );
+				}
 
-			for(extset=1;extset lte arraylen(documentXML.xmlChildren); extset=extset+1){
-				      	
-				extendSetXML=documentXML.xmlChildren[extset];
+				if(isDefined("documentXML.xmlAttributes.availableSubTypes")){
+					subType.setAvailableSubTypes( documentXML.xmlAttributes.availableSubTypes );
+				}
 
-				if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
-					extsetorder=extsetorder+1;
+				if(isDefined("documentXML.xmlAttributes.hassummary")){
+					subType.setHasSummary( documentXML.xmlAttributes.hassummary );
+				}
 
-					extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+				if(isDefined("documentXML.xmlAttributes.adminonly")){
+					subType.setAdminOnly( documentXML.xmlAttributes.adminonly );
+				}
 
-					if(isDefined("extendSetXML.xmlAttributes.container")){
-						extendset.setContainer( extendSetXML.xmlAttributes.container );
+				if(isDefined("documentXML.xmlAttributes.hasassocfile")){
+					subType.setHasAssocfile( documentXML.xmlAttributes.hasassocfile );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.hasconfigurator")){
+					subType.setHasConfigurator( documentXML.xmlAttributes.hasconfigurator );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.hasbody")){
+					subType.setHasBody( documentXML.xmlAttributes.hasbody );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.isactive")){
+					subType.setIsActive( documentXML.xmlAttributes.isactive );
+				}
+
+				if(isDefined("documentXML.xmlAttributes.iconClass")){
+					subType.setIconClass( documentXML.xmlAttributes.iconClass );
+				}
+					      	
+				subType.setSiteID( arguments.siteID );
+				subType.load();
+
+				if(subtype.getIsNew()){
+					if(subtype.getType() eq "Site"){
+				  		subType.setBaseTable( "tsettings" );
+						subType.setBaseKeyField( "baseID" );
+					} else if(listFindNoCase("1,2,Group,User",subtype.getType())){
+						subType.setBaseTable( "tusers" );
+						subType.setBaseKeyField( "userid" );
+						subType.setDataTable("tclassextenddatauseractivity");
+					} else if(subtype.getType() eq "Address"){
+				  		subType.setBaseTable( "tusersaddresses" );
+				  		subType.setDataTable("tclassextenddatauseractivity");
+						subType.setBaseKeyField( "addressid" );	
 					}
-								
-					if(extendSet.getIsNew()){
-						extendSet.setOrderNo(extsetorder);
-						extendSet.save();
-					}
 
-					for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
-						      		
-						attributeXML=extendSetXML.xmlChildren[at];
+					subType.save();
+				}
 
-						if(structKeyExists(attributeXML,"name")){
-							attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
-						} else {
-							attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
+				for(extset=1;extset lte arraylen(documentXML.xmlChildren); extset=extset+1){
+					      	
+					extendSetXML=documentXML.xmlChildren[extset];
+
+					if(extendSetXML.xmlName == 'attributeset' && isdefined('extendSetXML.xmlAttributes.name')){
+						extsetorder=extsetorder+1;
+
+						extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+
+						if(isDefined("extendSetXML.xmlAttributes.container")){
+							extendset.setContainer( extendSetXML.xmlAttributes.container );
 						}
-						if(attribute.getIsNew()){
-							attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
-							
-							for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
-							      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
-							    if(structKeyExists(attributeXML,attrbuteKeyName)){
-									evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
-								}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
-									evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
-								}
+									
+						if(extendSet.getIsNew()){
+							extendSet.setOrderNo(extsetorder);
+							extendSet.save();
+						}
+
+						for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
+							      		
+							attributeXML=extendSetXML.xmlChildren[at];
+
+							if(structKeyExists(attributeXML,"name")){
+								attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
+							} else {
+								attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
 							}
+							if(attribute.getIsNew()){
+								attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex,adminonly";
+								
+								for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
+								      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
+								    if(structKeyExists(attributeXML,attrbuteKeyName)){
+										evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
+									}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
+										evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
+									}
+								}
 
-							attribute.setOrderNo(at);
-							attribute.save();
-						}			
-					}
-				} else if(extendSetXML.xmlName == 'relatedcontentset' && isDefined("extendSetXML.xmlAttributes.name")){
-					relsetorder=relsetorder+1;
-					relset=getBean('extendRelatedContentSetBean').loadBy(siteID=subtype.getSiteID(),subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
-					if(isDefined("extendSetXML.xmlAttributes.AvailableSubTypes")){
-						relset.setAvailableSubTypes(extendSetXML.xmlAttributes.AvailableSubTypes);
-					}
+								attribute.setOrderNo(at);
+								attribute.save();
+							}			
+						}
+					} else if(extendSetXML.xmlName == 'relatedcontentset' && isDefined("extendSetXML.xmlAttributes.name")){
+						relsetorder=relsetorder+1;
+						relset=getBean('extendRelatedContentSetBean').loadBy(siteID=subtype.getSiteID(),subTypeID=subType.getSubTypeID(),name=extendSetXML.xmlAttributes.name);
+						if(isDefined("extendSetXML.xmlAttributes.AvailableSubTypes")){
+							relset.setAvailableSubTypes(extendSetXML.xmlAttributes.AvailableSubTypes);
+						}
 
-					relset.setOrderNo(relsetorder);
-					relset.save();
+						relset.setOrderNo(relsetorder);
+						relset.save();
+					}
 				}
+
 			}
 		}
 	</cfscript>

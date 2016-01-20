@@ -240,6 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.approvalChainOverride = false />
 	<cfset variables.instance.approvingChainRequest = false />
 	<cfset variables.instance.relatedContentSetData = "" />
+	<cfset variables.instance.objectParams={}>
 	
 	<cfset variables.displayRegions = structNew()>
 		
@@ -354,6 +355,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(variables.instance.displayStop), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
 			
+			</cfif>
+
+			<cfif getBean('configBean').getValue(property='advancedScheduling',defaultValue=false)>
+						
 			</cfif>
 		</cfif>
 		
@@ -779,6 +784,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getDisplayStart" output="false">
+	<cfargument name="timezone" default="">
+
+	<cfif len(arguments.timezone) and isDate(variables.instance.displaystart)>
+		<cfreturn convertTimezone(datetime=variables.instance.displaystart,to=arguments.timezone)>
+	<cfelse>
+		<cfreturn variables.instance.displaystart>
+	</cfif>
+	
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayStop" output="false">
+	<cfargument name="timezone" default="">
+
+	<cfif len(arguments.timezone) and isDate(variables.instance.displaystop)>
+		<cfreturn convertTimezone(datetime=variables.instance.displaystop,to=arguments.timezone)>
+	<cfelse>
+		<cfreturn variables.instance.displaystop>
+	</cfif>
+	
+	<cfreturn this>	
+</cffunction>
+
 <cffunction name="setDisplayList" output="false">
 	<cfargument name="displayList">
 	<cfset variables.instance.responseDisplayFields=arguments.displayList>
@@ -786,7 +815,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
-	<cfreturn variables.instance.responseDisplayFields>
+	<cfif not len(variables.instance.responseDisplayFields)>
+		<cfreturn "Image,Date,Title,Summary,Credits">
+	<cfelse>
+		<cfreturn variables.instance.responseDisplayFields>
+	</cfif>
+</cffunction>
+
+<cffunction name="setDisplayInterval" output="false">
+	<cfargument name="displayInterval">
+
+	<cfif not isSimpleValue(arguments.displayInterval)>
+		<cfif isDefined('arguments.displayInterval.end') >
+			<cfif arguments.displayInterval.end eq 'on'
+			and isDefined('arguments.displayInterval.endon') 
+			and isDate(arguments.displayInterval.endon)>
+				<cfset setValue('displayStop',arguments.displayInterval.end)>
+			<cfelseif arguments.displayInterval.end eq 'after'
+				and isDefined('arguments.displayInterval.endafter') 
+				and isNumeric(arguments.displayInterval.endafter)
+				or arguments.displayInterval.end eq 'never'>
+				<cfif isDate(getValue('displayStop'))>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStop')))>
+				<cfelse>
+					<cfset setValue('displayStop',dateAdd('yyyy',100,getValue('displayStart')))>
+				</cfif>
+			</cfif>
+		</cfif>
+		<cfset arguments.displayInterval=serializeJSON(arguments.displayInterval)>
+	</cfif>
+
+	<cfset variables.instance.displayInterval=arguments.displayInterval>
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayIntervalDesc" output="false">
+	<cfreturn getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().renderIntervalDesc(this)>
+</cffunction>
+
+<cffunction name="getDisplayInterval" output="false">
+	<cfargument name="deserialize" default="false">
+
+	<cfif arguments.deserialize>
+		<cfreturn getBean('contentIntervalManager').deserializeInterval(
+			interval=variables.instance.displayInterval,
+			displayStart=getValue('displayStart'),
+			displayStop=getValue('displayStop')
+		)>
+	<cfelse>
+		<cfreturn variables.instance.displayInterval>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="getDisplayConflicts" output="false">
+	<cfreturn getBean('contentIntervalManager').findConflicts(this)>
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
@@ -900,7 +983,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
-	
+	<cfargument name="sortBy" required="true" default="#getValue('sortBy')#">
+	<cfargument name="sortDirection" required="true" default="#getValue('sortDirection')#">
+	<cfargument name="nextN" required="true" default="#getValue('nextN')#">
 	<cfset arguments.parentid=getContentID()>
 	<cfset arguments.siteid=getValue('siteid')>
 	<cfreturn variables.contentManager.getKidsQuery(argumentCollection=arguments) />
@@ -911,6 +996,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
 	<cfargument name="size" required="true" default="0">
+	<cfargument name="sortBy" required="true" default="#getValue('sortBy')#">
+	<cfargument name="sortDirection" required="true" default="#getValue('sortDirection')#">
+	<cfargument name="nextN" required="true" default="#getValue('nextN')#">
 
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>
@@ -925,6 +1013,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
 	<cfreturn it>
+</cffunction>
+
+<cffunction name="getEventsQuery" output="false">
+	<cfif getValue('type') neq 'Calendar'>
+		<cfthrow message="The method is only for calendars">
+	</cfif>
+	<cfset arguments.calendarid=getValue('contentid')>
+	<cfset arguments.siteid=getValue('siteid')>
+	<cfreturn getBean('$')
+		.init(getValue('siteid'))
+		.getCalendarUtility()
+		.getCalendarItems(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getEventsIterator">
+	<cfscript>
+		var q = getEventsQuery(argumentCollection=arguments);
+		var it = getBean('contentIterator').init();
+		it.setQuery(q);
+		return it;
+	</cfscript>
 </cffunction>
 
 <cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">
@@ -1016,6 +1125,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.child.setModuleID(variables.instance.moduleID)>
 	<cfset arrayAppend(variables.instance.addObjects,arguments.child)>	
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setObjectParams" output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="objectParams">
+
+	<cfif isSimpleValue(arguments.objectParams) and len(arguments.objectParams) and isJSON(arguments.objectParams)>
+		<cfset var val=deserializeJSON(arguments.objectParams)>
+		
+		<cfif isStruct(val)>
+			<cfset variables.instance.objectParams=val>
+		</cfif>
+	<cfelseif not isSimpleValue(arguments.objectParams)>
+		<cfset variables.instance.objectParams=arguments.objectParams>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getObjectParams"  output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="serialize" default="false">
+	<cfif arguments.serialize>
+		<cfreturn serializeJSON(variables.instance.objectParams)>
+	<cfelse>
+		<cfreturn variables.instance.objectParams>
+	</cfif>
+</cffunction>
+
+<cffunction name="getObjectParam"  output="false" hint="This is used when content nodes are configurable as display objects">
+	<cfargument name="param">
+	<cfargument name="defaultValue">
+	<cfset var val=getValue('param')>
+	<cfif len(val)>
+		<cfreturn val>
+	<cfelse>
+		<cfset params=getObjectParams()>
+
+		<cfif structKeyExists(params,arguments.param)>
+			<cfreturn params['#arguments.param#']>
+		<cfelseif isDefined('arguments.defaultValue')>
+			<cfreturn arguments.defaultValue>
+		<cfelse>
+			<cfreturn ''>
+		</cfif>
+	</cfif>
 </cffunction>
 
 <cffunction name="addDisplayObject" output="false">
@@ -1163,7 +1315,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
+	<cfif getValue('isNew') and getValue('contentid') neq '00000000000000000000000000000000001'>
+		<cfreturn variables.contentManager.getCrumbList(contentID=variables.instance.parentid, siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, sort=arguments.sort)>
+	<cfelse>
+		<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
+	</cfif>
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
@@ -1195,6 +1351,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setBody" output="false">
+	<cfargument name="body">
+
+	<cfif getValue('type') eq 'Variation'>
+		<cfif not isSimpleValue(arguments.body)>
+			<cfset arguments.body=serializeJSON(arguments.body)>
+		</cfif>
+		<cfif not isJSON(arguments.body)>
+			<cfset arguments.body=urlDecode(arguments.body)>
+			<cfif not isJSON(arguments.body)>
+				<cfset arguments.body="[]">
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfset variables.instance.body=arguments.body>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setAssocURL" output="false">
 	<cfargument name="assocURL">
 	<cfif variables.instance.type eq 'Link'>
@@ -1206,22 +1381,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="boolean" required="true" default="false"/>
 	<cfargument name="tab">
+	<cfargument name="complete" required="true" default="false">
+	<cfargument name="hash" required="true" default="false">
 	<cfset var returnStr="">
 	<cfset var topID="00000000000000000000000000000000001">
 	
 	<cfif listFindNoCase("Form,Component", variables.instance.type)>
-		<cfset topID=variables.instance.moduleID>
+		<cfset topID=getValue('moduleid')>
 	</cfif>
 
 	<cfif arguments.compactDisplay>
-		<cfset arguments.compactDisplay=true>
+		<cfset arguments.compactDisplay='true'>
 	</cfif>
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getAdminPath(complete=arguments.complete)#/?muraAction=cArch.edit&contenthistid=#getContentHistId()#&contentid=#getContentId()#&type=#getValue('type')#&siteid=#getValue('siteid')#&topid=#topID#&parentid=#getValue('parentid')#&moduleid=#getValue('moduleid')#&compactdisplay=#arguments.compactdisplay#" >
 	
 	<cfif structKeyExists(arguments,"tab")>
 		<cfset returnStr=returnStr & "##" & arguments.tab>
 	</cfif>
+
+	<cfif arguments.hash>
+		<cfset var redirectid=getBean('utility').createRedirectId(returnStr)>
+		<cfset returnStr=getBean('settingsManager').getSite(getValue('siteid')).getContentRenderer().createHREF(complete=arguments.complete,filename=redirectid)>
+	</cfif>
+
 	<cfreturn returnStr>
 </cffunction> 
 
@@ -1245,6 +1428,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfargument name="default" default=""/>
+	<cfargument name="useProtocol" default="true"/>
 	<cfset arguments.bean=this>
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
@@ -1368,7 +1552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasImage">
-	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif',getValue('fileEXT'))>
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif,svg',getValue('fileEXT'))>
 </cffunction>
 
 	<cffunction name="getStatusID" output="false">

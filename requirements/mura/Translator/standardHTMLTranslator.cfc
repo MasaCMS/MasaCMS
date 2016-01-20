@@ -61,6 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var inheritedObjectsContentID="">
 	<cfset var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm' />
 	
+	<cfset variables.$=$>
+	
 	<cfif not isNumeric(arguments.event.getValue('startRow'))>
 		<cfset arguments.event.setValue('startRow',1)>
 	</cfif>

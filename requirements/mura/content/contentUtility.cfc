@@ -263,6 +263,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates(arguments.type) />
 </cffunction>
 
+<cffunction name="getLayouts" returntype="query" access="public" output="false">
+	<cfargument name="siteid" type="string" required="true">
+	<cfargument name="type" type="string" required="true" default="collection/layouts">
+	<cfreturn variables.settingsManager.getSite(arguments.siteID).getLayouts(arguments.type) />
+</cffunction>
+
 <cffunction name="getRestrictGroups" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
@@ -1132,6 +1138,8 @@ and parentID is null
 	<cfset var newSummary ="" />
 	<cfset var newBody ="" />
 	<cfset var newFilename ="" />
+	<cfset var newAttributeValue ="" />
+	<cfset var newStringValue ="" />
 	
 	<cfif arguments.find neq "/">
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1167,11 +1175,32 @@ and parentID is null
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfset newSummary = replaceNoCase(rs.summary,"#arguments.find#","#arguments.replace#","ALL")>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 			</cfquery>
 		</cfloop> 
+
+		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs">
+			select tclassextenddata.dataid, tclassextenddata.attributevalue, tclassextenddata.stringvalue from tclassextenddata 
+			inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
+			where 
+			tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			and tclassextendattributes.type='HTMLEditor'
+			and tclassextenddata.attributevalue like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
+		</cfquery>
+
+		<cfloop query="rs">
+			<cfset newAttributeValue = replaceNoCase(rs.attributeValue,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfset newStringValue=replace(rs.stringvalue,"#arguments.find#","#arguments.replace#","ALL")>
+			
+			<cfquery>
+				update tclassextenddata set
+				attributeValue=<cfqueryparam value="#newAttributeValue#" cfsqltype="cf_sql_longvarchar" >,
+				stringvalue=<cfqueryparam value="#newStringValue#" cfsqltype="cf_sql_longvarchar" >
+				where dataid=<cfqueryparam value="#rs.dataid#" cfsqltype="cf_sql_integer" >
+			</cfquery>
+		</cfloop> 	
 	</cfif>
 </cffunction>
 

@@ -582,6 +582,7 @@ function validateForm(theForm) {
 		}
 
 		$("#alertDialogMessage").html(errors);
+		$("#alertDialog").attr('title','Alert');
 		$("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
@@ -1050,7 +1051,6 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 				}
 			);
 		}
-	   
 
 	    var clickHandler=function(){
 	    	setTab($(this).val());
@@ -1080,8 +1080,8 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	   
 	    $elm.find(".mura-file-option").find('input').change(
 	    	function(){
-	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif)$/;
-	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/;
+	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif|.svg)$/;
+	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|jpeg|gif|png|svg)/;
 	    		if(reg1.test( $(this).val().toLowerCase()) || reg2.test( $(this).val().toLowerCase())){
 	    			$(this).parent().find('.file-meta-open').show();
 	    		}else{
@@ -1117,54 +1117,103 @@ function setFileSelectors() {
 	$('.mura-file-selector').fileselector();
 }
 
-function alertDialog(message) {
-	$("#alertDialogMessage").html(message);
-	$("#alertDialog").dialog({
+function alertDialog(message,okAction,title,width) {
+
+	if(typeof message == 'object'){
+		var config=message;
+		message=config.message || 'Message not defined';
+		okAction=config.okAction || function(){};
+		title=config.title || 'Alert';
+		width=config.width || 0;
+	}
+	
+	title= title || 'Alert';
+	width= width || null;
+
+	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
 			Ok: function() {
 				$(this).dialog('close');
+				if(okAction){
+					if(typeof(okAction) == 'function') {
+						okAction();
+					} else if (typeof(_okAction) == 'string'){
+						actionModal(okAction);
+					}
+				}
 			}
 		}
-	});
+	};
+
+	if(width){
+		dialogConfig.width=width;
+	}
+
+	$("#alertDialog").attr('title',title);
+	$("#alertDialogMessage").html(message);
+	$("#alertDialog").dialog(dialogConfig);
 
 	return false;
 }
 
-function confirmDialog(message, yesAction, noAction) {
-	_yesAction = yesAction;
-	_noAction = noAction;
+function confirmDialog(message, yesAction, noAction,title,width) {
 
-	$("#alertDialogMessage").html(message);
-	$("#alertDialog").dialog({
+	if(typeof message == 'object'){
+		var config=message;
+		message=config.message || 'Message not defined';
+		
+		if(config.yesAction){
+			yesAction=config.yesAction;
+		}
+
+		if(config.noAction){
+			noAction=config.noAction;
+		}
+		
+		title=config.title || 'Alert';
+		width=config.width || 0;
+	}
+
+	title= title || 'Alert';
+
+	var dialogConfig={
 		resizable: false,
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
 			'Yes': function() {
 				$(this).dialog('close');
-				if(typeof(_yesAction) == 'function') {
-					_yesAction();
+				if(typeof(yesAction) == 'function') {
+					yesAction();
 				} else {
-					actionModal(_yesAction);
+					actionModal(yesAction);
 				}
 
 			},
 			'No': function() {		
-				if(typeof(_noAction) != 'undefined') {
-					if(typeof(_noAction) == 'function') {
-						_noAction();
+				if(typeof(noAction) != 'undefined') {
+					if(typeof(noAction) == 'function') {
+						noAction();
 					} else {
-						actionModal(_noAction);
+						actionModal(noAction);
 					}
 				} else {
 					$(this).dialog('close');
 				}
 			}
 		}
-	});
+	};
+
+	if(width){
+		dialogConfig.width=width;
+	}
+
+	$("#alertDialog").attr('title',title);
+	$("#alertDialogMessage").html(message);
+	$("#alertDialog").dialog(dialogConfig);
 
 	return false;
 }

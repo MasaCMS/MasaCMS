@@ -182,18 +182,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="span4 hasConfiguratorContainer">
 			<label class="control-label">Show "List Display Options" when editing?</label>
 			<div class="controls"> 
-				<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="1"<cfif subType.gethasConfigurator() eq 1 >Checked</cfif>>Yes</label>
-				<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="0"<cfif subType.gethasConfigurator() eq 0 >Checked</cfif>>No</label>
+				<label class="radio inline"><input name="hasConfigurator" id="hasConfiguratorYes" type="radio" class="radio inline" value="1"<cfif subType.gethasConfigurator() eq 1 >Checked</cfif>>Yes</label>
+				<label class="radio inline"><input name="hasConfigurator" id="hasConfiguratorNo" type="radio" class="radio inline" value="0"<cfif subType.gethasConfigurator() eq 0 >Checked</cfif>>No</label>
 			</div>
 		</div>
 		<div class="span4">
 			<label class="control-label">Status</label>
 			<div class="controls">
-					<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
+				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
 				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
 			</div>
 		</div>
 	</div>
+	<cfif application.configBean.getValue(property='adminOnlysubTypes',defaultValue=false)>
+	<div class="control-group adminOnlyContainer">
+	<div class="span4">
+			<label class="control-label">For 'Admin' Group Member Use Only?</label>
+			<div class="controls">
+				<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif subType.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
+				<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif subType.getAdminOnly() eq 0 >Checked</cfif>>No</label>
+			</div>
+		</div>
+	</div>
+	</cfif>
 </div>	
 <div class="form-actions">
 	<cfif not len(rc.subTypeID)>
@@ -208,12 +219,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <input type="hidden" name="action" value="">
-<input name="muraAction" value="cExtend.updateSubType" type="hidden">
-<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
-<input type="hidden" name="baseTable" value="#esapiEncode('html_attr',subType.getBaseTable())#"/>
-<input type="hidden" name="baseKeyField" value="#esapiEncode('html_attr',subType.getBaseKeyField())#" />
-<input type="hidden" name="type" value="#esapiEncode('html_attr',subType.getType())#"/>
-<input type="hidden" name="dataTable" value="#esapiEncode('html_attr',subType.getDataTable())#" />
+<input type="hidden" name="muraAction" value="cExtend.updateSubType">
+<input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#">
+<input type="hidden" name="baseTable" value="#esapiEncode('html_attr',subType.getBaseTable())#">
+<input type="hidden" name="baseKeyField" value="#esapiEncode('html_attr',subType.getBaseKeyField())#">
+<input type="hidden" name="type" value="#esapiEncode('html_attr',subType.getType())#">
+<input type="hidden" name="dataTable" value="#esapiEncode('html_attr',subType.getDataTable())#">
+<input type="hidden" name="isnew" value="#subtype.getIsNew()#">
 #rc.$.renderCSRFTokens(context=rc.subtypeid,format="form")#
 </form>
 

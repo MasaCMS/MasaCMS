@@ -150,13 +150,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset isObjectInstance=false>
 </cfif>
 
-<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
-<cfif isObjectInstance>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+<cfif rc.$.getContentRenderer().useLayoutManager()>
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 <cfelse>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
+	<cfif isObjectInstance>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfelse>
+		<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	</cfif>
 </cfif>
-
 <cfset endpoint=rc.$.siteConfig().getApi('feed','v1').getEndpoint()>
 </cfsilent>
 
@@ -182,9 +186,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif rc.compactDisplay eq "true">
-	<ul class="navTask nav nav-pills">
-		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
-	</ul>
+		<div id="nav-module-specific" class="btn-group">
+		<cfif rc.$.useLayoutManager()>
+			<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});">
+				<i class="icon-circle-arrow-left"></i>
+			 	#application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		<cfelse>
+			<a class="btn" onclick="history.go(-1);">
+				<i class="icon-circle-arrow-left"></i>
+			 	#application.rbFactory.getKeyValue(session.rb,'collections.back')#
+			</a>
+		</cfif>
+		</div>
 	</cfif>
 <cfelse>
 	<!---<h2>#esapiEncode('html',rc.feedBean.getName())#</h2>--->
@@ -310,6 +324,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 				</div>
 			</div>
+
+			<cfif rc.$.getContentRenderer().useLayoutManager()>
+			<div class="control-group">
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
+					<div class="controls">
+						<select name="#displaNamePrefix#maxItems" data-displayobjectparam="maxItems">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+						<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
+						</cfloop>
+						<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>All</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="span6">
+				      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
+						<div class="controls"><select name="#displaNamePrefix#nextN" data-displayobjectparam="nextN">
+						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+						<option value="#r#" <cfif r eq rc.feedBean.getNextN()>selected</cfif>>#r#</option>
+						</cfloop>
+						<option value="100000" <cfif rc.feedBean.getNextN() eq 100000>selected</cfif>>All</option>
+						</select>
+					  </div>
+				</div>
+			</div>
+			</cfif>
 
 			<!--- Features + Nav --->
 			<div class="control-group">
@@ -457,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 </cfif>
-
+<cfif not rc.$.getContentRenderer().useLayoutManager()>
 <div id="tabDisplay" class="tab-pane fade">
 <div class="fieldset">
 <cfif isObjectInstance><h2>#esapiEncode('html',rc.feedBean.getName())#</h2></cfif>
@@ -613,7 +654,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </div>
 </div>
-
+</cfif>
 <cfif not isObjectInstance>
 <div id="tabRss" class="tab-pane fade">
 <div class="fieldset">
@@ -737,7 +778,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 	</cfif>
 	<cfif rc.compactDisplay eq "true">
-		<input type="hidden" name="closeCompactDisplay" value="true" />
 		<input type="hidden" name="homeID" value="#rc.homeID#" />
 	</cfif>
 	<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
@@ -770,6 +810,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="assignmentID" value="#esapiEncode('html_attr',rc.assignmentID)#" />
 <input type="hidden" name="orderno" value="#esapiEncode('html_attr',rc.orderno)#" />
 <input type="hidden" name="regionid" value="#esapiEncode('html_attr',rc.regionID)#" />
+<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
+<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 #rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 <!--- Button Begins --->
 </form>
@@ -809,7 +851,13 @@ jQuery(document).ready(function(){
 <cfset tablist="tabBasic,tabCategorization">
 <cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<cfif rc.compactDisplay eq "true">
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" onclick="history.go(-1);"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
+	</div>
+<cfelse>
+	<cfinclude template="dsp_secondary_menu.cfm">
+</cfif>
 
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
@@ -846,7 +894,7 @@ jQuery(document).ready(function(){
 	<div class="span6">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 	      <div class="controls">
-	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#" maxlength="250">
+	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#">
 	      </div>
 	</div>
 </div>
@@ -910,7 +958,7 @@ jQuery(document).ready(function(){
 	</div>
 <div class="control-group">
 	
-	<div class="span2">
+	<div class="span3">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
       <div class="controls">
 	    <select class="span7" name="maxItems">
@@ -922,7 +970,7 @@ jQuery(document).ready(function(){
 	  </div>
     </div>
 
-	<div class="span2">
+	<div class="span3">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
       <div class="controls">
       <select class="span7" name="version">
@@ -932,6 +980,23 @@ jQuery(document).ready(function(){
 		</select>
 		</div>
     </div>
+    <cfif len(rc.$.globalConfig('proxyserver')) or len(rc.$.globalConfig('proxyuser'))>
+	    <div class="span6">
+	    	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.authtype')#</label>
+	      	<div class="controls">
+			   <select name="authtype" class="span4">
+				<option value="DEFAULT">DEFAULT</option>
+				<option value="BASIC" <cfif rc.feedBean.getAuthType() eq 'BASIC'>selected</cfif>>BASIC</option>
+				<cfif len(rc.$.globalConfig('proxyserver'))>
+					<option value="PROXY" <cfif rc.feedBean.getAuthType() eq 'PROXY'>selected</cfif>>PROXY</option>
+				</cfif>
+				<cfif len(rc.$.globalConfig('proxyuser'))>
+					<option value="NTLM" <cfif rc.feedBean.getAuthType() eq 'NTLM'>selected</cfif>>NTLM</option>
+				</cfif>
+				</select>
+	  		</div>
+		</div>
+	</cfif>
 </div>
 
 	<div class="control-group">	
@@ -975,15 +1040,15 @@ jQuery(document).ready(function(){
 			</div>
 		</div>
 		<div class="control-group">
-	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
-	      <div class="controls">
-     <label class="radio inline">
-	 <input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	</label>
-	<label class="radio inline">
-	<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-	</label>
-	  </div>
+	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
+	      	<div class="controls">
+			    <label class="radio inline">
+				<input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				</label>
+				<label class="radio inline">
+				<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</label>
+	  		</div>
 	    </div>
     </div>
 </div>
@@ -1018,12 +1083,13 @@ jQuery(document).ready(function(){
 			</cfif>
 			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 			<cfif rc.compactDisplay eq "true">
-				<input type="hidden" name="closeCompactDisplay" value="true" />
 				<input type="hidden" name="homeID" value="#rc.homeID#" />
 			</cfif>
 			<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
 			<input type="hidden" name="action" value="update">
 		</cfif>
+		<input type=hidden name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#">
+		<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 		<input type="hidden" name="type" value="Remote">
 		#rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 		</div>
@@ -1031,13 +1097,7 @@ jQuery(document).ready(function(){
 </div>
 
 </form>
-<!---
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
-
-<script type="text/javascript">
-initTabs(Array(#tablist#),0,0,0);
-</script>---></cfoutput>
+</cfoutput>
 <cfsavecontent variable="headerStr">
 <cfoutput>
 <script type="text/javascript">

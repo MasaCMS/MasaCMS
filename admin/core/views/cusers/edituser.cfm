@@ -46,6 +46,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#" />
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 <cfsilent>
 	<cfscript>
 		event = request.event;
@@ -83,7 +84,7 @@
 </cfsilent>
 
 <cfoutput>
-	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);" autocomplete="off">
+	<form novalidate="novalidate" action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#&routeid=#rc.routeid#')#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);;" autocomplete="off">
 
 		<h1>#rbKey('user.usermaintenanceform')#</h1>
 		
@@ -455,7 +456,7 @@
 											</cfloop>
 										</table>
 									<cfelse>
-										<em>#rbKey('user.noaddressinformation')#</em>
+										<p class="alert">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</p>
 									</cfif>
 								</div>
 								<!--- /Add Address --->
@@ -623,7 +624,6 @@
 								userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
 							</script>	
 						</div>
-						<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 					</cfif>
 				<!--- /Extended Attributes Tab --->
 
@@ -760,10 +760,10 @@
 						<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 						<div class="form-actions">
 							<cfif rc.userid eq ''>
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
+								<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'add');" value="#rbKey('user.add')#" />
 							<cfelse>
 								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(rbKey('user.deleteuserconfirm'))#');" value="#rbKey('user.delete')#" /> 
-								<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
+								<input type="button" class="btn" onclick="userManager.submitForm(document.forms.form1,'update');" value="#rbKey('user.update')#" />
 							</cfif>
 						</div>
 					</div>

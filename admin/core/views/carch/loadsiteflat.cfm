@@ -53,7 +53,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	//data=structNew();
 	
 	$=application.serviceFactory.getBean("MuraScope");
+	rsTypes=application.configBean.getClassExtensionManager().getSubTypes(siteid=session.siteid,activeOnly=true);
 
+	filterSubtypes=!poweruser;
+
+	if(filterSubtypes){
+		qs = new Query();
+	    qs.setDBType('query');
+	    qs.setAttributes(subtypes=rsTypes); 
+	    qs.setSQL('SELECT * FROM subtypes where adminOnly=1');
+	    rsAdminOnly = qs.execute(sql='SELECT * FROM subtypes where adminOnly=1').getResult();
+	    rsTypes = qs.execute(sql='SELECT * FROM subtypes where adminOnly !=1').getResult();
+	}
+  
 	if(!listFindNoCase('myexpires,expires',$.event('report')) && $.event('sortby') == 'expiration'){
 		$.event('sortby','lastupdate');
 	} else if(!listFindNoCase('mysubmissions,myapprovals',$.event('report')) && $.event('sortby') == 'duedate'){
@@ -69,7 +81,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs["#rc.siteID#"].tags=$.event("tags");
 	session.flatViewArgs["#rc.siteID#"].page=$.event("page");
 	session.flatViewArgs["#rc.siteID#"].type=$.event("type");
-	session.flatViewArgs["#rc.siteID#"].subtype=$.event("subtype");
 	session.flatViewArgs["#rc.siteID#"].subtype=$.event("subtype");
 	session.flatViewArgs["#rc.siteID#"].report=$.event("report");
 	session.flatViewArgs["#rc.siteID#"].keywords=$.event("keywords");
@@ -204,6 +215,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 		if( len($.globalConfig('defaultflatviewtable')) ){
 			feed.setTable($.globalConfig('defaultflatviewtable'));
+		}
+	}
+
+	if(filterSubtypes && rsAdminOnly.recordcount){
+		for(r=1;r<=rsAdminOnly.recordcount;r++){
+			feed.addParam(relationship="and not (");
+			feed.addParam(field="tcontent.type",datatype="varchar",criteria=rsAdminOnly.type[r]);
+			feed.addParam(field="tcontent.subtype",datatype="varchar",criteria=rsAdminOnly.subtype[r]);
+			feed.addParam(relationship=")");
 		}
 	}
 	
@@ -604,13 +624,18 @@ if(len($.siteConfig('customTagGroups'))){
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module well">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h3>
-		<cfset rsTypes=application.configBean.getClassExtensionManager().getSubTypes(session.siteid)>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 			<cfloop list="#$.getBean('contentManager').getTreeLevelList()#" index="i">
 				<option value="#i#^Default"<cfif $.event('type') eq i and $.event('subtype') eq 'Default'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#<!---  / Default ---></option>
 				<cfquery name="rsSubTypes" dbtype="query">
 					select * from rsTypes where type='#i#' and subtype!='Default'
+					<cfif not (
+						rc.$.currentUser().isAdminUser() 
+						or rc.$.currentUser().isSuperUser()
+						)>
+						and adminonly !=1
+					</cfif>
 				</cfquery>
 				<cfloop query="rsSubTypes">
 					<option value="#i#^#rsSubTypes.subtype#"<cfif $.event('type') eq i and $.event('subtype') eq rsSubTypes.subtype> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")# / #rsSubTypes.subtype#</option>

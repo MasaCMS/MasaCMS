@@ -46,5 +46,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput><h1>Access Denied</h1>
-<p>You have successfully logged in. However, you user account has not been granted permission to access any sites. <br/> If you believe that this is an error, please feel free to contact the system <a href="mailto:#esapiEncode('url',application.configBean.getAdminEmail())#">administrator.</a></p>
+<p>You have successfully logged in. However, your user account has not been granted permission to access any sites. <br/> If you believe this is an error, contact the system <a href="mailto:#esapiEncode('url',application.configBean.getAdminEmail())#">administrator</a> for assistance.</p>
 </cfoutput>

@@ -153,6 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset event("contentRenderer").setValue('siteid',event('siteid'))>
 			</cfif>
+			<cfset event("contentRenderer").postMergeInit()>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
@@ -365,6 +366,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfthrow message="No primary content has been set.">
 	</cfif>
+</cffunction>
+
+<cffunction name="hasParent" output="false" returntype="any">
+	<cfreturn structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
 </cffunction>
 
 <cffunction name="getBean" returntype="any" access="public" output="false">

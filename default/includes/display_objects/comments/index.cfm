@@ -57,17 +57,26 @@
 <!---
 	NOTE: The comment form does not appear on Folders or Galleries
 --->
-<cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
-	<cfif request.muraFrontEndRequest and this.asyncObjects>
-		<cfoutput>
-			<div class="mura-async-object" 
-				data-object="comments" 
-				data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
-				data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
-				data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
-			</div>
 
-		</cfoutput>
+<cfif variables.$.siteConfig().getHasComments() and not listFindNoCase("Folder,Gallery",variables.$.content('type'))>
+
+	<cfif request.muraFrontEndRequest and this.asyncObjects>
+
+		<cfif this.layoutmanager>
+			<cfset objectparams.deletecommentid=$.event('deletecommentid')>
+			<cfset objectparams.spamcommentid=$.event('spamcommentid')>
+			<cfset objectparams.approvedcommentid=$.event('approvedcommentid')>
+			<cfset objectparams.async=true>
+		<cfelse>
+			<cfoutput>
+				<div class="mura-async-object" 
+					data-object="comments" 
+					data-deletecommentid="#esapiEncode('html_attr',$.event('deletecommentid'))#"
+					data-spamcommentid="#esapiEncode('html_attr',$.event('spamcommentid'))#"
+					data-approvedcommentid="#esapiEncode('html_attr',$.event('approvedcommentid'))#">
+				</div>
+			</cfoutput>
+		</cfif>
 	<cfelse>
 		<cfoutput>
 			<cfsilent>
@@ -238,7 +247,7 @@
 					mura.loader().loadjs(
 						"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/js/comments.js",
 						function(){
-							initMuraComments();
+							initMuraComments({proxyPath:"#variables.$.siteConfig('AssetPath')#/includes/display_objects/comments/ajax/commentsProxy.cfc"});
 						}
 					);
 				});

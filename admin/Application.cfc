@@ -361,6 +361,11 @@ component extends="framework" output="false" {
 		if(not structKeyExists(session.alerts,'#session.siteid#')){
 			session.alerts['#session.siteid#']=structNew();
 		}
+
+		if(request.action neq 'core:csettings.editSite' 
+			&& !len(request.context.siteid) && len(session.siteid)){
+			request.context.siteid=session.siteid;
+		}
 			
 		request.event=createObject("component", "mura.event").init(request.context);
 		request.context.$=request.event.getValue('MuraScope');
@@ -482,6 +487,10 @@ component extends="framework" output="false" {
 	  	}
 
 		application.rbFactory.setAdminLocale();
+
+		var previewData=application.serviceFactory.getBean('$').getCurrentUser().getValue("ChangesetPreviewData");
+		request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq request.context.siteid;
+		
 		application.pluginManager.announceEvent("onAdminRequestStart",request.event);
 		
 	}

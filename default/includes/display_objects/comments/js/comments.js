@@ -55,9 +55,10 @@
 	Mura CMS.
 */
 initMuraComments=function(config){
-	
+	config=config || {};
+
 	var $editor = jQuery('#mura-comment-post-comment');
-	var $commentsProxyPath = mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
+	var $commentsProxyPath = config.proxyPath || mura.assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
 	var $newcommentid = jQuery("#mura-comment-post-comment [name=commentid]").val();
 	var $name = jQuery("#mura-comment-post-comment [name=name]").val();
 	var $url = jQuery("#mura-comment-post-comment [name=url]").val();

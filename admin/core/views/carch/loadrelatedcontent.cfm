@@ -47,9 +47,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.isNew" default="1">
 <cfparam name="rc.keywords" default="">
 <cfparam name="rc.searchTypeSelector" default="">
+<cfparam name="rc.relatedcontentsetid" default="">
 <cfparam name="rc.rcStartDate" default="">
 <cfparam name="rc.rcEndDate" default="">
 <cfparam name="rc.rcCategoryID" default="">
+<cfparam name="rc.external" default="true">
 <cfset request.layout=false>
 <cfset baseTypeList = "Page,Folder,Calendar,Gallery,File,Link"/>
 <cfset rsSubTypes = application.classExtensionManager.getSubTypes(siteID=rc.siteID, activeOnly=true) />
@@ -57,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif listFind(contentPoolSiteIDs, $.event('siteid'))>
 	<cfset contentPoolSiteIDs = listDeleteAt(contentPoolSiteIDs, listFind(contentPoolSiteIDs, $.event('siteid')))>
 </cfif>
-
+<cfset request.layout=false>
 <cfoutput>
 	<script>
 		function toggleRelatedType(clicked){
@@ -117,13 +119,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		}		
 	</script>
-	<div class="control-group">
-		<label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
-		<div class="controls">
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
-			<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
+	<cfif rc.external>
+		<div class="control-group">
+			<label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
+			<div class="controls">
+				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
+				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
+			</div>
 		</div>
-	</div>
+	</cfif>
+	
 	<div class="control-group mura-related-internal">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 		<div id="internalContent" class="form-inline">
@@ -138,6 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-related-internal">
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="control-group">
+				<cfif rc.relatedcontentsetid neq 'calendar'>
 				<div class="span4">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
 					<div class="controls">
@@ -145,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
 							<cfloop list="#baseTypeList#" index="t">
 								<cfsilent>
-									<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery>
+									<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default') and adminonly!=1</cfquery>
 								</cfsilent>
 								<option value="#t#^Default"<cfif rc.searchTypeSelector eq "#t#^Default"> selected="selected"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
 								<cfif rsst.recordcount>
@@ -156,7 +162,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 						</select>
 					</div>
-				</div>	
+				</div>
+				</cfif>	
 				<div class="span8">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 					<div class="controls">
@@ -195,15 +202,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
-			if (len($.event("searchTypeSelector"))) {
-				feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
-				feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
+			if(rc.relatedcontentsetid=='calendar'){
+				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");	
+			} else {
+				if (len($.event("searchTypeSelector"))) {
+					feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
+					feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
+				}
 			}
 			
 			if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
 				feed.addParam(relationship="and (");
-				
-
+			
 				started=false;
 
 				feed.addParam(relationship="(");
@@ -285,7 +295,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfoutput>
 		</cfif>
 
-		
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
 			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>		

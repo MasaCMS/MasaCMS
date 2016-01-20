@@ -377,13 +377,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 	</cfscript>
 	<cftry>
-		<cfif len(variables.configBean.getProxyServer())>
-			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#"
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
-		<cfelse>
-			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#"></cfhttp>
-		</cfif>
+		<cfhttp attributeCollection='#getHTTPAttrs(
+			getasbinary="yes",
+			result="local.theFile",
+			method="get",
+			url="http://#variables.configBean.getFileStoreEndPoint()#/#arguments.bucket#/#local.rsFile.siteid#/cache/file/#arguments.fileid##local.size#.#local.rsFile.fileExt#")#'>
 		<cfcatch>
 		</cfcatch>
 	</cftry>
@@ -453,17 +451,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
 	<cfelse>
 		<cfset local.isLocalFile=false>
-		<cfif len(variables.configBean.getProxyServer())>
-			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
-			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
-			</cfhttp>
-		<cfelse>
-			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes">
-				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
-			</cfhttp>
-		</cfif>
+		
+		<cfhttp attributeCollection='#getHTTPAttrs(
+				url="#local.filePath#",
+				result="local.remoteGet",
+				getasbinary="yes")#'>
+			<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
+		</cfhttp>
 
 		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>
@@ -541,27 +535,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			return false;
 		}
 
+		if(isdefined('arguments.scope.type') && arguments.scope.type=='Link'){
+			arguments.scope=structCopy(arguments.scope);
+			structDelete(arguments.scope,'body');
+		}
+
 		for (var i in arguments.scope){
 			if(structKeyExists(arguments.scope,'#i#') && isSimpleValue(arguments.scope['#i#']) ){
 				if(isPostedFile(i)){
 
 					temptext=listLast(getPostedClientFileName(i),'.');
 					
-					if(len(tempText) && len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
+					if(len(tempText) && len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
+						return true;
+					}	
+				}
+
+				if(isValid('url',arguments.scope['#i#']) && right(arguments.scope['#i#'],1) != '/'){
+					tempText=arguments.scope['#i#'];
+
+					//if it contains a protocol
+					if(reFindNoCase("(https://||http://)", tempText)){
+
+						//strip it out
+						tempText=reReplaceNoCase(tempText, "(http://||https://)", "");
+
+						//and then on continue if the url contains a list longer than one
+						if(listLen(tempText,'/') ==1) {
+							break;
+						}
+					}
+
+					tempText=listFirst(arguments.scope['#i#'],'?');
+					tempText=listLast(tempText,'/');
+					tempText=listLast(tempText,'.');
+
+					/*
+					if(i=='body'){
+						writeDump(var=tempText,abort=1);
+					}
+					*/
+					
+					if(len(tempText) < 5 && !listFindNoCase(allowedExtensions,temptext)){
 						return true;
 					}	
 				}
 				
-				if(isValid('url',arguments.scope['#i#']) 
-					&& listLen(arguments.scope['#i#'],'.')
-					){
-					
-					tempText=listLast(arguments.scope['#i#'],'.');
-
-					if(len(tempText) < 4 && !listFindNoCase(allowedExtensions,temptext)){
-						return true;
-					}	
-				}
 			}
 		}
 	
@@ -586,7 +605,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    	<cfreturn GetPageContext().formScope().getUploadResource(arguments.fieldname).getName()>	
 	    </cfif>
 	    <cfcatch>
-	    	<cflog type="Error" file="exception" text="#exception.stacktrace#">
+	    	<cflog type="Error" file="exception" text="#cfcatch.type#: #cfcatch.detail#">
 		</cfcatch>
     </cftry>
 
@@ -614,6 +633,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 	<cfset var check="">
+
+	<!--- Allow function to be escaped for huge file directories --->
+	<cfif variables.configBean.getValue('skipCleanFileCache')>
+		<cfreturn>
+	</cfif>
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsDB')#">
 	select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -776,6 +800,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
 <cfargument name="secure" default="false">
+<cfargument name="useProtocol" default="true">
 
 	<cfset var imgSuffix="">
 	<cfset var returnURL="">
@@ -785,7 +810,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
 	
-	<cfif not ListFindNoCase('jpg,jpeg,png,gif', arguments.fileEXT)>
+	<cfif not ListFindNoCase('jpg,jpeg,png,gif,svg', arguments.fileEXT)>
 		<cfreturn ''>
 	</cfif>
 	
@@ -801,10 +826,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		AND len(variables.$.event('siteID')) 
 		AND variables.$.event('siteID') neq arguments.siteID
 		AND !isValid('URL', application.configBean.getAssetPath())>
-		<cfif arguments.secure>
-			<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+		<cfif arguments.useProtocol>
+			<cfif arguments.secure>
+				<cfset begin='https://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfelse>
+				<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			</cfif>
 		<cfelse>
-			<cfset begin='#application.settingsManager.getSite(arguments.siteID).getScheme()#://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
+			<cfset begin='//#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'>
 		</cfif>
 	<cfelse>
 		<cfset var begin="">
@@ -815,56 +844,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.direct and listFindNoCase("fileDir,s3",application.configBean.getFileStore())>
-
-		<cfif arguments.size eq 'undefined'>
-			<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
-				<cfset arguments.size ='Custom'>
-			<cfelse>
-				<cfset arguments.size ='Large'>
-			</cfif>
-		</cfif>
-
-		<cfif arguments.size neq 'Custom'>			
-			<cfset arguments.width="auto">
-			<cfset arguments.height="auto">
+		<cfif arguments.fileEXT eq 'svg'>
+			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & "." & arguments.fileEXT>
 		<cfelse>
-			<cfif not isNumeric(arguments.width)>
+			<cfif arguments.size eq 'undefined'>
+				<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
+					<cfset arguments.size ='Custom'>
+				<cfelse>
+					<cfset arguments.size ='Large'>
+				</cfif>
+			</cfif>
+
+			<cfif arguments.size neq 'Custom'>			
 				<cfset arguments.width="auto">
-			</cfif>
-
-			<cfif not isNumeric(arguments.height)>
 				<cfset arguments.height="auto">
-			</cfif>
-
-			<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
-				<cfset arguments.size="Custom">
-			</cfif>
-
-			<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
-				<cfset arguments.size="small">
-			</cfif>
-		</cfif>
-		
-		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
-			<cfif arguments.size eq "large">
-				<cfset imgSuffix="">
 			<cfelse>
-				<cfset imgSuffix="_" & lcase(arguments.size)>
+				<cfif not isNumeric(arguments.width)>
+					<cfset arguments.width="auto">
+				</cfif>
+
+				<cfif not isNumeric(arguments.height)>
+					<cfset arguments.height="auto">
+				</cfif>
+
+				<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
+					<cfset arguments.size="Custom">
+				</cfif>
+
+				<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
+					<cfset arguments.size="small">
+				</cfif>
 			</cfif>
-			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
-		<cfelseif arguments.size neq 'custom'>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
-		<cfelse>
-			<cfif not len(arguments.width)>
-				<cfset arguments.width="auto">
+			
+			<cfif listFindNoCase('small,medium,large,source',arguments.size)>
+				<cfif arguments.size eq "large">
+					<cfset imgSuffix="">
+				<cfelse>
+					<cfset imgSuffix="_" & lcase(arguments.size)>
+				</cfif>
+				<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
+			<cfelseif arguments.size neq 'custom'>
+				<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+			<cfelse>
+				<cfif not len(arguments.width)>
+					<cfset arguments.width="auto">
+				</cfif>
+				<cfif not len(arguments.height)>
+					<cfset arguments.height="auto">
+				</cfif>
+				<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 			</cfif>
-			<cfif not len(arguments.height)>
-				<cfset arguments.height="auto">
-			</cfif>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()#/#arguments.siteid#/cache/file/#arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 		</cfif>
 	<cfelse>
-		<cfif arguments.size eq "large">
+		<cfif arguments.size eq "large" or arguments.fileExt eq 'svg'>
 			<cfset imgSuffix="file">
 		<cfelse>
 			<cfset imgSuffix=arguments.size>
@@ -926,11 +958,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 			<cfelse>
 				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
-				<cfset variables.imageProcessor.resizeImage(
-					image=file,
-					height=customImageSize.getHeight(),
-					width=customImageSize.getWidth()
-				)>
+				<cfif customImageSize.exists()>
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				<cfelse>
+					<!--- Assume it's an adhoc custom size with HX_WX name --->
+					<cfset customImageSize.setName(arguments.size)>
+					<cfset customImageSize.parseName()>
+					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				</cfif>
+				
 			</cfif>
 		<cfelse>
 			<cfset ImageWrite(cropper,file,variables.configBean.getImageQuality())>
@@ -942,11 +987,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 			<cfelse>
 				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
-				<cfset variables.imageProcessor.resizeImage(
+				<cfif customImageSize.exists()>
+					<cfset variables.imageProcessor.resizeImage(
 					image=file,
 					height=customImageSize.getHeight(),
 					width=customImageSize.getWidth()
 				)>
+				<cfelse>
+					<!--- Assume it's an adhoc custom size with HX_WX name --->
+					<cfset customImageSize.setName(arguments.size)>
+					<cfset customImageSize.parseName()>
+					<cfset file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#ucase(arguments.size)#.#rsMeta.fileExt#">
+					<cfset variables.imageProcessor.resizeImage(
+						image=file,
+						height=customImageSize.getHeight(),
+						width=customImageSize.getWidth()
+					)>
+				</cfif>
+				
 			</cfif>
 		</cfif>
 

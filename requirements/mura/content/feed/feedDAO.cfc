@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate,imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid">
+<cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate,imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid,authtype">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
 	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL, remotePubDate,
-	imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid)
+	imageSize,imageHeight,imageWidth,displayList,showNavOnly,showExcludeSearch,viewalllink,viewalllabel,autoimport,isLocked,CssClass,useCategoryIntersect,contentpoolid,authtype)
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getsiteID()#">,
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#arguments.feedBean.getRestricted()#,
 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getRestrictGroups() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRestrictGroups()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getVersion() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getVersion()#">,
-	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getChannelLink() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getChannelLink()#">,
+	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getChannelLink() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getChannelLink()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getType()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getParentID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getParentID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getSortBy()#">,
@@ -107,7 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#arguments.feedBean.getIsLocked()#,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getCssClass() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getCssClass()#">,
 	#arguments.feedBean.getUseCategoryIntersect()#,
-	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">
+	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	)
 	</cfquery>
 	
@@ -251,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	restricted = #arguments.feedBean.getRestricted()#,
 	RestrictGroups= <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getRestrictGroups() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRestrictGroups()#">,
 	version = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getVersion() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getVersion()#">,
-	ChannelLink = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getChannelLink() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getChannelLink()#">,
+	ChannelLink = <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getChannelLink() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getChannelLink()#">,
 	type = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getType()#">,
 	parentID = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getParentID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getParentID()#">,
 	sortBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getSortBy()#">,
@@ -275,7 +276,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	isLocked=#arguments.feedBean.getIsLocked()#,
 	CssClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getCssClass() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getCssClass()#">,
 	useCategoryIntersect=#arguments.feedBean.getUseCategoryIntersect()#,
-	contentpoolid=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">
+	contentpoolid=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getContentPoolID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getContentPoolID()#">,
+	authtype=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAuthType() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAuthType()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
 	
