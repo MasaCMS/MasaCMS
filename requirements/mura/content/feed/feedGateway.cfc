@@ -1019,7 +1019,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	</cfif>
 
-	<cfreturn arguments.feedBean.getSortBy() eq 'displayStart' ? getBean('contentCalendarUtilityBean').filterCalendarItems(data=rsFeed,maxitems=0) : rsFeed />
+	<cfreturn arguments.feedBean.getSortBy() eq 'displayStart' ? getBean('contentCalendarUtilityBean').filterCalendarItems(data=rsFeed,maxitems=0,sortDirection=arguments.feedBean.getSortDirection()) : rsFeed />
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">
