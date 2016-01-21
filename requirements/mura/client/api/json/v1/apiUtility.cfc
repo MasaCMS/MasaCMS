@@ -2086,7 +2086,7 @@ component extends="mura.cfobject" {
 						};
 						break;
 					}
-				} else if ($.event('object')=='calendar'){
+				} else if (listFindNoCase('calendar,page',$.event('object'))){
 					result={
 						html=$.getContentRenderer().dspContentTypeBody()
 					};
