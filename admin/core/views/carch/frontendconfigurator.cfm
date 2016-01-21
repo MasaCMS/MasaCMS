@@ -307,7 +307,7 @@
 			frontEndProxy.post({cmd:'setWidth',width:'configurator'});
 		}
 		
-		<cfif $.siteConfig().hasDisplayObject(rsDisplayObject.object)>
+		<cfif rsDisplayObject.object eq 'plugin' and $.siteConfig().hasDisplayObject(rsDisplayObject.object)>
 			var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rsDisplayObject.objectid)#');
 					window[configurator](
 						{
@@ -354,7 +354,7 @@
 								'parentid':'#esapiEncode('javascript',rc.contentBean.getParentID())#'
 							});
 				</cfcase>
-				<cfcase value="category_summary,category_summary_rss">	
+				<cfcase value="category_summary,category_summary_rss">
 					siteManager.initCategorySummaryConfigurator({
 								'object':'#esapiEncode('javascript',rsDisplayObject.object)#',
 								'objectid':'#esapiEncode('javascript',rsDisplayObject.objectid)#',
