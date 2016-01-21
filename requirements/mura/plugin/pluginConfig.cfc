@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn session.plugins["p#getPluginID()#"] />
 </cffunction>
 
-<cffunction name="addEventHandler" output="false" returntype="void">
+<cffunction name="addEventHandler" output="false">
 	<cfargument name="component" required="true">
 
 	<cfif not isDefined('arguments.component.injectMethod')>
@@ -305,6 +305,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfset getPluginManager().addEventHandler(component=arguments.component,siteid=rsSites.siteID,applyglobal=applyglobal)>
      <cfset var applyglobal=false>
     </cfloop>
+     <cfreturn this>
+</cffunction>
+
+<cffunction name="addAPIMethod" output="false">
+	<cfargument name="methodName" required="true">
+	<cfargument name="method" required="true">
+	<cfset var settingsManager=getBean('settingsManager')>
+    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
+    <cfloop query="rsSites">
+    <cfset settingsManager.getSite(rs.siteid).getApi('json','v1').registerMethod(argumentCollection=arguments)>
+    </cfloop>
+    <cfreturn this>
 </cffunction>
 
 <cffunction name="getAssignedSites" output="false" returntype="any">
