@@ -3673,6 +3673,8 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		noSpam:noSpam,
 		initMura:init
 	});
+	
+	window.m=window.m || window.mura;
 
 	//for some reason this can't be added via extend
 	window.validateForm=validateForm;

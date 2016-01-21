@@ -1000,7 +1000,7 @@
 		will be in the NEXT month of someone put in an Nth value
 		that was too large for the current month to handle.
 	--->
-	<cfreturn DateFormat( LOCAL.Date ) />
+	<cfreturn DateFormat( LOCAL.Date,'yyyy-mm-dd') />
 </cffunction>
 
 <cffunction
@@ -1082,7 +1082,7 @@
 	</cfif>
  
 	<!--- Return the given day. --->
-	<cfreturn DateFormat( LOCAL.Day ) />
+	<cfreturn DateFormat(LOCAL.Day,'yyyy-mm-dd') />
 </cffunction>
 
 
