@@ -307,7 +307,9 @@
 			frontEndProxy.post({cmd:'setWidth',width:'configurator'});
 		}
 		
-		<cfif rsDisplayObject.object eq 'plugin' and $.siteConfig().hasDisplayObject(rsDisplayObject.object)>
+		<cfset bypasslist='feed,feed_no_summary,remoteFeed,feed_slideshow,feed_slideshow_no_summary,category_summary,category_summary_rss,tag_cloud,site_map,related_content,related_section_content,plugin'>
+
+		<cfif not listFindNoCase(bypasslist,rsDisplayObject.object) and $.siteConfig().hasDisplayObject(rsDisplayObject.object)>
 			var configurator=siteManager.getPluginConfigurator('#esapiEncode('javascript',rsDisplayObject.objectid)#');
 					window[configurator](
 						{
