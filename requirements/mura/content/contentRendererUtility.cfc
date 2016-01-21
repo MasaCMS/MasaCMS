@@ -122,15 +122,26 @@
 						arguments.value="<p></p>";
 					}
 
-					cssClass='mura-region-local ';
-					dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
+					if(layoutManager){
+						cssClass='mura-region-local ';
+						dataString=dataString & ' data-loose="true" data-perm="true" data-inited="false"';
 
-					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 
-					return '<div class="mura-region mura-editable inactive#inline#">
-						<label class="mura-editable-label">#ucase(arguments.label)#</label>
-						<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
-						</div>';
+						return '<div class="mura-region mura-editable inactive#inline#">
+							<label class="mura-editable-label">#ucase(arguments.label)#</label>
+							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+							</div>';
+					} else {
+					
+						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
+
+						return '<div class="mura-editable inactive#inline#">
+							<label class="mura-editable-label">#ucase(arguments.label)#</label>
+							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
+							</div>';
+
+					}
 
 				} else {
 					cssClass=cssClass & "inactive mura-editable-attribute#inline#";
