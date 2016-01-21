@@ -493,7 +493,7 @@ Blog: www.codfusion.com--->
 <cffunction name="setSessionCookies">
 	<cftry>
 		<cfif isdefined('session.CFID')>
-			<cfif application.configBean.getSessionCookiesExpires EQ "" OR application.configBean.getSessionCookiesExpires EQ "session">
+			<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
 				<cfcookie name="CFID" value="#session.CFID#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 				<cfcookie name="CFTOKEN" value="#session.CFTOKEN#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 			<cfelse>
@@ -502,7 +502,7 @@ Blog: www.codfusion.com--->
 			</cfif>
 		</cfif>
 		<cfif isdefined('session.jsessionid')>
-			<cfif application.configBean.getSessionCookiesExpires EQ "" OR application.configBean.getSessionCookiesExpires EQ "session">
+			<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
 				<cfcookie name="JSESSIONID" value="#session.jsessionid#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 			<cfelse>
 				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
