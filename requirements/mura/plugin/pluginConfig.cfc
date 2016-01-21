@@ -438,26 +438,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var dir='#configBean.getPluginDir#/#getDirectory()#'>
 	<cfset var package=getPackage()>
 	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
-	<cfset configBean.registerBeanDir(dir='#dir#/entities',siteid=siteids,moduleid=getModuleID())>
-	<cfset configBean.registerBeanDir(dir='#dir#/beans',siteid=siteids,moduleid=getModuleID())>
-	<cfset configBean.registerBeanDir(dir='#dir#/managers',siteid=siteids,moduleid=getModuleID())>
-	<cfset configBean.registerBeanDir(dir='#dir#/services',siteid=siteids,moduleid=getModuleID())>
 	<cfset configBean.registerBeanDir(dir='#dir#/model',siteid=siteids,moduleid=getModuleID())>
-	--->
-	<cfreturn this>	
-</cffunction>
-
-
-<cffunction name="discoverHandlers" output="false">
-<cfset var configBean=getBean("configBean")>
-	<!---
-	<cfset var dir='#configBean.getPluginDir#/#getDirectory()#'>
-	<cfset var package=getPackage()>
-	<cfset var siteids=valueList(getPluginManager().getAssignedSites(getModuleID()).siteid)>
-	<cfset configBean.registerHandlerDir(dir='#dir#/eventHandlers',package='#package#.eventHandlers',siteid=siteids,moduleid=getModuleID())>
-	<cfset configBean.registerHandlerDir(dir='#dir#/handlers',package='#package#.handlers',siteid=siteids,moduleid=getModuleID())>
-	<cfset configBean.registerHandlerDir(dir='#dir#/model/eventHandlers',package='#package#.model.eventHandlers',siteids,moduleid=getModuleID())>
-	<cfset configBean.registerHandlerDir(dir='#dir#/model/handlers',package='#package#.model.handlers',siteid=siteids,moduleid=getModuleID())>
 	--->
 	<cfreturn this>	
 </cffunction>

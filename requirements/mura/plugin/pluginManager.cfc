@@ -2788,7 +2788,7 @@ select * from rs order by name
 		select moduleid from tplugins where deployed >=1 order by loadPriority desc
 	</cfquery>
 	<cfloop query="rs">
-		<cfset getConfig(id=rs.moduleid).discoverBeans().discoverHandlers()>
+		<cfset getConfig(id=rs.moduleid).discoverBeans()>
 	</cfloop>
 	<cfreturn this>
 </cffunction>

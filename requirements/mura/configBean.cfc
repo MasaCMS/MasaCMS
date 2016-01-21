@@ -1788,7 +1788,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var ioc=getServiceFactory()>
 	<cfset var checkSchema=isDefined('url.applydbupdates')>
-	<cfset var isSingleton=listFindNoCase(arguments.componentPath,'entities','.') or listFindNoCase(arguments.componentPath,'beans','.')>
+	<cfset var isSingleton=not listFindNoCase(arguments.componentPath,'entities','.') and not listFindNoCase(arguments.componentPath,'beans','.')>
 	<cfset var isORM=false>
 	<cfset var isPublic=false>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
