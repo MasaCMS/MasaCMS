@@ -1606,6 +1606,20 @@ Display Objects
 			 </cfif>
 		</cfif>
 		</cf_CacheOMatic>
+	<cfelseif variables.$.content('type') eq 'calendar'>
+		<cf_CacheOMatic key="calendarBody#hash(cgi.queryString)#" nocache="#variables.event.getValue('r').restrict#">
+		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
+		 	 <cfif len(filePath)>
+			 	<cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
+			 </cfif>
+		</cf_CacheOMatic>
+	<cfelseif variables.$.content('type') eq 'gallery'>
+		<cf_CacheOMatic key="galleryBody#hash(cgi.queryString)#" nocache="#variables.event.getValue('r').restrict#">
+		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
+		 	 <cfif len(filePath)>
+			 	<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
+			 </cfif>
+		</cf_CacheOMatic>
 	</cfif>
 	</cfoutput>
 	</cfsavecontent>

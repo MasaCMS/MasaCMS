@@ -2086,12 +2086,11 @@ component extends="mura.cfobject" {
 						};
 						break;
 					}
-				/*
 				} else if ($.event('object')=='calendar'){
-					result= {
-						html=applyRemoteFormat($.dspObject_Include(thefile="calendar/index.cfm"))
+					result={
+						html=$.getContentRenderer().dspContentTypeBody()
 					};
-				*/
+					break;
 				}
 
 				if(len($.event('objectparams2'))){
@@ -2126,8 +2125,7 @@ component extends="mura.cfobject" {
 				}
 
 				result=$.dspObject(argumentCollection=args);
-				
-				
+					
 				if(isdefined('request.muraJSONRedirectURL')){
 					result={redirect=request.muraJSONRedirectURL};
 				} else if(isSimpleValue(result)){
