@@ -103,6 +103,7 @@ sameformfieldsasarray=false
 scriptprotect=true
 scriptprotectexceptions=body,source,params
 secureCookies=false
+sessioncookiesexpires=never
 sendfrommailserverusername=true
 sessionhistory=1
 sessiontimeout=180

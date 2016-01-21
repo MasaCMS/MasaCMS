@@ -185,7 +185,7 @@ component extends='mura.cfobject' {
       || (isdefined('url.day') || isdefined('form.day'));
   }
 
-  public any function filterCalendarItems(required query data, numeric maxItems=1000) {
+  public any function filterCalendarItems(required query data, numeric maxItems=1000, string sortDirection='ASC') {
     var maxRows = !arguments.maxItems ? 100000 : arguments.maxItems;
     var qoq = new Query();
     qoq.setDBType('query');
@@ -193,7 +193,7 @@ component extends='mura.cfobject' {
     qoq.setSQL('
       SELECT *
       FROM rs
-      ORDER BY displaystart ASC
+      ORDER BY displaystart #arguments.sortDirection#
     ');
     return qoq.execute().getResult();
   }
