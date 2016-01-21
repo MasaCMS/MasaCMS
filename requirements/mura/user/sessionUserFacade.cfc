@@ -203,7 +203,7 @@
 		<cfreturn false>
 	</cfif>
 
-	<cfif arguments.$.event('csrf_token_expires') gt (now() + 0) and arguments.$.event('csrf_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
+	<cfif arguments.$.event('csrf_token_expires') gt datetimeformat(now(),'yyMMddHHnnsslll') and arguments.$.event('csrf_token') eq hash(arguments.context & session.mura.csrfsecretkey & arguments.$.event('csrf_token_expires'))>
 		<cfset session.mura.csrfusedtokens["#arguments.$.event('csrf_token')#"]=now()>
 		<cfreturn true>
 	<cfelse>
@@ -214,7 +214,10 @@
 <cffunction name="generateCSRFTokens" output="false">
 	<cfargument name="timespan" default="#createTimeSpan(0,3,0,0)#">
 	<cfargument name="context" default="">
-	<cfset var expires="#numberFormat((now() + arguments.timespan),'99999.9999999')#">
+
+	<cfset var currentDateTime = now()>
+	<cfset var milliseconds = datetimeFormat(currentDateTime,'lll')/>
+	<cfset var expires=dateTimeFormat(dateAdd('l',milliseconds,(currentDateTime + arguments.timespan)),'yyMMddHHnnsslll')>
 
 	<cfreturn {
 		expires=expires,
