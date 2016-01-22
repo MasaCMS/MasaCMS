@@ -496,8 +496,8 @@ Blog: www.codfusion.com--->
 			<!--- Lucee uses lowercase cookies the setCookie method allows it to maintain case--->
 			<cfif server.coldfusion.productname neq 'Coldfusion Server'>
 				<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-					<cfset setCookie('cfid', session.CFID,"session", "", "/", application.configBean.getSecureCookies(), true, true)>
-					<cfset setCookie('cftoken', session.CFTOKEN, "session", "", "/", application.configBean.getSecureCookies(), true, true)>
+					<cfset setCookie('cfid', session.CFID,"", "", "/", application.configBean.getSecureCookies(), true, true)>
+					<cfset setCookie('cftoken', session.CFTOKEN, "", "", "/", application.configBean.getSecureCookies(), true, true)>
 				<cfelse>
 					<cfset setCookie('cfid', session.CFID, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
 					<cfset setCookie('cftoken', session.CFTOKEN, application.configBean.getSessionCookiesExpires(), "", "/", application.configBean.getSecureCookies(), true, true)>
@@ -513,7 +513,11 @@ Blog: www.codfusion.com--->
 			</cfif>
 		</cfif>
 		<cfif isdefined('session.jsessionid')>
-			<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+			<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
+				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+			<cfelse>
+				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+			</cfif>
 		</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
