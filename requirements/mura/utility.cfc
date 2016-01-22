@@ -514,7 +514,7 @@ Blog: www.codfusion.com--->
 		</cfif>
 		<cfif isdefined('session.jsessionid')>
 			<cfif application.configBean.getSessionCookiesExpires() EQ "" OR application.configBean.getSessionCookiesExpires() EQ "session">
-				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
+				<cfcookie name="JSESSIONID" value="#session.jsessionid#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 			<cfelse>
 				<cfcookie name="JSESSIONID" value="#session.jsessionid#" expires="#application.configBean.getSessionCookiesExpires()#" secure="#application.configBean.getSecureCookies()#" httpOnly="true"/>
 			</cfif>
