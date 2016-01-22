@@ -1592,7 +1592,7 @@ Display Objects
 	<cfelseif isDefined('bodyLookup.filepath')>
 		<cfinclude template="#bodyLookup.filepath#">
 	<cfelseif variables.$.content('type') eq 'folder'>
-		<cf_CacheOMatic key="folderBody#hash(cgi.queryString)#" nocache="#variables.event.getValue('r').restrict#">
+		<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
 		 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
 
 		 <cfif len(filePath)>
@@ -1607,14 +1607,14 @@ Display Objects
 		</cfif>
 		</cf_CacheOMatic>
 	<cfelseif variables.$.content('type') eq 'calendar'>
-		<cf_CacheOMatic key="calendarBody#hash(cgi.queryString)#" nocache="#variables.event.getValue('r').restrict#">
+		<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
 		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
 		 	 <cfif len(filePath)>
 			 	<cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 			 </cfif>
 		</cf_CacheOMatic>
 	<cfelseif variables.$.content('type') eq 'gallery'>
-		<cf_CacheOMatic key="galleryBody#hash(cgi.queryString)#" nocache="#variables.event.getValue('r').restrict#">
+		<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
 		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
 		 	 <cfif len(filePath)>
 			 	<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
