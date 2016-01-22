@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.sessionManagement = true>
 
 <!--- We don't set client cookies here, because they are not set secure if required. We use setSessionCookies() --->
-<cfset this.setClientCookies = false>
+<cfset this.setClientCookies = true>
 
 <!--- should cookies be domain specific, ie, *.foo.com or www.foo.com
 <cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
