@@ -2757,6 +2757,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function isScrolledIntoView(el) {
+		if(!window || window.innerHeight){
+			true;
+		}
 	    var elemTop = el.getBoundingClientRect().top;
 	    var elemBottom = el.getBoundingClientRect().bottom;
 

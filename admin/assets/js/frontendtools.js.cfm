@@ -1783,6 +1783,10 @@
 
 					var size=fileInfo.join('_');
 
+					if(!size){
+						size='large';
+					}
+					
 					var actionhref=adminLoc + '?muraAction=cArch.imagedetails&siteid=' + mura.siteid + '&fileid=' + fileid + '&imagesize=' + size + '&instanceid=' + img.data('instanceid') + '&compactDisplay=true';
 
 					function initCropper(){

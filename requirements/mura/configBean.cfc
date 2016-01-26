@@ -1794,6 +1794,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
 	<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 	<cfset var levelObj=metadata>
+	<cfset var entity="">
 	<cfloop condition="structKeyExists(levelObj,'extends')">
 		<cfif isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public>
 			<cfset isPublic=true>
@@ -1809,9 +1810,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset beanName=metadata.entityname>
 		<cfset ioc.addAlias(metadata.entityname,beanName)>
 	</cfif>
+
+	<cfset entity=ioc.getBean(beanName)>
+		
 	<cfif isORM>
 		<cfif checkSchema>
-			<cfset ioc.getBean(beanName).checkSchema()>
+			<cfset entity.checkSchema()>
 		</cfif>
 
 		<cfloop list="#arguments.siteid#" index="local.i">

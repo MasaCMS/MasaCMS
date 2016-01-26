@@ -68,7 +68,6 @@
 	</div>
 </cfif>
 
-
 <div id="image-details" class="form-horizontal fieldset-wrap">
 	<div class="fieldset">
 	<cfif len(rc.fileID)>

@@ -173,7 +173,7 @@
 						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
 							#variables.$.getContentListLabel(arguments.field)#
 							<cfif arguments.type eq "Search" && this.searchShowNumbers eq 1><span class="record-index">#arguments.iterator.getRecordIndex()#.</span> </cfif>
-							#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
+							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif>>#HTMLEditFormat(arguments.item.getMenuTitle())#</a>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
 					</cfcase>
@@ -184,7 +184,7 @@
 							<cfif variables.$.event('muraMobileTemplate')>
 							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
 							<cfelse>
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getURL()#"<cfif arguments.item.getTarget() eq '_blank'> target="_blank"</cfif> title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 							</cfif>
 						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
 						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
