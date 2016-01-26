@@ -1489,7 +1489,7 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfset arguments.runat=REReplace(arguments.runat, "[^a-zA-Z0-9_]", "", "ALL")>
 	
-	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset isValidEvent=arguments.runat eq "onApplicationLoad" or variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
