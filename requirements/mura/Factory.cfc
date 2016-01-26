@@ -143,10 +143,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var hashedKey = getHashKey( arguments.key ) />
 		<cfset var cacheData=structNew()>
 		
-		<cfif isDate(arguments.timespan)>
+		<cfif isNumeric(arguments.timespan)>
 			<cfset cacheData.expires=now() + arguments.timespan>
 		<cfelse>
-			<cfset cacheData.expires=dateAdd("yyyy",1,now())>
+			<cfset cacheData.expires=dateAdd("yyyy",1,now()) + 0>
 		</cfif>
 		
 		<!--- check to see if this should be a soft reference --->
@@ -183,7 +183,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- Check for Object in Cache. --->
 		<cfif keyExists( hashLocal ) >
 			<cfset cacheData=variables.collection.get( hashLocal )>
-			<cfif cacheData.expires gt now()>
+
+			<cfif cacheData.expires gt (now() + 0)>
 				<cfif isSoftReference( cacheData.object ) >
 					<cfset refLocal.tmpObj =cacheData.object.get() />
 					<cfreturn structKeyExists(refLocal, "tmpObj") />
