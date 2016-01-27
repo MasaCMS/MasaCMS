@@ -1,3 +1,5 @@
+<!--- TODO GoWest : update js asset links, css links, any markup as needed : 2015-12-14T11:09:45-07:00 --->
+
 <!--- 
 	This file is part of Mura CMS.
 
@@ -190,7 +192,7 @@
 	</head>
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact">
 		<cfif rc.sourceFrame eq 'modal'>
-			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
+			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
 		

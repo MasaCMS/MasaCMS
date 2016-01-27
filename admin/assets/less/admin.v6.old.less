@@ -1,0 +1,377 @@
+
+
+
+/* TODO	REMOVE OLD CSS */
+
+
+
+// -- Bootstrap File Edits --
+// 1. Changed ref to @import sprites.less to @import "../../fonts/less/font-awesome.less" (bootstrap.less, line 30)
+// 2. Commented out variables.less @import (responsive.less, line 21) - Using our own
+// 3. Commented out @import "responsive-1200px-min.less"; - Don't need super-wide layouts
+
+@import "jquery.ui.less";
+@import "../bootstrap/less/bootstrap.less";
+@import "variables.less";
+@import "mixins.less";
+
+.mura {
+	
+	@import "fonts.less";
+	@import "icons.less";
+	@import "typography.less";
+	@import "header.less";
+//	@import "dropdowns.less";
+	@import "navigation.less";
+	@import "buttons.less";
+	@import "tables.less";
+	@import "mura-grid.less";
+	@import "login.less";
+	@import "forms.less";
+	@import "form-builder.less";
+	@import "tabs.less";
+	@import "tag-clouds.less";
+	@import "session-history.less";
+	@import "category-assignments.less";
+	@import "email-broadcaster.less";
+	@import "dashboard.less";
+	@import "comments-manager.less";
+	@import "setup.less";
+	@import "site-settings.less";
+	@import "image-details.less";
+	@import "configurator.less";
+	@import "class-extension.less";
+	@import "add-content-ui.less";
+	@import "multi-file-upload.less";
+	@import "related-content.less";
+	@import "status-modal.less";
+	@import "code-diff.less";
+	@import "mobile-preview.less";
+	@import "razuna.less";
+	
+	
+// Layout
+
+.main { 
+	padding-bottom: @baseLineHeight*2;
+	.border-box;
+	width: 100%;
+	}
+
+.compact {
+	padding: 18px;
+	background: #fff;
+
+	#frontEndToolsModalClose {
+	position: absolute;
+	top: 23px;
+	right: 18px;
+	color: @gray;
+	.inline-block;
+	text-decoration: none !important;
+	
+		&:hover {
+			text-decoration: none !important;
+			color: @grayDark;
+			}
+
+		i {
+			font-size: 24px;
+			}
+	
+	.main { 
+		padding-bottom: 0;
+		}
+	}
+}
+
+// Override bootstrap classes
+.dropdown .dropdown-menu {
+	.border-radius(6);
+}
+
+.well {
+		.box-shadow(0 0 0) !important;
+		.well-small;
+		background: @grayLighter;
+		margin-bottom: @baseLineHeight;
+		clear: both;
+		border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
+	}
+	
+pre {
+	background-color: lighten(@blue,36%);
+	border: 0;
+	padding: @baseLineHeight;
+}
+
+a[rel="tooltip"] {
+	display: inline-block;
+	color: @grayDark;
+	padding-right: .25em;
+	text-decoration: none;
+	
+	i {
+		color: @iconColor;
+		font-size: 14px;
+		}	
+	}
+	
+.input-prepend, .input-append {
+	
+	i {
+		font-size: 16px;
+		}
+	}
+
+div.tooltip {
+	text-shadow: none;
+	font-weight: normal;
+	display: block !important;
+	white-space: normal;
+
+	&.in {
+		.opacity(100) !important;
+	}
+	
+	.tooltip-inner {
+		padding: 10px;
+		text-align: left;
+		line-height: 1.2;
+		
+		img {
+			float: none;
+			margin: 0;
+			padding: 0;
+		}
+		
+		}
+	
+	.tooltip-arrow {
+		padding: 0;
+		}
+	}
+
+
+
+// Additional Mura styles -- Move to separate file?
+.alert {
+	
+	padding: 12px 30px 12px 48px;
+	margin-left: -1px;
+	margin-bottom: @baseLineHeight;
+	.border-radius(3px);
+	background-color: @warningBackground;
+	border: 2px solid @warningBorder;
+	line-height: 1.3;
+	clear: both;
+	min-height: 1.2;
+	font-size: @baseFontSize;
+	position: relative;
+	
+	p { margin-bottom: 0; line-height: 1.2; }
+	p:first-child { margin-top: 4px; }
+	
+	ul, ol {
+		margin: 0 0 0 @baseLineHeight;
+		padding: 0;
+		
+		li:last-child {
+			margin-bottom: 0;
+		}	
+	
+	}
+	
+	.close {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		}
+}
+
+.alert:before {
+		.icon-font('FontAwesome');
+		font-size: 32px;
+		.inline-block();
+		margin-right: @gridGutterWidth/2;
+		position: absolute;
+		top: 44%;
+		margin-top: -18px;
+		left: 13px;
+		content: "\f05a";
+		color: @warningBorder;
+		/* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
+	}
+
+#alertDialog {
+
+	h2 { color: @orange !important; }
+
+	&.alert:before {
+		content: '';
+		}
+}
+
+.alert-success {
+	
+	border-color: @successBorder;
+	background-color: @successBackground;
+	min-height: 20px;
+	
+	&:before {
+		/* top: -6px; */
+		content: "\f087";
+		color: @successBorder;
+		}
+	}
+
+.alert-error {
+	padding-left: 50px;
+	border-color: @errorBorder;
+	background-color: @errorBackground;
+	
+	&:before {
+		margin-top: -16px;
+		content: "\f071";
+		color: @errorBorder;
+		}
+	
+	a:link:hover {
+		color: @grayDarker;
+		}
+	
+	}
+
+.alert-info {
+
+	border-color: @infoBorder;
+	background-color: @infoBackground;
+	
+	&:before {
+		content: "\f05a";
+		color: @infoText;
+		}
+	}
+
+.alert-locked {
+	
+	p:first-child {
+		margin-bottom: .25em;
+	}
+	
+}
+
+.control-group .alert {
+	margin-top: @baseLineHeight;	
+}
+
+.separate, .divide {
+	.clearfix;
+	clear: both;
+	padding-top: @baseLineHeight;
+	margin-top: @baseLineHeight+4px;
+	}
+
+.separate {
+	border-top: 1px solid @grayLight;
+	}
+	
+.divide {
+	border-top: 1px dotted @grayLight;
+	}
+
+a img {
+	border: 0;
+	}
+
+img.fmImage {
+	border: 0 solid #fff;
+	margin: 10px;
+	}
+
+#sm-modify-view {
+	margin-bottom: @baseLineHeight;	
+	}
+
+/* @group Metadata List */
+
+.metadata-horizontal {
+	margin: 10px 0 0 0;
+	padding: .2em .5em;
+	list-style: none;
+	float: right;
+	background: #f9f9f9;
+	.border-radius(14px);
+	font-size: @baseFontSize;
+	}
+
+.metadata-horizontal li {
+	margin: 0 .5em 0;
+	padding: 0;
+	color: #333;
+	float: right;
+	line-height: 24px;
+	}
+
+.metadata-horizontal li strong {
+	padding: 0 .25em 0 0;
+	}
+
+/*
+.metadata-horizontal #ratestars {
+	position: relative;
+	top: 3px;
+	}
+*/
+
+.selectContentType {
+	margin-bottom: 1em;
+	clear: both;
+	}
+
+.metadata {
+
+	.well;
+		
+	list-style: none;
+	margin-left: 0 !important;
+		
+		li {
+			margin-bottom: .5em;
+		}
+	
+	}
+	
+/* @end */
+
+.spinner-wrap {
+		background: @grayDark;
+		background: rgba(0,0,0,.55);
+		color: #fff;
+		width: 70px;
+		height: 70px;
+		margin: -35px 0 0 -35px;
+		.border-radius(8px);
+		z-index: 50000;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+	}
+
+#mura-grid-loader {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	margin: 0 -1px;
+	background: rgba(255,255,255,.53);
+	z-index: 49999;
+	}
+
+input[class^="cke_"] {
+	min-height: 2em;
+}
+	
+} /* End .mura */
+
+// @import "../bootstrap/less/responsive.less";
+// .mura { @import "admin-responsive.less"; }

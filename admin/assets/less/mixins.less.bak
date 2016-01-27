@@ -1,0 +1,78 @@
+.blur (@blur: 20px) {
+	-webkit-filter: blur(@blur);
+    -moz-filter: blur(@blur);
+    -o-filter: blur(@blur);
+    -ms-filter: blur(@blur);
+    filter: blur(@blur);
+}
+
+.mura-modal, .modal-backdrop {
+	background-color: #222;
+	background-color: rgba(0,0,0,.8);
+	background: transparent;
+    filter:~"progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000,endColorstr=#CC000000)"; 
+    zoom: 1;
+	#gradient .radial(hsla(0,0%,40%,.8),hsla(0,0%,0%,.8));
+	}
+
+.load-inline { 
+	.border-radius(6px);
+	//min-height: 60px;
+	width: 60px;
+	height: 60px;
+	background: rgba(255,255,255,.5);
+	margin: @baseLineHeight auto;
+	position: relative;
+	
+	> .spinner-alt {
+		left: 50% !important;
+		top: 50% !important;
+		}
+	}
+	
+#classList > .load-inline {
+	margin-top: 70px;
+	}
+
+.inline-block() {
+	display: inline-block;
+	*display: inline; /* IE7 inline-block hack */
+	*zoom: 1;
+	}
+
+.btn-alt { // Dark Buttons i.e. Add Content
+	color: @white;
+	padding: 3% 3% 5%;
+	#gradient .vertical(#414141,#323232);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.99);
+	.border-radius(4px);
+	border-bottom: 1px solid lighten(@grayDarker,5%);
+	border-bottom-right-radius: 1px solid lighten(@grayDarker,5%);
+	border-right: 1px solid lighten(@grayDarker,5%);
+	}
+
+.icon-font(@font) {
+	font-family: @font;
+	font-weight: normal;
+	font-style: normal;
+	display: inline-block;
+	text-decoration: inherit;
+	}
+
+.border-box() {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	}
+
+.more-gradient {
+	#gradient .vertical(hsla(0,0,25%,0),hsla(0,0,25%,1.0));
+	height: 10px;
+	content: '';
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	z-index: 10000000;
+	display: block;
+	width: 100%;
+	}

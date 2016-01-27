@@ -1,0 +1,206 @@
+.mura-rc-quickoption {
+	border: none;
+	background: none;
+	.border-radius(0);
+	.box-shadow(none);
+	padding: 5px 0;
+	float: left;
+	width: 1em;
+	margin-right: 5px;
+	
+	i {
+		color: @iconColor;
+		font-size: 1em;
+		}
+	}
+	
+#mura-rc-quickedit {
+	width: 190px;
+	color: @gray;
+	position: absolute;
+	left: -190px;
+	z-index: 20;
+	padding: 10px;
+	background: rgba(0,0,0,.9);
+	.border-radius(5px);
+	.box-shadow(1px 1px 4px rgba(0,0,0,.65));
+	
+		button{
+			border: none;
+			background: none;
+			.border-radius(0);
+			.box-shadow(none);
+			position: absolute;
+			right: 0;
+			top:5px;
+			
+				> i{
+					color: @gray;
+					font-size: 1.4em;
+				}
+			}
+			
+		ul {
+			margin: 0;
+			overflow: hidden;
+			}
+	
+		li {
+			list-style: none;
+			margin: 0;
+			padding: .12em;
+			position: relative;
+			border-top: 1px dotted rgba(255,255,255,.2);
+			
+			input {
+				float: left;
+				margin-right: 5px;
+				}
+	
+				&:first-child { border-top: 0; }
+			}
+	
+		}
+
+.rcSortable {
+	min-height: 27px;
+	
+}
+	
+.list-table {
+
+	border: 1px solid #e6e6e6;
+	margin: 18px 0;
+	
+	&.disabled {
+	opacity: 0.1;	
+	}	
+	
+	.list-table-content-set {
+		color: #000;
+		font-weight: bold;
+		background: #f0f0f0;
+		padding: 8px 5px;		
+		}
+	
+	/* header of list */
+	.list-table-header {
+		color: #000;
+		background: #eaf4fd;
+		background-image: linear-gradient(to bottom,#fffefe,#f5f5f5);
+		padding: 4px 5px;
+		line-height: 18px;
+		font-weight: bold;
+		}
+	
+	/* list holder - similar to tbody */
+	.list-table-items {
+		position: relative;
+		list-style: none;
+		display: block;
+		padding: 0;
+		margin: 0;
+		max-height: 300px;
+		overflow: auto;
+
+		.navZoom {
+			width: 95% !important;			
+			}
+	
+		/* each 'row' of the pseudo table - similar to tr */
+		li.item {
+			position: relative;
+			display: block;
+			background: #fcfeff;
+			border-top: 1px solid #e6e6e6;
+			padding: 4px 5px;
+			border-collapse: collapse;
+			overflow: hidden;
+			max-width: 100%;
+			cursor: move;
+			box-sizing: border-box;
+			}
+		
+		/* zero out bottom margin on empty list item */
+		li.item.empty p {
+			margin: 0;
+			padding: 5px;
+			font-style: italic;
+		}
+		
+		li.item:nth-child(even) {
+			background: #eaf4fd;
+			}
+		
+		/* styles for the list item being sorted */
+		li.item.ui-sortable-helper {}
+		
+		/* the nested list within each item */
+		li.item ul {
+			list-style: none;
+			margin: 0;
+			padding: .2em;
+			}
+		
+		/* inline list of nested items */
+		.list-table-items li.item ul li {
+			display: inline-block;
+			}
+		
+		.list-table-items li.item ul li strong {
+			color: #333232;
+			}
+		}
+	
+	.content-type {
+		float: right;
+		font-weight: normal;
+		color: @grayDark;
+		
+		i {
+			//background: @gray;
+			//.border-radius(3px);
+			//padding: 4px 4px;
+			font-size: 18px;
+			margin-left: .25em;
+			
+			&:hover {
+				color: @grayDarker;
+			}
+		}
+		
+	}
+}
+
+div[id^="rcGroup-"] .list-table-items li.item {
+	
+	.delete {
+	z-index: 1;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 30px;
+	font-size: 14px;
+	border-left: 1px solid #e6e6e6;
+	line-height: 34px;
+	color: #949494;
+	
+		&:before {
+			content: "\f057";
+			font-family: "FontAwesome";
+			font-weight: normal;
+			font-style: normal;
+			}
+		
+		&:hover {
+			color: #666;
+			text-decoration: none;
+			}
+	}
+}
+
+.noShow {
+	display: none !important;
+	}
