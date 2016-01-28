@@ -48,23 +48,30 @@ to your own modified versions of Mura CMS.
 <cfset rsPluginScripts=application.pluginManager.getScripts("onSiteEdit",rc.siteID)>
 </cfsilent>
 
-<h1>Site Settings</h1>
 <cfoutput>
+	<!--- mura-header --->
+	<div class="items-push mura-header">
+		<h1>Site Settings</h1>
 	<cfif len(rc.siteid)>
-		<div id="nav-module-specific" class="btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="icon-trash"></i> Trash Bin</a>
+			<div class="mura-item-metadata">
+				<div class="label-group">
+					<div id="nav-module-specific" class="btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.siteid)#"><i class="mi-trash"></i> Trash Bin</a>
 			<cfif rc.action eq "updateFiles">
-				<a href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
+							<a href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 				<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-				<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
+							<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a> 
 			</cfif>
 			<cfif application.configBean.getJavaEnabled()>
-			<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
+						<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
 			</cfif>
 			<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
-				<a  class="btn" href="##"  onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="icon-share"></i> Export Static HTML (BETA)</a>
+							<a  class="btn" href="##" onclick="confirmDialog('Export static HTML files to #esapiEncode("javascript","'#rc.siteBean.getExportLocation()#'")#.',function(){actionModal('./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#')});return false;"><i class="mi-share"></i> Export Static HTML (BETA)</a>
 			</cfif>
 		</div>
+				</div><!--- /.label-group --->
+			</div><!--- /.mura-item-metadata --->
 	</cfif>
+	</div><!--- /.mura-header --->
 </cfoutput>
 <cfif rc.action neq "updateFiles">
 	<cfoutput>
@@ -78,12 +85,12 @@ to your own modified versions of Mura CMS.
 		<cfoutput>
 			<div class="form-actions">
 				<cfif rc.siteBean.getsiteid() eq ''>
-					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="icon-plus-sign"></i> Add</button>
+					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"><i class="mi-plus-circle"></i> Add</button>
 					<cfelse>
 					<cfif rc.siteBean.getsiteid() neq 'default' and listFind(session.mura.memberships,'S2')>
-						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="icon-remove-sign"></i> Delete</button>
+						<button type="button" class="btn" onclick="return confirmDialog('#esapiEncode("javascript","WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()##rc.$.renderCSRFTokens(context=rc.siteID,format="url")#')});"><i class="mi-times-circle"></i> Delete</button>
 					</cfif>
-					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="icon-ok-sign"></i> Update</button>
+					<button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');"><i class="mi-check-circle"></i> Update</button>
 				</cfif>
 			</div>
 		</cfoutput>
@@ -99,110 +106,109 @@ to your own modified versions of Mura CMS.
 			<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
 			<cfset tabList=listAppend(tabList,"tab" & $.createCSSID(rsPluginScripts.name))>
 		</cfoutput> </cfoutput> <cfoutput>
-		<div class="tabbable tabs-left mura-ui">
-		<ul class="nav nav-tabs tabs initActiveTab">
+		<div class="block block-constrain">
+		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
 				<cfloop from="1" to="#listlen(tabList)#" index="t">
-				<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+				<li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 			</ul>
-		<div class="tab-content">
+		<div class="block-content tab-content">
 		<!--- Basic --->
-		<div id="tabBasic" class="tab-pane fade">
-				<div class="fieldset">
-				<div class="control-group">
-						<div class="span6">
-						<label class="control-label">Site ID</label>
-						<div class="controls">
+		<div id="tabBasic" class="tab-pane active">
+				<div class="block block-bordered">
+						<!-- block header -->
+					  <div class="block-header bg-gray-lighter">
+					    <ul class="block-options">
+					        <li>Something here?</li>
+					        <li>
+					            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+					        </li>
+					        <li>
+					            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+					        </li>
+					    </ul>
+					    <h3 class="block-title">Basic Settings</h3>
+					  </div>
+					  <!-- /block header -->						
+					  <div class="block-content">					
+							<div class="mura-control-group">
+								<label>Site ID</label>
 								<cfif rc.siteid eq ''>
-								<input name="siteid" type="text" class="span12" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true" onchange="removePunctuation(this);">
+										<input name="siteid" type="text" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true" onchange="removePunctuation(this);">
 								<p class="help-block alert">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
 								<cfelse>
-								<input class="span12"  id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
+										<input  id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
 								<input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#">
 							</cfif>
 							</div>
-					</div>
-						<div class="span6">
-						<label class="control-label">Site Name</label>
-						<div class="controls">
-								<input name="site" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getsite())#" size="50" maxlength="50">
-							</div>
-					</div>
+							<div class="mura-control-group">
+								<label>Site Name</label>
+								<input name="site" type="text" value="#esapiEncode('html_attr',rc.siteBean.getsite())#" size="50" maxlength="50">
 					</div>
 
 				<!--- Tagline --->
-				<div class="control-group">
-					<label class="control-label">
-						<a href="##" rel="tooltip" title="#rc.$.rbKey('siteconfig.sitesettings.tagline.tooltip')#">
+						<div class="mura-control-group">
+							<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline.tooltip'))#" 
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline'))#">	
 							#rc.$.rbKey('siteconfig.sitesettings.tagline')# 
-							<i class="icon-question-sign"></i>
-						</a>
+									<i class="mi-question-circle"></i>
+								</span>
 					</label>
-					<div class="controls">
-						<input name="tagline" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getTagline())#" size="50" maxlength="255">
-					</div>
+								<input name="tagline" type="text" value="#esapiEncode('html_attr',rc.siteBean.getTagline())#" size="50" maxlength="255">
 				</div>
 
 				<!--- Domain --->
-				<div class="control-group">
-					<div class="span6">
-						<div>
-							<label class="control-label">
-								<a href="##" rel="tooltip" title="#rc.$.rbKey('siteconfig.sitesettings.primarydomain.tooltip')#">
-									#rc.$.rbKey('siteconfig.sitesettings.primarydomain')#
-									<i class="icon-question-sign"></i>
-								</a>
+						<div class="mura-control-group">
+							<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.primarydomain.tooltip'))#" 
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.primarydomain'))#">			#rc.$.rbKey('siteconfig.sitesettings.primarydomain')#
+									<i class="mi-question-circle"></i>
+								</span>
 							</label>
-							<div class="controls">
-								<input name="domain" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
-							</div>
-						</div>
+							<input name="domain" type="text" value="#esapiEncode('html_attr',rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
 					</div>
 
-					<div class="span6">
-						<label class="control-label">Domain Alias List <span>(Line Delimited)</span></label>
-						<div class="controls">
-							<textarea rows="6" class="span12" name="domainAlias" rows="6" class="span12" >#esapiEncode('html',rc.siteBean.getDomainAlias())#</textarea>
-						</div>
-					</div>
+						<div class="mura-control-group">
+							<label>Domain Alias List <span>(Line Delimited)</span></label>
+							<textarea name="domainAlias" rows="6">#esapiEncode('html',rc.siteBean.getDomainAlias())#</textarea>
 				</div>
 
-				<div class="control-group">          
 					<!--- Enforce Primary --->
-					<div class="span6">
-						<label class="control-label">Enforce Primary Domain</label>
-						<div class="controls">
+							<div class="mura-control-group">          
+								<label>Enforce Primary Domain</label>
 							<label class="radio inline">
-								<input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
+										<input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> checked</cfif>>
 								Off
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>
+										<input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> checked</cfif>>
 								On
 							</label>
 						</div>
-					</div>
 
 					<!--- Use SSL (Sitewide) --->
-					<div class="span6">
-						<label class="control-label"><a href="##" rel="tooltip" title="#rc.$.rbKey('siteconfig.sitesettings.usessl.tooltip')#">#rc.$.rbKey('siteconfig.sitesettings.usessl')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
+							<div class="mura-control-group">          
+								<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl.tooltip'))#" 
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl'))#">	
+									#rc.$.rbKey('siteconfig.sitesettings.usessl')# <i class="mi-question-circle"></i></span>
+								</label>
 							<label class="radio inline">
-								<input type="radio" name="useSSL" value="0"<cfif rc.siteBean.getUseSSL() neq 1> CHECKED</CFIF>>
+									<input type="radio" name="useSSL" value="0"<cfif rc.siteBean.getUseSSL() neq 1> checked</cfif>>
 								#rc.$.rbKey('sitemanager.no')#
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="useSSL" value="1"<cfif rc.siteBean.getUseSSL() eq 1> CHECKED</CFIF>>
+									<input type="radio" name="useSSL" value="1"<cfif rc.siteBean.getUseSSL() eq 1> checked</cfif>>
 								#rc.$.rbKey('sitemanager.yes')#
 							</label>
 						</div>
-					</div>
-				</div>
 
-				<div class="control-group">
-						<div class="span6">
-						<label class="control-label">Locale</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Locale</label>
 								<select name="siteLocale">
 								<option value="">Default</option>
 								<cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
@@ -210,10 +216,9 @@ to your own modified versions of Mura CMS.
 									</cfloop>
 							</select>
 							</div>
-					</div>
-						<div class="span6">
-						<label class="control-label">Theme</label>
-						<div class="controls">
+
+							<div class="mura-control-group">
+								<label>Theme</label>
 								<select name="theme">
 								<cfif rc.siteBean.hasNonThemeTemplates()>
 										<option value="">None</option>
@@ -223,198 +228,165 @@ to your own modified versions of Mura CMS.
 									</cfloop>
 							</select>
 							</div>
-					</div>
-					</div>
-				<div class="control-group">
-						<div class="span6">
-						<label class="control-label">Page Limit</label>
-						<div class="controls">
-								<input name="pagelimit" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getpagelimit())#" size="5" maxlength="6">
+							<div class="mura-control-group">
+								<label>Page Limit</label>
+										<input name="pagelimit" type="text" value="#esapiEncode('html_attr',rc.siteBean.getpagelimit())#" size="5" maxlength="6">
 							</div>
+							<div class="mura-control-group">
+								<label>Default  Rows <span>(in Site Manager)</span></label>
+										<input name="nextN" type="text" value="#esapiEncode('html_attr',rc.siteBean.getnextN())#" size="5" maxlength="5">
 					</div>
-						<div class="span6">
-						<label class="control-label">Default  Rows <span>(in Site Manager)</span></label>
-						<div class="controls">
-								<input name="nextN" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getnextN())#" size="5" maxlength="5">
-							</div>
-					</div>
-				</div>
-				<div class="control-group">
-						<div class="span6">
-						<label class="control-label">Site Caching</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Site Caching</label>
 								<label class="radio inline">
-								<input type="radio" name="cache" value="0"<cfif rc.siteBean.getcache() neq 1> CHECKED</CFIF>>
+										<input type="radio" name="cache" value="0"<cfif rc.siteBean.getcache() neq 1> checked</cfif>>
 								Off</label>
 								<label class="radio inline">
-								<input type="radio" name="cache" value="1"<cfif rc.siteBean.getcache() eq 1> CHECKED</CFIF>>
+										<input type="radio" name="cache" value="1"<cfif rc.siteBean.getcache() eq 1> checked</cfif>>
 								On</label>
 							</div>
-					</div>
 						<!---
 						<div class="span4">
-						<label class="control-label">Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
+								<label>Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
 						<div class="controls">
 								<input name="cacheCapacity" type="text" class="span3" value="#esapiEncode('html_attr',rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
 							</div>
 					</div>--->
-						<div class="span6">
-						<label class="control-label">Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
 								<input name="cacheFreeMemoryThreshold" type="text" class="span2" value="#esapiEncode('html_attr',rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">
-								% </div>
+										% 
 					</div>
-					</div>
-				<div class="control-group">
-						<div class="span6">
-						<label class="control-label">Lock Site Architecture</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Lock Site Architecture</label>
 								<p class="help-block">Restricts Addition or Deletion of Site Content</p>
 								<label class="radio inline">
-								<input type="radio" name="locking" value="none" <cfif rc.siteBean.getlocking() eq 'none' or rc.siteBean.getlocking() eq ''> CHECKED</CFIF>>
+										<input type="radio" name="locking" value="none" <cfif rc.siteBean.getlocking() eq 'none' or rc.siteBean.getlocking() eq ''> checked</cfif>>
 								None</label>
 								<label class="radio inline">
-								<input type="radio" name="locking" value="all" <cfif rc.siteBean.getlocking() eq 'all'> CHECKED</CFIF>>
+										<input type="radio" name="locking" value="all" <cfif rc.siteBean.getlocking() eq 'all'> checked</cfif>>
 								All</label>
 								<label class="radio inline">
-								<input type="radio" name="locking" value="top" <cfif rc.siteBean.getlocking() eq 'top'> CHECKED</CFIF>>
+										<input type="radio" name="locking" value="top" <cfif rc.siteBean.getlocking() eq 'top'> checked</cfif>>
 								Top</label>
 							</div>
-					</div>
-						<div class="span6">
-						<label class="control-label">Allow Comments to be Posted Without Site Admin Approval</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Allow Comments to be Posted Without Site Admin Approval</label>
 								<label class="radio inline">
-								<input type="radio" name="CommentApprovalDefault" value="1" <cfif rc.siteBean.getCommentApprovalDefault()  eq 1> CHECKED</CFIF>>
+										<input type="radio" name="CommentApprovalDefault" value="1" <cfif rc.siteBean.getCommentApprovalDefault()  eq 1> checked</cfif>>
 								Yes</label>
 								<label class="radio inline">
-								<input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>
+										<input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> checked</cfif>>
 								No</label>
 						</div>
-					</div>
-				</div>
 			 
-				<div class="control-group">
-						<label class="control-label">Static HTML Export Location (BETA)</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Static HTML Export Location (BETA)</label>
 						<cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
 								<p class="alert alert-error help-block">The current value is not a valid directory</p>
 							</cfif>
-						<input name="exportLocation" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getExportLocation())#" maxlength="100"/>
+								<input name="exportLocation" type="text" value="#esapiEncode('html_attr',rc.siteBean.getExportLocation())#" maxlength="100"/>
 					</div>
+							 <div class="mura-control-group">
+								<label>Custom Tag Groups <span class="help-inline">("^" Delimiter. List elements must use valid variable names.)</span></label>
+									<input name="customTagGroups" type="text" value="#esapiEncode('html_attr',rc.siteBean.getCustomTagGroups())#" maxlength="255"/>
 				</div>
-				 <div class="control-group">
-						<label class="control-label">Custom Tag Groups <span class="help-inline">("^" Delimiter. List elements must use valid variable names.)</span></label>
-						<div class="controls">
-							<input name="customTagGroups" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getCustomTagGroups())#" maxlength="255"/>
-						</div>
-				</div>
-				<div class="control-group">
-						<label class="control-label">Site Mode</label>
-						<div class="controls">
+							<div class="mura-control-group">
+								<label>Site Mode</label>
 							<select name="enableLockdown">
 									<option value=""<cfif rc.siteBean.getEnableLockdown() eq ""> selected</cfif>>Live</option>
 									<option value="development"<cfif rc.siteBean.getEnableLockdown() eq "development"> selected</cfif>>Development</option>
 									<option value="maintenance"<cfif rc.siteBean.getEnableLockdown() eq "maintenance"> selected</cfif>>Maintenance</option>
 								</select>
 						</div>
-				</div>
 
 				<!--- Lockable nodes --->
 				<cfif application.configBean.getLockableNodes()>
-					<div class="control-group">      
-							<label class="control-label">Allow Content Locking</label>
-							<div class="controls">
+							<div class="mura-control-group">      
+									<label>Allow Content Locking</label>
 									<p class="help-block">Grants content editors the right to exlusively lock a content node and all of it's versions when editing.</p>
 									<label class="radio inline">
-									<input type="radio" name="hasLockableNodes" value="1" <cfif rc.siteBean.gethasLockableNodes()  eq 1> CHECKED</CFIF>>
+											<input type="radio" name="hasLockableNodes" value="1" <cfif rc.siteBean.gethasLockableNodes()  eq 1> checked</cfif>>
 									Yes</label>
 									<label class="radio inline">
-									<input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> CHECKED</CFIF>>
+											<input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> checked</cfif>>
 									No</label>
-								
-								</div>      
 					</div>
 				</cfif> 
 				<!--- /Lockable nodes --->
 
 				<!--- Custom Context + Port --->
-				<div class="control-group">
-					<div class="span4">
-						<label class="control-label">Is this a Remote Site?</label>
-						<div class="controls">
+						<div class="mura-control-group">
+								<label>Is this a Remote Site?</label>
 								<label class="radio inline">
-								<input type="radio" name="IsRemote" value="0"<cfif rc.siteBean.getIsRemote() neq 1> CHECKED</CFIF>>
+										<input type="radio" name="IsRemote" value="0"<cfif rc.siteBean.getIsRemote() neq 1> checked</cfif>>
 								No</label>
 								<label class="radio inline">
-								<input type="radio" name="IsRemote" value="1"<cfif rc.siteBean.getIsRemote() eq 1> CHECKED</CFIF>>
+										<input type="radio" name="IsRemote" value="1"<cfif rc.siteBean.getIsRemote() eq 1> checked</cfif>>
 								Yes</label>
 						</div>
-					</div>
-					<div class="span4">
-						<label class="control-label">Remote Context</label>
-						<div class="controls">
-							<input name="remotecontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemoteContext())#" class="span12" maxlength="100">
-						</div>
-					</div>
-					<div class="span4">
-						<label class="control-label">Remote Port</label>
-						<div class="controls">
-							<input name="remoteport" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getRemotePort())#"maxlength="4">
-						</div>
-					</div>
+						<div class="mura-control-group">
+								<label>Remote Context</label>
+									<input name="remotecontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemoteContext())#" maxlength="100">
+						</div>				
+						<div class="mura-control-group">
+								<label>Remote Port</label>
+									<input name="remoteport" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemotePort())#"maxlength="4">
 				</div>
 
-				<div class="control-group">          
-					<div class="span6">
-						<div>
-							<label class="control-label">
-								<a href="##" rel="tooltip" title="#rc.$.rbKey('siteconfig.sitesettings.resourcedomain.tooltip')#">
+						<div class="mura-control-group">          
+									<label>
+									<span data-toggle="popover" title="" data-placement="right" 
+							  		data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain.tooltip'))#" 
+							  		data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain'))#">	
 									#rc.$.rbKey('siteconfig.sitesettings.resourcedomain')#
-									<i class="icon-question-sign"></i>
-								</a>
+											<i class="mi-question-circle"></i>
+										</span>
 							</label>
-							<div class="controls">
-								<input name="resourcedomain" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getresourcedomain('production'))#" size="50" maxlength="255">
-							</div>
+										<input name="resourcedomain" type="text" value="#esapiEncode('html_attr',rc.siteBean.getresourcedomain('production'))#" size="50" maxlength="255">
 						</div>
-					</div>
-					<div class="span6">
-						<label class="control-label">#rc.$.rbKey('siteconfig.sitesettings.resourcessl')# </label>
-						<div class="controls">
+						<div class="mura-control-group">          
+								<label>#rc.$.rbKey('siteconfig.sitesettings.resourcessl')# </label>
 							<label class="radio inline">
-								<input type="radio" name="resourceSSL" value="0"<cfif rc.siteBean.getResourceSSL() neq 1> CHECKED</CFIF>>
+										<input type="radio" name="resourceSSL" value="0"<cfif rc.siteBean.getResourceSSL() neq 1> checked</cfif>>
 								#rc.$.rbKey('sitemanager.no')#
 							</label>
 							<label class="radio inline">
-								<input type="radio" name="resourceSSL" value="1"<cfif rc.siteBean.getResourceSSL() eq 1> CHECKED</CFIF>>
+										<input type="radio" name="resourceSSL" value="1"<cfif rc.siteBean.getResourceSSL() eq 1> checked</cfif>>
 								#rc.$.rbKey('sitemanager.yes')#
 							</label>
 						</div>
-					</div>
-				</div>
 				<!--- /Custom Context + Port --->
 
 				<!--- Google reCAPTCHA API Keys --->
-				<div class="control-group">
+						<div class="mura-control-group">
 					<!--- reCAPTCHA Site Key --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
-								<input name="reCAPTCHASiteKey" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
-							</div>
+								<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.getapikeys'))#" 
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.sitekey'))#">	
+										#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="mi-question-circle"></i></span>
+								</label>
+										<input name="reCAPTCHASiteKey" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
 					</div>
 					<!--- reCAPTCHA Secret --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.getapikeys')#">#$.rbKey('siteconfig.recaptcha.secret')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
-								<input name="reCAPTCHASecret" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
-							</div>
+						<div class="mura-control-group">
+								<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.getapikeys'))#" 
+							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))#">									
+									<i class="mi-question-circle"></i></a>
+								</label>
+										<input name="reCAPTCHASecret" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
 					</div>
 					<!--- reCAPTCHA Language --->
-					<div class="span4">
-						<label class="control-label"><a href="" rel="tooltip" data-original-title="#$.rbKey('siteconfig.recaptcha.languageoptions')#">#$.rbKey('siteconfig.recaptcha.language')# <i class="icon-question-sign"></i></a></label>
-						<div class="controls">
+						<div class="mura-control-group">
+								<label>
+								<span data-toggle="popover" title="" data-placement="right" 
+							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.languageoptions'))#" 
+							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.language'))#">	
+									#$.rbKey('siteconfig.recaptcha.language')# <i class="mi-question-circle"></i></span>
+								</label>
 							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
 							<cfset rc.sortedLangs = StructSort(rc.langs, 'textnocase', 'asc') />
 							<select name="reCAPTCHALanguage" class="span12">
@@ -425,97 +397,98 @@ to your own modified versions of Mura CMS.
 								</cfloop>
 							</select>
 						</div>
-					</div>
-				</div>
 
 				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
-					<div class="control-group">
 						<div class="alert alert-warning">
 							#rc.$.rbKey('siteconfig.recaptcha.message')#
 						</div>
-						<div class="form-actions span12">
-							<div class="controls">
+					<div class="form-actions">
 								<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
-									<i class="icon-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
+								<i class="mi-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
 								</a>
 							</div>
-						</div>
-					</div>
 				</cfif>
 				<!--- /Google reCAPTCHA API Keys --->
 
-			</div>
-		</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 				
 		<!--- Default Contact Info --->
-		<div id="tabContactinfo" class="tab-pane fade">
-			<div class="fieldset">
-					<div class="control-group">
-						<div class="span6">
-								<label class="control-label">Contact Name </label>
-								<div class="controls">
-									<input name="contactName" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactName())#" size="50" maxlength="50" maxlength="100">
+		<div id="tabContactinfo" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Contact Info</h3>
 								</div>
+			  <!-- /block header -->						
+			  <div class="block-content">									
+					<div class="mura-control-group">
+								<label>Contact Name </label>
+									<input name="contactName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactName())#" size="50" maxlength="50" maxlength="100">
 						</div>
 						
-						<div class="span6">
-								<label class="control-label">Contact Address </label>
-								<div class="controls">
-									<input name="contactAddress" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactAddress())#" size="50" maxlength="50" maxlength="100">
-								</div>
-						</div>          
+					<div class="mura-control-group">
+								<label>Contact Address </label>
+									<input name="contactAddress" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactAddress())#" size="50" maxlength="50" maxlength="100">
 					</div>
 					
-					<div class="control-group">
-						<div class="span6">
-								<label class="control-label">Contact City </label>
-								<div class="controls">
-									<input name="contactCity" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactCity())#" size="50" maxlength="50" maxlength="100">
+					<div class="mura-control-group">
+								<label>Contact City </label>
+									<input name="contactCity" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactCity())#" size="50" maxlength="50" maxlength="100">
 								</div>
+					<div class="mura-control-group">
+								<label>Contact State </label>
+									<input name="contactState" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactState())#" size="50" maxlength="50" maxlength="100">
 							</div>
-
-						<div class="span2">
-								<label class="control-label">Contact State </label>
-								<div class="controls">
-									<input name="contactState" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactState())#" size="50" maxlength="50" maxlength="100">
+					<div class="mura-control-group">
+								<label>Contact Zip </label>
+									<input name="contactZip" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactZip())#" size="50" maxlength="50" maxlength="100">
 								</div>
+					<div class="mura-control-group">
+								<label>Contact Phone </label>
+								<input name="contactPhone" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactPhone())#" size="50" maxlength="50" maxlength="100">
 							</div>
 						
-						<div class="span4">
-								<label class="control-label">Contact Zip </label>
-								<div class="controls">
-									<input name="contactZip" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactZip())#" size="50" maxlength="50" maxlength="100">
-								</div>
-							</div>
+					<div class="mura-control-group">
+							<label>Contact Email </label>
+							<input name="contactEmail" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactEmail())#" size="50" maxlength="50" maxlength="100">
 						</div>
 					
-					<div class="control-group">
-						<div class="span6">
-								<label class="control-label">Contact Phone </label>
-								<div class="controls">
-								<input name="contactPhone" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactPhone())#" size="50" maxlength="50" maxlength="100">
-								</div>
-						</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 						
-					<div class="span6">
-							<label class="control-label">Contact Email </label>
-							<div class="controls">
-							<input name="contactEmail" type="text" class="span12"  value="#esapiEncode('html_attr',rc.siteBean.getcontactEmail())#" size="50" maxlength="50" maxlength="100">
-							</div>
-					</div>
-						
-					</div>
-		 </div>
-		</div>
-		
 		<!--- Shared Resources --->
-		<div id="tabSharedresources" class="tab-pane fade">
-				<div class="fieldset">
-				<div class="control-group">
-				<div class="span3">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.memberuserpool')#</label>
-					<div class="controls">
-							<select class="span12"  id="publicUserPoolID" name="publicUserPoolID" onchange="if(this.value!='' || jQuery('##privateUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
+		<div id="tabSharedresources" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Shared Resources</h3>
+					</div>
+			  <!-- /block header -->						
+			  <div class="block-content">						
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.memberuserpool')#</label>
+							<select  id="publicUserPoolID" name="publicUserPoolID" onchange="if(this.value!='' || jQuery('##privateUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
 							<option value="">This site</option>
 							<cfloop query="rsSites">
 									<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -524,12 +497,10 @@ to your own modified versions of Mura CMS.
 								</cfloop>
 						</select>
 						</div>
-				</div>
 				
-				<div class="span3">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.systemuserpool')#</label>
-				<div class="controls">
-						<select class="span12"  id="privateUserPoolID" name="privateUserPoolID" onchange="if(this.value!='' || jQuery('##publicUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
+				<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.systemuserpool')#</label>
+						<select  id="privateUserPoolID" name="privateUserPoolID" onchange="if(this.value!='' || jQuery('##publicUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
 						<option value="">This site</option>
 						<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -538,12 +509,10 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-			</div>
 			
-				<div class="span3">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
-				<div class="controls">
-						<select class="span12"  name="advertiserUserPoolID">
+				<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
+						<select  name="advertiserUserPoolID">
 						<option value="">This site</option>
 						<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -552,11 +521,10 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-			</div>
-				<div class="span3">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
-				<div class="controls">
-						<select class="span12"  name="displayPoolID">
+
+				<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
+						<select  name="displayPoolID">
 						<option value="">This site</option>
 						<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -565,14 +533,10 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-					</div>
-			</div>
 	 
-				<div class="control-group">
-				 <div class="span3">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.filepool')#</label>
-				<div class="controls">
-						<select class="span12"  name="filePoolID">
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.filepool')#</label>
+					<select  name="filePoolID">
 						<option value="">This site</option>
 						<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -581,12 +545,10 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-				</div>
 			 
-				<div class="span3">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
-					<div class="controls">
-						<select class="span12" id="categoryPoolID" name="categoryPoolID">
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
+					<select id="categoryPoolID" name="categoryPoolID">
 							<option value="">This site</option>
 							<cfloop query="rsSites">
 								<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -595,12 +557,10 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 						</select>
 					</div>
-				</div>
 		
-				<div class="span3">
-					 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.contentpool')#</label>
-					 <div class="controls">
-							<select class="span12" id="contentPoolID" name="contentPoolID" multiple>
+				<div class="mura-control-group">
+					 <label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.contentpool')#</label>
+						<select id="contentPoolID" name="contentPoolID" multiple>
 								<option value="#$.event('siteid')#" <cfif listFind(rc.siteBean.getContentPoolID(), $.event('siteid'))>selected</cfif>>This site</option>
 								<cfloop query="rsSites">
 									<cfif rsSites.siteid neq rc.siteBean.getSiteID()>
@@ -609,321 +569,286 @@ to your own modified versions of Mura CMS.
 								</cfloop>
 							</select>
 					 </div>
-				</div>
 			 
-			</div>
-		</div>
-	</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 		
 		<!--- Modules --->
-		<div id="tabModules" class="tab-pane fade">
-			<div class="fieldset">
-			
-					<div class="control-group">
-					
-						<div class="span3">
-							<label class="control-label">Extranet <span class="help-inline">(Password Protection)</span></label>
-							<div class="controls">
-									<label class="radio inline"><input type="radio" name="extranet" value="0" <cfif rc.siteBean.getextranet() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="extranet" value="1" <cfif rc.siteBean.getextranet()  eq 1> CHECKED</CFIF>>On</label>
+		<div id="tabModules" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Modules</h3>
 							</div>
+			  <!-- /block header -->						
+			  <div class="block-content">				
+					<div class="mura-control-group">					
+							<label>Extranet <span class="help-inline">(Password Protection)</span></label>
+									<label class="radio inline"><input type="radio" name="extranet" value="0" <cfif rc.siteBean.getextranet() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="extranet" value="1" <cfif rc.siteBean.getextranet()  eq 1> checked</cfif>>On</label>
 					</div>
-					
-						<div class="span3">
-							<label class="control-label">Content Collections</label>
-							<div class="controls">
-									<label class="radio inline"><input type="radio" name="hasFeedManager" value="0" <cfif rc.siteBean.getHasFeedManager() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> CHECKED</CFIF>>On</label>
-							</div>
+					<div class="mura-control-group">					
+							<label>Content Collections</label>
+									<label class="radio inline"><input type="radio" name="hasFeedManager" value="0" <cfif rc.siteBean.getHasFeedManager() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> checked</cfif>>On</label>
 						</div>
 						<cfif application.configBean.getDataCollection()>
-						<div class="span3">
-							<label class="control-label">Forms Manager</label>
-							<div class="controls">
+					<div class="mura-control-group">					
+							<label>Forms Manager</label>
 									<label class="radio inline">
-									<input type="radio" name="dataCollection" value="0" <cfif rc.siteBean.getdataCollection() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> CHECKED</CFIF>>On</label>
-							</div>
+									<input type="radio" name="dataCollection" value="0" <cfif rc.siteBean.getdataCollection() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> checked</cfif>>On</label>
 						</div>
 						 </cfif>
-					</div>
 
-					<div class="control-group">
 						<!--- The ad manager is now gone, but can exist in limited legacy situations --->
 						<cfif application.configBean.getAdManager() or rc.siteBean.getadManager()>
-						<div class="span3">
-							<label class="control-label">Advertisement Manager</label>
-							<div class="controls"> 
+					<div class="mura-control-group">
+							<label>Advertisement Manager</label>
 									<!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
-									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
-								</div>
+									<label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> checked</cfif>>On</label>
+
 						</div>
 						</cfif>
-						<div class="span3">
-							<label class="control-label">Comments Manager</label>
-							<div class="controls"> 
-									<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> CHECKED</CFIF>>On</label>
+					<div class="mura-control-group">
+							<label>Comments Manager</label>
+									<label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> checked</cfif>>On</label>
 								</div>
-						</div>
-						 <div class="span3">
-							<label class="control-label">JSON API (ALPHA)</label>
-							<div class="controls"> 
-									<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> CHECKED</CFIF>>On</label>
-								</div>
-						</div>
-
+					<div class="mura-control-group">
+							<label>JSON API (ALPHA)</label>
+									<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> checked</cfif>>On</label>
 					</div>
 			
 					<cfif application.configBean.getEmailBroadcaster()>
-					<div class="control-group">
-					
-						<div class="span3">
-							<label class="control-label">Email Broadcaster</label>
-							<div class="controls"> 
+					<div class="mura-control-group">
+							<label>Email Broadcaster</label>
 									<!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
-									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> CHECKED</CFIF>>Off</label>
-									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> CHECKED</CFIF>>On</label>
-							</div>
+									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> checked</cfif>>Off</label>
+									<label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> checked</cfif>>On</label>
 					</div>
-						
-						<div class="span3">
-							<label class="control-label">Email Broadcaster Limit</label>
-							<div class="controls">
+					<div class="mura-control-group">
+							<label>Email Broadcaster Limit</label>
 									<input name="EmailBroadcasterLimit" type="text" class="span4" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
 							</div>
-						</div>
-					
-					</div>
 					</cfif>
 			
 			
-					<div class="control-group">
-					
-			
-					<div class="span3">
-				<label class="control-label">Content Staging Manager</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Content Staging Manager</label>
 						<label class="radio inline">
-						<input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> CHECKED</CFIF>>
+						<input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> checked</cfif>>
 						Off </label>
 						<label class="radio inline">
-						<input type="radio" name="hasChangesets" value="1" <cfif rc.siteBean.getHasChangesets() eq 1> CHECKED</CFIF>>
+						<input type="radio" name="hasChangesets" value="1" <cfif rc.siteBean.getHasChangesets() eq 1> checked</cfif>>
 						On </label>
 					</div>
-			</div>
 					
-					<div class="span6">
-				<label class="control-label">Publish via Change Sets Only</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Publish via Change Sets Only</label>
 						<label class="radio inline">
-						<input type="radio" name="enforceChangesets" value="0" <cfif rc.siteBean.getEnforceChangesets() neq 1> CHECKED</CFIF>>
+						<input type="radio" name="enforceChangesets" value="0" <cfif rc.siteBean.getEnforceChangesets() neq 1> checked</cfif>>
 						Off </label>
 						<label class="radio inline">
-						<input type="radio" name="enforceChangesets" value="1" <cfif rc.siteBean.getEnforceChangesets() eq 1> CHECKED</CFIF>>
+						<input type="radio" name="enforceChangesets" value="1" <cfif rc.siteBean.getEnforceChangesets() eq 1> checked</cfif>>
 						On </label>
 					</div>
-			</div>
-			</div>
-			</div>
-		</div>
+
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 		
 		<!--- Email --->
-		<div id="tabEmail" class="tab-pane fade">
-			<div class="fieldset">
-			
-				<div class="control-group">
-				<label class="control-label">Default "From" Email Address</label>
-				<div class="controls">
+		<div id="tabEmail" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Email</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">				
+				<div class="mura-control-group">
+				<label>Default "From" Email Address</label>
 						<input name="contact" type="text" class="span8" value="#esapiEncode('html_attr',rc.siteBean.getcontact())#" size="50" maxlength="50">
 					</div>
-			</div>
-				<div class="control-group">
-				<div class="span4">
-				<label class="control-label">Mail Server IP/Host Name</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Mail Server IP/Host Name</label>
 						<input name="MailServerIP" type="text" class="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerIP())#" size="50" maxlength="50">
 					</div>
-			</div>
-				<div class="span4">
-				<label class="control-label">Mail Server SMTP Port</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Mail Server SMTP Port</label>
 						<input name="MailServerSMTPPort" type="text" class="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerSMTPPort())#" size="5" maxlength="5">
 					</div>
-			</div>
-				<div class="span4">
-				<label class="control-label">Mail Server POP Port</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Mail Server POP Port</label>
 						<input name="MailServerPOPPort" type="text" class="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPOPPort())#" size="5" maxlength="5">
 					</div>
-			</div>
-				</div>
 				
-				<div class="control-group">
-				<div class="span6">
-				<label class="control-label">Mail Server Username <a href="" rel="tooltip" data-original-title="WARNING: Do Not Use a Personal Account. Email will be removed from server for tracking purposes."><i class="icon-warning-sign"></i></a></label>
-				<div class="controls">
-						<input name="MailServerUserName" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getMailServerUserName())#" size="50" maxlength="50">
-					</div>
-			</div>
-				<div class="span6">
-				<label class="control-label">Mail Server Password</label>
-				<div class="controls">
-						<input name="MailServerPassword" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPassword())#" size="50" maxlength="50">
-					</div>
-			</div>
+				<div class="mura-control-group">
+				<label>Mail Server Username 
+					<span data-toggle="popover" title="" data-placement="right" 
+				  	data-content="Do Not Use a Personal Account. Email will be removed from server for tracking purposes." 
+				  	data-original-title="WARNING:">	
+				  	<i class="mi-warning"></i></span></label>
+						<input name="MailServerUserName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerUserName())#" size="50" maxlength="50">
+				</div>
+				<div class="mura-control-group">
+				<label>Mail Server Password</label>
+						<input name="MailServerPassword" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPassword())#" size="50" maxlength="50">
 				</div>
 			
-			<div class="control-group">
-				<div class="span3">
-				<label class="control-label">Use TLS</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>Use TLS</label>
 						<label class="radio inline">
-						<input type="radio" name="mailServerTLS" value="true" <cfif rc.siteBean.getmailServerTLS()  eq "true"> CHECKED</CFIF>>
+						<input type="radio" name="mailServerTLS" value="true" <cfif rc.siteBean.getmailServerTLS()  eq "true"> checked</cfif>>
 						Yes </label>
 						<label class="radio inline">
-						<input type="radio" name="mailServerTLS" value="false" <cfif rc.siteBean.getmailServerTLS() eq "false"> CHECKED</CFIF>>
+						<input type="radio" name="mailServerTLS" value="false" <cfif rc.siteBean.getmailServerTLS() eq "false"> checked</cfif>>
 						No </label>
 					</div>
-				</div>
-				<div class="span3">
-				<label class="control-label">Use SSL</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>Use SSL</label>
 						<label class="radio inline">
-						<input type="radio" name="mailServerSSL" value="true" <cfif rc.siteBean.getmailServerSSL()  eq "true"> CHECKED</CFIF>>
+						<input type="radio" name="mailServerSSL" value="true" <cfif rc.siteBean.getmailServerSSL()  eq "true"> checked</cfif>>
 						Yes </label>
 						<label class="radio inline">
-						<input type="radio" name="mailServerSSL" value="false" <cfif rc.siteBean.getmailServerSSL() eq "false"> CHECKED</CFIF>>
+						<input type="radio" name="mailServerSSL" value="false" <cfif rc.siteBean.getmailServerSSL() eq "false"> checked</cfif>>
 						No </label>
 					</div>
-			</div>
-				<div class="span3">
-				<label class="control-label">Use Default SMTP Server</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>Use Default SMTP Server</label>
 						<label class="radio inline">
-						<input type="radio" name="useDefaultSMTPServer" value="1" <cfif rc.siteBean.getUseDefaultSMTPServer()  eq 1> CHECKED</CFIF>>
+						<input type="radio" name="useDefaultSMTPServer" value="1" <cfif rc.siteBean.getUseDefaultSMTPServer()  eq 1> checked</cfif>>
 						Yes </label>
 						<label class="radio inline">
-						<input type="radio" name="useDefaultSMTPServer" value="0" <cfif rc.siteBean.getUseDefaultSMTPServer() neq 1> CHECKED</CFIF>>
+						<input type="radio" name="useDefaultSMTPServer" value="0" <cfif rc.siteBean.getUseDefaultSMTPServer() neq 1> checked</cfif>>
 						No </label>
 					</div>
-			</div>
-			</div>
 			
-			 <div class="control-group">
-				<label class="control-label">Content Approval Script</label>
-				<div class="controls">
+			 <div class="mura-control-group">
+				<label>Content Approval Script</label>
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
-						<textarea rows="6" class="span12" name="contentApprovalScript">#esapiEncode('html',rc.siteBean.getContentApprovalScript())#</textarea>
-					</div>
+						<textarea rows="6" name="contentApprovalScript">#esapiEncode('html',rc.siteBean.getContentApprovalScript())#</textarea>
 			</div>
 
-			 <div class="control-group">
-				<label class="control-label">Content Rejection Script</label>
-				<div class="controls">
+			 <div class="mura-control-group">
+				<label>Content Rejection Script</label>
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
-						<textarea rows="6" class="span12" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
-					</div>
+						<textarea rows="6" name="contentRejectionScript">#esapiEncode('html',rc.siteBean.getContentRejectionScript())#</textarea>
 			</div>
 
-			<div class="control-group">
-				<label class="control-label">User Login Authorization Code Challenge Script</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>User Login Authorization Code Challenge Script</label>
 					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##email## ##authcode## ##contactEmail## ##contactName##</p>
-					<textarea rows="6" class="span12" name="sendAuthCodeScript">#esapiEncode('html',rc.siteBean.getSendAuthCodeScript())#</textarea>
-				</div>
+					<textarea rows="6" name="sendAuthCodeScript">#esapiEncode('html',rc.siteBean.getSendAuthCodeScript())#</textarea>
 			</div>
 
-			<div class="control-group">
-				<label class="control-label">User Login Info Request Script</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>User Login Info Request Script</label>
 					<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##</p>
-					<textarea rows="6" class="span12" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
-				</div>
+					<textarea rows="6" name="sendLoginScript">#esapiEncode('html',rc.siteBean.getSendLoginScript())#</textarea>
 			</div>
 
-			<div class="control-group">
-				<label class="control-label">Mailing List Confirmation Script</label>
-				<div class="controls">
+			<div class="mura-control-group">
+				<label>Mailing List Confirmation Script</label>
 					<p class="help-block">Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##</p>
-					<textarea rows="6" class="span12" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
-				</div>
+					<textarea rows="6" name="mailingListConfirmScript">#esapiEncode('html',rc.siteBean.getMailingListConfirmScript())#</textarea>
 			</div>
-				<div class="control-group">
-				<label class="control-label">Account Activation Script</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Account Activation Script</label>
 						<p class="help-block">Available Dynamic Content: ##firstName## ##lastName## ##username## ##contactEmail## ##contactName##</p>
-						<textarea rows="6" class="span12" name="accountActivationScript">#esapiEncode('html',rc.siteBean.getAccountActivationScript())#</textarea>
-					</div>
+						<textarea rows="6" name="accountActivationScript">#esapiEncode('html',rc.siteBean.getAccountActivationScript())#</textarea>
 			</div>
 			<!---
-				<div class="control-group">
-				<label class="control-label">Public Submission Approval Script</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Public Submission Approval Script</label>
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
-						<textarea rows="6" class="span12" name="publicSubmissionApprovalScript">#esapiEncode('html',rc.siteBean.getPublicSubmissionApprovalScript())#</textarea>
-					</div>
+						<textarea rows="6" name="publicSubmissionApprovalScript">#esapiEncode('html',rc.siteBean.getPublicSubmissionApprovalScript())#</textarea>
 			</div>
 			--->
-				<div class="control-group">
-				<label class="control-label">Event Reminder Script</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Event Reminder Script</label>
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##eventTitle## ##startDate## ##startTime## ##siteName## ##eventContactName## ##eventContactAddress## ##eventContactCity## ##eventContactState## ##eventContactZip## ##eventContactPhone##</p>
-						<textarea rows="6" class="span12" name="reminderScript">#esapiEncode('html',rc.siteBean.getReminderScript())#</textarea>
-					</div>
+						<textarea rows="6" name="reminderScript">#esapiEncode('html',rc.siteBean.getReminderScript())#</textarea>
 			</div>
 			
-			</div>
-		</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
+
 		<!--- Galleries --->
-		<div id="tabImages" class="tab-pane fade">
-			<div class="fieldset">
-				
-				<div class="control-group">
-					
-					<div class="span6">
-					<label class="control-label">Small (Thumbnail) Image</label>
+		<div id="tabImages" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Image Galleries</h3>
+			</div>
+			  <!-- /block header -->						
+			  <div class="block-content">					
+				<div class="mura-control-group">
+					<label>Small (Thumbnail) Image</label>
 							<label>Height</label>
-							<div class="controls"><input name="smallImageHeight" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" /></div>
+							<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
 					</div>
 					
-					<div class="span6"> 
-					<br />  
+				<div class="mura-control-group">
 							<label>Width</label>
-							<div class="controls"><input name="smallImageWidth" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" /></div>
-					</div>
-					
+							<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />				
 			</div>
 			
-				<div class="control-group">
-				<div class="span6">
-					<label class="control-label">Medium Image</label>
+				<div class="mura-control-group">
+					<label>Medium Image</label>
 							<label>Height</label>
-							<div class="controls"><input name="mediumImageHeight" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" /></div>
+							<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
 					</div>
 					
-					<div class="span6"> 
-					<br />  
+				<div class="mura-control-group">
 							<label>Width</label>
-							<div class="controls"><input name="mediumImageWidth" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" /></div>
-					</div>
+					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" />
 			</div>
 			
-				<div class="control-group">
-				<div class="span6">
-					<label class="control-label">Large Image</label>
+				<div class="mura-control-group">
+					<label>Large Image</label>
 							<label>Height</label>
-							<div class="controls"><input name="largeImageHeight" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" /></div>
+							<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
 					</div>
 					
-					<div class="span6"> 
-					<br />  
+				<div class="mura-control-group">
 							<label>Width</label>
-							<div class="controls"><input name="largeImageWidth" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" /></div>
-					</div>
+							<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
 			</div>
+			
+		<!--- TODO GoWest : custom images UI & markup : 2016-01-20T17:05:43-07:00 --->
 			
 				<cfif len(rc.siteBean.getSiteID())>
 				<script>
@@ -1032,87 +957,101 @@ to your own modified versions of Mura CMS.
 		 $(document).ready(function(){loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'})});
 
 			</script>
-			<div class="control-group">
-				<label class="control-label">Custom Images</label>
-				<ul class="nav nav-pills"><li><a href="##" onclick="return openCustomImageSize('','#esapiEncode('javascript',rc.siteBean.getSiteID())#')"><i class="icon-plus-sign"></i> Add Custom Image Size</a></li></ul>
+			<div class="mura-control-group">
+				<label>Custom Images</label>
+				<ul class="nav nav-pills"><li><a href="##" onclick="return openCustomImageSize('','#esapiEncode('javascript',rc.siteBean.getSiteID())#')"><i class="mi-plus-circle"></i> Add Custom Image Size</a></li></ul>
 				<div id="custom-images-container"></div>
 			</div>
 			</cfif>
 			
-			</div>
-		</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 		
 		<!--- Extranet --->
-		<div id="tabExtranet" class="tab-pane fade">
-			<div class="fieldset">
-				
-				<div class="control-group">
-				<div class="span6">
-				<label class="control-label">Allow Public Site Registration</label>
-				<div class="controls">
+		<div id="tabExtranet" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Extranet Settings</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">					
+				<div class="mura-control-group">
+				<label>Allow Public Site Registration</label>
 						<label class="radio inline">
-						<input type="radio" name="extranetpublicreg" value="0" <cfif rc.siteBean.getextranetpublicreg() neq 1> CHECKED</CFIF>>
+						<input type="radio" name="extranetpublicreg" value="0" <cfif rc.siteBean.getextranetpublicreg() neq 1> checked</cfif>>
 						No </label>
 						<label class="radio inline">
-						<input type="radio" name="extranetpublicreg" value="1" <cfif rc.siteBean.getextranetpublicreg()  eq 1> CHECKED</CFIF>>
+						<input type="radio" name="extranetpublicreg" value="1" <cfif rc.siteBean.getextranetpublicreg()  eq 1> checked</cfif>>
 						Yes </label>
 					</div>
-			</div>
 			<!--- This is removed in favor of a useSSL 
-			<div class="span6">
-				<label class="control-label">Require HTTPS Encryption for Extranet</label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Require HTTPS Encryption for Extranet</label>
 						<label class="radio inline">
-						<input type="radio" name="extranetssl" value="0" <cfif rc.siteBean.getextranetssl() neq 1> CHECKED</CFIF>>
+						<input type="radio" name="extranetssl" value="0" <cfif rc.siteBean.getextranetssl() neq 1> checked</cfif>>
 						No </label>
 						<label class="radio inline">
-						<input type="radio" name="extranetssl" value="1" <cfif rc.siteBean.getextranetssl()  eq 1> CHECKED</CFIF>>
+						<input type="radio" name="extranetssl" value="1" <cfif rc.siteBean.getextranetssl()  eq 1> checked</cfif>>
 						Yes </label>
 					</div>
-			</div>
 			--->
-	</div>
 				
-				<div class="control-group">
-				<div class="span6">
-				<label class="control-label">Custom Login URL</label>
-				<div class="controls">
-						<input name="loginURL" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
-					</div>
-			</div>
-				<div class="span6">
-				<label class="control-label">Custom Profile URL</label>
-				<div class="controls">
-						<input name="editProfileURL" type="text" class="span12" value="#esapiEncode('html_attr',rc.siteBean.getEditProfileURL(parseMuraTag=false))#" maxlength="255">
-					</div>
-			</div>
+				<div class="mura-control-group">
+				<label>Custom Login URL</label>
+						<input name="loginURL" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
+				</div>
+				<div class="mura-control-group">
+				<label>Custom Profile URL</label>
+						<input name="editProfileURL" type="text" value="#esapiEncode('html_attr',rc.siteBean.getEditProfileURL(parseMuraTag=false))#" maxlength="255">
 				</div>
 				<!---  <dt>Allow Public Submission In To Folders</dt>
 			<dd>
-				<input type="radio" name="publicSubmission" value="0" <cfif rc.siteBean.getpublicSubmission() neq 1> CHECKED</CFIF>>
+				<input type="radio" name="publicSubmission" value="0" <cfif rc.siteBean.getpublicSubmission() neq 1> checked</cfif>>
 				No&nbsp;&nbsp;
-				<input type="radio" name="publicSubmission" value="1" <cfif rc.siteBean.getpublicSubmission() eq 1> CHECKED</CFIF>>
+				<input type="radio" name="publicSubmission" value="1" <cfif rc.siteBean.getpublicSubmission() eq 1> checked</cfif>>
 				Yes</dd>
 			<dd> --->
 			 
-				<div class="control-group">
-				<label class="control-label">Email Site Registration Notifications to:</label>
-				<div class="controls">
-						<input name="ExtranetPublicRegNotify" type="text" class="span12" value="#rc.siteBean.getExtranetPublicRegNotify()#" size="255" maxlength="255">
-					</div>
+				<div class="mura-control-group">
+				<label>Email Site Registration Notifications to:</label>
+						<input name="ExtranetPublicRegNotify" type="text" value="#rc.siteBean.getExtranetPublicRegNotify()#" size="255" maxlength="255">
 			</div>
 			
-			</div>
-		</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 		
 		<!--- Display Regions --->
-		<div id="tabDisplayregions" class="tab-pane fade">
-			<div class="fieldset">
-			
-				<div class="control-group">
-				<div class="span6">
-				<label class="control-label">Number of Display Regions</label>
-				<div class="controls">
+		<div id="tabDisplayregions" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Display Regions</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">				
+				<div class="mura-control-group">
+					<label>Number of Display Regions</label>
 						<select class="span2" name="columnCount">
 						<option value="1" <cfif rc.siteBean.getcolumnCount() eq 1 or rc.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
 						<cfloop from="2" to="20" index="i">
@@ -1120,37 +1059,46 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-					</div>
-					</div>
 					
-				 <div class="control-group">
-				 <div class="span6">
-				<label class="control-label">Primary Display Region <span class="help-block">Dynamic System Content such as Login Forms<br />and Search Results get displayed here</span></label>
-				<div class="controls">
+				 <div class="mura-control-group">
+				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Formsa nd Search Results get displayed here</span></label>
 						<select class="span2" name="primaryColumn">
 						<cfloop from="1" to="20" index="i">
 								<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>
 							</cfloop>
 					</select>
 						</div>
-					</div>
-			</div>
 			
-				<div class="control-group">
-				<label class="control-label">Display Region Names <span class="help-inline">"^" Delimiter</span></label>
-				<div class="controls">
+				<div class="mura-control-group">
+				<label>Display Region Names <span class="help-inline">"^" Delimiter</span></label>
 						<input name="columnNames" type="text" class="span6" value="#esapiEncode('html_attr',rc.siteBean.getcolumnNames())#">
 					</div>
-			</div>
 			
-			</div>
-		</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
+		
+		<!--- TODO GoWest : test site ext. attr display : 2016-01-20T16:50:18-07:00 --->
 		
 		<!--- Extended Attributes --->
 		<cfif arrayLen(extendSets)>
-				<div id="tabExtendedAttributes" class="tab-pane fade">
-				 <div class="fieldset">
-				<cfset started=false />
+				<div id="tabExtendedAttributes" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Extended Attributes</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">					<cfset started=false />
 				<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 						<cfset extendSetBean=extendSets[s]/>
 						<cfset style=extendSetBean.getStyle()/>
@@ -1159,7 +1107,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 						<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-					<div class="fieldset">
+					<div class="block block-bordered">
 							<h2>#extendSetBean.getName()#</h2>
 							<cfsilent>
 						<cfset attributesArray=extendSetBean.getAttributes() />
@@ -1167,12 +1115,15 @@ to your own modified versions of Mura CMS.
 							<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">
 							<cfset attributeBean=attributesArray[a]/>
 							<cfset attributeValue=rc.siteBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-							<div class="control-group">
-									<label class="control-label">
+							<div class="mura-control-group">
+									<label>
 									<cfif len(attributeBean.getHint())>
-											<a rel="tooltip" href="##" title="#esapiEncode('html_attr',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+										<span data-toggle="popover" title="" data-placement="right" 
+									  	data-content="#esapiEncode('html_attr',attributeBean.gethint())#" 
+									  	data-original-title="#esapiEncode('html_attr',attributeBean.getLabel())#">	
+									  	#attributeBean.getLabel()# <i class="mi-question-circle"></i></span>
 											<cfelse>
-#attributeBean.getLabel()#
+											#attributeBean.getLabel()#
 										</cfif>
 									<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
 											<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
@@ -1193,63 +1144,66 @@ to your own modified versions of Mura CMS.
 						</div>
 					</span>
 					</cfloop>
-					</div>
-				</div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 		</cfif>
 		
 		<!--- Site Bundles --->
-		<div id="tabBundles" class="tab-pane fade">
+		<div id="tabBundles" class="tab-pane">
 			<cfif application.configBean.getJavaEnabled()>
-			<div class="fieldset">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Deploy Site Bundle</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">	
 				<cfif listFind(session.mura.memberships,'S2')>
 					
 			 
-				<div class="control-group">
-					<label class="control-label"> Are you restoring a site from a backup bundle? </label>
-					<div class="controls">
+				<div class="mura-control-group">
+					<label> Are you restoring a site from a backup bundle? </label>
 						<label class="radio inline"><input type="radio" name="bundleImportKeyMode" value="copy" checked="checked">No - <em>Assign New Keys to Imported Items</em></label>
 						<label class="radio inline" for=""><input type="radio" name="bundleImportKeyMode" value="publish">Yes - <em>Maintain All Keys from Imported Items</em></label>
 					</div>
-			</div>
 				
-				<div class="control-group">
-				<label class="control-label">Include:</label>
-				<div class="controls">
-						<ul>
-						<li>
+				<div class="mura-control-group">
+				<label>Include:</label>
+				<div class="mura-control">
 								<label class="checkbox" for="bundleImportContentMode">
 								<input id="bundleImportContentMode" name="bundleImportContentMode" value="all" type="checkbox" onchange="if(this.checked){jQuery('##contentRemovalNotice').show();}else{jQuery('##contentRemovalNotice').hide();}">
 								Site Architecture &amp; Content</label>
-							</li>
-						<li id="bundleImportUsersModeLI"<cfif not (rc.siteBean.getPublicUserPoolID() eq rc.siteBean.getSiteID() and rc.siteBean.getPrivateUserPoolID() eq rc.siteBean.getSiteID())> style="display:none;"</cfif>>
+						<span id="bundleImportUsersModeLI"<cfif not (rc.siteBean.getPublicUserPoolID() eq rc.siteBean.getSiteID() and rc.siteBean.getPrivateUserPoolID() eq rc.siteBean.getSiteID())> style="display:none;"</cfif>>
 								<label class="checkbox" for="bundleImportUsersMode">
 								<input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">
 								Site Members &amp; Administrative Users</label>
-							</li>
-						<li>
+							</span>
 								<label class="checkbox" for="bundleImportMailingListMembersMode">
 								<input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">
 								Mailing Lists Members</label>
-							</li>
-						<li>
 								<label class="checkbox" for="bundleImportFormDataMode">
 								<input id="bundleImportFormDataMode" name="bundleImportFormDataMode" value="all" type="checkbox">
 								Form Response Data</label>
-							</li>
-						<li>
 								<label class="checkbox" for="bundleImportPluginMode">
 								<input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">
 								All Plugins</label>
-							</li>
-					</ul>
+					</div>	
 						<p class="alert help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
 						<p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
 					</div>
-			</div>
 				 </cfif>
-				<div class="control-group">
-					<label class="control-label"> Which rendering files would you like to import? </label>
-					<div class="controls">
+				<div class="mura-control-group">
+					<label> Which rendering files would you like to import? </label>
 							<cfif listFind(session.mura.memberships,'S2')>
 								 <label class="radio inline">
 									<input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
@@ -1262,49 +1216,66 @@ to your own modified versions of Mura CMS.
 							</cfif>
 							<p class="alert help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 					</div>
-				</div>
 				
-				<div class="control-group">
-				<label class="control-label">Select Bundle File From Server
+				<div class="mura-control-group">
+				<label>Select Bundle File From Server
 						<cfif application.configBean.getPostBundles()>
 						(Preferred)
 					</cfif>
 					</label>
-				<div class="controls">
-						<p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
+					<div class="mura-control justify">
 						<input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
 						<input type="button" value="Browse Server" class="mura-ckfinder" data-completepath="true" data-resourcetype="root" data-target="serverBundlePath"/>
 					</div>
+						<p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
 			</div>
 				<cfif application.configBean.getPostBundles()>
-				<div class="control-group">
-						<label class="control-label"><a rel="tooltip" data-container="body" title="Uploading large files via a web browser can produce inconsistent results.">Upload Bundle File</a></label>
-						<div class="controls">
+				<div class="mura-control-group">
+						<label>
+							<span data-toggle="popover" title="" data-placement="right" 
+						  	data-content="#esapiEncode('html_attr','Uploading large files via a web browser can produce inconsistent results.')#" 
+						  	data-original-title="#esapiEncode('html_attr','WARNING')#">Upload Bundle File <i class="mi-question-circle"></i></span>
+						</label>
 						<input type="file" name="bundleFile" accept=".zip"/>
-					</div>
 					</div>
 				<cfelse>
 				<input type="hidden" name="bundleFile" value=""/>
 			</cfif>
 			
-			</div>
+			</div> <!--- /.block-content --->
 			<cfelse>
-			<div class="fieldset">
-				<div class="control-group">
+			<div class="block block-bordered">
+				<div class="mura-control-group">
 					<div class="alert">
 						Java is currently disabled. So this feature is not currently available.
 					</div>
 				</div>
 			</div>
 			</cfif>
-		</div>
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 
 		<cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
-		<div id="tabRazuna" class="tab-pane fade">
-			<div class="fieldset">
+		<div id="tabRazuna" class="tab-pane">
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">Razuna Settings</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">	
 			<!---
-			<div class="control-group">
-				<label class="control-label" for="razuna_servertype">Server Type</label>
+			<div class="mura-control-group">
+				<label for="razuna_servertype">Server Type</label>
 				<div class="controls">
 					<label for="razuna_servertype_hosted" class="radio inline">
 						<input type="radio" name="servertype" value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
@@ -1316,50 +1287,65 @@ to your own modified versions of Mura CMS.
 			</div>
 			--->
 			<input type="hidden" name="servertype" value="local">
-			<div class="control-group">
-				<label class="control-label" for="razuna_hostname">Hostname</label>
-				<div class="controls">
-					<input type="text" class="span6" value="#esapiEncode('html_attr',rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname"> 
-					<span class="help-block">Example: yourcompany.razuna.com or localhost:8080/razuna</span>
+			<div class="mura-control-group">
+				<label for="razuna_hostname">Hostname <span class="help-block">Example: yourcompany.razuna.com or localhost:8080/razuna</span></label>
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname"> 
+					
 				</div>
+			
+			<div class="mura-control-group">
+				<label for="hostid">Host ID <span class="help-block">Example: 496</span></label>
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid"> 
 			</div>
 			
-			<div class="control-group">
-				<label class="control-label" for="hostid">Host ID</label>
-				<div class="controls">
-					<input type="text" class="span6" value="#esapiEncode('html_attr',rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid"> 
-					<span class="help-block">Example: 496</span>
-				</div>
+			<div class="mura-control-group">
+				<label for="dampath">DAM Path <span class="help-block">Example: /demo/dam</span></label>
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath"> 
 			</div>
 			
-			<div class="control-group">
-				<label class="control-label" for="dampath">DAM Path</label>
-				<div class="controls">
-					<input type="text" class="span6" value="#esapiEncode('html_attr',rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath"> 
-					<span class="help-block">Example: /demo/dam</span>
-				</div>
+			<div class="mura-control-group">
+				<label for="razuna_api_key">API Key</label>
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getApiKey())#" id="razuna_api_key" name="apikey">
 			</div>
 			
-			<div class="control-group">
-				<label class="control-label" for="razuna_api_key">API Key</label>
-				<div class="controls">
-					<input type="text" class="span6" value="#esapiEncode('html_attr',rc.razunaSettings.getApiKey())#" id="razuna_api_key" name="apikey">
-				</div>
-			</div>
-		</div>
- </div>
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 				
+	</div>	<!--- /.block-content.tab-content --->
+	</div>	<!--- /.block --->
 	</cfoutput>
+	
+	<!--- TODO GoWest : test plugin-generated tabs layout & markup : 2016-01-20T16:52:02-07:00 --->
 	
 	<cfoutput query="rsPluginScripts" group="pluginID"> 
 		<!---<cfset tabLabelList=tabLabelList & ",'#esapiEncode('javascript',rsPluginScripts.name)#'"/>--->
 		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
-		<div id="#tabID#" class="tab-pane fade"> <cfoutput>
+		<div id="#tabID#" class="tab-pane"> <cfoutput>
+			<div class="block block-bordered">
+				<!-- block header -->
+			  <div class="block-header bg-gray-lighter">
+			    <ul class="block-options">
+			        <li>Something here?</li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+			        </li>
+			        <li>
+			            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+			        </li>
+			    </ul>
+			    <h3 class="block-title">#rsPluginScripts.name#</h3>
+			  </div>
+			  <!-- /block header -->						
+			  <div class="block-content">	
 				<cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
 #application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
 				</cfif>
-			</cfoutput> </div>
+			</cfoutput> 
+			</div> <!--- /.block-content --->
+		</div> <!--- /.block --->		
+	</div> <!--- /.tab-pane --->
 	</cfoutput> <cfoutput> 
 		<div class="load-inline tab-preloader"></div>
 		<script>$('.tab-preloader').spin(spinnerArgs2);</script>
