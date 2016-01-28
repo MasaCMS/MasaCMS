@@ -16,12 +16,14 @@
 <cfproperty name="categoryID" type="string" default="" />
 <cfproperty name="tags" type="string" default="" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="changesetCategoryAssignment">
+<cfproperty name="contentAssigments" fieldtype="one-to-many" cfc="content">
 
 <cfset variables.primaryKey = 'changesetID'>
 <cfset variables.entityName = 'changeset'>
 
 <cffunction name="init" output="false">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
 
 	<cfset variables.instance.changesetID="">
@@ -41,7 +43,7 @@
 	<cfset variables.instance.categoryID=""/>
 	<cfset variables.instance.tags=""/>
 	<cfset variables.instance.errors=structNew()>
-	
+
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 		<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 		<cfset variables.instance.LastUpdateByID = session.mura.userID />
@@ -49,7 +51,7 @@
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -68,7 +70,7 @@
 <cffunction name="set" returnType="any" output="false" access="public">
 		<cfargument name="property" required="true">
 	    <cfargument name="propertyValue">
-	    
+
 	    <cfif not isDefined('arguments.data')>
 		    <cfif isSimpleValue(arguments.property)>
 		      <cfreturn setValue(argumentCollection=arguments)>
@@ -76,23 +78,23 @@
 
 		    <cfset arguments.data=arguments.property>
 	    </cfif>
-	    
+
 		<cfset var prop="" />
 		<cfset var publishhour="">
-		
+
 		<cfif isquery(arguments.data)>
 			<cfloop list="#arguments.data.columnlist#" index="prop">
 				<cfset setValue(prop,arguments.data[prop][1]) />
 			</cfloop>
-			
+
 		<cfelseif isStruct(arguments.data)>
-		
+
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfset setValue(prop,arguments.data[prop]) />
 			</cfloop>
-			
+
 		</cfif>
-		
+
 		<cfreturn this />
   </cffunction>
 
@@ -155,9 +157,9 @@
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
-	
+
 	<cfset arguments.changesetBean=this>
-	
+
 	<cfreturn variables.changesetManager.read(argumentCollection=arguments)>
 </cffunction>
 
@@ -178,7 +180,7 @@
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
 	<cfset var i="">
-	
+
     <cfif not arguments.append>
 		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
@@ -186,7 +188,7 @@
 		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
 	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
 	    </cfif>
-	    </cfloop> 
+	    </cfloop>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -216,7 +218,7 @@
 			<cfloop condition="it.hasNext()">
 				<cfset it.next().rollback()>
 			</cfloop>
-		</cfif>	
+		</cfif>
 	</cfif>
 
 	<cfset variables.instance.published=0>
