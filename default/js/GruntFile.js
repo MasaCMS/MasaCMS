@@ -11,7 +11,7 @@ module.exports = function(grunt) {
           //'external/handlebars.runtime.js',
           'src/mura.js',
           'src/mura.loader.js',
-          'src/mura.coreobject.js',
+          'src/mura.core.js',
           'src/mura.domselection.js',
           'src/mura.entity.js',
           'src/mura.entitycollection.js',
@@ -47,6 +47,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('default',['concat','uglify']);
-   
+
 
 };
