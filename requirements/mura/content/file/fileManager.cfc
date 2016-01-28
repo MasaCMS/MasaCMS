@@ -450,6 +450,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset local.results.fileSize=local.connection.getContentLength()>
 		<cfset local.connection.getInputStream().close()>
 		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
+
 	<cfelse>
 		<cfset local.isLocalFile=false>
 

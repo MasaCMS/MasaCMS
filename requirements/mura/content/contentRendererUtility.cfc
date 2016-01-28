@@ -51,7 +51,7 @@
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)#</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -728,9 +728,6 @@
 			<cfset crumbLen = arguments.maxLevels>
 		</cfif>
 		<cfsavecontent variable="content"><cfoutput><ul class="#arguments.class#">
-		<cfif limited>
-			<li>&raquo;</li>
-		</cfif>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
@@ -742,7 +739,7 @@
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
 				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
+			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>

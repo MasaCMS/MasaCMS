@@ -1994,7 +1994,7 @@ component extends="mura.cfobject" {
 			$.content().setSiteID(arguments.siteid);
 			request.contentBean=$.content();
 		}
-
+		
 		$.event('localHandler',application.settingsManager.getSite(getValue('siteID')).getLocalHandler());
 		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
