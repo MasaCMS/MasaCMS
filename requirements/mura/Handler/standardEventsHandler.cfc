@@ -796,26 +796,27 @@
 
 			result.links=apiUtility.getLinks($.content());
 
-			if(isBoolean($.event('expand')) && $.event('expand')){
+			if(len($.event('expand'))){
 				var p='';
 				var expandParams={};
 				var entity=$.content();
+				var expand=$.event('expand');
 
 				if(arrayLen(entity.getHasManyPropArray())){
 					for(p in entity.getHasManyPropArray()){
-						//if(p.cfc !='content'){
+						if(expand=='all' || listFindNoCase(expand,p.name)){
 							expandParams={maxitems=0,itemsperpage=0};
 							expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
 							try{
 								result[p.name]=apiUtility.findQuery(entityName=p.cfc,siteid=$.event('siteid'),params=expandParams);
 							} catch(any e){WriteDump(p); abort;}
-						//}
+						}
 					}
 				}
 
 				if(arrayLen(entity.getHasOnePropArray())){
 					for(p in entity.getHasOnePropArray()){
-						//if(p.cfc !='content'){
+						if(expand=='all' || listFindNoCase(expand,p.name)){
 							try{
 								if(p.name=='site'){
 									result[p.name]=apiUtility.findOne(entityName='site',id=$.event('siteid'),siteid=$.event('siteid'),render=false,variation=false,expand=false);
@@ -823,13 +824,13 @@
 									result[p.name]=apiUtility.findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=$.event('siteid'),render=false,variation=false,expand=false);
 								}
 							} catch(any e){WriteDump(p); abort;}
-						//}
+						}
 					}
 				}
 
-				result.parent=apiUtility.findOne(entityName='content',id=entity.getParentID(),siteid=$.event('siteid'),render=false,variation=false,expand=false);
-				result.crumbs=apiUtility.findCrumbArray('content',entity.getContentID(),$.event('siteid'),entity.getCrumbIterator());
-
+				if(expand=='all' || listFindNoCase(expand,'crumbs')){
+					result.crumbs=apiUtility.findCrumbArray('content',entity.getContentID(),$.event('siteid'),entity.getCrumbIterator());
+				}
 			}
 
 			result.config={

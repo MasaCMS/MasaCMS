@@ -45,7 +45,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 ;(function(window){
-	window.mura.Entity=window.mura.CoreObject.extend({
+	window.mura.Entity=window.mura.Core.extend({
 		init:function(properties){
 			properties || {};
 			properties.entityname = properties.entityname || 'content';

@@ -1,11 +1,11 @@
 mura.templates={};
 mura.templates['meta']=function(context){
-	
+
 	if(context.label){
 		return '<div class="mura-object-meta"><h3>' + mura.escapeHTML(context.label) + '</h3></div>';
 	} else {
 	    return '';
-	}  
+	}
 }
 mura.templates['content']=function(context){
 	context.html=context.html || context.content || context.source || '';

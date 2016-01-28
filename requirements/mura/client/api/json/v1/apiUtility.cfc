@@ -336,7 +336,7 @@ component extends="mura.cfobject" {
 			}
 
 			if(arrayLen(pathInfo) > 1){
-				if(isDefined(pathInfo[2])){
+				if(isDefined(pathInfo[2]) && pathInfo[2] != 'file'){
 					params.method=pathInfo[2];
 
 					if(!listFindNoCase(variables.config.publicMethods, params.method) ){
@@ -1034,7 +1034,7 @@ component extends="mura.cfobject" {
 		return vals;
 	}
 
-	function findOne(entityName,id,siteid,render=false,variation=false,expand=false){
+	function findOne(entityName,id,siteid,render=false,variation=false,expand=''){
 		var $=getBean('$').init(arguments.siteid);
 
 		checkForChangesetRequest(arguments.entityName,arguments.siteid);
@@ -1112,45 +1112,40 @@ component extends="mura.cfobject" {
 			returnstruct.url=entity.getURL();
 		}
 
-		if(arguments.expand){
+		if(len(arguments.expand)){
 			var p='';
 			var expandParams={};
 
 			if(arrayLen(entity.getHasManyPropArray())){
 				for(p in entity.getHasManyPropArray()){
-					//if(p.cfc !='content'){
+					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						expandParams={maxitems=0,itemsperpage=0};
 						expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
 						try{
 							returnstruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
 						} catch(any e){WriteDump(p); abort;}
-					//}
+					}
 				}
 			}
 
 			if(arrayLen(entity.getHasOnePropArray())){
 				for(p in entity.getHasOnePropArray()){
-					//if(p.cfc !='content'){
+					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						try{
 							if(p.name=='site'){
-								returnstruct[p.name]=findOne(entityName='site',id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand=false);
+								returnstruct[p.name]=findOne(entityName='site',id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
 							} else {
-								returnstruct[p.name]=findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand=false);
+								returnstruct[p.name]=findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
 							}
 						} catch(any e){WriteDump(p); abort;}
-					//}
+					}
 				}
 			}
 
-			if(isDefined('returnstruct.links.parent')
-				&& isDefined('returnstruct.parentid')
-			 	&& isDefined('returnstruct.path')
-			  	&& listLen(returnstruct.path) > 1){
-				returnstruct.parent=findOne(entityName=arguments.entityname,id=entity.getParentID(),siteid=arguments.siteid,render=false,variation=false,expand=false);
-			}
-
-			if(isDefined('returnstruct.links.crumbs') && isDefined('returnstruct.path')){
-				returnstruct.crumbs=findCrumbArray(returnstruct.entityName,returnstruct.id,arguments.siteid,entity.getCrumbIterator());
+			if(arguments.expand=='all' || listFindNoCase(arguments.expand,'crumbs')){
+				if(isDefined('returnstruct.links.crumbs') && isDefined('returnstruct.path')){
+					returnstruct.crumbs=findCrumbArray(returnstruct.entityName,returnstruct.id,arguments.siteid,entity.getCrumbIterator());
+				}
 			}
 		}
 
