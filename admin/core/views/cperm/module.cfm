@@ -47,13 +47,24 @@
 --->
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
-<div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-</div>
-<p class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
+<div class="items-push mura-header">
+  <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+  <div class="mura-item-metadata">
+    <div class="label-group">
+      <div id="nav-module-specific" class="btn-group">
+        <a class="btn" href="##" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+      </div>
+    </div><!-- /.label-group -->
+  </div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+
+<div class="block block-constrain">
+    <div class="block block-bordered">
+      <div class="block-content">
+
+      <p class="alert alert-info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
  <form novalidate="novalidate"  method="post" name="form1" action="./?muraAction=cPerm.updatemodule&contentid=#esapiEncode('url',rc.contentid)#">
-  <section>
+        <div class="block-content">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
     <table class="mura-table-grid">
           <tr> 
@@ -75,9 +86,9 @@
             </tr>
   </cfif>
     </table>
-</section>
-<cfset rc.rslist=rc.groups.publicGroups />
-<section>
+      </div><!-- /.block-content -->
+      <cfset rc.rslist=rc.groups.publicGroups />
+      <div class="block-content">
  <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>   <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
  <table class="mura-table-grid">
     <tr> 
@@ -98,14 +109,20 @@
       </td>
         </tr>
   </cfif>
-</table>
-</section>
-<div class="form-actions no-offset">
-<input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
-</div>
-<input type="hidden" name="router" value="#esapiEncode('html_attr',cgi.HTTP_REFERER)#">
-<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-<input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#">
-<input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#">
-#rc.$.renderCSRFTokens(context=rc.moduleid,format="form")#
-</form></cfoutput>
+      </table>
+
+      <div class="form-actions no-offset">
+      <input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+      </div>
+      <input type="hidden" name="router" value="#esapiEncode('html_attr',cgi.HTTP_REFERER)#">
+      <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
+      <input type="hidden" name="topid" value="#esapiEncode('html_attr',rc.topid)#">
+      <input type="hidden" name="moduleid" value="#esapiEncode('html_attr',rc.moduleid)#">
+      #rc.$.renderCSRFTokens(context=rc.moduleid,format="form")#
+      </form>
+
+      </div> <!-- /.block-content -->
+    </div> <!-- /.block-bordered -->
+  </div> <!-- /.block-constrain -->
+
+</cfoutput>
