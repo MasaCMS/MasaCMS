@@ -51,7 +51,7 @@
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
 				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
 			</cfsilent>
-			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)#</li>
+			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)# &raquo;</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -133,7 +133,7 @@
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 					} else {
-					
+
 						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 
 						return '<div class="mura-editable inactive#inline#">
@@ -728,6 +728,9 @@
 			<cfset crumbLen = arguments.maxLevels>
 		</cfif>
 		<cfsavecontent variable="content"><cfoutput><ul class="#arguments.class#">
+		<cfif limited>
+			<li>&raquo;</li>
+		</cfif>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
@@ -739,7 +742,7 @@
 				href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 			<cfelse>
 				href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a></li>
+			</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
 		</cfloop>
 		<cfsilent>
 			<cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1>
@@ -919,7 +922,7 @@
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
 		</cfif>
-		
+
 	</cffunction>
 
 	<cffunction name="serializeObjectParam" output="false">
@@ -1091,7 +1094,7 @@
 				</cfcase>
 			</cfswitch>
 		</cfif>
-		
+
 
 		<cfif arguments.renderer.useLayoutManager() and listFindNoCase("editor,author",arguments.assignmentPerm)>
 			<cfset showEditable=true>
@@ -1359,7 +1362,7 @@
 
 			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
 			<cfset theRegion.inherited.footer='</div>'>
-			
+
 		<cfelse>
 			<cfset theRegion.header='<div class="mura-region">'>
 			<cfset theRegion.footer='</div>'>
@@ -1776,7 +1779,7 @@
 
 		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
 
-		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop()) 
+		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop())
 			and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())
 			and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 			and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
@@ -1822,7 +1825,7 @@
 		<cfelseif displayInterval.end eq 'after'>
 			<cfset returnstring=returnstring & ', ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
 		</cfif>
-		
+
 		<cfset returnstring=returnstring & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 
 		<cfreturn returnstring>
@@ -1854,7 +1857,7 @@
 		</cfif>
 
 		<cfset var filePath="">
-		
+
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
 		<cfif len(filePath)>
