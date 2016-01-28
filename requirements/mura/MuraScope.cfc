@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -50,9 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" output="false">
 	<cfargument name="data" hint="Can be an event object, struct or siteID">
-	
+
 	<cfset var initArgs=structNew()>
-	
+
 	<cfif structKeyExists(arguments,"data") and not (isSimpleValue(arguments.data) and not len(arguments.data))>
 		<cfif isObject(arguments.data)>
 			<cfset setEvent(arguments.data)>
@@ -66,9 +66,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setEvent(createObject("component","mura.event").init(initArgs).setValue('MuraScope',this))>
 		</cfif>
 	</cfif>
-	
+
 	<cfset structAppend(this,request.customMuraScopeKeys,false)>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -78,9 +78,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var local=structNew()>
 	<cfset var object="">
 	<cfset var prefix="">
-	
+
 	<cfif len(arguments.MissingMethodName)>
-		
+
 		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,arguments.MissingMethodName)>
 			<cfset object=variables.instance.event>
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),arguments.MissingMethodName)>
@@ -94,9 +94,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset prefix=left(arguments.MissingMethodName,3)>
 				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
 					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
-						<cfset object=getContentBean()>	
+						<cfset object=getContentBean()>
 					<cfelse>
-						<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">		
+						<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 					</cfif>
 				<cfelse>
 					<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
-		
+
 		<cfsavecontent variable="local.thevalue2">
 		<cfif not structIsEmpty(arguments.MissingMethodArguments)>
 			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" argumentcollection="#arguments.MissingMethodArguments#" returnvariable="local.theValue1">
@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" returnvariable="local.theValue1">
 		</cfif>
 		</cfsavecontent>
-		
+
 		<cfif isDefined("local.theValue1")>
 			<cfreturn local.theValue1>
 		<cfelseif isDefined("local.theValue2")>
@@ -221,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="event" output="false" returntype="any">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
-	
+
 	<cfif structKeyExists(arguments,"property")>
 		<cfif isObject(getEvent())>
 			<cfif structKeyExists(arguments,"propertyValue")>
@@ -236,13 +236,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn getEvent()>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="content" output="false" returntype="any">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
-	
+
 	<cfif structKeyExists(arguments,"property")>
 		<cfif isObject(getContentBean())>
 			<cfif structKeyExists(arguments,"propertyValue")>
@@ -262,7 +262,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="currentUser" output="false" returntype="any">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
-	
+
 	<cfif structKeyExists(arguments,"property")>
 		<cfif structKeyExists(arguments,"propertyValue")>
 			<cfset getCurrentUser().setValue(arguments.property,arguments.propertyValue)>
@@ -280,15 +280,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="propertyValue">
 	<cfset var site="">
 	<cfset var theValue="">
-	<cfset var siteID = Len(event('siteid')) 
-		? event('siteid') 
-		: IsDefined('session') && StructKeyExists(session, 'siteid') 
-			? session.siteid 
+	<cfset var siteID = Len(event('siteid'))
+		? event('siteid')
+		: IsDefined('session') && StructKeyExists(session, 'siteid')
+			? session.siteid
 			: '' />
-	
+
 	<cfif len(siteid)>
-		<cfset site=application.settingsManager.getSite(siteid)>
-	
+		<cfset site=getBean('settingsManager').getSite(siteid)>
+
 		<cfif structKeyExists(arguments,"property")>
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset site.setValue(arguments.property,arguments.propertyValue)>
@@ -304,13 +304,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfelse>
 		<cfthrow message="The SiteID is not set in the current Mura Scope event.">
-	</cfif>	
+	</cfif>
 </cffunction>
 
 <cffunction name="globalConfig" output="false" returntype="any">
 	<cfargument name="property">
 	<cfset var theValue="">
-	
+
 	<cfif structKeyExists(arguments,"property")>
 		<cfif structKeyExists(arguments,"propertyValue")>
 			<cfinvoke component="#application.configBean#" method="set#arguments.property#">
@@ -331,9 +331,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="propertyValue">
 	<cfset var componentBean="">
 	<cfset var component=event('component')>
-	
+
 	<cfif structKeyExists(arguments,"property") and isStruct(component)>
-		<cfif structKeyExists(arguments,"property") and structKeyExists(component,arguments.property)>		
+		<cfif structKeyExists(arguments,"property") and structKeyExists(component,arguments.property)>
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset component[arguments.property]=arguments.propertyValue>
 				<cfreturn this>
@@ -358,7 +358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getParent" output="false" returntype="any">
 	<cfset var parent="">
-	
+
 	<cfif structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
 		<cfreturn getBean("contentNavBean").set(request.crumbdata[2],"active") />
 	<cfelseif isObject(getContentBean())>
@@ -375,7 +375,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getBean" returntype="any" access="public" output="false">
 	<cfargument name="beanName">
 	<cfargument name="siteID" default="">
-	
+
 	<cfif len(arguments.siteID)>
 		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
 	<cfelse>
@@ -432,7 +432,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setCustomMuraScopeKey" output="false">
 	<cfargument name="name">
 	<cfargument name="value">
-	
+
 	<cfset this['#arguments.name#']=arguments.value>
 	<cfset request.customMuraScopeKeys['#arguments.name#']=arguments.value>
 </cffunction>
@@ -449,21 +449,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var hashKey="">
 
 	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
-		<cfset arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"))>	
+		<cfset arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"))>
 	</cfif>
-	
+
 	<cfset hashKey=hash(arguments.staticDirectory)>
-	
+
 	<cfif not structKeyExists(application.cfstatic,hashKey)>
-		
+
 		<cfif not len(arguments.staticUrl)>
-			<cfset arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>	
+			<cfset arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>
 		</cfif>
-	
+
 		<cfif not directoryExists(arguments.staticDirectory & "/compiled")>
-			<cfset getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled")>	
+			<cfset getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled")>
 		</cfif>
-		
+
 		<cfset application.cfstatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(argumentCollection=arguments)>
 	</cfif>
 	<cfreturn application.cfstatic[hashKey]>
@@ -478,28 +478,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var queryIterator="">
 	<cfset var test=false>
 	<cfset var item="">
-	
+
 	<cfif structKeyExists(arguments,"mura")>
 		<cfset arguments.$=arguments.mura>
 	</cfif>
-	
-	<cfif isObject(arguments.collection) and structKeyExists(arguments.collection,"hasNext")>	
+
+	<cfif isObject(arguments.collection) and structKeyExists(arguments.collection,"hasNext")>
 		<cfset arguments.$.event("each:count",arguments.collection.getRecordCount())>
 		<cfloop condition="arguments.collection.hasNext()">
 			<cfset item=arguments.collection.next()>
 			<cfset arguments.$.event("each:index",arguments.collection.getRecordIndex())>
 			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
+				<cfbreak>
 			</cfif>
-		</cfloop>	
+		</cfloop>
 	<cfelseif isArray(arguments.collection) and arrayLen(arguments.collection)>
 		<cfset arguments.$.event("each:count",arrayLen(arguments.collection))>
 		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
 			<cfset arguments.$.event("each:index",i)>
 			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
+				<cfbreak>
 			</cfif>
 		</cfloop>
 	<cfelseif isStruct(arguments.collection)>
@@ -509,19 +509,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.$.event("each:index",arguments.$.event("each:index")+1)>
 			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
+				<cfbreak>
 			</cfif>
 		</cfloop>
 	<cfelseif isQuery(arguments.collection)>
 		<cfset queryIterator=createObject("component","mura.iterator.queryIterator")>
 		<cfset queryIterator.setQuery(arguments.collection).init()>
 		<cfset arguments.$.event("each:count",queryIterator.getRecordCount())>
-		<cfloop condition="queryIterator.hasNext()">	
+		<cfloop condition="queryIterator.hasNext()">
 			<cfset item=queryIterator.next()>
 			<cfset arguments.$.event("each:index",queryIterator.getRecordIndex())>
 			<cfset test=arguments.action(item=item, $=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
+				<cfbreak>
 			</cfif>
 		</cfloop>
 	<cfelseif isSimpleValue(arguments.collection) and len(arguments.collection)>
@@ -531,9 +531,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.$.event("each:index",i)>
 			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
+				<cfbreak>
 			</cfif>
-		</cfloop>	
+		</cfloop>
 	</cfif>
 </cffunction>
 
@@ -545,7 +545,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbPropertyArray" output="false">
 	<cfargument name="property">
 	<cfargument name="direction" default="desc">
-	
+
 	<cfset var it=content().getCrumbIterator()>
 	<cfset var propertyArray=[]>
 	<cfset var item="">
@@ -554,7 +554,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset it.end()>
 		<cfloop condition="it.hasPrevious()">
 			<cfset item=it.previous()>
-			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>	
+			<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
 		</cfloop>
 	<cfelse>
 		<cfloop condition="it.hasNext()">
