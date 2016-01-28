@@ -41,8 +41,8 @@
 <div id="razuna-search-div" class="pull-right well">
 	<div class="input-append">
 		<input type="text" name="razuna-search-box" id="razuna-search-box">
-		<button type="search" class="btn search" name="search" id="razuna-search"><i class="icon-search"></i></button>
-		<button type="button" class="btn reset" name="reset" id="razuna-reset" onclick="$('#razuna-tagTree').jstree('refresh',-1);"><i class="icon-refresh"></i></button>
+		<button type="search" class="btn search" name="search" id="razuna-search"><i class="mi-search"></i></button>
+		<button type="button" class="btn reset" name="reset" id="razuna-reset" onclick="$('#razuna-tagTree').jstree('refresh',-1);"><i class="mi-refresh"></i></button>
 	</div>
 </div>
 <!--- Image Details --->

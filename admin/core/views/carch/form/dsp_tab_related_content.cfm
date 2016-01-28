@@ -53,13 +53,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabRelatedcontent" class="tab-pane">
 
+		<!-- block -->
+	  <div class="block block-bordered">
+	  	<!-- block header -->
+	    <div class="block-header bg-gray-lighter">
+	      <ul class="block-options">
+	          <li>Something here?</li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+	          </li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+	          </li>
+	      </ul>
+	      <h3 class="block-title">Related Content</h3>
+	    </div>
+	    <!-- /block header -->
+			
+			<!-- block content -->
+			<div class="block-content">
+
 	<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
 	
-	<div class="fieldset">
 		<div id="selectRelatedContent"><!--- target for ajax ---></div>
-		<div id="selectedRelatedContent" class="control-group">
+			<div id="selectedRelatedContent" class="mura-control-group">
 		</div>
 		<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
-	</div>
-</div>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
 </cfoutput>

@@ -50,12 +50,11 @@
 	<!--- Header --->
 		<cfinclude template="inc/dsp_users_header.cfm" />
 
-	<!--- Subheading --->
-		<h2>#rbKey('user.users')#</h2>
+	<div class="block block-constrain">
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>
-        <ul class="nav nav-tabs">
+				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
           <!--- Site Members Tab --->
           <li<cfif rc.ispublic eq 1> class="active"</cfif>>
             <a href="#buildURL(action='cusers.listusers', querystring='siteid=#rc.siteid#&ispublic=1&unassigned=#rc.unassigned#')#" onclick="actionModal();">
@@ -75,12 +74,33 @@
     </cfif>
   <!--- /Tab Nav --->
 
+  <div class="block-content tab-content">
+
+		<!-- start tab -->
+		<div id="tab1" class="tab-pane active">
+	
+			<div class="block block-bordered">
+				<!-- block header -->
+				<div class="block-header bg-gray-lighter">
+					<ul class="block-options">
+						<li>Something here?</li>
+						<li>
+							<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+						</li>
+						<li>
+							<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+						</li>
+					</ul>
+					<h3 class="block-title">#rbKey('user.users')#</h3>
+				</div> <!-- /.block header -->						
+				<div class="block-content">
+				  	
 	<!--- Filters --->
 		<div class="well btn-group">
 
 			<!--- View All / Unassigned Only --->
 				<a class="btn" href="#buildURL(action='cusers.listusers', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassignedlink#')#" onclick="actionModal();">
-					<i class="icon-filter"></i> 
+								<i class="mi-filter"></i> 
 					<cfif rc.unassigned EQ 0>
 						#rbKey('user.viewunassignedonly')#
 					<cfelse>
@@ -91,7 +111,7 @@
 			<!--- Download .CSV --->
         <cfif rc.it.hasNext()>
   				<a class="btn" href="#buildURL(action='cusers.download', querystring='siteid=#URLEncodedFormat(rc.siteid)#&ispublic=#rc.ispublic#&unassigned=#rc.unassigned#')#">
-  					<i class="icon-download"></i> 
+			  					<i class="mi-download"></i> 
   					#rbKey('user.download')#
   				</a>
         </cfif>
@@ -102,4 +122,11 @@
 	<!--- Users List --->
 		<cfinclude template="inc/dsp_users_list.cfm" />
 
+				</div> <!-- /.block-content -->
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /.tab-pane -->
+
+
+	</div> <!-- /.block-content.tab-content -->
+</div> <!-- /.block-constrain -->
 </cfoutput>

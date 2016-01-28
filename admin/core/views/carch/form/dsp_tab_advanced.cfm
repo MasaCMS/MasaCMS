@@ -48,30 +48,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))/>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <cfoutput>
-<div id="tabAdvanced" class="tab-pane fade">
+<div id="tabAdvanced" class="tab-pane">
 	
+		<!-- block -->
+	  <div class="block block-bordered">
+	  	<!-- block header -->
+	    <div class="block-header bg-gray-lighter">
+	      <ul class="block-options">
+	          <li>Something here?</li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+	          </li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+	          </li>
+	      </ul>
+	      <h3 class="block-title">Advanced Settings</h3>
+	    </div>
+	    <!-- /block header -->
+			
+			<!-- block content -->
+			<div class="block-content">			
 	<span id="extendset-container-tabadvancedtop" class="extendset-container"></span>
 
-		<div class="fieldset">
-			<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
-			      <div class="controls"><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></div>
+					<div class="mura-control-group">
+					      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
+					      <cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
 			    </div>
 			<cfif listFind("Gallery,Link,Folder,Page,Calendar",rc.type)>
-				<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#</label>
-			      <div class="controls"><cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
-				</div>
+						<div class="mura-control-group">
+					      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#</label>
+					      <cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>
 			   </div>
 			</cfif>
 
 			
 			<cfif rc.type eq 'Component'>
-			<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+					<div class="mura-control-group">
+					      	<label>
+					      		<cfoutput>
+										<span data-toggle="popover" title="" data-placement="right" 
+								  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#" 
+								  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.layouttemplate"))#"
+								  	>
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="mi-question-circle"></i></span>
+									</cfoutput>
 			      	</label> 
-			      	<div class="controls">
 			      		<select name="template" class="dropdown">
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
 							<cfloop query="rc.rsTemplates">
@@ -82,102 +104,88 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif></cfloop>
 						</select>
 					</div>
-			    </div>
 			</cfif>
 			<!--- Use site useSSL sitewide setting instead --->
 			<cfif not listFindNoCase('Component,Form,Variation',rc.type) and not rc.$.siteConfig('useSSL')>
-				<div class="control-group">
-			      <div class="controls">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
+						<div class="mura-control-group">
+					      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 			      	<label for="forceSSL" class="checkbox">
 			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> 
-			      	<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
-			      	 <i class="icon-question-sign"></i></a>
+										<span data-toggle="popover" title="" data-placement="right" 
+								  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#" 
+								  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.forcessllabel"))#">
+								  	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
+					      	 <i class="mi-question-circle"></i>
+					      	</span>
 			  		</label>
 			      </div>
-			    </div>			
 			</cfif>
 
 			<cfif rc.type eq 'Form' >
 				<cfif not rc.$.siteConfig('useSSL')>
-					<div class="control-group">
-						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
-					 	<div class="controls">
+							<div class="mura-control-group">
+								<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 				     		<label for="forceSSL" class="checkbox">
 				     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
 				     		</label>
 				    	</div>
-				    </div>
 			   	</cfif>
-			    <div class="control-group">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
-				 	<div class="controls">
+					    <div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 			      		<label for="displayTitle" class="checkbox">
 			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitle')#
 			      		</label>
 			        </div>
-			    </div>
 			</cfif>
 			
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
-				<div class="control-group">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
-			      <div class="controls">
+						<div class="mura-control-group">
+							<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
 			      		<label for="cacheItem" class="checkbox">
 			      			<input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
 			      		</label>
 			       </div>
-			    </div>
 			</cfif>
 			 
 			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
-				<div class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label>
-			      <div class="controls"><label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
-				 </div>
+						<div class="mura-control-group">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label>
+						<label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 			    </div>
 			</cfif>
-	</div>
 	<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
-		<div class="fieldset">
 			<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2> 
 			     <!--- <div id="editRemote"> --->
-					<div class="control-group">
-							<div class="span6">
-					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
-					     	 	<div class="controls"><input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255" class="span12"></div>
-							</div>
-				     	 	<div class="span6">
-					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
-					      		<div class="controls"><input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255" class="span12"></div>
+					<div class="mura-control-group">
+		     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
+		     	 	<input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255">
 				     	 	</div>
+					     	 	
+					<div class="mura-control-group">
+		     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
+		      		<input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255">
 			   		</div>
 
 					
-					<div class="control-group">
-						 	<div class="span6">
-				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
-				      		<div class="controls"><input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255" class="span12"></div>
+					<div class="mura-control-group">
+				     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
+				      		<input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255">
+				     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
+				      		<input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255">
 						 	</div>
 				      		
-				      		<div class="span6">
-				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
-				      		<div class="controls"><input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255" class="span12"></div>
-				      		</div>
+			    	<div class="mura-control-group">
+					     	 	<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
+					      		<input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255">
 			    	</div>
 			    	
-			    	<div class="control-group">
-					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
-					      		<div class="controls"><input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255" class="span6"></div>
-			    	</div>
-			    	
-			    </div>
 		</cfif>
 	<!--- </div> --->
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
 	<span id="extendset-container-tabadvancedbottom" class="extendset-container"></span>
 
-</div>
-
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
 </cfoutput>

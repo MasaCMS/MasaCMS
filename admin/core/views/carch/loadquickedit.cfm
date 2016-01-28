@@ -1,4 +1,5 @@
-﻿<!--- This file is part of Mura CMS.
+﻿<!--- TODO GoWest : markup in this file --->
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -50,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="icon-remove-sign"></i></span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-times-circle"></i></span>
 	
 	<cfif rc.attribute eq "isnav">
 		<select id="mura-quickEdit-isnav">
@@ -501,9 +502,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 <cfelse>
 	<cfoutput>
-	<i class="icon-ban-circle"></i>
+	<i class="mi-ban"></i>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="icon-remove-sign"></i></span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="mi-times-circle"></i></span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>
