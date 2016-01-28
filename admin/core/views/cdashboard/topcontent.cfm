@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#decimalFormat((item.gethits()/rstotal.hits)*100)#%</td>
 <td class="actions">
 <ul>		
-	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a>
+	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a>
 	</li>
 	
 </ul></td>

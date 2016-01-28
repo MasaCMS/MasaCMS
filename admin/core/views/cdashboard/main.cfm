@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryTop',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div<cfif started> class="divide"</cfif>>
-					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
+					<h2><i class="mi-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 				<cfset started=true>
@@ -78,14 +78,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif application.configBean.getSessionHistory() >	
 	<cfif not application.sessionTrackingThrottle>
 	<div id="userActivity"<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="./?muraAction=cDashboard.sessionSearch&siteid=#esapiEncode('url',rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
+	<h2><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="./?muraAction=cDashboard.sessionSearch&siteid=#esapiEncode('url',rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
 	<span id="userActivityData"></span>
 	</div>
 	<script type="text/javascript">dashboardManager.loadUserActivity('#esapiEncode('javascript',rc.siteid)#');</script>
 	<cfset started=true>
 
 	<div id="popularContent"<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-thumbs-up"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
+	<h2><i class="mi-thumbs-up"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 	<span id="popularContentData"></span>
 	</div>
 	<script type="text/javascript">dashboardManager.loadPopularContent('#esapiEncode('javascript',rc.siteid)#');</script>
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and application.permUtility.getModulePerm('00000000000000000000000000000000015',rc.siteid)
 		and application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
 	<div id="recentComments"<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cComments.default&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewall")#)</a></span></h2>
+	<h2><i class="mi-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cComments.default&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewall")#)</a></span></h2>
 	<span id="recentCommentsData"></span>
 	</div>
 	<script type="text/javascript">dashboardManager.loadRecentComments('#esapiEncode('javascript',rc.siteid)#');</script>
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif application.settingsManager.getSite(session.siteid).getdatacollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
 	<div id="recentFormActivity"<cfif started> class="divide"</cfif>>
-	<h2><i class="icon-list"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
+	<h2><i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
 	<span id="recentFormActivityData"></span>
 	</div>
 	<script type="text/javascript">dashboardManager.loadFormActivity('#esapiEncode('javascript',rc.siteid)#');</script>
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardPrimaryBottom',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div<cfif started> class="divide"</cfif>>
-					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
+					<h2><i class="mi-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 				<cfset started=true>
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
 		<div class="input-append">
 		    <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" placeholder="Enter Keywords" />
-		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="icon-search"></i></button>
+		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
 		</div>
 		<input type="hidden" name="muraAction" value="cArch.list">
 		<input type="hidden" name="activetab" value="1">
@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarTop',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div class="divide">
-					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
+					<h2><i class="mi-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 			</cfif>
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedEvent=$.renderEvent(eventName='onDashboardSideBarBottom',index=i)>
 			<cfif len(trim(renderedEvent))>
 				<div class="divide">
-					<h2><i class="icon-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
+					<h2><i class="mi-cog"></i> #esapiEncode('html',eventMappings[i].pluginName)#</h2>
 					#renderedEvent#
 				</div>
 			</cfif>
