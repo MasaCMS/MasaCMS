@@ -153,7 +153,7 @@ component extends="mura.bean.bean" versioned=false {
 			variables.dbUtility=getBean('dbUtility');
 			variables.dbUtility.setTable(getTable());
 			if(hasCustomDatasource() ){
-				variables.dbUtility.setValue('datasource',getsCustomDatasource());
+				variables.dbUtility.setValue('datasource',getCustomDatasource());
 				variables.dbUtility.setValue('DbUsername','');
 				variables.dbUtility.setValue('DbPassword','');
 
