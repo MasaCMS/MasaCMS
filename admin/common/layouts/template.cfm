@@ -65,11 +65,6 @@
 <cfelse>
 <!--[if IE 9]> <html lang="en_US" class="ie9 mura no-focus"> <![endif]-->
 <!--[if gt IE 9]><!--> <html lang="#esapiEncode('html_attr',session.locale)#" class="mura no-focus"><!--<![endif]-->
-
-<!--- M7 removed 2015-12-02T13:55:27-07:00
-	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
-/end m7 removed --->
-
 </cfif>
   <head>
 		<meta charset="utf-8">
@@ -178,19 +173,9 @@
 
 		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
-<!--- M7 removed 2015-12-02T13:58:16-07:00
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-/end m7 removed --->
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
-
-		<cfif cgi.http_user_agent contains 'msie'>
-			<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-			<!--[if lt IE 9]>
-			   <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
-			<![endif]-->
-		</cfif>
 
 		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 
@@ -212,20 +197,6 @@
       <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicons/apple-touch-icon-152x152.png">
       <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
 
-
-<!--- M7 removed 2015-12-02T13:59:07-07:00
-
-    <!-- Le fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
-
-    <!-- Favicons -->
-		<link rel="icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
-
-/end m7 removed --->
-
     <!-- Stylesheets -->
     <!-- Web fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
@@ -237,31 +208,28 @@
 		<!-- Admin CSS -->
 <!--- TODO GoWest : change to admin.min.css for release : 2016-01-29T16:29:31-07:00 --->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.css" rel="stylesheet" type="text/css" />
+		<!--- 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" /> --->
 
 <!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
-
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
-	
 
     <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
    <script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
-
-		<!-- jQuery -->
-<!--- M7 removed 2015-12-02T14:12:28-07:00
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-/end m7 removed --->
 
 <!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
+
+<!--- TODO GoWest : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
 	
+<!--- TODO GoWest : add this msie notification to compact.cfm? : 2016-01-29T16:53:17-07:00 --->
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />

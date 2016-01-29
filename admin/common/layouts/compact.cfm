@@ -1,5 +1,3 @@
-<!--- TODO GoWest : update js asset links, css links, any markup as needed : 2015-12-14T11:09:45-07:00 --->
-
 <!--- 
 	This file is part of Mura CMS.
 
@@ -46,8 +44,8 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
----><cfsilent>
-<cfparam name="request.action" default="core:cplugin.plugin">
+--->
+<cfsilent><cfparam name="request.action" default="core:cplugin.plugin">
 <cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 <cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
 <cfparam name="rc.jsLib" default="jquery">
@@ -69,13 +67,16 @@
 	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if (gte IE 9)|!(IE)]><!--><html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
-	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
+<!--[if IE 9]> <html lang="en_US" class="ie9 mura no-focus"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="#esapiEncode('html_attr',session.locale)#" class="mura no-focus"><!--<![endif]-->
 </cfif>
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta charset="utf-8">
-		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+
+		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
@@ -93,28 +94,42 @@
 			<![endif]-->
 		</cfif>
 
-		<!--- <link href="#application.configBean.getContext()#/admin/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-		<link href="#application.configBean.getContext()#/admin/assets/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"> --->
+		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 
-		<!-- Le fav and touch icons -->
-		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico">
-		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+<!--- TODO GoWest : PNGs / icons : 2015-12-02T13:59:23-07:00 --->
+        
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-16x16.png" sizes="16x16">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-32x32.png" sizes="32x32">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-96x96.png" sizes="96x96">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-160x160.png" sizes="160x160">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-192x192.png" sizes="192x192">
 
+      <link rel="apple-touch-icon" sizes="57x57" href="assets/img/favicons/apple-touch-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="assets/img/favicons/apple-touch-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="assets/img/favicons/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicons/apple-touch-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="assets/img/favicons/apple-touch-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicons/apple-touch-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="assets/img/favicons/apple-touch-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicons/apple-touch-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
+
+<!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
 		 <!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
-		 <!-- jQuery -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+			<!--- TODO GoWest : include full theme core js in compact view? : 2016-01-29T16:49:50-07:00 --->			
+	    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+   		<script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>	
+
+<!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 
 		<!-- CK Editor/Finder -->
 		<script type="text/javascript" src="#application.configBean.getContext()#/requirements/ckeditor/ckeditor.js"></script>
@@ -146,7 +161,9 @@
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 		
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+<!--- TODO GoWest : change to admin.min.css for release : 2016-01-29T16:29:31-07:00 --->
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.css" rel="stylesheet" type="text/css" />
+<!--- 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" /> --->
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
@@ -193,13 +210,19 @@
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact">
 		<cfif rc.sourceFrame eq 'modal'>
 			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
+<!--- TODO GoWest : dialog.cfm markup : 2016-01-29T16:54:26-07:00 --->
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
-		
+
+		<!--- TODO GoWest : main-row-fluid / new css : 2016-01-29T16:54:46-07:00 --->						
 		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
 		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+
+<!--- TODO GoWest : remove if unused : 2016-01-29T16:57:09-07:00 --->
+<!--- 
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+ --->
 	</body>
 </html></cfprocessingdirective>
 </cfoutput>
