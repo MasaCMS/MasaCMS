@@ -129,6 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow message="Key '#arguments.key#' was not found within the map collection" />
 
 	</cffunction>
+
 	<cffunction name="getAll" access="public" returntype="any" output="false">
 		<cfreturn variables.collection />
 	</cffunction>
@@ -143,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var hashedKey = getHashKey( arguments.key ) />
 		<cfset var cacheData=structNew()>
 
-		<cfif isNumeric(arguments.timespan) or isDate(arguments.timespan)>
+		<cfif arguments.timespan neq ''>
 			<cfset cacheData.expires=now() + arguments.timespan>
 		<cfelse>
 			<cfset cacheData.expires=dateAdd("yyyy",1,now()) + 0>
@@ -183,9 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- Check for Object in Cache. --->
 		<cfif keyExists( hashLocal ) >
 			<cfset cacheData=variables.collection.get( hashLocal )>
-
-			<cfif isDate(cacheData.expires) and cacheData.expires gt now()
-				or isNumeric(cacheData.expires) and cacheData.expires gt (now() + 0)>
+			<cfif isNumeric(cacheData.expires) and cacheData.expires gt (now() + 0)>
 				<cfif isSoftReference( cacheData.object ) >
 					<cfset refLocal.tmpObj =cacheData.object.get() />
 					<cfreturn structKeyExists(refLocal, "tmpObj") />
