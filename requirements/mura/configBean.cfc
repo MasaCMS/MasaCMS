@@ -393,11 +393,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setContext" access="public" output="false">
 	<cfargument name="Context" type="String" />
-	<cfset arguments.Context=cleanFilePath(arguments.Context) />
-	<cfif getContextRoot() NEQ "/">
+	<cfset arguments.Context=cleanFilePath(arguments.Context) />		
+	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
+		
 	<cfreturn this>
 </cffunction>
 
