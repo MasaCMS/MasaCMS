@@ -52,7 +52,7 @@
 <cfparam name="rc.jsLibLoaded" default="false">
 <cfparam name="rc.activetab" default="0">
 <cfparam name="rc.activepanel" default="0">
-<cfparam name="rc.siteid" default="#session.siteID#">
+<cfparam name="rc.siteid" default="#session.siteID#"><cfoutput></cfoutput>
 <cfparam name="rc.frontEndProxyLoc" default="">
 <cfparam name="session.frontEndProxyLoc" default="#rc.frontEndProxyLoc#">
 <cfparam name="rc.sourceFrame" default="modal">
@@ -75,7 +75,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
 
-		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
+		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
