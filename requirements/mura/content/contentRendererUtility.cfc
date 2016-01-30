@@ -133,7 +133,7 @@
 							<div contenteditable="false" id="mura-editable-attribute-#arguments.attribute#" class="#cssClass#" #dataString#>#arguments.value#</div>
 							</div>';
 					} else {
-					
+
 						cssClass=cssClass & "inactive mura-editable-attribute#inline#";
 
 						return '<div class="mura-editable inactive#inline#">
@@ -919,7 +919,7 @@
 		<cfelse>
 			<cfreturn '#openingDiv##trim(arguments.content)#</div>'>
 		</cfif>
-		
+
 	</cffunction>
 
 	<cffunction name="serializeObjectParam" output="false">
@@ -1091,7 +1091,7 @@
 				</cfcase>
 			</cfswitch>
 		</cfif>
-		
+
 
 		<cfif arguments.renderer.useLayoutManager() and listFindNoCase("editor,author",arguments.assignmentPerm)>
 			<cfset showEditable=true>
@@ -1359,7 +1359,7 @@
 
 			<cfset theRegion.inherited.header='<div class="mura-region-inherited">'>
 			<cfset theRegion.inherited.footer='</div>'>
-			
+
 		<cfelse>
 			<cfset theRegion.header='<div class="mura-region">'>
 			<cfset theRegion.footer='</div>'>
@@ -1776,7 +1776,7 @@
 
 		<cfset var allday=variables.intervalManager.isAllDay(arguments.content.getdisplayStart(),arguments.content.getdisplayStop())>
 
-		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop()) 
+		<cfif isDate(arguments.content.getdisplayStart()) and isDate(arguments.content.getdisplayStop())
 			and month(arguments.content.getdisplayStart()) eq month(arguments.content.getdisplayStop())
 			and day(arguments.content.getdisplayStart()) eq day(arguments.content.getdisplayStop())
 			and year(arguments.content.getdisplayStart()) eq year(arguments.content.getdisplayStop())>
@@ -1822,7 +1822,7 @@
 		<cfelseif displayInterval.end eq 'after'>
 			<cfset returnstring=returnstring & ', ' & arguments.renderer.setProperCase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.until')) & ' ' & displayinterval.endafter & ' ' & application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.occurrences')>
 		</cfif>
-		
+
 		<cfset returnstring=returnstring & " (" & getJavaTimezone(displayInterval.timezone).getDisplayName() & ")">
 
 		<cfreturn returnstring>
@@ -1854,7 +1854,13 @@
 		</cfif>
 
 		<cfset var filePath="">
-		
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
 		<cfif len(filePath)>
