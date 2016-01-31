@@ -1854,6 +1854,35 @@
 		</cfif>
 
 		<cfset var filePath="">
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
+
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		<cfelseif $.content('type') eq 'folder'>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_Portal_#safesubtype#.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
+		
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
+
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		<cfelseif $.content('type') eq 'folder'>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
+
+
 		<cfset var displayObjectKey='#arguments.$.content().getType()#'>
 
 		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
@@ -1872,34 +1901,6 @@
 			</cfif>
 		</cfif>
 
-		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
-		<cfif len(filePath)>
-			<cfreturn {filepath=filePath}>
-		</cfif>
-
-		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
-
-		<cfif len(filePath)>
-			<cfreturn {filepath=filePath}>
-		<cfelseif $.content('type') eq 'folder'>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('custom/extensions/dsp_Portal_#safesubtype#.cfm')>
-			<cfif len(filePath)>
-				<cfreturn {filepath=filePath}>
-			</cfif>
-		</cfif>
-
-		<cfif not len(filePath)>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
-
-			<cfif len(filePath)>
-				<cfreturn {filepath=filePath}>
-			<cfelseif $.content('type') eq 'folder'>
-				<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_Portal_#safesubtype#.cfm')>
-				<cfif len(filePath)>
-					<cfreturn {filepath=filePath}>
-				</cfif>
-			</cfif>
-		</cfif>
 
 		<cfreturn {}>
 	</cffunction>
