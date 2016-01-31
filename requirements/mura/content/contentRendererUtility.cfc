@@ -1520,7 +1520,7 @@
 				)
 			>
 			<cfset arguments.bean=getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
-			<cfset argument.filename=arguments.bean.getFilename()>
+			<cfset arguments.filename=arguments.bean.getFilename()>
 		</cfif>
 
 		<cfif application.configBean.getValue(property='AllowUnicodeInFilenames',defaultValue=false)>
@@ -1854,9 +1854,25 @@
 		</cfif>
 
 		<cfset var filePath="">
+		<cfset var displayObjectKey='#arguments.$.content().getType()#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/' & arguments.$.siteConfig().getDisplayObject(displayObjectKey).displayobjectfile)>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
+
+		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/' & arguments.$.siteConfig().getDisplayObject(displayObjectKey).displayobjectfile)>
+			<cfif len(filePath)>
+				<cfreturn {filepath=filePath}>
+			</cfif>
+		</cfif>
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
-
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
 		</cfif>

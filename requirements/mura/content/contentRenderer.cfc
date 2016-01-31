@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead2="h4"/>
 <cfset this.subHead3="h5"/>
 <cfset this.subHead4="h6">
-<!--- This is duplicated for when the page title gets set to h1 ---> 
+<!--- This is duplicated for when the page title gets set to h1 --->
 <cfset this.subHead5="h6">
 <!--- This is the preloader markup for async objects--->
 <cfset this.preloaderMarkup=''>
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.navsize=this.size>
 
 <!--- ===================
-General Classes 
+General Classes
 =================== --->
 
 <!--- Forms --->
@@ -140,10 +140,10 @@ General Classes
 <cfset this.formButtonInnerClass="">
 <cfset this.formButtonClass = "btn btn-default">
 <cfset this.formRequiredWrapperClass="">
-		
+
 <!--- Images --->
 <cfset this.imageClass="img-thumbnail">
-		
+
 <!--- Tables --->
 <cfset this.tableClass = "table table-bordered table-striped">
 <cfset this.tableHeadClass = "">
@@ -152,7 +152,7 @@ General Classes
 <cfset this.tableRowClass = "">
 <cfset this.tableCellClass = "">
 <cfset this.tableFooterClass = "">
-		
+
 <!--- Alerts --->
 <cfset this.alertSuccessClass = "alert alert-success">
 <cfset this.alertInfoClass = "alert alert-info">
@@ -161,7 +161,7 @@ General Classes
 
 
 <!--- ===================
-Display Objects 
+Display Objects
 =================== --->
 
 <!--- calendar/dsp_showMonth.cfm --->
@@ -373,7 +373,7 @@ Display Objects
 
 <!---
  Formbuilder/Fields/Dsp_checkbox.cfm
- Formbuilder/Fields/Dsp_dropdown.cfm 
+ Formbuilder/Fields/Dsp_dropdown.cfm
  Formbuilder/Fields/Dsp_file.cfm
  Formbuilder/Fields/Dsp_radio.cfm
  Formbuilder/Fields/Dsp_textfield.cfm
@@ -428,7 +428,7 @@ Display Objects
 
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=variables.$>
-	
+
 	<cfif request.muraExportHtml>
 		<cfset this.showEditableObjects=false>
 		<cfset this.showAdminToolBar=false>
@@ -455,7 +455,7 @@ Display Objects
 	<cfif structKeyExists(this,'ulNestedCustomString') and len(this.ulNestedCustomString)>
 		<cfset this.ulNestedAttributes=this.ulNestedCustomString>
 	</cfif>
-	
+
 	<cfset variables.contentGateway=getBean('contentGateway')>
 	<cfset variables.contentRendererUtility=getBean('contentRendererUtility')>
 
@@ -482,7 +482,7 @@ Display Objects
 				? getConfigBean().getEnableFrontEndTools()
 				: true;
 	</cfscript>
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -491,7 +491,7 @@ Display Objects
 		this.asyncObjects=request.muraFrontEndRequest && (this.asyncObjects || this.layoutmanager);
 		this.asyncRender=!this.asyncObjects;
 		return this;
-	</cfscript>	
+	</cfscript>
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
@@ -499,14 +499,14 @@ Display Objects
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
 	<cfscript>
 		var prefix=left(arguments.MissingMethodName,3);
-	
+
 		if(listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3){
-			var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);	
-			
+			var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);
+
 			if(prefix eq "get"){
 				param name='this.#prop#' default='';
 				return this['#prop#'];
-			} 
+			}
 
 			if(not structIsEmpty(arguments.MissingMethodArguments)){
 				this['#prop#']=arguments.MissingMethodArguments[1];
@@ -514,7 +514,7 @@ Display Objects
 			} else {
 				throw(message="The method '#arguments.MissingMethodName#' requires a propery value");
 			}
-				
+
 		} else {
 			throw(message="The method '#arguments.MissingMethodName#' is not defined");
 		}
@@ -618,7 +618,7 @@ Display Objects
 <cfargument name="navDepthLimit">
 
 	<cfset this.navDepthLimit=arguments.navDepthLimit />
-	
+
 	<cfif arrayLen(this.crumbdata) gt this.navDepthLimit >
 		<cfset this.navDepthAdjust=arraylen(this.crumbdata)-this.navDepthLimit />
 		<cfset this.navGrandParentIdx= 3 + this.navDepthAdjust />
@@ -702,7 +702,7 @@ Display Objects
 	<cfset var nestedArgs=structNew()>
 	<cfset var linkArgs=structNew()>
 	<cfset var started=false>
-	
+
 	<cfif not isQuery(rsSection)>
 		<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,Val(arguments.size),'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 	</cfif>
@@ -710,7 +710,7 @@ Display Objects
 	<cfif isDefined("arguments.ulTopClass") and arguments.currDepth eq 1>
 		<cfset arguments.class=arguments.ulTopClass>
 	</cfif>
-	
+
 	<cfif rsSection.recordcount and ((variables.event.getValue('r').restrict and variables.event.getValue('r').allow) or (not variables.event.getValue('r').restrict))>
 		<cfset adjust=rsSection.recordcount>
 
@@ -726,18 +726,18 @@ Display Objects
 				(
 					(
 						ListFind("Page,Folder,Calendar",rsSection.type)
-						and arguments.openCurrentOnly 
+						and arguments.openCurrentOnly
 						and ListFindNoCase(ArrayToList(this.crumbData[this.navSelfIdx].parentArray), rsSection.contentid)
 					) or (
 						ListFindNoCase("Page,Calendar",rsSection.type)
 						and not arguments.openCurrentOnly
 					)
-				) 
-				and arguments.currDepth lt arguments.viewDepth 
-				and rsSection.type neq 'Gallery' 
+				)
+				and arguments.currDepth lt arguments.viewDepth
+				and rsSection.type neq 'Gallery'
 				and not (rsSection.restricted and not session.mura.isLoggedIn) />
 			</cfif>
-		
+
 			<cfset current=current+1>
 			<cfset nest=''>
 			<cfif subnav>
@@ -752,7 +752,7 @@ Display Objects
 				<cfset nest=dspNestedNav(argumentCollection=nestedArgs)>
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
-			
+
 			<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
 				<cfset itemClass=arguments.liHasKidsNestedClass>
 			<cfelse>
@@ -769,9 +769,9 @@ Display Objects
 			<cfif current eq adjust>
 				<cfset itemClass=listAppend(itemClass,'last',' ')>
 			</cfif>
-			
+
 			<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
-		
+
 			<cfif isCurrent and len(arguments.liCurrentClass)>
 				<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 			</cfif>
@@ -935,7 +935,7 @@ Display Objects
 					<cfset nestedArgs.sortBy=this.crumbdata[this.navGrandParentIdx].sortBy>
 					<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
 					<cfset structAppend(nestedArgs,arguments,false)>
-					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />	
+					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 				<cfelse>
 					<cfset nestedArgs.contentID=this.crumbdata[this.navParentIdx].contentid>
 					<cfset nestedArgs.viewDepth=2>
@@ -945,10 +945,10 @@ Display Objects
 					<cfset nestedArgs.sortDirection=this.crumbdata[this.navParentIdx].sortDirection>
 					<cfset structAppend(nestedArgs,arguments,false)>
 					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
-				</cfif>			
+				</cfif>
 			<cfelse>
 				<cfset theNav=dspSubNav(argumentCollection=arguments) />
-			</cfif>	
+			</cfif>
 	<cfelse>
 			<cfset thenav=dspFolderNav(argumentCollection=arguments) />
 	</cfif>
@@ -991,7 +991,7 @@ Display Objects
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
-	<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>	
+	<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>
 		<cfset nestedArgs.contentID=this.crumbdata[this.navSelfIdx].contentID>
 		<cfset nestedArgs.viewDepth=1>
 		<cfset nestedArgs.currDepth=1>
@@ -1005,7 +1005,7 @@ Display Objects
 		<cfset structAppend(nestedArgs,arguments,false)>
 		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
-			
+
 	<cfset commitTracePoint(tracePoint)>
 
 	<cfreturn thenav />
@@ -1022,7 +1022,7 @@ Display Objects
 	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
 	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
-	
+
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	<cfset var nestedArgs=structNew()>
@@ -1060,7 +1060,7 @@ Display Objects
 		<cfset structAppend(nestedArgs,arguments,false)>
 		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
-	
+
 	<cfset commitTracePoint(tracePoint)>
 
 	<cfreturn theNav />
@@ -1121,9 +1121,9 @@ Display Objects
 		<cfset var next=1>
 		<cfset var prev=1>
 		<cfset var tracepoint=initTracepoint("contentRenderer.dspGalleryNav")>
-		
+
 		<cfif rsSection.recordcount and ((variables.event.getValue('r').restrict and variables.event.getValue('r').allow) or (not variables.event.getValue('r').restrict))>
-			
+
 			<cfloop query="rsSection">
 			<cfif rssection.contentID eq variables.event.getValue('galleryItemID')>
 				<cfset prev=iif((rsSection.currentrow - 1) lt 1,de(rsSection.recordcount),de(rsSection.currentrow-1)) />
@@ -1131,7 +1131,7 @@ Display Objects
 				<cfset next=iif((rsSection.currentrow + 1) gt rsSection.recordcount,de(1),de(rsSection.currentrow + 1)) />
 			</cfif>
 			</cfloop>
-			
+
 			<cfsavecontent variable="theNav">
 			<cfoutput>
 			<ul class="#this.navSequentialULClass#">
@@ -1151,7 +1151,7 @@ Display Objects
 		</cfif>
 
 		<cfset commitTracePoint(tracePoint)>
-		
+
 		<cfreturn trim(theNav) />
 </cffunction>
 
@@ -1165,13 +1165,13 @@ Display Objects
 	<cfelse>
 		<cfset returnURL = URLEncodedFormat(getCurrentURL())>
 	</cfif>
-		
+
 	<cfsavecontent variable="theNav">
 		<cfif getSite().getExtranet() eq 1 and session.mura.isLoggedIn>
 			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(variables.event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
-			
+
 	<cfreturn trim(thenav) />
 </cffunction>
 
@@ -1188,7 +1188,7 @@ Display Objects
 	<cfset var expandedPath=expandPath(filePath)>
 	<cfset var str="">
 	<cfset var tracePoint=0>
-	
+
 	<cfsavecontent variable="str">
 	<cfif fileExists(expandedPath & "themes/"  & theme & "/display_objects/nav/dsp_tag_cloud.cfm")>
 		<cfset tracePoint=initTracePoint("#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm")>
@@ -1201,17 +1201,17 @@ Display Objects
 		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
 	</cfif>
 	</cfsavecontent>
-	
+
 	<cfset commitTracePoint(tracePoint)>
-	
+
 <cfreturn str />
 </cffunction>
 
 <cffunction name="dspObject_Render" access="public" output="false">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="object" type="string" />
-	<cfargument name="objectid" type="string" />
-	<cfargument name="fileName" type="string" default=''/>
+	<cfargument name="objectid" type="string" default=""/>
+	<cfargument name="fileName" type="string" default=""/>
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
@@ -1246,14 +1246,14 @@ Display Objects
 		</cfif>
 	<cfelse>
 		<cfset result = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno,'',true,arguments.showEditable,arguments.isConfigurator,arguments.objectname) />
-		
+
 		<cfif isSimpleValue(result)>
 			<cfreturn trim(result)>
 		<cfelse>
 			<cfreturn result>
 		</cfif>
 	</cfif>
-	
+
 
 </cffunction>
 
@@ -1274,7 +1274,7 @@ Display Objects
 	<cfargument name="showEditable" required="true" default="false">
 	<cfargument name="isConfigurator" required="true" default="false">
 	<cfargument name="objectname" required="true" default="">
-	
+
 	<cfset var fileDelim = "/" />
 	<cfset var displayObjectPath = variables.$.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = variables.$.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
@@ -1300,7 +1300,7 @@ Display Objects
 		<cfset objectParams.async=false>
 		<cfset objectParams.render='server'>
 	</cfif>
-	
+
 	<cfif arguments.object eq 'plugin'>
 		<cfset result=application.pluginManager.displayObject(regionid=arguments.regionid,object=arguments.objectid,event=variables.$.event(),params=objectParams,isConfigurator=arguments.isConfigurator,objectname=arguments.objectname)>
 		<cfif isSimpleValue(result)>
@@ -1309,9 +1309,9 @@ Display Objects
 	<cfelse>
 		<!--- For backward compatability with old dsp_feed.cfm files --->
 		<cfif arguments.thefile eq "dsp_feed.cfm">
-			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">	
+			<cfparam name="objectParams.displaySummaries" default="#arguments.hasSummary#">
 		</cfif>
-		
+
 		<cfset var filePath=variables.$.siteConfig().lookupDisplayObjectFilePath(arguments.theFile)>
 
 		<cfsavecontent variable="theContent">
@@ -1369,7 +1369,7 @@ Display Objects
 	<cfargument name="renderKids" default="true">
 	<cfargument name="displayIntervalDesc" type="string" default="">
 	<cfargument name="displayIntervalClass" type="string" default="">
-	
+
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var themeIncludePath = variables.event.getSite().getThemeIncludePath() />
 	<cfset var str = "" />
@@ -1381,7 +1381,7 @@ Display Objects
 	<cfset var doLayoutManagerWrapper=false>
 	<cfsavecontent variable="str">
 		<cfif (variables.event.getValue('isOnDisplay') and (not variables.event.getValue('r').restrict or (variables.event.getValue('r').restrict and variables.event.getValue('r').allow)))
-			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn) 
+			or (getSite().getextranetpublicreg() and variables.event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn)
 			or (variables.event.getValue('display') eq 'editprofile' and session.mura.isLoggedIn)>
 			<cfif variables.event.getValue('display') neq ''>
 				<cfswitch expression="#variables.event.getValue('display')#">
@@ -1405,7 +1405,7 @@ Display Objects
 						<cfelse>
 						<cfoutput>#dspObject_Include(thefile='dsp_search_results.cfm')#</cfoutput>
 						</cfif>
-					</cfcase> 
+					</cfcase>
 					<cfcase value="login">
 						<cfset variables.$.noIndex()>
 						<cfset variables.event.setValue('noCache',1)>
@@ -1440,11 +1440,11 @@ Display Objects
 					</cfif>
 					<cfif variables.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false) and $.hasParent() and $.getParent().getType() eq 'Calendar' and len(arguments.displayIntervalDesc)>
 						<p<cfif len(displayIntervalClass)> class="#displayIntervalClass#"</cfif>>#arguments.displayIntervalDesc#</p>
-					</cfif>		
+					</cfif>
 				</cfoutput>
 
 				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
-				
+
 				<cfif isDefined('bodyLookup.eventOutput')>
 					<cfoutput>#bodyLookup.eventOutput#</cfoutput>
 				<cfelseif isDefined('bodyLookup.filepath')>
@@ -1452,7 +1452,7 @@ Display Objects
 				<cfelse>
 					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
 					<cfcase value="File">
-						<cfif variables.event.getValue('contentBean').getContentType() eq "Image" 
+						<cfif variables.event.getValue('contentBean').getContentType() eq "Image"
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
@@ -1465,23 +1465,23 @@ Display Objects
 								<cfoutput>
 								<div id="svAssetDetail" class="mura-asset-detail file">
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
-								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
+								<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset #lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>
 								</div>
 								</cfoutput>
-						</cfif>				
+						</cfif>
 					</cfcase>
 					<cfcase value="Link">
 						<cfoutput>
 						<div id="svAssetDetail" class="mura-asset-detail link">
-							#renderEditableAttribute(attribute="summary",type="htmlEditor")#	
-							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>							
+							#renderEditableAttribute(attribute="summary",type="htmlEditor")#
+							<a href="#$.content().getURL('showMeta=2&ext=.#$.content().getFileExt()#')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="mura-asset url">View Link</a>
 						</div>
 						</cfoutput>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif arguments.showMetaImage
-							and len(variables.event.getValue('contentBean').getFileID()) 
-							and variables.event.getValue('contentBean').getContentType() eq "Image" 
+							and len(variables.event.getValue('contentBean').getFileID())
+							and variables.event.getValue('contentBean').getContentType() eq "Image"
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
 								<cfif useLayoutManager()>
 									<cfoutput>
@@ -1489,7 +1489,7 @@ Display Objects
 										<div class="mura-asset">
 											<cfif arguments.includeMetaHREF><a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" #this.shadowboxattribute#="shadowbox[body]"></cfif><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /><cfif arguments.includeMetaHREF></a></cfif>
 										</div>
-									</cfoutput>	
+									</cfoutput>
 								<cfelse>
 									<cfoutput>
 									<cfif arguments.includeMetaHREF>
@@ -1500,9 +1500,9 @@ Display Objects
 										<img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed #arguments.metaImageClass#" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
 										</div>
 									</cfif>
-									</cfoutput>	
+									</cfoutput>
 								</cfif>
-						</cfif>		
+						</cfif>
 						<cfoutput>
 							<cfif structKeyExists(arguments,'bodyAttribute')>
 								#renderEditableAttribute(attribute=arguments.bodyAttribute,type="htmlEditor")#
@@ -1510,7 +1510,7 @@ Display Objects
 								#renderEditableAttribute(attribute="body",type="htmlEditor")#
 							<cfelse>
 								#setDynamicContent(arguments.body)#
-							</cfif>		
+							</cfif>
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
@@ -1532,12 +1532,12 @@ Display Objects
 								 </cfif>
 							</cfif>
 							</cf_CacheOMatic>
-						</cfcase> 
+						</cfcase>
 						<cfcase value="Calendar">
 							 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 							 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 							 </cf_CacheOMatic>
-						</cfcase> 
+						</cfcase>
 						<cfcase value="Gallery">
 							<cfset loadShadowBoxJS() />
 							<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
@@ -1545,11 +1545,11 @@ Display Objects
 							<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 							<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 							</cf_CacheOMatic>
-						</cfcase> 
+						</cfcase>
 						</cfswitch>
 					</cfif>
-				</cfif>		
-			</cfif> 
+				</cfif>
+			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
 			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
@@ -1570,7 +1570,7 @@ Display Objects
 		<cfelse>
 			<cfset variables.$.noIndex()>
 			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
-			<cfheader statuscode="404" statustext="Content Not Found" /> 
+			<cfheader statuscode="404" statustext="Content Not Found" />
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
@@ -1578,12 +1578,12 @@ Display Objects
 			</cfif>
 		</cfif>
 	</cfsavecontent>
-	
+
 	<cfreturn str />
 </cffunction>
 
 <cffunction name="dspContentTypeBody" output="false">
-	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>		
+	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
 	<cfset var eventOutput="">
 	<cfsavecontent variable="eventOutput">
 	<cfoutput>
@@ -1640,7 +1640,7 @@ Display Objects
 		<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
 		<cfargument name="displayHome" type="string" default="conditional">
 		<cfargument name="closeFolders" type="string" default="">
-		<cfargument name="openFolders" type="string" default="">	
+		<cfargument name="openFolders" type="string" default="">
 		<cfargument name="menuClass" type="string" default="">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 		<cfargument name="liHasKidsClass" required="true" default="">
@@ -1691,15 +1691,15 @@ Display Objects
 		</cfif>
 
 		<cfif len(arguments.closeFolders)>
-			<cfset limitingBy="closed">	
-			<cfif isBoolean(arguments.closeFolders)>	
+			<cfset limitingBy="closed">
+			<cfif isBoolean(arguments.closeFolders)>
 				<cfset isLimitingOn=arguments.closeFolders />
 			</cfif>
 		</cfif>
-		
+
 		<cfif len(arguments.openFolders)>
-			<cfset limitingBy="open">			
-			<cfif isBoolean(arguments.openFolders)>	
+			<cfset limitingBy="open">
+			<cfif isBoolean(arguments.openFolders)>
 				<cfif arguments.openFolders>
 					<cfset isLimitingOn=false />
 				<cfelse>
@@ -1730,44 +1730,44 @@ Display Objects
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
 				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
-			
+
 			<cfloop query="rsSection">
 			<cfif allowLink(rssection.restricted,rssection.restrictgroups,variables.event.getValue('r').loggedIn)>
 			<cfsilent>
-			
+
 			<cfset current=current+1>
 			<cfset nest=''>
-			
-			<cfset isNotLimited= rsSection.type eq "Page" or 
+
+			<cfset isNotLimited= rsSection.type eq "Page" or
 			not (
-				rsSection.type eq "Folder" and 
+				rsSection.type eq "Folder" and
 					(isLimitingOn or (
 										(limitingBy eq "closed" and listFind(arguments.closeFolders,rsSection.contentid))
-									or  
+									or
 										(limitingBy eq "open" and not listFind(arguments.openFolders,rsSection.contentid))
 									)
-										
-					) 
+
+					)
 					or listFindNoCase("Calendar,Gallery,Link,File",rsSection.type)
 				)
-			/>	
-				
-			<cfset subnav= arguments.currDepth lt arguments.viewDepth 
+			/>
+
+			<cfset subnav= arguments.currDepth lt arguments.viewDepth
 			and (
 					(
 					isNotLimited and isNavSecondary and (
-														listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentID#") 
+														listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentID#")
 														and
-														listLen(rsSection.path) lte listLen(variables.event.getValue('contentBean').getPath()) 	
+														listLen(rsSection.path) lte listLen(variables.event.getValue('contentBean').getPath())
 														)
-					) 
+					)
 				or (
 					isNotLimited and not isNavSecondary
 					)
-				) 
-				and not (rsSection.restricted and not session.mura.isLoggedIn) 
+				)
+				and not (rsSection.restricted and not session.mura.isLoggedIn)
 			/>
-			
+
 			<cfif subnav>
 				<cfset nestedArgs.contentID=rssection.contentid>
 				<cfset nestedArgs.currDepth=arguments.currDepth+1>
@@ -1786,7 +1786,7 @@ Display Objects
 			<cfelse>
 				<cfset itemClass="">
 			</cfif>
-			
+
 			<cfif current eq adjust>
 				<cfset itemClass=listAppend(itemClass, "last",' ')>
 			</cfif>
@@ -1798,9 +1798,9 @@ Display Objects
 			<cfif subnav and len(arguments.liHasKidsClass)>
 				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
 			</cfif>
-			
+
 			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
-			
+
 			<cfset linkArgs=structNew()>
 			<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
 			<cfset linkArgs.aHasKidsAttributes=arguments.aHasKidsAttributes>
@@ -1817,9 +1817,9 @@ Display Objects
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
 			<cfset link=addlink(argumentCollection=linkArgs)>
-			
+
 			</cfsilent>
-			
+
 			<cfif not started>
 				<cfset started=true>
 				<cfset itemClass=listAppend(itemClass, "first",' ')>
@@ -2010,7 +2010,7 @@ Display Objects
 	<cfreturn variables.contentRendererUtility.getListFormat(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="dspCrumblistLinks"  output="false" returntype="string"> 
+<cffunction name="dspCrumblistLinks"  output="false" returntype="string">
 	<cfargument name="id" type="string" default="crumblist">
 	<cfargument name="separator" type="string" default="">
 	<cfargument name="class" type="string" default="#this.navBreadcrumbULClass#">
@@ -2116,7 +2116,7 @@ Display Objects
 	<cfargument name="rawQuery" type="query">
 	<cfreturn application.permUtility.queryPermFilter(arguments.rawQuery,'',variables.event.getValue('siteID'),variables.event.getValue('r').hasModuleAccess)/>
 </cffunction>
-	
+
 <cffunction name="newResultQuery" returntype="query" access="public" output="false">
 	<cfreturn application.permUtility.newResultQuery() />
 </cffunction>
@@ -2155,7 +2155,7 @@ Display Objects
 </cffunction>
 
 <cffunction name="stripHTML" returntype="string" output="false">
-	<cfargument name="str" type="string">	
+	<cfargument name="str" type="string">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.stripHTML(argumentCollection=arguments)>
 </cffunction>
@@ -2215,11 +2215,11 @@ Display Objects
 	</cfsavecontent>
 
 	<cfreturn theObject />
-	
+
 </cffunction>
 
 <cffunction name="dspSection" access="public" output="false" returntype="string">
-	<cfargument name="level" default="1" required="true">		
+	<cfargument name="level" default="1" required="true">
 	<cfset arguments.renderer=this>
 	<cfreturn variables.contentRendererUtility.dspSection(argumentCollection=arguments)>
 </cffunction>
@@ -2233,29 +2233,29 @@ Display Objects
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
-	
+
 	<cfparam name="this.enableMuraTag" default="true" />
-	
+
 	<!--- It the Mura tag is not enabled just return the submitted string --->
 	<cfif not this.enableMuraTag>
 		<cfreturn str />
 	</cfif>
-	
+
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
 			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
-			
+
 			<cfif left(tempValue,3) eq "[m]">
 				<cfset tempValue=evaluate("##" & mid(tempValue, 4, len(tempValue)-7) & "##")>
 			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
 			</cfif>
-			
+
 			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
 				<cfset tempValue="">
 			</cfif>
-			
+
 			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(tempValue)#')>
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
@@ -2270,18 +2270,18 @@ Display Objects
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
 		<cfset request.cacheItem=false>
 	</cfloop>
-	
+
 	<cfreturn body />
 </cffunction>
 
 <cffunction name="dspCaptcha" returntype="string" output="false">
 	<cfset var theObject = "" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
-	
+
 	<cfsavecontent variable="theObject">
 		<cfinclude template="#theIncludePath#/includes/display_objects/dsp_captcha.cfm">
 	</cfsavecontent>
-	
+
 	<cfreturn trim(theObject)>
 </cffunction>
 
@@ -2297,7 +2297,7 @@ Display Objects
 		</cfsavecontent>
 		<cfset commitTracePoint(tracePoint)>
 	</cfif>
-	
+
 	<cfreturn trim(str) />
 </cffunction>
 
@@ -2312,7 +2312,7 @@ Display Objects
 		</cfsavecontent>
 		<cfset commitTracePoint(tracePoint)>
 	</cfif>
-	
+
 	<cfreturn trim(str) />
 </cffunction>
 
@@ -2330,7 +2330,7 @@ Display Objects
 
 <cffunction name="addToHTMLFootQueue" output="false">
 	<cfargument name="text">
-	<cfargument name="action" default="append">	
+	<cfargument name="action" default="append">
 	<cfset arguments.renderer=this>
 	<cfset variables.contentRendererUtility.addToHTMLFootQueue(argumentCollection=arguments)>
 </cffunction>
@@ -2340,20 +2340,20 @@ Display Objects
 </cffunction>
 
 <cffunction name="getShowToolbar" output="false">
-	<cfreturn this.enableFrontEndTools 
+	<cfreturn this.enableFrontEndTools
 		and (
-			request.muraChangesetPreviewToolbar 
+			request.muraChangesetPreviewToolbar
 			and (
 				this.showMemberToolBar or this.showAdminToolBar
 			) or (
 				(
-				 	StructKeyExists(session, 'mura') 
+				 	StructKeyExists(session, 'mura')
 				 	and (
-						listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') 
+						listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#')
 						or listFind(session.mura.memberships,'S2')
 					)
 				) or (
-					listFindNoCase("editor,author",variables.event.getValue('r').perm) 
+					listFindNoCase("editor,author",variables.event.getValue('r').perm)
 					and this.showMemberToolBar
 				)
 			) and getShowAdminToolBar()
@@ -2375,7 +2375,7 @@ Display Objects
 	<cfset var HTMLQueue="" />
 	<cfset var i = "" />
 	<cfset var iLen = 0 />
-	<cfset var headerFound=false />	
+	<cfset var headerFound=false />
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />
 	<cfset var pluginID=0 />
@@ -2383,11 +2383,11 @@ Display Objects
 	<cfset var displayPoolID=application.settingsManager.getSite(variables.event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=(len(request.altTheme) ? request.altTheme : application.settingsManager.getSite(variables.event.getValue('siteID')).getTheme())>
 	<cfset var tracePoint=0>
-	
+
 	<cfif getRenderHTMLQueues()>
-		
+
 		<cfif arguments.queueType eq "HEAD" and variables.$.content('type') neq 'Variation'>
-			
+
 			<!--- Add global.js --->
 			<cfset addToHTMLHEADQueue('global.cfm',"prepend")>
 
@@ -2395,13 +2395,13 @@ Display Objects
 			<cfif not this.jsLibLoaded>
 				<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
 			</cfif>
-					
+
 		<cfelseif arguments.queueType eq "FOOT">
 			<cfif (getShowModal() or variables.event.getValue("muraChangesetPreviewToolbar")) and not request.muraExportHTML>
 				<cfif getShowModal()>
 					<cfsavecontent variable="headerStr"><cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/toolbar.cfm"></cfsavecontent>
 					<cfset commitTracePoint(tracePoint)>
-				</cfif>	
+				</cfif>
 				<!---
 				<cfif variables.event.getValue("muraChangesetPreviewToolbar")>
 					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
@@ -2413,19 +2413,19 @@ Display Objects
 		</cfif>
 		<!--- Loop through the HTML Head Que--->
 		<cfset HTMLQueue=variables.event.getValue(property='HTML#arguments.queueType#Queue',defaultValue=[]) />
-		
+
 		<cfif arrayLen(HTMLQueue)>
 			<cfloop from="1" to="#arrayLen(HTMLQueue)#" index="item">
 				<cfset headerFound=false/>
 				<cfset i=HTMLQueue[item]>
-					
+
 				<cfif refind('[<>]',i)>
 						<cfset itemStr=i>
 				<cfelse>
 					<cfset itemStr=""/>
 					<!--- look in default htmlHead directory --->
 					<cfif not refind('[\\/]',i)>
-						
+
 						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
 						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
@@ -2434,7 +2434,7 @@ Display Objects
 							<cfset commitTracePoint(tracePoint)>
 							<cfset headerFound=true />
 						</cfif>
-						
+
 						<cfif not headerFound>
 							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
@@ -2445,12 +2445,12 @@ Display Objects
 								<cfset headerFound=true />
 							</cfif>
 						</cfif>
-					
+
 					<cfelse>
 						<!--- If not found, look in look in your theme --->
 						<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
 						<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+							<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 							<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
 							<cfset commitTracePoint(tracePoint)>
@@ -2462,51 +2462,51 @@ Display Objects
 							<cfsavecontent variable="itemStr"><cfinclude template="#i#" /></cfsavecontent>
 							<cfset headerFound = true />
 						</cfif>
-								
+
 						<!--- If not found, look in display_objects directory --->
 						<cfif not headerFound>
 							<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 								<cfsavecontent variable="itemStr"><cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
 								<cfset commitTracePoint(tracePoint)>
 								<cfset headerFound=true />
 							</cfif>
 						</cfif>
-						
+
 						<!--- If not found, look in top of theme directory
 						<cfif not headerFound>
 							<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 								<cfset headerFound=true />
 							</cfif>
 						</cfif>
 						 --->
-						 
+
 						<!--- If not found, look in includes directory --->
 						<cfif not headerFound>
 							<cfset pluginBasePath="/#displayPoolID#/includes/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 								<cfsavecontent variable="itemStr"><cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
 								<cfset commitTracePoint(tracePoint)>
 								<cfset headerFound=true />
 							</cfif>
 						</cfif>
-						
+
 						<!--- If not found, look in local plugins directory --->
 						<cfif not headerFound>
-							<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
+							<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">
 							<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 								<cfset pluginID=listLast(listFirst(i,"/"),"_")>
 								<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
 								<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-								<cfset variables.event.setValue('pluginPath',pluginPath)>		
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >
+								<cfset variables.event.setValue('pluginPath',pluginPath)>
 								<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 								<cfsavecontent variable="itemStr"><cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#"></cfsavecontent>
 								<cfset commitTracePoint(tracePoint)>
@@ -2515,7 +2515,7 @@ Display Objects
 								<cfset variables.event.removeValue("pluginConfig")>
 							</cfif>
 						</cfif>
-						
+
 						<!--- If not found, look in global plugins directory --->
 						<cfif not headerFound>
 							<cfset pluginBasePath="/plugins/">
@@ -2523,7 +2523,7 @@ Display Objects
 								<cfset pluginID=listLast(listFirst(i,"/"),"_")>
 								<cfset variables.event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
 								<cfset pluginConfig=variables.event.getValue('pluginConfig')>
-								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+								<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >
 								<cfset variables.event.setValue('pluginPath',pluginPath)>
 								<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
 								<cfsavecontent variable="itemStr"><cfinclude  template="#pluginBasePath##i#"></cfsavecontent>
@@ -2541,7 +2541,7 @@ Display Objects
 				<cfset headerStr=headerStr & chr(13) & chr(10) & trim(itemStr)>
 			</cfloop>
 		</cfif>
-	</cfif>	
+	</cfif>
 	<cfreturn headerStr>
 </cffunction>
 
