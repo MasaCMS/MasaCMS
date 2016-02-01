@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Pbuublic License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset event=request.event>
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
-	<cfset rc.parentID=rc.contentBean.getParentID()>	
+	<cfset rc.parentID=rc.contentBean.getParentID()>
 </cfif>
 
 <cfset rc.parentBean=$.getBean('content').loadBy(contentid=rc.parentID)>
@@ -97,18 +97,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	$(document).ready(function(){
 		var anchors=document.getElementsByTagName("A");
-		
-		for(var i=0;i<anchors.length;i++){	
+
+		for(var i=0;i<anchors.length;i++){
 			try{
-				if (typeof(anchors[i].onclick) != 'function' 
-					&& typeof(anchors[i].getAttribute('href')) == 'string' 
+				if (typeof(anchors[i].onclick) != 'function'
+					&& typeof(anchors[i].getAttribute('href')) == 'string'
 					&& anchors[i].getAttribute('href').indexOf('#') == -1
 					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
 		   			anchors[i].onclick = setRequestedURL;
 				}
 			} catch(err){}
 		}
-		
+
 	});
 
 	$(document).unload(function(){
@@ -123,12 +123,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(!siteManager.doConditionalExit){
 			return true;
 		}
-		
+
 		if(siteManager.form_is_modified(document.contentForm)){
 		if(msg==null){
 			<cfoutput>msg="#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 		}
-		
+
 		document.contentForm.approved.value=0;
 		jQuery("#alertDialog").html(msg);
 		jQuery("#alertDialog").dialog({
@@ -151,12 +151,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					}
 				}
 			});
-		
-			return false;	
-			
+
+			return false;
+
 		} else {
 			siteManager.requestedURL="";
-			return true;	
+			return true;
 		}
 
 	}
@@ -170,14 +170,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					function(){
 						frontEndProxy.post({cmd:'setWidth',width:'standard'});
 					}
-				);	
+				);
 			} else {
 				frontEndProxy.post({cmd:'setWidth',width:'standard'});
 			}
 		}
 	});
 	</script>
-</cfif> 
+</cfif>
 
 <script>
 	<cfif requiresApproval or showApprovalStatus>
@@ -212,10 +212,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif listFindNoCase(extendedList,rc.type)>
 		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
-		
+
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
-		where 
+		where
 			<cfif not len(subtypefilter) or not listFind(nodeLevelList,rc.type)>
 				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
 				or type='Base'
@@ -232,19 +232,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>
 		</cfquery>
-		
+
 		<cfif listFindNoCase("Component,File,Link,Form,Variation",rc.type)>
 			<cfset baseTypeList=rc.type>
 		<cfelse>
 			<cfset baseTypeList=pageLevelList>
 		</cfif>
-		
+
 		<!--- If the node is new check to see if the parent type has a matching sub type. --->
 		<cfif rc.contentBean.getIsNew() and structKeyExists(rc,"subType") and len(rc.subtype)>
 			<cfset rc.contentBean.setSubType(rc.subtype)>
-		
+
 		</cfif>
-		
+
 		<cfif rsSubTypes.recordCount>
 			<cfset isExtended=true/>
 		<cfelse>
@@ -289,10 +289,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsavecontent variable="actionButtons">
 	<cfoutput>
 	<div class="form-actions">
-	
+
 		 <button type="button" class="btn" onclick="return saveDraftPrompt();"><i class="mi-edit"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		 <script>
-		 
+
 				saveDraftPrompt=function(){
 					confirmDialog(
 						'#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.keepeditingconfirm"))#',
@@ -304,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								submitForm(document.contentForm,'add');
 							}
 						},
-						function(){	
+						function(){
 							if(siteManager.ckContent(draftremovalnotice,true)){
 								document.contentForm.approved.value=0;
 								document.contentForm.preview.value=0;
@@ -315,11 +315,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 					);
 				}
- 	
+
  				var shifted=false;
  				var lockedbysomeonelse=false;
 
- 				checkForSave=function(e) {	  
+ 				checkForSave=function(e) {
 				  	if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
 				    	e.preventDefault();
 					   	if(!lockedbysomeonelse){
@@ -347,9 +347,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								document.contentForm.preview.value=0;
 								document.contentForm.approved.value=0;
 							}
-							
+
 						}
-					}	
+					}
 				}
 
 				//try{
@@ -360,13 +360,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="mi-eye"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
-			<button type="button" class="btn<cfif not currentChangeset.getIsNew()> btn-danger</cfif>" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;"> 
+			<button type="button" class="btn<cfif not currentChangeset.getIsNew()> btn-danger</cfif>" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#esapiEncode('html',rc.siteID)#','');return false;">
 				<cfif requiresApproval>
 					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangesetandsendforapproval"))#
 				<cfelse>
 					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#
 				</cfif>
-			</button>	
+			</button>
 
 			<!---
 			<cfif not currentChangeset.getIsNew()>
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<i class="mi-list-alt"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetoexistingchangeset"))#
 				</cfif>
-				</button>		
+				</button>
 			</cfif>
 			--->
 		</cfif>
@@ -388,7 +388,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<i class="mi-check"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#
 				</cfif>
 			</button>
-		</cfif> 
+		</cfif>
 	</div>
 	</cfoutput>
 	</cfsavecontent>
@@ -424,7 +424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.createcontent")#</h1>
 		</cfif>
 	</cfif>
-	
+
 		<!--- metadata labels --->
 	<cfif rc.compactDisplay neq "true">
 	<div class="mura-item-metadata">
@@ -442,7 +442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfif>
 			<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</strong></span>
-			<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: 
+			<span class="label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:
 				<strong>
 
 					<cfif not rc.contentBean.getIsNew()>
@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</a>
 							<cfelse>
 								#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
-							</cfif>				
+							</cfif>
 						<cfelseif len(rc.contentBean.getApprovalStatus()) and (requiresApproval or showApprovalStatus) >
 							<a href="##" onclick="return viewStatusInfo('#esapiEncode('javascript',rc.contentBean.getContentHistID())#','#esapiEncode('javascript',rc.contentBean.getSiteID())#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#rc.contentBean.getApprovalStatus()#")#</a>
 						<cfelseif rc.contentBean.getapproved() lt 1>
@@ -472,9 +472,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<span class="label">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#esapiEncode('html',rc.type)#</strong>
 			</span>
-	
-		<!--- secondary menu --->	
-	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>	
+
+		<!--- secondary menu --->
+	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>
 		<cfinclude template="dsp_secondary_menu.cfm">
 	</cfif>
 		</div>
@@ -483,23 +483,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!-- /metadata -->
 
 	</cfif>
-			
+
 	<!--- crumbdata --->
 	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
 <!--- TODO GoWest : add class 'link-effect' to li > a in rendered list / or duplicate all link-effect styles in custom.less for breadcrumb li a : 2015-12-23T09:39:33-07:00 --->
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
-	
+
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 	</cfif>
-	
+
 	<cfif not rc.contentBean.getIsNew()>
-		
+
 		<cfinclude template="dsp_status.cfm">
-		
+
 		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
-		
+
 		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
 			<p class="alert">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
@@ -509,7 +509,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<p class="alert">
-		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
+		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
 		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
 		</p>
@@ -523,9 +523,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
 
-	
+
 	<!--- TODO GoWest : plugin message markup : 2015-12-23T12:57:02-07:00 --->
-	<!--- This is plugin message targeting --->	
+	<!--- This is plugin message targeting --->
 	<span id="msg">
 	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
@@ -535,16 +535,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<!--- /end mura-header --->
 	</cfoutput>
-	
+
 	<cfset tabLabelList=""/>
 	<cfset tabList="">
 	<!--- set up tab content --->
 	<cfsavecontent variable="tabContent">
 
 		<cfif rc.type neq "Form">
-			<cfinclude template="form/dsp_tab_basic.cfm">	
+			<cfinclude template="form/dsp_tab_basic.cfm">
 		<cfelse>
-			<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>		
+			<cfif rc.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>
 				<cfset rc.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( rc.contentBean.getContentID() ) ) />
 			</cfif>
 			<cfif isJSON(rc.contentBean.getBody())>
@@ -553,20 +553,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfinclude template="form/dsp_tab_basic.cfm">
 			</cfif>
 		</cfif>
-		
+
 		<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
-			</cfif>	
+			</cfif>
 			<cfif  not len(tabAssignments) or listFindNocase(tabAssignments,'Mobile')>
 				<cfinclude template="form/dsp_tab_mobile.cfm">
-			</cfif>	
+			</cfif>
 		</cfif>
 
 		<cfif not rc.$.getContentRenderer().useLayoutManager() and listFindNoCase('Page,Folder,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
-				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
-		</cfif>	
-		
+			<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
+		</cfif>
+
 		<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
@@ -581,7 +581,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>	
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 				<cfinclude template="form/dsp_tab_related_content.cfm">
 			<cfelse>
@@ -597,7 +597,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>		
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 				<cfinclude template="form/dsp_tab_related_content.cfm">
 			<cfelse>
@@ -612,7 +612,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>		
+			</cfif>
 		</cfcase>
 		<cfcase value="Component">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
@@ -622,12 +622,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>	
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
 				</cfif>
-			</cfif>		
+			</cfif>
 		</cfcase>
 		<cfcase value="Form">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
@@ -637,7 +637,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
 				<cfinclude template="form/dsp_tab_tags.cfm">
-			</cfif>	
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 				<cfif not rc.contentBean.getIsNew()>
 					<cfinclude template="form/dsp_tab_usage.cfm">
@@ -645,20 +645,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfcase>
 	</cfswitch>
-	
+
 	<cfif listFindNoCase(rc.$.getBean('contentManager').ExtendableList,rc.type)>
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
 		</cfif>
 	</cfif>
-		
+
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 			<cfinclude template="form/dsp_tab_advanced.cfm">
 		<cfelse>
 			<input type="hidden" name="ommitAdvancedTab" value="true">
-		</cfif> 
+		</cfif>
 	</cfif>
 
 	<cfif arrayLen(pluginEventMappings)>
@@ -709,10 +709,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- start output --->
 	<cfoutput>
-	
+
 	<div class="block block-constrain">
 
-	<!-- tabs -->	
+	<!-- tabs -->
 		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
@@ -721,7 +721,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 
 		<!-- tab content -->
-		<div class="block-content tab-content">	
+		<div class="block-content tab-content">
 			#tabContent#
 			<div class="load-inline tab-preloader"></div>
 			<script>
@@ -735,7 +735,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				});
 			</script>
-			#actionButtons#	
+			#actionButtons#
 		</div>
 		<!-- /block-content tab content -->
 	</div>
@@ -746,7 +746,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
-	
+
 	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component,Form",rc.contentBean.getType())>
 		<script type="text/javascript">
 		siteManager.tablist='#esapiEncode('javascript',lcase(tabList))#';
@@ -759,7 +759,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
 	<input id="changesetID" name="changesetID" type="hidden" value="">
 	<input id="changesetname" name="changesetname" type="hidden" value="">
-	<input name="preview" type="hidden" value="0">	
+	<input name="preview" type="hidden" value="0">
 	<cfif rc.type neq 'Link'>
 		<input name="filename" type="hidden" value="#rc.contentBean.getfilename()#">
 	</cfif>
@@ -795,14 +795,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
 	<input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
-	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />	
+	<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 	<input type="hidden" name="instanceid" value="#esapiEncode('html_attr',rc.instanceid)#" />
 
 	#rc.$.renderCSRFTokens(context=rc.contentBean.getContentHistID() & "add",format="form")#
 
 	</cfoutput>
 	</form>
-	
+
 <cfelse>
 	<div>
 		<cfinclude template="form/dsp_full.cfm">
