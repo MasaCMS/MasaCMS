@@ -93,27 +93,27 @@ jQuery(document).ready(function(){
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
     	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
-    	<div id="fileupload-target" class="alert alert-info"><p><i class="icon-plus-sign"></i>Drag and drop files to upload</p></div>
+    	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i>Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
             <div class="span7">
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn fileinput-button">
-                    <i class="icon-plus"></i>
+                    <i class="mi-plus"></i>
                     <span>Add files...</span>
                     <input type="file" name="files" multiple>
                 </span>
                 <button type="submit" class="btn start">
-                    <i class="icon-upload"></i>
+                    <i class="mi-upload"></i>
                     <span>Start upload</span>
                 </button>
                 <button type="reset" class="btn cancel">
-                    <i class="icon-ban-circle"></i>
+                    <i class="mi-ban"></i>
                     <span>Cancel upload</span>
                 </button>
                 <!---
                 <button type="button" class="btn btn-danger delete">
-                    <i class="icon-trash icon-white"></i>
+                    <i class="mi-trash icon-white"></i>
                     <span>Delete</span>
                 </button>
                 <input type="checkbox" class="toggle">
@@ -164,20 +164,20 @@ jQuery(document).ready(function(){
     <div class="modal-body"><div class="modal-image"></div></div>
     <div class="modal-footer">
         <a class="btn modal-download" target="_blank">
-            <i class="icon-download"></i>
+            <i class="mi-download"></i>
             <span>Download</span>
         </a>
         <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
-            <i class="icon-play icon-white"></i>
+            <i class="mi-play icon-white"></i>
             <span>Slideshow</span>
         </a>
         <a class="btn btn-info modal-prev">
-            <i class="icon-arrow-left icon-white"></i>
+            <i class="mi-arrow-left icon-white"></i>
             <span>Previous</span>
         </a>
         <a class="btn btn-primary modal-next">
             <span>Next</span>
-            <i class="icon-arrow-right icon-white"></i>
+            <i class="mi-arrow-right icon-white"></i>
         </a>
     </div>
 </div>
@@ -199,7 +199,7 @@ jQuery(document).ready(function(){
             </td>
             <td class="start">tet{% if (!o.options.autoUpload) { %}
                 <button class="btn">
-                    <i class="icon-upload icon-white"></i>
+                    <i class="mi-upload icon-white"></i>
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
             {% } %}</td>
@@ -208,7 +208,7 @@ jQuery(document).ready(function(){
         {% } %}
         <td class="cancel">{% if (!i) { %}
             <button class="btn">
-                <i class="icon-ban-circle icon-white"></i>
+                <i class="mi-ban icon-white"></i>
                 <span>{%=locale.fileupload.cancel%}</span>
             </button>
         {% } %}</td>
@@ -237,7 +237,7 @@ jQuery(document).ready(function(){
         <td class="delete">
            <!---
             <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
-                <i class="icon-trash icon-white"></i>
+                <i class="mi-trash icon-white"></i>
                 <span>{%=locale.fileupload.destroy%}</span>
             </button>
             <input type="checkbox" name="delete" value="1">
@@ -313,12 +313,12 @@ jQuery(document).ready(function(){
         	<div class="btn-group">
             {% if (!o.files.error && !i && !o.options.autoUpload) { %}
                 <button class="btn start">
-                    <i class="icon-upload"></i><span> Upload</span>
+                    <i class="mi-upload"></i><span> Upload</span>
                 </button>
             {% } %}
             {% if (!i) { %}
                 <button class="btn cancel">
-                    <i class="icon-ban-circle"></i><span> Cancel</span>
+                    <i class="mi-ban"></i><span> Cancel</span>
                 </button>
             {% } %}
 			</div>
@@ -336,7 +336,7 @@ jQuery(document).ready(function(){
                 {% if (file.thumbnail_url) { %}
                     <a href="{%=file.url%}" title="{%=file.title%}" class="gallery" download="{%=file.filename%}"><img src="{%=file.thumbnail_url%}"></a>
                 {% } else { %}
-                    <i class="icon-file-text-alt"></i>
+                    <i class="mi-file-text-o"></i>
                 {% } %}
                 <span class="badge">{%=$(file.filename.split(".")).get(-1).toUpperCase()%}</span>
             </span>
@@ -388,11 +388,11 @@ jQuery(document).ready(function(){
         </td>
         <td>
         {% if (file.edit_url !='') { %}
-        <a class="btn" onclick="confirmDialog('Would you like to edit this file in the site manager?','{%=file.edit_url%}');"><i class="icon-pencil"></i> Edit in Site Manager</a>
+        <a class="btn" onclick="confirmDialog('Would you like to edit this file in the site manager?','{%=file.edit_url%}');"><i class="mi-pencil"></i> Edit in Site Manager</a>
          {% } %}
         <!---
             <button class="btn btn-danger delete" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                <i class="icon-trash icon-white"></i>
+                <i class="mi-trash icon-white"></i>
                 <span>Delete</span>
             </button>
             <input type="checkbox" name="delete" value="1" class="toggle">
@@ -445,7 +445,7 @@ $(function () {
                     $(elm).append(data.files[index].preview);
                     $(elm).append('<span class="badge">' + fileext + '</span>' )
                 } else {
-                    $(elm).append('<i class="icon-file-text-alt"></i><span class="badge">' + fileext + '</span>' );
+                    $(elm).append('<i class="mi-file-text-o"></i><span class="badge">' + fileext + '</span>' );
                 }
             });
         }

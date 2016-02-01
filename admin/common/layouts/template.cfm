@@ -63,13 +63,16 @@
 	<!--[if IE 8 ]><html class="mura ie ie8" lang="#esapiEncode('html_attr',session.locale)#"><![endif]-->
 	<!--[if (gte IE 9)|!(IE)]><!--><html lang="#esapiEncode('html_attr',session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
-	<html lang="#esapiEncode('html_attr',session.locale)#" class="mura">
+<!--[if IE 9]> <html lang="en_US" class="ie9 mura no-focus"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="#esapiEncode('html_attr',session.locale)#" class="mura no-focus"><!--<![endif]-->
 </cfif>
   <head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
 
 		<cfsilent>
+			<cfparam name="cookie.ADMINSIDEBAR" default="off">
 			<cfparam name="request.action" default="core:cplugin.plugin">
 			<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
 			<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
@@ -169,45 +172,64 @@
 		</cfsilent>
 
 		<title>#esapiEncode('html',application.configBean.getTitle())#<cfif len(moduleTitle)> - #esapiEncode('html',moduleTitle)#</cfif></title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
 
-		<cfif cgi.http_user_agent contains 'msie'>
-			<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-			<!--[if lt IE 9]>
-			   <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
-			<![endif]-->
-		</cfif>
-
-    <!-- Le fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
-
-    <!-- Favicons -->
-		<link rel="icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico" type="image/x-icon" />
 
-		<!-- CSS -->
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
+<!--- TODO GoWest : PNGs / icons : 2015-12-02T13:59:23-07:00 --->
+        
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-16x16.png" sizes="16x16">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-32x32.png" sizes="32x32">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-96x96.png" sizes="96x96">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-160x160.png" sizes="160x160">
+      <link rel="icon" type="image/png" href="assets/img/favicons/favicon-192x192.png" sizes="192x192">
 
+      <link rel="apple-touch-icon" sizes="57x57" href="assets/img/favicons/apple-touch-icon-57x57.png">
+      <link rel="apple-touch-icon" sizes="60x60" href="assets/img/favicons/apple-touch-icon-60x60.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="assets/img/favicons/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="76x76" href="assets/img/favicons/apple-touch-icon-76x76.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="assets/img/favicons/apple-touch-icon-114x114.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="assets/img/favicons/apple-touch-icon-120x120.png">
+      <link rel="apple-touch-icon" sizes="144x144" href="assets/img/favicons/apple-touch-icon-144x144.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="assets/img/favicons/apple-touch-icon-152x152.png">
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon-180x180.png">
+
+    <!-- Stylesheets -->
+    <!-- Web fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+<!--- TODO GoWest : fontlibary.org URL not responding from staging server, use google fonts instead? : 2015-12-14T11:18:14-07:00 --->
+<!---     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/source-sans-pro" type="text/css"/> --->
+ 
+<!--- TODO GoWest : audit usage and versions of jquery, bootstrap, plugins, other js files, remove unused files : 2015-12-02T14:02:15-07:00 --->
+
+		<!-- Admin CSS -->
+<!--- TODO GoWest : change to admin.min.css for release : 2016-01-29T16:29:31-07:00 --->
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.css" rel="stylesheet" type="text/css" />
+		<!--- 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" /> --->
+
+<!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
 		<!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
-	
-		<!-- jQuery -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+   <script src="#application.configBean.getContext()#/admin/assets/js/oneui.min.js"></script>
+
+<!--- TODO GoWest : keep both spin.js? : see above 2015-12-02T14:12:47-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
+
+<!--- TODO GoWest : keep chart.min.js? : 2016-01-29T16:52:21-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	
 		<!-- Mura Admin JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
 	
+<!--- TODO GoWest : add this msie notification to compact.cfm? : 2016-01-29T16:53:17-07:00 --->
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
@@ -258,17 +280,29 @@
 		 #rc.$.renderEvent('onAdminHTMLHeadRender')#
 	</cfif>
   </head>
-  <body id="#rc.originalcircuit#">
+  <body id="#rc.originalcircuit#" class="header-navbar-fixed">
+
+    <!-- Page Container -->
+    <div id="page-container" class="sidebar-l sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
+
+    <cfinclude template="includes/nav.cfm">
+	
+		<cfif session.siteid neq '' and session.mura.isLoggedIn>
     <cfinclude template="includes/header.cfm">
-    <div class="main">
-      <div class="main-inner">
-         <div class="container">
+		</cfif>
+
+    <!-- Main Container -->
+    <main id="main-container" class="block-constrain">
+
+    <!-- Page Content -->
+    <div class="content">
+
          	<cfif request.action neq "core:cLogin.main" and isdefined('session.siteID')
          		and (
          		listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
          		)
          	>
-
+<!--- M7 changed: put .close links before text to hold top right position --->
           <cfparam name="session.mura.alerts" default="#structNew()#">
           <cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
           	<cfset session.mura.alerts['#session.siteid#']={}>
@@ -278,30 +312,49 @@
      				<cfset alerts=session.mura.alerts['#session.siteid#']>
      				<cfloop collection="#alerts#" item="alert">
      					<cfif not listFindNoCase('defaultpasswordnotice,cachenotice',alert)>
-     						<cfif len(alerts['#alert#'].type)>
-     						<div class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#">
-     						<cfelse>
-     						<div class="alert alertr">
-     						</cfif>
+     						<div<cfif len(alerts['#alert#'].type)> class="alert alert-#esapiEncode('html',alerts['#alert#'].type)#"<cfelse> class="alert alert-error"</cfif>>
+				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+		            </div>
 		     				#alerts['#alert#'].text#
-				           	<a href="##" data-alertid="#alert#" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 		     			</cfif>
      				</cfloop>
      			</cfif>
 
      			<cfif rc.renderMuraAlerts>
      				<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.mura.alerts['#session.siteID#'],'defaultpasswordnotice')>
-     					<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
-			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
+     					<div class="alert alert-error">
+			           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+     						#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+							</div>
 	     			</cfif>
 	     			<cfif not application.settingsManager.getSite(session.siteID).getCache() and not structKeyExists(session.mura.alerts['#session.siteID#'],'cachenotice')>
-			           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
-			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
+			           	<div class="alert">
+			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="mi-times-circle"></i></a>
+			           		#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+			           </div>
 		           	</cfif>
      			</cfif>
      			
+<!--- TODO GoWest : move this script elsewhere? : 2015-12-17T15:57:17-07:00 --->
+     			     			
 	           	<script>
 	           		$(document).ready(function(){
+	           			// persist sidebar selection
+		           		$('*[data-action=sidebar_mini_toggle').click(function(){
+		           			if($('##page-container').hasClass('sidebar-mini')){
+			           			createCookie('ADMINSIDEBAR','off',5);
+		           			} else {
+			           			createCookie('ADMINSIDEBAR','on',5);
+		           			}
+		           		});
+
+		           		// persist open nav items
+<!--- TODO GoWest : prevent open parent behavior on minimized nav? (or if ok as is, remove these commented lines): 2015-12-17T16:27:15-07:00 --->
+		           		// if(!($('##page-container').hasClass('sidebar-mini'))){
+		           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
+		           		//}
+
+		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
 	           				function(){
 	           					var _alert=this;
@@ -324,38 +377,56 @@
 	           		});
 	           	</script>
          	</cfif>
-         	<div class="row-fluid">
+         	<div class="mura-layout-row">
          		<cfif request.action neq "core:cDashboard.main" 
          			and request.action neq "core:cLogin.main">
-         			<div id="mura-content" class="span12">
+         			<div id="mura-content">
          		</cfif>
          		</cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true">
          		<cfif request.action neq "core:cDashboard.main"
          			and request.action neq "core:cLogin.main">
-         			</div>
+         			</div> <!-- /##mura-content -->
          		</cfif>
-         	</div> <!-- /row -->
-         </div> <!-- /container -->
-      </div> <!-- /main-inner -->
-    </div> <!-- /main -->  
+         	</div> <!-- /.mura-layout-row -->
+
+      </div>  <!-- /.content -->
+
+      </main>
+
+<!--- TODO GoWest : use this? : 2015-12-15T10:12:08-07:00 --->
     
-    <!---
+<!---
     <script type="text/javascript">
 		stripe('stripe');
 	</script>
-	
 	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 		<script type="text/javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
 	</cfif>	
-	--->
+--->
 
-		<!-- Le javascript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+<!--- TODO GoWest : should the oneUI min file go here instead of page head? : 2015-12-02T14:14:35-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
+
+        <!-- Initialize CKeditor -->
+<!--- TODO GoWest : how is CKeditor init'd in Mura? : 2015-12-02T14:16:39-07:00 --->
+
+<!--- 
+        <script src="assets/js/plugins/ckeditor/ckeditor.js"></script>
+	--->
+<!--- 
+        <script>
+            $(function () {
+                App.initHelpers('ckeditor');
+                 CKEDITOR.inline('content-body');
+                 CKEDITOR.inline('content-summary');
+            });
+        </script>        
+ --->
+
+<!--- TODO GoWest : this include : 2015-12-15T13:23:46-07:00 --->
+
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
@@ -363,6 +434,23 @@
 		<cfif structKeyExists(rc,'$')>
 			#rc.$.renderEvent('onAdminHTMLFootRender')#
 		</cfif>
+
+    </div><!-- /.page-container -->		
+
 	</body>
 </html></cfprocessingdirective>
 </cfoutput>
+
+<!--- TODO GoWest : TEMP REMOVE : 2015-12-18T09:09:27-07:00 --->
+<cfif structkeyExists(url,'debug') and url.debug neq 0>
+<cfset session.debug = 1>
+<cfelse>
+<cfset session.debug = 0>
+</cfif>
+
+<cfif session.debug>
+<div style="padding-left: 360px;">
+<cfdump var="#url#" abort="false" label="url">
+<cfdump var="#rc#" abort="false" label="rc">
+</div>
+</cfif>	

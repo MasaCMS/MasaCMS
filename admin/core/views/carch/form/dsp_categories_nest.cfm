@@ -120,18 +120,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<a class="dropdown-toggle<cfif not attributes.disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
-											<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
+											<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
 												<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 											</cfcase>
 											<cfcase value="1">
-												<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i>
+												<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i>
 												<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
 											</cfcase>
 											<cfcase value="2">
-												<i class="icon-calendar" title="#esapiEncode('html_attr',LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"></i>
+												<i class="mi-calendar" title="#esapiEncode('html_attr',LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"></i>
 											</cfcase>
 											<cfdefaultcase>
-												<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
+												<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 											</cfdefaultcase>
 										</cfswitch>
 									</a><!--- /.mura-quickEditItem --->

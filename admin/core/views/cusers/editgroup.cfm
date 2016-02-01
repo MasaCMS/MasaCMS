@@ -101,25 +101,35 @@
 
 <!--- Header --->
 	<cfoutput>
+
+<div class="items-push mura-header">
 		<h1>#rbKey('user.groupform')#</h1>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
+			
 		<div id="nav-module-specific" class="btn-group">
 			<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-				<i class="icon-circle-arrow-left"></i> 
+					<i class="mi-arrow-circle-left"></i> 
 				#rbKey('sitemanager.back')#
 			</a>
 
 			<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
-				<i class="icon-eye-open"></i>
+					<i class="mi-eye"></i>
 				#rbKey('user.viewallgroups')#
 			</a>
 
 			<cfif !rc.userBean.getIsNew()>
 				<a class="btn" href="#buildURL(action='cusers.editgroupmembers', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-					<i class="icon-group"></i>
+						<i class="mi-group"></i>
 					#rbKey('user.viewgroupsusers')#
 				</a>
 			</cfif>
 		</div>
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->		
 	</cfoutput>
 
 <!--- Edit Form --->
@@ -128,15 +138,15 @@
 			<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 		</cfif>
 
-
 		<form novalidate="novalidate"<cfif not (rsSubTypes.recordcount or arrayLen(pluginEventMappings))> class="fieldset-wrap"</cfif> action="#buildURL(action='cUsers.update', querystring='userid=#rc.userBean.getUserID()#')#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return userManager.submitForm(this);">
+
+		<div class="block block-constrain">
 	</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
-			<div class="tabbable tabs-left mura-ui">
-				<ul class="nav nav-tabs tabs initActiveTab">
+				<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
 					<cfoutput>
-						<li>
+						<li class="active">
 							<a href="##tabBasic" onclick="return false;"><span>#esapiEncode('html',rbKey('user.basic'))#</span></a>
 						</li>
 						<cfif rsSubTypes.recordcount>
@@ -161,18 +171,36 @@
 					</cfif>
 				</ul>
 
-				<div class="tab-content">
-					<div id="tabBasic" class="tab-pane fade">
+				<div class="tab-content block-content">
+					<div id="tabBasic" class="tab-pane active">
+
+
 		</cfif>
 
 		<cfoutput>
-			<div class="fieldset">
+		<div class="block block-bordered">
+			<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
+				<!-- block header -->
+				<div class="block-header bg-gray-lighter">
+					<ul class="block-options">
+						<li>Something here?</li>
+						<li>
+							<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+						</li>
+						<li>
+							<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+						</li>
+					</ul>
+					<h3 class="block-title">Basic Settings</h3>
+				</div> <!-- /.block header -->	
+				</cfif>					
+				<div class="block-content">
+
 				<cfif rsNonDefault.recordcount>
-					<div class="control-group">
-						<label class="control-label">
+					<div class="mura-control-group">
+						<label>
 							#rbKey('user.type')#
 						</label>
-						<div class="controls">
 							<select name="subtype" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 								<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>>
 									#rbKey('user.default')#
@@ -184,40 +212,34 @@
 								</cfloop>
 							</select>
 						</div>
-					</div>
 				</cfif>
 
-				<div class="control-group">
-					<div class="span6">
-						<label class="control-label">
+				<div class="mura-control-group">
+						<label>
 							#rbKey('user.groupname')#
 						</label>
-						<div class="controls">
-							<input type="text" class="span12" name="groupname" value="#esapiEncode('html',rc.userBean.getgroupname())#" required="true" message="#rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
-						</div>
+						<input type="text" name="groupname" value="#esapiEncode('html',rc.userBean.getgroupname())#" required="true" message="#rbKey('user.groupnamerequired')#" <cfif rc.userbean.getPerm()>readonly="readonly"</cfif>>
 					</div>
 
-					<div class="span6">
-						<label class="control-label">
-							<a href="##" rel="tooltip" data-original-title="#rbKey('user.groupemailmessage')#">
+				<div class="mura-control-group">
+						<label>
+
+					<span data-toggle="popover" title="" data-placement="right" 
+				  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemailmessage"))#" 
+				  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"user.groupemail"))#">	
 								#rbKey('user.groupemail')#
-								<i class="icon-question-sign"></i>
-							</a>
+								<i class="mi-question-circle"></i>
+							</span>
 						</label>
-						<div class="controls">
-							<input type="text" class="span12" name="email" value="#esapiEncode('html',rc.userBean.getemail())#">
-						</div>
-					</div>
+						<input type="text" name="email" value="#esapiEncode('html',rc.userBean.getemail())#">
 				</div>
 
 				<cfif not rc.userbean.getperm()>
-					<div class="control-group">
+					<div class="mura-control-group">
 
-						<div class="span6">
-							<label class="control-label">
+							<label>
 								#rbKey('user.tablist')#
 							</label>
-							<div class="controls">
 								<select name="tablist" multiple="true" class="span12">
 									<option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
 									<cfloop list="#application.contentManager.getTabList()#" index="t">
@@ -227,18 +249,15 @@
 									</cfloop>
 								</select>
 							</div>
-						</div>
-
 						<!--- 
 							Group Type
 							** Only allow 'Admin' or Super Users to modify Group Types
 						--->
 						<cfif rc.isAdmin>
-							<div class="span6">
-								<label class="control-label">
+							<div class="mura-control-group">
+								<label>
 									#rbKey('user.grouptype')#
 								</label>
-								<div class="controls">
 									<label class="radio inline">
 										<input name="isPublic" type="radio" class="radio inline" value="1" <cfif rc.tempIsPublic>Checked</cfif>>
 										#rbKey('user.membergroup')#
@@ -248,27 +267,46 @@
 											#rbKey('user.systemgroup')#
 									</label>
 								</div>
-							</div>
 						<cfelse>
 							<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
 						</cfif>
 
-					</div>
 				<cfelse>
 					<input type="hidden" name="isPublic" value="#rc.tempIsPublic#">
 				</cfif>
-			</div>
+
 
 			<span id="extendSetsBasic"></span>
+
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
 		</cfoutput>
 
 		<cfif rsSubTypes.recordcount or arrayLen(pluginEventMappings)>
-			</div>
+			</div> <!-- /.tab-pane -->
 
 			<cfif rsSubTypes.recordcount>
 				<div id="tabExtendedattributes" class='tab-pane'>
+					<div class="block block-bordered">
+						<!-- block header -->
+						<div class="block-header bg-gray-lighter">
+							<ul class="block-options">
+								<li>Something here?</li>
+								<li>
+									<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+								</li>
+								<li>
+									<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+								</li>
+							</ul>
+							<h3 class="block-title">Extended Attributes</h3>
+						</div> <!-- /.block header -->						
+						<div class="block-content">					
 					<span id="extendSetsDefault"></span>
-				</div>
+						</div> <!-- /.block-content -->
+					</div> <!-- /.block-bordered -->
+				</div> <!-- /.tab-pane -->
 			</cfif>
 
 			<cfif arrayLen(pluginEventMappings)>
@@ -278,9 +316,26 @@
 						<cfset tabID="tab" & $.createCSSID(pluginEventMappings[i].pluginName)>
 						<cfset tabList=listAppend(tabList,tabID)>
 						<cfset pluginEvent.setValue("tabList",tabLabelList)>
-						<div id="#tabID#" class="tab-pane fade">
+						<div id="#tabID#" class="tab-pane">
+						<div class="block block-bordered">
+							<!-- block header -->
+							<div class="block-header bg-gray-lighter">
+								<ul class="block-options">
+									<li>Something here?</li>
+									<li>
+										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+									</li>
+									<li>
+										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+									</li>
+								</ul>
+								<h3 class="block-title">Plugin Events</h3>
+							</div> <!-- /.block header -->						
+							<div class="block-content">							
 							#$.getBean('pluginManager').renderEvent(eventToRender=pluginEventMappings[i].eventName,currentEventObject=$,index=i)#
-						</div>
+									</div> <!-- /.block-content -->
+								</div> <!-- /.block-bordered -->
+							</div> <!-- /.tab-pane -->							
 					</cfloop>
 				</cfoutput>
 			</cfif>
@@ -305,8 +360,8 @@
 							</cfif>
 							#rc.$.renderCSRFTokens(context=rc.userBean.getUserID(),format="form")#
 						</div> 
-					</div>
-				</div>
+
+				</div> <!-- /.block-content.tab-content -->
 						
 				<cfif rsSubTypes.recordcount>
 					<script type="text/javascript">
@@ -337,5 +392,6 @@
 			</cfoutput>
 		</cfif>
 
+	</div> <!-- /.block-constrain -->
 	</form>
 <!--- /Edit Form --->

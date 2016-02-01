@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="control-group">
 				     	<label class="control-label">
 							<cfif len(settingBean.getHint())>
-								<a href="##" rel="tooltip" title="#esapiEncode('html_attr',settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
+								<a href="##" rel="tooltip" title="#esapiEncode('html_attr',settingBean.gethint())#">#settingBean.getLabel()# <i class="mi-question-circle"></i></a>
 							<cfelse>
 								#settingBean.getLabel()#
 							</cfif>
@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<div class="form-actions">
-			<button type="submit" class="btn"><i class="icon-ok-sign"></i> Update</button>
+			<button type="submit" class="btn"><i class="mi-check-circle"></i> Update</button>
 		</div>
 	</form>
 

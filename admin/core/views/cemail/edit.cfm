@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
     <!--- Email --->
     <div class="tab-content">
-    <div id="emailContent" class="tab-pane fade">
+    <div id="emailContent" class="tab-pane">
 	  <div class="fieldset">
       	<div class="control-group">
         <label class="control-label">
@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>  
 
 	<!--- Recipients --->      
-	<div id="emailGroupsLists" class="tab-pane fade">
+	<div id="emailGroupsLists" class="tab-pane">
 	<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h2> --->     	
 	<div class="fieldset">
 	  
@@ -338,11 +338,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfsilent>
 	<cfif showDelete>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
+	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('delete', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="mi-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
 	</cfif>
-	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
-	<button type="button" class="btn toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+	<button type="button" class="btn toggle" onClick="emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
+	<button type="button" class="btn toggle" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="mi-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
 	<input type="hidden" name="emailid" value="#currentEmailid#">
 </div>
        
@@ -356,8 +356,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </div>
            
 	          <div class="scheduler-actions">
-		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
+		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="mi-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="mi-ban"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
 		       </div>
         <input type="hidden" name="action" value="">
         <input type="hidden" name="sendNow" value="">

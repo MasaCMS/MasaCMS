@@ -94,26 +94,26 @@
 											<cfif IsDefined('rc.listUnassignedUsers') and ListFindNoCase(rc.listUnassignedUsers, local.item.getValue('userid'))>
 												<li>
 													<a rel="tooltip" title="Unassigned">
-														<i class="icon-exclamation"></i>
+														<i class="mi-exclamation"></i>
 													</a>
 												</li>
 											</cfif>
 											<cfif local.item.getValue('s2') EQ 1>
 												<li>
 													<a rel="tooltip" title="#rbKey('user.superuser')#">
-														<i class="icon-star"></i>
+														<i class="mi-star"></i>
 													</a>
 												</li>
 											<cfelseif local.item.getValue('isPublic') EQ 0>
 												<li>
 													<a rel="tooltip" title="#rbKey('user.adminuser')#">
-														<i class="icon-user"></i>
+														<i class="mi-user"></i>
 													</a>
 												</li>
 											<cfelse>
 												<li>
 													<a rel="tooltip" title="#rbKey('user.sitemember')#">
-														<i class="icon-user"></i>
+														<i class="mi-user"></i>
 													</a>
 												</li>
 											</cfif>
@@ -166,12 +166,12 @@
 												<cfif local.canEdit>
 													<li>
 														<a href="#buildURL(action='cusers.edituser', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
-															<i class="icon-pencil"></i>
+															<i class="mi-pencil"></i>
 														</a>
 													</li>
 												<cfelse>
 													<li class="disabled">
-														<i class="icon-pencil"></i>
+														<i class="mi-pencil"></i>
 													</li>
 												</cfif>
 
@@ -179,7 +179,7 @@
 												<cfif ListLast(rc.muraAction, '.') eq 'editgroupmembers'>
 													<li class="remove">
 														<a href="#buildURL(action='cusers.removefromgroup', querystring='userid=#local.item.getValue('userid')#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="return confirmDialog('#jsStringFormat(rbKey('user.removeconfirm'))#',this.href)" rel="tooltip" title="#rbKey('user.removeconfirm')#">
-															<i class="icon-minus-sign"></i>
+															<i class="mi-minus-circle"></i>
 														</a>
 													</li>
 												</cfif>
@@ -188,12 +188,12 @@
 												<cfif local.canEdit>
 													<li>
 														<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
-															<i class="icon-remove-sign"></i>
+															<i class="mi-times-circle"></i>
 														</a>
 													</li>
 												<cfelse>
 													<li class="disabled">
-														<i class="icon-remove-sign"></i>
+														<i class="mi-times-circle"></i>
 													</li>
 												</cfif>
 

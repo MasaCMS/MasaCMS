@@ -49,75 +49,88 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsList=application.dashboardManager.getTopReferers(rc.siteID,rc.limit,rc.startDate,rc.stopDate) />
 <cfset rsTotal=application.dashboardManager.getTotalReferers(rc.siteID,rc.startDate,rc.stopDate) />
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topreferers")#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<div class="items-push mura-header">
+	<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topreferers")#</h1>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+	<div class="mura-item-metadata">
+		<div class="label-group">
 
-<div class="fieldset">
-	<div class="control-group">
-	<div class="span2">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
-	</label>
-	      <div class="controls">
-			<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-	     </div>
-	 </div>
-	
-	<div class="span2">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,"params.to")#
-		</label>
-	      <div class="controls">
-			<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-	     </div>
-	 </div>
-	
-	<div class="span2">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
-		</label>
-	      <div class="controls"><select name="limit" class="span6">
-			<cfloop list="10,20,30,40,50,75,100" index="i">
-			<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+			<cfinclude template="dsp_secondary_menu.cfm">
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
+
+			<h3>#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
+			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+
+			<div class="fieldset">
+				<div class="control-group">
+				<div class="span2">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
+				</label>
+				      <div class="controls">
+						<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+				     </div>
+				 </div>
+				
+				<div class="span2">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
+					</label>
+				      <div class="controls">
+						<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+				     </div>
+				 </div>
+				
+				<div class="span2">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+					</label>
+				      <div class="controls"><select name="limit" class="span6">
+						<cfloop list="10,20,30,40,50,75,100" index="i">
+						<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+						</cfloop>
+					</select>
+				    </div>
+				</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+			</div>
+
+			<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
+			<input type="hidden" value="cDashboard.topReferers" name="muraAction"/>
+			</form>
+
+			<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalreferrals")#: <strong>#rstotal.referals#</strong></h3>
+			<table class="mura-table-grid">
+			<tr>
+			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.referer")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.count")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
+			</tr>
+			<cfif rslist.recordcount>
+			<cfloop query="rslist">
+			<tr>
+			<td class="var-width"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#esapiEncode('html',left(rslist.referer,120))#</a><cfelse>#esapiEncode('html',rslist.referer)#</cfif></td>
+			<td>#rsList.referals#</td>
+			<td>#decimalFormat((rsList.referals/rstotal.referals)*100)#%</td>
+			</tr>
 			</cfloop>
-		</select>
-	    </div>
-	</div>
-	</div>
-</div>
-<div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
-</div>
-
-<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
-<input type="hidden" value="cDashboard.topReferers" name="muraAction"/>
-</form>
-
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalreferrals")#: <strong>#rstotal.referals#</strong></h3>
-<table class="mura-table-grid">
-<tr>
-<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.referer")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.count")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
-</tr>
-<cfif rslist.recordcount>
-<cfloop query="rslist">
-<tr>
-<td class="var-width"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#esapiEncode('html',left(rslist.referer,120))#</a><cfelse>#esapiEncode('html',rslist.referer)#</cfif></td>
-<td>#rsList.referals#</td>
-<td>#decimalFormat((rsList.referals/rstotal.referals)*100)#%</td>
-</tr>
-</cfloop>
-<cfelse>
-<tr>
-<td class="noResults" colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.nosearchresults")#</td>
-</tr>
-</cfif>
-</table>
-</cfoutput>
-
-
-
+			<cfelse>
+			<tr>
+			<td class="noResults" colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.nosearchresults")#</td>
+			</tr>
+			</cfif>
+			</table>
+			</cfoutput>	
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->

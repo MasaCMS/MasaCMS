@@ -83,7 +83,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 	<div class="tab-content">
 	
-	<div id="tabBasic" class="tab-pane fade in">
+	<div id="tabBasic" class="tab-pane in">
 		<div class="fieldset">
 		
 		<cfif rsNonDefault.recordcount>
@@ -184,7 +184,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 	</div>
 	
-	<div id="tabAddressinformation" class="tab-pane fade in">
+	<div id="tabAddressinformation" class="tab-pane in">
 		<div class="fieldset">
 
 			<div class="control-group">
@@ -209,8 +209,8 @@ select * from rsSubTypes where subType <> 'Default'
 					<cfif rsAddresses.addressURL neq ''>#application.rbFactory.getKeyValue(session.rb,'user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#rsAddresses.addressURL#</a><br/></cfif>
 					<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#rsAddresses.addressEmail#</a></cfif>
 					</td>
-					<td nowrap class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#"><i class="icon-pencil"></i></a></li>
-					<cfif rsAddresses.isPrimary neq 1><li class="icon-remove-sign"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><i class="icon-remove-sign"></i></cfif></ul></td>
+					<td nowrap class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cusers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#"><i class="mi-pencil"></i></a></li>
+					<cfif rsAddresses.isPrimary neq 1><li class="mi-times-circle"><a title="Delete" href="./?muraAction=cusers.updateAddress&userID=#session.mura.userID#&action=delete&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=#rsAddresses.addressID#&returnURL=#esapiEncode('url',cgi.query_string)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#',this.href);"><i class="mi-times-circle"></i></a></li><cfelse><i class="mi-times-circle"></i></cfif></ul></td>
 				</tr>
 				</cfloop>
 				</table>
@@ -235,7 +235,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</div>
 	
 	<cfif rsSubTypes.recordcount>
-	<div id="tabExtendedattributes" class="tab-pane fade in">
+	<div id="tabExtendedattributes" class="tab-pane in">
 		<div class="fieldset">
 				<span id="extendSetsDefault"></span>
 				<script type="text/javascript">
@@ -245,7 +245,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</div>
 	</cfif>
 	
-	<div id="tabAdvanced" class="tab-pane fade in">
+	<div id="tabAdvanced" class="tab-pane in">
 		<div class="fieldset">
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>

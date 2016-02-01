@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!---<cfif (rsnest.type eq 'Page') or  (rsnest.type eq 'Folder')  or  (rsnest.type eq 'Calendar') or (rsnest.type eq 'Gallery')>--->
 
 	
-	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#');"><i class="icon-plus-sign"></i></a>	
+	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#');"><i class="mi-plus-circle"></i></a>	
 	
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
@@ -186,9 +186,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<a class="mura-quickEditItem" data-attribute="inheritObjects">
 		</cfif>
 			<cfif rsnest.inheritObjects eq 'cascade'>
-				<i class="icon-arrow-down" title="#rsnest.inheritObjects#"></i>
+				<i class="mi-arrow-down" title="#rsnest.inheritObjects#"></i>
 				<cfelseif rsnest.inheritObjects eq 'reject'>
-					<i class="icon-ban-circle" title="#rsnest.inheritObjects#"></i>
+					<i class="mi-ban" title="#rsnest.inheritObjects#"></i>
 				<cfelse>
 					<span class="bullet" title="#rsnest.inheritObjects#">&bull;</span>
 			</cfif>
@@ -202,16 +202,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif rsnest.Display eq 1 and rsnest.approved>
-		 <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
+		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
 		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
 				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
 			</cfif>
-			<i class="icon-calendar"></i>
+			<i class="mi-calendar"></i>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)></a></cfif>
 		<cfelse>
-		<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
+		<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 		</cfif>
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd class="template">
 	  	<cfif verdict eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rsnest.template) or len(rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 		<cfif len(rsnest.template) or len(rsnest.template)>
-			 <i class="icon-list-alt" title="#rsnest.template#"></i><span>#rsnest.template#</span>
+			 <i class="mi-list-alt" title="#rsnest.template#"></i><span>#rsnest.template#</span>
 		<cfelse>
 			<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
            	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rsnest.moduleid eq '00000000000000000000000000000000000'>
 	<dd class="nav">
 		 <cfif verdict eq 'editor' and request.hasPublishingTab><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-			 <cfif rsnest.isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
+			 <cfif rsnest.isnav><i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
 			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#</span>
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
@@ -241,16 +241,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif rsnest.Display eq 1 and rsnest.approved>
-		 <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
+		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
 		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
 				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
 			</cfif>
-			<i class="icon-calendar"></i>
+			<i class="mi-calendar"></i>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)></a></cfif>
 		<cfelse>
-		<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
+		<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 		</cfif>
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
@@ -260,32 +260,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="icon-pencil"></i></a></li>
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsNest.filename)#');"><i class="icon-globe"></i></a></li>
-	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="icon-book"></i></a></li>
+       <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-pencil"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsNest.filename)#');"><i class="mi-globe"></i></a></li>
+	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-book"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="icon-group"></i></a></li>
+          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&startrow=#esapiEncode('url',attributes.startrow)#"><i class="mi-group"></i></a></li>
         <cfelse>
-		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
+		  <li class="permissions disabled"><a><i class="mi-group"></i></a></li>
 		</cfif>
         <cfif deletable and not isLockedBySomeoneElse>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&parentid=#esapiEncode('url',attributes.parentid)#&startrow=#esapiEncode('url',attributes.startrow)##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#esapiEncode('url',rsnest.moduleid)#&parentid=#esapiEncode('url',attributes.parentid)#&startrow=#esapiEncode('url',attributes.startrow)##attributes.muraScope.renderCSRFTokens(context=rsnest.contentid & 'deleteall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="mi-times-circle"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
-          <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
+          <li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
         </cfif>
         <cfelse>
-        <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
+        <li class="edit disabled"><a><i class="mi-pencil"></i></a></li>
 		<cfswitch expression="#rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#'));"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,rsnest.filename)#','#esapiEncode('javascript',rsnest.targetParams)#'));"><i class="mi-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(attributes.siteid).getWebPath(complete=1)##$.getURLStem(attributes.siteid,"")#index.cfm?LinkServID=#rsnest.contentid#','#esapiEncode('javascript',rsnest.targetParams)#');"><i class="mi-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-		<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
-		<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
-		<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
+		<li class="version-history disabled"><a><i class="mi-book"></i></a></li>
+		<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+		<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
       </cfif>
 		<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rsnest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#

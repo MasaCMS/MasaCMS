@@ -48,29 +48,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subType = application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
 <cfset rcsBean = $.getBean('relatedContentSet').loadBy(relatedContentSetID=rc.relatedContentSetID)>
 
-<h1><cfif len(rc.relatedContentSetID)>Edit<cfelse>Add</cfif> Related Content Set</h1>
+
 <cfoutput>
+<div class="items-push mura-header">
+	<h1><cfif len(rc.relatedContentSetID)>Edit<cfelse>Add</cfif> Related Content Set</h1>
 
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Extension Overview</a>
-</div>
+	<div class="mura-item-metadata">
+		<div class="label-group">
 
-<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #esapiEncode('html',subType.getSubType())#</h2>
+			<div id="nav-module-specific" class="btn-group">
+			<a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> Back to Class Extensions</a>
+			<a class="btn" href="./?muraAction=cExtend.listSets&subTypeID=#esapiEncode('url',rc.subTypeID)#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-arrow-circle-left"></i> Back to Extension Overview</a>
+			</div>
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+
+<div class="block block-constrain">
+		<div class="block block-bordered">
+		  <div class="block-content">
+
+			<h2><i class="#subtype.getIconClass(includeDefault=true)# mi-lg"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #esapiEncode('html',subType.getSubType())#</h2>
 
 
-<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+			<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
-<div class="fieldset">
+			<div class="fieldset">
 
-<div class="control-group">
+			<div class="control-group">
 	<label class="control-label">Related Content Set Name</label>
 	<div class="controls">
 	<input name="name" type="text" value="#esapiEncode('html_attr',rcsBean.getName())#" required="true"/>
 	</div>
-</div>
-<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
-<div class="control-group">
+			</div>
+			<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
+			<div class="control-group">
 	<div class="span6 availableSubTypesContainer" >
 		<label class="control-label">Allow users to add only specific subtypes?</label>
 		<div class="controls"> 
@@ -94,25 +107,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>			
 		</div>
 	</div>
-</div>
+			</div>
 
-</div>
-<div class="form-actions">
-<cfif not len(rc.relatedContentSetID)>
+			</div>
+			<div class="form-actions">
+			<cfif not len(rc.relatedContentSetID)>
 	<cfset rc.relatedContentSetID=createUUID()>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
 	<input type=hidden name="relatedContentSetID" value="#rc.relatedContentSetID#">
-<cfelse>
+			<cfelse>
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','Delete Related Content Set?');" value="Delete" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
 	<input type=hidden name="relatedContentSetID" value="#esapiEncode('html_attr',rcsBean.getRelatedContentSetID())#">
-</cfif>
-</div>
+			</cfif>
+			</div>
 
-<input type="hidden" name="action" value="">
-<input name="muraAction" value="cExtend.updateRelatedContentSet" type="hidden">
-<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
-<input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
-#rc.$.renderCSRFTokens(context=rc.relatedContentSetID,format="form")#
-</form>
+			<input type="hidden" name="action" value="">
+			<input name="muraAction" value="cExtend.updateRelatedContentSet" type="hidden">
+			<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
+			<input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
+			#rc.$.renderCSRFTokens(context=rc.relatedContentSetID,format="form")#
+			</form>
+
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
+
 </cfoutput>

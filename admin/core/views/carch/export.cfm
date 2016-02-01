@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cArch.list&amp;siteid=#esapiEncode('url',session.siteid)#&amp;contentid=#esapiEncode('url',rc.contentid)#&amp;moduleid=#esapiEncode('url','00000000000000000000000000000000000')#">
-			<i class="icon-circle-arrow-left"></i> 
+			<i class="mi-arrow-circle-left"></i> 
 			#rc.$.rbKey('sitemanager.backtositemanager')#
 		</a>
 	</div>
@@ -107,12 +107,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<div class="form-actions">
 			<button type="button" class="btn" onclick="return history.go(-1);">
-				<i class="icon-circle-arrow-left"></i> 
+				<i class="mi-arrow-circle-left"></i> 
 				#rc.$.rbKey('sitemanager.cancel')#
 			</button>
 
 			<button type="button" class="btn" onClick="return exportPartial();">
-				<i class="icon-signout"></i> 
+				<i class="mi-sign-out"></i> 
 				#rc.$.rbKey('sitemanager.content.exportcontent')#
 			</button>
 		</div>
