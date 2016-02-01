@@ -61,11 +61,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.action eq "add">
 <li>
-<a href="javascript:;" id="#esapiEncode('html_attr',attributes.formName)#open" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideDown();this.style.display='none';$('###esapiEncode('html',attributes.formName)#close').show();return false;"><i class="mi-plus-circle"></i> Add New Attribute</a></li>
-<li><a href="javascript:;" class="btn" style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#close" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();this.style.display='none';$('###esapiEncode('html',attributes.formName)#open').show();return false;"><i class="mi-eye-slash"></i> Close</a></li>
+<a href="javascript:;" id="#esapiEncode('html_attr',attributes.formName)#open" class="btn" onclick="$('###esapiEncode('html',attributes.formName)#container').slideDown();this.style.display='none';$('###esapiEncode('html',attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#close" onclick="$('###esapiEncode('html',attributes.formName)#container').slideUp();this.style.display='none';$('###esapiEncode('html',attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
 <cfif isDefined('attributes.attributesArray') and ArrayLen(attributes.attributesArray)>
-<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="mi-check"></i> Save Order</a></li>
-<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="mi-arrows"></i> Reorder</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
+<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
 </cfif>
 </cfif>
 </ul>

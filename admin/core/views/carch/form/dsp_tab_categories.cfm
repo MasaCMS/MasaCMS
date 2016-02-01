@@ -47,27 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))/>
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
-	<div id="tabCategorization" class="tab-pane">
+	<div id="tabCategorization" class="tab-pane fade">
 
-		<!-- block -->
-	  <div class="block block-bordered">
-	  	<!-- block header -->
-	    <div class="block-header bg-gray-lighter">
-	      <ul class="block-options">
-	          <li>Something here?</li>
-	          <li>
-	              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-	          </li>
-	          <li>
-	              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-	          </li>
-	      </ul>
-	      <h3 class="block-title">Categories</h3>
-	    </div>
-	    <!-- /block header -->
-			
-			<!-- block content -->
-			<div class="block-content">
 		<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
 		<div class="fieldset">
@@ -79,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dt>
 				<dd class="categoryassignmentwrapper">
 					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="mi-question-circle"></i>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="icon-question-sign"></i>
 					</a>
 				</dd>
 			</dl><!--- /.mura-grid-hdr --->
@@ -98,9 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendset-container-categorization" class="extendset-container"></span>
 		<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
 		
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
-</div> <!--- /.tab-pane --->
+	</div><!--- /tabCatgeorization --->
 </cfoutput>
 <script>
 	siteManager.initCategoryAssignments();

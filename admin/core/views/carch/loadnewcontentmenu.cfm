@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'#i#/Default')>
 						<li class="new#i#">
 							<cfif len(rsItemTypes.description)>
-								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
 							</cfif>
 							<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</span></a>
 						</li>
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#output#
 						<cfelse>
 							<li class="new#i#">
-								<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a></cfif>
+								<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
 								<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(type=i,subtype=rsItemTypes.subtype,siteid=rc.siteID)#"></i> <span> <!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#/ --->#rsItemTypes.subType#</span></a>
 							</li>
 						</cfif>
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 			<cfif application.configBean.getValue(property='allowmultiupload',defaultValue=true) and not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
-					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="mi-question-circle"></i></a>--->
+					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
 					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
 				</li>
 			</cfif>
@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItem">
-					<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a></cfif>
+					<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
 					<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemLink"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</span></a>
 				</li>
 			</cfif>
@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<li class="newFile">
 							<cfif len(rsItemTypes.description)>
-								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="mi-question-circle"></i></a>
+								<a href="##" rel="tooltip" data-original-title="#esapiEncode('html_attr',rsItemTypes.description)#"><i class="icon-question-sign"></i></a>
 							</cfif>
 							<a href="./?muraAction=cArch.edit&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItem"><i class="#$.iconClassByContentType(type='GalleryItem',subtype='default',siteid=rc.siteid)#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/ --->#rsItemTypes.subType#</span></a>
 						</li>
@@ -152,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 			<cfif application.configBean.getValue(property='allowmultiupload',defaultValue=true) and not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 				<li class="newGalleryItemMulti">
-					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="mi-question-circle"></i></a>--->
+					<!---<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>--->
 					<a href="./?muraAction=cArch.multiFileUpload&contentid=&parentid=#esapiEncode('url',rc.contentid)#&type=File&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#esapiEncode('url',rc.ptype)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType(type='Quick',subtype='default',siteid=rc.siteid)#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</span></a>
 				</li>
 			</cfif>

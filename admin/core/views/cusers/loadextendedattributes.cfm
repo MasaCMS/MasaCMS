@@ -85,7 +85,7 @@
 		<div class="control-group">
 	      	<label class="control-label">
 			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="mi-question-circle"></i></a>
+			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
 			<cfelse>
 			#attributeBean.getLabel()#
 			</cfif>
@@ -141,7 +141,7 @@
 		<div class="control-group">
 	      	<label class="control-label">
 			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="mi-question-circle"></i></a>
+			<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
 			<cfelse>
 			#attributeBean.getLabel()#
 			</cfif>

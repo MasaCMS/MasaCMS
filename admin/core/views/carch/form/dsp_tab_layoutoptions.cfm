@@ -45,8 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- TODO GoWest : this file not used, remove per Matt : 2016-01-19T15:41:08-07:00 --->
-
 <cfloop from="1" to="#application.settingsManager.getSite('siteID').getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
@@ -54,14 +52,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabLayoutOptions")>
 
 <cfoutput>
-  <div id="tabLayoutOptions" class="tab-pane">
+  <div id="tabLayoutOptions" class="tab-pane fade">
 
   <span id="extendset-container-tablayoutoptionstop" class="extendset-container"></span>
 
   <div class="fieldset">
       <div class="control-group">
               <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="mi-question-circle"></i></a></cfoutput>
+                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
             </label>
             <div class="controls">
               <select name="template" class="dropdown">
@@ -81,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       <div class="control-group">
               <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="mi-question-circle"></i></a></cfoutput>
+                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
               </label>
               <div class="controls">
               <select name="childTemplate" class="dropdown">
@@ -98,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
  
     <div class="control-group">
-      <label class="control-label"> <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="mi-question-circle"></i> </a> </label>
+      <label class="control-label"> <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
       <div class="controls">
         <label for="ioi" class="radio inline">
           <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>
@@ -154,7 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <div id="availableRegions">
           <cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r">
             <div class="region">
-              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects',#r#,true);"> <i class="mi-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="mi-caret-left"></i></a> </div>
+              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects',#r#,true);"> <i class="icon-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="icon-caret-left"></i></a> </div>
               <cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r>
                 <dl>
                 <dt>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#
@@ -178,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
               </dd>
               </dl>
-              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="mi-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="mi-caret-down"></i></a> </div>
+              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="icon-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="icon-caret-down"></i></a> </div>
             </div> <!--- /.region --->
           </cfloop>
         </div> <!--- /#availableRegions --->

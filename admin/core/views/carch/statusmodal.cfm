@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset lockedBy=$.getBean('user').loadBy(userid=stats.getLockID())>
 		<div class="alert alert-error alert-locked">
 			<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodeLockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.</p>
-			<p><a tabindex="-1" href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
+			<p><a tabindex="-1" href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.nodeunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestnoderelease')#</a></p>
 		</div>
 		</cfif>
 	</cfif>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dl>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.createdby')#</dt> 
 		<dd>
-			<i class="mi-user"></i>
+			<i class="icon-user"></i>
 			<p><cfif not user.getIsNew()>#esapiEncode('html',user.getFullName())# <cfelse> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.na")# </cfif></p>
 		</dd>
 	</dl>
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dl class="created-on">
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.createdon')#</dt>
 		<dd>
-			<i class="mi-calendar"></i>
+			<i class="icon-calendar"></i>
 			<p>#LSDateFormat(parseDateTime(content.getLastUpdate()),session.dateKeyFormat)#<br />
 			#LSTimeFormat(parseDateTime(content.getLastUpdate()),"short")#</p>
 		</dd>
@@ -99,21 +99,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</dt>
 		<dd<cfif islocked> class="status-locked"</cfif>>	
 			<cfif content.getactive() gt 0 and content.getapproved() gt 0>
-				<i class="mi-check-circle"></i>
+				<i class="icon-ok-sign"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#</p>
 			<cfelseif len(content.getApprovalStatus()) and (requiresApproval or showApprovalStatus)>
-				<i class="mi-clock-o"></i>
+				<i class="icon-time"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#content.getApprovalStatus()#")#</p>
 			<cfelseif content.getapproved() lt 1>
 				<cfif len(content.getChangesetID())>
-					<i class="mi-check-circle"></i>
+					<i class="icon-ok-sign"></i>
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#</p
 				<cfelse>
-					<i class="mi-edit"></i>
+					<i class="icon-edit"></i>
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</p>
 				</cfif>
 			<cfelse>
-				<i class="mi-book"></i>
+				<i class="icon-book"></i>
 				<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</p>
 			</cfif>
 		</dd>
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<dl class="change-set">
 			<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</dt>
 			<dd>
-				<i class="mi-list-alt"></i>
+				<i class="icon-list"></i>
 				<p><cfif changeset.getIsNew()>Unassigned<cfelse>#esapiEncode('html',changeset.getName())#</cfif></p>
 			</dd>
 		</dl>
@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<dl class="approval-status">
 				<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.approvalstatus')#</dt>
 				<dd>
-					<i class="mi-clock-o"></i>
+					<i class="icon-time"></i>
 					 <cfif group.getType() eq 1>
 						<em>#application.rbFactory.getKeyValue(session.rb,"approvalchains.waitingforgroup")#:</em>
 						<p>#esapiEncode('html',group.getGroupName())#</p>
@@ -157,8 +157,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 				<dd>
 					<strong class="<cfif action.getActionType() eq 'rejection'>rejected<cfelseif action.getActionType() eq 'cancelation'>canceled<cfelse>approved</cfif>">
-					<cfif action.getActionType() eq 'rejection'><i class="mi-warning"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.rejected")#<cfelseif action.getActionType() eq 'cancelation'><i class="mi-ban"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.canceled")#<cfelse><i class="mi-check-circle"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approved")#</cfif></strong> 
-					<cfif len(action.getComments())><p><!--- <i class="mi-comment"></i>  --->#esapiEncode('html',action.getComments())#</p></cfif>
+					<cfif action.getActionType() eq 'rejection'><i class="icon-warning-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.rejected")#<cfelseif action.getActionType() eq 'cancelation'><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.canceled")#<cfelse><i class="icon-ok-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approved")#</cfif></strong> 
+					<cfif len(action.getComments())><p><!--- <i class="icon-comment"></i>  --->#esapiEncode('html',action.getComments())#</p></cfif>
 					<em>#application.rbFactory.getKeyValue(session.rb,"approvalchains.by")# #esapiEncode('html',action.getUser().getFullName())# #application.rbFactory.getKeyValue(session.rb,"approvalchains.on")# #LSDateFormat(parseDateTime(action.getCreated()),session.dateKeyFormat)# #application.rbFactory.getKeyValue(session.rb,"approvalchains.at")# #LSTimeFormat(parseDateTime(action.getCreated()),"short")#</em>		
 				</dd>
 			

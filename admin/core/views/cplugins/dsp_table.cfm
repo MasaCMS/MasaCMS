@@ -46,36 +46,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <cfset started=false>
-<div id="tab#ucase(replace(local.category,' ','','all'))#" class="tab-pane<cfif local.category is 'Application'> active</cfif>">
-
-	<div class="block block-bordered">
-		<!-- block header -->
-		<div class="block-header bg-gray-lighter">
-			<ul class="block-options">
-				<li>Something here?</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-				</li>
-				<li>
-					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-				</li>
-			</ul>
-			<h3 class="block-title">#replace(local.category,' ','','all')# Plugins</h3>
-		</div> <!-- /.block header -->						
-		<div class="block-content">
-
-		<table class="mura-table-grid">
-		<tr>
-		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
-		<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
-		<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
-		<th>Plugin ID</th>
-		<th class="actions">&nbsp;</th>
-		</tr>
-		<cfloop query="rscategorylist">
+<div id="tab#ucase(replace(local.category,' ','','all'))#" class="tab-pane fade">
+<table class="mura-table-grid">
+<tr>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
+<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
+<th>Plugin ID</th>
+<th class="actions">&nbsp;</th>
+</tr>
+<cfloop query="rscategorylist">
 	<cfset started=true>
 	<tr>
 	<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#esapiEncode('html',rscategorylist.name)#</a></td>
@@ -87,25 +70,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 	<ul>
 	<cfif listFind(session.mura.memberships,'S2')>
-				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="./?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="mi-pencil"></i></a></li>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="./?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="icon-pencil"></i></a></li>
 	<cfelse>
 		<li class="edit disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 	</cfif>
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-				<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="mi-group"></i></a></li>
+		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="./?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="icon-group"></i></a></li>
 	<cfelse>
 		<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 	</cfif>
 	</ul></td>
 	</tr>
-		</cfloop>
-		<cfif not started>
-		<tr>
-		<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")# #local.category#</td>
-		</tr>
-		</cfif>
-		</table>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.tab-pane -->
+</cfloop>
+<cfif not started>
+<tr>
+<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")# #local.category#</td>
+</tr>
+</cfif>
+</table>
+</div>
 </cfoutput>

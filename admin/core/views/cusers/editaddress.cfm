@@ -55,7 +55,7 @@
 	<h1>#rbKey('user.memberaddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #esapiEncode('html',rbKey('sitemanager.back'))#</a>
 	</div>
 	
 	<h2>#esapiEncode('html',rc.userBean.getFname())# #esapiEncode('html',rc.userBean.getlname())#</h2>
@@ -148,7 +148,7 @@
 		<div class="control-group">
       <label class="control-label">
 		<cfif len(attributeBean.getHint())>
-		<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="mi-question-circle"></i></a>
+		<a href="##" rel="tooltip" title="#esapiEncode('html',attributeBean.gethint())#">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <i class="icon-question-sign"></i></a>
 		<cfelse>
 		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 		</cfif>

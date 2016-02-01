@@ -1,4 +1,3 @@
-<!--- TODO GoWest : verify merged changes in all carch/ subfiles --->
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
@@ -68,10 +67,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <div class="control-group control-group-nested">
-	<!--- <label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocfile'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassoc#rc.filetype#')# <i class="mi-question-circle"></i></a></label> --->
+	<!--- <label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocfile'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassoc#rc.filetype#')# <i class="icon-question-sign"></i></a></label> --->
 	<div class="controls">
 		<div class="input-append">
-			<input class="filesearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforexistingfiles'))#" /><button type="button" class="btn"><i class="mi-search"></i></button>
+			<input class="filesearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforexistingfiles'))#" /><button type="button" class="btn"><i class="icon-search"></i></button>
 		</div>
 	</div>
 </div>
@@ -81,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<div class="tabbable selectAssocImageResults" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
 		<ul class="nav nav-tabs tabs">
-			<li><a href="##mura-assoc-images-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
-			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-file-text-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
+			<li><a href="##mura-assoc-images-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
+			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="icon-file-text-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
 		</ul>
 		</cfoutput>
 		<div class="tab-content">
 			<cfoutput>
-			<div id="mura-assoc-images-#esapiEncode('html',rc.property)#" class="tab-pane mura-assoc-images"></cfoutput>
+			<div id="mura-assoc-images-#esapiEncode('html',rc.property)#" class="tab-pane fade mura-assoc-images"></cfoutput>
 				<ul>
 					<cfset counter=0 />
 				    <cfif rsimages.recordcount>
@@ -105,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						        <cfif hasImage>
 						        <img src="#application.configBean.getContext()#/index.cfm/_api/render/small/?fileID=#rsimages.fileid#"/><br/>
 						        <cfelse>
-						        <i class="mi-file-text-o mi-5x"></i><br/>#rsimages.assocfilename#<br>
+						        <i class="icon-file-text-alt icon-5x"></i><br/>#rsimages.assocfilename#<br>
 						        </cfif>
 						        <input type="radio" name="#esapiEncode('html_attr',rc.property)#" value="#rsimages.fileid#"/></li>
 						 	</cfif>	 	
@@ -121,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<cfif rc.type eq 'file'>
 			<cfoutput>
-			<div id="mura-assoc-files-#esapiEncode('html',rc.property)#" class="tab-pane mura-assoc-files"></cfoutput>
+			<div id="mura-assoc-files-#esapiEncode('html',rc.property)#" class="tab-pane fade mura-assoc-files"></cfoutput>
 				<ul>
 					<cfset counter=0 />
 					<cfif rsfiles.recordcount>
@@ -135,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif verdict neq 'none'>
 								<cfset filtered['#rsfiles.fileid#']=true>
 								<cfset counter=counter+1/> 
-						        <li><input type="radio" name="#esapiEncode('html_attr',rc.property)#" value="#rsfiles.fileid#"/>&nbsp;<i class="mi-file-text-o mi-5x"></i>&nbsp;#esapiEncode('html',rsfiles.assocfilename)#</li>							        
+						        <li><input type="radio" name="#esapiEncode('html_attr',rc.property)#" value="#rsfiles.fileid#"/>&nbsp;<i class="icon-file-text-alt icon-2x"></i>&nbsp;#esapiEncode('html',rsfiles.assocfilename)#</li>							        
 						 	</cfif>		 	
 					 	</cfif>
 				      </cfoutput>

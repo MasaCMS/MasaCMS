@@ -46,76 +46,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="rc.keywords" default="">
 <cfoutput>
-
-<div class="items-push mura-header">
-	<h1>Trash Bin</h1>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-			<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="mi-arrow-circle-left"></i> Back to Site Settings</a>
-			<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
-			</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
-
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-
-<!--- TODO GoWest : style search form : 2016-01-25T12:07:56-07:00 --->
-
-			<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <div class="input-append">
 	   <input id="search" name="keywords" type="text" class="text" value="#esapiEncode('html_attr',rc.keywords)#">
-				    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
+	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="icon-search"></i></button>
 	</div>
     
     <!---
-			<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" align="absmiddle" />
+<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
-			--->
+--->
     <input type="hidden" name="muraAction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
  </form>
 
- 			<table class="mura-table-grid"> 
-			<tr>
-			<th class="var-width">Label</th>
-			<th>Type</th>
-			<th>SubType</th>
-			<th>SiteID</th>
-			<th>Date Deleted</th>
-			<th>Date By</th>
-			<th class="actions">&nbsp;</th>
-			</tr>
-			<cfset rc.trashIterator.setPage(rc.pageNum)>
-			<cfif rc.trashIterator.hasNext()>
-			<cfloop condition="rc.trashIterator.hasNext()">
-			<cfset trashItem=rc.trashIterator.next()>
-			<tr>
-			<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
-			<td>#esapiEncode('html',trashItem.getObjectType())#</td>
-			<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
-			<td>#esapiEncode('html',trashItem.getSiteID())#</td>
-			<td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
-			<td>#esapiEncode('html',trashItem.getDeletedBy())#</td>
-			<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-pencil"></i></a></li></ul></td>
-			</tr>
-			</cfloop>
-			<cfelse>
-			<tr><td colspan="7">The trash is currently empty.</tr>
-			</cfif>
-			</table>
+<h1>Trash Bin</h1>
 
-			<cfif rc.trashIterator.pageCount() gt 1>
-			<div class="pagination">
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="./?muraAction=cSettings.editSite&siteID=#esapiEncode('url',rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+<a class="btn" href="./?muraAction=cTrash.empty&siteID=#esapiEncode('url',rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
+</div>
+
+<table class="mura-table-grid"> 
+<tr>
+<th class="var-width">Label</th>
+<th>Type</th>
+<th>SubType</th>
+<th>SiteID</th>
+<th>Date Deleted</th>
+<th>Date By</th>
+<th class="actions">&nbsp;</th>
+</tr>
+<cfset rc.trashIterator.setPage(rc.pageNum)>
+<cfif rc.trashIterator.hasNext()>
+<cfloop condition="rc.trashIterator.hasNext()">
+<cfset trashItem=rc.trashIterator.next()>
+<tr>
+<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#">#esapiEncode('html',left(trashItem.getObjectLabel(),80))#</a></td>
+<td>#esapiEncode('html',trashItem.getObjectType())#</td>
+<td>#esapiEncode('html',trashItem.getObjectSubType())#</td>
+<td>#esapiEncode('html',trashItem.getSiteID())#</td>
+<td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
+<td>#esapiEncode('html',trashItem.getDeletedBy())#</td>
+<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="icon-pencil"></i></a></li></ul></td>
+</tr>
+</cfloop>
+<cfelse>
+<tr><td colspan="7">The trash is currently empty.</tr>
+</cfif>
+</table>
+
+<cfif rc.trashIterator.pageCount() gt 1>
+<div class="pagination">
 	<ul>
 		<cfif rc.pageNum gt 1>
-						<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="mi-caret-left"></i>Previous</a></li>
+			<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="icon-caret-left"></i>Previous</a></li>
 		</cfif>
 		<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
 		
@@ -127,14 +112,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		</cfloop>
 		<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-						<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="mi-caret-right"></i></a></li>
+			<li><a href="?muraAction=cTrash.list&siteid=#esapiEncode('url',rc.siteid)#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="icon-caret-right"></i></a></li>
 		</cfif>
 	</ul>
-			</div>
-			</cfif>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
-
+</div>
+</cfif>
 </cfoutput>
 

@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <cfinclude template="dsp_secondary_menu.cfm">
 	  <cfoutput>
 
-	  <div id="filterView" class="mura-layout-row">
+	  <div id="filterView" class="row-fluid">
 	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
 <form novalidate="novalidate" action="./?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="doSearch" value="true"/>
 <div class="form-actions">			  
-<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
+<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
 </div>
 </form>
 </div>
@@ -223,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  <td>#LSDateFormat(rc.rslist.createddate,session.dateKeyFormat)#</td>
 					  <td><cfif LSisDate(rc.rslist.deliverydate)>#LSDateFormat(rc.rslist.deliverydate,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.deliverydate,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
 					  <td><cfif LSisDate(rc.rslist.deliverydate)><cfif rc.rslist.status eq 99>In Progress<cfelseif rc.rslist.status eq 1>#application.rbFactory.getKeyValue(session.rb,'email.sent')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.queued')#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
-					  <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="./?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-download-alt"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="./?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="mi-times-circle"></i></a></li></ul></td>
+					  <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="./?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-download-alt"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="./?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#esapiEncode('url',rc.siteid)#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 					</tr>
 			  </cfloop>
 		  

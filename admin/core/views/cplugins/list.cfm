@@ -45,24 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-
-<div class="items-push mura-header">
-	<h1>#application.rbFactory.getKeyValue(session.rb,"plugin.siteplugins")#</h1>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
-
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
-
-
+<h1>#application.rbFactory.getKeyValue(session.rb,"plugin.siteplugins")#</h1>
 
 <cfset started=false>
-	<div class="block block-constrain">
-	<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
-		<li class="active"><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
+	<div class="tabbable">
+		<ul class="nav nav-tabs tabs initActiveTab">
+		<li><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
 		<li><a href="##tab#ucase('Utility')#" onclick="return false;"><span>Utility</span></a></li>
 		<cfloop collection="#rc.plugingroups#" item="local.category" >
 			<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
@@ -70,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 		</ul>
-		<div class="tab-content block-content">
+		<div class="tab-content">
 		<cfset rscategorylist = rc.plugingroups['Application']/>
 		<cfset local.category = "Application" />
 		<cfinclude template="dsp_table.cfm" />
@@ -83,5 +71,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfinclude template="dsp_table.cfm" />
 			</cfif>
 		</cfloop>
-	</div> <!-- /.block-constrain -->
+	</div>
 </cfoutput>

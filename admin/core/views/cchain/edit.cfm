@@ -3,53 +3,39 @@
 </cfif>  
 <cfset chain=$.getBean('approvalChain').loadBy(chainid=rc.chainID)/>
 <cfoutput>
-
-
-<div class="items-push mura-header">
-  <cfif not len(rc.chainid)>
+<cfif chain.getIsNew()>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.addapprovalchain")#</h1>
-  <cfelse>
+<cfelse>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.editapprovalchain")#</h1>
-  </cfif>
-  <div class="mura-item-metadata">
-    <div class="label-group">
-      <cfinclude template="dsp_secondary_menu.cfm">
-    </div><!-- /.label-group -->
-  </div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
+</cfif>
 
+<cfinclude template="dsp_secondary_menu.cfm">
 
-<div class="block block-constrain">
-    <div class="block block-bordered">
-      <div class="block-content">
-
-<!--- TODO GoWest : test this alert-error : 2016-01-23T09:30:45-07:00 --->
-
-        <cfif not structIsEmpty(chain.getErrors())>
+<cfif not structIsEmpty(chain.getErrors())>
     <div class="alert alert-error">#application.utility.displayErrors(chain.getErrors())#</div>
-        </cfif>
+</cfif>
 
-      <form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">
-      <div class="fieldset">
-      <div class="control-group">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">
+<div class="fieldset">
+<div class="control-group">
   <label class="control-label">
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.name')#
   </label>
   <div class="controls">
   <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'approvalchains.namerequired')#" value="#esapiEncode('html_attr',chain.getName())#" maxlength="50">
    </div>
-      </div>
+</div>
 
-      <div class="control-group">
+<div class="control-group">
   <label class="control-label">
     #application.rbFactory.getKeyValue(session.rb,'approvalchains.description')#
   </label>
   <div class="controls">
   <textarea name="description" class="span12" rows="6">#esapiEncode('html',chain.getDescription())#</textarea>
   </div>
-      </div>
+</div>
 
-      <div class="control-group" id="availableGroups">
+<div class="control-group" id="availableGroups">
 	<div class="alert alert-info">
 		<p>The first group in the chain will be the first group to actually <em>approve</em> the content after it's been submitted.
 		<strong>All content creators can send for approval without having to be in the chain.</strong></p>
@@ -90,9 +76,10 @@
         });
     </script>
   </div>
-      </div>
-      <div class="form-actions">
-        <cfif rc.chainID eq ''>
+</div>
+
+<div class="form-actions">
+  <cfif chain.getIsNew()>
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.add')#" />
   <cfelse>
     <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'approvalchains.delete')#" onclick="confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#','./?muraAction=cchain.delete&chainID=#chain.getchainID()#&siteid=#esapiEncode('url',chain.getSiteID())#')" /> 
@@ -101,10 +88,7 @@
   <input type="hidden" name="siteid" value="#chain.getSiteID()#">
   <input type=hidden name="chainID" value="#chain.getchainID()#">
   #rc.$.renderCSRFTokens(context=chain.getchainID(),format="form")#
-      </div>
-      </form>
-      <cfinclude template="js.cfm">
-    </div> <!-- /.block-content -->
-  </div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->      
+</div>
+</form>
+<cfinclude template="js.cfm">
 </cfoutput>

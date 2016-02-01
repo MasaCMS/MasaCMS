@@ -13,7 +13,7 @@
 			<a href="##tabFileMetaAdvanced" data-toggle="tab"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</span></a>
 		</li>
 	</ul>
-	<div class="tab-content mura-layout-row">	
+	<div class="tab-content row-fluid">	
 		<div id="tabFileMetaBasic" class="tab-pane active">	
 			<div class="fieldset">
 			 	<cfif fileMetaData.hasImageFileExt()>

@@ -50,51 +50,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<div class="items-push mura-header">
-	<h1>Trash Detail</h1>
+<h1>Trash Detail</h1>
 
-	<div class="mura-item-metadata">
-		<div class="label-group">
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.trashItem.getSiteID())#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="icon-circle-arrow-left"></i>  Back to Trash Bin</a>
+</div>
 
-			<div id="nav-module-specific" class="btn-group">
-			<a class="btn" href="./?muraAction=cTrash.list&siteID=#esapiEncode('url',rc.trashItem.getSiteID())#&keywords=#esapiEncode('url',rc.keywords)#&pageNum=#esapiEncode('url',rc.pageNum)#"><i class="mi-arrow-circle-left"></i>  Back to Trash Bin</a>
-			</div>
+<ul class="metadata">
+<li><strong>Label:</strong> #esapiEncode('html',rc.trashItem.getObjectLabel())#</li>
+<li><strong>Type:</strong> #esapiEncode('html',rc.trashItem.getObjectType())#</li>
+<li><strong>SubType:</strong> #esapiEncode('html',rc.trashItem.getObjectSubType())#</li>
+<li><strong>ObjectID:</strong> #esapiEncode('html',rc.trashItem.getObjectID())#</li>
+<li><strong>SiteID:</strong> #esapiEncode('html',rc.trashItem.getSiteID())#</li>
+<li><strong>ParentID:</strong> #esapiEncode('html',rc.trashItem.getParentID())#</li>
+<li><strong>Object Class:</strong> #esapiEncode('html',rc.trashItem.getObjectClass())#</li>
+<li><strong>DeleteID:</strong> #esapiEncode('html',rc.trashItem.getDeleteID())#</li>
+<li><strong>Deleted Date:</strong> #LSDateFormat(rc.trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(rc.trashItem.getDeletedDate(),"short")#</li>
+<li><strong>Deleted By:</strong> #esapiEncode('html',rc.trashItem.getDeletedBy())#</li>
+</ul>
 
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
-
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-
-			<ul class="metadata">
-			<li><strong>Label:</strong> #esapiEncode('html',rc.trashItem.getObjectLabel())#</li>
-			<li><strong>Type:</strong> #esapiEncode('html',rc.trashItem.getObjectType())#</li>
-			<li><strong>SubType:</strong> #esapiEncode('html',rc.trashItem.getObjectSubType())#</li>
-			<li><strong>ObjectID:</strong> #esapiEncode('html',rc.trashItem.getObjectID())#</li>
-			<li><strong>SiteID:</strong> #esapiEncode('html',rc.trashItem.getSiteID())#</li>
-			<li><strong>ParentID:</strong> #esapiEncode('html',rc.trashItem.getParentID())#</li>
-			<li><strong>Object Class:</strong> #esapiEncode('html',rc.trashItem.getObjectClass())#</li>
-			<li><strong>DeleteID:</strong> #esapiEncode('html',rc.trashItem.getDeleteID())#</li>
-			<li><strong>Deleted Date:</strong> #LSDateFormat(rc.trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(rc.trashItem.getDeletedDate(),"short")#</li>
-			<li><strong>Deleted By:</strong> #esapiEncode('html',rc.trashItem.getDeletedBy())#</li>
-			</ul>
-
-			<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
+<cfif not listFindNoCase("Page,Folder,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 	<div class="clearfix form-actions">
 		<input type="button" class="btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 		<cfif len(rc.trashItem.getDeleteID())>
 		<input type="button" class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
 		</cfif>
 	</div>
-			<cfelse>
+<cfelse>
 	<cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
 
-				<div class="mura-control-group">
-					<label>
+	<div class="control-group">
+		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
-<!--- TODO GoWest : style new parent search: 2016-01-25T12:15:59-07:00 --->
 			<span id="mover1" class="text"> 
 			<cfif parentBean.getIsNew()>NA<cfelse>#esapiEncode('html',parentBean.getMenuTitle())#</cfif>
 
@@ -103,9 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</button>		
 		</span>
 		</label>
-					<div class="mura-control justify" id="mover2" style="display:none">
-						<input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.trashItem.getParentID())#">
-					</div>
+		<div class="controls" id="mover2" style="display:none"><input type="hidden" id="parentid" name="parentid" value="#esapiEncode('html_attr',rc.trashItem.getParentID())#"></div>
 	</div>
 
 	</div>
@@ -165,9 +150,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	});
 					
 	</script>
-			</cfif>
-
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
+</cfif>
 </cfoutput>

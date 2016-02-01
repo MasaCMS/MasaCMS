@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 		
 		<div class="tab-content">
-		<div id="tabBasic" class="tab-pane">
+		<div id="tabBasic" class="tab-pane fade">
 		<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 			
 		<div class="tab-content">
-		<div id="tabBasic" class="tab-pane">
+		<div id="tabBasic" class="tab-pane fade">
 			<div class="fieldset">
 				<div class="control-group">
 		<label class="control-label">

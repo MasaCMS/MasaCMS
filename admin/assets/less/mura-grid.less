@@ -517,6 +517,56 @@
 
 	#tabFlat {
 
+		> #main {
+
+				h2 { margin-top: 0; }
+			}
+
+		.navSort {
+			margin-bottom: 1em;
+			overflow: hidden;
+
+				h3 {
+				float: left;
+				font-size: 12px;
+				margin: 0 1em 0 0 ;
+				line-height: 34px;
+				font-weight: normal;
+				}
+			}
+
+		.sidebar {
+
+			float: right;
+			width: 22%;
+
+			.nav {
+
+				.active {
+					font-weight: bold;
+					color: @grayDark;
+				}
+
+			.badge {
+				float: right;
+				}
+
+			}
+
+			h2 {
+				font-size: 16px;
+				//font-weight: normal;
+				margin-bottom: .25em;
+				}
+
+			h3 {
+				line-height: 1;
+				}
+		}
+
+
+
+
 		.mura-table-grid {
 
 			float: left;
@@ -682,6 +732,24 @@
 			.inline-block;
 		}
 	} /* End #tabFlat */
+
+	.module, .well {
+
+		ul.nav { margin: 0; padding: 0;
+
+			li {
+
+				> a {
+					margin: 0 -9px;
+				}
+			}
+
+		}
+
+		select { width: 100%; }
+		input.text { width: 95%; }
+
+		}
 
 	/* @end */
 

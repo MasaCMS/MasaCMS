@@ -53,33 +53,33 @@
     <cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
   </cfif>
 
-<!--- M7 edit: alter markup for new theme --->
-
   <cfoutput>
-    <li id="admin-nav-modules">
-      <a class="nav-submenu <cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) or not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>" data-toggle="nav-submenu" href="index.cfm">
-        <i class="mi-th-large"></i> 
-        <span class="sidebar-mini-hide">#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> 
+    <li id="modules" class="dropdown<cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000099',rc.moduleID) or not listFindNoCase('carch,cchain,cusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit) and not (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="##">
+        <i class="icon-th-large"></i> 
+        <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> 
+        <b class="caret"></b>
       </a>
 
-      <ul>
+      <ul id="navSecondary" class="dropdown-menu">
         <!--- Change Sets --->
-          <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))
-            and application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
-            <li>
-              <a<cfif  rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+          <cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))>
+            <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014",session.siteid)>
+              <li <cfif  rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')>class="active"</cfif>>
+                <a href="#application.configBean.getContext()#/admin/?muraAction=cChangesets.list&amp;siteid=#session.siteid#">
+                  <i class="icon-cog"></i> 
                   #application.rbFactory.getKeyValue(session.rb,"layout.changesets")#
                 </a>
               </li>
             </cfif> 
+          </cfif>
         <!--- /Change Sets --->
 
         <!--- Comments --->
           <cfif isBoolean(application.settingsManager.getSite(session.siteid).getHasComments()) and application.settingsManager.getSite(session.siteid).getHasComments() and application.permUtility.getModulePerm("00000000000000000000000000000000015",session.siteid)>
-            <li>
-              <a<cfif rc.originalcircuit eq 'cComments'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cComments.default&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.originalcircuit eq 'cComments'>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cComments.default&amp;siteid=#session.siteid#">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,'layout.comments')#
               </a>
             </li>
@@ -88,9 +88,9 @@
 
         <!--- Components --->
           <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003",session.siteid)>
-            <li>
-              <a<cfif rc.moduleid eq '00000000000000000000000000000000003'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.moduleid eq '00000000000000000000000000000000003'>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000003&amp;parentid=00000000000000000000000000000000003&amp;moduleid=00000000000000000000000000000000003">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.components")#
               </a>
             </li>
@@ -99,9 +99,9 @@
 
         <!--- Variations --->
           <cfif application.configBean.getValue(property='variations',defaultValue=false) and application.permUtility.getModulePerm("00000000000000000000000000000000099",session.siteid)>
-            <li>
-              <a<cfif rc.moduleid eq '00000000000000000000000000000000099'> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.moduleid eq '00000000000000000000000000000000099'>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000099&amp;parentid=00000000000000000000000000000000099&amp;moduleid=00000000000000000000000000000000099">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.variations")#
               </a>
             </li>
@@ -110,9 +110,9 @@
        
         <!--- Categories --->
           <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010",session.siteid)>
-            <li>
-              <a<cfif  rc.originalcircuit eq 'cCategory' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000010')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+            <li <cfif  rc.originalcircuit eq 'cCategory' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000010')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cCategory.list&amp;siteid=#session.siteid#">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.categories")#
               </a>
             </li>
@@ -121,9 +121,9 @@
 
         <!--- Content Collections --->
           <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011",session.siteid)>
-            <li>
-              <a<cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cFeed.list&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+            <li <cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cFeed.list&amp;siteid=#session.siteid#">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#
               </a>
             </li>
@@ -132,9 +132,9 @@
 
         <!--- Forms --->
           <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004",session.siteid)>
-            <li>
-              <a<cfif rc.moduleid eq '00000000000000000000000000000000004' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000004')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.moduleid eq '00000000000000000000000000000000004' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000004')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cArch.list&amp;siteid=#session.siteid#&amp;topid=00000000000000000000000000000000004&amp;parentid=00000000000000000000000000000000004&amp;moduleid=00000000000000000000000000000000004">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.forms")#
               </a>
             </li>
@@ -143,9 +143,9 @@
 
         <!--- Advertising, this is not only available in certain legacy situations --->
           <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006",session.siteid)>
-            <li>
-              <a<cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cAdvertising.listAdvertisers&amp;siteid=#session.siteid#&amp;moduleid=00000000000000000000000000000000006">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.advertising")#
               </a>
             </li>
@@ -154,9 +154,9 @@
 
         <!--- Email Broadcaster --->     
           <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005",session.siteid)>
-            <li>
-              <a<cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000005')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cEmail.list&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000005')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cEmail.list&amp;siteid=#session.siteid#">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#
               </a>
             </li>
@@ -165,9 +165,9 @@
         
         <!--- Mailing Lists --->
           <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009",session.siteid)>
-            <li>
-              <a<cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')> class="active"</cfif> href="#application.configBean.getContext()#/admin/?muraAction=cMailingList.list&amp;siteid=#session.siteid#">
-                <i class="mi-cog"></i> 
+            <li <cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and rc.moduleid eq '00000000000000000000000000000000009')>class="active"</cfif>>
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cMailingList.list&amp;siteid=#session.siteid#">
+                <i class="icon-cog"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#
               </a>
             </li>
@@ -181,9 +181,9 @@
         <!--- /Custom Site Secondary Menu --->
 
         <!--- File Manager --->
-          <li>
-            <a<cfif rc.originalcircuit eq 'cFilemanager'> class="active"</cfif> href="./?muraAction=cFilemanager.default&amp;siteid=#session.siteid#">
-              <i class="mi-cog"></i> 
+          <li <cfif rc.originalcircuit eq 'cFilemanager'>class="active"</cfif>>
+            <a href="./?muraAction=cFilemanager.default&amp;siteid=#session.siteid#">
+              <i class="icon-cog"></i> 
               #application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#
             </a>
           </li>
@@ -193,24 +193,17 @@
           <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
           <cfif rc.rsplugins.recordcount or listFind(session.mura.memberships,'S2')>
             <li class="divider"></li>
-            <li>
-              <a class="nav-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>" data-toggle="nav-submenu" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#">
-                <i class="mi-puzzle-piece"></i> 
+            <li class="dropdown-submenu<cfif rc.originalcircuit eq 'cPlugins'> active</cfif>">
+              <a href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#">
+                <i class="icon-puzzle-piece"></i> 
                 #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#
               </a>
 
-              <ul>
-                <li>
-                  <a class="<cfif rc.originalcircuit eq 'cplugins' and rc.originalfuseaction eq 'list'> active</cfif>" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#">
-                    <i class="mi-puzzle-piece"></i> 
-<!--- TODO GoWest : wording of this link? add rb.key? : 2015-12-15T11:23:40-07:00 --->
-                    Site Plugins
-                  </a>
-                </li>
+              <ul class="dropdown-menu">
                 <cfloop query="rc.rsplugins">
-                   <li>
-                    <a<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif> href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/">
-                      <i class="mi-puzzle-piece"></i> 
+                   <li<cfif rc.moduleid eq rc.rsplugins.moduleid> class="active"</cfif>>
+                    <a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/">
+                      <i class="icon-puzzle-piece"></i> 
                       #esapiEncode('html',rc.rsplugins.name)#
                     </a>
                   </li>
@@ -222,9 +215,8 @@
                     <li class="divider"></li>
                   </cfif>
                   <li>
-<!--- TODO GoWest : set active state only when adding plugin (tabPlugins), not for tab 1 : 2015-12-15T11:24:15-07:00 ---> 
                     <a href="#application.configBean.getContext()#/admin/?muraAction=cSettings.list##tabPlugins">
-                      <i class="mi-plus-circle"></i> 
+                      <i class="icon-plus-sign"></i> 
                       #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#
                     </a>
                   </li>
@@ -237,8 +229,5 @@
       </ul>
     </li>
   </cfoutput>
-
-<!--- /end m7 edit --->
-
 
 </cfif>

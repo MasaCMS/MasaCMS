@@ -393,13 +393,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setContext" access="public" output="false">
 	<cfargument name="Context" type="String" />
-	<cfset arguments.Context=cleanFilePath(arguments.Context) />		
-	<!--- TODO GoWest : added check for /admin to prevent /admin/admin in localhost URLs : 2016-01-29T15:39:54-07:00 --->			
-	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
+	<cfset arguments.Context=cleanFilePath(arguments.Context) />
+	<cfif getContextRoot() NEQ "/">
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
-		
 	<cfreturn this>
 </cffunction>
 
