@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 			<td class="actions">
 			<ul>
-				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#esapiEncode('javascript',content.getTargetParams())#');"><i class="icon-globe"></i></a></li>
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#esapiEncode('javascript',content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#esapiEncode('javascript',content.getTargetParams())#');"><i class="mi-globe"></i></a></li>
 			</ul>
 			</td>
 		</tr>

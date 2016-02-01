@@ -49,22 +49,31 @@
 <cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
 
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
+<div class="items-push mura-header">	
+	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+	<div class="mura-item-metadata">
+		<div class="label-group">
+			<cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="mura-table-grid"> 
-<thead>
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
+			<table class="mura-table-grid"> 
+			<thead>
 	<tr>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"approvalchains.name")#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,"approvalchains.lastupdate")#</th>
 		<th class="actions">&nbsp;</th>
 	</tr>
-<thead>
-<tbody class="nest">
-<cfif not chains.hasNext()>
+			<thead>
+			<tbody class="nest">
+			<cfif not chains.hasNext()>
 	<tr><td colspan="3">#application.rbFactory.getKeyValue(session.rb,"approvalchains.noapprovalchains")#</td></tr>
-<cfelse>
+			<cfelse>
 	<cfloop condition="chains.hasNext()">
 	<cfset chain=chains.next()>
 	<tr>
@@ -79,17 +88,20 @@
 		<td class="actions">
 			<ul>
 				<li class="edit">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.edit&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="icon-pencil"></i></a>
+								<a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.edit')#" href="./?muraAction=cchain.edit&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i></a>
 				</li>
-				<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',chain.getSiteID())#"><i class="icon-reorder"></i></a></li>
+							<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'approvalchains.pendingrequests')#" href="./?muraAction=cchain.pending&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',chain.getSiteID())#"><i class="mi-reorder"></i></a></li>
 				<li class="delete">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
+								<a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" href="./?muraAction=cchain.delete&chainID=#chain.getChainID()#&siteid=#esapiEncode('url',rc.siteid)##rc.$.renderCSRFTokens(context=chain.getChainID(),format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'approvalchains.deleteconfirm'))#',this.href)"><i class="mi-times-circle"></i></a>
 				</li>
 			</ul>
 		</td>
 	</tr>
 	</cfloop>
-</cfif>
-</tbody>
-</table>
+			</cfif>
+			</tbody>
+			</table>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->				
 </cfoutput>

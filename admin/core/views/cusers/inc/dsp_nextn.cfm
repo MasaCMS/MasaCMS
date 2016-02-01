@@ -81,7 +81,7 @@
 		</form>
 
 		<div class="container">
-			<div class="row-fluid">
+			<div class="mura-layout-row">
 
 				<!--- Records Per Page --->
 					<div class="btn-group">
@@ -90,6 +90,7 @@
 							<span class="caret"></span>
 						</a>
 
+<!--- TODO GoWest : markup for dropdown and pagination here : 2016-01-26T13:53:40-07:00 --->
 						<cfset local.arrPages = [5,10,25,50,100,250,500,1000] />
 						<ul class="dropdown-menu">
 							<cfloop array="#local.arrPages#" index="local.pagecount">

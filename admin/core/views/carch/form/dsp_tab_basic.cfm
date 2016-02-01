@@ -48,29 +48,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfset started=false>
 <cfoutput>
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane active">
+
+	<!-- block -->
+	<div class="block block-bordered">
+		<!-- block header -->
+	  <div class="block-header bg-gray-lighter">
+	    <ul class="block-options">
+	        <li>Something here?</li>
+	        <li>
+	            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+	        </li>
+	        <li>
+	            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+	        </li>
+	    </ul>
+	    <h3 class="block-title">Basic Settings</h3>
+	  </div>
+	  <!-- /block header -->
+		
+		<!-- block content -->
+		<div class="block-content">
 	
 	<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
-	<div class="fieldset">
 	<cfinclude template="dsp_type_selector.cfm">
 	
 	<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery,File,Link">
-			<div class="control-group">
-			    <label class="control-label">
-			    	<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#">
-			    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="icon-question-sign"></i>
-					</a>
+				<div class="mura-control-group">
+				    <label>
+				    	<span data-toggle="popover" title="" data-placement="right" 
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#"
+				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
+				    	>	
+				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>	
 			    </label>
 			   	<cfset hasSEOTab=not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
-			    <div class="controls">
-			     	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+				     	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+				     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="mi-times-circle"></i></button></div>
 			     </div>
-			     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></button></div>
-		    </div>
-		<div class="control-group" id="editAdditionalTitles" style="display:none;">		
-			<div class="controls" >
+			<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">		
 				<div class="alert help-block">
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
 					<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
@@ -88,19 +106,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					});
 				</script>
 			</div>
-		</div>
 		</cfcase>
 		<cfdefaultcase>
 			
-			<div class="control-group">
-	      		<label class="control-label">
+				<div class="mura-control-group">
+		      		<label>
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 	      		</label>
-	     		 <div class="controls">
-	     		 	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"<cfif rc.contentBean.getIsLocked()> disabled="disabled"</cfif>>
+		     		 	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.getTitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"<cfif rc.contentBean.getIsLocked()> disabled="disabled"</cfif>>
 	     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	     		</div>
-	     	</div>
 		</cfdefaultcase>
 	</cfswitch>
 
@@ -109,16 +124,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 
 	<cfif not ListFindNoCase('Form,Component',rc.type) >	
-		<div class="control-group summaryContainer" style="display:none;">
-	      	<label class="control-label">
-	      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
-	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-	      		 <i class="icon-question-sign"></i></a> 
+			<div class="mura-control-group summaryContainer" style="display:none;">
+		      	<label>
+				    	<span data-toggle="popover" title="" data-placement="right" 
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#" 
+				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary"))#"
+				    	>	
+				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")# <i class="mi-question-circle"></i></span>	
 	      		<!---<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 	      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 	      		</a>--->
 	      	</label>
-	      	<div id="editSummary" class="controls summaryContainer" style="display:none;">
+		      	<div id="editSummary" class="summaryContainer" style="display:none;">
 				<cfoutput>
 					<textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea>
 				</cfoutput>
@@ -162,9 +179,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>    	
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
-		<div id="bodyContainer" class="body-container controls" style="display:none;">
-			<div class="control-group">
-			<label class="control-label">
+			<div id="bodyContainer" class="body-container" style="display:none;">
+				<div class="mura-control-group">
+				<label>
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
 	      	</label>
 			<cfif rsPluginEditor.recordcount>
@@ -277,21 +294,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		
 	<cfelseif rc.type eq 'Link'>
-		<div class="control-group">
-	      	<label class="control-label">
+			<div class="mura-control-group">
+		      	<label>
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
 	      	</label>
-	     	<div class="controls">
-	     	 	
 	     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
 	     	 			<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
 	     	 			<div class="btn-group">
 	     	 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-	     	 				 	<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+		     	 				 	<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
 	     	 				</a>
 	     	 				<ul class="dropdown-menu">
 	     	 					<li><a href="##" type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
-	     	 						<i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+		     	 						<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
 	     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('body');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
 	     	 				</ul>
 	     	 			</div>
@@ -299,21 +314,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
 					<div class="btn-group">
-	     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
+		     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
 	     	 		</div>
 				</cfif>	
 	     	</div>
-	    </div>
 	<cfelseif rc.type eq 'File'>
 		<cfinclude template="dsp_file_selector.cfm">
 	</cfif>
 
 	<cfif rc.type eq 'Component'>
-		<div class="control-group">
-	      	<label class="control-label">
+			<div class="mura-control-group">
+		      	<label>
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
-	      	<div class="controls">
 				<label for="m1" class="checkbox inline">
 					<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
 				</label>
@@ -334,45 +347,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</label>
 				</cfif>
 			</div>
-		</div>
 	</cfif>
 
 	<cfif rc.type eq 'Form'>
-		<div class="control-group body-container" style="display:none">
-			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-			<div class="controls">
+			<div class="mura-control-group body-container" style="display:none">
+				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 				<label for="rc" class="checkbox">
 	      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
 	      		</label>
 			</div>
-		</div>
-		<div class="control-group body-container" style="display:none">
-			<label class="control-label">
+			<div class="mura-control-group body-container" style="display:none">
+				<label>
 				 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
-			<div class="controls">
 				<textarea name="responseMessage" rows="6" class="span12">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">
+			<div class="mura-control-group">
+				<label>
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 			</label>
-			<div class="controls">
 				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#" class="span12">
 			</div>
-		</div> 
 	</cfif>
 
 	<cfif rc.parentBean.getType() eq 'Calendar' and ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>	
 		<cfinclude template="dsp_displaycontent.cfm">
 	</cfif>
 
-	</div> <!--- / .fieldset --->
-	
 	<span id="extendset-container-basic" class="extendset-container"></span>
 
 	<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
-</div>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
+
 </cfoutput>

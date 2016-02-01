@@ -51,44 +51,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabLayoutObjects")>
 
 <cfoutput>
-  <div id="tabLayoutObjects" class="tab-pane fade">
+  <div id="tabLayoutObjects" class="tab-pane">
 
+    <!-- block -->
+    <div class="block block-bordered">
+      <!-- block header -->
+      <div class="block-header bg-gray-lighter">
+        <ul class="block-options">
+            <li>Something here?</li>
+            <li>
+                <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+            </li>
+            <li>
+                <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+            </li>
+        </ul>
+        <h3 class="block-title">Layout &amp; Objects</h3>
+      </div>
+      <!-- /block header -->
+      
+      <!-- block content -->
+      <div class="block-content">
   <span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
 
-  <div class="fieldset">
+            <div class="mura-control-group">
   
-      <div class="control-group">
+              <div class="half">
+                <div class="mura-control-group">
+                    <label>
+                      <span data-toggle="popover" title="" data-placement="right" 
+                      data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#" 
+                      data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.layouttemplate"))#">
+                        #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#
+                       <i class="mi-question-circle"></i></span>
       
-        <div class="span6">
-              <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
             </label>
-            <div class="controls">
               <select name="template" class="dropdown">
             <cfif rc.contentid neq '00000000000000000000000000000000001'>
               <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
             </cfif>
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
-                </cfoutput>
+                      <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
               </cfif>
             </cfloop>
           </select>
         </div>
         </div>
-        <div class="span6">
-        <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+              <div class="half">
+                <div class="mura-control-group">
+              <label>
+                <span data-toggle="popover" title="" data-placement="right" 
+                data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#" 
+                data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.childtemplate"))#">
+                  #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')#
+                 <i class="mi-question-circle"></i></span>
               </label>
-              <div class="controls">
               <select name="childTemplate" class="dropdown">
             <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
             <cfloop query="rc.rsTemplates">
               <cfif right(rc.rsTemplates.name,4) eq ".cfm">
                 <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#listFirst(rc.rsTemplates.name,'.')#</option>
+                        <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
                 </cfoutput>
               </cfif>
             </cfloop>
@@ -98,8 +122,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       </div>
  
-    <div class="control-group">
-      <label class="control-label"> <a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
+          <div class="mura-control-group">
+            <label> 
+              <span data-toggle="popover" title="" data-placement="right" 
+              data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.inheritancerules"))#" 
+              data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.inheritancerules"))#">
+                #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#
+               <i class="mi-question-circle"></i></span>
+            </label>
        <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
           <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
           <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
@@ -113,22 +143,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </div>
           </cfif>
       </cfif>
-      <div class="controls">
         <label for="ioi" class="radio inline">
           <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>
-#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#           </label>
+      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#           </label>
         <label for="ioc" class="radio inline">
           <input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>>
-#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#           </label>
+      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#           </label>
         <label for="ior" class="radio inline">
           <input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>>
-#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
+      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
       </div>
-    </div>
-    <cfif not rc.$.getContentRenderer().useLayoutManager()>
-    <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
-      <div class="controls" id="editObjects">       
+          
+          <div class="mura-control-group">
+            <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
+            <div id="editObjects">       
           <cfif rc.$.getContentRenderer().useLayoutManager()>
             <div id="availableObjectsContainer">
             <script>
@@ -154,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                       #esapiEncode('html','Text')#
                     </option>
 
-                   <option title="#esapiEncode('html_attr','Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
+                         <option title="#esapiEncode('html_attr','Social Embed')#" value='{"object":"#esapiEncode('javascript','embed')#","name":"#esapiEncode('javascript','Embed')#","objectid":"#createUUID()#"}'>
                       #esapiEncode('html','Embed')#
                     </option>
 
@@ -256,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <div id="availableRegions">
           <cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r">
             <div class="region">
-              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects' + availableObjectSuffix,#r#,true);"> <i class="icon-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="icon-caret-left"></i></a> </div>
+                    <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="siteManager.addDisplayObject('availableObjects' + availableObjectSuffix,#r#,true);"> <i class="mi-caret-right"></i></a> <a class="objectNav btn" onclick="siteManager.deleteDisplayObject(#r#);"> <i class="mi-caret-left"></i></a> </div>
               <cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r>
                 <dl>
                 <dt>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#
@@ -264,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <dt>
                 Region #r#
               </cfif>
-#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#
+      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#
               </dt>
               <cfset variables["objectlist#r#"]="">
               <dd>
@@ -280,19 +308,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
               </dd>
               </dl>
-              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="icon-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="icon-caret-down"></i></a> </div>
+                    <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="mi-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="mi-caret-down"></i></a> </div>
             </div> <!--- /.region --->
           </cfloop>
         </div> <!--- /#availableRegions --->
       </div> <!--- /#editObjects--->
-    </div> <!--- /.control-group --->
-    </cfif>
+          </div> <!--- /.mura-control-group --->
   
-  </div>  
 
   <span id="extendset-container-layoutobjects" class="extendset-container"></span>
   <span id="extendset-container-tablayoutobjectsbottom" class="extendset-container"></span>
 
-  </div> <!--- /.tab-pane --->
+    </div> <!--- /.block-content --->
+  </div> <!--- /.block --->   
+</div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

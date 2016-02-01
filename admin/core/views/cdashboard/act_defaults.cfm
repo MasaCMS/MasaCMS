@@ -54,7 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfparam name="rc.threshold" default="1">
-	
+
+<!--- TODO GoWest : remove? : 2016-01-29T17:26:39-07:00 --->
 	<!--- <cfswitch expression="#rc.span#">
 	<cfcase value="Week">
 	<cfset rc.stopDate=LSDateFormat(now(),session.dateKeyFormat)/>

@@ -46,23 +46,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
-<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h1>
+<cfoutput>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+	<div class="items-push mura-header">
+		<h1>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h1>
 
-<table class="mura-table-grid"> 
-<thead>
-<tr>
-<th class="add">&nbsp;</td>
-<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.active")#</th>
-<th class="actions">&nbsp;</th>
-</tr>
-<thead>
-<tbody class="nest">
-<cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" muraScope="#rc.$#">
-</tbody>
-</table>
+		<div class="mura-item-metadata">
+			<div class="label-group">
+				<cfinclude template="dsp_secondary_menu.cfm">
+			</div><!-- /.label-group -->
+		</div><!-- /.mura-item-metadata -->
+	</div> <!-- /.items-push.mura-header -->
+
+	
+	<div class="block block-constrain">
+			<div class="block block-bordered">
+				<div class="block-content">
+					<div id="main">
+
+							<table class="mura-table-grid"> 
+							<thead>
+							<tr>
+							<th class="add">&nbsp;</td>
+							<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
+							<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
+							<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
+							<th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.active")#</th>
+							<th class="actions">&nbsp;</th>
+							</tr>
+							<thead>
+							<tbody class="nest">
+							<cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" muraScope="#rc.$#">
+							</tbody>
+							</table>
+
+				</div> <!-- /##main -->	
+				<div class="clearfix"></div>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.block-constrain -->
+
+
+
+
+
+
 </cfoutput>

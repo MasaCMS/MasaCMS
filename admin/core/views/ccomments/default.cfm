@@ -69,18 +69,32 @@
 </script>
 <cfoutput>
 	
+
+<div id="commentsManagerWrapper">
+
+	<div class="items-push mura-header">
+		<h1>#rbKey('comments.commentsmanager')#</h1>
+
+		<div class="mura-item-metadata">
+			<div class="label-group">
+
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 		<div id="nav-module-specific" class="btn-group">
 				<cfif rc.$.globalConfig('purgecomments') and rc.$.currentUser().isSuperUser()>
-				<a id="purge-comments" class="btn btn-default" data-alertmessage="#application.rbFactory.getKeyValue(session.rb,'comments.message.confirm.purge')#"><i class="fa fa-trash-o icon-trash"></i> #application.rbFactory.getKeyValue(session.rb,'comments.purgedeletedcomments')#</a>
+							<a id="purge-comments" class="btn btn-default" data-alertmessage="#application.rbFactory.getKeyValue(session.rb,'comments.message.confirm.purge')#"><i class="mi-trash-o"></i> #application.rbFactory.getKeyValue(session.rb,'comments.purgedeletedcomments')#</a>
 				</cfif>
-				<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+							<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="mi-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
 		</div>
 	</cfif>
 
+			</div><!-- /.label-group -->
+		</div><!-- /.mura-item-metadata -->
+	</div> <!-- /.items-push.mura-header -->
 	
-<div id="commentsManagerWrapper">
-	<h1>#rbKey('comments.commentsmanager')#</h1>
+	<div class="block block-constrain">
+			<div class="block block-bordered">
+				<div class="block-content">
+	
 
 	<!--- MESSAGING --->
 	<cfif StructKeyExists(rc, 'processed') and IsBoolean(rc.processed)>
@@ -105,5 +119,10 @@
 			</div>
 		</div>
 	</form>
+
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.block-constrain -->
+
 </div>
 </cfoutput>

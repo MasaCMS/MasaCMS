@@ -47,22 +47,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.mobile"))/>
 <cfset tabList=listAppend(tabList,"tabMobile")>
 <cfoutput>
-  	<div id="tabMobile" class="tab-pane fade">
+  	<div id="tabMobile" class="tab-pane">
+
+		<!-- block -->
+	  <div class="block block-bordered">
+	  	<!-- block header -->
+	    <div class="block-header bg-gray-lighter">
+	      <ul class="block-options">
+	          <li>Something here?</li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+	          </li>
+	          <li>
+	              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+	          </li>
+	      </ul>
+	      <h3 class="block-title">Mobile Settings</h3>
+	    </div>
+	    <!-- /block header -->
+			
+			<!-- block content -->
+			<div class="block-content">
 
   	<span id="extendset-container-tabmobiletop" class="extendset-container"></span>
 
-	<div class="fieldset">
-	  	<div class="control-group">
-			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label> 
-			<div class="controls">	
-			<label class="radio inline"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
-				<label class="radio inline"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
-				<label class="radio inline"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
-			</div>
+			  	<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label> 
+					<div class="radio-group">	
+					<label class="radio"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</label>
+						<label class="radio"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+						<label class="radio"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
 		</div>
 	</div>
 
 	<span id="extendset-container-mobile" class="extendset-container"></span>
 	<span id="extendset-container-tabmobilebottom" class="extendset-container"></span>
-
-</div></cfoutput>
+		</div> <!--- /.block-content --->
+	</div> <!--- /.block --->		
+</div> <!--- /.tab-pane --->
+</cfoutput>

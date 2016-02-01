@@ -48,82 +48,90 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text="#session.dateKey#">
 <cfset rsList=application.dashboardManager.getTopRated(rc.siteID,rc.threshold,rc.limit,rc.startDate,rc.stopDate) />
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topratedcontent")#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<div class="items-push mura-header">
+	<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topratedcontent")#</h1>
 
+	<div class="mura-item-metadata">
+		<div class="label-group">
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
-<div class="fieldset">
-	<div class="control-group">
-	<div class="span2">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
-	</label>
-	      <div class="controls">
-			<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-	     </div>
-	 </div>
-	
-	<div class="span2">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,"params.to")#
-		</label>
-	      <div class="controls">
-			<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-	     </div>
-	 </div>
-	
-	<div class="span2">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
-		</label>
-	      <div class="controls"><select name="limit" class="span6">
-			<cfloop list="10,20,30,40,50,75,100" index="i">
-			<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+			<cfinclude template="dsp_secondary_menu.cfm">
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content"
+
+			<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
+			<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+				<div class="mura-control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
+				</label>
+						<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+			</div>
+				
+				<div class="mura-control-group">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,"params.to")#
+					</label>
+						<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+			</div>
+				
+				<div class="mura-control-group">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+					</label>
+					<select name="limit">
+						<cfloop list="10,20,30,40,50,75,100" index="i">
+						<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+						</cfloop>
+					</select>
+			</div>
+
+			<div class="form-actions">
+				<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
+			</div>
+
+			<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
+			<input type="hidden" value="cDashboard.topRated" name="muraAction"/>
+			</form>
+			<table class="mura-table-grid">
+			<tr>
+			<th class="var-width">Content</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.votes")#</th>
+			<th>&nbsp;</th>
+			</tr>
+			<cfif rslist.recordcount>
+			<cfloop query="rslist">
+			<cfsilent>
+			<cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
+			</cfsilent>
+			<tr>
+			<td class="var-width">#$.dspZoom(crumbdata)#</td>
+			<td><img src="assets/images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
+			<td class="count">#rsList.theCount#</td>
+			<td class="actions">
+					<ul>
+					
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rsList.filename)#');"><i class="mi-globe"></i></a></li>
+					</ul></td>
+			</tr>
 			</cfloop>
-		</select>
-	</div>
-</div>
+			<cfelse>
+			<tr>
+			<td class="noResults" colspan="4">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.nosearchresults")#</td>
+			</tr>
+			</cfif>
+			</table>
 
-</div>
-</div>
-<div class="form-actions">
-	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
-</div>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 
-<input type="hidden" value="#esapiEncode('html_attr',rc.siteid)#" name="siteID"/>
-<input type="hidden" value="cDashboard.topRated" name="muraAction"/>
-</form>
-<table class="mura-table-grid">
-<tr>
-<th class="var-width">Content</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.votes")#</th>
-<th>&nbsp;</th>
-</tr>
-<cfif rslist.recordcount>
-<cfloop query="rslist">
-<cfsilent>
-<cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
-</cfsilent>
-<tr>
-<td class="var-width">#$.dspZoom(crumbdata)#</td>
-<td><img src="assets/images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
-<td class="count">#rsList.theCount#</td>
-<td class="actions">
-		<ul>
-		
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#application.settingsManager.getSite(rc.siteid).getWebPath(complete=1)##$.getURLStem(rc.siteid,rsList.filename)#');"><i class="icon-globe"></i></a></li>
-		</ul></td>
-</tr>
-</cfloop>
-<cfelse>
-<tr>
-<td class="noResults" colspan="4">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.nosearchresults")#</td>
-</tr>
-</cfif>
-</table>
 </cfoutput>
 
 

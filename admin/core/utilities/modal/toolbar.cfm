@@ -210,13 +210,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif $.content('active') gt 0 and  $.content('approved')  gt 0>
 								<cfif len($.content('approvalStatus'))>
 									<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook# title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#">
-										<i class="icon-ok-circle status-published"></i> 
+										<i class="mi-check-circle status-published"></i> 
 										<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
 									</a>
 								<cfelse>
 									<a href="#variables.approvalrequestlink#" data-configurator="true" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#" #variables.targetHook#>
-										<i class="icon-ok-circle status-published"></i> 
+										<i class="mi-check-circle status-published"></i> 
 										<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 										#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#
 									</a>
@@ -225,20 +225,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<!--- wildcard: approved, published --->			
 							<cfelseif len($.content('approvalStatus')) and $.content().requiresApproval() >
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
-									<i class="icon-warning-sign status-req-approval"></i> 
+									<i class="mi-warning status-req-approval"></i> 
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.#$.content('approvalstatus')#")#
 								</a>
 							<cfelseif $.content('approved') lt 1>
 								<cfif len($.content('changesetid'))>
 									<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
-									<i class="icon-ok status-queued"></i> 
+									<i class="mi-checkstatus-queued"></i> 
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.queued")#
 									</a>
 								<cfelse>
 									<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
-									<i class="icon-edit status-draft"></i> 
+									<i class="mi-edit status-draft"></i> 
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#
 								</a>
@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								
 							<cfelse>
 								<a href="#variables.approvalrequestlink#" data-configurator="true" #variables.targetHook#>
-									<i class="icon-book status-archived"></i> 
+									<i class="mi-book status-archived"></i> 
 									<!--- #application.rbFactory.getKeyValue(session.rb,'layout.status')#: --->
 									#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#
 								</a>
@@ -258,12 +258,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset edittype='inline'>
 							<li id="adminSave" class="dropdown" style="display:none">
 								<a href="" class="dropdown-toggle" onclick="return false;">
-									<i class="icon-ok-sign"></i> Save</a>
+									<i class="mi-check-circle"></i> Save</a>
 								<ul class="dropdown-menu">
 									<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')>
 										<li>
 											<a class="mura-#edittype#-save" data-approved="1" data-changesetid="">
-											<i class="icon-ok"></i> 
+											<i class="mi-check"></i> 
 											<cfif $.content().requiresApproval()>
 												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.sendforapproval"))#
 											<cfelse>
@@ -275,14 +275,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
 										<li>
 											<a class="mura-#edittype#-save" data-approved="0" data-changesetid="">
-												<i class="icon-edit"></i>  
+												<i class="mi-edit"></i>  
 												#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
 											</a>
 										</li>
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 										<li class="dropdown-submenu">
-											<a href=""><i class="icon-list"></i> 
+											<a href=""><i class="mi-list-alt"></i> 
 											#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 											<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
@@ -303,9 +303,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										</li>
 									</cfif>
 									<cfif $.content('type') eq 'Variation'>
-									<li><a class="mura-#edittype#-undo"><i class="icon-undo"></i> Undo</a></li>
+									<li><a class="mura-#edittype#-undo"><i class="mi-undo"></i> Undo</a></li>
 									</cfif>
-									<li><a class="mura-#edittype#-cancel"><i class="icon-ban-circle"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
+									<li><a class="mura-#edittype#-cancel"><i class="mi-ban"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
 								</ul>
 							</li>
 						</cfif>
@@ -317,14 +317,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<ul id="tools-version">
 							<!---
 							<cfif $.content('type') eq 'Variation'>
-							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="icon-pencil"></i></a></li>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
+							<li id="adminEditPage" class="dropdown"><a onclick="return muraInlineEditor.init();"><i class="mi-pencil"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-book"></i></a></li>
 							<cfelse>
 							--->
-							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i><b class="caret"></b></a>
+							<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="mi-pencil"></i><b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li id="adminFullEdit">
-										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="icon-pencil"></i>
+										<a href="#variables.editLink#"<cfif variables.dolockcheck> data-configurator="true"</cfif> #variables.targetHook#><i class="mi-pencil"></i>
 											<cfif useLayoutManager()>
 												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-content')#
 											<cfelse>
@@ -333,7 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</li>
 									<cfif this.showInlineEditor>	
 									<li id="adminQuickEdit">
-										<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i>
+										<a onclick="return muraInlineEditor.init();"><i class="mi-bolt"></i>
 										<cfif useLayoutManager()>
 											<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
 											<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
@@ -347,20 +347,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</ul>				
 							</li>
 							<cfif $.content('type') neq 'Variation'>		
-							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i></a>
+							<li id="adminAddContent"><a href="#variables.newLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" #variables.targethook# data-configurator="true"><i class="mi-plus"></i></a>
 							</li>	
 							</cfif>
-							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="icon-book"></i></a></li>
+							<li id="adminVersionHistory"><a href="#variables.historyLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" #variables.targethook#><i class="mi-book"></i></a></li>
 							<cfif $.content('type') neq 'Variation'>
-							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="icon-mobile-phone"></i></a>
+							<li id="adminPreview"<!--- class="dropdown"--->><a href="#variables.$.getCurrentURL()#" data-modal-preview="true" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.multidevicepreview')#" #variables.targethook#><i class="mi-mobile-phone"></i></a>
 							</li>
 							</cfif>
 							<!---</cfif>--->
 							<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 								<cfif request.contentBean.getType() eq 'Variation'>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i></a></li>
+									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletevariationconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-times-circle"></i></a></li>
 								<cfelse>
-									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i></a></li>
+									<li id="adminDelete"><a href="#variables.deleteLink#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" onclick="return confirm('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="mi-times-circle"></i></a></li>
 								</cfif>
 								
 							</cfif>
@@ -399,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 								</cfif>
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="mi-list-alt"></i></a>
 									<cfif request.muraChangesetPreview>
 										<ul class="dropdown-menu">
 										<cfif changesetMembers.hasNext()>
@@ -416,20 +416,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</li>
 								
 								<!--- I can't figure out how to trigger the tooltip but here are the icons for each status:
-									In Selected Changeset - icon-check
-									In Earlier Changeset - icon-code-fork
-									Not in a Changeset - icon-ban-circle --->
+									In Selected Changeset - mi-check 
+									In Earlier Changeset - mi-code-fork
+									Not in a Changeset - mi-ban --->
 								<cfif request.muraChangesetPreview and structKeyExists(previewData.previewmap,$.content("contentID")) >
 									<cfif previewData.previewmap[$.content("contentID")].changesetID eq previewData.changesetID>
 										<li>
 											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.in'))#">
-												<i class="icon-check"></i>
+												<i class="mi-check"></i>
 											</a>
 										</li>
 									<cfelse>
 										<li>
 											<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.dependent'))#">
-												<i class="icon-code-fork"></i>
+												<i class="mi-code-fork"></i>
 						
 											</a>
 										</li>
@@ -437,7 +437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfelse>
 									<li>
 										<a href="" data-toggle="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'changesets.content.notin'))#">
-											<i class="icon-ban-circle"></i>
+											<i class="mi-ban"></i>
 											
 										</a>
 									</li>
@@ -452,13 +452,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif listFindNoCase(session.mura.memberships,'S2IsPrivate')>
 
-					<ul id="adminSiteManager"><li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></ul>
+					<ul id="adminSiteManager"><li><a href="#variables.adminLink#" title="#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#" target="admin"><i class="mi-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></ul>
 				</cfif>
 				
 				<cfif $.currentUser().isLoggedIn()>
 					<ul id="tools-user">
-						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="icon-signout"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
-						<li id="adminWelcome"><i class="icon-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
+						<li id="adminLogOut"><a href="?doaction=logout" title="#application.rbFactory.getKeyValue(session.rb,'layout.logout')#"><i class="mi-sign-out"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
+						<li id="adminWelcome"><i class="mi-user"></i> #esapiEncode("html","#session.mura.fname# #session.mura.lname#")#</li>
 					</ul>
 				</cfif>
 

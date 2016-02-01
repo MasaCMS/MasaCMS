@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="icon-plus-sign"></i></button><ul class="navZoom"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="mi-plus-circle"></i></button><ul class="navZoom"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
 			 	)
 			 ); 
 
@@ -120,33 +120,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}		
 	</script>
 	<cfif rc.external>
-		<div class="control-group">
-			<label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="icon-question-sign"></i></a></label>
-			<div class="controls">
+		<div class="mura-control-group">
+			<label>
+				<span data-toggle="popover" title="" data-placement="right" 
+  			data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#" 
+  			data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent'))#">	
+		  	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="mi-question-circle"></i></span>
+			</label>
 				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
 			</div>
-		</div>
 	</cfif>
 	
-	<div class="control-group mura-related-internal">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
-		<div id="internalContent" class="form-inline">
-			<div class="input-append">
+	<div class="mura-control-group mura-related-internal">
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
+		<div id="internalContent" class="mura-control justify">
 				<input type="text" name="keywords" value="#rc.keywords#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
-				<button type="button" name="btnSearch" id="rcBtnSearch" class="btn"><i class="icon-search"></i></button>
-			</div>
+				<button type="button" name="btnSearch" id="rcBtnSearch" class="btn"><i class="mi-search"></i></button>
 			<a href="##" class="btn" id="aAdvancedSearch" data-toggle="button">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.advancedsearch')#</a>
 		</div>	
 	</div>
 	
 	<div class="mura-related-internal">
 		<div id="rcAdvancedSearch" style="display:none;">
-			<div class="control-group">
+			<div class="mura-control-group">
 				<cfif rc.relatedcontentsetid neq 'calendar'>
-				<div class="span4">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
-					<div class="controls">
+					<div class="mura-control justify">
+						<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.contenttype')#</label>
 						<select name="searchTypeSelector" id="searchTypeSelector">
 							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.all')#</option>
 							<cfloop list="#baseTypeList#" index="t">
@@ -162,20 +162,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 						</select>
 					</div>
-				</div>
 				</cfif>	
-				<div class="span8">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
-					<div class="controls">
+				<div class="mura-control-group">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 						<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> &ndash; <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
 					</div>
 				</div>			
-			</div>
-			<div class="control-group">
-				<div class="controls">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>
-			
-					<div id="mura-list-tree" class="controls">
+			<div class="mura-control-group">
+				<div class="mura-control justify">
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>			
+					<div id="mura-list-tree">
 						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
 					</div>
 				</div>
@@ -271,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		rc.rslist=getRelatedFeed($,$.event('siteid')).getQuery();
 	</cfscript>
 
-	<div class="control-group mura-related-internal">
+	<div class="mura-control-group mura-related-internal">
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
 				<div class="list-table-content-set">
@@ -283,7 +279,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 						<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 							<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
-								<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="icon-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
+								<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 							</li>
 						<!---</cfif>--->
 					</cfoutput>
@@ -311,7 +307,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, siteId)/>
 								<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 									<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
-										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="icon-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
+										<button class="btn mura-rc-quickoption" type="button" value="#rc.rslist.contentID#"><i class="mi-plus"></i></button>  #$.dspZoomNoLinks(crumbdata=crumbdata, charLimit=90, minLevels=2)#
 									</li>
 								<!---</cfif>--->
 							</cfoutput>
@@ -327,24 +323,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </cfif>
 <cfoutput>
-<div class="control-group mura-related-external" style="display:none;">
+<div class="mura-control-group mura-related-external" style="display:none;">
+<!--- TODO GoWest : markup here (span6, span12 etc) --->
 	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
-		<div class="controls">
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
 			<input type="text" id="mura-related-title" value="" class="span12">	
 		</div>
-	</div>
 	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
-		<div class="controls input-append">
+		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
 			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="icon-plus-sign"></i></button>		
-		</div>
+			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>		
 	</div>
 </div>	
 
 <div class="mura-related-external" style="display:none;">
-	<div id="draggableContainmentExternal" class="control-group" style="display:none;">
+	<div id="draggableContainmentExternal" class="mura-control-group" style="display:none;">
 		<div class="list-table search-results">
 			<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availableurls')#</label></div>
 			<ul class="rcDraggable list-table-items"></ul>
