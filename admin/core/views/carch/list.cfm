@@ -80,7 +80,6 @@
 		</cfswitch>
 
 		<cfoutput>
-			<div class="items-push mura-header">
 			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
@@ -88,18 +87,11 @@
 			<cfelse>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1> 
 			</cfif>
-				<div class="mura-item-metadata">
-					<div class="label-group">
 			<cfinclude template="dsp_secondary_menu.cfm">
-					</div><!-- /.label-group -->
-				</div><!-- /.mura-item-metadata -->
-			</div> <!-- /.items-push.mura-header -->	
 		</cfoutput>
 
-			<div class="block block-constrain">
-					<div class="block block-bordered">
-					  <div class="block-content">
-							<div id="main">
+		<div class="row-fluid">
+			<div id="main" class="span9">
 				<table class="mura-table-grid">
 					<cfoutput>
 						<thead>
@@ -161,12 +153,12 @@
 				  					<!--- Display Start/Stop --->
 									<td>
 										<cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved)>
-															<i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i>
+											<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i>
 											<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
 										<cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved)>
 											#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#
 										<cfelse>
-															<i class="mi-ban" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i>
+											<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i>
 											<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
 										</cfif>
 									</td>
@@ -185,60 +177,60 @@
 											<cfif verdict neq 'none'>
 												<li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
-																		<i class="mi-pencil"></i>
+														<i class="icon-pencil"></i>
 													</a>
 												</li>
 												<cfif rc.rstop.type eq 'Variation'>
-																	<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#');"><i class="mi-globe"></i></a></li>
+													<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rstop.remoteurl#');"><i class="icon-globe"></i></a></li>
 												</cfif>
 												<li class="version-history">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#">
-																		<i class="mi-book"></i>
+														<i class="icon-book"></i>
 													</a>
 												</li>
 												<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 													<li class="manage-data">
 														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#esapiEncode('url',rc.topid)#&parentid=#esapiEncode('url',rc.parentid)#&type=Form">
-																			<i class="mi-wrench"></i>
+															<i class="icon-wrench"></i>
 														</a>
 													</li>
 												</cfif>
 												<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 													<li class="permissions">
 														<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">
-																			<i class="mi-group"></i>
+															<i class="icon-group"></i>
 														</a>
 													</li>
 												</cfif>
 											<cfelse>
 												<li class="edit disabled">
 													<a>
-																		<i class="mi-pencil"></i>
+														<i class="icon-pencil"></i>
 													</a>
 												</li>
 												<li class="version-history disabled">
-																	<i class="mi-book"></i>
+													<i class="icon-book"></i>
 												</li>
 												<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 													<li class="manage-dataOff disabled">
-																		<i class="mi-wrench"></i>
+														<i class="icon-wrench"></i>
 													</li>
 												</cfif>
 												<li class="permissions disabled">
 													<a>
-																		<i class="mi-group"></i>
+														<i class="icon-group"></i>
 													</a>
 												</li>
 											</cfif>
 											<cfif (((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1) and not isLockedBySomeoneElse>
 												<li class="delete">
 													<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&moduleid=#rc.moduleid#&parentid=#esapiEncode('url',rc.parentid)##rc.$.renderCSRFTokens(context=rc.rstop.contentid & 'deleteall',format='url')#" onClick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)">
-																		<i class="mi-times-circle"></i>
+														<i class="icon-remove-sign"></i>
 													</a>
 												</li>
 											<cfelseif rc.locking neq 'all'>
 												<li class="delete disabled">
-																	<i class="mi-times-circle"></i>
+													<i class="icon-remove-sign"></i>
 												</li>
 											</cfif>
 										</ul>
@@ -326,7 +318,7 @@
 						<div id="tags" class="tagSelector">
 							<cfloop list="#$.event('tags')#" index="i">
 								<span class="tag">
-												#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+								#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 								<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 								</span>
 							</cfloop>
@@ -341,7 +333,7 @@
 								<div id="#g#tags" class="tagSelector">
 									<cfloop list="#$.event('#g#tags')#" index="i">
 										<span class="tag">
-														#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+										#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 										<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 										</span>
 									</cfloop>
@@ -414,16 +406,9 @@
 					 ); 
 
 				</script>
-							</div> <!-- /.sidebar -->									
-
+			</div>
 		</cfoutput>
 
-						<div class="clearfix"></div>
-					</div> <!-- /.block-content -->
-				</div> <!-- /.block-bordered -->
-			</div> <!-- /.block-constrain -->
-
-<!--- TODO GoWest : should draftpromptjs be inside markup wrapper? : 2016-01-23T09:08:10-07:00 --->
 		<cfinclude template="draftpromptjs.cfm">
 	</cfcase>
 
@@ -623,17 +608,13 @@
 				</cfif>
 			</script>
 		 
-		 	<div class="items-push mura-header">
-
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
-
-<!--- M7 removed - are we keeping this search?
 
 			<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 				<div class="input-append">
 					<input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="text" />
 					<button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);">
-						<i class="mi-search"></i>
+						<i class="icon-search"></i>
 					</button>
 				</div>
 				<input type="hidden" name="muraAction" value="cArch.list">
@@ -641,68 +622,25 @@
 				<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 				<input type="hidden" name="moduleid" value="#rc.moduleid#">
 			</form>
-/end m7 removed --->
 
-		</div> <!--- /.mura-header --->
-
-			<div class="block block-constrain">
-				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
-					<li><a href="##tabArchitectural" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
-					<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
+			<div class="tabbable">
+				<ul id="viewTabs" class="nav nav-tabs tabs initActiveTab">
+					<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
+					<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
 				</ul>
-				<div class="block-content tab-content"> 
-					
-					<div id="tabArchitectural" class="tab-pane">
-						<div class="block block-bordered">
-							<!-- block header -->
-						  <div class="block-header bg-gray-lighter">
-						    <ul class="block-options">
-						        <li>Something here?</li>
-						        <li>
-						            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-						        </li>
-						        <li>
-						            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-						        </li>
-						    </ul>
-						    <h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</h3>
-						  </div>
-						  <!-- /block header -->						
-						  <div class="block-content">
-						  	<!--- site manager architectural view container --->
+				<div class="tab-content"> 
+					<div id="tabArchitectural" class="tab-pane fade">
 						<div id="gridContainer">
 							
 						</div>
 					</div>
-						</div>
-					</div>
-					<div id="tabFlat" class="tab-pane">
-						<div class="block block-bordered">
-							<!-- block header -->
-						  <div class="block-header bg-gray-lighter">
-						    <ul class="block-options">
-						        <li>Something here?</li>
-						        <li>
-						            <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-						        </li>
-						        <li>
-						            <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-						        </li>
-						    </ul>
-						    <h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</h3>
-						  </div>
-						  <!-- /block header -->						
-						  <div class="block-content">							
-						  	<!--- site manager flat view container --->
+					<div id="tabFlat" class="tab-pane fade">
 						<div id="flatViewContainer">
 							
 						</div>
 					</div>
 				</div>
 			</div>
-
-				</div> <!--- /.block-content.tab-content --->
-			</div> <!--- /.block-constrain --->
 
 			<script type="text/javascript">
 				var archViewLoaded=false;

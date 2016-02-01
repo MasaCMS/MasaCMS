@@ -2,22 +2,20 @@
 <cfset fileLockedBySomeElse=len(stats.getLockID()) and stats.getLockType() neq 'node' and  stats.getLockID() neq session.mura.userID>
 <cfset examplefileext="zip">
 <cfoutput>
-<div id="assocFileContainer" class="mura-control-group" style="display:none">
-   <label>
+<div id="assocFileContainer" class="control-group" style="display:none">
+   <label class="control-label">
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
 		<cfset examplefileext="png">
-		<span data-toggle="popover" title="" data-placement="right" 
-  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.selectimage"))#" 
-  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.selectimage"))#">	
-  		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="mi-question-circle"></i></span>
+		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-question-sign"></i></a>
 	<cfelse>
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 	</cfif>	
 	</label>
+    <div class="controls">
 	<cfif not fileLockedBySomeElse>
 		<cfif  rc.type eq 'File'
 			and (rc.type eq 'File' and not rc.contentBean.getIsNew())>
-			<p id="msg-file-locked" class="alert"<cfif not fileLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+			<p id="msg-file-locked" class="alert"<cfif not fileLockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 			</p>
 		</cfif>
 
@@ -30,14 +28,14 @@
 	<cfelse>
 		<!--- Locked by someone else --->	
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<p id="msg-file-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+		<p id="msg-file-locked" class="alert" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a class="mura-file-unlock" href="##"<cfif not fileLockedByYou> style="display:none;"</cfif>><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		</p>
 		
 	
 		<p id="msg-file-locked-else" class="alert alert-error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#.<br>
-		<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#"><i class="mi-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a>
+		<a href="mailto:#esapiEncode('html',lockedBy.getEmail())#?subject=#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#"><i class="icon-envelope"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a>
 		<cfif $.currentUser().isSuperUser() or $.currentUser().isAdminUser()>
-		 &nbsp; &nbsp;<a class="mura-file-unlock" href="##"><i class="mi-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+		 &nbsp; &nbsp;<a class="mura-file-unlock" href="##"><i class="icon-unlock"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		</cfif>
 		</p>
 		
@@ -51,5 +49,6 @@
 		siteManager.unlockfileconfirm="#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#";
 	</script>
 	<input type="hidden" id="unlockfilewithnew" name="unlockfilewithnew" value="false" />
+	</div>
 </div>
 </cfoutput>

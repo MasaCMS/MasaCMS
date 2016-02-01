@@ -116,7 +116,7 @@
 	<!--- Basic Search Button --->
 		<div id="nav-module-specific" class="btn-group">
 			<a class="btn" href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-				<i class="mi-search"></i> 
+				<i class="icon-search"></i> 
 				#rbKey('user.basicsearch')#
 			</a>
 		</div>
@@ -154,11 +154,11 @@
 
 								<!--- remove --->
 								<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#rbKey("params.removecriteria")#">
-									<i class="mi-times-circle"></i>
+									<i class="icon-remove-sign"></i>
 								</a>
 								<!--- add --->
 								<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey("params.addcriteria")#">
-									<i class="mi-plus-circle"></i>
+									<i class="icon-plus-sign"></i>
 								</a>
 							<cfelse>
 								<cfloop from="1" to="#session.paramCount#" index="p">
@@ -192,10 +192,10 @@
 									
 									<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
 									<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" title="#rbKey('params.removecriteria')#">
-										<i class="mi-times-circle"></i>
+										<i class="icon-remove-sign"></i>
 									</a>
 									<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#rbKey('params.addcriteria')#">
-										<i class="mi-plus-circle"></i>
+										<i class="icon-plus-sign"></i>
 									</a><br>
 								</cfloop>
 							</cfif>
@@ -227,14 +227,14 @@
 					
 					<!--- Search Button --->
 						<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearch';submitForm(document.forms.form2);">
-							<i class="mi-search"></i> 
+							<i class="icon-search"></i> 
 							#rbKey("user.search")#
 						</button>
 					
 					<!--- Download Button --->
 						<cfif rc.it.getRecordcount()>
 							<button type="button" class="btn" onclick="document.forms.form2.muraAction.value='cUsers.advancedSearchToCSV';submitForm(document.forms.form2);$('##action-modal').remove();">
-								<i class="mi-download"></i> 
+								<i class="icon-download"></i> 
 								#rbKey("user.download")#
 							</button>
 						</cfif>

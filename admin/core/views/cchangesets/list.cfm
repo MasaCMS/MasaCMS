@@ -49,34 +49,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<div class="input-append">
 	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text" maxlength="50" />
-	<button type="button" class="btn" onclick="submitForm(document.forms.changesetSearch);"><i class="mi-search"></i></button>
+	<button type="button" class="btn" onclick="submitForm(document.forms.changesetSearch);"><i class="icon-search"></i></button>
 	<input type="hidden" name="muraAction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
 	</div>
 </form>
 --->
 
-<div class="mura-layout-row">
-	<!--- TODO GoWest : mura-content is in template... remove here? : 2016-01-29T17:22:03-07:00 --->
-	
-	 <div id="mura-content">
+<h1>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h1>
 
-		<div class="items-push mura-header">
-			<h1>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h1>
-			<div class="mura-item-metadata">
-				<div class="label-group">
-				<cfinclude template="dsp_secondary_menu.cfm">
-				</div><!-- /.label-group -->
-			</div><!-- /.mura-item-metadata -->
-		</div> <!-- /.items-push.mura-header -->
-	
-	<div class="block block-constrain">
-			<div class="block block-bordered">
-				<div class="block-content">
-					<div id="main">
+<cfinclude template="dsp_secondary_menu.cfm">
 
-<!--- TODO GoWest : table markup / css : 2016-01-22T22:35:25-07:00 --->
 
+
+<div class="row-fluid">
+	 <div id="main" class="span9">
 	<table class="mura-table-grid"> 
 	<tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
@@ -93,14 +80,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td>#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#</td>
 		<td class="actions">
 			<ul>
-						<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="mi-pencil"></i></a></li>
+				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="./?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)#"><i class="icon-pencil"></i></a></li>
 				<cfif rc.changeset.getPublished()>
-							<li class="preview disabled"><i class="mi-globe"></i></li>
+					<li class="preview disabled"><i class="icon-globe"></i></li>
 				<cfelse>
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('#rc.$.getBean('content').loadBy(filename='').getURL(complete=1,queryString='changesetID=#rc.changeset.getchangesetID()#')#');"><i class="mi-globe"></i></a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('#rc.$.getBean('content').loadBy(filename='').getURL(complete=1,queryString='changesetID=#rc.changeset.getchangesetID()#')#');"><i class="icon-globe"></i></a></li>
 				</cfif>
-						<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#"><i class="mi-reorder"></i></a></li>
-						<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="mi-times-circle"></i></a></li>
+				<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="./?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#"><i class="icon-reorder"></i></a></li>
+				<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="./?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#esapiEncode('url',rc.changeset.getSiteID())#&categoryid=#esapiEncode('url',rc.categoryid)#&tags=#esapiEncode('url',rc.tags)##rc.$.renderCSRFTokens(context=rc.changeset.getChangesetID(),format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 			</ul>
 		</td>
 	</tr></cfloop>
@@ -141,26 +128,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</li>
 			</cfif>
 			</ul>
-					</div> <!-- /.pagination -->
-				</div> <!-- /.mura-results-wrapper -->
+			</div>
+		</div>
 	</cfif>
-	</div> <!-- /##main -->	
+	</div>
 
-	<div class="sidebar">
+	<div class="sidebar span3">
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	<form novalidate="novalidate" name="searchFrm" class="form-inline" onsubmit="return validate(this);">
 		
 		<div class="module well">
 			<h3>#application.rbFactory.getKeyValue(session.rb,"params.keywords")#</h3>
-		  	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="text"  maxlength="50" />
+		  	<input name="keywords" value="#esapiEncode('html_attr',rc.keywords)#" type="text" class="span12"  maxlength="50" />
 		</div>
 
 		<div class="module well">
 			<h3>#application.rbFactory.getKeyValue(session.rb,"params.from")#</h3>
-			<input type="text" class="datepicker text" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+			<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
 		     <br/><br/>
 		     <h3>#application.rbFactory.getKeyValue(session.rb,"params.to")#</h3>
-		     <input type="text" class="datepicker text" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+		     <input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 		</div>		
 		
 		<div class="module well" id="mura-filter-tags">
@@ -169,11 +156,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="tags" class="tagSelector">
 				<cfloop list="#$.event('tags')#" index="i">
 					<span class="tag">
-					#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+					#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 					<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
-				<input type="text" class="text" name="tags">
+				<input type="text" name="tags">
 			</div>
 		</div>
 
@@ -205,11 +192,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</script>
 	</form>
-</div> <!-- /.sidebar -->
-
-<div class="clearfix"></div>
-</div> <!-- /.block-content -->
-</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
-
+</div>
 </cfoutput>

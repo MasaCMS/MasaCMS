@@ -36,7 +36,7 @@ width:#rc.width#<br/>
 <td>#esapiEncode('html',image.getHeight())#</td>
 <td>#esapiEncode('html',image.getWidth())#</td>
 <td class="actions"><ul>
-	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#esapiEncode('javascript',image.getSiteID())#');"><i class="mi-pencil"></i></a></li>
+	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#esapiEncode('javascript',image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
 </ul></td>
 </tr>
 </cfloop>

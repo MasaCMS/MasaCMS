@@ -46,49 +46,39 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div class="items-push mura-header">
+
 	<h1>#rbKey('user.groupform')#</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
 
 	<!--- Buttons --->
 	<div id="nav-module-specific" class="btn-group">
 
 		<!--- Back --->
 		<a class="btn" href="##" title="#esapiEncode('html',rbKey('sitemanager.back'))#" onclick="actionModal();window.history.back(); return false;">
-					<i class="mi-arrow-circle-left"></i> 
+			<i class="icon-circle-arrow-left"></i> 
 			#esapiEncode('html',rbKey('sitemanager.back'))#
 		</a>
 
 		<!--- View All Groups --->
 		<a class="btn" href="#buildURL(action='cusers.list')#" onclick="actionModal();">
-					<i class="mi-eye"></i>
+			<i class="icon-eye-open"></i>
 			#rbKey('user.viewallgroups')#
 		</a>
 
 		<!--- Edit Group Settings --->
 		<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='userid=#rc.userid#&siteid=#esapiEncode('url',rc.siteid)#')#" onclick="actionModal();">
-					<i class="mi-pencil"></i>
+			<i class="icon-pencil"></i>
 			#rbKey('user.editgroupsettings')#
 		</a>
 
 		<!--- Download Users --->
 	    <cfif rc.it.hasNext()>
 				<a class="btn" href="#buildURL(action='cusers.downloadgroupmembers', querystring='userid=#rc.userid#')#">
-							<i class="mi-download"></i> 
+					<i class="icon-download"></i> 
 					#rbKey('user.download')#
 				</a>
 	    </cfif>
 
 	</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
-
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
 
 	<h2>
 		<strong>#esapiEncode('html', rc.userBean.getgroupname())#</strong> #rbKey('user.users')#
@@ -96,7 +86,4 @@
 
 	<cfinclude template="inc/dsp_users_list.cfm" />
 
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
 </cfoutput>

@@ -76,35 +76,30 @@
 			});
 
 		});
-</script>
+	</script>
 
-
-<div class="items-push mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
-	<div class="mura-item-metadata">
-		<div class="label-group">
+
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-					<i class="mi-arrow-circle-left"></i> 
+			<i class="icon-circle-arrow-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
 
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
-			<form novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);">
-					<div class="mura-control-group">
+	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" onsubmit="return validateForm(this);">
+		<div class="fieldset">
+			<div class="control-group">
+				<div class="controls">
 					<label class="checkbox">
 						<input type="checkbox" name="checkall" id="checkall" /> 
 						<strong>#rc.$.rbKey('sitemanager.extension.selectall')#</strong>
 					</label>
 				</div>
+			</div>
 
-					<div class="mura-control-group">
+			<div class="control-group">
+				<div class="controls">
 					<cfloop query="rc.subtypes">
 						<label class="checkbox">
 							<input name="exportClassExtensionID" type="checkbox" class="checkbox" value="#subtypeid#">
@@ -112,6 +107,8 @@
 						</label>
 					</cfloop>
 				</div>
+			</div>
+		</div>
 		
 		<div class="form-actions">
 			<input id="btnSubmit" type="button" class="btn" value="#rc.$.rbKey('sitemanager.extension.export')#" />
@@ -122,8 +119,4 @@
 		<input name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" type="hidden">
 		#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 	</form>
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
-
 </cfoutput>

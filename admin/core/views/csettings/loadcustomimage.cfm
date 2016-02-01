@@ -1,7 +1,7 @@
  <cfset request.layout=false>
  <cfset rc.customImage=application.serviceFactory.getBean('imageSize').loadBy(sizeid=rc.sizeid)>
  <cfoutput>
- <div id="custom-image-form" data-sizeid="#rc.customImage.getSizeID()#" class="fieldset-wrap mura-layout-row">
+ <div id="custom-image-form" data-sizeid="#rc.customImage.getSizeID()#" class="fieldset-wrap row-fluid">
 	 <div class="fieldset">
       	<div class="control-group">
             <label class="control-label">Name</label>

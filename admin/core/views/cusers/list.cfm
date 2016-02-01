@@ -49,13 +49,13 @@
 
 	<cfinclude template="inc/dsp_users_header.cfm" />
 
-<div class="block block-constrain">
+	<!--- Subheading --->
+		<h2>#rbKey('user.groups')#</h2>
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
 
-				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
-	<!--- TODO GoWest : js error with tab link syntax : 2016-01-26T13:14:07-07:00 --->
+				<ul class="nav nav-tabs">
 
 					<!--- Member/Public Groups --->
 						<li<cfif rc.ispublic eq 1> class="active"</cfif>>
@@ -77,34 +77,6 @@
 			<h3>#rbKey('user.membergroups')#</h3>
 		</cfif>
 	<!--- /Tab Nav --->
-
-	<div class="block-content tab-content">
-
-		<!-- start tab -->
-		<div class="tab-pane active">
-		
-			<div class="block block-bordered">
-				<!-- block header -->
-				<div class="block-header bg-gray-lighter">
-					<ul class="block-options">
-						<li>Something here?</li>
-						<li>
-							<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-						</li>
-						<li>
-							<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-						</li>
-					</ul>
-					<h3 class="block-title">
-						<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
-							#rbKey('user.groups')#
-						<cfelse>
-							#rbKey('user.membergroups')#
-						</cfif>
-	
-					</h3>
-				</div> <!-- /.block header -->						
-				<div class="block-content">
 
 	<!--- Group Listing --->
 		<cfif rc.it.hasNext()>
@@ -183,7 +155,7 @@
 										<!--- Edit --->
 											<li>
 												<a href="#buildURL(action='cusers.editgroup', querystring='userid=#local.item.getValue('userid')#&siteid=#rc.siteid#')#" rel="tooltip" title="#rbKey('user.edit')#" onclick="actionModal(); window.location=this.href;">
-																<i class="mi-pencil"></i>
+													<i class="icon-pencil"></i>
 												</a>
 											</li>
 
@@ -197,12 +169,12 @@
 
 												<li>
 													<a href="#buildURL(action='cusers.update', querystring='action=delete&userid=#local.item.getValue('userid')#&siteid=#rc.siteid#&type=1#rc.$.renderCSRFTokens(context=local.item.getValue('userid'),format='url')#')#" onclick="return confirmDialog('#esapiEncode('javascript', msgDelete)#',this.href)" rel="tooltip" title="#rbKey('user.delete')#">
-																	<i class="mi-times-circle"></i>
+														<i class="icon-remove-sign"></i>
 													</a>
 												</li>
 											<cfelse>
 												<li class="disabled">
-																<i class="mi-times-circle"></i>
+													<i class="icon-remove-sign"></i>
 												</li>
 											</cfif>
 
@@ -225,12 +197,4 @@
 			</div>
 
 		</cfif>
-
-					</div> <!-- /.block-content -->
-				</div> <!-- /.block-bordered -->
-			</div> <!-- /.tab-pane -->
-
-	</div> <!-- /.block-content.tab-content -->
-</div> <!-- /.block-constrain -->
-
 </cfoutput>

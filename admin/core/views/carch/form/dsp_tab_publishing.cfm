@@ -2,42 +2,27 @@
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.publishing"))/>
 <cfset tabList=listAppend(tabList,"tabPublishing")>
 <cfoutput>
-<div id="tabPublishing" class="tab-pane">
-
-	<!-- block -->
-  <div class="block block-bordered">
-  	<!-- block header -->
-    <div class="block-header bg-gray-lighter">
-      <ul class="block-options">
-          <li>Something here?</li>
-          <li>
-              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-          </li>
-          <li>
-              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-          </li>
-      </ul>
-      <h3 class="block-title">Publishing</h3>
-    </div>
-    <!-- /block header -->
-		
-		<!-- block content -->
-		<div class="block-content">
+  <div id="tabPublishing" class="tab-pane fade">
 		
 	<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
+	<div class="fieldset">
+
   	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
-					<div class="mura-control-group">  				
-			      <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-			      <input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255" class="span12">
-			    </div> <!--- /end mura-control-group --->
+		<div class="control-group">
+  				
+			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
+			      <div class="controls"><input type="text" id="credits" name="credits" value="#esapiEncode('html_attr',rc.contentBean.getCredits())#"  maxlength="255" class="span12"></div>
+			    </div> <!--- /end control-group --->
 					
 		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-					<div class="mura-control-group">
+		<div class="control-group">
+	      	<div class="controls">
 				      	<label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
 						</label>
-			      	<div class="mura-control" id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
+					</div> 
+	      	<div class="controls" id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
 						<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
 						<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 						<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
@@ -61,48 +46,44 @@
 						</cfif>
 						</select>
 					</div>
-			      	</div> <!--- /end mura-control-group --->
+	      	</div> <!--- /end control-group --->
 	    </cfif>
 
-		  		<div class="mura-control-group">
+  		<div class="control-group">
+		     <div class="controls">
 		      	<label for="isNav" class="checkbox">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
-					    	<span data-toggle="popover" title="" data-placement="right" 
-						    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#" 
-						    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.isnav"))#"
-						    	>					
-						      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
-				    		 <i class="mi-question-circle"></i>
+		      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
+		      		 <i class="icon-question-sign"></i></a>
 		      	</label>
-					</div> <!--- /end mura-control-group --->
+		    </div>
+		</div> <!--- /end control-group --->
 
-					<div class="mura-control-group">
+		<div class="control-group">
+		    <div class="controls">
 		     	<label for="Target" class="checkbox">
 		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" > 
-			    		<span data-toggle="popover" title="" data-placement="right" 
-				    		data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#" 
-				    		data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.newWindow"))#"
-				    		>					
-				     		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
-				     		 <i class="mi-question-circle"></i>
+		     		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
+		     		 <i class="icon-question-sign"></i></a>
 		     	</label>
-					</div> <!--- /end mura-control-group --->
+		     </div>  
+		</div> <!--- /end control-group --->
 
-				<div class="mura-control-group">
-					 <label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label> 
-				</div> <!--- /end mura-control-group --->
+		<div class="control-group">
+			 <div class="controls"><label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label> 
+			</div>
+		</div> <!--- /end control-group --->
 	
-				<div class="mura-control-group">
-		    	<label>
-		    	<span data-toggle="popover" title="" data-placement="right" 
-			    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#" 
-			    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.releasedate"))#"
-			    	>					      		
+		<div class="control-group">
+	      	<label class="control-label">
+	      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
-		      		 <i class="mi-question-circle"></i>
+	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
+	      	<div class="controls">
 	      		<cf_datetimeselector name="releaseDate" datetime="#rc.contentBean.getReleaseDate()#">
-				</div> <!--- /end mura-control-group --->
+			</div>
+		</div> <!--- /end control-group --->
 	</cfif>	
 		
 	<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
@@ -111,13 +92,15 @@
 			<cfinclude template="dsp_displaycontent.cfm">
 		</cfif>
 		<cfif (rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form' and rc.type neq 'Variation') >
-					<div class="mura-control-group">
-			      		<label>
+			<div class="control-group">
+	      		<label class="control-label">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:
 	      			<span id="mover1" class="text"> 
 	      				<cfif arrayLen(rc.crumbData)>
-			      					<cfif rc.contentBean.getIsNew()>
-			      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
+	      					<cfif rc.contentBean.exists() and arrayLen(rc.crumbData) gte 2>
+	      						"#rc.crumbData[2].menutitle#"
+	      					<cfelse>
+	      						"#rc.crumbData[1].menutitle#"
 	      					</cfif>
 	      				</cfif>
 						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
@@ -125,7 +108,7 @@
 						</button>
 					</span>
 	      		</label>
-			      		<div class="mura-control" id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></div>	
+	      		<div class="controls" id="mover2" style="display:none"><input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#"></div>	
 				<script>
 					jQuery(document).ready(function(){
 						$('##selectParent').click(function(e){
@@ -142,7 +125,7 @@
 					});
 				</script>
 				
-					</div> <!--- /end mura-control-group --->
+			</div> <!--- /end control-group --->
 		<cfelse>
 		 	<input type="hidden" name="parentid" value="#esapiEncode('html_attr',rc.parentid)#">
 		</cfif>
@@ -162,100 +145,109 @@
 	</cfif>
 
 	<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
-				<div class="mura-control-group">
-			      	<label>
+		<div class="control-group">
+	      	<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#
 	      	</label>
+	     	<div class="controls" id="expires-date-selector">
 	     			<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
-					<div class="mura-control" id="expires-notify">
+			</div>
+			<div class="controls" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
 					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contenthistid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 				</label>
 			</div>
-					<div class="mura-control" id="selectExpiresNotify" style="display: none;"></div>
-				</div> <!--- /end mura-control-group --->
+			<div class="controls" id="selectExpiresNotify" style="display: none;"></div>
+		</div> <!--- /end control-group --->
 	</cfif>
 
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
-				<div class="mura-control-group">
+		<div class="control-group">
 			<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
-						 <label>
+				 <label class="control-label">
 			     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 			    </label>
+			    <div class="controls">
 			    	<select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
 						<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 						<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 						<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perschedule')#</option>
 					</select>
-						<div class="mura-control" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-							<div class="mura-control-group">
-								<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+				</div>
+				<div class="controls" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
+					<div class="control-group">
+						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
+						<div class="controls">
+							
 							<cf_datetimeselector name="featureStart" datespanclass="span2" datetime="#rc.contentBean.getFeatureStart()#">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#
 							<cf_datetimeselector name="featureStop" datespanclass="span2" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
 						</div>
 					</div>
+				</div>
 			<cfelse>
-				    <label>
+		    <label class="control-label">
 		     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 		    </label>
+		    <div class="controls">
 		    	<select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
 					<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 					<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 					<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
 				</select>
-					<div class="mura-control" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-						<div class="mura-control-group">
-							<label>
+			</div>
+			<div class="controls" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
+				<div class="control-group">
+					<label class="control-label">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#
 					</label>
+					<div class="controls">
+						
 						<cf_datetimeselector name="featureStart" datetime="#rc.contentBean.getFeatureStart()#">
 
 					</div>
-						<div class="mura-control-group">
-							<label>
+				</div>
+				<div class="control-group">
+					<label class="control-label">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
 					</label>
-							<div class="mura-control">
+					<div class="controls">
 						<cf_datetimeselector name="featureStop" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
 					</div>
 				</div>
 			</div>
 			</cfif>
-				</div> <!--- /end mura-control-group --->
+		</div> <!--- /end control-group --->
 	</cfif>
 
-			<div class="mura-control-group">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
+	<div class="control-group">
+		<div class="controls">
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreviewlabel')#</label>
 	   		<label for="dspnotify" class="checkbox">
 	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#esapiEncode('javascript',rc.siteid)#','#esapiEncode('javascript',rc.contentid)#','#esapiEncode('javascript',rc.parentid)#');"  class="checkbox"> 
-					    	<span data-toggle="popover" title="" data-placement="right" 
-						    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#" 
-						    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.notifyforreview"))#"
-						    	>						      		
+	      		<a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
-			      		 <i class="mi-question-circle"></i>
+	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
-			     <div id="selectNotify" class="mura-control" style="display: none;"></div>
-			</div> <!--- /end mura-control-group --->
+	  	</div>
+	     <div class="controls" id="selectNotify" style="display: none;"></div>
+	</div> <!--- /end control-group --->
 
-			<div class="mura-control-group">
-				<label>
+	<div class="control-group">
+		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <!--- <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a> --->
 		</label>
-				<!--- M7 removed since show/hide behavior is commented out... remove both? --->		
-				<!--- <div class="controls" id="editNote"> --->
+		<div class="controls" id="editNote">
 			<textarea name="notes" rows="8" class="span12" id="abstract"></textarea>	
-				<!--- </div> --->
-				<!--- /end m7 removed --->
-			</div> <!--- /end mura-control-group --->
+		</div>
+	</div> <!--- /end control-group --->
+
+  </div>
 
    <span id="extendset-container-publishing" class="extendset-container"></span>
 
    <span id="extendset-container-tabpublishingbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
-</div> <!--- /.tab-pane --->
-</cfoutput>
+
+</div></cfoutput>

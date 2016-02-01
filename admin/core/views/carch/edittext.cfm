@@ -5,7 +5,7 @@
 <cfoutput>
 <h1>Edit Text</h1>
 <div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+	<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
 	</a>
 </div>
 <div class="fieldset-wrap">

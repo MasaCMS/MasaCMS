@@ -101,26 +101,14 @@
 
 	<div id="clipboard-container" style="position:fixed;left:0px;top:0px;width:0px;height:0px;z-index:100;display:none;opacity:0;"><textarea id="clipboard" style="width:1px;height:1px;padding:0px;margin:0px;"></textarea></div>
 
-<div class="items-push mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
-
-	<div class="mura-item-metadata">
-		<div class="label-group">
 
 	<div id="nav-module-specific" class="btn-group">
 		<a class="btn" href="#rc.$.globalConfig('context')#/admin/?muraAction=cExtend.listSubTypes&amp;siteid=#esapiEncode('url',rc.siteid)#">
-					<i class="mi-arrow-circle-left"></i> 
+			<i class="icon-circle-arrow-left"></i> 
 			#rc.$.rbKey('sitemanager.extension.backtoclassextensions')#
 		</a>
 	</div>
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-</div> <!-- /.items-push.mura-header -->
-
-<div class="block block-constrain">
-		<div class="block block-bordered">
-		  <div class="block-content">
 
 	<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post">
 		<div class="fieldset">
@@ -145,9 +133,4 @@
 		#rc.$.renderCSRFTokens(context=rc.extendSetID,format="form")#
 
 	</form>
-
-		</div> <!-- /.block-content -->
-	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
-
 </cfoutput>

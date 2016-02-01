@@ -58,25 +58,25 @@
 
 			<!--- Add User --->
 				<a class="btn" href="#buildURL(action='cusers.edituser', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-					<i class="mi-plus-circle"></i> 
+					<i class="icon-plus-sign"></i> 
 					#rbKey('user.adduser')#
 				</a>
 
 		  <!--- Add Group --->
 				<a class="btn" href="#buildURL(action='cusers.editgroup', querystring='siteid=#esapiEncode('url',rc.siteid)#&userid=')#">
-					<i class="mi-plus-circle"></i> 
+					<i class="icon-plus-sign"></i> 
 					#rbKey('user.addgroup')#
 				</a>
 
 			<!--- View Groups --->
 				<a class="btn" href="#buildURL(action='cusers.default', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="mi-eye"></i>
+					<i class="icon-eye-open"></i>
 					#rbKey('user.viewgroups')#
 				</a>
 
 			<!--- View Users --->
 				<a class="btn" href="#buildURL(action='cusers.listUsers', querystring='siteid=#esapiEncode('url',rc.siteid)#')#">
-					<i class="mi-eye"></i>
+					<i class="icon-eye-open"></i>
 					#rbKey('user.viewusers')#
 				</a>
 

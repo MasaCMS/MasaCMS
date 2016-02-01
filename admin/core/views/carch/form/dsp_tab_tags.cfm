@@ -46,31 +46,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags"))/>
 <cfset tabList=listAppend(tabList,"tabTags")>
-<div id="tabTags" class="tab-pane">
+<div id="tabTags" class="tab-pane fade">
 
-	<!-- block -->
-  <div class="block block-bordered">
-  	<!-- block header -->
-    <div class="block-header bg-gray-lighter">
-      <ul class="block-options">
-          <li>Something here?</li>
-          <li>
-              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
-          </li>
-          <li>
-              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
-          </li>
-      </ul>
-      <h3 class="block-title">Tags</h3>
-    </div>
-    <!-- /block header -->
-		
-		<!-- block content -->
-		<div class="block-content">
+<span id="extendset-container-tabtagstop" class="extendset-container"></span>
 
-		<span id="extendset-container-tabtagstop" class="extendset-container"></span>
-
-		<cfoutput>
+<div class="fieldset">
+<cfoutput>
+<div class="control-group">
+   	<label class="control-label">
+   		<cfif len($.siteConfig('customTagGroups'))>
+   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
+   		<cfelse>
+   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
+   		</cfif>
+   	</label>	    
+   	<div class="controls">
    		
    		<!---
    		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
@@ -106,28 +96,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</cfif>	
 		--->
-		   	<div id="tags" class="mura-control justify tagSelector">
-					<div class="mura-control-group">
-					   	<label>
-					   		<cfif len($.siteConfig('customTagGroups'))>
-					   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
-					   		<cfelse>
-					   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
-					   		</cfif>
-					   	</label>	   
-							<input type="text" name="tags">
+   		<div id="tags" class="tagSelector">
 		<cfif len(rc.contentBean.getTags())>
 			<cfloop list="#rc.contentBean.getTags()#" index="i">
 				<span class="tag">
-									#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+				#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 				<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 				</span>
 			</cfloop>
 		</cfif>
-					</div> <!--- /.mura-control-group --->
-				</div> <!--- /.mura-control .tagSelector --->
+		<input type="text" name="tags">
+		</div>
+   </div>
+</div>
 
-		<script>
+<script>
 	$(document).ready(function(){
 		$.ajax({
 			url: '?muraAction=carch.loadtagarray&siteid=' + siteid,
@@ -138,12 +121,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 		});
 	});
-		</script>
+</script>
 
 
-		<cfset tagGroupList=$.siteConfig('customTagGroups')>
+<cfset tagGroupList=$.siteConfig('customTagGroups')>
 
-		<cfif len(tagGroupList)>
+<cfif len(tagGroupList)>
 	<cfloop list="#tagGroupList#" index="g" delimiters="^,">
 		<cfset g=trim(g)>
 		<div class="control-group">
@@ -188,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   		<cfif len(rc.contentBean.getvalue('#g#tags'))>
 					<cfloop list="#rc.contentBean.getvalue('#g#tags')#" index="i">
 						<span class="tag">
-								#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+						#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 						<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 						</span>
 					</cfloop>
@@ -210,12 +193,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			});
 		</script>
 	</cfloop>
-		</cfif>
+</cfif>
 
-		<span id="extendset-container-tags" class="extendset-container"></span>
-		<span id="extendset-container-tabtagsbottom" class="extendset-container"></span>
+</div>
+<span id="extendset-container-tags" class="extendset-container"></span>
+<span id="extendset-container-tabtagsbottom" class="extendset-container"></span>
 
-		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
-</div> <!--- /.tab-pane --->
-</cfoutput>
+ </div>
+ </cfoutput>

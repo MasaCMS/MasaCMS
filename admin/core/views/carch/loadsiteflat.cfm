@@ -328,7 +328,7 @@ if(len($.siteConfig('customTagGroups'))){
 
 </cfsilent>
 
-<div class="mura-layout-row">
+<div class="row-fluid">
 	<cfsilent>
 <cfsavecontent variable="pagination">
 <cfoutput>
@@ -340,13 +340,15 @@ if(len($.siteConfig('customTagGroups'))){
 		<div class="mura-results-wrapper">
 		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
 		<cfif iterator.pageCount() gt 1>
-			<ul class="moreResults pagination">
+		<div class="pagination">
+			<ul class="moreResults">
 				<cfif $.event('page') gt 1><li class="navPrev"><a href="" data-page="#evaluate($.event('page')-1)#">&laquo;</a></li></cfif>
 				<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
 				<li<cfif $.event('page') eq p> class="active"</cfif>><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
 				</cfloop>
 				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
 			</ul>
+		</div>
 		</cfif>
 		</div>
 	</cfif>	
@@ -356,7 +358,7 @@ if(len($.siteConfig('customTagGroups'))){
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
 </cfsilent>
 <cfoutput>
-<div id="main">
+<div id="main" class="span9">
 <cfif not len($.event("report"))>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</h2>	
 <cfelseif $.event('report') eq 'mylockedcontent'>
@@ -441,45 +443,45 @@ if(len($.siteConfig('customTagGroups'))){
 		</cfsilent>
 	
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#esapiEncode('html_attr',item.getModuleID())#" data-type="#item.getType()#" class="mura-node-data">
-			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="mi-plus-circle"></i></a></td>
+			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="icon-plus-sign"></i></a></td>
 			<td class="var-width item">
 			
 			<div class="actions">
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict) or $.event('report') eq 'mydrafts'>
 					 
-					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="mi-pencil"></i></a></li>
+					    <li class="edit<cfif isLockedBySomeoneElse> disabled</cfif>"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="File">
-							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="mi-download"></i></a></li>
+							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="#application.configBean.getContext()#/index.cfm/_api/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 							</cfcase>
 							<cfdefaultcase>
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a></li>
 							</cfdefaultcase>
 						</cfswitch>
 						 
-						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-book"></i></a></li>
+						 <li class="version-history"><a title="Version History" href="./?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topid)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="icon-book"></i></a></li>
 					      
 					    <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="mi-group"></i></a></li>
+					        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="./?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#esapiEncode('url',$.event('startrow'))#"><i class="icon-group"></i></a></li>
 					    <cfelse>
-							<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
+							<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						</cfif>
 					    
 					    <cfif deletable and not isLockedBySomeoneElse>
 					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="./?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#esapiEncode('url',topID)#&siteid=#esapiEncode('url',item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#esapiEncode('url',item.getParentID())#&startrow=#esapiEncode('url',$.event('startrow'))##rc.$.renderCSRFTokens(context=item.getContentID() & 'deleteall',format='url')#"<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>
-							<i class="mi-times-circle"></i></a></li>
+							<i class="icon-remove-sign"></i></a></li>
 					    <cfelseif rc.locking neq 'all'>
-					        <li class="delete disabled"><i class="mi-times-circle"></i></li>
+					        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
 					    </cfif>
 					
 					<cfelse>
-					    <li class="edit disabled"><i class="mi-pencil"></i></li>
-						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="mi-globe"></i></a></li>
-						<li class="version-history disabled"><a><i class="mi-book"></i></a></li>
-						<li class="permissions disabled"><a><i class="mi-group"></i></a></li>
-						<li class="delete disabled"><a><i class="mi-times-circle"></i></a></li>
+					    <li class="edit disabled"><i class="icon-pencil"></i></li>
+						<li class="preview"><a title="Preview" href="##" onclick="return preview('#item.getURL(complete=1)#');"><i class="icon-globe"></i></a></li>
+						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
+						<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
+						<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
 					</cfif>
 					
 				</ul>
@@ -487,7 +489,7 @@ if(len($.siteConfig('customTagGroups'))){
 			
 			<!---
 			<cfif listFindNoCase('mysubmissions,myapprovals',$.event('report')) and isDate(item.getDueDate())>
-				<p><i class="mi-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.due')#: #LSDateFormat(item.getDueDate(),session.dateKeyFormat)#</p>
+				<p><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.due')#: #LSDateFormat(item.getDueDate(),session.dateKeyFormat)#</p>
 			</cfif>
 			--->
 			<!---
@@ -539,14 +541,14 @@ if(len($.siteConfig('customTagGroups'))){
 				<cfif len(item.getLockID())>
 					<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 					<cfif item.getLockType() neq 'node'>
-						<p class="locked-offline"><i class="mi-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
+						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
 					<cfelseif $.siteConfig('hasLockableNodes')>
-						<p class="locked-offline"><i class="mi-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
+						<p class="locked-offline"><i class="icon-lock"></i> #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.nodelockedby"),"#esapiEncode('html_attr',lockedBy.getFName())# #esapiEncode('html',lockedBy.getLName())#")#</p>
 					</cfif>
 					
 				</cfif>
 				
-				#$.dspZoom(crumbData=crumbdata,ajax=true,class="breadcrumb")#
+				#$.dspZoom(crumbData=crumbdata,ajax=true)#
 
 				<ul class="nodeMeta">
 					<cfsilent><cfset args=arrayNew(1)>
@@ -587,7 +589,7 @@ if(len($.siteConfig('customTagGroups'))){
 	#pagination#
 </div>
 
-<div class="sidebar">
+<div class="sidebar span3">
 	<!---<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>--->
 	<div class="well">
 		<ul id="navReports" class="nav nav-list">
@@ -654,7 +656,7 @@ if(len($.siteConfig('customTagGroups'))){
 		<div id="tags" class="tagSelector">
 			<cfloop list="#$.event('tags')#" index="i">
 				<span class="tag">
-				#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+				#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 				<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 				</span>
 			</cfloop>
@@ -669,7 +671,7 @@ if(len($.siteConfig('customTagGroups'))){
 				<div id="#g#tags" class="tagSelector">
 				<cfloop list="#$.event('#g#tags')#" index="i">
 					<span class="tag">
-					#esapiEncode('html',i)# <a><i class="mi-times-circle"></i></a>
+					#esapiEncode('html',i)# <a><i class="icon-remove-sign"></i></a>
 					<input name="#g#tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 					</span>
 				</cfloop>
@@ -688,10 +690,10 @@ if(len($.siteConfig('customTagGroups'))){
 
 	
 	<cfif session.flatViewArgs["#rc.siteID#"].filtered>
-		<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
-		<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
+		<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+		<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
 	<cfelse>
-		<button type="submit" class="btn btn-block" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+		<button type="submit" class="btn btn-block" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 	</cfif>
 </div>
 </div>

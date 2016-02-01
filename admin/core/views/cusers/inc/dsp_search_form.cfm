@@ -50,7 +50,7 @@
     <div class="input-append">
       <input id="search" name="search" type="text" value="#esapiEncode('html', rc.$.event('search'))#" placeholder="#rbKey('user.searchforusers')#" />
       <button type="button" class="btn" onclick="submitForm(document.forms.form1);">
-        <i class="mi-search"></i>
+        <i class="icon-search"></i>
       </button>
       <button type="button" class="btn" onclick="actionModal();window.location='./?muraAction=cUsers.advancedSearch&amp;ispublic=#esapiEncode('url',rc.ispublic)#&amp;siteid=#esapiEncode('url',rc.siteid)#&amp;newSearch=true'" value="#rbKey('user.advanced')#">
         #rbKey('user.advanced')#
