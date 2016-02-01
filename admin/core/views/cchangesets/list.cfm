@@ -57,6 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <div class="mura-layout-row">
+	<!--- TODO GoWest : mura-content is in template... remove here? : 2016-01-29T17:22:03-07:00 --->
+	
 	 <div id="mura-content">
 
 		<div class="items-push mura-header">

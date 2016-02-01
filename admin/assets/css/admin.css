@@ -28032,6 +28032,7 @@ main > .content > :first-child {
   padding-left: 0px;
   padding-right: 0px;
 }
+#cdashboard #main,
 #mura-content #main {
   position: relative;
   min-height: 1px;
@@ -28039,11 +28040,13 @@ main > .content > :first-child {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
+  #cdashboard #main,
   #mura-content #main {
     float: left;
     width: 75%;
   }
 }
+#cdashboard .sidebar,
 #mura-content .sidebar {
   position: relative;
   min-height: 1px;
@@ -28051,6 +28054,7 @@ main > .content > :first-child {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
+  #cdashboard .sidebar,
   #mura-content .sidebar {
     float: left;
     width: 25%;
