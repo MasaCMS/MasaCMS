@@ -179,7 +179,7 @@
 						</div>
 					</cfif>
 
-					#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+					#variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
 				</div>
 			</form>
 		</cfif>

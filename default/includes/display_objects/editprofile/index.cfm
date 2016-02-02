@@ -291,7 +291,7 @@
 					<!--- form protection --->
 					<div class="#this.editProfileFormGroupWrapperClass#">
 						<div class="#this.editProfileSubmitButtonWrapperClass#">
-							#variables.$.dspObject_include(thefile='dsp_form_protect.cfm')#
+							#variables.$.dspObject_include(thefile='datacollection/dsp_form_protect.cfm')#
 						</div>
 					</div>
 

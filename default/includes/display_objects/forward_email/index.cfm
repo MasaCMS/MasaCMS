@@ -75,7 +75,7 @@
    </ul>
 
    <div>
-       #variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+       #variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
    </div>
 
    <input name="doaction" value="forwardEmail" type="hidden"/>
