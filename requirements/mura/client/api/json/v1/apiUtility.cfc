@@ -1195,7 +1195,8 @@ component extends="mura.cfobject" {
 
 		if(arguments.entityName=='entityname'){
 			var returnArray=[];
-			for(var i in variables.config.entities){
+			var entityKeys=listToArray(ListSort(StructKeyList(variables.config.entities),'textnocase'));
+			for(var i in entityKeys){
 				if(allowAccess(i,$,false)){
 					arrayAppend(returnArray,{entityname=i,links={endpoint=getEndPoint() & "/" & i}});
 				}
