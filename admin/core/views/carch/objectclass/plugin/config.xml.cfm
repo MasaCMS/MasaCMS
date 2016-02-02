@@ -1,2 +1,1 @@
 <displayobject name="Plugin" contenttypes="*"/>
-

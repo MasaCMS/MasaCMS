@@ -1,5 +1,4 @@
-<displayobject 
-	name="Component" 
+<displayobject
+	name="Component"
 	contenttypes="*"
-	displayobjectfile="../dsp_template.cfm"/>
-
+	legacyobjectfile="../dsp_template.cfm"/>

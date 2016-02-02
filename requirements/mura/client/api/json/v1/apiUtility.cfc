@@ -137,7 +137,7 @@ component extends="mura.cfobject" {
 	}
 
 
-	function registerEntity(entityName, config={public=false}){
+	function registerEntity(entityName, config={public=false,fields=''}){
 
 		if(!isDefined('arguments.config.public')){
 			arguments.config.public=false;
@@ -988,7 +988,7 @@ component extends="mura.cfobject" {
 			if(!listFindNoCase(fields,'siteid')){
 				fields=listAppend(fields,'siteid');
 			}
-		} else if(isDefined('variables.config.entities.#arguments.entityConfigName#.fields')){
+		} else if(isDefined('variables.config.entities.#arguments.entityConfigName#.fields') && len(variables.config.entities[arguments.entityConfigName].fields)){
 			fields=variables.config.entities[arguments.entityConfigName].fields;
 		}
 
@@ -1994,7 +1994,7 @@ component extends="mura.cfobject" {
 			$.content().setSiteID(arguments.siteid);
 			request.contentBean=$.content();
 		}
-		
+
 		$.event('localHandler',application.settingsManager.getSite(getValue('siteID')).getLocalHandler());
 		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
@@ -2049,7 +2049,7 @@ component extends="mura.cfobject" {
 
 				if(!isStruct(result)){
 					result={
-						html=applyRemoteFormat($.dspObject_Include(theFile='dsp_login.cfm'))
+						html=applyRemoteFormat($.dspObject('login'))
 					};
 				}
 
@@ -2057,7 +2057,7 @@ component extends="mura.cfobject" {
 
 			case 'search':
 				result={
-					html=applyRemoteFormat($.dspObject_Include(thefile="dsp_search_results.cfm"))
+					html=applyRemoteFormat($.dspObject('search'))
 				};
 
 				break;
@@ -2148,7 +2148,7 @@ component extends="mura.cfobject" {
 
 				if(!isStruct(result)){
 					result={
-							html=applyRemoteFormat($.dspObject_Include(theFile='dsp_edit_profile.cfm'))
+							html=applyRemoteFormat($.dspObject('editprofile'))
 						};
 				}
 

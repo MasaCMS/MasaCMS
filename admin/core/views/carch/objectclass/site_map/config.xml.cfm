@@ -1,2 +1,1 @@
-<displayobject name="Site Map" displayobjectfile="../dsp_site_map.cfm"/>
-
+<displayobject name="Site Map" legacyobjectfile="../dsp_site_map.cfm"/>

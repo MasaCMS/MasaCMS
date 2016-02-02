@@ -1146,11 +1146,20 @@
 			<cfelse>
 				<cfset var displayobject=$.siteConfig().getDisplayObject(arguments.object)>
 
-				<!--- may push for standardization of display object rendering via .cfm files--->
-				<cfif listLast(displayobject.displayobjectfile,".") neq "cfm">
+				<!--- Standardizing display object rendering via .cfm files--->
+
+				<cfset var filePath=''>
+
+				<cfif len(displayobject.legacyObjectFile) and len($.siteConfig().lookupDisplayObjectFilePath(displayobject.legacyObjectFile))>
+					<cfset filePath=displayobject.legacyObjectFile>
+				<cfelse>
+					<cfset filePath=displayobject.displayObjectFile>
+				</cfif>
+
+				<cfif listLast(filePath,".") neq "cfm">
 					<cfset var theDisplay1=''>
 					<cfset var theDisplay2=''>
-					<cfset var componentPath="#displayobject.displayobjectfile#">
+					<cfset var componentPath="#filePath#">
 					<cfset var eventHandler=createObject(componentPath).init()>
 					<cfset var tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#displayobject.displaymethod#")>
 					<cfsavecontent variable="theDisplay1">
@@ -1167,7 +1176,7 @@
 						<cfreturn trim(theDisplay1)>
 					</cfif>
 				<cfelse>
-					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=displayobject.displayobjectfile,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
+					<cfset var objectargs={regionid=arguments.regionid,siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename=filePath,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator}>
 
 					<cfif objectargs.object neq 'plugin'>
 						<cfset objectargs.cacheKey=cacheKeyObjectId>
@@ -1189,7 +1198,7 @@
 				<cfcase value="contact"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_contact.cfm")></cfcase>
 				<cfcase value="calendar_nav"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="nav/calendarNav/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="plugin"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,params=arguments.params,objectid=arguments.objectid,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
-				<!--- BEGIN: New Layout Manager Objects --->
+				<!--- BEGIN: New Layout Manager Objects
 				<cfcase value="collection">
 					<cfparam name="arguments.params.sourceid" default="#createUUID()#">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="collection/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
@@ -1204,7 +1213,7 @@
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="calendar/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
 				<cfcase value="embed">
 					<cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="embed/index.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname,params=arguments.params)></cfcase>
-				<!--- END: New Layout Manager Objects--->
+				 END: New Layout Manager Objects--->
 				<cfcase value="mailing_list"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="mailing_list_master"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_mailing_list_master.cfm",showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
 				<cfcase value="site_map"><cfset theObject=arguments.renderer.dspObject_Render(regionid=arguments.regionid,siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_site_map.cfm",cacheKey=cacheKeyObjectId,params=arguments.params,showEditable=showEditable,isConfigurator=editableControl.isConfigurator,objectname=arguments.objectname)></cfcase>
@@ -1870,7 +1879,7 @@
 				<cfreturn {filepath=filePath}>
 			</cfif>
 		</cfif>
-		
+
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('extensions/dsp_#arguments.$.content().getType()#_#safesubtype#.cfm')>
 
 		<cfif len(filePath)>
