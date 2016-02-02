@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.beanExtendable" entityName="address" table="tuseraddresses" output="false">
@@ -73,9 +73,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instanceName= 'addressname'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.addressid="" />
 	<cfset variables.instance.userid="" />
 	<cfset variables.instance.siteid="" />
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isNew=0 />
 	<cfset variables.instance.type="Address" />
 	<cfset variables.instance.subType="Default" />
-	
+
 	<cfreturn this />
 </cffunction>
 
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="property" required="true">
     <cfargument name="propertyValue">
-    
+
     <cfif not isDefined('arguments.args')>
 	    <cfif isSimpleValue(arguments.property)>
 	      <cfreturn setValue(argumentCollection=arguments)>
@@ -136,18 +136,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </cfif>
 
 	<cfset var prop=""/>
-		
+
 	<cfif isQuery(arguments.args) and arguments.args.recordcount>
 		<cfloop list="#arguments.args.columnlist#" index="prop">
 			<cfset setValue(prop,arguments.args[prop][1]) />
 		</cfloop>
-		
+
 	<cfelseif isStruct(arguments.args)>
 		<cfloop collection="#arguments.args#" item="prop">
 			<cfset setValue(prop,arguments.args[prop]) />
 		</cfloop>
 	</cfif>
-		
+
 	<cfif isdefined('arguments.args.siteid') and trim(arguments.args.siteid) neq ''
 		and isdefined('arguments.args.isPublic') and trim(arguments.args.isPublic) neq ''>
 		<cfif arguments.args.isPublic eq 0>
@@ -164,44 +164,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var result=structNew() />
 	<cfset var address=""/>
 	<cfset var googleAPIKey="" />
-	
+
 	<cfif len(variables.instance.siteID)>
 		<cfset googleAPIKey=variables.settingsManager.getSite(variables.instance.siteID).getGoogleAPIKey() />
 		<cfif len(googleAPIKey)>
-		
+
 			<cfif len(variables.instance.address1)>
 				<cfset address=listAppend(address,trim("#variables.instance.address1# #variables.instance.address2#")) />
 			</cfif>
-			
+
 			<cfif len(variables.instance.siteID)>
 				<cfset address=listAppend(address,variables.instance.state) />
 			</cfif>
-			
+
 			<cfif len(variables.instance.country)>
 				<cfset address=listAppend(address,variables.instance.country) />
-			</cfif>	
-			
+			</cfif>
+
 			<cfif len(variables.instance.city)>
 				<cfset address=listAppend(address,variables.instance.city) />
 			</cfif>
-			
+
 			<cfif len(variables.instance.zip)>
 				<cfset address=listAppend(address,variables.instance.zip) />
-			</cfif>				
-				
+			</cfif>
+
 			<cfset result = getBean("geoCoding").geocode(googleAPIKey,trim(address))>
-			
+
 			<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
 				<cfset variables.instance.longitude=result.longitude />
 				<cfset variables.instance.latitude=result.latitude />
 			</cfif>
-		
+
 		</cfif>
-	
+
 	</cfif>
 	<cfreturn this>
 </cffunction>
-  
+
 <cffunction name="getAddressID" returnType="string" output="false" access="public">
     <cfif not len(variables.instance.addressID)>
 		<cfset variables.instance.addressID = createUUID() />
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setIsPrimary" output="false" access="public">
     <cfargument name="IsPrimary" required="true">
-	
+
 	<cfif isNumeric(arguments.IsPrimary)>
     <cfset variables.instance.IsPrimary = arguments.IsPrimary />
 	</cfif>
@@ -220,24 +220,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="validate" access="public" output="false" >
 	<cfset var extErrors=structNew() />
-	
+
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
-	
+
 	<cfset super.validate()>
-		
+
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>
-	</cfif>	
-	
-	<cfset setGeoCoding()/>	
+	</cfif>
+
+	<cfset setGeoCoding()/>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLongitude" output="false" access="public">
     <cfargument name="Longitude" required="true">
-    
+
 	<cfif isNumeric(arguments.Longitude)>
 		<cfset variables.instance.Longitude = arguments.Longitude />
 	</cfif>
@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setLatitude" output="false" access="public">
     <cfargument name="Latitude" required="true">
-    
+
 	<cfif isNumeric(arguments.Latitude)>
 		<cfset variables.instance.Latitude = arguments.Latitude />
 	</cfif>
@@ -262,13 +262,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfset variables.userManager.updateAddress(this)>
 	<cfelse>
 		<cfset variables.userManager.createAddress(this)>
 	</cfif>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -282,5 +282,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getPrimaryKey" output="false">
 	<cfreturn "addressID">
+</cffunction>
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=variables.instance.siteID>
+	</cfif>
+
+	<cfset arguments.addressBean=this>
+
+	<cfreturn variables.userManager.readAddress(argumentCollection=arguments)>
 </cffunction>
 </cfcomponent>
