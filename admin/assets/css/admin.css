@@ -27801,10 +27801,12 @@ a.no-link {
   margin-top: -32px;
   margin-left: -13px;
 }
-.mura-header .alert {
+.mura-header .alert,
+.content .mura-header p.alert {
   clear: both;
   margin-right: 15px;
   margin-left: 15px;
+  margin-bottom: 10px !important;
 }
 .mura-header .label-group {
   margin-top: 6px;
