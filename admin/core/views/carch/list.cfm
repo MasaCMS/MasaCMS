@@ -598,9 +598,10 @@
 					<cfif rc.sorted>
 						<cfset application.pluginManager.announceEvent("onAfterContentSort",pluginEvent)>
 					</cfif>
-
-					<cfset rc.$.getBean('contentManager').purgeContentCache(contentBean=current)>
-					<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
+					<cfif isDefined('current')>
+						<cfset rc.$.getBean('contentManager').purgeContentCache(contentBean=current)>
+						<cfset application.settingsManager.getSite(rc.siteid).purgeCache()>
+					</cfif>
 				</cflock>
 			</cfif>
 

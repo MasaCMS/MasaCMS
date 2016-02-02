@@ -160,7 +160,7 @@
 </cfif>
 	#local.frmFieldContents#
 <cfif not arguments.isNested>
-	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+	#variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
 	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
 </form>
 </cfif>

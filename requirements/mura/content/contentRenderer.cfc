@@ -1393,7 +1393,7 @@ Display Objects
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_edit_profile.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
@@ -1403,7 +1403,7 @@ Display Objects
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_search_results.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject('search')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="login">
@@ -1413,7 +1413,7 @@ Display Objects
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject('login')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
@@ -1556,7 +1556,7 @@ Display Objects
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
+				<cfoutput>#variables.$.dspObject('deny')#</cfoutput>
 			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
 			<cfset variables.$.noIndex()>
@@ -1565,7 +1565,7 @@ Display Objects
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
+			<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
 			</cfif>
 		<cfelse>
 			<cfset variables.$.noIndex()>
@@ -1574,7 +1574,7 @@ Display Objects
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfoutput>#dspObject_Include(thefile='dsp_offline.cfm')#</cfoutput>
+			<cfoutput>#variables.$.dspObject('offline')#</cfoutput>
 			</cfif>
 		</cfif>
 	</cfsavecontent>

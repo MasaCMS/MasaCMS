@@ -393,13 +393,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setContext" access="public" output="false">
 	<cfargument name="Context" type="String" />
-	<cfset arguments.Context=cleanFilePath(arguments.Context) />		
-	<!--- TODO GoWest : added check for /admin to prevent /admin/admin in localhost URLs : 2016-01-29T15:39:54-07:00 --->			
+	<cfset arguments.Context=cleanFilePath(arguments.Context) />
+	<!--- TODO GoWest : added check for /admin to prevent /admin/admin in localhost URLs : 2016-01-29T15:39:54-07:00 --->
 	<cfif getContextRoot() NEQ "/" and getContextRoot() NEQ "/admin">
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
-		
+
 	<cfreturn this>
 </cffunction>
 
@@ -1764,10 +1764,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" hint="Can be a list">
 	<cfargument name="moduleid" default="00000000000000000000000000000000000">
 	<cfset var rs="">
-	<cfif directoryExists(expandPath(arguments.dir))>		
-		<cfif not isDefined('arguments.package')>
+	<cfif directoryExists(expandPath(arguments.dir))>
+		<cfif not isDefined('arguments.package') or isDefined('arguments.package') and not len(arguments.package)>
 			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
-		</cfif>	
+		</cfif>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
 		<cfloop query="rs">
 			<cfif rs.type eq 'dir'>
@@ -1793,13 +1793,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var isSingleton=not listFindNoCase(arguments.componentPath,'entities','.') and not listFindNoCase(arguments.componentPath,'beans','.')>
 	<cfset var isORM=false>
 	<cfset var isPublic=false>
+	<cfset var isPublicFound=false>
+	<cfset var fieldsFound=false>
+	<cfset var fields=''>
 	<cfset var beanName=listLast(arguments.componentPath,'.')>
 	<cfset var metadata=getMetaData(createObject('component','#arguments.componentPath#'))>
 	<cfset var levelObj=metadata>
 	<cfset var entity="">
 	<cfloop condition="structKeyExists(levelObj,'extends')">
-		<cfif isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public>
+		<cfif not isPublicFound && isdefined('levelObj.public') and isBoolean(levelObj.public) and levelObj.public>
 			<cfset isPublic=true>
+			<cfset isPublicFound=true>
+		</cfif>
+		<cfif not fieldsFound and isdefined('levelObj.fields') and len(levelObj.fields)>
+			<cfset fields=levelObj.fields>
+			<cfset fieldsFound=true>
 		</cfif>
 		<cfif listFindNoCase('beanORM,beanORMVersioned',listLast(levelObj.fullname,'.'))>
 			<cfset isORM=true>
@@ -1814,7 +1822,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset entity=ioc.getBean(beanName)>
-		
+
 	<cfif isORM>
 		<cfif checkSchema>
 			<cfset entity.checkSchema()>
@@ -1823,7 +1831,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop list="#arguments.siteid#" index="local.i">
 			<cfset getBean('settingsManager').getSite(local.i).getApi('json','v1').registerEntity(beanName,{
 				moduleid=arguments.moduleid,
-				public=isPublic
+				public=isPublic,
+				fields=fields
 			})>
 		</cfloop>
 	</cfif>
@@ -1839,7 +1848,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif directoryExists(expandPath(arguments.dir))>
 		<cfif not isDefined('arguments.package')>
 			<cfset arguments.package=replace(replace(right(arguments.dir, len(arguments.dir)-1), "\", "/", "ALL"),"/",".","ALL")>
-		</cfif>		
+		</cfif>
 		<cfset var beanName=''>
 		<cfset var beanInstance=''>
 		<cfdirectory name="rs" directory="#expandPath(arguments.dir)#" action="list" filter="">
@@ -1858,7 +1867,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset getBean('pluginManager').addEventHandler(component=beanInstance,siteid=local.i,applyglobal=applyglobal)>
 					<cfset var applyglobal=true>
 				</cfloop>
-			</cfif>	
+			</cfif>
 		</cfloop>
 	</cfif>
 	<cfreturn this>
