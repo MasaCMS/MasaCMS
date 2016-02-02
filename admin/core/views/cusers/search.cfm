@@ -47,11 +47,13 @@
 --->
 <cfoutput>
 
-	<!--- User Search --->
-		<cfinclude template="inc/dsp_search_form.cfm" />
 
 	<!--- Page Title --->
-		<h1>#rbKey('user.usersearchresults')#</h1>
+<div class="items-push mura-header">
+	<h1>#rbKey('user.usersearchresults')#</h1>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
 
 	<!--- Buttons --->
 		<div id="nav-module-specific" class="btn-group">
@@ -82,35 +84,73 @@
 
 		</div>
 	<!--- /Buttons --->
+		</div><!-- /.label-group -->
+
+	<!--- User Search --->
+	<cfinclude template="inc/dsp_search_form.cfm" />
+
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.items-push.mura-header -->
+
+<div class="block block-constrain">
+
+<!--- Tab Nav (only tabbed for Admin + Super Users) --->
+  <cfif rc.isAdmin>
+
+      <ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+
+        <!--- Site Members Tab --->
+          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
+            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
+              #rbKey('user.sitemembers')#
+            </a>
+          </li>
+
+        <!--- System Users Tab --->
+          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
+            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
+              #rbKey('user.systemusers')#
+            </a>
+          </li>
+
+      </ul>
+			<div class="block-content tab-content">
+
+			<!-- start tab -->
+			<div id="tab1" class="tab-pane active">
+				<div class="block block-bordered">
+					<!-- block header -->
+					<div class="block-header bg-gray-lighter">
+						<ul class="block-options">
+							<li>Something here?</li>
+							<li>
+								<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+							</li>
+							<li>
+								<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+							</li>
+						</ul>
+						<h3 class="block-title"><cfif rc.ispublic eq 1>#rbKey('user.sitemembers')#<cfelse>#rbKey('user.systemusers')#</cfif></h3>
+					</div> <!-- /.block header -->						
+					<div class="block-content">
+						  	
+						<cfinclude template="inc/dsp_users_list.cfm" />
+
+					</div> <!-- /.block-content -->
+				</div> <!-- /.block-bordered -->
+			</div> <!-- /.tab-pane -->
+
+		</div> <!-- /.block-content.tab-content -->
+  <cfelse>
+		<div class="block block-bordered">
+		  <div class="block-content">
+		    <h3>#rbKey('user.sitemembers')#</h3>
+				<cfinclude template="inc/dsp_users_list.cfm" />
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+  </cfif>
+<!--- /Tab Nav --->
 
 
-	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
-    <cfif rc.isAdmin>
-
-        <ul class="nav nav-tabs">
-
-          <!--- Site Members Tab --->
-	          <li<cfif rc.ispublic eq 1> class="active"</cfif>>
-	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=1&search=#esapiEncode('url',rc.search)#')#">
-	              #rbKey('user.sitemembers')#
-	            </a>
-	          </li>
-
-          <!--- System Users Tab --->
-	          <li<cfif rc.ispublic eq 0> class="active"</cfif>>
-	            <a href="#buildURL(action='cusers.search', querystring='siteid=#esapiEncode('url',rc.siteid)#&ispublic=0&search=#esapiEncode('url',rc.search)#')#">
-	              #rbKey('user.systemusers')#
-	            </a>
-	          </li>
-
-        </ul>
-
-    <cfelse>
-
-      <h3>#rbKey('user.sitemembers')#</h3>
-
-    </cfif>
-  <!--- /Tab Nav --->
-
-	<cfinclude template="inc/dsp_users_list.cfm" />
+</div> <!-- /.block-constrain -->
 </cfoutput>
