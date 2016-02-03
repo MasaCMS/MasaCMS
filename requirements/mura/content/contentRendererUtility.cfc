@@ -1864,6 +1864,11 @@
 
 		<cfset var filePath="">
 
+		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
+		<cfif len(filePath)>
+			<cfreturn {filepath=filePath}>
+		</cfif>
+
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/index.cfm')>
 		<cfif len(filePath)>
 			<cfreturn {filepath=filePath}>
