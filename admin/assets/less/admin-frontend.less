@@ -46,8 +46,8 @@
 
 // Bootstrap /* Bringing these in separately to enable name-spacing of bootstrap styles to avoid conflicts with Bootstrapped-based themes
 
-	@import url("../bootstrap/less/variables.less");
-	@import url("../bootstrap/less/mixins.less");
+	@import url("bootstrap/variables.less");
+	@import url("bootstrap/mixins.less");
 	@import url("variables.less");
 	@import url("mixins.less");
 	@import url("editable-objects.less");
@@ -55,29 +55,30 @@
 	
 	.mura {
 	
-	// CSS Reset
-	@import url("../bootstrap/less/reset.less");
-	
 	// Layout Manager Sidebar
 	@import url("layoutmanager-sidebar.less");
 
 	// Base CSS
-	@import url("../bootstrap/less/type.less");
+	@import url("bootstrap/type.less");
 	
 	// Components: common
 	@import url("../fonts/font-awesome/less/font-awesome.less");
-	@import url("../bootstrap/less/dropdowns.less");
+
+	// Components: Forms
+	@import url("bootstrap/forms.less");
 	
-		// Components: Nav
-	@import url("../bootstrap/less/navs.less");
-	@import url("../bootstrap/less/navbar.less");
+	// Components: Dropdowns
+	@import url("bootstrap/dropdowns.less");
+	
+	// Components: Nav
+	@import url("bootstrap/navs.less");
+	@import url("bootstrap/navbar.less");
 	
 	// Utility classes
-	@import url("../bootstrap/less/utilities.less"); // Has to be last to override when necessary
+	@import url("bootstrap/utilities.less"); // Has to be last to override when necessary
 
 // End Bootstrap
 
-@import url("dropdowns.less");
 @import url("fonts.less");
 @import url("add-content-ui.less");
 @import url("mobile-preview.less");

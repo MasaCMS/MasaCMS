@@ -206,9 +206,7 @@
 <!--- TODO GoWest : audit usage and versions of jquery, bootstrap, plugins, other js files, remove unused files : 2015-12-02T14:02:15-07:00 --->
 
 		<!-- Admin CSS -->
-<!--- TODO GoWest : change to admin.min.css for release : 2016-01-29T16:29:31-07:00 --->
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.css" rel="stylesheet" type="text/css" />
-		<!--- 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" /> --->
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
 <!--- TODO GoWest :  keep spinner? : 2015-12-02T14:11:23-07:00 --->
 		<!-- Spinner JS -->
