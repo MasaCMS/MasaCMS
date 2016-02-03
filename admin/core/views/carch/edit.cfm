@@ -489,7 +489,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- TODO GoWest : add class 'link-effect' to li > a in rendered list / or duplicate all link-effect styles in custom.less for breadcrumb li a : 2015-12-23T09:39:33-07:00 --->
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
-
+ 
+ <!--- TODO GoWest : find all class="alert", check location on page, s/b inside at end of mura-header	: 2016-02-02T18:33:39-07:00 --->
+ 
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 	</cfif>
@@ -524,7 +526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 
-	<!--- TODO GoWest : plugin message markup : 2015-12-23T12:57:02-07:00 --->
+	<!--- TODO GoWest : plugin message markup - find id="msg" - style like alerts / test w/ real string : 2015-12-23T12:57:02-07:00 --->
 	<!--- This is plugin message targeting --->
 	<span id="msg">
 	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
