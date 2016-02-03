@@ -67,18 +67,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset filtered=structNew()>	
 </cfsilent>
 <cfoutput>
-<div class="control-group control-group-nested">
+<!--- TODO GoWest : this markup : 2016-02-02T20:44:53-07:00 --->
+<div class="mura-control-group">
+<!--- TODO GoWest : remove this disabled markup? : 2016-02-02T20:43:05-07:00 --->	
 	<!--- <label class="control-label"><a href="##" rel="tooltip" title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocfile'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassoc#rc.filetype#')# <i class="mi-question-circle"></i></a></label> --->
-	<div class="controls">
 		<div class="input-append">
 			<input class="filesearch" value="#esapiEncode('html_attr',rc.keywords)#" type="text" maxlength="50" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforexistingfiles'))#" /><button type="button" class="btn"><i class="mi-search"></i></button>
 		</div>
-	</div>
 </div>
 </cfoutput>
 
 <cfif len(rc.keywords)>
 	<cfoutput>
+<!--- TODO GoWest : these tabs - test w/ multiple images returned by search : 2016-02-02T20:45:21-07:00 --->
+
 	<div class="tabbable selectAssocImageResults" id="selectAssocImageResults-#esapiEncode('html',rc.property)#">
 		<ul class="nav nav-tabs tabs">
 			<li><a href="##mura-assoc-images-#esapiEncode('html',rc.property)#" data-toggle="tab" onclick="return false;"><i class="mi-picture-o"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
