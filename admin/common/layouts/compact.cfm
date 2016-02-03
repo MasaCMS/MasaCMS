@@ -161,9 +161,8 @@
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 		
-<!--- TODO GoWest : change to admin.min.css for release : 2016-01-29T16:29:31-07:00 --->
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin.css" rel="stylesheet" type="text/css" />
-<!--- 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" /> --->
+<!--- TODO GoWest : use full admin css? : 2016-01-29T16:29:31-07:00 --->
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
