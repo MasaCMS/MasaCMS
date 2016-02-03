@@ -14,17 +14,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -38,12 +38,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfinclude template="js.cfm">
@@ -147,103 +147,98 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory fieldset-wrap">
 				<input type="hidden" name="startSearch" value="true"/>
 				<div id="date-range" class="mura-control-group">
-
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.from")#
 					</label>
-			    <input type="text" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-					<input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
-			    <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" />
-				    
+				    <input type="text" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+						<input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
+				    <input type="hidden" name="siteID" value="#esapiEncode('html_attr',rc.siteid)#" />
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.to")#
 					</label>
-	        <input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+	        		<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 				</div>
 
 				<div class="mura-control-group" id="searchParams">
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.where")#
 					</label>
+					<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
+					<cfif rc.newSearch or (session.paramCircuit neq 'cDashboard' or not session.paramCount)>
+						<div class="mura-control justify form-inline">
+							<select name="paramRelationship1" style="display:none;" class="span2">
+								<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
+								<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
+							</select>
+							<input type="hidden" name="param" value="1" />
+							<select name="paramField1" class="span2">
+							<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
+							<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#">
+							<cfloop from="1" to="#arrayLen(userOptions)#" index="i">
+							<option value="#userOptions[i][1]#">#userOptions[i][2]#</option>
+							</cfloop>
+							</optgroup>
+							<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.contentoptions")#">
+							<cfloop from="1" to="#arrayLen(contentOptions)#" index="i">
+							<option value="#contentOptions[i][1]#">#contentOptions[i][2]#</option>
+							</cfloop>
+							</optgroup>
+							<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.siteoptions")#">
+							<cfloop from="1" to="#arrayLen(sessionOptions)#" index="i">
+							<option value="#sessionOptions[i][1]#">#sessionOptions[i][2]#</option>
+							</cfloop>
+							</optgroup>
+							</select>
+							<select name="paramCondition1" class="span2">
+							<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+							<option value="#criterias[i][1]#">#criterias[i][2]#</option>
+							</cfloop>
+							</select>
 
-
-<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
-						<cfif rc.newSearch or (session.paramCircuit neq 'cDashboard' or not session.paramCount)>
-
-
-
-						<select name="paramRelationship1" style="display:none;" class="span2">
-							<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
-							<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
-						</select>
-						<input type="hidden" name="param" value="1" />
-						<select name="paramField1" class="span2">
-						<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#">
-						<cfloop from="1" to="#arrayLen(userOptions)#" index="i">
-						<option value="#userOptions[i][1]#">#userOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.contentoptions")#">
-						<cfloop from="1" to="#arrayLen(contentOptions)#" index="i">
-						<option value="#contentOptions[i][1]#">#contentOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.siteoptions")#">
-						<cfloop from="1" to="#arrayLen(sessionOptions)#" index="i">
-						<option value="#sessionOptions[i][1]#">#sessionOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						</select>
-						<select name="paramCondition1" class="span2">
-						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-						<option value="#criterias[i][1]#">#criterias[i][2]#</option>
-						</cfloop>
-						</select>
-
-<!--- TODO GoWest : tooltip : 2016-01-29T17:34:40-07:00 --->
-						<input type="text" name="paramCriteria1" class="span4">
-						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="mi-times-circle"></i></a>
-						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="mi-plus-circle"></i></a>
-
-
-<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
-						<cfelse>
+							<!--- TODO GoWest : tooltip : 2016-01-29T17:34:40-07:00 --->
+							<input type="text" name="paramCriteria1" class="span4">
+							<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="mi-times-circle"></i></a>
+							<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="mi-plus-circle"></i></a>
+						</div>
+						<!--- TODO GoWest : this markup : 2016-01-29T17:35:32-07:00 --->
+					<cfelse>
 
 						<cfloop from="1" to="#session.paramCount#" index="p">
-						<select name="paramRelationship#p#" class="span2">
-							<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
-							<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
-						</select>
-						<input type="hidden" name="param" value="#p#" />
-						<select name="paramField#p#" class="span2">
-						<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#">
-						<cfloop from="1" to="#arrayLen(userOptions)#" index="i">
-						<option value="#userOptions[i][1]#" <cfif session.paramArray[p].field eq userOptions[i][1]>selected</cfif>>#userOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.contentoptions")#">
-						<cfloop from="1" to="#arrayLen(contentOptions)#" index="i">
-						<option value="#contentOptions[i][1]#" <cfif session.paramArray[p].field eq contentOptions[i][1]>selected</cfif>>#contentOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.siteoptions")#">
-						<cfloop from="1" to="#arrayLen(sessionOptions)#" index="i">
-						<option value="#sessionOptions[i][1]#" <cfif session.paramArray[p].field eq sessionOptions[i][1]>selected</cfif>>#sessionOptions[i][2]#</option>
-						</cfloop>
-						</optgroup>
-						</select>
-						<select name="paramCondition#p#" class="span2">
-						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-						<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
-						</cfloop>
-						</select>
-						<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
-						<a class="removeCriteria" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
-						<a class="addCriteria" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
-						</cfloop>
-						</cfif>	
+							<div class="mura-control justify form-inline">
+								<select name="paramRelationship#p#" class="span2">
+									<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
+									<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
+								</select>
+								<input type="hidden" name="param" value="#p#" />
+								<select name="paramField#p#" class="span2">
+								<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
+								<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#">
+								<cfloop from="1" to="#arrayLen(userOptions)#" index="i">
+								<option value="#userOptions[i][1]#" <cfif session.paramArray[p].field eq userOptions[i][1]>selected</cfif>>#userOptions[i][2]#</option>
+								</cfloop>
+								</optgroup>
+								<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.contentoptions")#">
+								<cfloop from="1" to="#arrayLen(contentOptions)#" index="i">
+								<option value="#contentOptions[i][1]#" <cfif session.paramArray[p].field eq contentOptions[i][1]>selected</cfif>>#contentOptions[i][2]#</option>
+								</cfloop>
+								</optgroup>
+								<optgroup label="#application.rbFactory.getKeyValue(session.rb,"params.siteoptions")#">
+								<cfloop from="1" to="#arrayLen(sessionOptions)#" index="i">
+								<option value="#sessionOptions[i][1]#" <cfif session.paramArray[p].field eq sessionOptions[i][1]>selected</cfif>>#sessionOptions[i][2]#</option>
+								</cfloop>
+								</optgroup>
+								</select>
+								<select name="paramCondition#p#" class="span2">
+								<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+								<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
+								</cfloop>
+								</select>
+								<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
+								<a class="removeCriteria" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+								<a class="addCriteria" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
+							</div>
+							</cfloop>
+						</cfif>
 				</div>
 
 				<cfif application.settingsManager.getSite(rc.siteID).getExtranet() eq 1>
@@ -256,7 +251,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				      <input type="radio" name="membersOnly" value="false" <cfif not session.membersOnly>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.membersonlyfalse")#
 				  	</label>
 				 </div>
-				 
+
 				<div class="mura-control-group">
 					<label>
 						#application.rbFactory.getKeyValue(session.rb,"params.visitoroptions")#
@@ -271,10 +266,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 					<label class="radio inline">
-				   		<input type="radio" name="visitorStatus" value="Return" <cfif session.visitorStatus eq "Return">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.returningvisitors")# 
+				   		<input type="radio" name="visitorStatus" value="Return" <cfif session.visitorStatus eq "Return">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.returningvisitors")#
 				    </label>
 				    <label class="radio inline">
-				    	 <input type="radio" name="visitorStatus" value="New" <cfif session.visitorStatus eq "New">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.newvisitors")# 
+				    	 <input type="radio" name="visitorStatus" value="New" <cfif session.visitorStatus eq "New">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.newvisitors")#
 				    </label>
 					<label class="radio inline">
 				    	<input type="radio" name="visitorStatus" value="All" <cfif session.visitorStatus eq "All">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.allvisitors")#
@@ -311,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not searchFailed>
 	<cfoutput>
 	<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h2>
-	
+
 <table class="mura-table-grid">
 <thead>
 <tr>
@@ -358,13 +353,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="moreResults">
 		  <cfif rc.nextN.currentpagenumber gt 1>
 		  	<li>
-		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
+		  	<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.previous#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
 		  	</li>
 		  </cfif>
 		  <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-		  <cfif rc.nextN.currentpagenumber eq i> 
+		  <cfif rc.nextN.currentpagenumber eq i>
 		  		<li class="active"><a href="##">#i#</a></li>
-		  <cfelse>  
+		  <cfelse>
 		  		<li>
 		  			<a href="./?muraAction=cDashboard.sessionSearch&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">#i#</a>
 		  		</li>
@@ -372,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     </cfloop>
 		 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 		 	<li>
-		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
+		 		<a href="./?muraAction=cDashboard.sessionSearch&startrow=#rc.nextN.next#&siteid=#esapiEncode('url',rc.siteid)#&direction=#esapiEncode('url',rc.direction)#&orderBy=#esapiEncode('url',rc.orderBy)#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
 		 	</li>
 		 </cfif>
 		</ul>
@@ -382,9 +377,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfelse>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h2> 
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h2>
 <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedoutdesc")#</p>
-</cfoutput> 
+</cfoutput>
 </cfif>
 </cfif>
 </div>
