@@ -1799,6 +1799,7 @@ component extends="mura.cfobject" {
 		var links={};
 		var p='';
 		var baseURL=getEndPoint();
+		var id='';
 
 		links.entities=baseURL;
 
@@ -1817,7 +1818,10 @@ component extends="mura.cfobject" {
 				if(p.name=='site'){
 					links[p.name]="#baseurl#?method=findOne&entityName=site&siteid=#entity.getSiteID()#";
 				} else {
-					links[p.name]="#baseurl#?method=findOne&siteid=#entity.getSiteID()#&entityName=#p.cfc#&id=#entity.getValue(entity.translatePropKey(p.column))#";
+					id=entity.getValue(entity.translatePropKey(p.column));
+					if(len(id)){
+						links[p.name]="#baseurl#?method=findOne&siteid=#entity.getSiteID()#&entityName=#p.cfc#&id=#entity.getValue(entity.translatePropKey(p.column))#";
+					}
 				}
 			}
 		}
