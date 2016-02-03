@@ -481,58 +481,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3 class="block-title">Advanced Filters</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
-				<div class="mura-control-group" id="searchParams">
-	      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#</label>
-		<cfif not rsParams.recordcount>
-		<!--- TODO GoWest : params markup / span2 / etc : 2016-01-26T07:36:03-07:00 --->
-		<div class="mura-control justify form-inline"><select name="paramRelationship1" class="span2" style="display:none;" >
-			<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
-			<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
-		</select>
-		<input type="hidden" name="param" value="1" />
-		<select name="paramField1" class="span2">
-		<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
-		<cfloop from="1" to="#arrayLen(options)#" index="i">
-		<option value="#options[i][1]#">#options[i][2]#</option>
-		</cfloop>
-		</select>
-		<select name="paramCondition1" class="span2">
-		<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-		<option value="#criterias[i][1]#">#criterias[i][2]#</option>
-		</cfloop>
-		</select>
-		<input type="text" name="paramCriteria1" class="span4">
+			<div class="mura-control-group" id="searchParams">
+		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#</label>
+			<cfif not rsParams.recordcount>
+				<!--- TODO GoWest : params markup / span2 / etc : 2016-01-26T07:36:03-07:00 --->
+				<div class="mura-control justify form-inline">
+					<select name="paramRelationship1" class="span2" style="display:none;" >
+						<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
+						<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
+					</select>
+					<input type="hidden" name="param" value="1" />
+					<select name="paramField1" class="span2">
+						<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
+						<cfloop from="1" to="#arrayLen(options)#" index="i">
+						<option value="#options[i][1]#">#options[i][2]#</option>
+						</cfloop>
+					</select>
+					<select name="paramCondition1" class="span2">
+						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+						<option value="#criterias[i][1]#">#criterias[i][2]#</option>
+						</cfloop>
+					</select>
+					<input type="text" name="paramCriteria1" class="span4">
 					<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;"><i class="mi-minus-circle"></i></a>
 					<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;"><i class="mi-plus-circle"></i></a>
-		</div>
-		<cfelse>
-		<cfloop query="rsParams">
-					<div class="form-inline">
-		<select name="paramRelationship#rsParams.currentRow#" class="span2">
-			<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
-			<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>
-		</select>
-		<input type="hidden" name="param" value="#rsParams.currentRow#" />
-		<select name="paramField#rsParams.currentRow#" class="span2">
-		<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
-		<cfloop from="1" to="#arrayLen(options)#" index="i">
-		<option value="#options[i][1]#" <cfif rsParams.criteria neq '' and "#rsParams.field#^#rsParams.dataType#" eq options[i][1]>selected</cfif>>#options[i][2]#</option>
-		</cfloop>
-		</select>
-		<select name="paramCondition#rsParams.currentRow#" class="span2">
-		<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-		<option value="#criterias[i][1]#" <cfif rsParams.criteria neq '' and rsParams.condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
-		</cfloop>
-		</select>
-		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#esapiEncode('html_attr',rsParams.criteria)#" class="span4" >
+				</div>
+			<cfelse>
+				<cfloop query="rsParams">
+					<div class="mura-control justify form-inline">
+						<select name="paramRelationship#rsParams.currentRow#" class="span2">
+							<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
+							<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>
+						</select>
+						<input type="hidden" name="param" value="#rsParams.currentRow#" />
+						<select name="paramField#rsParams.currentRow#" class="span2">
+						<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
+						<cfloop from="1" to="#arrayLen(options)#" index="i">
+						<option value="#options[i][1]#" <cfif rsParams.criteria neq '' and "#rsParams.field#^#rsParams.dataType#" eq options[i][1]>selected</cfif>>#options[i][2]#</option>
+						</cfloop>
+						</select>
+						<select name="paramCondition#rsParams.currentRow#" class="span2">
+						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+						<option value="#criterias[i][1]#" <cfif rsParams.criteria neq '' and rsParams.condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
+						</cfloop>
+						</select>
+						<input type="text" name="paramCriteria#rsParams.currentRow#" value="#esapiEncode('html_attr',rsParams.criteria)#" class="span4" >
 						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><i class="mi-minus-circle"></i></a>
-					<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><i class="mi-plus-circle"></i></a>
+						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><i class="mi-plus-circle"></i></a>
+					</div>
+				</cfloop>
+			</cfif>
 		</div>
-		</cfloop>
-		</cfif>
-	</div>
-
-		</div> <!-- /.block-content -->
+	</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
 </cfif>
@@ -852,7 +852,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 $searchParams.setSearchButtons();
 </script>
 </cfoutput>
-
+<cfif rc.compactDisplay eq 'true'>
 <cfsavecontent variable="headerStr">
 <cfoutput>
 <script type="text/javascript">
@@ -873,6 +873,7 @@ jQuery(document).ready(function(){
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#headerStr#">
+</cfif>
 
 <cfelse>
 
@@ -1145,6 +1146,7 @@ jQuery(document).ready(function(){
 	</div> <!-- /.block-constrain -->
 </form>
 </cfoutput>
+<cfif rc.compactDisplay eq 'true'>
 <cfsavecontent variable="headerStr">
 <cfoutput>
 <script type="text/javascript">
@@ -1165,5 +1167,5 @@ jQuery(document).ready(function(){
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#headerStr#">
-
+</cfif>
 </cfif>
