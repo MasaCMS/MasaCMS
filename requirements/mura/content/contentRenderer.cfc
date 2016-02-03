@@ -1393,7 +1393,7 @@ Display Objects
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
+						<cfoutput>#variables.$.dspObject('edit_profile')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
