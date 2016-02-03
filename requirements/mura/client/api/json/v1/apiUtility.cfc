@@ -414,6 +414,15 @@ component extends="mura.cfobject" {
 
 							if(getServiceFactory().containsBean(pathInfo[4])){
 								params.relatedEntity=pathInfo[4];
+							} else if (params.entityName=='content' && pathInfo[4]=='history'){
+								params.method='findVersionHistory';
+								url.id=params.id;
+								url.entityname='content';
+								result=findVersionHistory(argumentCollection=params);
+								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findVersionHistory','params'=getParamsWithOutMethod(params),'data'=result});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
 							}
 						} else {
 							if(structKeyExists(headers,'X-HTTP-Method-Override')){
@@ -544,7 +553,6 @@ component extends="mura.cfobject" {
 						}
 
 					} else {
-
 						if(structCount(url)){
 							params.method='findQuery';
 							result=findQuery(argumentCollection=params);
@@ -1493,6 +1501,13 @@ component extends="mura.cfobject" {
 			sort=arguments.params.sort;
 		}
 
+		if(isDefined('params.entityname')
+			&& listFind('content,contentnav',params.entityname)
+			&& isDefined('params.changesetid')
+			&& len(params.changesetid)){
+			feed.setActiveOnly(0);
+		}
+
 		if(len(sort)){
 
 			var prefix='';
@@ -1652,6 +1667,48 @@ component extends="mura.cfobject" {
 		return formatIteratorResult(arguments.iterator,returnArray,'findCrumbArray');
 	}
 
+
+	function findVersionHistory(id,siteid){
+
+		var $=getBean('$').init(arguments.siteid);
+		var entity=$.getBean('content');
+		var crumbdata=getBean('contentManager').getCrumbList(arguments.id,arguments.siteid);
+		var perm=getBean('permUtility').getNodePerm(crumbData);
+
+		if(!listFindNoCase('author,editor',perm)){
+			throw(type="authorization");
+		}
+
+		var pk="contentid";
+		var iterator=entity.loadBy(contentid=arguments.id).getVersionHistoryIterator();
+
+		var returnArray=[];
+		var itemStruct={};
+		var item='';
+		var subIterator='';
+		var subItem='';
+		var subItemArray=[];
+		var p='';
+		var entityConfigName='contentnav';
+
+		while(iterator.hasNext()){
+			item=iterator.next();
+			itemStruct=getFilteredValues(item,$,false,entityConfigName);
+			itemStruct.id=itemStruct[pk];
+			itemStruct.links=getLinks(item);
+			itemStruct.images=setImageURLS(item,$);
+			itemStruct.url=item.getURL();
+
+			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
+			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+
+			arrayAppend(returnArray, itemStruct );
+		}
+
+		return formatIteratorResult(iterator,returnArray,'findVersionHistory');
+	}
+
+
 	function delete(entityName,id,siteid){
 
 		var $=getBean('$').init(arguments.siteid);
@@ -1778,6 +1835,7 @@ component extends="mura.cfobject" {
 
 		if(entity.getEntityName()=='content'){
 			links['self']="#baseurl#/content/#entity.getContentID()#";
+			links['history']="#baseurl#/content/#entity.getContentID()#/history";
 			links['renderered']="#baseurl#/content/_path/#entity.getFilename()#";
 			if(entity.getType()=='Variation'){
 				links['self']=links['renderered'];
