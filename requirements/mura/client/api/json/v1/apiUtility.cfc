@@ -2218,25 +2218,12 @@ component extends="mura.cfobject" {
 				break;
 
 			default:
-				if(listFindNoCase('folder,gallery',$.event('object'))){
-					if($.getContentRenderer().useLayoutManager()){
-						$.event('object','collection');
-						$.event('objectid',$.content('contentid'));
-						url.object='collection';
-						url.sourcetype='children';
-						url.source=$.content('contentid');
-
-					} else {
-						result={
-							html=$.getContentRenderer().dspContentTypeBody()
-						};
-						break;
-					}
-				} else if (listFindNoCase('calendar,page',$.event('object'))){
-					result={
-						html=$.getContentRenderer().dspContentTypeBody()
-					};
-					break;
+				if(listFindNoCase('folder,gallery',$.event('object')) && $.getContentRenderer().useLayoutManager()){
+					$.event('object','collection');
+					$.event('objectid',$.content('contentid'));
+					url.object='collection';
+					url.sourcetype='children';
+					url.source=$.content('contentid');
 				}
 
 				if(len($.event('objectparams2'))){
@@ -2270,6 +2257,12 @@ component extends="mura.cfobject" {
 
 				}
 
+				if(listFindNoCase('folder,gallery,calendar,page',$.event('object'))){
+					result={
+						html=$.getContentRenderer().dspContentTypeBody(params=args.params)
+					};
+					break;
+				}
 				result=$.dspObject(argumentCollection=args);
 
 				if(isdefined('request.muraJSONRedirectURL')){
