@@ -1837,11 +1837,12 @@
 		<cfreturn returnstring>
 	</cffunction>
 
-	<cffunction name="processContentTypeBody" output="false">
+	<cffunction name="lookupCustomContentTypeBody" output="false" hint="This is for looking up overrides in dspBody">
 		<cfargument name="$">
 		<cfset var safesubtype=REReplace(arguments.$.content().getSubType(), "[^a-zA-Z0-9_]", "", "ALL")>
 		<cfset var eventOutput="">
 
+		<!--- START Checking for Override via Event Model --->
 		<!--- For backwards compatibility --->
 		<cfif arguments.$.content().getType() eq 'Folder'>
 			<cfset eventOutput=arguments.$.renderEvent("onPortalBodyRender")>
@@ -1862,6 +1863,36 @@
 			<cfreturn {eventOutput=eventOutput}>
 		</cfif>
 
+		<!--- END Checking for Override via Event Model --->
+
+		<!--- START Checking for Override via Display Object --->
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+		</cfif>
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+		</cfif>
+
+		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+		</cfif>
+
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey) and arguments.$.siteConfig().getDisplayObject(displayObjectKey).custom>
+			<cfreturn {eventOutput=$.dspObject(object=displayObjectKey,params=$.content().getObjectParams())}>
+		</cfif>
+		<cfset displayObjectKey='#arguments.$.content().getType()#_#safesubtype#'>
+
+		<!--- END Checking for Override via Display Object --->
+
+		<!--- START Checking for Override via File  --->
 		<cfset var filePath="">
 
 		<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()#_#safesubtype#/index.cfm')>
@@ -1896,25 +1927,7 @@
 			</cfif>
 		</cfif>
 
-
-		<cfset var displayObjectKey='#arguments.$.content().getType()#'>
-
-		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/' & arguments.$.siteConfig().getDisplayObject(displayObjectKey).displayobjectfile)>
-			<cfif len(filePath)>
-				<cfreturn {filepath=filePath}>
-			</cfif>
-		</cfif>
-
-		<cfset displayObjectKey='#arguments.$.content().getType()##safesubtype#'>
-
-		<cfif arguments.$.siteConfig().hasDisplayObject(displayObjectKey)>
-			<cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('#arguments.$.content().getType()##safesubtype#/' & arguments.$.siteConfig().getDisplayObject(displayObjectKey).displayobjectfile)>
-			<cfif len(filePath)>
-				<cfreturn {filepath=filePath}>
-			</cfif>
-		</cfif>
-
+		<!--- END Checking for Override via File  --->
 
 		<cfreturn {}>
 	</cffunction>

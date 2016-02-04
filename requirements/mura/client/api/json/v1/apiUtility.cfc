@@ -2065,13 +2065,13 @@ component extends="mura.cfobject" {
 		$.getContentRenderer().injectMethod('crumbdata',$.event("crumbdata"));
 		$.event().getHandler('standardSetPermissions').handle($.event());
 		$.event().getHandler('standardSetLocale').handle($.event());
+		$.event().getHandler('standardSetIsOnDisplay').handle($.event());
 
 		$.announceEvent('asyncRenderStart');
 
 		if($.event('object')=='comments'){
 			$.event().getHandler('standardSetCommentPermissions').handle($.event());
 		}
-
 
 		if($.content().getType() != 'Variation' && $.event('r').restrict){
 			$.event('nocache',1);
@@ -2218,13 +2218,6 @@ component extends="mura.cfobject" {
 				break;
 
 			default:
-				if(listFindNoCase('folder,gallery',$.event('object')) && $.getContentRenderer().useLayoutManager()){
-					$.event('object','collection');
-					$.event('objectid',$.content('contentid'));
-					url.object='collection';
-					url.sourcetype='children';
-					url.source=$.content('contentid');
-				}
 
 				if(len($.event('objectparams2'))){
 					$.event('objectparams',$.event('objectparams2'));
@@ -2263,7 +2256,7 @@ component extends="mura.cfobject" {
 					};
 					break;
 				}
-				
+
 				result=$.dspObject(argumentCollection=args);
 
 				if(isdefined('request.muraJSONRedirectURL')){

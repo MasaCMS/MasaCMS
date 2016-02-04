@@ -1234,6 +1234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenttypes" default="">
 	<cfargument name="condition" default="true">
     <cfargument name="legacyObjectFile" default="">
+	<cfargument name="custom" default="true">
 	<cfset arguments.objectid=arguments.object>
 	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
 	<cfreturn this>
@@ -1315,9 +1316,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	]>
 
 	<cfset var dir="">
+	<cfset var dirIndex=0>
+	<cfset var custom=true>
 
 	<cfloop array="#lookupArray#" index="dir">
-		<cfset registerDisplayObjectDir(dir,false)>
+		<cfset dirIndex=dirIndex+1>
+		<cfset custom=dirIndex gt 2>
+		<cfset registerDisplayObjectDir(dir=dir,conditional=false,custom=custom)>
 	</cfloop>
 
 	<cfset var rs="">
@@ -1341,6 +1346,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="dir">
 	<cfargument name="conditional" default="true">
     <cfargument name="package" default="">
+	<cfargument name="custom" default="true">
 	<cfset var rs="">
 	<cfset var config="">
 	<cfset var objectArgs={}>
@@ -1365,7 +1371,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfif isDefined('config.displayobject.xmlAttributes.name')>
 					<cfset objectArgs={
-						object=rs.name
+						object=rs.name,
+						custom=arguments.custom
 						}>
                     <cfif isDefined('config.displayobject.xmlAttributes.legacyObjectFile')>
     					<cfset objectArgs.legacyObjectFile=rs.name & "/" & config.displayobject.xmlAttributes.legacyObjectFile>

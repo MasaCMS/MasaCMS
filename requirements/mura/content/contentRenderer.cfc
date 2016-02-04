@@ -1443,14 +1443,18 @@ Display Objects
 					</cfif>
 				</cfoutput>
 
-				<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
+				<!--- Look for custom overrides--->
+				<cfset var bodyLookup=variables.contentRendererUtility.lookupCustomContentTypeBody(variables.$)>
 
 				<cfif isDefined('bodyLookup.eventOutput')>
 					<cfoutput>#bodyLookup.eventOutput#</cfoutput>
 				<cfelseif isDefined('bodyLookup.filepath')>
+					<cfset var objectParams=$.content().getObjectParams()>
 					<cfinclude template="#bodyLookup.filepath#">
+
+				<!--- Otherwise start default body rendering --->
 				<cfelse>
-					<cfswitch expression="#variables.event.getValue('contentBean').getType()#">
+					<cfswitch expression="#$.content('type')#">
 					<cfcase value="File">
 						<cfif variables.event.getValue('contentBean').getContentType() eq "Image"
 							and listFind("jpg,jpeg,gif,png",lcase(variables.event.getValue('contentBean').getFileExt()))>
@@ -1514,68 +1518,11 @@ Display Objects
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
-
-					<cfif arguments.renderKids>
-						<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
-						<cfcase value="Folder">
-							<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
-
-							 <cfif len(filePath)>
-							 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
-							 <cfelse>
-							 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
-							 	 <cfif len(filePath)>
-								 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm')#</cfoutput>
-								 <cfelse>
-								 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm')#</cfoutput>
-								 </cfif>
-							</cfif>
-							</cf_CacheOMatic>
-						</cfcase>
-						<cfcase value="Calendar">
-							 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
-							 </cf_CacheOMatic>
-						</cfcase>
-						<cfcase value="Gallery">
-							<cfset loadShadowBoxJS() />
-							<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
-							<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
-							<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-							<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
-							</cf_CacheOMatic>
-						</cfcase>
-						</cfswitch>
-					</cfif>
+					<cfoutput>#$.dspContentTypeBody(params=$.content().getObjectParams(),renderKids=arguments.renderKids)#</cfoutput>
 				</cfif>
 			</cfif>
-		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
-			<cfset variables.$.noIndex()>
-			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-				<cfoutput>#variables.$.dspObject('deny')#</cfoutput>
-			</cfif>
-		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
-			<cfset variables.$.noIndex()>
-			<cfset variables.event.setValue('noCache',1)>
-			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-			<cfoutput>#variables.$.dspObject('editprofile')#</cfoutput>
-			</cfif>
 		<cfelse>
-			<cfset variables.$.noIndex()>
-			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
-			<cfheader statuscode="404" statustext="Content Not Found" />
-			<cfif len(eventOutput)>
-			<cfoutput>#eventOutput#</cfoutput>
-			<cfelse>
-			<cfoutput>#variables.$.dspObject('offline')#</cfoutput>
-			</cfif>
+			<cfoutput>#$.dspContentTypeBody(params=$.content().getObjectParams())#</cfoutput>
 		</cfif>
 	</cfsavecontent>
 
@@ -1584,44 +1531,88 @@ Display Objects
 
 <cffunction name="dspContentTypeBody" output="false">
 	<cfargument name="params" default="#structNew()#">
-	<cfset var bodyLookup=variables.contentRendererUtility.processContentTypeBody(variables.$)>
-	<cfset var eventOutput="">
+	<cfargument name="renderKids" default="true">
 	<cfsavecontent variable="eventOutput">
 	<cfoutput>
-	<cfif isDefined('bodyLookup.eventOutput')>
-		#bodyLookup.eventOutput#
-	<cfelseif isDefined('bodyLookup.filepath')>
-		<cfset objectParams=arguments.params>
-		<cfinclude template="#bodyLookup.filepath#">
-	<cfelseif variables.$.content('type') eq 'folder'>
-		<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
-
-		 <cfif len(filePath)>
-		 	<cfoutput>#dspObject_Include(thefile='dsp_portal.cfm',params=arguments.params)#</cfoutput>
-		 <cfelse>
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params)#</cfoutput>
-			 <cfelse>
-			 	<cfoutput>#dspObject_Include(thefile='folder/index.cfm',params=arguments.params)#</cfoutput>
-			 </cfif>
+	<cfif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn and not $.event('r').allow >
+		<cfset $.noIndex()>
+		<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",$)>
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+			<cfoutput>#$.dspObject('deny')#</cfoutput>
 		</cfif>
-		</cf_CacheOMatic>
-	<cfelseif variables.$.content('type') eq 'calendar'>
-		<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='calendar/index.cfm',params=arguments.params)#</cfoutput>
-			 </cfif>
-		</cf_CacheOMatic>
-	<cfelseif variables.$.content('type') eq 'gallery'>
-		<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#variables.event.getValue('r').restrict#">
-		 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
-		 	 <cfif len(filePath)>
-			 	<cfoutput>#dspObject_Include(thefile='gallery/index.cfm',params=arguments.params)#</cfoutput>
-			 </cfif>
-		</cf_CacheOMatic>
+	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and not $.event('r').loggedIn>
+		<cfset $.noIndex()>
+		<cfset $.event('noCache',1)>
+		<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",$)>
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+		<cfoutput>#$.dspObject('login')#</cfoutput>
+		</cfif>
+	<cfelseif $.event('isOnDisplay') and $.event('r').restrict and $.event('r').loggedIn>
+		<cfset $.noIndex()>
+		<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",$)>
+		<cfheader statuscode="404" statustext="Content Not Found" />
+		<cfif len(eventOutput)>
+		<cfoutput>#eventOutput#</cfoutput>
+		<cfelse>
+		<cfoutput>#$.dspObject('offline')#</cfoutput>
+		</cfif>
+	<cfelse>
+		<cfset var bodyLookup=variables.contentRendererUtility.lookupCustomContentTypeBody($=variables.$)>
+		<cfset var eventOutput="">
+		<cfif isDefined('bodyLookup.eventOutput')>
+			#bodyLookup.eventOutput#
+		<cfelseif isDefined('bodyLookup.filepath')>
+			<cfset var objectParams=arguments.params>
+			<cfinclude template="#bodyLookup.filepath#">
+		<cfelse>
+			<cfif arguments.renderKids>
+				<cfif request.muraApiRequest
+					and listFindNoCase('folder,gallery',$.content('type'))
+					and $.getContentRenderer().useLayoutManager()>
+					<cfset arguments.params.object='collection'>
+					<cfset arguments.params.sourcetype='children'>
+					<cfset arguments.params.source=$.content('contentid')>
+					<cfoutput>#$.dspObject(object='collection',params=arguments.params)#</cfoutput>
+				<cfelseif $.siteConfig().hasDisplayObject($.content('type'))>
+					<cfoutput>#dspObject(object=$.content('type'),params=arguments.params)#</cfoutput>
+				<cfelse>
+					<cfif $.content('type') eq 'folder'>
+						<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 <cfset var filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_portal.cfm')>
+
+						 <cfif len(filePath)>
+						 	<cfoutput>#$.dspObject_Include(thefile='dsp_portal.cfm',params=arguments.params)#</cfoutput>
+						 <cfelse>
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params)#</cfoutput>
+							 <cfelse>
+							 	<cfoutput>#$.dspObject_Include(thefile='folder/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cfif>
+						</cf_CacheOMatic>
+					<cfelseif $.content('type') eq 'calendar'>
+						<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cf_CacheOMatic>
+					<cfelseif variables.$.content('type') eq 'gallery'>
+						<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
+						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
+						 	 <cfif len(filePath)>
+							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params)#</cfoutput>
+							 </cfif>
+						</cf_CacheOMatic>
+					</cfif>
+				</cfif>
+			</cfif>
+		</cfif>
 	</cfif>
 	</cfoutput>
 	</cfsavecontent>
