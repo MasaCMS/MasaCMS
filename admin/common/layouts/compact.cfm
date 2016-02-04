@@ -161,7 +161,6 @@
 		var fileDelim='#esapiEncode('javascript',$.globalConfig("fileDelim"))#';
 		</script>
 		
-<!--- TODO GoWest : use full admin css? : 2016-01-29T16:29:31-07:00 --->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
@@ -207,14 +206,15 @@
 		</cfif>
 	</head>
 	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact">
+		<div id="mura-content">
 		<cfif rc.sourceFrame eq 'modal'>
 			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
 <!--- TODO GoWest : dialog.cfm markup : 2016-01-29T16:54:26-07:00 --->
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
+	</div> <!-- /mura-content -->
 
-		<!--- TODO GoWest : main-row-fluid / new css : 2016-01-29T16:54:46-07:00 --->						
-		<div class="main row-fluid"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
+		<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
 		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 

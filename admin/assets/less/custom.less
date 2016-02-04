@@ -722,32 +722,33 @@ input.text, { width: 95%; }
 .mura-control-group .mura-control.justify{
   padding: 8px 0px;
 }
-#mura-content .mura-control-group input.radio,
-#mura-content .mura-control-group input[type="radio"],
-#mura-content .mura-control-group input.checkbox,
-#mura-content .mura-control-group input[type="checkbox"]{
+.mura-control-group input.radio,
+.mura-control-group input[type="radio"],
+.mura-control-group input.checkbox,
+.mura-control-group input[type="checkbox"]{
   min-height: auto;
   margin-top: 4px;
   border: none;
   outline: 0;
 }
 
-#mura-content .mura-control-group input.radio:focus,
-#mura-content .mura-control-group input.checkbox:focus,
-#mura-content .mura-control-group input[type="radio"]:focus,
-#mura-content .mura-control-group input[type="checkbox"]:focus{
+.mura-control-group input.radio:focus,
+.mura-control-group input.checkbox:focus,
+.mura-control-group input[type="radio"]:focus,
+.mura-control-group input[type="checkbox"]:focus{
   outline:0;
 }
 
 #mura-content form label.checkbox,
-#mura-content form .mura-control-group label.checkbox{
+.mura-control-group label.checkbox{
   padding-left: 22px;
 }
 #mura-content form label.radio,
-#mura-content form .mura-control-group label.radio{
+.mura-control-group label.radio{
   padding-left: 15px;
 }
-#mura-content form label.radio.inline{
+#mura-content form label.radio.inline,
+.mura-control-group label.radio.inline{
   width:auto; 
   padding-left: 30px;
   margin-top: 0;
@@ -755,8 +756,25 @@ input.text, { width: 95%; }
 #mura-content form .radio, 
 #mura-content form .checkbox, 
 #mura-content form .radio.inline, 
-#mura-content form .checkbox.inline{
+#mura-content form .checkbox.inline, 
+.mura form .radio, 
+.mura form .checkbox, 
+.mura form .radio.inline, 
+.mura form .checkbox.inline
+{
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 7px;
+}
+
+
+/* configurator / compact view */
+
+body.compact .mura-layout-row{
+  padding: 0;
+  margin: 0;
+}
+
+body.compact #configurator{
+    padding: 0 30px 0 15px;
 }
