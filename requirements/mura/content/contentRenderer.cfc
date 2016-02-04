@@ -1578,7 +1578,7 @@ Display Objects
 					<cfset arguments.params.source=$.content('contentid')>
 					<cfoutput>#$.dspObject(object='collection',params=arguments.params)#</cfoutput>
 				<cfelseif $.siteConfig().hasDisplayObject($.content('type'))>
-					<cfoutput>#dspObject(object=$.content('type'),params=arguments.params)#</cfoutput>
+					<cfoutput>#dspObject(object=lcase($.content('type')),params=arguments.params)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
 						<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
