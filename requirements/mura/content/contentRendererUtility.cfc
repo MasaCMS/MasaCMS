@@ -178,28 +178,28 @@
 
 		<cfswitch expression="#arguments.type#">
 		<cfcase value="Folder">
-			<cfreturn "icon-folder-open-alt">
+			<cfreturn "mi-folder-open-o">
 		</cfcase>
 		<cfcase value="Calendar">
-			<cfreturn "icon-calendar">
+			<cfreturn "mi-calendar">
 		</cfcase>
 		<cfcase value="Gallery">
-			<cfreturn "icon-th">
+			<cfreturn "mi-th">
 		</cfcase>
 		<cfcase value="GalleryItem">
-			<cfreturn "icon-picture">
+			<cfreturn "mi-picture">
 		</cfcase>
 		<cfcase value="Link">
-			<cfreturn "icon-link">
+			<cfreturn "mi-link">
 		</cfcase>
 		<cfcase value="Quick">
-			<cfreturn "icon-upload-alt">
+			<cfreturn "mi-upload">
 		</cfcase>
 		<cfcase value="File">
-			<cfreturn "icon-file-text-alt">
+			<cfreturn "mi-file-text-o">
 		</cfcase>
 		<cfdefaultcase>
-			<cfreturn "icon-file">
+			<cfreturn "mi-file">
 		</cfdefaultcase>
 		</cfswitch>
 
