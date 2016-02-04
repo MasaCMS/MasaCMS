@@ -2263,6 +2263,7 @@ component extends="mura.cfobject" {
 					};
 					break;
 				}
+				
 				result=$.dspObject(argumentCollection=args);
 
 				if(isdefined('request.muraJSONRedirectURL')){
