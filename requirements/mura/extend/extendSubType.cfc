@@ -381,10 +381,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset returnVar = "mi-file">
 		</cfcase>
 		<cfcase value="folder">
-			<cfset returnVar = "mi-folder-open-alt">
+			<cfset returnVar = "mi-folder-open-o">
 		</cfcase>
 		<cfcase value="file">
-			<cfset returnVar = "mi-file-text-alt">
+			<cfset returnVar = "mi-file-text-o">
 		</cfcase>
 		<cfcase value="link">
 			<cfset returnVar = "mi-link">
