@@ -8,7 +8,7 @@
 	bottom: 0;
 	z-index: 15; /* 1 higher than navbar */
 	height: 100vh;
-	background-color: #FFFFFF;
+	background-color: #f5f5f5;
 	
 	// reset typography styles in layout manager sidebar
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -88,7 +88,7 @@
 .mura-sidebar__objects-list {
 	height: 100%;
 	width: 100%;
-	overflow: scroll;
+	overflow: auto;
 }
 
 .mura-sidebar__objects-list__object-group {
@@ -96,13 +96,12 @@
 }
 
 .mura-sidebar__objects-list__object-group h3 {
-	margin: 0 0 .5em 0;
+	margin: 12px 0;
 	padding: 0;
-	font-size: 32px;
+	font-size: 16px;
 	font-weight: bold;
-	color: #ff3a00;
-	line-height: 44px;
-	letter-spacing: -0.05em;
+	color: inherit;
+	line-height: 1.2;
 }
 
 .mura-sidebar__objects-list__object-group-heading {}
@@ -111,7 +110,7 @@
 .mura-sidebar__object-group-items,
 .mura-sidebar__objects-list__object-group-items {
 	padding: 8px;
-	background-color: #e6e6e6;
+	background-color: #FFF;
 	border-radius: 3px;
 }
 
@@ -133,9 +132,10 @@
 	margin-bottom: -1px;
 	background-color: #F5F5F5;
 	font-size: 13px;
-	color: #000;
-	text-shadow: 0 1px 0 #fff;
+	color: inherit;
 	font-weight: bold;
+  border: 1px solid #E9E9E9;
+  border-collapse: collapse;	
 }
 
 .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {

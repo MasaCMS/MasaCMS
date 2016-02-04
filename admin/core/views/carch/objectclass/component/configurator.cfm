@@ -52,31 +52,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cf_objectconfigurator>
 <cfoutput>
-<div class="fieldset-wrap row-fluid">
-	<div class="fieldset">
-		<div class="control-group">
-			<label class="control-label">Select Component</label>
-			<div class="controls">
-				<select id="availableObjectSelector" class="span12">
-					<option value="{object:'component',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component'))#',objectid:'unconfigured'}">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
-					</option>
+<div class="mura-layout-row">
+	<div class="mura-control-group">
+		<label class="mura-control-label">Select Component</label>
+		<select id="availableObjectSelector">
+		<option value="{object:'component',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component'))#',objectid:'unconfigured'}">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
+		</option>
 
-					<cfloop query="rc.rsComponents">
+			<cfloop query="rc.rsComponents">
 
-						<cfset title=rc.rsComponents.menutitle>
+				<cfset title=rc.rsComponents.menutitle>
 
-						<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'component',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsComponents.contentid#'}">
-							#esapiEncode('html',title)#
-						</option>
-				
-					</cfloop>
-				</select>
-				<cfif hasModulePerm>
-					<button class="btn" id="editBtn">Edit</button>
-				</cfif>
-			</div>
-		</div>
+				<option <cfif rc.objectid eq rc.rsComponents.contentid and rc.object eq 'component'>selected </cfif>title="#esapiEncode('html_attr',title)#" value="{object:'component',name:'#esapiEncode('html_attr',title)#',objectid:'#rc.rsComponents.contentid#'}">
+					#esapiEncode('html',title)#
+				</option>
+		
+			</cfloop>
+		</select>
+		<cfif hasModulePerm>
+			<button class="btn" id="editBtn">Edit</button>
+		</cfif>
 	</div>
 </div>
 <cfif hasModulePerm>

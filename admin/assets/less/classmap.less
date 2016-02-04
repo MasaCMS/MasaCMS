@@ -46,52 +46,52 @@ main > .content > :first-child{
 #mura-content > form{
   .form-horizontal;
 }
-#mura-content .mura-control-group{
+.mura-control-group{
   .form-group;
   .make-row();
   margin-left:0px;
   margin-right:0px;
 }
 
-#mura-content .mura-control-group > label{
+.mura-control-group > label{
   .make-xs-column(12);
 }
-#mura-content .mura-control-group > label:not([class*="checkbox"]):not([class*="radio"]){
+.mura-control-group > label:not([class*="checkbox"]):not([class*="radio"]){
   padding-left:0px;
   padding-right:0px;
 }
 
 // form elements w/ label
 
-#mura-content .mura-control-group > label + textarea,
-#mura-content .mura-control-group > label + * + textarea,
-#mura-content .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
-#mura-content .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
-#mura-content .mura-control-group > label + input[type=password],
-#mura-content .mura-control-group > label + * + input[type=password],
-#mura-content .mura-control-group > label + select:not([class*="time"]),
-#mura-content .mura-control-group > label + * + select:not([class*="time"]){
+.mura-control-group > label + textarea,
+.mura-control-group > label + * + textarea,
+.mura-control-group > label + input[type=text]:not([class*="datepicker"]),
+.mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.mura-control-group > label + input[type=password],
+.mura-control-group > label + * + input[type=password],
+.mura-control-group > label + select:not([class*="time"]),
+.mura-control-group > label + * + select:not([class*="time"]){
   .form-control;
   .make-sm-column(9);
 }
 
 select[multiple],
 select[size]
-,#mura-content .mura-control-group > label + select[multiple], 
-#mura-content .mura-control-group > label + select[size] {
+,.mura-control-group > label + select[multiple], 
+.mura-control-group > label + select[size] {
     height: auto !important;
 }
 
 // checkboxes / radio buttons
 
-#mura-content .mura-control-group > .checkbox-group,
-#mura-content .mura-control-group > .radio-group{
+.mura-control-group > .checkbox-group,
+.mura-control-group > .radio-group{
   .make-sm-column(9);
 }
 
 // ckeditor fields
 
-#mura-content .mura-control-group textarea + .cke{
+.mura-control-group textarea + .cke{
   .make-sm-column(9);
   padding-left:0px;
   padding-right:0px;
