@@ -1994,7 +1994,7 @@ component extends="mura.cfobject" {
 			$.content().setSiteID(arguments.siteid);
 			request.contentBean=$.content();
 		}
-		
+
 		$.event('localHandler',application.settingsManager.getSite(getValue('siteID')).getLocalHandler());
 		$.announceEvent('siteAsyncRequestStart');
 		$.event('crumbdata',$.content().getCrumbArray(setInheritance=true));
@@ -2169,11 +2169,6 @@ component extends="mura.cfobject" {
 						};
 						break;
 					}
-				} else if (listFindNoCase('calendar,page',$.event('object'))){
-					result={
-						html=$.getContentRenderer().dspContentTypeBody()
-					};
-					break;
 				}
 
 				if(len($.event('objectparams2'))){
@@ -2205,6 +2200,13 @@ component extends="mura.cfobject" {
 						}
 					}
 
+				}
+
+				if(listFindNoCase('calendar,page',$.event('object'))){
+					result={
+						html=$.getContentRenderer().dspContentTypeBody(args.params)
+					};
+					break;
 				}
 
 				result=$.dspObject(argumentCollection=args);
