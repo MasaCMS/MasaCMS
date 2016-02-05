@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-layout-row">
 	<div class="mura-control-group">
-		<label class="mura-control-label">Select Component</label>
+		<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
 		<select id="availableObjectSelector">
 			<option value="{object:'component',name:'#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component'))#',objectid:'unconfigured'}">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#
