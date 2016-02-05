@@ -668,6 +668,12 @@ component extends="mura.cfobject" {
 		var temp={};
 		structAppend(temp,arguments.params);
 		structDelete(temp,'method');
+
+		for(var p in temp){
+			if(find('[',p)){
+				structDelete(temp,listFirst(p,'[') & listFirst(listLast(p,'['),']'));
+			}
+		}
 		return temp;
 	}
 
@@ -1466,10 +1472,10 @@ component extends="mura.cfobject" {
 		var baseURL=getEndPoint() & "/#entity.getEntityName()#/?";
 
 		for(var p in queryParams){
-			if(listLen(p)){
+			if(find('[',p)){
 				propName=listFirst(p,'[');
-				propIndex=listFirst(listLast(p,'['),']');
-				structDelete(url,propName & propIndex);
+				propIndex=listFirst(listlast(p,'['),']');
+				structDelete(arguments,propName & propIndex);
 			} else {
 				propName=p;
 			}
