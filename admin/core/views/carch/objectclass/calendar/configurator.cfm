@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 				<div class="mura-control-group">
 					<label class="mura-control-label">
-						<span class="span12">#application.rbFactory.getKeyValue(session.rb,'calendar.additionalcalendars')#</span>
+						#application.rbFactory.getKeyValue(session.rb,'calendar.additionalcalendars')#
 						<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 					</label>
 					<cfif arrayLen(objectParams.items)>

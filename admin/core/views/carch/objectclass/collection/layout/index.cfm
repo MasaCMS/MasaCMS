@@ -115,6 +115,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>All</option>
 				</select>
+			</div>
+			<div class="mura-control-group">
 			    <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
 				<select name="nextN" data-displayobjectparam="nextN" class="objectParam">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">

@@ -74,12 +74,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</select>
 </div>
 
-<div id="imageoptionscontainer" class="mura-control-group" style="display:none">
-	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-  	<input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
-	<label class="mura-ntrol-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
-	<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+<div id="imageoptionscontainer" style="display:none">
+    <div class="mura-control-group">
+    	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+      	<input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+    </div>
+    <div class="mura-control-group">
+        <label class="mura-ntrol-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+    	<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+    </div>
 </div>
+
 <div class="mura-control-group" id="availableFields">
 	<label class="mura-control-label">
 		<span>Selected Fields</span>
