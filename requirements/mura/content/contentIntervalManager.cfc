@@ -6,7 +6,7 @@
 	<cfargument name="start">
 	<cfargument name="stop">
 
-	<cfreturn (isDate(arguments.start) 
+	<cfreturn (isDate(arguments.start)
 		and hour(arguments.start) eq 0
 		and minute(arguments.start) eq 0
 		and (
@@ -36,7 +36,7 @@
 				<cfset var rsresult=''>
 				<cfset var rsresultfinal=''>
 				<cfset var rsitemdetails=''>
-				
+
 				<cfquery name="rsresult" dbtype="query">
 					select * from rsevents where 0=1
 				</cfquery>
@@ -65,8 +65,8 @@
 
 						<cfloop query="rscheck">
 							<cfset QueryAddRow(rsresult) />
-									
-							<cfloop list="#rsresult.columnList#" index="local.i">			
+
+							<cfloop list="#rsresult.columnList#" index="local.i">
 								<cfset querySetCell(rsresult,
 								local.i,
 								rscheck[local.i][rscheck.currentrow],
@@ -86,7 +86,7 @@
 						<cfset arrayAppend(result, utility.queryRowToStruct(rsresultfinal,rsresultfinal.currentrow))>
 
 						<cfquery name="rsitemdetails" dbtype="query">
-							select * from rsresult 
+							select * from rsresult
 							where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsresultfinal.contentid#">
 						</cfquery>
 
@@ -96,8 +96,8 @@
 			</cfif>
 
 		</cfif>
-		
-	</cfif>	
+
+	</cfif>
 
 	<cfreturn getBean('contentIterator').setArray(result)>
 
@@ -151,9 +151,9 @@
 	<cfif not data.every>
 		<cfset data.every=1>
 	</cfif>
-	
+
 	<cfset var hasdaysofweek=listFindNoCase('weekly,bi-weekly,monthly,week1,week2,week3,week4,weeklast',data.type)>
-		
+
 	<cfif hasdaysofweek>
 		<cfif not structkeyExists(data,'daysofweek')>
 			<cfset data.daysofweek=''>
@@ -182,14 +182,14 @@
 		required="true"
 		hint="The Query the has the items that may need intervals applied"
 		/>
-	
+
 	<cfargument
 		name="From"
 		type="date"
 		required="true"
 		hint="The From date for our date span (inclusive)."
 		/>
-		
+
 	<cfargument
 		name="To"
 		type="date"
@@ -204,19 +204,19 @@
 		default="0"
 		hint="The From date for our date span (inclusive)."
 		/>
-		
-	
+
+
 	<!--- Define the local scope. --->
 	<cfset var LOCAL = StructNew() />
 	<cfset local.deleteList="" />
-	
+
 	<cfif not arguments.query.recordcount>
 		<cfreturn arguments.query>
 	</cfif>
 
-	<!--- 
-		Make sure that we are working with numeric dates 
-		that are DAY-only dates. 
+	<!---
+		Make sure that we are working with numeric dates
+		that are DAY-only dates.
 	--->
 	<cfset ARGUMENTS.From = Fix( ARGUMENTS.From ) />
 	<cfset ARGUMENTS.To = Fix( ARGUMENTS.To ) />
@@ -229,31 +229,31 @@
 
 	<!--- Build out raw events to and in event type--->
 
-	<!--- 
-		Now, we will loop over the raw events and populate the 
+	<!---
+		Now, we will loop over the raw events and populate the
 		calculated events query. This way, when we are rendering
 		the calednar itself, we won't have to worry about repeat
 		types or anything of that nature.
 	--->
 	<cfset local.currentrow=1>
 	<cfset local.recordcount=arguments.query.recordcount>
-	
+
 	<cfloop from="1" to="#local.recordcount#" index="local.currentrow">
-		
-		<!--- 
-			No matter what kind of repeating event type we are 
-			dealing with, the TO date will always be calculated 
-			in the same manner (it the Starting date that get's 
-			hairy). If there is an end date for the event, the 
-			the TO date is the minumium of the end date and the 
-			end of the time period we are examining. If there 
+
+		<!---
+			No matter what kind of repeating event type we are
+			dealing with, the TO date will always be calculated
+			in the same manner (it the Starting date that get's
+			hairy). If there is an end date for the event, the
+			the TO date is the minumium of the end date and the
+			end of the time period we are examining. If there
 			is no end date on the event, then the TO date is the
 			end of the time period we are examining.
 		--->
 
 		<cfset local.displayInterval=deserializeInterval(arguments.query.displayInterval[local.currentrow],arguments.query.displayStart[local.currentrow],arguments.query.displayStop[local.currentrow])>
 
-		<cfif arguments.query.display[local.currentrow] eq 2 
+		<cfif arguments.query.display[local.currentrow] eq 2
 		and len(local.DISPLAYINTERVAL.type) >
 
 			<cfif not local.displayInterval.every>
@@ -271,7 +271,7 @@
 			</cfif>
 
 			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
-			
+
 			<cfif isDate(arguments.query.displayStop[local.currentrow])>
 				<cfset LOCAL.DisplayStop=fix(arguments.query.displayStop[local.currentrow])>
 			<cfelse>
@@ -290,56 +290,56 @@
 			<cfset LOCAL.ToOrig=LOCAL.to>
 
 			<cfif isDate(arguments.query.displayStop[local.currentrow])>
-				
-				<!--- 
-					Since the event has an end date, get what ever 
-					is most efficient for the future loop evaluation 
-					- the end of the time period or the end date of 
+
+				<!---
+					Since the event has an end date, get what ever
+					is most efficient for the future loop evaluation
+					- the end of the time period or the end date of
 					the event.
 				--->
 
-				<cfset LOCAL.To = Min( 
+				<cfset LOCAL.To = Min(
 					LOCAL.DisplayStop,
 					LOCAL.ToOrig
 					) />
-			
+
 			</cfif>
-			
-			<!--- 
-				Set the default loop type and increment. We are 
+
+			<!---
+				Set the default loop type and increment. We are
 				going to default to 1 day at a time.
 			--->
 			<cfset LOCAL.LoopType = "d" />
 			<cfset LOCAL.LoopIncrement = 1 />
-			
-			<!--- 
-				Set additional conditions to be met. We are going 
+
+			<!---
+				Set additional conditions to be met. We are going
 				to default to allowing all days of the week.
 			--->
 			<cfset LOCAL.DaysOfWeek = "" />
 			<cfset LOCAL.hasdaysofweek= false />
 			<!---
-				Check to see what kind of event we have - is 
+				Check to see what kind of event we have - is
 				it a single day event or an event that type. If
 				we have an event repeat, we are going to flesh it
 				out directly into the event query by adding rows.
 				The point of this switch statement is to use the
-				repeat type to figure out what the START date, 
+				repeat type to figure out what the START date,
 				the type of loop skipping (ie. day, week, month),
 				and the number of items we need to skip per loop
 				iteration.
 			--->
 
 			<cfswitch expression="#local.displayInterval.type#">
-			
-				
+
+
 				<!--- Repeat weekly. --->
 				<cfcase value="weekly">
-				
+
 					<!---
-						Set the start date of the loop. For 
-						efficiency's sake, we don't want to loop 
-						from the very beginning of the event; we 
+						Set the start date of the loop. For
+						efficiency's sake, we don't want to loop
+						from the very beginning of the event; we
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
@@ -352,40 +352,40 @@
 					<cfelse>
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 					</cfif>
-					
-					<!--- 
-						Since this event type weekly, we want 
-						to make sure to start on a day that might 
-						be in the event series. Therefore, adjust 
-						the start day to be on the closest day of 
+
+					<!---
+						Since this event type weekly, we want
+						to make sure to start on a day that might
+						be in the event series. Therefore, adjust
+						the start day to be on the closest day of
 						the week.
 					--->
 
 					<cfset LOCAL.From = (
-						LOCAL.From - 
-						DayOfWeek( LOCAL.From ) + 
+						LOCAL.From -
+						DayOfWeek( LOCAL.From ) +
 						DayOfWeek( LOCAL.DisplayStart )
 						) />
-					
+
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.LoopIncrement = 1 />
 					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
-					
+
 				</cfcase>
-				
+
 				<!--- Repeat bi-weekly. --->
 				<cfcase value="bi-weekly">
-				
+
 					<!---
-						Set the start date of the loop. For 
-						efficiency's sake, we don't want to loop 
-						from the very beginning of the event; we 
+						Set the start date of the loop. For
+						efficiency's sake, we don't want to loop
+						from the very beginning of the event; we
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
-					
+
 					<cfif not local.repeatmax>
 						<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
@@ -394,29 +394,29 @@
 					<cfelse>
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 					</cfif>
-					
-					<!--- 
-						Since this event type weekly, we want 
-						to make sure to start on a day that might 
-						be in the event series. Therefore, adjust 
-						the start day to be on the closest day of 
+
+					<!---
+						Since this event type weekly, we want
+						to make sure to start on a day that might
+						be in the event series. Therefore, adjust
+						the start day to be on the closest day of
 						the week.
 					--->
 
 					<cfset LOCAL.From = (
-						LOCAL.From - 
-						DayOfWeek( LOCAL.From ) + 
+						LOCAL.From -
+						DayOfWeek( LOCAL.From ) +
 						DayOfWeek( LOCAL.DisplayStart )
 						) />
-					
-					<!--- 
-						Now, we have to make sure that our start 
-						date is NOT in the middle of the bi-week 
-						period. Therefore, subtract the mod of 
+
+					<!---
+						Now, we have to make sure that our start
+						date is NOT in the middle of the bi-week
+						period. Therefore, subtract the mod of
 						the day difference over 14 days.
-					
+
 					<cfset LOCAL.From = (
-						LOCAL.From - 
+						LOCAL.From -
 						((LOCAL.From - LOCAL.DisplayStart) MOD 14)
 						) />
 					--->
@@ -425,20 +425,20 @@
 					<cfset LOCAL.LoopIncrement = 8 />
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
-					
+
 				</cfcase>
-				
+
 				<!--- Repeat monthly. --->
 				<cfcase value="monthly">
-				
+
 					<!---
-						When dealing with the start date of a 
-						monthly repeating, we have to be very 
-						careful not to try tro create a date that 
-						doesnt' exists. Therefore, we are simply 
-						going to go back a year from the current 
-						year and start counting up. Not the most 
-						efficient, but the easist way of dealing 
+						When dealing with the start date of a
+						monthly repeating, we have to be very
+						careful not to try tro create a date that
+						doesnt' exists. Therefore, we are simply
+						going to go back a year from the current
+						year and start counting up. Not the most
+						efficient, but the easist way of dealing
 						with it.
 					--->
 
@@ -446,26 +446,26 @@
 						fix(DateAdd( "yyyy", -1, LOCAL.DisplayStart )),
 						LOCAL.DisplayStart
 						) />
-				
-					
+
+
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "m" />
 					<cfset LOCAL.LoopIncrement = 1 />
 					<cfset LOCAL.hasdaysofweek = false />
-				
+
 				</cfcase>
 
 				<!--- Repeat monthly. --->
 				<cfcase value="week1,week2,week3,week4,weeklast">
-				
+
 					<!---
-						When dealing with the start date of a 
-						monthly repeating, we have to be very 
-						careful not to try tro create a date that 
-						doesnt' exists. Therefore, we are simply 
-						going to go back a year from the current 
-						year and start counting up. Not the most 
-						efficient, but the easist way of dealing 
+						When dealing with the start date of a
+						monthly repeating, we have to be very
+						careful not to try tro create a date that
+						doesnt' exists. Therefore, we are simply
+						going to go back a year from the current
+						year and start counting up. Not the most
+						efficient, but the easist way of dealing
 						with it.
 					--->
 					<cfset local.LoopIncrement=right(local.displayInterval.type,1)>
@@ -478,7 +478,7 @@
 					<cfelse>
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 					</cfif>
-					
+
 					<!--- Set the loop type and increment. --->
 					<cfif local.displayInterval.type eq 'weeklast'>
 						<cfset LOCAL.LoopType = "weeklast" />
@@ -490,40 +490,40 @@
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.LoopIncrement = 1 />
 				</cfcase>
-				
-				
+
+
 				<!--- Repeat yearly. --->
 				<cfcase value="yearly">
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 
 					<!---
-						When dealing with the start date of a 
-						yearly repeating, we have to be very 
-						careful not to try tro create a date that 
-						doesnt' exists. Therefore, we are simply 
-						going to go back a year from the current 
-						year and start counting up. Not the most 
-						efficient, but the easist way of dealing 
+						When dealing with the start date of a
+						yearly repeating, we have to be very
+						careful not to try tro create a date that
+						doesnt' exists. Therefore, we are simply
+						going to go back a year from the current
+						year and start counting up. Not the most
+						efficient, but the easist way of dealing
 						with it.
-					
+
 					<cfset LOCAL.From = Max(
 						fix(DateAdd( "yyyy", -1, LOCAL.DisplayStart )),
 						LOCAL.DisplayStart
 						) />
-						--->	
+						--->
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "yyyy" />
 					<cfset LOCAL.LoopIncrement = 1 />
-				
+
 				</cfcase>
-				
+
 				<!--- Repeat monday - friday. --->
 				<cfcase value="weekdays">
-				
-					<!--- 
-						Set the start date of the loop. For 
-						efficiency's sake, we don't want to loop 
-						from the very beginning of the event; we 
+
+					<!---
+						Set the start date of the loop. For
+						efficiency's sake, we don't want to loop
+						from the very beginning of the event; we
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
@@ -539,16 +539,16 @@
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.LoopIncrement = 1 />
 					<cfset LOCAL.DaysOfWeek = "2,3,4,5,6" />
-				
+
 				</cfcase>
-				
+
 				<!--- Repeat saturday - sunday. --->
 				<cfcase value="weekends">
-					
-					<!--- 
-						Set the start date of the loop. For 
-						efficiency's sake, we don't want to loop 
-						from the very beginning of the event; we 
+
+					<!---
+						Set the start date of the loop. For
+						efficiency's sake, we don't want to loop
+						from the very beginning of the event; we
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
@@ -561,25 +561,25 @@
 					<cfelse>
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 					</cfif>
-						
+
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.LoopIncrement = 1 />
 					<cfset LOCAL.DaysOfWeek = "1,7" />
-					
+
 				</cfcase>
 
 				<!--- Repeat daily. --->
 				<cfdefaultcase>
 					<cfset LOCAL.From = LOCAL.DisplayStart />
-					<!--- 
-						Set the start date of the loop. For 
-						efficiency's sake, we don't want to loop 
-						from the very beginning of the event; we 
+					<!---
+						Set the start date of the loop. For
+						efficiency's sake, we don't want to loop
+						from the very beginning of the event; we
 						can get the max of the start date and first
 						day of the calendar month.
 					--->
-					
+
 					<cfif not local.repeatmax>
 						<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
@@ -588,44 +588,50 @@
 					<cfelse>
 						<cfset LOCAL.From = LOCAL.DisplayStart />
 					</cfif>
-						
+
 					<!--- Set the loop type and increment. --->
 					<cfset LOCAL.LoopType = "d" />
 					<cfset LOCAL.LoopIncrement = 1 />
 					<cfset LOCAL.DaysOfWeek = "1,2,3,4,5,6,7" />
-				
+
 				</cfdefaultcase>
-			
+
 			</cfswitch>
-			
+
 			<cfset LOCAL.found = false />
 
 
-			<!--- 
+			<!---
 				Check to see if we are looking at an event that need
 				to be fleshed it (ie. it has a repeat type).
 			--->
 
 			<cfif len(local.LoopType)>
-					
-				<!--- 
+
+				<!---
 					Set the offset. This is the number of iterations
 					we are away from the start date.
 				--->
 				<cfset LOCAL.Offset = 0 />
-				
-				<!--- 
-					Get the initial date to look at when it comes to 
+
+				<!---
+					Get the initial date to look at when it comes to
 					fleshing out the events.
 				--->
 				<cfif local.loopType eq 'nthweek'>
-					<cfset LOCAL.Day =fix(GetNthDayOfMonth(year(LOCAL.from),month(LOCAL.from),1,local.LoopIncrement)) />
+					<cfif len(local.DaysOfWeek)>
+						<cfset local.startCheck=listToArray(local.DaysOfWeek)>
+						<cfset arraySort(local.startCheck,'numeric','asc')>
+						<cfset local.startdayofweek=local.startCheck[1]>
+					<cfelse>
+						<cfset local.startdayofweek=1>
+					</cfif>
+					<cfset LOCAL.Day =fix(GetNthDayOfMonth(year(LOCAL.from),month(LOCAL.from),local.startdayofweek,local.LoopIncrement)) />
 				<cfelseif local.loopType eq 'weeklast'>
 					<cfset LOCAL.Day =fix(GetLastDayOfWeekOfMonth(year(LOCAL.from),month(LOCAL.from),1)) />
 				<cfelse>
-					<cfset LOCAL.Day = LOCAL.From />	
+					<cfset LOCAL.Day = LOCAL.From />
 				</cfif>
-				
 				<cfif local.hasdaysofweek>
 					<cfif local.displayStop and local.day gt local.displayStop>
 						<cfset LOCAL.day=LOCAL.To+1>
@@ -635,17 +641,15 @@
 						<cfset LOCAL.day=local.displayStart>
 					</cfif>
 				</cfif>
-
-				<!--- 
-					Now, keep looping over the incrementing date 
-					until we are past the cut off for this time 
+				<!---
+					Now, keep looping over the incrementing date
+					until we are past the cut off for this time
 					period of potential events.
 				--->
-				
 				<cfloop condition="(LOCAL.Day LTE LOCAL.To)">
-				
-					<!--- 
-						Check to make sure that this day is in 
+
+					<!---
+						Check to make sure that this day is in
 						the appropriate date range and that we meet
 						any days-of-the-week criteria that have been
 						defined. Remember, to ensure proper looping,
@@ -656,26 +660,26 @@
 					<cfif local.repeatmax and local.repeatcount eq local.repeatmax>
 						<cfbreak>
 					</cfif>
-					
+
 					<cfif NOT Len(LOCAL.DaysOfWeek) OR
-							ListFind( 
-								LOCAL.DaysOfWeek, 
+							ListFind(
+								LOCAL.DaysOfWeek,
 								DayOfWeek( LOCAL.Day )
 							) >
-								
-						<cfif 
-								(LOCAL.From LTE LOCAL.Day) AND 
+
+						<cfif
+								(LOCAL.From LTE LOCAL.Day) AND
 								(LOCAL.Day LTE LOCAL.To) AND
-								(LOCAL.Day GTE LOCAL.FromOrig) AND 
+								(LOCAL.Day GTE LOCAL.FromOrig) AND
 								(not local.repeatmax or local.repeatcount LT local.repeatmax) AND
 								local.day LTE local.repeatuntil
 							>
 
-							<!--- 
-								Populate the event query. Add a row to 
+							<!---
+								Populate the event query. Add a row to
 								the query and then copy over the data.
 							--->
-							
+
 							<cfif not LOCAL.found>
 								<cfset querySetCell(
 										arguments.query,
@@ -723,7 +727,7 @@
 
 							<cfelse>
 								<cfset QueryAddRow( arguments.query ) />
-								
+
 								<!--- Set query data in the event query. --->
 								<cfloop list="#arguments.query.columnList#" index="local.i">
 									<cfset querySetCell(arguments.query,
@@ -745,7 +749,7 @@
 										),
 										arguments.query.recordCount
 									) />
-								
+
 								<cfif isDate(arguments.query['displayStop'][local.currentrow])>
 									<cfset querySetCell(
 										arguments.query,
@@ -789,7 +793,7 @@
 					<cfif LOCAL.loopType eq 'nthweek'>
 						<cfif dayOfWeek(local.day) eq 7>
 							<cfset local.day=dateAdd("m",1 * local.displayInterval.every,LOCAL.Day)>
-							<cfset LOCAL.Day=fix(GetNthDayOfMonth(year(local.day),month(local.day),1,local.LoopIncrement))/>
+							<cfset LOCAL.Day=fix(GetNthDayOfMonth(year(local.day),month(local.day),local.startdayofweek,local.LoopIncrement))/>
 						<cfelse>
 							<cfset local.day=fix(dateAdd("d",1,LOCAL.Day))>
 						</cfif>
@@ -802,39 +806,39 @@
 						</cfif>
 					<cfelseif LOCAL.loopType eq 'bi-weekly'>
 						<cfif dayOfWeek(local.day) eq 7>
-							
-							<cfset LOCAL.Day = Fix( 
+
+							<cfset LOCAL.Day = Fix(
 								DateAdd(
 									'd',
 									8 + (14 * (local.displayInterval.every-1)),
 									LOCAL.day
-									) 
+									)
 								) />
 						<cfelse>
 							<cfset LOCAL.Day = Fix( DateAdd('d',1,LOCAL.day) ) />
 						</cfif>
 					<cfelseif local.hasdaysofweek>
 						<cfif dayOfWeek(local.day) eq 7>
-							
-							<cfset LOCAL.Day = Fix( 
+
+							<cfset LOCAL.Day = Fix(
 								DateAdd(
 									'd',
 									(7 * (local.displayInterval.every-1)) + 1,
 									LOCAL.day
-									) 
+									)
 								) />
 						<cfelse>
 							<cfset LOCAL.Day = Fix( DateAdd('d',1,LOCAL.day) ) />
 						</cfif>
 					<cfelse>
 						<!--- Add one to the offset. --->
-						
-						<cfset LOCAL.Day = Fix( 
+
+						<cfset LOCAL.Day = Fix(
 							DateAdd(
 								LOCAL.LoopType,
 								(LOCAL.Offset * LOCAL.LoopIncrement),
 								LOCAL.From
-								) 
+								)
 							) />
 					</cfif>
 
@@ -862,7 +866,7 @@
 		select * from arguments.query where contentid not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#local.deleteList#">)
 		</cfquery>
 	</cfif>
-	
+
 	<cfreturn arguments.query />
 </cffunction>
 
@@ -872,30 +876,30 @@
 <cfargument name="menuDate">
 
 	<cfswitch expression="#arguments.menuType#">
-		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
+		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">
 			<cfreturn apply(
 				query=arguments.query,
 				from=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate)),
 				to=createDate(year(arguments.menuDate),month(arguments.menuDate),day(arguments.menuDate))
-				)		
-			/>					  	
+				)
+			/>
 		</cfcase>
 		<cfcase value="CalendarMonth">
 			<cfreturn apply(
 				query=arguments.query,
 				from=createDate(year(arguments.menuDate),month(arguments.menuDate),1),
 				to=createDate(year(arguments.menuDate),month(arguments.menuDate),daysInMonth(arguments.menuDate))
-				)		
+				)
 			/>
 		</cfcase>
-		<cfcase value="ReleaseYear,CalendarYear"> 
+		<cfcase value="ReleaseYear,CalendarYear">
 			<cfreturn apply(
 				query=arguments.query,
 				from=createDate(year(arguments.menuDate),1,1),
 				to=createDate(year(arguments.menuDate),12,31)
-				)		
+				)
 			/>
-		</cfcase>				
+		</cfcase>
 		<cfdefaultcase>
 			<cfreturn arguments.query>
 		</cfdefaultcase>
@@ -908,7 +912,7 @@
 	returntype="any"
 	output="false"
 	hint="I return the Nth instance of the given day of the week for the given month (ex. 2nd Sunday of the month).">
- 
+
 	<!--- Define arguments. --->
 
 	<cfargument
@@ -924,14 +928,14 @@
 		required="true"
 		hint="I am the month for which we are gathering date information."
 		/>
- 
+
 	<cfargument
 		name="DayOfWeek"
 		type="numeric"
 		required="true"
 		hint="I am the day of the week (1-7) that we are locating."
 		/>
- 
+
 	<cfargument
 		name="Nth"
 		type="numeric"
@@ -939,10 +943,10 @@
 		default="1"
 		hint="I am the Nth instance of the given day of the week for the given month."
 		/>
- 
+
 	<!--- Define the local scope. --->
 	<cfset var LOCAL = {} />
- 
+
 	<!---
 		First, we need to make sure that the date we were given
 		was actually the first of the month.
@@ -959,7 +963,7 @@
 		week.
 	--->
 	<cfif (DayOfWeek( LOCAL.Date ) LTE ARGUMENTS.DayOfWeek)>
- 
+
 		<!---
 			The first of the month falls on or before the first
 			instance of our target day of the week. This means we
@@ -970,9 +974,9 @@
 			LOCAL.Date +
 			(ARGUMENTS.DayOfWeek - DayOfWeek( LOCAL.Date ))
 			) />
- 
+
 	<cfelse>
- 
+
 		<!---
 			The first of the month falls after the first instance
 			of our target day of the week. This means we will
@@ -984,17 +988,17 @@
 			(7 - DayOfWeek( LOCAL.Date )) +
 			ARGUMENTS.DayOfWeek
 			) />
- 
+
 	</cfif>
- 
- 
+
+
 	<!---
 		At this point, our Date is the first occurrence of our
 		target day of the week. Now, we have to navigate to the
 		target occurence.
 	--->
 	<cfset LOCAL.Date += (7 * (ARGUMENTS.Nth - 1)) />
- 
+
 	<!---
 		Return the given date. There is a chance that this date
 		will be in the NEXT month of someone put in an Nth value
@@ -1009,7 +1013,7 @@
 	returntype="date"
 	output="false"
 	hint="Returns the date of the last given weekday of the given month.">
- 
+
 	<!--- Define arguments. --->
 	<cfargument
 		name="year"
@@ -1024,24 +1028,24 @@
 		required="true"
 		hint="Any date in the given month we are going to be looking at."
 		/>
- 
+
 	<cfargument
 		name="DayOfWeek"
 		type="numeric"
 		required="true"
 		hint="The day of the week of which we want to find the last monthly occurence."
 		/>
- 
+
 	<!--- Define the local scope. --->
 	<cfset var LOCAL = StructNew() />
- 
+
 	<!--- Get the current month based on the given date. --->
 	<cfset LOCAL.ThisMonth = CreateDate(
 		ARGUMENTS.year,
 		ARGUMENTS.month,
 		1
 		) />
- 
+
 	<!---
 		Now, get the last day of the current month. We
 		can get this by subtracting 1 from the first day
@@ -1051,7 +1055,7 @@
 		DateAdd( "m", 1, LOCAL.ThisMonth ) -
 		1
 		) />
- 
+
 	<!---
 		Now, the last day of the month is part of the last
 		week of the month. However, there is no guarantee
@@ -1064,8 +1068,8 @@
 		DayOfWeek( LOCAL.LastDay ) +
 		ARGUMENTS.DayOfWeek
 		) />
- 
- 
+
+
 	<!---
 		Now, we have the target date, but we are not exactly
 		sure if the target date is in the current month. if
@@ -1075,12 +1079,12 @@
 		the current Month.
 	--->
 	<cfif (Month( LOCAL.Day ) NEQ Month( LOCAL.ThisMonth ))>
- 
+
 		<!--- Subract a week. --->
 		<cfset LOCAL.Day = (LOCAL.Day - 7) />
- 
+
 	</cfif>
- 
+
 	<!--- Return the given day. --->
 	<cfreturn DateFormat(LOCAL.Day,'yyyy-mm-dd') />
 </cffunction>
