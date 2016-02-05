@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
 					--->
 				</select>
-				<button id="editSource" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
+				<button id="editSource" class="btn span12">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 			</div>
 			<div id="componentcontainer" class="mura-control-group source-container" style="display:none">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 
 				<cfif hasModuleAccess>
-					<button class="btn" id="editBtnComponent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
+					<button class="btn span12" id="editBtnComponent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 				</cfif>
 			</div>
 			<div id="customcontainer" class="mura-control-group source-container" style="display:none">
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset options[rsExtend.currentRow + 4][2]=rsExtend.attribute/>
 					</cfloop>
 				</cfsilent>
-				<select name="source" id="boundattribute" class="span12">
+				<select name="source" id="boundattribute">
 					<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectboundattribute')#e</option>
 					<cfloop from="1" to="#arrayLen(options)#" index="i">
 						<option value="#esapiEncode('html_attr',options[i][1])#"<cfif objectParams.source eq options[i][1]> selected</cfif>>#esapiEncode('html',options[i][2])#</option>
@@ -135,15 +135,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" class="objectParam" name="async" value="#esapiEncode('html_attr',objectParams.async)#">
 	<script>
 		$(function(){
-
-			function setComponentEditOption(){
-				var selector=$('##component');
-			 	if(selector.val()){
-			 		$('##editBtnComponent').html('Edit');
-			 	} else {
-			 		$('##editBtnComponent').html('Create New');
-			 	}
-			}
 
 			function setContentSourceVisibility(){
 				<cfif rc.configuratormode neq 'backend'>
@@ -209,18 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				setContentSourceVisibility();
 			});
 
-			$('##component').change(setComponentEditOption);
-
-			$('##editBtnComponent').click(function(){
-				frontEndProxy.post({
-					cmd:'openModal',
-					src:'?muraAction=cArch.editLive&contentId=' +  $('##component').val() + '&type=Component&siteId=#esapiEncode("javascript",rc.siteid)#&instanceid=#esapiEncode("javascript",rc.instanceid)#&compactDisplay=true'
-					}
-				);
-
-			});
 			setContentSourceVisibility();
-			setComponentEditOption();
 
 		});
 	</script>

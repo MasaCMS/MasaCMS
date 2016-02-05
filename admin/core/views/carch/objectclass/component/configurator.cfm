@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</select>
 		<cfif hasModulePerm>
-			<button class="btn" id="editBtn">Edit</button>
+			<button class="btn span12" id="editBtn">Edit</button>
 		</cfif>
 	</div>
 </div>
@@ -76,7 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	$(function(){
 		function setEditOption(){
 			var selector=$('##availableObjectSelector');
-		 	if(eval('(' + selector.val() + ')').objectid){
+			var val=eval('(' + selector.val() + ')').objectid;
+			if(val && val !='unconfigured'){
 		 		$('##editBtn').html('Edit');
 		 	} else {
 		 		$('##editBtn').html('Create New');
