@@ -489,6 +489,14 @@
 					<cfset LOCAL.DaysOfWeek = local.displayInterval.daysofweek>
 					<cfset LOCAL.hasdaysofweek = true />
 					<cfset LOCAL.LoopIncrement = 1 />
+
+					<cfif len(local.DaysOfWeek)>
+						<cfset local.startCheck=listToArray(local.DaysOfWeek)>
+						<cfset arraySort(local.startCheck,'numeric','asc')>
+						<cfset local.startdayofweek=local.startCheck[1]>
+					<cfelse>
+						<cfset local.startdayofweek=1>
+					</cfif>
 				</cfcase>
 
 
@@ -619,19 +627,13 @@
 					fleshing out the events.
 				--->
 				<cfif local.loopType eq 'nthweek'>
-					<cfif len(local.DaysOfWeek)>
-						<cfset local.startCheck=listToArray(local.DaysOfWeek)>
-						<cfset arraySort(local.startCheck,'numeric','asc')>
-						<cfset local.startdayofweek=local.startCheck[1]>
-					<cfelse>
-						<cfset local.startdayofweek=1>
-					</cfif>
 					<cfset LOCAL.Day =fix(GetNthDayOfMonth(year(LOCAL.from),month(LOCAL.from),local.startdayofweek,local.LoopIncrement)) />
 				<cfelseif local.loopType eq 'weeklast'>
-					<cfset LOCAL.Day =fix(GetLastDayOfWeekOfMonth(year(LOCAL.from),month(LOCAL.from),1)) />
+					<cfset LOCAL.Day =fix(GetLastDayOfWeekOfMonth(year(LOCAL.from),month(LOCAL.from),local.startdayofweek)) />
 				<cfelse>
 					<cfset LOCAL.Day = LOCAL.From />
 				</cfif>
+
 				<cfif local.hasdaysofweek>
 					<cfif local.displayStop and local.day gt local.displayStop>
 						<cfset LOCAL.day=LOCAL.To+1>
@@ -641,11 +643,13 @@
 						<cfset LOCAL.day=local.displayStart>
 					</cfif>
 				</cfif>
+
 				<!---
 					Now, keep looping over the incrementing date
 					until we are past the cut off for this time
 					period of potential events.
 				--->
+
 				<cfloop condition="(LOCAL.Day LTE LOCAL.To)">
 
 					<!---
@@ -800,7 +804,7 @@
 					<cfelseif LOCAL.loopType eq 'weeklast'>
 						<cfif dayOfWeek(local.day) eq 7>
 							<cfset local.day=dateAdd("m",1 * local.displayInterval.every,LOCAL.Day)>
-							<cfset LOCAL.Day=fix(GetLastDayOfWeekOfMonth(year(local.day),month(local.day),1))/>
+							<cfset LOCAL.Day=fix(GetLastDayOfWeekOfMonth(year(local.day),month(local.day),local.startdayofweek))/>
 						<cfelse>
 							<cfset local.day=fix(dateAdd("d",1,LOCAL.Day))>
 						</cfif>
