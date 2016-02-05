@@ -197,19 +197,23 @@ component extends="mura.cfobject" {
 		}
 
 
-		var baseURL=getEndPoint() & "/?";
-		var params={};
-		structAppend(params,url,true);
-		structAppend(params,form,true);
-		param name="params.method" default=arguments.method;
+		if(!(isDefined('arguments.baseURL'))){
+			arguments.baseURL=getEndPoint() & "/?";
 
-		if(params.method=='undefined'){
-			params.method=arguments.method;
-		}
+			var params={};
+			structAppend(params,url,true);
+			structAppend(params,form,true);
 
-		for(var u in params){
-			if(u!='pageIndex'){
-				baseURL= baseurl & "&#lcase(u)#=#params[u]#";
+			param name="params.method" default=arguments.method;
+
+			if(params.method=='undefined'){
+				params.method=arguments.method;
+			}
+
+			for(var u in params){
+				if(u!='pageIndex'){
+					arguments.baseURL= arguments.baseURL & "&#lcase(u)#=#params[u]#";
+				}
 			}
 		}
 
@@ -217,21 +221,21 @@ component extends="mura.cfobject" {
 		var prevIndex =(result.pageIndex > 1) ? result.pageIndex-1 : result.totalPages;
 
 		result.links={
-			'self'=baseurl & "&pageIndex=" & result.pageIndex,
+			'self'=arguments.baseURL & "&pageIndex=" & result.pageIndex,
 			'entities'=getEndpoint()
 		};
 
 		if(result.pageIndex > 1){
-			result.links['first']='first'=baseurl & "&pageIndex=" & 1;
-			result.links['previous']=baseurl & "&pageIndex=" & prevIndex;
+			result.links['first']='first'=arguments.baseURL & "&pageIndex=" & 1;
+			result.links['previous']=arguments.baseURL & "&pageIndex=" & prevIndex;
 		}
 
 		if(result.totalPages > 1){
-			result.links['last']=baseurl & "&pageIndex=" & result.totalPages;
+			result.links['last']=arguments.baseURL & "&pageIndex=" & result.totalPages;
 		}
 
 		if(result.pageIndex < result.totalPages ){
-			result.links['next']=baseurl & "&pageIndex=" & nextIndex;
+			result.links['next']=arguments.baseURL & "&pageIndex=" & nextIndex;
 		}
 
 		return result;
@@ -403,7 +407,6 @@ component extends="mura.cfobject" {
 						method=httpRequestData.method;
 					}
 				}
-
 			} else {
 
 				if(arrayLen(pathInfo) > 2){
@@ -420,6 +423,28 @@ component extends="mura.cfobject" {
 								url.entityname='content';
 								result=findVersionHistory(argumentCollection=params);
 								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findVersionHistory','params'=getParamsWithOutMethod(params),'data'=result});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
+							} else if (listFind('comment,content,category',params.entityName) && pathInfo[4]=='crumbs'){
+								params.method='findCrumbArray';
+								url.id=params.id;
+								url.siteid=variables.siteid;
+								params.siteid=variables.siteid;
+								url.entityname=params.entityName;
+								result=findCrumbArray(argumentCollection=params);
+								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findCrumbArray','params'=getParamsWithOutMethod(params),'data'=result});
+								responseObject.setContentType('application/json; charset=utf-8');
+								responseObject.setStatus(200);
+								return result;
+							} else if (params.entityName=='content' && pathInfo[4]=='relatedcontent'){
+								params.method='findRelatedContent';
+								url.id=params.id;
+								url.siteid=variables.siteid;
+								params.siteid=variables.siteid;
+								url.entityname=params.entityName;
+								result=findCrumbArray(argumentCollection=params);
+								result=getSerializer().serialize({'apiversion'=getApiVersion(),'method'='findRelatedContent','params'=getParamsWithOutMethod(params),'data'=result});
 								responseObject.setContentType('application/json; charset=utf-8');
 								responseObject.setStatus(200);
 								return result;
@@ -478,6 +503,10 @@ component extends="mura.cfobject" {
 				var primaryKey='userid';
 			} else if(params.entityName=="feed"){
 				var primaryKey='feedid';
+			} else if(params.entityName=="stats"){
+				var primaryKey='contentid';
+			} else if(params.entityName=="contentCategoryAssign"){
+				var primaryKey='notvalid';
 			} else if(params.entityName=="entityname"){
 				var primaryKey='notvalid';
 			} else {
@@ -1424,18 +1453,54 @@ component extends="mura.cfobject" {
 			}
 		}
 
-		for(var p in arguments.params){
-			if(!(entity.getEntityName()=='user' && p=='isPublic')){
-				if(entity.getEnityName()=='user' && p=='groupid'){
+		var queryParams=[];
+
+		for(var i in listToArray(cgi.QUERY_STRING,'&')){
+			ArrayAppend(queryParams, listFirst(i,'='));
+		}
+
+		var propName='';
+		var propIndex=0;
+		var relationship='and';
+		var started=false;
+		var baseURL=getEndPoint() & "/#entity.getEntityName()#/?";
+
+		for(var p in queryParams){
+			if(listLen(p)){
+				propName=listFirst(p,'[');
+				propIndex=listFirst(listLast(p,'['),']');
+				structDelete(url,propName & propIndex);
+			} else {
+				propName=p;
+			}
+
+			if(started){
+				baseURL=baseURL & '&' & p;
+			} else {
+				baseURL=baseURL & p;
+				started=true;
+			}
+
+			if(len(params[p])){
+				baseURL=baseURL & '=' & params[p];
+			}
+			if(!(entity.getEntityName()=='user' && propName=='isPublic')){
+				if(entity.getEnityName()=='user' && propName=='groupid'){
 					feed.setGroupID(arguments.params[p]);
-				} else if(entity.valueExists(p)){
+				} else if(entity.valueExists(propName)){
 					var condition="=";
 
 					if(find('*',arguments.params[p])){
 						condition="like";
 					}
 
-					feed.addParam(column=p,criteria=replace(arguments.params[p],'*','%','all'),condition=condition);
+					feed.addParam(column=propName,criteria=replace(arguments.params[p],'*','%','all'),condition=condition,relationship=relationship);
+					relationship='and';
+				} else if(propName=='or'){
+					relationship='or';
+				} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
+					feed.addParam(relationship=p);
+					relationship='and';
 				}
 			}
 		}
@@ -1484,7 +1549,7 @@ component extends="mura.cfobject" {
 
 		//writeDump(var=$.event('pageIndex'),abort=1);
 
-		return formatIteratorResult(iterator,returnArray,'findquery');
+		return formatIteratorResult(iterator=iterator,returnArray=returnArray,method='findquery',baseURL=baseURL);
 	}
 
 	function setFeedProps(feed,params){
@@ -1803,12 +1868,12 @@ component extends="mura.cfobject" {
 
 		links.entities=baseURL;
 
-		links['self']="#baseurl#?method=findOne&entityName=#entity.getEntityName()#&siteid=#entity.getSiteID()#&id=#entity.getvalue(entity.getPrimaryKey())#";
+		links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
 
 		if(arrayLen(entity.getHasManyPropArray())){
 			try{
 			for(p in entity.getHasManyPropArray()){
-				links[p.name]="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=#p.cfc#&#entity.translatePropKey(p.loadkey)#=#entity.getValue(entity.translatePropKey(p.column))#";
+				links[p.name]="#baseurl#/#p.cfc#?#entity.translatePropKey(p.loadkey)#=#entity.getValue(entity.translatePropKey(p.column))#";
 			}
 			} catch(any e){writeDump(var=p,abort=true);}
 		}
@@ -1816,18 +1881,18 @@ component extends="mura.cfobject" {
 		if(arrayLen(entity.getHasOnePropArray())){
 			for(p in entity.getHasOnePropArray()){
 				if(p.name=='site'){
-					links[p.name]="#baseurl#?method=findOne&entityName=site&siteid=#entity.getSiteID()#";
+					links[p.name]="#baseurl#/site";
 				} else {
 					id=entity.getValue(entity.translatePropKey(p.column));
 					if(len(id)){
-						links[p.name]="#baseurl#?method=findOne&siteid=#entity.getSiteID()#&entityName=#p.cfc#&id=#entity.getValue(entity.translatePropKey(p.column))#";
+						links[p.name]="#baseurl#/#p.cfc#/#entity.getValue(entity.translatePropKey(p.column))#";
 					}
 				}
 			}
 		}
 
 		if(listFindNoCase('feed,contentFeed',entity.getEntityName())){
-			links['feed']="#baseurl#?method=findQuery&siteid=#entity.getSiteID()#&entityName=content&feedid=#entity.getFeedID()#";
+			links['feed']="#baseurl#/content/?feedid=#entity.getFeedID()#";
 		}
 
 		/*
@@ -1844,11 +1909,11 @@ component extends="mura.cfobject" {
 			if(entity.getType()=='Variation'){
 				links['self']=links['renderered'];
 			} else {
-				links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";
+				links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/crumbs";
 			}
-			links['relatedcontent']="#baseurl#?method=findRelatedContent&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('contentid')#";
+			links['relatedcontent']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/relatedcontent";
 		} else if(entity.getEntityName()=='category'){
-			links['crumbs']="#baseurl#?method=findCrumbArray&siteid=#entity.getSiteID()#&entityName=#entity.getEntityName()#&id=#entity.getValue('categoryid')#";
+			links['crumbs']="#baseurl#?#entity.getEntityName()#/#entity.getValue('categoryid')#/crumbs";
 		}
 
 		if(arrayLen(variables.config.linkMethods)){
