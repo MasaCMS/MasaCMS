@@ -46,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
+<cfparam name="rc.feedid" default="#rc.objectid#">
 <cfset feed=$.getBean("feed").loadBy(feedID=rc.feedID)>
 
 <cfif isDefined("form.params") and isJSON(form.params)>
