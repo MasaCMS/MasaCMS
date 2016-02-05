@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
@@ -66,34 +66,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <h3 class="block-title">Basic Settings</h3>
 	  </div>
 	  <!-- /block header -->
-		
+
 		<!-- block content -->
 		<div class="block-content">
-	
+
 	<span id="extendset-container-tabbasictop" class="extendset-container"></span>
 
 	<cfinclude template="dsp_type_selector.cfm">
-	
+
 	<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery,File,Link">
 				<div class="mura-control-group">
 				    <label>
-				    	<span data-toggle="popover" title="" data-placement="right" 
+				    	<span data-toggle="popover" title="" data-placement="right"
 				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#"
 				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title"))#"
-				    	>	
-				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>	
+				    	>
+				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="mi-question-circle"></i></span>
 			    </label>
 			   	<cfset hasSEOTab=not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 				     	<input type="text" id="title" name="title" value="#esapiEncode('html_attr',rc.contentBean.gettitle())#"  maxlength="255" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif hasSEOTab and not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
 				     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="mi-times-circle"></i></button></div>
 			     </div>
-			<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">		
+			<div class="mura-control-group" id="editAdditionalTitles" style="display:none;">
 				<div class="alert help-block">
 					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
 					<button type="button" id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
 				</div>
-				
+
 				<script>
 					jQuery(document).ready(function(){
 						$('##resetTitles').click(function(e){
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</cfcase>
 		<cfdefaultcase>
-			
+
 				<div class="mura-control-group">
 		      		<label>
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
@@ -121,16 +121,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif ListFindNoCase("Page,Folder,Calendar,Gallery,Link",rc.type)>
 		<cfinclude template="dsp_file_selector.cfm">
-	</cfif>	
+	</cfif>
 
-	<cfif not ListFindNoCase('Form,Component',rc.type) >	
+	<cfif not ListFindNoCase('Form,Component',rc.type) >
 			<div class="mura-control-group summaryContainer" style="display:none;">
 		      	<label>
-				    	<span data-toggle="popover" title="" data-placement="right" 
-				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#" 
+				    	<span data-toggle="popover" title="" data-placement="right"
+				    	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#"
 				    	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary"))#"
-				    	>	
-				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")# <i class="mi-question-circle"></i></span>	
+				    	>
+				    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")# <i class="mi-question-circle"></i></span>
 	      		<!---<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 	      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 	      		</a>--->
@@ -140,11 +140,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#esapiEncode('html',rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea>
 				</cfoutput>
 			</div>
-			
+
 		</div>
 
 		<script>
-			
+
 			hideSummaryEditor=function(){
 				if(typeof CKEDITOR.instances.summary != 'undefined'){
 					CKEDITOR.instances.summary.updateElement();
@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				jQuery(".summaryContainer").hide();
 				summaryLoaded=true;
 			}
-			
+
 			showSummaryEditor=function(){
 				if(typeof CKEDITOR.instances.summary == 'undefined'){
 					jQuery(".summaryContainer").show();
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						if (!hasBody){
 							showPreview();
 						}
-					}	
+					}
 		     	);
 				}
 			}
@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 	</cfif>
 
-	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>    	
+	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
 			<div id="bodyContainer" class="body-container" style="display:none;">
 				<div class="mura-control-group">
@@ -208,22 +208,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						fckEditor.config.GoogleMaps_Key ='none';
 						}
 						fckEditor.toolbarset 	= '#iif(rc.type eq "Form",de("Form"),de("Default"))#';
-						
+
 						if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
 						{
 						fckEditor.config["CustomConfigurationsPath"]=esapiEncode('url','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#rc.type#');
 						}
-						
+
 						fckEditor.create(); // create the editor.
 					</cfscript>
 					<script type="text/javascript">
 					var loadEditorCount = 0;
-					
-					function FCKeditor_OnComplete( editorInstance ) { 	
+
+					function FCKeditor_OnComplete( editorInstance ) {
 						<cfif rc.preview eq 1>
 					   	preview('#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#','');
-						</cfif> 
-						htmlEditorOnComplete(editorInstance); 
+						</cfif>
+						htmlEditorOnComplete(editorInstance);
 					}
 
 					<cfif rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</script>
 				<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
 					<textarea name="body" id="body">#esapiEncode('html',rc.contentBean.getBody())#</textarea>
-				<cfelse>	
+				<cfelse>
 					<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#esapiEncode('html',rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
 					<script type="text/javascript">
 					var loadEditorCount = 0;
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							jQuery('##body').ckeditor(
 							{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
 							height:'550',
-							customConfig : 'config.js.cfm' 
+							customConfig : 'config.js.cfm'
 							},
 								function(editorInstance){
 									htmlEditorOnComplete(editorInstance);
@@ -263,25 +263,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							);
 						}
 					}
-					
+
 					jQuery(document).ready(function(){
 						<cfif not isExtended>
-						showBodyEditor();	
+						showBodyEditor();
 						</cfif>
 						if (!hasSummary && !hasBody){
 							setTimeout(function(){
 								showPreview();
 							}, 2000);
 						}
-					});	
-					
+					});
+
 					function showPreview(){
 						<cfif rc.preview eq 1>
 							if(!previewLaunched){
 						<cfif listFindNoCase("File",rc.type)>
 							preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
 						<cfelse>
-							openPreviewDialog('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
+							preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
 						</cfif>
 							previewLaunched=true;
 							}
@@ -292,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</div>
 		</div>
-		
+
 	<cfelseif rc.type eq 'Link'>
 			<div class="mura-control-group">
 		      	<label>
@@ -310,13 +310,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('body');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
 	     	 				</ul>
 	     	 			</div>
-						
+
 				<cfelse>
 					<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
 					<div class="btn-group">
 		     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
 	     	 		</div>
-				</cfif>	
+				</cfif>
 	     	</div>
 	<cfelseif rc.type eq 'File'>
 		<cfinclude template="dsp_file_selector.cfm">
@@ -330,7 +330,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<label for="m1" class="checkbox inline">
 					<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
 				</label>
-				
+
 				<label for="m2" class="checkbox inline">
 					<input name="moduleAssign" type="CHECKBOX" id="m2" value="00000000000000000000000000000000003" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000003')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#
 				</label>
@@ -370,7 +370,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 	</cfif>
 
-	<cfif rc.parentBean.getType() eq 'Calendar' and ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>	
+	<cfif rc.parentBean.getType() eq 'Calendar' and ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
 		<cfinclude template="dsp_displaycontent.cfm">
 	</cfif>
 
@@ -379,7 +379,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<span id="extendset-container-tabbasicbottom" class="extendset-container"></span>
 
 		</div> <!--- /.block-content --->
-	</div> <!--- /.block --->		
+	</div> <!--- /.block --->
 </div> <!--- /.tab-pane --->
 
 </cfoutput>
