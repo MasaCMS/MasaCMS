@@ -1495,12 +1495,28 @@ component extends="mura.cfobject" {
 					feed.setGroupID(arguments.params[p]);
 				} else if(entity.valueExists(propName)){
 					var condition="=";
+					var criteria=arguments.params[p];
 
-					if(find('*',arguments.params[p])){
+					if(find('*',criteria)){
 						condition="like";
+						criteria=replace(criteria,'*','%','all');
+					} else if(find(',',criteria)) {
+						condition='in';
 					}
 
-					feed.addParam(column=propName,criteria=replace(arguments.params[p],'*','%','all'),condition=condition,relationship=relationship);
+					if(len(criteria) gt 1){
+						var firstChar=left(criteria,1);
+
+						if(firstChar=='^'){
+							condition='not in';
+							criteria=right(criteria,len(criteria)-1);
+						} else if (listFind('>,<',firstChar)){
+							condition=firstChar;
+							criteria=right(critera,len(criteria)-1);
+						}
+					}
+
+					feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
 					relationship='and';
 				} else if(propName=='or'){
 					relationship='or';
