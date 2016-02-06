@@ -145,7 +145,7 @@
 	}
 
 	function getFeed(entityname){
-		return new window.mura.Entity(entityname);
+		return new window.mura.Feed(mura.siteid,entityname);
 	}
 
 	function findQuery(params){

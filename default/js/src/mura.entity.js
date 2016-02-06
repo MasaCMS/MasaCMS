@@ -311,6 +311,7 @@
 		},
 
 		getFeed:function(){
+			var siteid=get('siteid') || mura.siteid;
 			return new window.mura.Feed(this.get('entityName'));
 		}
 

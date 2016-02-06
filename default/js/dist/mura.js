@@ -1666,7 +1666,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 	}
 
 	function getFeed(entityname){
-		return new window.mura.Entity(entityname);
+		return new window.mura.Feed(mura.siteid,entityname);
 	}
 
 	function findQuery(params){
@@ -5191,6 +5191,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		},
 
 		getFeed:function(){
+			var siteid=get('siteid') || mura.siteid;
 			return new window.mura.Feed(this.get('entityName'));
 		}
 
@@ -5361,8 +5362,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 ;(function(window){
 	window.mura.Feed=window.mura.Core.extend({
-		init:function(entityname){
-            this.queryString='/' + entityname + '/?';
+		init:function(siteid,entityname){
+            this.queryString=siteid + '/' + entityname + '/?';
+			this.propIndex=0;
+			this.entityname=entityname;
             return this;
 		},
         where:function(property){
@@ -5375,72 +5378,92 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
             return this.andProp(property);
         },
         andProp:function(property){
-            this.queryString+='&' + property + '=';
+            this.queryString+='&' + property + '[' + this.propIndex + ']=';
+			this.propIndex++;
             return this;
         },
         orProp:function(property){
-            this.queryString+='&or&' + property + '=';
+            this.queryString+='&or[' + this.propIndex + ']&';
+			this.propIndex++;
+			this.queryString+= property + '[' + this.propIndex + ']=';
+			this.propIndex++;
+			return this;
         },
         isEQ:function(criteria){
             this.queryString+=criteria;
+			return this;
         },
         isNEQ:function(criteria){
-                this.queryString+='neq:' & criteria;
+            this.queryString+='neq:' & criteria;
+			return this;
         },
         isLT:function(criteria){
             this.queryString+='lt:' & criteria;
+			return this;
         },
         isLTE:function(criteria){
             this.queryString+='lte:' & criteria;
+			return this;
         },
         isGT:function(criteria){
             this.queryString+='gt:' & criteria;
+			return this;
         },
         isGTE:function(criteria){
             this.queryString+='gte:' & criteria;
+			return this;
         },
         isIn:function(criteria){
             this.queryString+='in:' & criteria;
+			return this;
         },
         isNotIn:function(criteria){
             this.queryString+='notin:' & criteria;
+			return this;
         },
         contains:function(criteria){
             this.queryString+='contains:' & criteria;
+			return this;
         },
         doesNotContain:function(criteria){
             this.queryString+='doesnotcontain:' & criteria;
+			return this;
         },
         openGrouping:function(criteria){
             this.queryString+='&openGrouping';
+			return this;
         },
         andOpenGrouping:function(criteria){
             this.queryString+='&andOpenGrouping';
+			return this;
         },
         closeGrouping:function(criteria){
             this.queryString+='&closeGrouping:';
+			return this;
         },
         getQuery:function(){
             var self=this;
             return new Promise(function(resolve,reject) {
 				window.mura.ajax({
 					type:'get',
-					url:window.mura.apiEndpoint + '?method=generateCSRFTokens',
-					data:{
-						siteid:self.get('siteid'),
-						context:self.get('id')
-					},
+					url:window.mura.apiEndpoint + self.queryString,
 					success:function(resp){
-						window.mura.ajax({
-							type:'get',
-							url:window.mura.apiEndpoint + self.queryString,
-							success:function(){
-								if(typeof resolve == 'function'){
-									resolve(self);
-								}
+
+						if('items' in resp.data){
+							var returnObj = new window.mura.EntityCollection(resp.data);
+						} else {
+							if(window.mura.entities[self.entityname]){
+								var returnObj = new window.mura.entities[self.entityname](obj);
+							} else {
+								var returnObj = new window.mura.Entity(resp.data);
 							}
-						});
-					}
+						}
+
+						if(typeof resolve == 'function'){
+							resolve(returnObj);
+						}
+					},
+					error:reject
 				});
 			});
         }
