@@ -586,8 +586,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="where" output="false">
 	<cfargument name="property">
+	<cfif isDefined('arguments.propery')>
 	<cfset variables.instance.pendingParam.relationship='and'>
 	<cfset variables.instance.pendingParam.column=arguments.property>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="prop" output="false">
+	<cfargument name="property">
+	<cfset andProp(argumentCollection=arguments)>
 	<cfreturn this>
 </cffunction>
 
