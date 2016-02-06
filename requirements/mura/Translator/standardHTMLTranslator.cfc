@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var page = "" />
 	<cfset var themePath=arguments.event.getSite().getThemeAssetPath()  />
 	<cfset var $=arguments.event.getValue("MuraScope")>
+	<cfset var m=$>
 	<cfset var mura=arguments.event.getValue("MuraScope")>
 	<cfset var renderer="">
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
@@ -62,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var defaultTemplatePath = arguments.event.getSite().getTemplateIncludePath() & '/default.cfm' />
 
 	<cfset variables.$=$>
-	<cfset variables.m=m>
+	<cfset variables.m=$>
 
 	<cfif not isNumeric(arguments.event.getValue('startRow'))>
 		<cfset arguments.event.setValue('startRow',1)>
