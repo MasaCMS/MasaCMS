@@ -736,6 +736,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="itemsPerPage" output="false">
+	<cfargument name="itemsPerPage">
+	<cfset setNextN(arguments.itemsPerPage)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="maxItems" output="false">
+	<cfargument name="maxItems">
+	<cfset setMaxItems(arguments.maxItems)>
+	<cfreturn this>
+</cffunction>
 
 <!---
 <cffunction name="sanitizedValue" output="false">

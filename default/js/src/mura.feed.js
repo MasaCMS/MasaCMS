@@ -135,6 +135,12 @@
 			this.propIndex++;
             return this;
         },
+		itemsPerPage:function(itemsPerPage){
+            this.queryString+='&itemsPerPage=' + itemsPerPage;
+        },
+		maxItems:function(maxItems){
+            this.queryString+='&maxItems=' + maxItems;
+        },
         getQuery:function(){
             var self=this;
             return new Promise(function(resolve,reject) {
