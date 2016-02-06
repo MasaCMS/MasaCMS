@@ -694,7 +694,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="begins" output="false">
+<cffunction name="beginsWith" output="false">
 	<cfargument name="criteria">
 	<cfset variables.instance.pendingParam.condition='begins'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
@@ -703,7 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="ends" output="false">
+<cffunction name="endsWith" output="false">
 	<cfargument name="criteria">
 	<cfset variables.instance.pendingParam.condition='ends'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>

@@ -109,11 +109,11 @@
             this.queryString+='contains^' + criteria;
 			return this;
         },
-		begins:function(criteria){
+		beginsWith:function(criteria){
             this.queryString+='begins^' + criteria;
 			return this;
         },
-		ends:function(criteria){
+		endsWith:function(criteria){
             this.queryString+='ends^' + criteria;
 			return this;
         },
