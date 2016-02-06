@@ -78,39 +78,43 @@
 			return this;
         },
         isNEQ:function(criteria){
-            this.queryString+='neq^' & criteria;
+            this.queryString+='neq^' + criteria;
 			return this;
         },
         isLT:function(criteria){
-            this.queryString+='lt^' & criteria;
+            this.queryString+='lt^' + criteria;
 			return this;
         },
         isLTE:function(criteria){
-            this.queryString+='lte^' & criteria;
+            this.queryString+='lte^' + criteria;
 			return this;
         },
         isGT:function(criteria){
-            this.queryString+='gt^' & criteria;
+            this.queryString+='gt^' + criteria;
 			return this;
         },
         isGTE:function(criteria){
-            this.queryString+='gte^' & criteria;
+            this.queryString+='gte^' + criteria;
 			return this;
         },
         isIn:function(criteria){
-            this.queryString+='in^' & criteria;
+            this.queryString+='in^' + criteria;
 			return this;
         },
         isNotIn:function(criteria){
-            this.queryString+='notin^' & criteria;
+            this.queryString+='notin^' + criteria;
 			return this;
         },
         contains:function(criteria){
-            this.queryString+='contains^' & criteria;
+            this.queryString+='contains^' + criteria;
 			return this;
         },
-        doesNotContain:function(criteria){
-            this.queryString+='doesnotcontain^' & criteria;
+		begins:function(criteria){
+            this.queryString+='begins^' + criteria;
+			return this;
+        },
+		ends:function(criteria){
+            this.queryString+='ends^' + criteria;
 			return this;
         },
         openGrouping:function(criteria){

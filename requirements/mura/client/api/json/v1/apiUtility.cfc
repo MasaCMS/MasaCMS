@@ -1500,7 +1500,7 @@ component extends="mura.cfobject" {
 					if(listLen(criteria,"^") > 1){
 						condition=listFirst(criteria,'^');
 						criteria=listGetAt(criteria,2,'^');
-						if(listFindNoCase('contains,doesnotcontain',condition)){
+						if(listFindNoCase('begins,contains,doesnotcontain',condition)){
 							criteria=replace(criteria,'*','%','all');
 						}
 					} else if(find('*',criteria)){

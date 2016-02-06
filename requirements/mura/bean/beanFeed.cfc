@@ -687,16 +687,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="contains" output="false">
 	<cfargument name="criteria">
-	<cfset variables.instance.pendingParam.condition='like'>
+	<cfset variables.instance.pendingParam.condition='contains'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
 	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
 	<cfset variables.instance.pendingParam={}>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="doesNotContain" output="false">
+<cffunction name="begins" output="false">
 	<cfargument name="criteria">
-	<cfset variables.instance.pendingParam.condition='not like'>
+	<cfset variables.instance.pendingParam.condition='begins'>
+	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
+	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
+	<cfset variables.instance.pendingParam={}>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="ends" output="false">
+	<cfargument name="criteria">
+	<cfset variables.instance.pendingParam.condition='ends'>
 	<cfset variables.instance.pendingParam.criteria=arguments.criteria>
 	<cfset addParam(argumentCollection=variables.instance.pendingParam)>
 	<cfset variables.instance.pendingParam={}>
