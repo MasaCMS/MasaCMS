@@ -308,6 +308,10 @@
 				});
 			});
 
+		},
+
+		getFeed:function(){
+			return new window.mura.Feed(this.get('entityName'));
 		}
 
 	});

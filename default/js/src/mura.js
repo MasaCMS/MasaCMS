@@ -1,4 +1,4 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -142,6 +142,10 @@
 			properties.siteid=properties.siteid || window.mura.siteid;
 		}
 		return new window.mura.Entity(properties);
+	}
+
+	function getFeed(entityname){
+		return new window.mura.Entity(entityname);
 	}
 
 	function findQuery(params){
@@ -2132,6 +2136,7 @@
 			getEntity:getEntity,
 			renderFilename:renderFilename,
 			findQuery:findQuery,
+			getFeed:getFeed,
 			login:login,
 			logout:logout,
 			extendClass:extendClass,

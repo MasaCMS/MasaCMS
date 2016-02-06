@@ -1494,26 +1494,20 @@ component extends="mura.cfobject" {
 				if(entity.getEnityName()=='user' && propName=='groupid'){
 					feed.setGroupID(arguments.params[p]);
 				} else if(entity.valueExists(propName)){
-					var condition="=";
+					var condition="eq";
 					var criteria=arguments.params[p];
 
-					if(find('*',criteria)){
+					if(listLen(criteria,":") > 1){
+						condition=listFirst(criteria,':');
+						criteria=listGetAt(criteria,2,':');
+						if(listFindNoCase('contains,doesnotcontain',condition)){
+							criteria=replace(criteria,'*','%','all');
+						}
+					} else if(find('*',criteria)){
 						condition="like";
 						criteria=replace(criteria,'*','%','all');
 					} else if(find(',',criteria)) {
 						condition='in';
-					}
-
-					if(len(criteria) gt 1){
-						var firstChar=left(criteria,1);
-
-						if(firstChar=='^'){
-							condition='not in';
-							criteria=right(criteria,len(criteria)-1);
-						} else if (listFind('>,<',firstChar)){
-							condition=firstChar;
-							criteria=right(critera,len(criteria)-1);
-						}
 					}
 
 					feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
