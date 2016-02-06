@@ -428,6 +428,7 @@ Display Objects
 
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=variables.$>
+	<cfset variables.m=variables.$>
 
 	<cfif request.muraExportHtml>
 		<cfset this.showEditableObjects=false>
