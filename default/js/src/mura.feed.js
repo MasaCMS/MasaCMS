@@ -137,9 +137,11 @@
         },
 		itemsPerPage:function(itemsPerPage){
             this.queryString+='&itemsPerPage=' + itemsPerPage;
+			return this;
         },
 		maxItems:function(maxItems){
             this.queryString+='&maxItems=' + maxItems;
+			return this;
         },
         getQuery:function(){
             var self=this;
