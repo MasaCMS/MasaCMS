@@ -1506,8 +1506,6 @@ component extends="mura.cfobject" {
 					} else if(find('*',criteria)){
 						condition="like";
 						criteria=replace(criteria,'*','%','all');
-					} else if(find(',',criteria)) {
-						condition='in';
 					}
 
 					feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
