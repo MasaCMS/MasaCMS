@@ -1497,9 +1497,9 @@ component extends="mura.cfobject" {
 					var condition="eq";
 					var criteria=arguments.params[p];
 
-					if(listLen(criteria,":") > 1){
-						condition=listFirst(criteria,':');
-						criteria=listGetAt(criteria,2,':');
+					if(listLen(criteria,"^") > 1){
+						condition=listFirst(criteria,'^');
+						criteria=listGetAt(criteria,2,'^');
 						if(listFindNoCase('contains,doesnotcontain',condition)){
 							criteria=replace(criteria,'*','%','all');
 						}
