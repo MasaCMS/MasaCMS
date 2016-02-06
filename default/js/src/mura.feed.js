@@ -125,6 +125,16 @@
             this.queryString+='&closeGrouping:';
 			return this;
         },
+		sort:function(property,direction){
+			direction=direction || 'asc';
+			if(direction == 'desc'){
+				this.queryString+='&sort[' + this.propIndex + ']=-' + property;
+			} else {
+				this.queryString+='&sort[' + this.propIndex + ']=+' + property;
+			}
+			this.propIndex++;
+            return this;
+        },
         getQuery:function(){
             var self=this;
             return new Promise(function(resolve,reject) {

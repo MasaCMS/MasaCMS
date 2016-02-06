@@ -729,6 +729,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="sort" output="false">
+	<cfargument name="property">
+	<cfargument name="direction" default="asc">
+	<cfset variables.instance.orderby=listAppend(variables.instance.orderby,arguments.property & ' ' & arguments.direction)>
+	<cfreturn this>
+</cffunction>
+
+
 <!---
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="property">
