@@ -196,29 +196,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not arguments.countOnly and dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif>
 
 				<cfif not arguments.countOnly>
-                    <cfif len(arguments.feedBean.getValue('fields'))>
-                        <cfset started=false>
-                        <cfloop list="#arguments.feedBean.getValue('fields')#" index="local.i">
-                            <cfif started>,</cfif>tcontent.#local.i# <cfset started=true>
-                        </cfloop>
-                        <cfset started=false>
-                    <cfelse>
-                        <cfif len(altTable)>
-    						tcontent.*
-    					<cfelse>
-    						tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
-    						tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
-    						tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
-    						tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
-    						tcontent.releaseDate, tcontent.lastupdate,tcontent.summary,
-    						tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
-    						tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
-    						tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-    						tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
-    						tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
-    						tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
-    					</cfif>
-                    </cfif>
+					<cfif len(altTable)>
+						tcontent.*
+					<cfelse>
+						tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups,
+						tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
+						tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
+						tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+						tcontent.releaseDate, tcontent.lastupdate,tcontent.summary,
+						tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
+						tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
+						tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
+						tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
+						tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontentstats.lockType, tcontent.expires,
+						tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display,tcontentfilemetadata.altText as fileAltText
+					</cfif>
 				<cfelse>
 					count(*) as count
 				</cfif>

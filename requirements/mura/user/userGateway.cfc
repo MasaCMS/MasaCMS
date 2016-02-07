@@ -205,15 +205,7 @@
 		select <cfif not arguments.countOnly and params.getMaxItems()>top #params.getMaxItems()# </cfif>
 
 		<cfif not arguments.countOnly>
-			<cfif len(params.getValue('fields'))>
-				<cfset started=false>
-				<cfloop list="#params.getValue('fields')#" index="local.i">
-					<cfif started>,</cfif>tusers.#local.i# <cfset started=true>
-				</cfloop>
-				<cfset started=false>
-			<cfelse>
-				#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
-			</cfif>
+			#variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif>
 		<cfelse>
 			count(*) as count
 		</cfif>
