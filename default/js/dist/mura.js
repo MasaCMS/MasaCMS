@@ -2773,7 +2773,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 
 	function loader(){return window.mura.ljs;}
 
-	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="icon-pencil"></i>&nbsp;</div>';
+	var layoutmanagertoolbar='<div class="frontEndToolsModal mura"><i class="mi-pencil"></i>&nbsp;</div>';
 
 	function processMarkup(scope){
 
