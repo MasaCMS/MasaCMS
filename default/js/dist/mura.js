@@ -5368,6 +5368,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			this.entityname=entityname;
             return this;
 		},
+		fields:function(fields){
+            this.queryString+='&fields=' + fields;
+            return this;
+        },
         where:function(property){
             if(property){
                 return this.andProp(property);

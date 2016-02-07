@@ -89,6 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.joins=arrayNew(1)  />
 	<cfset variables.instance.pendingParam={}>
+	<cfset variables.instance.fields=''/>
 	<cfreturn this/>
 </cffunction>
 
@@ -173,8 +174,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getTableFieldList" output="false">
-	<cfset loadTableMetaData()>
-	<cfreturn application.objectMappings[variables.instance.entityName].columnlist>
+	<cfif len(variables.instance.fields)>
+		<cfreturn variables.instance.fields>
+	<cfelse>
+		<cfset loadTableMetaData()>
+		<cfreturn application.objectMappings[variables.instance.entityName].columnlist>
+	</cfif>
 </cffunction>
 
 <cffunction name="formatField" output="false">
@@ -527,7 +532,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
-			order by #REReplace(variables.instance.orderby,"[^0-9A-Za-z\._,\- ]","","all")#
+			order by #REReplace(variables.instance.orderby,"[^0-9A-Za-z\._\- ]","","all")#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
 					NULLS FIRST
@@ -590,6 +595,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.pendingParam.relationship='and'>
 	<cfset variables.instance.pendingParam.column=arguments.property>
 	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="fields" output="false">
+	<cfargument name="fields">
+	<cfloop list="#arguments.fields#" index="local.i">
+		<cfset variables.instance.fields=listAppend(variables.instance.fields,sanitizedValue(local.i))>
+	</cfloop>
 	<cfreturn this>
 </cffunction>
 
@@ -757,11 +770,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<!---
 <cffunction name="sanitizedValue" output="false">
 	<cfargument name="property">
 	<cfreturn REReplace(getValue(arguments.property),"[^0-9A-Za-z\._,\- ]","","all")>
 </cffunction>
+<!---
 
 <cffunction name="getOffset" output="false">
 	<cfreturn (getValue('pageIndex')-1) * getValue('nextN')>
