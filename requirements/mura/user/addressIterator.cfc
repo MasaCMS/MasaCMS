@@ -49,6 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.addressBean="">
 <cfset variables.recordIDField="addressID">
 
+<cffunction name="getEntityName" output="false">
+	<cfreturn "address">
+</cffunction>
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfif NOT isObject(variables.addressBean)>
 		<cfset variables.addressBean=getBean("address") />

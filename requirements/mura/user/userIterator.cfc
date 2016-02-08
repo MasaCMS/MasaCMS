@@ -49,6 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.userBean ="">
 <cfset variables.recordIDField="userID">
 
+<cffunction name="getEntityName" output="false">
+	<cfreturn "user">
+</cffunction>
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfif NOT isObject(variables.userBean)>
 		<cfset variables.userBean=getBean("user") />

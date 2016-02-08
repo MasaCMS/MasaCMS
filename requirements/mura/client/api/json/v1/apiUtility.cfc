@@ -173,14 +173,14 @@ component extends="mura.cfobject" {
 		return {'items'=arguments._array};
 	}
 
-	function formatIteratorResult(iterator,returnArray,method){
+	function packageIteratorArray(iterator,itArray,method){
 		var result={};
 
 		if(arguments.iterator.getRecordCount()){
 			result={'totalItems'=arguments.iterator.getRecordCount(),
 			'totalPages'=arguments.iterator.pageCount(),
 			'pageIndex'=arguments.iterator.getPageIndex(),
-			'items'=arguments.returnArray,
+			'items'=arguments.itArray,
 			'startindex'=arguments.iterator.getFirstRecordOnPageIndex(),
 			'endindex'=arguments.iterator.getLastRecordOnPageIndex(),
 			'itemsperpage'=arguments.iterator.getNextN()
@@ -197,7 +197,7 @@ component extends="mura.cfobject" {
 		}
 
 
-		if(!(isDefined('arguments.baseURL'))){
+		if(!(isDefined('arguments.baseURL')) || !len(arguments.baseURL)){
 			arguments.baseURL=getEndPoint() & "/?";
 
 			var params={};
@@ -415,8 +415,9 @@ component extends="mura.cfobject" {
 
 						if(arrayLen(pathInfo) == 4){
 
-							if(getServiceFactory().containsBean(pathInfo[4])){
+							if(isDefined('application.objectmappings.#params.entityName#.properties.#pathInfo[4]#')){
 								params.relatedEntity=pathInfo[4];
+								params.relationship=application.objectmappings[params.entityName].properties[pathInfo[4]];
 							} else if (params.entityName=='content' && pathInfo[4]=='history'){
 								params.method='findVersionHistory';
 								url.id=params.id;
@@ -997,7 +998,7 @@ component extends="mura.cfobject" {
 
 		entity=$.getBean(entityName).loadBy(argumentCollection=loadByparams);
 
-		var returnStruct=getFilteredValues(entity,$,true,entity.getEntityName());
+		var returnStruct=getFilteredValues(entity,true,entity.getEntityName());
 
 		returnStruct.saveErrors=saveErrors;
 		returnStruct.errors=errors;
@@ -1005,7 +1006,7 @@ component extends="mura.cfobject" {
 		returnStruct.id=returnStruct[pk];
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity,$);
+			returnstruct.images=setImageURLS(entity);
 			returnstruct.url=entity.getURL();
 		}
 
@@ -1015,12 +1016,12 @@ component extends="mura.cfobject" {
 		return returnStruct;
 	}
 
-	function getFilteredValues(entity,$,expand=true,entityConfigName){
+	function getFilteredValues(entity,expand=true,entityConfigName){
 		var fields='';
 		var vals={};
 
-		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && len($.event('fields'))){
-			fields=$.event('fields');
+		if(!(isDefined('variables.config.entities.#arguments.entityConfigName#.allowfieldselect') && !variables.config.entities[entityConfigName].allowfieldselect) && (isDefined('url.fields') && len(url.fields))){
+			fields=url.fields;
 
 			if(arguments.entity.getEntityName()=='content' && !listFindNoCase(fields,'contentid')){
 				fields=listAppend(fields,'contentid');
@@ -1146,12 +1147,12 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		var returnStruct=getFilteredValues(entity,$,true,arguments.entityName);
+		var returnStruct=getFilteredValues(entity,true,arguments.entityName);
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity,$);
+			returnstruct.images=setImageURLS(entity);
 			returnstruct.url=entity.getURL();
 		}
 
@@ -1216,12 +1217,12 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		var returnStruct=getFilteredValues(entity,$,true,entity.getEntityName());
+		var returnStruct=getFilteredValues(entity,true,entity.getEntityName());
 		returnStruct.links=getLinks(entity);
 		returnStruct.id=returnStruct[pk];
 
 		if(listFindNoCase('content,contentnav',arguments.entityName)){
-			returnstruct.images=setImageURLS(entity,$);
+			returnstruct.images=setImageURLS(entity);
 			returnstruct.url=entity.getURL();
 		}
 
@@ -1298,14 +1299,14 @@ component extends="mura.cfobject" {
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
+			itemStruct=getFilteredValues(item,false,entityConfigName);
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
 			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
+				itemStruct.images=setImageURLS(item);
 				itemStruct.url=item.getURL();
 			}
 
@@ -1315,7 +1316,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct);
 		}
 
-		return formatIteratorResult(iterator,returnArray,'findall');
+		return packageIteratorArray(iterator,returnArray,'findall');
 	}
 
 	function findMany(entityName,ids,siteid,params){
@@ -1376,7 +1377,7 @@ component extends="mura.cfobject" {
 				throw(type="authorization");
 			}
 
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
+			itemStruct=getFilteredValues(item,false,entityConfigName);
 
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
@@ -1384,7 +1385,7 @@ component extends="mura.cfobject" {
 			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
+				itemStruct.images=setImageURLS(item);
 				itemStruct.url=item.getURL();
 			}
 
@@ -1409,7 +1410,7 @@ component extends="mura.cfobject" {
 			finalArray=returnArray;
 		}
 
-		return formatIteratorResult(iterator,finalArray,'findmany');
+		return packageIteratorArray(iterator,finalArray,'findmany');
 	}
 
 	function findQuery(entityName,siteid,params){
@@ -1437,14 +1438,6 @@ component extends="mura.cfobject" {
 			if(arguments.entityName=='group'){
 				feed.setType(1);
 			}
-		}
-
-		if(arguments.entityName=='content'){
-			var pk="contentid";
-		} else if(arguments.entityName=='feed'){
-			var pk="feedid";
-		} else {
-			var pk=entity.getPrimaryKey();
 		}
 
 		if(!entity.allowQueryParams(arguments.params,$)){
@@ -1500,9 +1493,6 @@ component extends="mura.cfobject" {
 					if(listLen(criteria,"^") > 1){
 						condition=listFirst(criteria,'^');
 						criteria=listGetAt(criteria,2,'^');
-						if(listFindNoCase('begins,contains,doesnotcontain',condition)){
-							criteria=replace(criteria,'*','%','all');
-						}
 					} else if(find('*',criteria)){
 						condition="like";
 						criteria=replace(criteria,'*','%','all');
@@ -1525,9 +1515,14 @@ component extends="mura.cfobject" {
 			return {count=feed.getAvailableCount()};
 		} else {
 			var iterator=feed.getIterator();
-			setIteratorProps(iterator,arguments.params);
+			setIteratorProps(iterator=iterator);
+			var returnArray=iteratorToArray(iterator=iterator);
+			return packageIteratorArray(iterator=iterator,itArray=returnArray,method='findQuery',baseURL=baseURL);
 		}
 
+	}
+
+	function iteratorToArray(iterator){
 		var returnArray=[];
 		var itemStruct={};
 		var item='';
@@ -1535,23 +1530,32 @@ component extends="mura.cfobject" {
 		var subItem='';
 		var subItemArray=[];
 		var p='';
+		var entityName=arguments.iterator.getEntityName();
 
-		if(entity.getEntityName()=='content'){
+		if(listFindNoCase('content,contentnav',entityName)){
+			var pk="contentid";
+		} else if (entityName== 'feed'){
+			var pk="feedid";
+		} else {
+			var pk=application.objectMappings[entityName].primarykey;
+		}
+
+		if(entityName=='content'){
 			var entityConfigName='contentnav';
 		} else {
-			var entityConfigName=entity.getEntityName();
+			var entityConfigName=entityName;
 		}
 
 		while(iterator.hasNext()){
 			item=iterator.next();
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
+			itemStruct=getFilteredValues(item,false,entityConfigName);
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
 			itemStruct.links=getLinks(item);
 
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
+			if(listFindNoCase('content,contentnav',entityName)){
+				itemStruct.images=setImageURLS(item);
 				itemStruct.url=item.getURL();
 			}
 
@@ -1562,8 +1566,7 @@ component extends="mura.cfobject" {
 		}
 
 		//writeDump(var=$.event('pageIndex'),abort=1);
-
-		return formatIteratorResult(iterator=iterator,returnArray=returnArray,method='findquery',baseURL=baseURL);
+		return returnArray;
 	}
 
 	function setFeedProps(feed,params){
@@ -1725,14 +1728,14 @@ component extends="mura.cfobject" {
 
 		while(arguments.iterator.hasNext()){
 			item=arguments.iterator.next();
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
+			itemStruct=getFilteredValues(item,false,entityConfigName);
 			if(len(pk)){
 				itemStruct.id=itemStruct[pk];
 			}
 			itemStruct.links=getLinks(item);
 
 			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
+				itemStruct.images=setImageURLS(item);
 				itemStruct.url=item.getURL();
 			}
 
@@ -1743,7 +1746,7 @@ component extends="mura.cfobject" {
 			arrayAppend(returnArray, itemStruct );
 		}
 
-		return formatIteratorResult(arguments.iterator,returnArray,'findCrumbArray');
+		return packageIteratorArray(arguments.iterator,returnArray,'findCrumbArray');
 	}
 
 
@@ -1758,33 +1761,10 @@ component extends="mura.cfobject" {
 			throw(type="authorization");
 		}
 
-		var pk="contentid";
 		var iterator=entity.loadBy(contentid=arguments.id).getVersionHistoryIterator();
-
-		var returnArray=[];
-		var itemStruct={};
-		var item='';
-		var subIterator='';
-		var subItem='';
-		var subItemArray=[];
-		var p='';
-		var entityConfigName='contentnav';
-
-		while(iterator.hasNext()){
-			item=iterator.next();
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
-			itemStruct.id=itemStruct[pk];
-			itemStruct.links=getLinks(item);
-			itemStruct.images=setImageURLS(item,$);
-			itemStruct.url=item.getURL();
-
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-
-			arrayAppend(returnArray, itemStruct );
-		}
-
-		return formatIteratorResult(iterator,returnArray,'findVersionHistory');
+		setIteratorProps(iterator);
+		var returnArray=iteratorToArray(iterator=iterator);
+		return packageIteratorArray(iterator,returnArray,'findVersionHistory');
 	}
 
 
@@ -1882,7 +1862,11 @@ component extends="mura.cfobject" {
 
 		links.entities=baseURL;
 
-		links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
+		if(entity.getEntityName()=='site'){
+			links['self']="#baseurl#/site";
+		} else {
+			links['self']="#baseurl#/#entity.getEntityName()#/#entity.getvalue(entity.getPrimaryKey())#";
+		}
 
 		if(arrayLen(entity.getHasManyPropArray())){
 			try{
@@ -1986,33 +1970,8 @@ component extends="mura.cfobject" {
 		var pk=entity.getPrimaryKey();
 
 		setIteratorProps(iterator,arguments.params);
-
-		if(entity.getEntityName()=='content'){
-			var entityConfigName='contentnav';
-		} else {
-			var entityConfigName=entity.getEntityName();
-		}
-
-		while(iterator.hasNext()){
-			item=iterator.next();
-			itemStruct=getFilteredValues(item,$,false,entityConfigName);
-			if(len(pk)){
-				itemStruct.id=itemStruct[pk];
-			}
-			itemStruct.links=getLinks(item);
-
-			if(listFindNoCase('content,contentnav',arguments.entityName)){
-				itemStruct.images=setImageURLS(item,$);
-				itemStruct.url=item.getURL();
-			}
-
-			//var tokens=$.generateCSRFTokens(context=itemStruct.id);
-			//structAppend(itemStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
-
-			arrayAppend(returnArray, itemStruct );
-		}
-
-		return formatIteratorResult(iterator,returnArray,'findRelatedContent');
+		var returnArray=iteratorToArray(iterator=iterator);
+		return packageIteratorArray(iterator,returnArray,'findRelatedContent');
 	}
 
 	function applyRemoteFormat(str){
@@ -2024,11 +1983,11 @@ component extends="mura.cfobject" {
 		return trim(arguments.str);
 	}
 
-	function setImageURLs(entity,$){
+	function setImageURLs(entity){
 
 		if(arguments.entity.hasImage()){
 			if(!isDefined('variables.images')){
-				variables.images=arguments.$.siteConfig().getCustomImageSizeIterator();
+				variables.images=getBean('settingsManager').getSite(entity.getSiteID()).getCustomImageSizeIterator();
 			}
 
 			var returnStruct={
