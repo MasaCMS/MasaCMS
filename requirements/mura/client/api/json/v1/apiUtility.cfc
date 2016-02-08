@@ -1911,7 +1911,7 @@ component extends="mura.cfobject" {
 			}
 			links['relatedcontent']="#baseurl#/#entity.getEntityName()#/#entity.getValue('contentid')#/relatedcontent";
 		} else if(entity.getEntityName()=='category'){
-			links['crumbs']="#baseurl#?#entity.getEntityName()#/#entity.getValue('categoryid')#/crumbs";
+			links['crumbs']="#baseurl#/#entity.getEntityName()#/#entity.getValue('categoryid')#/crumbs";
 		}
 
 		if(arrayLen(variables.config.linkMethods)){
