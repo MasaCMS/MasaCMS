@@ -7455,6 +7455,8 @@ main > .content > :first-child:after,
 .mura-control-group:after,
 .mura-tabs:before,
 .mura-tabs:after,
+#mura-login:before,
+#mura-login:after,
 .container-fluid:before,
 .container-fluid:after,
 .row-fluid:before,
@@ -7486,6 +7488,7 @@ main > .content > :first-child:after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
+#mura-login:after,
 .container-fluid:after,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:after {
@@ -7535,6 +7538,8 @@ main > .content > :first-child:after,
 .mura-control-group:after,
 .mura-tabs:before,
 .mura-tabs:after,
+#mura-login:before,
+#mura-login:after,
 .container-fluid:before,
 .container-fluid:after,
 .row-fluid:before,
@@ -7566,6 +7571,7 @@ main > .content > :first-child:after,
 #mura-content > form .form-group:after,
 .mura-control-group:after,
 .mura-tabs:after,
+#mura-login:after,
 .container-fluid:after,
 .row-fluid:after,
 .tab-pane .fieldset .control-group:after {
@@ -28183,6 +28189,52 @@ select.time.input-lg {
     float: left;
     width: 100%;
   }
+}
+#mura-login {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+#mura-login .mura-control-group > label + input,
+#mura-login .mura-control-group > label + select {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+#mura-login > .block {
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+  padding: 0;
+  float: none !important;
+}
+@media (min-width: 992px) {
+  #mura-login > .block {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+#mura-login > .block + .block {
+  margin-top: 15px;
+}
+#mura-login .block-header {
+  color: #fff;
+  background-color: #5c90d2;
+  background-color: #ff3405;
+}
+a#mura-login .block-header:hover,
+a#mura-login .block-header:focus {
+  background-color: #3675c5;
+}
+a#mura-login .block-header:hover,
+a#mura-login .block-header:focus {
+  background-color: #3675c5;
 }
 /* TEMPLATE MAPPING */
 /* LEGACY MURA / BS2 CLASS MAPPING */
