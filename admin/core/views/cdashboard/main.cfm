@@ -162,23 +162,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<div id="contentSecondary" class="sidebar">
 
-			<div>
-			<!--- <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h2> --->
-			<!--- <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</p> --->
-			<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-				<!--- <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" class="search-query" placeholder="Enter Keywords" />
-				<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
-				<div class="input-append">
-				    <input name="keywords" value="#esapiEncode('html_attr',session.keywords)#" type="text" placeholder="Enter Keywords" />
-				    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);"><i class="mi-search"></i></button>
-				</div>
-				<input type="hidden" name="muraAction" value="cArch.list">
-				<input type="hidden" name="activetab" value="1">
-				<input type="hidden" name="siteid" value="#esapiEncode('html_attr',rc.siteid)#">
-				<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
-			</form>
-			</div> 
-
 			<cfset eventMappings=$.getBean('pluginManager').getEventMappings('onDashboardSideBarTop',rc.siteid)>
 			<cfif arrayLen(eventMappings)>
 				<cfloop from="1" to="#arrayLen(eventMappings)#"	index="i">
