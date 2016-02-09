@@ -2,7 +2,6 @@
 <cfset fileMetaData=$.getBean('fileMetaData').loadBy(fileid=rc.fileid,contenthistid=rc.contenthistid,siteid=rc.siteid)>
 <cfoutput>
 <div class="block block-constrain">
-<div class="tabbable">
 	<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab">
 		<li class="active">
 			<a href="##tabFileMetaBasic" data-toggle="tab"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</span></a>
@@ -122,6 +121,5 @@
 			</div>
 		</div>
 	</div>
-</div>
 </div>
 </cfoutput>
