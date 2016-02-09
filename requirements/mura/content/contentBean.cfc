@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="kids" fieldtype="one-to-many" cfc="content" nested=true fkcolumn="contentid" orderby="created asc" cascade="delete"/>
 <cfproperty name="parent" fieldtype="many-to-one" cfc="content" fkcolumn="parentid"/>
 <cfproperty name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID" />
-<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign"/>
+<cfproperty name="categoryAssignments" fieldtype="one-to-many" cfc="contentCategoryAssign" loadkey="contenthistid"/>
 <cfproperty name="changeset" fieldtype="many-to-one" cfc="changeset" fkcolumn="changesetid"/>
 <cfproperty name="comments" fieldtype="one-to-many" cfc="comment" fkcolumn="contentid"/>
 <cfproperty name="stats" fieldtype="one-to-one" cfc="stats" fkcolumn="contentid" />
