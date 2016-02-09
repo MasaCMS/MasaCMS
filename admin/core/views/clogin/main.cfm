@@ -193,6 +193,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input type="hidden" name="compactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#">
 							#rc.$.renderCSRFTokens(format='form')#
 						</form>
+
+				</div><!-- /block-content -->
+			</div><!-- /block -->
+			
+			<div class="block">
+	  	  <div class="block-content">
+			
 						<cfif not isBoolean(application.configBean.getValue('showadminloginhelp')) or application.configBean.getValue('showadminloginhelp')>
 							<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="./?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 

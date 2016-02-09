@@ -28220,6 +28220,9 @@ select.time.input-lg {
     width: 33.33333333%;
   }
 }
+#mura-login > .block + .block {
+  margin-top: 15px;
+}
 #mura-login .block-header {
   color: #fff;
   background-color: #5c90d2;
