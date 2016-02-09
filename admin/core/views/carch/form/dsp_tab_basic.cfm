@@ -179,195 +179,193 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif listFindNoCase(rc.$.getBean('contentManager').HTMLBodyList,rc.type)>
 		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
-			<div id="bodyContainer" class="body-container" style="display:none;">
-				<div class="mura-control-group">
-				<label>
-	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
-	      	</label>
-			<cfif rsPluginEditor.recordcount>
-				#application.pluginManager.renderScripts("onHTMLEdit",rc.siteid,pluginEvent,rsPluginEditor)#
-			<cfelse>
-				<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
-					<cfscript>
-						fckEditor = createObject("component", "mura.fckeditor");
-						fckEditor.instanceName	= "body";
-						fckEditor.value			= '#rc.contentBean.getBody()#';
-						fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
-						fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
-						fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
-						fckEditor.width			= "98%";
-						fckEditor.height		= 550;
-						fckEditor.config.DefaultLanguage=lcase(session.rb);
-						fckEditor.config.AutoDetectLanguage=false;
-						if (rc.moduleID eq "00000000000000000000000000000000000"){
-						fckEditor.config.BodyId		="primary";
-						}
-						if (len(application.settingsManager.getSite(rc.siteID).getGoogleAPIKey())){
-						fckEditor.config.GoogleMaps_Key =application.settingsManager.getSite(rc.siteID).getGoogleAPIKey();
-						} else {
-						fckEditor.config.GoogleMaps_Key ='none';
-						}
-						fckEditor.toolbarset 	= '#iif(rc.type eq "Form",de("Form"),de("Default"))#';
+		<div id="bodyContainer" class="body-container mura-control-group" style="display:none;">
+		<label class="mura-control-label">
+      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
+      	</label>
+		<cfif rsPluginEditor.recordcount>
+			#application.pluginManager.renderScripts("onHTMLEdit",rc.siteid,pluginEvent,rsPluginEditor)#
+		<cfelse>
+			<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
+				<cfscript>
+					fckEditor = createObject("component", "mura.fckeditor");
+					fckEditor.instanceName	= "body";
+					fckEditor.value			= '#rc.contentBean.getBody()#';
+					fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
+					fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/editor.css';
+					fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/css/fckstyles.xml';
+					fckEditor.width			= "98%";
+					fckEditor.height		= 550;
+					fckEditor.config.DefaultLanguage=lcase(session.rb);
+					fckEditor.config.AutoDetectLanguage=false;
+					if (rc.moduleID eq "00000000000000000000000000000000000"){
+					fckEditor.config.BodyId		="primary";
+					}
+					if (len(application.settingsManager.getSite(rc.siteID).getGoogleAPIKey())){
+					fckEditor.config.GoogleMaps_Key =application.settingsManager.getSite(rc.siteID).getGoogleAPIKey();
+					} else {
+					fckEditor.config.GoogleMaps_Key ='none';
+					}
+					fckEditor.toolbarset 	= '#iif(rc.type eq "Form",de("Form"),de("Default"))#';
 
-						if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
-						{
-						fckEditor.config["CustomConfigurationsPath"]=esapiEncode('url','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#rc.type#');
-						}
-
-						fckEditor.create(); // create the editor.
-					</cfscript>
-					<script type="text/javascript">
-					var loadEditorCount = 0;
-
-					function FCKeditor_OnComplete( editorInstance ) {
-						<cfif rc.preview eq 1>
-					   	preview('#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#','');
-						</cfif>
-						htmlEditorOnComplete(editorInstance);
+					if(fileExists("#expandPath(application.settingsManager.getSite(rc.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
+					{
+					fckEditor.config["CustomConfigurationsPath"]=esapiEncode('url','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#rc.type#');
 					}
 
-					<cfif rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
-					toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
-					editSummary();
+					fckEditor.create(); // create the editor.
+				</cfscript>
+				<script type="text/javascript">
+				var loadEditorCount = 0;
+
+				function FCKeditor_OnComplete( editorInstance ) {
+					<cfif rc.preview eq 1>
+				   	preview('#rc.contentBean.getURL(complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#','');
 					</cfif>
-					</script>
-				<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
-					<textarea name="body" id="body">#esapiEncode('html',rc.contentBean.getBody())#</textarea>
-				<cfelse>
-					<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#esapiEncode('html',rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
-					<script type="text/javascript">
-					var loadEditorCount = 0;
-					<cfif rc.preview eq 1>var previewLaunched= false;</cfif>
+					htmlEditorOnComplete(editorInstance);
+				}
 
-					hideBodyEditor=function(){
-						if(typeof CKEDITOR.instances.body != 'undefined'){
-							CKEDITOR.instances.body.updateElement();
-							CKEDITOR.instances.body.destroy();
-						}
-						jQuery(".body-container").hide();
-					}
-
-					showBodyEditor=function(){
-						if(typeof CKEDITOR.instances.body == 'undefined'){
-							jQuery(".body-container").show();
-
-							jQuery('##body').ckeditor(
-							{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
-							height:'550',
-							customConfig : 'config.js.cfm'
-							},
-								function(editorInstance){
-									htmlEditorOnComplete(editorInstance);
-									showPreview();
-								}
-							);
-						}
-					}
-
-					jQuery(document).ready(function(){
-						<cfif not isExtended>
-						showBodyEditor();
-						</cfif>
-						if (!hasSummary && !hasBody){
-							setTimeout(function(){
-								showPreview();
-							}, 2000);
-						}
-					});
-
-					function showPreview(){
-						<cfif rc.preview eq 1>
-							if(!previewLaunched){
-						<cfif listFindNoCase("File",rc.type)>
-							preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
-						<cfelse>
-							preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
-						</cfif>
-							previewLaunched=true;
-							}
-						</cfif>
-					}
-					</script>
+				<cfif rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
+				toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+				editSummary();
 				</cfif>
+				</script>
+			<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
+				<textarea name="body" id="body">#esapiEncode('html',rc.contentBean.getBody())#</textarea>
+			<cfelse>
+				<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#esapiEncode('html',rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
+				<script type="text/javascript">
+				var loadEditorCount = 0;
+				<cfif rc.preview eq 1>var previewLaunched= false;</cfif>
+
+				hideBodyEditor=function(){
+					if(typeof CKEDITOR.instances.body != 'undefined'){
+						CKEDITOR.instances.body.updateElement();
+						CKEDITOR.instances.body.destroy();
+					}
+					jQuery(".body-container").hide();
+				}
+
+				showBodyEditor=function(){
+					if(typeof CKEDITOR.instances.body == 'undefined'){
+						jQuery(".body-container").show();
+
+						jQuery('##body').ckeditor(
+						{ toolbar:<cfif rc.type eq "Form">'Form'<cfelse>'Default'</cfif>,
+						height:'550',
+						customConfig : 'config.js.cfm'
+						},
+							function(editorInstance){
+								htmlEditorOnComplete(editorInstance);
+								showPreview();
+							}
+						);
+					}
+				}
+
+				jQuery(document).ready(function(){
+					<cfif not isExtended>
+					showBodyEditor();
+					</cfif>
+					if (!hasSummary && !hasBody){
+						setTimeout(function(){
+							showPreview();
+						}, 2000);
+					}
+				});
+
+				function showPreview(){
+					<cfif rc.preview eq 1>
+						if(!previewLaunched){
+					<cfif listFindNoCase("File",rc.type)>
+						preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
+					<cfelse>
+						preview('#rc.contentBean.getURL(secure=rc.$.getBean("utility").isHTTPs(),complete=1,queryString="previewid=#rc.contentBean.getcontenthistid()#")#');
+					</cfif>
+						previewLaunched=true;
+						}
+					</cfif>
+				}
+				</script>
 			</cfif>
-			</div>
-		</div>
+		</cfif>
+	</div>
+
 
 	<cfelseif rc.type eq 'Link'>
-			<div class="mura-control-group">
-		      	<label>
+		<div class="mura-control-group">
+		     <label class="mura-control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
 	      	</label>
-	     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
-	     	 			<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
-	     	 			<div class="btn-group">
-	     	 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-		     	 				 	<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
-	     	 				</a>
-	     	 				<ul class="dropdown-menu">
-	     	 					<li><a href="##" type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
-		     	 						<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
-	     	 					<li><a href="##" type="button" onclick="renderRazunaWindow('body');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
-	     	 				</ul>
-	     	 			</div>
-
-				<cfelse>
-					<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
-					<div class="btn-group">
-		     	 			<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
-	     	 		</div>
-				</cfif>
-	     	</div>
+     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
+ 	 			<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+ 	 			<div class="btn-group">
+ 	 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+     	 				 	<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#
+ 	 				</a>
+ 	 				<ul class="dropdown-menu">
+ 	 					<li><a href="##" type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="mura-file-type-selector mura-ckfinder" title="Select a File from Server">
+     	 						<i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.local')#</a></li>
+ 	 					<li><a href="##" type="button" onclick="renderRazunaWindow('body');return false;" class="mura-file-type-selector btn-razuna-icon" value="URL-Razuna" title="Select a File from Razuna"><i></i> Razuna</a></li>
+ 	 				</ul>
+ 	 			</div>
+			<cfelse>
+				<input type="text" id="url" name="body" value="#esapiEncode('html_attr',rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+				<div class="btn-group">
+	     	 		<button type="button" data-completepath="false" data-target="body" data-resourcetype="user" class="btn mura-file-type-selector mura-ckfinder" title="Select a File from Server"><i class="mi-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.browseassets')#</button>
+     	 		</div>
+			</cfif>
+     	</div>
 	<cfelseif rc.type eq 'File'>
 		<cfinclude template="dsp_file_selector.cfm">
 	</cfif>
 
 	<cfif rc.type eq 'Component'>
-			<div class="mura-control-group">
-		      	<label>
+		<div class="mura-control-group">
+		    <label class="mura-control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
-				<label for="m1" class="checkbox inline">
-					<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
+			<label for="m1" class="checkbox inline">
+				<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
+			</label>
+
+			<label for="m2" class="checkbox inline">
+				<input name="moduleAssign" type="CHECKBOX" id="m2" value="00000000000000000000000000000000003" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000003')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#
+			</label>
+
+			<cfif application.settingsManager.getSite(rc.siteid).getdatacollection()>
+				<label for="m3" class="checkbox inline">
+					<input name="moduleAssign" type="CHECKBOX" id="m3" value="00000000000000000000000000000000004" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000004')>checked </cfif> class="checkbox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formsmanager')#
 				</label>
+			</cfif>
 
-				<label for="m2" class="checkbox inline">
-					<input name="moduleAssign" type="CHECKBOX" id="m2" value="00000000000000000000000000000000003" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000003')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#
+			<cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
+				<label for="m4" class="checkbox inline">
+					<input name="moduleAssign" type="CHECKBOX" id="m4"  value="00000000000000000000000000000000005" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000005')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emailbroadcaster')#
 				</label>
-
-				<cfif application.settingsManager.getSite(rc.siteid).getdatacollection()>
-					<label for="m3" class="checkbox inline">
-						<input name="moduleAssign" type="CHECKBOX" id="m3" value="00000000000000000000000000000000004" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000004')>checked </cfif> class="checkbox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formsmanager')#
-					</label>
-				</cfif>
-
-				<cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-					<label for="m4" class="checkbox inline">
-						<input name="moduleAssign" type="CHECKBOX" id="m4"  value="00000000000000000000000000000000005" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000005')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emailbroadcaster')#
-					</label>
-				</cfif>
-			</div>
+			</cfif>
+		</div>
 	</cfif>
 
 	<cfif rc.type eq 'Form'>
-			<div class="mura-control-group body-container" style="display:none">
-				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
-				<label for="rc" class="checkbox">
-	      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
-	      		</label>
-			</div>
-			<div class="mura-control-group body-container" style="display:none">
-				<label>
-				 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+		<div class="mura-control-group body-container" style="display:none">
+			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
+			<label for="rc" class="checkbox">
+      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+      		</label>
+		</div>
+		<div class="mura-control-group body-container" style="display:none">
+			<label class="mura-control-label">
+			 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
-				<textarea name="responseMessage" rows="6" class="span12">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
-			</div>
-			<div class="mura-control-group">
-				<label>
+			<textarea name="responseMessage" rows="6" class="span12">#esapiEncode('html',rc.contentBean.getresponseMessage())#</textarea>
+		</div>
+		<div class="mura-control-group">
+			<label class="mura-control-label">
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 			</label>
-				<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#" class="span12">
-			</div>
+			<input type="text" name="responseSendTo" value="#esapiEncode('html_attr',rc.contentBean.getresponseSendTo())#" class="span12">
+		</div>
 	</cfif>
 
 	<cfif rc.parentBean.getType() eq 'Calendar' and ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
