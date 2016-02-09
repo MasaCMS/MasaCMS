@@ -23470,6 +23470,8 @@ i {
   /* Categorization Tab */
   /* /categorization tab */
   /* Related content tab */
+  /* /related content tab */
+  /* dashboard */
 }
 .mura .mura-grid .actions ul,
 .mura .mura-table-grid .actions ul {
@@ -27364,6 +27366,177 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #tabRelatedcontent table {
   margin-top: 18px;
 }
+.mura #cdashboard div#userActivity:before,
+.mura #cdashboard div#userActivity:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard div#userActivity:after {
+  clear: both;
+}
+.mura #cdashboard div#userActivity:before,
+.mura #cdashboard div#userActivity:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard div#userActivity:after {
+  clear: both;
+}
+.mura #cdashboard div#userActivity:before,
+.mura #cdashboard div#userActivity:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard div#userActivity:after {
+  clear: both;
+}
+.mura #cdashboard div#userActivity:before,
+.mura #cdashboard div#userActivity:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard div#userActivity:after {
+  clear: both;
+}
+.mura #cdashboard .load-inline {
+  height: 108px;
+}
+.mura #cdashboard h2 {
+  line-height: 1;
+  color: #666666;
+}
+.mura #cdashboard #main h2 {
+  clear: both;
+  padding-top: 15px;
+}
+.mura #cdashboard table {
+  margin: 0;
+}
+.mura #cdashboard th,
+.mura #cdashboard td {
+  white-space: nowrap;
+  color: #666666;
+  font-weight: normal;
+}
+.mura #cdashboard .count {
+  text-align: center;
+}
+.mura #cdashboard td.dateTime {
+  width: 1%;
+}
+.mura #cdashboard #recentFormActivity td {
+  width: 300px;
+}
+.mura #cdashboard #recentFormActivity td.total {
+  width: 1%;
+  text-align: center;
+}
+.mura #cdashboard #emailBroadcasts dl {
+  margin: 0 0 1em 0;
+}
+.mura #cdashboard #emailBroadcasts dt,
+.mura #cdashboard #emailBroadcasts dd {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  margin-right: .5em;
+}
+.mura #cdashboard #emailBroadcasts dt {
+  font-weight: normal;
+  color: #000000;
+}
+.mura #cdashboard #emailBroadcasts dd {
+  margin: 0 1em 0 0;
+  padding: 0;
+  color: #666666;
+}
+.mura #cdashboard #contentSecondary {
+  padding-top: 8px;
+  /* Search */
+  /* Site Summary & Drafts */
+}
+.mura #cdashboard #contentSecondary p {
+  line-height: 1.2;
+}
+.mura #cdashboard #contentSecondary #siteSearch {
+  float: none;
+}
+.mura #cdashboard #contentSecondary #siteSearch .input-append {
+  margin-bottom: 0;
+}
+.mura #cdashboard #contentSecondary #siteSearch input[type="text"] {
+  width: 167px;
+}
+.mura #cdashboard #contentSecondary #siteSearch input.btn {
+  float: right;
+  padding: 4px 10px;
+}
+.mura #cdashboard #contentSecondary dl {
+  margin-bottom: 0;
+}
+.mura #cdashboard #contentSecondary dl:before,
+.mura #cdashboard #contentSecondary dl:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard #contentSecondary dl:after {
+  clear: both;
+}
+.mura #cdashboard #contentSecondary dl:before,
+.mura #cdashboard #contentSecondary dl:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard #contentSecondary dl:after {
+  clear: both;
+}
+.mura #cdashboard #contentSecondary dl:before,
+.mura #cdashboard #contentSecondary dl:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard #contentSecondary dl:after {
+  clear: both;
+}
+.mura #cdashboard #contentSecondary dl:before,
+.mura #cdashboard #contentSecondary dl:after {
+  content: " ";
+  display: table;
+}
+.mura #cdashboard #contentSecondary dl:after {
+  clear: both;
+}
+.mura #cdashboard #contentSecondary dt,
+.mura #cdashboard #contentSecondary dd {
+  margin-bottom: .5em;
+  line-height: 1.5 !important;
+  display: block;
+}
+.mura #cdashboard #contentSecondary dt {
+  text-align: left !important;
+  float: left;
+  clear: left;
+  font-weight: normal;
+  max-width: 100px;
+}
+.mura #cdashboard #contentSecondary dd {
+  /* margin-left: 3em !important; */
+  float: right;
+  clear: right;
+}
+.mura #cdashboard #contentSecondary ul {
+  margin: 0;
+}
+.mura #cdashboard #contentSecondary li {
+  list-style: none;
+}
+.mura #cdashboard #contentSecondary a {
+  color: #ff3a00;
+}
+.mura #cdashboard #contentSecondary .well li span {
+  color: #b3b3b3;
+}
 /* BS3 CLASS MAPPING */
 #mura-content {
   position: relative;
@@ -28789,6 +28962,7 @@ a#nav-module-specific .btn:focus {
 *[class*=" mi-"] {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -31378,16 +31552,20 @@ a.no-link {
   margin-left: 15px;
   margin-bottom: 10px !important;
 }
+/* module specific buttons and labels */
 .mura-header .label-group {
   margin-top: 6px;
 }
 .mura-header .label,
 .mura-header #nav-module-specific .btn {
-  font-size: 84%;
-  color: #777;
-  background-color: #f1f1f1;
+  color: #fff;
+  background-color: #ff3a00;
+  font-size: 92%;
+  line-height: 1;
   font-weight: normal;
   margin-left: 8px;
+  min-height: 2.3em;
+  padding-top: .5em;
 }
 .mura-file-selector .btn-group {
   margin-bottom: 9px;
@@ -31454,6 +31632,9 @@ a.close:hover {
 .sidebar h3 {
   font-size: 15px;
   margin-bottom: 8px;
+}
+.sidebar .nav .badge {
+  float: right;
 }
 .sidebar .module ul.nav,
 .sidebar .well ul.nav {
