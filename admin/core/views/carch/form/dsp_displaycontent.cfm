@@ -406,35 +406,35 @@
 	</script>
 <cfelse>
 	<div class="mura-control-group">
-	  	<label>
+	  	<label class="mura-control-label">
 			<span data-toggle="popover" title="" data-placement="right"
 		  	data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#"
 		  	data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.display"))#">
 	  			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#
 	  		 <i class="mi-question-circle"></i></span>
 	  	</label>
-	  		<select name="display" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
-				<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-				<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-				<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2> selected</CFIF>>
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#
-				</option>
-			</select>
+  		<select name="display" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
+			<option value="1"  <cfif rc.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+			<option value="0"  <cfif rc.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+			<option value="2"  <cfif rc.contentBean.getdisplay() EQ 2> selected</CFIF>>
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#
+			</option>
+		</select>
 		<div id="editDates" class="mura-control" <cfif rc.contentBean.getdisplay() NEQ 2>style="display: none;"</cfif>>
 			<div class="mura-control-group">
-			<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
+				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
 				<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart()#">
 			</div>
 			<div class="mura-control-group">
-			<label>
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
-			</label>
+				<label class="mura-control-label">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
+				</label>
 				<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop()#" defaulthour="23" defaultminute="59">
 			</div>
 			<div class="mura-control-group">
-			<label>
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
-			</label>
+				<label class="mura-control-label">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
+				</label>
 				<select name="displayInterval" class="span2">
 					<cfloop list="Daily,Weekly,Bi-Weekly,Monthly,WeekDays,WeekEnds,Week1,Week2,Week3,Week4,WeekLast,Yearly" index="i">
 					<option value="#i#"<cfif rc.contentBean.getDisplayInterval() eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
