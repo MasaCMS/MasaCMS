@@ -28962,6 +28962,7 @@ a#nav-module-specific .btn:focus {
 *[class*=" mi-"] {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -31551,16 +31552,20 @@ a.no-link {
   margin-left: 15px;
   margin-bottom: 10px !important;
 }
+/* module specific buttons and labels */
 .mura-header .label-group {
   margin-top: 6px;
 }
 .mura-header .label,
 .mura-header #nav-module-specific .btn {
-  font-size: 84%;
-  color: #777;
-  background-color: #f1f1f1;
+  color: #fff;
+  background-color: #ff3a00;
+  font-size: 92%;
+  line-height: 1;
   font-weight: normal;
   margin-left: 8px;
+  min-height: 2.3em;
+  padding-top: .5em;
 }
 .mura-file-selector .btn-group {
   margin-bottom: 9px;

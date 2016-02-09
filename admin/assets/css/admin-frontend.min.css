@@ -473,6 +473,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 *[class*=" mi-"] {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: inherit;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
