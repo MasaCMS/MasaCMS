@@ -61,8 +61,8 @@
 			<input type="hidden" name="displayInterval" id="displayInterval" value="#esapiEncode('html_attr',rc.contentBean.getDisplayInterval())#">
 			<input name="convertDisplayTimeZone" type="hidden" value="true">
 
-			<div class="controls">
-				<label for="displayIntervalAllDay">
+			<div class="mura-control-group">
+				<label class="checkbox" for="displayIntervalAllDay">
 					<input type="checkbox" id="displayIntervalAllDay" name="displayIntervalllDay" value="1" <cfif displayInterval.allday> checked</cfif>/>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.allday')#
 				</label>
 				<cfif rc.ptype eq 'Calendar'>
@@ -81,17 +81,17 @@
 						</select> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#
 					</div>
 				</cfif>
-				<label for="displayIntervalRepeats" class="control-label">
+				<label for="displayIntervalRepeats" class="checkbox">
 					<input type="checkbox" class="mura-repeat-option" id="displayIntervalRepeats" value="1" name="displayIntervalRepeats"<cfif displayInterval.repeats> checked</cfif>>&nbsp;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.repeats')#
 				</label>
 				<div class="mura-repeat-options" style="display:none">
-						<select id="displayIntervalType" name="displayIntervalType" class="span4 mura-repeat-option">
+						<select id="displayIntervalType" name="displayIntervalType" class="mura-repeat-option">
 							<cfloop list="daily,weekly,bi-weekly,monthly,weekdays,weekends,week1,week2,week3,week4,weeklast,yearly" index="i">
 							<option value="#i#"<cfif displayInterval.type eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 							</cfloop>
 						</select>
 						&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.every')#&nbsp;
-						<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="span1 mura-repeat-option" size="3">
+						<input type="text" id="displayIntervalEvery" name="displayIntervalEvery" value="#esapiEncode('html_attr',displayInterval.every)#" class="mura-repeat-option">
 					
 						&nbsp;
 						<span class="mura-interval-every-label" id="mura-interval-every-label-weeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.weeks')#</span>
@@ -99,7 +99,8 @@
 						<span class="mura-interval-every-label" id="mura-interval-every-label-years" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.years')#</span>
 						<span class="mura-interval-every-label" id="mura-interval-every-label-days" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.days')#</span>
 						<span class="mura-interval-every-label" id="mura-interval-every-label-biweeks" style="display:none">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.bi-weeks')#</span>
-					</div>
+					</div><!-- /mura-repeat-options -->
+					
 					<div class="mura-daysofweek" style="display:none">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.ondow')#
 						<cfset daysofweekshortlabels=application.rbFactory.getKeyValue(session.rb,'calendar.weekdayAbrev')>
