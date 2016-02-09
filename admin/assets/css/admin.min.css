@@ -28409,6 +28409,13 @@ a#mura-login .block-header:hover,
 a#mura-login .block-header:focus {
   background-color: #3675c5;
 }
+#mura-login .block-header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
 /* TEMPLATE MAPPING */
 /* LEGACY MURA / BS2 CLASS MAPPING */
 h1:not([class]) {
@@ -28845,11 +28852,11 @@ fieldset[disabled] .btn:not([class*="btn-"]).active {
   width: 75%;
 }
 .form-actions {
-  padding: 17px 20px 18px;
+  padding: 17px 0 18px;
   margin-top: 18px;
   margin-bottom: 18px;
   background-color: transparent;
-  border-top: 1px solid #e5e5e5;
+  border-top: none;
 }
 .form-actions:before,
 .form-actions:after {
@@ -31559,7 +31566,7 @@ a.no-link {
 .mura-header .label,
 .mura-header #nav-module-specific .btn {
   color: #fff;
-  background-color: #ff3a00;
+  background-color: #545454;
   font-size: 92%;
   line-height: 1;
   font-weight: normal;
