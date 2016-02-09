@@ -121,7 +121,6 @@ select.time{
   .nav; 
 }
 
-
 // image details
 #mura-content #image-details .mura-control-group label + .btn-group{
   .make-sm-column(12);
@@ -131,6 +130,27 @@ select.time{
   .make-sm-column(12);
 }
 
+// login
+.block-themed{};
+#mura-login{
+  .make-row();
+   
+  .mura-control-group > label + input, 
+  .mura-control-group > label + select{
+    .make-xs-column(12); 
+  }
+
+  > .block{
+    .make-xs-column(12);
+    .make-md-column(4);
+    margin: 0 auto;
+    padding: 0;
+    float: none !important;
+  } 
+  .block-header{
+    .bg-primary;
+  }
+}
 
 /* TEMPLATE MAPPING */
 //@import "oneui/main.less";
