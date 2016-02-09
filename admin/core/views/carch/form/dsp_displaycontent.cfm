@@ -126,7 +126,7 @@
 
 		<div class="mura-control-group" id="mura-detectspan-container"<cfif displayInterval.detectconflicts> style="display:none;"</cfif>>
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.for')#</label>
-			<select id="mura-detectspan">
+			<select id="mura-detectspan" class="mura-repeat-option">
 				<cfloop from="1" to="12" index="m">
 					<option value="#m#"<cfif m eq displayInterval.detectspan> selected</cfif>>
 					#m#
@@ -168,7 +168,6 @@
 			}
 
 			function updateDisplayInterval(){
-
 				if($('##displayIntervalEnd').val()=='on'){
 					$('##mura-datepicker-displayStop').val($('##displayIntervalEndOn').val());
 					$('##mura-datepicker-displayStop').trigger('change');
