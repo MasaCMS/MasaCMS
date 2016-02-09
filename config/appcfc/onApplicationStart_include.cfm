@@ -321,6 +321,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfscript>
 	</cfif>
 
+	<cfset variables.serviceFactory.getBean('contentCategoryAssign')>
+
 	<cfset application.appAutoUpdated=false>
 
 	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
