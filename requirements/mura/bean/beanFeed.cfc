@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
-			order by #variables.instance.table#.#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._,\- ]","","all")#  #variables.instance.sortDirection#
+			order by #variables.instance.table#.#REReplace(variables.instance.sortby,"[^0-9A-Za-z\._\- ]","","all")#  #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
 				<cfif variables.instance.sortDirection eq "asc">
 					NULLS FIRST
