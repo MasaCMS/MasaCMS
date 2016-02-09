@@ -129,10 +129,10 @@
 			<select id="mura-detectspan" class="mura-repeat-option">
 				<cfloop from="1" to="12" index="m">
 					<option value="#m#"<cfif m eq displayInterval.detectspan> selected</cfif>>
-					#m#
+					#m##application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#
 					</option>
 				</cfloop>
-			</select> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.months')#
+			</select>
 		</div>
 
 	</cfif>
