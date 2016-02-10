@@ -28945,6 +28945,105 @@ a#nav-module-specific .btn:focus {
 #nav-module-specific .btn-inverse[href] {
   background-color: #4d4d4d;
 }
+#nav-module-specific .label {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  font-size: 14px;
+}
+#nav-module-specific .label:focus,
+#nav-module-specific .label:active:focus,
+#nav-module-specific .label.active:focus,
+#nav-module-specific .label.focus,
+#nav-module-specific .label:active.focus,
+#nav-module-specific .label.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+#nav-module-specific .label:hover,
+#nav-module-specific .label:focus,
+#nav-module-specific .label.focus {
+  color: #333333;
+  text-decoration: none;
+}
+#nav-module-specific .label:active,
+#nav-module-specific .label.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+#nav-module-specific .label.disabled,
+#nav-module-specific .label[disabled],
+fieldset[disabled] #nav-module-specific .label {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a#nav-module-specific .label.disabled,
+fieldset[disabled] a#nav-module-specific .label {
+  pointer-events: none;
+}
+#nav-module-specific .label:active,
+#nav-module-specific .label.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+#nav-module-specific .label.btn-square {
+  border-radius: 0;
+}
+#nav-module-specific .label.btn-rounded {
+  border-radius: 20px;
+}
+#nav-module-specific .label.btn-minw {
+  min-width: 110px;
+}
+#nav-module-specific .label.btn-noborder {
+  border: none !important;
+}
+#nav-module-specific .label.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+#nav-module-specific .label.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+#nav-module-specific .label > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+#nav-module-specific .label > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
+}
 .label:not([class*="label-"]) {
   background-color: #f3f3f3;
   background-color: #f1f1f1;
@@ -31467,6 +31566,7 @@ header .btn-image span.button-image {
 .nav-main li a i {
   font-size: 23px;
   margin-left: -3px;
+  min-width: 26px;
 }
 .nav-main li ul li a i {
   font-size: 17px;
@@ -31516,8 +31616,13 @@ div.cke_editable {
 /* custom styles */
 /* custom styles */
 /* custom styles */
+/* fixed width, pre-responsive */
 .block-constrain {
   padding-bottom: 20px;
+  min-width: 1110px;
+}
+.mura-header {
+  min-width: 1140px;
 }
 .block-constrain > * {
   max-width: 1140px;
@@ -31565,8 +31670,9 @@ a.no-link {
 }
 .mura-header .label,
 .mura-header #nav-module-specific .btn {
-  color: #fff;
-  background-color: #545454;
+  color: #777;
+  background-color: #f1f1f1;
+  font-size: 84%;
   font-size: 92%;
   line-height: 1;
   font-weight: normal;
@@ -31585,6 +31691,7 @@ a.no-link {
 }
 .block-content {
   display: block;
+  padding: 5px 20px 1px;
 }
 .tab-content {
   padding-left: 0px;

@@ -487,6 +487,7 @@ header .btn-image span.button-image{
 .nav-main li a i {
   font-size: 23px;
   margin-left: -3px;
+  min-width: 26px;
 }
 .nav-main li ul li a i {
   font-size: 17px;
@@ -541,15 +542,19 @@ div.cke_editable{
 /* custom styles */
 /* custom styles */
 
+/* fixed width, pre-responsive */
 .block-constrain{
   padding-bottom: 20px;
+  min-width: 1110px;
+}
+.mura-header{
+  min-width: 1140px;
 }
 
 .block-constrain > *{
   max-width: 1140px;
   margin: 0 30px;
 }
-
 
 .block-constrain > .content{
   padding: 15px 30px !important;
@@ -598,8 +603,9 @@ a.no-link{
 }
 .mura-header .label,
 .mura-header #nav-module-specific .btn{
-  color:#fff;
-  background-color: #545454;
+  color: #777;
+  background-color: #f1f1f1;
+  font-size: 84%;
   font-size: 92%;
   line-height: 1;
   font-weight: normal;
@@ -621,6 +627,7 @@ a.no-link{
 }
 .block-content{
   display: block;
+  padding: 5px 20px 1px;
 }
 
 .tab-content{
