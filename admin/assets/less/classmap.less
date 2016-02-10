@@ -292,13 +292,17 @@ h1:not([class]){
 
 // .form-actions (bs3 deprecated)
 .form-actions {
-  padding: (@baseLineHeight - 1) 0 @baseLineHeight;
+  padding: (@baseLineHeight - 15) 0 @baseLineHeight;
   margin-top: @baseLineHeight;
   margin-bottom: @baseLineHeight;
   background-color: @formActionsBackground;
   border-top: none;
   .clearfix(); // Adding clearfix to allow for .pull-right button containers
+  > .btn{
+  margin-right: 15px;
+  }
 }
+
 
 // secondary nav 
 
