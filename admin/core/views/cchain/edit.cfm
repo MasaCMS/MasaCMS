@@ -5,7 +5,7 @@
 <cfoutput>
 
 
-<div class="items-push mura-header">
+<div class="mura-header">
   <cfif not len(rc.chainid)>
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains.addapprovalchain")#</h1>
   <cfelse>

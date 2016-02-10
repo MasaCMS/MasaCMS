@@ -48,7 +48,7 @@
 <cfoutput>
 
 	<!--- User Search --->		
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rbKey('user.groupsandusers')#</h1>
 
 	<div class="mura-item-metadata">

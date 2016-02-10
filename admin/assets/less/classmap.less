@@ -120,6 +120,10 @@ select.time{
 .mura-tabs{
   .nav; 
 }
+/* hide tab header controls for now */
+.tab-pane .block-options{
+  display:none;
+}
 
 // image details
 #mura-content #image-details .mura-control-group label + .btn-group{
@@ -153,6 +157,13 @@ select.time{
   }
   .block-header{
     .bg-primary;
+    h3{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
   }
 }
 
@@ -281,19 +292,26 @@ h1:not([class]){
 
 // .form-actions (bs3 deprecated)
 .form-actions {
-  padding: (@baseLineHeight - 1) 20px @baseLineHeight;
+  padding: (@baseLineHeight - 15) 0 @baseLineHeight;
   margin-top: @baseLineHeight;
   margin-bottom: @baseLineHeight;
   background-color: @formActionsBackground;
-  border-top: 1px solid #e5e5e5;
+  border-top: none;
   .clearfix(); // Adding clearfix to allow for .pull-right button containers
+  > .btn{
+  margin-right: 15px;
+  }
 }
+
 
 // secondary nav 
 
 // style a.btn like label
 #nav-module-specific .btn{
 	.label;
+}
+#nav-module-specific .label{
+  .btn;
 }
 
 // default to label-default

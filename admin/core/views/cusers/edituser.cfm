@@ -85,7 +85,7 @@
 
 <cfoutput>
 
-<div class="items-push mura-header">
+<div class="mura-header">
 		<h1>#rbKey('user.usermaintenanceform')#</h1>
 		
 	<div class="mura-item-metadata">

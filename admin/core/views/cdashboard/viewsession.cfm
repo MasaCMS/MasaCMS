@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- TODO GoWest : test w/ live session data : 2016-02-01T12:55:42-07:00 --->
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.sessionhistory")#</h1>
 
 	<div class="mura-item-metadata">

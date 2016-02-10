@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>Trash Detail</h1>
 
 	<div class="mura-item-metadata">

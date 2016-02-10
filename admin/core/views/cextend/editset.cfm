@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSetBean=subType.loadSet(rc.extendSetID) />
 <cfoutput>
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1><cfif len(rc.extendSetID)>Edit<cfelse>Add</cfif> Attribute Set</h1>
 
 	<div class="mura-item-metadata">

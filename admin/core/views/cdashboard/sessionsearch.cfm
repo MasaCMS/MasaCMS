@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.advancedsearch")#</h1>
 
 	<div class="mura-item-metadata">

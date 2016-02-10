@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteSortBy" default="site">
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>Global Settings</h1>
 	<div class="mura-item-metadata">
 		<div class="label-group">

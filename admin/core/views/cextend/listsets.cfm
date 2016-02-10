@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset relatedContentsets = subType.getRelatedContentSets(includeInheritedSets=false)>
 	</cfif>
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionoverview')#</h1>
 
 	<div class="mura-item-metadata">

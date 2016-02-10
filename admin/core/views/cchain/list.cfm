@@ -49,7 +49,7 @@
 <cfset chains=$.getBean('approvalChainManager').getChainFeed(rc.siteID).getIterator()>
 
 <cfoutput>
-<div class="items-push mura-header">	
+<div class="mura-header">	
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
 
 	<div class="mura-item-metadata">
