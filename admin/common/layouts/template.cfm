@@ -281,16 +281,15 @@
   <body id="#rc.originalcircuit#" class="header-navbar-fixed">
 
     <!-- Page Container -->
-    <div id="page-container" class="sidebar-l sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
+    <div id="page-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>sidebar-l</cfif> sidebar-o <cfif cookie.ADMINSIDEBAR is 'off'> sidebar-mini</cfif> side-overlay-hover side-scroll header-navbar-fixed">
 
-    <cfinclude template="includes/nav.cfm">
-	
 		<cfif session.siteid neq '' and session.mura.isLoggedIn>
+    <cfinclude template="includes/nav.cfm">
     <cfinclude template="includes/header.cfm">
 		</cfif>
 
     <!-- Main Container -->
-    <main id="main-container" class="block-constrain">
+    <main id="main-container" class="<cfif session.siteid neq '' and session.mura.isLoggedIn>block-constrain</cfif>">
 
     <!-- Page Content -->
     <div class="content">

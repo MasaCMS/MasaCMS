@@ -28382,7 +28382,7 @@ select.time.input-lg {
 }
 #mura-login > .block {
   float: left;
-  width: 100%;
+  width: 83.33333333%;
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -28391,7 +28391,7 @@ select.time.input-lg {
   padding: 0;
   float: none !important;
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   #mura-login > .block {
     float: left;
     width: 33.33333333%;
@@ -31337,6 +31337,9 @@ a.list-group-item:focus {
 }
 #main-container {
   background-color: #f5f5f5;
+}
+#clogin #main-container {
+  background: none;
 }
 .nav-main-header {
   background-color: #333;
