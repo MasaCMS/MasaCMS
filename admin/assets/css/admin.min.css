@@ -28338,6 +28338,10 @@ select.time.input-lg {
 .mura-tabs > li > a > img {
   max-width: none;
 }
+/* hide tab header controls for now */
+.tab-pane .block-options {
+  display: none;
+}
 #mura-content #image-details .mura-control-group label + .btn-group {
   position: relative;
   min-height: 1px;
@@ -31554,6 +31558,10 @@ header .btn-image span.button-image {
 .nav-main li a {
   text-decoration: none;
 }
+.nav-main li a span {
+  display: inline-block;
+  vertical-align: top;
+}
 .nav-main ul {
   padding-left: 32px;
 }
@@ -31696,6 +31704,11 @@ a.no-link {
 .tab-content {
   padding-left: 0px;
   padding-right: 0px;
+}
+.tab-pane .block-header h3 {
+  margin-bottom: 0;
+  font-size: 16px;
+  text-transform: uppercase;
 }
 .sidebar h2,
 .tab-content h2 {
