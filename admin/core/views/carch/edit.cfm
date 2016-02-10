@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function setRequestedURL(){
 		siteManager.requestedURL=this.href
 		return conditionalExit("#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
-	}</cfoutput>
+	}
 
 	$(document).ready(function(){
 		var anchors=document.getElementsByTagName("A");
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			try{
 				if (typeof(anchors[i].onclick) != 'function'
 					&& typeof(anchors[i].getAttribute('href')) == 'string'
-					&& anchors[i].getAttribute('href').indexOf('#') == -1
+					&& anchors[i].getAttribute('href').indexOf('##') == -1
 					&& anchors[i].getAttribute('href').indexOf('mailto') == -1) {
 		   			anchors[i].onclick = setRequestedURL;
 				}
@@ -110,6 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		}
 
 	});
+	</cfoutput>
 
 	$(document).unload(function(){
 		if(!siteManager.formSubmitted && siteManager.requestedURL != '')
@@ -428,7 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- metadata labels --->
 	<cfif rc.compactDisplay neq "true">
 	<div class="mura-item-metadata">
-	<div class="label-group">
+		<div class="label-group">
 			<cfif not rc.contentBean.getIsNew()>
 				<cfif listFindNoCase(rc.$.getBean('contentManager').TreeLevelList,rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
@@ -747,9 +748,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				});
 			</script>
+			#actionButtons#
 		</div>
 		<!-- /block-content tab content -->
-		#actionButtons#
 	</div>
 	<!-- /tabs -->
 

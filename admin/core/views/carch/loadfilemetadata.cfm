@@ -18,7 +18,7 @@
 			<!-- block -->
 		  	<div class="block block-bordered">
 				<div class="block-header bg-gray-lighter">
-					<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</h3>
+					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.basic')#</h3>
 				</div>
 				<div class="block-content">
 				 	<cfif fileMetaData.hasImageFileExt()>
@@ -65,7 +65,7 @@
 			<!-- block -->
 			  <div class="block block-bordered">
 				<div class="block-header bg-gray-lighter">
-					<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.exifdata')#</h3>
+					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filemetadata.exifdata')#</h3>
 	  			</div>
   				<div class="block-content">
 				<cfset gpsList="GPS Altitude,GPS Altitude Ref,GPS Latitude,GPS Latitude Ref,GPS Longitude,GPS Longitude Ref,GPS Img Direction,GPS Time-Stamp">
@@ -84,7 +84,7 @@
 			<!-- block -->
 		  	<div class="block block-bordered">
 				<div class="block-header bg-gray-lighter">
-					<h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</h3>
+					<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.tabs.advanced')#</h3>
 				</div>
 				<div class="block-content">
 					<div class="mura-control-group">
