@@ -748,8 +748,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				});
 			</script>
-			#actionButtons#
 		</div>
+		#actionButtons#
 		<!-- /block-content tab content -->
 	</div>
 	<!-- /tabs -->
