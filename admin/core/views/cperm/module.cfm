@@ -47,7 +47,7 @@
 --->
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
   <h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
   <div class="mura-item-metadata">
     <div class="label-group">

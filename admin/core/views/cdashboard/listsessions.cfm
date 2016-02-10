@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<cfoutput>
 		<h1><cfif rc.membersOnly>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.membersessions")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.allsessions")#</cfif>
 	<span>

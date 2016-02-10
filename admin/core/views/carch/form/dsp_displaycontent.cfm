@@ -33,7 +33,7 @@
 			<cfset displayInterval=rc.contentBean.getDisplayInterval(deserialize=true)>
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.schedule')#</label>
 			<cf_datetimeselector name="displayStart" datetime="#rc.contentBean.getDisplayStart(timezone=displayInterval.timezone)#"> <span id="displayIntervalToLabel">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayinterval.to')#</span>
-			<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplayStop(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"></span>
+			<cf_datetimeselector name="displayStop" datetime="#rc.contentBean.getDisplaySto p(timezone=displayInterval.timezone)#" defaulthour="23" defaultminute="59"></span>
 		</div>
 		<cfif len(rc.$.globalConfig('tzRegex'))>
 		<div id="mura-tz-container mura-control-group" style="display:none">

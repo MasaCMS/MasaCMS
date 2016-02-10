@@ -46,7 +46,7 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rbKey('user.groupform')#</h1>
 	<div class="mura-item-metadata">
 		<div class="label-group">

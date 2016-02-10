@@ -3,7 +3,7 @@
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 
 <cfoutput>
-<div class="items-push mura-header">	
+<div class="mura-header">	
 	<h1>#application.rbFactory.getKeyValue(session.rb,"approvalchains")#</h1>
 
 	<div class="mura-item-metadata">

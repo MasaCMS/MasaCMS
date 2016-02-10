@@ -49,7 +49,7 @@
 
 
 	<!--- Page Title --->
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rbKey('user.usersearchresults')#</h1>
 
 	<div class="mura-item-metadata">

@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1><cfif len(rc.relatedContentSetID)>Edit<cfelse>Add</cfif> Related Content Set</h1>
 
 	<div class="mura-item-metadata">

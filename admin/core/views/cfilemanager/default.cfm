@@ -6,7 +6,7 @@
   <cfset session.resourceType=rc.resourceType>
 </cfif>
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<cfif session.resourceType eq "assets">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
 	<cfelseif session.resourceType eq "files">

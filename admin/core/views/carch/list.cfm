@@ -80,7 +80,7 @@
 		</cfswitch>
 
 		<cfoutput>
-			<div class="items-push mura-header">
+			<div class="mura-header">
 			<cfif rc.moduleid eq '00000000000000000000000000000000004'>
 				<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 			<cfelseif rc.moduleid eq '00000000000000000000000000000000099'>
@@ -624,7 +624,7 @@
 				</cfif>
 			</script>
 
-		 	<div class="items-push mura-header">
+		 	<div class="mura-header">
 
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
 

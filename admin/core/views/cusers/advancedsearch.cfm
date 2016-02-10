@@ -111,7 +111,7 @@
 		<cfset criterias[8][2]=rbKey('params.contains')>
 </cfsilent>
 <cfoutput>
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rbKey("user.advancedusersearch")#</h1>
 
 	<div class="mura-item-metadata">

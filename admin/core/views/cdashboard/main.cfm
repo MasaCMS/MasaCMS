@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="act_defaults.cfm"/>
 	<cfoutput>
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h1>
 
 	<div class="mura-item-metadata">

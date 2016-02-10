@@ -72,7 +72,7 @@
 
 <div id="commentsManagerWrapper">
 
-	<div class="items-push mura-header">
+	<div class="mura-header">
 		<h1>#rbKey('comments.commentsmanager')#</h1>
 
 		<div class="mura-item-metadata">

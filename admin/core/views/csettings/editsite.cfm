@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 	<!--- mura-header --->
-	<div class="items-push mura-header">
+	<div class="mura-header">
 		<h1>Site Settings</h1>
 	<cfif len(rc.siteid)>
 			<div class="mura-item-metadata">

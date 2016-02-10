@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.classextensionmanager')#</h1>
 
 	<div class="mura-item-metadata">

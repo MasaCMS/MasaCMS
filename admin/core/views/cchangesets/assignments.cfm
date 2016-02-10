@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 
-<div class="items-push mura-header">
+<div class="mura-header">
   <h1>Change Set Content List</h1>
   <div class="mura-item-metadata">
     <div class="label-group">

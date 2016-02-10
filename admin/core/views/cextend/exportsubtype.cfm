@@ -79,7 +79,7 @@
 </script>
 
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rc.$.rbKey('sitemanager.extension.exportclassextensions')#</h1>
 	<div class="mura-item-metadata">
 		<div class="label-group">

@@ -53,7 +53,7 @@
 <cfoutput>
 <form novalidate="novalidate" action="./?muraAction=cUsers.updateAddress&amp;userid=#esapiEncode('url',rc.userid)#&amp;routeid=#rc.routeid#&amp;siteid=#esapiEncode('url',rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return userManager.submitForm(this);"  autocomplete="off" >
 
-<div class="items-push mura-header">
+<div class="mura-header">
 	<h1>#rbKey('user.memberaddressform')#</h1>
 
 	<div class="mura-item-metadata">

@@ -399,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentBean.getIsNew()) or not rc.contentBean.getIsNew()>
 <cfoutput>
 	<!--- mura-header --->
-	<div class="items-push mura-header">
+	<div class="mura-header">
 	<cfif rc.type eq "Component">
 		<cfif rc.contentBean.exists()>
 			<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>

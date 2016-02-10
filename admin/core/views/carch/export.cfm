@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</div>
 
-	<div class="items-push mura-header">
+	<div class="mura-header">
 		<h1>#rc.$.rbKey('sitemanager.content.exportcontent')#</h1>
 
 		<div class="mura-item-metadata">

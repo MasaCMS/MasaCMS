@@ -87,7 +87,7 @@ function checkAll (form) {
 }
 </script>
 
-<div class="items-push mura-header">
+<div class="mura-header">
   <h1>Create Site Bundle</h1>
   <div class="mura-item-metadata">
     <div class="label-group">
