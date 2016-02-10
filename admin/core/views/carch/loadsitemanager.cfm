@@ -186,6 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
 
     <!-- Begin Grid Header -->
+    <div class="clear-both"></div>
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> no-manual-sort</cfif>">
     <dl class="mura-grid-hdr">
       <dt>
@@ -363,6 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </li>
       </ul>
       </div>
+      <div class="clear=both"></div>
   </form>
   <cfif isMore>
 	#pageList#
