@@ -3102,9 +3102,18 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
-						var context=obj.data();
-						context.html=mura.templates[template](obj.data());
-						obj.html(mura.templates.content(context));
+
+						var context=deepExtend(obj.data(),response);
+
+						if(typeof context.async != 'undefined'){
+							obj.data('async',context.async);
+						}
+						alert(JSON.stringify(context))
+						context.html=mura.templates[template](context);
+
+						if(context.html){
+							obj.html(mura.templates.content(context));
+						}
 						obj.prepend(mura.templates.meta(context));
 					} else {
 						console.log('Missing Client Template for:');
@@ -3121,7 +3130,9 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				if(typeof mura.templates[template] == 'function'){
 					var context=obj.data();
 					context.html=mura.templates[template](obj.data());
-					obj.html(mura.templates.content(context));
+					if(context.html){
+						obj.html(mura.templates.content(context));
+					}
 					obj.prepend(mura.templates.meta(context));
 				} else {
 					console.log('Missing Client Template for:');
@@ -3589,9 +3600,10 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						title:'test 5'
 					}
 				.save()
-				.then(function(item){
-					alert(item.get('title'));
-				});
+				.then(
+					function(item){
+						alert(item.get('title'));
+					});
 
 			mura.findQuery({
 					entityname:'content',
