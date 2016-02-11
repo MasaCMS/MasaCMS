@@ -26583,18 +26583,18 @@ font-size: 12px;
 .mura .noShow {
   display: none !important;
 }
-.mura #main-container ul,
-.mura #main-container ol {
+.mura #main-container #tabArchitectural ul,
+.mura #main-container #tabArchitectural ol {
   padding: 0;
   margin: 0 0 9px 25px;
 }
-.mura #main-container ul ul,
-.mura #main-container ul ol,
-.mura #main-container ol ol,
-.mura #main-container ol ul {
+.mura #main-container #tabArchitectural ul ul,
+.mura #main-container #tabArchitectural ul ol,
+.mura #main-container #tabArchitectural ol ol,
+.mura #main-container #tabArchitectural ol ul {
   margin-bottom: 0;
 }
-.mura #main-container li {
+.mura #main-container #tabArchitectural li {
   line-height: 18px;
 }
 .mura #carch #mura-content #sitemgr-reorder {
@@ -31856,12 +31856,19 @@ a.close:hover {
   float: none;
   display: block;
 }
+ul.dropdown-menu {
+  margin: 0 0 9px 9px;
+}
 .sidebar h3 {
   font-size: 15px;
   margin-bottom: 8px;
 }
 .sidebar .nav .badge {
   float: right;
+}
+.sidebar ul {
+  padding: 0;
+  margin: 0;
 }
 .sidebar .sidebar-submit {
   display: block;
