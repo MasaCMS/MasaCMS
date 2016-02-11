@@ -31840,8 +31840,7 @@ a.close:hover {
 .sidebar .sidebar-submit {
   display: block;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 15px auto 5px;
 }
 .sidebar .module ul.nav,
 .sidebar .well ul.nav {
