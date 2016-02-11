@@ -151,6 +151,16 @@
             this.queryString+='&maxItems=' + maxItems;
 			return this;
         },
+		innerJoin:function(relatedEntity){
+            this.queryString+='&innerJoin[' + this.propIndex + ']=' + relatedEntity;
+			this.propIndex++;
+            return this;
+        },
+		leftJoin:function(relatedEntity){
+            this.queryString+='&leftJoin[' + this.propIndex + ']=' + relatedEntity;
+			this.propIndex++;
+            return this;
+        },
         getQuery:function(){
             var self=this;
             return new Promise(function(resolve,reject) {

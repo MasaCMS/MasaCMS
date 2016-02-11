@@ -601,6 +601,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="andProp" output="false">
 	<cfargument name="property">
+	<cfif listLen(arguments.property,'.') eq 2>
+		<cfset var propArray=listToArray(arguments.property,'.')>
+		<cfset arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2]>
+	</cfif>
 	<cfset variables.instance.pendingParam.relationship='and'>
 	<cfset variables.instance.pendingParam.column=arguments.property>
 	<cfreturn this>
@@ -608,6 +612,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="orProp" output="false">
 	<cfargument name="property">
+	<cfif listLen(arguments.property,'.') eq 2>
+		<cfset var propArray=listToArray(arguments.property,'.')>
+		<cfset arguments.property=application.objectMapping[propArray[1]].table & '.' & propArray[2]>
+	</cfif>
 	<cfset variables.instance.pendingParam.relationship='or'>
 	<cfset variables.instance.pendingParam.column=arguments.property>
 	<cfreturn this>
@@ -754,6 +762,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="maxItems" output="false">
 	<cfargument name="maxItems">
 	<cfset setMaxItems(arguments.maxItems)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getEntity" output="false">
+	<cfif not isdefined('variables.sampleEntity')>
+		<cfset variables.sampleEntity=getBean(getEntityName())>
+	</cfif>
+	<cfreturn variables.sampleEntity>
+</cffunction>
+
+<cffunction name="innerJoin" output="false">
+	<cfargument name="relatedEntity">
+	<cfset var entity=getEntity()>
+	<cfset var p="">
+	<cfloop array="#entity.getHasManyArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfloop array="#entity.getHasOneArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="leftJoin" output="false">
+	<cfargument name="entityName">
+	<cfset var entity=getEntity()>
+	<cfset var p="">
+	<cfloop array="#entity.getHasManyArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
+	<cfloop array="#entity.getHasOneArray()#" index="p">
+		<cfif p.cfc eq arguments.relatedEntity>
+			<cfset addJoin('inner',relatedEntity.getTable(),'#entity.getValue(entity.translatePropKey(p.column))#=#application.objectMappings[arguments.relatedEntity].table#.#entity.translatePropKey(p.loadkey)#')>
+			<cfreturn this>
+		</cfif>
+	</cfloop>
 	<cfreturn this>
 </cffunction>
 
