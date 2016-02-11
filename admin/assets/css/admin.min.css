@@ -31288,11 +31288,17 @@ fieldset[disabled] .btn-primary.active {
 }
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
-  background-color: #ff3405;
+.nav-pills > li.active > a:focus,
+.nav-pills > li > a.active,
+.nav-pills > li > a:ho10er,
+.nav-pills > li > a:focus {
+  background-color: #eee;
 }
 .nav-pills > li.active > a > .badge {
   color: #ff3405;
+}
+.navSort .nav-pills a {
+  margin-top: -10px;
 }
 .pagination > li > a:hover,
 .pagination > li > span:hover,
@@ -31647,6 +31653,10 @@ header .btn-image span.button-image {
 .content h3 {
   font-size: 15px;
   margin-bottom: 15px;
+}
+.content .navSort h3 {
+  width: 64px;
+  float: left;
 }
 .popover-content {
   font-size: 12px;
