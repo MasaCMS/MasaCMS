@@ -5441,7 +5441,9 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   display: inline-block;
 }
 .breadcrumb > li + li:before {
-  content: "/\00a0";
+  /* 
+      content: "@{breadcrumb-separator}\00a0"; // Unicode space added since inline-block means non-collapsing white-space
+      */
   padding: 0 5px;
   color: #cccccc;
 }
@@ -10079,7 +10081,7 @@ a.list-group-item:focus {
   padding: 0;
   font-family: "FontAwesome";
   color: rgba(0, 0, 0, 0.5);
-  content: "\f105";
+  /* content: "\f105"; */
   width: 20px;
   text-align: center;
 }
@@ -31683,6 +31685,9 @@ div.cke_editable {
 .mura-header {
   /* min-width: 1140px; */
   min-width: 550px;
+}
+.header-navbar-fixed #header-navbar {
+  min-width: 520px;
 }
 .block-constrain > * {
   max-width: 1140px;
