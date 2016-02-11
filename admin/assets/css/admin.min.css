@@ -31300,6 +31300,10 @@ fieldset[disabled] .btn-primary.active {
 .navSort .nav-pills a {
   margin-top: -10px;
 }
+.sidebar .nav-list li,
+.sidebar .nav-list li a {
+  line-height: 10px;
+}
 .pagination > li > a:hover,
 .pagination > li > span:hover,
 .pagination > li > a:focus,
