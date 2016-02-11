@@ -31270,6 +31270,10 @@ fieldset[disabled] .btn-primary.active {
   color: #ff3405;
   background-color: #fff;
 }
+#nav-module-specific * > .badge {
+  background-color: #c0c0c0;
+  margin-left: 8px;
+}
 .label-default {
   background-color: #f1f1f1;
 }
