@@ -7445,6 +7445,10 @@ button.close {
 .modal-header:after,
 .modal-footer:before,
 .modal-footer:after,
+.mura #userActivityData:before,
+.mura #userActivityData:after,
+.mura #popularContent:before,
+.mura #popularContent:after,
 .mura-layout-row:before,
 .mura-layout-row:after,
 .mura-header:before,
@@ -7484,6 +7488,8 @@ main > .content > :first-child:after,
 .panel-body:after,
 .modal-header:after,
 .modal-footer:after,
+.mura #userActivityData:after,
+.mura #popularContent:after,
 .mura-layout-row:after,
 .mura-header:after,
 main > .content > :first-child:after,
@@ -7528,6 +7534,10 @@ main > .content > :first-child:after,
 .modal-header:after,
 .modal-footer:before,
 .modal-footer:after,
+.mura #userActivityData:before,
+.mura #userActivityData:after,
+.mura #popularContent:before,
+.mura #popularContent:after,
 .mura-layout-row:before,
 .mura-layout-row:after,
 .mura-header:before,
@@ -7567,6 +7577,8 @@ main > .content > :first-child:after,
 .panel-body:after,
 .modal-header:after,
 .modal-footer:after,
+.mura #userActivityData:after,
+.mura #popularContent:after,
 .mura-layout-row:after,
 .mura-header:after,
 main > .content > :first-child:after,
@@ -25231,18 +25243,30 @@ text-shadow: 0 0 1px @blue;
   /*For FCKEditor PopUps*/
   width: auto;
 }
-.mura #userActivity table {
-  width: 49%;
-  float: right;
-  clear: none;
+.mura #userActivityData,
+.mura #popularContent {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-left: 0;
+  margin-right: 0;
 }
-.mura #userActivity #recentActivity {
-  float: left;
-}
+.mura #userActivity table,
 .mura #popularContent table {
-  width: 49%;
-  float: right;
+  float: left;
+  width: 100%;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 15px;
   clear: none;
+}
+@media (min-width: 1200px) {
+  .mura #userActivity table,
+  .mura #popularContent table {
+    float: left;
+    width: 50%;
+  }
 }
 .mura #popularContent #topPages {
   float: left;
@@ -27628,7 +27652,14 @@ main > .content > :first-child {
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
+  #cdashboard #main,
+  #mura-content #main {
+    float: left;
+    width: 66.66666667%;
+  }
+}
+@media (min-width: 1200px) {
   #cdashboard #main,
   #mura-content #main {
     float: left;
@@ -27642,7 +27673,14 @@ main > .content > :first-child {
   padding-left: 15px;
   padding-right: 15px;
 }
-@media (min-width: 768px) {
+@media (min-width: 992px) {
+  #cdashboard .sidebar,
+  #mura-content .sidebar {
+    float: left;
+    width: 33.33333333%;
+  }
+}
+@media (min-width: 1200px) {
   #cdashboard .sidebar,
   #mura-content .sidebar {
     float: left;
