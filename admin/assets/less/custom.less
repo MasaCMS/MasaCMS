@@ -281,6 +281,9 @@ a.list-group-item:hover,a.list-group-item:focus {
 #main-container {
   background-color: #f5f5f5;
 }
+#clogin #main-container{
+  background: none;
+}
 
 .nav-main-header {
   background-color: #333;
@@ -324,6 +327,9 @@ a.list-group-item:hover,a.list-group-item:focus {
 }
 .block>.nav-tabs>li>a:hover {
   color: #ff3405;
+}
+#mura-content .block ul.nav-tabs-alt{
+  margin-right: 25px;
 }
 
 .block>.nav-tabs.nav-tabs-alt>li>a:hover {
@@ -458,9 +464,6 @@ header .btn-image span.button-image{
 #mura-search-submit{
   cursor: pointer;
 }
-#carch #mura-content .block ul.nav-tabs-alt{
-  margin-right: 25px;
-}
 #carch #mura-content ul.breadcrumb, 
 #carch #mura-content ol.breadcrumb {
     padding: 0;
@@ -550,10 +553,15 @@ div.cke_editable{
 /* fixed width, pre-responsive */
 .block-constrain{
   padding-bottom: 20px;
-  min-width: 1110px;
+  /* min-width: 1110px; */
+  min-width: 520px;
 }
 .mura-header{
-  min-width: 1140px;
+ /* min-width: 1140px; */
+ min-width: 550px;
+}
+.header-navbar-fixed #header-navbar{
+  min-width: 520px;
 }
 
 .block-constrain > *{
@@ -748,6 +756,10 @@ input.text, { width: 95%; }
 .mura-control-group .mura-control.justify{
   padding: 8px 0px;
 }
+#mura-content > form .mura-control-group input.radio,
+#mura-content > form .mura-control-group input[type="radio"],
+#mura-content > form .mura-control-group input.checkbox,
+#mura-content > form .mura-control-group input[type="checkbox"],
 .mura-control-group input.radio,
 .mura-control-group input[type="radio"],
 .mura-control-group input.checkbox,
