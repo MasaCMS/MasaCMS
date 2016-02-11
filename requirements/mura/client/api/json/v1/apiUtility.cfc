@@ -1546,6 +1546,10 @@ component extends="mura.cfobject" {
 				} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
 					feed.addParam(relationship=p);
 					relationship='and';
+				} else if(propname='innerJoin'){
+					feed.innerJoin(relatedEntity=params[p]);
+				} else if(propname='leftJoin'){
+					feed.leftJoin(relatedEntity=params[p]);
 				}
 			}
 		}

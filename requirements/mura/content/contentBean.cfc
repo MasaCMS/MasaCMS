@@ -495,7 +495,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
 
-
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
@@ -509,6 +508,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listFindNoCase('Form,Component',variables.instance.type)
 		and variables.contentManager.doesLoadKeyExist(this,'title',variables.instance.title)>
 			<cfset variables.instance.errors.titleconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.titlenotunique")>
+	</cfif>
+
+	<cfif getValue('display') eq 2 and getDisplayConflicts().hasNext()>
+		<cfset variables.instance.errors.displayconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.displayconflict")>
 	</cfif>
 
 	<cfif variables.instance.isNew

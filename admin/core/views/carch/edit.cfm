@@ -497,6 +497,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 	</cfif>
 
+	<cfif not structIsEmpty(rc.contentBean.getErrors())>
+		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+	</cfif>
+	
 	<cfif not rc.contentBean.getIsNew()>
 
 		<cfinclude template="dsp_status.cfm">
@@ -520,10 +524,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif len(rc.contentBean.getNotes())>
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</p>
-	</cfif>
-
-	<cfif not structIsEmpty(rc.contentBean.getErrors())>
-		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
 
 
