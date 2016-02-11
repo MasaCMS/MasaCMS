@@ -31837,6 +31837,12 @@ a.close:hover {
 .sidebar .nav .badge {
   float: right;
 }
+.sidebar .sidebar-submit {
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
 .sidebar .module ul.nav,
 .sidebar .well ul.nav {
   margin: 0 !important;
