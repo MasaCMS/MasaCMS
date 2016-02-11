@@ -87,10 +87,12 @@
                 <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
                 <div class="btn-group">
                     <strong>
-<!--- TODO GoWest : logo treatment show/hide/xs : 2015-11-23T17:00:49-07:00 --->
                     <a class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
                         <img src="#application.configBean.getContext()#/admin/assets/images/mura_logo.png" class="mura-logo">
                     </a>
+                    <span class="sidebar-mini-hide logo-credit">
+                        <img src="#application.configBean.getContext()#/admin/assets/images/mura_logo_credit.png" class="mura-logo-credit">
+                    </span>
                 </strong>
                 </div>
             </div>

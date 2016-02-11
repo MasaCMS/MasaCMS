@@ -32,50 +32,15 @@
   float: right;
   margin: 0 0 25px 0;
 }
-
+/* see custom-responsive.less for column widths */
 #tabArchitectural #gridContainer{
   min-width: 419px;
   max-width: 1008px;
 }
-
-/* site manager column widths */
-@media (max-width: (@screen-sm-min - 1)) {
-  #tabArchitectural #gridContainer dl dt:first-child{
-    max-width: 175px;
-  }
-  /* hide some columns */
-  dd.objects, dd.template, dd.display, dd.nav{
-  display:none;
-  }
-}
-@media (min-width: @screen-sm-min) and (max-width: (@screen-md-min - 1)) {
-  #tabArchitectural #gridContainer dl dt:first-child{
-    max-width: 175px;
-  }
-  /* hide some columns */
-  dd.objects, dd.template{
-  display:none;
-  }
-}
-@media (min-width: @screen-md-min) and (max-width: (@screen-lg-min + 59)) {
-  #tabArchitectural #gridContainer dl dt:first-child{
-    max-width:247px;
-  }
-}
-@media (min-width: (@screen-lg-min+60)) {
-  #tabArchitectural #gridContainer dl dt:first-child{
-    width: 514px;
-    max-width: 514px;
-   }
-}
-/*  /column widths */
-
-
 #tabArchitectural #gridContainer .mura-grid-hdr span.add{
   min-width: 24px;
   min-height: 24px;
 }
-
 #carch #mura-content #tabArchitectural ul.breadcrumb,
 #carch #mura-content #gridContainer ul.breadcrumb{
   float: left;
