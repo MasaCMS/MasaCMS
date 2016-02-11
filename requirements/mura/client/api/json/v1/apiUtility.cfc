@@ -1547,9 +1547,9 @@ component extends="mura.cfobject" {
 					feed.addParam(relationship=p);
 					relationship='and';
 				} else if(propname='innerJoin'){
-					feed.innerJoin(params[p]);
+					feed.innerJoin(relatedEntity=params[p]);
 				} else if(propname='leftJoin'){
-					feed.leftJoin(params[p]);
+					feed.leftJoin(relatedEntity=params[p]);
 				}
 			}
 		}
