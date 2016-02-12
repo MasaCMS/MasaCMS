@@ -500,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structIsEmpty(rc.contentBean.getErrors())>
 		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
-	
+
 	<cfif not rc.contentBean.getIsNew()>
 
 		<cfinclude template="dsp_status.cfm">

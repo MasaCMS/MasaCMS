@@ -3097,7 +3097,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					obj.prepend(mura.templates.meta(response));
+					obj.prepend(mura.templates.meta(response,obj));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
@@ -3108,13 +3108,13 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
 						}
-						alert(JSON.stringify(context))
-						context.html=mura.templates[template](context);
+
+						context.html=mura.templates[template](context,obj);
 
 						if(context.html){
-							obj.html(mura.templates.content(context));
+							obj.html(mura.templates.content(context,obj));
 						}
-						obj.prepend(mura.templates.meta(context));
+						obj.prepend(mura.templates.meta(context,obj));
 					} else {
 						console.log('Missing Client Template for:');
 						console.log(obj.data());
@@ -3123,17 +3123,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			if(obj.data('object')=='container'){
-				obj.prepend(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(obj.data(),obj));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
 					var context=obj.data();
-					context.html=mura.templates[template](obj.data());
+					context.html=mura.templates[template](obj.data(),obj);
 					if(context.html){
-						obj.html(mura.templates.content(context));
+						obj.html(mura.templates.content(context,obj));
 					}
-					obj.prepend(mura.templates.meta(context));
+					obj.prepend(mura.templates.meta(context,obj));
 				} else {
 					console.log('Missing Client Template for:');
 					console.log(obj.data());
