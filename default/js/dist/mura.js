@@ -3097,18 +3097,21 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				obj.html(trim(response.html));
 			} else {
 				if(obj.data('object')=='container'){
-					obj.prepend(mura.templates.meta(response));
+					var context=deepExtend(obj.data(),response);
+					context.targetEl=obj.node;
+					obj.prepend(mura.templates.meta(context));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
 
 					if(typeof mura.templates[template] == 'function'){
 
 						var context=deepExtend(obj.data(),response);
+						context.targetEl=obj.node;
 
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
 						}
-						alert(JSON.stringify(context))
+
 						context.html=mura.templates[template](context);
 
 						if(context.html){
@@ -3122,14 +3125,18 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 				}
 			}
 		} else {
+			var context=obj.data();
+			context.targetEl=obj.node;
+
 			if(obj.data('object')=='container'){
-				obj.prepend(mura.templates.meta(obj.data()));
+				obj.prepend(mura.templates.meta(context));
 			} else {
 				var template=obj.data('clienttemplate') || obj.data('object');
 
 				if(typeof mura.templates[template] == 'function'){
-					var context=obj.data();
-					context.html=mura.templates[template](obj.data());
+
+					context.html=mura.templates[template](context);
+
 					if(context.html){
 						obj.html(mura.templates.content(context));
 					}
