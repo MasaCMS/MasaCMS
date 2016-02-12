@@ -158,6 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
+<!--- TODO GoWest : these tooltips/popovers : 2016-02-11T18:51:53-07:00 --->
 
 	<cfsilent>
 		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rsnest.assocfilename,"."))>

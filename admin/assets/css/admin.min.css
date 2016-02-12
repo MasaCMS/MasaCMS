@@ -31606,6 +31606,9 @@ body {
 .content .items-push > div {
   margin-bottom: 0px !Important;
 }
+.content .block-bordered {
+  border: none;
+}
 .content {
   padding: 15px 14px 7px !important;
 }
@@ -31842,6 +31845,9 @@ a.no-link {
 }
 .tab-pane .block-content {
   padding-top: 20px;
+}
+.tab-pane .block-header {
+  padding: 8px 15px;
 }
 .tab-pane .block-header h3 {
   margin-bottom: 0;
