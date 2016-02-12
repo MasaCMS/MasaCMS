@@ -358,19 +358,36 @@ and
                                     onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"
                                 <cfelse>class="no-link"</cfif> >
                                  <span><strong>#rc.$.rbKey('version.core')#</strong> #application.autoUpdater.getCurrentCompleteVersion()#</span> 
-<!--- TODO GoWest : get latest available version dynamically, compare to above : 2015-12-11T13:44:13-07:00 --->
                                <!---  <i class="mi-action mi-check" data-toggle="tooltip" data-placement="right" title="Core files are up to date"></i> --->
-                                <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i>
-                                </a>
-                            </li>
+<!---                                 <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i>
+ --->                           
+                                 </a>
+                             </li>
+
+                            <!--- update core --->
+                            <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
+                                <li>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateCore'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.<cfif application.configBean.getDbType() eq "mssql">\n\nIf you are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.</cfif>',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.list&action=updateCore#rc.$.renderCSRFTokens(context='updatecore',format='url')#')});return false;"><i class="mi-bolt"></i>#rc.$.rbKey('layout.updatemuracore')#</a>
+                                </li>
+                            </cfif>
                             <!--- site version --->
                             <li>
                                 <a href="##" <cfif (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')> onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;"
                                 <cfelse> class="no-link"</cfif> >
                                  <span><strong>#rc.$.rbKey('version.site')#</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</span>
-<!--- TODO GoWest : get latest available version dynamically, compare to above : 2015-12-11T13:44:13-07:00 --->
-                                <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i></a>
+<!---                                 <i class="mi-action mi-cloud-download" data-toggle="tooltip" data-placement="right" title="New version available (6.2.7890) Click to update"></i>
+ --->                           
+                                </a>
                             </li>
+                            <!--- update site --->
+                            <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
+                                <li>
+                                    <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
+                                        <i class="mi-bolt"></i>#rc.$.rbKey('layout.updatesite')#
+                                    </a>
+                                </li>
+                            </cfif>
+
                             <li class="divider"></li>
                             <!--- server version --->
                             <li>

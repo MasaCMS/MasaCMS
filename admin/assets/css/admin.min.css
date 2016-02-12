@@ -31751,6 +31751,11 @@ header .btn-image span.button-image {
 .nav-main ul.version li a {
   font-weight: 100;
 }
+.nav-main ul.version li a i {
+  margin-left: 10px;
+  margin-right: 0;
+  font-weight: 100;
+}
 .nav-main li a i {
   font-size: 23px;
   margin-left: -3px;
