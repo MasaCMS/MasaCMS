@@ -36,12 +36,20 @@ main > .content > :first-child{
 #mura-content #main{
   .make-md-column(8);
   .make-lg-column(9);
+  padding-left: 0px;
+  padding-right: 0px;
 }
 #cdashboard .sidebar,
 #mura-content .sidebar{
   .make-md-column(4);
   .make-lg-column(3);
 }
+#cdashboard #main + .sidebar,
+#mura-content #main + .sidebar{
+  padding-left: 15px;
+  padding-right: 0;
+}
+
 
 // forms
 
