@@ -90,10 +90,10 @@
                     <a class="brand" href="http://www.getmura.com" title="Mura CMS" target="_blank">
                         <img src="#application.configBean.getContext()#/admin/assets/images/mura_logo.png" class="mura-logo">
                     </a>
-                    <span class="sidebar-mini-hide logo-credit">
+<!---                     <span class="sidebar-mini-hide logo-credit">
                         <img src="#application.configBean.getContext()#/admin/assets/images/mura_logo_credit.png" class="mura-logo-credit">
                     </span>
-                </strong>
+ --->                </strong>
                 </div>
             </div>
             <!-- END Side Header -->
@@ -383,7 +383,8 @@ and
                             <cfif listFind(session.mura.memberships,'S2') and (not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()) and isDefined('rc.currentUser.renderCSRFTokens')>
                                 <li>
                                     <a<cfif rc.originalcircuit eq 'cSettings' and rc.action eq 'updateFiles'> class="active"</cfif> href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('#application.configBean.getContext()#/admin/?muraAction=cSettings.editSite&amp;siteid=#esapiEncode('url',session.siteid)#&amp;action=updateFiles#rc.$.renderCSRFTokens(context=session.siteid & 'updatesite',format='url')#')});return false;">
-                                        <i class="mi-bolt"></i>#rc.$.rbKey('layout.updatesite')#
+                                        <i class="mi-bolt"></i> 
+                                        #rc.$.rbKey('layout.updatesite')#
                                     </a>
                                 </li>
                             </cfif>
