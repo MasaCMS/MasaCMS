@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-	Mura CMS is free software: you can redistribute it and/or modify 
-	it under the terms of the GNU General Public License as published by 
-	the Free Software Foundation, Version 2 of the License. 
+	Mura CMS is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, Version 2 of the License.
 
-	Mura CMS is distributed in the hope that it will be useful, 
-	but WITHOUT ANY WARRANTY; without even the implied warranty of 
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-	GNU General Public License for more details. 
+	Mura CMS is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License 
-	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+	You should have received a copy of the GNU General Public License
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-	
+
 	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 	or libraries that are released under the GNU Lesser General Public License version 2.1.
-	
-	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-	
-	Your custom code 
-	
+
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+	Your custom code
+
 	• Must not alter any default objects in the Mura CMS database and
 	• May not alter the default display of the Mura CMS logo within Mura CMS and
 	• Must not alter any files in the following directories.
-	
+
 	 /admin/
 	 /tasks/
 	 /config/
@@ -35,13 +35,13 @@
 	 /Application.cfc
 	 /index.cfm
 	 /MuraProxy.cfc
-	
-	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 	requires distribution of source code.
-	
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 function loadObject(url, target, message) {
@@ -135,7 +135,7 @@ function parseDateTimeSelector(id){
 		var strMonth = dtArray[dtFormat[0]];
 		var strDay = dtArray[dtFormat[1]];
 		var strYear = dtArray[dtFormat[2]];
-	
+
 		var strMinute = ($('#mura-' + id + 'Minute').length) ? $('#mura-' + id + 'Minute').val() : 0;
 		var strHour=($('#mura-' + id + 'Hour').length) ? $('#mura-' + id + 'Hour').val() : 0;
 
@@ -161,7 +161,7 @@ function parseDateTimeSelector(id){
 		}
 
 		var newVal="{ts '" + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strMinute + ":00'}";
-		
+
 		$('#mura-' + id).val(newVal);
 		//alert($('#mura-' + id).val());
 	} else {
@@ -676,7 +676,7 @@ function submitForm(frm, action, msg) {
 function actionModal(action) {
 	$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
 	$('#action-modal').spin(spinnerArgs);
-	
+
 	if(action){
 		if(typeof(action)=='string'){
 			location.href=action;
@@ -684,7 +684,7 @@ function actionModal(action) {
 			action();
 		}
 	}
- 
+
 	return false;
 }
 
@@ -745,7 +745,7 @@ function setHTMLEditors() {
 				toolbar: 'Default',
 				customConfig: 'config.js.cfm'
 			}, htmlEditorOnComplete);
-	
+
 		}
 	}
 }
@@ -820,20 +820,22 @@ function setToolTips(target) {
 	if(typeof $(target).tooltip =='function'){
 		$(target).tooltip({
 			selector: "a[rel=tooltip]"
-		});
+		})
 	}
 
 	$(target + ' a[rel=tooltip]').click(function(e) {
 		e.preventDefault();
 		return false
 	});
+
+	$('[data-toggle="popover"]').popover();
 }
 
 function setTabs(target, activetab) {
 	$(".tab-preloader").spin(spinnerArgs2);
 	/*
 	$(target).each(
-		function(index) {			
+		function(index) {
 			$(this).tabs().fadeIn()
 			.find(".ui-corner-all")
 			.each(
@@ -853,7 +855,7 @@ function setTabs(target, activetab) {
 	} else if(typeof(activetab) != 'undefined') {
 		try{
 			$(target + ' li::nth-child(' + (activetab + 1) + ') a').tab('show');
-		} 
+		}
 		catch(err){
 			if($(target + ' li:first a').tab){
 				$(target + ' li:first a').tab('show');
@@ -865,13 +867,13 @@ function setTabs(target, activetab) {
 
 	/*
 	$(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
-			function(index) {			
+			function(index) {
 				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 			}
 		);
-	
+
 	$(".initActiveTab").each(
-			function(index) {			
+			function(index) {
 				$(this).tabs("select",activetab);
 			}
 		);
@@ -965,10 +967,10 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 					if(data.indexOf('mura-primary-login-token') != -1) {
 						location.href = './';
 					}
-					
+
 					$("#newFileMetaContainer .load-inline").spin(false);
 					$('#newFileMetaContainer').html(data);
-					
+
 					if(property in fileMetaDataAssign){
 						var fileData=fileMetaDataAssign[property];
 						for(var p in fileData){
@@ -977,7 +979,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 						$('#filemeta-setasdefault').prop('checked',fileData.setasdefault);
 					}
-					
+
 					$('#newFileMetaContainer .htmlEditor').ckeditor({
 							toolbar: 'Basic',
 							height: 100,
@@ -1013,7 +1015,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 		return false;
 	}
- 
+
 (function ($) {
 
 	 /* BUTTON PUBLIC CLASS DEFINITION
@@ -1033,7 +1035,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			$elm.find(".mura-file-existing").html('<div class="load-inline"></div>');
 			$elm.find('.load-inline').spin(spinnerArgs2);
 			$.ajax(url + "?" + pars)
-			.done( 
+			.done(
 				function(data) {
 					$elm.find('.load-inline').spin(false);
 					$elm.find(".mura-file-existing").html(data);
@@ -1063,7 +1065,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 	    }
 
 	    var setTab=function(tab){
-	    	
+
 	    	//if(tab.toLowerCase() != 'upload'){
 			$elm.find(".mura-file-option").find('input').val('');
 			$elm.find(".mura-file-option").find('.btn').hide();
@@ -1075,9 +1077,9 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 			$elm.find(".mura-file-" + tab.toLowerCase()).find("input").attr('name',$opts.file);
 
 	    }
-	
+
 	    $(this.$element).find("button.mura-file-type-selector").click(clickHandler);
-	   
+
 	    $elm.find(".mura-file-option").find('input').change(
 	    	function(){
 	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif|.svg)$/;
@@ -1092,12 +1094,12 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 		setTab('Upload');
 
 	  }
-	
+
 	  $.fn.fileselector = function (options) {
 	    return this.each(function () {
 	      var $this = $(this);
 	      var data = $this.data('fileselector');
-	      
+
 	      if (!data){
 	      	 $this.data('fileselector', (data = new FileSelector(this, options)) );
 	      }
@@ -1126,7 +1128,7 @@ function alertDialog(message,okAction,title,width) {
 		title=config.title || 'Alert';
 		width=config.width || 0;
 	}
-	
+
 	title= title || 'Alert';
 	width= width || null;
 
@@ -1164,7 +1166,7 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 	if(typeof message == 'object'){
 		var config=message;
 		message=config.message || 'Message not defined';
-		
+
 		if(config.yesAction){
 			yesAction=config.yesAction;
 		}
@@ -1172,7 +1174,7 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 		if(config.noAction){
 			noAction=config.noAction;
 		}
-		
+
 		title=config.title || 'Alert';
 		width=config.width || 0;
 	}
@@ -1193,7 +1195,7 @@ function confirmDialog(message, yesAction, noAction,title,width) {
 				}
 
 			},
-			'No': function() {		
+			'No': function() {
 				if(typeof(noAction) != 'undefined') {
 					if(typeof(noAction) == 'function') {
 						noAction();
@@ -1338,7 +1340,7 @@ function openPreviewDialog(previewURL) {
 			var hos=85+39;
 
 			$('.ui-dialog').prepend($tools);
-			
+
 			$('#mura-preview-device-selector a').bind('click', function () {
 				var data=$(this).data();
 
@@ -1355,7 +1357,7 @@ function openPreviewDialog(previewURL) {
 
 			    return false;
 			});
-			
+
 		}
 	});
 
@@ -1397,7 +1399,7 @@ var spinnerArgs = {
 	// Whether to use hardware acceleration
 	className: 'spinner',
 	// The CSS class to assign to the spinner
-	zIndex: 2e9,	
+	zIndex: 2e9,
 	// The z-index (defaults to 2000000000)
 	top: 'auto',
 	// Top position relative to parent in px
@@ -1429,7 +1431,7 @@ var spinnerArgs2 = {
 	// Whether to use hardware acceleration
 	className: 'spinner-alt',
 	// The CSS class to assign to the spinner
-	zIndex: 2e9,	
+	zIndex: 2e9,
 	// The z-index (defaults to 2000000000)
 	top: 'auto',
 	// Top position relative to parent in px
@@ -1463,7 +1465,7 @@ var spinnerArgs3 = {
 	// Whether to use hardware acceleration
 	className: 'spinner-alt',
 	// The CSS class to assign to the spinner
-	zIndex: 2e9,	
+	zIndex: 2e9,
 	// The z-index (defaults to 2000000000)
 	top: 'auto',
 	// Top position relative to parent in px
@@ -1488,7 +1490,7 @@ if(typeof $.ui != 'undefined'){
 			// todo: make the ul id an options config (string or object?)
 			var ul = this.element.closest("ul");
 			ul.children("li").remove();
-			
+
 			this._renderMenu( ul, items );
 			this.isNewMenu = true;
 			this.menu.refresh();
@@ -1514,7 +1516,7 @@ if(typeof $.ui != 'undefined'){
 
 		options: {
 			create: function( event ) {
-				
+
 				// we clear the results list if search string get is using backspace for example
 				$( event.target ).keyup(function( event, ui ) {
 					var input = $( this );
@@ -1523,7 +1525,7 @@ if(typeof $.ui != 'undefined'){
 						ul.children("li").remove();
 					}
 				});
-				
+
 			}
 		}
 	});
@@ -1576,11 +1578,11 @@ function setFinders(selector){
 
 		if(completepath.toLowerCase() == 'true'){
 			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(webroot + fileDelim + fileUrl);		
+				jQuery('input[name="' + target + '"]').val(webroot + fileDelim + fileUrl);
 			};
 		} else {
 			finder.selectActionFunction = function(fileUrl) {
-				jQuery('input[name="' + target + '"]').val(fileUrl);		
+				jQuery('input[name="' + target + '"]').val(fileUrl);
 			};
 		}
 
@@ -1591,14 +1593,14 @@ function setFinders(selector){
 		} else {
 			finder.resourceType=siteid + '_User_Assets';
 		}
-		
-		finder.popup();			
+
+		finder.popup();
 
 	});
 }
 
 $(function(){
-	
+
 	setFinders(".mura-ckfinder");
 	if(typeof dtLocale != 'undefined'){
 		setDatePickers(".datepicker",dtLocale);
@@ -1616,4 +1618,3 @@ $(function(){
 	setFileSelectors();
 
 });
-
