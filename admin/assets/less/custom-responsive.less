@@ -50,10 +50,6 @@
   dd.objects, dd.template{
   display:none;
   }
-  #cdashboard #main + .sidebar,
-  #mura-content #main + .sidebar{
-    padding-left: 0;
-  }
 }
 
 
@@ -71,10 +67,30 @@
   dd.objects, dd.template, dd.display, dd.nav{
   display:none;
   }
-  #cdashboard #main + .sidebar,
-  #mura-content #main + .sidebar{
-    padding-left: 0;
+  .mura-item-metadata{
+    text-align: left !important;
+    margin-left: -8px;
   }
 
 }
 
+/* MEDIUM, EXTRA SMALL & SMALL */
+/* MEDIUM, EXTRA SMALL & SMALL */
+/* MEDIUM, EXTRA SMALL & SMALL */
+@media (max-width: (@screen-lg-min - 1)) {
+  #userActivity table + table,
+  #popularContent table + table {
+    margin-top: 10px !important;
+  }
+}
+
+
+/* EXTRA SMALL & SMALL */
+/* EXTRA SMALL & SMALL */
+/* EXTRA SMALL & SMALL */
+
+@media (max-width: (@screen-md-min - 1)) {
+  #cdashboard #main + .sidebar,
+  #mura-content #main + .sidebar{
+    padding-left: 0;
+  }
