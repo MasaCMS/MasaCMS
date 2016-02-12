@@ -1510,20 +1510,18 @@ h3 + table {
 	width: auto;
 }
 
-#userActivity table {
-	width: 49%;
-	float: right;
-	clear: none;
-}
-
-#userActivity #recentActivity {
-	float: left;
-}
-
+#userActivityData, 
+#popularContent{
+	.make-row();
+	margin-left: 0;
+	margin-right: 0;
+} 
+#userActivity table,
 #popularContent table {
-	width: 49%;
-	float: right;
-	clear: none;
+	.make-xs-column(12);
+	.make-lg-column(6);
+	margin-bottom: 15px;
+	clear:none;
 }
 
 #popularContent #topPages{

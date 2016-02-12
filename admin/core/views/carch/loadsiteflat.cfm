@@ -612,16 +612,19 @@ if(len($.siteConfig('customTagGroups'))){
 		</ul>
 	</div>
 	
-	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	
-	<div id="filters" class="module well">
-	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
-    <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" size="20" />
-  	</div>
+	<div class="well">
+	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
+	<div id="filters" class="module">
+	<div class="mura-control-group">
+	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</label>
+    <input class="text" id="contentKeywords" value="#esapiEncode('html_attr',session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" />
+	</div>
+  
 
     <cfif $.event("report") neq "lockedfiles">
-	<div class="module well">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h3>
+	<div class="module mura-control-group">
+		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</label>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 			<cfloop list="#$.getBean('contentManager').getTreeLevelList()#" index="i">
@@ -644,13 +647,14 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 	
 
-	<div class="module well" id="mura-filter-tags">
+	<div class="module mura-control-group" id="mura-filter-tags">
 		<cfif len($.siteConfig('customTagGroups'))>
-   		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</h3>
+   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.defaulttags")#</label>
    		<cfelse>
-   		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+   		<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</label>
    		</cfif>
 
+		<input type="text" name="tags">
 		<div id="tags" class="tagSelector">
 			<cfloop list="#$.event('tags')#" index="i">
 				<span class="tag">
@@ -658,13 +662,12 @@ if(len($.siteConfig('customTagGroups'))){
 				<input name="tags" type="hidden" value="#esapiEncode('html_attr',i)#">
 				</span>
 			</cfloop>
-			<input type="text" name="tags">
 		</div>
 	</div>
 
 	<cfif len($.siteConfig('customTagGroups'))>
 		<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
-			<div class="module well" id="mura-filter-tags">
+			<div class="module" id="mura-filter-tags">
 				<h3>#g# #application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 				<div id="#g#tags" class="tagSelector">
 				<cfloop list="#$.event('#g#tags')#" index="i">
@@ -680,7 +683,7 @@ if(len($.siteConfig('customTagGroups'))){
 	</cfif>
 	
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-		<div class="module well" id="mura-list-tree">
+		<div class="module" id="mura-list-tree">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
@@ -691,8 +694,9 @@ if(len($.siteConfig('customTagGroups'))){
 		<button type="submit" class="btn" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 		<button type="submit" class="btn" name="filterList" onclick="clearFlatviewFilter()"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#</button>
 	<cfelse>
-		<button type="submit" class="btn btn-block" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
+		<button type="submit" class="btn sidebar-submit" name="filterList" onclick="siteManager.loadSiteFlatByFilter();"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#</button>
 	</cfif>
+</div>
 </div>
 </div>
 

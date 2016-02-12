@@ -158,10 +158,10 @@
                   <li class="dropdown-header">Admin User</li>
                   <li class="divider"></li>
                   <li>
-                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog pull-right"></i>Edit Profile</a>
+                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cEditProfile.edit"><i class="mi-cog"></i> Edit Profile</a>
                   </li>
                   <li>
-                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out pull-right"></i>#rc.$.rbKey("layout.logout")#</a>
+                      <a tabindex="-1" href="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout"><i class="mi-sign-out"></i> #rc.$.rbKey("layout.logout")#</a>
                   </li>
               </ul>
           </div>
