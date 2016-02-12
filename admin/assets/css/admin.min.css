@@ -32180,7 +32180,8 @@ body {
   padding: 8px 15px;
 }
 .block-constrain .form-actions {
-  padding: 8px 0;
+  padding: 8px 0 0;
+  margin-bottom: 0;
 }
 .btn,
 .btn-group .btn {
@@ -32524,7 +32525,7 @@ a.close:hover {
   display: block;
 }
 ul.dropdown-menu {
-  margin: 0 0 9px 9px;
+  margin: 2px 0 0;
 }
 .sidebar h3 {
   font-size: 15px;
@@ -32546,6 +32547,8 @@ ul.dropdown-menu {
   border-radius: 0px;
   box-shadow: none;
   padding: 10px 15px 15px;
+  background-color: #F9F9F9;
+  border: 1px solid #F5F5F5;
 }
 .sidebar .module ul.nav,
 .sidebar .well ul.nav {
