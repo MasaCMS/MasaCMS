@@ -10,6 +10,8 @@
 .mura-layout-row,
 .mura-header{
   .make-row();
+  margin-left: 0;
+  margin-right: 0;
 }
 .mura-header h1{
   .make-sm-column(5);
@@ -85,6 +87,18 @@ main > .content > :first-child{
   .make-sm-column(9);
 }
 
+.sidebar .mura-control-group > label + textarea,
+.sidebar .mura-control-group > label + * + textarea,
+.sidebar .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
+.sidebar .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.sidebar .mura-control-group > label + input[type=password],
+.sidebar .mura-control-group > label + * + input[type=password],
+.sidebar .mura-control-group > label + select:not([class*="time"]),
+.sidebar .mura-control-group > label + * + select:not([class*="time"]){
+  padding: 4px 8px;
+  height: 2em;
+  .make-sm-column(12);
+}
 select[multiple],
 select[size]
 ,.mura-control-group > label + select[multiple], 

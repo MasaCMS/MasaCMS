@@ -27167,6 +27167,7 @@ font-size: 12px;
   float: left !important;
   float: left;
   clear: left;
+  padding-top: 15px;
 }
 .mura #carch #mura-content #flatViewContainer .pagination {
   float: right !important;
@@ -28082,6 +28083,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura-header {
   margin-left: -15px;
   margin-right: -15px;
+  margin-left: 0;
+  margin-right: 0;
 }
 .mura-header h1 {
   position: relative;
@@ -28560,6 +28563,34 @@ input[type="email"].mura-control-group > label + * + select:not([class*="time"])
   .mura-control-group > label + * + select:not([class*="time"]) {
     float: left;
     width: 75%;
+  }
+}
+.sidebar .mura-control-group > label + textarea,
+.sidebar .mura-control-group > label + * + textarea,
+.sidebar .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
+.sidebar .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+.sidebar .mura-control-group > label + input[type=password],
+.sidebar .mura-control-group > label + * + input[type=password],
+.sidebar .mura-control-group > label + select:not([class*="time"]),
+.sidebar .mura-control-group > label + * + select:not([class*="time"]) {
+  padding: 4px 8px;
+  height: 2em;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  .sidebar .mura-control-group > label + textarea,
+  .sidebar .mura-control-group > label + * + textarea,
+  .sidebar .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
+  .sidebar .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
+  .sidebar .mura-control-group > label + input[type=password],
+  .sidebar .mura-control-group > label + * + input[type=password],
+  .sidebar .mura-control-group > label + select:not([class*="time"]),
+  .sidebar .mura-control-group > label + * + select:not([class*="time"]) {
+    float: left;
+    width: 100%;
   }
 }
 select[multiple],
@@ -31909,12 +31940,16 @@ fieldset[disabled] .btn-primary.active {
 .nav-pills > li.active > a > .badge {
   color: #ff3405;
 }
-.navSort .nav-pills a {
-  margin-top: -10px;
+.nav-pills > li > a {
+  padding: 4px 8px;
+  margin-top: -6px;
 }
 .sidebar .nav-list li,
 .sidebar .nav-list li a {
   line-height: 10px;
+}
+.pagination {
+  margin: 8px 0;
 }
 .pagination > li > a:hover,
 .pagination > li > span:hover,
@@ -32444,10 +32479,13 @@ a.no-link {
 }
 .sidebar h2,
 .tab-content h2 {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   padding-bottom: 10px;
   margin-left: -2px;
+}
+.sidebar .well h2 {
+  padding-bottom: 0;
 }
 .alert,
 p.alert,
@@ -32557,6 +32595,11 @@ ul.dropdown-menu {
   display: block;
   text-align: center;
   margin: 15px auto 5px;
+}
+.sidebar .well {
+  border-radius: 0px;
+  box-shadow: none;
+  padding: 10px 15px 15px;
 }
 .sidebar .module ul.nav,
 .sidebar .well ul.nav {
