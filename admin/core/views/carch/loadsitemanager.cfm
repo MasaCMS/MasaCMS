@@ -224,35 +224,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfsilent>
         <cfif  perm neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rc.rsTop.assocfilename,"."))>
           <cfset atooltip=true>
-          <cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rc.rsTop.fileid,size='small',siteid=rc.rsTop.siteid,fileext=rc.rsTop.fileExt)#'/>">
+          <cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rc.rsTop.fileid,size='small',siteid=rc.rsTop.siteid,fileext=rc.rsTop.fileExt)#'>">
         <cfelse>
           <cfset atooltip=false>
           <cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
         </cfif>
       </cfsilent>
- 
-
-<cfif atooltip>   
-  <span data-toggle="popover" title="" 
-  data-html="true" 
-  data-placement="right" 
-  data-content="#atitle#" 
-  data-original-title=""> 
-</cfif>
-<!--- TODO GoWest : clean up once new style is working, remove commented code : 2016-02-12T15:19:03-07:00 --->
+  		
           <cfif not listFindNoCase('none,read',perm)>
-            <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" <!--- title="#atitle#"  --->href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <!--- <cfif atooltip>rel="tooltip" data-html="true"</cfif> --->>
+            <a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#esapiEncode('url',rc.siteid)#&contentid=#rc.topid#&topid=#esapiEncode('url',rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.rstop.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
           <cfelse>
-  		      <a class="#icon# title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <!--- <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif> --->>
+  		      <a class="#icon# title" <cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(left(rc.rsTop.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
   		    </cfif>
   		#esapiEncode('html',left(rc.rsTop.menutitle,75))#
           <cfif len(rc.rsTop.menutitle) gt 75>&hellip;</cfif>
             </a>
-
-<cfif atooltip>
-  </span>
-</cfif>
-
           <!--- <div class="mura-title-fade"></div> --->
         </dt>
        <cfif rc.rstop.moduleid eq '00000000000000000000000000000000000' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
