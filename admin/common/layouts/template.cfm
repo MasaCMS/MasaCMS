@@ -225,7 +225,8 @@
 		<script src="#application.configBean.getContext()#/admin/assets/js/chart.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
+<!--- TODO GoWest : minify js : 2016-02-12T14:55:58-07:00 --->
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
 	
 <!--- TODO GoWest : add this msie notification to compact.cfm? : 2016-01-29T16:53:17-07:00 --->
 		<cfif cgi.http_user_agent contains 'msie'>

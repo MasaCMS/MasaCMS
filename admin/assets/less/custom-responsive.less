@@ -1,8 +1,8 @@
 @sidebar-x: 170;
-@mgr-grid-w-lg: 976px;
-@mgr-grid-w-md: 976px;
-@mgr-grid-w-sm: 767px;
-@mgr-grid-w-xs: 543px;
+@mgr-grid-w-lg: 998px;
+@mgr-grid-w-md: 998px;
+@mgr-grid-w-sm: 799px;
+@mgr-grid-w-xs: 575px;
 
  #tabArchitectural #gridContainer .overflow-wrap{
  overflow-x: auto;
@@ -18,7 +18,7 @@
     width: @mgr-grid-w-lg;
    }
    #tabArchitectural #gridContainer dl dt:first-child{
-    width: 514px;
+    width: 536px;
    }
 }
 
@@ -31,7 +31,7 @@
     width: @mgr-grid-w-md;
    }
   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 514px;
+    width: 536px;
    }
 }
 
@@ -44,7 +44,7 @@
     width: @mgr-grid-w-sm;
    }
   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 415px;
+    width: 447px;
   }
   /* hide some columns */
   dd.objects, dd.template{
@@ -61,7 +61,7 @@
     width: @mgr-grid-w-xs;
    }
   #tabArchitectural #gridContainer dl dt:first-child{
-    width: 301px;
+    width: 323px;
   }
   /* hide some columns */
   dd.objects, dd.template, dd.display, dd.nav{
@@ -92,5 +92,7 @@
 @media (max-width: (@screen-md-min - 1)) {
   #cdashboard #main + .sidebar,
   #mura-content #main + .sidebar{
-    padding-left: 0;
+    padding-left: 0 !important;
+    clear: both;
   }
+}

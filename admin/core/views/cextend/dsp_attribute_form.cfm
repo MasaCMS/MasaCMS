@@ -74,70 +74,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div style="display:none;" id="#esapiEncode('html_attr',attributes.formName)#container" class="attr-add">
 </cfif>
 <form <cfif attributes.action eq "add"> class="fieldset-wrap"</cfif> novalidate="novalidate" method="post" name="#esapiEncode('html_attr',attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
-<div class="fieldset">
 <cfif attributes.action neq "add">
-<div class="control-group">
-	<label class="control-label">Attribute ID</label>
-	<div class="controls">
-		#attributes.attributeBean.getAttributeID()#
-	</div>
+<div class="mura-control-group">
+	<label>Attribute ID: #attributes.attributeBean.getAttributeID()#</label>
 </div>
 </cfif>
 
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Name (No spaces)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Name (No spaces)</label>
+		<input type="text" name="name" required="true" value="#esapiEncode('html_attr',attributes.attributeBean.getName())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Label</label>
-	<div class="controls">
-		<input class="span12" type="text" name="label" value="#esapiEncode('html_attr',attributes.attributeBean.getLabel())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Label</label>
+		<input type="text" name="label" value="#esapiEncode('html_attr',attributes.attributeBean.getLabel())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Input Type</label>
-	<div class="controls">
+<div class="mura-control-group">
+	<label>Input Type</label>
 		<select name="type" class="span12">
 		<cfloop list="#typelist#" index="t">
 			<option value="#t#" <cfif attributes.attributeBean.getType() eq t>selected</cfif>>#t#</option>
 		</cfloop>
 		</select>
-	</div>
-</div>
 </div>
 
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Default Value</label>
-	<div class="controls">
-		<input class="span12" type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Default Value</label>
+		<input type="text" name="defaultValue"  value="#esapiEncode('html_attr',attributes.attributeBean.getDefaultvalue())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Tooltip</label>
-	<div class="controls">
-		<input class="span12" type="text" name="hint" value="#esapiEncode('html_attr',attributes.attributeBean.getHint())#" />
-	</div>
+<div class="mura-control-group">
+	<label>Tooltip</label>
+		<input type="text" name="hint" value="#esapiEncode('html_attr',attributes.attributeBean.getHint())#" />
 </div>
-<div class="span4">
-	<label class="control-label">Required</label>
-	<div class="controls">
+<div class="mura-control-group">
+	<label>Required</label>
 		<select name="required" class="span12">
 			<option value="false" <cfif attributes.attributeBean.getRequired() eq "false">selected</cfif>>False</option>
 			<option value="true" <cfif attributes.attributeBean.getRequired() eq "true">selected</cfif>>True</option>
 		</select>
-	</div>
 </div>
-</div>
-</div>
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Validate</label>
-	<div class="controls">
+
+<div class="mura-control-group">
+	<label>Validate</label>
 		<select name="validation" class="span12">
 			<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
 			<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
@@ -148,50 +125,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="Color" <cfif attributes.attributeBean.getValidation() eq "Color">selected</cfif>>Color</option>
 			<option value="URL" <cfif attributes.attributeBean.getValidation() eq "URL">selected</cfif>>URL</option>
 		</select>
-	</div>
-</div>
-<div class="span4">
-	<label class="control-label">Regex</label>
-	<div class="controls">
-		<input class="span12" type="text" name="regex"  value="#esapiEncode('html_attr',attributes.attributeBean.getRegex())#" />
-	</div>
-</div>
-<div class="span4">
-	<label class="control-label">Validation Message</label>
-	<div class="controls">
-		<input class="span12" type="text" name="message"  value="#esapiEncode('html_attr',attributes.attributeBean.getMessage())#" />
-	</div>
-</div>
 </div>
 
-</div>
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">Option List ("^" Delimiter)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="optionList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionList())#" />
-	</div>
-</div>
-<div class="span8">
-	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
-	<div class="controls">
-		<input class="span12" type="text" name="optionLabelList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionLabelList())#" />
-	</div>
-</div>
-</div>
+<div class="mura-control-group">
+	<label>Regex</label>
+		<input type="text" name="regex"  value="#esapiEncode('html_attr',attributes.attributeBean.getRegex())#" />
 </div>
 
-<div class="fieldset">
-<div class="control-group">
-<div class="span4">
-	<label class="control-label">For administrative Use Only?</label>
-	<div class="controls">
+<div class="mura-control-group">
+	<label>Validation Message</label>
+		<input type="text" name="message"  value="#esapiEncode('html_attr',attributes.attributeBean.getMessage())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>Option List ("^" Delimiter)</label>
+		<input type="text" name="optionList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionList())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>Option Label List (Optional, "^" Delimiter)</label>
+	<input type="text" name="optionLabelList"  value="#esapiEncode('html_attr',attributes.attributeBean.getOptionLabelList())#" />
+</div>
+
+<div class="mura-control-group">
+	<label>For administrative Use Only?</label>
 		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="1"<cfif attributes.attributeBean.getAdminOnly() eq 1 >Checked</cfif>>Yes</label>
 		<label class="radio inline"><input name="adminonly" type="radio" class="radio inline" value="0"<cfif attributes.attributeBean.getAdminOnly() eq 0 >Checked</cfif>>No</label>
-	</div>
-</div>
-</div>
 </div>
 
 <div class="form-actions">

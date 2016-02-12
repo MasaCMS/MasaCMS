@@ -827,8 +827,6 @@ function setToolTips(target) {
 		e.preventDefault();
 		return false
 	});
-
-	$('[data-toggle="popover"]').popover();
 }
 
 function setTabs(target, activetab) {
