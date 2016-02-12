@@ -79,7 +79,7 @@
         <!-- Adding .sidebar-mini-hide to an element will hide it when the sidebar is in mini mode -->
         <div class="sidebar-content">
             <!-- Side Header -->
-            <div class="side-header side-content">
+            <div class="side-header side-content" data-toggle="layout" data-action="sidebar_mini_toggle" style="cursor:pointer;">
                 <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
                 <button class="btn btn-link text-gray pull-right hidden-md hidden-lg" type="button" data-toggle="layout" data-action="sidebar_close">
                     <i class="mi-times"></i>
@@ -95,6 +95,12 @@
                     </span>
  --->                </strong>
                 </div>
+                <button class="btn btn-link text-gray pull-right hidden-sm hidden-xs sidebar-icon-right" type="button">
+                    <i class="mi-caret-right"></i>
+                </button>
+                <button class="btn btn-link text-gray pull-right hidden-sm hidden-xs sidebar-icon-left" type="button">
+                    <i class="mi-caret-left"></i>
+                </button>
             </div>
             <!-- END Side Header -->
 

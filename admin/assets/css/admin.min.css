@@ -31860,6 +31860,15 @@ a.no-link {
   margin-top: -13px;
   margin-left: -13px;
 }
+.sidebar-icon-right {
+  display: none;
+}
+.sidebar-mini .sidebar-icon-right {
+  display: block;
+}
+.sidebar-mini .sidebar-icon-left {
+  display: none;
+}
 .mura-header .alert,
 .content .mura-header p.alert {
   clear: both;
