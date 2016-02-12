@@ -24236,7 +24236,7 @@ i {
   margin: 0;
 }
 .mura .mura-grid dl.alt {
-  background-color: #eaf4fd;
+  background-color: #F6FAFE;
 }
 .mura .mura-grid dl.mura-grid-hdr {
   background-image: -webkit-linear-gradient(top, #fffefe 0%, #f5f5f5 100%);
@@ -25675,7 +25675,7 @@ text-shadow: 0 0 1px @blue;
 .mura .table tbody tr:hover th,
 .mura #mura-nodes dl:hover,
 .mura .mura-row:hover {
-  background-color: #fffff5;
+  background-color: #eaf4fd;
 }
 .mura .mura-row.alt {
   background-color: #eaf4fd;
@@ -31937,6 +31937,13 @@ a.list-group-item:focus {
 .table-header-bg > thead > tr > td {
   background-color: #ff3405;
   border-bottom-color: #ff3405;
+}
+/* table striping */
+.mura .mura-table-grid > tbody > tr:nth-of-type(odd) {
+  background-color: #F6FAFE;
+}
+.mura .mura-table-grid > tbody > tr:hover {
+  background-color: #eaf4fd;
 }
 .panel-primary {
   border-color: rgba(102, 153, 204, 0.8);
