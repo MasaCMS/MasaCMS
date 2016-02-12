@@ -1519,9 +1519,16 @@ h3 + table {
 #userActivity table,
 #popularContent table {
 	.make-xs-column(12);
-	.make-lg-column(6);
+	.make-lg-column(5.75);
 	margin-bottom: 15px;
+	margin-right: 1% !important;
 	clear:none;
+}
+#userActivity table + table,
+#popularContent table + table {
+	margin-right: 0 !important;
+	margin-left: 0 !important;
+	float: right;
 }
 
 #popularContent #topPages{
