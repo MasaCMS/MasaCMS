@@ -18,9 +18,9 @@
 		}
 	
 	.attr-list {
-		
+		padding-left: 0;		
 		list-style: none;
-		margin: 0 0 @baseLineHeight*2 0;
+		margin: 1em 0 @baseLineHeight*2 0;
 		clear: both;
 		
 		li {
@@ -39,12 +39,14 @@
 				
 				width: 100%;
 				padding-top: @baseLineHeight; 
+				padding-left: 15px;
 				
 				p { 
 					font-size: 16px;
 					font-weight: bold;
-					padding-left: @gridGutterWidth;
-					}
+					padding-left: 0;
+			    margin-left: 0;					
+			    }
 				
 				.btns {
 					padding-right: @gridGutterWidth;
@@ -53,7 +55,9 @@
 					
 					}
 				
-				.nav-pills { display: none; }
+				.nav-pills { 
+				display: none;
+				 }
 				
 				#editFrm1container > form {
 					margin-top: 0;
@@ -144,9 +148,6 @@
 					
 					i {
 						margin: @baseLineHeight/6;
-						 .icon-border;
-						 .icon-2x;
-						 .inline-block();
 						 width: 23px;
 						 text-align: center;
 						

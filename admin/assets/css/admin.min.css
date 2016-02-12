@@ -26962,6 +26962,151 @@ font-size: 12px;
 .mura .noShow {
   display: none !important;
 }
+.mura #cextend h2 {
+  line-height: 26px;
+}
+.mura #cextend h2 i {
+  font-size: 26px;
+}
+.mura #cextend #editFrm1container form {
+  margin-top: 36px;
+}
+.mura #cextend .attr-list {
+  padding-left: 0;
+  list-style: none;
+  margin: 1em 0 36px 0;
+  clear: both;
+}
+.mura #cextend .attr-list li {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 30%;
+  clear: both;
+  margin: 0 0 .25em;
+  background: #f7f7f7;
+  padding: .25em .5em;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  line-height: 28px;
+  z-index: 0;
+}
+.mura #cextend .attr-list li.attr-edit {
+  width: 100%;
+  padding-top: 18px;
+  padding-left: 15px;
+}
+.mura #cextend .attr-list li.attr-edit p {
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 0;
+  margin-left: 0;
+}
+.mura #cextend .attr-list li.attr-edit .btns {
+  padding-right: 20px;
+}
+.mura #cextend .attr-list li.attr-edit .btns i {
+  font-size: 16px;
+}
+.mura #cextend .attr-list li.attr-edit .nav-pills {
+  display: none;
+}
+.mura #cextend .attr-list li.attr-edit #editFrm1container > form {
+  margin-top: 0;
+}
+.mura #cextend .attr-list li form {
+  z-index: 10;
+}
+.mura #cextend .attr-list li .attr-edit {
+  width: 100%;
+}
+.mura #cextend .attr-list li a:hover {
+  text-decoration: none;
+}
+.mura #cextend .attr-list li a:hover i {
+  color: #6699cc;
+}
+.mura #cextend .attr-list li i {
+  font-size: 14px;
+  width: 1em;
+  color: #666666;
+}
+.mura #cextend .attr-list li i.icon-move {
+  font-size: 16px;
+  /* width: 1.5em; */
+  padding: 0;
+  margin-bottom: -2px;
+  position: relative;
+  top: 2px;
+  /* margin-right: 1em; */
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  text-shadow: 0 1px 0 #ffffff;
+  line-height: 24px;
+}
+.mura #cextend .attr-list li i.icon-move:hover {
+  cursor: hand !important;
+  color: #cccccc;
+}
+.mura #cextend .attr-list li .btns {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  margin-left: 2em;
+  float: right !important;
+  float: right;
+}
+.mura #cextend .attr-list li .btns .btn {
+  padding: 4px 6px;
+}
+.mura #cextend .attr-list li p {
+  margin: 0 0 0 .5em;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  line-height: 1;
+}
+.mura #cextend.ui-sortable li:hover {
+  background: #e6e6e6 !important;
+  cursor: hand !important;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu {
+  width: 731px;
+  padding: 9px;
+  margin-bottom: 18px;
+  left: -360px;
+  height: 404px;
+  overflow-x: scroll;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu li {
+  float: left;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu li i {
+  margin: 3px;
+  width: 23px;
+  text-align: center;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu li i:hover {
+  cursor: pointer;
+  background-color: #6699cc;
+  color: #ffffff;
+  border-color: #6699cc;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu li i.icon-default {
+  background-color: #cccccc;
+  border-color: #cccccc;
+  color: #ffffff;
+}
+.mura #cextend .SubTypeIconSelect .dropdown-menu li i.icon-current {
+  background-color: #ff3a00;
+  border-color: #ff3a00;
+  color: #ffffff;
+}
 .mura #main-container #tabArchitectural ul,
 .mura #main-container #tabArchitectural ol {
   padding: 0;
