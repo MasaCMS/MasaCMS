@@ -31751,6 +31751,11 @@ header .btn-image span.button-image {
 .nav-main ul.version li a {
   font-weight: 100;
 }
+.nav-main ul.version li a i {
+  margin-left: 10px;
+  margin-right: 0;
+  font-weight: 100;
+}
 .nav-main li a i {
   font-size: 23px;
   margin-left: -3px;
@@ -31854,6 +31859,15 @@ a.no-link {
   max-width: 44px;
   margin-top: -13px;
   margin-left: -13px;
+}
+.sidebar-icon-right {
+  display: none;
+}
+.sidebar-mini .sidebar-icon-right {
+  display: block;
+}
+.sidebar-mini .sidebar-icon-left {
+  display: none;
 }
 .mura-header .alert,
 .content .mura-header p.alert {
