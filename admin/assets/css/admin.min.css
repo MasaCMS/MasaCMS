@@ -27652,6 +27652,8 @@ main > .content > :first-child {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 @media (min-width: 992px) {
   #cdashboard #main,
@@ -27687,6 +27689,11 @@ main > .content > :first-child {
     float: left;
     width: 25%;
   }
+}
+#cdashboard #main + .sidebar,
+#mura-content #main + .sidebar {
+  padding-left: 15px;
+  padding-right: 0;
 }
 #mura-content > form .radio,
 #mura-content > form .checkbox,
@@ -31125,6 +31132,10 @@ fieldset[disabled] a#nav-module-specific .label {
   dd.template {
     display: none;
   }
+  #cdashboard #main + .sidebar,
+  #mura-content #main + .sidebar {
+    padding-left: 0;
+  }
 }
 /* XS: EXTRA SMALL WIDTH */
 /* XS: EXTRA SMALL WIDTH */
@@ -31142,6 +31153,10 @@ fieldset[disabled] a#nav-module-specific .label {
   dd.display,
   dd.nav {
     display: none;
+  }
+  #cdashboard #main + .sidebar,
+  #mura-content #main + .sidebar {
+    padding-left: 0;
   }
 }
 /* minified color scheme, expanded and altered */
@@ -31789,7 +31804,7 @@ div.cke_editable {
 }
 .block-constrain > * {
   max-width: 1140px;
-  margin: 0 30px;
+  margin: 0 25px;
 }
 .block-constrain > .content {
   padding: 15px 30px !important;
@@ -31856,7 +31871,7 @@ a.no-link {
 }
 .block-content {
   display: block;
-  padding: 5px 20px 1px;
+  padding: 5px 0px 1px;
 }
 .tab-content {
   padding-left: 0px;
