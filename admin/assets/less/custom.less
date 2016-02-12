@@ -303,7 +303,9 @@ a.list-group-item:hover,a.list-group-item:focus {
 #clogin #main-container{
   background: none;
 }
-
+#clogin .block-content{
+    padding: 20px 20px 1px;
+}
 .nav-main-header {
   background-color: #333;
 }
@@ -729,9 +731,25 @@ a.no-link{
   padding-bottom: 10px;
   margin-left: -2px;
 }
-.alert{
+.alert, p.alert, .content p.alert{
   padding-top: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 12px !important;
+  box-shadow: none !important;
+}
+.alert-success {
+    .alert-variant(@brand-success-light; darken(@brand-success, 10%));
+}
+
+.alert-info {
+    .alert-variant(@brand-info-light; darken(@brand-info, 10%));
+}
+
+.alert-warning {
+    .alert-variant(#fcf8e3; #646464);
+}
+
+.alert-danger {
+    .alert-variant(@brand-danger-light; darken(@brand-danger, 10%));
 }
 .container > .alert{
   margin-left: -15px;
