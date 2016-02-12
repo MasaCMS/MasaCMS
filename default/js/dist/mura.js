@@ -3098,7 +3098,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			} else {
 				if(obj.data('object')=='container'){
 					var context=deepExtend(obj.data(),response);
-					context.targetEl=obj;
+					context.targetEl=el;
 					obj.prepend(mura.templates.meta(context));
 				} else {
 					var template=obj.data('clienttemplate') || obj.data('object');
@@ -3106,7 +3106,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 					if(typeof mura.templates[template] == 'function'){
 
 						var context=deepExtend(obj.data(),response);
-						context.targetEl=obj;
+						context.targetEl=el;
 
 						if(typeof context.async != 'undefined'){
 							obj.data('async',context.async);
@@ -3126,7 +3126,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			}
 		} else {
 			var context=obj.data();
-			context.targetEl=obj;
+			context.targetEl=el;
 
 			if(obj.data('object')=='container'){
 				obj.prepend(mura.templates.meta(context));
