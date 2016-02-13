@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
-Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-Your custom code
+Your custom code 
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset attop=rsnest.currentrow eq 1>
 
 <cfset atbottom=rsnest.currentrow eq rsnest.recordcount>
-
+	
 <cfset neworder= ((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and attributes.perm eq 'editor'>
 
 <cfset deletable=(((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and (verdict eq 'editor'))  and rsnest.IsLocked neq 1>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(icon)>
 		<cfset icon=lcase(rsnest.fileExt)>
 	</cfif>
-
+	
 	<cfif variables.restricted>
 		<cfset icon=icon & " locked">
 	</cfif>
@@ -152,9 +152,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>
 	<!---<cfif (rsnest.type eq 'Page') or  (rsnest.type eq 'Folder')  or  (rsnest.type eq 'Calendar') or (rsnest.type eq 'Gallery')>--->
 
-
-	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#');"><i class="mi-plus-circle"></i></a>
-
+	
+	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#esapiEncode('javascript',newcontent)#',this,'#rsnest.contentid#','#esapiEncode('javascript',attributes.topid)#','#rsnest.parentid#','#esapiEncode('javascript',attributes.siteid)#','#rsnest.type#');"><i class="mi-plus-circle"></i></a>	
+	
 	<cfif isNumeric(attributes.hasKids) and attributes.hasKids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
@@ -170,29 +170,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfsilent>
 
-<cfif atooltip>
-	<span data-toggle="popover" title=""
-	data-html="true"
-	data-placement="right"
-	data-content="#atitle#"
-	data-original-title="">
-</cfif>
-		<cfif not listFindNoCase('none,read',verdict)>
-			<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" <!--- title="#atitle#"  --->href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <!--- <cfif atooltip>rel="tooltip" data-html="true"</cfif> --->>
-		<cfelse>
-			<a class="<cfif rsnest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <!--- <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif> --->>
-		</cfif>
-				#esapiEncode('html',left(rsnest.menutitle,75))#
-				<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
-				<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif>
-			</a>
-
-<cfif atooltip>
-	</span>
-</cfif>
-
+	<cfif not listFindNoCase('none,read',verdict)>
+		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#esapiEncode('url',attributes.topid)#&siteid=#esapiEncode('url',attributes.siteid)#&moduleid=#rsnest.moduleid#&startrow=#esapiEncode('url',attributes.startrow)#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+	<cfelse>
+		<a class="<cfif rsnest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(left(rsnest.fileExt,4))#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
+	</cfif>
+	#esapiEncode('html',left(rsnest.menutitle,75))#
+	<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
+	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 	<!--- <div class="mura-title-fade"></div> --->
-</dt>
+</dt>	
 
 <cfif rsnest.moduleid eq '00000000000000000000000000000000000' and attributes.locking neq 'all'>
 	<dd class="objects">
@@ -209,15 +196,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 <span>#rsnest.inheritObjects#</span>
 		<cfif verdict eq 'editor' and request.hasLayoutObjectsTab></a></cfif>
 	</dd>
-
+	
 	<dd class="display<cfif rsnest.Display eq 2 and rsnest.approved> scheduled</cfif>">
 		<cfif verdict eq 'editor' and request.hasPublishingTab>
 		<a class="mura-quickEditItem" data-attribute="display">
 		</cfif>
-
+		
 		<cfif rsnest.Display eq 1 and rsnest.approved>
-		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span>
-
+		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
+		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
 				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
@@ -229,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
-
+	
 	<dd class="template">
 	  	<cfif verdict eq 'editor' and request.hasLayoutObjectsTab><a class="mura-quickEditItem<cfif len(rsnest.template) or len(rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 		<cfif len(rsnest.template) or len(rsnest.template)>
@@ -253,10 +240,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict eq 'editor' and request.hasPublishingTab>
 		<a class="mura-quickEditItem" data-attribute="display">
 		</cfif>
-
+		
 		<cfif rsnest.Display eq 1 and rsnest.approved>
-		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span>
-
+		 <i class="mi-check" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
+		
 		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif not (verdict eq 'editor' and request.hasPublishingTab)>
 				<a href="##" rel="tooltip" title="#esapiEncode('html_attr',LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
@@ -269,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict eq 'editor' and request.hasPublishingTab></a></cfif>
 	</dd>
 </cfif>
-
+	
     <dd class="updated">#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rsnest.lastupdate,"medium")#</dd>
     <dd class="actions">
     <ul>
@@ -315,9 +302,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dl>
    <cfif ((attributes.hasKids and attributes.nestlevel lt attributes.viewDepth)
    	 or isOpenSection) and attributes.hasKids>
-   <cf_dsp_nest parentid="#rsnest.contentid#"
-   locking="#attributes.locking#"
-   nestlevel="#evaluate(attributes.nestlevel + 1)#"
+   <cf_dsp_nest parentid="#rsnest.contentid#"  
+   locking="#attributes.locking#" 
+   nestlevel="#evaluate(attributes.nestlevel + 1)#" 
    perm="#verdict#"
    siteid="#attributes.siteid#"
    topid="#attributes.topid#"

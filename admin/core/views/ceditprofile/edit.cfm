@@ -76,12 +76,10 @@ select * from rsSubTypes where subType <> 'Default'
 </div> <!-- /.mura-header -->
 
 
-<!--- TODO GoWest : where on page should alerts appear? : 2016-02-10T15:06:14-07:00 --->						
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
 		<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 	</cfif>
 	
-<!--- TODO GoWest : how did we handle this previously? find *required : 2016-02-10T15:05:44-07:00 --->
 	<p>(*Required, **Required to login to Site)<p>
  
 <div class="block block-constrain">
@@ -260,7 +258,6 @@ select * from rsSubTypes where subType <> 'Default'
 							</div> <!-- /.block header -->						
 							<div class="block-content">
 
-<!--- TODO GoWest : this markup (test w/ categories) : 2016-02-10T15:35:11-07:00 --->
 							<div id="mura-list-tree" class="mura-control-group">
 							<cfloop collection="#application.settingsManager.getSites()#" item="site">
 								<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
@@ -292,7 +289,6 @@ select * from rsSubTypes where subType <> 'Default'
 								<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'user.extendedattributes')#</h3>
 							</div> <!-- /.block header -->						
 							<div class="block-content">
-<!--- TODO GoWest : test and adjust this markup : 2016-02-10T15:32:19-07:00 --->
 								<span id="extendSetsDefault"></span>
 								<script type="text/javascript">
 								userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userbean.getSiteID()).getThemeAssetPath()#');

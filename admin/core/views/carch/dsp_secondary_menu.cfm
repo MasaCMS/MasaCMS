@@ -194,9 +194,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdefaultcase>
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="edit,update">
-<!--- TODO GoWest : move to 'cancel' button : 2015-12-22T23:10:25-07:00 --->
-<!--- 				<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
- --->
+				<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
+
 				<cfif rc.contentid neq "">
 				<div class="btn-group">
 					  <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
@@ -204,7 +203,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    <span class="caret"></span>
 					  </a>
 					  <ul class="dropdown-menu drop-right">
-<!--- TODO GoWest : add icons , style sub-items in dropdown here : 2015-12-23T10:03:03-07:00 --->
 				<cfif (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 					<cfswitch expression="#rc.type#">
 					<cfcase value="Page,Folder,Calendar,Gallery,Link">
@@ -263,13 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfcase>
 			<cfcase value="hist,audit">
-				<!--- TODO GoWest : replicate 'back' buttons as cancel in content controls - see commented/removed items such as below : 2015-12-23T08:53:45-07:00 --->
-
-				<!---
 				<a class="btn" href="./?muraAction=cArch.list&siteid=#esapiEncode('url',rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="mi-arrow-circle-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
-				 --->
-<!--- TODO GoWest : test/move additional buttons if they don't fit in label-group : 2015-12-22T23:12:54-07:00 --->
-
 				<cfif rc.originalfuseaction eq 'hist'>
 					<cfif rc.perm neq 'none' and not isLockedBySomeoneElse>
 						<a class="btn" href="./?muraAction=cArch.update&action=deletehistall&contentid=#esapiEncode('url',rc.contentid)#&type=#esapiEncode('url',rc.type)#&parentid=#esapiEncode('url',rc.parentid)#&topid=#esapiEncode('url',rc.topid)#&siteid=#esapiEncode('url',rc.siteid)#&startrow=#esapiEncode('url',rc.startrow)#&moduleid=#esapiEncode('url',rc.moduleid)#&compactDisplay=#esapiEncode('url',rc.compactdisplay)##rc.$.renderCSRFTokens(context=rc.contentid & 'deletehistall',format='url')#" onclick="return confirmDialog('#esapiEncode('javascript',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)"><i class="mi-times-circle"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a>

@@ -46,24 +46,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfhtmlhead text="#session.dateKey#">
-<cfparam name="rc.rsPublicGroups.recordcount" default="0" />
-<cfparam name="rc.direction" default="">
-<cfparam name="rc.orderBy" default="">
-<cfparam name="rc.page" default="1">
-<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h1></cfoutput>
-
 <cfsilent>
-	  <cfset startDate=createDate(year(now()),month(now()),1)>
-	  <cfset stopDate=createDate(year(now()),month(now()),day(now()))>
-	  <cfset emailLimit = application.settingsManager.getSite(rc.siteID).getEmailBroadcasterLimit()>
-	  <cfset emailsSent = application.emailManager.getSentCount(rc.siteID, startDate,stopDate)>
-	  <cfif emailLimit eq 0>
-	  	<cfset emailLimitText = "Unlimited">
-		<cfset emailsRemainingText = "Unlimited">
-	  <cfelse>
-	  	<cfset emailLimitText = emailLimit>
-		<cfset emailsRemainingText = emailLimit - emailsSent>
-	  </cfif></cfsilent>   
+	<cfparam name="rc.rsPublicGroups.recordcount" default="0" />
+	<cfparam name="rc.direction" default="">
+	<cfparam name="rc.orderBy" default="">
+	<cfparam name="rc.page" default="1">
+  <cfset startDate=createDate(year(now()),month(now()),1)>
+  <cfset stopDate=createDate(year(now()),month(now()),day(now()))>
+  <cfset emailLimit = application.settingsManager.getSite(rc.siteID).getEmailBroadcasterLimit()>
+  <cfset emailsSent = application.emailManager.getSentCount(rc.siteID, startDate,stopDate)>
+  <cfif emailLimit eq 0>
+  	<cfset emailLimitText = "Unlimited">
+	<cfset emailsRemainingText = "Unlimited">
+  <cfelse>
+  	<cfset emailLimitText = emailLimit>
+	<cfset emailsRemainingText = emailLimit - emailsSent>
+  </cfif>
+	</cfsilent>   
+	
+	<cfoutput>	
+	<div class="mura-header">
+			<h1>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h1>
+		</cfoutput>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
 	  <cfoutput>
 	  <ul class="metadata-horizontal"><li>#application.rbFactory.getKeyValue(session.rb,"email.emailssent")#: <strong>#emailsSent# (#LSDateFormat(startDate,session.dateKeyFormat)# - #LSDateFormat(stopDate, session.dateKeyFormat)#)</strong></li>
 	  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsalloted")#: <strong>#emailLimitText#</strong></li>
@@ -74,92 +81,96 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <a href="./?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfinclude template="dsp_secondary_menu.cfm">
-	  <cfoutput>
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
+
+  <cfoutput>
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
 
 	  <div id="filterView" class="mura-layout-row">
 	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
 <form novalidate="novalidate" action="./?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
 
-<div class="fieldset">
-	<div class="control-group">
-		<div class="span3">
-	      <label class="control-label">
-	      	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
-	      </label>
-	      <div class="controls"><select name="groupID" class="input-medium">
-	      	<optgroup label="#application.rbFactory.getKeyValue(session.rb,'email.all')#">
-			<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
-			</optgroup></cfoutput>
-			<option value=""></option>
-			<cfif rc.rsPrivateGroups.recordcount>
-				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.privategroups')#</cfoutput>">
-					<cfoutput query="rc.rsPrivateGroups">
-						<option value="#rc.rsPrivateGroups.UserID#" <cfif listfind(session.emaillist.groupid,rc.rsPrivateGroups.userid)>selected</cfif>>#rc.rsPrivateGroups.groupname#</option>
-			  		</cfoutput>
-				</optgroup>
-			    <option value=""></option>
-			</cfif>
-			<cfif rc.rsPublicGroups.recordcount>
-				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#</cfoutput>">
-					<cfoutput query="rc.rsPublicGroups">
-						<option value="#rc.rsPublicGroups.UserID#" <cfif  listfind(session.emaillist.groupid,rc.rsPublicGroups.userid)>selected</cfif>>#rc.rsPublicGroups.groupname#</option>
-					</cfoutput>
-				</optgroup>
-				<option value=""></option>
-			</cfif>
-			<cfif rc.rsMailingLists.recordcount>
-				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.mailinglist')#</cfoutput>">
-					<cfoutput query="rc.rsMailingLists">
-					<option value="#rc.rsMailingLists.mlid#" <cfif  listfind(session.emaillist.groupid,rc.rsMailingLists.mlid)>selected</cfif>>#rc.rsMailingLists.name#</option>
-					</cfoutput>
-				</optgroup>
-				<option value=""></option>
-			</cfif>
-		  </select>
-	      </div>
-	    </div>
+	<div class="mura-control-group">
+    <label>
+    	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
+    </label>
+    <select name="groupID" class="input-medium">
+    	<optgroup label="#application.rbFactory.getKeyValue(session.rb,'email.all')#">
+	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
+	</optgroup></cfoutput>
+	<option value=""></option>
+	<cfif rc.rsPrivateGroups.recordcount>
+		<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.privategroups')#</cfoutput>">
+			<cfoutput query="rc.rsPrivateGroups">
+				<option value="#rc.rsPrivateGroups.UserID#" <cfif listfind(session.emaillist.groupid,rc.rsPrivateGroups.userid)>selected</cfif>>#rc.rsPrivateGroups.groupname#</option>
+	  		</cfoutput>
+		</optgroup>
+	    <option value=""></option>
+	</cfif>
+	<cfif rc.rsPublicGroups.recordcount>
+		<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#</cfoutput>">
+			<cfoutput query="rc.rsPublicGroups">
+				<option value="#rc.rsPublicGroups.UserID#" <cfif  listfind(session.emaillist.groupid,rc.rsPublicGroups.userid)>selected</cfif>>#rc.rsPublicGroups.groupname#</option>
+			</cfoutput>
+		</optgroup>
+		<option value=""></option>
+	</cfif>
+	<cfif rc.rsMailingLists.recordcount>
+		<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.mailinglist')#</cfoutput>">
+			<cfoutput query="rc.rsMailingLists">
+			<option value="#rc.rsMailingLists.mlid#" <cfif  listfind(session.emaillist.groupid,rc.rsMailingLists.mlid)>selected</cfif>>#rc.rsMailingLists.name#</option>
+			</cfoutput>
+		</optgroup>
+		<option value=""></option>
+	</cfif>
+  </select>
+	</div>	  
 <cfoutput>
 
-	<div class="span3">
-	      <label class="control-label">
-	      	#application.rbFactory.getKeyValue(session.rb,'email.status')#
-	      </label>
-	      <div class="controls">
-	      <label class="radio inline">
-	      <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
-	      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
-	      </label>
-	      <label class="radio inline">
-	      <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
-	      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
-	      </label>
-	       <label class="radio inline">
-	       	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
-	       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
-	   		</label>
-	      </div>
-	</div>
+	<div class="mura-control-group">
+  <label>
+  	#application.rbFactory.getKeyValue(session.rb,'email.status')#
+  </label>
+  <label class="radio inline">
+  <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
+  <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
+  </label>
+  <label class="radio inline">
+  <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
+  <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
+  </label>
+   <label class="radio inline">
+   	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
+   <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
+		</label>
 </div>
 	
-	<div class="control-group">
-	      <label class="control-label">
-	      	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
-	  	  </label>
-	      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="span6">
-	      </div>
+	<div class="mura-control-group">
+    <label>
+    	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
+	  </label>
+	  <input type="text"  name="subject" value="#session.emaillist.subject#">
 	</div>
 
 </div>
 
 <input type="hidden" name="doSearch" value="true"/>
-<div class="form-actions">			  
-<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
-</div>
+
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+			<div class="form-actions">			  
+			<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="mi-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
+			</div>
 </form>
-</div>
+
 
 </cfoutput>
+<div class="block-content">
 	  <table id="metadata" class="mura-table-grid">
         <tr> 
 		  <cfset subjectDirection = "asc">
@@ -234,6 +245,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </tr>
         </cfif>
       </table>
+    		</div> <!-- /.block-content -->
+      </div> <!-- /.block-constrain -->
+
 	  <cfoutput>
 	  <cfif rc.rslist.recordcount gt recordsPerPage>
 		#application.rbFactory.getKeyValue(session.rb,'email.moreresults')#: 

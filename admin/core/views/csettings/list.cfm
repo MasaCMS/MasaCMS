@@ -105,6 +105,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 	<div class="tab-content block-content">
 		<div id="tabCurrentsites" class="tab-pane active"> 
+
+					<!-- start tab -->
+						<div class="block block-bordered">
+							<!-- block header -->
+							<div class="block-header bg-gray-lighter">
+								<ul class="block-options">
+									<li>Something here?</li>
+									<li>
+										<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+									</li>
+									<li>
+										<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+									</li>
+								</ul>
+								<h3 class="block-title">Current Sites</h3>
+							</div> <!-- /.block header -->						
+							<div class="block-content">
+
 			<script type="text/javascript">
 				jQuery(function ($) {
 					$('#checkall').click(function () {
@@ -228,8 +246,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#rc.$.renderCSRFTokens(context='updatesites',format='form')#
 				</cfoutput>
 			</form>
-		</div>
+
+				</div> <!-- /.block-content -->
+			</div> <!-- /.block-bordered -->
+		</div> <!-- /.tab-pane -->	
+
 		<div id="tabPlugins" class="tab-pane">
+
+		<div class="block block-bordered">
+			<!-- block header -->
+			<div class="block-header bg-gray-lighter">
+				<ul class="block-options">
+					<li>Something here?</li>
+					<li>
+						<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+					</li>
+					<li>
+						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+					</li>
+				</ul>
+				<h3 class="block-title">Plugins</h3>
+			</div> <!-- /.block header -->						
+			<div class="block-content">
+
 		<h2>Install Plugin</h2>
 		<cfif application.configBean.getJavaEnabled()>
 		<div class="mura-file-selector">
@@ -240,22 +279,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 			<div id="appzip" class="fileTypeOption">
 				<form novalidate="novalidate" name="frmNewPlugin" action="./?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
-					<div class="control-group">
-						<label class="control-label">Select File to Upload</label>
-						<div class="controls"><input name="newPlugin" type="file" data-required="true" message="Please select a plugin file."></div>
-					</div>
-					<button type="submit" value="Deploy" class="btn" /><i class="mi-bolt"></i> Deploy</button>
+					<div class="mura-control-group">
+						<label>Select File to Upload</label>
+							<input name="newPlugin" type="file" data-required="true" message="Please select a plugin file.">
+							<div class="mura-control justify">
+								<button type="submit" value="Deploy" class="btn" /><i class="mi-bolt"></i> Deploy</button>
+							</div>
+						</div>
 					<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
 				</form>
 			</div>
 			<div id="appurl" class="fileTypeOption" style="display:none;">
 				<form name="frmNewPluginFROMURL" action="./?muraAction=cSettings.deployPlugin" method="post" onsubmit="return validateForm(this);">
-					<div class="control-group">
-						<label class="control-label">Enter URL</label>
-						<div class="controls">	
+					<div class="mura-control-group">
+						<label>Enter URL</label>
 							<input type="text" name="newPlugin"  class="input-xxlarge" type="url" data-required="true" placeholder="http://www.domain.com/plugin.zip"
 					message="Please enter the url for your plugin file"
-					value=""></div>
+					value="">
 					</div>
 					<button type="submit" class="btn" /><i class="mi-bolt"></i> Deploy</button>
 					<cfoutput>#rc.$.renderCSRFTokens(context='newplugin',format='form')#</cfoutput>
@@ -321,7 +361,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</tr>
 				</cfif>
 			</table>
-		</div>
+			</div> <!-- /.block-content -->
+		</div> <!-- /.block-bordered -->
+	</div> <!-- /.tab-pane -->	
 		<div class="load-inline tab-preloader"></div>
 		<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 		</div> <!-- /.block-content.tab-content -->

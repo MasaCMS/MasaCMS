@@ -52,9 +52,6 @@
 <!--- mura-header --->
 <div class="mura-header">	
 	<h1>Image Details</h1>
-	<!--- TODO GoWest : item title actual value : 2016-01-06T15:13:56-07:00 --->		
-	<div class="mura-item-title">Item Title Here Item Title Here Item Title Here Item Title ...</div>	
-
 	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
 		#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
 	</cfif>

@@ -248,7 +248,7 @@ to your own modified versions of Mura CMS.
 						<!---
 						<div class="span4">
 								<label>Cache Capacity <span class="help-inline">(0=Unlimited)</span></label>
-						<div class="controls">
+						<div class="mura-control justify">
 								<input name="cacheCapacity" type="text" class="span3" value="#esapiEncode('html_attr',rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
 							</div>
 					</div>--->
@@ -1138,7 +1138,7 @@ to your own modified versions of Mura CMS.
 									<cfif attributeBean.getType() IS "Hidden">
 									<cfset attributeBean.setType( "TextBox" ) />
 								</cfif>
-									<div class="controls"> #attributeBean.renderAttribute(attributeValue)# </div>
+									<div class="mura-control justify"> #attributeBean.renderAttribute(attributeValue)# </div>
 								</div>
 						</cfloop>
 						</div>
@@ -1276,7 +1276,7 @@ to your own modified versions of Mura CMS.
 			<!---
 			<div class="mura-control-group">
 				<label for="razuna_servertype">Server Type</label>
-				<div class="controls">
+				<div class="mura-control justify">
 					<label for="razuna_servertype_hosted" class="radio inline">
 						<input type="radio" name="servertype" value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
 					</label>

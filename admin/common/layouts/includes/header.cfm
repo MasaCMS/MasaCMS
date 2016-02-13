@@ -46,9 +46,6 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- TODO GoWest : should some of this be in sidebar.cfm? : 2015-12-11T13:38:46-07:00 --->
-<!--- TODO GoWest : tab indent all, remove trailing whitespace : 2015-12-10T13:52:19-07:00 --->
-
 <cfsilent>
 	<cfparam name="rc.originalfuseAction" default="">
 	<cfparam name="rc.originalcircuit" default="">
@@ -124,7 +121,6 @@
   <ul class="nav-header pull-right">
       <li class="visible-xs">
           <!-- Toggle class helper (for .js-header-search below), functionality initialized in App() -> uiToggleClass() -->
-<!--- TODO GoWest : check formatting on show/hide in xs view : 2015-12-10T15:36:26-07:00 --->
           <button class="btn btn-default" data-toggle="class-toggle" data-target=".js-header-search" data-class="header-search-xs-visible" type="button">
               <i class="mi-search"></i>
           </button>
@@ -725,12 +721,6 @@
 		<!--- /Main Navbar --->
 	</header>
 
-
 	</cfsavecontent>
-
-<!--- TODO GoWest : show old header - temp/remove : 2015-12-10T16:57:18-07:00 --->
-<!--- 
-#oldheader#
- --->		
 
 </cfoutput>

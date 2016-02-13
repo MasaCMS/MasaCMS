@@ -90,7 +90,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset newAttribute=extendSet.getAttributeBean() />
       <cfset newAttribute.setSiteID(rc.siteID) />
       <cfset newAttribute.setOrderno(arrayLen(attributesArray)+1) />
-      <!--- TODO GoWest : attribute form in custom tags : 2016-01-25T11:24:46-07:00 --->
       <cf_dsp_attribute_form attributesArray="#attributesArray#" attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm" muraScope="#rc.$#">
 
       <cfif arrayLen(attributesArray)>

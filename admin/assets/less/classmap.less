@@ -82,25 +82,27 @@ main > .content > :first-child{
 }
 
 // form elements w/ label
-
 .mura-control-group > label + textarea,
 .mura-control-group > label + * + textarea,
 .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
 .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
 .mura-control-group > label + input[type=password],
 .mura-control-group > label + * + input[type=password],
+.mura-control-group > label + input[type=file],
+.mura-control-group > label + * + input[type=file],
 .mura-control-group > label + select:not([class*="time"]),
 .mura-control-group > label + * + select:not([class*="time"]){
   .form-control;
   .make-sm-column(9);
 }
-
 .sidebar .mura-control-group > label + textarea,
 .sidebar .mura-control-group > label + * + textarea,
 .sidebar .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
 .sidebar .mura-control-group > label + * + input[type=text]:not([class*="datepicker"]),
 .sidebar .mura-control-group > label + input[type=password],
 .sidebar .mura-control-group > label + * + input[type=password],
+.sidebar .mura-control-group > label + input[type=file],
+.sidebar .mura-control-group > label + * + input[type=file],
 .sidebar .mura-control-group > label + select:not([class*="time"]),
 .sidebar .mura-control-group > label + * + select:not([class*="time"]){
   padding: 4px 8px;
@@ -112,6 +114,30 @@ select[size]
 ,.mura-control-group > label + select[multiple], 
 .mura-control-group > label + select[size] {
     height: auto !important;
+}
+.mura-control-group > label + .datepicker{
+  .form-control;
+  .make-sm-column(2.6);
+}
+
+// inline groups
+.mura-control-inline{
+  > label {
+  float:left;
+  padding-right: 8px;
+  padding-top: 8px;
+  }
+  > input{
+  .make-sm-column(3);
+  .form-control;
+  }
+  > input + label{
+  margin-left: 8px;
+  }
+  > button {
+  .btn;
+  height: 36px;
+  }
 }
 
 // checkboxes / radio buttons
@@ -340,12 +366,16 @@ h1:not([class]){
 
 // style a.btn like label
 #nav-module-specific .btn{
-	.label;
+  .label;
 }
+
 #nav-module-specific .label{
   .btn;
 }
-
+.mura-item-metadata .metadata-horizontal li{
+   .btn;
+   .label;
+}
 // default to label-default
 .label:not([class*="label-"]){
   .label-default;
