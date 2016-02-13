@@ -83,6 +83,10 @@ main > .content > :first-child{
 
 // form elements w/ label
 
+.mura-control-group > label + .datepicker{
+  .form-control;
+  .make-sm-column(2.6);
+}
 .mura-control-group > label + textarea,
 .mura-control-group > label + * + textarea,
 .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
@@ -96,7 +100,6 @@ main > .content > :first-child{
   .form-control;
   .make-sm-column(9);
 }
-
 .sidebar .mura-control-group > label + textarea,
 .sidebar .mura-control-group > label + * + textarea,
 .sidebar .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
