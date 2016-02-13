@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+Mura CMS under the license of your choice, provided that you follow these specific guidelines:
 
-Your custom code 
+Your custom code
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,12 +36,12 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="rc.isNew" default="1">
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if($(clicked).val()=='internal'){
 				$(".mura-related-internal").show();
 				$(".mura-related-external").hide();
-			} else {	
+			} else {
 				$(".mura-related-internal").hide();
 				$(".mura-related-external").show();
 			}
@@ -92,9 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 	.attr('data-content-type','Link/Default')
 			 	.attr('class','item')
 			 	.append(
-			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="mi-plus-circle"></i></button><ul class="navZoom"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
+			 		$('<button class="btn mura-rc-quickoption" type="button" value="'+ newcontentid +'"><i class="mi-plus-circle"></i></button><ul class="breadcrumb"/><li class="link">' + $('##mura-related-title').val() + '</li></ul></li>')
 			 	)
-			 ); 
+			 );
 
 			if(!$("##draggableContainmentExternal").is(":visible")){
 				$("##draggableContainmentExternal").fadeIn();
@@ -117,30 +117,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			siteManager.bindMouse();
 
-		}		
+		}
 	</script>
 	<cfif rc.external>
 		<div class="mura-control-group">
 			<label>
-				<span data-toggle="popover" title="" data-placement="right" 
-  			data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#" 
-  			data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent'))#">	
+				<span data-toggle="popover" title="" data-placement="right"
+  			data-content="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'tooltip.addrelatedcontent'))#"
+  			data-original-title="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent'))#">
 		  	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.whereistherelatedcontent')# <i class="mi-question-circle"></i></span>
 			</label>
 				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation1" name="contentlocation" value="internal" checked="true"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 				<label class="radio inline"><input type="radio" onclick="toggleRelatedType(this)" id="contentlocation2" name="contentlocation" value="external"/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.onanothersite')#</label>
 			</div>
 	</cfif>
-	
+
 	<div class="mura-control-group mura-related-internal">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.inthissite')#</label>
 		<div id="internalContent" class="mura-control justify">
 				<input type="text" name="keywords" value="#rc.keywords#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="button" name="btnSearch" id="rcBtnSearch" class="btn"><i class="mi-search"></i></button>
 			<a href="##" class="btn" id="aAdvancedSearch" data-toggle="button">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.advancedsearch')#</a>
-		</div>	
+		</div>
 	</div>
-	
+
 	<div class="mura-related-internal">
 		<div id="rcAdvancedSearch" style="display:none;">
 			<div class="mura-control-group">
@@ -162,15 +162,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfloop>
 						</select>
 					</div>
-				</cfif>	
+				</cfif>
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.releasedaterange')#</label>
 						<input type="text" name="rcStartDate" id="rcStartDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.startdate'))#" value="#rc.rcStartDate#" /> &ndash; <input type="text" name="rcEndDate" id="rcEndDate" class="datepicker span3 mura-relatedContent-datepicker" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.enddate')#" value="#rc.rcEndDate#" />
 					</div>
-				</div>			
+				</div>
 			<div class="mura-control-group">
 				<div class="mura-control justify">
-					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>			
+					<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availablecategories')#</label>
 					<div id="mura-list-tree">
 						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.rcCategoryID#" nestLevel="0" useID="0" elementName="rcCategoryID">
 					</div>
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not rc.isNew>
 	<cfscript>
 		$=application.serviceFactory.getBean("MuraScope");
-	
+
 		function getRelatedFeed($,siteid){
 			feed=$.getBean("feed");
 			feed.setMaxItems(100);
@@ -194,32 +194,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			feed.setSortBy("lastupdate");
 			feed.setSortDirection("desc");
 			feed.setContentPoolID(arguments.siteid);
-			
+
 			feed.addParam(field="active", criteria=1, condition="eq");
 			feed.addParam(field="contentid", criteria=$.event('contentid'), condition="neq");
 
 			if(rc.relatedcontentsetid=='calendar'){
-				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");	
+				feed.addParam(field="tcontent.type",criteria='Calendar',condition="eq");
 			} else {
 				if (len($.event("searchTypeSelector"))) {
-					feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");	
-					feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");	
+					feed.addParam(field="tcontent.type",criteria=listFirst($.event("searchTypeSelector"), "^"),condition="eq");
+					feed.addParam(field="tcontent.subtype",criteria=listLast($.event("searchTypeSelector"), "^"),condition="eq");
 				}
 			}
-			
+
 			if(len($.event("rcStartDate")) or len($.event("rcEndDate"))){
 				feed.addParam(relationship="and (");
-			
+
 				started=false;
 
 				feed.addParam(relationship="(");
 
 				if (len($.event("rcStartDate"))) {
-					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="gte",criteria=$.event("rcStartDate"));
 				}
-				
+
 				if (len($.event("rcEndDate"))) {
-					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+					feed.addParam(field="tcontent.releaseDate",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));
 				}
 
 				feed.addParam(relationship=")");
@@ -227,11 +227,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				feed.addParam(relationship="or (");
 
 				if (len($.event("rcStartDate"))) {
-					feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+					feed.addParam(field="tcontent.displayStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));
 				}
-				
+
 				if (len($.event("rcEndDate"))) {
-					feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+					feed.addParam(field="tcontent.displayStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));
 				}
 
 				feed.addParam(relationship=")");
@@ -239,25 +239,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				feed.addParam(relationship="or (");
 
 				if (len($.event("rcStartDate"))) {
-					feed.addParam(field="tcontent.featureStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));	
+					feed.addParam(field="tcontent.featureStart",datatype="date",condition="gte",criteria=$.event("rcStartDate"));
 				}
-				
+
 				if (len($.event("rcEndDate"))) {
-					feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));	
+					feed.addParam(field="tcontent.featureStart",datatype="date",condition="lt",criteria=dateAdd('d',1,$.event("rcEndDate")));
 				}
 
 				feed.addParam(relationship=")");
 
 
-		
+
 				feed.addParam(relationship=")");
 			}
-			
+
 			if (len($.event("rcCategoryID"))) {
-				feed.setCategoryID($.event("rcCategoryID"));	
+				feed.setCategoryID($.event("rcCategoryID"));
 			}
-			
-			if (len($.event("keywords"))) {	
+
+			if (len($.event("keywords"))) {
 				subList=$.getBean("contentManager").getPrivateSearch(arguments.siteid,$.event("keywords"));
 				feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 			}
@@ -271,11 +271,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rc.rslist.recordcount>
 			<div id="draggableContainmentInternal" class="list-table search-results">
 				<div class="list-table-content-set">
-					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif> 
+					<cfoutput><cfif len( contentPoolSiteIDs )>#$.getBean('settingsManager').getSite($.event('siteId')).getSite()#:</cfif>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
 				</div>
 				<ul class="rcDraggable list-table-items">
-					<cfoutput query="rc.rslist" startrow="1" maxrows="100">	
+					<cfoutput query="rc.rslist" startrow="1" maxrows="100">
 						<cfset crumbdata = application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 						<!---<cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>--->
 							<li class="item" data-content-type="#esapiEncode('html_attr','#rc.rslist.type#/#rc.rslist.subtype#')#" data-contentid="#rc.rslist.contentID#">
@@ -286,20 +286,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</ul>
 			</div>
 		<cfelse>
-			<cfoutput>  
+			<cfoutput>
 				<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
 			</cfoutput>
 		</cfif>
 
 		<!--- Cross-Site Related Search --->
 		<cfloop list="#contentPoolSiteIDs#" index="siteId">
-			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>		
+			<cfif siteId neq $.event('siteid') and len($.event("keywords"))>
 				<cfset rc.rslist=getRelatedFeed($,siteId).getQuery()>
 
 				<cfif rc.rslist.recordcount>
 					<div id="draggableContainmentInternal" class="list-table search-results">
 						<div class="list-table-content-set">
-							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#: 
+							<cfoutput>#$.getBean('settingsManager').getSite(siteId).getSite()#:
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.searchresults')# (1-#min(rc.rslist.recordcount,100)# of #rc.rslist.recordcount#)</cfoutput>
 						</div>
 						<ul class="rcDraggable list-table-items">
@@ -314,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</div>
 				<cfelse>
-					<cfoutput>  
+					<cfoutput>
 						<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#</p>
 					</cfoutput>
 				</cfif>
@@ -325,21 +325,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="mura-control-inline mura-related-external" style="display:none;">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
-		<input type="text" id="mura-related-title" value="" class="span12">	
+		<input type="text" id="mura-related-title" value="" class="span12">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
 		<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-		<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>		
-</div>	
+		<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>
+</div>
 
 <div class="mura-related-external" style="display:none;">
 	<div id="draggableContainmentExternal" class="mura-control-group" style="display:none;">
 		<div class="list-table search-results">
 			<div class="list-table-content-set">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.availableurls')#</label></div>
 			<ul class="rcDraggable list-table-items"></ul>
-		</div>	
+		</div>
 	</div>
 </div>
 </cfoutput>
-
-
-

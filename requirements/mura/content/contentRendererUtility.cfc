@@ -8,7 +8,7 @@
 	<cffunction name="dspZoomNoLinks" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
-		<cfargument name="class" type="string" default="navZoom">
+		<cfargument name="class" type="string" default="breadcrumb">
 		<cfargument name="charLimit" type="numeric" default="0">
 		<cfargument name="minLevels" type="numeric" default="0">
 		<cfargument name="maxLevels" type="numeric" default="0">
@@ -49,7 +49,7 @@
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
-				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
+				<cfset isFileIcon=arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
 			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> #HTMLEditformat(arguments.crumbdata[i].menutitle)#</li>
 		</cfloop>
@@ -58,7 +58,7 @@
 				<cfset lastlocked="locked">
 			</cfif>
 			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
-			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
+			<cfset isFileIcon=arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "mi">
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>> <strong>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</strong></li>
 		</ul></cfoutput></cfsavecontent>
@@ -695,7 +695,7 @@
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="ajax" type="boolean" default="false">
-		<cfargument name="class" type="string" default="navZoom">
+		<cfargument name="class" type="string" default="breadcrumb">
 		<cfargument name="charLimit" type="numeric" default="0">
 		<cfargument name="minLevels" type="numeric" default="0">
 		<cfargument name="maxLevels" type="numeric" default="0">
