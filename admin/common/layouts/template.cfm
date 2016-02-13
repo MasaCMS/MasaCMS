@@ -203,8 +203,6 @@
 <!--- TODO GoWest : fontlibary.org URL not responding from staging server, use google fonts instead? : 2015-12-14T11:18:14-07:00 --->
 <!---     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/source-sans-pro" type="text/css"/> --->
  
-<!--- TODO GoWest : audit usage and versions of jquery, bootstrap, plugins, other js files, remove unused files : 2015-12-02T14:02:15-07:00 --->
-
 		<!-- Admin CSS -->
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
@@ -228,7 +226,6 @@
 <!--- TODO GoWest : minify js : 2016-02-12T14:55:58-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>	
 	
-<!--- TODO GoWest : add this msie notification to compact.cfm? : 2016-01-29T16:53:17-07:00 --->
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if lte IE 8]>
 			<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
@@ -300,7 +297,6 @@
          		listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
          		)
          	>
-<!--- M7 changed: put .close links before text to hold top right position --->
           <cfparam name="session.mura.alerts" default="#structNew()#">
           <cfif not structKeyExists(session.mura.alerts,'#session.siteid#')>
           	<cfset session.mura.alerts['#session.siteid#']={}>
@@ -347,10 +343,7 @@
 		           		});
 
 		           		// persist open nav items
-<!--- TODO GoWest : prevent open parent behavior on minimized nav? (or if ok as is, remove these commented lines): 2015-12-17T16:27:15-07:00 --->
-		           		// if(!($('##page-container').hasClass('sidebar-mini'))){
-		           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
-		           		//}
+	           			$('##sidebar .nav-main li ul li a.active').parents('li').parents('ul').parents('li').addClass('open');
 
 		           		// dismiss alerts
 	           			$('.alert-dismiss').click(
@@ -404,27 +397,9 @@
 	</cfif>	
 --->
 
-<!--- TODO GoWest : should the oneUI min file go here instead of page head? : 2015-12-02T14:14:35-07:00 --->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 
-        <!-- Initialize CKeditor -->
-<!--- TODO GoWest : how is CKeditor init'd in Mura? : 2015-12-02T14:16:39-07:00 --->
-
-<!--- 
-        <script src="assets/js/plugins/ckeditor/ckeditor.js"></script>
-	--->
-<!--- 
-        <script>
-            $(function () {
-                App.initHelpers('ckeditor');
-                 CKEDITOR.inline('content-body');
-                 CKEDITOR.inline('content-summary');
-            });
-        </script>        
- --->
-
 <!--- TODO GoWest : this include : 2015-12-15T13:23:46-07:00 --->
-
 		<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
 			<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 		</cfif>
@@ -438,17 +413,3 @@
 	</body>
 </html></cfprocessingdirective>
 </cfoutput>
-
-<!--- TODO GoWest : TEMP REMOVE : 2015-12-18T09:09:27-07:00 --->
-<cfif structkeyExists(url,'debug') and url.debug neq 0>
-<cfset session.debug = 1>
-<cfelse>
-<cfset session.debug = 0>
-</cfif>
-
-<cfif session.debug>
-<div style="padding-left: 360px;">
-<cfdump var="#url#" abort="false" label="url">
-<cfdump var="#rc#" abort="false" label="rc">
-</div>
-</cfif>	

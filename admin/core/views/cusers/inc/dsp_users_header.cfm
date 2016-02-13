@@ -100,7 +100,6 @@
 		
 			</div><!-- /.label-group -->
 
-<!--- TODO GoWest : how to style this search form? : 2016-01-26T13:09:55-07:00 --->
 		<cfinclude template="dsp_search_form.cfm" />
 
 	</div><!-- /.mura-item-metadata -->

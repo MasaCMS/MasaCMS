@@ -45,8 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<!--- TODO GoWest : test w/ live session data : 2016-02-01T12:55:42-07:00 --->
-
 <div class="mura-header">
 	<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.sessionhistory")#</h1>
 

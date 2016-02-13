@@ -85,7 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 			<div class="mura-control-group">
       	<label>
-<!--- TODO GoWest : popovers not firing on mouseover for ext attrs : 2016-01-06T18:54:13-07:00 --->
 				<cfif len(attributeBean.getHint())>
 				<span data-toggle="popover" title="" data-placement="right" 
 			  	data-content="#esapiEncode('html_attr',attributeBean.getLabel())#" 
@@ -95,7 +94,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#esapiEncode('html',attributeBean.getLabel())#
 				</cfif>
 				</label>
-<!--- TODO GoWest : radio / checkbox label markup in renderAttribute method : 2016-01-06T18:25:25-07:00 --->
 					#attributeBean.renderAttribute(theValue=attributeValue,bean=contentBean,compactDisplay=rc.compactDisplay,size='medium')#
 					<cfif attributeBean.getValidation() eq "URL">
 						<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>

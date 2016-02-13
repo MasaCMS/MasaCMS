@@ -141,10 +141,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <cfelse>
                  #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
               </cfif>
-          <cfelse>
-  <!--- TODO GoWest : datepicker custom tag markup : 2016-01-25T12:55:33-07:00 --->                            
+          <cfelse>                            
              <cf_datetimeselector name="closeDate" datetime="#rc.changeset.getCloseDate()#" defaulthour="23" defaultminute="59">
-          
         </cfif>
         </div>
 
@@ -186,11 +184,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <div class="block-content">
 
               <div class="mura-control-group">
-            <!--- Category Filters --->
-                <label>#application.rbFactory.getKeyValue(session.rb,'changesets.categoryassignments')#</label>
+              <!--- Category Filters --->
+              <label>#application.rbFactory.getKeyValue(session.rb,'changesets.categoryassignments')#</label>
                 <div id="mura-list-tree" class="mura-control justify">
-    <!--- TODO GoWest : categories custom tag markup : 2016-01-25T12:56:11-07:00 --->
-              <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.changeset.getCategoryID()#">
+                <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" categoryid="#rc.changeset.getCategoryID()#">
             </div>
           </div>
         </div>

@@ -203,7 +203,6 @@
                 <li>
                   <a class="<cfif rc.originalcircuit eq 'cplugins' and rc.originalfuseaction eq 'list'> active</cfif>" href="#application.configBean.getContext()#/admin/?muraAction=cPlugins.list&amp;siteid=#session.siteid#">
                     <i class="mi-puzzle-piece"></i> 
-<!--- TODO GoWest : wording of this link? add rb.key? : 2015-12-15T11:23:40-07:00 --->
                     Site Plugins
                   </a>
                 </li>

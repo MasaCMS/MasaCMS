@@ -487,11 +487,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- crumbdata --->
 	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
-<!--- TODO GoWest : add class 'link-effect' to li > a in rendered list / or duplicate all link-effect styles in custom.less for breadcrumb li a : 2015-12-23T09:39:33-07:00 --->
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
-
- <!--- TODO GoWest : find all class="alert", check location on page, s/b inside at end of mura-header	: 2016-02-02T18:33:39-07:00 --->
 
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
@@ -526,8 +523,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</p>
 	</cfif>
 
-
-	<!--- TODO GoWest : plugin message markup - find id="msg" - style like alerts / test w/ real string : 2015-12-23T12:57:02-07:00 --->
 	<!--- This is plugin message targeting --->
 	<span id="msg">
 	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
@@ -588,7 +583,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 				<cfinclude template="form/dsp_tab_related_content.cfm">
 			<cfelse>
-				<!--- TODO GoWest : replace all instances of ommit with omit : 2016-01-19T17:12:50-07:00 --->
 				<input type="hidden" name="ommitRelatedContentTab" value="true">
 			</cfif>
 		</cfcase>
@@ -705,9 +699,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</cfoutput>
 	</cfif>
-
-<!--- TODO GoWest : tab order, see combined tab groups in cfswitch above : 2016-01-06T19:47:55-07:00 --->
-
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
 		<cfinclude template="form/dsp_tab_publishing.cfm">
 	<cfelse>
@@ -754,8 +745,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<!-- /tabs -->
 
-
-<!--- TODO GoWest : check changeset markup : 2015-12-23T11:54:01-07:00 --->
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>

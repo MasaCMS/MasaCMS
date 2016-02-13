@@ -55,9 +55,6 @@
 	</div>
 </cfoutput>
 
-<!--- TODO GoWest : comments markup (below here) : 2016-01-22T17:01:09-07:00 --->
-
-
 <cfoutput>
 	<div class="mura-control-group">
 		<!--- BODY --->

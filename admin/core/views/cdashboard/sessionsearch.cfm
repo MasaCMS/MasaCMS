@@ -1,6 +1,4 @@
-<!--- TODO GoWest : check <div vs </div including conditionals : 2016-01-29T17:38:22-07:00 --->
-
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -282,7 +280,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
-</div> <!-- /.block-constrain -->
 
 </cfoutput>
 <!--- <cfdump var="#rc.result#">arrayLen(session.paramArray)  --->
@@ -304,6 +301,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript">$searchParams.setSearchButtons();</script>
 
 <cfif not searchFailed>
+	<div class="block-content">
 	<cfoutput>
 	<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h2>
 
@@ -380,6 +378,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h2>
 <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedoutdesc")#</p>
 </cfoutput>
+</div> <!-- /.block-content -->
 </cfif>
 </cfif>
-</div>
+</div> <!-- /.block-constrain -->

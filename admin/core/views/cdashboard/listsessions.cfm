@@ -127,8 +127,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div>
 			<cfif rc.contentid neq ''>
 
-<!--- TODO GoWest : should this be in header like standard breadcrumb ul? : 2016-02-01T13:01:15-07:00 --->
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.contentid, rc.siteid)/>
+
 			<h3>#$.dspZoom(crumbdata,'breadcrumb')#</h3>
 			</cfif>
 

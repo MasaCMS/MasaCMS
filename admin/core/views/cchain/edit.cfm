@@ -23,10 +23,8 @@
     <div class="block block-bordered">
       <div class="block-content">
 
-<!--- TODO GoWest : test this alert-error : 2016-01-23T09:30:45-07:00 --->
-
         <cfif not structIsEmpty(chain.getErrors())>
-    <div class="alert alert-error">#application.utility.displayErrors(chain.getErrors())#</div>
+          <div class="alert alert-error">#application.utility.displayErrors(chain.getErrors())#</div>
         </cfif>
 
       <form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cchain.save" method="post" name="form1" onsubmit="return validateForm(this);">

@@ -55,7 +55,6 @@
 		<cfif ListFind(rc.$.currentUser().getMemberships(), 'Admin;#rc.$.siteConfig('privateUserPoolID')#;0') OR ListFind(rc.$.currentUser().getMemberships(), 'S2')>
 
 				<ul id="viewTabs" class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
-	<!--- TODO GoWest : js error with tab link syntax : 2016-01-26T13:14:07-07:00 --->
 
 					<!--- Member/Public Groups --->
 						<li<cfif rc.ispublic eq 1> class="active"</cfif>>

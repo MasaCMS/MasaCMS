@@ -14720,7 +14720,7 @@ $.widget( "ui.tooltip", {
 			var element = $( this );
 			if ( element.is( "[title]" ) ) {
 				element
-					//.data( "ui-tooltip-title", element.attr( "title" ) )
+					.data( "ui-tooltip-title", element.attr( "title" ) )
 					.attr( "title", "" );
 			}
 		});
