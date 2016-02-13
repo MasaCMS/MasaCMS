@@ -41,10 +41,7 @@
 		</cfif>
 		<cfsavecontent variable="content">
 		<cfoutput>
-			<ul class="#arguments.class#">
-		<cfif limited>
-			<li>&hellip;</li>
-		</cfif>
+		<ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="i" step="-1">
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
@@ -732,7 +729,7 @@
 			<cfsilent>
 				<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 				<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[i])>
-				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "icon">
+				<cfset isFileIcon= arguments.crumbdata[i].type eq 'File' and listFirst(icon,"-") neq "mi">
 			</cfsilent>
 			<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>>
 			<a <cfif arguments.ajax>
@@ -746,7 +743,7 @@
 				<cfset lastlocked="locked">
 			</cfif>
 			<cfset icon=arguments.renderer.renderIcon(arguments.crumbdata[1])>
-			<cfset isFileIcon= arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "icon">
+			<cfset isFileIcon= arguments.crumbdata[1].type eq 'File' and listFirst(icon,"-") neq "mi">
 		</cfsilent>
 		<li class="#icon# #locked#<cfif isFileIcon> file</cfif>"<cfif isFileIcon> data-filetype="#left(icon,4)#"</cfif>><strong>
 		<a <cfif arguments.ajax>
