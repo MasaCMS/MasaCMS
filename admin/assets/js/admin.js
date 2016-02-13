@@ -830,7 +830,7 @@ function setToolTips(target) {
 	});
 
 
-	$(target + ' [data-toggle="popover"]').popover({trigger:'hover'})
+	$(target + ' [data-toggle="popover"]').popover({trigger:'hover',html:true})
 }
 
 function setTabs(target, activetab) {

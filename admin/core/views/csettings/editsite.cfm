@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+the preparation of a derivative work based on Mura CMS. Thus, the terms and
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 			<cfif rc.action eq "updateFiles">
 							<a href="./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#"><i class="mi-pencil"></i> Edit Site</a>
 				<cfelseif application.configBean.getAllowAutoUpdates() and  listFind(session.mura.memberships,'S2')>
-							<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a> 
+							<a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#esapiEncode('url',rc.siteid)#&action=updateFiles#rc.$.renderCSRFTokens(context=rc.siteid & 'updatesite',format='url')#')});return false;"><i class="mi-bolt"></i> Update Site Files to Latest Version</a>
 			</cfif>
 			<cfif application.configBean.getJavaEnabled()>
 						<a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#esapiEncode('url',rc.siteBean.getSiteID())#"><i class="mi-gift"></i> Create Site Bundle</a>
@@ -129,8 +129,8 @@ to your own modified versions of Mura CMS.
 					    </ul>
 					    <h3 class="block-title">Basic Settings</h3>
 					  </div>
-					  <!-- /block header -->						
-					  <div class="block-content">					
+					  <!-- /block header -->
+					  <div class="block-content">
 							<div class="mura-control-group">
 								<label>Site ID</label>
 								<cfif rc.siteid eq ''>
@@ -149,10 +149,10 @@ to your own modified versions of Mura CMS.
 				<!--- Tagline --->
 						<div class="mura-control-group">
 							<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline.tooltip'))#" 
-							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline'))#">	
-							#rc.$.rbKey('siteconfig.sitesettings.tagline')# 
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline.tooltip'))#"
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.tagline'))#">
+							#rc.$.rbKey('siteconfig.sitesettings.tagline')#
 									<i class="mi-question-circle"></i>
 								</span>
 					</label>
@@ -162,8 +162,8 @@ to your own modified versions of Mura CMS.
 				<!--- Domain --->
 						<div class="mura-control-group">
 							<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.primarydomain.tooltip'))#" 
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.primarydomain.tooltip'))#"
 							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.primarydomain'))#">			#rc.$.rbKey('siteconfig.sitesettings.primarydomain')#
 									<i class="mi-question-circle"></i>
 								</span>
@@ -177,7 +177,7 @@ to your own modified versions of Mura CMS.
 				</div>
 
 					<!--- Enforce Primary --->
-							<div class="mura-control-group">          
+							<div class="mura-control-group">
 								<label>Enforce Primary Domain</label>
 							<label class="radio inline">
 										<input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> checked</cfif>>
@@ -190,11 +190,11 @@ to your own modified versions of Mura CMS.
 						</div>
 
 					<!--- Use SSL (Sitewide) --->
-							<div class="mura-control-group">          
+							<div class="mura-control-group">
 								<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl.tooltip'))#" 
-							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl'))#">	
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl.tooltip'))#"
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.usessl'))#">
 									#rc.$.rbKey('siteconfig.sitesettings.usessl')# <i class="mi-question-circle"></i></span>
 								</label>
 							<label class="radio inline">
@@ -255,7 +255,7 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 								<label>Cache Free Memory Threshold <span class="help-inline">(Defaults to 60%)</span></label>
 								<input name="cacheFreeMemoryThreshold" type="text" class="span2" value="#esapiEncode('html_attr',rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">
-										% 
+										%
 					</div>
 							<div class="mura-control-group">
 								<label>Lock Site Architecture</label>
@@ -279,7 +279,7 @@ to your own modified versions of Mura CMS.
 										<input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> checked</cfif>>
 								No</label>
 						</div>
-			 
+
 							<div class="mura-control-group">
 								<label>Static HTML Export Location (BETA)</label>
 						<cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
@@ -302,7 +302,7 @@ to your own modified versions of Mura CMS.
 
 				<!--- Lockable nodes --->
 				<cfif application.configBean.getLockableNodes()>
-							<div class="mura-control-group">      
+							<div class="mura-control-group">
 									<label>Allow Content Locking</label>
 									<p class="help-block">Grants content editors the right to exlusively lock a content node and all of it's versions when editing.</p>
 									<label class="radio inline">
@@ -312,7 +312,7 @@ to your own modified versions of Mura CMS.
 											<input type="radio" name="hasLockableNodes" value="0" <cfif rc.siteBean.gethasLockableNodes() neq 1> checked</cfif>>
 									No</label>
 					</div>
-				</cfif> 
+				</cfif>
 				<!--- /Lockable nodes --->
 
 				<!--- Custom Context + Port --->
@@ -328,24 +328,24 @@ to your own modified versions of Mura CMS.
 						<div class="mura-control-group">
 								<label>Remote Context</label>
 									<input name="remotecontext" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemoteContext())#" maxlength="100">
-						</div>				
+						</div>
 						<div class="mura-control-group">
 								<label>Remote Port</label>
 									<input name="remoteport" type="text" value="#esapiEncode('html_attr',rc.siteBean.getRemotePort())#"maxlength="4">
 				</div>
 
-						<div class="mura-control-group">          
+						<div class="mura-control-group">
 									<label>
-									<span data-toggle="popover" title="" data-placement="right" 
-							  		data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain.tooltip'))#" 
-							  		data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain'))#">	
+									<span data-toggle="popover" title="" data-placement="right"
+							  		data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain.tooltip'))#"
+							  		data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.sitesettings.resourcedomain'))#">
 									#rc.$.rbKey('siteconfig.sitesettings.resourcedomain')#
 											<i class="mi-question-circle"></i>
 										</span>
 							</label>
 										<input name="resourcedomain" type="text" value="#esapiEncode('html_attr',rc.siteBean.getresourcedomain('production'))#" size="50" maxlength="255">
 						</div>
-						<div class="mura-control-group">          
+						<div class="mura-control-group">
 								<label>#rc.$.rbKey('siteconfig.sitesettings.resourcessl')# </label>
 							<label class="radio inline">
 										<input type="radio" name="resourceSSL" value="0"<cfif rc.siteBean.getResourceSSL() neq 1> checked</cfif>>
@@ -362,9 +362,9 @@ to your own modified versions of Mura CMS.
 						<div class="mura-control-group">
 					<!--- reCAPTCHA Site Key --->
 								<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.getapikeys'))#" 
-							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.sitekey'))#">	
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.getapikeys'))#"
+							  	data-original-title="#esapiEncode('html_attr',rc.$.rbKey('siteconfig.recaptcha.sitekey'))#">
 										#$.rbKey('siteconfig.recaptcha.sitekey')# <i class="mi-question-circle"></i></span>
 								</label>
 										<input name="reCAPTCHASiteKey" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASiteKey())#" maxlength="50">
@@ -372,19 +372,19 @@ to your own modified versions of Mura CMS.
 					<!--- reCAPTCHA Secret --->
 						<div class="mura-control-group">
 								<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.getapikeys'))#" 
-							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))#">									
-									<i class="mi-question-circle"></i></a>
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.getapikeys'))#"
+							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))#">
+								#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.secret'))# <i class="mi-question-circle"></i></a>
 								</label>
-										<input name="reCAPTCHASecret" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
+								<input name="reCAPTCHASecret" type="text" value="#esapiEncode('html_attr',rc.siteBean.getReCAPTCHASecret())#" maxlength="50">
 					</div>
 					<!--- reCAPTCHA Language --->
 						<div class="mura-control-group">
 								<label>
-								<span data-toggle="popover" title="" data-placement="right" 
-							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.languageoptions'))#" 
-							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.language'))#">	
+								<span data-toggle="popover" title="" data-placement="right"
+							  	data-content="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.languageoptions'))#"
+							  	data-original-title="#esapiEncode('html_attr',$.rbKey('siteconfig.recaptcha.language'))#">
 									#$.rbKey('siteconfig.recaptcha.language')# <i class="mi-question-circle"></i></span>
 								</label>
 							<cfset rc.langs = application.serviceFactory.getBean('utility').getReCAPTCHALanguages() />
@@ -399,21 +399,21 @@ to your own modified versions of Mura CMS.
 						</div>
 
 				<cfif not Len(rc.siteBean.getReCAPTCHASiteKey()) or not Len(rc.siteBean.getReCAPTCHASecret())>
-						<div class="alert alert-warning">
-							#rc.$.rbKey('siteconfig.recaptcha.message')#
-						</div>
+					<div class="alert alert-warning">
+						#rc.$.rbKey('siteconfig.recaptcha.message')#
+					</div>
 					<div class="form-actions">
-								<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
-								<i class="mi-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
-								</a>
-							</div>
+						<a class="btn" href="http://www.google.com/recaptcha/admin" target="_blank">
+						<i class="mi-key"></i> #rc.$.rbKey('siteconfig.recaptcha.getgooglekeys')#
+						</a>
+					</div>
 				</cfif>
 				<!--- /Google reCAPTCHA API Keys --->
 
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-				
+
 		<!--- Default Contact Info --->
 		<div id="tabContactinfo" class="tab-pane">
 			<div class="block block-bordered">
@@ -430,18 +430,18 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Contact Info</h3>
 								</div>
-			  <!-- /block header -->						
-			  <div class="block-content">									
+			  <!-- /block header -->
+			  <div class="block-content">
 					<div class="mura-control-group">
 								<label>Contact Name </label>
 									<input name="contactName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactName())#" size="50" maxlength="50" maxlength="100">
 						</div>
-						
+
 					<div class="mura-control-group">
 								<label>Contact Address </label>
 									<input name="contactAddress" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactAddress())#" size="50" maxlength="50" maxlength="100">
 					</div>
-					
+
 					<div class="mura-control-group">
 								<label>Contact City </label>
 									<input name="contactCity" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactCity())#" size="50" maxlength="50" maxlength="100">
@@ -458,16 +458,16 @@ to your own modified versions of Mura CMS.
 								<label>Contact Phone </label>
 								<input name="contactPhone" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactPhone())#" size="50" maxlength="50" maxlength="100">
 							</div>
-						
+
 					<div class="mura-control-group">
 							<label>Contact Email </label>
 							<input name="contactEmail" type="text" value="#esapiEncode('html_attr',rc.siteBean.getcontactEmail())#" size="50" maxlength="50" maxlength="100">
 						</div>
-					
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-						
+
 		<!--- Shared Resources --->
 		<div id="tabSharedresources" class="tab-pane">
 			<div class="block block-bordered">
@@ -484,8 +484,8 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Shared Resources</h3>
 					</div>
-			  <!-- /block header -->						
-			  <div class="block-content">						
+			  <!-- /block header -->
+			  <div class="block-content">
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.memberuserpool')#</label>
 							<select  id="publicUserPoolID" name="publicUserPoolID" onchange="if(this.value!='' || jQuery('##privateUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
@@ -497,7 +497,7 @@ to your own modified versions of Mura CMS.
 								</cfloop>
 						</select>
 						</div>
-				
+
 				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.systemuserpool')#</label>
 						<select  id="privateUserPoolID" name="privateUserPoolID" onchange="if(this.value!='' || jQuery('##publicUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
@@ -509,7 +509,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-			
+
 				<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
 						<select  name="advertiserUserPoolID">
@@ -533,7 +533,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-	 
+
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.filepool')#</label>
 					<select  name="filePoolID">
@@ -545,7 +545,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-			 
+
 				<div class="mura-control-group">
 					<label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.categorypool')#</label>
 					<select id="categoryPoolID" name="categoryPoolID">
@@ -557,7 +557,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 						</select>
 					</div>
-		
+
 				<div class="mura-control-group">
 					 <label>#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.contentpool')#</label>
 						<select id="contentPoolID" name="contentPoolID" multiple>
@@ -569,11 +569,11 @@ to your own modified versions of Mura CMS.
 								</cfloop>
 							</select>
 					 </div>
-			 
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-		
+
 		<!--- Modules --->
 		<div id="tabModules" class="tab-pane">
 			<div class="block block-bordered">
@@ -590,20 +590,20 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Modules</h3>
 							</div>
-			  <!-- /block header -->						
-			  <div class="block-content">				
-					<div class="mura-control-group">					
+			  <!-- /block header -->
+			  <div class="block-content">
+					<div class="mura-control-group">
 							<label>Extranet <span class="help-inline">(Password Protection)</span></label>
 									<label class="radio inline"><input type="radio" name="extranet" value="0" <cfif rc.siteBean.getextranet() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="extranet" value="1" <cfif rc.siteBean.getextranet()  eq 1> checked</cfif>>On</label>
 					</div>
-					<div class="mura-control-group">					
+					<div class="mura-control-group">
 							<label>Content Collections</label>
 									<label class="radio inline"><input type="radio" name="hasFeedManager" value="0" <cfif rc.siteBean.getHasFeedManager() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> checked</cfif>>On</label>
 						</div>
 						<cfif application.configBean.getDataCollection()>
-					<div class="mura-control-group">					
+					<div class="mura-control-group">
 							<label>Forms Manager</label>
 									<label class="radio inline">
 									<input type="radio" name="dataCollection" value="0" <cfif rc.siteBean.getdataCollection() neq 1> checked</cfif>>Off</label>
@@ -631,7 +631,7 @@ to your own modified versions of Mura CMS.
 									<label class="radio inline"><input type="radio" name="JSONAPI" value="0" <cfif rc.siteBean.getJSONAPI() neq 1> checked</cfif>>Off</label>
 									<label class="radio inline"><input type="radio" name="JSONAPI" value="1" <cfif rc.siteBean.getJSONAPI() eq 1> checked</cfif>>On</label>
 					</div>
-			
+
 					<cfif application.configBean.getEmailBroadcaster()>
 					<div class="mura-control-group">
 							<label>Email Broadcaster</label>
@@ -644,8 +644,8 @@ to your own modified versions of Mura CMS.
 									<input name="EmailBroadcasterLimit" type="text" class="span4" value="#esapiEncode('html_attr',rc.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
 							</div>
 					</cfif>
-			
-			
+
+
 				<div class="mura-control-group">
 				<label>Content Staging Manager</label>
 						<label class="radio inline">
@@ -655,7 +655,7 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="hasChangesets" value="1" <cfif rc.siteBean.getHasChangesets() eq 1> checked</cfif>>
 						On </label>
 					</div>
-					
+
 				<div class="mura-control-group">
 				<label>Publish via Change Sets Only</label>
 						<label class="radio inline">
@@ -667,9 +667,9 @@ to your own modified versions of Mura CMS.
 					</div>
 
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-		
+
 		<!--- Email --->
 		<div id="tabEmail" class="tab-pane">
 			<div class="block block-bordered">
@@ -686,8 +686,8 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Email</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">				
+			  <!-- /block header -->
+			  <div class="block-content">
 				<div class="mura-control-group">
 				<label>Default "From" Email Address</label>
 						<input name="contact" type="text" class="span8" value="#esapiEncode('html_attr',rc.siteBean.getcontact())#" size="50" maxlength="50">
@@ -704,12 +704,12 @@ to your own modified versions of Mura CMS.
 				<label>Mail Server POP Port</label>
 						<input name="MailServerPOPPort" type="text" class="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPOPPort())#" size="5" maxlength="5">
 					</div>
-				
+
 				<div class="mura-control-group">
-				<label>Mail Server Username 
-					<span data-toggle="popover" title="" data-placement="right" 
-				  	data-content="Do Not Use a Personal Account. Email will be removed from server for tracking purposes." 
-				  	data-original-title="WARNING:">	
+				<label>Mail Server Username
+					<span data-toggle="popover" title="" data-placement="right"
+				  	data-content="Do Not Use a Personal Account. Email will be removed from server for tracking purposes."
+				  	data-original-title="WARNING:">
 				  	<i class="mi-warning"></i></span></label>
 						<input name="MailServerUserName" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerUserName())#" size="50" maxlength="50">
 				</div>
@@ -717,7 +717,7 @@ to your own modified versions of Mura CMS.
 				<label>Mail Server Password</label>
 						<input name="MailServerPassword" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMailServerPassword())#" size="50" maxlength="50">
 				</div>
-			
+
 			<div class="mura-control-group">
 				<label>Use TLS</label>
 						<label class="radio inline">
@@ -745,7 +745,7 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="useDefaultSMTPServer" value="0" <cfif rc.siteBean.getUseDefaultSMTPServer() neq 1> checked</cfif>>
 						No </label>
 					</div>
-			
+
 			 <div class="mura-control-group">
 				<label>Content Approval Script</label>
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
@@ -792,9 +792,9 @@ to your own modified versions of Mura CMS.
 						<p class="help-block">Available Dynamic Content: ##returnURL## ##eventTitle## ##startDate## ##startTime## ##siteName## ##eventContactName## ##eventContactAddress## ##eventContactCity## ##eventContactState## ##eventContactZip## ##eventContactPhone##</p>
 						<textarea rows="6" name="reminderScript">#esapiEncode('html',rc.siteBean.getReminderScript())#</textarea>
 			</div>
-			
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 
 		<!--- Galleries --->
@@ -813,47 +813,47 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Image Galleries</h3>
 			</div>
-			  <!-- /block header -->						
-			  <div class="block-content">					
+			  <!-- /block header -->
+			  <div class="block-content">
 				<div class="mura-control-group">
 					<label>Small (Thumbnail) Image</label>
 							<label>Height</label>
 							<input name="smallImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageHeight())#" />
 					</div>
-					
+
 				<div class="mura-control-group">
 							<label>Width</label>
-							<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />				
+							<input name="smallImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getSmallImageWidth())#" />
 			</div>
-			
+
 				<div class="mura-control-group">
 					<label>Medium Image</label>
 							<label>Height</label>
 							<input name="mediumImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageHeight())#" />
 					</div>
-					
+
 				<div class="mura-control-group">
 							<label>Width</label>
 					<input name="mediumImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getMediumImageWidth())#" />
 			</div>
-			
+
 				<div class="mura-control-group">
 					<label>Large Image</label>
 							<label>Height</label>
 							<input name="largeImageHeight" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageHeight())#" />
 					</div>
-					
+
 				<div class="mura-control-group">
 							<label>Width</label>
 							<input name="largeImageWidth" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLargeImageWidth())#" />
 			</div>
-			
+
 		<!--- TODO GoWest : custom images UI & markup : 2016-01-20T17:05:43-07:00 --->
-			
+
 				<cfif len(rc.siteBean.getSiteID())>
 				<script>
 			function openCustomImageSize(sizeid,siteid){
-		
+
 					jQuery("##custom-image-dialog").remove();
 					jQuery("body").append('<div id="custom-image-dialog" rel="tooltip" title="Loading..." style="display:none"><div id="newContentMenu"><div class="load-inline"></div></div></div>');
 
@@ -881,23 +881,23 @@ to your own modified versions of Mura CMS.
 						position: getDialogPosition(),
 						buttons: dialogoptions,
 						open: function(){
-						 
+
 							jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 							var url = 'index.cfm';
 							var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
-							jQuery.get(url + "?" + pars, 
+							jQuery.get(url + "?" + pars,
 									function(data) {
 									jQuery("##custom-image-dialog").closest(".ui-dialog").find(".ui-dialog-title").html('Edit Custom Image Size');
 									jQuery('##custom-image-dialog').html(data);
 									$("##custom-image-dialog").dialog("option", "position", "center");
 									}
-								);    
-							
+								);
+
 						},
 						close: function(){
 							jQuery(this).dialog("destroy");
 							jQuery("##custom-image-dialog").remove();
-						} 
+						}
 				});
 
 				return false;
@@ -945,13 +945,13 @@ to your own modified versions of Mura CMS.
 					);
 				var url = 'index.cfm';
 				var pars = 'muraAction=cSettings.loadcustomimages&siteid=' + merged.siteid + '&cacheid=' + Math.random();;
-		
+
 				jQuery.post(url + "?" + pars,
-					merged, 
+					merged,
 					function(data) {
 						jQuery('##custom-images-container').html(data);
 						}
-				);    
+				);
 		 }
 
 		 $(document).ready(function(){loadCustomImages({siteid:'#esapiEncode('javascript',rc.siteBean.getSiteID())#'})});
@@ -963,11 +963,11 @@ to your own modified versions of Mura CMS.
 				<div id="custom-images-container"></div>
 			</div>
 			</cfif>
-			
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-		
+
 		<!--- Extranet --->
 		<div id="tabExtranet" class="tab-pane">
 			<div class="block block-bordered">
@@ -984,8 +984,8 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Extranet Settings</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">					
+			  <!-- /block header -->
+			  <div class="block-content">
 				<div class="mura-control-group">
 				<label>Allow Public Site Registration</label>
 						<label class="radio inline">
@@ -995,7 +995,7 @@ to your own modified versions of Mura CMS.
 						<input type="radio" name="extranetpublicreg" value="1" <cfif rc.siteBean.getextranetpublicreg()  eq 1> checked</cfif>>
 						Yes </label>
 					</div>
-			<!--- This is removed in favor of a useSSL 
+			<!--- This is removed in favor of a useSSL
 				<div class="mura-control-group">
 				<label>Require HTTPS Encryption for Extranet</label>
 						<label class="radio inline">
@@ -1006,7 +1006,7 @@ to your own modified versions of Mura CMS.
 						Yes </label>
 					</div>
 			--->
-				
+
 				<div class="mura-control-group">
 				<label>Custom Login URL</label>
 						<input name="loginURL" type="text" value="#esapiEncode('html_attr',rc.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
@@ -1022,16 +1022,16 @@ to your own modified versions of Mura CMS.
 				<input type="radio" name="publicSubmission" value="1" <cfif rc.siteBean.getpublicSubmission() eq 1> checked</cfif>>
 				Yes</dd>
 			<dd> --->
-			 
+
 				<div class="mura-control-group">
 				<label>Email Site Registration Notifications to:</label>
 						<input name="ExtranetPublicRegNotify" type="text" value="#rc.siteBean.getExtranetPublicRegNotify()#" size="255" maxlength="255">
 			</div>
-			
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-		
+
 		<!--- Display Regions --->
 		<div id="tabDisplayregions" class="tab-pane">
 			<div class="block block-bordered">
@@ -1048,8 +1048,8 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Display Regions</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">				
+			  <!-- /block header -->
+			  <div class="block-content">
 				<div class="mura-control-group">
 					<label>Number of Display Regions</label>
 						<select class="span2" name="columnCount">
@@ -1059,7 +1059,7 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 					</div>
-					
+
 				 <div class="mura-control-group">
 				<label>Primary Display Region <span class="help-block">Dynamic System Content such as Login Formsa nd Search Results get displayed here</span></label>
 						<select class="span2" name="primaryColumn">
@@ -1068,18 +1068,18 @@ to your own modified versions of Mura CMS.
 							</cfloop>
 					</select>
 						</div>
-			
+
 				<div class="mura-control-group">
 				<label>Display Region Names <span class="help-inline">"^" Delimiter</span></label>
 						<input name="columnNames" type="text" class="span6" value="#esapiEncode('html_attr',rc.siteBean.getcolumnNames())#">
 					</div>
-			
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-		
+
 		<!--- TODO GoWest : test site ext. attr display : 2016-01-20T16:50:18-07:00 --->
-		
+
 		<!--- Extended Attributes --->
 		<cfif arrayLen(extendSets)>
 				<div id="tabExtendedAttributes" class="tab-pane">
@@ -1097,7 +1097,7 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Extended Attributes</h3>
 			  </div>
-			  <!-- /block header -->						
+			  <!-- /block header -->
 			  <div class="block-content">					<cfset started=false />
 				<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 						<cfset extendSetBean=extendSets[s]/>
@@ -1118,9 +1118,9 @@ to your own modified versions of Mura CMS.
 							<div class="mura-control-group">
 									<label>
 									<cfif len(attributeBean.getHint())>
-										<span data-toggle="popover" title="" data-placement="right" 
-									  	data-content="#esapiEncode('html_attr',attributeBean.gethint())#" 
-									  	data-original-title="#esapiEncode('html_attr',attributeBean.getLabel())#">	
+										<span data-toggle="popover" title="" data-placement="right"
+									  	data-content="#esapiEncode('html_attr',attributeBean.gethint())#"
+									  	data-original-title="#esapiEncode('html_attr',attributeBean.getLabel())#">
 									  	#attributeBean.getLabel()# <i class="mi-question-circle"></i></span>
 											<cfelse>
 											#attributeBean.getLabel()#
@@ -1145,10 +1145,10 @@ to your own modified versions of Mura CMS.
 					</span>
 					</cfloop>
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 		</cfif>
-		
+
 		<!--- Site Bundles --->
 		<div id="tabBundles" class="tab-pane">
 			<cfif application.configBean.getJavaEnabled()>
@@ -1166,17 +1166,17 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Deploy Site Bundle</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">	
+			  <!-- /block header -->
+			  <div class="block-content">
 				<cfif listFind(session.mura.memberships,'S2')>
-					
-			 
+
+
 				<div class="mura-control-group">
 					<label> Are you restoring a site from a backup bundle? </label>
 						<label class="radio inline"><input type="radio" name="bundleImportKeyMode" value="copy" checked="checked">No - <em>Assign New Keys to Imported Items</em></label>
 						<label class="radio inline" for=""><input type="radio" name="bundleImportKeyMode" value="publish">Yes - <em>Maintain All Keys from Imported Items</em></label>
 					</div>
-				
+
 				<div class="mura-control-group">
 				<label>Include:</label>
 				<div class="mura-control">
@@ -1197,7 +1197,7 @@ to your own modified versions of Mura CMS.
 								<label class="checkbox" for="bundleImportPluginMode">
 								<input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">
 								All Plugins</label>
-					</div>	
+					</div>
 						<p class="alert help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
 						<p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
 					</div>
@@ -1216,7 +1216,7 @@ to your own modified versions of Mura CMS.
 							</cfif>
 							<p class="alert help-block"<cfif listFind(session.mura.memberships,'S2')> style="display:none"</cfif> id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 					</div>
-				
+
 				<div class="mura-control-group">
 				<label>Select Bundle File From Server
 						<cfif application.configBean.getPostBundles()>
@@ -1232,8 +1232,8 @@ to your own modified versions of Mura CMS.
 				<cfif application.configBean.getPostBundles()>
 				<div class="mura-control-group">
 						<label>
-							<span data-toggle="popover" title="" data-placement="right" 
-						  	data-content="#esapiEncode('html_attr','Uploading large files via a web browser can produce inconsistent results.')#" 
+							<span data-toggle="popover" title="" data-placement="right"
+						  	data-content="#esapiEncode('html_attr','Uploading large files via a web browser can produce inconsistent results.')#"
 						  	data-original-title="#esapiEncode('html_attr','WARNING')#">Upload Bundle File <i class="mi-question-circle"></i></span>
 						</label>
 						<input type="file" name="bundleFile" accept=".zip"/>
@@ -1241,7 +1241,7 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 				<input type="hidden" name="bundleFile" value=""/>
 			</cfif>
-			
+
 			</div> <!--- /.block-content --->
 			<cfelse>
 			<div class="block block-bordered">
@@ -1252,7 +1252,7 @@ to your own modified versions of Mura CMS.
 				</div>
 			</div>
 			</cfif>
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
 
 		<cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
@@ -1271,8 +1271,8 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">Razuna Settings</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">	
+			  <!-- /block header -->
+			  <div class="block-content">
 			<!---
 			<div class="mura-control-group">
 				<label for="razuna_servertype">Server Type</label>
@@ -1289,36 +1289,36 @@ to your own modified versions of Mura CMS.
 			<input type="hidden" name="servertype" value="local">
 			<div class="mura-control-group">
 				<label for="razuna_hostname">Hostname <span class="help-block">Example: yourcompany.razuna.com or localhost:8080/razuna</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname"> 
-					
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname">
+
 				</div>
-			
+
 			<div class="mura-control-group">
 				<label for="hostid">Host ID <span class="help-block">Example: 496</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid"> 
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid">
 			</div>
-			
+
 			<div class="mura-control-group">
 				<label for="dampath">DAM Path <span class="help-block">Example: /demo/dam</span></label>
-					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath"> 
+					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath">
 			</div>
-			
+
 			<div class="mura-control-group">
 				<label for="razuna_api_key">API Key</label>
 					<input type="text" value="#esapiEncode('html_attr',rc.razunaSettings.getApiKey())#" id="razuna_api_key" name="apikey">
 			</div>
-			
+
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-				
+
 	</div>	<!--- /.block-content.tab-content --->
 	</div>	<!--- /.block --->
 	</cfoutput>
-	
+
 	<!--- TODO GoWest : test plugin-generated tabs layout & markup : 2016-01-20T16:52:02-07:00 --->
-	
-	<cfoutput query="rsPluginScripts" group="pluginID"> 
+
+	<cfoutput query="rsPluginScripts" group="pluginID">
 		<!---<cfset tabLabelList=tabLabelList & ",'#esapiEncode('javascript',rsPluginScripts.name)#'"/>--->
 		<cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
 		<div id="#tabID#" class="tab-pane"> <cfoutput>
@@ -1336,17 +1336,17 @@ to your own modified versions of Mura CMS.
 			    </ul>
 			    <h3 class="block-title">#rsPluginScripts.name#</h3>
 			  </div>
-			  <!-- /block header -->						
-			  <div class="block-content">	
+			  <!-- /block header -->
+			  <div class="block-content">
 				<cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
 #application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
 				</cfif>
-			</cfoutput> 
+			</cfoutput>
 			</div> <!--- /.block-content --->
-		</div> <!--- /.block --->		
+		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-	</cfoutput> <cfoutput> 
+	</cfoutput> <cfoutput>
 		<div class="load-inline tab-preloader"></div>
 		<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 		 #actionButtons#
