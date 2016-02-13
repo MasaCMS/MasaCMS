@@ -82,11 +82,6 @@ main > .content > :first-child{
 }
 
 // form elements w/ label
-
-.mura-control-group > label + .datepicker{
-  .form-control;
-  .make-sm-column(2.6);
-}
 .mura-control-group > label + textarea,
 .mura-control-group > label + * + textarea,
 .mura-control-group > label + input[type=text]:not([class*="datepicker"]),
@@ -119,6 +114,30 @@ select[size]
 ,.mura-control-group > label + select[multiple], 
 .mura-control-group > label + select[size] {
     height: auto !important;
+}
+.mura-control-group > label + .datepicker{
+  .form-control;
+  .make-sm-column(2.6);
+}
+
+// inline groups
+.mura-control-inline{
+  > label {
+  float:left;
+  padding-right: 8px;
+  padding-top: 8px;
+  }
+  > input{
+  .make-sm-column(3);
+  .form-control;
+  }
+  > input + label{
+  margin-left: 8px;
+  }
+  > button {
+  .btn;
+  height: 36px;
+  }
 }
 
 // checkboxes / radio buttons

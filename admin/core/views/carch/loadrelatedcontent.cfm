@@ -323,17 +323,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </cfif>
 <cfoutput>
-<div class="mura-control-group mura-related-external" style="display:none;">
-<!--- TODO GoWest : markup here (span6, span12 etc) --->
-	<div class="span6">
+<div class="mura-control-inline mura-related-external" style="display:none;">
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.title')#</label>
-			<input type="text" id="mura-related-title" value="" class="span12">	
-		</div>
-	<div class="span6">
+		<input type="text" id="mura-related-title" value="" class="span12">	
 		<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.relatedcontent.url')#</label>
-			<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
-			<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>		
-	</div>
+		<input type="text" id="mura-related-url" value="" placeholder="http://www.example.com" class="span12">
+		<button type="button" name="btnCreateLink" id="rcBtnCreateLink" class="btn" onclick="createExternalLink();"><i class="mi-plus-circle"></i></button>		
 </div>	
 
 <div class="mura-related-external" style="display:none;">
