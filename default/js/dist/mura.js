@@ -1519,7 +1519,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
   window.addEventListener("load", ready);
 })();
 
-;/* This file is part of Mura CMS. 
+;/* This file is part of Mura CMS.
 
 	Mura CMS is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -2181,7 +2181,7 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 		return escape(value).replace(
        	 	new RegExp( "\\+", "g" ),
         	"%2B"
-        );
+        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
 	}
 
 	function $unescape(value){
