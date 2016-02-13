@@ -664,7 +664,7 @@
 		return escape(value).replace(
        	 	new RegExp( "\\+", "g" ),
         	"%2B"
-        );
+        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
 	}
 
 	function $unescape(value){

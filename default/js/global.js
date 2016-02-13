@@ -1,33 +1,33 @@
-/* This file is part of Mura CMS. 
+/* This file is part of Mura CMS.
 
-  Mura CMS is free software: you can redistribute it and/or modify 
-  it under the terms of the GNU General Public License as published by 
-  the Free Software Foundation, Version 2 of the License. 
+  Mura CMS is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, Version 2 of the License.
 
-  Mura CMS is distributed in the hope that it will be useful, 
-  but WITHOUT ANY WARRANTY; without even the implied warranty of 
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-  GNU General Public License for more details. 
+  Mura CMS is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License 
-  along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+  You should have received a copy of the GNU General Public License
+  along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-  Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+  Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
   Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-  
+
   However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
   or libraries that are released under the GNU Lesser General Public License version 2.1.
-  
-  In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-  independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-  Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-  
-  Your custom code 
-  
+
+  In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
+  independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
+  Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+
+  Your custom code
+
   • Must not alter any default objects in the Mura CMS database and
   • May not alter the default display of the Mura CMS logo within Mura CMS and
   • Must not alter any files in the following directories.
-  
+
    /admin/
    /tasks/
    /config/
@@ -35,13 +35,13 @@
    /Application.cfc
    /index.cfm
    /MuraProxy.cfc
-  
-  You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-  under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+
+  You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
+  under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
   requires distribution of source code.
-  
-  For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-  modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+
+  For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
+  modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
   version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 if(window.Prototype) {
     delete Object.prototype.toJSON;
@@ -114,7 +114,7 @@ throw new SyntaxError('JSON.parse');}};}();}
     , script  = scriptTag.innerHTML.replace(/^\s+|\s+$/g,'')
   ;
   //avoid multiple inclusion to override current loader but allow tag content evaluation
-  
+
   if( ! window.ljs ){
     var checkLoaded = scriptTag.src.match(/checkLoaded/)?1:0
       //-- keep trace of header as we will make multiple access to it
@@ -189,16 +189,16 @@ throw new SyntaxError('JSON.parse');}};}();}
             attrs={};
           }
 
-          var parts = urlParse(url);  
+          var parts = urlParse(url);
           var partToAttrs=[['i','id'],['f','fallback'],['u','src']];
-          
+
           for(var i=0;i<partToAttrs.length;i++){
             var part=partToAttrs[i];
             if(!(part[1] in attrs) && (part[0] in parts)){
               attrs[part[1]]=parts[part[0]];
             }
           }
-        
+
           if(typeof attrs.type === 'undefined'){
             attrs.type='text/javascript';
           }
@@ -210,7 +210,7 @@ throw new SyntaxError('JSON.parse');}};}();}
               finalAttrs[a]=attrs[a];
             }
           }
-          
+
           finalAttrs.onerror=function(error){
             if( attrs.fallback ){
               var c = error.currentTarget;
@@ -219,7 +219,7 @@ throw new SyntaxError('JSON.parse');}};}();}
               appendElmt('script',attrs,cb);
             }
           };
-          
+
 
           if( loaded[finalAttrs.src] === true ){ // already loaded exec cb if any
             cb && cb();
@@ -258,7 +258,7 @@ throw new SyntaxError('JSON.parse');}};}();}
           } else if (typeof attrs=='string' || (typeof attrs=='object' && Array.isArray(attrs))) {
             return loader.load.apply(this, arguments);
           }
-          
+
           var parts = urlParse(url);
           parts={type:'text/css',rel:'stylesheet',href:url,id:parts.i}
 
@@ -426,7 +426,7 @@ if (!Object.keys) {
       return result;
     };
   }());
-} 
+}
 
 var initMura=function(config){
 
@@ -459,7 +459,7 @@ var initMura=function(config){
   if(typeof config.windowdocumentdomain != 'undefined' && config.windowdocumentdomain != ''){
     window.document.domain=config.windowdocumentdomain;
   }
-  
+
 
   var createCookie=function(name,value,days) {
     if (days) {
@@ -504,10 +504,10 @@ var initMura=function(config){
   }
 
   var $escape=function(value){
-    return escape(value).replace( 
-          new RegExp( "\\+", "g" ), 
-          "%2B" 
-        );
+    return escape(value).replace(
+          new RegExp( "\\+", "g" ),
+          "%2B"
+        ).replace(/[\x00-\x1F\x7F-\x9F]/g, "");
   }
 
   var setHTMLEditor=function(el) {
@@ -515,26 +515,26 @@ var initMura=function(config){
     var initEditor=function(){
       var instance=CKEDITOR.instances[$(el).attr('id')];
       var conf={height:200,width:'70%'};
-      
+
       if($(el).data('editorconfig')){
         $.extend(conf,$(el).data('editorconfig'));
       }
-        
+
       if (instance) {
         instance.destroy();
         CKEDITOR.remove(instance);
-      } 
+      }
 
-      $('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete); 
+      $('#' + $(el).attr('id')).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);
 
-      
+
     }
 
-    var htmlEditorOnComplete=function( editorInstance ) {     
+    var htmlEditorOnComplete=function( editorInstance ) {
       var instance=jQuery(editorInstance).ckeditorGet();
       instance.resetDirty();
       var totalIntances=CKEDITOR.instances;
-      //CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;  
+      //CKFinder.setupCKEditor( instance, { basePath : context + '/requirements/ckfinder/', rememberLastFolder : false } ) ;
     }
 
     var getHTMLEditorConfig=function(customConfig) {
@@ -543,11 +543,11 @@ var initMura=function(config){
         toolbar:'htmlEditor',
         customConfig : 'config.js.cfm'
         }
-      
-      if(typeof(customConfig)== 'object'){  
+
+      if(typeof(customConfig)== 'object'){
         $.extend(htmlEditorConfig,customConfig);
       }
-      
+
       return htmlEditorConfig;
     }
 
@@ -565,10 +565,10 @@ var initMura=function(config){
   var pressed_keys='';
 
   var loginCheck=function(key){
-    
+
     if(key==27){
       pressed_keys = key.toString();
-      
+
     } else if(key == 76){
       pressed_keys = pressed_keys + "" + key.toString();
     }
@@ -578,11 +578,11 @@ var initMura=function(config){
     }
 
     if (pressed_keys != "") {
-    
+
     var aux = pressed_keys;
-    
+
     if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
-      
+
       if(typeof(config.loginURL) != "undefined"){
         lu=config.loginURL;
       } else if(typeof(config.loginurl) != "undefined"){
@@ -590,7 +590,7 @@ var initMura=function(config){
       } else{
         lu="?display=login";
       }
-      
+
       if(typeof(config.returnURL) != "undefined"){
         ru=config.returnURL;
       } else if(typeof(config.returnurl) != "undefined"){
@@ -599,7 +599,7 @@ var initMura=function(config){
         ru=location.href;
       }
       pressed_keys = "";
-      
+
       lu = new String(lu);
       if(lu.indexOf('?') != -1){
         location.href=lu + "&returnUrl=" + $escape(ru);
@@ -612,7 +612,7 @@ var initMura=function(config){
 
   var isInteger=function(s){
     var i;
-      for (i = 0; i < s.length; i++){   
+      for (i = 0; i < s.length; i++){
           // Check that current character is number.
           var c = s.charAt(i);
           if (((c < "0") || (c > "9"))) return false;
@@ -622,42 +622,42 @@ var initMura=function(config){
   }
 
   var createDate=function(str){
-            
+
     var valueArray = str.split("/");
-          
+
     var mon = valueArray[0];
     var dt = valueArray[1];
     var yr = valueArray[2];
-        
+
     var date = new Date(yr, mon-1, dt);
-            
+
     if(!isNaN(date.getMonth())){
       return date;
     } else {
-      return new Date();  
+      return new Date();
     }
-              
+
   }
-          
+
   var dateToString=function(date){
     var mon   = date.getMonth()+1;
     var dt  = date.getDate();
     var yr   = date.getFullYear();
-        
+
     if(mon < 10){ mon="0" + mon;}
     if(dt < 10){ dt="0" + dt;}
-            
-            
-    return mon + "/" + dt + "/20" + new String(yr).substring(2,4);      
+
+
+    return mon + "/" + dt + "/20" + new String(yr).substring(2,4);
   }
-          
+
 
   var stripCharsInBag=function(s, bag){
     var i;
       var returnString = "";
       // Search through string's characters one by one.
       // If character is not in bag, append to returnString.
-      for (i = 0; i < s.length; i++){   
+      for (i = 0; i < s.length; i++){
           var c = s.charAt(i);
           if (bag.indexOf(c) == -1) returnString += c;
       }
@@ -675,14 +675,14 @@ var initMura=function(config){
       this[i] = 31
       if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
       if (i==2) {this[i] = 29}
-     } 
+     }
      return this
   }
 
   var isDate=function(dtStr,fldName){
     var daysInMonth = DaysArray(12);
     var dtArray= dtStr.split(config.dtCh);
-    
+
     if (dtArray.length != 3){
       //alert("The date format for the "+fldName+" field should be : short")
       return false
@@ -690,24 +690,24 @@ var initMura=function(config){
     var strMonth=dtArray[config.dtFormat[0]];
     var strDay=dtArray[config.dtFormat[1]];
     var strYear=dtArray[config.dtFormat[2]];
-    
+
     /*
     if(strYear.length == 2){
       strYear="20" + strYear;
     }
     */
     strYr=strYear;
-    
+
     if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1)
     if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1)
     for (var i = 1; i <= 3; i++) {
       if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1)
     }
-    
+
     month=parseInt(strMonth)
     day=parseInt(strDay)
     year=parseInt(strYr)
-      
+
     if (month<1 || month>12){
       //alert("Please enter a valid month in the "+fldName+" field")
       return false
@@ -745,13 +745,13 @@ var initMura=function(config){
             mura.assetpath +'/css/shadowbox.min.css',
             mura.assetpath +'/js/external/shadowbox/shadowbox.min.js',
             mura.assetpath +'/js/external/shadowbox/shadowbox-jquery.min.js'
-           
+
           ],
           function(){
               window.Shadowbox.init();
           }
-        );   
-      } 
+        );
+      }
   }
 
   var validateForm=function(frm,customaction) {
@@ -783,7 +783,7 @@ var initMura=function(config){
           return theField.getAttribute('message') ;
         } else {
           return getValidationFieldName(theField).toUpperCase() + defaultMessage;
-        } 
+        }
       }
 
       var getValidationType=function(theField){
@@ -846,109 +846,109 @@ var initMura=function(config){
       var firstErrorNode;
       var validationType='';
       var validations={properties:{}};
-      var frmInputs = theForm.getElementsByTagName("input");  
+      var frmInputs = theForm.getElementsByTagName("input");
       var rules=new Array();
       var data={};
       var $customaction=customaction;
-      
+
       for (var f=0; f < frmInputs.length; f++) {
        var theField=frmInputs[f];
        validationType=getValidationType(theField).toUpperCase();
-      
+
         rules=new Array();
-    
+
         if(theField.style.display==""){
           if(getValidationIsRequired(theField))
-            { 
+            {
               rules.push({
                 required: true,
                 message: getValidationMessage(theField,' is required.')
               });
-              
-                    
+
+
             }
           if(validationType != ''){
-              
+
             if(validationType=='EMAIL' && theField.value != '')
-            { 
+            {
               rules.push({
                 dataType: 'EMAIL',
                 message: getValidationMessage(theField,' must be a valid email address.')
               });
-              
-                  
+
+
             }
-    
+
             else if(validationType=='NUMERIC' && theField.value != '')
-            { 
+            {
               rules.push({
                 dataType: 'NUMERIC',
                 message: getValidationMessage(theField,' must be numeric.')
               });
-                    
+
             }
-            
+
             else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-            { 
+            {
               rules.push({
                 regex: getValidationRegex(theField),
                 message: getValidationMessage(theField,' is not valid.')
               });
-                      
+
             }
-            
-            else if(validationType=='MATCH' 
+
+            else if(validationType=='MATCH'
                 && hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
-            { 
+            {
               rules.push({
                 eq: theForm[getValidationMatchField(theField)].value,
                 message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
               });
-                    
+
             }
-            
+
             else if(validationType=='DATE' && theField.value != '')
             {
               rules.push({
                 dataType: 'DATE',
                 message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
               });
-               
+
             }
           }
-          
+
           if(rules.length){
             validations.properties[theField.getAttribute('name')]=rules;
             data[theField.getAttribute('name')]=theField.value;
           }
         }
       }
-      var frmTextareas = theForm.getElementsByTagName("textarea");  
+      var frmTextareas = theForm.getElementsByTagName("textarea");
       for (f=0; f < frmTextareas.length; f++) {
-      
-        
+
+
           theField=frmTextareas[f];
           validationType=getValidationType(theField);
 
           rules=new Array();
-           
+
           if(theField.style.display=="" && getValidationIsRequired(theField))
-          { 
+          {
             rules.push({
               required: true,
               message: getValidationMessage(theField, ' is required.' )
             });
-            
-          } 
+
+          }
 
           else if(validationType != ''){
             if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
-            { 
+            {
               rules.push({
                 regex: getValidationRegex(theField),
                 message: getValidationMessage(theField, ' is not valid.' )
               });
-                      
+
             }
           }
 
@@ -957,8 +957,8 @@ var initMura=function(config){
             data[theField.getAttribute('name')]=theField.value;
           }
       }
-      
-      var frmSelects = theForm.getElementsByTagName("select");  
+
+      var frmSelects = theForm.getElementsByTagName("select");
       for (f=0; f < frmSelects.length; f++) {
           theField=frmSelects[f];
           validationType=getValidationType(theField);
@@ -966,7 +966,7 @@ var initMura=function(config){
           rules=new Array();
 
           if(theField.style.display=="" && getValidationIsRequired(theField))
-          { 
+          {
             rules.push({
               required: true,
               message: getValidationMessage(theField, ' is required.' )
@@ -976,7 +976,7 @@ var initMura=function(config){
           if(rules.length){
             validations.properties[theField.getAttribute('name')]=rules;
             data[theField.getAttribute('name')]=theField.value;
-          } 
+          }
       }
 
       try{
@@ -994,9 +994,9 @@ var initMura=function(config){
               },
             success: function(resp) {
               var _data=eval('(' + resp + ')');
-              
+
               data=_data.data;
-              
+
               if(jQuery.isEmptyObject(data)){
                 if(typeof $customaction == 'function'){
                   $customaction(theForm);
@@ -1014,25 +1014,25 @@ var initMura=function(config){
               }
             },
             error: function(resp) {
-              
+
               alert(JSON.stringify(resp));
             }
 
-          }    
+          }
         );
-      } 
-      catch(err){ 
+      }
+      catch(err){
         console.log(err);
 
       }
 
     return false;
-      
+
   }
 
   var setLowerCaseKeys=function (obj) {
     $.map(obj, function(value, key) {
-     
+
        if (key !== key.toLowerCase()) { // might already be in its lower case version
             obj[key.toLowerCase()] = obj[key] // swap the value to a new lower case key
             delete obj[key] // delete the old key
@@ -1097,7 +1097,7 @@ var initMura=function(config){
                   }
 
                 checkForReCaptcha();
-                
+
               });
             }
             );
@@ -1107,9 +1107,9 @@ var initMura=function(config){
 
       function(){
         if(typeof resizeEditableObject == 'function' ){
-          $(scope).closest('.editableObject').each(function(){ 
+          $(scope).closest('.editableObject').each(function(){
             resizeEditableObject(this);
-          }); 
+          });
 
           $(scope).find(".frontEndToolsModal").each(
             function(){
@@ -1165,7 +1165,7 @@ var initMura=function(config){
       }
     } else {
       getRegisteredHandlers(eventType).push(handler);
-    } 
+    }
   }
 
   var announceEvent=function(eventType,context){
@@ -1179,13 +1179,13 @@ var initMura=function(config){
   var submitForm=function(frm,obj){
 
     frm=(typeof frm.get=='function') ? frm.get(0) : frm;
-     
+
     if(obj){
       obj=(typeof obj.get=='function') ? obj : $(obj);
     } else {
       obj=$(frm).closest('.mura-async-object');
     }
-   
+
     if(!obj.length){
       frm.submit();
     }
@@ -1194,7 +1194,7 @@ var initMura=function(config){
         var data=new FormData(frm);
         var checkdata=setLowerCaseKeys($(frm).serializeObject());
         var keys=$.extend(true,setLowerCaseKeys(obj.data()),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
-        
+
         for(var k in keys){
           if(!(k in checkdata)){
             data.append(k,keys[k]);
@@ -1208,7 +1208,7 @@ var initMura=function(config){
         if('nocache' in checkdata){
           data.append('nocache',1);
         }
-        
+
         var postconfig={
               url:  config.apiEndpoint + '?method=processAsyncObject',
               type: 'POST',
@@ -1217,8 +1217,8 @@ var initMura=function(config){
               contentType: false,
               dataType: 'JSON',
               success: function(resp){handleResponse(obj,resp);}
-            } 
-      
+            }
+
       } else {
         var data=$.extend(true,setLowerCaseKeys(obj.data()),urlparams,setLowerCaseKeys($( frm ).serializeObject()),{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid,nocache:1});
 
@@ -1236,7 +1236,7 @@ var initMura=function(config){
               data: data,
               dataType: 'JSON',
               success: function(resp){handleResponse(obj,resp);}
-            } 
+            }
       }
 
       var self=obj.get(0);
@@ -1257,15 +1257,15 @@ var initMura=function(config){
       );
 
       return false;
-      
-    } 
+
+    }
 
     obj=(typeof obj.get=='function') ? obj : $(obj);
 
     var self=obj.get(0);
 
     $(self).html(html);
-    
+
     $(self).find('a[href="javascript:history.back();"]').each(function(){
       $(this).off('click').on("click",function(e){
         if(self.prevInnerHTML){
@@ -1304,7 +1304,7 @@ var initMura=function(config){
     } else if('redirect' in resp.data){
       location.href=resp.data.redirect;
     } else if('render' in resp.data){
-      $.ajax({ 
+      $.ajax({
             type:"POST",
             xhrFields:{ withCredentials: true },
             crossDomain:true,
@@ -1324,7 +1324,7 @@ var initMura=function(config){
   var processAsyncObject=function(el){
     var self=el;
     var data=$.extend(true,$(self).data(),urlparams,{siteid:config.siteid,contentid:config.contentid,contenthistid:config.contenthistid});
-    
+
     if('objectparams' in data){
       data['objectparams']= $escape(JSON.stringify(data['objectparams']));
     }
@@ -1338,7 +1338,7 @@ var initMura=function(config){
         dataType: 'JSON'
     }).then(function(resp){handleResponse($(el),resp);});
   }
-  
+
   $.extend(config,{
     submitForm:submitForm,
     processAsyncObject:processAsyncObject,
@@ -1373,13 +1373,13 @@ var initMura=function(config){
           a = /\+/g,  // Regex for replacing addition symbol with a space
           r = /([^&;=]+)=?([^&;]*)/g,
           d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
-          
+
           if(queryString.substring(0,1)=='?'){
             var q=queryString.substring(1);
           } else {
             var q=queryString;
           }
-          
+
 
       while (e = r.exec(q))
          params[d(e[1]).toLowerCase()] = d(e[2]);
@@ -1392,7 +1392,7 @@ var initMura=function(config){
   }
 
   $(function(){
-     
+
     urlparams=setLowerCaseKeys(getURLParams());
     processHandlers(document);
 
@@ -1417,7 +1417,7 @@ var initMura=function(config){
       }
     );
     */
-    
+
     $.fn.appendMuraObject = function(data) {
         var el=$('<div class="mura-async-object"></div>');
 
