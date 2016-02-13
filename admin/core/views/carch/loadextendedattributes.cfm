@@ -170,5 +170,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset returnsets.hasBody=subType.getHasBody()>
 <cfset returnsets.hasAssocFile=subType.getHasAssocFile()>
 <cfset returnsets.hasConfigurator=subType.getHasConfigurator()>
-<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput><cfabort>
 
+<!--- escape control characters in JSON --->
+<cfset result = createObject("component","mura.json").encode(returnsets)>
+<cfset result = reReplace(result, "[^(!\x20-\x7F|\xA|\xD)]", "", "all")>
+<cfcontent type="application/json; charset=utf-8" reset="true"><cfoutput>#result#</cfoutput><cfabort>
