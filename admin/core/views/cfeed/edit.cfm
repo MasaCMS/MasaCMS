@@ -150,7 +150,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset isObjectInstance=false>
 </cfif>
 
-<!--- TODO GoWest : use these values in place of static tab headings? (see div class="block-header") : 2016-01-25T17:04:22-07:00 --->
 <cfif rc.$.getContentRenderer().useLayoutManager()>
 	<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabRss">
 	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
@@ -198,7 +197,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="block block-constrain">
 
-<!--- TODO GoWest : this markup : 2016-01-25T16:33:44-07:00 --->
 <cfif not isObjectInstance>
 	<cfif rc.compactDisplay eq "true">
 		<div id="nav-module-specific" class="btn-group">
@@ -281,7 +279,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1,$('##contentPoolID').val());return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="mura-control justify">
-<!--- TODO GoWest : this table markup : 2016-01-26T07:29:12-07:00 --->
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
 							<tr>
@@ -439,7 +436,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Category Filters --->
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
 					<div id="mura-list-tree" class="mura-control">
-<!--- TODO GoWest : this markup categories_next : 2016-01-26T07:34:44-07:00 --->
 						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
 					</div>
 				</div>
@@ -484,48 +480,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="mura-control-group" id="searchParams">
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#</label>
 			<cfif not rsParams.recordcount>
-				<!--- TODO GoWest : params markup / span2 / etc : 2016-01-26T07:36:03-07:00 --->
 				<div class="mura-control justify form-inline">
-					<select name="paramRelationship1" class="span2" style="display:none;" >
+					<select name="paramRelationship1" style="display:none;" >
 						<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
 						<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
 					</select>
 					<input type="hidden" name="param" value="1" />
-					<select name="paramField1" class="span2">
+					<select name="paramField1">
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
 						<cfloop from="1" to="#arrayLen(options)#" index="i">
 						<option value="#options[i][1]#">#options[i][2]#</option>
 						</cfloop>
 					</select>
-					<select name="paramCondition1" class="span2">
+					<select name="paramCondition1">
 						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
 						<option value="#criterias[i][1]#">#criterias[i][2]#</option>
 						</cfloop>
 					</select>
-					<input type="text" name="paramCriteria1" class="span4">
+					<input type="text" name="paramCriteria1">
 					<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;" style="display:none;"><i class="mi-minus-circle"></i></a>
 					<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;"><i class="mi-plus-circle"></i></a>
 				</div>
 			<cfelse>
 				<cfloop query="rsParams">
 					<div class="mura-control justify form-inline">
-						<select name="paramRelationship#rsParams.currentRow#" class="span2">
+						<select name="paramRelationship#rsParams.currentRow#">
 							<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
 							<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>
 						</select>
 						<input type="hidden" name="param" value="#rsParams.currentRow#" />
-						<select name="paramField#rsParams.currentRow#" class="span2">
+						<select name="paramField#rsParams.currentRow#">
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
 						<cfloop from="1" to="#arrayLen(options)#" index="i">
 						<option value="#options[i][1]#" <cfif rsParams.criteria neq '' and "#rsParams.field#^#rsParams.dataType#" eq options[i][1]>selected</cfif>>#options[i][2]#</option>
 						</cfloop>
 						</select>
-						<select name="paramCondition#rsParams.currentRow#" class="span2">
+						<select name="paramCondition#rsParams.currentRow#">
 						<cfloop from="1" to="#arrayLen(criterias)#" index="i">
 						<option value="#criterias[i][1]#" <cfif rsParams.criteria neq '' and rsParams.condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
 						</cfloop>
 						</select>
-						<input type="text" name="paramCriteria#rsParams.currentRow#" value="#esapiEncode('html_attr',rsParams.criteria)#" class="span4" >
+						<input type="text" name="paramCriteria#rsParams.currentRow#" value="#esapiEncode('html_attr',rsParams.criteria)#" >
 						<a class="criteria remove" href="javascript:;" onclick="$searchParams.removeSeachParam(this.parentNode);$searchParams.setSearchButtons();return false;"><i class="mi-minus-circle"></i></a>
 						<a class="criteria add" href="javascript:;" onclick="$searchParams.addSearchParam();$searchParams.setSearchButtons();return false;" ><i class="mi-plus-circle"></i></a>
 					</div>
@@ -817,8 +812,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfoutput>
 <cfif not isObjectInstance>
-
-<!--- TODO GoWest : are we using initActiveTab, or should we remove globally? : 2016-01-25T16:43:44-07:00 --->
 		<ul class="mura-tabs nav-tabs nav-tabs-alt initActiveTab" data-toggle="tabs">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -898,7 +891,6 @@ jQuery(document).ready(function(){
 	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
-<!--- TODO GoWest : where to put alert : 2016-01-26T11:51:29-07:00 --->
 <cfif not structIsEmpty(rc.feedBean.getErrors())>
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
 </cfif>
@@ -1012,7 +1004,7 @@ jQuery(document).ready(function(){
 
     <cfif len(rc.$.globalConfig('proxyserver')) or len(rc.$.globalConfig('proxyuser'))>
 	    	<label>#application.rbFactory.getKeyValue(session.rb,'collections.authtype')#</label>
-			   <select name="authtype" class="span4">
+			   <select name="authtype">
 				<option value="DEFAULT">DEFAULT</option>
 				<option value="BASIC" <cfif rc.feedBean.getAuthType() eq 'BASIC'>selected</cfif>>BASIC</option>
 				<cfif len(rc.$.globalConfig('proxyserver'))>

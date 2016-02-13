@@ -26742,8 +26742,12 @@ font-size: 12px;
 .mura #mura-list-tree {
   overflow-x: auto;
 }
-.mura #mura-list-tree ul.checkBoxTree {
+.mura #mura-list-tree ul.checkboxTree {
   overflow: visible;
+  padding-left: 0;
+}
+.mura #mura-list-tree ul.checkboxTree ul {
+  padding-left: 15px;
 }
 .mura #mura-list-tree > ul {
   margin: 0;
@@ -26755,6 +26759,7 @@ font-size: 12px;
   white-space: nowrap;
   line-height: 18px;
   list-style: none;
+  clear: both;
 }
 .mura #mura-list-tree > ul li span {
   display: inline-block;
@@ -26781,10 +26786,12 @@ font-size: 12px;
   color: #cccccc;
 }
 .mura #mura-list-tree > ul li > input[type="radio"] {
-  margin-top: 0;
+  float: left;
+  margin: 3px 5px 7px 0;
 }
 .mura #mura-list-tree > ul li > input[type="checkbox"] {
-  margin-top: -2px;
+  float: left;
+  margin: 3px 5px 7px 0;
 }
 .mura .mura-rc-quickoption {
   border: none;
@@ -28664,6 +28671,341 @@ select[size],
 .mura-control-group > label + select[multiple],
 .mura-control-group > label + select[size] {
   height: auto !important;
+}
+.mura-control-group > label + .datepicker {
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cccccc;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  color: #aaa;
+  color: #646464;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.mura-control-group > label + .datepicker:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.mura-control-group > label + .datepicker::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.mura-control-group > label + .datepicker:-ms-input-placeholder {
+  color: #999999;
+}
+.mura-control-group > label + .datepicker::-webkit-input-placeholder {
+  color: #999999;
+}
+.mura-control-group > label + .datepicker::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.mura-control-group > label + .datepicker[disabled],
+.mura-control-group > label + .datepicker[readonly],
+fieldset[disabled] .mura-control-group > label + .datepicker {
+  background-color: #f9f9f9;
+  opacity: 1;
+}
+.mura-control-group > label + .datepicker[disabled],
+fieldset[disabled] .mura-control-group > label + .datepicker {
+  cursor: not-allowed;
+}
+textarea.mura-control-group > label + .datepicker {
+  height: auto;
+}
+.mura-control-group > label + .datepicker::-moz-placeholder {
+  color: #aaaaaa;
+  opacity: 1;
+}
+.mura-control-group > label + .datepicker:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + .datepicker::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + .datepicker::-moz-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + .datepicker:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + .datepicker::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-group > label + .datepicker:focus {
+  border-color: #cccccc;
+  background-color: #fcfcfc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+textarea.mura-control-group > label + .datepicker {
+  max-width: 100%;
+}
+input[type="text"].mura-control-group > label + .datepicker,
+input[type="password"].mura-control-group > label + .datepicker,
+input[type="email"].mura-control-group > label + .datepicker {
+  -webkit-appearance: none;
+}
+.mura-control-group > label + .datepicker.input-sm {
+  border-radius: 3px;
+}
+.mura-control-group > label + .datepicker.input-lg {
+  font-size: 14px;
+  border-radius: 3px;
+}
+.input-group-lg .mura-control-group > label + .datepicker {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .mura-control-group > label + .datepicker {
+    float: left;
+    width: 21.66666667%;
+  }
+}
+.mura-control-inline > label {
+  float: left;
+  padding-right: 8px;
+  padding-top: 8px;
+}
+.mura-control-inline > input {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: block;
+  width: 100%;
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #cccccc;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  color: #aaa;
+  color: #646464;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+@media (min-width: 768px) {
+  .mura-control-inline > input {
+    float: left;
+    width: 25%;
+  }
+}
+.mura-control-inline > input:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.mura-control-inline > input::-moz-placeholder {
+  color: #999999;
+  opacity: 1;
+}
+.mura-control-inline > input:-ms-input-placeholder {
+  color: #999999;
+}
+.mura-control-inline > input::-webkit-input-placeholder {
+  color: #999999;
+}
+.mura-control-inline > input::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.mura-control-inline > input[disabled],
+.mura-control-inline > input[readonly],
+fieldset[disabled] .mura-control-inline > input {
+  background-color: #f9f9f9;
+  opacity: 1;
+}
+.mura-control-inline > input[disabled],
+fieldset[disabled] .mura-control-inline > input {
+  cursor: not-allowed;
+}
+textarea.mura-control-inline > input {
+  height: auto;
+}
+.mura-control-inline > input::-moz-placeholder {
+  color: #aaaaaa;
+  opacity: 1;
+}
+.mura-control-inline > input:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-inline > input::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-inline > input::-moz-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-inline > input:-ms-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-inline > input::-webkit-input-placeholder {
+  color: #aaaaaa;
+}
+.mura-control-inline > input:focus {
+  border-color: #cccccc;
+  background-color: #fcfcfc;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+textarea.mura-control-inline > input {
+  max-width: 100%;
+}
+input[type="text"].mura-control-inline > input,
+input[type="password"].mura-control-inline > input,
+input[type="email"].mura-control-inline > input {
+  -webkit-appearance: none;
+}
+.mura-control-inline > input.input-sm {
+  border-radius: 3px;
+}
+.mura-control-inline > input.input-lg {
+  font-size: 14px;
+  border-radius: 3px;
+}
+.input-group-lg .mura-control-inline > input {
+  font-size: 14px;
+}
+.mura-control-inline > input + label {
+  margin-left: 8px;
+}
+.mura-control-inline > button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  padding: 2px 12px;
+  font-size: 14px;
+  height: 36px;
+}
+.mura-control-inline > button:focus,
+.mura-control-inline > button:active:focus,
+.mura-control-inline > button.active:focus,
+.mura-control-inline > button.focus,
+.mura-control-inline > button:active.focus,
+.mura-control-inline > button.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.mura-control-inline > button:hover,
+.mura-control-inline > button:focus,
+.mura-control-inline > button.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.mura-control-inline > button:active,
+.mura-control-inline > button.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.mura-control-inline > button.disabled,
+.mura-control-inline > button[disabled],
+fieldset[disabled] .mura-control-inline > button {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.mura-control-inline > button.disabled,
+fieldset[disabled] a.mura-control-inline > button {
+  pointer-events: none;
+}
+.mura-control-inline > button:active,
+.mura-control-inline > button.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.mura-control-inline > button.btn-square {
+  border-radius: 0;
+}
+.mura-control-inline > button.btn-rounded {
+  border-radius: 20px;
+}
+.mura-control-inline > button.btn-minw {
+  min-width: 110px;
+}
+.mura-control-inline > button.btn-noborder {
+  border: none !important;
+}
+.mura-control-inline > button.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+.mura-control-inline > button.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.mura-control-inline > button > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.mura-control-inline > button > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
 }
 .mura-control-group > .checkbox-group,
 .mura-control-group > .radio-group {
@@ -32602,6 +32944,9 @@ a.no-link {
   margin-bottom: 10px;
   min-height: 2.3em;
   padding-top: .5em;
+}
+.mura-item-metadata .metadata-horizontal li,
+.mura-item-metadata .metadata-horizontal li:hover {
   cursor: default;
 }
 .mura-file-selector .btn-group {
@@ -32738,6 +33083,9 @@ a.close:hover {
 }
 ul.dropdown-menu {
   margin: 2px 0 0;
+}
+.mura-header .btn-group ul.dropdown-menu {
+  margin: -3px 0 0 11px;
 }
 .sidebar h3 {
   font-size: 15px;

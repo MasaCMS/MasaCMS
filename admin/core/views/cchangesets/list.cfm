@@ -55,12 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </form>
 --->
-
-<div class="mura-layout-row">
-	<!--- TODO GoWest : mura-content is in template... remove here? : 2016-01-29T17:22:03-07:00 --->
-	
-	 <div id="mura-content">
-
 		<div class="mura-header">
 			<h1>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h1>
 			<div class="mura-item-metadata">
@@ -74,8 +68,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block block-bordered">
 				<div class="block-content">
 					<div id="main">
-
-<!--- TODO GoWest : table markup / css : 2016-01-22T22:35:25-07:00 --->
 
 	<table class="mura-table-grid"> 
 	<tr>

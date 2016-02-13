@@ -68,8 +68,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3 class="block-title">Usage Report</h3>
 		</div> <!-- /.block header -->						
 		<div class="block-content">
-<!--- TODO GoWest : this markup : 2016-01-25T17:21:30-07:00 --->
-
 		<div class="mura-control-group">
 			<label>#application.rbFactory.getKeyValue(session.rb,'collections.usagetext')#:</label>
 			<div class="mura-control justify">

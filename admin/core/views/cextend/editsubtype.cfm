@@ -93,7 +93,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input name="subType" id="subType" type="text" value="#esapiEncode('html_attr',subType.getSubType())#" required="true" maxlength="25"/>
 				</div>
 			</div>
-<!--- TODO GoWest : icon selection : 2016-01-25T10:50:56-07:00 --->
 						<div class="mura-control justify SubTypeIconSelect"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
 							<label>Icon</label>
 				<div class="btn-toolbar">
