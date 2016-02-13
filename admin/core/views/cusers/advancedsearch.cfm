@@ -129,6 +129,8 @@
 	</div><!-- /.mura-item-metadata -->
 </div> <!-- /.items-push.mura-header -->
 
+
+<div class="block block-constrain">
 <!--- Search Form --->
 <form class="fieldset-wrap" novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
 
@@ -243,8 +245,6 @@
 </form>
 <script type="text/javascript">$searchParams.setSearchButtons();</script>
 <!--- /Search Form --->
-
-<div class="block block-constrain">
 
 	<!--- Tab Nav (only tabbed for Admin + Super Users) --->
     <cfif rc.isAdmin>

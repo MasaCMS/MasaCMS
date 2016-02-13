@@ -50,7 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 
 <cfoutput>
+<div class="mura-header">
   <h1>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h1>
+
+  <div class="mura-item-metadata">
+    <div class="label-group">
   
   <cfif rc.emailid neq "">
     <ul class="metadata-horizontal">
@@ -100,72 +104,84 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
  <cfinclude template="dsp_secondary_menu.cfm">
+
+    </div><!-- /.label-group -->
+  </div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
+
 <form novalidate="novalidate" action="./?muraAction=cEmail.update&siteid=#esapiEncode('url',rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
 <div class="load-inline tab-preloader"></div>
 <script>$('.tab-preloader').spin(spinnerArgs2);</script>
     
-<div class="tabbable tabs-left mura-ui">
-    <ul class="nav nav-tabs tabs initActiveTab">
-        <li><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
-        <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
-    </ul>
+
+<div class="block block-constrain">
+
+  <ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+      <li class="active"><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
+      <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
+  </ul>
+
+    <div class="block-content tab-content">
 
     <!--- Email --->
-    <div class="tab-content">
-    <div id="emailContent" class="tab-pane">
-	  <div class="fieldset">
-      	<div class="control-group">
-        <label class="control-label">
+    <div id="emailContent" class="tab-pane active">
+      <div class="block block-bordered">
+        <!-- block header -->
+        <div class="block-header bg-gray-lighter">
+          <ul class="block-options">
+            <li>Something here?</li>
+            <li>
+              <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+            </li>
+            <li>
+              <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+            </li>
+          </ul>
+          <h3 class="block-title">Email</h3>
+        </div> <!-- /.block header -->            
+        <div class="block-content">
+
+      	<div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.subject')#
         </label>
-      <div class="controls">
           <input type="text" class="span12" name="subject" value="#esapiEncode('html_attr',rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
-        </div>
       </div>
         
-        <div class="control-group">
-        <div class="span6">
-        <label class="control-label">
+      <div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.replytoemail')#
         </label>
-        <div class="controls">
           <input type="text" class="span12" name="replyto" value="#iif(rc.emailid neq '',de("#rc.emailBean.getreplyto()#"),de("#application.settingsManager.getSite(rc.siteid).getcontact()#"))#"  required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'email.replytorequired')#" >
-          </div>
-         </div>
+      </div>
         
-        <div class="span6">
-        <label class="control-label">
+      <div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#
           </label>
-         <div class="controls">
           <input type="text" class="span12" name="fromLabel" value="#esapiEncode('html_attr',iif(rc.emailBean.getFromLabel() neq '',de("#rc.emailBean.getFromLabel()#"),de("#application.settingsManager.getSite(rc.siteid).getsite()#")))#"  required="true" message="The 'From Label' form field is required" >
-          </div>
-         </div>
         </div>
         
-        <div class="control-group">
-        <label class="control-label">
+        <div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.format')#
         </label>
-        <div class="controls">
           <select name="format"  onChange="emailManager.showMessageEditor();" id="messageFormat">
             <option value="HTML">#application.rbFactory.getKeyValue(session.rb,'email.html')#</option>
             <option value="Text" <cfif rc.emailBean.getformat() eq 'Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.text')#</option>
             <option value="HTML & Text" <cfif rc.emailBean.getformat() eq 'HTML & Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.htmltext')#</option>
           </select>
-          </div>
          </div>
         
         <span id="htmlMessage" style="display:none;">
 
           <!--- HTML LAYOUT TEMPLATE --->
           <cfif rc.rsTemplates.recordcount>
-            <div class="control-group">
-              <label class="control-label">
+            <div class="mura-control-group">
+              <label>
                 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#
               </label>
-              <div class="controls">
                 <select name="template" class="dropdown">
                   <cfloop query="rc.rsTemplates">
                     <option value=""<cfif not Len(rc.rsTemplates.name)> selected</cfif>>Default</option>
@@ -176,17 +192,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     </cfif>
                   </cfloop>
                 </select>
-              </div>
             </div>
             <cfelse>
             <input type="hidden" name="template" value="">
           </cfif>
         
-        <div class="control-group">
-        <label class="control-label">
+        <div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.htmlmessage')#
         </label>
-        <div class="controls">
           <cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
           <cfif rsPluginScripts.recordcount>
             <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
@@ -228,67 +242,76 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfif>
           </cfif>
           </div>
-        </div>
         
         </span> 
 
         <span id="textMessage" style="display:none;">
         
-        <div class="control-group">
-        <label class="control-label">
+        <div class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.textmessage')#
         </label>
-        <div class="controls">
           <textarea name="bodyText" id="textEditor">#esapiEncode('html',rc.emailBean.getbodytext())#</textarea>
-          </div>
         </div>
 
         </span>
 
-      </div>
-    </div>  
+      </div> <!-- /.block-content -->
+    </div> <!-- /.block-bordered -->
+  </div> <!-- /.tab-pane -->
+
 
 	<!--- Recipients --->      
 	<div id="emailGroupsLists" class="tab-pane">
 	<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h2> --->     	
-	<div class="fieldset">
-	  
+    <div class="block block-bordered">
+    <!-- block header -->
+    <div class="block-header bg-gray-lighter">
+      <ul class="block-options">
+        <li>Something here?</li>
+        <li>
+          <button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+        </li>
+        <li>
+          <button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
+        </li>
+      </ul>
+      <h3 class="block-title">Recipients</h3>
+    </div> <!-- /.block header -->            
+    <div class="block-content">
+  
 	  <cfif rc.rsPrivateGroups.recordcount>
-	  <div id="privateGroups" class="control-group">
-	        <label class="control-label">
-	            #application.rbFactory.getKeyValue(session.rb,'email.privategroups')#
-	        </label>
-	      <div class="controls">
-	            <cfloop query="rc.rsPrivateGroups">
-	              <label class="checkbox">
-	                <input type="checkbox" id="#esapiEncode('html_attr',rc.rsPrivateGroups.groupname)##rc.rsPrivateGroups.UserID#" name="GroupID" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPrivateGroups.userid)>checked</cfif>> #esapiEncode('html',rc.rsPrivateGroups.groupname)#</label>
-	            </cfloop>
-	      </div>
+	  <div id="privateGroups" class="mura-control-group">
+        <label>
+            #application.rbFactory.getKeyValue(session.rb,'email.privategroups')#
+        </label>
+        <cfloop query="rc.rsPrivateGroups">
+          <label class="checkbox">
+            <input type="checkbox" id="#esapiEncode('html_attr',rc.rsPrivateGroups.groupname)##rc.rsPrivateGroups.UserID#" name="GroupID" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPrivateGroups.userid)>checked</cfif>> #esapiEncode('html',rc.rsPrivateGroups.groupname)#</label>
+        </cfloop>
       </div>
       </cfif>
 
       <cfif rc.rsPublicGroups.recordcount>
-      <div id="publicGroups" class="control-group">
-        <label class="control-label">
+      <div id="publicGroups" class="mura-control-group">
+        <label>
             #application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#
         </label>
-        <div class="controls">
-              <cfloop query="rc.rsPublicGroups">
-                <label class="checkbox">
-                  <input type="checkbox" id="#esapiEncode('html_attr',rc.rsPublicGroups.groupname)##rc.rsPublicGroups.UserID#" name="GroupID"  class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPublicGroups.userid)>checked</cfif>> #esapiEncode('html',rc.rsPublicGroups.groupname)#</label>
-                </label>
-              </cfloop>
-           </div>
+          <cfloop query="rc.rsPublicGroups">
+            <label class="checkbox">
+              <input type="checkbox" id="#esapiEncode('html_attr',rc.rsPublicGroups.groupname)##rc.rsPublicGroups.UserID#" name="GroupID"  class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPublicGroups.userid)>checked</cfif>> #esapiEncode('html',rc.rsPublicGroups.groupname)#</label>
+            </label>
+          </cfloop>
        </div>
       </cfif>
       
       
       <cfif application.categoryManager.getInterestGroupCount(rc.siteID)>
-      <div id="interestGroups" class="control-group">
-        <label class="control-label">
+      <div id="interestGroups" class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.userinterestgroups')#
         </label>
-        <div class="controls" id="mura-list-tree">
+        <div class="mura-control" id="mura-list-tree">
             <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" groupid="#rc.emailBean.getgroupID()#">
         </div>
       </div>
@@ -296,21 +319,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       
       
       <cfif rc.rsMailingLists.recordcount>
-      <div id="mailingLists" class="control-group">
-        <label class="control-label">
+      <div id="mailingLists" class="mura-control-group">
+        <label>
           #application.rbFactory.getKeyValue(session.rb,'email.mailinglists')#
         </label>
-        <div class="controls controls-row">
-              <cfloop query="rc.rsMailingLists">
-                <label class="checkbox">
-                  <input type="checkbox" id="#esapiEncode('html_attr',rc.rsMailingLists.name)##rc.rsMailingLists.mlid#" name="GroupID"  class="checkbox" value="#rc.rsMailingLists.mlid#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsMailingLists.mlid)>checked</cfif>>#esapiEncode('html',rc.rsMailingLists.name)#</span>
-                </label>
-              </cfloop>
+          <cfloop query="rc.rsMailingLists">
+            <label class="checkbox">
+              <input type="checkbox" id="#esapiEncode('html_attr',rc.rsMailingLists.name)##rc.rsMailingLists.mlid#" name="GroupID"  class="checkbox" value="#rc.rsMailingLists.mlid#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsMailingLists.mlid)>checked</cfif>>#esapiEncode('html',rc.rsMailingLists.name)#</span>
+            </label>
+          </cfloop>
           </div>
-      </div>
       </cfif>
-    </div>
-	</div>
+      </div> <!-- /.block-content -->
+    </div> <!-- /.block-bordered -->
+  </div> <!-- /.tab-pane -->
+  <!-- /end tab -->
 
 <!--- End Tab Container --->
 
@@ -364,8 +387,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div>
       </div>
     
-	
+
  </div> 
+    
+    </div> <!-- /.block-content.tab-content -->	
+  </div> <!-- /.block-constrain -->
 </form>
 </cfoutput>
 <cfif showScheduler and dateCheck>

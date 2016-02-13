@@ -29723,6 +29723,157 @@ fieldset[disabled] a#nav-module-specific .label {
   margin-top: 3px;
   margin-left: 5px;
 }
+.mura-item-metadata .metadata-horizontal li {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  line-height: 1.6;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  border-radius: 2px;
+  -o-transition: all 0.15s ease-out;
+  -webkit-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+  padding: 2px 12px;
+  font-size: 14px;
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
+.mura-item-metadata .metadata-horizontal li:focus,
+.mura-item-metadata .metadata-horizontal li:active:focus,
+.mura-item-metadata .metadata-horizontal li.active:focus,
+.mura-item-metadata .metadata-horizontal li.focus,
+.mura-item-metadata .metadata-horizontal li:active.focus,
+.mura-item-metadata .metadata-horizontal li.active.focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.mura-item-metadata .metadata-horizontal li:hover,
+.mura-item-metadata .metadata-horizontal li:focus,
+.mura-item-metadata .metadata-horizontal li.focus {
+  color: #333333;
+  text-decoration: none;
+}
+.mura-item-metadata .metadata-horizontal li:active,
+.mura-item-metadata .metadata-horizontal li.active {
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.mura-item-metadata .metadata-horizontal li.disabled,
+.mura-item-metadata .metadata-horizontal li[disabled],
+fieldset[disabled] .mura-item-metadata .metadata-horizontal li {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+a.mura-item-metadata .metadata-horizontal li.disabled,
+fieldset[disabled] a.mura-item-metadata .metadata-horizontal li {
+  pointer-events: none;
+}
+.mura-item-metadata .metadata-horizontal li:active,
+.mura-item-metadata .metadata-horizontal li.active {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.mura-item-metadata .metadata-horizontal li.btn-square {
+  border-radius: 0;
+}
+.mura-item-metadata .metadata-horizontal li.btn-rounded {
+  border-radius: 20px;
+}
+.mura-item-metadata .metadata-horizontal li.btn-minw {
+  min-width: 110px;
+}
+.mura-item-metadata .metadata-horizontal li.btn-noborder {
+  border: none !important;
+}
+.mura-item-metadata .metadata-horizontal li.btn-image {
+  position: relative;
+  padding-left: 40px;
+}
+.mura-item-metadata .metadata-horizontal li.btn-image > img {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 3px;
+}
+.mura-item-metadata .metadata-horizontal li > i.pull-left {
+  margin-top: 3px;
+  margin-right: 5px;
+}
+.mura-item-metadata .metadata-horizontal li > i.pull-right {
+  margin-top: 3px;
+  margin-left: 5px;
+}
+a.mura-item-metadata .metadata-horizontal li:hover,
+a.mura-item-metadata .metadata-horizontal li:focus {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.mura-item-metadata .metadata-horizontal li:empty {
+  display: none;
+}
+.btn .mura-item-metadata .metadata-horizontal li {
+  position: relative;
+  top: -1px;
+}
+.mura-item-metadata .metadata-horizontal li-important {
+  background-color: #ff3a00;
+}
+.mura-item-metadata .metadata-horizontal li-important[href] {
+  background-color: #cc2e00;
+}
+.mura-item-metadata .metadata-horizontal li-warning {
+  background-color: #ffc40d;
+}
+.mura-item-metadata .metadata-horizontal li-warning[href] {
+  background-color: #d9a400;
+}
+.mura-item-metadata .metadata-horizontal li-success {
+  background-color: #587231;
+}
+.mura-item-metadata .metadata-horizontal li-success[href] {
+  background-color: #3c4f22;
+}
+.mura-item-metadata .metadata-horizontal li-info {
+  background-color: #4e7696;
+}
+.mura-item-metadata .metadata-horizontal li-info[href] {
+  background-color: #3d5c74;
+}
+.mura-item-metadata .metadata-horizontal li-inverse {
+  background-color: #666666;
+}
+.mura-item-metadata .metadata-horizontal li-inverse[href] {
+  background-color: #4d4d4d;
+}
 .label:not([class*="label-"]) {
   background-color: #f3f3f3;
   background-color: #f1f1f1;
@@ -32436,7 +32587,9 @@ a.no-link {
   float: none;
 }
 .mura-header .label,
-.mura-header #nav-module-specific .btn {
+.mura-header #nav-module-specific .btn,
+.mura-item-metadata .metadata-horizontal li,
+.mura-item-metadata .metadata-horizontal li:hover {
   float: none !important;
   color: #777;
   background-color: #f1f1f1;
@@ -32449,6 +32602,7 @@ a.no-link {
   margin-bottom: 10px;
   min-height: 2.3em;
   padding-top: .5em;
+  cursor: default;
 }
 .mura-file-selector .btn-group {
   margin-bottom: 9px;
