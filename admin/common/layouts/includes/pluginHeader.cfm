@@ -1,5 +1,3 @@
-<!--- TODO GoWest : plugin header : 2015-12-14T11:12:24-07:00 --->
-
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify

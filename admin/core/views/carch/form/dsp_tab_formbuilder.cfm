@@ -110,8 +110,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif rc.type eq 'Form'>
 			<div class="mura-control-group">
-				<!--- TODO GoWest : this markup - should this label be a h2/h3? 
-				if so, remove div class="mura-control justify" : 2016-01-19T16:37:34-07:00 --->
 				<label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 				<div class="mura-control justify">
 			<label for="rc" class="checkbox inline">

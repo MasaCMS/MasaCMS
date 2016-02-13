@@ -76,7 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
     <div class="mura-control-group">
     <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
-    <!--- TODO GoWest : mura-table-grid styles and markup : 2016-01-19T16:27:11-07:00 --->
  <table class="mura-table-grid">
     <tr> 
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
