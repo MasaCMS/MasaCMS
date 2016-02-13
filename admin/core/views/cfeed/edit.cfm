@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 					</li>
 				</ul>
-				<h3 class="block-title">Basic Settings</h3>
+				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.basic')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
 			<!--- Name --->
@@ -430,7 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 					</li>
 				</ul>
-				<h3 class="block-title">Categories</h3>
+				<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
 
@@ -478,7 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 				</li>
 			</ul>
-			<h3 class="block-title">Advanced Filters</h3>
+			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
 			<div class="mura-control-group" id="searchParams">
@@ -551,7 +551,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 				</li>
 			</ul>
-			<h3 class="block-title">Display Defaults</h3>
+			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
@@ -693,7 +693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 				</li>
 			</ul>
-			<h3 class="block-title">RSS Settings</h3>
+			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.rss')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
@@ -936,7 +936,7 @@ jQuery(document).ready(function(){
 					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 				</li>
 			</ul>
-			<h3 class="block-title">Basic Settings</h3>
+			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.basic')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
@@ -1048,7 +1048,7 @@ jQuery(document).ready(function(){
 					<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 				</li>
 			</ul>
-			<h3 class="block-title">Tab Heading</h3>
+			<h3 class="block-title">#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#</h3>
 		</div> <!-- /.block header -->
 		<div class="block-content">
 			<div  class="mura-control-group">
@@ -1078,7 +1078,7 @@ jQuery(document).ready(function(){
 						<button type="button" data-toggle="block-option" data-action="content_toggle"><i class="si si-arrow-up"></i></button>
 					</li>
 				</ul>
-				<h3 class="block-title">Tab Heading</h3>
+				<h3 class="block-title">application.rbFactory.getKeyValue(session.rb,'collections.importlocation')</h3>
 			</div> <!-- /.block header -->
 			<div class="block-content">
 
