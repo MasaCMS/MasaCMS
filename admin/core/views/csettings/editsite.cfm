@@ -96,12 +96,18 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 		</cfsavecontent>
 		<cfif arrayLen(extendSets)>
-			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle,Razuna'>
-			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles,tabRazuna'>
-			<cfelse>
-			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle,Razuna'>
-			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles,tabRazuna'>
+			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle,'>
+			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles'>
+		<cfelse>
+			<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
+			<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 		</cfif>
+
+		<cfif rc.$.globalConfig().getValue(property='razuna',defaultValue=false)>
+			<cfset tabLabelList=listApppend(tabLabelList,'Razuna')>
+			<cfset tabList=listApppend(tabList,'tabRazuna')>
+		</cfif>
+
 	</cfoutput> <cfoutput query="rsPluginScripts" group="pluginid"> <cfoutput>
 			<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
 			<cfset tabList=listAppend(tabList,"tab" & $.createCSSID(rsPluginScripts.name))>
@@ -1254,7 +1260,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-
+	<cfif rc.$.globalConfig().getValue(property='razuna',defaultValue=false)>
 		<cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
 		<div id="tabRazuna" class="tab-pane">
 			<div class="block block-bordered">
@@ -1311,7 +1317,7 @@ to your own modified versions of Mura CMS.
 			</div> <!--- /.block-content --->
 		</div> <!--- /.block --->
 	</div> <!--- /.tab-pane --->
-
+	</cfif>
 	</div>	<!--- /.block-content.tab-content --->
 	</div>	<!--- /.block --->
 	</cfoutput>
