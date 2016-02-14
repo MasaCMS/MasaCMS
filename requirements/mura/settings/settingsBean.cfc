@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="mailServerUsernameEmail" type="string" default=""/>
 <cfproperty name="mailServerPassword" type="string" default=""/>
 <cfproperty name="useDefaultSMTPServer" type="numeric" default="1" required="true" />
-<cfproperty name="EmailBroadcaster" type="numeric" default="0" required="true" />
+<cfproperty name="EmailBroadcaster" type="numeric" default="0" required="false" />
 <cfproperty name="EmailBroadcasterLimit" type="numeric" default="0" required="true" />
 <cfproperty name="extranet" type="numeric" default="1" required="true" />
 <cfproperty name="extranetSSL" type="numeric" default="0" required="true" hint="deprecated"/>
