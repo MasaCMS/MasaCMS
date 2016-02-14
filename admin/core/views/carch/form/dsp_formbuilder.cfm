@@ -56,8 +56,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 .tb-fieldIsEmpty {
 	border: 1px solid ##ff0000 !important;
 }	
-</style>
+	##mura-tb-form-fields {
+		width: 20% !important;
+	}
+	##mura-tb-fields-settings {
+		width: 60% !important;
+	}
 
+	##mura-tb-form-pages {
+		width: 7%;
+		padding: 2% 2% 2% 2%;
+		float: left;
+		background: ##aaa;
+		height: 450px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	##mura-tb-form-pages .current {
+		background: ##ccc;
+	}
+	##mura-form-pages li,##mura-form-addpage {
+		padding: 6px 4px;
+		margin: 2px 0;
+		background: ##fff;
+		border: 1px solid ##333;
+		border-radius: 4px;
+	}
+
+	##mura-form-addpage {
+		padding: 2px 4px 5px 4px;
+		font-size: 2em;
+		background: ##eee;
+	}
+
+ 	.button-trash {
+		display: block;
+		padding: 0;
+		margin: 0;
+		border-radius: 0;
+		width: 16px;
+		height: 16px;
+		float: right;
+		background: transparent url('/admin/assets/images/formbuilder/data-delete.png') no-repeat center center !important;
+		border: 0 !important;
+		.box-shadow(~"0 0 0,0 0 0") !important;
+		text-shadow: 0 0 0 !important;
+	}
+
+</style>
 	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/">
 		<div class="mura-tb-menu">
 			<ul class="mura-tb-form-menu">
@@ -79,6 +125,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 		</div>
 		<div id="mura-tb-form" class="clearfix">
+			<div id="mura-tb-form-pages" class="clearfix">
+					Page
+				<ul id="mura-form-pages">
+				</ul>
+				<div id="mura-form-addpage">+</div>
+			</div>		
 			<div id="mura-tb-form-fields">
 				<div id="mura-tb-fields-empty" class="alert">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
 				<ul id="mura-tb-fields">

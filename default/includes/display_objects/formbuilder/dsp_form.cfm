@@ -59,6 +59,7 @@
 
 <cfparam name="arguments.isNested" default="false">
 <cfparam name="arguments.prefix" default="">
+<cfparam name="url.p" default="1">
 
 <cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
 <cfset local.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
@@ -95,7 +96,7 @@
 <!--- start with fieldsets closed --->
 <cfset request.fieldsetopen = false />
 
-<cfset local.aFieldOrder = local.frmForm.fieldorder />
+<cfset local.aFieldOrder = local.frmForm.pages[1] />
 <cfset local.frmFieldContents = "" />
 
 <cfsavecontent variable="frmFieldContents">
@@ -152,17 +153,29 @@
 <cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
 <!---</ol>--->
 </cfoutput>
+
 </cfsavecontent>
 <cfset local.frmFieldContents = frmFieldContents />
 <cfoutput>
 <cfif not arguments.isNested>
 <form id="#local.frmID#" class="<cfif structKeyExists(local.attributes,"class") and len(local.attributes.class)>#local.attributes.class# </cfif>mura-form-builder" method="post"<cfif local.isMultipart>enctype="multipart/form-data"</cfif>>
 </cfif>
+	<cfif structKeyExists(local.frm.form.formattributes,'muraormentities') and local.frm.form.formattributes.muraormentities eq 1>
+	<input type="hidden" name="muraentities" value="1">
+	</cfif>
 	#local.frmFieldContents#
 <cfif not arguments.isNested>
 	#variables.$.dspObject_Include(thefile='datacollection/dsp_form_protect.cfm')#
-	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
+	<cfif ArrayLen(local.frmForm.pages) eq 1> 
+		<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.submit')#"></div>
+	<cfelse>
+		<div class="#this.formBuilderButtonWrapperClass#"><br><input type="button" id="next" class="#this.formBuilderSubmitClass#" value="#$.rbKey('form.next')#"></div>
+	</cfif>
+	#local.frm.form.formattributes.muraormentities#
 </form>
 </cfif>
+
+<cfdump var="#local.frm#">
+
 </cfoutput>
 

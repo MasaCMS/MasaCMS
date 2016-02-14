@@ -1,0 +1,1 @@
+<displayobject name="Form" contenttypes="*"/>

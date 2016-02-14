@@ -240,6 +240,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var dataOrder		= ArrayNew(1) />
 		<cfset var dataRecords		= StructNew() />
+		<cfset var dataBean			= "" />
+		<cfset var rsData			= "" />
+		<cfset var primaryKey		= "" />
+		<cfset var rowid			= "" />
 
 		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>			
 			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.invaliddataset")#" >
@@ -247,6 +251,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfswitch expression="#arguments.dataset.sourcetype#">
 			<cfcase value="manual,entered">
+				<cfreturn arguments.dataset />
+			</cfcase>
+			<cfcase value="muraorm">
+							
+				<cfset dataBean = $.getBean( arguments.dataset.source ) /> 
+				<cfset primaryKey = dataBean.getPrimaryKey() />
+				<cfset rsData = dataBean
+					.loadby( siteid = $.event('siteid'))
+					.getFeed()
+					.getQuery() />
+
+				<cfloop query="#rsData#">
+					<cfset rowid = rsdata[primaryKey] />
+					<cfset ArrayAppend( arguments.dataset.datarecordorder,rowid )>
+					<cfset arguments.dataset.datarecords[rowid] = $.getBean('utility').queryRowToStruct( rsData,currentrow )>
+					<cfset arguments.dataset.datarecords[rowid]['value'] = rowid>
+					<cfset arguments.dataset.datarecords[rowid]['datarecordid'] = rowid>
+					<cfset arguments.dataset.datarecords[rowid]['datasetid'] = dataset.datasetid>
+					<cfset arguments.dataset.datarecords[rowid]['isselected'] = 0>
+				</cfloop>
+				
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="object">

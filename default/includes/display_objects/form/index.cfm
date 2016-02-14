@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+﻿ <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,41 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfoutput><span>
-		<div class="mura-tb-form" id="formblock-${fieldid}">
-			<div class="mura-tb-header">
-				<h2><span id="mura-tb-form-label">#mmRBF.getKeyValue(session.rb,'formbuilder.form')#</span></h2>
-			</div>
-			<ul class="template-form">
-				<li>
-					<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.form.emailsubject')#</label>
-					<input class="text tb-emailsubject" type="text" name="emailsubject" value="" data-label="true">
-				</li>
-				<li>
-					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.form.replyto')#</label>
-					<input class="text tb-replyto" type="text" name="replyto" value="" data-label="true">
-				</li>
-				<li>
-					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.form.class')#</label>
-					<input class="text tb-class" type="text" name="class" value="" data-label="true">
-				</li>
-				<li>
-					<label for="name-restricted">#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestricted')#</label>
-					<input id="tb-name-restricted" class="text tb-class" type="checkbox" name="name-unrestricted" value="1" data-label="true"> *
-				</li>
-				<li>
-					<label for="muraormentities">#mmRBF.getKeyValue(session.rb,'formbuilder.form.muraormentities')#</label>
-					<input id="tb-name-muraormentities" class="text tb-class" type="checkbox" name="muraormentities" value="1" data-label="true">
-				</li>
-				<li>
-					<div>
-					#mmRBF.getKeyValue(session.rb,'formbuilder.form.nameunrestrictedtip')#
-					</div>
-				</li>
+<cfset objectParams.render = "client" />
+<cfset objectParams.async = "false"/>
 
-							
-
-			</ul>
-		</div>
-	</span>
-</cfoutput>
