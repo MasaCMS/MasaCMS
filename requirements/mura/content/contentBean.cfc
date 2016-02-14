@@ -358,9 +358,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			</cfif>
 
-			<cfif getBean('configBean').getValue(property='advancedScheduling',defaultValue=false)>
-
-			</cfif>
 		</cfif>
 
 		<cfif variables.instance.isFeature eq 2

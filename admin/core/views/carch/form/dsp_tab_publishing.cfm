@@ -179,7 +179,7 @@
 
 	<cfif not listFindNoCase('Component,Form,Variation',rc.type) and rc.contentid neq '00000000000000000000000000000000001'>
 		<div class="mura-control-group">
-			<cfif rc.$.globalConfig().getValue(property='advancedScheduling',defaultValue=false)>
+
 			 <label class="mura-control-label">
 			     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
 			</label>
@@ -196,36 +196,6 @@
 				<cf_datetimeselector name="featureStop" datespanclass="span2" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
 			</div>
 		</div>
-	<cfelse>
-		<div class="mura-control-group">
-			<label class="mura-control-label">
-		     	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#
-		    </label>
-		    <select name="isFeature" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editFeatureDates',true):toggleDisplay2('editFeatureDates',false);">
-				<option value="0"  <cfif  rc.contentBean.getisfeature() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-				<option value="1"  <cfif  rc.contentBean.getisfeature() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-				<option value="2"  <cfif rc.contentBean.getisfeature() EQ 2> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
-			</select>
-			<div class="mura-control" id="editFeatureDates" <cfif rc.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
-				<div class="mura-control-group">
-					<label class="mura-control-label">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#
-					</label>
-						<cf_datetimeselector name="featureStart" datetime="#rc.contentBean.getFeatureStart()#">
-
-					</div>
-						<div class="mura-control-group">
-							<label>
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
-					</label>
-							<div class="mura-control">
-						<cf_datetimeselector name="featureStop" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-					</div>
-				</div>
-			</div>
-		</div> <!--- /end mura-control-group --->
-	</cfif>
-
 	</cfif>
 
 	<div class="mura-control-group">
