@@ -1243,10 +1243,10 @@ component extends="mura.cfobject" {
 				for(p in arguments.entity.getHasManyPropArray()){
 					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						expandParams={maxitems=0,itemsperpage=0};
-						expandParams['#earguments.ntity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column));
-						try{
+						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column));
+						//try{
 							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
-						} catch(any e){WriteDump(p); abort;}
+						//} catch(any e){WriteDump(p); abort;}
 					}
 				}
 			}
@@ -1519,42 +1519,44 @@ component extends="mura.cfobject" {
 				feed.setActiveOnly(0);
 			}
 
-			if(started){
-				baseURL=baseURL & '&' & p;
-			} else {
-				baseURL=baseURL & p;
-				started=true;
-			}
+			if(structKeyExists(params,p)){
+				if(started){
+					baseURL=baseURL & '&' & p;
+				} else {
+					baseURL=baseURL & p;
+					started=true;
+				}
 
-			if(len(params[p])){
-				baseURL=baseURL & '=' & params[p];
-			}
-			if(!(entity.getEntityName()=='user' && propName=='isPublic')){
-				if(entity.getEnityName()=='user' && propName=='groupid'){
-					feed.setGroupID(arguments.params[p]);
-				} else if(entity.valueExists(propName)){
-					var condition="eq";
-					var criteria=arguments.params[p];
+				if(len(params[p])){
+					baseURL=baseURL & '=' & params[p];
+				}
+				if(!(entity.getEntityName()=='user' && propName=='isPublic')){
+					if(entity.getEnityName()=='user' && propName=='groupid'){
+						feed.setGroupID(arguments.params[p]);
+					} else if(entity.valueExists(propName)){
+						var condition="eq";
+						var criteria=arguments.params[p];
 
-					if(listLen(criteria,"^") > 1){
-						condition=listFirst(criteria,'^');
-						criteria=listGetAt(criteria,2,'^');
-					} else if(find('*',criteria)){
-						condition="like";
-						criteria=replace(criteria,'*','%','all');
+						if(listLen(criteria,"^") > 1){
+							condition=listFirst(criteria,'^');
+							criteria=listGetAt(criteria,2,'^');
+						} else if(find('*',criteria)){
+							condition="like";
+							criteria=replace(criteria,'*','%','all');
+						}
+
+						feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
+						relationship='and';
+					} else if(propName=='or'){
+						relationship='or';
+					} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
+						feed.addParam(relationship=p);
+						relationship='and';
+					} else if(propname=='innerJoin'){
+						feed.innerJoin(relatedEntity=params[p]);
+					} else if(propname=='leftJoin'){
+						feed.leftJoin(relatedEntity=params[p]);
 					}
-
-					feed.addParam(column=propName,criteria=criteria,condition=condition,relationship=relationship);
-					relationship='and';
-				} else if(propName=='or'){
-					relationship='or';
-				} else if(listFindNoCase('openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping',propName)){
-					feed.addParam(relationship=p);
-					relationship='and';
-				} else if(propname=='innerJoin'){
-					feed.innerJoin(relatedEntity=params[p]);
-				} else if(propname=='leftJoin'){
-					feed.leftJoin(relatedEntity=params[p]);
 				}
 			}
 		}
