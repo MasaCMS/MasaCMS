@@ -1238,14 +1238,20 @@ component extends="mura.cfobject" {
 		if(len(arguments.expand)){
 			var p='';
 			var expandParams={};
+			var queryString='';
+			var q='';
 
 			if(arrayLen(arguments.entity.getHasManyPropArray())){
 				for(p in arguments.entity.getHasManyPropArray()){
 					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						expandParams={maxitems=0,itemsperpage=0};
 						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
+
+						for(q in expandParams){
+							queryString=queryString & '&' & lcase(q) & '=' & expandParams[q];
+						}
 						try{
-							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
+							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams,queryString=queryString);
 						} catch(any e){WriteDump(p); abort;}
 					}
 				}
