@@ -8,7 +8,7 @@
 	bottom: 0;
 	z-index: 15; /* 1 higher than navbar */
 	height: 100vh;
-	background-color: #f5f5f5;
+	background-color: #454545;
 	
 	// reset typography styles in layout manager sidebar
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -66,7 +66,20 @@
 	border-color: #e6e6e6 #e6e6e6 #ccc;
 }
 	
-
+.btn-primary {
+	background-image:none;
+	text-shadow:none;
+  color: #ffffff;
+  background-color: #4485f1;
+  border-color: #4882cc;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	
+}
 
 /* 
 	DEV NOTE
@@ -82,7 +95,17 @@
 }
 
 .mura__layout-manager__controls__objects {
-	padding: 50px 0;
+	padding: 30px 0 50px 0;
+
+	/* sidebar icons */
+	*[class^="mi-"], 
+	*[class*=" mi-"]{
+		width: 18px;
+		padding-right: 1em;
+		font-size: 1em;
+		color: #898989;
+	}
+
 }
 
 .mura-sidebar__objects-list {
@@ -96,11 +119,11 @@
 }
 
 .mura-sidebar__objects-list__object-group h3 {
-	margin: 12px 0;
+	margin: 23px 0 15px 0;
 	padding: 0;
-	font-size: 16px;
-	font-weight: bold;
-	color: inherit;
+	font-size: 24px;
+	font-weight: normal;
+	color: #f3f3f3;
 	line-height: 1.2;
 }
 
@@ -109,9 +132,11 @@
 /* legacy, initial set */
 .mura-sidebar__object-group-items,
 .mura-sidebar__objects-list__object-group-items {
-	padding: 8px;
-	background-color: #FFF;
-	border-radius: 3px;
+	padding: 0;
+	background:none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
 }
 
 .mura-sidebar__object-group-items {
@@ -128,23 +153,25 @@
 
 .mura-sidebar__objects-list__object-item {
 	box-sizing: border-box;
-	padding: .5em;
-	margin-bottom: -1px;
-	background-color: #F5F5F5;
-	font-size: 13px;
-	color: inherit;
+	display:block;
+	padding: 10px 16px;
+	margin-bottom: 2px;
+	background-color: #565656;
+	font-size: 12px;
+	color: #d8d8d8;
 	font-weight: bold;
-  border: 1px solid #E9E9E9;
+  border: none;
   border-collapse: collapse;	
 }
 
 .mura-sidebar__objects-list__object-item + .mura-sidebar__objects-list__object-item {
-	border-top: 1px solid rgba(0,0,0,0.07);
+	border:none;
 }
 
 .mura-sidebar__objects-list__object-item:hover {
-	background: #f9f9f9;
-	cursor: pointer;
+	background: #6f6f6f;
+	color: #f5f5f5;
+	/* cursor: pointer; */
 }
 
 

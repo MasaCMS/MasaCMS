@@ -10,7 +10,7 @@
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<cfif $.content('type') neq 'Variation'>
-						<button id="mura-objects-legacy-btn" class="btn btn-default">View Legacy Objects</button>
+						<button id="mura-objects-legacy-btn" class="btn btn-primary">View Legacy Objects</button>
 						</cfif>
 						<h3>Content Objects</h3>
 					</div>
@@ -27,7 +27,6 @@
 							or listFindNoCase(displayobjects['#key#'].contenttypes,$.content('subtype'))
 							)
 							and evaluate(displayobjects['#key#'].condition)>
-
 								#contentRendererUtility.renderObjectClassOption(
 									object=displayObjects[key].object,
 									objectid='',
@@ -43,7 +42,7 @@
 			<div id="mura-sidebar-objects-legacy" class="mura-sidebar__objects-list" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-						<button class="mura-objects-back-btn btn btn-default">
+						<button class="mura-objects-back-btn btn btn-primary">
 							<i class="icon-circle-arrow-left"></i> Back
 						</button>
 						<h3>Legacy Objects</h3>
@@ -86,7 +85,7 @@
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
-					<a href="##" class="mura-objects-back-btn" class="btn btn-default"><i class="icon-circle-arrow-left"></i> Back</a>
+					<a href="##" class="mura-objects-back-btn" class="btn btn-primary"><i class="icon-circle-arrow-left"></i> Back</a>
 					</div>
 				</div>
 				--->
@@ -99,7 +98,7 @@
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
 						<h3>Editing Content</h3>
-						<button class="mura-objects-back-btn btn btn-default" id="mura-deactivate-editors">Done Editing</button>
+						<button class="mura-objects-back-btn btn btn-primary" id="mura-deactivate-editors">Done Editing</button>
 					</div>
 				</div>
 
