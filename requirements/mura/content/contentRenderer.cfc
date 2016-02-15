@@ -1951,6 +1951,11 @@ Display Objects
 	<cfset arguments.renderer=this>
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>
+
+	<cfif isDefined('arguments.objectParams')>
+		<cfset arguments.params=arguments.objectParams>
+	</cfif>
+
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
