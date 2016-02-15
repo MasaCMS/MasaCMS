@@ -1764,7 +1764,8 @@
 			<cfset arguments.objectlabel=arguments.objectname>
 		</cfif>
 
-		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#">#esapiEncode('html',arguments.objectlabel)#</div>'>
+<!--- TODO GoWest : replace mi-cog w/ dynamic class : 2016-02-15T15:51:43-07:00 --->
+		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="mi-cog"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
 	</cffunction>
 
 	<cffunction name="renderIntervalDesc" output="false">
