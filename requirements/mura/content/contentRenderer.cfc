@@ -1952,10 +1952,10 @@ Display Objects
 	<cfset arguments.showEditableObjects=this.showEditableObjects>
 	<cfset arguments.layoutmanager=this.layoutmanager>
 
-	<cfif isDefiend('arguments.objectParams')>
+	<cfif isDefined('arguments.objectParams')>
 		<cfset arguments.params=arguments.objectParams>
 	</cfif>
-	
+
 	<cfreturn variables.contentRendererUtility.dspObject(argumentCollection=arguments)>
 </cffunction>
 
