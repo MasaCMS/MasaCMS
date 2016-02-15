@@ -927,7 +927,7 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 		$("#newFileMetaContainer").dialog({
 			resizable: false,
 			modal: true,
-			width: 552,
+			width: 600,
 			title: 'Edit Image Properties',
 			position: getDialogPosition(),
 			buttons: {
