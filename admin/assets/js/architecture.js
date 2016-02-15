@@ -878,9 +878,9 @@ buttons: {
 
 	setupRCResultIcon: function(el){
 		if($('#selectedRelatedContent').find('li[data-contentid="'+ el.val() + '"]').length){
-			el.find('i').attr('class','mi-check icon-ok-sign');
+			el.find('i').attr('class','mi-check');
 		} else {
-			el.find('i').attr('class','mi-plus-circle icon-plus-sign');
+			el.find('i').attr('class','mi-plus-circle');
 		}
 	},
 

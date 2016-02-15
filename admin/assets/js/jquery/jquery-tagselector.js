@@ -14,9 +14,9 @@
 					.delegate('.tag a', 'click', function() {
 						$(this).parent().remove();
 					});
-				
+
 				input.keydown(function(e) {
-						
+
 						if (e.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active){
 							e.preventDefault();
 						}
@@ -24,11 +24,11 @@
 						if(e.keyCode === $.ui.keyCode.ENTER){ //&& !$(this).data('autocomplete').menu.active){
 							e.preventDefault();
 							input.val($.trim(input.val()));
-							
+
 							if(input.val() != ''){
 								var tag = $('<span class="tag"/>')
 									.text(input.val() + ' ')
-									.append('<a><i class="icon-remove-sign"></i></a>')
+									.append('<a><i class="mi-remove-circle"></i></a>')
 									.append($('<input type="hidden"/>').attr('name', name).val(input.val()))
 									.insertBefore(input);
 							}
@@ -44,12 +44,12 @@
 							//<span class=tag>@jcarrascal <a>Ã—</a><input type=hidden name=tag value=1/></span>
 							var tag = $('<span class="tag"/>')
 								.text(ui.item.toString() + ' ')
-								.append('<a><i class="icon-remove-sign"></i></a>')
+								.append('<a><i class="mi-remove-circle"></i></a>')
 								.append($('<input type="hidden"/>').attr('name', name).val(ui.item.id))
 								.insertBefore(input);
 
 								input.val('');
-							
+
 							return true;
 						}
 					});
