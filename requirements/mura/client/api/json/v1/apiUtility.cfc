@@ -1194,44 +1194,8 @@ component extends="mura.cfobject" {
 		}
 
 		if(len(arguments.expand)){
-			var p='';
-			var expandParams={};
-
-			if(arrayLen(entity.getHasManyPropArray())){
-				for(p in entity.getHasManyPropArray()){
-					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
-						expandParams={maxitems=0,itemsperpage=0};
-						expandParams['#entity.translatePropKey(p.loadkey)#']=entity.getValue(entity.translatePropKey(p.column));
-						try{
-							returnstruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
-						} catch(any e){WriteDump(p); abort;}
-					}
-				}
-			}
-
-			if(arrayLen(entity.getHasOnePropArray())){
-				for(p in entity.getHasOnePropArray()){
-					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
-						try{
-							if(p.name=='site'){
-								returnstruct[p.name]=findOne(entityName='site',id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
-							} else {
-								returnstruct[p.name]=findOne(entityName=p.cfc,id=entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
-							}
-						} catch(any e){WriteDump(p); abort;}
-					}
-				}
-			}
-
-			if(arguments.expand=='all' || listFindNoCase(arguments.expand,'crumbs')){
-				if(isDefined('returnstruct.links.crumbs') && isDefined('returnstruct.path')){
-					returnstruct.crumbs=findCrumbArray(returnstruct.entityName,returnstruct.id,arguments.siteid,entity.getCrumbIterator());
-				}
-			}
+			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
 		}
-
-		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
 
 		return returnStruct;
 	}
@@ -1263,10 +1227,51 @@ component extends="mura.cfobject" {
 			returnstruct.url=entity.getURL();
 		}
 
-		//var tokens=$.generateCSRFTokens(context=returnStruct.id);
-		//structAppend(returnStruct,{csrf_token=tokens.token,csrf_token_expires='#tokens.expires#'});
+		if(len(arguments.expand)){
+			expandEntity(entity=entity,itemStruct=returnstruct,siteid=arguments.siteid,expand=arguments.expand);
+		}
 
 		return returnStruct;
+	}
+
+	function expandEntity(entity,itemStuct,siteid,expand=''){
+		if(len(arguments.expand)){
+			var p='';
+			var expandParams={};
+
+			if(arrayLen(arguments.entity.getHasManyPropArray())){
+				for(p in arguments.entity.getHasManyPropArray()){
+					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
+						expandParams={maxitems=0,itemsperpage=0};
+						expandParams['#earguments.ntity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column));
+						try{
+							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
+						} catch(any e){WriteDump(p); abort;}
+					}
+				}
+			}
+
+			if(arrayLen(arguments.entity.getHasOnePropArray())){
+				for(p in arguments.entity.getHasOnePropArray()){
+					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
+						try{
+							if(p.name=='site'){
+								itemStruct[p.name]=findOne(entityName='site',id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
+							} else {
+								itemStruct[p.name]=findOne(entityName=p.cfc,id=arguments.entity.getValue(entity.translatePropKey(p.column)),siteid=arguments.siteid,render=false,variation=false,expand='');
+							}
+						} catch(any e){WriteDump(p); abort;}
+					}
+				}
+			}
+
+			if(arguments.expand=='all' || listFindNoCase(arguments.expand,'crumbs')){
+				if(isDefined('arguments.itemStruct.links.crumbs') && isDefined('arguments.itemStruct.path')){
+					arguments.itemStruct.crumbs=findCrumbArray(arguments.itemStruct.entityName,arguments.itemStruct.id,arguments.siteid,arguments.entity.getCrumbIterator());
+				}
+			}
+		}
+
 	}
 
 	function findAll(siteid,entityName,params){
