@@ -1200,7 +1200,7 @@ component extends="mura.cfobject" {
 		return returnStruct;
 	}
 
-	function findNew(entityName,siteid){
+	function findNew(entityName,siteid,expand=''){
 
 		var $=getBean('$').init(arguments.siteid);
 		var entity=$.getBean(arguments.entityName);
@@ -1243,10 +1243,10 @@ component extends="mura.cfobject" {
 				for(p in arguments.entity.getHasManyPropArray()){
 					if(arguments.expand=='all' || listFindNoCase(arguments.expand,p.name)){
 						expandParams={maxitems=0,itemsperpage=0};
-						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column));
-						//try{
+						expandParams['#arguments.entity.translatePropKey(p.loadkey)#']=entity.getValue(arguments.entity.translatePropKey(p.column),createUUID());
+						try{
 							itemStruct[p.name]=findQuery(entityName=p.cfc,siteid=arguments.siteid,params=expandParams);
-						//} catch(any e){WriteDump(p); abort;}
+						} catch(any e){WriteDump(p); abort;}
 					}
 				}
 			}
