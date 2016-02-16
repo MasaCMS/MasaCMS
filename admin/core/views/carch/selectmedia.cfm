@@ -28,6 +28,7 @@
 <div class="mura-header">
 	<h1>Select Image</h1>
 
+	<!---
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -41,6 +42,7 @@
 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
+	--->
 </div> <!-- /.mura-header -->
 
 <div class="block block-constrain">

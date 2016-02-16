@@ -53,6 +53,7 @@
 <div class="mura-header">
 	<h1>Image Details</h1>
 
+	<cfif rc.compactDisplay neq "true">
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -62,16 +63,19 @@
 			</cfsavecontent>
 
 			#secondarynav#
+		<!---
 		<cfelse>
 			<div id="nav-module-specific" class="btn-toolbar">
 				<div class="btn-group">
 					<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</div>
 			</div>
+		--->
 		</cfif>
 
 		</div> <!-- /label-group -->
 	</div> <!-- /metadata -->
+	</cfif>
 </div>
 <!--- /mura-header --->
 <cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>

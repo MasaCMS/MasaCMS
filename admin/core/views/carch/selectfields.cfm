@@ -10,6 +10,7 @@
 <div class="mura-header">
 	<h1>Select Fields</h1>
 
+	<!---
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -23,14 +24,17 @@
 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
+	--->
 </div> <!-- /.mura-header -->
 <div class="block block-constrain">
 	<div class="block block-bordered">
 	  <div class="block-content">
 			<div class="mura-control-group" id="availableFields">
+				<!---
 				<label class="mura-control-label">
 					<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
 				</label>
+				--->
 				<div id="sortableFields" class="mura-control">
 					<p class="dragMsg">
 						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
@@ -62,20 +66,8 @@
 </div> <!-- /.block-constrain -->
 
 <script>
-$(function(){
-	$('##updateBtn').click(function(){
-		//alert($('##displayList').val())
-		//return;
-		frontEndProxy.post({
-			cmd:'setObjectParams',
-			reinit:true,
-			instanceid:'#esapiEncode("javascript",rc.instanceid)#',
-			params:{
-				displayList:$('##displayList').val()
-				}
-			});
-	});
 
+$(function(){
 	if($("##ProxyIFrame").length){
 		$("##ProxyIFrame").load(
 			function(){
@@ -85,6 +77,19 @@ $(function(){
 	} else {
 		frontEndProxy.post({cmd:'setWidth',width:600});
 	}
+
+
+
+	$('##updateBtn').click(function(){
+		frontEndProxy.post({
+			cmd:'setObjectParams',
+			reinit:true,
+			instanceid:'#esapiEncode("javascript",rc.instanceid)#',
+			params:{
+				displayList:$('##displayList').val()
+				}
+			});
+	});
 
 	$("##availableListSort, ##displayListSort").sortable({
 		connectWith: ".displayListSortOptions",

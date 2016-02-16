@@ -488,6 +488,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
 
+<<<<<<< HEAD
 <!--- TODO GoWest : move alerts to inside block-constrain : 2016-02-16T16:18:21-07:00 --->
 		
 
@@ -532,6 +533,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</span>
 
 </div> <!-- /.mura-header -->
+=======
+	</div>
+	<!--- /end mura-header --->
+>>>>>>> 598d9dd273f344bb0174b040c516adcf52029f66
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
@@ -713,6 +718,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- start output --->
 	<cfoutput>
+	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
+		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+	</cfif>
+
+	<cfif not structIsEmpty(rc.contentBean.getErrors())>
+		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+	</cfif>
+
+	<cfif not rc.contentBean.getIsNew()>
+
+		<cfinclude template="dsp_status.cfm">
+
+		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
+
+		<cfif yesNoFormat(draftcheck.showdialog) and len(draftcheck.historyid) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
+			<p class="alert">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+			<p>
+		</cfif>
+	</cfif>
+
+	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
+		<p class="alert">
+		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#:
+		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#esapiEncode('url',rc.moduleID)#&siteID=#esapiEncode('url',rc.siteID)#&topID=#esapiEncode('url',rc.topID)#&contentID=#esapiEncode('url',rc.contentID)#&return=#esapiEncode('url',rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#esapiEncode('url',rc.parentID)#&startrow=#esapiEncode('url',rc.startrow)#&type=#esapiEncode('url',rc.type)#&compactDisplay=#esapiEncode('url',rc.compactDisplay)#"><strong>#esapiEncode('html',pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#esapiEncode('html',currentChangeset.getName())#</strong></cfif>
+		</p>
+	</cfif>
+
+	<cfif len(rc.contentBean.getNotes())>
+		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #esapiEncode('html',rc.contentBean.getNotes())#</p>
+	</cfif>
+
+	<!--- This is plugin message targeting --->
+	<span id="msg">
+	<cfif not listFindNoCase("Component,Form,Variation",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
+	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+	</span>
+
 
 	<div class="block block-constrain">
 

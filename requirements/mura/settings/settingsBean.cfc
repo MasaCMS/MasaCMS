@@ -1235,6 +1235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="condition" default="true">
     <cfargument name="legacyObjectFile" default="">
 	<cfargument name="custom" default="true">
+	<cfargument name="iconclass" default="mi-cog">
 	<cfset arguments.objectid=arguments.object>
 	<cfset variables.instance.displayObjectLookup['#arguments.object#']=arguments>
 	<cfreturn this>

@@ -893,6 +893,14 @@
 
 		<cfset var openingDiv='<div class="mura-object'>
 
+		<cfif not isDefined('arguments.objectParams.objectname')>
+			<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
+		</cfif>
+
+		<cfif not find('iconclass',arguments.objectParams.objectname) and arguments.renderer.hasDisplayObject(arguments.object)>
+			<cfset arguments.objectParams.objectname='<i class="#arguments.renderer.getDisplayObject(arguments.object).iconclass#"></i> ' & arguments.objectParams.objectname>
+		</cfif>
+
 		<cfparam name="arguments.objectParams.async" default="false">
 
 		<cfif arguments.objectParams.async>
@@ -1759,13 +1767,12 @@
 		<cfargument name="objectid" default="">
 		<cfargument name="objectname" default="">
 		<cfargument name="objectlabel">
+		<cfargument name="objecticonclass" default="mi-cog">
 
 		<cfif not isDefined('arguments.objectlabel')>
 			<cfset arguments.objectlabel=arguments.objectname>
 		</cfif>
-
-<!--- TODO GoWest : replace mi-cog w/ dynamic class : 2016-02-15T15:51:43-07:00 --->
-		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="mi-cog"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
+		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="#esapiEncode('html_attr',arguments.objecticonclass)#"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
 	</cffunction>
 
 	<cffunction name="renderIntervalDesc" output="false">

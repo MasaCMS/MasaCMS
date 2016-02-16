@@ -80,20 +80,34 @@ jQuery(document).ready(function(){
 <!--- check to see if the site has reached it's maximum amount of pages --->
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentid eq '') or rc.contentid neq ''>
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
+<div class="mura-header">
+    <h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+    <cfif rc.compactDisplay neq "true">
+        <div class="mura-item-metadata">
+    		<div class="label-group">
 
-<cfif rc.compactDisplay neq "true">
-    #$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb alt")#
-</cfif>
+                <cfinclude template="dsp_secondary_menu.cfm">
+
+    		</div><!-- /.label-group -->
+    	</div><!-- /.mura-item-metadata -->
+
+
+        #$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
+    </cfif>
+</div> <!-- /.mura-header -->
+
+
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
 
     <!--- <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h2> --->
 <div id="multi-file-upload">
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
     	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
-    	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i>Drag and drop files to upload</p></div>
+    	<div id="fileupload-target" class="alert alert-info"><p><i class="mi-plus-circle"></i> Drag and drop files to upload</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
             <div class="span7">
@@ -558,3 +572,6 @@ $(function () {
 <cfinclude template="form/dsp_full.cfm">
 </div>
 </cfif>
+</div> <!-- /.block-content -->
+</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->

@@ -1,1 +1,5 @@
-<displayobject name="Component" contenttypes="*" legacyobjectfile="../dsp_template.cfm" />
+<displayobject name="Component"
+    contenttypes="*"
+    iconclass="mi-clone"
+    legacyobjectfile="../dsp_template.cfm"
+/>

@@ -1,2 +1,1 @@
-<displayobject name="Text" contenttypes="*"/>
-
+<displayobject name="Text" contenttypes="*" iconclass="mi-font"/>

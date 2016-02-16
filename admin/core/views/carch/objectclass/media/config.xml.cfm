@@ -1,1 +1,1 @@
-<displayobject name="Image" contenttypes="*"/>
+<displayobject name="Image" contenttypes="*" iconclass="mi-picture-o"/>

@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</select>
 			<cfif hasModulePerm>
-				<button class="btn span12" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
+				<button class="btn" id="editBtn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</button>
 			</cfif>
 	</div>
 </div>

@@ -1,1 +1,1 @@
-<displayobject name="Folder" legacyobjectfile="../dsp_folder.cfm"/>
+<displayobject name="Folder" iconclass="mi-th-list" legacyobjectfile="../dsp_folder.cfm"/>

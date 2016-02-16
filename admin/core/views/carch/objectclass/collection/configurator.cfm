@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 
 				<cfif hasFeedManagerAccess>
-					<button class="btn span12" id="editBtnLocalIndex">Create New</button>
+					<button class="btn" id="editBtnLocalIndex">Create New</button>
 				</cfif>
 			</div>
 			<div id="remotefeedcontainer" class="mura-control-group source-container" style="display:none">
@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 
 				<cfif hasFeedManagerAccess>
-					<button class="btn span12" id="editBtnRemoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
+					<button class="btn" id="editBtnRemoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 				</cfif>
 			</div>
 			<div id="relatedcontentcontainer" class="mura-control-group source-container" style="display:none">
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option value="custom"<cfif objectParams.source eq 'custom'> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.custom')#</option>
 				</select>
 				<input type="hidden" name="items" id="items" value="#esapiEncode('html_attr',serializeJSON(objectParams.items))#">
-				<button class="btn span12" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
+				<button class="btn" id="editBtnRelatedContent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 				<!---
 				<cfif rc.configuratormode neq 'backend'>
 				<div id="relatedContentContainer">

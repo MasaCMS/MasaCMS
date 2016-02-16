@@ -141,7 +141,31 @@
 			return this.loadBy('id',this.get('id'));
 		},
 
-		loadBy:function(propertyName,propertyValue){
+		new:function(params){
+
+			return new Promise(function(resolve,reject){
+				params=window.mura.extend(
+					{
+						entityname:self.get('entityname'),
+						method:'findQuery',
+						siteid:self.get('siteid')
+					},
+					params
+				);
+
+				window.mura.findNew(params).then(function(collection){
+
+					if(collection.get('items').length){
+						self.set(collection.get('items')[0].getAll());
+					}
+					if(typeof resolve == 'function'){
+						resolve(self);
+					}
+				});
+			});
+		},
+
+		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
@@ -149,14 +173,18 @@
 			var self=this;
 
 			return new Promise(function(resolve,reject){
-				var params={
-					entityname:self.get('entityname'),
-					method:'findQuery',
-					siteid:self.get('siteid')};
+				params=window.mura.extend(
+					{
+						entityname:self.get('entityname'),
+						method:'findQuery',
+						siteid:self.get('siteid')
+					},
+					params
+				);
 
-					params[propertyName]=propertyValue;
+				params[propertyName]=propertyValue;
 
-					window.mura.findQuery(params).then(function(collection){
+				window.mura.findQuery(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());

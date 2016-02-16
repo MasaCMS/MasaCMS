@@ -1,2 +1,1 @@
-<displayobject name="Embed" contenttypes="*"/>
-
+<displayobject name="Embed" contenttypes="*" iconclass="mi-code"/>

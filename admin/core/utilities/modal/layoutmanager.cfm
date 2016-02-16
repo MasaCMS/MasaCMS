@@ -1,11 +1,11 @@
 <cfoutput>
 <div id="mura-sidebar-container" class="mura" style="display:none">
 <div class="mura__layout-manager__controls">
-					
+
 	<div class="mura__layout-manager__controls__scrollable">
-	
+
 		<div class="mura__layout-manager__controls__objects">
-	
+
 			<div id="mura-sidebar-objects" class="mura-sidebar__objects-list">
 			 	<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
@@ -18,7 +18,7 @@
 						<cfset contentRendererUtility=$.getBean('contentRendererUtility')>
 
 						<cfset displayObjects=$.siteConfig('displayObjects')>
-						
+
 						<cfset objectKeys=listSort(structKeylist(displayObjects),'textNoCase')>
 						<cfloop list="#objectKeys#" index="key">
 							<cfif (displayobjects['#key#'].contenttypes eq '*'
@@ -30,7 +30,8 @@
 								#contentRendererUtility.renderObjectClassOption(
 									object=displayObjects[key].object,
 									objectid='',
-									objectname=displayObjects[key].name
+									objectname=displayObjects[key].name,
+									objecticonclass=displayObjects[key].iconclass
 								)#
 
 							</cfif>
@@ -52,7 +53,7 @@
 						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 			            <cfif application.settingsManager.getSite($.event('siteid')).getemailbroadcaster()>
 			                <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-			            </cfif> 
+			            </cfif>
 		                <cfif application.settingsManager.getSite($.event('siteid')).getAdManager()>
 		                  <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
 		                </cfif>
@@ -77,10 +78,10 @@
 					</div>
 					<div class="mura-sidebar__object-group-items" id="classList"></div>
 				</div>
-		
+
 			</div>
 			</cfif>
-			
+
 			<div id="mura-sidebar-configurator" style="display:none">
 				<!---
 				<div class="mura-sidebar__objects-list__object-group">
@@ -91,9 +92,9 @@
 				--->
 				<iframe src="" id="frontEndToolsSidebariframe" scrolling="false" frameborder="0" style="overflow:hidden;width:100%;" name="frontEndToolsSidebariframe">
 				</iframe>
-			
+
 			</div>
-			
+
 			<div id="mura-sidebar-editor" style="display:none">
 				<div class="mura-sidebar__objects-list__object-group">
 					<div class="mura-sidebar__objects-list__object-group-heading">
@@ -108,11 +109,11 @@
 					</div>
 					<div class="mura-sidebar__object-group-items" id="classList"></div>
 				</div>
-		
+
 			</div>
 		</div>
 	</div>
-	
+
 </div>
 </div>
 <script>
@@ -137,5 +138,3 @@ mura.ready(function(){
 });
 </script>
 </cfoutput>
-
-
