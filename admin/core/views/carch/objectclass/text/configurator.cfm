@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option <cfif objectParams.sourcetype eq 'component'>selected </cfif>value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.component')#</option>
 					--->
 				</select>
-				<button id="editSource" class="btn span12">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
+				<button id="editSource" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</button>
 			</div>
 			<div id="componentcontainer" class="mura-control-group source-container" style="display:none">
 				<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcomponent')#</label>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 
 				<cfif hasModuleAccess>
-					<button class="btn span12" id="editBtnComponent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
+					<button class="btn" id="editBtnComponent">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.createnew')#</button>
 				</cfif>
 			</div>
 			<div id="customcontainer" class="mura-control-group source-container" style="display:none">
