@@ -68,35 +68,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<h3 class="block-title">Usage Report</h3>
 		</div> <!-- /.block header -->						
 		<div class="block-content">
-		<div class="mura-control-group">
-			<label>#application.rbFactory.getKeyValue(session.rb,'collections.usagetext')#:</label>
-			<div class="mura-control justify">
-				<table id="metadata" class="mura-table-grid">
-	    <tr> 
-	      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.title')#</th>
-	      <th>#application.rbFactory.getKeyValue(session.rb,'collections.display')#</th>
-	      <th>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</th>
-	      <th>&nbsp;</th>
-	    </tr></cfoutput>
-	    <cfif rsUsage.recordcount>
-	     <cfoutput query="rsUsage">
-			<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
-			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-	        <tr>  
-	          <td class="var-width">#$.dspZoom(crumbdata)#</td>
-	          <td> 
-		    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>Yes<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
-			<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-	          <td class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#&compactDisplay=#esapiEncode('html',rc.compactDisplay)#&homeID=#esapiEncode('html',rc.homeID)#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-book"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'collections.versionhistory')#</li></cfif></ul></td></tr>
-	       </cfoutput>
-	      <cfelse>
-	      <tr> 
-	        <td colspan="4" class="noResults"><cfoutput><cfif rc.feedBean.getType() eq 'Local'>#application.rbFactory.getKeyValue(session.rb,'collections.noindexusage')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.nofeedusage')#</cfif></cfoutput></td>
-	      </tr>
-	    </cfif>
-	</table>
-		 	</div>
-		 </div>
+			<div class="mura-control-group">
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.usagetext')#:</label>
+				<div class="mura-control justify">
+							<table id="metadata" class="mura-table-grid">
+				    <tr> 
+				      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.title')#</th>
+				      <th>#application.rbFactory.getKeyValue(session.rb,'collections.display')#</th>
+				      <th>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</th>
+				      <th>&nbsp;</th>
+				    </tr></cfoutput>
+				    <cfif rsUsage.recordcount>
+				     <cfoutput query="rsUsage">
+						<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
+						<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+				        <tr>  
+				          <td class="var-width">#$.dspZoom(crumbdata)#</td>
+				          <td> 
+					    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>Yes<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
+						<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
+				          <td class="actions"><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#&compactDisplay=#esapiEncode('html',rc.compactDisplay)#&homeID=#esapiEncode('html',rc.homeID)#"><i class="mi-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="mi-book"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'collections.versionhistory')#</li></cfif></ul></td></tr>
+				       </cfoutput>
+				      <cfelse>
+				      <tr> 
+				        <td colspan="4" class="noResults"><cfoutput><cfif rc.feedBean.getType() eq 'Local'>#application.rbFactory.getKeyValue(session.rb,'collections.noindexusage')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.nofeedusage')#</cfif></cfoutput></td>
+				      </tr>
+				    </cfif>
+				</table>
+			 	</div>
+			 </div>
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->

@@ -484,6 +484,9 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
 }
+.mura body.configurator-wrapper {
+  background-color: #454545;
+}
 .mura .mura__layout-manager__controls {
   width: 300px;
   position: fixed;
@@ -552,7 +555,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura .mura-sidebar__objects-list__object-group {
   margin: 18px;
 }
-.mura body.compact #configuratorContainer h1,
+.mura body.configurator-wrapper #configuratorContainer h1,
 .mura .mura-sidebar__objects-list__object-group h3 {
   margin: 23px 0 15px 0;
   padding: 0;
@@ -561,7 +564,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   color: #f3f3f3;
   line-height: 1.2;
 }
-.mura body.compact #mura-content {
+.mura body.configurator-wrapper #mura-content {
   padding-left: 0;
   padding-right: 0;
 }
@@ -592,7 +595,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   background-color: #333;
   color: #d8d8d8;
   padding: 8px 12px;
-  font-size: 11px;
+  font-size: 12px;
   border: none;
   cursor: pointer;
   outline: none;
@@ -636,21 +639,21 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura .mura__layout-manager__controls .mura #configurator .fieldset-wrap + .fieldset-wrap {
   margin-top: 1em;
 }
-.mura body.compact {
+.mura body.configurator-wrapper {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
-.mura body.compact #configuratorContainer {
+.mura body.configurator-wrapper #configuratorContainer {
   background-color: #454545;
   padding: 18px 34px 15px 18px;
 }
-.mura body.compact #configuratorContainer * {
+.mura body.configurator-wrapper #configuratorContainer * {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: none;
 }
-.mura body.compact #configuratorContainer .btn {
+.mura body.configurator-wrapper #configuratorContainer .btn {
   font-size: 12px;
   padding: 5px 12px;
   -webkit-border-radius: 2px;
@@ -660,44 +663,49 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.mura body.compact #configuratorContainer .btn-primary {
+.mura body.configurator-wrapper #configuratorContainer .btn-primary {
   background-image: none;
   text-shadow: none;
   color: #ffffff;
   background-color: #4485f1;
   border-color: #4882cc;
 }
-.mura body.compact #configuratorContainer .mura-layout-row {
+.mura body.configurator-wrapper #configuratorContainer .mura-layout-row {
   padding: 0;
   margin: 0;
 }
-.mura body.compact #configuratorContainer label,
-.mura body.compact #configuratorContainer .control-label,
-.mura body.compact #configuratorContainer .mura-control-label {
+.mura body.configurator-wrapper #configuratorContainer label,
+.mura body.configurator-wrapper #configuratorContainer .control-label,
+.mura body.configurator-wrapper #configuratorContainer .mura-control-label {
   font-size: 12px;
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
 }
-.mura body.compact #configuratorContainer select,
-.mura body.compact #configuratorContainer select:focus,
-.mura body.compact #configuratorContainer input[type=text] {
+.mura body.configurator-wrapper #configuratorContainer select,
+.mura body.configurator-wrapper #configuratorContainer select:focus,
+.mura body.configurator-wrapper #configuratorContainer input[type=text],
+.mura body.configurator-wrapper #configuratorContainer textarea {
   margin: .5em 0;
   width: 100%;
   background-color: #333;
   color: #d8d8d8;
   padding: 8px 12px;
-  font-size: 11px;
+  font-size: 12px;
   border: none;
   cursor: pointer;
   outline: none;
   outline-offset: 0;
 }
-.mura body.compact #configuratorContainer .form-actions {
+.mura body.configurator-wrapper #configuratorContainer textarea {
+  max-width: 230px;
+  min-height: 85px;
+}
+.mura body.configurator-wrapper #configuratorContainer .form-actions {
   margin: 0;
   padding: 0;
 }
-.mura body.compact #configuratorContainer .form-actions .btn {
+.mura body.configurator-wrapper #configuratorContainer .form-actions .btn {
   background-image: none;
   text-shadow: none;
   color: #ffffff;
