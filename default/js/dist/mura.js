@@ -5040,16 +5040,17 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			return this.loadBy('id',this.get('id'));
 		},
 
-		new:function(expand){
-			expand=expand || '';
+		new:function(params){
 
 			return new Promise(function(resolve,reject){
-				var params={
-					entityname:self.get('entityname'),
-					method:'findOne',
-					siteid:self.get('siteid'),
-					expand:expand
-				};
+				params=window.mura.extend(
+					{
+						entityname:self.get('entityname'),
+						method:'findQuery',
+						siteid:self.get('siteid')
+					},
+					params
+				);
 
 				window.mura.findNew(params).then(function(collection){
 
@@ -5063,21 +5064,22 @@ this.Element && Element.prototype.attachEvent && !Element.prototype.addEventList
 			});
 		},
 
-		loadBy:function(propertyName,propertyValue,expand){
+		loadBy:function(propertyName,propertyValue,params){
 
 			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
-			expand=expand || '';
 
 			var self=this;
 
 			return new Promise(function(resolve,reject){
-				var params={
-					entityname:self.get('entityname'),
-					method:'findQuery',
-					siteid:self.get('siteid'),
-					expand:expand
-				};
+				params=window.mura.extend(
+					{
+						entityname:self.get('entityname'),
+						method:'findQuery',
+						siteid:self.get('siteid')
+					},
+					params
+				);
 
 				params[propertyName]=propertyValue;
 
