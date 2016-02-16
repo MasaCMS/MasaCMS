@@ -694,20 +694,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
-	<cfif rc.feedID neq ''>
-		<div class="mura-control-group">
-	   <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
+		<cfif rc.feedID neq ''>
+			<div class="mura-control-group">
+		   <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#endpoint#/?feedID=#rc.feedBean.getFeedID()#" target="_blank">#endpoint#/?feedID=#rc.feedBean.getFeedID()#</a>
-	     </div>
-	</cfif>
+			</div>
+		</cfif>
 
-	<div class="mura-control-group">
-    <label>#application.rbFactory.getKeyValue(session.rb,'collections.description')#</label>
-    <textarea rows="6" name="description">#esapiEncode('html_attr',rc.feedBean.getDescription())#</textarea>
-	</div>
+		<div class="mura-control-group">
+	    <label>#application.rbFactory.getKeyValue(session.rb,'collections.description')#</label>
+	    <textarea rows="6" name="description">#esapiEncode('html_attr',rc.feedBean.getDescription())#</textarea>
+		</div>
 
-	<div class="mura-control-group">
-	 <label>#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
+		<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
 			<label class="radio inline">
 			<input name="allowHTML" type="radio" value="1" <cfif rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
 			</label>
@@ -716,8 +716,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</label>
 	  </div>
 
-	<div class="mura-control-group">
-		<label>#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</label>
+		<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</label>
 			<label class="radio inline">
 			<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
 			</label>
@@ -726,8 +726,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</label>
 		</div>
 
-	<div class="mura-control-group">
-  	<label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
+		<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
 			<select name="version" class="dropdown">
 			<cfloop list="RSS 2.0,RSS 0.920" index="v">
 			<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
@@ -735,43 +735,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</select>
 		</div>
 
-	<div class="mura-control-group">
-  	<label>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
+		<div class="mura-control-group">
+			<label>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
 			<input name="lang" type="text" value="#esapiEncode('html_attr',rc.feedBean.getlang())#" maxlength="50">
 		</div>
 
 <cfif application.settingsManager.getSite(rc.siteid).getextranet()>
 	<div class="mura-control-group">
-	<label>#application.rbFactory.getKeyValue(session.rb,'collections.access')#</label>
-      	<label class="checkbox">
-      		<input name="restricted" type="checkbox" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-			#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
-			</label>
-			<div id="rg" class="mura-control" <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
-				<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-				<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-				<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-				</optgroup>
-				<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>
-				<cfif rsGroups.recordcount>
-				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-				<cfloop query="rsGroups">
-				<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-				</cfloop>
-				</optgroup>
-				</cfif>
-				<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>
-				<cfif rsGroups.recordcount>
-				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-				<cfloop query="rsGroups">
-				<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-				</cfloop>
-				</optgroup>
-				</cfif>
-				</select>
-			</div> <!-- /##rg.mura-control
-		</div> <!-- mura-control-group -->
+		<label>#application.rbFactory.getKeyValue(session.rb,'collections.access')#</label>
+		<label class="checkbox">
+			<input name="restricted" type="checkbox" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+				#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
+		</label>
+		<div id="rg" class="mura-control" <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
+			<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+			<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
+			<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+			</optgroup>
+			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>
+			<cfif rsGroups.recordcount>
+			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+			<cfloop query="rsGroups">
+			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+			</cfloop>
+			</optgroup>
+			</cfif>
+			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>
+			<cfif rsGroups.recordcount>
+			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+			<cfloop query="rsGroups">
+			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+			</cfloop>
+			</optgroup>
+			</cfif>
+			</select>
+		</div> <!-- /##rg.mura-control -->
+</div> <!-- mura-control-group -->
 </cfif>
 		
 
