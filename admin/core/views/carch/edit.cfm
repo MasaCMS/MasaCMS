@@ -488,7 +488,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
 
-<<<<<<< HEAD
 <!--- TODO GoWest : move alerts to inside block-constrain : 2016-02-16T16:18:21-07:00 --->
 		
 
