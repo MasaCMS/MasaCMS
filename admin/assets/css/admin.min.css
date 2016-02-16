@@ -28317,6 +28317,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   background-color: #4485f1;
   border-color: #4882cc;
 }
+.mura body.modal-wrapper {
+  /* allow for (x) icon on modal */
+}
 .mura body.modal-wrapper #frontEndToolsModalClose {
   float: right;
   font-size: 22px;
@@ -28328,6 +28331,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.modal-wrapper .block-bordered {
   border: none;
+}
+.mura body.modal-wrapper .mura-header h1 {
+  margin-right: 24px;
 }
 /* BS3 CLASS MAPPING */
 #mura-content {
