@@ -204,7 +204,7 @@
 			<![endif]-->
 		</cfif>
 	</head>
-	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact <cfif request.action eq 'core:carch.frontendconfigurator'>configurator-wrapper<cfelse>modal-wrapper</cfif>">
+	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact <cfif rc.sourceFrame eq 'modal'>modal-wrapper<cfelse>configurator-wrapper</cfif>">
 		<div id="mura-content">
 		<cfif rc.sourceFrame eq 'modal'>
 			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
