@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="mura-layout-row">
 		<div class="mura-control-group">
 			<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.enterembedcode')#</label>
-			<textarea name="source" class="objectParam">#objectParams.source#</textarea>
+			<textarea name="source" class="objectParam" style="height:150px">#objectParams.source#</textarea>
 			<input type="hidden" class="objectParam" name="render" value="client">
 			<input type="hidden" class="objectParam" name="async" value="false">
 		</div>
