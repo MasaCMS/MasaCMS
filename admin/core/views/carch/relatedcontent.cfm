@@ -5,31 +5,46 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfoutput>
-<cfif rc.relatedcontentsetid eq 'calendar'>
-	<h1>Select Additional Calendars</h1>
-<cfelse>
-	<h1>Select Content</h1>
-</cfif>
 
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
-	</a>
-</div>
-<div class="fieldset-wrap">
-<div class="fieldset">
-	<div id="selectRelatedContent"><!--- target for ajax ---></div>
-	<div id="selectedRelatedContent" class="control-group">
+<div class="mura-header">
+	<cfif rc.relatedcontentsetid eq 'calendar'>
+		<h1>Select Additional Calendars</h1>
+	<cfelse>
+		<h1>Select Content</h1>
+	</cfif>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
+
+	<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+		</a>
 	</div>
-	<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />	
-</div>
-<div class="form-actions">
-	<button class="btn" id="updateBtn">Update</button>
-</div>
-</div>
+	<!-- /optional nav-module-specific -->
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
+
+<div class="block block-constrain">
+	<div class="block block-bordered">
+		<div class="block-content">
+			<div id="selectRelatedContent"><!--- target for ajax ---></div>
+			<div id="selectedRelatedContent" class="control-group">
+			</div>
+			<input id="relatedContentSetData" type="hidden" name="relatedContentSetData" value="" />
+
+			<div class="form-actions">
+				<button class="btn" id="updateBtn">Update</button>
+			</div>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 
 <script>
 $(function(){
-	
+
 	function getItems(){
 		var raw=$('##relatedContentSetData').val();
 		if(raw){
@@ -60,11 +75,11 @@ $(function(){
 			function(){
 				frontEndProxy.post({cmd:'setWidth',width:'standard'});
 			}
-		);	
+		);
 	} else {
 		frontEndProxy.post({cmd:'setWidth',width:'standard'});
 	}
-	
+
 
 	siteManager.loadRelatedContentSets(
 		'#esapiEncode("javascript",content.getContentID())#',

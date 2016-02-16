@@ -6,45 +6,59 @@
 </cfsilent>
 <cfinclude template="js.cfm">
 <cfoutput>
-<h1>Select Fields</h1>
-<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
-	</a>
-</div>
-<div class="fieldset-wrap">
-<div class="fieldset">
-	<div class="control-group" id="availableFields">
-		<label class="control-label">
-			<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
-		</label>
-		<div id="sortableFields" class="controls">
-			<p class="dragMsg">
-				<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
-			</p>	
-						
-			<cfset displayList=feed.getDisplayList()>
-			<cfset availableList=feed.getAvailableDisplayList()>
-				
-			<ul id="availableListSort" class="displayListSortOptions">
-				<cfloop list="#availableList#" index="i">
-					<li class="ui-state-default">#trim(i)#</li>
-				</cfloop>
-			</ul>
-										
-			<ul id="displayListSort" class="displayListSortOptions">
-				<cfloop list="#displayList#" index="i">
-					<li class="ui-state-highlight">#trim(i)#</li>
-				</cfloop>
-			</ul>
-			<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
-		</div>	
+
+<div class="mura-header">
+	<h1>Select Fields</h1>
+
+	<div class="mura-item-metadata">
+		<div class="label-group">
+
+	<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
+	<div id="nav-module-specific" class="btn-group">
+		<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
+		</a>
 	</div>
-	
-</div>
-<div class="form-actions">
-	<button class="btn" id="updateBtn">Update</button>
-</div>
-</div>
+	<!-- /optional nav-module-specific -->
+
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
+</div> <!-- /.mura-header -->
+<div class="block block-constrain">
+	<div class="block block-bordered">
+	  <div class="block-content">
+			<div class="mura-control-group" id="availableFields">
+				<label class="mura-control-label">
+					<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+				</label>
+				<div id="sortableFields" class="mura-control">
+					<p class="dragMsg">
+						<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+					</p>
+
+					<cfset displayList=feed.getDisplayList()>
+					<cfset availableList=feed.getAvailableDisplayList()>
+
+					<ul id="availableListSort" class="displayListSortOptions">
+						<cfloop list="#availableList#" index="i">
+							<li class="ui-state-default">#trim(i)#</li>
+						</cfloop>
+					</ul>
+
+					<ul id="displayListSort" class="displayListSortOptions">
+						<cfloop list="#displayList#" index="i">
+							<li class="ui-state-highlight">#trim(i)#</li>
+						</cfloop>
+					</ul>
+					<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
+				</div>
+			</div>
+
+			<div class="form-actions">
+				<button class="btn" id="updateBtn">Update</button>
+			</div>
+		</div> <!-- /.block-content -->
+	</div> <!-- /.block-bordered -->
+</div> <!-- /.block-constrain -->
 
 <script>
 $(function(){
@@ -66,11 +80,11 @@ $(function(){
 			function(){
 				frontEndProxy.post({cmd:'setWidth',width:600});
 			}
-		);	
+		);
 	} else {
 		frontEndProxy.post({cmd:'setWidth',width:600});
 	}
-	
+
 	$("##availableListSort, ##displayListSort").sortable({
 		connectWith: ".displayListSortOptions",
 		update: function(event) {
@@ -86,7 +100,7 @@ $(function(){
 				}
 
 			});
-			
+
 		}
 	}).disableSelection();
 
