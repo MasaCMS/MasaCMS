@@ -16,12 +16,13 @@
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
-	<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
-	<div id="nav-module-specific" class="btn-toolbar">
-		<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
-		</a>
-	</div>
-	<!-- /optional nav-module-specific -->
+			<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
+			<div id="nav-module-specific" class="btn-toolbar">
+				<div class="btn-group">
+					<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
+				</div>
+			</div>
+			<!-- /optional nav-module-specific -->
 
 		</div><!-- /.label-group -->
 	</div><!-- /.mura-item-metadata -->
