@@ -83,16 +83,17 @@ jQuery(document).ready(function(){
 <div class="mura-header">
     <h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
 
-    <div class="mura-item-metadata">
-		<div class="label-group">
-
-            <cfinclude template="dsp_secondary_menu.cfm">
-
-		</div><!-- /.label-group -->
-	</div><!-- /.mura-item-metadata -->
-
     <cfif rc.compactDisplay neq "true">
-        #$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb alt")#
+        <div class="mura-item-metadata">
+    		<div class="label-group">
+
+                <cfinclude template="dsp_secondary_menu.cfm">
+
+    		</div><!-- /.label-group -->
+    	</div><!-- /.mura-item-metadata -->
+
+
+        #$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
     </cfif>
 </div> <!-- /.mura-header -->
 

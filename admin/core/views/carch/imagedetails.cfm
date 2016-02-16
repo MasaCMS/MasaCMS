@@ -53,6 +53,7 @@
 <div class="mura-header">
 	<h1>Image Details</h1>
 
+	<cfif rc.compactDisplay neq "true">
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -74,6 +75,7 @@
 
 		</div> <!-- /label-group -->
 	</div> <!-- /metadata -->
+	</cfif>
 </div>
 <!--- /mura-header --->
 <cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
