@@ -2373,7 +2373,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var requestData = GetHttpRequestData()>
 	<cfset var filemetadata= "">
 
-	<cfset fileItem.siteID=arguments.data.siteID/>
+	<cfset fileItem.siteID=arguments.data.siteid/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
 	<cfset fileItem.type="File" />
 	<cfset fileItem.subType=arguments.data.subType />
@@ -2409,6 +2409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset local.fileBean.setCaption(fileItem.summary)>
 				</cfif>
 				<cfset local.fileBean.setFileField('files')>
+				<cfset local.fileBean.setSiteID(getBean('settingsManager').getSite(fileItem.siteid).getFilePoolID())>
 				<cfset local.fileBean.save()>
 
 				<cfset fileItem.filename=local.fileBean.getFilename()/>
@@ -2427,7 +2428,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
 						 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 					</cfquery>
-					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=arguments.data.siteid)>
 					<cfset filemetadata=fileBean.getFileMetaData()>
 					<cfset local.returnStr={
 					    filename=JSStringFormat(fileBean.getAssocFilename()),
@@ -2496,6 +2497,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif structKeyExists(fileItem,'summary')>
 					<cfset local.fileBean.setCaption(fileItem.summary)>
 				</cfif>
+				<cfset local.fileBean.setSiteID(getBean('settingsManager').getSite(fileItem.siteid).getFilePoolID())>
 				<cfset local.fileBean.setFileField('files')>
 				<cfset local.fileBean.save()>
 
