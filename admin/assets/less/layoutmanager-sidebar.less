@@ -29,6 +29,7 @@
 	}
 	.btn {
 		font-size: 12px;
+		padding: 6px 12px;
 		-webkit-border-radius: 2px;
 		-moz-border-radius: 2px;
 		border-radius: 2px;
@@ -45,8 +46,6 @@
 	}
 }
 
-	
-	
 
 /* 
 	DEV NOTE
@@ -63,16 +62,22 @@
 
 .mura__layout-manager__controls__objects {
 	padding: 30px 0 50px 0;
+}
 
-	/* sidebar icons */
-	*[class^="mi-"], 
-	*[class*=" mi-"]{
-		width: 18px;
-		padding-right: 1em;
-		font-size: 1em;
-		color: #898989;
-	}
+/* sidebar icons */
 
+*[class^="mi-"], 
+*[class*=" mi-"]{
+	font-family: FontAwesome,"Source Sans Pro","Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+.mura-sidebar__objects-list__object-item *[class^="mi-"], 
+.mura-sidebar__objects-list__object-item *[class*=" mi-"]{
+	font-family: "FontAwesome" !important;
+	width: 18px;
+	padding-right: 1em;
+	font-size: 1em;
+	color: #898989;
 }
 
 .mura-sidebar__objects-list {
@@ -85,6 +90,7 @@
 	margin: 18px;
 }
 
+body.compact #configuratorContainer h1,
 .mura-sidebar__objects-list__object-group h3 {
 	margin: 23px 0 15px 0;
 	padding: 0;
@@ -94,6 +100,10 @@
 	line-height: 1.2;
 }
 
+body.compact #mura-content{
+	padding-left: 0;
+	padding-right: 0;
+}
 .mura-sidebar__objects-list__object-group-heading {
 	font-size: 12px;
 	font-weight: normal;
@@ -160,7 +170,7 @@
 /* iframe
 ===================================== */
 
-.mura #sortableFields.sortable-sidebar #displayListSort {
+#configurator #sortableFields #displayListSort {
 	width: 100%;
 	float: none;
 }
@@ -181,4 +191,77 @@
 
 .mura__layout-manager__controls .mura #configurator .fieldset-wrap + .fieldset-wrap {
 	margin-top: 1em;
+}
+
+/* compact view / configurators */
+
+body.compact{
+	// reset typography styles in sidebar configurator
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-weight: normal;
+	text-transform: none;
+		
+		#configuratorContainer{
+			background-color: #454545;
+			padding: 18px 34px 15px 18px;
+
+			// reset typography styles NESTED within sidebar configurator
+			* {
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+				font-weight: normal;
+				text-transform: none;
+			}
+
+			.btn {
+				font-size: 12px;
+				padding: 5px 12px;
+				-webkit-border-radius: 2px;
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+				-webkit-box-shadow: none;
+				-moz-box-shadow: none;
+				box-shadow: none;	
+			}
+			.btn-primary {
+				background-image:none;
+				text-shadow:none;
+			  color: #ffffff;
+			  background-color: #4485f1;
+			  border-color: #4882cc;
+			}
+			.mura-layout-row{
+			  padding: 0;
+			  margin: 0;
+			}
+
+			label,
+			.control-label,
+			.mura-control-label{
+				.mura-sidebar__objects-list__object-group-heading;
+			}
+
+			select,
+			select:focus,
+			input[type=text] {
+				margin: .5em 0;
+				width: 100%;
+				background-color: #333;
+				color: #d8d8d8;
+				padding: 8px 12px;
+				font-size: 11px;
+				border: none;
+				cursor: pointer;
+				outline: none;
+				outline-offset: 0;
+			}
+
+			.form-actions{
+				margin:0;
+				padding:0;
+				.btn{
+					.btn-primary;
+				}
+			}
+
+	} 
 }

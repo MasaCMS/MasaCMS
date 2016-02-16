@@ -21,7 +21,7 @@
 	<cfoutput>
 	<div id="configuratorContainer">
 		<cfif rc.sourceFrame eq 'sidebar'>
-			<a class="btn btn-default" onclick="frontEndProxy.post({cmd:'showobjects'});">
+			<a class="btn btn-primary" onclick="frontEndProxy.post({cmd:'showobjects'});">
 		<i class="icon-circle-arrow-left"></i> Back</a>
 		</cfif>
 

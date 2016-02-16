@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <div class="mura-control-group">
-  	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+  	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 	<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam">
 		<cfloop list="Small,Medium,Large" index="i">
 			<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
@@ -62,20 +62,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="imageoptionscontainer" style="display:none">
     <div class="mura-control-group" >
-    	<label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+    	<label>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
       	<input class="objectParam" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
     </div>
     <div class="mura-control-group">
-        <label class="mura-control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
+        <label>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
     	<input class="objectParam" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
     </div>
 </div>
 
 <div class="mura-control-group" id="availableFields">
-	<label class="mura-control-label">
-		<span>Selected Fields</span>
+	<label>
+		<div>Selected Fields</div>
 		<button id="editFields" class="btn">Edit</button>
 	</label>
+
 	<div id="sortableFields" class="sortable-sidebar">
 		<cfset displayList=feed.getDisplayList()>
 		<ul id="displayListSort" class="displayListSortOptions">
