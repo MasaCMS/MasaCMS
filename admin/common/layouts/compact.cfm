@@ -204,15 +204,16 @@
 			<![endif]-->
 		</cfif>
 	</head>
-	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact">
+	<body id="#esapiEncode('html_attr',rc.originalcircuit)#" class="compact <cfif request.action eq 'core:carch.frontendconfigurator'>configurator-wrapper<cfelse>modal-wrapper</cfif>">
 		<div id="mura-content">
 		<cfif rc.sourceFrame eq 'modal'>
 			<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="mi-times-circle"></i></a>
 			<cfinclude template="includes/dialog.cfm">
 		</cfif>
-	</div> <!-- /mura-content -->
 
-		<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
+			<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
+	
+		</div> <!-- /mura-content -->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 

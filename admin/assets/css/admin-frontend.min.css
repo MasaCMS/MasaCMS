@@ -475,9 +475,11 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 	example: .mura-sidebar uses a calculated height, therefore the child elements cannot use 'inherit' for height
 	http://stackoverflow.com/questions/19423384/css-less-calc-method-is-crashing-my-ie10
 */
+  /* sidebar icons */
   /* legacy, initial set */
   /* iframe
 ===================================== */
+  /* compact view / configurators */
   /* FONT PATH
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
@@ -507,6 +509,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 }
 .mura .mura__layout-manager__controls .btn {
   font-size: 12px;
+  padding: 6px 12px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -528,10 +531,14 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 }
 .mura .mura__layout-manager__controls__objects {
   padding: 30px 0 50px 0;
-  /* sidebar icons */
 }
-.mura .mura__layout-manager__controls__objects *[class^="mi-"],
-.mura .mura__layout-manager__controls__objects *[class*=" mi-"] {
+.mura *[class^="mi-"],
+.mura *[class*=" mi-"] {
+  font-family: FontAwesome, "Source Sans Pro", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+.mura .mura-sidebar__objects-list__object-item *[class^="mi-"],
+.mura .mura-sidebar__objects-list__object-item *[class*=" mi-"] {
+  font-family: "FontAwesome" !important;
   width: 18px;
   padding-right: 1em;
   font-size: 1em;
@@ -545,6 +552,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 .mura .mura-sidebar__objects-list__object-group {
   margin: 18px;
 }
+.mura body.compact #configuratorContainer h1,
 .mura .mura-sidebar__objects-list__object-group h3 {
   margin: 23px 0 15px 0;
   padding: 0;
@@ -552,6 +560,10 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   font-weight: normal;
   color: #f3f3f3;
   line-height: 1.2;
+}
+.mura body.compact #mura-content {
+  padding-left: 0;
+  padding-right: 0;
 }
 .mura .mura-sidebar__objects-list__object-group-heading {
   font-size: 12px;
@@ -606,7 +618,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   color: #f5f5f5;
   /* cursor: pointer; */
 }
-.mura .mura #sortableFields.sortable-sidebar #displayListSort {
+.mura #configurator #sortableFields #displayListSort {
   width: 100%;
   float: none;
 }
@@ -623,6 +635,74 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 }
 .mura .mura__layout-manager__controls .mura #configurator .fieldset-wrap + .fieldset-wrap {
   margin-top: 1em;
+}
+.mura body.compact {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  text-transform: none;
+}
+.mura body.compact #configuratorContainer {
+  background-color: #454545;
+  padding: 18px 34px 15px 18px;
+}
+.mura body.compact #configuratorContainer * {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  text-transform: none;
+}
+.mura body.compact #configuratorContainer .btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.mura body.compact #configuratorContainer .btn-primary {
+  background-image: none;
+  text-shadow: none;
+  color: #ffffff;
+  background-color: #4485f1;
+  border-color: #4882cc;
+}
+.mura body.compact #configuratorContainer .mura-layout-row {
+  padding: 0;
+  margin: 0;
+}
+.mura body.compact #configuratorContainer label,
+.mura body.compact #configuratorContainer .control-label,
+.mura body.compact #configuratorContainer .mura-control-label {
+  font-size: 12px;
+  font-weight: normal;
+  color: #f3f3f3;
+  line-height: 1.2;
+}
+.mura body.compact #configuratorContainer select,
+.mura body.compact #configuratorContainer select:focus,
+.mura body.compact #configuratorContainer input[type=text] {
+  margin: .5em 0;
+  width: 100%;
+  background-color: #333;
+  color: #d8d8d8;
+  padding: 8px 12px;
+  font-size: 11px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  outline-offset: 0;
+}
+.mura body.compact #configuratorContainer .form-actions {
+  margin: 0;
+  padding: 0;
+}
+.mura body.compact #configuratorContainer .form-actions .btn {
+  background-image: none;
+  text-shadow: none;
+  color: #ffffff;
+  background-color: #4485f1;
+  border-color: #4882cc;
 }
 .mura h1,
 .mura h2,
@@ -4603,9 +4683,9 @@ fieldset[disabled] .mura .navbar-inverse .btn-link:focus {
   width: 100%;
   min-height: 400px;
   background: transparent;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
 }
 .mura .modal-configurator #frontEndToolsModaliframe {
   width: 600px !important;
