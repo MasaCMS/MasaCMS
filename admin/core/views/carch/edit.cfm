@@ -533,10 +533,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</span>
 
 </div> <!-- /.mura-header -->
-=======
 	</div>
 	<!--- /end mura-header --->
->>>>>>> 598d9dd273f344bb0174b040c516adcf52029f66
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
