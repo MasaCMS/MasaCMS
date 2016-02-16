@@ -76,7 +76,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 		<title>#esapiEncode('html', application.configBean.getTitle())#</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
 		<meta name="author" content="Blue River Interactive Group">
 		<meta name="robots" content="noindex, nofollow, noarchive">
 		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate">
@@ -212,7 +212,7 @@
 		</cfif>
 
 			<div class="main mura-layout-row"></cfprocessingdirective>#body#<cfprocessingdirective suppressWhitespace="true"></div>
-	
+
 		</div> <!-- /mura-content -->
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
