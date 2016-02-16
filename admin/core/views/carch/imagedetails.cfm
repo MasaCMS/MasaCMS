@@ -50,7 +50,7 @@
 <cfoutput>
 
 <!--- mura-header --->
-<div class="mura-header">	
+<div class="mura-header">
 	<h1>Image Details</h1>
 	<cfif not len(rc.imagesize) and  rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
 		#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="breadcrumb")#
@@ -59,19 +59,19 @@
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
-			<cfif not len(rc.imagesize)>
-	<cfsavecontent variable="secondarynav">
-		<cfinclude template="dsp_secondary_menu.cfm">
-	</cfsavecontent>
+		<cfif not len(rc.imagesize)>
+			<cfsavecontent variable="secondarynav">
+				<cfinclude template="dsp_secondary_menu.cfm">
+			</cfsavecontent>
 
-	#secondarynav#
-			<cfelse>
-	<div id="nav-module-specific" class="btn-toolbar">
-		<div class="btn-group">
-						<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
-		</div>
-	</div>
-			</cfif>
+			#secondarynav#
+		<cfelse>
+			<div id="nav-module-specific" class="btn-toolbar">
+				<div class="btn-group">
+					<a href="javascript:frontEndProxy.post({cmd:'close'});" class="btn"><i class="mi-arrow-circle-left"></i> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+				</div>
+			</div>
+		</cfif>
 
 		</div> <!-- /label-group -->
 	</div> <!-- /metadata -->
@@ -83,17 +83,18 @@
 	<div class="block-content">
 	<cfif len(rc.fileID)>
 		<cfloop list="#rc.fileID#" index="f">
-			<cfset $.getBean('fileManager').touchSourceImage(f)>	
+			<cfset $.getBean('fileManager').touchSourceImage(f)>
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
-			<cfif len(rc.sourceImage)>		
+			<cfif len(rc.sourceImage)>
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="mi-picture-o"></i> #esapiEncode('html',rc.rsMeta.filename)#</h2>
-				
+
 				<cfif not len(rc.imagesize)>
 					<div id="image-orientation" class="mura-control-group">
-						<label>
+						<label class="mura-control-label">
 							#esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
 						</label>
+						<div class="mura-control">
 							<select id="image-actions#f#">
 								<option value="">Please Select</option>
 								<option value="90"> #esapiEncode('html',application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
@@ -110,13 +111,17 @@
 
 					<cfloop list="Small,Medium,Large" index="s">
 						<div class="mura-control-group">
-							<label>#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
-								<div id="#lcase(s)##f#btns" class="btn-group">
+							<label class="mura-control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
+
+							<div id="#lcase(s)##f#btns" class="btn-group">
 									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
 									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
-							<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-							<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+
+							<div class="mura-control">
+								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
+								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+							</div>
 						</div>
 					</cfloop>
 					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
@@ -128,13 +133,17 @@
 							<cfset rc.customImageRatio=''>
 						</cfif>
 						<div class="mura-control-group">
-							<label>#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
-								<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
+							<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
+
+							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
 									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
-							<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-							<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+
+							<div class="mura-control">
+								<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
+								<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+							</div>
 						</div>
 					</cfloop>
 				<cfelse>
@@ -143,13 +152,17 @@
 						<cfset found=true>
 						<cfset s=ucase(left(rc.imagesize,1)) & lcase(right(rc.imagesize,len(rc.imagesize)-1))>
 						<div class="mura-control-group">
-							<label>#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
-								<div id="#lcase(s)##f#btns" class="btn-group">
+							<label class="mura-control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
+
+							<div id="#lcase(s)##f#btns" class="btn-group">
 								<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="mi-refresh"></i> Reset</button>
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="mi-crop"></i> Re-Crop</button>
 							</div>
-							<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
-							<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+
+							<div class="mura-control">
+								<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
+								<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+							</div>
 						</div>
 					<cfelse>
 						<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
@@ -162,13 +175,17 @@
 									<cfset rc.customImageRatio=''>
 								</cfif>
 								<div class="mura-control-group">
-									<label>#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
-										<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
+									<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
+
+									<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 										<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="mi-refresh"></i> Reset</button>
 										<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="mi-crop"></i> Re-Crop</button>
 									</div>
-									<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
-									<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+
+									<div class="mura-control">
+										<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
+										<img class="mura-custom-image" data-fileid="#f#" data-size="#lcase(customImage.getName())#" id="#lcase(customImage.getName())##f#" src="assets/images/ajax-loader.gif"/>
+									</div>
 								</div>
 								<cfset rc.found=true>
 								<cfbreak>
@@ -189,29 +206,31 @@
 								<cfset rc.customImageRatio=''>
 							</cfif>
 							<div class="mura-control-group">
-								<label>#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
-								<div class="controls">
-									<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
-										<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#"><i class="mi-refresh"></i> Reset</button>
-										<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
-									</div>
+								<label class="mura-control-label">#esapiEncode('html',customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
+
+								<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
+									<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#" data-height="#customImage.getHeight()#"  data-width="#customImage.getWidth()#"><i class="mi-refresh"></i> Reset</button>
+									<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(esapiEncode('html_attr',rc.imagesize))#"><i class="mi-crop"></i> Re-Crop</button>
 								</div>
+
 								<!---
 								<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
 								--->
-								
+
 								<!---<div id="cropper">
 									<div class="jc-dialog">
-									--->	
-										<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#" 
-										src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth())#?cacheID=#createUUID()#"
-										<cfif isNumeric(customImage.getWidth())> width="#customImage.getWidth()#"</cfif>
-										<cfif isNumeric(customImage.getHeight())> width="#customImage.getHeight()#"</cfif>
-										>
-									<!---	
-										<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#" 
+									--->
+								<div class="mura-control">
+									<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
+									src="#$.getURLForImage(fileID=f,size='custom',height=customImage.getHeight(),width=customImage.getWidth())#?cacheID=#createUUID()#"
+									<cfif isNumeric(customImage.getWidth())> width="#customImage.getWidth()#"</cfif>
+									<cfif isNumeric(customImage.getHeight())> width="#customImage.getHeight()#"</cfif>
+									>
+								</div>
+									<!---
+										<img id="#lcase(esapiEncode('html_attr',rc.imagesize))##f#"
 										src="#rc.sourceImage#" data-ratio="#rc.customImageRatio#">
-									
+
 										<input type="hidden" name="coords" value="" id="coords">
 										<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">
 									</div>
@@ -223,7 +242,7 @@
 				</cfif>
 			</cfif>
 		</cfloop>
-		<!-- Hidden dialog 
+		<!-- Hidden dialog
 	   	<div style="display:none;" id="jc-container" >
 			<div class="jc-dialog">
 			   	<img id="jc-source-image"/>
@@ -236,16 +255,16 @@
 	    var currentCoords='';
 		var currentSize='';
 		var instanceid='#esapiEncode("javascript",rc.instanceid)#';
-	
+
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
-		 
+
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
 		      src = src.substr(0, pos);
 		   }
-			
+
 		   obj.src = src + '?v=' + Math.random();
 
 		   if(instanceid && window.frontEndProxy){
@@ -257,17 +276,17 @@
 
 		function setImg(id,src) {
 		   var obj = document.getElementById(id);
-		 
+
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
 		      src = src.substr(0, pos);
 		   }
-			
+
 		   obj.src = src + '?v=' + Math.random();
 
 		   return false;
 		}
-	
+
 		function resizeImg(id,w,h) {
 		   $('##'+ id).css({'height':h,'width':w});
 		   return false;
@@ -292,40 +311,40 @@
 									$.ajax(
 								    	{
 								    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
-											success: function(data) {	
+											success: function(data) {
 													//alert(JSON.stringify(data));
-														
+
 													reloadImg(resetSize + resetFileID);
 													resizeImg(resetSize + resetFileID,data.width,data.height);
-													return false;		
+													return false;
 												}	,
 											async:   false
 										}
 									);
-									
 
-								});							
+
+								});
 					    	}
 						);
 			   		}
 				);
-			}	
+			}
 
 		 return false;
 	    }
-	
+
 	    function saveCoords(c){currentCoords=c};
 
 	    function applyCropping(){
 
 	    	actionModal(function(){
 			    	//$('##cropper .btn').hide();
-			 		
+
 			 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
-			
+
 			 		if(typeof(currentCoords) == 'object'){
 				    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid + '#csrf#&cacheid=' + Math.random(),
-											function(data) {	
+											function(data) {
 												//alert(JSON.stringify(data));
 												reloadImg(currentSize + currentFileID);
 												resizeImg(currentSize + currentFileID,data.width,data.height);
@@ -338,9 +357,9 @@
 						$('##action-modal').remove();
 					}
 				}
-			);		
+			);
 	    }
-	
+
 	    $('.cropper-reset').click(
 	    	function(){
 	    		$('##action-modal').remove();
@@ -363,37 +382,37 @@
 				    $.ajax(
 				    	{
 				    		url:url,
-							success: function(data) {	
+							success: function(data) {
 										//alert(JSON.stringify(data));
-										
+
 										reloadImg(resetSize + resetFileID);
 										resizeImg(resetSize + resetFileID,data.width,data.height);
 						    			$('##action-modal').remove();
 									},
 							async:   true
-						}		
+						}
 					)}
 				);
-			   		    		
+
 	    });
 		<!---
 		<cfif not len(rc.imagesize)>
 		--->
 	    $('.cropper').click(
 	    	function(){
-	
+
 	    		currentFileID=$(this).attr('data-fileid');
 				currentSize=$(this).attr('data-size');
 				currentCoords='';
-				
-	    		var jcrop_api; 
+
+	    		var jcrop_api;
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
-	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> '; 
-	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">'; 
+	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> ';
+	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">';
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
 	    			$dialogHTML+='</div></div>';
-	
+
 		        var $dialog = $($dialogHTML);
 		        var title=$(this).attr('data-filename');
 		        var scaleby=$(this).attr('data-scaleby');
@@ -401,7 +420,7 @@
 
 		        actionModal(function(){
 			       	 $dialog.find('##crop-target').Jcrop(
-			       	 	{ 
+			       	 	{
 			       	 		boxHeight:600,
 			       	 		boxWidth:600,
 			       	 		aspectRatio:aspectRatio,
@@ -422,9 +441,9 @@
 		       	});
 	    });
 
-		
+
 		$(document).ready(function(){
-			
+
 			$('.load-inline').spin(spinnerArgs2);
 
 			$('.mura-custom-image').each(
@@ -448,12 +467,12 @@
 						function(){
 							frontEndProxy.post({cmd:'setWidth',width:'standard'});
 						}
-					);	
+					);
 				} else {
 					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			}
-			</cfif> 
+			</cfif>
 		});
 		<!---
 		<cfelse>
@@ -479,7 +498,7 @@
 			*/
 
 			customImage.Jcrop(
-	       	 	{ 
+	       	 	{
 	       	 		aspectRatio:customImage.attr('data-ratio'),
 	       	 		onSelect:saveCoords,
 	       	 		onChange:saveCoords
@@ -493,17 +512,17 @@
 						function(){
 							frontEndProxy.post({cmd:'setWidth',width:'standard'});
 						}
-					);	
+					);
 				} else {
 					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			}
-			</cfif> 
+			</cfif>
 		});
 		</cfif>
 		--->
 		</script>
-		
+
 	    <!-- /Hidden dialog -->
 	</div>
 </div>

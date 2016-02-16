@@ -32,7 +32,7 @@
 		<div class="label-group">
 
 	<!-- optional - the view might use dsp_secondary_menu.cfm instead -->
-	<div id="nav-module-specific" class="btn-group">
+	<div id="nav-module-specific" class="btn-toolbar">
 		<a class="btn" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-circle-arrow-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#
 		</a>
 	</div>
