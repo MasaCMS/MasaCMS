@@ -1861,7 +1861,7 @@
 		setAnchorSaveChecks:function(el){
 			function handleEditCheck(){
 				if(muraInlineEditor.isDirty && confirm("Save as draft?")){
-					muraInlineEditor.requestedURL=this.href;
+					muraInlineEditor.requestedURL=window.location;
 					muraInlineEditor.save();
 					return false;
 				} else {

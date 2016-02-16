@@ -166,8 +166,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <div class="mura-header">
-<cfoutput><h1><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h1>
-
+<cfoutput>
+	<cfif rc.feedBean.getIsNew()>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'collections.createlocalindex')#</h1>
+	<cfelse>
+		<h1><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h1>
+	</cfif>
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
@@ -184,7 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
 </cfif>
 
-<cfif rc.compactDisplay eq "true" and not isObjectInstance>
+<cfif rc.feedBean.exists() and rc.compactDisplay eq "true" and not isObjectInstance>
 <p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
@@ -198,6 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="block block-constrain">
 
 <cfif not isObjectInstance>
+	<!---
 	<cfif rc.compactDisplay eq "true">
 		<div id="nav-module-specific" class="btn-group">
 		<cfif rc.$.useLayoutManager()>
@@ -213,6 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		</div>
 	</cfif>
+	--->
 <cfelse>
 	<!---<h2>#esapiEncode('html',rc.feedBean.getName())#</h2>--->
 	<cfsilent>
@@ -432,7 +438,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block-content">
 
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-				
+
 				<div class="mura-control-group">
 					<!--- Category Filters --->
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
@@ -773,7 +779,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!-- /##rg.mura-control -->
 </div> <!-- mura-control-group -->
 </cfif>
-		
+
 
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
@@ -876,16 +882,24 @@ jQuery(document).ready(function(){
 <cfoutput>
 
 <div class="mura-header">
-		<h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
+		<cfif rc.feedBean.getIsNew()>
+			<h1>#application.rbFactory.getKeyValue(session.rb,'collections.createremotefeed')#</h1>
+		<cfelse>
+			<h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
+		</cfif>
+
+
 	<div class="mura-item-metadata">
 		<div class="label-group">
 
 		<cfif rc.compactDisplay eq "true">
-	<div id="nav-module-specific" class="btn-group">
+			<!---
+			<div id="nav-module-specific" class="btn-group">
 				<a class="btn" onclick="history.go(-1);"><i class="mi-arrow-circle-left"></i>  #application.rbFactory.getKeyValue(session.rb,'collections.back')#</a>
-	</div>
+			</div>
+		--->
 		<cfelse>
-	<cfinclude template="dsp_secondary_menu.cfm">
+			<cfinclude template="dsp_secondary_menu.cfm">
 		</cfif>
 
 		</div><!-- /.label-group -->
@@ -1016,7 +1030,7 @@ jQuery(document).ready(function(){
 			<label>#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#</label>
 			<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
 			</div>
-	
+
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
@@ -1076,7 +1090,7 @@ jQuery(document).ready(function(){
 							<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
 					</span>
 				</div>
-		
+
 				<div class="mura-control-group">
       	<label>#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
 		    <label class="radio inline">
