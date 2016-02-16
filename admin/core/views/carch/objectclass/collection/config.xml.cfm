@@ -1,2 +1,1 @@
-<displayobject name="Collection" contenttypes="*"/>
-
+<displayobject name="Collection" contenttypes="*" iconclass="mi-th-list"/>

@@ -1,1 +1,1 @@
-<displayobject name="Container" contenttypes="*"/>
+<displayobject name="Container" contenttypes="*" iconclass="mi-trello"/>

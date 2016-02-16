@@ -1759,13 +1759,12 @@
 		<cfargument name="objectid" default="">
 		<cfargument name="objectname" default="">
 		<cfargument name="objectlabel">
+		<cfargument name="objecticonclass" default="mi-cog">
 
 		<cfif not isDefined('arguments.objectlabel')>
 			<cfset arguments.objectlabel=arguments.objectname>
 		</cfif>
-
-<!--- TODO GoWest : replace mi-cog w/ dynamic class : 2016-02-15T15:51:43-07:00 --->
-		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="mi-cog"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
+		<cfreturn '<div class="mura-sidebar__objects-list__object-item mura-objectclass" data-object="#esapiEncode('html_attr',arguments.object)#" data-objectid="#esapiEncode('html_attr',arguments.objectid)#" data-objectname="#esapiEncode('html_attr',arguments.objectname)#"><i class="#esapiEncode('html_attr',arguments.objecticonclass)#"></i> #esapiEncode('html',arguments.objectlabel)#</div>'>
 	</cffunction>
 
 	<cffunction name="renderIntervalDesc" output="false">
