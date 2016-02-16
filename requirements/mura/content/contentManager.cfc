@@ -2516,7 +2516,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#">
 						 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 					</cfquery>
-					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
+					<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=arguments.data.siteid)>
 					<cfset filemetadata=fileBean.getFileMetaData()>
 
 					<cfset local.returnStr={
