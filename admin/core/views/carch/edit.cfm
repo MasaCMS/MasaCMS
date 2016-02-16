@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -489,8 +489,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 </div> <!-- /.mura-header -->
-	</div>
-	<!--- /end mura-header --->
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
