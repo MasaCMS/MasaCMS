@@ -488,7 +488,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
 
-<<<<<<< HEAD
 <!--- TODO GoWest : move alerts to inside block-constrain : 2016-02-16T16:18:21-07:00 --->
 		
 
@@ -533,10 +532,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</span>
 
 </div> <!-- /.mura-header -->
-=======
 	</div>
 	<!--- /end mura-header --->
->>>>>>> 598d9dd273f344bb0174b040c516adcf52029f66
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
