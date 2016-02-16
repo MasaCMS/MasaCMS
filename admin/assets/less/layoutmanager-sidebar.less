@@ -1,3 +1,7 @@
+body.configurator-wrapper{
+	background-color: #454545;
+}
+
 // use outermost div for higher specificity hook into sidebar objects
 .mura__layout-manager__controls {
 	
@@ -242,7 +246,8 @@ body.compact{
 
 			select,
 			select:focus,
-			input[type=text] {
+			input[type=text],
+			textarea {
 				margin: .5em 0;
 				width: 100%;
 				background-color: #333;
@@ -253,6 +258,11 @@ body.compact{
 				cursor: pointer;
 				outline: none;
 				outline-offset: 0;
+			}
+
+			textarea{
+			max-width: 230px;
+			min-height: 85px;
 			}
 
 			.form-actions{

@@ -484,6 +484,9 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
  * -------------------------- */
   /* makes the font 33% larger relative to the icon container */
 }
+.mura body.configurator-wrapper {
+  background-color: #454545;
+}
 .mura .mura__layout-manager__controls {
   width: 300px;
   position: fixed;
@@ -681,7 +684,8 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
 }
 .mura body.compact #configuratorContainer select,
 .mura body.compact #configuratorContainer select:focus,
-.mura body.compact #configuratorContainer input[type=text] {
+.mura body.compact #configuratorContainer input[type=text],
+.mura body.compact #configuratorContainer textarea {
   margin: .5em 0;
   width: 100%;
   background-color: #333;
@@ -692,6 +696,10 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   cursor: pointer;
   outline: none;
   outline-offset: 0;
+}
+.mura body.compact #configuratorContainer textarea {
+  max-width: 230px;
+  min-height: 85px;
 }
 .mura body.compact #configuratorContainer .form-actions {
   margin: 0;

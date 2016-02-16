@@ -28089,6 +28089,9 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 .mura #cdashboard #contentSecondary .well li span {
   color: #b3b3b3;
 }
+.mura body.configurator-wrapper {
+  background-color: #454545;
+}
 .mura .mura__layout-manager__controls {
   width: 300px;
   position: fixed;
@@ -28286,7 +28289,8 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
 }
 .mura body.compact #configuratorContainer select,
 .mura body.compact #configuratorContainer select:focus,
-.mura body.compact #configuratorContainer input[type=text] {
+.mura body.compact #configuratorContainer input[type=text],
+.mura body.compact #configuratorContainer textarea {
   margin: .5em 0;
   width: 100%;
   background-color: #333;
@@ -28297,6 +28301,10 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   cursor: pointer;
   outline: none;
   outline-offset: 0;
+}
+.mura body.compact #configuratorContainer textarea {
+  max-width: 230px;
+  min-height: 85px;
 }
 .mura body.compact #configuratorContainer .form-actions {
   margin: 0;
