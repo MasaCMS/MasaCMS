@@ -2781,7 +2781,7 @@ Display Objects
 	}
 
 	public function getDisplayObject(object,siteid='#variables.$.event('siteid')#'){
-		return getBean('settingsManager').getSite(arguments.siteid).hasDisplayObject(argumentCollection=arguments);
+		return getBean('settingsManager').getSite(arguments.siteid).getDisplayObject(argumentCollection=arguments);
 	}
 
 	public function get(){

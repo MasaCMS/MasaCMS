@@ -1,1 +1,1 @@
-<displayobject name="Calendar"/>
+<displayobject name="Calendar" iconclass="mi-calendar"/>

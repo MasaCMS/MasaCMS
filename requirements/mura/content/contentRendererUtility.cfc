@@ -893,6 +893,14 @@
 
 		<cfset var openingDiv='<div class="mura-object'>
 
+		<cfif not isDefined('arguments.objectParams.objectname')>
+			<cfset arguments.objectParams.objectname=ucase(left(arguments.object,1)) & right(arguments.object,len(arguments.object)-1)>
+		</cfif>
+
+		<cfif not find('iconclass',arguments.objectParams.objectname) and arguments.renderer.hasDisplayObject(arguments.object)>
+			<cfset arguments.objectParams.objectname='<i class="#arguments.renderer.getDisplayObject(arguments.object).iconclass#"></i> ' & arguments.objectParams.objectname>
+		</cfif>
+
 		<cfparam name="arguments.objectParams.async" default="false">
 
 		<cfif arguments.objectParams.async>
