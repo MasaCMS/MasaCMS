@@ -1641,11 +1641,21 @@ component extends="mura.cfobject" {
 			sort=arguments.params.sort;
 		}
 
+
 		if(isDefined('params.entityname')
 			&& listFind('content,contentnav',params.entityname)
-			&& isDefined('params.changesetid')
+		){
+			if(isDefined('params.changesetid')
 			&& len(params.changesetid)){
-			feed.setActiveOnly(0);
+				feed.setActiveOnly(0);
+			}
+
+			if(isDefined('params.type')
+				&& len(params.type)
+				&& listFindNoCase('form,component,variation',params.type)
+			){
+				feed.setType(params.type);
+			}
 		}
 
 		if(len(sort)){
