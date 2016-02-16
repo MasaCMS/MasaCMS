@@ -432,6 +432,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block-content">
 
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+				
 				<div class="mura-control-group">
 					<!--- Category Filters --->
 					<label>#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
@@ -456,9 +457,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<input name="useCategoryIntersect" type="radio" value="0" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 						</label>
 					</div>
+			</cfif>
+
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
-			</cfif>
 </div> <!-- /.tab-pane -->
 
 <div id="tabAdvancedfilters" class="tab-pane">
@@ -692,7 +694,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> <!-- /.block header -->
 		<div class="block-content">
 
-<div class="fieldset">
 	<cfif rc.feedID neq ''>
 		<div class="mura-control-group">
 	   <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
@@ -740,44 +741,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 <cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-
 	<div class="mura-control-group">
 	<label>#application.rbFactory.getKeyValue(session.rb,'collections.access')#</label>
       	<label class="checkbox">
       		<input name="restricted" type="checkbox" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 			#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
-		</label>
-		<div id="rg" class="mura-control" <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
-			<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-			<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-			<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-			</optgroup>
-			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>
-			<cfif rsGroups.recordcount>
-			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-			<cfloop query="rsGroups">
-			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-			</cfloop>
-			</optgroup>
-			</cfif>
-			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>
-			<cfif rsGroups.recordcount>
-			<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-			<cfloop query="rsGroups">
-			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-			</cfloop>
-			</optgroup>
-			</cfif>
-			</select>
-		</div>
+			</label>
+			<div id="rg" class="mura-control" <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
+				<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+				<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
+				<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+				</optgroup>
+				<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>
+				<cfif rsGroups.recordcount>
+				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+				<cfloop query="rsGroups">
+				<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+				</cfloop>
+				</optgroup>
+				</cfif>
+				<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>
+				<cfif rsGroups.recordcount>
+				<optgroup label="#esapiEncode('html_attr',application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+				<cfloop query="rsGroups">
+				<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+				</cfloop>
+				</optgroup>
+				</cfif>
+				</select>
+			</div> <!-- /##rg.mura-control
+		</div> <!-- mura-control-group -->
+</cfif>
+		
+
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
-</cfif>
 
-</div>
-</div>
 <cfif rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
@@ -821,7 +822,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#tabContent#
 			<div class="load-inline tab-preloader"></div>
 			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
-			#actionButtons#
 		</div>
 <cfelse>
 	#tabContent#
@@ -835,6 +835,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="closeCompactDisplay" value="#esapiEncode('html_attr',rc.compactDisplay)#" />
 #rc.$.renderCSRFTokens(context=rc.feedBean.getFeedID(),format="form")#
 
+			#actionButtons#
 </div> <!-- /.block-constrain -->
 </form>
 <!---
@@ -935,94 +936,87 @@ jQuery(document).ready(function(){
 			<div class="mura-control-group">
 			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
 			  	<input name="name" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#esapiEncode('html_attr',rc.feedBean.getName())#" maxlength="50">
-	      </div>
+      </div>
 			<div class="mura-control-group">
 			    <label>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
 			  	<input name="channelLink" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#esapiEncode('html_attr',rc.feedBean.getChannelLink())#">
-	</div>
+			</div>
 
 			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
-		</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#</label>
 				<input name="viewalllink" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLink())#" maxlength="255">
-
-	</div>
+			</div>
 			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
-		</label>
+				<label>#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#</label>
 				<input name="viewalllabel" type="text" value="#esapiEncode('html_attr',rc.feedBean.getViewAllLabel())#" maxlength="100">
-	</div>
+			</div>
 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.isactive')#</label>
-     <label class="radio inline">
-	 <input name="isActive" type="radio" value="1" <cfif rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
-	</label>
-	<label class="radio inline">
-	<input name="isActive" type="radio" value="0" <cfif not rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-	</label>
-	  </div>
+				<label class="radio inline">
+	 				<input name="isActive" type="radio" value="1" <cfif rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+	 			</label>
+				<label class="radio inline">
+				<input name="isActive" type="radio" value="0" <cfif not rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+				</label>
+		  </div>
 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.ispublic')#</label>
       	<label class="radio inline">
-	<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
-	</label>
-	<label class="radio inline">
-	<input name="isPublic" type="radio" value="0" <cfif not rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-	</label>
-	  </div>
+				<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+				</label>
+				<label class="radio inline">
+				<input name="isPublic" type="radio" value="0" <cfif not rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+				</label>
+		  </div>
 
 			<div class="mura-control-group">
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
       	<label class="radio inline">
-	<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
-	</label>
-	<label class="radio inline">
-		<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-	</label>
-	  </div>
+				<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+				</label>
+				<label class="radio inline">
+					<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+				</label>
+	  	</div>
 
 			<div class="mura-control-group">
-
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
-	    <select class="span7" name="maxItems">
-			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-			<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
-			</cfloop>
-			<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
-		</select>
+		    <select class="span7" name="maxItems">
+					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+					<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
+					</cfloop>
+					<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
+				</select>
 
 		    <label>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
-      <select class="span7" name="version">
-		<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
-		<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
-		</cfloop>
-		</select>
-
-    <cfif len(rc.$.globalConfig('proxyserver')) or len(rc.$.globalConfig('proxyuser'))>
-	    	<label>#application.rbFactory.getKeyValue(session.rb,'collections.authtype')#</label>
-			   <select name="authtype">
-				<option value="DEFAULT">DEFAULT</option>
-				<option value="BASIC" <cfif rc.feedBean.getAuthType() eq 'BASIC'>selected</cfif>>BASIC</option>
-				<cfif len(rc.$.globalConfig('proxyserver'))>
-					<option value="PROXY" <cfif rc.feedBean.getAuthType() eq 'PROXY'>selected</cfif>>PROXY</option>
-				</cfif>
-				<cfif len(rc.$.globalConfig('proxyuser'))>
-					<option value="NTLM" <cfif rc.feedBean.getAuthType() eq 'NTLM'>selected</cfif>>NTLM</option>
-				</cfif>
+	      <select class="span7" name="version">
+					<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
+					<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
+					</cfloop>
 				</select>
+
+	    	<cfif len(rc.$.globalConfig('proxyserver')) or len(rc.$.globalConfig('proxyuser'))>
+		    	<label>#application.rbFactory.getKeyValue(session.rb,'collections.authtype')#</label>
+				  <select name="authtype">
+						<option value="DEFAULT">DEFAULT</option>
+						<option value="BASIC" <cfif rc.feedBean.getAuthType() eq 'BASIC'>selected</cfif>>BASIC</option>
+						<cfif len(rc.$.globalConfig('proxyserver'))>
+							<option value="PROXY" <cfif rc.feedBean.getAuthType() eq 'PROXY'>selected</cfif>>PROXY</option>
+						</cfif>
+						<cfif len(rc.$.globalConfig('proxyuser'))>
+							<option value="NTLM" <cfif rc.feedBean.getAuthType() eq 'NTLM'>selected</cfif>>NTLM</option>
+						</cfif>
+					</select>
 				</cfif>
 	  		</div>
 
 			<div class="mura-control-group">
-				<label>
-			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
-		</label>
-				<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
-		</div>
+			<label>#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#</label>
+			<input name="cssclass"  data-displayobjectparam="cssclass" type="text" value="#esapiEncode('html_attr',rc.feedBean.getCssclass())#" maxlength="255">
+			</div>
+	
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
@@ -1047,8 +1041,8 @@ jQuery(document).ready(function(){
 				<label>#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
 		    <div id="mura-list-tree mura-control">
 				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+				</div>
 			</div>
-		</div>
 		</div> <!-- /.block-content -->
 	</div> <!-- /.block-bordered -->
 </div> <!-- /.tab-pane -->
@@ -1077,18 +1071,19 @@ jQuery(document).ready(function(){
 				<div class="mura-control-group">
 			      <label>#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:</label>
 	      	<span id="move" class="text">
-	      		<cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
-					&nbsp;&nbsp;<a class="btn btn-small"href="javascript:##;" onclick="javascript: feedManager.loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#</a>
-					<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
-			</span>
-			</div>
+			      		<cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
+							&nbsp;&nbsp;<a class="btn btn-small"href="javascript:##;" onclick="javascript: feedManager.loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#</a>
+							<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
+					</span>
+				</div>
+		
 				<div class="mura-control-group">
-			      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
-			    <label class="radio inline">
-				<input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
+      	<label>#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
+		    <label class="radio inline">
+					<input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')#
 				</label>
 				<label class="radio inline">
-				<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+					<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 				</label>
 	  		</div>
 
@@ -1102,13 +1097,14 @@ jQuery(document).ready(function(){
 	<cfinclude template="dsp_tab_usage.cfm">
 </cfif>
 </cfsavecontent>
-		<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
+
+<ul class="mura-tabs nav-tabs nav-tabs-alt" data-toggle="tabs">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li<cfif t eq 1> class="active"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
-	</ul>
-		<div class="tab-content block-content">
-	#tabContent#
+</ul>
+	<div class="tab-content block-content">
+		#tabContent#
 	<div class="load-inline tab-preloader"></div>
 	<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 

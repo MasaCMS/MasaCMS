@@ -390,7 +390,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</button>
 		</cfif>
-	</div>
+		</div> <!-- /.form-actions -->
 	</cfoutput>
 	</cfsavecontent>
 </cfsilent>
@@ -478,10 +478,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>
 				<cfinclude template="dsp_secondary_menu.cfm">
 			</cfif>
-		</div>
-		<!-- /label-group -->
-	</div>
-	<!-- /metadata -->
+		</div><!-- /.label-group -->
+	</div><!-- /.mura-item-metadata -->
 
 	</cfif>
 
@@ -489,6 +487,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
 			#$.dspZoom(crumbdata=rc.crumbdata,class="breadcrumb")#
 	</cfif>
+
+<!--- TODO GoWest : move alerts to inside block-constrain : 2016-02-16T16:18:21-07:00 --->
+		
 
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList & ",Variation",rc.type)>
 		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
@@ -530,8 +531,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
 
-	</div>
-	<!--- /end mura-header --->
+</div> <!-- /.mura-header -->
 	</cfoutput>
 
 	<cfset tabLabelList=""/>
@@ -727,7 +727,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!-- tab content -->
 		<div class="block-content tab-content">
 			#tabContent#
+
 			<div class="load-inline tab-preloader"></div>
+
 			<script>
 				$(function(){
 					$('.tab-preloader').spin(spinnerArgs2);
@@ -739,11 +741,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				});
 			</script>
-		</div>
+
+		</div><!-- /block-content tab content -->
 		#actionButtons#
-		<!-- /block-content tab content -->
-	</div>
-	<!-- /tabs -->
+	</div><!-- /.block-constrain -->
 
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">

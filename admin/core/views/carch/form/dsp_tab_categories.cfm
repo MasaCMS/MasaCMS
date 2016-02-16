@@ -70,30 +70,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="block-content">
 		<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
-		<div class="fieldset">
-		<div class="control-group">
-		<div class="mura-grid stripe">
-			<dl class="mura-grid-hdr">
-				<dt class="categorytitle">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
-				</dt>
-				<dd class="categoryassignmentwrapper">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
-								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="mi-question-circle"></i>
-					</a>
-				</dd>
-			</dl><!--- /.mura-grid-hdr --->
-				<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
-				<cf_dsp_categories_nest 
-					siteID="#rc.siteID#" 
-					parentID="" 
-					nestLevel="0" 
-					contentBean="#rc.contentBean#" 
-					rsCategoryAssign="#rc.rsCategoryAssign#">
-			
-		</div><!--- /.mura-grid --->
-		</div>
-		</div>
+			<div class="mura-control-group">
+				<div class="mura-grid stripe">
+					<dl class="mura-grid-hdr">
+						<dt class="categorytitle">
+								#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
+						</dt>
+						<dd class="categoryassignmentwrapper">
+							<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
+										#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="mi-question-circle"></i>
+							</a>
+						</dd>
+					</dl><!--- /.mura-grid-hdr --->
+						<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contentBean.getContentHistID()) />
+						<cf_dsp_categories_nest 
+							siteID="#rc.siteID#" 
+							parentID="" 
+							nestLevel="0" 
+							contentBean="#rc.contentBean#" 
+							rsCategoryAssign="#rc.rsCategoryAssign#">
+					
+				</div><!--- /.mura-grid --->
+			</div>
 
 		<span id="extendset-container-categorization" class="extendset-container"></span>
 		<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
