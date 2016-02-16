@@ -141,10 +141,34 @@
 			return this.loadBy('id',this.get('id'));
 		},
 
-		loadBy:function(propertyName,propertyValue){
+		new:function(expand){
+			expand=expand || '';
+
+			return new Promise(function(resolve,reject){
+				var params={
+					entityname:self.get('entityname'),
+					method:'findOne',
+					siteid:self.get('siteid'),
+					expand:expand
+				};
+
+				window.mura.findNew(params).then(function(collection){
+
+					if(collection.get('items').length){
+						self.set(collection.get('items')[0].getAll());
+					}
+					if(typeof resolve == 'function'){
+						resolve(self);
+					}
+				});
+			});
+		},
+
+		loadBy:function(propertyName,propertyValue,expand){
 
 			propertyName=propertyName || 'id';
 			propertyValue=propertyValue || this.get(propertyName);
+			expand=expand || '';
 
 			var self=this;
 
@@ -152,11 +176,13 @@
 				var params={
 					entityname:self.get('entityname'),
 					method:'findQuery',
-					siteid:self.get('siteid')};
+					siteid:self.get('siteid'),
+					expand:expand
+				};
 
-					params[propertyName]=propertyValue;
+				params[propertyName]=propertyValue;
 
-					window.mura.findQuery(params).then(function(collection){
+				window.mura.findQuery(params).then(function(collection){
 
 					if(collection.get('items').length){
 						self.set(collection.get('items')[0].getAll());
