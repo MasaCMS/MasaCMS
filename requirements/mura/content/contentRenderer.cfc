@@ -1577,9 +1577,9 @@ Display Objects
 					<cfset arguments.params.object='collection'>
 					<cfset arguments.params.sourcetype='children'>
 					<cfset arguments.params.source=$.content('contentid')>
-					<cfoutput>#$.dspObject(object='collection',params=arguments.params)#</cfoutput>
+					<cfoutput>#$.dspObject(object='collection',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 				<cfelseif $.siteConfig().hasDisplayObject($.content('type'))>
-					<cfoutput>#dspObject(object=$.content('type'),params=arguments.params)#</cfoutput>
+					<cfoutput>#dspObject(object=$.content('type'),params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 				<cfelse>
 					<cfif $.content('type') eq 'folder'>
 						<cf_CacheOMatic key="folderBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
@@ -1590,9 +1590,9 @@ Display Objects
 						 <cfelse>
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('dsp_folder.cfm')>
 						 	 <cfif len(filePath)>
-							 	<cfoutput>#$.dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params)#</cfoutput>
+							 	<cfoutput>#$.dspObject_Include(thefile='dsp_folder.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 							 <cfelse>
-							 	<cfoutput>#$.dspObject_Include(thefile='folder/index.cfm',params=arguments.params)#</cfoutput>
+							 	<cfoutput>#$.dspObject_Include(thefile='folder/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 							 </cfif>
 						</cfif>
 						</cf_CacheOMatic>
@@ -1600,14 +1600,14 @@ Display Objects
 						<cf_CacheOMatic key="calendarBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('calendar/index.cfm')>
 						 	 <cfif len(filePath)>
-							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params)#</cfoutput>
+							 	<cfoutput>#$.dspObject_Include(thefile='calendar/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 							 </cfif>
 						</cf_CacheOMatic>
 					<cfelseif variables.$.content('type') eq 'gallery'>
 						<cf_CacheOMatic key="galleryBody#hash(cgi.query_string)#" nocache="#$.event('r').restrict#">
 						 	 <cfset filePath=$.siteConfig().lookupDisplayObjectFilePath('gallery/index.cfm')>
 						 	 <cfif len(filePath)>
-							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params)#</cfoutput>
+							 	<cfoutput>#$.dspObject_Include(thefile='gallery/index.cfm',params=arguments.params,cachekey=cgi.query_string)#</cfoutput>
 							 </cfif>
 						</cf_CacheOMatic>
 					</cfif>
