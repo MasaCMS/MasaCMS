@@ -1,0 +1,1 @@
+component extends="fb2.lib.dataBean" table="fb_heardabout" entityName="heardabout" displayName="heardabout" access="public" {	property name="heardaboutid" fieldtype="id";}
