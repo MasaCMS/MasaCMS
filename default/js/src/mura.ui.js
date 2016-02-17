@@ -59,6 +59,7 @@
 		smack: [1,2,3],
 		templateList: ['checkbox','dropdown','radio','textarea','textfield','form'],
 		formInit: false,
+		responsemessage: "",
 
 		init:function(properties){
 			
@@ -93,9 +94,6 @@
 		renderField:function(name,data) {
 			var self = this;
 			var templates = this.templates;
-			console.log('field');
-			console.log( data );
-			console.log( self.formJSON.datasets );
 
 			if( data.datasetid != "")
 				data.options = self.formJSON.datasets[data.datasetid].options;
@@ -106,8 +104,6 @@
 
 		renderData: function( ) {
 			var self = this;
-			console.log('renderData');
-			console.log(self.datasets.length);
 
 			if(self.datasets.length == 0)
 				self.renderForm();
@@ -187,16 +183,19 @@
 		loadForm: function() {
 
 			var self = this;
+			
 
 			window.mura.get(
 					window.mura.apiEndpoint + '/' + window.mura.siteid + '/content/' + self.settings.objectid
-					 + '?fields=body,title,filename'
+					 + '?fields=body,title,filename,responsemessage'
 					).then(function(data) {
 					 	formJSON = JSON.parse( data.data.body );
 						entityName = data.data.filename.replace(/\W+/g, "");
 						self.entity = entityName;
-
 					 	self.formJSON = formJSON;
+					 	self.responsemessage = data.data.responsemessage;
+
+					 	console.log(data);
 					 	console.log(self.formJSON);
 						for(var i in self.formJSON.datasets)
 							self.datasets.push(i);
@@ -243,7 +242,11 @@
 					self.data
 				)
 				.save()
-				.then( console.log('saved!!!'));
+				.then( function() {
+					console.log('done and saved');
+					console.log(self.responsemessage);
+					$(self.settings.formEl).html( self.responsemessage );
+				});
 	
 
 

@@ -5,7 +5,7 @@
 			</label>
 			{{#each options}}
 				<label class="control-label" for="{{label}}">	
-				<input class="form-control" type="radio" name="{{../name}}" id="field-{{id}}" value="{{id}}" />
+				<input class="form-control" type="radio" name="{{../name}}id" id="field-{{id}}" value="{{id}}" />
 				{{label}}</label>
 			{{/each}}
 		</div>

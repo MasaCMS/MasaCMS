@@ -64,6 +64,7 @@ WEB-INF/
 /default/includes/email/
 /default/includes/eventHandler.cfc
 /default/js/node_modules/
+/default/model/
 
 # create sites &/or directories beginning with 'demo' or 'temp' without tracking them
 demo-*/
