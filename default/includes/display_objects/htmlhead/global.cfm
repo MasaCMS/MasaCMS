@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/dist/mura.js"></script>
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/src/handlebars-v3.0.3.js"></script>
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/src/mura.ui.js"></script>
+<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/src/mura.dm.js"></script>
 <script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/src/mura.uitemplates.js"></script>
->
 
 <script>
 initMura({
