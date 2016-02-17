@@ -689,6 +689,7 @@ body.mura-sidebar-state__pushed--right .mura__layout-manager__controls {
   margin: 4px 0;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) + * {
+  float: left;
   clear: left;
   margin-top: 8px;
 }

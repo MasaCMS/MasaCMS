@@ -28189,6 +28189,7 @@ fieldset[disabled] .mura #configuratorContainer .form-actions .btn.active {
   margin: 4px 0;
 }
 .mura body.configurator-wrapper #configuratorContainer .btn:not([class*="btn-"]) + * {
+  float: left;
   clear: left;
   margin-top: 8px;
 }
